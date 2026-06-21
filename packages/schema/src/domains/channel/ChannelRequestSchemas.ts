@@ -367,3 +367,21 @@ export const StreamPreviewUploadUrlResponseSchema = z.object({
 });
 
 export type StreamPreviewUploadUrlResponseSchema = z.infer<typeof StreamPreviewUploadUrlResponseSchema>;
+
+// Echowire: create a thread under a text/forum channel (POST /channels/:channel_id/threads).
+export const ThreadCreateRequest = z.object({
+	name: GeneralChannelNameType.describe('The name of the thread (1-100 characters)'),
+	auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.optional()
+		.describe('Minutes of inactivity before auto-archiving (60, 1440, 4320, or 10080); defaults to 1440'),
+	type: z
+		.union([
+			createNamedLiteral(ChannelTypes.PUBLIC_THREAD, 'PUBLIC_THREAD'),
+			createNamedLiteral(ChannelTypes.PRIVATE_THREAD, 'PRIVATE_THREAD'),
+		])
+		.optional()
+		.describe('The thread type (11 = public, 12 = private); defaults to public'),
+});
+
+export type ThreadCreateRequest = z.infer<typeof ThreadCreateRequest>;

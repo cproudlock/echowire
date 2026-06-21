@@ -43,6 +43,16 @@ export interface ChannelRow {
 	last_pin_timestamp: Nullish<Date>;
 	permission_overwrites: Nullish<Map<RoleID | UserID, PermissionOverwrite>>;
 	nicks: Nullish<Map<string, string>>;
+	// Echowire: thread fields (flat, like other Date/scalar columns so they round-trip through the KV layer).
+	// Present only when `type` is a thread; owner_id (above) is the thread creator.
+	thread_archived?: Nullish<boolean>;
+	thread_auto_archive_duration?: Nullish<number>;
+	thread_archive_timestamp?: Nullish<Date>;
+	thread_locked?: Nullish<boolean>;
+	thread_invitable?: Nullish<boolean>;
+	thread_create_timestamp?: Nullish<Date>;
+	thread_member_count?: Nullish<number>;
+	thread_message_count?: Nullish<number>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;
@@ -130,6 +140,14 @@ export const CHANNEL_COLUMNS = [
 	'last_pin_timestamp',
 	'permission_overwrites',
 	'nicks',
+	'thread_archived',
+	'thread_auto_archive_duration',
+	'thread_archive_timestamp',
+	'thread_locked',
+	'thread_invitable',
+	'thread_create_timestamp',
+	'thread_member_count',
+	'thread_message_count',
 	'soft_deleted',
 	'indexed_at',
 	'version',

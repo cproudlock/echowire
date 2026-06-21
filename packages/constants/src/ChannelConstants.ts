@@ -8,15 +8,23 @@ export const ChannelTypes = {
 	GUILD_VOICE: 2,
 	GROUP_DM: 3,
 	GUILD_CATEGORY: 4,
+	// Echowire: Threads + Forum channels (re-ported from the old fork; absent upstream).
+	PUBLIC_THREAD: 11,
+	PRIVATE_THREAD: 12,
+	GUILD_FORUM: 15,
 	GUILD_LINK: 998,
 	DM_PERSONAL_NOTES: 999,
 } as const;
 
 export type ChannelType = ValueOf<typeof ChannelTypes>;
 
+// Echowire: thread channel types (live as sub-channels of a text/forum parent).
+export const THREAD_CHANNEL_TYPES = new Set<number>([ChannelTypes.PUBLIC_THREAD, ChannelTypes.PRIVATE_THREAD]);
+
 export const GUILD_TEXT_BASED_CHANNEL_TYPES = new Set<number>([ChannelTypes.GUILD_TEXT, ChannelTypes.GUILD_VOICE]);
 export const TEXT_BASED_CHANNEL_TYPES = new Set<number>([
 	...GUILD_TEXT_BASED_CHANNEL_TYPES,
+	...THREAD_CHANNEL_TYPES,
 	ChannelTypes.DM,
 	ChannelTypes.DM_PERSONAL_NOTES,
 	ChannelTypes.GROUP_DM,

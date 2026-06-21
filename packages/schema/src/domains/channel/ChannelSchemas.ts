@@ -142,6 +142,25 @@ export const ChannelResponse = z.object({
 		.record(z.string(), createStringType(1, 32))
 		.optional()
 		.describe('Custom nicknames for users in this channel (for group DMs)'),
+	// Echowire: thread fields. Present only when `type` is a thread; `owner_id` above doubles as the thread creator.
+	thread_metadata: z
+		.object({
+			archived: z.boolean().describe('Whether the thread is archived'),
+			auto_archive_duration: Int32Type.describe(
+				'Minutes of inactivity before auto-archiving (60, 1440, 4320, or 10080)',
+			),
+			archive_timestamp: z.iso.datetime().nullish().describe('ISO 8601 timestamp of the last archive state change'),
+			locked: z.boolean().optional().describe('Whether the thread is locked (only moderators can unarchive)'),
+			invitable: z
+				.boolean()
+				.optional()
+				.describe('Whether non-moderators can add others to a private thread'),
+			create_timestamp: z.iso.datetime().nullish().describe('ISO 8601 timestamp of thread creation'),
+		})
+		.nullish()
+		.describe('Thread metadata; present only for thread channels'),
+	member_count: Int32Type.optional().describe('Approximate count of members in the thread (threads only)'),
+	message_count: Int32Type.optional().describe('Approximate count of messages in the thread (threads only)'),
 });
 
 export type ChannelResponse = z.infer<typeof ChannelResponse>;

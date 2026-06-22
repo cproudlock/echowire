@@ -124,6 +124,10 @@ export function createHandlerRegistry(): GatewayHandlerRegistry {
 	registry.set('CHANNEL_UPDATE', handleChannelUpdate as GatewayEventHandler);
 	registry.set('CHANNEL_UPDATE_BULK', handleChannelUpdateBulk as GatewayEventHandler);
 	registry.set('CHANNEL_DELETE', handleChannelDelete as GatewayEventHandler);
+	// Echowire: threads are channels in the store, so they reuse the channel handlers.
+	registry.set('THREAD_CREATE', handleChannelCreate as GatewayEventHandler);
+	registry.set('THREAD_UPDATE', handleChannelUpdate as GatewayEventHandler);
+	registry.set('THREAD_DELETE', handleChannelDelete as GatewayEventHandler);
 	registry.set('PASSIVE_UPDATES', handlePassiveUpdates as GatewayEventHandler);
 	registry.set('CHANNEL_PINS_UPDATE', handleChannelPinsUpdate as GatewayEventHandler);
 	registry.set('CHANNEL_PINS_ACK', handleChannelPinsAck as GatewayEventHandler);

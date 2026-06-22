@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
-import {ALL_PERMISSIONS, ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {ALL_PERMISSIONS, ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {ContentWarningLevel, GuildFeatures} from '@fluxer/constants/src/GuildConstants';
 import {
 	MAX_CHANNELS_PER_CATEGORY,
@@ -271,6 +271,43 @@ export class ChannelOperationsService {
 		});
 		await this.gatewayService.dispatchGuild({guildId, event: 'THREAD_CREATE', data: response});
 		return response;
+	}
+
+	// Echowire: list active (non-archived) threads under a text/forum channel.
+	async listActiveThreads(params: {
+		userId: UserID;
+		parentChannelId: ChannelID;
+		requestCache: RequestCache;
+	}): Promise<Array<ChannelResponse>> {
+		const parent = await this.channelRepository.findUnique(params.parentChannelId);
+		if (!parent || parent.isSoftDeleted || !parent.guildId) {
+			throw new UnknownChannelError();
+		}
+		const canView = await this.gatewayService.checkPermission({
+			guildId: parent.guildId,
+			userId: params.userId,
+			permission: Permissions.VIEW_CHANNEL,
+		});
+		if (!canView) {
+			throw new MissingPermissionsError();
+		}
+		const channels = await this.channelRepository.listGuildChannels(parent.guildId);
+		const threads = channels.filter(
+			(channel) =>
+				channel.parentId === params.parentChannelId &&
+				THREAD_CHANNEL_TYPES.has(channel.type) &&
+				!channel.threadMetadata?.archived,
+		);
+		return Promise.all(
+			threads.map((channel) =>
+				mapChannelToResponse({
+					channel,
+					currentUserId: null,
+					userCacheService: this.userCacheService,
+					requestCache: params.requestCache,
+				}),
+			),
+		);
 	}
 
 	async updateChannelPositionsLocked(params: {

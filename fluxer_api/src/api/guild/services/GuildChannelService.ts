@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
 import type {ChannelCreateRequest, ThreadCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
@@ -61,7 +61,10 @@ export class GuildChannelService {
 			userId: params.userId,
 		});
 		const channels = await this.channelRepository.listGuildChannels(params.guildId);
-		const viewableChannels = channels.filter((channel) => viewableChannelIds.includes(channel.id));
+		// Echowire: threads are not part of the guild channel list; they are fetched via the thread endpoints.
+		const viewableChannels = channels.filter(
+			(channel) => viewableChannelIds.includes(channel.id) && !THREAD_CHANNEL_TYPES.has(channel.type),
+		);
 		return Promise.all(
 			viewableChannels.map((channel) => {
 				return mapChannelToResponse({
@@ -100,6 +103,15 @@ export class GuildChannelService {
 		requestCache: RequestCache;
 	}): Promise<ChannelResponse> {
 		return this.channelOps.createThread(params);
+	}
+
+	// Echowire: list active threads under a text/forum channel.
+	async listActiveThreads(params: {
+		userId: UserID;
+		parentChannelId: ChannelID;
+		requestCache: RequestCache;
+	}): Promise<Array<ChannelResponse>> {
+		return this.channelOps.listActiveThreads(params);
 	}
 
 	async updateChannelPositions(

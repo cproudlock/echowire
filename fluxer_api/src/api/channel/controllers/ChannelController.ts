@@ -62,6 +62,30 @@ export function ChannelController(app: HonoApp) {
 			);
 		},
 	);
+	// Echowire: list active threads under a text/forum channel.
+	app.get(
+		'/channels/:channel_id/threads',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'list_active_threads',
+			summary: 'List active threads',
+			description: 'Lists the active (non-archived) threads under a text or forum channel.',
+			responseSchema: z.array(ChannelResponse),
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const parentChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(
+				await ctx.get('guildService').channels.listActiveThreads({userId, parentChannelId, requestCache}),
+			);
+		},
+	);
 	app.get(
 		'/channels/:channel_id',
 		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),

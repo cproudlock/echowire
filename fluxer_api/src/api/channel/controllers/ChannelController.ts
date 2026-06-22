@@ -113,6 +113,28 @@ export function ChannelController(app: HonoApp) {
 			);
 		},
 	);
+	// Echowire: delete a thread.
+	app.delete(
+		'/channels/:channel_id/thread',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'delete_thread',
+			summary: 'Delete a thread',
+			description: 'Deletes a thread. Requires being the thread owner or having Manage Channels.',
+			responseSchema: z.object({}),
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			await ctx.get('guildService').channels.deleteThread({userId, threadChannelId});
+			return ctx.body(null, 204);
+		},
+	);
 	app.get(
 		'/channels/:channel_id',
 		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),

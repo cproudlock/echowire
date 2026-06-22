@@ -128,6 +128,11 @@ export class GuildChannelService {
 		return this.channelOps.updateThread(params);
 	}
 
+	// Echowire: delete a thread.
+	async deleteThread(params: {userId: UserID; threadChannelId: ChannelID}): Promise<void> {
+		return this.channelOps.deleteThread(params);
+	}
+
 	async updateChannelPositions(
 		params: {
 			userId: UserID;

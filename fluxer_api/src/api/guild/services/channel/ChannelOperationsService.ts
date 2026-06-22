@@ -359,6 +359,35 @@ export class ChannelOperationsService {
 		return response;
 	}
 
+	// Echowire: delete a thread.
+	async deleteThread(params: {userId: UserID; threadChannelId: ChannelID}): Promise<void> {
+		const thread = await this.channelRepository.findUnique(params.threadChannelId);
+		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			throw new UnknownChannelError();
+		}
+		if (thread.ownerId !== params.userId) {
+			const canManage = await this.gatewayService.checkPermission({
+				guildId: thread.guildId,
+				userId: params.userId,
+				permission: Permissions.MANAGE_CHANNELS,
+			});
+			if (!canManage) {
+				throw new MissingPermissionsError();
+			}
+		}
+		await this.channelRepository.delete(thread.id, thread.guildId);
+		await this.gatewayService.dispatchGuild({
+			guildId: thread.guildId,
+			event: 'THREAD_DELETE',
+			data: {
+				id: thread.id.toString(),
+				guild_id: thread.guildId.toString(),
+				parent_id: thread.parentId ? thread.parentId.toString() : null,
+				type: thread.type,
+			},
+		});
+	}
+
 	async updateChannelPositionsLocked(params: {
 		userId: UserID;
 		guildId: GuildID;

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {ChannelTypes, MessageTypes} from '@fluxer/constants/src/ChannelConstants';
+import {NULL_THREAD_FIELDS} from '../../database/types/ChannelTypes';
 import type {LimitKey} from '@fluxer/constants/src/LimitConfigMetadata';
 import {MAX_GROUP_DM_RECIPIENTS, MAX_GROUP_DMS_PER_USER} from '@fluxer/constants/src/LimitConstants';
 import {RelationshipTypes} from '@fluxer/constants/src/UserConstants';
@@ -510,6 +511,7 @@ export class UserChannelService {
 			last_pin_timestamp: null,
 			permission_overwrites: null,
 			nicks: null,
+			...NULL_THREAD_FIELDS,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,

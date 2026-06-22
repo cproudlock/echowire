@@ -5,6 +5,7 @@ import {
 	ChannelUpdateRequest,
 	DeleteChannelQuery,
 	PermissionOverwriteCreateRequest,
+	ThreadCreateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import {
 	ChannelResponse,
@@ -34,6 +35,33 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 export function ChannelController(app: HonoApp) {
+	// Echowire: create a thread under a text/forum channel.
+	app.post(
+		'/channels/:channel_id/threads',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		Validator('json', ThreadCreateRequest),
+		OpenAPI({
+			operationId: 'create_thread',
+			summary: 'Create a thread',
+			description: 'Creates a thread under a text or forum channel. Requires permission to send messages in the parent.',
+			responseSchema: ChannelResponse,
+			statusCode: 201,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const parentChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const data = ctx.req.valid('json');
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(
+				await ctx.get('guildService').channels.createThread({userId, parentChannelId, data, requestCache}),
+				201,
+			);
+		},
+	);
 	app.get(
 		'/channels/:channel_id',
 		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),

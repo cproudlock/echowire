@@ -19,6 +19,28 @@ export interface PermissionOverwrite {
 	deny_: Nullish<bigint>;
 }
 
+// Echowire: spread into any non-thread ChannelRow literal to satisfy the full-row-upsert DSL.
+export const NULL_THREAD_FIELDS = {
+	thread_archived: null,
+	thread_auto_archive_duration: null,
+	thread_archive_timestamp: null,
+	thread_locked: null,
+	thread_invitable: null,
+	thread_create_timestamp: null,
+	thread_member_count: null,
+	thread_message_count: null,
+} satisfies Pick<
+	ChannelRow,
+	| 'thread_archived'
+	| 'thread_auto_archive_duration'
+	| 'thread_archive_timestamp'
+	| 'thread_locked'
+	| 'thread_invitable'
+	| 'thread_create_timestamp'
+	| 'thread_member_count'
+	| 'thread_message_count'
+>;
+
 export interface ChannelRow {
 	channel_id: ChannelID;
 	guild_id: Nullish<GuildID>;
@@ -44,15 +66,16 @@ export interface ChannelRow {
 	permission_overwrites: Nullish<Map<RoleID | UserID, PermissionOverwrite>>;
 	nicks: Nullish<Map<string, string>>;
 	// Echowire: thread fields (flat, like other Date/scalar columns so they round-trip through the KV layer).
-	// Present only when `type` is a thread; owner_id (above) is the thread creator.
-	thread_archived?: Nullish<boolean>;
-	thread_auto_archive_duration?: Nullish<number>;
-	thread_archive_timestamp?: Nullish<Date>;
-	thread_locked?: Nullish<boolean>;
-	thread_invitable?: Nullish<boolean>;
-	thread_create_timestamp?: Nullish<Date>;
-	thread_member_count?: Nullish<number>;
-	thread_message_count?: Nullish<number>;
+	// Present only when `type` is a thread; owner_id (above) is the thread creator. NON-optional Nullish so
+	// the full-row-upsert DSL (which requires every CHANNEL_COLUMNS key present) is satisfied at all sites.
+	thread_archived: Nullish<boolean>;
+	thread_auto_archive_duration: Nullish<number>;
+	thread_archive_timestamp: Nullish<Date>;
+	thread_locked: Nullish<boolean>;
+	thread_invitable: Nullish<boolean>;
+	thread_create_timestamp: Nullish<Date>;
+	thread_member_count: Nullish<number>;
+	thread_message_count: Nullish<number>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;

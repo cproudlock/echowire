@@ -3,7 +3,7 @@
 import {type ChannelType, ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import type {UserID} from '../BrandedTypes';
 import {Db, type DbOp} from '../database/CassandraTypes';
-import type {ChannelRow, PrivateChannelRow} from '../database/types/ChannelTypes';
+import {type ChannelRow, NULL_THREAD_FIELDS, type PrivateChannelRow} from '../database/types/ChannelTypes';
 
 type SnapshotPatch = Partial<{
 	is_gdm: DbOp<boolean>;
@@ -104,6 +104,7 @@ export function channelRowFromPrivateChannelSnapshot(row: PrivateChannelRow): Ch
 		last_pin_timestamp: row.channel_last_pin_timestamp ?? null,
 		permission_overwrites: null,
 		nicks: row.channel_nicks ?? null,
+		...NULL_THREAD_FIELDS,
 		soft_deleted: false,
 		indexed_at: null,
 		version: row.channel_version ?? 0,

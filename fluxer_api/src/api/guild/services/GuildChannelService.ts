@@ -3,7 +3,7 @@
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
-import type {ChannelCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
+import type {ChannelCreateRequest, ThreadCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import type {ChannelID, GuildID, UserID} from '../../BrandedTypes';
@@ -89,6 +89,17 @@ export class GuildChannelService {
 			permission: Permissions.MANAGE_CHANNELS,
 		});
 		return this.channelOps.createChannel(params, auditLogReason);
+	}
+
+	// Echowire: create a thread under a text/forum channel. Permission (SEND_MESSAGES on
+	// the parent) is checked inside channelOps, which also resolves the parent's guild.
+	async createThread(params: {
+		userId: UserID;
+		parentChannelId: ChannelID;
+		data: ThreadCreateRequest;
+		requestCache: RequestCache;
+	}): Promise<ChannelResponse> {
+		return this.channelOps.createThread(params);
 	}
 
 	async updateChannelPositions(

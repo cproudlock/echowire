@@ -12,7 +12,7 @@ import {
 	upsertOne,
 } from '../../database/CassandraQueryExecution';
 import {Db} from '../../database/CassandraTypes';
-import type {ChannelRow, DmStateRow, PrivateChannelRow} from '../../database/types/ChannelTypes';
+import {type ChannelRow, type DmStateRow, NULL_THREAD_FIELDS, type PrivateChannelRow} from '../../database/types/ChannelTypes';
 import {Logger} from '../../Logger';
 import {Channel} from '../../models/Channel';
 import {Channels, DmStates, PinnedDms, PrivateChannels, ReadStates, UserDmHistory} from '../../Tables';
@@ -157,6 +157,7 @@ function buildDmChannelRow({
 		last_pin_timestamp: null,
 		permission_overwrites: null,
 		nicks: null,
+		...NULL_THREAD_FIELDS,
 		soft_deleted: false,
 		indexed_at: null,
 		version: 1,

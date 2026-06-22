@@ -10,11 +10,12 @@ import {
 } from '@fluxer/constants/src/LimitConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {MaxCategoryChannelsError} from '@fluxer/errors/src/domains/channel/MaxCategoryChannelsError';
+import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
-import type {ChannelCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
+import type {ChannelCreateRequest, ThreadCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {
 	computeChannelMoveBlockIds,
@@ -28,7 +29,7 @@ import type {ChannelID, EmojiID, GuildID, RoleID, StickerID, UserID} from '../..
 import {createChannelID, createRoleID, createUserID} from '../../../BrandedTypes';
 import {mapChannelToResponse} from '../../../channel/ChannelMappers';
 import type {IChannelRepository} from '../../../channel/IChannelRepository';
-import type {PermissionOverwrite} from '../../../database/types/ChannelTypes';
+import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '../../../database/types/ChannelTypes';
 import type {IGatewayService} from '../../../infrastructure/IGatewayService';
 import type {ISnowflakeService} from '../../../infrastructure/ISnowflakeService';
 import type {UserCacheService} from '../../../infrastructure/UserCacheService';
@@ -167,6 +168,7 @@ export class ChannelOperationsService {
 			last_pin_timestamp: null,
 			permission_overwrites: permissionOverwrites,
 			nicks: null,
+			...NULL_THREAD_FIELDS,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,
@@ -197,6 +199,78 @@ export class ChannelOperationsService {
 			userCacheService: this.userCacheService,
 			requestCache: params.requestCache,
 		});
+	}
+
+	// Echowire: create a thread under a text/forum parent channel.
+	async createThread(params: {
+		userId: UserID;
+		parentChannelId: ChannelID;
+		data: ThreadCreateRequest;
+		requestCache: RequestCache;
+	}): Promise<ChannelResponse> {
+		const parent = await this.channelRepository.findUnique(params.parentChannelId);
+		if (!parent || parent.isSoftDeleted || !parent.guildId) {
+			throw new UnknownChannelError();
+		}
+		if (parent.type !== ChannelTypes.GUILD_TEXT && parent.type !== ChannelTypes.GUILD_FORUM) {
+			throw new UnknownChannelError();
+		}
+		const guildId = parent.guildId;
+		const canSend = await this.gatewayService.checkPermission({
+			guildId,
+			userId: params.userId,
+			permission: Permissions.SEND_MESSAGES,
+		});
+		if (!canSend) {
+			throw new MissingPermissionsError();
+		}
+		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
+		const now = new Date();
+		const channelId = createChannelID(await this.snowflakeService.generate());
+		const channel = await this.channelRepository.upsert({
+			channel_id: channelId,
+			guild_id: guildId,
+			type: threadType,
+			name: params.data.name,
+			topic: null,
+			icon_hash: null,
+			url: null,
+			parent_id: params.parentChannelId,
+			position: 0,
+			owner_id: params.userId,
+			recipient_ids: null,
+			nsfw: parent.nsfwOverride,
+			content_warning_level: parent.contentWarningLevel,
+			content_warning_text: parent.contentWarningText,
+			rate_limit_per_user: parent.rateLimitPerUser,
+			bitrate: null,
+			user_limit: null,
+			voice_connection_limit: null,
+			rtc_region: null,
+			last_message_id: null,
+			last_pin_timestamp: null,
+			permission_overwrites: null,
+			nicks: null,
+			thread_archived: false,
+			thread_auto_archive_duration: params.data.auto_archive_duration ?? 1440,
+			thread_archive_timestamp: now,
+			thread_locked: false,
+			thread_invitable: threadType === ChannelTypes.PRIVATE_THREAD,
+			thread_create_timestamp: now,
+			thread_member_count: 1,
+			thread_message_count: 0,
+			soft_deleted: false,
+			indexed_at: null,
+			version: 1,
+		});
+		const response = await mapChannelToResponse({
+			channel,
+			currentUserId: null,
+			userCacheService: this.userCacheService,
+			requestCache: params.requestCache,
+		});
+		await this.gatewayService.dispatchGuild({guildId, event: 'THREAD_CREATE', data: response});
+		return response;
 	}
 
 	async updateChannelPositionsLocked(params: {

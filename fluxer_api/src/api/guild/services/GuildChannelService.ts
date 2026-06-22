@@ -3,7 +3,11 @@
 import {Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
-import type {ChannelCreateRequest, ThreadCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
+import type {
+	ChannelCreateRequest,
+	ThreadCreateRequest,
+	ThreadUpdateRequest,
+} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import type {ChannelID, GuildID, UserID} from '../../BrandedTypes';
@@ -112,6 +116,16 @@ export class GuildChannelService {
 		requestCache: RequestCache;
 	}): Promise<Array<ChannelResponse>> {
 		return this.channelOps.listActiveThreads(params);
+	}
+
+	// Echowire: update a thread (archive/unarchive/lock/rename).
+	async updateThread(params: {
+		userId: UserID;
+		threadChannelId: ChannelID;
+		data: ThreadUpdateRequest;
+		requestCache: RequestCache;
+	}): Promise<ChannelResponse> {
+		return this.channelOps.updateThread(params);
 	}
 
 	async updateChannelPositions(

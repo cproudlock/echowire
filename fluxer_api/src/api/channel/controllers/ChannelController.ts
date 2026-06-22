@@ -6,6 +6,7 @@ import {
 	DeleteChannelQuery,
 	PermissionOverwriteCreateRequest,
 	ThreadCreateRequest,
+	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import {
 	ChannelResponse,
@@ -83,6 +84,32 @@ export function ChannelController(app: HonoApp) {
 			const requestCache = ctx.get('requestCache');
 			return ctx.json(
 				await ctx.get('guildService').channels.listActiveThreads({userId, parentChannelId, requestCache}),
+			);
+		},
+	);
+	// Echowire: update a thread (archive/unarchive/lock/rename).
+	app.patch(
+		'/channels/:channel_id/thread',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		Validator('json', ThreadUpdateRequest),
+		OpenAPI({
+			operationId: 'update_thread',
+			summary: 'Update a thread',
+			description: 'Updates a thread (name, archived, locked, auto-archive duration, invitable).',
+			responseSchema: ChannelResponse,
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const data = ctx.req.valid('json');
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(
+				await ctx.get('guildService').channels.updateThread({userId, threadChannelId, data, requestCache}),
 			);
 		},
 	);

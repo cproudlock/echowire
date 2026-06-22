@@ -385,3 +385,17 @@ export const ThreadCreateRequest = z.object({
 });
 
 export type ThreadCreateRequest = z.infer<typeof ThreadCreateRequest>;
+
+// Echowire: update a thread (PATCH /channels/:channel_id/thread). All fields optional.
+export const ThreadUpdateRequest = z.object({
+	name: GeneralChannelNameType.optional().describe('New thread name (1-100 characters)'),
+	archived: z.boolean().optional().describe('Whether the thread is archived'),
+	locked: z.boolean().optional().describe('Whether the thread is locked (only moderators can unarchive)'),
+	auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.optional()
+		.describe('Minutes of inactivity before auto-archiving'),
+	invitable: z.boolean().optional().describe('Whether non-moderators can add others to a private thread'),
+});
+
+export type ThreadUpdateRequest = z.infer<typeof ThreadUpdateRequest>;

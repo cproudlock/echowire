@@ -15,7 +15,11 @@ import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidat
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
-import type {ChannelCreateRequest, ThreadCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
+import type {
+	ChannelCreateRequest,
+	ThreadCreateRequest,
+	ThreadUpdateRequest,
+} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {
 	computeChannelMoveBlockIds,
@@ -308,6 +312,51 @@ export class ChannelOperationsService {
 				}),
 			),
 		);
+	}
+
+	// Echowire: update a thread (name / archived / locked / auto-archive / invitable).
+	async updateThread(params: {
+		userId: UserID;
+		threadChannelId: ChannelID;
+		data: ThreadUpdateRequest;
+		requestCache: RequestCache;
+	}): Promise<ChannelResponse> {
+		const thread = await this.channelRepository.findUnique(params.threadChannelId);
+		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			throw new UnknownChannelError();
+		}
+		// Owner can edit; otherwise MANAGE_CHANNELS is required.
+		if (thread.ownerId !== params.userId) {
+			const canManage = await this.gatewayService.checkPermission({
+				guildId: thread.guildId,
+				userId: params.userId,
+				permission: Permissions.MANAGE_CHANNELS,
+			});
+			if (!canManage) {
+				throw new MissingPermissionsError();
+			}
+		}
+		const row = thread.toRow();
+		const {data} = params;
+		const archivedChanged = data.archived !== undefined && data.archived !== row.thread_archived;
+		const updatedRow = {
+			...row,
+			name: data.name ?? row.name,
+			thread_archived: data.archived ?? row.thread_archived,
+			thread_locked: data.locked ?? row.thread_locked,
+			thread_auto_archive_duration: data.auto_archive_duration ?? row.thread_auto_archive_duration,
+			thread_invitable: data.invitable ?? row.thread_invitable,
+			thread_archive_timestamp: archivedChanged ? new Date() : row.thread_archive_timestamp,
+		};
+		const channel = await this.channelRepository.upsert(updatedRow);
+		const response = await mapChannelToResponse({
+			channel,
+			currentUserId: null,
+			userCacheService: this.userCacheService,
+			requestCache: params.requestCache,
+		});
+		await this.gatewayService.dispatchGuild({guildId: thread.guildId, event: 'THREAD_UPDATE', data: response});
+		return response;
 	}
 
 	async updateChannelPositionsLocked(params: {

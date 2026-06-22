@@ -75,7 +75,11 @@ channel_event_map() ->
         <<"CHANNEL_RECIPIENT_ADD">> => channel_recipient_add,
         <<"CHANNEL_RECIPIENT_REMOVE">> => channel_recipient_remove,
         <<"CHANNEL_UPDATE">> => channel_update,
-        <<"CHANNEL_UPDATE_BULK">> => channel_update_bulk
+        <<"CHANNEL_UPDATE_BULK">> => channel_update_bulk,
+        %% Echowire: threads
+        <<"THREAD_CREATE">> => thread_create,
+        <<"THREAD_DELETE">> => thread_delete,
+        <<"THREAD_UPDATE">> => thread_update
     }.
 
 -spec guild_event_map() -> #{binary() => atom()}.

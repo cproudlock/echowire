@@ -95,6 +95,7 @@ import {useLingui} from '@lingui/react/macro';
 import {
 	ArrowLeftIcon,
 	CaretRightIcon,
+	ChatCircleIcon,
 	EyeSlashIcon,
 	ListIcon,
 	MagnifyingGlassIcon,
@@ -105,12 +106,20 @@ import {
 	UsersIcon,
 	VideoCameraIcon,
 } from '@phosphor-icons/react';
+import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
+import {msg} from '@lingui/core/macro';
 import {clsx} from 'clsx';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 import {useCallback, useEffect, useRef, useState} from 'react';
 
 const {VoiceCallButton, VideoCallButton} = CallButtons;
+
+// Echowire: create-thread header button.
+const CREATE_THREAD_HEADER_DESCRIPTOR = msg({
+	message: 'Create Thread',
+	comment: 'Tooltip on the create-thread button in the channel header.',
+});
 
 interface ChannelHeaderProps {
 	channel?: Channel;
@@ -923,6 +932,20 @@ export const ChannelHeader = observer(
 							)}
 							{showPins && channel && !isMobile && (
 								<ChannelPinsButton channel={channel} data-flx="channel.channel-header.channel-pins-button" />
+							)}
+							{channel && !isMobile && channel.guildId && channel.type === ChannelTypes.GUILD_TEXT && (
+								<ChannelHeaderIcon
+									icon={ChatCircleIcon}
+									label={i18n._(CREATE_THREAD_HEADER_DESCRIPTOR)}
+									onClick={() =>
+										ModalCommands.push(
+											modal(() => (
+												<ThreadCreateModal guildId={channel.guildId as string} parentChannelId={channel.id} />
+											)),
+										)
+									}
+									data-flx="channel.channel-header.create-thread"
+								/>
 							)}
 							{shouldShowCreateGroupButton && (
 								<ChannelHeaderIcon

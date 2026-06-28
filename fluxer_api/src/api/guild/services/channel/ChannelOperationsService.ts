@@ -256,6 +256,17 @@ export class ChannelOperationsService {
 		if (!canSend) {
 			throw new MissingPermissionsError();
 		}
+		// Echowire: forum posts may carry applied_tags, but only IDs defined in the forum's
+		// available_tags are valid. Reject unknown tags (and reject tags on non-forum threads).
+		if (params.data.applied_tags && params.data.applied_tags.length > 0) {
+			if (parent.type !== ChannelTypes.GUILD_FORUM) {
+				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
+			}
+			const validTagIds = new Set((parent.availableTags ?? []).map((tag) => tag.id));
+			if (!params.data.applied_tags.every((tagId) => validTagIds.has(tagId))) {
+				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
+			}
+		}
 		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
 		const now = new Date();
 		// Echowire: when starting a thread from a message, the thread adopts the source

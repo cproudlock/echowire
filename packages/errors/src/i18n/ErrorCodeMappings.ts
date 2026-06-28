@@ -185,6 +185,7 @@ export const ErrorCodeToI18nKey = {
 	[ValidationErrorCodes.EMBEDS_EXCEED_MAX_CHARACTERS]: 'embeds.embeds_exceed_max_characters',
 	[ValidationErrorCodes.INVALID_EMAIL_ADDRESS]: 'email.invalid_format',
 	[ValidationErrorCodes.INVALID_MESSAGE_DATA]: 'messages.invalid_message_data',
+	[ValidationErrorCodes.FORUM_TAG_INVALID]: 'admin_and_system.invalid_form_body',
 	[ValidationErrorCodes.FORWARD_MESSAGES_CANNOT_CONTAIN_CONTENT]:
 		'messages.forward_messages_cannot_include_extra_content',
 	[ValidationErrorCodes.FORWARD_REFERENCE_REQUIRES_CHANNEL_AND_MESSAGE]:

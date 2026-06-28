@@ -5,6 +5,7 @@ import {usePlaceholderSpecs} from '@app/features/app/utils/PlaceholderSpecs';
 import {renderChannelStream} from '@app/features/channel/components/ChannelMessageStream';
 import styles from '@app/features/channel/components/ChannelMessages.module.css';
 import {ChannelWelcomeSection} from '@app/features/channel/components/ChannelWelcomeSection';
+import {ThreadStarterMessage} from '@app/features/channel/components/ThreadStarterMessage';
 import {CollapsedMessageVisibilityProvider} from '@app/features/channel/components/CollapsedMessageVisibilityContext';
 import {NewMessagesBar} from '@app/features/channel/components/NewMessagesBar';
 import ScrollFillerSkeleton from '@app/features/channel/components/ScrollFillerSkeleton';
@@ -630,6 +631,7 @@ export const Messages = observer(function Messages({
 			{!readyMessages.hasMoreBefore && (
 				<ChannelWelcomeSection channel={channel} data-flx="channel.messages.channel-welcome-section" />
 			)}
+			{!readyMessages.hasMoreBefore && channel.isThread() && <ThreadStarterMessage channel={channel} />}
 			{readyMessages.hasMoreBefore && (
 				<>
 					<div className={styles.placeholderSpacer} data-flx="channel.messages.placeholder-spacer" />

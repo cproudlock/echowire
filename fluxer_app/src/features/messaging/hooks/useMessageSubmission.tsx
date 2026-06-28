@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import type {Channel} from '@app/features/channel/models/Channel';
+import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import * as DraftCommands from '@app/features/messaging/commands/DraftCommands';
 import * as MessageCommands from '@app/features/messaging/commands/MessageCommands';
 import {Message} from '@app/features/messaging/models/MessagingMessage';
@@ -135,6 +136,10 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 			}).then((sentMessage) => {
 				if (sentMessage) {
 					SlowmodeCommands.recordMessageSend(channel.id);
+					// Echowire: sending into an archived thread reopens it, like Discord.
+					if (channel.isThread() && channel.threadMetadata?.archived) {
+						void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
+					}
 				}
 			});
 			ComponentDispatch.dispatch('MESSAGE_SENT', {channelId: channel.id});
@@ -200,6 +205,10 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 			}).then((sentMessage) => {
 				if (sentMessage) {
 					SlowmodeCommands.recordMessageSend(channel.id);
+					// Echowire: sending into an archived thread reopens it, like Discord.
+					if (channel.isThread() && channel.threadMetadata?.archived) {
+						void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
+					}
 				}
 			});
 			ComponentDispatch.dispatch('MESSAGE_SENT', {channelId: channel.id});

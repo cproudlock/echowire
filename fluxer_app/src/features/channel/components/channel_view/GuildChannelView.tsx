@@ -15,6 +15,7 @@ import {ChannelMembers} from '@app/features/channel/components/ChannelMembers';
 import {Messages} from '@app/features/channel/components/ChannelMessages';
 import {ChannelSearchResults} from '@app/features/channel/components/ChannelSearchResults';
 import {ChannelTextarea} from '@app/features/channel/components/ChannelTextarea';
+import {ThreadArchivedBanner} from '@app/features/channel/components/ThreadArchivedBanner';
 import {ChannelCompactCallSurface} from '@app/features/channel/components/channel_view/ChannelCompactCallSurface';
 import {ChannelViewScaffold} from '@app/features/channel/components/channel_view/ChannelViewScaffold';
 import {useChannelSearchState} from '@app/features/channel/components/channel_view/useChannelSearchState';
@@ -495,7 +496,12 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 								data-flx="channel.channel-view.guild-channel-view.messages"
 							/>
 						}
-						textarea={renderChatArea(isVoiceTextCallExpanded)}
+						textarea={
+							<>
+								<ThreadArchivedBanner channel={channel} />
+								{renderChatArea(isVoiceTextCallExpanded)}
+							</>
+						}
 						hideBottomBar={hasMessagesBottomBar}
 						data-flx="channel.channel-view.guild-channel-view.channel-chat-layout"
 					/>
@@ -551,7 +557,12 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 							data-flx="channel.channel-view.guild-channel-view.messages--2"
 						/>
 					}
-					textarea={renderChatArea()}
+					textarea={
+						<>
+							<ThreadArchivedBanner channel={channel} />
+							{renderChatArea()}
+						</>
+					}
 					hideBottomBar={hasMessagesBottomBar}
 					data-flx="channel.channel-view.guild-channel-view.channel-chat-layout--2"
 				/>

@@ -7,6 +7,7 @@ import {useFormSubmit} from '@app/features/app/hooks/useFormSubmit';
 import {
 	AUTO_ARCHIVE_OPTIONS,
 	createThread,
+	deriveThreadNameFromMessage,
 	getDefaultValues,
 	type ThreadFormInputs,
 } from '@app/features/channel/utils/ThreadCreateModalUtils';
@@ -37,15 +38,29 @@ const AUTO_ARCHIVE_DESCRIPTOR = msg({
 	message: 'Hide after inactivity',
 	comment: 'Label for the auto-archive duration selector in the create-thread modal.',
 });
+const STARTING_FROM_DESCRIPTOR = msg({
+	message: 'Starting thread from this message',
+	comment: 'Label above the source-message preview when creating a thread from a message.',
+});
 
 export const ThreadCreateModal = observer(
 	({
 		guildId,
 		parentChannelId,
 		starterMessageId,
-	}: {guildId: string; parentChannelId: string; starterMessageId?: string}) => {
+		starterMessageContent,
+		starterMessageAuthor,
+	}: {
+		guildId: string;
+		parentChannelId: string;
+		starterMessageId?: string;
+		starterMessageContent?: string;
+		starterMessageAuthor?: string;
+	}) => {
 		const {i18n} = useLingui();
-		const form = useForm<ThreadFormInputs>({defaultValues: getDefaultValues()});
+		const form = useForm<ThreadFormInputs>({
+			defaultValues: getDefaultValues(deriveThreadNameFromMessage(starterMessageContent)),
+		});
 		const onSubmit = async (data: ThreadFormInputs) => {
 			await createThread(guildId, parentChannelId, data, starterMessageId);
 		};
@@ -58,6 +73,38 @@ export const ThreadCreateModal = observer(
 						data-flx="channel.thread-create-modal.modal-header"
 					/>
 					<Modal.Content data-flx="channel.thread-create-modal.modal-content">
+						{starterMessageContent != null && starterMessageContent.length > 0 && (
+							<div
+								data-flx="channel.thread-create-modal.starter-preview"
+								style={{
+									marginBottom: 16,
+									padding: '8px 12px',
+									borderRadius: 6,
+									background: 'var(--background-secondary)',
+									borderLeft: '3px solid var(--brand-experiment, #5865f2)',
+								}}
+							>
+								<div style={{marginBottom: 4, fontSize: 11, fontWeight: 700, color: 'var(--text-muted)'}}>
+									{i18n._(STARTING_FROM_DESCRIPTOR)}
+								</div>
+								<div style={{fontSize: 13, color: 'var(--text-normal)'}}>
+									{starterMessageAuthor != null && starterMessageAuthor.length > 0 && (
+										<span style={{fontWeight: 600, marginRight: 6}}>{starterMessageAuthor}</span>
+									)}
+									<span
+										style={{
+											display: '-webkit-box',
+											WebkitLineClamp: 3,
+											WebkitBoxOrient: 'vertical',
+											overflow: 'hidden',
+											wordBreak: 'break-word',
+										}}
+									>
+										{starterMessageContent}
+									</span>
+								</div>
+							</div>
+						)}
 						<Input
 							data-flx="channel.thread-create-modal.input"
 							{...form.register('name')}

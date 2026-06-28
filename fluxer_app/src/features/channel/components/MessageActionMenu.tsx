@@ -316,6 +316,8 @@ export const useMessageActionMenuData = (
 										guildId={threadGuildId}
 										parentChannelId={threadParentId}
 										starterMessageId={message.id}
+										starterMessageContent={message.content}
+										starterMessageAuthor={message.author.displayName}
 									/>
 								)),
 							);

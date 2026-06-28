@@ -37,6 +37,17 @@ export async function createThread(
 	ModalCommands.pop();
 }
 
-export function getDefaultValues(): ThreadFormInputs {
-	return {name: '', autoArchiveDuration: '1440'};
+// Derive a sensible default thread name from the source message's content, the way
+// Discord pre-fills it: first line, collapsed whitespace, capped at 100 chars.
+export function deriveThreadNameFromMessage(content: string | null | undefined): string {
+	if (!content) {
+		return '';
+	}
+	const firstLine = content.split('\n', 1)[0] ?? '';
+	const collapsed = firstLine.replace(/\s+/g, ' ').trim();
+	return collapsed.slice(0, 100);
+}
+
+export function getDefaultValues(seedName?: string): ThreadFormInputs {
+	return {name: seedName ?? '', autoArchiveDuration: '1440'};
 }

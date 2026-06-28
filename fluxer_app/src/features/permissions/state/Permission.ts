@@ -7,6 +7,7 @@ import Guilds from '@app/features/guild/state/Guilds';
 import * as PermissionUtils from '@app/features/permissions/utils/PermissionUtils';
 import type {User as UserModel} from '@app/features/user/models/User';
 import Users from '@app/features/user/state/Users';
+import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelId, GuildId, UserId} from '@fluxer/schema/src/branded/WireIds';
 import type {Channel as WireChannel} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {Guild as WireGuild} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
@@ -29,8 +30,17 @@ class Permission {
 		makeAutoObservable(this, {}, {autoBind: true});
 	}
 
+	// Echowire: threads inherit their parent channel's permissions (they carry no overwrites of their own).
+	private resolveChannelPermissionsId(channelId: string): string {
+		const channel = Channels.getChannel(channelId);
+		if (channel && THREAD_CHANNEL_TYPES.has(channel.type) && channel.parentId) {
+			return channel.parentId;
+		}
+		return channelId;
+	}
+
 	getChannelPermissions(channelId: string): bigint | undefined {
-		return this.channelPermissions.get(channelId as ChannelId);
+		return this.channelPermissions.get(this.resolveChannelPermissionsId(channelId) as ChannelId);
 	}
 
 	getGuildPermissions(guildId: string): bigint | undefined {
@@ -59,11 +69,15 @@ class Permission {
 	): boolean {
 		let permissions = PermissionUtils.NONE;
 		if (isChannelLike(context)) {
-			permissions = this.channelPermissions.get(context.id as ChannelId) ?? PermissionUtils.NONE;
+			permissions =
+				this.channelPermissions.get(this.resolveChannelPermissionsId(context.id) as ChannelId) ??
+				PermissionUtils.NONE;
 		} else if (isGuildLike(context)) {
 			permissions = this.guildPermissions.get(context.id as GuildId) ?? PermissionUtils.NONE;
 		} else if (context.channelId) {
-			permissions = this.channelPermissions.get(context.channelId as ChannelId) ?? PermissionUtils.NONE;
+			permissions =
+				this.channelPermissions.get(this.resolveChannelPermissionsId(context.channelId) as ChannelId) ??
+				PermissionUtils.NONE;
 		} else if (context.guildId) {
 			permissions = this.guildPermissions.get(context.guildId as GuildId) ?? PermissionUtils.NONE;
 		}

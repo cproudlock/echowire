@@ -280,6 +280,21 @@ export class Channel {
 					updates.content_warning_text !== undefined ? updates.content_warning_text : this.contentWarningText,
 				rate_limit_per_user: updates.rate_limit_per_user ?? this.rateLimitPerUser,
 				nicks: updates.nicks ?? this.nicks,
+				// Echowire: preserve/merge thread state so THREAD_UPDATE events don't wipe it.
+				thread_metadata:
+					updates.thread_metadata !== undefined
+						? updates.thread_metadata
+						: this.threadMetadata
+							? {
+									archived: this.threadMetadata.archived,
+									auto_archive_duration: this.threadMetadata.autoArchiveDuration,
+									archive_timestamp: this.threadMetadata.archiveTimestamp?.toISOString() ?? null,
+									locked: this.threadMetadata.locked,
+									invitable: this.threadMetadata.invitable,
+								}
+							: null,
+				member_count: updates.member_count ?? this.memberCount ?? undefined,
+				message_count: updates.message_count ?? this.messageCount ?? undefined,
 			},
 			{instanceId: this.instanceId},
 		);

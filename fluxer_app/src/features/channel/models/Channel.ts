@@ -352,6 +352,18 @@ export class Channel {
 				return false;
 			}
 		}
+		// Echowire: thread state must be part of identity equality, otherwise an
+		// archive/unarchive (which changes only thread_metadata) is treated as "equal"
+		// and the store skips the update — the UI then needs a hard refresh to reflect it.
+		if (this.threadMetadata?.archived !== other.threadMetadata?.archived) return false;
+		if (this.threadMetadata?.locked !== other.threadMetadata?.locked) return false;
+		if (this.threadMetadata?.autoArchiveDuration !== other.threadMetadata?.autoArchiveDuration) return false;
+		if (this.threadMetadata?.invitable !== other.threadMetadata?.invitable) return false;
+		if (this.threadMetadata?.archiveTimestamp?.getTime() !== other.threadMetadata?.archiveTimestamp?.getTime()) {
+			return false;
+		}
+		if (this.memberCount !== other.memberCount) return false;
+		if (this.messageCount !== other.messageCount) return false;
 		return true;
 	}
 

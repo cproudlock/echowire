@@ -581,12 +581,14 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = observer(
 				</MenuGroup>
 			);
 		};
+		const createThreadItem = itemById.get(ids.createThread);
 		const renderInteractionGroup = () => {
-			if (!editItem && !replyItem && !forwardItem) return null;
+			if (!editItem && !replyItem && !forwardItem && !createThreadItem) return null;
 			return (
 				<MenuGroup data-flx="ui.action-menu.message-context-menu.render-interaction-group.menu-group">
 					{editItem && renderDataMenuItem(editItem, 'edit')}
 					{replyItem && renderDataMenuItem(replyItem, 'reply')}
+					{createThreadItem && renderDataMenuItem(createThreadItem, 'create-thread')}
 					{forwardItem && renderDataMenuItem(forwardItem, 'forward')}
 				</MenuGroup>
 			);

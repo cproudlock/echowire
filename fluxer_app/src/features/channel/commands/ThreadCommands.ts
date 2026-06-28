@@ -16,6 +16,9 @@ export interface CreateThreadParams {
 	name: string;
 	type?: typeof ChannelTypes.PUBLIC_THREAD | typeof ChannelTypes.PRIVATE_THREAD;
 	auto_archive_duration?: 60 | 1440 | 4320 | 10080;
+	// When starting a thread from a message, the source message ID. The created thread
+	// adopts this ID so the message can render an inline link to it.
+	message_id?: string;
 }
 
 export interface UpdateThreadParams {

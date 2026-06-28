@@ -12,6 +12,7 @@ import {CompactAuthorPrefix, CompactMessageLayout} from '@app/features/channel/c
 import {EditingMessageInput} from '@app/features/channel/components/EditingMessageInput';
 import {isMediaOnlyEmbed} from '@app/features/channel/components/embeds/EmbedRenderUtils';
 import {MessageAttachments} from '@app/features/channel/components/MessageAttachments';
+import {MessageThreadLink} from '@app/features/channel/components/MessageThreadLink';
 import {MessageAuthorInfo} from '@app/features/channel/components/MessageAuthorInfo';
 import {MessageAvatar} from '@app/features/channel/components/MessageAvatar';
 import {shouldAnimateMessageEmojiByDefault} from '@app/features/channel/components/MessageEmojiAnimationUtils';
@@ -511,6 +512,7 @@ export const UserMessage = observer(() => {
 				<div className={styles.messageGutterRight} data-flx="channel.user-message.message-gutter-right" />
 				<div className={styles.container} data-flx="channel.user-message.container">
 					<MessageAttachments data-flx="channel.user-message.message-attachments" />
+					<MessageThreadLink />
 				</div>
 			</SpoilerSyncProvider>
 		);
@@ -596,6 +598,7 @@ export const UserMessage = observer(() => {
 				</CompactMessageLayout>
 				<div className={styles.container} data-flx="channel.user-message.container--2">
 					<MessageAttachments data-flx="channel.user-message.message-attachments--2" />
+					<MessageThreadLink />
 					{renderFailedFooter()}
 				</div>
 			</SpoilerSyncProvider>
@@ -773,6 +776,7 @@ export const UserMessage = observer(() => {
 					</AuthorHeading>
 				)}
 				<MessageAttachments data-flx="channel.user-message.message-attachments--3" />
+				<MessageThreadLink />
 				{renderFailedFooter()}
 			</div>
 		</SpoilerSyncProvider>

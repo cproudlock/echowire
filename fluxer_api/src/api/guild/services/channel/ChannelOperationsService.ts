@@ -230,7 +230,27 @@ export class ChannelOperationsService {
 		}
 		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
 		const now = new Date();
-		const channelId = createChannelID(await this.snowflakeService.generate());
+		// Echowire: when starting a thread from a message, the thread adopts the source
+		// message's ID (Discord semantics) so the message can render an inline link to it.
+		// If a thread already exists for that message, return it idempotently.
+		let channelId: ChannelID;
+		if (params.data.message_id != null) {
+			channelId = createChannelID(BigInt(params.data.message_id));
+			const existing = await this.channelRepository.findUnique(channelId);
+			if (existing && !existing.isSoftDeleted) {
+				if (existing.parentId !== params.parentChannelId || !THREAD_CHANNEL_TYPES.has(existing.type)) {
+					throw new UnknownChannelError();
+				}
+				return mapChannelToResponse({
+					channel: existing,
+					currentUserId: null,
+					userCacheService: this.userCacheService,
+					requestCache: params.requestCache,
+				});
+			}
+		} else {
+			channelId = createChannelID(await this.snowflakeService.generate());
+		}
 		const channel = await this.channelRepository.upsert({
 			channel_id: channelId,
 			guild_id: guildId,

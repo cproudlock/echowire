@@ -311,7 +311,13 @@ export const useMessageActionMenuData = (
 						onClick: () => {
 							onClose?.();
 							ModalCommands.push(
-								modal(() => <ThreadCreateModal guildId={threadGuildId} parentChannelId={threadParentId} />),
+								modal(() => (
+									<ThreadCreateModal
+										guildId={threadGuildId}
+										parentChannelId={threadParentId}
+										starterMessageId={message.id}
+									/>
+								)),
 							);
 						},
 					});

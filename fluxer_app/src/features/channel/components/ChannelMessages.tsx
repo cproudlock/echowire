@@ -13,6 +13,7 @@ import type {Channel} from '@app/features/channel/models/Channel';
 import GatewayConnection from '@app/features/gateway/transport/GatewayConnection';
 import GuildVerification from '@app/features/guild/state/GuildVerification';
 import {TRY_AGAIN_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
+import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import * as MessageCommands from '@app/features/messaging/commands/MessageCommands';
 import {useMessageListKeyboardNavigation} from '@app/features/messaging/hooks/useMessageListKeyboardNavigation';
 import {useMessageSelectionCopyForMessageGetter} from '@app/features/messaging/hooks/useMessageSelectionCopy';
@@ -44,7 +45,7 @@ import type {User} from '@app/features/user/models/User';
 import UserSettings from '@app/features/user/state/UserSettings';
 import Users from '@app/features/user/state/Users';
 import Window from '@app/features/window/state/Window';
-import {Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {MAX_MESSAGES_PER_CHANNEL} from '@fluxer/constants/src/LimitConstants';
 import {extractTimestamp} from '@fluxer/snowflake/src/SnowflakeUtils';
 import {msg} from '@lingui/core/macro';
@@ -240,6 +241,14 @@ export const Messages = observer(function Messages({
 			ChannelMessages.releaseRetainedChannel(channel.id);
 		};
 	}, [channel.id]);
+	// Echowire: prefetch active threads when viewing a text/forum channel so inline
+	// thread links (under their source message) and the threads popout are populated
+	// without waiting for the user to open the popout.
+	useEffect(() => {
+		if (channel.type === ChannelTypes.GUILD_TEXT || channel.type === ChannelTypes.GUILD_FORUM) {
+			void ThreadCommands.listActiveThreads(channel.id).catch(() => {});
+		}
+	}, [channel.id, channel.type]);
 	const updateFromState = useCallback(() => {
 		const snapshot = readFromState(channel.id);
 		const previous = lastStateSnapshotRef.current;

@@ -24,10 +24,12 @@ export async function createThread(
 	guildId: string,
 	parentChannelId: string,
 	data: ThreadFormInputs,
+	starterMessageId?: string,
 ): Promise<void> {
 	const thread = await ThreadCommands.createThread(parentChannelId, {
 		name: data.name,
 		auto_archive_duration: Number(data.autoArchiveDuration) as AutoArchiveDuration,
+		message_id: starterMessageId,
 	});
 	setTimeout(() => {
 		selectChannel(guildId, thread.id);

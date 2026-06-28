@@ -39,11 +39,15 @@ const AUTO_ARCHIVE_DESCRIPTOR = msg({
 });
 
 export const ThreadCreateModal = observer(
-	({guildId, parentChannelId}: {guildId: string; parentChannelId: string}) => {
+	({
+		guildId,
+		parentChannelId,
+		starterMessageId,
+	}: {guildId: string; parentChannelId: string; starterMessageId?: string}) => {
 		const {i18n} = useLingui();
 		const form = useForm<ThreadFormInputs>({defaultValues: getDefaultValues()});
 		const onSubmit = async (data: ThreadFormInputs) => {
-			await createThread(guildId, parentChannelId, data);
+			await createThread(guildId, parentChannelId, data, starterMessageId);
 		};
 		const {handleSubmit} = useFormSubmit({form, onSubmit, defaultErrorField: 'name'});
 		return (

@@ -23,6 +23,7 @@ import {ChannelOverwriteTypeSchema, GeneralChannelNameType} from '@fluxer/schema
 import {createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
 import {ContentWarningLevelSchema} from '@fluxer/schema/src/primitives/GuildValidators';
 import {QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
+import {SnowflakeStringType} from '@fluxer/schema/src/primitives/SchemaPrimitives';
 import {
 	coerceNumberFromString,
 	createNamedLiteral,
@@ -371,6 +372,9 @@ export type StreamPreviewUploadUrlResponseSchema = z.infer<typeof StreamPreviewU
 // Echowire: create a thread under a text/forum channel (POST /channels/:channel_id/threads).
 export const ThreadCreateRequest = z.object({
 	name: GeneralChannelNameType.describe('The name of the thread (1-100 characters)'),
+	message_id: SnowflakeStringType.optional().describe(
+		'When creating a thread from an existing message, the source message ID. The thread adopts this ID so the message can render an inline link to it (Discord semantics).',
+	),
 	auto_archive_duration: z
 		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
 		.optional()

@@ -11,6 +11,7 @@ import {
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {MaxCategoryChannelsError} from '@fluxer/errors/src/domains/channel/MaxCategoryChannelsError';
 import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
+import {UnknownMessageError} from '@fluxer/errors/src/domains/channel/UnknownMessageError';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
@@ -30,7 +31,7 @@ import {
 import {ChannelNameType} from '@fluxer/schema/src/primitives/ChannelValidators';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import type {ChannelID, EmojiID, GuildID, RoleID, StickerID, UserID} from '../../../BrandedTypes';
-import {createChannelID, createRoleID, createUserID} from '../../../BrandedTypes';
+import {createChannelID, createMessageID, createRoleID, createUserID} from '../../../BrandedTypes';
 import {mapChannelToResponse} from '../../../channel/ChannelMappers';
 import type {IChannelRepository} from '../../../channel/IChannelRepository';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '../../../database/types/ChannelTypes';
@@ -235,6 +236,13 @@ export class ChannelOperationsService {
 		// If a thread already exists for that message, return it idempotently.
 		let channelId: ChannelID;
 		if (params.data.message_id != null) {
+			// SECURITY: the client supplies message_id and we adopt it as the new channel's
+			// ID, so we must verify it actually names a real message in THIS parent channel.
+			// Otherwise a caller could squat an arbitrary snowflake (e.g. collide a thread's
+			// ID with an unrelated message/resource, making a bogus inline thread link appear
+			// under it). The SEND_MESSAGES check above already gates who may create threads
+			// here; this gates which IDs they may claim.
+			const messageId = createMessageID(BigInt(params.data.message_id));
 			channelId = createChannelID(BigInt(params.data.message_id));
 			const existing = await this.channelRepository.findUnique(channelId);
 			if (existing && !existing.isSoftDeleted) {
@@ -247,6 +255,10 @@ export class ChannelOperationsService {
 					userCacheService: this.userCacheService,
 					requestCache: params.requestCache,
 				});
+			}
+			const message = await this.channelRepository.getMessage(params.parentChannelId, messageId);
+			if (!message) {
+				throw new UnknownMessageError();
 			}
 		} else {
 			channelId = createChannelID(await this.snowflakeService.generate());

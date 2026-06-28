@@ -3,7 +3,12 @@
 import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import UserPinnedDM from '@app/features/user/state/UserPinnedDM';
 import Users from '@app/features/user/state/Users';
-import {ChannelTypes, GUILD_TEXT_BASED_CHANNEL_TYPES, Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {
+	ChannelTypes,
+	GUILD_TEXT_BASED_CHANNEL_TYPES,
+	Permissions,
+	THREAD_CHANNEL_TYPES,
+} from '@fluxer/constants/src/ChannelConstants';
 import {VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT} from '@fluxer/constants/src/LimitConstants';
 import type {ChannelOverwrite, Channel as WireChannel} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {UserPartial} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
@@ -81,6 +86,16 @@ export class Channel {
 	readonly contentWarningText: string | null;
 	readonly rateLimitPerUser: number;
 	readonly nicks: Readonly<Record<string, string>>;
+	// Echowire: thread state (non-null only for thread channels).
+	readonly threadMetadata: {
+		readonly archived: boolean;
+		readonly autoArchiveDuration: number;
+		readonly archiveTimestamp: Date | null;
+		readonly locked: boolean;
+		readonly invitable: boolean;
+	} | null;
+	readonly memberCount: number | null;
+	readonly messageCount: number | null;
 
 	constructor(channel: WireChannel, options?: ChannelRecordOptions) {
 		this.instanceId = options?.instanceId ?? RuntimeConfig.localInstanceDomain;
@@ -108,6 +123,19 @@ export class Channel {
 		this.contentWarningText = channel.content_warning_text ?? null;
 		this.rateLimitPerUser = channel.rate_limit_per_user ?? 0;
 		this.nicks = channel.nicks ?? {};
+		this.threadMetadata = channel.thread_metadata
+			? {
+					archived: channel.thread_metadata.archived,
+					autoArchiveDuration: channel.thread_metadata.auto_archive_duration,
+					archiveTimestamp: channel.thread_metadata.archive_timestamp
+						? new Date(channel.thread_metadata.archive_timestamp)
+						: null,
+					locked: channel.thread_metadata.locked ?? false,
+					invitable: channel.thread_metadata.invitable ?? false,
+				}
+			: null;
+		this.memberCount = channel.member_count ?? null;
+		this.messageCount = channel.message_count ?? null;
 		if ((this.type === ChannelTypes.DM || this.type === ChannelTypes.GROUP_DM) && channel.recipients) {
 			Users?.cacheUsers(Array.from(channel.recipients));
 		}
@@ -144,6 +172,10 @@ export class Channel {
 
 	isDM(): boolean {
 		return this.type === ChannelTypes.DM;
+	}
+
+	isThread(): boolean {
+		return THREAD_CHANNEL_TYPES.has(this.type);
 	}
 
 	isGroupDM(): boolean {

@@ -223,4 +223,15 @@ export interface Channel {
 	readonly content_warning_text?: string | null;
 	readonly rate_limit_per_user?: number;
 	readonly nicks?: Readonly<Record<string, string>>;
+	// Echowire: thread fields (present only for thread channels).
+	readonly thread_metadata?: {
+		readonly archived: boolean;
+		readonly auto_archive_duration: number;
+		readonly archive_timestamp?: string | null;
+		readonly locked?: boolean;
+		readonly invitable?: boolean;
+		readonly create_timestamp?: string | null;
+	} | null;
+	readonly member_count?: number;
+	readonly message_count?: number;
 }

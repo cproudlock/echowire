@@ -118,6 +118,15 @@ export class GuildChannelService {
 		return this.channelOps.listActiveThreads(params);
 	}
 
+	// Echowire: list archived threads under a text/forum channel.
+	async listArchivedThreads(params: {
+		userId: UserID;
+		parentChannelId: ChannelID;
+		requestCache: RequestCache;
+	}): Promise<Array<ChannelResponse>> {
+		return this.channelOps.listArchivedThreads(params);
+	}
+
 	// Echowire: update a thread (archive/unarchive/lock/rename).
 	async updateThread(params: {
 		userId: UserID;

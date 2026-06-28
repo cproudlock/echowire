@@ -6,16 +6,29 @@ import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 
+export type AutoArchiveDuration = 60 | 1440 | 4320 | 10080;
+
 export interface ThreadFormInputs {
 	name: string;
+	autoArchiveDuration: string;
 }
+
+export const AUTO_ARCHIVE_OPTIONS: Array<{value: AutoArchiveDuration; name: string}> = [
+	{value: 60, name: '1 hour'},
+	{value: 1440, name: '1 day'},
+	{value: 4320, name: '3 days'},
+	{value: 10080, name: '1 week'},
+];
 
 export async function createThread(
 	guildId: string,
 	parentChannelId: string,
 	data: ThreadFormInputs,
 ): Promise<void> {
-	const thread = await ThreadCommands.createThread(parentChannelId, {name: data.name});
+	const thread = await ThreadCommands.createThread(parentChannelId, {
+		name: data.name,
+		auto_archive_duration: Number(data.autoArchiveDuration) as AutoArchiveDuration,
+	});
 	setTimeout(() => {
 		selectChannel(guildId, thread.id);
 	}, 50);
@@ -23,5 +36,5 @@ export async function createThread(
 }
 
 export function getDefaultValues(): ThreadFormInputs {
-	return {name: ''};
+	return {name: '', autoArchiveDuration: '1440'};
 }

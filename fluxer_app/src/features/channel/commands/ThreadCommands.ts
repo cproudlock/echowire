@@ -54,6 +54,21 @@ export async function listActiveThreads(parentChannelId: string): Promise<Array<
 	}
 }
 
+// List the archived threads under a text/forum parent channel.
+export async function listArchivedThreads(parentChannelId: string): Promise<Array<Channel>> {
+	try {
+		const response = await http.get<Array<Channel>>(Endpoints.CHANNEL_THREADS_ARCHIVED(parentChannelId));
+		const threads = response.body ?? [];
+		for (const thread of threads) {
+			Channels.handleChannelCreate({channel: thread});
+		}
+		return threads;
+	} catch (error) {
+		logger.error(`Failed to list archived threads under ${parentChannelId}:`, error);
+		throw error;
+	}
+}
+
 // Update a thread (archive/unarchive, lock, rename, auto-archive duration).
 export async function updateThread(threadChannelId: string, params: UpdateThreadParams): Promise<Channel> {
 	try {

@@ -314,6 +314,43 @@ export class ChannelOperationsService {
 		);
 	}
 
+	// Echowire: list archived threads under a text/forum channel.
+	async listArchivedThreads(params: {
+		userId: UserID;
+		parentChannelId: ChannelID;
+		requestCache: RequestCache;
+	}): Promise<Array<ChannelResponse>> {
+		const parent = await this.channelRepository.findUnique(params.parentChannelId);
+		if (!parent || parent.isSoftDeleted || !parent.guildId) {
+			throw new UnknownChannelError();
+		}
+		const canView = await this.gatewayService.checkPermission({
+			guildId: parent.guildId,
+			userId: params.userId,
+			permission: Permissions.VIEW_CHANNEL,
+		});
+		if (!canView) {
+			throw new MissingPermissionsError();
+		}
+		const channels = await this.channelRepository.listGuildChannels(parent.guildId);
+		const threads = channels.filter(
+			(channel) =>
+				channel.parentId === params.parentChannelId &&
+				THREAD_CHANNEL_TYPES.has(channel.type) &&
+				channel.threadMetadata?.archived === true,
+		);
+		return Promise.all(
+			threads.map((channel) =>
+				mapChannelToResponse({
+					channel,
+					currentUserId: null,
+					userCacheService: this.userCacheService,
+					requestCache: params.requestCache,
+				}),
+			),
+		);
+	}
+
 	// Echowire: update a thread (name / archived / locked / auto-archive / invitable).
 	async updateThread(params: {
 		userId: UserID;

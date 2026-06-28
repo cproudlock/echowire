@@ -54,6 +54,7 @@ export const Endpoints = {
 	OAUTH_AUTHORIZATION: (applicationId: string) => `/oauth2/@me/authorizations/${applicationId}`,
 	CHANNEL: (channelId: string) => `/channels/${channelId}`,
 	CHANNEL_THREADS: (channelId: string) => `/channels/${channelId}/threads`,
+	CHANNEL_THREADS_ARCHIVED: (channelId: string) => `/channels/${channelId}/threads/archived`,
 	CHANNEL_THREAD: (channelId: string) => `/channels/${channelId}/thread`,
 	CHANNEL_ATTACHMENTS: (channelId: string) => `/channels/${channelId}/attachments`,
 	CHANNEL_ATTACHMENTS_COMPLETE: (channelId: string) => `/channels/${channelId}/attachments/complete`,

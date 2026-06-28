@@ -5,6 +5,7 @@
 import * as Modal from '@app/features/app/components/dialogs/Modal';
 import {useFormSubmit} from '@app/features/app/hooks/useFormSubmit';
 import {
+	AUTO_ARCHIVE_OPTIONS,
 	createThread,
 	getDefaultValues,
 	type ThreadFormInputs,
@@ -14,10 +15,11 @@ import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {Form} from '@app/features/ui/components/form/Form';
 import {Input} from '@app/features/ui/components/form/FormInput';
+import {RadioGroup} from '@app/features/ui/radio_group/RadioGroup';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {observer} from 'mobx-react-lite';
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 
 const CREATE_THREAD_DESCRIPTOR = msg({
 	message: 'Create Thread',
@@ -30,6 +32,10 @@ const THREAD_NAME_DESCRIPTOR = msg({
 const THREAD_NAME_PLACEHOLDER_DESCRIPTOR = msg({
 	message: 'new-thread',
 	comment: 'Placeholder example for the thread name field.',
+});
+const AUTO_ARCHIVE_DESCRIPTOR = msg({
+	message: 'Hide after inactivity',
+	comment: 'Label for the auto-archive duration selector in the create-thread modal.',
 });
 
 export const ThreadCreateModal = observer(
@@ -60,6 +66,24 @@ export const ThreadCreateModal = observer(
 							placeholder={i18n._(THREAD_NAME_PLACEHOLDER_DESCRIPTOR)}
 							required={true}
 						/>
+						<div style={{marginTop: 16}}>
+							<div style={{marginBottom: 8, fontSize: 12, fontWeight: 600, color: 'var(--text-secondary, #b5bac1)'}}>
+								{i18n._(AUTO_ARCHIVE_DESCRIPTOR)}
+							</div>
+							<Controller
+								name="autoArchiveDuration"
+								control={form.control}
+								render={({field}) => (
+									<RadioGroup
+										aria-label={i18n._(AUTO_ARCHIVE_DESCRIPTOR)}
+										value={Number(field.value)}
+										onChange={(value) => field.onChange(value.toString())}
+										options={AUTO_ARCHIVE_OPTIONS.map((o) => ({value: o.value, name: o.name, desc: ''}))}
+										data-flx="channel.thread-create-modal.auto-archive-radio-group"
+									/>
+								)}
+							/>
+						</div>
 					</Modal.Content>
 					<Modal.Footer data-flx="channel.thread-create-modal.modal-footer">
 						<Button

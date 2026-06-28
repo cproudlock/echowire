@@ -93,6 +93,7 @@ import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {RelationshipTypes} from '@fluxer/constants/src/UserConstants';
 import {useLingui} from '@lingui/react/macro';
 import {
+	ArchiveIcon,
 	ArrowLeftIcon,
 	CaretRightIcon,
 	ChatCircleIcon,
@@ -107,6 +108,7 @@ import {
 	VideoCameraIcon,
 } from '@phosphor-icons/react';
 import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
+import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {msg} from '@lingui/core/macro';
 import {clsx} from 'clsx';
 import {observer} from 'mobx-react-lite';
@@ -119,6 +121,14 @@ const {VoiceCallButton, VideoCallButton} = CallButtons;
 const CREATE_THREAD_HEADER_DESCRIPTOR = msg({
 	message: 'Create Thread',
 	comment: 'Tooltip on the create-thread button in the channel header.',
+});
+const ARCHIVE_THREAD_DESCRIPTOR = msg({
+	message: 'Archive Thread',
+	comment: 'Tooltip on the archive-thread button in a thread header.',
+});
+const UNARCHIVE_THREAD_DESCRIPTOR = msg({
+	message: 'Unarchive Thread',
+	comment: 'Tooltip on the unarchive-thread button in a thread header.',
 });
 
 interface ChannelHeaderProps {
@@ -945,6 +955,22 @@ export const ChannelHeader = observer(
 										)
 									}
 									data-flx="channel.channel-header.create-thread"
+								/>
+							)}
+							{channel && !isMobile && channel.isThread() && (
+								<ChannelHeaderIcon
+									icon={ArchiveIcon}
+									label={i18n._(
+										channel.threadMetadata?.archived
+											? UNARCHIVE_THREAD_DESCRIPTOR
+											: ARCHIVE_THREAD_DESCRIPTOR,
+									)}
+									onClick={() =>
+										void ThreadCommands.updateThread(channel.id, {
+											archived: !channel.threadMetadata?.archived,
+										})
+									}
+									data-flx="channel.channel-header.archive-thread"
 								/>
 							)}
 							{shouldShowCreateGroupButton && (

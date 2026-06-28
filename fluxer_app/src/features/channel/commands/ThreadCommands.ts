@@ -19,6 +19,8 @@ export interface CreateThreadParams {
 	// When starting a thread from a message, the source message ID. The created thread
 	// adopts this ID so the message can render an inline link to it.
 	message_id?: string;
+	// Forum post tags (only valid when the parent is a forum channel; max 5).
+	applied_tags?: Array<string>;
 }
 
 export interface UpdateThreadParams {

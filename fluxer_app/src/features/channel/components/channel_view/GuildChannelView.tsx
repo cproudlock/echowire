@@ -16,6 +16,7 @@ import {Messages} from '@app/features/channel/components/ChannelMessages';
 import {ChannelSearchResults} from '@app/features/channel/components/ChannelSearchResults';
 import {ChannelTextarea} from '@app/features/channel/components/ChannelTextarea';
 import {ThreadArchivedBanner} from '@app/features/channel/components/ThreadArchivedBanner';
+import {ForumChannelView} from '@app/features/channel/components/forum/ForumChannelView';
 import {ChannelCompactCallSurface} from '@app/features/channel/components/channel_view/ChannelCompactCallSurface';
 import {ChannelViewScaffold} from '@app/features/channel/components/channel_view/ChannelViewScaffold';
 import {useChannelSearchState} from '@app/features/channel/components/channel_view/useChannelSearchState';
@@ -533,6 +534,23 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 		);
 	}
 	const shouldRenderMemberList = isMemberListVisible && !isMobileLayout && !isSearchActive;
+	// Echowire: forum channels render a post grid instead of a message stream + composer.
+	if (channel.isForum()) {
+		return (
+			<ChannelViewScaffold
+				header={
+					<ChannelHeader
+						channel={channel}
+						showMembersToggle={false}
+						showPins={false}
+						data-flx="channel.channel-view.guild-channel-view.channel-header--forum"
+					/>
+				}
+				chatArea={<ForumChannelView channel={channel} />}
+				data-flx="channel.channel-view.guild-channel-view.channel-view-scaffold--forum"
+			/>
+		);
+	}
 	return (
 		<ChannelViewScaffold
 			header={

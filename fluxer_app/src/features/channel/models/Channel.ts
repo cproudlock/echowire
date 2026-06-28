@@ -96,6 +96,12 @@ export class Channel {
 	} | null;
 	readonly memberCount: number | null;
 	readonly messageCount: number | null;
+	// Echowire forum fields. availableTags/defaultReactionEmoji/defaultSortOrder: forum channels.
+	// appliedTags: forum posts (threads).
+	readonly availableTags: ReadonlyArray<{readonly id: string; readonly name: string; readonly emojiName: string | null}>;
+	readonly appliedTags: ReadonlyArray<string>;
+	readonly defaultReactionEmoji: {readonly emojiId: string | null; readonly emojiName: string | null} | null;
+	readonly defaultSortOrder: number | null;
 
 	constructor(channel: WireChannel, options?: ChannelRecordOptions) {
 		this.instanceId = options?.instanceId ?? RuntimeConfig.localInstanceDomain;
@@ -136,6 +142,16 @@ export class Channel {
 			: null;
 		this.memberCount = channel.member_count ?? null;
 		this.messageCount = channel.message_count ?? null;
+		this.availableTags = (channel.available_tags ?? []).map((tag) => ({
+			id: tag.id,
+			name: tag.name,
+			emojiName: tag.emoji_name,
+		}));
+		this.appliedTags = channel.applied_tags ?? [];
+		this.defaultReactionEmoji = channel.default_reaction_emoji
+			? {emojiId: channel.default_reaction_emoji.emoji_id, emojiName: channel.default_reaction_emoji.emoji_name}
+			: null;
+		this.defaultSortOrder = channel.default_sort_order ?? null;
 		if ((this.type === ChannelTypes.DM || this.type === ChannelTypes.GROUP_DM) && channel.recipients) {
 			Users?.cacheUsers(Array.from(channel.recipients));
 		}
@@ -176,6 +192,10 @@ export class Channel {
 
 	isThread(): boolean {
 		return THREAD_CHANNEL_TYPES.has(this.type);
+	}
+
+	isForum(): boolean {
+		return this.type === ChannelTypes.GUILD_FORUM;
 	}
 
 	isGroupDM(): boolean {
@@ -295,6 +315,27 @@ export class Channel {
 							: null,
 				member_count: updates.member_count ?? this.memberCount ?? undefined,
 				message_count: updates.message_count ?? this.messageCount ?? undefined,
+				// Echowire: preserve/merge forum state so partial channel updates don't wipe tags etc.
+				available_tags:
+					updates.available_tags !== undefined
+						? updates.available_tags
+						: this.availableTags.length > 0
+							? this.availableTags.map((tag) => ({id: tag.id, name: tag.name, emoji_name: tag.emojiName}))
+							: undefined,
+				applied_tags:
+					updates.applied_tags !== undefined
+						? updates.applied_tags
+						: this.appliedTags.length > 0
+							? [...this.appliedTags]
+							: undefined,
+				default_reaction_emoji:
+					updates.default_reaction_emoji !== undefined
+						? updates.default_reaction_emoji
+						: this.defaultReactionEmoji
+							? {emoji_id: this.defaultReactionEmoji.emojiId, emoji_name: this.defaultReactionEmoji.emojiName}
+							: null,
+				default_sort_order:
+					updates.default_sort_order !== undefined ? updates.default_sort_order : (this.defaultSortOrder ?? null),
 			},
 			{instanceId: this.instanceId},
 		);
@@ -364,6 +405,20 @@ export class Channel {
 		}
 		if (this.memberCount !== other.memberCount) return false;
 		if (this.messageCount !== other.messageCount) return false;
+		// Echowire: forum tag/sort/reaction state — same live-update reasoning as thread state above.
+		if (this.defaultSortOrder !== other.defaultSortOrder) return false;
+		if (this.defaultReactionEmoji?.emojiId !== other.defaultReactionEmoji?.emojiId) return false;
+		if (this.defaultReactionEmoji?.emojiName !== other.defaultReactionEmoji?.emojiName) return false;
+		if (this.appliedTags.length !== other.appliedTags.length) return false;
+		for (let i = 0; i < this.appliedTags.length; i++) {
+			if (this.appliedTags[i] !== other.appliedTags[i]) return false;
+		}
+		if (this.availableTags.length !== other.availableTags.length) return false;
+		for (let i = 0; i < this.availableTags.length; i++) {
+			if (this.availableTags[i].id !== other.availableTags[i].id) return false;
+			if (this.availableTags[i].name !== other.availableTags[i].name) return false;
+			if (this.availableTags[i].emojiName !== other.availableTags[i].emojiName) return false;
+		}
 		return true;
 	}
 
@@ -396,6 +451,15 @@ export class Channel {
 			content_warning_text: this.contentWarningText,
 			rate_limit_per_user: this.rateLimitPerUser,
 			nicks: this.nicks,
+			available_tags:
+				this.availableTags.length > 0
+					? this.availableTags.map((tag) => ({id: tag.id, name: tag.name, emoji_name: tag.emojiName}))
+					: undefined,
+			applied_tags: this.appliedTags.length > 0 ? [...this.appliedTags] : undefined,
+			default_reaction_emoji: this.defaultReactionEmoji
+				? {emoji_id: this.defaultReactionEmoji.emojiId, emoji_name: this.defaultReactionEmoji.emojiName}
+				: null,
+			default_sort_order: this.defaultSortOrder,
 		};
 	}
 }

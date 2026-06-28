@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import Channels from '@app/features/channel/state/Channels';
 import Users from '@app/features/user/state/Users';
 import * as NicknameUtils from '@app/features/user/utils/NicknameUtils';
 import {MessageTypes} from '@fluxer/constants/src/ChannelConstants';
@@ -135,6 +136,10 @@ const STARTED_A_CALL_DESCRIPTOR = msg({
 	message: '{username} started a call.',
 	comment: 'System message shown inline when a user starts a voice or video call in a DM or group DM.',
 });
+const STARTED_A_THREAD_DESCRIPTOR = msg({
+	message: '{username} started a thread: {threadName}',
+	comment: 'System message shown in a channel when a user starts a thread. Preserve {username} and {threadName}.',
+});
 
 interface StringifyableMessage {
 	id: string;
@@ -231,6 +236,10 @@ export const SystemMessageUtils = {
 				return i18n._(CHANGED_THE_CHANNEL_ICON_DESCRIPTOR, {username});
 			case MessageTypes.CALL:
 				return i18n._(STARTED_A_CALL_DESCRIPTOR, {username});
+			case MessageTypes.THREAD_CREATED: {
+				const threadName = (message.content ? Channels.getChannel(message.content)?.name : null) ?? '';
+				return i18n._(STARTED_A_THREAD_DESCRIPTOR, {username, threadName});
+			}
 			default:
 				return null;
 		}

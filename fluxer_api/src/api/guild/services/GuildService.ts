@@ -211,6 +211,7 @@ export class GuildService {
 			snowflakeService,
 			guildAuditLogService,
 			limitConfigService,
+			channelService.messages.system,
 		);
 		this.search = new GuildSearchService(
 			channelRepository,

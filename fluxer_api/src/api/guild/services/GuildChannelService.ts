@@ -18,6 +18,7 @@ import type {ISnowflakeService} from '../../infrastructure/ISnowflakeService';
 import type {UserCacheService} from '../../infrastructure/UserCacheService';
 import type {LimitConfigService} from '../../limits/LimitConfigService';
 import type {RequestCache} from '../../middleware/RequestCacheMiddleware';
+import type {MessageSystemService} from '../../channel/services/message/MessageSystemService';
 import type {GuildAuditLogService} from '../GuildAuditLogService';
 import type {IGuildRepositoryAggregate} from '../repositories/IGuildRepositoryAggregate';
 import {ChannelOperationsService} from './channel/ChannelOperationsService';
@@ -34,6 +35,7 @@ export class GuildChannelService {
 		snowflakeService: ISnowflakeService,
 		guildAuditLogService: GuildAuditLogService,
 		limitConfigService: LimitConfigService,
+		messageSystemService: MessageSystemService,
 	) {
 		this.channelOps = new ChannelOperationsService(
 			channelRepository,
@@ -44,6 +46,7 @@ export class GuildChannelService {
 			snowflakeService,
 			guildAuditLogService,
 			limitConfigService,
+			messageSystemService,
 		);
 	}
 

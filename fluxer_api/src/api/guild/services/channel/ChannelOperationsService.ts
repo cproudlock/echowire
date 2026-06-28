@@ -42,6 +42,7 @@ import {Logger} from '../../../Logger';
 import type {LimitConfigService} from '../../../limits/LimitConfigService';
 import {resolveLimitSafe} from '../../../limits/LimitConfigUtils';
 import {createLimitMatchContext} from '../../../limits/LimitMatchContextBuilder';
+import type {MessageSystemService} from '../../../channel/services/message/MessageSystemService';
 import type {RequestCache} from '../../../middleware/RequestCacheMiddleware';
 import type {Channel} from '../../../models/Channel';
 import {ChannelPermissionOverwrite} from '../../../models/ChannelPermissionOverwrite';
@@ -60,6 +61,7 @@ export class ChannelOperationsService {
 		private readonly snowflakeService: ISnowflakeService,
 		private readonly guildAuditLogService: GuildAuditLogService,
 		private readonly limitConfigService: LimitConfigService,
+		private readonly messageSystemService: MessageSystemService,
 	) {}
 
 	async createChannel(
@@ -306,6 +308,19 @@ export class ChannelOperationsService {
 			requestCache: params.requestCache,
 		});
 		await this.gatewayService.dispatchGuild({guildId, event: 'THREAD_CREATE', data: response});
+		// Echowire: drop a "started a thread" system message in the parent channel (Discord
+		// parity). Best-effort — a failure here must not fail thread creation.
+		try {
+			await this.messageSystemService.sendThreadCreatedSystemMessage({
+				parentChannelId: params.parentChannelId,
+				threadChannelId: channelId,
+				userId: params.userId,
+				guildId,
+				requestCache: params.requestCache,
+			});
+		} catch {
+			// ignore — the thread is already created and dispatched.
+		}
 		return response;
 	}
 

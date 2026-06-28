@@ -148,6 +148,28 @@ export class ChannelOperationsService {
 		const requestedContentWarningText =
 			trimmedContentWarningText && trimmedContentWarningText.length > 0 ? trimmedContentWarningText : null;
 		const channelId = createChannelID(await this.snowflakeService.generate());
+		// Echowire: forum channels carry available_tags (each tag gets a server-assigned snowflake id),
+		// a default reaction, and a default sort order.
+		let forumAvailableTags: Array<{id: string; name: string; emoji_name: string | null}> | null = null;
+		let forumDefaultReaction: {emoji_id: string | null; emoji_name: string | null} | null = null;
+		let forumDefaultSortOrder: number | null = null;
+		if (params.data.type === ChannelTypes.GUILD_FORUM) {
+			const tags = params.data.available_tags ?? [];
+			forumAvailableTags = await Promise.all(
+				tags.map(async (tag) => ({
+					id: tag.id ?? (await this.snowflakeService.generate()).toString(),
+					name: tag.name,
+					emoji_name: tag.emoji_name ?? null,
+				})),
+			);
+			forumDefaultReaction = params.data.default_reaction_emoji
+				? {
+						emoji_id: params.data.default_reaction_emoji.emoji_id ?? null,
+						emoji_name: params.data.default_reaction_emoji.emoji_name ?? null,
+					}
+				: null;
+			forumDefaultSortOrder = params.data.default_sort_order ?? null;
+		}
 		const channel = await this.channelRepository.upsert({
 			channel_id: channelId,
 			guild_id: params.guildId,
@@ -176,6 +198,9 @@ export class ChannelOperationsService {
 			permission_overwrites: permissionOverwrites,
 			nicks: null,
 			...NULL_THREAD_FIELDS,
+			available_tags: forumAvailableTags,
+			default_reaction_emoji: forumDefaultReaction,
+			default_sort_order: forumDefaultSortOrder,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,

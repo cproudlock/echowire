@@ -151,11 +151,36 @@ const ChannelCreateLinkRequest = ChannelCreateCommon.extend({
 	name: GeneralChannelNameType.describe('The name of the channel'),
 });
 
+// Echowire: a forum tag as supplied by the client. id is present when editing an existing tag and
+// omitted when creating a new one (the server assigns a snowflake).
+export const ForumTagInput = z.object({
+	id: SnowflakeStringType.optional().describe('Existing tag ID (omit to create a new tag)'),
+	name: createStringType(1, 20).describe('Tag name (1-20 characters)'),
+	emoji_name: z.string().nullish().describe('Optional emoji for the tag'),
+});
+export type ForumTagInput = z.infer<typeof ForumTagInput>;
+
+const DefaultReactionEmojiInput = z
+	.object({
+		emoji_id: SnowflakeStringType.nullish().describe('Custom emoji ID'),
+		emoji_name: z.string().nullish().describe('Unicode emoji'),
+	})
+	.describe('Default reaction shown on forum posts');
+
+const ChannelCreateForumRequest = ChannelCreateCommon.extend({
+	type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
+	name: GeneralChannelNameType.describe('The name of the forum channel'),
+	available_tags: z.array(ForumTagInput).max(20).optional().describe('Tags available for posts (max 20)'),
+	default_reaction_emoji: DefaultReactionEmojiInput.nullish(),
+	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
+});
+
 export const ChannelCreateRequest = z.discriminatedUnion('type', [
 	ChannelCreateTextRequest,
 	ChannelCreateVoiceRequest,
 	ChannelCreateCategoryRequest,
 	ChannelCreateLinkRequest,
+	ChannelCreateForumRequest,
 ]);
 
 export type ChannelCreateRequest = z.infer<typeof ChannelCreateRequest>;
@@ -180,6 +205,24 @@ const ChannelUpdateLinkRequest = ChannelUpdateCommon.extend({
 	name: GeneralChannelNameType.nullish().describe('The name of the channel'),
 });
 
+const ChannelUpdateForumRequest = ChannelUpdateCommon.extend({
+	type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
+	name: GeneralChannelNameType.nullish().describe('The name of the forum channel'),
+	available_tags: z
+		.array(ForumTagInput)
+		.max(20)
+		.nullish()
+		.describe('Full replacement set of available tags (max 20); existing tags keep their id'),
+	default_reaction_emoji: z
+		.object({
+			emoji_id: SnowflakeStringType.nullish(),
+			emoji_name: z.string().nullish(),
+		})
+		.nullish()
+		.describe('Default reaction shown on forum posts (null to clear)'),
+	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
+});
+
 const ChannelUpdateGroupDmRequest = z.object({
 	type: createNamedLiteral(ChannelTypes.GROUP_DM, 'GROUP_DM', 'Channel type (group DM)'),
 	name: GeneralChannelNameType.nullish().describe('The name of the group DM'),
@@ -195,6 +238,7 @@ export const ChannelUpdateRequest = z.discriminatedUnion('type', [
 	ChannelUpdateVoiceRequest,
 	ChannelUpdateCategoryRequest,
 	ChannelUpdateLinkRequest,
+	ChannelUpdateForumRequest,
 	ChannelUpdateGroupDmRequest,
 ]);
 

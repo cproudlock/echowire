@@ -70,6 +70,10 @@ export interface ChannelUpdateData {
 	icon?: string | null;
 	owner_id?: bigint | null;
 	nicks?: Record<string, string | null> | null;
+	// Echowire forum fields (already resolved: tag ids assigned by the caller).
+	available_tags?: Array<{id: string; name: string; emoji_name: string | null}> | null;
+	default_reaction_emoji?: {emoji_id: string | null; emoji_name: string | null} | null;
+	default_sort_order?: number | null;
 }
 
 export class ChannelOperationsService {
@@ -273,6 +277,18 @@ export class ChannelOperationsService {
 					overwrite.toPermissionOverwrite(),
 				]),
 			),
+			available_tags:
+				data.available_tags !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.available_tags
+					: channel.availableTags,
+			default_reaction_emoji:
+				data.default_reaction_emoji !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.default_reaction_emoji
+					: channel.defaultReactionEmoji,
+			default_sort_order:
+				data.default_sort_order !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.default_sort_order
+					: channel.defaultSortOrder,
 		};
 		const updatedChannel = await this.channelRepository.channelData.upsert(updatedChannelData);
 		if (

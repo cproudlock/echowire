@@ -19,7 +19,21 @@ export interface PermissionOverwrite {
 	deny_: Nullish<bigint>;
 }
 
-// Echowire: spread into any non-thread ChannelRow literal to satisfy the full-row-upsert DSL.
+// Echowire: forum channel tag (available_tags) + default reaction shapes.
+export interface ForumTag {
+	id: string;
+	name: string;
+	emoji_name: Nullish<string>;
+}
+export interface DefaultReactionEmoji {
+	emoji_id: Nullish<string>;
+	emoji_name: Nullish<string>;
+}
+
+// Echowire: spread into any non-thread / non-forum ChannelRow literal to satisfy the full-row-upsert
+// DSL (it requires every CHANNEL_COLUMNS key present). Covers both the thread_* fields and the forum
+// fields (available_tags/applied_tags/default_reaction_emoji/default_sort_order) so the common
+// channel-create sites stay terse; forum/thread sites override the relevant keys.
 export const NULL_THREAD_FIELDS = {
 	thread_archived: null,
 	thread_auto_archive_duration: null,
@@ -29,6 +43,10 @@ export const NULL_THREAD_FIELDS = {
 	thread_create_timestamp: null,
 	thread_member_count: null,
 	thread_message_count: null,
+	available_tags: null,
+	applied_tags: null,
+	default_reaction_emoji: null,
+	default_sort_order: null,
 } satisfies Pick<
 	ChannelRow,
 	| 'thread_archived'
@@ -39,6 +57,10 @@ export const NULL_THREAD_FIELDS = {
 	| 'thread_create_timestamp'
 	| 'thread_member_count'
 	| 'thread_message_count'
+	| 'available_tags'
+	| 'applied_tags'
+	| 'default_reaction_emoji'
+	| 'default_sort_order'
 >;
 
 export interface ChannelRow {
@@ -76,6 +98,13 @@ export interface ChannelRow {
 	thread_create_timestamp: Nullish<Date>;
 	thread_member_count: Nullish<number>;
 	thread_message_count: Nullish<number>;
+	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order are set on
+	// GUILD_FORUM channels; applied_tags is set on threads (forum posts). NON-optional Nullish so the
+	// full-row-upsert DSL is satisfied at every construction site.
+	available_tags: Nullish<Array<ForumTag>>;
+	applied_tags: Nullish<Array<string>>;
+	default_reaction_emoji: Nullish<DefaultReactionEmoji>;
+	default_sort_order: Nullish<number>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;
@@ -171,6 +200,10 @@ export const CHANNEL_COLUMNS = [
 	'thread_create_timestamp',
 	'thread_member_count',
 	'thread_message_count',
+	'available_tags',
+	'applied_tags',
+	'default_reaction_emoji',
+	'default_sort_order',
 	'soft_deleted',
 	'indexed_at',
 	'version',

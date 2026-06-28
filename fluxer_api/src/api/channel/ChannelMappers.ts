@@ -126,6 +126,7 @@ function serializeThreadChannel(channel: Channel, ctx: ContentWarningCtx): Chann
 		rate_limit_per_user: channel.rateLimitPerUser,
 		member_count: channel.memberCount ?? undefined,
 		message_count: channel.messageCount ?? undefined,
+		applied_tags: channel.appliedTags && channel.appliedTags.length > 0 ? channel.appliedTags : undefined,
 		thread_metadata: meta
 			? {
 					archived: meta.archived,
@@ -136,6 +137,20 @@ function serializeThreadChannel(channel: Channel, ctx: ContentWarningCtx): Chann
 					create_timestamp: meta.createTimestamp?.toISOString() ?? null,
 				}
 			: null,
+	};
+}
+
+// Echowire: forum channels (GUILD_FORUM) hold posts (threads) and define available tags.
+function serializeGuildForumChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
+	return {
+		...serializeBaseChannelFields(channel),
+		...serializePositionableGuildChannelFields(channel),
+		topic: channel.topic,
+		...serializeContentWarningFields(channel, ctx),
+		rate_limit_per_user: channel.rateLimitPerUser,
+		available_tags: channel.availableTags && channel.availableTags.length > 0 ? channel.availableTags : undefined,
+		default_reaction_emoji: channel.defaultReactionEmoji ?? undefined,
+		default_sort_order: channel.defaultSortOrder ?? undefined,
 	};
 }
 
@@ -235,6 +250,9 @@ export async function mapChannelToResponse(params: MapChannelToResponseParams): 
 		case ChannelTypes.PUBLIC_THREAD:
 		case ChannelTypes.PRIVATE_THREAD:
 			response = serializeThreadChannel(channel, ctx);
+			break;
+		case ChannelTypes.GUILD_FORUM:
+			response = serializeGuildForumChannel(channel, ctx);
 			break;
 		case ChannelTypes.DM:
 			response = serializeDMChannel(channel);

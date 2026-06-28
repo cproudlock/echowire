@@ -375,6 +375,11 @@ export const ThreadCreateRequest = z.object({
 	message_id: SnowflakeStringType.optional().describe(
 		'When creating a thread from an existing message, the source message ID. The thread adopts this ID so the message can render an inline link to it (Discord semantics).',
 	),
+	applied_tags: z
+		.array(SnowflakeStringType)
+		.max(5)
+		.optional()
+		.describe('Tag IDs to apply to this forum post (max 5). Only valid when the parent is a forum channel.'),
 	auto_archive_duration: z
 		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
 		.optional()

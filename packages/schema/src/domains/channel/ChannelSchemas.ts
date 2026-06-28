@@ -87,6 +87,15 @@ export const VoicePresenceHeartbeatEndResponse = z.object({
 
 export type VoicePresenceHeartbeatEndResponse = z.infer<typeof VoicePresenceHeartbeatEndResponse>;
 
+// Echowire: a tag definition for a forum channel's available_tags.
+export const ForumTagResponse = z.object({
+	id: SnowflakeStringType.describe('The unique identifier for this tag'),
+	name: z.string().describe('The name of the tag'),
+	emoji_name: z.string().nullable().describe('The emoji associated with this tag, or null'),
+});
+
+export type ForumTagResponse = z.infer<typeof ForumTagResponse>;
+
 export const ChannelResponse = z.object({
 	id: SnowflakeStringType.describe('The unique identifier (snowflake) for this channel'),
 	guild_id: SnowflakeStringType.optional().describe('The ID of the guild this channel belongs to'),
@@ -161,6 +170,26 @@ export const ChannelResponse = z.object({
 		.describe('Thread metadata; present only for thread channels'),
 	member_count: Int32Type.optional().describe('Approximate count of members in the thread (threads only)'),
 	message_count: Int32Type.optional().describe('Approximate count of messages in the thread (threads only)'),
+	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order: forum channels.
+	// applied_tags: forum posts (threads).
+	available_tags: z
+		.array(ForumTagResponse)
+		.max(20)
+		.optional()
+		.describe('Tags that can be applied to posts in a forum channel (max 20)'),
+	applied_tags: z
+		.array(SnowflakeStringType)
+		.max(5)
+		.optional()
+		.describe('Tag IDs applied to a forum post / thread (max 5)'),
+	default_reaction_emoji: z
+		.object({
+			emoji_id: SnowflakeStringType.nullable().describe('Custom emoji ID, or null for a unicode emoji'),
+			emoji_name: z.string().nullable().describe('Unicode emoji, or null for a custom emoji'),
+		})
+		.nullish()
+		.describe('The default reaction shown on forum posts'),
+	default_sort_order: Int32Type.nullish().describe('Default sort for forum posts (0 = latest activity, 1 = creation)'),
 });
 
 export type ChannelResponse = z.infer<typeof ChannelResponse>;
@@ -234,4 +263,16 @@ export interface Channel {
 	} | null;
 	readonly member_count?: number;
 	readonly message_count?: number;
+	// Echowire forum fields.
+	readonly available_tags?: ReadonlyArray<{
+		readonly id: string;
+		readonly name: string;
+		readonly emoji_name: string | null;
+	}>;
+	readonly applied_tags?: ReadonlyArray<string>;
+	readonly default_reaction_emoji?: {
+		readonly emoji_id: string | null;
+		readonly emoji_name: string | null;
+	} | null;
+	readonly default_sort_order?: number | null;
 }

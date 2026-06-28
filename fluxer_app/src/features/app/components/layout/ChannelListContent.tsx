@@ -512,7 +512,7 @@ export const ChannelListContent = observer(({guild, scrollY}: {guild: Guild; scr
 													isOnMembersRoute={isMembersSelected}
 													data-flx="app.channel-list-content.channel-item--2"
 												/>
-												<ChannelThreadList guild={guild} channel={ch} />
+												<ChannelThreadList guild={guild} channel={ch} selectedChannelId={selectedChannelInGuildId} />
 											</React.Fragment>
 										))}
 									{showVoiceChannels &&

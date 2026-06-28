@@ -11,7 +11,6 @@ import {
 	CollapsedChannelAvatarStack,
 } from '@app/features/app/components/layout/CollapsedCategoryVoiceParticipants';
 import {GenericChannelItem} from '@app/features/app/components/layout/GenericChannelItem';
-import {ChannelThreadList} from '@app/features/app/components/layout/ChannelThreadList';
 import {GuildDetachedBanner} from '@app/features/app/components/layout/GuildDetachedBanner';
 import {NullSpaceDropIndicator} from '@app/features/app/components/layout/NullSpaceDropIndicator';
 import {ScrollIndicatorOverlay} from '@app/features/app/components/layout/ScrollIndicatorOverlay';
@@ -500,20 +499,18 @@ export const ChannelListContent = observer(({guild, scrollY}: {guild: Guild; scr
 									)}
 									{showTextChannels &&
 										visibleTextChannels.map((ch) => (
-											<React.Fragment key={ch.id}>
-												<ChannelItem
-													guild={guild}
-													channel={ch}
-													isDraggingAnything={isDraggingAnything}
-													activeDragItem={activeDragItem}
-													onChannelDrop={handleChannelDrop}
-													onDragStateChange={setActiveDragItem}
-													isSelectedByPath={selectedChannelInGuildId === ch.id}
-													isOnMembersRoute={isMembersSelected}
-													data-flx="app.channel-list-content.channel-item--2"
-												/>
-												<ChannelThreadList guild={guild} channel={ch} selectedChannelId={selectedChannelInGuildId} />
-											</React.Fragment>
+											<ChannelItem
+												key={ch.id}
+												guild={guild}
+												channel={ch}
+												isDraggingAnything={isDraggingAnything}
+												activeDragItem={activeDragItem}
+												onChannelDrop={handleChannelDrop}
+												onDragStateChange={setActiveDragItem}
+												isSelectedByPath={selectedChannelInGuildId === ch.id}
+												isOnMembersRoute={isMembersSelected}
+												data-flx="app.channel-list-content.channel-item--2"
+											/>
 										))}
 									{showVoiceChannels &&
 										visibleVoiceChannels.map((ch) => {

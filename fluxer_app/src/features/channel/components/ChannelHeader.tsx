@@ -96,7 +96,6 @@ import {
 	ArchiveIcon,
 	ArrowLeftIcon,
 	CaretRightIcon,
-	ChatCircleIcon,
 	EyeSlashIcon,
 	ListIcon,
 	MagnifyingGlassIcon,
@@ -107,7 +106,7 @@ import {
 	UsersIcon,
 	VideoCameraIcon,
 } from '@phosphor-icons/react';
-import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
+import {ChannelThreadsButton} from '@app/features/channel/components/channel_header_components/ChannelThreadsButton';
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {msg} from '@lingui/core/macro';
 import {clsx} from 'clsx';
@@ -118,10 +117,6 @@ import {useCallback, useEffect, useRef, useState} from 'react';
 const {VoiceCallButton, VideoCallButton} = CallButtons;
 
 // Echowire: create-thread header button.
-const CREATE_THREAD_HEADER_DESCRIPTOR = msg({
-	message: 'Create Thread',
-	comment: 'Tooltip on the create-thread button in the channel header.',
-});
 const ARCHIVE_THREAD_DESCRIPTOR = msg({
 	message: 'Archive Thread',
 	comment: 'Tooltip on the archive-thread button in a thread header.',
@@ -943,19 +938,8 @@ export const ChannelHeader = observer(
 							{showPins && channel && !isMobile && (
 								<ChannelPinsButton channel={channel} data-flx="channel.channel-header.channel-pins-button" />
 							)}
-							{channel && !isMobile && channel.guildId && channel.type === ChannelTypes.GUILD_TEXT && (
-								<ChannelHeaderIcon
-									icon={ChatCircleIcon}
-									label={i18n._(CREATE_THREAD_HEADER_DESCRIPTOR)}
-									onClick={() =>
-										ModalCommands.push(
-											modal(() => (
-												<ThreadCreateModal guildId={channel.guildId as string} parentChannelId={channel.id} />
-											)),
-										)
-									}
-									data-flx="channel.channel-header.create-thread"
-								/>
+							{channel && !isMobile && channel.type === ChannelTypes.GUILD_TEXT && (
+								<ChannelThreadsButton channel={channel} />
 							)}
 							{channel && !isMobile && channel.isThread() && (
 								<ChannelHeaderIcon

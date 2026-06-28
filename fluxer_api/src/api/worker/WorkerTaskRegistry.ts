@@ -2,6 +2,7 @@
 
 import type {WorkerTaskHandler} from '@pkgs/worker/src/contracts/WorkerTask';
 import applicationProcessDeletion from './tasks/ApplicationProcessDeletion';
+import archiveInactiveThreads from './tasks/ArchiveInactiveThreads';
 import bulkAddGuildMembers from './tasks/admin_bulk/BulkAddGuildMembers';
 import bulkBanFileShas from './tasks/admin_bulk/BulkBanFileShas';
 import bulkScheduleUserDeletion from './tasks/admin_bulk/BulkScheduleUserDeletion';
@@ -49,6 +50,7 @@ import type {WorkerTaskName} from './WorkerLaneConfig';
 
 export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	applicationProcessDeletion,
+	archiveInactiveThreads,
 	batchGuildAuditLogMessageDeletes,
 	bulkAddGuildMembers: bulkAddGuildMembers,
 	bulkBanFileShas: bulkBanFileShas,

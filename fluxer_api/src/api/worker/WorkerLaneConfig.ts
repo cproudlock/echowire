@@ -63,6 +63,7 @@ const LANE_CONFIG = {
 	batch: {
 		consumerName: 'workers_batch',
 		tasks: [
+			'archiveInactiveThreads',
 			'enqueueGifFeaturedCategoriesRefresh',
 			'expireAttachments',
 			'indexChannelMessages',

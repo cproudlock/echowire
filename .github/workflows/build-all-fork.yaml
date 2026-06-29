@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Echowire fork CI: build all self-host images on GitHub-hosted amd64 runners
+# and push to ghcr.io/<owner>/fluxer-*. Self-contained (does NOT use upstream's
+# _build-image.yaml, which targets paid Blacksmith runners + dual-arch) so
+# upstream merges of that file stay clean. amd64-only because all Echowire infra
+# (Vultr edge, NC, MI, voice, staging) is x86.
+name: build all (echowire fork)
+
+on:
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "Comma-separated image names to build (blank = all 11). e.g. fluxer-api"
+        required: false
+        default: ""
+      image_tag:
+        description: "Moving tag to push; self-host compose pulls this via FLUXER_IMAGE_TAG (default v1)"
+        required: false
+        default: "v1"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  prepare:
+    name: resolve build matrix
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      matrix: ${{ steps.gen.outputs.matrix }}
+    steps:
+      - id: gen
+        env:
+          ONLY: ${{ inputs.only }}
+        run: |
+          set -euo pipefail
+          cat > /tmp/all.json <<'JSON'
+          [
+            {"image":"fluxer-api","dockerfile":"fluxer_api/Dockerfile","build_args":""},
+            {"image":"fluxer-admin","dockerfile":"fluxer_admin/Dockerfile","build_args":""},
+            {"image":"fluxer-gateway","dockerfile":"fluxer_gateway/Dockerfile","build_args":""},
+            {"image":"fluxer-media-proxy","dockerfile":"fluxer_media_proxy/Dockerfile","build_args":""},
+            {"image":"fluxer-messages","dockerfile":"fluxer_messages/Dockerfile","build_args":""},
+            {"image":"fluxer-snowflakes","dockerfile":"fluxer_snowflakes/Dockerfile","build_args":""},
+            {"image":"fluxer-static","dockerfile":"fluxer_static/Dockerfile","build_args":""},
+            {"image":"fluxer-unfurl","dockerfile":"fluxer_unfurl/Dockerfile","build_args":""},
+            {"image":"fluxer-users","dockerfile":"fluxer_users/Dockerfile","build_args":""},
+            {"image":"fluxer-marketing","dockerfile":"fluxer_marketing/Dockerfile","build_args":""},
+            {"image":"fluxer-app-proxy-self-hosted","dockerfile":"fluxer_app_proxy/Dockerfile","build_args":"FLUXER_APP_PROXY_TIME_FREEZE_ENABLED=false"}
+          ]
+          JSON
+          if [ -n "${ONLY}" ]; then
+            jq -c --arg only "${ONLY}" \
+              '[.[] | select([.image] | inside($only | split(",") | map(gsub("^\\s+|\\s+$";"")) ))]' \
+              /tmp/all.json > /tmp/sel.json
+          else
+            cp /tmp/all.json /tmp/sel.json
+          fi
+          echo "matrix=$(jq -c '{include: .}' /tmp/sel.json)" >> "$GITHUB_OUTPUT"
+
+  build:
+    name: build ${{ matrix.image }}
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: true
+          provenance: false
+          platforms: linux/amd64
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:${{ inputs.image_tag }}
+            ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:latest
+          build-args: |
+            BUILD_VERSION=${{ github.sha }}
+            ${{ matrix.build_args }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,scope=${{ matrix.image }},mode=max,ignore-error=true

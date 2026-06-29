@@ -242,8 +242,8 @@ pub fn languages_section(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                         (message_with_links(&intro_template, &[
                             LinkReplacement {
                                 variable: "email",
-                                text: "i18n@fluxer.app",
-                                href: "mailto:i18n@fluxer.app",
+                                text: "i18n@echowire.org",
+                                href: "mailto:i18n@echowire.org",
                                 class: "text-[#4641D9] underline decoration-[#4641D9]/40 hover:decoration-[#4641D9]",
                             },
                         ]))

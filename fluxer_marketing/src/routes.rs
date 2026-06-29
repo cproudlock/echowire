@@ -329,17 +329,17 @@ async fn canonical_host_redirect_middleware(
     next: Next,
 ) -> Response {
     match request_host(request.headers()).as_deref() {
-        Some("help.fluxer.app") => {
+        Some("help.echowire.org") => {
             let target_path = help_host_redirect_path(request.uri());
             let target = absolute_marketing_url(&state.config.base_url(), &target_path);
             return Redirect::permanent(&target).into_response();
         }
-        Some("blog.fluxer.app") => {
+        Some("blog.echowire.org") => {
             let target_path = blog_host_redirect_path(request.uri());
             let target = absolute_marketing_url(&state.config.base_url(), &target_path);
             return Redirect::permanent(&target).into_response();
         }
-        Some("www.fluxer.app" | "fluxerapp.com" | "www.fluxerapp.com") => {
+        Some("www.echowire.org" | "fluxerapp.com" | "www.fluxerapp.com") => {
             let target =
                 absolute_marketing_url(&state.config.base_url(), uri_path_and_query(request.uri()));
             return Redirect::permanent(&target).into_response();
@@ -363,7 +363,7 @@ async fn canonical_host_redirect_middleware(
             return Redirect::temporary(&target).into_response();
         }
         Some("fluxer.dev" | "www.fluxer.dev") => {
-            let target = append_uri("https://docs.fluxer.app", request.uri());
+            let target = append_uri("https://docs.echowire.org", request.uri());
             return Redirect::permanent(&target).into_response();
         }
         Some("every.day.im.fluxer.ing") => {
@@ -1076,7 +1076,7 @@ async fn security_txt(State(state): State<AppState>) -> impl IntoResponse {
         .format(&Rfc3339)
         .unwrap_or_default();
     let body = format!(
-        "Contact: {base_url}/security\nContact: mailto:security@fluxer.app\nExpires: {expires}\nPreferred-Languages: en\nPolicy: {base_url}/security\n"
+        "Contact: {base_url}/security\nContact: mailto:security@echowire.org\nExpires: {expires}\nPreferred-Languages: en\nPolicy: {base_url}/security\n"
     );
     ([(header::CONTENT_TYPE, "text/plain; charset=utf-8")], body)
 }

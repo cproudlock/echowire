@@ -64,11 +64,11 @@ impl MarketingConfig {
             base_path: cfg::normalize_base_path(&cfg::read_env("FLUXER_MARKETING_BASE_PATH", "")),
             api_endpoint: cfg::trim_trailing_slash(&cfg::read_env(
                 "FLUXER_API_ENDPOINT",
-                "https://api.fluxer.app",
+                "https://api.echowire.org",
             )),
             app_endpoint: cfg::trim_trailing_slash(&cfg::read_env(
                 "FLUXER_APP_ENDPOINT",
-                "https://app.fluxer.app",
+                "https://app.echowire.org",
             )),
             static_cdn_endpoint: cfg::trim_trailing_slash(&cfg::read_env(
                 "FLUXER_STATIC_CDN_ENDPOINT",
@@ -76,7 +76,7 @@ impl MarketingConfig {
             )),
             marketing_endpoint: cfg::trim_trailing_slash(&cfg::read_env(
                 "FLUXER_MARKETING_ENDPOINT",
-                "https://fluxer.app",
+                "https://echowire.org",
             )),
             geoip_db_path,
             geoip_source,

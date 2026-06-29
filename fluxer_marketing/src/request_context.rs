@@ -21,9 +21,9 @@ use std::{
 
 type HmacSha256 = Hmac<Sha256>;
 
-const CANARY_API_ENDPOINT: &str = "https://api.canary.fluxer.app";
+const CANARY_API_ENDPOINT: &str = "https://api.canary.echowire.org";
 const LOCALE_COOKIE_MAX_AGE_SECONDS: u64 = 60 * 60 * 24 * 365;
-const STABLE_API_ENDPOINT: &str = "https://api.fluxer.app";
+const STABLE_API_ENDPOINT: &str = "https://api.echowire.org";
 
 #[derive(Clone)]
 pub struct AppState {

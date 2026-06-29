@@ -153,7 +153,7 @@ pub const BLOG_POSTS: &[BlogPost] = &[
         feature_image_base_path: "/blog/assets/mobile-clients-and-fluxer-v2-feature-image",
         feature_image_alt: BLOG_POST_MOBILE_CLIENTS_AND_FLUXER_V2_TITLE_DESCRIPTOR,
         feature_image_placeholder: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAASACADAREAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAEEAwX/xAAjEAABBAEDBAMAAAAAAAAAAAABAAIDERIEISIFMUGRUsHR/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAMBBf/EABgRAQEAAwAAAAAAAAAAAAAAAAABAhES/9oADAMBAAIRAxEAPwDkBxJoAknwF3Okz51eDvRTqA5fF3op0EXEGjsR4KdDKHUOhlbIysmGxYsKFu5pq6LquvnzbHi/ichiO3b7U7jhGlJ1XXRFrJMWlvJoLBttX6kxxoim1DppXyPIyebNbKkupqMTqbQgEAg//9k=",
-        source_url: "https://fluxer.app/blog/mobile-clients-and-fluxer-v2",
+        source_url: "https://echowire.org/blog/mobile-clients-and-fluxer-v2",
         body: include_str!("../../content/blog/mobile-clients-and-fluxer-v2.mdx"),
     },
     BlogPost {
@@ -168,7 +168,7 @@ pub const BLOG_POSTS: &[BlogPost] = &[
         feature_image_base_path: "/blog/assets/roadmap-2026-feature-image",
         feature_image_alt: BLOG_POST_ROADMAP_2026_TITLE_DESCRIPTOR,
         feature_image_placeholder: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAOAA4AAD/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAASACADASIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAAIDAQQF/8QAGRABAQADAQAAAAAAAAAAAAAAAAECAxES/8QAGAEBAAMBAAAAAAAAAAAAAAAAAAECAwX/xAAXEQEAAwAAAAAAAAAAAAAAAAAAAQMT/9oADAMBAAIRAxEAPwDy8Z1vlHDbxSbo6+ih/Jcpxl3RPPb0iwc0NAGSRS0AH//Z",
-        source_url: "https://fluxer.app/blog/roadmap-2026",
+        source_url: "https://echowire.org/blog/roadmap-2026",
         body: include_str!("../../content/blog/roadmap-2026.mdx"),
     },
     BlogPost {
@@ -183,7 +183,7 @@ pub const BLOG_POSTS: &[BlogPost] = &[
         feature_image_base_path: "/blog/assets/how-i-built-fluxer-cover",
         feature_image_alt: BLOG_POST_HOW_I_BUILT_FLUXER_TITLE_DESCRIPTOR,
         feature_image_placeholder: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAOAA4AAD/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAASACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAMBAgQF/8QAGRABAQEBAQEAAAAAAAAAAAAAAAECAxET/8QAGAEAAgMAAAAAAAAAAAAAAAAAAAECAwX/xAAZEQADAAMAAAAAAAAAAAAAAAAAAQIDITH/2gAMAwEAAhEDEQA/AOPrfin2R0lpNxWlkuk9EUjROxmd+sczT+cp4rpvYhmlKAsvoEL5AEdA/9k=",
-        source_url: "https://fluxer.app/blog/how-i-built-fluxer-a-discord-like-chat-app",
+        source_url: "https://echowire.org/blog/how-i-built-fluxer-a-discord-like-chat-app",
         body: include_str!("../../content/blog/how-i-built-fluxer-a-discord-like-chat-app.mdx"),
     },
 ];
@@ -1390,9 +1390,9 @@ mod tests {
 
     #[test]
     fn autolinked_emails_become_mailto_anchors() {
-        let html = rendered("Email <support@fluxer.app> today.");
+        let html = rendered("Email <support@echowire.org> today.");
         assert!(
-            html.contains(r#"href="mailto:support@fluxer.app""#),
+            html.contains(r#"href="mailto:support@echowire.org""#),
             "mailto: {html}"
         );
         assert!(
@@ -1403,16 +1403,16 @@ mod tests {
 
     #[test]
     fn paragraph_soft_breaks_render_as_visual_line_breaks() {
-        let html = rendered("**Support:** <support@fluxer.app>\n**Privacy:** <privacy@fluxer.app>");
+        let html = rendered("**Support:** <support@echowire.org>\n**Privacy:** <privacy@echowire.org>");
         assert!(
             html.contains(
-                r#"<strong>Support:</strong> <a href="mailto:support@fluxer.app">support@fluxer.app</a><br>"#
+                r#"<strong>Support:</strong> <a href="mailto:support@echowire.org">support@echowire.org</a><br>"#
             ),
             "support line break: {html}"
         );
         assert!(
             html.contains(
-                r#"<strong>Privacy:</strong> <a href="mailto:privacy@fluxer.app">privacy@fluxer.app</a>"#
+                r#"<strong>Privacy:</strong> <a href="mailto:privacy@echowire.org">privacy@echowire.org</a>"#
             ),
             "privacy line: {html}"
         );

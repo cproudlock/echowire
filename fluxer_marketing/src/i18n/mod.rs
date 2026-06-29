@@ -72,11 +72,11 @@ pub struct MarketingDefaults {
 impl Default for MarketingDefaults {
     fn default() -> Self {
         Self {
-            l10n_email: "i18n@fluxer.app",
-            partners_email: "partners@fluxer.app",
-            premium_tier_name: "Plutonium",
+            l10n_email: "i18n@echowire.org",
+            partners_email: "partners@echowire.org",
+            premium_tier_name: "Reverb",
             product_name: PRODUCT_NAME,
-            social_handle: "fluxer.app",
+            social_handle: "echowire.org",
         }
     }
 }

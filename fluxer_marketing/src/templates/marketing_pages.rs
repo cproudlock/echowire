@@ -193,8 +193,8 @@ pub fn partners_page(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                             (message_with_links(&apply_template, &[
                                 LinkReplacement {
                                     variable: "email",
-                                    text: "partners@fluxer.app",
-                                    href: "mailto:partners@fluxer.app",
+                                    text: "partners@echowire.org",
+                                    href: "mailto:partners@echowire.org",
                                     class: "text-white underline decoration-white/50 hover:decoration-white",
                                 },
                             ]))
@@ -297,8 +297,8 @@ pub fn press_page(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                             (message_with_links(&press_template, &[
                                 LinkReplacement {
                                     variable: "email",
-                                    text: "press@fluxer.app",
-                                    href: "mailto:press@fluxer.app",
+                                    text: "press@echowire.org",
+                                    href: "mailto:press@echowire.org",
                                     class: "text-white underline decoration-white/50 hover:decoration-white",
                                 },
                             ]))

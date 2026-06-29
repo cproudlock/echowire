@@ -89,12 +89,12 @@ impl PageMeta {
 
     fn formatted_title(&self) -> String {
         if self.title.is_empty() {
-            return "Fluxer".to_owned();
+            return "Echowire".to_owned();
         }
 
         match self.title_format {
-            PageTitleFormat::BrandTagline => format!("Fluxer - {}", self.title),
-            PageTitleFormat::Page => format!("{} | Fluxer", self.title),
+            PageTitleFormat::BrandTagline => format!("Echowire - {}", self.title),
+            PageTitleFormat::Page => format!("{} | Echowire", self.title),
         }
     }
 }
@@ -987,7 +987,7 @@ fn base_document(
                 meta charset="utf-8";
                 meta name="viewport" content="width=device-width, initial-scale=1.0";
                 meta name="description" content=(meta.description);
-                meta property="og:site_name" content="Fluxer";
+                meta property="og:site_name" content="Echowire";
                 meta property="og:locale" content=(og_locale);
                 meta property="og:title" content=(page_title.as_str());
                 meta property="og:description" content=(meta.description);
@@ -1073,7 +1073,7 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                                 (nav_link(i18n, ctx, "/download", DOWNLOAD_DOWNLOAD_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/plutonium", PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/help", COMPANY_AND_RESOURCES_HELP_LABEL_DESCRIPTOR))
-                                a class="body-lg text-gray-900/90 transition-colors hover:text-gray-900" href="https://docs.fluxer.app" {
+                                a class="body-lg text-gray-900/90 transition-colors hover:text-gray-900" href="https://docs.echowire.org" {
                                     (tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR))
                                 }
                                 (nav_link(i18n, ctx, "/blog", COMPANY_AND_RESOURCES_BLOG_DESCRIPTOR))
@@ -1081,7 +1081,7 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                             }
                         }
                         div class="flex items-center gap-1 xl:gap-2" {
-                            (nav_icon_link("https://bsky.app/profile/fluxer.app", tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR), Icon::Bluesky, "hidden lg:flex"))
+                            (nav_icon_link("https://bsky.app/profile/echowire.org", tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR), Icon::Bluesky, "hidden lg:flex"))
                             (nav_icon_link("https://github.com/fluxerapp/fluxer", tr(i18n, ctx, SOCIAL_AND_FEEDS_GITHUB_DESCRIPTOR), Icon::Github, "hidden lg:flex"))
                             (nav_icon_link(&ctx.href("/blog/rss.xml"), tr(i18n, ctx, SOCIAL_AND_FEEDS_RSS_LABEL_DESCRIPTOR), Icon::Rss, "marketing-nav-rss hidden xl:flex"))
                             button
@@ -1131,7 +1131,7 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                                     a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href=(ctx.href("/help")) {
                                         (tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR))
                                     }
-                                    a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href="https://docs.fluxer.app" {
+                                    a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href="https://docs.echowire.org" {
                                         (tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR))
                                     }
                                     a class="flex items-center gap-2 rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href=(ctx.href("/blog")) {
@@ -1144,7 +1144,7 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                                 }
                             }
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_CONNECT_DESCRIPTOR, &[
-                                ("https://bsky.app/profile/fluxer.app".to_owned(), SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR),
+                                ("https://bsky.app/profile/echowire.org".to_owned(), SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR),
                                 ("https://github.com/fluxerapp/fluxer".to_owned(), COMPANY_AND_RESOURCES_SOURCE_AND_CONTRIBUTION_SOURCE_CODE_DESCRIPTOR),
                             ]))
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_COMPANY_DESCRIPTOR, &[
@@ -1282,12 +1282,12 @@ fn hero(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
             div class="max-w-4xl space-y-8 text-center" {
                 @if ctx.locale.code() == "ja" {
                     div class="flex justify-center" {
-                        span class="font-bold text-3xl text-white" { "Fluxer（フラクサー）" }
+                        span class="font-bold text-3xl text-white" { "Echowire" }
                     }
                 }
                 @if ctx.locale.code() == "ko" {
                     div class="flex justify-center" {
-                        span class="font-bold text-3xl text-white" { "Fluxer (플럭서)" }
+                        span class="font-bold text-3xl text-white" { "Echowire" }
                     }
                 }
                 div class="flex flex-wrap items-center justify-center gap-3 pb-2" {
@@ -1421,7 +1421,7 @@ fn features_section(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 PLATFORM_SUPPORT_DESKTOP_USE_DESKTOP_CLIENT_MOBILE_SOON_DESCRIPTOR,
                 PRODUCT_POSITIONING_SELF_HOSTING_SWITCH_BETWEEN_INSTANCES_DESCRIPTOR,
             ],
-            Some("https://docs.fluxer.app/operator/get-started/"),
+            Some("https://docs.echowire.org/operator/get-started/"),
         ),
     ];
     html! {
@@ -1535,7 +1535,7 @@ fn bluesky_support_card(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 h3 class="title mb-4 text-xl text-black md:text-2xl" { (tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_FOLLOW_US_DESCRIPTOR)) }
                 p class="body-lg text-gray-700 leading-relaxed" {
                     (tr(i18n, ctx, SOCIAL_AND_FEEDS_STAY_UPDATED_CTA_DESCRIPTOR)) " "
-                    a class="underline hover:text-[#4641D9]" href="https://bsky.app/profile/fluxer.app/rss" target="_blank" rel="noopener noreferrer" {
+                    a class="underline hover:text-[#4641D9]" href="https://bsky.app/profile/echowire.org/rss" target="_blank" rel="noopener noreferrer" {
                         (tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_RSS_FEED_DESCRIPTOR))
                     }
                     " " (tr(i18n, ctx, GENERAL_OR_DESCRIPTOR)) " "
@@ -1546,7 +1546,7 @@ fn bluesky_support_card(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 }
             }
             div class="mt-auto flex flex-col items-center" {
-                a class="label w-full rounded-xl bg-[#4641D9] px-6 py-3 text-center font-semibold text-base text-white shadow-md transition hover:bg-[#3832B8] md:text-lg" href="https://bsky.app/profile/fluxer.app" target="_blank" rel="noopener noreferrer" {
+                a class="label w-full rounded-xl bg-[#4641D9] px-6 py-3 text-center font-semibold text-base text-white shadow-md transition hover:bg-[#3832B8] md:text-lg" href="https://bsky.app/profile/echowire.org" target="_blank" rel="noopener noreferrer" {
                     (tr(i18n, ctx, SOCIAL_AND_FEEDS_FOLLOW_FLUXER_DESCRIPTOR))
                 }
             }
@@ -2007,7 +2007,7 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                             (footer_link(ctx.href("/partners"), tr(i18n, ctx, FOOTER_PARTNERS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/download"), tr(i18n, ctx, FOOTER_DOWNLOAD_DESCRIPTOR), link_class))
                             (footer_link("https://github.com/fluxerapp/fluxer".to_owned(), tr(i18n, ctx, FOOTER_SOURCE_CODE_DESCRIPTOR), link_class))
-                            (footer_link("https://bsky.app/profile/fluxer.app".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))
+                            (footer_link("https://bsky.app/profile/echowire.org".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))
                             li {
                                 div class="flex items-center gap-2" {
                                     a href=(ctx.href("/blog")) class=(link_class) {
@@ -2022,7 +2022,7 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                             (footer_link(ctx.href("/help"), tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR), link_class))
                             (footer_link("https://fluxerstatus.com".to_owned(), tr(i18n, ctx, FOOTER_STATUS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/press"), tr(i18n, ctx, FOOTER_PRESS_DESCRIPTOR), link_class))
-                            (footer_link("https://docs.fluxer.app".to_owned(), tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR), link_class))
+                            (footer_link("https://docs.echowire.org".to_owned(), tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/careers"), tr(i18n, ctx, COMPANY_AND_RESOURCES_CAREERS_LABEL_DESCRIPTOR), link_class))
                         }
                     }
@@ -2039,8 +2039,8 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                     div class="sm:col-span-1 min-[480px]:col-span-2" {
                         h3 class="title mb-4 text-white md:mb-6" { (tr(i18n, ctx, FOOTER_CONNECT_DESCRIPTOR)) }
                         ul class="space-y-3" {
-                            (footer_link("mailto:press@fluxer.app".to_owned(), "press@fluxer.app".to_owned(), link_class))
-                            (footer_link("mailto:support@fluxer.app".to_owned(), "support@fluxer.app".to_owned(), link_class))
+                            (footer_link("mailto:press@echowire.org".to_owned(), "press@echowire.org".to_owned(), link_class))
+                            (footer_link("mailto:support@echowire.org".to_owned(), "support@echowire.org".to_owned(), link_class))
                             (footer_link(ctx.href("/help/report-bug"), tr(i18n, ctx, FOOTER_REPORT_A_BUG_DESCRIPTOR), link_class))
                         }
                     }

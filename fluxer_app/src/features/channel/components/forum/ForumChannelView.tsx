@@ -14,7 +14,15 @@ import {modal} from '@app/features/ui/commands/ModalCommands';
 import Users from '@app/features/user/state/Users';
 import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import * as SnowflakeUtils from '@fluxer/snowflake/src/SnowflakeUtils';
-import {ArchiveIcon, ChatCircleIcon, ClockIcon, FunnelIcon, PlusIcon, SortAscendingIcon} from '@phosphor-icons/react';
+import {
+	ArchiveIcon,
+	ChatCircleIcon,
+	ClockIcon,
+	FunnelIcon,
+	PlusIcon,
+	PushPinIcon,
+	SortAscendingIcon,
+} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 import {useEffect, useMemo, useState} from 'react';
@@ -90,7 +98,10 @@ const ForumPostCard = observer(
 						))}
 					</div>
 				)}
-				<div style={{fontSize: 16, fontWeight: 600, color: 'var(--text-normal)'}}>{thread.name ?? 'post'}</div>
+				<div style={{display: 'flex', alignItems: 'center', gap: 6, fontSize: 16, fontWeight: 600, color: 'var(--text-normal)'}}>
+					{thread.pinned && <PushPinIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />}
+					{thread.name ?? 'post'}
+				</div>
 				<div style={{display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text-muted)', fontSize: 12}}>
 					{author && <span style={{fontWeight: 600}}>{author.displayName}</span>}
 					<span style={{display: 'flex', alignItems: 'center', gap: 4}}>
@@ -141,6 +152,8 @@ export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
 			result = result.filter((t) => t.appliedTags.some((id) => selectedTagIds.has(id)));
 		}
 		return [...result].sort((a, b) => {
+			// Pinned posts always sort to the top.
+			if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
 			const at =
 				sortMode === 'recent_activity' && a.lastMessageId
 					? SnowflakeUtils.extractTimestamp(a.lastMessageId)

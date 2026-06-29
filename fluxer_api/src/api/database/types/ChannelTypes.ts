@@ -43,6 +43,7 @@ export const NULL_THREAD_FIELDS = {
 	thread_create_timestamp: null,
 	thread_member_count: null,
 	thread_message_count: null,
+	thread_pinned: null,
 	available_tags: null,
 	applied_tags: null,
 	default_reaction_emoji: null,
@@ -57,6 +58,7 @@ export const NULL_THREAD_FIELDS = {
 	| 'thread_create_timestamp'
 	| 'thread_member_count'
 	| 'thread_message_count'
+	| 'thread_pinned'
 	| 'available_tags'
 	| 'applied_tags'
 	| 'default_reaction_emoji'
@@ -98,6 +100,7 @@ export interface ChannelRow {
 	thread_create_timestamp: Nullish<Date>;
 	thread_member_count: Nullish<number>;
 	thread_message_count: Nullish<number>;
+	thread_pinned: Nullish<boolean>;
 	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order are set on
 	// GUILD_FORUM channels; applied_tags is set on threads (forum posts). NON-optional Nullish so the
 	// full-row-upsert DSL is satisfied at every construction site.
@@ -200,6 +203,7 @@ export const CHANNEL_COLUMNS = [
 	'thread_create_timestamp',
 	'thread_member_count',
 	'thread_message_count',
+	'thread_pinned',
 	'available_tags',
 	'applied_tags',
 	'default_reaction_emoji',

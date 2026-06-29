@@ -31,6 +31,8 @@ export interface UpdateThreadParams {
 	invitable?: boolean;
 	// Forum post tags (replacement set, max 5).
 	applied_tags?: Array<string>;
+	// Pin/unpin a forum post (moderators).
+	pinned?: boolean;
 }
 
 // Create a thread under a text/forum parent channel. Returns the created thread channel.

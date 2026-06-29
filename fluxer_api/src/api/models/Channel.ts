@@ -49,6 +49,7 @@ export class Channel {
 	readonly appliedTags: Array<string> | null;
 	readonly defaultReactionEmoji: DefaultReactionEmoji | null;
 	readonly defaultSortOrder: number | null;
+	readonly pinned: boolean;
 	readonly isSoftDeleted: boolean;
 	readonly indexedAt: Date | null;
 	readonly version: number;
@@ -101,6 +102,7 @@ export class Channel {
 		this.appliedTags = this.threadMetadata ? (row.applied_tags ?? []) : null;
 		this.defaultReactionEmoji = this.type === ChannelTypes.GUILD_FORUM ? (row.default_reaction_emoji ?? null) : null;
 		this.defaultSortOrder = this.type === ChannelTypes.GUILD_FORUM ? (row.default_sort_order ?? null) : null;
+		this.pinned = this.threadMetadata ? (row.thread_pinned ?? false) : false;
 		this.isSoftDeleted = row.soft_deleted;
 		this.indexedAt = row.indexed_at ?? null;
 		this.version = row.version;
@@ -148,6 +150,7 @@ export class Channel {
 			thread_create_timestamp: this.threadMetadata?.createTimestamp ?? null,
 			thread_member_count: this.memberCount ?? null,
 			thread_message_count: this.messageCount ?? null,
+			thread_pinned: this.threadMetadata ? this.pinned : null,
 			available_tags: this.availableTags ?? null,
 			applied_tags: this.appliedTags ?? null,
 			default_reaction_emoji: this.defaultReactionEmoji ?? null,

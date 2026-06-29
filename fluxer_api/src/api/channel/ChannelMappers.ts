@@ -126,6 +126,7 @@ function serializeThreadChannel(channel: Channel, ctx: ContentWarningCtx): Chann
 		rate_limit_per_user: channel.rateLimitPerUser,
 		member_count: channel.memberCount ?? undefined,
 		message_count: channel.messageCount ?? undefined,
+		pinned: channel.pinned ? true : undefined,
 		applied_tags: channel.appliedTags && channel.appliedTags.length > 0 ? channel.appliedTags : undefined,
 		thread_metadata: meta
 			? {

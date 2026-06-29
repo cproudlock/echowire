@@ -333,6 +333,7 @@ export class ChannelOperationsService {
 			thread_create_timestamp: now,
 			thread_member_count: 1,
 			thread_message_count: 0,
+			thread_pinned: false,
 			available_tags: null,
 			applied_tags: params.data.applied_tags ?? null,
 			default_reaction_emoji: null,
@@ -486,6 +487,7 @@ export class ChannelOperationsService {
 			thread_auto_archive_duration: data.auto_archive_duration ?? row.thread_auto_archive_duration,
 			thread_invitable: data.invitable ?? row.thread_invitable,
 			thread_archive_timestamp: archivedChanged ? new Date() : row.thread_archive_timestamp,
+			thread_pinned: data.pinned ?? row.thread_pinned,
 			applied_tags: appliedTags,
 		};
 		const channel = await this.channelRepository.upsert(updatedRow);

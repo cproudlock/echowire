@@ -102,6 +102,7 @@ export class Channel {
 	readonly appliedTags: ReadonlyArray<string>;
 	readonly defaultReactionEmoji: {readonly emojiId: string | null; readonly emojiName: string | null} | null;
 	readonly defaultSortOrder: number | null;
+	readonly pinned: boolean;
 
 	constructor(channel: WireChannel, options?: ChannelRecordOptions) {
 		this.instanceId = options?.instanceId ?? RuntimeConfig.localInstanceDomain;
@@ -152,6 +153,7 @@ export class Channel {
 			? {emojiId: channel.default_reaction_emoji.emoji_id, emojiName: channel.default_reaction_emoji.emoji_name}
 			: null;
 		this.defaultSortOrder = channel.default_sort_order ?? null;
+		this.pinned = channel.pinned ?? false;
 		if ((this.type === ChannelTypes.DM || this.type === ChannelTypes.GROUP_DM) && channel.recipients) {
 			Users?.cacheUsers(Array.from(channel.recipients));
 		}
@@ -315,6 +317,7 @@ export class Channel {
 							: null,
 				member_count: updates.member_count ?? this.memberCount ?? undefined,
 				message_count: updates.message_count ?? this.messageCount ?? undefined,
+				pinned: updates.pinned !== undefined ? updates.pinned : this.pinned,
 				// Echowire: preserve/merge forum state so partial channel updates don't wipe tags etc.
 				available_tags:
 					updates.available_tags !== undefined
@@ -405,6 +408,7 @@ export class Channel {
 		}
 		if (this.memberCount !== other.memberCount) return false;
 		if (this.messageCount !== other.messageCount) return false;
+		if (this.pinned !== other.pinned) return false;
 		// Echowire: forum tag/sort/reaction state — same live-update reasoning as thread state above.
 		if (this.defaultSortOrder !== other.defaultSortOrder) return false;
 		if (this.defaultReactionEmoji?.emojiId !== other.defaultReactionEmoji?.emojiId) return false;
@@ -460,6 +464,7 @@ export class Channel {
 				? {emoji_id: this.defaultReactionEmoji.emojiId, emoji_name: this.defaultReactionEmoji.emojiName}
 				: null,
 			default_sort_order: this.defaultSortOrder,
+			pinned: this.pinned ? true : undefined,
 		};
 	}
 }

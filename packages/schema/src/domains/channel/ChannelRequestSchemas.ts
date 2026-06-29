@@ -454,6 +454,7 @@ export const ThreadUpdateRequest = z.object({
 		.max(5)
 		.optional()
 		.describe('Replacement set of tag IDs for a forum post (max 5)'),
+	pinned: z.boolean().optional().describe('Whether to pin this forum post to the top (moderators only)'),
 });
 
 export type ThreadUpdateRequest = z.infer<typeof ThreadUpdateRequest>;

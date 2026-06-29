@@ -19,7 +19,7 @@ import {Popout} from '@app/features/ui/popover/PopoverPopout';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {Trans, useLingui} from '@lingui/react/macro';
 import {msg} from '@lingui/core/macro';
-import {DotsThreeIcon, LockIcon, LockOpenIcon, TagIcon, TrashIcon} from '@phosphor-icons/react';
+import {DotsThreeIcon, LockIcon, LockOpenIcon, PushPinIcon, TagIcon, TrashIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 
@@ -64,6 +64,17 @@ export const ThreadManageButton = observer(({channel}: {channel: Channel}) => {
 						>
 							<TagIcon size={16} />
 							<Trans>Edit tags</Trans>
+						</MenuRow>
+					)}
+					{parentIsForum && canManage && (
+						<MenuRow
+							onClick={() => {
+								void ThreadCommands.updateThread(channel.id, {pinned: !channel.pinned}).catch(() => {});
+								onClose();
+							}}
+						>
+							<PushPinIcon size={16} weight={channel.pinned ? 'fill' : 'regular'} />
+							{channel.pinned ? <Trans>Unpin</Trans> : <Trans>Pin to top</Trans>}
 						</MenuRow>
 					)}
 					{canManage && (

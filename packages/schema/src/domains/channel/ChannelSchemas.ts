@@ -170,6 +170,7 @@ export const ChannelResponse = z.object({
 		.describe('Thread metadata; present only for thread channels'),
 	member_count: Int32Type.optional().describe('Approximate count of members in the thread (threads only)'),
 	message_count: Int32Type.optional().describe('Approximate count of messages in the thread (threads only)'),
+	pinned: z.boolean().optional().describe('Whether this forum post / thread is pinned to the top'),
 	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order: forum channels.
 	// applied_tags: forum posts (threads).
 	available_tags: z
@@ -263,6 +264,7 @@ export interface Channel {
 	} | null;
 	readonly member_count?: number;
 	readonly message_count?: number;
+	readonly pinned?: boolean;
 	// Echowire forum fields.
 	readonly available_tags?: ReadonlyArray<{
 		readonly id: string;

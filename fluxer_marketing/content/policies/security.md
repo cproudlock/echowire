@@ -22,7 +22,7 @@ Out of scope:
 
 ## Safe harbour
 
-**Good-faith research that follows this policy is authorised.** We authorise good-faith research under this policy for the purposes of Swedish, EU, US, and equivalent anti-hacking laws, and we will not take legal action against you for it. If a third party takes action against you over such research, we will make clear that it was authorised under this policy. Safe harbour applies by default and is not revoked retroactively.
+**Good-faith research that follows this policy is authorised.** We authorise good-faith research under this policy for the purposes of EU, US, and equivalent anti-hacking laws, and we will not take legal action against you for it. If a third party takes action against you over such research, we will make clear that it was authorised under this policy. Safe harbour applies by default and is not revoked retroactively.
 
 It does not cover extortion, intentional harm to users, service degradation, or data destruction. If you are not sure whether a test is in scope, ask first.
 

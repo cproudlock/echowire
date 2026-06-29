@@ -33,7 +33,7 @@ A few kinds of data outlive your account, but only for specific, narrow reasons:
 - **Report snapshots.** When someone reports a message, user, Community, or invite, we snapshot the reported item so there is a stable record for investigation and appeals. Snapshots live in an isolated bucket, are not served to users or included in exports, and are deleted after one year. Deleting the original does not remove the snapshot during that window.
 - **Security and usage logs.** Up to 90 days under normal conditions. Specific logs may be kept longer only for an active security investigation, a legal obligation, or an ongoing dispute.
 - **Audit logs.** Records of administrative actions and enforcement decisions are kept as long as needed for accountability and appeals, and reviewed periodically.
-- **Payment and transaction records.** Kept at least seven years, as Swedish bookkeeping law (Bokföringslag 1999:1078) requires. Full card numbers are not stored.
+- **Payment and transaction records.** Kept at least seven years, as applicable tax and accounting law requires. Full card numbers are not stored.
 - **Photo IDs sent to support** (for an age appeal or a date-of-birth correction): deleted within 60 days after the request is closed.
 - **Support correspondence.** Held in Intercom for as long as needed to handle the conversation and any follow-up, then deleted on review.
 - **Backups.** Encrypted, off-site, kept on a rolling cycle of up to about 30 days, then overwritten.

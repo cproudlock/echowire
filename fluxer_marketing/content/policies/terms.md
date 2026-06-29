@@ -11,7 +11,7 @@ Nothing in these terms overrides your rights under applicable consumer law, incl
 
 These terms will not change without notice. Material changes come with at least 30 days' notice, an explanation of what changed, and time to export your data and delete your account before they take effect if you disagree.
 
-If we restrict your content or account, you receive the reasons, the evidence relied on, and a route to appeal. This is both our policy and our legal obligation under the EU Digital Services Act.
+If we restrict your content or account, you receive the reasons, the evidence relied on, and a route to appeal. This is our policy.
 
 The service is provided "as is" because we cannot guarantee perfect uptime, but we do not disclaim responsibility for our own negligence or for problems we cause.
 
@@ -232,23 +232,13 @@ You can use one self-service refund per rolling 30-day period. If you need help 
 
 Nothing in this section limits your mandatory consumer rights, including statutory rights to refunds, remedies for defective digital content, or withdrawal rights under applicable law.
 
-### 6.4 EU/EEA right of withdrawal
-
-If you are a consumer in the EU or EEA, you have a statutory right to withdraw from a purchase of digital content within 14 days of the purchase date, under the EU Consumer Rights Directive (Directive 2011/83/EU).
-
-Reverb is digital content delivered immediately on purchase. Before every purchase, you will be asked to (i) expressly consent to performance beginning during the withdrawal period, and (ii) acknowledge that you will lose your right of withdrawal once the digital content is provided. We then send you confirmation of this consent. By confirming, you waive your right of withdrawal for that specific purchase in accordance with Article 16(m) of the Directive, as amended by Directive (EU) 2019/2161.
-
-If you have not given this consent, or if the digital content has not yet been fully provided, you may exercise your right of withdrawal by contacting <support@echowire.org> within 14 days. No reason is needed. The refund is processed without undue delay and no later than 14 days after we are informed of your decision, using the same payment method unless you expressly agree otherwise.
-
-This waiver applies only to the EU/EEA statutory right of withdrawal and does not affect non-waivable consumer rights under other applicable laws.
-
-### 6.5 Failed payments
+### 6.4 Failed payments
 
 If a payment fails, we automatically retry a reasonable number of times and may charge backup payment methods you have added. Premium features may be suspended or downgraded until payment succeeds, and you remain responsible for any unpaid amounts.
 
 Fees, charges, or penalties imposed by your bank or financial institution in connection with failed payments or chargebacks are not our responsibility.
 
-### 6.6 Chargebacks and payment disputes
+### 6.5 Chargebacks and payment disputes
 
 If you think there is a billing error or unauthorised charge, try the self-service refund option or contact <support@echowire.org> first; that is usually the fastest way to resolve it.
 
@@ -339,17 +329,15 @@ If you are a consumer in the EU/EEA, the UK, or another jurisdiction where indem
 
 **Informal resolution first.** If you have a concern or dispute, contact <support@echowire.org> first. We will work with you in good faith to resolve it informally within 30 days.
 
-**Governing law.** Unless otherwise required by mandatory local law, these terms and any disputes arising from them or the Services are governed by Swedish law, without regard to conflict-of-law rules.
+**Governing law.** Unless otherwise required by mandatory local law, these terms and any disputes arising from them or the Services are governed by the laws of the State of North Carolina, USA, without regard to conflict-of-law rules.
 
-**Jurisdiction.** Disputes will be submitted to the courts of Stockholm, Sweden, which will have exclusive jurisdiction, subject to the exceptions below.
+**Jurisdiction.** Disputes will be submitted to the state and federal courts located in North Carolina, USA, which will have exclusive jurisdiction, subject to the exceptions below.
 
-**Small claims.** Either party may bring an individual claim in a competent small-claims court where venue is proper, instead of in Stockholm.
+**Small claims.** Either party may bring an individual claim in a competent small-claims court where venue is proper, instead of in the courts above.
 
-**EU/EEA consumers.** If you are a consumer in the EU, EEA, or another jurisdiction that gives you mandatory rights to bring claims in your home courts, nothing in these terms limits those rights. You can bring proceedings in the courts of your country of residence.
+**Mandatory local rights.** If the law of your country of residence gives you mandatory rights to bring claims in your home courts, nothing in these terms limits those rights.
 
 **Collective action rights preserved.** Nothing in these terms stops you from participating in class actions, collective actions, representative proceedings, or any other form of collective redress available under the laws of your jurisdiction. Mandatory binding arbitration is not required, and you are not asked to waive your right to collective action.
-
-**Alternative dispute resolution.** If you are a consumer in the EU and want to resolve a dispute through alternative dispute resolution, you can refer the matter to a certified out-of-court dispute settlement body. Information about available bodies is provided through the Digital Services Coordinator in your EU Member State. For content moderation disputes specifically, you may also refer the matter to a certified body under DSA Article 21; see Section 15.5.
 
 ## 12. Changes to these terms
 
@@ -375,81 +363,41 @@ You must comply with all applicable export control, sanctions, and related laws 
 
 Access may be restricted or terminated to comply with these requirements. If you have questions about how these laws may apply to you, seek your own legal advice.
 
-## 15. EU Digital Services Act
+## 15. General provisions
 
-As a provider of intermediary services established in the European Union, we comply with the EU Digital Services Act (Regulation (EU) 2022/2065).
-
-### 15.1 Single point of contact
-
-For EU authorities, the European Commission, and the European Board for Digital Services: <legal@echowire.org>. Our postal address and phone number are in Section 17 and on our [Company Information page](/company-information).
-
-For users with DSA questions: <support@echowire.org>. Communications may be conducted in English or Swedish.
-
-### 15.2 Legal representative
-
-Since Proudlock Technology LLC is established in Sweden (an EU Member State), no separate legal representative is required under DSA Article 13.
-
-### 15.3 Statements of reasons
-
-When content is restricted, features are suspended, or an account is terminated, the affected user receives a clear and specific statement of reasons, as described in Section 9.2.
-
-### 15.4 Internal complaint handling
-
-Users affected by content moderation decisions can submit a complaint through the appeals process described in our [Community Guidelines](/guidelines). Complaints are handled free of charge, reviewed by qualified staff (not resolved by fully automated means alone), and decided without undue delay.
-
-If a complaint shows that content is not illegal and does not violate our terms or guidelines, the decision is reversed without undue delay.
-
-### 15.5 Out-of-court dispute settlement
-
-If you are in the EU and are not satisfied with the outcome of our internal complaint handling, you can refer the dispute to a certified out-of-court dispute settlement body under DSA Article 21. A list of certified bodies is available through the Digital Services Coordinator in your Member State. We will engage in good faith with any certified body you select.
-
-### 15.6 Trusted flaggers
-
-Priority is given to reports submitted by entities designated as trusted flaggers under DSA Article 22. If you are a designated trusted flagger, contact <legal@echowire.org> so an appropriate workflow can be set up.
-
-### 15.7 Transparency reporting
-
-As a micro enterprise under the DSA, we are currently exempt from the transparency reporting obligations in Article 15. Voluntary transparency reports are planned as Echowire grows, covering content moderation activities, action types, automated tools, complaints and outcomes, orders from authorities, and our responses. When published, reports will be available on our website and cover the preceding calendar year.
-
-### 15.8 UK Online Safety Act
-
-Our safety measures, content moderation practices, and transparency work are designed to meet our obligations under the UK Online Safety Act 2023 for user-to-user services accessible in the United Kingdom, including the illegal content duties set out in Ofcom's codes of practice. The required risk assessments and children's access assessments are in progress, and this section will be updated as that work moves forward.
-
-## 16. General provisions
-
-### 16.1 Severability
+### 15.1 Severability
 
 If any provision of these terms is found invalid or unenforceable, it will be modified to the minimum extent necessary to make it enforceable (or removed if modification is not possible), and the remaining provisions continue in full force.
 
-### 16.2 Entire agreement
+### 15.2 Entire agreement
 
 These terms, together with our [Privacy Policy](/privacy) and [Community Guidelines](/guidelines), constitute the entire agreement between you and Echowire regarding the Services, superseding all prior agreements on the same subject matter. This does not affect any separate written agreement under Section 1.3.
 
-### 16.3 No waiver
+### 15.3 No waiver
 
 Failure to enforce any right or provision does not amount to a waiver. Any waiver must be in writing and signed by an authorised representative.
 
-### 16.4 Assignment
+### 15.4 Assignment
 
 You may not assign your rights or obligations without our prior written consent. We may assign ours in connection with a merger, acquisition, or sale of substantially all our assets, provided the assignee agrees to be bound by these terms. Any attempted assignment in violation is void.
 
-### 16.5 Force majeure
+### 15.5 Force majeure
 
 Neither party is liable for failure to perform obligations (other than payment) to the extent caused by circumstances beyond reasonable control, including natural disasters, pandemics, acts of government, war, terrorism, power outages, telecommunications failures, or internet disruptions. The affected party will use reasonable efforts to mitigate and resume performance.
 
-### 16.6 Electronic communications
+### 15.6 Electronic communications
 
 By creating an account, you consent to receive electronic communications necessary to operate the Services for you: transactional and security messages (login alerts, password resets, payment receipts), administrative notices (account changes, enforcement decisions, appeals), and material updates to these terms or our policies. These may be sent by email, in-app notification, or other electronic means, and you cannot opt out of them while you maintain an account.
 
 Marketing, promotional, and feature-announcement messages are separate. They are sent only where the law allows, or where you have opted in, and you can unsubscribe at any time through the link in those messages or from your notification settings without affecting required service communications.
 
-### 16.7 Language
+### 15.7 Language
 
 These terms are written in English. If translations are provided, the English version prevails in the event of a conflict.
 
-## 17. Contact information
+## 16. Contact information
 
-These terms are entered into with Proudlock Technology LLC, organisation number 559537-3993, c/o Embassy House, Östgötagatan 12, 116 25 Stockholm, Sweden.
+These terms are entered into with Proudlock Technology LLC, 502 Buck Mountain Circle, West Jefferson, NC 28694, USA.
 
 **Support:** <support@echowire.org>
 **Privacy:** <privacy@echowire.org>

@@ -9,7 +9,7 @@ You can disable or delete your account from your account settings.
 
 ## Deleting your account
 
-Choosing delete schedules your account for permanent removal in 14 days. Signing in at any point during that window cancels the deletion. After 14 days, identifying information is removed from active systems and the rest is anonymised. Encrypted backups roll over on a cycle of up to about 30 days, after which the data is gone from there too. Records we are legally required to keep (such as payment records under Swedish bookkeeping law) are retained for the period the law requires. The full breakdown is in [section 7 of our Privacy Policy](/privacy) and the [data retention article](/help/data-retention).
+Choosing delete schedules your account for permanent removal in 14 days. Signing in at any point during that window cancels the deletion. After 14 days, identifying information is removed from active systems and the rest is anonymised. Encrypted backups roll over on a cycle of up to about 30 days, after which the data is gone from there too. Records we are legally required to keep (such as payment records under applicable tax law) are retained for the period the law requires. The full breakdown is in [section 7 of our Privacy Policy](/privacy) and the [data retention article](/help/data-retention).
 
 ### Messages
 

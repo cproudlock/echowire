@@ -3,7 +3,7 @@
 
 ## The short version
 
-Echowire is a chat service run by Proudlock Technology LLC, a Swedish company based in Stockholm. This policy explains how we handle your data. It is binding under EU consumer protection law and part of our Terms of Service, so you can hold us to it.
+Echowire is a chat service run by Proudlock Technology LLC, a company organized in North Carolina, USA. This policy explains how we handle your data. It is binding under EU consumer protection law and part of our Terms of Service, so you can hold us to it.
 
 - We do not sell, rent, or license your personal data. We have no advertising partners and no dealings with data brokers. Our revenue comes from Echowire Reverb, our optional premium subscription.
 - AI does not read what you share on Echowire. We run no AI or LLM inference over your messages, files, or voice and video calls, and none of your content is used to train or fine-tune AI models. The only automated content check is a local image classifier that helps respect explicit-content preferences.
@@ -13,14 +13,13 @@ Echowire is a chat service run by Proudlock Technology LLC, a Swedish company ba
 
 ## 1. Who we are
 
-Proudlock Technology LLC is a Swedish limited liability company, organisation number 559537-3993. We operate Echowire and related services. For GDPR purposes, we are the data controller for your personal data: we decide what data is processed and why, under the General Data Protection Regulation as implemented in Sweden, supervised by the Swedish Authority for Privacy Protection (Integritetsskyddsmyndigheten, known as IMY).
+Proudlock Technology LLC is a limited liability company organized in North Carolina, USA. We operate Echowire and related services. Where the EU/UK General Data Protection Regulation applies to your personal data, we act as the data controller: we decide what data is processed and why.
 
-**Privacy contact:** Hampus Kraft, Founder and CEO
+**Privacy contact:** Cameron Proudlock, Owner
 **Email:** <privacy@echowire.org>
-**Phone:** +46 79 101 18 18 (legal enquiries only; no phone support)
-**Postal address:** Proudlock Technology LLC, c/o Embassy House, Östgötagatan 12, 116 25 Stockholm, Sweden
+**Postal address:** Proudlock Technology LLC, 502 Buck Mountain Circle, West Jefferson, NC 28694, USA
 
-Hampus handles privacy and data protection questions, including data subject requests.
+Cameron handles privacy and data protection questions, including data subject requests.
 
 We have not appointed a formal Data Protection Officer (GDPR Article 37) or a UK representative (UK GDPR Article 27). Both are kept under review as the service and its safety and security processing grow, and this section will be updated if that changes. In the meantime, UK residents can direct any data protection enquiry to <privacy@echowire.org>.
 
@@ -89,7 +88,7 @@ For readers in the EEA, the UK, or any other jurisdiction requiring a lawful bas
 
 **Legitimate interests (Article 6(1)(f)).** Service security, fraud prevention, reliability and performance, aggregate feature-use analysis, and writing to you about changes to our services or policies. Each activity has a documented assessment covering its purpose, necessity, and the balance against your rights. For example, abuse prevention uses IP signals, login events, device metadata, and rate-limit triggers; these are used only for security and administration, never for advertising or profiling. You can object at any time (Section 10).
 
-**Legal obligations (Article 6(1)(c)).** Accounting, tax, and bookkeeping under Swedish law, responses to lawful requests from public authorities, and compliance with applicable data protection, security, and consumer laws.
+**Legal obligations (Article 6(1)(c)).** Accounting, tax, and bookkeeping under applicable law, responses to lawful requests from public authorities, and compliance with applicable data protection, security, and consumer laws.
 
 **Consent (Article 6(1)(a)).** A smaller set of processing, such as optional communications or specific cookie uses on our marketing site where local law requires consent. Consent can be withdrawn at any time through your settings or by writing to us; withdrawal does not affect processing that was lawful beforehand.
 
@@ -246,7 +245,7 @@ Accounts may be scheduled for deletion after 2 years of inactivity, with advance
 
 ### 7.7 Payment and transaction data
 
-Transaction records are kept for at least seven years, as required by Swedish bookkeeping law (Bokföringslag 1999:1078), and for as long thereafter as needed for legal compliance, dispute resolution, or fraud prevention. Retention is reviewed periodically. Full payment card numbers are not stored.
+Transaction records are kept for at least seven years, as required by applicable tax and accounting law, and for as long thereafter as needed for legal compliance, dispute resolution, or fraud prevention. Retention is reviewed periodically. Full payment card numbers are not stored.
 
 ### 7.8 Logs and security data
 
@@ -271,7 +270,7 @@ Snapshots are kept for up to 1 year from the report date, after which an automat
 - **Report snapshots (in-app reports):** up to 1 year; access limited to authorised staff and audit-logged.
 - **Security and usage logs:** up to 90 days (longer only for active investigations or legal obligations).
 - **Audit logs:** kept as needed; reviewed periodically.
-- **Payment and transaction records:** at least 7 years (Swedish bookkeeping law); reviewed periodically after that.
+- **Payment and transaction records:** at least 7 years (applicable tax law); reviewed periodically after that.
 - **Inactive accounts:** scheduled for deletion after 2 years of inactivity, with advance notice.
 
 ## 8. Your controls
@@ -311,7 +310,7 @@ Opt-in end-to-end encryption is planned for Personal Notes, DMs, Group DMs, and 
 
 ### 9.1 Data breaches
 
-In the event of a personal data breach, we will investigate and take appropriate remedial steps. The relevant supervisory authority (IMY) will be notified within 72 hours of our becoming aware of a breach likely to pose a risk to your rights and freedoms, as GDPR Article 33 requires; affected users will be notified without undue delay where the risk is high, as Article 34 requires; and other applicable breach notification obligations will be met. Notifications will explain what happened, what data is likely affected, the likely consequences, and what you can do to protect yourself.
+In the event of a personal data breach, we will investigate and take appropriate remedial steps. The relevant supervisory authority will be notified within 72 hours of our becoming aware of a breach likely to pose a risk to your rights and freedoms, as GDPR Article 33 requires; affected users will be notified without undue delay where the risk is high, as Article 34 requires; and other applicable breach notification obligations will be met. Notifications will explain what happened, what data is likely affected, the likely consequences, and what you can do to protect yourself.
 
 ## 10. Your rights
 
@@ -347,13 +346,13 @@ Several of these rights can be exercised directly through your Privacy dashboard
 
 ### 10.4 Complaints to supervisory authorities
 
-You have the right to lodge a complaint with your local data protection authority. In Sweden, that is the Swedish Authority for Privacy Protection (IMY) at [imy.se](https://www.imy.se); in the UK, the Information Commissioner's Office (ICO) at [ico.org.uk](https://ico.org.uk); the authority in your country of residence is also an option. You can also raise concerns with us first, so we have an opportunity to resolve them directly.
+You have the right to lodge a complaint with your local data protection authority. For example, in the UK, the Information Commissioner's Office (ICO) at [ico.org.uk](https://ico.org.uk); the authority in your country of residence is also an option. You can also raise concerns with us first, so we have an opportunity to resolve them directly.
 
 ## 11. Children's privacy
 
 ### 11.1 Minimum age
 
-Meeting the minimum age requirement in your region is a condition of using Echowire. The general minimum, including in Sweden, is 13, though some countries set it higher; the full list is in our [help article on minimum age requirements](/help/minimum-age). Users above the minimum age but below the age of legal majority (for example, under 18) may use Echowire, but our Terms require a parent or guardian to review and agree to them on the user's behalf.
+Meeting the minimum age requirement in your region is a condition of using Echowire. The general minimum is 13, though some countries set it higher; the full list is in our [help article on minimum age requirements](/help/minimum-age). Users above the minimum age but below the age of legal majority (for example, under 18) may use Echowire, but our Terms require a parent or guardian to review and agree to them on the user's behalf.
 
 ### 11.2 Protections for younger users
 
@@ -419,7 +418,7 @@ After the effective date, the updated policy applies to your continued use of Ec
 
 ## 16. Contact
 
-**Privacy and data protection:** <privacy@echowire.org> (Hampus Kraft, Founder and CEO)
+**Privacy and data protection:** <privacy@echowire.org> (Cameron Proudlock, Owner)
 **General support:** <support@echowire.org>
 
 Our postal address, phone number, and all other contact routes (press, security, legal requests) are listed in Section 1 and on our [Company Information page](/company-information).

@@ -146,7 +146,7 @@ export const CreateForumPostModal = observer(({channel}: {channel: Channel}) => 
 				<Button
 					onClick={() => void onSubmit()}
 					submitting={submitting}
-					disabled={!title.trim()}
+					disabled={!title.trim() || (channel.forumRequireTag && selectedTagIds.size === 0)}
 					data-flx="channel.create-forum-post-modal.button.submit"
 				>
 					{i18n._(CREATE_POST_DESCRIPTOR)}

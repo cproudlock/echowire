@@ -173,6 +173,11 @@ const ChannelCreateForumRequest = ChannelCreateCommon.extend({
 	available_tags: z.array(ForumTagInput).max(20).optional().describe('Tags available for posts (max 20)'),
 	default_reaction_emoji: DefaultReactionEmojiInput.nullish(),
 	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
+	default_auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.nullish()
+		.describe('Default inactivity (minutes) new posts inherit'),
+	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
 });
 
 export const ChannelCreateRequest = z.discriminatedUnion('type', [
@@ -221,6 +226,11 @@ const ChannelUpdateForumRequest = ChannelUpdateCommon.extend({
 		.nullish()
 		.describe('Default reaction shown on forum posts (null to clear)'),
 	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
+	default_auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.nullish()
+		.describe('Default inactivity (minutes) new posts inherit'),
+	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
 });
 
 const ChannelUpdateGroupDmRequest = z.object({

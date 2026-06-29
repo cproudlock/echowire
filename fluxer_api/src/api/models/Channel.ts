@@ -49,6 +49,8 @@ export class Channel {
 	readonly appliedTags: Array<string> | null;
 	readonly defaultReactionEmoji: DefaultReactionEmoji | null;
 	readonly defaultSortOrder: number | null;
+	readonly forumDefaultAutoArchiveDuration: number | null;
+	readonly forumRequireTag: boolean;
 	readonly pinned: boolean;
 	readonly isSoftDeleted: boolean;
 	readonly indexedAt: Date | null;
@@ -102,6 +104,9 @@ export class Channel {
 		this.appliedTags = this.threadMetadata ? (row.applied_tags ?? []) : null;
 		this.defaultReactionEmoji = this.type === ChannelTypes.GUILD_FORUM ? (row.default_reaction_emoji ?? null) : null;
 		this.defaultSortOrder = this.type === ChannelTypes.GUILD_FORUM ? (row.default_sort_order ?? null) : null;
+		this.forumDefaultAutoArchiveDuration =
+			this.type === ChannelTypes.GUILD_FORUM ? (row.forum_default_auto_archive_duration ?? null) : null;
+		this.forumRequireTag = this.type === ChannelTypes.GUILD_FORUM ? (row.forum_require_tag ?? false) : false;
 		this.pinned = this.threadMetadata ? (row.thread_pinned ?? false) : false;
 		this.isSoftDeleted = row.soft_deleted;
 		this.indexedAt = row.indexed_at ?? null;
@@ -155,6 +160,8 @@ export class Channel {
 			applied_tags: this.appliedTags ?? null,
 			default_reaction_emoji: this.defaultReactionEmoji ?? null,
 			default_sort_order: this.defaultSortOrder ?? null,
+			forum_default_auto_archive_duration: this.forumDefaultAutoArchiveDuration ?? null,
+			forum_require_tag: this.type === ChannelTypes.GUILD_FORUM ? this.forumRequireTag : null,
 			soft_deleted: this.isSoftDeleted,
 			indexed_at: this.indexedAt,
 			version: this.version,

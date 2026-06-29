@@ -153,6 +153,8 @@ export class ChannelOperationsService {
 		let forumAvailableTags: Array<{id: string; name: string; emoji_name: string | null}> | null = null;
 		let forumDefaultReaction: {emoji_id: string | null; emoji_name: string | null} | null = null;
 		let forumDefaultSortOrder: number | null = null;
+		let forumDefaultAutoArchive: number | null = null;
+		let forumRequireTag: boolean | null = null;
 		if (params.data.type === ChannelTypes.GUILD_FORUM) {
 			const tags = params.data.available_tags ?? [];
 			forumAvailableTags = await Promise.all(
@@ -169,6 +171,8 @@ export class ChannelOperationsService {
 					}
 				: null;
 			forumDefaultSortOrder = params.data.default_sort_order ?? null;
+			forumDefaultAutoArchive = params.data.default_auto_archive_duration ?? null;
+			forumRequireTag = params.data.require_tag ?? false;
 		}
 		const channel = await this.channelRepository.upsert({
 			channel_id: channelId,
@@ -201,6 +205,8 @@ export class ChannelOperationsService {
 			available_tags: forumAvailableTags,
 			default_reaction_emoji: forumDefaultReaction,
 			default_sort_order: forumDefaultSortOrder,
+			forum_default_auto_archive_duration: forumDefaultAutoArchive,
+			forum_require_tag: forumRequireTag,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,
@@ -267,6 +273,14 @@ export class ChannelOperationsService {
 				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
 			}
 		}
+		// Echowire: a forum that requires a tag rejects tagless posts.
+		if (
+			parent.type === ChannelTypes.GUILD_FORUM &&
+			parent.forumRequireTag &&
+			(!params.data.applied_tags || params.data.applied_tags.length === 0)
+		) {
+			throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
+		}
 		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
 		const now = new Date();
 		// Echowire: when starting a thread from a message, the thread adopts the source
@@ -326,7 +340,8 @@ export class ChannelOperationsService {
 			permission_overwrites: null,
 			nicks: null,
 			thread_archived: false,
-			thread_auto_archive_duration: params.data.auto_archive_duration ?? 1440,
+			thread_auto_archive_duration:
+				params.data.auto_archive_duration ?? parent.forumDefaultAutoArchiveDuration ?? 1440,
 			thread_archive_timestamp: now,
 			thread_locked: false,
 			thread_invitable: threadType === ChannelTypes.PRIVATE_THREAD,
@@ -338,6 +353,8 @@ export class ChannelOperationsService {
 			applied_tags: params.data.applied_tags ?? null,
 			default_reaction_emoji: null,
 			default_sort_order: null,
+			forum_default_auto_archive_duration: null,
+			forum_require_tag: null,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,

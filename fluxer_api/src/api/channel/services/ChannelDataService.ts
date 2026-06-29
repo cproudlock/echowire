@@ -182,6 +182,8 @@ export class ChannelDataService {
 			available_tags?: Array<{id?: string; name: string; emoji_name?: string | null}> | null;
 			default_reaction_emoji?: {emoji_id?: string | null; emoji_name?: string | null} | null;
 			default_sort_order?: number | null;
+			default_auto_archive_duration?: number | null;
+			require_tag?: boolean;
 		};
 		if (forumData.available_tags !== undefined) {
 			const tags = forumData.available_tags ?? [];
@@ -203,6 +205,12 @@ export class ChannelDataService {
 		}
 		if (forumData.default_sort_order !== undefined) {
 			channelUpdateData.default_sort_order = forumData.default_sort_order ?? null;
+		}
+		if (forumData.default_auto_archive_duration !== undefined) {
+			channelUpdateData.default_auto_archive_duration = forumData.default_auto_archive_duration ?? null;
+		}
+		if (forumData.require_tag !== undefined) {
+			channelUpdateData.require_tag = forumData.require_tag;
 		}
 		return this.operations.editChannel({
 			userId,

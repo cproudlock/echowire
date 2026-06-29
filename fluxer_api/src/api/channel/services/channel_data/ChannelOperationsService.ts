@@ -74,6 +74,8 @@ export interface ChannelUpdateData {
 	available_tags?: Array<{id: string; name: string; emoji_name: string | null}> | null;
 	default_reaction_emoji?: {emoji_id: string | null; emoji_name: string | null} | null;
 	default_sort_order?: number | null;
+	default_auto_archive_duration?: number | null;
+	require_tag?: boolean;
 }
 
 export class ChannelOperationsService {
@@ -289,6 +291,16 @@ export class ChannelOperationsService {
 				data.default_sort_order !== undefined && channel.type === ChannelTypes.GUILD_FORUM
 					? data.default_sort_order
 					: channel.defaultSortOrder,
+			forum_default_auto_archive_duration:
+				data.default_auto_archive_duration !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.default_auto_archive_duration
+					: channel.forumDefaultAutoArchiveDuration,
+			forum_require_tag:
+				data.require_tag !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.require_tag
+					: channel.type === ChannelTypes.GUILD_FORUM
+						? channel.forumRequireTag
+						: null,
 		};
 		const updatedChannel = await this.channelRepository.channelData.upsert(updatedChannelData);
 		if (

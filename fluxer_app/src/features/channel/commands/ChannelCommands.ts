@@ -46,6 +46,8 @@ type ChannelUpdateParams = Partial<
 	available_tags?: Array<{id?: string; name: string; emoji_name?: string | null}>;
 	default_reaction_emoji?: {emoji_id?: string | null; emoji_name?: string | null} | null;
 	default_sort_order?: number | null;
+	default_auto_archive_duration?: number | null;
+	require_tag?: boolean;
 };
 
 interface PermissionOverwritePatch {

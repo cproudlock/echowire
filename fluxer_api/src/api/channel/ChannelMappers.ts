@@ -152,6 +152,8 @@ function serializeGuildForumChannel(channel: Channel, ctx: ContentWarningCtx): C
 		available_tags: channel.availableTags && channel.availableTags.length > 0 ? channel.availableTags : undefined,
 		default_reaction_emoji: channel.defaultReactionEmoji ?? undefined,
 		default_sort_order: channel.defaultSortOrder ?? undefined,
+		default_auto_archive_duration: channel.forumDefaultAutoArchiveDuration ?? undefined,
+		require_tag: channel.forumRequireTag ? true : undefined,
 	};
 }
 

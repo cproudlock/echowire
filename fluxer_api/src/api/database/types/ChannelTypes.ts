@@ -48,6 +48,8 @@ export const NULL_THREAD_FIELDS = {
 	applied_tags: null,
 	default_reaction_emoji: null,
 	default_sort_order: null,
+	forum_default_auto_archive_duration: null,
+	forum_require_tag: null,
 } satisfies Pick<
 	ChannelRow,
 	| 'thread_archived'
@@ -63,6 +65,8 @@ export const NULL_THREAD_FIELDS = {
 	| 'applied_tags'
 	| 'default_reaction_emoji'
 	| 'default_sort_order'
+	| 'forum_default_auto_archive_duration'
+	| 'forum_require_tag'
 >;
 
 export interface ChannelRow {
@@ -108,6 +112,8 @@ export interface ChannelRow {
 	applied_tags: Nullish<Array<string>>;
 	default_reaction_emoji: Nullish<DefaultReactionEmoji>;
 	default_sort_order: Nullish<number>;
+	forum_default_auto_archive_duration: Nullish<number>;
+	forum_require_tag: Nullish<boolean>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;
@@ -208,6 +214,8 @@ export const CHANNEL_COLUMNS = [
 	'applied_tags',
 	'default_reaction_emoji',
 	'default_sort_order',
+	'forum_default_auto_archive_duration',
+	'forum_require_tag',
 	'soft_deleted',
 	'indexed_at',
 	'version',

@@ -24,6 +24,8 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 	const [tags, setTags] = useState<Array<EditableTag>>(() =>
 		(channel?.availableTags ?? []).map((tag) => ({id: tag.id, name: tag.name, emojiName: tag.emojiName})),
 	);
+	const [requireTag, setRequireTag] = useState(channel?.forumRequireTag ?? false);
+	const [defaultDuration, setDefaultDuration] = useState<number>(channel?.forumDefaultAutoArchiveDuration ?? 1440);
 	const [saving, setSaving] = useState(false);
 
 	if (!channel) {
@@ -53,6 +55,8 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 					name: tag.name,
 					emoji_name: tag.emojiName && tag.emojiName.length > 0 ? tag.emojiName : null,
 				})),
+				require_tag: requireTag,
+				default_auto_archive_duration: defaultDuration,
 			});
 			ToastCommands.createToast({type: 'success', children: <Trans>Tags updated</Trans>});
 		} catch {
@@ -64,6 +68,30 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 
 	return (
 		<div style={{display: 'flex', flexDirection: 'column', gap: 12, padding: 4}}>
+			<label style={{display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--text-normal)'}}>
+				<input type="checkbox" checked={requireTag} onChange={(e) => setRequireTag(e.target.checked)} />
+				<Trans>Require members to select a tag when posting</Trans>
+			</label>
+			<label style={{display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--text-normal)'}}>
+				<Trans>Hide posts after inactivity</Trans>
+				<select
+					value={defaultDuration}
+					onChange={(e) => setDefaultDuration(Number(e.target.value))}
+					style={{
+						padding: '6px 8px',
+						borderRadius: 6,
+						border: '1px solid var(--background-modifier-accent)',
+						background: 'var(--input-background, var(--background-secondary))',
+						color: 'var(--text-normal)',
+					}}
+				>
+					<option value={60}>{t`1 hour`}</option>
+					<option value={1440}>{t`1 day`}</option>
+					<option value={4320}>{t`3 days`}</option>
+					<option value={10080}>{t`1 week`}</option>
+				</select>
+			</label>
+			<div style={{height: 1, background: 'var(--background-modifier-accent)', margin: '4px 0'}} />
 			<div style={{fontSize: 13, color: 'var(--text-muted)'}}>
 				<Trans>Tags help members organize and filter posts in this forum (up to 20).</Trans>
 			</div>

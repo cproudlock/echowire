@@ -631,6 +631,26 @@ export const ReadStates = defineTable<ReadStateRow, 'user_id' | 'channel_id'>({
 	columns: READ_STATE_COLUMNS,
 	primaryKey: ['user_id', 'channel_id'],
 });
+
+// Echowire: thread membership. Partition by thread so all members of a thread list together.
+export interface ThreadMemberRow {
+	thread_id: bigint;
+	user_id: bigint;
+	join_timestamp: Date;
+	flags: number;
+}
+const THREAD_MEMBER_COLUMNS = [
+	'thread_id',
+	'user_id',
+	'join_timestamp',
+	'flags',
+] as const satisfies ReadonlyArray<keyof ThreadMemberRow>;
+export const ThreadMembers = defineTable<ThreadMemberRow, 'thread_id' | 'user_id', 'thread_id'>({
+	name: 'thread_members',
+	columns: THREAD_MEMBER_COLUMNS,
+	primaryKey: ['thread_id', 'user_id'],
+	partitionKey: ['thread_id'],
+});
 export const Messages = defineTable<MessageRow, 'channel_id' | 'bucket' | 'message_id', 'channel_id' | 'bucket'>({
 	name: 'messages',
 	columns: MESSAGE_COLUMNS,

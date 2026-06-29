@@ -9,6 +9,7 @@ import type {Channel} from '@app/features/channel/models/Channel';
 import {CreateForumPostModal} from '@app/features/channel/components/modals/CreateForumPostModal';
 import Channels from '@app/features/channel/state/Channels';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
+import ReadStates from '@app/features/read_state/state/ReadStates';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
 import Users from '@app/features/user/state/Users';
@@ -50,6 +51,7 @@ const ForumPostCard = observer(
 			: SnowflakeUtils.extractTimestamp(thread.id);
 		const tagsById = new Map(channel.availableTags.map((tag) => [tag.id, tag]));
 		const resolvedTags = thread.appliedTags.map((id) => tagsById.get(id)).filter((t) => t != null);
+		const unread = ReadStates.hasUnreadOrMentions(thread.id);
 		return (
 			<button
 				type="button"
@@ -100,6 +102,11 @@ const ForumPostCard = observer(
 				)}
 				<div style={{display: 'flex', alignItems: 'center', gap: 6, fontSize: 16, fontWeight: 600, color: 'var(--text-normal)'}}>
 					{thread.pinned && <PushPinIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />}
+					{unread && (
+						<span
+							style={{width: 8, height: 8, borderRadius: '50%', background: 'var(--text-normal)', flexShrink: 0}}
+						/>
+					)}
 					{thread.name ?? 'post'}
 				</div>
 				<div style={{display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text-muted)', fontSize: 12}}>

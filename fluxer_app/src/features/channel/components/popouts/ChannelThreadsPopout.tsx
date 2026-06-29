@@ -10,6 +10,7 @@ import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadC
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
+import ReadStates from '@app/features/read_state/state/ReadStates';
 import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {ArchiveIcon, ChatCircleIcon, PlusIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
@@ -104,47 +105,85 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 						{showArchived ? 'No archived threads' : 'No active threads'}
 					</div>
 				) : (
-					threads.map((thread) => (
-						<button
-							key={thread.id}
-							type="button"
-							onClick={() => {
-								selectChannel(guildId, thread.id);
-								onClose();
-							}}
-							aria-label={`Thread: ${thread.name ?? 'thread'}`}
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								gap: 8,
-								width: '100%',
-								padding: '8px 16px',
-								border: 'none',
-								background: 'transparent',
-								color: 'var(--text-normal)',
-								fontSize: 13,
-								fontWeight: 500,
-								cursor: 'pointer',
-								textAlign: 'left',
-							}}
-							onMouseEnter={(e) => {
-								e.currentTarget.style.background = 'var(--background-modifier-hover)';
-							}}
-							onMouseLeave={(e) => {
-								e.currentTarget.style.background = 'transparent';
-							}}
-						>
-							<ChatCircleIcon size={16} style={{flexShrink: 0, color: 'var(--text-muted)'}} />
-							<span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1}}>
-								{thread.name ?? 'thread'}
-							</span>
-							{thread.messageCount != null && thread.messageCount > 0 && (
-								<span style={{fontSize: 11, color: 'var(--text-muted)', flexShrink: 0}}>
-									{thread.messageCount} {thread.messageCount === 1 ? 'reply' : 'replies'}
+					threads.map((thread) => {
+						const unread = ReadStates.hasUnreadOrMentions(thread.id);
+						const mentionCount = ReadStates.getMentionCount(thread.id);
+						return (
+							<button
+								key={thread.id}
+								type="button"
+								onClick={() => {
+									selectChannel(guildId, thread.id);
+									onClose();
+								}}
+								aria-label={`Thread: ${thread.name ?? 'thread'}${unread ? ' (unread)' : ''}`}
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									gap: 8,
+									width: '100%',
+									padding: '8px 16px',
+									border: 'none',
+									background: 'transparent',
+									color: unread ? 'var(--text-normal)' : 'var(--text-muted)',
+									fontSize: 13,
+									fontWeight: unread ? 600 : 500,
+									cursor: 'pointer',
+									textAlign: 'left',
+								}}
+								onMouseEnter={(e) => {
+									e.currentTarget.style.background = 'var(--background-modifier-hover)';
+								}}
+								onMouseLeave={(e) => {
+									e.currentTarget.style.background = 'transparent';
+								}}
+							>
+								{unread ? (
+									<span
+										style={{
+											width: 8,
+											height: 8,
+											borderRadius: '50%',
+											background: 'var(--text-normal)',
+											flexShrink: 0,
+											marginLeft: 4,
+											marginRight: 4,
+										}}
+									/>
+								) : (
+									<ChatCircleIcon size={16} style={{flexShrink: 0, color: 'var(--text-muted)'}} />
+								)}
+								<span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1}}>
+									{thread.name ?? 'thread'}
 								</span>
-							)}
-						</button>
-					))
+								{mentionCount > 0 && (
+									<span
+										style={{
+											display: 'inline-flex',
+											alignItems: 'center',
+											justifyContent: 'center',
+											minWidth: 16,
+											height: 16,
+											padding: '0 5px',
+											borderRadius: 8,
+											background: 'var(--status-danger, #f23f43)',
+											color: 'white',
+											fontSize: 11,
+											fontWeight: 700,
+											flexShrink: 0,
+										}}
+									>
+										{mentionCount}
+									</span>
+								)}
+								{mentionCount === 0 && thread.messageCount != null && thread.messageCount > 0 && (
+									<span style={{fontSize: 11, color: 'var(--text-muted)', flexShrink: 0}}>
+										{thread.messageCount} {thread.messageCount === 1 ? 'reply' : 'replies'}
+									</span>
+								)}
+							</button>
+						);
+					})
 				)}
 			</div>
 		</div>

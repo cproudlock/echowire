@@ -762,6 +762,10 @@ export class MessageSendService {
 			return this.sendPersonalNoteMessage({user, channelId, data, requestCache});
 		}
 		const {channel, guild, checkPermission, hasPermission, member} = authChannel;
+		// Echowire: a locked thread/forum post accepts messages only from moderators (Manage Channels).
+		if (channel.threadMetadata?.locked && !(await hasPermission(Permissions.MANAGE_CHANNELS))) {
+			throw new MissingPermissionsError();
+		}
 		const {canEmbedLinks, canMentionEveryone, canAttachFiles} = await this.checkMessageSendPermissions({
 			guild,
 			member,

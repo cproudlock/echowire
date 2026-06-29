@@ -7,7 +7,7 @@ import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import type {Channel} from '@app/features/channel/models/Channel';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
-import {ArchiveIcon} from '@phosphor-icons/react';
+import {ArchiveIcon, LockIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 
 const ARCHIVED_DESCRIPTOR = msg({
@@ -18,9 +18,36 @@ const UNARCHIVE_DESCRIPTOR = msg({
 	message: 'Unarchive',
 	comment: 'Button that reopens an archived thread.',
 });
+const LOCKED_DESCRIPTOR = msg({
+	message: 'This thread is locked. Only moderators can send messages.',
+	comment: 'Banner shown above the composer when viewing a locked thread.',
+});
 
 export const ThreadArchivedBanner = observer(({channel}: {channel: Channel}) => {
 	const {i18n} = useLingui();
+	// Echowire: a locked (but not archived) thread shows an informational banner; archived takes
+	// precedence (it offers the Unarchive action).
+	if (channel.isThread() && channel.threadMetadata?.locked && !channel.threadMetadata?.archived) {
+		return (
+			<div
+				data-flx="channel.thread-locked-banner"
+				style={{
+					display: 'flex',
+					alignItems: 'center',
+					gap: 10,
+					margin: '0 16px 8px',
+					padding: '8px 14px',
+					borderRadius: 8,
+					background: 'var(--background-secondary)',
+					color: 'var(--text-muted)',
+					fontSize: 13,
+				}}
+			>
+				<LockIcon size={16} weight="fill" style={{flexShrink: 0}} />
+				<span style={{flex: 1}}>{i18n._(LOCKED_DESCRIPTOR)}</span>
+			</div>
+		);
+	}
 	if (!channel.isThread() || !channel.threadMetadata?.archived) {
 		return null;
 	}

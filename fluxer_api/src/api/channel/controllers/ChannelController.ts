@@ -159,6 +159,71 @@ export function ChannelController(app: HonoApp) {
 			);
 		},
 	);
+	// Echowire: thread membership — join (@me), leave (@me), list.
+	app.put(
+		'/channels/:channel_id/thread-members/@me',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'join_thread',
+			summary: 'Join a thread',
+			description: 'Adds the current user to a thread.',
+			responseSchema: z.object({}),
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			await ctx.get('guildService').channels.joinThread({userId, threadChannelId});
+			return ctx.body(null, 204);
+		},
+	);
+	app.delete(
+		'/channels/:channel_id/thread-members/@me',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'leave_thread',
+			summary: 'Leave a thread',
+			description: 'Removes the current user from a thread.',
+			responseSchema: z.object({}),
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			await ctx.get('guildService').channels.leaveThread({userId, threadChannelId});
+			return ctx.body(null, 204);
+		},
+	);
+	app.get(
+		'/channels/:channel_id/thread-members',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'list_thread_members',
+			summary: 'List thread members',
+			description: 'Lists the members of a thread.',
+			responseSchema: z.array(
+				z.object({user_id: z.string(), join_timestamp: z.string(), flags: z.number()}),
+			),
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			return ctx.json(await ctx.get('guildService').channels.listThreadMembers({userId, threadChannelId}));
+		},
+	);
 	app.get(
 		'/channels/:channel_id',
 		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),

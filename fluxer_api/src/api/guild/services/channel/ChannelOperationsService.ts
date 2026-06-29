@@ -34,6 +34,7 @@ import type {ChannelID, EmojiID, GuildID, RoleID, StickerID, UserID} from '../..
 import {createChannelID, createMessageID, createRoleID, createUserID} from '../../../BrandedTypes';
 import {mapChannelToResponse} from '../../../channel/ChannelMappers';
 import type {IChannelRepository} from '../../../channel/IChannelRepository';
+import {ThreadMemberRepository} from '../../../channel/repositories/ThreadMemberRepository';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '../../../database/types/ChannelTypes';
 import type {IGatewayService} from '../../../infrastructure/IGatewayService';
 import type {ISnowflakeService} from '../../../infrastructure/ISnowflakeService';
@@ -63,6 +64,8 @@ export class ChannelOperationsService {
 		private readonly limitConfigService: LimitConfigService,
 		private readonly messageSystemService: MessageSystemService,
 	) {}
+
+	private readonly threadMemberRepository = new ThreadMemberRepository();
 
 	async createChannel(
 		params: {
@@ -366,6 +369,8 @@ export class ChannelOperationsService {
 			requestCache: params.requestCache,
 		});
 		await this.gatewayService.dispatchGuild({guildId, event: 'THREAD_CREATE', data: response});
+		// Echowire: the creator auto-joins the thread (member_count was seeded to 1 on the row above).
+		await this.threadMemberRepository.addMember(channelId, params.userId);
 		// Echowire: drop a "started a thread" system message in the parent channel (Discord
 		// parity). Best-effort — a failure here must not fail thread creation.
 		try {
@@ -545,6 +550,99 @@ export class ChannelOperationsService {
 				type: thread.type,
 			},
 		});
+	}
+
+	// Echowire: recompute member_count from the membership table and persist it on the thread.
+	private async syncThreadMemberCount(threadChannelId: ChannelID): Promise<number> {
+		const thread = await this.channelRepository.findUnique(threadChannelId);
+		if (!thread || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			return 0;
+		}
+		const members = await this.threadMemberRepository.listMembers(threadChannelId);
+		const count = members.length;
+		await this.channelRepository.upsert({...thread.toRow(), thread_member_count: count});
+		return count;
+	}
+
+	// Echowire: join the current user (or auto-join an actor) to a thread. Idempotent.
+	async joinThread(params: {threadChannelId: ChannelID; userId: UserID; silent?: boolean}): Promise<void> {
+		const thread = await this.channelRepository.findUnique(params.threadChannelId);
+		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			throw new UnknownChannelError();
+		}
+		const existing = await this.threadMemberRepository.getMember(params.threadChannelId, params.userId);
+		if (existing) {
+			return;
+		}
+		const canView = await this.gatewayService.checkPermission({
+			guildId: thread.guildId,
+			userId: params.userId,
+			permission: Permissions.VIEW_CHANNEL,
+		});
+		if (!canView) {
+			throw new MissingPermissionsError();
+		}
+		await this.threadMemberRepository.addMember(params.threadChannelId, params.userId);
+		const count = await this.syncThreadMemberCount(params.threadChannelId);
+		await this.gatewayService.dispatchGuild({
+			guildId: thread.guildId,
+			event: 'THREAD_MEMBERS_UPDATE',
+			data: {
+				id: thread.id.toString(),
+				guild_id: thread.guildId.toString(),
+				member_count: count,
+				added_members: [{user_id: params.userId.toString()}],
+			},
+		});
+	}
+
+	// Echowire: leave a thread.
+	async leaveThread(params: {threadChannelId: ChannelID; userId: UserID}): Promise<void> {
+		const thread = await this.channelRepository.findUnique(params.threadChannelId);
+		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			throw new UnknownChannelError();
+		}
+		const existing = await this.threadMemberRepository.getMember(params.threadChannelId, params.userId);
+		if (!existing) {
+			return;
+		}
+		await this.threadMemberRepository.removeMember(params.threadChannelId, params.userId);
+		const count = await this.syncThreadMemberCount(params.threadChannelId);
+		await this.gatewayService.dispatchGuild({
+			guildId: thread.guildId,
+			event: 'THREAD_MEMBERS_UPDATE',
+			data: {
+				id: thread.id.toString(),
+				guild_id: thread.guildId.toString(),
+				member_count: count,
+				removed_member_ids: [params.userId.toString()],
+			},
+		});
+	}
+
+	// Echowire: list the members of a thread (requires VIEW_CHANNEL).
+	async listThreadMembers(params: {
+		threadChannelId: ChannelID;
+		userId: UserID;
+	}): Promise<Array<{user_id: string; join_timestamp: string; flags: number}>> {
+		const thread = await this.channelRepository.findUnique(params.threadChannelId);
+		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			throw new UnknownChannelError();
+		}
+		const canView = await this.gatewayService.checkPermission({
+			guildId: thread.guildId,
+			userId: params.userId,
+			permission: Permissions.VIEW_CHANNEL,
+		});
+		if (!canView) {
+			throw new MissingPermissionsError();
+		}
+		const members = await this.threadMemberRepository.listMembers(params.threadChannelId);
+		return members.map((member) => ({
+			user_id: member.userId.toString(),
+			join_timestamp: member.joinTimestamp.toISOString(),
+			flags: member.flags,
+		}));
 	}
 
 	async updateChannelPositionsLocked(params: {

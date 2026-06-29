@@ -4,7 +4,9 @@
 // POST/GET /channels/:id/threads, PATCH/DELETE /channels/:id/thread).
 
 import {Endpoints} from '@app/features/app/constants/Endpoints';
+import Authentication from '@app/features/auth/state/Authentication';
 import Channels from '@app/features/channel/state/Channels';
+import ThreadMembers from '@app/features/channel/state/ThreadMembers';
 import {http} from '@app/features/platform/transport/RestTransport';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
@@ -97,6 +99,55 @@ export async function deleteThread(threadChannelId: string): Promise<void> {
 		await http.delete(Endpoints.CHANNEL_THREAD(threadChannelId));
 	} catch (error) {
 		logger.error(`Failed to delete thread ${threadChannelId}:`, error);
+		throw error;
+	}
+}
+
+interface ThreadMemberResponse {
+	user_id: string;
+	join_timestamp: string;
+	flags: number;
+}
+
+// List the members of a thread and sync the store.
+export async function listThreadMembers(threadChannelId: string): Promise<void> {
+	try {
+		const response = await http.get<Array<ThreadMemberResponse>>(Endpoints.CHANNEL_THREAD_MEMBERS(threadChannelId));
+		ThreadMembers.setMembers(
+			threadChannelId,
+			(response.body ?? []).map((member) => ({userId: member.user_id, joinTimestamp: member.join_timestamp})),
+		);
+	} catch (error) {
+		logger.error(`Failed to list thread members for ${threadChannelId}:`, error);
+	}
+}
+
+// Join the current user to a thread (optimistic store update).
+export async function joinThread(threadChannelId: string): Promise<void> {
+	const userId = Authentication.currentUserId;
+	if (userId) {
+		ThreadMembers.addMember(threadChannelId, {userId, joinTimestamp: new Date().toISOString()});
+	}
+	try {
+		await http.put(Endpoints.CHANNEL_THREAD_MEMBER_ME(threadChannelId));
+	} catch (error) {
+		logger.error(`Failed to join thread ${threadChannelId}:`, error);
+		void listThreadMembers(threadChannelId);
+		throw error;
+	}
+}
+
+// Leave a thread (optimistic store update).
+export async function leaveThread(threadChannelId: string): Promise<void> {
+	const userId = Authentication.currentUserId;
+	if (userId) {
+		ThreadMembers.removeMember(threadChannelId, userId);
+	}
+	try {
+		await http.delete(Endpoints.CHANNEL_THREAD_MEMBER_ME(threadChannelId));
+	} catch (error) {
+		logger.error(`Failed to leave thread ${threadChannelId}:`, error);
+		void listThreadMembers(threadChannelId);
 		throw error;
 	}
 }

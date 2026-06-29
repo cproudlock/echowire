@@ -108,6 +108,7 @@ import {
 } from '@phosphor-icons/react';
 import {ChannelThreadsButton} from '@app/features/channel/components/channel_header_components/ChannelThreadsButton';
 import {ThreadManageButton} from '@app/features/channel/components/channel_header_components/ThreadManageButton';
+import {ThreadMembersButton} from '@app/features/channel/components/channel_header_components/ThreadMembersButton';
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {msg} from '@lingui/core/macro';
 import {clsx} from 'clsx';
@@ -958,6 +959,7 @@ export const ChannelHeader = observer(
 									data-flx="channel.channel-header.archive-thread"
 								/>
 							)}
+							{channel && !isMobile && channel.isThread() && <ThreadMembersButton channel={channel} />}
 							{channel && !isMobile && channel.isThread() && <ThreadManageButton channel={channel} />}
 							{shouldShowCreateGroupButton && (
 								<ChannelHeaderIcon

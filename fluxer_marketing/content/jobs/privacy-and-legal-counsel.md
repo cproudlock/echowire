@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Privacy & Legal Counsel
 
-Fluxer is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
+Echowire is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
 
 ### What this role is
 
-Legal and privacy work at Fluxer sits close to the product. It shows up in app decisions, data subject requests, copyright disputes, vendor contracts, law-enforcement process, policy drafts, and regulatory changes. We are headquartered in Sweden and built for people everywhere, so the work sits where EU data protection, platform regulation, intellectual property, and cross-border requests meet. The right person can turn legal requirements into advice the team can actually use: precise, grounded, and understandable.
+Legal and privacy work at Echowire sits close to the product. It shows up in app decisions, data subject requests, copyright disputes, vendor contracts, law-enforcement process, policy drafts, and regulatory changes. We are headquartered in Sweden and built for people everywhere, so the work sits where EU data protection, platform regulation, intellectual property, and cross-border requests meet. The right person can turn legal requirements into advice the team can actually use: precise, grounded, and understandable.
 
 ### What you would actually be doing
 

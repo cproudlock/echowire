@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Product Engineer
 
-Fluxer is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
+Echowire is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
 
 ### What this role is
 
-Product engineers build the parts of Fluxer people use every day: messages, channels, calls, notifications, settings, desktop behavior, mobile flows, and the backend services behind them.
+Product engineers build the parts of Echowire people use every day: messages, channels, calls, notifications, settings, desktop behavior, mobile flows, and the backend services behind them.
 
 The backend services are TypeScript and Rust. The real-time infrastructure is Erlang/OTP. The desktop client is Electron, with Rust underneath. The mobile app is Flutter. You do not need to know all of that on day one, but you should be comfortable learning across boundaries.
 

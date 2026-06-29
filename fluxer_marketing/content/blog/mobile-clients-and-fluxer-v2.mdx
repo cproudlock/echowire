@@ -1,13 +1,13 @@
 ---
-title: "Mobile clients and Fluxer v2"
+title: "Mobile clients and Echowire v2"
 slug: "mobile-clients-and-fluxer-v2"
-description: "Fluxer v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
+description: "Echowire v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
 author: "Hampus Kraft"
 published_at: "2026-06-15T12:00:00Z"
 updated_at: "2026-06-15T12:00:00Z"
 feature_image: "/blog/assets/mobile-clients-and-fluxer-v2-feature-image-1280.jpg"
-feature_image_alt: "Mobile clients and Fluxer v2"
-source_url: "https://fluxer.app/blog/mobile-clients-and-fluxer-v2"
+feature_image_alt: "Mobile clients and Echowire v2"
+source_url: "https://echowire.org/blog/mobile-clients-and-fluxer-v2"
 tags:
   - "News"
 ---
@@ -16,39 +16,39 @@ Hey Fluxers,
 
 Hampus here. I know it sounds like a broken record to say the last few months have been intense, but there's no better word for it. We have a lot to cover, and I don't want to go further without saying thank you.
 
-Fluxer has grown to more than 300,000 users. Today we're launching the mobile apps, big self-hosting and safety improvements, the reopening of pull requests, $1,500 in developer bounties, and a growing list of clients, tools, and bots. Thanks to @Fen and @Xeon, Fluxer is now also on Flathub.
+Echowire has grown to more than 300,000 users. Today we're launching the mobile apps, big self-hosting and safety improvements, the reopening of pull requests, $1,500 in developer bounties, and a growing list of clients, tools, and bots. Thanks to @Fen and @Xeon, Echowire is now also on Flathub.
 
-> [Install Fluxer on Linux with Flathub](https://flathub.org/en/apps/app.fluxer.Fluxer)
+> [Install Echowire on Linux with Flathub](https://flathub.org/en/apps/app.fluxer.Echowire)
 >
-> Fluxer is available on Flathub for Linux users, with x86_64 and aarch64 builds.
+> Echowire is available on Flathub for Linux users, with x86_64 and aarch64 builds.
 >
 > Source: Flathub
 
-We couldn't do this without all of you talking about Fluxer, subscribing to Plutonium, donating, filing bug reports, building things, testing rough edges, and helping us find what needs to be better. Volunteers have collectively put thousands of hours into Fluxer over the last few months. We're grateful to every one of you. Without you, none of this would be possible.
+We couldn't do this without all of you talking about Echowire, subscribing to Reverb, donating, filing bug reports, building things, testing rough edges, and helping us find what needs to be better. Volunteers have collectively put thousands of hours into Echowire over the last few months. We're grateful to every one of you. Without you, none of this would be possible.
 
 In the same spirit, we're glad to welcome a few new staff members: @Lilith, @Ferret, and @Stefan. They bring experience across support, safety, engineering, product, and more. Expect to see them around.
 
-If you're new here, these two posts explain how Fluxer got here and what was next on the roadmap:
+If you're new here, these two posts explain how Echowire got here and what was next on the roadmap:
 
-> [How I built Fluxer, a Discord-like chat app](/blog/how-i-built-fluxer-a-discord-like-chat-app)
+> [How I built Echowire, a Discord-like chat app](/blog/how-i-built-fluxer-a-discord-like-chat-app)
 >
-> The backstory, architecture, and reasoning behind Fluxer.
+> The backstory, architecture, and reasoning behind Echowire.
 >
-> Source: Fluxer Blog / Hampus Kraft
+> Source: Echowire Blog / Hampus Kraft
 
 > [Roadmap 2026](/blog/roadmap-2026)
 >
 > The current roadmap for mobile, self-hosting, federation, voice and video, and backend reliability.
 >
-> Source: Fluxer Blog / Hampus Kraft
+> Source: Echowire Blog / Hampus Kraft
 
-Before the announcements, one quick note: the [self-hosting get-started guide](https://docs.fluxer.app/operator/get-started/) is live. The rest of the self-hosting documentation is still being finalised, and the API documentation is being cleaned up too. We don't expect either to take more than a few days longer.
+Before the announcements, one quick note: the [self-hosting get-started guide](https://docs.echowire.org/operator/get-started/) is live. The rest of the self-hosting documentation is still being finalised, and the API documentation is being cleaned up too. We don't expect either to take more than a few days longer.
 
-With that said, we promised one launch: an open source mobile app. We're also finally announcing the long-awaited Fluxer v2.
+With that said, we promised one launch: an open source mobile app. We're also finally announcing the long-awaited Echowire v2.
 
-## Fluxer v2
+## Echowire v2
 
-It's here. Fluxer v2.
+It's here. Echowire v2.
 
 <figure class="blog-media blog-media--gif">
 	<video class="blog-embed-video" autoplay loop muted playsinline preload="metadata" poster="/blog/assets/tenor-cable-guy-well-look-who-decided-to-show-poster.jpg">
@@ -58,10 +58,10 @@ It's here. Fluxer v2.
 	<figcaption>Jim Carrey as Chip Douglas in The Cable Guy: "Well, look who decided to show!"</figcaption>
 </figure>
 
-Fluxer v2 is what we've been calling a large refactor and a set of infrastructure stability improvements. Most of the app stayed intact. Fluxer is still very much a polyglot codebase in TypeScript, Erlang, and Rust, using each one for the parts it is good at. We worked on it privately for the last two months because the code was moving fast enough that pushing broken builds to everyone would have helped nobody. The refactor includes a lot:
+Echowire v2 is what we've been calling a large refactor and a set of infrastructure stability improvements. Most of the app stayed intact. Echowire is still very much a polyglot codebase in TypeScript, Erlang, and Rust, using each one for the parts it is good at. We worked on it privately for the last two months because the code was moving fast enough that pushing broken builds to everyone would have helped nobody. The refactor includes a lot:
 
 - Self-hosting documentation and prebuilt images.
-- A cleaner split between Fluxer.app deployment settings and self-hosted settings.
+- A cleaner split between Echowire.app deployment settings and self-hosted settings.
 - The Erlang Gateway role split for websocket connections, sessions, guilds, presence, calls, and push notifications.
 - Rust services for hot paths like users, messages, unfurling, media, and Snowflake IDs.
 - Better tools for operators and safety work around spam, illegal content, and instance moderation.
@@ -69,9 +69,9 @@ Fluxer v2 is what we've been calling a large refactor and a set of infrastructur
 
 And a lot more.
 
-> [Fluxer on GitHub](https://github.com/fluxerapp/fluxer)
+> [Echowire on GitHub](https://github.com/fluxerapp/fluxer)
 >
-> The main Fluxer repository now has the v2 refactor, public issues, pull requests, self-hosting work, and bounties.
+> The main Echowire repository now has the v2 refactor, public issues, pull requests, self-hosting work, and bounties.
 >
 > Source: GitHub / fluxerapp
 
@@ -81,9 +81,9 @@ Now that the v2 refactor is out, we can keep GitHub in sync with active developm
 
 For the last six weeks, we've been alpha testing the iOS and Android apps. They're built with Flutter, which isn't a typo, and it has made the apps fast and smooth. Early adopters, the Visionaries, have been daily driving them, giving feedback, and finding bugs while @M0N7Y5 and @Elias have been hard at work getting the clients closer to desktop.
 
-They aren't fully there yet, but we think the native apps are ready for Plutonium subscribers on iOS and for open testing on Android. As of 15 June 2026, you can find the mobile client on GitHub.
+They aren't fully there yet, but we think the native apps are ready for Reverb subscribers on iOS and for open testing on Android. As of 15 June 2026, you can find the mobile client on GitHub.
 
-> [Fluxer mobile client on GitHub](https://github.com/fluxerapp/flutter_client)
+> [Echowire mobile client on GitHub](https://github.com/fluxerapp/flutter_client)
 >
 > The open source Flutter client for iOS and Android.
 >
@@ -91,25 +91,25 @@ They aren't fully there yet, but we think the native apps are ready for Plutoniu
 
 We'll release prebuilt versions on F-Droid, Obtainium, Google Play, and the Apple App Store in the coming weeks. Accrescent will come as soon as they open up again.
 
-The native client has about 50% of what we'd consider ready for a stable launch. Expect bugs. For now, we'd rather send new non-technical users to the Canary mobile PWA at [web.canary.fluxer.app](https://web.canary.fluxer.app), which has also improved a lot, than have them bounce off a half-finished native app.
+The native client has about 50% of what we'd consider ready for a stable launch. Expect bugs. For now, we'd rather send new non-technical users to the Canary mobile PWA at [web.canary.echowire.org](https://web.canary.echowire.org), which has also improved a lot, than have them bounce off a half-finished native app.
 
-> [Download Fluxer Canary](https://canary.fluxer.app/download)
+> [Download Echowire Canary](https://canary.echowire.org/download)
 >
 > The Canary mobile PWA remains the most complete phone experience today, while the native apps continue through alpha testing.
 >
-> Source: Fluxer
+> Source: Echowire
 
-If you're on iOS and don't have Plutonium, please hold on a little longer and be careful with prebuilt apps from other sources claiming to be the official Fluxer client.
+If you're on iOS and don't have Reverb, please hold on a little longer and be careful with prebuilt apps from other sources claiming to be the official Echowire client.
 
 ## Safety, operations, and bounties
 
 We've been hard at work behind the scenes on instance moderation and operations. We've dealt with spam attacks, CSAM, extremist content, and other abuse while continuing to improve reliability and uptime.
 
-Many of those improvements are already part of the Fluxer v2 refactor, and more are coming soon. Check GitHub for the public roadmap, discussion boards, and feature requests.
+Many of those improvements are already part of the Echowire v2 refactor, and more are coming soon. Check GitHub for the public roadmap, discussion boards, and feature requests.
 
-> [Fluxer Discussions](https://github.com/fluxerapp/fluxer/discussions)
+> [Echowire Discussions](https://github.com/fluxerapp/fluxer/discussions)
 >
-> Roadmap discussions, feature proposals, and design conversations for Fluxer.
+> Roadmap discussions, feature proposals, and design conversations for Echowire.
 >
 > Source: GitHub / fluxerapp
 
@@ -127,13 +127,13 @@ We've been working on updated requirements, and the plan is to review applicatio
 
 ### Why did GitHub lag behind internal development?
 
-GitHub lagged because we made a call: the public code needed to be useful, not just current. Fluxer needed a cleaner foundation before it made sense to invite people back into issues, pull requests, and self-hosting.
+GitHub lagged because we made a call: the public code needed to be useful, not just current. Echowire needed a cleaner foundation before it made sense to invite people back into issues, pull requests, and self-hosting.
 
-Most of Fluxer was not rewritten. The v2 refactor was about separating what needed to move, cleaning up infrastructure, and making the codebase easier to run, self-host, and contribute to. Doing that privately made the public repo harder to follow, and I understand why that frustrated people.
+Most of Echowire was not rewritten. The v2 refactor was about separating what needed to move, cleaning up infrastructure, and making the codebase easier to run, self-host, and contribute to. Doing that privately made the public repo harder to follow, and I understand why that frustrated people.
 
 At the same time, we were a small team carrying too much at once: backend, frontend, operations, moderation, mobile, and the v2 refactor. Native screen sharing, audio capture, and platform integration also came with a real learning curve for a mostly solo developer suddenly facing a lot of new technical requirements from a user base that needed more. I'm glad to be close to delivering that when Canary reaches stable.
 
-Fluxer was also dealing with attacks involving CSAM and gore content across public communities. The new safety systems have put us in a much better place, but getting there was emotionally exhausting. I could not in good conscience push half-finished moderation tools, policy thresholds, or infrastructure changes to GitHub while that work was still tangled together.
+Echowire was also dealing with attacks involving CSAM and gore content across public communities. The new safety systems have put us in a much better place, but getting there was emotionally exhausting. I could not in good conscience push half-finished moderation tools, policy thresholds, or infrastructure changes to GitHub while that work was still tangled together.
 
 So we finished the v2 foundation first. With the v2 refactor out, the safety work split out, and a roadmap in place, GitHub can be useful again. Issues, pull requests, self-hosting, and migration work can move in the open.
 
@@ -141,41 +141,41 @@ We're happy to be back there. Seriously, nobody is happier than we are to have t
 
 ### Why is federation taking so long?
 
-We're working on it, and we need your input. Seriously, come talk through the design standard with the Fluxer team and developer community on GitHub and in Fluxer Developers. Federation matters to me and the entire team, and we want to do it right. A lot of questions are still unanswered:
+We're working on it, and we need your input. Seriously, come talk through the design standard with the Echowire team and developer community on GitHub and in Echowire Developers. Federation matters to me and the entire team, and we want to do it right. A lot of questions are still unanswered:
 
-- What happens when a user keeps returning to one Fluxer instance through another instance?
-- How does Fluxer prevent illegal content like CSAM from propagating across instances?
+- What happens when a user keeps returning to one Echowire instance through another instance?
+- How does Echowire prevent illegal content like CSAM from propagating across instances?
 - In DMs, which instance is responsible for moderation, if any?
 - How do users and communities migrate between instances?
-- How should Fluxer handle Plutonium?
+- How should Echowire handle Reverb?
 - Why is Hampus a ghost?
 
 And dozens more.
 
-We'd really like to avoid the email problem, where some instances or clients never support newer standards, by being careful with the design upfront. Some split between instances is inevitable, but Fluxer shouldn't start there through rushed implementation.
+We'd really like to avoid the email problem, where some instances or clients never support newer standards, by being careful with the design upfront. Some split between instances is inevitable, but Echowire shouldn't start there through rushed implementation.
 
-We want Fluxer to be the home for your community for years to come, no matter who hosts it. That means putting in the thought and building slowly.
+We want Echowire to be the home for your community for years to come, no matter who hosts it. That means putting in the thought and building slowly.
 
-### I'm worried about Fluxer disappearing!
+### I'm worried about Echowire disappearing!
 
-Fluxer has a way forward, but we still need the community around it. Costs grow quickly with age and a larger user base, and the best version of Fluxer is built with people using it, testing it, supporting it, and telling us what needs work. Here's how you can help:
+Echowire has a way forward, but we still need the community around it. Costs grow quickly with age and a larger user base, and the best version of Echowire is built with people using it, testing it, supporting it, and telling us what needs work. Here's how you can help:
 
-- Subscribe to [Plutonium](/plutonium). Plutonium supports Fluxer while giving you fun perks. It's the best way to contribute to the hosted instance.
-- [Donate to Fluxer](/donate).
+- Subscribe to [Reverb](/plutonium). Reverb supports Echowire while giving you fun perks. It's the best way to contribute to the hosted instance.
+- [Donate to Echowire](/donate).
 - File bug reports.
-- Talk about feature requests, federation, and other parts of Fluxer in GitHub Discussions and the Fluxer Developers community.
-- Invite your friends to hang out on Fluxer. We love company.
+- Talk about feature requests, federation, and other parts of Echowire in GitHub Discussions and the Echowire Developers community.
+- Invite your friends to hang out on Echowire. We love company.
 
-And thankfully, even if Fluxer were to close its hosted instance in the future, the point is that you can always run an instance on your own hardware. Fluxer is open source, now and forever.
+And thankfully, even if Echowire were to close its hosted instance in the future, the point is that you can always run an instance on your own hardware. Echowire is open source, now and forever.
 
-### Why should my community use Fluxer over other platforms?
+### Why should my community use Echowire over other platforms?
 
 You should use what gives you joy.
 
-For us, that's the promise of being able to own your communications and still connect with others. If your community finds joy on other platforms, use them. But give Fluxer a try. You may find that little spark of magic here.
+For us, that's the promise of being able to own your communications and still connect with others. If your community finds joy on other platforms, use them. But give Echowire a try. You may find that little spark of magic here.
 
 Communication belongs to people, and people create communities. Building so much at once has been a lot, and honestly, I feel like I need a vacation at this point.
 
-More than that, though, we're excited to at long last share everything with the developer community and keep building in the open. That's what we wanted all along: for Fluxer to be a home for open, free communities, no matter who hosts them.
+More than that, though, we're excited to at long last share everything with the developer community and keep building in the open. That's what we wanted all along: for Echowire to be a home for open, free communities, no matter who hosts them.
 
-Thank you all for reading, and let's make 2026 the year of ~~Linux~~ Fluxer.
+Thank you all for reading, and let's make 2026 the year of ~~Linux~~ Echowire.

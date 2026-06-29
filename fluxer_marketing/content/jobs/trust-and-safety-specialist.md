@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Trust & Safety Specialist
 
-Fluxer is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
+Echowire is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
 
 ### What this role is
 
-Trust and safety at Fluxer covers casework, policy, tooling, escalation paths, appeals, pattern recognition, and enough product understanding to notice when a safety problem is also a design problem. The work can be heavy. You will see abusive behavior, urgent reports, and situations where the facts are incomplete. We take that seriously, and we say more about it below. The right person brings steady judgement, clear writing, firm boundaries, and care for the people using Fluxer.
+Trust and safety at Echowire covers casework, policy, tooling, escalation paths, appeals, pattern recognition, and enough product understanding to notice when a safety problem is also a design problem. The work can be heavy. You will see abusive behavior, urgent reports, and situations where the facts are incomplete. We take that seriously, and we say more about it below. The right person brings steady judgement, clear writing, firm boundaries, and care for the people using Echowire.
 
 This role involves regular exposure to distressing material, including illegal content and other exploitative, violent, or hateful things people report to us. We do provide the wellbeing support, rotation, and boundaries that make it sustainable to do well over time, and we would rather tell you now than have you find out in week two.
 

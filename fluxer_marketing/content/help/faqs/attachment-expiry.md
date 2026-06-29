@@ -1,4 +1,4 @@
-Fluxer automatically expires older attachments. Smaller files stay available for longer, while larger files expire sooner. If someone opens a message with a file that is close to expiry, we extend its availability so it remains accessible.
+Echowire automatically expires older attachments. Smaller files stay available for longer, while larger files expire sooner. If someone opens a message with a file that is close to expiry, we extend its availability so it remains accessible.
 
 ## How expiry is decided
 
@@ -24,7 +24,7 @@ If you need a file, download it before it expires. For full account exports, inc
 
 ## Frequently asked questions
 
-### Does Plutonium extend file expiry?
+### Does Reverb extend file expiry?
 
 Not at the moment. The same attachment expiry limits apply to all users.
 
@@ -34,7 +34,7 @@ No. Viewing the message in chat or search is enough.
 
 ### What about Saved Media?
 
-Saved Media lets you keep up to 50 files, or 500 with Plutonium. Saved Media is not subject to attachment expiry.
+Saved Media lets you keep up to 50 files, or 500 with Reverb. Saved Media is not subject to attachment expiry.
 
 ### Can I hide the expiry indicator?
 

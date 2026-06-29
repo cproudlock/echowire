@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Platform Engineer
 
-Fluxer is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
+Echowire is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
 
 ### What this role is
 
-Platform engineers keep Fluxer's production systems reliable, observable, and straightforward to operate. The work covers real-time messaging, voice, media pipelines, queues, storage, deploys, certificates, databases, and the dashboards that help the team understand what is happening.
+Platform engineers keep Echowire's production systems reliable, observable, and straightforward to operate. The work covers real-time messaging, voice, media pipelines, queues, storage, deploys, certificates, databases, and the dashboards that help the team understand what is happening.
 
 The backend services are TypeScript and Rust, the real-time infrastructure is Erlang/OTP, and performance-sensitive parts of the stack tend to be Rust. We expect platform work to include ownership. If you ship a deploy pipeline, the rollback story has to be clear. If an alert pages the team, acknowledge it and then make the system clearer or more reliable.
 

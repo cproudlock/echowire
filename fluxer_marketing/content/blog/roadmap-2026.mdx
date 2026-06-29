@@ -1,13 +1,13 @@
 ---
 title: "Roadmap 2026"
 slug: "roadmap-2026"
-description: "The current 2026 roadmap for Fluxer: canary, mobile, self-hosting, localisation, federation, voice and video, and the backend reliability work behind it."
+description: "The current 2026 roadmap for Echowire: canary, mobile, self-hosting, localisation, federation, voice and video, and the backend reliability work behind it."
 author: "Hampus Kraft"
 published_at: "2026-01-26T12:49:48Z"
 updated_at: "2026-05-24T05:00:00Z"
 feature_image: "/blog/assets/roadmap-2026-feature-image-1280.jpg"
 feature_image_alt: "Roadmap 2026"
-source_url: "https://fluxer.app/blog/roadmap-2026"
+source_url: "https://echowire.org/blog/roadmap-2026"
 tags:
   - "News"
 ---
@@ -18,27 +18,27 @@ tags:
 >
 > Source: The Verge / Stevie Bonifield
 
-Fluxer is still in public beta, but it's grown a lot since January. The hosted instance had to grow quickly after Discord's age-verification announcement. The next stretch is about reliability and keeping the app running: fewer client bugs, self-hosting that's easier to set up, stronger moderation tools, fewer incidents, and then the new features people are waiting for. The hosted service pays for that work and tests it under real traffic, and new work should happen in the open, with proper tools for people running their own instances.
+Echowire is still in public beta, but it's grown a lot since January. The hosted instance had to grow quickly after Discord's age-verification announcement. The next stretch is about reliability and keeping the app running: fewer client bugs, self-hosting that's easier to set up, stronger moderation tools, fewer incidents, and then the new features people are waiting for. The hosted service pays for that work and tests it under real traffic, and new work should happen in the open, with proper tools for people running their own instances.
 
-I've also updated the longer post that explains how Fluxer got here, the architecture, and the reasoning behind it:
+I've also updated the longer post that explains how Echowire got here, the architecture, and the reasoning behind it:
 
-> [How I built Fluxer, a Discord-like chat app](/blog/how-i-built-fluxer-a-discord-like-chat-app)
+> [How I built Echowire, a Discord-like chat app](/blog/how-i-built-fluxer-a-discord-like-chat-app)
 >
-> Fluxer is a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.
+> Echowire is a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.
 >
-> Source: Fluxer Blog / Hampus Kraft
+> Source: Echowire Blog / Hampus Kraft
 
 ## #1: Canary to stable, and native mobile
 
-The canary client is the newest way to use Fluxer. It's past build v0.0.200, compared with v0.0.8 for the original stable desktop client, and includes hundreds of fixes plus big voice and video work: screen sharing with audio, text in voice, better DM calls, a stronger device selector, more mic processing controls, DeepFilterNet3 noise suppression, and LiveKit-backed E2EE for voice and video in testing communities that have it turned on.
+The canary client is the newest way to use Echowire. It's past build v0.0.200, compared with v0.0.8 for the original stable desktop client, and includes hundreds of fixes plus big voice and video work: screen sharing with audio, text in voice, better DM calls, a stronger device selector, more mic processing controls, DeepFilterNet3 noise suppression, and LiveKit-backed E2EE for voice and video in testing communities that have it turned on.
 
-Try it today through the canary desktop build at [canary.fluxer.app/download](https://canary.fluxer.app/download), or in the browser at [web.canary.fluxer.app](https://web.canary.fluxer.app). Canary moves to stable once the last serious bugs are fixed. Voice and video E2EE rolls out more broadly soon, then becomes required as supported clients catch up.
+Try it today through the canary desktop build at [canary.echowire.org/download](https://canary.echowire.org/download), or in the browser at [web.canary.echowire.org](https://web.canary.echowire.org). Canary moves to stable once the last serious bugs are fixed. Voice and video E2EE rolls out more broadly soon, then becomes required as supported clients catch up.
 
 The launch PWA worked in the browser and as an installable app from day one, and it keeps improving while the native app moves through testing.
 
-Native mobile is happening at the same time, built with Flutter. As of 15 June 2026, the iOS app is in a limited TestFlight beta with a small group of Plutonium subscribers, since TestFlight slots are capped, and the Android app is available now as an APK from [the open source repo](https://github.com/fluxerapp/flutter_client). Both mobile apps are early alphas, so expect missing features and bugs while they move towards a public release.
+Native mobile is happening at the same time, built with Flutter. As of 15 June 2026, the iOS app is in a limited TestFlight beta with a small group of Reverb subscribers, since TestFlight slots are capped, and the Android app is available now as an APK from [the open source repo](https://github.com/fluxerapp/flutter_client). Both mobile apps are early alphas, so expect missing features and bugs while they move towards a public release.
 
-Flutter also gives Fluxer a desktop path later. Mobile comes first, but Flutter can become an alternative to Electron for low-end devices.
+Flutter also gives Echowire a desktop path later. Mobile comes first, but Flutter can become an alternative to Electron for low-end devices.
 
 ## #2: Self-hosting and the backend cleanup
 
@@ -46,27 +46,27 @@ Self-hosting work is back in the public repository after the 15 June 2026 sync. 
 
 Docs and operator tooling are now public work; the remaining gaps can be fixed as people try running real instances.
 
-Fluxer.app is much larger than a normal self-hosted instance will ever need to be. It runs the TypeScript API and Worker, the clustered Erlang Gateway, the Rust Media Proxy, NATS, and newer Rust services for users, messages, search, unfurling, and Snowflake IDs. People running their own instances should get the benefit of that work without copying the hosted setup: Fluxer.app stress-tests the hard parts, and instance operators get the simpler shape.
+Echowire.app is much larger than a normal self-hosted instance will ever need to be. It runs the TypeScript API and Worker, the clustered Erlang Gateway, the Rust Media Proxy, NATS, and newer Rust services for users, messages, search, unfurling, and Snowflake IDs. People running their own instances should get the benefit of that work without copying the hosted setup: Echowire.app stress-tests the hard parts, and instance operators get the simpler shape.
 
-Gateway clustering is a recent example. Fluxer started with one Gateway node because the original design was built for a much smaller user base. After the growth spike, that became a reliability problem. I rolled out Erlang Gateway clustering, then split the gateway into specialised tiers for websocket connections, sessions, guilds, presence, calls, and push notifications. A problem in one stateful tier is now contained instead of taking down every connected user, and each tier scales on its own.
+Gateway clustering is a recent example. Echowire started with one Gateway node because the original design was built for a much smaller user base. After the growth spike, that became a reliability problem. I rolled out Erlang Gateway clustering, then split the gateway into specialised tiers for websocket connections, sessions, guilds, presence, calls, and push notifications. A problem in one stateful tier is now contained instead of taking down every connected user, and each tier scales on its own.
 
-> [Scheduled maintenance - Incident details - Fluxer - Status](https://fluxerstatus.com/cmpiwlw5e057vpbi74zh7ohmh)
+> [Scheduled maintenance - Incident details - Echowire - Status](https://fluxerstatus.com/cmpiwlw5e057vpbi74zh7ohmh)
 >
 > Scheduled maintenance window on 24 May 2026 for the Gateway role-split deployment and associated reliability improvements.
 >
-> Source: Fluxer Status
+> Source: Echowire Status
 
 The Rust services are part of the same reliability work. They move hot read paths and ID generation out of the main API where that helps, while the Gateway keeps presence, member lists, and real-time routing in Erlang.
 
 The Electron desktop path starts with custom backends through in-app account switching in the regular client, so you can point it at your own instance without waiting for full federation.
 
-The Operator Pass is planned for when the docs and setup guides are solid. It's a $199 or €199 one-time purchase for self-hosters who want to support the open source work and join the Operators community: a smaller place to get help from other self-hosters and the Fluxer team, share ideas, and make feedback heard before it gets buried on GitHub.
+The Operator Pass is planned for when the docs and setup guides are solid. It's a $199 or €199 one-time purchase for self-hosters who want to support the open source work and join the Operators community: a smaller place to get help from other self-hosters and the Echowire team, share ideas, and make feedback heard before it gets buried on GitHub.
 
-The public repository lagged until 15 June 2026 because the growth spike forced urgent anti-abuse and production work while I kept Fluxer.app stable. The sync separated Fluxer.app-only deployment settings from instance settings other people can use, and moved the remaining operator work into the open.
+The public repository lagged until 15 June 2026 because the growth spike forced urgent anti-abuse and production work while I kept Echowire.app stable. The sync separated Echowire.app-only deployment settings from instance settings other people can use, and moved the remaining operator work into the open.
 
 ## #3: Localisation in the open
 
-Fluxer already supports 34 locales across the app, email templates, marketing site, and similar places:
+Echowire already supports 34 locales across the app, email templates, marketing site, and similar places:
 
 - العربية
 - Български
@@ -103,11 +103,11 @@ Fluxer already supports 34 locales across the app, email templates, marketing si
 - Українська
 - Tiếng Việt
 
-Fluxer shouldn't assume everyone speaks English. It needs to feel usable internationally, whether English is your first language or not.
+Echowire shouldn't assume everyone speaks English. It needs to feel usable internationally, whether English is your first language or not.
 
 Because the app changes quickly and the team is small, the first translation pass is drafted with LLMs. LLM literally means large *language* model, and this is one place the tool fits: it saves humans from starting every locale from a blank page. Native speakers then catch what a model can miss: tone, terminology, awkward phrasing, and cultural details. People have told me the current localisation is already good in many languages, but I still want native speakers involved before treating it as something people can rely on.
 
-Localisation is moving into a self-hosted Weblate instance so the work can happen in the open. To improve an existing locale or add a new one, email [i18n@fluxer.app](mailto:i18n@fluxer.app).
+Localisation is moving into a self-hosted Weblate instance so the work can happen in the open. To improve an existing locale or add a new one, email [i18n@echowire.org](mailto:i18n@echowire.org).
 
 ## #4: Federation and multiple backends
 
@@ -125,13 +125,13 @@ True federation builds on that base later, with OAuth2-based authentication agai
 >
 > Source: TechCrunch / Amanda Silberling
 
-Fluxer's threads and forums should be useful enough that people don't immediately work around them.
+Echowire's threads and forums should be useful enough that people don't immediately work around them.
 
 Forum-style spaces will also have an optional public web mode. When a community chooses to publish something, people can read it without logging in, find it through search engines, archive it, and follow it through RSS and Atom feeds.
 
 > With LLMs, Sellis said, Discord could take a long, meandering conversation and turn it into "something that could be more sharable and syndicated across the web." However, he said that he and his team hadn't "seen a solution that we feel great about yet."
 
-Fluxer disagrees with Discord's starting point here. LLMs shouldn't turn people's "meandering conversations" into web content. If something becomes public, it should be because a person or community chose to publish it.
+Echowire disagrees with Discord's starting point here. LLMs shouldn't turn people's "meandering conversations" into web content. If something becomes public, it should be because a person or community chose to publish it.
 
 This feature uses the web itself: public pages with stable URLs, server-rendered posts, clear titles, search indexing, pages that can be archived, RSS and Atom feeds, and links people can share anywhere. People's posts remain their posts.
 
@@ -139,19 +139,19 @@ Publishing stays opt-in, for communities that benefit from public knowledge: ope
 
 ## #6: Discovery for communities, instances, and apps
 
-Fluxer already has basic in-app community discovery per instance. Once self-hosting and public web publishing become normal, it needs to grow.
+Echowire already has basic in-app community discovery per instance. Once self-hosting and public web publishing become normal, it needs to grow.
 
-Public communities on Fluxer instances should be findable on the web without logging in. The registry is built from pull requests to a public repository, so listings are easy to inspect, review, and update.
+Public communities on Echowire instances should be findable on the web without logging in. The registry is built from pull requests to a public repository, so listings are easy to inspect, review, and update.
 
-The same directory can later include Fluxer bots and apps. If someone builds a moderation bot, bridge, game, tool, or integration, there should be a public place to find it without relying on word of mouth. The official discovery list still gets reviewed, but the list itself stays public and easy to check.
+The same directory can later include Echowire bots and apps. If someone builds a moderation bot, bridge, game, tool, or integration, there should be a public place to find it without relying on word of mouth. The official discovery list still gets reviewed, but the list itself stays public and easy to check.
 
 ## #7: Slash commands, UI kit, and integrations
 
-Fluxer needs first-class bots and integrations: slash commands, modals, components, interactions, and then the improvements people ask for once they start building on it.
+Echowire needs first-class bots and integrations: slash commands, modals, components, interactions, and then the improvements people ask for once they start building on it.
 
 ## #8: Emoji and sticker packs
 
-Many Discord users know the habit of joining communities just to use their emojis and stickers globally. Fluxer skips that: people will be able to create emoji and sticker packs that other users can equip directly on their account. Free users get an allowance too, and paid tiers can offer higher limits.
+Many Discord users know the habit of joining communities just to use their emojis and stickers globally. Echowire skips that: people will be able to create emoji and sticker packs that other users can equip directly on their account. Free users get an allowance too, and paid tiers can offer higher limits.
 
 ## #9: E2EE where it makes sense
 
@@ -161,7 +161,7 @@ Matrix does offer E2EE, but the complexity of the protocol and its client implem
 >
 > Source: Hacker News
 
-Most people want a Discord alternative they can use day to day: fast clients, search, profiles and statuses, custom emoji, roles and permissions, voice and video, and moderation tools. That's where Fluxer's priorities lie. Adding E2EE to text messaging adds real complexity, especially around search, moderation, history, recovery, and multi-device sync.
+Most people want a Discord alternative they can use day to day: fast clients, search, profiles and statuses, custom emoji, roles and permissions, voice and video, and moderation tools. That's where Echowire's priorities lie. Adding E2EE to text messaging adds real complexity, especially around search, moderation, history, recovery, and multi-device sync.
 
 Optional E2EE still belongs in the roadmap for personal notes, calendar data, DMs, and small groups. E2EE for large communities is out of scope.
 
@@ -169,9 +169,9 @@ Voice and video are a better fit technically, and that work already runs in cana
 
 ## #10: Creator payments
 
-Fluxer can let fans pay to unlock roles and access to a creator's exclusive community content. That access can be permanent or time-limited, billed as a one-off purchase or a recurring subscription. Creators can also sell event tickets for time-boxed sessions, where a ticket or temporary role unlocks specific text and voice channels for the duration of the event.
+Echowire can let fans pay to unlock roles and access to a creator's exclusive community content. That access can be permanent or time-limited, billed as a one-off purchase or a recurring subscription. Creators can also sell event tickets for time-boxed sessions, where a ticket or temporary role unlocks specific text and voice channels for the duration of the event.
 
-On Fluxer.app, the model is simple: creators bring the thing people want to support, Fluxer handles the community space and payments around it, and Fluxer.app takes a small, clear fee (for example, 5 to 10%) that helps pay for hosted systems and the people keeping both Fluxer.app and the open source project moving. Patreon has been adding Discord-style community features, and Discord has experimented with Patreon-style payments, but those efforts have been mixed. If this works, it keeps the free hosted tier generous, funds work that also improves the self-hosted app, and means the hosted instance relies less on Plutonium.
+On Echowire.app, the model is simple: creators bring the thing people want to support, Echowire handles the community space and payments around it, and Echowire.app takes a small, clear fee (for example, 5 to 10%) that helps pay for hosted systems and the people keeping both Echowire.app and the open source project moving. Patreon has been adding Discord-style community features, and Discord has experimented with Patreon-style payments, but those efforts have been mixed. If this works, it keeps the free hosted tier generous, funds work that also improves the self-hosted app, and means the hosted instance relies less on Reverb.
 
 > [Patreon is adding a Discord-like chat feature for creators and fans](https://www.theverge.com/2023/9/7/23861171/patreon-community-chats-discord-chatroom-member-profile)
 >
@@ -179,25 +179,25 @@ On Fluxer.app, the model is simple: creators bring the thing people want to supp
 >
 > Source: The Verge / Mia Sato
 
-If you'd like to use Fluxer as a combined Discord + Patreon-style app, and you already have a large audience you'd bring over, email [partners@fluxer.app](mailto:partners@fluxer.app). I'm looking for early creators to test paid community features, and Fluxer can offer a lower fee while the model gets tested.
+If you'd like to use Echowire as a combined Discord + Patreon-style app, and you already have a large audience you'd bring over, email [partners@echowire.org](mailto:partners@echowire.org). I'm looking for early creators to test paid community features, and Echowire can offer a lower fee while the model gets tested.
 
 ## And more!
 
-Polls and scheduled events, profile connections, a theme marketplace, stage channels, activity sharing, streamer mode, DM folders, popping calls out into their own desktop windows, soundboard clips, community templates, public profile URLs, and better tools for instance operators and safety work. Fluxer will keep adding features.
+Polls and scheduled events, profile connections, a theme marketplace, stage channels, activity sharing, streamer mode, DM folders, popping calls out into their own desktop windows, soundboard clips, community templates, public profile URLs, and better tools for instance operators and safety work. Echowire will keep adding features.
 
-GIF search has maintenance work coming up. Fluxer currently relies on Tenor, but Google is shutting down the current Tenor API on 30 June 2026. KLIPY support already exists in the codebase and is the planned replacement. GIFs are proxied through Fluxer either way, so providers don't see your IP address just because you searched for or viewed a GIF through the app.
+GIF search has maintenance work coming up. Echowire currently relies on Tenor, but Google is shutting down the current Tenor API on 30 June 2026. KLIPY support already exists in the codebase and is the planned replacement. GIFs are proxied through Echowire either way, so providers don't see your IP address just because you searched for or viewed a GIF through the app.
 
-You can help shape the roadmap by joining the [Fluxer HQ community](https://fluxer.gg/fluxer-hq), submitting issues in [the GitHub repository](https://github.com/fluxerapp/fluxer), or [emailing me](mailto:hampus@fluxer.app). You can also support Fluxer directly:
+You can help shape the roadmap by joining the [Echowire HQ community](https://fluxer.gg/fluxer-hq), submitting issues in [the GitHub repository](https://github.com/fluxerapp/fluxer), or [emailing me](mailto:hampus@echowire.org). You can also support Echowire directly:
 
 - [Donate any amount](/donate), as an individual or a business.
-- [Purchase Plutonium](/plutonium) on the hosted Fluxer.app instance.
-- Spread the word about Fluxer with friends and on social media.
+- [Purchase Reverb](/plutonium) on the hosted Echowire.app instance.
+- Spread the word about Echowire with friends and on social media.
 
 ## But why?
 
-Why use Fluxer when Discord is free and works well?
+Why use Echowire when Discord is free and works well?
 
-If Discord does what you need, and you're fine relying on a closed, investor-driven app that has reportedly [filed confidential IPO paperwork](https://techcrunch.com/2026/01/07/discords-ipo-could-happen-in-march/), then you may not need Fluxer. Fluxer is for people who want an open, self-hostable alternative.
+If Discord does what you need, and you're fine relying on a closed, investor-driven app that has reportedly [filed confidential IPO paperwork](https://techcrunch.com/2026/01/07/discords-ipo-could-happen-in-march/), then you may not need Echowire. Echowire is for people who want an open, self-hostable alternative.
 
 > [Discord's IPO could happen in March | TechCrunch](https://techcrunch.com/2026/01/07/discords-ipo-could-happen-in-march/)
 >
@@ -205,23 +205,23 @@ If Discord does what you need, and you're fine relying on a closed, investor-dri
 >
 > Source: TechCrunch / Julie Bort
 
-Fluxer is for people who want a different model: free, open source, self-hostable software, with an optional hosted instance run by an independent European company that helps pay for the open source work. You shouldn't have to give up the basics you like just to leave Discord: Fluxer keeps the familiar shape of modern community chat while making the software open and self-hostable.
+Echowire is for people who want a different model: free, open source, self-hostable software, with an optional hosted instance run by an independent European company that helps pay for the open source work. You shouldn't have to give up the basics you like just to leave Discord: Echowire keeps the familiar shape of modern community chat while making the software open and self-hostable.
 
-Fluxer can succeed without Discord getting worse. Discord's network effect is hard to beat head-on, so I'm starting where switching already makes sense: technical users and communities that value control and openness, and want software they can run on their own terms. You don't need to be technical for Fluxer to be yours: many people prefer a European-owned instance that has clearer reasons to treat users well.
+Echowire can succeed without Discord getting worse. Discord's network effect is hard to beat head-on, so I'm starting where switching already makes sense: technical users and communities that value control and openness, and want software they can run on their own terms. You don't need to be technical for Echowire to be yours: many people prefer a European-owned instance that has clearer reasons to treat users well.
 
-Fluxer is free, open source, and self-hostable. The public code should be useful to people who run their own instance, not only to Fluxer.app. No community should have to depend on one company surviving. Fluxer.app should earn money by being a hosted service, then put that money back into hosting, documentation, review time, and development work that self-hosters benefit from too. Plutonium, donations, creator payments, and the optional Operator Pass all fit that model.
+Echowire is free, open source, and self-hostable. The public code should be useful to people who run their own instance, not only to Echowire.app. No community should have to depend on one company surviving. Echowire.app should earn money by being a hosted service, then put that money back into hosting, documentation, review time, and development work that self-hosters benefit from too. Reverb, donations, creator payments, and the optional Operator Pass all fit that model.
 
-If the hosted free tier limits are too tight, you can run your own instance. Fluxer will keep the software free of feature paywalls, licence key checks, upgrade-for-quota gates, and [SSO tax](https://sso.tax/).
+If the hosted free tier limits are too tight, you can run your own instance. Echowire will keep the software free of feature paywalls, licence key checks, upgrade-for-quota gates, and [SSO tax](https://sso.tax/).
 
 ## Closing thoughts
 
-The best ways to help are using Fluxer, buying Plutonium if the hosted instance works for you, donating to support the open source work directly, reporting bugs well, and giving feedback in the community.
+The best ways to help are using Echowire, buying Reverb if the hosted instance works for you, donating to support the open source work directly, reporting bugs well, and giving feedback in the community.
 
-Fluxer should stay independent and bootstrapped, with the hosted instance funding the systems and people needed to keep the open source app moving. Self-hosters should benefit from that work too.
+Echowire should stay independent and bootstrapped, with the hosted instance funding the systems and people needed to keep the open source app moving. Self-hosters should benefit from that work too.
 
-Reach me at [hampus@fluxer.app](mailto:hampus@fluxer.app) if you're a content creator, run an open source project, manage a community of any size, or can help with CDN, trust and safety, or moderation work. Fellow independent, bootstrapped, privacy-first alternatives and press inquiries are welcome too.
+Reach me at [hampus@echowire.org](mailto:hampus@echowire.org) if you're a content creator, run an open source project, manage a community of any size, or can help with CDN, trust and safety, or moderation work. Fellow independent, bootstrapped, privacy-first alternatives and press inquiries are welcome too.
 
-Fluxer should become a real alternative to Discord without losing why it was started.
+Echowire should become a real alternative to Discord without losing why it was started.
 
 See you in the Fluxerverse!
 

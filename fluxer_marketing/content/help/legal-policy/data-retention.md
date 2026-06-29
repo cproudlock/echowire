@@ -15,7 +15,7 @@ A few things are commonly assumed to be kept that we do not actually keep:
 - **Individual messages and attachments.** Delete them in the app. Deleting a message also deletes its attachments.
 - **All your messages in bulk.** Privacy Dashboard > Data Deletion. See [requesting data deletion](/help/data-deletion).
 - **Your whole account.** Settings > Account. See [how to delete or disable your account](/help/delete-account). After a 14-day grace period (during which signing in cancels the deletion), the account is removed.
-- **A specific piece of data.** Email <privacy@fluxer.app> from your registered address.
+- **A specific piece of data.** Email <privacy@echowire.org> from your registered address.
 
 ## What happens when you delete something
 
@@ -47,6 +47,6 @@ Accounts may be scheduled for deletion after two years of inactivity, with advan
 
 ## Your rights
 
-You can export your data, delete your messages, and close your account from the Privacy Dashboard and account settings. Anything you cannot do through the app can be requested at <privacy@fluxer.app> from your registered email.
+You can export your data, delete your messages, and close your account from the Privacy Dashboard and account settings. Anything you cannot do through the app can be requested at <privacy@echowire.org> from your registered email.
 
 If you are in the EEA or UK, the GDPR also gives you rights of access, rectification, erasure, restriction, portability, and objection, as well as rights around automated decisions. California residents have parallel rights under CCPA/CPRA. Both are described in section 10 of the [Privacy Policy](/privacy), along with how to exercise them and how to lodge a complaint with your local supervisory authority.

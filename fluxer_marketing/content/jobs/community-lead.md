@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Community Lead
 
-Fluxer is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
+Echowire is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
 
 ### What this role is
 
-You would keep Fluxer's public voice and community spaces clear, active, and useful. You would talk with people who use the app, share what the team is working on, collect feedback, and help the team understand what people are excited about or frustrated by. Because Fluxer is open source, many of the best conversations happen in public, with people who care enough to read the code, ask hard questions, and suggest changes. Your job is to keep those conversations healthy: friendly, honest, and connected to making the app better.
+You would keep Echowire's public voice and community spaces clear, active, and useful. You would talk with people who use the app, share what the team is working on, collect feedback, and help the team understand what people are excited about or frustrated by. Because Echowire is open source, many of the best conversations happen in public, with people who care enough to read the code, ask hard questions, and suggest changes. Your job is to keep those conversations healthy: friendly, honest, and connected to making the app better.
 
 ### What you would actually be doing
 
@@ -24,7 +24,7 @@ You would keep Fluxer's public voice and community spaces clear, active, and use
 - You understand how online communities work: excitement, frustration, inside jokes, recurring questions, and the speed at which a small issue can become the whole conversation
 - You have run a social or community presence for an app, project, or group of real people
 - You can reply calmly to someone who is upset, someone who is confused, and someone who is both at the same time
-- You are comfortable in chat-based communities such as Fluxer, Discord, Slack, and forums
+- You are comfortable in chat-based communities such as Echowire, Discord, Slack, and forums
 
 ### Other things we would be glad to see
 

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Support Specialist
 
-Fluxer is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
+Echowire is an open-source chat app for text, voice, and communities, built for people who want a chat product that respects their time and data. The company is based in Sweden, and our employees and contractors work remotely across countries. We are a small team, so people are expected to own their work, communicate clearly, and stay close to the users affected by their decisions. The [code is public](https://github.com/fluxerapp/fluxer), so you can read how the product is built before you apply.
 
 ### What this role is
 
@@ -34,7 +34,7 @@ The job goes beyond closing support conversations. We want someone who notices p
 - A background at a chat, social, or developer-facing app
 - Technical instincts: logs, repro steps, screenshots, environment details, and bug reports an engineer can act on
 - A track record of writing help articles people actually find useful
-- Comfort in community spaces like Fluxer, Discord, or forums, wherever people gather to talk about software they care about
+- Comfort in community spaces like Echowire, Discord, or forums, wherever people gather to talk about software they care about
 - Additional languages beyond English
 
 ### Who you would work with

@@ -1,4 +1,4 @@
-> The Fluxer Bug Hunter profile badge is currently only available as a reward for responsible disclosure through our [security bug bounty programme](/security), not for general bug reports submitted via this guide.
+> The Echowire Bug Hunter profile badge is currently only available as a reward for responsible disclosure through our [security bug bounty programme](/security), not for general bug reports submitted via this guide.
 
 Use this guide to put together a clear report so we can reproduce and fix the bug quickly. Screenshots, short screen recordings, and relevant logs or files help us diagnose the issue faster.
 
@@ -28,7 +28,7 @@ Before sending:
 
 ## Submit your report
 
-Email [bugs@fluxer.app](mailto:bugs@fluxer.app) with the completed template. A concise but descriptive subject line helps us triage quickly. If you prefer GitHub, you are welcome to file issues in the [Fluxer GitHub repository](https://github.com/fluxerapp/fluxer).
+Email [bugs@echowire.org](mailto:bugs@echowire.org) with the completed template. A concise but descriptive subject line helps us triage quickly. If you prefer GitHub, you are welcome to file issues in the [Echowire GitHub repository](https://github.com/fluxerapp/fluxer).
 
 ## Security issues
 

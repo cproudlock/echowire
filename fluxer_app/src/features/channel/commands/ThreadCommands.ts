@@ -29,6 +29,8 @@ export interface UpdateThreadParams {
 	locked?: boolean;
 	auto_archive_duration?: 60 | 1440 | 4320 | 10080;
 	invitable?: boolean;
+	// Forum post tags (replacement set, max 5).
+	applied_tags?: Array<string>;
 }
 
 // Create a thread under a text/forum parent channel. Returns the created thread channel.

@@ -462,6 +462,21 @@ export class ChannelOperationsService {
 		}
 		const row = thread.toRow();
 		const {data} = params;
+		// Echowire: editing a forum post's tags — validate against the parent forum's available_tags.
+		let appliedTags = row.applied_tags;
+		if (data.applied_tags !== undefined) {
+			if (data.applied_tags.length > 0) {
+				const parent = thread.parentId ? await this.channelRepository.findUnique(thread.parentId) : null;
+				if (!parent || parent.type !== ChannelTypes.GUILD_FORUM) {
+					throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
+				}
+				const validTagIds = new Set((parent.availableTags ?? []).map((tag) => tag.id));
+				if (!data.applied_tags.every((tagId) => validTagIds.has(tagId))) {
+					throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
+				}
+			}
+			appliedTags = data.applied_tags.length > 0 ? data.applied_tags : null;
+		}
 		const archivedChanged = data.archived !== undefined && data.archived !== row.thread_archived;
 		const updatedRow = {
 			...row,
@@ -471,6 +486,7 @@ export class ChannelOperationsService {
 			thread_auto_archive_duration: data.auto_archive_duration ?? row.thread_auto_archive_duration,
 			thread_invitable: data.invitable ?? row.thread_invitable,
 			thread_archive_timestamp: archivedChanged ? new Date() : row.thread_archive_timestamp,
+			applied_tags: appliedTags,
 		};
 		const channel = await this.channelRepository.upsert(updatedRow);
 		const response = await mapChannelToResponse({

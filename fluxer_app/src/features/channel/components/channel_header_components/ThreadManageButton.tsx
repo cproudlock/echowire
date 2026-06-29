@@ -7,7 +7,9 @@ import {ConfirmModal} from '@app/features/app/components/dialogs/ConfirmModal';
 import Authentication from '@app/features/auth/state/Authentication';
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {ChannelHeaderIcon} from '@app/features/channel/components/channel_header_components/ChannelHeaderIcon';
+import {EditPostTagsModal} from '@app/features/channel/components/modals/EditPostTagsModal';
 import type {Channel} from '@app/features/channel/models/Channel';
+import Channels from '@app/features/channel/state/Channels';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
 import Permission from '@app/features/permissions/state/Permission';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
@@ -17,7 +19,7 @@ import {Popout} from '@app/features/ui/popover/PopoverPopout';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {Trans, useLingui} from '@lingui/react/macro';
 import {msg} from '@lingui/core/macro';
-import {DotsThreeIcon, LockIcon, LockOpenIcon, TrashIcon} from '@phosphor-icons/react';
+import {DotsThreeIcon, LockIcon, LockOpenIcon, TagIcon, TrashIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 
@@ -34,6 +36,7 @@ export const ThreadManageButton = observer(({channel}: {channel: Channel}) => {
 	if (!isOwner && !canManage) {
 		return null;
 	}
+	const parentIsForum = channel.parentId != null && Channels.getChannel(channel.parentId)?.isForum() === true;
 	const locked = channel.threadMetadata?.locked === true;
 	return (
 		<Popout
@@ -52,6 +55,17 @@ export const ThreadManageButton = observer(({channel}: {channel: Channel}) => {
 						boxShadow: 'var(--shadow-high)',
 					}}
 				>
+					{parentIsForum && (
+						<MenuRow
+							onClick={() => {
+								onClose();
+								ModalCommands.push(modal(() => <EditPostTagsModal channel={channel} />));
+							}}
+						>
+							<TagIcon size={16} />
+							<Trans>Edit tags</Trans>
+						</MenuRow>
+					)}
 					{canManage && (
 						<MenuRow
 							onClick={() => {

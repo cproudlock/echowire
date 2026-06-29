@@ -449,6 +449,11 @@ export const ThreadUpdateRequest = z.object({
 		.optional()
 		.describe('Minutes of inactivity before auto-archiving'),
 	invitable: z.boolean().optional().describe('Whether non-moderators can add others to a private thread'),
+	applied_tags: z
+		.array(SnowflakeStringType)
+		.max(5)
+		.optional()
+		.describe('Replacement set of tag IDs for a forum post (max 5)'),
 });
 
 export type ThreadUpdateRequest = z.infer<typeof ThreadUpdateRequest>;

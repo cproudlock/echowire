@@ -9,9 +9,9 @@ type ConfigObject = Record<string, unknown>;
 let cachedConfig: MasterConfig | null = null;
 
 const DEFAULT_PASSKEY_ORIGINS = [
-	'https://fluxer.app',
-	'https://web.fluxer.app',
-	'https://web.canary.fluxer.app',
+	'https://echowire.org',
+	'https://web.echowire.org',
+	'https://web.canary.echowire.org',
 	'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 	'android:apk-key-hash:zRmCKDKo3uCX2GDZISjJx8Rzo3J-Y3Gbp7s7mAaUH28',
 ];
@@ -149,8 +149,8 @@ function defaultConfig(): MasterConfig {
 			sudo_mode_secret: '',
 			connection_initiation_secret: '',
 			passkeys: {
-				rp_name: 'Fluxer',
-				rp_id: 'fluxer.app',
+				rp_name: 'Echowire',
+				rp_id: 'echowire.org',
 				additional_allowed_origins: DEFAULT_PASSKEY_ORIGINS,
 			},
 			vapid: {
@@ -160,11 +160,11 @@ function defaultConfig(): MasterConfig {
 			},
 			bluesky: {
 				enabled: true,
-				client_name: 'Fluxer',
+				client_name: 'Echowire',
 				client_uri: '',
 				logo_uri: '',
-				tos_uri: 'https://fluxer.app/terms',
-				policy_uri: 'https://fluxer.app/privacy',
+				tos_uri: 'https://echowire.org/terms',
+				policy_uri: 'https://echowire.org/privacy',
 				keys: [],
 			},
 		},
@@ -177,7 +177,7 @@ function defaultConfig(): MasterConfig {
 				enabled: false,
 				provider: 'none',
 				from_email: '',
-				from_name: 'Fluxer',
+				from_name: 'Echowire',
 			},
 			sms: {
 				enabled: false,
@@ -260,7 +260,7 @@ function defaultConfig(): MasterConfig {
 		instance: {
 			self_hosted: false,
 			branding: {
-				product_name: 'Fluxer',
+				product_name: 'Echowire',
 			},
 			setup: {
 				configured: false,

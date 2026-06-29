@@ -22,6 +22,7 @@ import {
 	ChatCircleIcon,
 	ClockIcon,
 	FunnelIcon,
+	LockIcon,
 	PlusIcon,
 	PushPinIcon,
 	SortAscendingIcon,
@@ -122,6 +123,9 @@ const ForumPostCard = observer(
 				)}
 				<div style={{display: 'flex', alignItems: 'center', gap: 6, fontSize: 16, fontWeight: 600, color: 'var(--text-normal)'}}>
 					{thread.pinned && <PushPinIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />}
+					{thread.threadMetadata?.locked && (
+						<LockIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />
+					)}
 					{unread && (
 						<span
 							style={{width: 8, height: 8, borderRadius: '50%', background: 'var(--text-normal)', flexShrink: 0}}

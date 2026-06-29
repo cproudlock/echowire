@@ -12,7 +12,7 @@ import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
 import ReadStates from '@app/features/read_state/state/ReadStates';
 import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
-import {ArchiveIcon, ChatCircleIcon, PlusIcon} from '@phosphor-icons/react';
+import {ArchiveIcon, ChatCircleIcon, LockIcon, PlusIcon, PushPinIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 import {useEffect, useState} from 'react';
@@ -152,6 +152,12 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 									/>
 								) : (
 									<ChatCircleIcon size={16} style={{flexShrink: 0, color: 'var(--text-muted)'}} />
+								)}
+								{thread.pinned && (
+									<PushPinIcon size={13} weight="fill" style={{flexShrink: 0, color: 'var(--text-muted)'}} />
+								)}
+								{thread.threadMetadata?.locked && (
+									<LockIcon size={13} weight="fill" style={{flexShrink: 0, color: 'var(--text-muted)'}} />
 								)}
 								<span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1}}>
 									{thread.name ?? 'thread'}

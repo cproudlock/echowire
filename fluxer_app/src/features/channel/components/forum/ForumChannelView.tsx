@@ -4,8 +4,10 @@
 // thread under the GUILD_FORUM channel) with search, tag filter, sort, an Active/Archived toggle,
 // and a New Post button — instead of a message stream.
 
+import {Endpoints} from '@app/features/app/constants/Endpoints';
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import type {Channel} from '@app/features/channel/models/Channel';
+import {http} from '@app/features/platform/transport/RestTransport';
 import {CreateForumPostModal} from '@app/features/channel/components/modals/CreateForumPostModal';
 import Channels from '@app/features/channel/state/Channels';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
@@ -52,6 +54,24 @@ const ForumPostCard = observer(
 		const tagsById = new Map(channel.availableTags.map((tag) => [tag.id, tag]));
 		const resolvedTags = thread.appliedTags.map((id) => tagsById.get(id)).filter((t) => t != null);
 		const unread = ReadStates.hasUnreadOrMentions(thread.id);
+		const [preview, setPreview] = useState<string | null>(null);
+		useEffect(() => {
+			let cancelled = false;
+			// Fetch the post's first message for a snippet (the message just after the thread's id).
+			void http
+				.get<Array<{content?: string}>>(Endpoints.CHANNEL_MESSAGES(thread.id), {
+					query: {after: thread.id, limit: 1},
+				})
+				.then((response) => {
+					if (cancelled) return;
+					const content = response.body?.[0]?.content;
+					setPreview(content ? content.slice(0, 160) : null);
+				})
+				.catch(() => {});
+			return () => {
+				cancelled = true;
+			};
+		}, [thread.id]);
 		return (
 			<button
 				type="button"
@@ -109,6 +129,22 @@ const ForumPostCard = observer(
 					)}
 					{thread.name ?? 'post'}
 				</div>
+				{preview && (
+					<div
+						style={{
+							color: 'var(--text-muted)',
+							fontSize: 13,
+							overflow: 'hidden',
+							textOverflow: 'ellipsis',
+							display: '-webkit-box',
+							WebkitLineClamp: 2,
+							WebkitBoxOrient: 'vertical',
+							wordBreak: 'break-word',
+						}}
+					>
+						{preview}
+					</div>
+				)}
 				<div style={{display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text-muted)', fontSize: 12}}>
 					{author && <span style={{fontWeight: 600}}>{author.displayName}</span>}
 					<span style={{display: 'flex', alignItems: 'center', gap: 4}}>

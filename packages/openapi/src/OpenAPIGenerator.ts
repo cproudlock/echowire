@@ -29,9 +29,9 @@ interface GeneratorSettings {
 function createGeneratorSettings(options: OpenAPIGeneratorOptions): GeneratorSettings {
 	return {
 		basePath: options.basePath,
-		title: options.title ?? 'Fluxer API',
+		title: options.title ?? 'Echowire API',
 		version: options.version ?? '1.0.0',
-		description: options.description ?? 'The Fluxer API',
+		description: options.description ?? 'The Echowire API',
 		serverUrl: options.serverUrl ?? 'https://api.fluxer.app',
 		routeScope: options.routeScope ?? 'public',
 	};
@@ -80,7 +80,7 @@ export class OpenAPIGenerator {
 				version: this.settings.version,
 				description: this.settings.description,
 				contact: {
-					name: 'Fluxer Platform AB',
+					name: 'Proudlock Technology LLC',
 					email: 'support@fluxer.app',
 				},
 				license: {

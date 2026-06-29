@@ -16,7 +16,7 @@ import {
 
 type GenerateTarget = 'admin' | 'public';
 const API_DESCRIPTION =
-	'API for Fluxer, a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.';
+	'API for Echowire, an instant messaging and VoIP chat app built for friends, groups, and communities.';
 function parseArgs(): {
 	validateOnly: boolean;
 	outputPath: string | null;
@@ -65,7 +65,7 @@ function getRouteScope(target: GenerateTarget): OpenAPIRouteScope {
 async function buildTargetSpec(basePath: string, target: GenerateTarget): Promise<WritableOpenAPISpec> {
 	const generator = new OpenAPIGenerator({
 		basePath,
-		title: 'Fluxer API',
+		title: 'Echowire API',
 		version: '1.0.0',
 		description: API_DESCRIPTION,
 		serverUrl: 'https://api.fluxer.app/v1',
@@ -116,7 +116,7 @@ async function main(): Promise<void> {
 		throw new Error('--output requires --target when generating or validating multiple specs.');
 	}
 	const targets: Array<GenerateTarget> = requestedTarget ? [requestedTarget] : ['public', 'admin'];
-	console.log('Fluxer OpenAPI Specification Generator');
+	console.log('Echowire OpenAPI Specification Generator');
 	console.log('======================================');
 	console.log(`Base path: ${basePath}`);
 	console.log(`Targets: ${targets.join(', ')}`);

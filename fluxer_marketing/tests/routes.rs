@@ -1129,7 +1129,7 @@ async fn donation_page_renders_business_tab_and_swish_proxy_rejects_bad_amount()
 async fn product_program_and_press_pages_are_not_placeholders() {
     let app = build_router(test_config());
     for (path, expected) in [
-        ("/plutonium", "Free vs Reverb"),
+        ("/reverb", "Free vs Reverb"),
         ("/partners", "Partner perks"),
         ("/press", "logo-color.svg"),
     ] {
@@ -1144,7 +1144,7 @@ async fn product_program_and_press_pages_are_not_placeholders() {
         assert!(html.contains(expected), "{path} did not contain {expected}");
     }
 
-    let plutonium = render_path(app, "/plutonium").await;
+    let plutonium = render_path(app, "/reverb").await;
     for expected in [
         "<table",
         "--fluxer-premium-inner: #4641D9;",
@@ -1165,7 +1165,7 @@ async fn product_program_and_press_pages_are_not_placeholders() {
     ] {
         assert!(
             plutonium.contains(expected),
-            "/plutonium did not contain {expected}"
+            "/reverb did not contain {expected}"
         );
     }
 }
@@ -1190,7 +1190,7 @@ async fn rendered_pages_keep_no_js_and_accessibility_contracts() {
         "/careers",
         "/partners",
         "/press",
-        "/plutonium",
+        "/reverb",
         "/does-not-exist",
     ];
 

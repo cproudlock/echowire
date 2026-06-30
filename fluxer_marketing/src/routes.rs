@@ -214,7 +214,7 @@ pub fn build_router(config: MarketingConfig) -> Router {
         .route("/donate", get(donate))
         .route("/donate/manage", get(donate_manage))
         .route("/donate/success", get(donate_success))
-        .route("/plutonium", get(plutonium))
+        .route("/reverb", get(plutonium))
         .route("/partners", get(partners))
         .route("/press", get(press))
         .route("/press/download/{asset_id}", get(press_download))

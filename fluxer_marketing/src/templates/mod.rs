@@ -1071,7 +1071,7 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                             }
                             div class="marketing-nav-links hidden items-center gap-4 lg:flex xl:gap-6" {
                                 (nav_link(i18n, ctx, "/download", DOWNLOAD_DOWNLOAD_DESCRIPTOR))
-                                (nav_link(i18n, ctx, "/plutonium", PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR))
+                                (nav_link(i18n, ctx, "/reverb", PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/help", COMPANY_AND_RESOURCES_HELP_LABEL_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/donate", DONATIONS_DONATE_ACTION_DESCRIPTOR))
                             }
@@ -1117,7 +1117,7 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                         div class="flex flex-col gap-6" {
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_PRODUCT_DESCRIPTOR, &[
                                 (ctx.href("/download"), DOWNLOAD_DOWNLOAD_DESCRIPTOR),
-                                (ctx.href("/plutonium"), PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR),
+                                (ctx.href("/reverb"), PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR),
                                 (ctx.href("/partners"), PARTNER_PROGRAM_LABEL_DESCRIPTOR),
                             ]))
                             div {
@@ -1398,7 +1398,7 @@ fn features_section(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 PLATFORM_SUPPORT_DESKTOP_USE_DESKTOP_CLIENT_MOBILE_SOON_DESCRIPTOR,
                 PRODUCT_POSITIONING_SELF_HOSTING_SWITCH_BETWEEN_INSTANCES_DESCRIPTOR,
             ],
-            Some("https://docs.echowire.org/operator/get-started/"),
+            Some("https://github.com/fluxerapp/fluxer/tree/main/deploy/self-hosting"),
         ),
     ];
     html! {
@@ -1980,13 +1980,12 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                     div {
                         h3 class="title mb-4 text-white md:mb-6" { (tr(i18n, ctx, FOOTER_FLUXER_DESCRIPTOR)) }
                         ul class="space-y-3" {
-                            (footer_link(ctx.href("/plutonium"), tr(i18n, ctx, FOOTER_PLUTONIUM_TIER_DESCRIPTOR), link_class))
+                            (footer_link(ctx.href("/reverb"), tr(i18n, ctx, FOOTER_PLUTONIUM_TIER_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/partners"), tr(i18n, ctx, FOOTER_PARTNERS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/download"), tr(i18n, ctx, FOOTER_DOWNLOAD_DESCRIPTOR), link_class))
                             (footer_link("https://github.com/fluxerapp/fluxer".to_owned(), tr(i18n, ctx, FOOTER_SOURCE_CODE_DESCRIPTOR), link_class))
                             (footer_link("https://bsky.app/profile/echowire.org".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/help"), tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR), link_class))
-                            (footer_link("https://fluxerstatus.com".to_owned(), tr(i18n, ctx, FOOTER_STATUS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/press"), tr(i18n, ctx, FOOTER_PRESS_DESCRIPTOR), link_class))
                         }
                     }

@@ -835,7 +835,7 @@ fn partner_perks() -> [(
             PARTNER_PROGRAM_PERKS_FREE_PLUTONIUM_LABEL_DESCRIPTOR,
             PARTNER_PROGRAM_PERKS_FREE_PLUTONIUM_DESCRIPTION_DESCRIPTOR,
             false,
-            Some("/plutonium"),
+            Some("/reverb"),
         ),
         (
             Icon::FluxerPartner,

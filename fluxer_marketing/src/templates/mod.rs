@@ -1073,9 +1073,6 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                                 (nav_link(i18n, ctx, "/download", DOWNLOAD_DOWNLOAD_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/plutonium", PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/help", COMPANY_AND_RESOURCES_HELP_LABEL_DESCRIPTOR))
-                                a class="body-lg text-gray-900/90 transition-colors hover:text-gray-900" href="https://docs.echowire.org" {
-                                    (tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR))
-                                }
                                 (nav_link(i18n, ctx, "/donate", DONATIONS_DONATE_ACTION_DESCRIPTOR))
                             }
                         }
@@ -1128,9 +1125,6 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                                 div class="flex flex-col gap-1" {
                                     a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href=(ctx.href("/help")) {
                                         (tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR))
-                                    }
-                                    a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href="https://docs.echowire.org" {
-                                        (tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR))
                                     }
                                     a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href=(ctx.href("/press")) {
                                         (tr(i18n, ctx, COMPANY_AND_RESOURCES_PRESS_LABEL_DESCRIPTOR))
@@ -1994,7 +1988,6 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                             (footer_link(ctx.href("/help"), tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR), link_class))
                             (footer_link("https://fluxerstatus.com".to_owned(), tr(i18n, ctx, FOOTER_STATUS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/press"), tr(i18n, ctx, FOOTER_PRESS_DESCRIPTOR), link_class))
-                            (footer_link("https://docs.echowire.org".to_owned(), tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR), link_class))
                         }
                     }
                     div {

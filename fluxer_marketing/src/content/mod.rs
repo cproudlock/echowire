@@ -75,118 +75,11 @@ pub struct BlogPost {
     pub body: &'static str,
 }
 
-pub const JOBS: &[JobListing] = &[
-    JobListing {
-        slug: "product-engineer",
-        title: CONTENT_JOBS_PRODUCT_ENGINEER_TITLE_DESCRIPTOR,
-        department: CONTENT_LABEL_ENGINEERING_DESCRIPTOR,
-        location: CONTENT_LABEL_REMOTE_DESCRIPTOR,
-        employment_type: CONTENT_LABEL_FULL_TIME_DESCRIPTOR,
-        description: CONTENT_JOBS_PRODUCT_ENGINEER_DESCRIPTION_DESCRIPTOR,
-        posted_date: "2026-03-01",
-        body: include_str!("../../content/jobs/product-engineer.md"),
-    },
-    JobListing {
-        slug: "platform-engineer",
-        title: CONTENT_JOBS_PLATFORM_ENGINEER_TITLE_DESCRIPTOR,
-        department: CONTENT_LABEL_ENGINEERING_DESCRIPTOR,
-        location: CONTENT_LABEL_REMOTE_DESCRIPTOR,
-        employment_type: CONTENT_LABEL_FULL_TIME_DESCRIPTOR,
-        description: CONTENT_JOBS_PLATFORM_ENGINEER_DESCRIPTION_DESCRIPTOR,
-        posted_date: "2026-03-01",
-        body: include_str!("../../content/jobs/platform-engineer.md"),
-    },
-    JobListing {
-        slug: "community-lead",
-        title: CONTENT_JOBS_COMMUNITY_LEAD_TITLE_DESCRIPTOR,
-        department: CONTENT_LABEL_COMMUNITY_DESCRIPTOR,
-        location: CONTENT_LABEL_REMOTE_DESCRIPTOR,
-        employment_type: CONTENT_LABEL_FULL_TIME_DESCRIPTOR,
-        description: CONTENT_JOBS_COMMUNITY_LEAD_DESCRIPTION_DESCRIPTOR,
-        posted_date: "2026-03-01",
-        body: include_str!("../../content/jobs/community-lead.md"),
-    },
-    JobListing {
-        slug: "support-specialist",
-        title: CONTENT_JOBS_SUPPORT_SPECIALIST_TITLE_DESCRIPTOR,
-        department: CONTENT_LABEL_SUPPORT_DESCRIPTOR,
-        location: CONTENT_LABEL_REMOTE_DESCRIPTOR,
-        employment_type: CONTENT_LABEL_FULL_TIME_DESCRIPTOR,
-        description: CONTENT_JOBS_SUPPORT_SPECIALIST_DESCRIPTION_DESCRIPTOR,
-        posted_date: "2026-05-13",
-        body: include_str!("../../content/jobs/support-specialist.md"),
-    },
-    JobListing {
-        slug: "trust-and-safety-specialist",
-        title: CONTENT_JOBS_TRUST_AND_SAFETY_SPECIALIST_TITLE_DESCRIPTOR,
-        department: CONTENT_LABEL_TRUST_AND_SAFETY_DESCRIPTOR,
-        location: CONTENT_LABEL_REMOTE_DESCRIPTOR,
-        employment_type: CONTENT_LABEL_FULL_TIME_DESCRIPTOR,
-        description: CONTENT_JOBS_TRUST_AND_SAFETY_SPECIALIST_DESCRIPTION_DESCRIPTOR,
-        posted_date: "2026-03-01",
-        body: include_str!("../../content/jobs/trust-and-safety-specialist.md"),
-    },
-    JobListing {
-        slug: "privacy-and-legal-counsel",
-        title: CONTENT_JOBS_PRIVACY_AND_LEGAL_COUNSEL_TITLE_DESCRIPTOR,
-        department: CONTENT_LABEL_LEGAL_DESCRIPTOR,
-        location: CONTENT_LABEL_REMOTE_DESCRIPTOR,
-        employment_type: CONTENT_LABEL_FULL_TIME_DESCRIPTOR,
-        description: CONTENT_JOBS_PRIVACY_AND_LEGAL_COUNSEL_DESCRIPTION_DESCRIPTOR,
-        posted_date: "2026-03-01",
-        body: include_str!("../../content/jobs/privacy-and-legal-counsel.md"),
-    },
-];
+pub const JOBS: &[JobListing] = &[];
 
 pub const BLOG_TAGS: &[&str] = &["News"];
 
-pub const BLOG_POSTS: &[BlogPost] = &[
-    BlogPost {
-        slug: "mobile-clients-and-fluxer-v2",
-        title: BLOG_POST_MOBILE_CLIENTS_AND_FLUXER_V2_TITLE_DESCRIPTOR,
-        description: BLOG_POST_MOBILE_CLIENTS_AND_FLUXER_V2_DESCRIPTION_DESCRIPTOR,
-        author: "Hampus Kraft",
-        published_at: "2026-06-15T12:00:00Z",
-        updated_at: "2026-06-15T12:00:00Z",
-        tags: &["News"],
-        feature_image_path: "/blog/assets/mobile-clients-and-fluxer-v2-feature-image-1280.jpg",
-        feature_image_base_path: "/blog/assets/mobile-clients-and-fluxer-v2-feature-image",
-        feature_image_alt: BLOG_POST_MOBILE_CLIENTS_AND_FLUXER_V2_TITLE_DESCRIPTOR,
-        feature_image_placeholder: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAASACADAREAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAEEAwX/xAAjEAABBAEDBAMAAAAAAAAAAAABAAIDERIEISIFMUGRUsHR/8QAFwEBAQEBAAAAAAAAAAAAAAAAAAMBBf/EABgRAQEAAwAAAAAAAAAAAAAAAAABAhES/9oADAMBAAIRAxEAPwDkBxJoAknwF3Okz51eDvRTqA5fF3op0EXEGjsR4KdDKHUOhlbIysmGxYsKFu5pq6LquvnzbHi/ichiO3b7U7jhGlJ1XXRFrJMWlvJoLBttX6kxxoim1DppXyPIyebNbKkupqMTqbQgEAg//9k=",
-        source_url: "https://echowire.org/blog/mobile-clients-and-fluxer-v2",
-        body: include_str!("../../content/blog/mobile-clients-and-fluxer-v2.mdx"),
-    },
-    BlogPost {
-        slug: "roadmap-2026",
-        title: BLOG_POST_ROADMAP_2026_TITLE_DESCRIPTOR,
-        description: BLOG_POST_ROADMAP_2026_DESCRIPTION_DESCRIPTOR,
-        author: "Hampus Kraft",
-        published_at: "2026-01-26T12:49:48Z",
-        updated_at: "2026-05-20T23:55:00Z",
-        tags: &["News"],
-        feature_image_path: "/blog/assets/roadmap-2026-feature-image-1280.jpg",
-        feature_image_base_path: "/blog/assets/roadmap-2026-feature-image",
-        feature_image_alt: BLOG_POST_ROADMAP_2026_TITLE_DESCRIPTOR,
-        feature_image_placeholder: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAOAA4AAD/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAASACADASIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAAIDAQQF/8QAGRABAQADAQAAAAAAAAAAAAAAAAECAxES/8QAGAEBAAMBAAAAAAAAAAAAAAAAAAECAwX/xAAXEQEAAwAAAAAAAAAAAAAAAAAAAQMT/9oADAMBAAIRAxEAPwDy8Z1vlHDbxSbo6+ih/Jcpxl3RPPb0iwc0NAGSRS0AH//Z",
-        source_url: "https://echowire.org/blog/roadmap-2026",
-        body: include_str!("../../content/blog/roadmap-2026.mdx"),
-    },
-    BlogPost {
-        slug: "how-i-built-fluxer-a-discord-like-chat-app",
-        title: BLOG_POST_HOW_I_BUILT_FLUXER_TITLE_DESCRIPTOR,
-        description: PRODUCT_POSITIONING_INTRO_DESCRIPTOR,
-        author: "Hampus Kraft",
-        published_at: "2026-01-24T14:00:00Z",
-        updated_at: "2026-05-20T23:55:00Z",
-        tags: &["News"],
-        feature_image_path: "/blog/assets/how-i-built-fluxer-cover-1280.jpg",
-        feature_image_base_path: "/blog/assets/how-i-built-fluxer-cover",
-        feature_image_alt: BLOG_POST_HOW_I_BUILT_FLUXER_TITLE_DESCRIPTOR,
-        feature_image_placeholder: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQIAOAA4AAD/2wBDABIMDRANCxIQDhAUExIVGywdGxgYGzYnKSAsQDlEQz85Pj1HUGZXR0thTT0+WXlaYWltcnNyRVV9hnxvhWZwcm7/2wBDARMUFBsXGzQdHTRuST5Jbm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm5ubm7/wAARCAASACADASIAAhEBAxEB/8QAGQAAAgMBAAAAAAAAAAAAAAAAAAMBAgQF/8QAGRABAQEBAQEAAAAAAAAAAAAAAAECAxET/8QAGAEAAgMAAAAAAAAAAAAAAAAAAAECAwX/xAAZEQADAAMAAAAAAAAAAAAAAAAAAQIDITH/2gAMAwEAAhEDEQA/AOPrfin2R0lpNxWlkuk9EUjROxmd+sczT+cp4rpvYhmlKAsvoEL5AEdA/9k=",
-        source_url: "https://echowire.org/blog/how-i-built-fluxer-a-discord-like-chat-app",
-        body: include_str!("../../content/blog/how-i-built-fluxer-a-discord-like-chat-app.mdx"),
-    },
-];
+pub const BLOG_POSTS: &[BlogPost] = &[];
 
 #[derive(Clone, Copy, Debug)]
 pub enum BlogBookmarkAsset {
@@ -379,30 +272,6 @@ pub const HELP_CATEGORIES: &[HelpCategory] = &[
 
 pub const HELP_ARTICLES: &[HelpArticle] = &[
     HelpArticle {
-        slug: "plutonium-promotion-march-2026",
-        aliases: &[
-            "march-2026-plutonium-promotion",
-            "13984954-march-2026-plutonium-promotion",
-        ],
-        title: CONTENT_HELP_ARTICLE_PLUTONIUM_PROMOTION_TITLE_DESCRIPTOR,
-        description: CONTENT_HELP_ARTICLE_PLUTONIUM_PROMOTION_DESCRIPTION_DESCRIPTOR,
-        category_slug: "premium",
-        last_updated: "2026-04-04",
-        body: include_str!("../../content/help/premium/plutonium-promotion-march-2026.md"),
-    },
-    HelpArticle {
-        slug: "visionary",
-        aliases: &[
-            "what-was-fluxer-visionary",
-            "13985047-what-was-fluxer-visionary",
-        ],
-        title: CONTENT_HELP_ARTICLE_VISIONARY_TITLE_DESCRIPTOR,
-        description: CONTENT_HELP_ARTICLE_VISIONARY_DESCRIPTION_DESCRIPTOR,
-        category_slug: "premium",
-        last_updated: "2026-03-30",
-        body: include_str!("../../content/help/premium/visionary.md"),
-    },
-    HelpArticle {
         slug: "attachment-expiry",
         aliases: &[
             "how-attachment-expiry-works",
@@ -508,18 +377,6 @@ pub const HELP_ARTICLES: &[HelpArticle] = &[
         category_slug: "legal-policy",
         last_updated: "2026-03-17",
         body: include_str!("../../content/help/legal-policy/data-retention.md"),
-    },
-    HelpArticle {
-        slug: "dsa-dispute-resolution",
-        aliases: &[
-            "eu-dsa-dispute-resolution-options",
-            "13984923-eu-dsa-dispute-resolution-options",
-        ],
-        title: CONTENT_HELP_ARTICLE_DSA_DISPUTE_RESOLUTION_TITLE_DESCRIPTOR,
-        description: CONTENT_HELP_ARTICLE_DSA_DISPUTE_RESOLUTION_DESCRIPTION_DESCRIPTOR,
-        category_slug: "legal-policy",
-        last_updated: "2026-03-12",
-        body: include_str!("../../content/help/legal-policy/dsa-dispute-resolution.md"),
     },
     HelpArticle {
         slug: "regional-restrictions",

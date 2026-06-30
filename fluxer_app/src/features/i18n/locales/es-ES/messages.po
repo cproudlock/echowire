@@ -1963,7 +1963,7 @@ msgstr "un nombre de host, p. ej., {exampleDomain}"
 #. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:126
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "Hay una actualización de Fluxer para escritorio disponible en Linux. Elige el formato del paquete para este sistema y {productName} lo guardará localmente."
+msgstr "Hay una actualización de Echowire para escritorio disponible en Linux. Elige el formato del paquete para este sistema y {productName} lo guardará localmente."
 
 #. Duration label component for an elapsed call. Shown when the call lasted about a minute.
 #: src/features/channel/components/CallMessage.tsx:35
@@ -14808,7 +14808,7 @@ msgstr "Movimiento fluido a 720p y 30 FPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -19606,7 +19606,7 @@ msgstr "Marcar como leído el canal superior de la bandeja de entrada"
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:372
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:122
 msgid "Markdown"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Channel details bottom sheet label or action (channel type, settings, toast, confirmation, or notification option).
 #: src/features/channel/components/bottomsheets/channel_details_bottom_sheet/ChannelDetailsBottomSheetShared.ts:42

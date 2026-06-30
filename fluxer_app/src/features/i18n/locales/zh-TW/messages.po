@@ -14808,7 +14808,7 @@ msgstr "720p 30 FPS 流暢動作"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -24471,7 +24471,7 @@ msgstr "尊榮徽章"
 #. Developer control label for the premium-expired banner.
 #: src/features/devtools/components/NagbarControls.ts:48
 msgid "Premium expired nagbar"
-msgstr "Plutonium 方案過期通知列"
+msgstr "Reverb 方案過期通知列"
 
 #. Developer control label for the premium grace-period banner.
 #: src/features/devtools/components/NagbarControls.ts:44

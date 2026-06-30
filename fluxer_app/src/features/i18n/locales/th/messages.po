@@ -1963,7 +1963,7 @@ msgstr "ชื่อโฮสต์ เช่น {exampleDomain}"
 #. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:126
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "มีการอัปเดตสำหรับ Fluxer บนระบบปฏิบัติการ Linux เลือกรูปแบบแพ็กเกจสำหรับระบบนี้ แล้ว {productName} จะบันทึกไว้ในเครื่อง"
+msgstr "มีการอัปเดตสำหรับ Echowire บนระบบปฏิบัติการ Linux เลือกรูปแบบแพ็กเกจสำหรับระบบนี้ แล้ว {productName} จะบันทึกไว้ในเครื่อง"
 
 #. Duration label component for an elapsed call. Shown when the call lasted about a minute.
 #: src/features/channel/components/CallMessage.tsx:35
@@ -10249,7 +10249,7 @@ msgstr "ปรับแต่งแบนเนอร์โปรไฟล์ข
 #. Description text in the username section. Preserve {discriminatorLabel}, {premiumProductName}; they are inserted by code. Keep the tone plain and specific.
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:28
 msgid "Customize your tag ({discriminatorLabel}) to your liking with {premiumProductName}"
-msgstr "ปรับแต่ง FluxerTag ของคุณ ({discriminatorLabel}) ได้ตามต้องการด้วย {premiumProductName}"
+msgstr "ปรับแต่ง EchoTag ของคุณ ({discriminatorLabel}) ได้ตามต้องการด้วย {premiumProductName}"
 
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:381
 msgid "Customize your tag or keep it when changing your username"
@@ -14808,7 +14808,7 @@ msgstr "ภาพคมชัด 720p 30 FPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -15514,7 +15514,7 @@ msgstr "รับ {premiumProductName} เพื่อปรับแต่ง�
 #. Description text in the FluxerTag change modal. Preserve {premiumProductName}; it is inserted by code. Keep the tone plain and specific.
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:55
 msgid "Get {premiumProductName} to customize your tag or keep it when changing your username"
-msgstr "รับ {premiumProductName} เพื่อปรับแต่ง FluxerTag ของคุณ หรือเก็บไว้เมื่อเปลี่ยนชื่อผู้ใช้ของคุณ"
+msgstr "รับ {premiumProductName} เพื่อปรับแต่ง EchoTag ของคุณ หรือเก็บไว้เมื่อเปลี่ยนชื่อผู้ใช้ของคุณ"
 
 #. Button in the required-action modal. Requests a new inbound SMS challenge code.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:202
@@ -19197,7 +19197,7 @@ msgstr "ชำระเงินของขวัญ PLN ในภาษาท�
 #. Plutonium subscription checkout panel title for subscribers in Poland with localized PLN pricing.
 #: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:171
 msgid "Localized PLN subscription checkout"
-msgstr "ชำระเงินสำหรับ Plutonium"
+msgstr "ชำระเงินสำหรับ Reverb"
 
 #. Plutonium gift checkout panel title for buyers in Türkiye who selected localized TRY pricing.
 #: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:64

@@ -14808,7 +14808,7 @@ msgstr "Mouvement fluide en 720p 30 IPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -21430,7 +21430,7 @@ msgstr "Mise à jour native prête"
 #. Unicode emoji category label.
 #: src/features/expressions/utils/UnicodeEmojis.ts:25
 msgid "Nature"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:94
@@ -24328,7 +24328,7 @@ msgstr "Veuillez patienter un instant et réessayer de renommer."
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:9
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:178
 msgid "Plutonium"
-msgstr "Plutonium"
+msgstr "Reverb"
 
 #. Country name. EU member state in the illegal-content report country dropdown.
 #: src/features/moderation/components/report/OptionDescriptors.ts:191
@@ -24491,7 +24491,7 @@ msgstr "Bannière d'intégration Premium"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/StateSummaryMenu.tsx:50
 msgid "Premium perks disabled"
-msgstr "Avantages Plutonium désactivés"
+msgstr "Avantages Reverb désactivés"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:149

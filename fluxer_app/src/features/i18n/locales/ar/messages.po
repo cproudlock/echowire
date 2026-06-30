@@ -1963,7 +1963,7 @@ msgstr "اسم مضيف، مثل {exampleDomain}"
 #. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:126
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "يتوفر تحديث لـ Fluxer على نظام التشغيل Linux. اختر تنسيق الحزمة لهذا النظام وسيحفظه {productName} محليًا."
+msgstr "يتوفر تحديث لـ Echowire على نظام التشغيل Linux. اختر تنسيق الحزمة لهذا النظام وسيحفظه {productName} محليًا."
 
 #. Duration label component for an elapsed call. Shown when the call lasted about a minute.
 #: src/features/channel/components/CallMessage.tsx:35
@@ -4822,7 +4822,7 @@ msgstr "تم تفعيل تجاوز ميزة بريميوم من الواجهة �
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/StateSummaryMenu.tsx:46
 msgid "Backend premium perks disabled"
-msgstr "ميزات Plutonium الخلفية معطلة"
+msgstr "ميزات Reverb الخلفية معطلة"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -11440,7 +11440,7 @@ msgstr "تعطيل الرسوم المتحركة والانتقالات. يتم 
 
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx:151
 msgid "Disable backend premium perks"
-msgstr "تعطيل مزايا Plutonium في الواجهة الخلفية"
+msgstr "تعطيل مزايا Reverb في الواجهة الخلفية"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:31
@@ -14417,7 +14417,7 @@ msgstr "تعذّر إلغاء تثبيت الرسالة"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx:40
 msgid "Failed to update premium perk state."
-msgstr "تعذر تحديث حالة ميزة Plutonium."
+msgstr "تعذر تحديث حالة ميزة Reverb."
 
 #. Error toast shown when updating a sticker fails.
 #: src/features/expressions/components/modals/EditGuildStickerModal.tsx:24
@@ -15514,7 +15514,7 @@ msgstr "احصل على {premiumProductName} لتخصيص وسمك"
 #. Description text in the FluxerTag change modal. Preserve {premiumProductName}; it is inserted by code. Keep the tone plain and specific.
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:55
 msgid "Get {premiumProductName} to customize your tag or keep it when changing your username"
-msgstr "احصل على {premiumProductName} لتخصيص FluxerTag الخاص بك أو الاحتفاظ به عند تغيير اسم المستخدم الخاص بك"
+msgstr "احصل على {premiumProductName} لتخصيص EchoTag الخاص بك أو الاحتفاظ به عند تغيير اسم المستخدم الخاص بك"
 
 #. Button in the required-action modal. Requests a new inbound SMS challenge code.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:202
@@ -24491,7 +24491,7 @@ msgstr "شريط التنبيه للانضمام إلى Premium"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/StateSummaryMenu.tsx:50
 msgid "Premium perks disabled"
-msgstr "ميزات Plutonium معطلة"
+msgstr "ميزات Reverb معطلة"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:149

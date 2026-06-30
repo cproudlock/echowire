@@ -4822,7 +4822,7 @@ msgstr "Переопределение премиум-функций бэкен�
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/StateSummaryMenu.tsx:46
 msgid "Backend premium perks disabled"
-msgstr "Преимущества Plutonium для бэкенда отключены"
+msgstr "Преимущества Reverb для бэкенда отключены"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -11440,7 +11440,7 @@ msgstr "Отключить анимацию и переходы. Сейчас у
 
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx:151
 msgid "Disable backend premium perks"
-msgstr "Отключить привилегии Plutonium на сервере"
+msgstr "Отключить привилегии Reverb на сервере"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:31
@@ -14417,7 +14417,7 @@ msgstr "Не удалось открепить сообщение"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx:40
 msgid "Failed to update premium perk state."
-msgstr "Не удалось обновить статус привилегии Plutonium."
+msgstr "Не удалось обновить статус привилегии Reverb."
 
 #. Error toast shown when updating a sticker fails.
 #: src/features/expressions/components/modals/EditGuildStickerModal.tsx:24
@@ -14808,7 +14808,7 @@ msgstr "Плавное движение, 720p 30 кадров/с"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -24491,7 +24491,7 @@ msgstr "Баннер онбординга премиум-подписки"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/StateSummaryMenu.tsx:50
 msgid "Premium perks disabled"
-msgstr "Преимущества Plutonium отключены"
+msgstr "Преимущества Reverb отключены"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:149

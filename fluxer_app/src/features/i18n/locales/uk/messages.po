@@ -14808,7 +14808,7 @@ msgstr "Плавний рух у 720p 30 FPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -24476,7 +24476,7 @@ msgstr "Панель сповіщень про закінчення преміу
 #. Developer control label for the premium grace-period banner.
 #: src/features/devtools/components/NagbarControls.ts:44
 msgid "Premium grace period nagbar"
-msgstr "Банер пільгового періоду Plutonium"
+msgstr "Банер пільгового періоду Reverb"
 
 #. Summary row label for the premium model in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:355
@@ -24491,7 +24491,7 @@ msgstr "Панель сповіщень про преміум-підписку"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/StateSummaryMenu.tsx:50
 msgid "Premium perks disabled"
-msgstr "Переваги Plutonium вимкнено"
+msgstr "Переваги Reverb вимкнено"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:149

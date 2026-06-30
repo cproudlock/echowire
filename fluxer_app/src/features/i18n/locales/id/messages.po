@@ -10562,7 +10562,7 @@ msgstr "Default"
 #: src/features/voice/components/VoiceSettingsMenus.tsx:95
 msgctxt "voice-input-device"
 msgid "Default"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Default speaker or output device option.
 #: src/features/voice/components/VoiceSettingsMenus.tsx:104
@@ -14808,7 +14808,7 @@ msgstr "Gerakan lancar pada 720p 30 FPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -14905,7 +14905,7 @@ msgstr "Mengikuti master • {effectiveValue}%"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:170
 msgid "Font"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/TypographyTab.tsx:344
 msgid "Font weights"
@@ -24328,7 +24328,7 @@ msgstr "Harap tunggu sebentar dan coba ganti nama lagi."
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:9
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:178
 msgid "Plutonium"
-msgstr "Plutonium"
+msgstr "Reverb"
 
 #. Country name. EU member state in the illegal-content report country dropdown.
 #: src/features/moderation/components/report/OptionDescriptors.ts:191

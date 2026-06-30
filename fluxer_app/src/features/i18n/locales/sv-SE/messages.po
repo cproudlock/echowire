@@ -280,7 +280,7 @@ msgstr "{backgroundCount} av {maxBackgroundImages} anpassade bakgrunder"
 #. Plutonium gift checkout guidance for Poland. Explains that BLIK works for gifts but not for recurring subscriptions.
 #: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:53
 msgid "{blikPaymentMethod} can be used for one-time PLN gift payments, even though it does not support subscriptions in {paymentProviderName} checkout."
-msgstr "{blikPaymentMethod} kan användas för engångsbetalningar av Plutonium-gåvor i PLN, även om det inte stöder prenumerationer i {paymentProviderName}-kassan."
+msgstr "{blikPaymentMethod} kan användas för engångsbetalningar av Reverb-gåvor i PLN, även om det inte stöder prenumerationer i {paymentProviderName}-kassan."
 
 #. Plutonium subscription checkout guidance for Poland. Clarifies that BLIK is not available for recurring subscriptions.
 #: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:181
@@ -14808,7 +14808,7 @@ msgstr "Flytande rörelse vid 720p 30 FPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -24328,7 +24328,7 @@ msgstr "Vänta en stund och försök byta namn igen."
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:9
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:178
 msgid "Plutonium"
-msgstr "Plutonium"
+msgstr "Reverb"
 
 #. Country name. EU member state in the illegal-content report country dropdown.
 #: src/features/moderation/components/report/OptionDescriptors.ts:191
@@ -24471,12 +24471,12 @@ msgstr "Premium-märke"
 #. Developer control label for the premium-expired banner.
 #: src/features/devtools/components/NagbarControls.ts:48
 msgid "Premium expired nagbar"
-msgstr "Plutonium-prenumerationen har gått ut"
+msgstr "Reverb-prenumerationen har gått ut"
 
 #. Developer control label for the premium grace-period banner.
 #: src/features/devtools/components/NagbarControls.ts:44
 msgid "Premium grace period nagbar"
-msgstr "Plutonium-nådeperiodens meddelandefält"
+msgstr "Reverb-nådeperiodens meddelandefält"
 
 #. Summary row label for the premium model in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:355

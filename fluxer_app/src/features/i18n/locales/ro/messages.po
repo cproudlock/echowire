@@ -1963,7 +1963,7 @@ msgstr "un nume de gazdă, de ex. {exampleDomain}"
 #. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:126
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "Este disponibilă o actualizare pentru Fluxer pe sistemul Linux. Alegeți formatul pachetului pentru acest sistem, iar {productName} îl va salva local."
+msgstr "Este disponibilă o actualizare pentru Echowire pe sistemul Linux. Alegeți formatul pachetului pentru acest sistem, iar {productName} îl va salva local."
 
 #. Duration label component for an elapsed call. Shown when the call lasted about a minute.
 #: src/features/channel/components/CallMessage.tsx:35
@@ -14808,7 +14808,7 @@ msgstr "Mișcare fluidă la 720p 30 FPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Fluxer"
+msgstr "Echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -30198,7 +30198,7 @@ msgstr "A apărut o eroare la încărcarea membrilor. Încearcă din nou mai tâ
 #. Body of the generic fallback error modal shown when canceling a scheduled Plutonium billing cycle change fails.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:89
 msgid "Something went wrong while canceling your pending billing change. Please try again in a moment."
-msgstr "A apărut o eroare la anularea modificării programate a ciclului de facturare Plutonium. Te rugăm să încerci din nou mai târziu."
+msgstr "A apărut o eroare la anularea modificării programate a ciclului de facturare Reverb. Te rugăm să încerci din nou mai târziu."
 
 #. Body of the generic fallback error modal shown when cancelling a Plutonium subscription fails.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:28

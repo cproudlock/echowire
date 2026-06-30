@@ -64,7 +64,6 @@ const LANE_CONFIG = {
 		consumerName: 'workers_batch',
 		tasks: [
 			'archiveInactiveThreads',
-			'enqueueGifFeaturedCategoriesRefresh',
 			'expireAttachments',
 			'indexChannelMessages',
 			'indexGuildMembers',
@@ -75,7 +74,6 @@ const LANE_CONFIG = {
 			'processPendingBulkMessageDeletions',
 			'processPremiumStateReconciliationQueue',
 			'prunePostgresKvTtl',
-			'refreshGifFeaturedCategories',
 			'refreshSearchIndex',
 			'syncDiscoveryIndex',
 			'syncDisposableEmailDomains',

@@ -179,7 +179,7 @@ crate::marketing_message!(
 crate::marketing_message!(
     pub const CONTENT_POLICIES_COMPANY_INFORMATION_DESCRIPTION_DESCRIPTOR = {
         key: "content.policies.company_information.description",
-        message: "Legal details for {product_name} Platform AB, including how we make money and how to contact us.",
+        message: "Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us.",
         comment: "Policy page summary for company information. Keep company name and legal framing precise. Preserve placeholders exactly.",
     };
 );

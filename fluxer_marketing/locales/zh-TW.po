@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-06-16 00:00+0000\n"
-"PO-Revision-Date: 2026-06-16 00:00+0000\n"
+"POT-Creation-Date: 2026-06-29 00:00+0000\n"
+"PO-Revision-Date: 2026-06-29 00:00+0000\n"
 "Language: zh-TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -861,7 +861,7 @@ msgstr "政策變更紀錄"
 #: fluxer_marketing/generated:content.policies.company_information.description
 msgctxt "content.policies.company_information.description"
 msgid ""
-"Legal details for {product_name} Platform AB, including how we make money and how to contact us."
+"Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
 msgstr "{product_name} Platform AB 的法律資訊，包括我們的營收方式和聯絡方式。"
 
 #. Policy page title for legal company details. Translate as formal company information.
@@ -1508,7 +1508,8 @@ msgstr "{product_name}"
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.fluxer_platform_ab_swedish_limited
 msgctxt "footer.fluxer_platform_ab_swedish_limited"
-msgid "© {product_name} Platform AB (Swedish limited liability company: 559537-3993)"
+msgid ""
+"© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
 msgstr "© {product_name} Platform AB (瑞典有限責任公司：559537-3993)"
 
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.

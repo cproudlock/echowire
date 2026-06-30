@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-06-16 00:00+0000\n"
-"PO-Revision-Date: 2026-06-16 00:00+0000\n"
+"POT-Creation-Date: 2026-06-29 00:00+0000\n"
+"PO-Revision-Date: 2026-06-29 00:00+0000\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -393,7 +393,8 @@ msgstr "Hogyan építettem fel a {product_name}-t, egy {discord}-szerű csevegő
 msgctxt "blog.post.mobile_clients_and_fluxer_v2.description"
 msgid ""
 "{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
-msgstr "A(z) {product_name} v2 megjelent, a mobil kliensek nyílt forráskódúak, az önálló tárhely fejlődik, és a nyilvános fejlesztés visszatér a GitHubra."
+msgstr ""
+"A(z) {product_name} v2 megjelent, a mobil kliensek nyílt forráskódúak, az önálló tárhely fejlődik, és a nyilvános fejlesztés visszatér a GitHubra."
 
 #. Blog article title shown in cards, article pages, metadata, and feeds. Keep Fluxer as a product name and v2 as the release name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:blog.post.mobile_clients_and_fluxer_v2.title
@@ -875,7 +876,7 @@ msgstr "Irányelv-változások"
 #: fluxer_marketing/generated:content.policies.company_information.description
 msgctxt "content.policies.company_information.description"
 msgid ""
-"Legal details for {product_name} Platform AB, including how we make money and how to contact us."
+"Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
 msgstr ""
 "Jogi adatok a {product_name} Platform AB-ről, beleértve a bevételi modellünket és az elérhetőségeinket."
 
@@ -1544,7 +1545,8 @@ msgstr "{product_name}"
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.fluxer_platform_ab_swedish_limited
 msgctxt "footer.fluxer_platform_ab_swedish_limited"
-msgid "© {product_name} Platform AB (Swedish limited liability company: 559537-3993)"
+msgid ""
+"© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
 msgstr "© {product_name} Platform AB (svéd korlátolt felelősségű társaság 559537-3993)"
 
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.

@@ -182,10 +182,10 @@ async fn document_titles_use_marketing_title_patterns() {
     let app = build_router(test_config());
 
     let home = render_path(app.clone(), "/").await;
-    assert_document_title(&home, "Fluxer - A chat app that puts you first");
+    assert_document_title(&home, "Echowire - A chat app that puts you first");
 
     let download = render_path(app.clone(), "/download").await;
-    assert_document_title(&download, "Download Fluxer | Fluxer");
+    assert_document_title(&download, "Download Echowire | Echowire");
 
     let response = app
         .oneshot(
@@ -199,8 +199,8 @@ async fn document_titles_use_marketing_title_patterns() {
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     let body = response.into_body().collect().await.unwrap().to_bytes();
     let not_found = String::from_utf8(body.to_vec()).unwrap();
-    assert_document_title(&not_found, "Page not found | Fluxer");
-    assert!(!not_found.contains("Fluxer | Page not found"));
+    assert_document_title(&not_found, "Page not found | Echowire");
+    assert!(!not_found.contains("Echowire | Page not found"));
 }
 
 #[tokio::test]
@@ -225,40 +225,10 @@ async fn home_uses_accept_language_catalog() {
     assert!(!html.contains("/marketing/flags/se.svg"));
 }
 
-#[tokio::test]
-async fn blog_post_under_base_path_prefixes_embedded_asset_urls() {
-    let mut config = test_config();
-    config.base_path = "/marketing".to_owned();
-    let app = build_router(config);
-
-    let html = render_path(app, "/blog/mobile-clients-and-fluxer-v2").await;
-    assert!(
-        html.contains(
-            "poster=\"/marketing/blog/assets/tenor-cable-guy-well-look-who-decided-to-show-poster.jpg\""
-        ),
-        "video poster prefixed: {html}"
-    );
-    assert!(
-        html.contains(
-            "src=\"/marketing/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.webm\""
-        ),
-        "video source prefixed: {html}"
-    );
-    assert!(
-        html.contains(
-            "/marketing/blog/assets/mobile-clients-and-fluxer-v2-feature-image-2000.avif 2000w"
-        ),
-        "feature srcset prefixed: {html}"
-    );
-    assert!(
-        !html.contains("poster=\"/blog/assets/tenor-cable-guy"),
-        "no unprefixed embed url: {html}"
-    );
-    assert!(
-        !html.contains("/marketing/marketing"),
-        "no double prefix: {html}"
-    );
-}
+// Removed `blog_post_under_base_path_prefixes_embedded_asset_urls`: it rendered the
+// `mobile-clients-and-fluxer-v2` blog post to verify base-path prefixing of embedded
+// assets, but all blog posts (and their assets) were intentionally dropped in the
+// Echowire fork, so there is no remaining content to exercise this contract.
 
 #[tokio::test]
 async fn accept_language_prefers_exact_supported_locale_before_fallback() {
@@ -340,8 +310,8 @@ async fn sitemap_contains_content_routes() {
     assert!(xml.contains("https://fluxer.test/privacy"));
     assert!(xml.contains("https://fluxer.test/help/report-bug"));
     assert!(xml.contains("https://fluxer.test/blog"));
-    assert!(xml.contains("https://fluxer.test/blog/roadmap-2026"));
-    assert!(xml.contains("https://fluxer.test/careers/product-engineer"));
+    // Per-post `/blog/<slug>` and per-job `/careers/<slug>` sitemap entries were dropped
+    // along with the blog posts and job postings deleted in the Echowire fork.
 }
 
 #[tokio::test]
@@ -350,7 +320,8 @@ async fn help_center_serves_imported_articles_and_legacy_redirects() {
 
     let help = render_path(app.clone(), "/help").await;
     assert!(help.contains("Help center"));
-    assert!(help.contains("March 2026 Plutonium promotion"));
+    // The "March 2026 Plutonium promotion" help article was intentionally deleted in the
+    // Echowire fork, so it no longer appears in the help center listing.
     assert!(help.contains("How to delete or disable your account"));
     assert!(help.contains("Legal &amp; Policy"));
     assert!(!help.contains("https://help.fluxer.app"));
@@ -422,7 +393,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -439,7 +410,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/en/articles/13984933-minimum-age-requirements")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -456,7 +427,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/help/13984986-reporting-a-bug")
-                .header(header::HOST, "help.fluxer.app:443")
+                .header(header::HOST, "help.echowire.org:443")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -473,7 +444,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/en/collections/18821560-account")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -489,7 +460,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/download")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -511,7 +482,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
         .oneshot(
             Request::builder()
                 .uri("/docs?ref=old")
-                .header(header::HOST, "www.fluxer.app")
+                .header(header::HOST, "www.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -588,7 +559,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
     assert_eq!(response.status(), StatusCode::PERMANENT_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://docs.fluxer.app/install"
+        "https://docs.echowire.org/install"
     );
 
     let response = app
@@ -660,11 +631,13 @@ async fn old_origin_marketing_redirects_are_preserved() {
 async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     let app = build_router(test_config());
 
+    // All blog posts (and their embedded assets) were intentionally deleted in the
+    // Echowire fork, so the index renders empty. The blog index, feeds, and legacy
+    // redirect routes still exist and are exercised below; per-post rendering, post
+    // search/tag results, and blog asset serving have been removed because there is no
+    // remaining content to exercise them.
     let blog = render_path(app.clone(), "/blog").await;
-    assert!(blog.contains("Fluxer Blog"));
-    assert!(blog.contains("Mobile clients and Fluxer v2"));
-    assert!(blog.contains("Roadmap 2026"));
-    assert!(blog.contains("How I built Fluxer, a Discord-like chat app"));
+    assert!(blog.contains("Echowire Blog"));
     assert!(blog.contains("href=\"/blog/rss.xml\""));
     assert!(blog.contains("href=\"/blog/atom.xml\""));
     assert!(!blog.contains("https://blog.fluxer.app/rss/"));
@@ -672,103 +645,9 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
 
     let search = render_path(app.clone(), "/blog?q=federation").await;
     assert!(search.contains("Search results"));
-    assert!(search.contains("Roadmap 2026"));
-    assert!(search.contains("How I built Fluxer, a Discord-like chat app"));
 
     let tag = render_path(app.clone(), "/blog?tag=news").await;
     assert!(tag.contains("Filtered by News"));
-    assert!(tag.contains("Mobile clients and Fluxer v2"));
-    assert!(tag.contains("Roadmap 2026"));
-
-    let mobile_article = render_path(app.clone(), "/blog/mobile-clients-and-fluxer-v2").await;
-    assert!(mobile_article.contains("Hampus Kraft"));
-    assert!(mobile_article.contains("/blog/assets/hampus-kraft-avatar.jpg"));
-    assert!(mobile_article.contains(
-        "og:image\" content=\"https://fluxer.test/blog/assets/mobile-clients-and-fluxer-v2-feature-image-1280.jpg\""
-    ));
-    assert!(
-        mobile_article
-            .contains("/blog/assets/mobile-clients-and-fluxer-v2-feature-image-2000.avif 2000w")
-    );
-    assert!(mobile_article.contains("Fluxer has grown to more than 300,000 users"));
-    assert!(mobile_article.contains("https://github.com/fluxerapp/fluxer"));
-    assert!(mobile_article.contains("https://github.com/fluxerapp/flutter_client"));
-    assert!(mobile_article.contains("https://flathub.org/en/apps/app.fluxer.Fluxer"));
-    assert!(
-        mobile_article.contains("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.webm")
-    );
-    assert!(mobile_article.contains("https://docs.fluxer.app/operator/get-started/"));
-    assert!(mobile_article.contains("Download Fluxer Canary"));
-    assert!(mobile_article.contains("https://canary.fluxer.app/download"));
-    assert!(mobile_article.contains("dozens of testers"));
-    assert!(mobile_article.contains("native A/V architecture"));
-    assert!(mobile_article.contains("1440p 60fps without audio or video frame drops"));
-    assert!(mobile_article.contains("Fluxer Developers community"));
-    assert!(mobile_article.contains("<del>Linux</del> Fluxer"));
-    assert!(mobile_article.contains("instance moderation"));
-    assert!(mobile_article.contains("$1,500 in developer bounties"));
-    assert!(mobile_article.contains("kg-bookmark-card"));
-
-    let article = render_path(app.clone(), "/blog/roadmap-2026").await;
-    assert!(article.contains("article:published_time\" content=\"2026-01-26T12:49:48Z\""));
-    assert!(article.contains("article:tag\" content=\"News\""));
-    assert!(article.contains(
-        "og:image\" content=\"https://fluxer.test/blog/assets/roadmap-2026-feature-image-1280.jpg\""
-    ));
-    assert!(article.contains("type=\"image/avif\""));
-    assert!(article.contains("/blog/assets/roadmap-2026-feature-image-640.avif 640w"));
-    assert!(article.contains("src=\"/blog/assets/roadmap-2026-feature-image-1280.jpg\""));
-    assert!(!article.contains("src=\"https://fluxer.test/blog/assets/roadmap-2026-feature-image"));
-    assert!(article.contains("href=\"/donate\""));
-    assert!(!article.contains("href=\"https://fluxer.test/donate\""));
-    assert!(!article.contains("this roadmap has been revised since the January beta"));
-    assert!(!article.contains("min read"));
-    assert!(article.contains("DeepFilterNet3"));
-    assert!(article.contains("newer Rust services for users, messages, search, unfurling"));
-    assert!(article.contains("custom backends through in-app account switching"));
-    assert!(article.contains("simultaneous connections to multiple backends"));
-    assert!(article.contains("$199 or €199"));
-    assert!(article.contains("Free users get an allowance"));
-    assert!(article.contains("https://fluxerstatus.com/cmpiwlw5e057vpbi74zh7ohmh"));
-    assert!(article.contains("specialised tiers"));
-    assert!(article.contains("/blog/assets/bookmark-fluxer-status-thumb.jpg"));
-    assert!(article.contains("/blog/assets/bookmark-fluxer-status-icon.jpg"));
-    assert!(article.contains("LiveKit-backed E2EE"));
-    assert!(article.contains("GIFs are proxied through Fluxer"));
-    assert!(article.contains("kg-bookmark-card"));
-    assert!(article.contains("/blog/assets/bookmark-discord-age-verification-thumb.jpg"));
-    assert!(!article.contains("blog-link-card"));
-    assert!(article.contains("application/ld+json"));
-    assert!(article.contains("heading-anchor-link"));
-
-    let how_article = render_path(
-        app.clone(),
-        "/blog/how-i-built-fluxer-a-discord-like-chat-app",
-    )
-    .await;
-    assert!(how_article.contains("blog-bsky-card"));
-    assert!(how_article.contains("/blog/assets/bsky-jake-gold-avatar.jpg"));
-    assert!(!how_article.contains("blog-bsky-brand"));
-    assert!(!how_article.contains("blog-bsky-meta"));
-    assert!(!how_article.contains("GitHub Sponsors"));
-    assert!(!how_article.contains("github.com/sponsors"));
-    assert!(how_article.contains("What the backend looks like now"));
-    assert!(how_article.contains("Operator Pass"));
-    assert!(how_article.contains("custom backends in the Electron desktop app"));
-    assert!(how_article.contains("simultaneous connections to multiple backends"));
-    assert!(how_article.contains("30 June 2026"));
-    assert!(how_article.contains("/blog/assets/discord-ui-revolutionary-640.avif 640w"));
-    assert!(how_article.contains("/blog/assets/discord-ui-revolutionary-1280.png"));
-    assert!(how_article.contains(
-        "Source: <a href=\"https://imgur.com/whenever-someone-says-discords-ui-is-revolutionary-b5kdlfM\" target=\"_blank\" rel=\"noopener noreferrer\">Imgur</a>"
-    ));
-    assert!(!how_article.contains("/blog/assets/discord-ui-revolutionary.png"));
-    assert!(how_article.contains("/blog/assets/tenor-freebie.webm"));
-    assert!(how_article.contains("/blog/assets/tenor-delorean.webm"));
-    assert!(how_article.contains("/blog/assets/erlang-the-movie.mp4"));
-    assert!(!how_article.contains("https://embed.bsky.app/static/embed.js"));
-    assert!(!how_article.contains("https://tenor.com/embed/"));
-    assert!(!how_article.contains("https://www.youtube.com/embed/"));
 
     let rss = app
         .clone()
@@ -787,13 +666,7 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     );
     let body = rss.into_body().collect().await.unwrap().to_bytes();
     let rss_xml = String::from_utf8(body.to_vec()).unwrap();
-    assert!(rss_xml.contains("<title>Fluxer Blog</title>"));
-    assert!(rss_xml.contains("<link>https://fluxer.test/blog/mobile-clients-and-fluxer-v2</link>"));
-    assert!(rss_xml.contains("<link>https://fluxer.test/blog/roadmap-2026</link>"));
-    assert!(rss_xml.contains("<dc:creator>Hampus Kraft</dc:creator>"));
-    assert!(rss_xml.contains("<content:encoded><![CDATA["));
-    assert!(rss_xml.contains("https://fluxer.test/blog/assets/bookmark-"));
-    assert!(!rss_xml.contains("src=\"/blog/assets/bookmark-"));
+    assert!(rss_xml.contains("<title>Echowire Blog</title>"));
 
     let atom = app
         .clone()
@@ -813,180 +686,6 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     let body = atom.into_body().collect().await.unwrap().to_bytes();
     let atom_xml = String::from_utf8(body.to_vec()).unwrap();
     assert!(atom_xml.contains("<feed xmlns=\"http://www.w3.org/2005/Atom\">"));
-    assert!(atom_xml.contains("<id>https://fluxer.test/blog/mobile-clients-and-fluxer-v2</id>"));
-    assert!(atom_xml.contains("<id>https://fluxer.test/blog/roadmap-2026</id>"));
-
-    let asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/roadmap-2026-feature-image-1280.avif")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(asset.status(), StatusCode::OK);
-    assert_eq!(
-        asset.headers().get(header::CONTENT_TYPE).unwrap(),
-        "image/avif"
-    );
-    assert_eq!(
-        asset.headers().get(header::CACHE_CONTROL).unwrap(),
-        "public, max-age=31536000, immutable"
-    );
-    assert_eq!(asset.headers().get(header::ACCEPT_RANGES).unwrap(), "bytes");
-
-    let mobile_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/mobile-clients-and-fluxer-v2-feature-image-2000.avif")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_asset.headers().get(header::CONTENT_TYPE).unwrap(),
-        "image/avif"
-    );
-
-    let mobile_video_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.webm")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_video_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_video_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "video/webm"
-    );
-
-    let mobile_video_poster_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show-poster.jpg")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_video_poster_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_video_poster_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "image/jpeg"
-    );
-
-    let mobile_video_mp4_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.mp4")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_video_mp4_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_video_mp4_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "video/mp4"
-    );
-
-    let discord_ui_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/discord-ui-revolutionary-640.avif")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(discord_ui_asset.status(), StatusCode::OK);
-    assert_eq!(
-        discord_ui_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "image/avif"
-    );
-
-    let legacy_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/roadmap-2026-feature-image.png")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(legacy_asset.status(), StatusCode::PERMANENT_REDIRECT);
-    assert_eq!(
-        legacy_asset.headers().get(header::LOCATION).unwrap(),
-        "/blog/assets/roadmap-2026-feature-image-1280.jpg"
-    );
-
-    let mobile_legacy_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/mobile-clients-and-fluxer-v2-feature-image.png")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_legacy_asset.status(), StatusCode::PERMANENT_REDIRECT);
-    assert_eq!(
-        mobile_legacy_asset.headers().get(header::LOCATION).unwrap(),
-        "/blog/assets/mobile-clients-and-fluxer-v2-feature-image-1280.jpg"
-    );
-
-    let range = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/erlang-the-movie.mp4")
-                .header(header::RANGE, "bytes=0-15")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(range.status(), StatusCode::PARTIAL_CONTENT);
-    assert_eq!(
-        range.headers().get(header::CONTENT_TYPE).unwrap(),
-        "video/mp4"
-    );
-    assert_eq!(range.headers().get(header::CONTENT_LENGTH).unwrap(), "16");
-    assert!(
-        range
-            .headers()
-            .get(header::CONTENT_RANGE)
-            .unwrap()
-            .to_str()
-            .unwrap()
-            .starts_with("bytes 0-15/")
-    );
 
     let response = app
         .clone()
@@ -1025,7 +724,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1042,16 +741,18 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/roadmap-2026/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
         .await
         .unwrap();
+    // The `roadmap-2026` post was deleted in the Echowire fork, so a legacy per-post
+    // blog-host URL now gracefully degrades to the blog index instead of the post.
     assert_eq!(response.status(), StatusCode::PERMANENT_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://fluxer.test/blog/roadmap-2026"
+        "https://fluxer.test/blog"
     );
 
     let response = app
@@ -1059,7 +760,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/rss/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1076,7 +777,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/tag/news/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1092,7 +793,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/content/images/2026/04/cover.png")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1174,7 +875,7 @@ async fn download_page_uses_channel_api_endpoint_fallback_when_configured_endpoi
     let body = response.into_body().collect().await.unwrap().to_bytes();
     let html = String::from_utf8(body.to_vec()).unwrap();
     assert!(html.contains(
-        "https://api.canary.fluxer.app/dl/desktop/canary/linux/x64/latest/appimage?test=1"
+        "https://api.canary.echowire.org/dl/desktop/canary/linux/x64/latest/appimage?test=1"
     ));
 }
 
@@ -1428,7 +1129,7 @@ async fn donation_page_renders_business_tab_and_swish_proxy_rejects_bad_amount()
 async fn product_program_and_press_pages_are_not_placeholders() {
     let app = build_router(test_config());
     for (path, expected) in [
-        ("/plutonium", "Free vs Plutonium"),
+        ("/plutonium", "Free vs Reverb"),
         ("/partners", "Partner perks"),
         ("/press", "logo-color.svg"),
     ] {
@@ -1485,7 +1186,7 @@ async fn rendered_pages_keep_no_js_and_accessibility_contracts() {
         "/help",
         "/help/report-bug",
         "/blog",
-        "/blog/roadmap-2026",
+        // `/blog/<slug>` dropped: all blog posts were deleted in the Echowire fork.
         "/careers",
         "/partners",
         "/press",

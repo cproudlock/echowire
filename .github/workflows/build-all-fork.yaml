@@ -43,6 +43,7 @@ jobs:
             {"image":"fluxer-media-proxy","dockerfile":"fluxer_media_proxy/Dockerfile","build_args":""},
             {"image":"fluxer-messages","dockerfile":"fluxer_messages/Dockerfile","build_args":""},
             {"image":"fluxer-snowflakes","dockerfile":"fluxer_snowflakes/Dockerfile","build_args":""},
+            {"image":"fluxer-gifs","dockerfile":"fluxer_gifs/Dockerfile","build_args":""},
             {"image":"fluxer-static","dockerfile":"fluxer_static/Dockerfile","build_args":""},
             {"image":"fluxer-unfurl","dockerfile":"fluxer_unfurl/Dockerfile","build_args":""},
             {"image":"fluxer-users","dockerfile":"fluxer_users/Dockerfile","build_args":""},

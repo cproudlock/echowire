@@ -1131,11 +1131,12 @@ export class RpcService {
 				sortedRegions.sort((a, b) => a.id.localeCompare(b.id));
 			}
 			return [
-				{id: AUTOMATIC_VOICE_REGION_ID, name: 'Automatic', emoji: '🌐'},
+				{id: AUTOMATIC_VOICE_REGION_ID, name: 'Automatic', emoji: '🌐', ping_endpoint: null},
 				...sortedRegions.map((region) => ({
 					id: region.id,
 					name: region.name,
 					emoji: region.emoji,
+					ping_endpoint: region.pingEndpoint,
 				})),
 			];
 		});

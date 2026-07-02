@@ -4,7 +4,7 @@ import {GuildFeatures} from '@fluxer/constants/src/GuildConstants';
 import {describe, expect, it} from 'vitest';
 import type {GuildID, UserID} from '../../BrandedTypes';
 import type {VoiceAccessContext} from '../VoiceAvailabilityService';
-import {VoiceAvailabilityService} from '../VoiceAvailabilityService';
+import {deriveVoicePingEndpoint, VoiceAvailabilityService} from '../VoiceAvailabilityService';
 import type {VoiceRegionRecord, VoiceServerRecord} from '../VoiceModel';
 import type {VoiceTopology} from '../VoiceTopology';
 
@@ -308,6 +308,9 @@ describe('VoiceAvailabilityService', () => {
 			expect(regions[0].isAccessible).toBe(true);
 			expect(regions[1].id).toBe('eu-vip');
 			expect(regions[1].isAccessible).toBe(false);
+			// ping_endpoint derived from the accessible server; null when the region has none.
+			expect(regions[0].pingEndpoint).toBe('https://voice.example.com/ping');
+			expect(regions[1].pingEndpoint).toBeNull();
 		});
 		it('marks region as not accessible if no servers are available', () => {
 			const region = createMockRegion();
@@ -320,6 +323,28 @@ describe('VoiceAvailabilityService', () => {
 			expect(regions).toHaveLength(1);
 			expect(regions[0].isAccessible).toBe(false);
 			expect(regions[0].serverCount).toBe(0);
+			expect(regions[0].pingEndpoint).toBeNull();
+		});
+	});
+
+	describe('deriveVoicePingEndpoint', () => {
+		it('swaps wss->https and appends /ping', () => {
+			expect(deriveVoicePingEndpoint(createMockServer({endpoint: 'wss://voice-ord.echowire.org/livekit'}))).toBe(
+				'https://voice-ord.echowire.org/livekit/ping',
+			);
+		});
+		it('swaps ws->http for insecure endpoints', () => {
+			expect(deriveVoicePingEndpoint(createMockServer({endpoint: 'ws://localhost:7880'}))).toBe(
+				'http://localhost:7880/ping',
+			);
+		});
+		it('collapses a trailing slash before /ping', () => {
+			expect(deriveVoicePingEndpoint(createMockServer({endpoint: 'wss://voice.example.com/'}))).toBe(
+				'https://voice.example.com/ping',
+			);
+		});
+		it('returns null when there is no server', () => {
+			expect(deriveVoicePingEndpoint(null)).toBeNull();
 		});
 	});
 	describe('selectServer', () => {

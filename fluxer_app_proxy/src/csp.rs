@@ -57,6 +57,10 @@ const FONT_SOURCES: &[&str] = &[
 const CONNECT_SOURCES: &[&str] = &[
     "https://*.fluxer.app",
     "wss://*.fluxer.app",
+    // Echowire origins: voice-region latency pings (https GET /ping) and LiveKit voice
+    // connect to voice-*.echowire.org (separate hosts). CSP only allows full-subdomain wildcards.
+    "https://*.echowire.org",
+    "wss://*.echowire.org",
     "https://*.fluxer.media",
     "wss://*.fluxer.media",
     "https://fluxer-uploads.ewr1.vultrobjects.com",

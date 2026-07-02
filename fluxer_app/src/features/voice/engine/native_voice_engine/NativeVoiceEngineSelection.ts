@@ -56,7 +56,13 @@ let nativePrewarmPromise: Promise<void> | null = null;
 let nativeCapabilitiesSnapshot: VoiceEngineV2BridgeCapabilities | null = null;
 
 function isNativeVoiceEngineRequired(): boolean {
-	return isElectronPlatform();
+	// Echowire: prefer the native voice engine on desktop, but do NOT hard-require
+	// it. Older desktop wrappers (pre-new-arch, e.g. the wrappers shipped before
+	// the arch cutover) don't expose window.electron.voiceEngine, so requiring
+	// native would throw NativeVoiceEngineUpgradeRequiredError during bootstrap and
+	// brick the whole app. Fall back to the web voice engine (works in Electron's
+	// Chromium) whenever the native bridge is absent/incompatible.
+	return isElectronPlatform() && getNativeVoiceEngineBridgeUpgradeBlockReason() === null;
 }
 
 function getNativeVoiceEngineBridgeCandidate(): unknown {

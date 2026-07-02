@@ -516,9 +516,12 @@ jobs:
         if: steps.check_artifacts.outputs.found == 'true'
         uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43
         with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          # Echowire uses service-principal client-secret auth for the
+          # echowire-signing-ci SP (no GitHub OIDC federated credential is
+          # configured for this fork's repo). Providing client-secret switches
+          # azure/login from OIDC to SP-secret auth.
+          creds: >-
+            {"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}
 
       - name: Sign Windows executables with Artifact Signing
         if: steps.check_artifacts.outputs.found == 'true'

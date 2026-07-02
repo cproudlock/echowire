@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 <component type="desktop-application">
-    <id>app.fluxer.Fluxer</id>
-    <launchable type="desktop-id">app.fluxer.Fluxer.desktop</launchable>
-    <name>Fluxer</name>
-    <developer id="app.fluxer">
-        <name>Fluxer</name>
+    <id>org.echowire.canary</id>
+    <launchable type="desktop-id">org.echowire.canary.desktop</launchable>
+    <name>Echowire Canary</name>
+    <developer id="org.echowire">
+        <name>Echowire</name>
     </developer>
-    <summary>Instant messaging and VoIP</summary>
+    <summary>Canary build of Echowire</summary>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>AGPL-3.0-or-later</project_license>
-    <icon type="stock">app.fluxer.Fluxer</icon>
+    <icon type="stock">org.echowire.canary</icon>
     <description>
-        <p>Fluxer is a free and open-source instant messaging and voice-over-IP application. It provides text chat, voice calls, video calls, and screen sharing in a modern interface.</p>
+        <p>Echowire Canary is the pre-release desktop build of Echowire, a free and open-source instant messaging and voice-over-IP application.</p>
         <p>Features include:</p>
         <ul>
             <li>Text messaging with rich formatting and media support</li>
@@ -39,24 +39,21 @@
         <keyword>call</keyword>
     </keywords>
     <branding>
-        <color type="primary">#4641D9</color>
+        <color type="primary">#FFA600</color>
     </branding>
     <screenshots>
         <screenshot type="default">
-            <caption>The main Fluxer window.</caption>
-            <image type="source" width="1920" height="1080">https://fluxerstatic.com/marketing/screenshots/desktop-1920w.avif</image>
+            <caption>The main Echowire window.</caption>
+            <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.avif</image>
         </screenshot>
     </screenshots>
-    <releases>
-        <release version="0.0.8" date="2026-02-16"/>
-    </releases>
-    <url type="bugtracker">https://github.com/fluxerapp/fluxer/issues</url>
-    <url type="homepage">https://fluxer.app</url>
-    <url type="donation">https://fluxer.app/donate</url>
-    <url type="vcs-browser">https://github.com/fluxerapp/fluxer.git</url>
-    <update_contact>fen@unix.dog</update_contact>
+    <url type="bugtracker">https://github.com/cproudlock/echowire/issues</url>
+    <url type="homepage">https://canary.echowire.org</url>
+    <url type="donation">https://echowire.org/donate</url>
+    <url type="vcs-browser">https://github.com/cproudlock/echowire.git</url>
+    <update_contact>support@echowire.org</update_contact>
     <provides>
-        <binary>app.fluxer.Fluxer</binary>
+        <binary>org.echowire.canary</binary>
     </provides>
     <content_rating type="oars-1.1">
         <content_attribute id="social-chat">intense</content_attribute>

@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 [Desktop Entry]
-Name=Fluxer Canary
+Name=Echowire Canary
 GenericName=Instant Messenger
-Comment=Canary build of Fluxer
-Exec=app.fluxer.FluxerCanary %U
-TryExec=app.fluxer.FluxerCanary
-Icon=app.fluxer.FluxerCanary
+Comment=Canary build of Echowire
+Exec=org.echowire.canary %U
+TryExec=org.echowire.canary
+Icon=org.echowire.canary
 Type=Application
 Categories=Network;InstantMessaging;Chat;
 Keywords=chat;im;messaging;messenger;voip;voice;video;call;
-StartupWMClass=app.fluxer.FluxerCanary
+StartupWMClass=org.echowire.canary
 SingleMainWindow=true
 StartupNotify=true
 MimeType=x-scheme-handler/fluxer;
@@ -19,8 +19,8 @@ Actions=open-settings;new-dm;
 
 [Desktop Action open-settings]
 Name=Open Settings
-Exec=app.fluxer.FluxerCanary --fluxer-task=open-settings %U
+Exec=org.echowire.canary --fluxer-task=open-settings %U
 
 [Desktop Action new-dm]
 Name=New Direct Message
-Exec=app.fluxer.FluxerCanary --fluxer-task=new-dm %U
+Exec=org.echowire.canary --fluxer-task=new-dm %U

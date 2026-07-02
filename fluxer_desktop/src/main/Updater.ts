@@ -71,12 +71,17 @@ function getDesktopDownloadArch(arch: NodeJS.Architecture): DesktopDownloadArch 
 }
 
 const DESKTOP_DOWNLOAD_ARCH = getDesktopDownloadArch(process.arch);
-const UPDATE_API_ENDPOINT = BUILD_CHANNEL === 'canary' ? 'https://api.canary.fluxer.app' : 'https://api.fluxer.app';
+// Echowire serves the API (and its /dl download routes) behind the /api path on the
+// main domain — there is no separate api. subdomain like upstream's api.fluxer.app.
+// The edge/internal Caddy strips /api and the DownloadController serves /dl at the api
+// root, and the API also generates binary URLs under this same base (Config.endpoints.
+// apiClient == https://echowire.org/api), so the updater base must include /api.
+const UPDATE_API_ENDPOINT = BUILD_CHANNEL === 'canary' ? 'https://canary.echowire.org/api' : 'https://echowire.org/api';
 const UPDATE_VARIANT_SEGMENT =
 	process.platform === 'win32' && DESKTOP_BUILD_VARIANT !== 'default' ? `/${DESKTOP_BUILD_VARIANT}` : '';
 const UPDATE_BASE_URL = `${UPDATE_API_ENDPOINT}/dl/desktop/${BUILD_CHANNEL}/${process.platform}/${DESKTOP_DOWNLOAD_ARCH}${UPDATE_VARIANT_SEGMENT}`;
 const DOWNLOAD_PAGE_URL =
-	BUILD_CHANNEL === 'canary' ? 'https://canary.fluxer.app/download' : 'https://fluxer.app/download';
+	BUILD_CHANNEL === 'canary' ? 'https://canary.echowire.org/download' : 'https://echowire.org/download';
 
 let lastContext: UpdaterContext = 'background';
 let pendingVelopackUpdate: UpdateInfo | null = null;
@@ -477,7 +482,7 @@ function buildManualLatestDownloadUrl(format: ManualDesktopFormat): string {
 }
 
 function getModernProductName(): string {
-	return BUILD_CHANNEL === 'canary' ? 'Fluxer Canary' : 'Fluxer';
+	return BUILD_CHANNEL === 'canary' ? 'Echowire Canary' : 'Echowire';
 }
 
 function getManualUpdateSuggestedName(format: LinuxManualDesktopFormat, version: string): string {

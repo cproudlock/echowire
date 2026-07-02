@@ -336,7 +336,7 @@ function formatWindowBehavior(settings: DesktopWindowBehaviorSettings): string {
 
 export function formatDesktopDebugInfo(info: DesktopDebugInfo): string {
 	return [
-		'Fluxer desktop debug info',
+		'Echowire desktop debug info',
 		info.clientInfo,
 		`App URL: ${info.appUrl}`,
 		`Custom app URL: ${info.customAppUrl ?? '(none)'}`,

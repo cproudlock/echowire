@@ -8,7 +8,7 @@ import {BrowserWindow, ipcMain} from 'electron';
 import log from 'electron-log';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const VOICE_DEBUG_EVENT_SINK_WINDOW_TITLE = 'Fluxer | Voice Debug Event Sink';
+const VOICE_DEBUG_EVENT_SINK_WINDOW_TITLE = 'Echowire | Voice Debug Event Sink';
 export const VOICE_DEBUG_EVENT_SINK_POPOUT_KEY = 'fluxer-voice-debug-event-sink';
 const VOICE_DEBUG_EVENT_SINK_WINDOW_WIDTH = 1000;
 const VOICE_DEBUG_EVENT_SINK_WINDOW_HEIGHT = 700;

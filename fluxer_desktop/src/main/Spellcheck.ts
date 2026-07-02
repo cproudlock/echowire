@@ -102,7 +102,7 @@ const DICTIONARY_DOWNLOAD_TIMEOUT_MS = 15000;
 const AUTODETECT_MAX_TEXT_LENGTH = 2000;
 const AUTODETECT_PREFIX_SKIP_CHARS = 20;
 const AUTODETECT_CONTEXT_MAX_LENGTH = 128;
-const BUILTIN_ALLOWLIST: ReadonlyArray<string> = ['Fluxer', 'fluxer', 'Hampus'];
+const BUILTIN_ALLOWLIST: ReadonlyArray<string> = ['Echowire', 'echowire', 'Hampus'];
 const isLinux = process.platform === 'linux';
 const isMac = process.platform === 'darwin';
 const useChromiumSpellchecker = !isLinux;

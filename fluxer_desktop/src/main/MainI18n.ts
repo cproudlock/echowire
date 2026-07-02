@@ -33,7 +33,7 @@ const FALLBACK_STRINGS: Readonly<Record<string, string>> = Object.freeze({
 	'desktop.troubleshooting.reload': 'Reload',
 	'desktop.troubleshooting.resetAppDataAndRestart': 'Reset App Data and Restart',
 	'desktop.troubleshooting.resetTitle': 'Reset App Data',
-	'desktop.troubleshooting.resetMessage': 'Are you sure you want to reset Fluxer\u2019s app data?',
+	'desktop.troubleshooting.resetMessage': 'Are you sure you want to reset Echowire\u2019s app data?',
 	'desktop.troubleshooting.resetDetail':
 		'This will sign you out, clear cached files and stored sessions, and restart the desktop app. Your account, communities, and messages on the server are not affected.',
 	'desktop.troubleshooting.resetConfirm': 'Reset and Restart',

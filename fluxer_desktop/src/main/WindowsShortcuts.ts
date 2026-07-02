@@ -183,6 +183,6 @@ export function repairWindowsShortcuts(): void {
 	const repairPaths = getWindowsShortcutRepairPaths();
 	if (!repairPaths) return;
 	repairWindowsShortcutsAsync(repairPaths).catch((error) => {
-		console.warn('[WindowsShortcuts] Failed to repair Fluxer shortcuts', error);
+		console.warn('[WindowsShortcuts] Failed to repair Echowire shortcuts', error);
 	});
 }

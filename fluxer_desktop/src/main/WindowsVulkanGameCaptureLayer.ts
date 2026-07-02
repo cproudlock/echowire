@@ -73,7 +73,7 @@ function removeStaleFluxerGameCaptureVulkanLayers(): void {
 		for (const valueName of valueNames) {
 			if (!isFluxerGameCaptureVulkanLayerValue(valueName)) continue;
 			deleteVulkanLayerRegistryValue(root, valueName);
-			log.info('[VulkanGameCaptureLayer] Removed stale Fluxer Vulkan layer registry value', {root, valueName});
+			log.info('[VulkanGameCaptureLayer] Removed stale Echowire Vulkan layer registry value', {root, valueName});
 		}
 	}
 }

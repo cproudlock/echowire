@@ -58,7 +58,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
         with:
-          ref: main
+          # Echowire builds from the dispatched ref (our release branch is
+          # feat/threads; there is no `main` branch in this fork).
+          ref: ${{ github.ref_name }}
 
       - name: Set up Rust toolchain (CI helpers)
         uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9

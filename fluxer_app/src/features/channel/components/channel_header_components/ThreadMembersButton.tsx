@@ -39,7 +39,7 @@ export const ThreadMembersButton = observer(({channel}: {channel: Channel}) => {
 						flexDirection: 'column',
 						width: 240,
 						maxHeight: 420,
-						background: 'var(--background-floating)',
+						background: 'var(--form-surface-background)',
 						borderRadius: 8,
 						boxShadow: 'var(--shadow-high)',
 						overflow: 'hidden',

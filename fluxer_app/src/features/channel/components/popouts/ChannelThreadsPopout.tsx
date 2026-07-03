@@ -48,7 +48,7 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 				flexDirection: 'column',
 				width: 320,
 				maxHeight: 460,
-				background: 'var(--background-floating)',
+				background: 'var(--form-surface-background)',
 				borderRadius: 8,
 				boxShadow: 'var(--shadow-high)',
 				overflow: 'hidden',

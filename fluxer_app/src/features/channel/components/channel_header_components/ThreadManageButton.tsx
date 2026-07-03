@@ -50,7 +50,7 @@ export const ThreadManageButton = observer(({channel}: {channel: Channel}) => {
 						flexDirection: 'column',
 						minWidth: 180,
 						padding: 6,
-						background: 'var(--background-floating)',
+						background: 'var(--form-surface-background)',
 						borderRadius: 8,
 						boxShadow: 'var(--shadow-high)',
 					}}

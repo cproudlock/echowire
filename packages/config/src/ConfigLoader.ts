@@ -149,7 +149,7 @@ function defaultConfig(): MasterConfig {
 			sudo_mode_secret: '',
 			connection_initiation_secret: '',
 			passkeys: {
-				rp_name: 'Echowire',
+				rp_name: 'echowire',
 				rp_id: 'echowire.org',
 				additional_allowed_origins: DEFAULT_PASSKEY_ORIGINS,
 			},
@@ -160,7 +160,7 @@ function defaultConfig(): MasterConfig {
 			},
 			bluesky: {
 				enabled: true,
-				client_name: 'Echowire',
+				client_name: 'echowire',
 				client_uri: '',
 				logo_uri: '',
 				tos_uri: 'https://echowire.org/terms',
@@ -177,7 +177,7 @@ function defaultConfig(): MasterConfig {
 				enabled: false,
 				provider: 'none',
 				from_email: '',
-				from_name: 'Echowire',
+				from_name: 'echowire',
 			},
 			sms: {
 				enabled: false,
@@ -254,7 +254,7 @@ function defaultConfig(): MasterConfig {
 		instance: {
 			self_hosted: false,
 			branding: {
-				product_name: 'Echowire',
+				product_name: 'echowire',
 			},
 			setup: {
 				configured: false,

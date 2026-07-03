@@ -89,12 +89,12 @@ impl PageMeta {
 
     fn formatted_title(&self) -> String {
         if self.title.is_empty() {
-            return "Echowire".to_owned();
+            return "echowire".to_owned();
         }
 
         match self.title_format {
-            PageTitleFormat::BrandTagline => format!("Echowire - {}", self.title),
-            PageTitleFormat::Page => format!("{} | Echowire", self.title),
+            PageTitleFormat::BrandTagline => format!("echowire - {}", self.title),
+            PageTitleFormat::Page => format!("{} | echowire", self.title),
         }
     }
 }
@@ -987,7 +987,7 @@ fn base_document(
                 meta charset="utf-8";
                 meta name="viewport" content="width=device-width, initial-scale=1.0";
                 meta name="description" content=(meta.description);
-                meta property="og:site_name" content="Echowire";
+                meta property="og:site_name" content="echowire";
                 meta property="og:locale" content=(og_locale);
                 meta property="og:title" content=(page_title.as_str());
                 meta property="og:description" content=(meta.description);
@@ -1269,12 +1269,12 @@ fn hero(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
             div class="max-w-4xl space-y-8 text-center" {
                 @if ctx.locale.code() == "ja" {
                     div class="flex justify-center" {
-                        span class="font-bold text-3xl text-white" { "Echowire" }
+                        span class="font-bold text-3xl text-white" { "echowire" }
                     }
                 }
                 @if ctx.locale.code() == "ko" {
                     div class="flex justify-center" {
-                        span class="font-bold text-3xl text-white" { "Echowire" }
+                        span class="font-bold text-3xl text-white" { "echowire" }
                     }
                 }
                 h1 class="hero" { (tr(i18n, ctx, GENERAL_TAGLINE_DESCRIPTOR)) }

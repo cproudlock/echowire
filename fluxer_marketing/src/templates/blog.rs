@@ -439,7 +439,7 @@ fn blog_post_json_ld(i18n: &MarketingI18n, ctx: &RequestContext, post: BlogPost)
         },
         "publisher": {
             "@type": "Organization",
-            "name": "Echowire",
+            "name": "echowire",
             "url": ctx.base_url.as_str(),
         },
         "mainEntityOfPage": {

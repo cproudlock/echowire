@@ -10,7 +10,7 @@ import type {EmailTemplate, EmailTemplateKey} from '@pkgs/email/src/email_i18n/E
 
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_EMAIL_TEMPLATE_VARIABLES = {
-	product_name: 'Echowire',
+	product_name: 'echowire',
 	appeals_email: 'appeals@echowire.org',
 	safety_email: 'safety@echowire.org',
 } satisfies Record<string, string>;

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-pub const PRODUCT_NAME: &str = "Echowire";
+pub const PRODUCT_NAME: &str = "echowire";
 pub const SWISH_BRAND_NAME: &str = "Swish";
-pub const SWISH_PAYMENT_MESSAGE: &str = "Echowire Donation";
+pub const SWISH_PAYMENT_MESSAGE: &str = "echowire Donation";
 
 pub const BRAND_PLACEHOLDERS: &[(&str, &str)] = &[
-    ("premium_tier_full_name", "Echowire Reverb"),
+    ("premium_tier_full_name", "echowire Reverb"),
     ("visionary_tier_name", "Visionary"),
-    ("visionary_tier_full_name", "Echowire Visionary"),
+    ("visionary_tier_full_name", "echowire Visionary"),
     ("bluesky", "Bluesky"),
     ("github", "GitHub"),
     ("discord", "Discord"),

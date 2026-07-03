@@ -5,10 +5,10 @@
 // "Reverb" (was upstream "Plutonium").
 function getBootstrapProductName(): string {
 	if (typeof window === 'undefined') {
-		return 'Echowire';
+		return 'echowire';
 	}
 	const productName = window.__FLUXER_BOOTSTRAP__?.instance.app_public?.branding?.product_name?.trim();
-	return productName || 'Echowire';
+	return productName || 'echowire';
 }
 
 export const PRODUCT_NAME = getBootstrapProductName();

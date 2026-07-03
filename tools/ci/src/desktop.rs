@@ -200,20 +200,6 @@ const PLATFORMS: &[Platform] = &[
         electron_arch: "x64",
     },
     Platform {
-        platform: "windows",
-        arch: "arm64",
-        desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "windows-2025",
-        electron_arch: "arm64",
-    },
-    Platform {
-        platform: "windows",
-        arch: "arm64",
-        desktop_variant: WINDOWS_GAME_CAPTURE_DESKTOP_VARIANT,
-        os: "windows-2025",
-        electron_arch: "arm64",
-    },
-    Platform {
         platform: "macos",
         arch: "x64",
         desktop_variant: DEFAULT_DESKTOP_VARIANT,

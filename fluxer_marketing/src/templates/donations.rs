@@ -13,6 +13,11 @@ use crate::{
 };
 use maud::{Markup, PreEscaped, html};
 
+// Echowire: Swish is Fluxer's Swedish payment method (Fluxer Platform AB). Echowire
+// (Proudlock Technology LLC, US) takes donations via Stripe only, so the Swish
+// donate button + modal are gated off. Set true to restore for a Swish-region fork.
+const SWISH_ENABLED: bool = false;
+
 const SWISH_LOGO_SVG: &str = r##"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" fill-rule="evenodd" class="h-8 w-8 shrink-0" aria-hidden="true" focusable="false">
 <defs>
 <linearGradient id="swish-grad-1" x1="-746" y1="822.6" x2="-746.2" y2="823.1" gradientTransform="translate(224261.6 305063) scale(300.3 -370.5)" gradientUnits="userSpaceOnUse">
@@ -234,6 +239,22 @@ pub fn donate_page(
                         (tr(i18n, ctx, DONATIONS_SUPPORT_MESSAGE_DESCRIPTOR))
                     }
                 }
+                // Echowire: recipient selector — support this instance (echowire, active)
+                // or the upstream Fluxer project (links out to fluxer.app/donate).
+                div class="mb-8 flex flex-col items-center gap-2" {
+                    div class="inline-flex rounded-lg bg-gray-100 p-1" {
+                        span class="rounded-md bg-white px-5 py-2 font-semibold text-gray-900 shadow-sm" {
+                            "echowire"
+                        }
+                        a href="https://fluxer.app/donate" target="_blank" rel="noopener noreferrer"
+                            class="rounded-md px-5 py-2 font-semibold text-gray-500 transition-colors hover:text-gray-900" {
+                            "fluxer.app"
+                        }
+                    }
+                    p class="text-xs text-muted-foreground" {
+                        "Choose who to support — this instance or the upstream Fluxer project."
+                    }
+                }
                 div id="donation-interaction" {
                     div class="mb-8 flex justify-center" {
                         div class="inline-flex rounded-lg bg-gray-100 p-1" {
@@ -433,7 +454,7 @@ fn donation_form(
                 button type="submit" id=(format!("donate-btn-{audience_id}")) class="w-full rounded-xl bg-[#4641d9] py-3 font-semibold text-white transition-colors hover:bg-[#3832b8] disabled:cursor-not-allowed disabled:opacity-60" {
                     (tr(i18n, ctx, DONATIONS_DONATE_ACTION_DESCRIPTOR))
                 }
-                @if audience == DonationAudience::Individual {
+                @if SWISH_ENABLED && audience == DonationAudience::Individual {
                     div class="flex items-center gap-3 py-1 text-xs font-semibold uppercase text-gray-500" {
                         span class="h-px flex-1 bg-gray-200" {}
                         span { (tr(i18n, ctx, DONATIONS_FORM_OR_LABEL_DESCRIPTOR)) }
@@ -450,7 +471,7 @@ fn donation_form(
                     (donation_empty_message(&error_id))
                 }
             }
-            @if audience == DonationAudience::Individual {
+            @if SWISH_ENABLED && audience == DonationAudience::Individual {
                 (swish_modal(i18n, ctx, swish_open, swish_amount))
             }
         }

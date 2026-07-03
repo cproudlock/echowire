@@ -1242,14 +1242,9 @@ module.exports = {
 				target: 'AppImage',
 				arch: targetArchs,
 			},
-			{
-				target: 'deb',
-				arch: targetArchs,
-			},
-			{
-				target: 'rpm',
-				arch: targetArchs,
-			},
+			// Echowire: deb + rpm dropped — the system `fpm` `ar` step fails
+			// deterministically on GitHub-hosted ubuntu-24.04 x64 (works on arm64).
+			// AppImage (portable) + tar.gz cover Linux; re-add once fpm/ar is fixed.
 			{
 				target: 'tar.gz',
 				arch: targetArchs,

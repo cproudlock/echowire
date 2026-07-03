@@ -114,7 +114,10 @@ jobs:
       - matrix
     runs-on: ${{ matrix.os }}
     environment: desktop-releases
-    timeout-minutes: 60
+    # Windows compiles the native Rust ML/media addons (tract-onnx, livekit, webrtc)
+    # from scratch and is far slower than Linux (AV + slow FS) — 60 min timed out
+    # mid-compile. Give Windows 150 min; other platforms finish well under 60.
+    timeout-minutes: ${{ matrix.platform == 'windows' && 150 || 60 }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}

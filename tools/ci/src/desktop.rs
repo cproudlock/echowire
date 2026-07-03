@@ -1581,7 +1581,11 @@ struct WindowsPackageConfig {
 
 fn windows_package_config(build_channel: &str, arch: &str) -> WindowsPackageConfig {
     let canary = build_channel == "canary";
-    let pack_title = if canary { "Fluxer Canary" } else { "Fluxer" };
+    // Echowire: must match electron-builder `productName` (Echowire / Echowire Canary)
+    // — this is the unpacked main exe name (`{pack_title}.exe`) Velopack looks for and
+    // the setup filename. Upstream hardcoded "Fluxer", so packaging failed with
+    // "Unable to find unpacked Windows app containing Fluxer.exe".
+    let pack_title = if canary { "Echowire Canary" } else { "Echowire" };
     WindowsPackageConfig {
         pack_id: if canary {
             "fluxer_desktop_canary"

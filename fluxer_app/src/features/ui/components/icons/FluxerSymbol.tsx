@@ -5,7 +5,6 @@ import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
-import {getDataFlx, getImageSizingProps} from './BrandImageUtils';
 
 const APPLICATION_SYMBOL_DESCRIPTOR = msg({
 	message: '{productName} application symbol',
@@ -14,16 +13,10 @@ const APPLICATION_SYMBOL_DESCRIPTOR = msg({
 export const FluxerSymbol = observer((props: React.SVGProps<SVGSVGElement>) => {
 	const {i18n} = useLingui();
 	const ariaLabel = i18n._(APPLICATION_SYMBOL_DESCRIPTOR, {productName: RuntimeConfig.productName});
-	if (RuntimeConfig.symbolUrl) {
-		return (
-			<img
-				{...getImageSizingProps(props)}
-				src={RuntimeConfig.symbolUrl}
-				alt={ariaLabel}
-				data-flx={getDataFlx(props, 'ui.icons.fluxer-symbol.img')}
-			/>
-		);
-	}
+	// Echowire: always render the built-in monochrome soundwave mark (currentColor,
+	// theme-adapting) for the sidebar DM/home button — the user-approved mono logo,
+	// rather than the full-color `symbol_url` app icon. (favicon/PWA use favicon_url/
+	// icon_url and are unaffected.)
 	// Echowire brand symbol (equalizer mark), monochrome via currentColor so it adapts to the theme.
 	return (
 		<svg

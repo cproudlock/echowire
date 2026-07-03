@@ -960,7 +960,11 @@ export class DownloadService {
 	}
 
 	private getModernProductName(channel: DesktopChannel): string {
-		return channel === 'canary' ? 'Fluxer Canary' : 'Fluxer';
+		// Echowire: desktop artifacts are named from electron-builder `productName`
+		// (`Echowire` / `Echowire Canary`, see fluxer_desktop/electron-builder.config.cjs).
+		// Upstream hardcoded `Fluxer` here, so the version regex never matched our
+		// rebranded filenames and `/latest` fell back to ancient `Fluxer-*` artifacts.
+		return channel === 'canary' ? 'Echowire Canary' : 'Echowire';
 	}
 
 	private buildModernArtifactFilename(

@@ -16,6 +16,9 @@ export interface ChannelRtcRegion {
 	id: string;
 	name: string;
 	emoji: string;
+	// Echowire: CORS `/ping` URL derived from the region's voice host, used to show
+	// per-region latency in the settings voice-region picker (matches the in-call one).
+	ping_endpoint: string | null;
 }
 
 type ChannelCreateParams = Pick<

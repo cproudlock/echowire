@@ -8,7 +8,8 @@ import {useSplashScreenGuard} from '@app/features/app/hooks/useSplashScreenGuard
 import Initialization from '@app/features/app/state/Initialization';
 import DeveloperOptions from '@app/features/devtools/state/DeveloperOptions';
 import GatewayConnection from '@app/features/gateway/transport/GatewayConnection';
-import {FluxerIcon} from '@app/features/ui/components/icons/FluxerIcon';
+// Echowire: transparent soundwave icon for the centered loading splash.
+import EchowireIcon from '@app/media/images/echowire-icon-transparent.svg?react';
 import {getReducedMotionProps} from '@app/features/ui/utils/ReducedMotionAnimation';
 import StatusPage from '@app/features/user/state/StatusPage';
 import {type SplashQuote, useSplashQuotes} from '@app/media/data/SplashQuotes';
@@ -145,7 +146,7 @@ const SplashScreenContent = observer(({mode}: SplashScreenContentProps) => {
 							className={`${styles.iconPulse} ${styles.iconPulseStatic}`}
 							data-flx="app.splash-screen.splash-screen-content.icon-pulse"
 						/>
-						<FluxerIcon className={styles.icon} data-flx="app.splash-screen.splash-screen-content.icon" />
+						<EchowireIcon className={styles.icon} data-flx="app.splash-screen.splash-screen-content.icon" />
 					</div>
 					<div className={styles.quoteContainer} data-flx="app.splash-screen.splash-screen-content.quote-container">
 						{visibleIncident != null ? (
@@ -204,7 +205,7 @@ const SplashScreenContent = observer(({mode}: SplashScreenContentProps) => {
 			<div className={styles.splashContent} data-flx="app.splash-screen.splash-screen-content.splash-content--2">
 				<div className={styles.iconWrapper} data-flx="app.splash-screen.splash-screen-content.icon-wrapper--2">
 					<div className={styles.iconPulse} data-flx="app.splash-screen.splash-screen-content.icon-pulse--2" />
-					<FluxerIcon className={styles.icon} data-flx="app.splash-screen.splash-screen-content.icon--2" />
+					<EchowireIcon className={styles.icon} data-flx="app.splash-screen.splash-screen-content.icon--2" />
 				</div>
 				<div className={styles.quoteContainer} data-flx="app.splash-screen.splash-screen-content.quote-container--2">
 					{visibleIncident != null ? (

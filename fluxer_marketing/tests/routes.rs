@@ -182,10 +182,10 @@ async fn document_titles_use_marketing_title_patterns() {
     let app = build_router(test_config());
 
     let home = render_path(app.clone(), "/").await;
-    assert_document_title(&home, "Echowire - A chat app that puts you first");
+    assert_document_title(&home, "echowire - A chat app that puts you first");
 
     let download = render_path(app.clone(), "/download").await;
-    assert_document_title(&download, "Download Echowire | Echowire");
+    assert_document_title(&download, "Download echowire | echowire");
 
     let response = app
         .oneshot(
@@ -199,8 +199,8 @@ async fn document_titles_use_marketing_title_patterns() {
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     let body = response.into_body().collect().await.unwrap().to_bytes();
     let not_found = String::from_utf8(body.to_vec()).unwrap();
-    assert_document_title(&not_found, "Page not found | Echowire");
-    assert!(!not_found.contains("Echowire | Page not found"));
+    assert_document_title(&not_found, "Page not found | echowire");
+    assert!(!not_found.contains("echowire | Page not found"));
 }
 
 #[tokio::test]
@@ -228,7 +228,7 @@ async fn home_uses_accept_language_catalog() {
 // Removed `blog_post_under_base_path_prefixes_embedded_asset_urls`: it rendered the
 // `mobile-clients-and-fluxer-v2` blog post to verify base-path prefixing of embedded
 // assets, but all blog posts (and their assets) were intentionally dropped in the
-// Echowire fork, so there is no remaining content to exercise this contract.
+// echowire fork, so there is no remaining content to exercise this contract.
 
 #[tokio::test]
 async fn accept_language_prefers_exact_supported_locale_before_fallback() {
@@ -311,7 +311,7 @@ async fn sitemap_contains_content_routes() {
     assert!(xml.contains("https://fluxer.test/help/report-bug"));
     assert!(xml.contains("https://fluxer.test/blog"));
     // Per-post `/blog/<slug>` and per-job `/careers/<slug>` sitemap entries were dropped
-    // along with the blog posts and job postings deleted in the Echowire fork.
+    // along with the blog posts and job postings deleted in the echowire fork.
 }
 
 #[tokio::test]
@@ -321,7 +321,7 @@ async fn help_center_serves_imported_articles_and_legacy_redirects() {
     let help = render_path(app.clone(), "/help").await;
     assert!(help.contains("Help center"));
     // The "March 2026 Plutonium promotion" help article was intentionally deleted in the
-    // Echowire fork, so it no longer appears in the help center listing.
+    // echowire fork, so it no longer appears in the help center listing.
     assert!(help.contains("How to delete or disable your account"));
     assert!(help.contains("Legal &amp; Policy"));
     assert!(!help.contains("https://help.fluxer.app"));
@@ -632,12 +632,12 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     let app = build_router(test_config());
 
     // All blog posts (and their embedded assets) were intentionally deleted in the
-    // Echowire fork, so the index renders empty. The blog index, feeds, and legacy
+    // echowire fork, so the index renders empty. The blog index, feeds, and legacy
     // redirect routes still exist and are exercised below; per-post rendering, post
     // search/tag results, and blog asset serving have been removed because there is no
     // remaining content to exercise them.
     let blog = render_path(app.clone(), "/blog").await;
-    assert!(blog.contains("Echowire Blog"));
+    assert!(blog.contains("echowire Blog"));
     assert!(blog.contains("href=\"/blog/rss.xml\""));
     assert!(blog.contains("href=\"/blog/atom.xml\""));
     assert!(!blog.contains("https://blog.fluxer.app/rss/"));
@@ -666,7 +666,7 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     );
     let body = rss.into_body().collect().await.unwrap().to_bytes();
     let rss_xml = String::from_utf8(body.to_vec()).unwrap();
-    assert!(rss_xml.contains("<title>Echowire Blog</title>"));
+    assert!(rss_xml.contains("<title>echowire Blog</title>"));
 
     let atom = app
         .clone()
@@ -747,7 +747,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         )
         .await
         .unwrap();
-    // The `roadmap-2026` post was deleted in the Echowire fork, so a legacy per-post
+    // The `roadmap-2026` post was deleted in the echowire fork, so a legacy per-post
     // blog-host URL now gracefully degrades to the blog index instead of the post.
     assert_eq!(response.status(), StatusCode::PERMANENT_REDIRECT);
     assert_eq!(
@@ -1186,7 +1186,7 @@ async fn rendered_pages_keep_no_js_and_accessibility_contracts() {
         "/help",
         "/help/report-bug",
         "/blog",
-        // `/blog/<slug>` dropped: all blog posts were deleted in the Echowire fork.
+        // `/blog/<slug>` dropped: all blog posts were deleted in the echowire fork.
         "/careers",
         "/partners",
         "/press",

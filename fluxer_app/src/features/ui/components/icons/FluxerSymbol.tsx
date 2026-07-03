@@ -5,7 +5,6 @@ import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
-import {getDataFlx, getImageSizingProps} from './BrandImageUtils';
 
 const APPLICATION_SYMBOL_DESCRIPTOR = msg({
 	message: '{productName} application symbol',
@@ -14,16 +13,10 @@ const APPLICATION_SYMBOL_DESCRIPTOR = msg({
 export const FluxerSymbol = observer((props: React.SVGProps<SVGSVGElement>) => {
 	const {i18n} = useLingui();
 	const ariaLabel = i18n._(APPLICATION_SYMBOL_DESCRIPTOR, {productName: RuntimeConfig.productName});
-	if (RuntimeConfig.symbolUrl) {
-		return (
-			<img
-				{...getImageSizingProps(props)}
-				src={RuntimeConfig.symbolUrl}
-				alt={ariaLabel}
-				data-flx={getDataFlx(props, 'ui.icons.fluxer-symbol.img')}
-			/>
-		);
-	}
+	// Echowire: always render the built-in monochrome equalizer mark (currentColor, theme-adapting)
+	// rather than the config `symbol_url` (a full-color icon). The sidebar home button + native
+	// titlebar want the monochrome mark, matching the old client.
+	// (favicon/PWA icons use favicon_url/icon_url, unaffected by this.)
 	// Echowire brand symbol (equalizer mark), monochrome via currentColor so it adapts to the theme.
 	return (
 		<svg

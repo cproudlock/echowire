@@ -290,7 +290,7 @@ fn premium_mode_form(base: &str, csrf_token: &str, policy: &InstancePolicyRespon
                 div class="space-y-4" {
                     (select_input("policy_premium_mode", "Premium model", &[
                         ("mirror", "Mirror (Free and Premium tiers)"),
-                        ("everyone", "Everyone (every member gets Plutonium limits)"),
+                        ("everyone", "Everyone (every member gets Reverb limits)"),
                     ], policy.premium_mode.as_str()))
                     (form_actions(html! {
                         (submit_button("Save premium model"))
@@ -500,7 +500,7 @@ fn integrations_config_section(
                                 "integration_email_from_name",
                                 "From name",
                                 integrations.email.from_name.as_deref().unwrap_or(""),
-                                "Fluxer",
+                                "Echowire",
                             ))
                             (text_input(
                                 "integration_smtp_host",
@@ -549,7 +549,7 @@ fn integrations_config_section(
                                 "integration_bluesky_client_name",
                                 "Client name",
                                 integrations.bluesky.client_name.as_deref().unwrap_or(""),
-                                "Fluxer",
+                                "Echowire",
                             ))
                             (text_input(
                                 "integration_bluesky_client_uri",
@@ -739,7 +739,7 @@ fn app_public_config_section(
                                 "app_product_name",
                                 "Product Name",
                                 &app_public.branding.product_name,
-                                "Fluxer",
+                                "Echowire",
                             ))
                             (text_input(
                                 "app_theme_color",

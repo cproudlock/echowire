@@ -31,7 +31,7 @@ pub fn gift_codes_page(
     let content = html! {
         (page_header(
             "Gift Codes",
-            Some("Create one-use Plutonium gift URLs with a fixed positive \
+            Some("Create one-use Reverb gift URLs with a fixed positive \
                   duration. Lifetime gifts cannot be generated here."),
         ))
 

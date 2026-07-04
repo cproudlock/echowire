@@ -184,48 +184,32 @@ struct Platform {
     electron_arch: &'static str,
 }
 
+// Echowire: self-hosted runners only (GitHub-hosted minutes are billing-gated).
+// macOS (10x cost, not shipped) and linux-arm64 (needs an arm64 runner) dropped —
+// a single x64 Windows runner (label self-hosted-windows) + x64 Linux runner
+// (label self-hosted-linux) cover what we actually ship. Add entries back when
+// matching self-hosted runners exist.
 const PLATFORMS: &[Platform] = &[
     Platform {
         platform: "windows",
         arch: "x64",
         desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "windows-2025",
+        os: "self-hosted-windows",
         electron_arch: "x64",
     },
     Platform {
         platform: "windows",
         arch: "x64",
         desktop_variant: WINDOWS_GAME_CAPTURE_DESKTOP_VARIANT,
-        os: "windows-2025",
+        os: "self-hosted-windows",
         electron_arch: "x64",
-    },
-    Platform {
-        platform: "macos",
-        arch: "x64",
-        desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "macos-14",
-        electron_arch: "x64",
-    },
-    Platform {
-        platform: "macos",
-        arch: "arm64",
-        desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "macos-14",
-        electron_arch: "arm64",
     },
     Platform {
         platform: "linux",
         arch: "x64",
         desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "ubuntu-24.04",
+        os: "self-hosted-linux",
         electron_arch: "x64",
-    },
-    Platform {
-        platform: "linux",
-        arch: "arm64",
-        desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "ubuntu-24.04-arm",
-        electron_arch: "arm64",
     },
 ];
 

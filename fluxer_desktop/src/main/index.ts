@@ -311,6 +311,15 @@ if (launchConfigurationError) {
 			.then(() => app.whenReady())
 			.then(async () => {
 				log.info('App ready, initializing...');
+				runStartupPhase('user-agent-tag', () => {
+					// Echowire: append `EchowireApp` to the UA so Cloudflare's skip rule
+					// (http.user_agent contains "EchowireApp") matches the desktop wrapper.
+					// Without it, CF fires an interactive bot challenge that renders blank
+					// inside Electron and traps the user. Mirrors the old fork + the iOS
+					// WKWebView wrapper. Set as the global fallback so every window/session
+					// (initial load + IpcHandlers instance switch) carries it.
+					app.userAgentFallback = `${app.userAgentFallback} EchowireApp/${app.getVersion()}`;
+				});
 				await runStartupPhaseAsync('launch-net-log', startLaunchNetLog);
 				try {
 					await runStartupPhaseAsync('desktop-debug-info', async () => {

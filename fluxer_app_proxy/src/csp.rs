@@ -17,6 +17,9 @@ const FRAME_SOURCES: &[&str] = &[
     "https://www.youtube.com/s/player/",
     "https://hcaptcha.com",
     "https://*.hcaptcha.com",
+    // Echowire uses Cloudflare Turnstile for the login/register captcha; its widget
+    // renders in an iframe from challenges.cloudflare.com (script + connect added below).
+    "https://challenges.cloudflare.com",
 ];
 
 const IMAGE_SOURCES: &[&str] = &[
@@ -38,6 +41,8 @@ const SCRIPT_SOURCES: &[&str] = &[
     "https://*.fluxer.app",
     "https://hcaptcha.com",
     "https://*.hcaptcha.com",
+    // Echowire: Cloudflare Turnstile captcha api.js (was blocked → captcha never rendered).
+    "https://challenges.cloudflare.com",
 ];
 
 const STYLE_SOURCES: &[&str] = &[
@@ -66,6 +71,7 @@ const CONNECT_SOURCES: &[&str] = &[
     "https://fluxer-uploads.ewr1.vultrobjects.com",
     "https://hcaptcha.com",
     "https://*.hcaptcha.com",
+    "https://challenges.cloudflare.com",
     "https://fluxerstatus.com",
     "https://fluxer.media",
     "http://127.0.0.1:21863",

@@ -185,10 +185,11 @@ struct Platform {
 }
 
 // Echowire: self-hosted runners only (GitHub-hosted minutes are billing-gated).
-// macOS (10x cost, not shipped) and linux-arm64 (needs an arm64 runner) dropped —
-// a single x64 Windows runner (label self-hosted-windows) + x64 Linux runner
-// (label self-hosted-linux) cover what we actually ship. Add entries back when
-// matching self-hosted runners exist.
+// CI builds WINDOWS ONLY (the one platform that genuinely needs Windows to build +
+// Azure-sign). macOS (10x, not shipped), linux-arm64 (no arm64 runner), and linux-x64
+// (its dep-install step needs passwordless sudo the self-hosted runner lacks; Linux
+// clients are built locally on-demand instead) are all dropped. The self-hosted-linux
+// runner still handles orchestration (matrix/metadata/publish) — no build deps needed.
 const PLATFORMS: &[Platform] = &[
     Platform {
         platform: "windows",
@@ -202,13 +203,6 @@ const PLATFORMS: &[Platform] = &[
         arch: "x64",
         desktop_variant: WINDOWS_GAME_CAPTURE_DESKTOP_VARIANT,
         os: "self-hosted-windows",
-        electron_arch: "x64",
-    },
-    Platform {
-        platform: "linux",
-        arch: "x64",
-        desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "self-hosted-linux",
         electron_arch: "x64",
     },
 ];

@@ -649,6 +649,10 @@ fn desktop_dist_dir() -> PathBuf {
 async fn windows_paths_step() -> Result<()> {
     let github_workspace = require_env("GITHUB_WORKSPACE")?;
     let target = env::var("SUBST_TARGET").unwrap_or(github_workspace.clone());
+    // Echowire: a self-hosted runner is reused across jobs, so W: may already be mapped
+    // from a prior job on the same machine (GitHub-hosted gets a fresh VM each time).
+    // Best-effort unmap first so re-mapping is idempotent instead of failing "already SUBSTed".
+    let _ = run_command(CommandSpec::new("subst").args(["W:", "/D"]));
     run_command(CommandSpec::new("subst").args(["W:", target.as_str()]))?;
 
     let temp = Path::new(r"C:\t");

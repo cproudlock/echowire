@@ -205,6 +205,16 @@ const PLATFORMS: &[Platform] = &[
         os: "self-hosted-windows",
         electron_arch: "x64",
     },
+    // Echowire: Linux x64 on the self-hosted-linux runner (this workstation). Build deps are
+    // pre-installed and the install_linux_deps step is skipped via FLUXER_SKIP_LINUX_DEPS.
+    // Produces .deb / .rpm / AppImage / tar.gz (unsigned — Linux packages aren't code-signed).
+    Platform {
+        platform: "linux",
+        arch: "x64",
+        desktop_variant: DEFAULT_DESKTOP_VARIANT,
+        os: "self-hosted-linux",
+        electron_arch: "x64",
+    },
 ];
 
 pub async fn run(args: BuildDesktopArgs) -> Result<()> {
@@ -936,6 +946,12 @@ fn install_setuptools_macos_step() -> Result<()> {
 }
 
 fn install_linux_deps_step() -> Result<()> {
+    // Echowire: the self-hosted Linux runner has the build deps pre-installed and can't run
+    // passwordless sudo, so skip the apt bootstrap when told to (set in the workflow env).
+    if env_bool("FLUXER_SKIP_LINUX_DEPS") {
+        println!("FLUXER_SKIP_LINUX_DEPS is set — skipping apt dependency install.");
+        return Ok(());
+    }
     let apt_conf = runner_temp().join("99fluxer-ci-network");
     fs::write(
         &apt_conf,

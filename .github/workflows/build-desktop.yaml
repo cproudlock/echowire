@@ -242,6 +242,8 @@ jobs:
         if: matrix.platform == 'linux'
         env:
           DEBIAN_FRONTEND: noninteractive
+          # Echowire self-hosted Linux runner has deps pre-installed + no passwordless sudo.
+          FLUXER_SKIP_LINUX_DEPS: "true"
         run: >-
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step install_linux_deps

@@ -1243,9 +1243,18 @@ module.exports = {
 				target: 'AppImage',
 				arch: targetArchs,
 			},
-			// Echowire: deb + rpm dropped — the system `fpm` `ar` step fails
-			// deterministically on GitHub-hosted ubuntu-24.04 x64 (works on arm64).
-			// AppImage (portable) + tar.gz cover Linux; re-add once fpm/ar is fixed.
+			// Echowire: deb + rpm re-enabled. The old fpm/`ar` failure was specific to the
+			// GitHub-hosted ubuntu-24.04 image's fpm; the self-hosted Linux runner has fpm 1.17.0
+			// which builds valid .deb/.rpm (verified before re-adding). The .deb also ships the
+			// AppArmor profile + SUID chrome-sandbox for Ubuntu 24 / Mint 22.
+			{
+				target: 'deb',
+				arch: targetArchs,
+			},
+			{
+				target: 'rpm',
+				arch: targetArchs,
+			},
 			{
 				target: 'tar.gz',
 				arch: targetArchs,

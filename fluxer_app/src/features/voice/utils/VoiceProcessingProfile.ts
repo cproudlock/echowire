@@ -28,7 +28,10 @@ export interface ResolvedVoiceProcessing {
 export const DEFAULT_VOICE_PROCESSING_MODE: VoiceProcessingMode = 'voice';
 export const DEEP_FILTER_NOISE_REDUCTION_LEVEL_MIN = 0;
 export const DEEP_FILTER_NOISE_REDUCTION_LEVEL_MAX = 100;
-export const FOCUSED_VOICE_DEEP_FILTER_NOISE_REDUCTION_LEVEL = 100;
+// Echowire: was 100 (max), which over-processed voice into a "digital/robotic" timbre.
+// 80 matches the Custom-mode DeepFilter default users confirmed sounds natural while still
+// suppressing noise. See also the contentHint change in the default 'voice' profile below.
+export const FOCUSED_VOICE_DEEP_FILTER_NOISE_REDUCTION_LEVEL = 80;
 
 export function clampDeepFilterNoiseReductionLevel(level: number): number {
 	if (!Number.isFinite(level)) {
@@ -72,7 +75,10 @@ export function resolveVoiceProcessing(settings: VoiceProcessingSettingsLike): R
 				autoGainControl: false,
 				deepFilter: true,
 				deepFilterNoiseReductionLevel: FOCUSED_VOICE_DEEP_FILTER_NOISE_REDUCTION_LEVEL,
-				contentHint: 'speech',
+				// Echowire: was 'speech', which forced Opus into narrowband and made voice sound
+				// nasally/telephone-y. '' lets Opus run full-band (as the Custom profiles do, which
+				// users confirmed sound natural). This is the primary fix for the "nasally" report.
+				contentHint: '',
 			};
 	}
 }

@@ -1585,7 +1585,12 @@ fn recommended_desktop_url(ctx: &RequestContext, platform: Platform) -> String {
     match platform {
         Platform::Windows => desktop_url(ctx, "win32", recommended_arch(ctx, platform), "setup"),
         Platform::Macos => desktop_url(ctx, "darwin", recommended_arch(ctx, platform), "dmg"),
-        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "appimage"),
+        // Echowire: recommend the .deb (Debian/Ubuntu/Mint — the desktop-Linux majority).
+        // The AppImage's Chromium sandbox is blocked by Ubuntu 24 / Mint 22's userns
+        // restriction (a read-only AppImage can't set a SUID chrome-sandbox or install an
+        // AppArmor profile), so it fails to launch there; the .deb's postinst does both and
+        // works. AppImage/RPM/Flatpak remain as labeled alternatives below.
+        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "deb"),
         Platform::Ios | Platform::Android | Platform::Unknown => ctx.href("/download"),
     }
 }
@@ -1728,9 +1733,11 @@ fn alternate_builds(
             if !ctx.release_channel.is_canary() {
                 builds.push(alt("Flatpak".to_owned(), FLATPAK_URL.to_owned(), true));
             }
+            // .deb is now the primary/recommended download, so offer AppImage here as the
+            // "any distro, no install" alternative (note: needs --no-sandbox on Ubuntu 24/Mint 22).
             builds.push(alt(
-                "DEB".to_owned(),
-                desktop_url(ctx, "linux", arch, "deb"),
+                "AppImage".to_owned(),
+                desktop_url(ctx, "linux", arch, "appimage"),
                 false,
             ));
             builds.push(alt(

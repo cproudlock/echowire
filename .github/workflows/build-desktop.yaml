@@ -26,6 +26,11 @@ on:
         required: false
         default: ""
         type: string
+      force_overwrite:
+        description: Allow overwriting existing stable S3 artifacts (bypasses the immutable-release guard). Use only when intentionally republishing.
+        required: false
+        default: false
+        type: boolean
 permissions:
   contents: write
   id-token: write
@@ -592,6 +597,7 @@ jobs:
       S3_ENDPOINT: https://e54c5c050e04de8b819ab033506f952c.r2.cloudflarestorage.com
       S3_BUCKET: fluxer-downloads
       PUBLIC_DL_BASE: https://api.fluxer.app/dl
+      FLUXER_FORCE_DESKTOP_OVERWRITE: ${{ inputs.force_overwrite }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:

@@ -2728,7 +2728,10 @@ where
 }
 
 fn should_overwrite_payload(s3_prefix: &str, test_build: bool) -> bool {
-    test_build && s3_prefix == "desktop-test"
+    // Echowire: stable artifacts are immutable by default (never clobber a live release).
+    // FLUXER_FORCE_DESKTOP_OVERWRITE is an explicit, opt-in per-run escape hatch (wired to a
+    // workflow_dispatch input) for intentionally republishing a stable path with new bytes.
+    (test_build && s3_prefix == "desktop-test") || env_bool("FLUXER_FORCE_DESKTOP_OVERWRITE")
 }
 
 fn is_payload_metadata_key(relative: &Path) -> bool {

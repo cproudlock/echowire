@@ -8,13 +8,28 @@ use axum::{
 use serde_json::json;
 
 pub async fn apple_app_site_association() -> Response {
+    let paths = json!([
+        "/channels/*",
+        "/invite/*",
+        "/gift/*",
+        "/users/*",
+        "/settings/user/*",
+        "/reset/*",
+        "/notifications/*",
+        "/you/*"
+    ]);
     let body = json!({
+        "applinks": {
+            "apps": [],
+            "details": [
+                {"appID": "34589PFK6A.org.echowire.ios", "paths": paths},
+                {"appID": "34589PFK6A.org.echowire.ios.canary", "paths": paths}
+            ]
+        },
         "webcredentials": {
             "apps": [
-                "3G5837T29K.app.fluxer",
-                "3G5837T29K.app.fluxer.canary",
-                "3G5837T29K.com.fluxer",
-                "3G5837T29K.com.fluxer.canary"
+                "34589PFK6A.org.echowire.ios",
+                "34589PFK6A.org.echowire.ios.canary"
             ]
         }
     });

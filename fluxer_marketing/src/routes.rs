@@ -1129,12 +1129,17 @@ async fn apple_app_site_association() -> impl IntoResponse {
     (
         [(header::CACHE_CONTROL, "public, max-age=1800")],
         Json(serde_json::json!({
+            "applinks": {
+                "apps": [],
+                "details": [
+                    {"appID": "34589PFK6A.org.echowire.ios", "paths": ["/channels/*", "/invite/*", "/gift/*", "/users/*", "/settings/user/*", "/reset/*", "/notifications/*", "/you/*"]},
+                    {"appID": "34589PFK6A.org.echowire.ios.canary", "paths": ["/channels/*", "/invite/*", "/gift/*", "/users/*", "/settings/user/*", "/reset/*", "/notifications/*", "/you/*"]}
+                ]
+            },
             "webcredentials": {
                 "apps": [
-                    "3G5837T29K.app.fluxer",
-                    "3G5837T29K.app.fluxer.canary",
-                    "3G5837T29K.com.fluxer",
-                    "3G5837T29K.com.fluxer.canary"
+                    "34589PFK6A.org.echowire.ios",
+                    "34589PFK6A.org.echowire.ios.canary"
                 ]
             }
         })),
@@ -1152,21 +1157,10 @@ async fn assetlinks() -> impl IntoResponse {
                 ],
                 "target": {
                     "namespace": "android_app",
-                    "package_name": "com.fluxer",
-                    "sha256_cert_fingerprints": ["91:E4:98:E1:B8:A6:C8:BA:99:41:5E:DB:29:78:29:6B:6C:58:BA:A5:E2:D2:A6:49:CE:C6:2D:A7:A8:29:C7:BC"]
-                }
-            },
-            {
-                "relation": [
-                    "delegate_permission/common.handle_all_urls",
-                    "delegate_permission/common.get_login_creds"
-                ],
-                "target": {
-                    "namespace": "android_app",
-                    "package_name": "com.fluxer.canary",
+                    "package_name": "org.echowire.twa",
                     "sha256_cert_fingerprints": [
-                        "91:E4:98:E1:B8:A6:C8:BA:99:41:5E:DB:29:78:29:6B:6C:58:BA:A5:E2:D2:A6:49:CE:C6:2D:A7:A8:29:C7:BC",
-                        "CD:19:82:28:32:A8:DE:E0:97:D8:60:D9:21:28:C9:C7:C4:73:A3:72:7E:63:71:9B:A7:BB:3B:98:06:94:1F:6F"
+                        "02:9C:A2:1A:C9:A6:96:C3:F9:8B:FC:84:3F:9D:3D:63:89:29:5F:5B:4F:91:B3:D5:67:AC:AA:4D:B9:41:7E:7E",
+                        "2F:7A:6D:CA:0D:B4:B7:4D:6F:66:BA:AB:4A:D9:5C:8E:1D:05:C3:C2:BD:DF:BC:17:A6:38:CF:0B:49:BE:04:B1"
                     ]
                 }
             }

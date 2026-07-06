@@ -2714,12 +2714,18 @@ async fn upload_payload_step() -> Result<()> {
     )
     .await?;
     println!("Uploading manifests and updater metadata last...");
+    // Echowire: manifests + updater metadata (manifest.json, latest*.yml, RELEASES,
+    // source/latest.json) are mutable "latest" pointers — they MUST be rewritten on
+    // every release, since each new stable version changes them. The immutability
+    // guard applies only to the versioned binaries above, never to metadata; without
+    // this a second stable release fails with "Existing S3 object differs from local
+    // file: .../manifest.json".
     upload_payload_directory(
         &client,
         &bucket,
         &s3_prefix,
         &payload_root,
-        overwrite_existing,
+        true,
         is_payload_metadata_key,
     )
     .await

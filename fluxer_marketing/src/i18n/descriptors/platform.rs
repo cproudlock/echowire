@@ -395,8 +395,16 @@ crate::marketing_message!(
 crate::marketing_message!(
     pub const PLATFORM_SUPPORT_MOBILE_IOS_BODY_DESCRIPTOR = {
         key: "platform_support.mobile.ios.body",
-        message: "As of 15 June 2026, the {ios} app is in a limited {testflight} beta with a small group of {premium_tier_name} subscribers. {testflight} slots are limited, so the best way in for most people is to wait for the public release.",
-        comment: "Body copy for the iOS app card on the download page. Preserve {premium_tier_name} exactly; make clear the iOS app is in a limited TestFlight beta with capped slots and that a public release is coming. Do not promise that subscribing grants beta access. Preserve placeholders exactly.",
+        message: "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad.",
+        comment: "Body copy for the iOS app card on the download page. Keep TestFlight as a proper name. Preserve placeholders exactly.",
+    };
+);
+
+crate::marketing_message!(
+    pub const PLATFORM_SUPPORT_MOBILE_IOS_CTA_DESCRIPTOR = {
+        key: "platform_support.mobile.ios.cta",
+        message: "Join the {testflight} beta",
+        comment: "Button or link label on the iOS app card that opens the public TestFlight beta invite. Keep TestFlight as a proper name; keep it short. Preserve placeholders exactly.",
     };
 );
 

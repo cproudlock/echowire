@@ -2429,13 +2429,18 @@ msgctxt "platform_support.mobile.ios.title"
 msgid "{ios} app"
 msgstr "{ios} 앱"
 
-#. Body copy for the iOS app card on the download page. Preserve {premium_tier_name} exactly; make clear the iOS app is in a limited TestFlight beta with capped slots and that a public release is coming. Do not promise that subscribing grants beta access. Preserve placeholders exactly.
+#. Body copy for the iOS app card on the download page. Keep TestFlight as a proper name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.body
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
-"As of 15 June 2026, the {ios} app is in a limited {testflight} beta with a small group of {premium_tier_name} subscribers. {testflight} slots are limited, so the best way in for most people is to wait for the public release."
-msgstr ""
-"2026년 6월 15일 기준으로 {ios} 앱은 소수의 {premium_tier_name} 구독자를 대상으로 하는 제한된 {testflight} 베타 버전입니다. {testflight} 슬롯이 제한되어 있으므로 대부분의 사람들에게는 공개 출시를 기다리는 것이 가장 좋습니다."
+"The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
+msgstr "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
+
+#. Button or link label on the iOS app card that opens the public TestFlight beta invite. Keep TestFlight as a proper name; keep it short. Preserve placeholders exactly.
+#: fluxer_marketing/generated:platform_support.mobile.ios.cta
+msgctxt "platform_support.mobile.ios.cta"
+msgid "Join the {testflight} beta"
+msgstr "Join the {testflight} beta"
 
 #. Card title for the Android app option on the download page. Keep the platform name conventional and short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.android.title

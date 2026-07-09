@@ -176,6 +176,10 @@ pub fn download_page(
                         }
                         h3 class="mt-4 font-semibold text-gray-900 text-lg" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_TITLE_DESCRIPTOR)) }
                         p class="mt-2 flex-1 text-sm leading-relaxed text-gray-600" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_BODY_DESCRIPTOR)) }
+                        a class="mt-5 inline-flex items-center gap-2 self-start rounded-xl bg-[#4641D9] px-5 py-3 font-medium text-sm text-white shadow-md transition-colors hover:bg-[#3832B8]" href="https://testflight.apple.com/join/andaUq51" target="_blank" rel="noopener noreferrer" {
+                            (icon(Icon::Apple, "h-5 w-5"))
+                            (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_CTA_DESCRIPTOR))
+                        }
                     }
                     div class="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm" {
                         div class="caption absolute top-4 right-4 rounded-full bg-[#4641D9] px-3 py-1 font-semibold text-xs text-white uppercase shadow-lg" {

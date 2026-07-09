@@ -411,16 +411,16 @@ crate::marketing_message!(
 crate::marketing_message!(
     pub const PLATFORM_SUPPORT_MOBILE_ANDROID_BODY_DESCRIPTOR = {
         key: "platform_support.mobile.android.body",
-        message: "Install the {android} APK straight from our open source repository on {github}.",
-        comment: "Body copy for the Android app card on the download page. Keep APK and GitHub as proper names; make clear the install file lives in the open source repository. Preserve placeholders exactly.",
+        message: "Get the {android} app on the Google Play Store.",
+        comment: "Body copy for the Android app card on the download page. Keep Google Play Store as a proper name. Preserve placeholders exactly.",
     };
 );
 
 crate::marketing_message!(
     pub const PLATFORM_SUPPORT_MOBILE_ANDROID_CTA_DESCRIPTOR = {
         key: "platform_support.mobile.android.cta",
-        message: "Download the APK",
-        comment: "Button or link label on the Android app card that opens the GitHub repository where the APK is published. Keep APK as a proper name; keep it short.",
+        message: "Get it on Google Play",
+        comment: "Button or link label on the Android app card that opens the Google Play Store listing. Keep Google Play as a proper name; keep it short.",
     };
 );
 

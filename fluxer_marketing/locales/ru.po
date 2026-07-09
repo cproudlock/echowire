@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-06-29 00:00+0000\n"
-"PO-Revision-Date: 2026-06-29 00:00+0000\n"
+"POT-Creation-Date: 2026-07-09 00:00+0000\n"
+"PO-Revision-Date: 2026-07-09 00:00+0000\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2479,18 +2479,17 @@ msgctxt "platform_support.mobile.android.title"
 msgid "{android} app"
 msgstr "Приложение для {android}"
 
-#. Body copy for the Android app card on the download page. Keep APK and GitHub as proper names; make clear the install file lives in the open source repository. Preserve placeholders exactly.
+#. Body copy for the Android app card on the download page. Keep Google Play Store as a proper name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.android.body
 msgctxt "platform_support.mobile.android.body"
-msgid "Install the {android} APK straight from our open source repository on {github}."
-msgstr ""
-"Установите APK для {android} прямо из нашего репозитория с открытым исходным кодом на {github}."
+msgid "Get the {android} app on the Google Play Store."
+msgstr "Get the {android} app on the Google Play Store."
 
-#. Button or link label on the Android app card that opens the GitHub repository where the APK is published. Keep APK as a proper name; keep it short.
+#. Button or link label on the Android app card that opens the Google Play Store listing. Keep Google Play as a proper name; keep it short.
 #: fluxer_marketing/generated:platform_support.mobile.android.cta
 msgctxt "platform_support.mobile.android.cta"
-msgid "Download the APK"
-msgstr "Скачать APK"
+msgid "Get it on Google Play"
+msgstr "Get it on Google Play"
 
 #. Disclaimer under the mobile section on the download page. Make clear the native iOS and Android apps are early alphas and may be buggy, while the web app (PWA) is not an alpha. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.alpha_disclaimer

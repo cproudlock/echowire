@@ -186,8 +186,8 @@ pub fn download_page(
                         }
                         h3 class="mt-4 font-semibold text-gray-900 text-lg" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_TITLE_DESCRIPTOR)) }
                         p class="mt-2 flex-1 text-sm leading-relaxed text-gray-600" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_BODY_DESCRIPTOR)) }
-                        a class="mt-5 inline-flex items-center gap-2 self-start rounded-xl bg-[#4641D9] px-5 py-3 font-medium text-sm text-white shadow-md transition-colors hover:bg-[#3832B8]" href="https://github.com/fluxerapp/flutter_client" target="_blank" rel="noopener noreferrer" {
-                            (icon(Icon::Github, "h-5 w-5"))
+                        a class="mt-5 inline-flex items-center gap-2 self-start rounded-xl bg-[#4641D9] px-5 py-3 font-medium text-sm text-white shadow-md transition-colors hover:bg-[#3832B8]" href="https://play.google.com/store/apps/details?id=org.echowire.twa" target="_blank" rel="noopener noreferrer" {
+                            (icon(Icon::Android, "h-5 w-5"))
                             (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_CTA_DESCRIPTOR))
                         }
                     }

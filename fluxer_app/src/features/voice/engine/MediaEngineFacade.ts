@@ -3724,6 +3724,19 @@ class MediaEngineFacade extends Store {
 		const serverDeaf = serverVoiceState?.deaf ?? false;
 		if (await shouldUseNativeVoiceEngine()) {
 			await this.reconcileNativeEngineMicState({channelId, serverMute, serverDeaf});
+			// On a (re)connect, force the native engine to re-acquire the OS audio
+			// devices. After a long idle (e.g. the desktop app left in the tray
+			// overnight) the reused native voice engine keeps a STALE audio-device
+			// handle, so on rejoin remote audio stops playing ("can't hear others")
+			// until the user manually switches output devices in settings. Re-applying
+			// the devices reproduces that manual switch automatically.
+			if (
+				reason === 'voice room connected' ||
+				reason === 'voice room reconnected' ||
+				reason === 'native voice engine connected'
+			) {
+				await this.reacquireNativeAudioDevicesOnConnect();
+			}
 			this.syncLocalVoiceStateWithServer();
 			return;
 		}
@@ -3768,6 +3781,39 @@ class MediaEngineFacade extends Store {
 			(pttActive && !Keybind.pushToTalkHeld) ||
 			(ptmActive && Keybind.pushToMuteHeld);
 		await this.setMicEnabledViaEngine(!effectiveMute);
+	}
+
+	/**
+	 * Force the native voice engine to re-acquire the OS audio devices on a
+	 * (re)connect. Fixes the "can't hear others / others can't hear me after
+	 * rejoining without fully closing" bug: after a long idle the reused native
+	 * engine holds a stale audio-device handle, and the reducer won't re-issue a
+	 * device command because it believes nothing changed (plans zero commands), so
+	 * the stale playout/capture survives until a manual device switch or a full
+	 * app restart. Re-applying the current output device (outputDevice.setRequested
+	 * has no unchanged-guard, so it always re-issues the native set) plus a forced
+	 * mic republish reproduces that manual switch and re-initializes the device
+	 * module in both directions.
+	 */
+	private async reacquireNativeAudioDevicesOnConnect(): Promise<void> {
+		const room = voiceEngineV2AppConnectionHostAdapter.room;
+		if (!room) return;
+		try {
+			await this.voiceEngineV2Host.runAndWait(
+				() =>
+					this.voiceEngineV2Controller.setOutputDevice({
+						deviceId: VoiceSettings.getOutputDeviceId(),
+					}),
+				{description: 're-acquire output device on connect'},
+			);
+		} catch (error) {
+			logger.warn('Failed to re-acquire output device on connect', {error});
+		}
+		try {
+			await voiceEngineV2AppMediaExecutionAdapter.refreshMicrophone(room, {forceRepublish: true});
+		} catch (error) {
+			logger.warn('Failed to force-republish microphone on connect', {error});
+		}
 	}
 
 	getParticipantByUserIdAndConnectionId(

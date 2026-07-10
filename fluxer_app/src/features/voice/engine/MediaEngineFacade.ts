@@ -3724,18 +3724,17 @@ class MediaEngineFacade extends Store {
 		const serverDeaf = serverVoiceState?.deaf ?? false;
 		if (await shouldUseNativeVoiceEngine()) {
 			await this.reconcileNativeEngineMicState({channelId, serverMute, serverDeaf});
-			// On a (re)connect, force the native engine to re-acquire the OS audio
-			// devices. After a long idle (e.g. the desktop app left in the tray
-			// overnight) the reused native voice engine keeps a STALE audio-device
-			// handle, so on rejoin remote audio stops playing ("can't hear others")
-			// until the user manually switches output devices in settings. Re-applying
-			// the devices reproduces that manual switch automatically.
+			// On a (re)connect, force the native engine to re-acquire the SPEAKER /
+			// playout device. After a long idle (e.g. the desktop app left in the
+			// tray overnight) the reused native voice engine keeps a STALE output
+			// device handle, so on rejoin remote audio is silent ("can't hear
+			// others") until the user manually switches output devices in settings.
 			if (
 				reason === 'voice room connected' ||
 				reason === 'voice room reconnected' ||
 				reason === 'native voice engine connected'
 			) {
-				await this.reacquireNativeAudioDevicesOnConnect();
+				await this.reacquireOutputDeviceOnConnect();
 			}
 			this.syncLocalVoiceStateWithServer();
 			return;
@@ -3795,24 +3794,40 @@ class MediaEngineFacade extends Store {
 	 * mic republish reproduces that manual switch and re-initializes the device
 	 * module in both directions.
 	 */
-	private async reacquireNativeAudioDevicesOnConnect(): Promise<void> {
-		const room = voiceEngineV2AppConnectionHostAdapter.room;
-		if (!room) return;
+	private async reacquireOutputDeviceOnConnect(): Promise<void> {
+		// The SPEAKER / playout device goes stale after a long idle (Windows
+		// suspends wireless headsets), so remote audio is silent on rejoin.
+		// Re-applying the SAME output device is a no-op at the native layer
+		// (device unchanged), which is why simply re-setting it did nothing. Force
+		// a genuine re-acquire by briefly switching to a DIFFERENT output device
+		// and back to the intended one -- exactly what fixes it when a user does it
+		// by hand in Voice Settings.
+		const desired = VoiceSettings.getOutputDeviceId();
+		let alternate: string | null = null;
+		try {
+			const devices = await navigator.mediaDevices.enumerateDevices();
+			const other = devices.find(
+				(device) => device.kind === 'audiooutput' && device.deviceId !== '' && device.deviceId !== desired,
+			);
+			alternate = other?.deviceId ?? (desired === 'default' ? null : 'default');
+		} catch (error) {
+			logger.warn('Failed to enumerate output devices for reconnect re-acquire', {error});
+		}
+		if (alternate === null || alternate === desired) {
+			// No distinct second output to toggle through; best-effort re-apply.
+			alternate = desired;
+		}
 		try {
 			await this.voiceEngineV2Host.runAndWait(
-				() =>
-					this.voiceEngineV2Controller.setOutputDevice({
-						deviceId: VoiceSettings.getOutputDeviceId(),
-					}),
-				{description: 're-acquire output device on connect'},
+				() => this.voiceEngineV2Controller.setOutputDevice({deviceId: alternate as string}),
+				{description: 're-acquire output device (switch away)'},
+			);
+			await this.voiceEngineV2Host.runAndWait(
+				() => this.voiceEngineV2Controller.setOutputDevice({deviceId: desired}),
+				{description: 're-acquire output device (switch back)'},
 			);
 		} catch (error) {
 			logger.warn('Failed to re-acquire output device on connect', {error});
-		}
-		try {
-			await voiceEngineV2AppMediaExecutionAdapter.refreshMicrophone(room, {forceRepublish: true});
-		} catch (error) {
-			logger.warn('Failed to force-republish microphone on connect', {error});
 		}
 	}
 

@@ -3783,52 +3783,64 @@ class MediaEngineFacade extends Store {
 	}
 
 	/**
-	 * Force the native voice engine to re-acquire the OS audio devices on a
-	 * (re)connect. Fixes the "can't hear others / others can't hear me after
-	 * rejoining without fully closing" bug: after a long idle the reused native
-	 * engine holds a stale audio-device handle, and the reducer won't re-issue a
-	 * device command because it believes nothing changed (plans zero commands), so
-	 * the stale playout/capture survives until a manual device switch or a full
-	 * app restart. Re-applying the current output device (outputDevice.setRequested
-	 * has no unchanged-guard, so it always re-issues the native set) plus a forced
-	 * mic republish reproduces that manual switch and re-initializes the device
-	 * module in both directions.
+	 * Force the native voice engine to re-acquire the SPEAKER / playout device on
+	 * a (re)connect. Fixes the "no audio after rejoining without fully closing the
+	 * app" bug: after a long idle (e.g. the desktop app left in the tray overnight)
+	 * Windows power-suspends the output device and the reused native engine keeps a
+	 * stale playout handle, so on rejoin remote audio is silent until the user
+	 * manually switches the output device in Voice Settings or fully restarts.
+	 *
+	 * The reducer always emits an outputDevice.set command (no unchanged-guard),
+	 * but setting the SAME device is a no-op inside the native WebRTC audio device
+	 * module, so simply re-applying it does nothing. We reproduce the manual switch
+	 * by briefly selecting a DIFFERENT output device and switching back, which
+	 * forces the ADM to close and reopen the OS device and clears the stale handle.
+	 *
+	 * This is playout-only. The mic/capture path is deliberately left alone: the
+	 * confirmed symptom is silent output, and forcing a capture re-acquire would
+	 * mean briefly publishing a different microphone to the channel.
 	 */
 	private async reacquireOutputDeviceOnConnect(): Promise<void> {
-		// The SPEAKER / playout device goes stale after a long idle (Windows
-		// suspends wireless headsets), so remote audio is silent on rejoin.
-		// Re-applying the SAME output device is a no-op at the native layer
-		// (device unchanged), which is why simply re-setting it did nothing. Force
-		// a genuine re-acquire by briefly switching to a DIFFERENT output device
-		// and back to the intended one -- exactly what fixes it when a user does it
-		// by hand in Voice Settings.
 		const desired = VoiceSettings.getOutputDeviceId();
-		let alternate: string | null = null;
+		const alternate = await this.pickAlternateOutputDeviceId(desired);
+		// Switch away then back in separate steps so the switch-back to the
+		// intended device always runs even if the switch-away step fails.
+		try {
+			await this.voiceEngineV2Host.runAndWait(
+				() => this.voiceEngineV2Controller.setOutputDevice({deviceId: alternate}),
+				{description: 're-acquire output device (switch away)'},
+			);
+		} catch (error) {
+			logger.warn('Failed to switch away output device on connect', {error});
+		}
+		try {
+			await this.voiceEngineV2Host.runAndWait(() => this.voiceEngineV2Controller.setOutputDevice({deviceId: desired}), {
+				description: 're-acquire output device (switch back)',
+			});
+		} catch (error) {
+			logger.warn('Failed to switch back output device on connect', {error});
+		}
+	}
+
+	/**
+	 * Choose a real, DIFFERENT output device id to toggle through so the native
+	 * ADM actually re-acquires (setting the same device is a native no-op). Prefer
+	 * a genuinely enumerated second output; otherwise fall back to Windows' stock
+	 * 'default'/'communications' device ids, which are always distinct from each
+	 * other and force a real device change even on a machine that enumerates a
+	 * single physical output. Never returns `desired`.
+	 */
+	private async pickAlternateOutputDeviceId(desired: string): Promise<string> {
 		try {
 			const devices = await navigator.mediaDevices.enumerateDevices();
 			const other = devices.find(
 				(device) => device.kind === 'audiooutput' && device.deviceId !== '' && device.deviceId !== desired,
 			);
-			alternate = other?.deviceId ?? (desired === 'default' ? null : 'default');
+			if (other) return other.deviceId;
 		} catch (error) {
 			logger.warn('Failed to enumerate output devices for reconnect re-acquire', {error});
 		}
-		if (alternate === null || alternate === desired) {
-			// No distinct second output to toggle through; best-effort re-apply.
-			alternate = desired;
-		}
-		try {
-			await this.voiceEngineV2Host.runAndWait(
-				() => this.voiceEngineV2Controller.setOutputDevice({deviceId: alternate as string}),
-				{description: 're-acquire output device (switch away)'},
-			);
-			await this.voiceEngineV2Host.runAndWait(
-				() => this.voiceEngineV2Controller.setOutputDevice({deviceId: desired}),
-				{description: 're-acquire output device (switch back)'},
-			);
-		} catch (error) {
-			logger.warn('Failed to re-acquire output device on connect', {error});
-		}
+		return desired === 'default' ? 'communications' : 'default';
 	}
 
 	getParticipantByUserIdAndConnectionId(

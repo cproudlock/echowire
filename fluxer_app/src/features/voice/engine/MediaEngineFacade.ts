@@ -3724,18 +3724,6 @@ class MediaEngineFacade extends Store {
 		const serverDeaf = serverVoiceState?.deaf ?? false;
 		if (await shouldUseNativeVoiceEngine()) {
 			await this.reconcileNativeEngineMicState({channelId, serverMute, serverDeaf});
-			// On a (re)connect, force the native engine to re-acquire the SPEAKER /
-			// playout device. After a long idle (e.g. the desktop app left in the
-			// tray overnight) the reused native voice engine keeps a STALE output
-			// device handle, so on rejoin remote audio is silent ("can't hear
-			// others") until the user manually switches output devices in settings.
-			if (
-				reason === 'voice room connected' ||
-				reason === 'voice room reconnected' ||
-				reason === 'native voice engine connected'
-			) {
-				await this.reacquireOutputDeviceOnConnect();
-			}
 			this.syncLocalVoiceStateWithServer();
 			return;
 		}
@@ -3780,67 +3768,6 @@ class MediaEngineFacade extends Store {
 			(pttActive && !Keybind.pushToTalkHeld) ||
 			(ptmActive && Keybind.pushToMuteHeld);
 		await this.setMicEnabledViaEngine(!effectiveMute);
-	}
-
-	/**
-	 * Force the native voice engine to re-acquire the SPEAKER / playout device on
-	 * a (re)connect. Fixes the "no audio after rejoining without fully closing the
-	 * app" bug: after a long idle (e.g. the desktop app left in the tray overnight)
-	 * Windows power-suspends the output device and the reused native engine keeps a
-	 * stale playout handle, so on rejoin remote audio is silent until the user
-	 * manually switches the output device in Voice Settings or fully restarts.
-	 *
-	 * The reducer always emits an outputDevice.set command (no unchanged-guard),
-	 * but setting the SAME device is a no-op inside the native WebRTC audio device
-	 * module, so simply re-applying it does nothing. We reproduce the manual switch
-	 * by briefly selecting a DIFFERENT output device and switching back, which
-	 * forces the ADM to close and reopen the OS device and clears the stale handle.
-	 *
-	 * This is playout-only. The mic/capture path is deliberately left alone: the
-	 * confirmed symptom is silent output, and forcing a capture re-acquire would
-	 * mean briefly publishing a different microphone to the channel.
-	 */
-	private async reacquireOutputDeviceOnConnect(): Promise<void> {
-		const desired = VoiceSettings.getOutputDeviceId();
-		const alternate = await this.pickAlternateOutputDeviceId(desired);
-		// Switch away then back in separate steps so the switch-back to the
-		// intended device always runs even if the switch-away step fails.
-		try {
-			await this.voiceEngineV2Host.runAndWait(
-				() => this.voiceEngineV2Controller.setOutputDevice({deviceId: alternate}),
-				{description: 're-acquire output device (switch away)'},
-			);
-		} catch (error) {
-			logger.warn('Failed to switch away output device on connect', {error});
-		}
-		try {
-			await this.voiceEngineV2Host.runAndWait(() => this.voiceEngineV2Controller.setOutputDevice({deviceId: desired}), {
-				description: 're-acquire output device (switch back)',
-			});
-		} catch (error) {
-			logger.warn('Failed to switch back output device on connect', {error});
-		}
-	}
-
-	/**
-	 * Choose a real, DIFFERENT output device id to toggle through so the native
-	 * ADM actually re-acquires (setting the same device is a native no-op). Prefer
-	 * a genuinely enumerated second output; otherwise fall back to Windows' stock
-	 * 'default'/'communications' device ids, which are always distinct from each
-	 * other and force a real device change even on a machine that enumerates a
-	 * single physical output. Never returns `desired`.
-	 */
-	private async pickAlternateOutputDeviceId(desired: string): Promise<string> {
-		try {
-			const devices = await navigator.mediaDevices.enumerateDevices();
-			const other = devices.find(
-				(device) => device.kind === 'audiooutput' && device.deviceId !== '' && device.deviceId !== desired,
-			);
-			if (other) return other.deviceId;
-		} catch (error) {
-			logger.warn('Failed to enumerate output devices for reconnect re-acquire', {error});
-		}
-		return desired === 'default' ? 'communications' : 'default';
 	}
 
 	getParticipantByUserIdAndConnectionId(

@@ -76,18 +76,26 @@ build_android_notification(Tag, ImageUrl, Group) ->
         <<"click_action">> => <<"FLUXER_MESSAGE">>
     }).
 
+%% Data-only FCM message (no `notification`/`android.notification` block).
+%%
+%% The Android client renders every push itself via its own Flutter background
+%% handler, which recreates the `fluxer_default_push` channel each time. A
+%% `notification`-block message is instead rendered by the Android system and is
+%% SILENTLY DROPPED when that channel does not yet exist on the device (fresh
+%% install / app-data clear / stuck notification state) -- which caused "Android
+%% receives no push notifications". Title/body/tag travel in `data` (the client
+%% reads `data.title`/`data.body`); priority HIGH is kept so Doze wakeups match a
+%% notification message. See fcm_message_mapper.dart / fcm_background_local_notifications.dart.
 -spec wrap_notification_message(binary(), map(), map(), map(), binary()) -> map().
-wrap_notification_message(DeviceToken, NotificationBody, Data, AndroidNotification, Group) ->
+wrap_notification_message(DeviceToken, _NotificationBody, Data, _AndroidNotification, Group) ->
     #{
         <<"message">> => #{
             <<"token">> => DeviceToken,
-            <<"notification">> => NotificationBody,
             <<"data">> => Data,
             <<"android">> => #{
                 <<"priority">> => <<"HIGH">>,
                 <<"ttl">> => <<"86400s">>,
-                <<"collapse_key">> => Group,
-                <<"notification">> => AndroidNotification
+                <<"collapse_key">> => Group
             },
             <<"fcm_options">> => #{
                 <<"analytics_label">> => <<"message_create">>

@@ -103,6 +103,12 @@ objc2-vision = {version = "0.3", default-features = false, features = ["std", "V
 objc2-core-video = {version = "0.3", features = ["CVPixelBuffer", "CVImageBuffer", "CVBuffer", "CVReturn", "CVBase"]}
 objc2-core-foundation = {version = "0.3", features = ["CFDictionary", "CFBase"]}
 
+[target.'cfg(windows)'.dependencies]
+# Query the real OS default audio endpoint (Core Audio) so "default" output
+# follows the Windows Default Device instead of libwebrtc's first-enumerated
+# endpoint. Version pinned to the one already resolved in the tree (0.62.2).
+windows = {version = "0.62", features = ["Win32_Media_Audio", "Win32_System_Com"]}
+
 [build-dependencies]
 napi-build = "2.3.2"
 

@@ -3276,9 +3276,14 @@ impl VoiceEngine {
             let runtime = LkRuntime::instance();
             let factory = runtime.pc_factory();
             let raw = collect_factory_playout_devices_from(factory)?;
-            let guid = audio::resolve_playout_device_guid(&device_id, &raw).map_err(|error| {
-                napi::Error::from_reason(format!("set audio output device: {error}"))
-            })?;
+            // libwebrtc's enumeration does not flag the OS default output, so ask
+            // the platform directly; otherwise "default" degrades to the first
+            // active endpoint (wrong on multi-output machines). See audio.rs.
+            let os_default = audio::os_default_render_device_id();
+            let guid = audio::resolve_playout_device_guid(&device_id, &raw, os_default.as_deref())
+                .map_err(|error| {
+                    napi::Error::from_reason(format!("set audio output device: {error}"))
+                })?;
             let platform_playout_active =
                 factory.is_platform_adm_active() && factory.adm_playout_enabled();
             let plan = audio::playout_switch_plan(

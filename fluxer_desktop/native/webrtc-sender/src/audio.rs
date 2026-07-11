@@ -240,10 +240,11 @@ pub fn playout_switch_plan(
 pub fn resolve_playout_device_guid(
     requested: &str,
     raw: &[(String, String, usize)],
+    os_default_id: Option<&str>,
 ) -> Result<String, String> {
     let requested = requested.trim();
     if requested.is_empty() || requested == "default" {
-        return find_default_device_id(raw)
+        return find_default_device_id(raw, os_default_id)
             .ok_or_else(|| "no audio output devices available".to_string());
     }
     let found = raw
@@ -365,16 +366,107 @@ pub fn is_default_route_device(id: &str, label: &str) -> bool {
     default_route_endpoint_label(id.trim(), &label).is_some()
 }
 
-pub fn find_default_device_id(raw: &[(String, String, usize)]) -> Option<String> {
+pub fn find_default_device_id(
+    raw: &[(String, String, usize)],
+    os_default_id: Option<&str>,
+) -> Option<String> {
+    // 1. Prefer the ACTUAL OS default endpoint when the caller knows it.
+    //    libwebrtc's Windows enumeration returns plain endpoint names with no
+    //    "default" marker, so without this the resolver cannot tell which
+    //    endpoint the OS considers default and falls through to step 3
+    //    ("first enumerated"), which is wrong on any machine with more than one
+    //    active output. Match by exact id first, then by the endpoint GUID key
+    //    so "{0.0.0.00000000}.{guid}" and a bare "{guid}" still compare equal.
+    if let Some(os_id) = os_default_id
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+    {
+        let matched = raw
+            .iter()
+            .find(|(id, _, _)| id.trim() == os_id)
+            .or_else(|| {
+                let os_key = endpoint_guid_key(os_id)?;
+                raw.iter().find(|(id, _, _)| {
+                    endpoint_guid_key(id.trim()).as_deref() == Some(os_key.as_str())
+                })
+            });
+        if let Some((id, _, _)) = matched {
+            return Some(id.trim().to_string());
+        }
+    }
+    // 2. A device libwebrtc itself tags as the default route (legacy/other ADMs).
     let default_route = raw
         .iter()
         .find(|(id, label, _)| !id.trim().is_empty() && is_default_route_device(id, label));
     if let Some((id, _, _)) = default_route {
         return Some(id.trim().to_string());
     }
+    // 3. Last resort: the first enumerated endpoint.
     raw.iter()
         .find(|(id, _, _)| !id.trim().is_empty())
         .map(|(id, _, _)| id.trim().to_string())
+}
+
+/// Extract the endpoint GUID from a Core Audio device id so ids in different
+/// shapes still compare equal: "{0.0.0.00000000}.{a66f...c19a}" and the bare
+/// "{a66f...c19a}" both key on "a66f...c19a" (lower-cased).
+fn endpoint_guid_key(id: &str) -> Option<String> {
+    let id = id.trim();
+    if let Some(close) = id.rfind('}')
+        && let Some(open) = id[..close].rfind('{')
+    {
+        let inner = id[open + 1..close].trim();
+        if !inner.is_empty() {
+            return Some(inner.to_ascii_lowercase());
+        }
+    }
+    if id.is_empty() {
+        None
+    } else {
+        Some(id.to_ascii_lowercase())
+    }
+}
+
+/// The current OS default RENDER (playout) endpoint id, or `None` if it cannot
+/// be determined. On Windows this is the real Default Device (`eConsole` role);
+/// libwebrtc's own device enumeration never exposes it, so we ask the OS
+/// directly and feed the answer into [`find_default_device_id`]. Non-Windows
+/// platforms return `None` (their "default" playout is handled elsewhere).
+#[cfg(windows)]
+pub fn os_default_render_device_id() -> Option<String> {
+    windows_default_endpoint_id(windows::Win32::Media::Audio::eRender)
+}
+
+#[cfg(not(windows))]
+pub fn os_default_render_device_id() -> Option<String> {
+    None
+}
+
+#[cfg(windows)]
+fn windows_default_endpoint_id(flow: windows::Win32::Media::Audio::EDataFlow) -> Option<String> {
+    use windows::Win32::Media::Audio::{IMMDeviceEnumerator, MMDeviceEnumerator, eConsole};
+    use windows::Win32::System::Com::{
+        CLSCTX_ALL, COINIT_MULTITHREADED, CoCreateInstance, CoInitializeEx, CoTaskMemFree,
+    };
+    unsafe {
+        // The device-module worker thread may have no COM apartment yet. S_FALSE
+        // (already initialised) and RPC_E_CHANGED_MODE (an STA already exists)
+        // are both fine -- either way a usable apartment exists afterwards.
+        let _ = CoInitializeEx(None, COINIT_MULTITHREADED);
+        let enumerator: IMMDeviceEnumerator =
+            CoCreateInstance(&MMDeviceEnumerator, None, CLSCTX_ALL).ok()?;
+        let device = enumerator.GetDefaultAudioEndpoint(flow, eConsole).ok()?;
+        let id_pwstr = device.GetId().ok()?;
+        let id = id_pwstr.to_string().ok()?;
+        // GetId allocates the string with CoTaskMemAlloc; release it.
+        CoTaskMemFree(Some(id_pwstr.0 as *const core::ffi::c_void));
+        let id = id.trim();
+        if id.is_empty() {
+            None
+        } else {
+            Some(id.to_string())
+        }
+    }
 }
 
 fn strip_windows_role_prefix(label: &str, role: &str) -> Option<String> {
@@ -672,11 +764,11 @@ mod tests {
         ];
 
         assert_eq!(
-            resolve_playout_device_guid("", &raw),
+            resolve_playout_device_guid("", &raw, None),
             Ok("default".to_string())
         );
         assert_eq!(
-            resolve_playout_device_guid("default", &raw),
+            resolve_playout_device_guid("default", &raw, None),
             Ok("default".to_string())
         );
     }
@@ -685,7 +777,7 @@ mod tests {
     fn resolve_playout_device_guid_rejects_default_when_no_devices_exist() {
         let raw: Vec<(String, String, usize)> = vec![];
 
-        assert!(resolve_playout_device_guid("default", &raw).is_err());
+        assert!(resolve_playout_device_guid("default", &raw, None).is_err());
     }
 
     #[test]
@@ -696,10 +788,89 @@ mod tests {
         ];
 
         assert_eq!(
-            resolve_playout_device_guid(" speaker-guid ", &raw),
+            resolve_playout_device_guid(" speaker-guid ", &raw, None),
             Ok("speaker-guid".to_string())
         );
-        assert!(resolve_playout_device_guid("missing-guid", &raw).is_err());
+        assert!(resolve_playout_device_guid("missing-guid", &raw, None).is_err());
+    }
+
+    // Erin's actual Windows enumeration (2026-07-10): two ACTIVE render endpoints,
+    // the dead S/PDIF port sorts first, the real default (G735 headset) second.
+    // libwebrtc tags neither as default, which is the whole bug.
+    fn erin_active_render_devices() -> Vec<(String, String, usize)> {
+        vec![
+            (
+                "{0.0.0.00000000}.{5376a002-a208-4563-a150-b79d5e8baead}".to_string(),
+                "Realtek Digital Output (Realtek(R) Audio)".to_string(),
+                0,
+            ),
+            (
+                "{0.0.0.00000000}.{a66f94dc-ecda-4a66-854e-4fd86467c19a}".to_string(),
+                "Speakers (2- Logitech G735 Gaming Headset)".to_string(),
+                1,
+            ),
+        ]
+    }
+
+    const ERIN_G735_ID: &str = "{0.0.0.00000000}.{a66f94dc-ecda-4a66-854e-4fd86467c19a}";
+    const ERIN_REALTEK_ID: &str = "{0.0.0.00000000}.{5376a002-a208-4563-a150-b79d5e8baead}";
+
+    #[test]
+    fn find_default_device_id_without_os_default_reproduces_the_wrong_pick() {
+        // Regression witness: with no OS-default hint and no libwebrtc default
+        // tag, the resolver falls back to the first endpoint -- the dead S/PDIF.
+        let raw = erin_active_render_devices();
+        assert_eq!(
+            find_default_device_id(&raw, None),
+            Some(ERIN_REALTEK_ID.to_string())
+        );
+    }
+
+    #[test]
+    fn find_default_device_id_prefers_the_os_default_endpoint() {
+        let raw = erin_active_render_devices();
+        assert_eq!(
+            find_default_device_id(&raw, Some(ERIN_G735_ID)),
+            Some(ERIN_G735_ID.to_string()),
+        );
+    }
+
+    #[test]
+    fn find_default_device_id_matches_os_default_by_guid_key() {
+        // OS default id reported in a different shape (bare braces) still matches
+        // libwebrtc's full "{0.0.0...}.{guid}" endpoint id via the guid key.
+        let raw = erin_active_render_devices();
+        assert_eq!(
+            find_default_device_id(&raw, Some("{a66f94dc-ecda-4a66-854e-4fd86467c19a}")),
+            Some(ERIN_G735_ID.to_string()),
+        );
+    }
+
+    #[test]
+    fn find_default_device_id_ignores_unmatched_os_default() {
+        // OS default not present in the list -> fall back, do not invent a device.
+        let raw = erin_active_render_devices();
+        assert_eq!(
+            find_default_device_id(
+                &raw,
+                Some("{0.0.0.00000000}.{deadbeef-0000-0000-0000-000000000000}")
+            ),
+            Some(ERIN_REALTEK_ID.to_string()),
+        );
+    }
+
+    #[test]
+    fn resolve_playout_device_guid_uses_os_default_for_the_default_request() {
+        let raw = erin_active_render_devices();
+        assert_eq!(
+            resolve_playout_device_guid("default", &raw, Some(ERIN_G735_ID)),
+            Ok(ERIN_G735_ID.to_string()),
+        );
+        // An explicit device id is still honoured verbatim, OS default ignored.
+        assert_eq!(
+            resolve_playout_device_guid(ERIN_REALTEK_ID, &raw, Some(ERIN_G735_ID)),
+            Ok(ERIN_REALTEK_ID.to_string()),
+        );
     }
 
     #[test]
@@ -928,21 +1099,24 @@ mod tests {
             ("default".to_string(), "default (WH-1000XM5)".to_string(), 0),
             ("81".to_string(), "WH-1000XM5".to_string(), 1),
         ];
-        assert_eq!(find_default_device_id(&macos), Some("default".to_string()));
+        assert_eq!(
+            find_default_device_id(&macos, None),
+            Some("default".to_string())
+        );
 
         let no_virtual_default = vec![
             ("guid-a".to_string(), "Speakers (Realtek)".to_string(), 0),
             ("guid-b".to_string(), "HDMI Out".to_string(), 1),
         ];
         assert_eq!(
-            find_default_device_id(&no_virtual_default),
+            find_default_device_id(&no_virtual_default, None),
             Some("guid-a".to_string())
         );
 
         let empty: Vec<(String, String, usize)> = vec![];
-        assert_eq!(find_default_device_id(&empty), None);
+        assert_eq!(find_default_device_id(&empty, None), None);
         let only_empty_ids = vec![(String::new(), "Phantom".to_string(), 0)];
-        assert_eq!(find_default_device_id(&only_empty_ids), None);
+        assert_eq!(find_default_device_id(&only_empty_ids, None), None);
     }
 
     #[test]

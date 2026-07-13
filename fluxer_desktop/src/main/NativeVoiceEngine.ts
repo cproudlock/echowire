@@ -135,6 +135,8 @@ interface NativeVoiceEngineInstance {
 		| string
 		| Promise<Array<VoiceEngineV2BridgeAudioOutputDevice> | string>;
 	setAudioOutputDevice(deviceId: string): Promise<void>;
+	// TEMP diagnostic: dumps OS-default endpoint + libwebrtc device list + resolution.
+	debugDefaultOutputResolution?(): Promise<string>;
 	ensurePlatformAudio?(): Promise<void>;
 	setParticipantVolume(participantSid: string, volume: number): Promise<void>;
 	setRemoteTrackSubscription?(options: VoiceEngineV2BridgeRemoteTrackSubscriptionOptions): Promise<void>;
@@ -1192,6 +1194,15 @@ async function handleSetAudioOutputDevice(deviceId: string): Promise<void> {
 		return;
 	}
 	const engine = await ensureEngineReady();
+	// TEMP diagnostic for the "default output resolves to wrong device" bug.
+	if (typeof engine.debugDefaultOutputResolution === 'function') {
+		try {
+			const diag = await engine.debugDefaultOutputResolution();
+			logger.info('[audio-default-diag] set output', {requested: deviceId, diag});
+		} catch (diagError) {
+			logger.info('[audio-default-diag] diagnostic failed', {error: String(diagError)});
+		}
+	}
 	try {
 		await engine.setAudioOutputDevice(deviceId);
 	} catch (error) {

@@ -3270,6 +3270,23 @@ impl VoiceEngine {
         .await
     }
 
+    /// TEMP DIAGNOSTIC: returns what the OS reports as the default render
+    /// endpoint, libwebrtc's raw playout device list, and what "default"
+    /// currently resolves to -- so we can see why "default" picks the wrong
+    /// device on some machines. Logged to main.log by the TS layer.
+    #[napi]
+    pub async fn debug_default_output_resolution(&self) -> napi::Result<String> {
+        run_audio_device_module_blocking(|| {
+            let raw = collect_factory_playout_devices()?;
+            let os_default = audio::os_default_render_device_id();
+            let chosen = audio::resolve_playout_device_guid("default", &raw, os_default.as_deref()).ok();
+            Ok(format!(
+                "os_default={os_default:?} chosen={chosen:?} raw_devices={raw:?}"
+            ))
+        })
+        .await
+    }
+
     #[napi]
     pub async fn set_audio_output_device(&self, device_id: String) -> napi::Result<()> {
         run_audio_device_module_blocking(move || {
@@ -3280,10 +3297,19 @@ impl VoiceEngine {
             // the platform directly; otherwise "default" degrades to the first
             // active endpoint (wrong on multi-output machines). See audio.rs.
             let os_default = audio::os_default_render_device_id();
+            // TEMP DIAGNOSTIC (audio "default" resolution): dump what the OS
+            // reports as the default render endpoint, libwebrtc's raw device
+            // list, and the requested id, so we can see why "default" resolves
+            // to the wrong device on some machines. Remove once fixed.
+            eprintln!(
+                "[audio-default-diag] requested={:?} os_default={:?} raw_devices={:?}",
+                device_id, os_default, raw
+            );
             let guid = audio::resolve_playout_device_guid(&device_id, &raw, os_default.as_deref())
                 .map_err(|error| {
                     napi::Error::from_reason(format!("set audio output device: {error}"))
                 })?;
+            eprintln!("[audio-default-diag] resolved chosen guid={guid:?}");
             let platform_playout_active =
                 factory.is_platform_adm_active() && factory.adm_playout_enabled();
             let plan = audio::playout_switch_plan(

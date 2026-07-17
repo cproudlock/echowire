@@ -76,26 +76,28 @@ build_android_notification(Tag, ImageUrl, Group) ->
         <<"click_action">> => <<"FLUXER_MESSAGE">>
     }).
 
-%% Data-only FCM message (no `notification`/`android.notification` block).
+%% Notification + data FCM message.
 %%
-%% The Android client renders every push itself via its own Flutter background
-%% handler, which recreates the `fluxer_default_push` channel each time. A
-%% `notification`-block message is instead rendered by the Android system and is
-%% SILENTLY DROPPED when that channel does not yet exist on the device (fresh
-%% install / app-data clear / stuck notification state) -- which caused "Android
-%% receives no push notifications". Title/body/tag travel in `data` (the client
-%% reads `data.title`/`data.body`); priority HIGH is kept so Doze wakeups match a
-%% notification message. See fcm_message_mapper.dart / fcm_background_local_notifications.dart.
+%% The Android system renders the `notification` block INSTANTLY (no app wake),
+%% giving iOS-parity latency, while the `data` block still reaches the client's
+%% background handler for badges/dedupe/navigation. This relies on the target
+%% channel (`fluxer_default_push`) already existing on the device; the client
+%% now creates it natively at process start (FluxerApplication.onCreate, app
+%% build >= +81), so the system no longer silently drops the notification.
+%% (Data-only was a stopgap for older builds without that guarantee -- it always
+%% renders but must wake the app first, adding latency.)
 -spec wrap_notification_message(binary(), map(), map(), map(), binary()) -> map().
-wrap_notification_message(DeviceToken, _NotificationBody, Data, _AndroidNotification, Group) ->
+wrap_notification_message(DeviceToken, NotificationBody, Data, AndroidNotification, Group) ->
     #{
         <<"message">> => #{
             <<"token">> => DeviceToken,
+            <<"notification">> => NotificationBody,
             <<"data">> => Data,
             <<"android">> => #{
                 <<"priority">> => <<"HIGH">>,
                 <<"ttl">> => <<"86400s">>,
-                <<"collapse_key">> => Group
+                <<"collapse_key">> => Group,
+                <<"notification">> => AndroidNotification
             },
             <<"fcm_options">> => #{
                 <<"analytics_label">> => <<"message_create">>

@@ -4,13 +4,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-07-09 00:00+0000\n"
-"PO-Revision-Date: 2026-07-09 00:00+0000\n"
+"POT-Creation-Date: 2026-06-16 00:00+0000\n"
+"PO-Revision-Date: 2026-07-09 20:06+0000\n"
 "Language: es-419\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Last-Translator: Eyeflame <eyeflamx@gmail.com>\n"
+"Language-Team: Spanish (Latin America) <https://weblate.fluxer.tools/"
+"projects/fluxer/marketing/es_419/>\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 
 #. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.community_support
@@ -52,7 +56,9 @@ msgstr "Roles y permisos granulares"
 #: fluxer_marketing/generated:app.communities.roles_permissions_audit.keep_running_smoothly
 msgctxt "app.communities.roles_permissions_audit.keep_running_smoothly"
 msgid "Keep your community running smoothly with roles, permissions, and logs."
-msgstr "Mantén tu comunidad funcionando sin problemas con roles, permisos y registros."
+msgstr ""
+"Mantén tu comunidad funcionando sin problemas con roles, permisos y "
+"registros."
 
 #. Short UI label or heading used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.title
@@ -71,7 +77,8 @@ msgstr "Verificación de la comunidad"
 msgctxt "app.communities.verification.value_statement"
 msgid "Your community gets verified status for authenticity and trust."
 msgstr ""
-"Tu comunidad obtiene el estado verificado para garantizar su autenticidad y generar confianza."
+"Tu comunidad obtiene el estado verificado para garantizar su autenticidad y "
+"generar confianza."
 
 #. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.verification.verified_community
@@ -119,7 +126,9 @@ msgstr "Sonidos de entrada personalizados"
 #: fluxer_marketing/generated:app.customization.custom_sounds.set_personalized_join_sounds
 msgctxt "app.customization.custom_sounds.set_personalized_join_sounds"
 msgid "Set personalized sounds when you join voice channels to make your presence known."
-msgstr "Establece sonidos personalizados cuando te unes a canales de voz para hacerte notar."
+msgstr ""
+"Establece sonidos personalizados cuando te unes a canales de voz para "
+"hacerte notar."
 
 #. Compact UI label used in the home-page customization feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.customization.custom_themes
@@ -395,8 +404,7 @@ msgstr "Cómo construí {product_name}, una app de chat parecida a {discord}"
 msgctxt "blog.post.mobile_clients_and_fluxer_v2.description"
 msgid ""
 "{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
-msgstr ""
-"{product_name} v2 ya está disponible, los clientes móviles son de código abierto, el autoalojamiento está mejorando y el desarrollo público regresa a GitHub."
+msgstr "{product_name} v2 ya está disponible, los clientes móviles son de código abierto, el autoalojamiento está mejorando y el desarrollo público regresa a GitHub."
 
 #. Blog article title shown in cards, article pages, metadata, and feeds. Keep Fluxer as a product name and v2 as the release name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:blog.post.mobile_clients_and_fluxer_v2.title
@@ -878,7 +886,7 @@ msgstr "Historial de políticas"
 #: fluxer_marketing/generated:content.policies.company_information.description
 msgctxt "content.policies.company_information.description"
 msgid ""
-"Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
+"Legal details for {product_name} Platform AB, including how we make money and how to contact us."
 msgstr ""
 "Datos legales de {product_name} Platform AB, incluida nuestra forma de generar ingresos y cómo contactarnos."
 
@@ -1546,8 +1554,7 @@ msgstr "{product_name}"
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.fluxer_platform_ab_swedish_limited
 msgctxt "footer.fluxer_platform_ab_swedish_limited"
-msgid ""
-"© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
+msgid "© {product_name} Platform AB (Swedish limited liability company: 559537-3993)"
 msgstr "© {product_name} Platform AB (sociedad de responsabilidad limitada sueca: 559537-3993)"
 
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
@@ -2475,18 +2482,13 @@ msgctxt "platform_support.mobile.ios.title"
 msgid "{ios} app"
 msgstr "Aplicación de {ios}"
 
-#. Body copy for the iOS app card on the download page. Keep TestFlight as a proper name. Preserve placeholders exactly.
+#. Body copy for the iOS app card on the download page. Preserve {premium_tier_name} exactly; make clear the iOS app is in a limited TestFlight beta with capped slots and that a public release is coming. Do not promise that subscribing grants beta access. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.body
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
-"The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
-msgstr "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
-
-#. Button or link label on the iOS app card that opens the public TestFlight beta invite. Keep TestFlight as a proper name; keep it short. Preserve placeholders exactly.
-#: fluxer_marketing/generated:platform_support.mobile.ios.cta
-msgctxt "platform_support.mobile.ios.cta"
-msgid "Join the {testflight} beta"
-msgstr "Join the {testflight} beta"
+"As of 15 June 2026, the {ios} app is in a limited {testflight} beta with a small group of {premium_tier_name} subscribers. {testflight} slots are limited, so the best way in for most people is to wait for the public release."
+msgstr ""
+"A partir del 15 de junio de 2026, la aplicación de {ios} se encuentra en una beta limitada de {testflight} con un pequeño grupo de suscriptores de {premium_tier_name}. Los espacios de {testflight} son limitados, por lo que la mejor manera de acceder para la mayoría de las personas es esperar el lanzamiento público."
 
 #. Card title for the Android app option on the download page. Keep the platform name conventional and short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.android.title
@@ -2494,17 +2496,18 @@ msgctxt "platform_support.mobile.android.title"
 msgid "{android} app"
 msgstr "Aplicación de {android}"
 
-#. Body copy for the Android app card on the download page. Keep Google Play Store as a proper name. Preserve placeholders exactly.
+#. Body copy for the Android app card on the download page. Keep APK and GitHub as proper names; make clear the install file lives in the open source repository. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.android.body
 msgctxt "platform_support.mobile.android.body"
-msgid "Get the {android} app on the Google Play Store."
-msgstr "Get the {android} app on the Google Play Store."
+msgid "Install the {android} APK straight from our open source repository on {github}."
+msgstr ""
+"Instala el APK de {android} directamente desde nuestro repositorio de código abierto en {github}."
 
-#. Button or link label on the Android app card that opens the Google Play Store listing. Keep Google Play as a proper name; keep it short.
+#. Button or link label on the Android app card that opens the GitHub repository where the APK is published. Keep APK as a proper name; keep it short.
 #: fluxer_marketing/generated:platform_support.mobile.android.cta
 msgctxt "platform_support.mobile.android.cta"
-msgid "Get it on Google Play"
-msgstr "Get it on Google Play"
+msgid "Download the APK"
+msgstr "Descargar el APK"
 
 #. Disclaimer under the mobile section on the download page. Make clear the native iOS and Android apps are early alphas and may be buggy, while the web app (PWA) is not an alpha. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.alpha_disclaimer
@@ -3029,7 +3032,7 @@ msgstr "Una app de chat que te prioriza"
 #: fluxer_marketing/generated:misc_labels.donating_with_perks
 msgctxt "misc_labels.donating_with_perks"
 msgid "Donating with perks"
-msgstr "Apoyando a Echowire con beneficios"
+msgstr "Apoyando a Fluxer con beneficios"
 
 #. Short UI label or heading reused across marketing cards, buttons, and section headings. Translate as a standalone UI phrase that can fit multiple surfaces.
 #: fluxer_marketing/generated:misc_labels.exclusive_features

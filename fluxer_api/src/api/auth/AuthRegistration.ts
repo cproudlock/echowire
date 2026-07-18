@@ -56,6 +56,35 @@ import type {IRegistrationRiskEvaluator} from './services/IRegistrationRiskEvalu
 
 const DEFAULT_MINIMUM_AGE = 13;
 
+// Fire-and-forget notification to a channel webhook when a new registration is
+// pending admin approval, so admins get pinged instead of having to poll the
+// pending list. Configured via FLUXER_REGISTRATION_PENDING_WEBHOOK_URL (a
+// channel webhook URL). Never blocks or fails the registration.
+function notifyPendingRegistrationWebhook(params: {username: string; email: string | null}): void {
+	const webhookUrl = process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_URL;
+	if (!webhookUrl) return;
+	const emailPart = params.email ? ` (${params.email})` : '';
+	const content = `🆕 New registration pending approval: **${params.username}**${emailPart} — approve in Admin → Instance Config → Pending Registrations`;
+	void (async () => {
+		try {
+			const controller = new AbortController();
+			const timeout = setTimeout(() => controller.abort(), 5000);
+			try {
+				await fetch(webhookUrl, {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({content}),
+					signal: controller.signal,
+				});
+			} finally {
+				clearTimeout(timeout);
+			}
+		} catch (error) {
+			Logger.warn({error}, '[AuthRegistration] Failed to POST pending-registration notification webhook');
+		}
+	})();
+}
+
 function getRetryAfterSeconds(result: RateLimitResult): number {
 	return result.retryAfter ?? Math.max(0, Math.ceil((result.resetTime.getTime() - Date.now()) / 1000));
 }
@@ -419,6 +448,7 @@ export async function register(
 			registration_url_id: registrationAccess.registrationUrl?.id ?? null,
 			client_ip: clientIp,
 		});
+		notifyPendingRegistrationWebhook({username: user.username, email: rawEmail});
 		return {
 			registration_pending_approval: true,
 			user_id: user.id.toString(),

@@ -59,24 +59,38 @@ async fn applications_list(
     let trimmed_app_id = app_id.trim();
     let trimmed_owner_id = owner_id.trim();
 
+    // These lookups take a numeric snowflake ID, not a name. Guard against
+    // non-numeric input (e.g. someone typing "emma") so we show a friendly
+    // hint instead of firing an API call that returns a raw "Invalid snowflake"
+    // 400 on every keystroke.
+    let is_snowflake = |s: &str| !s.is_empty() && s.bytes().all(|b| b.is_ascii_digit());
+
     if !trimmed_app_id.is_empty() {
-        match client.lookup_application(trimmed_app_id).await {
-            Ok(Some(app)) => applications = Some(vec![app]),
-            Ok(None) => error = Some("Application not found".to_string()),
-            Err(e) => {
-                tracing::warn!(%e, application_id = trimmed_app_id, "admin API request failed: lookup application");
-                error = Some(e.to_string());
+        if !is_snowflake(trimmed_app_id) {
+            error = Some("Enter a numeric application ID (not a name).".to_string());
+        } else {
+            match client.lookup_application(trimmed_app_id).await {
+                Ok(Some(app)) => applications = Some(vec![app]),
+                Ok(None) => error = Some("Application not found".to_string()),
+                Err(e) => {
+                    tracing::warn!(%e, application_id = trimmed_app_id, "admin API request failed: lookup application");
+                    error = Some(e.to_string());
+                }
             }
         }
     } else if !trimmed_owner_id.is_empty() {
-        match client.list_user_applications(trimmed_owner_id).await {
-            Ok(apps) => {
-                owner_count = Some(apps.len());
-                applications = Some(apps);
-            }
-            Err(e) => {
-                tracing::warn!(%e, owner_id = trimmed_owner_id, "admin API request failed: list applications by owner");
-                error = Some(e.to_string());
+        if !is_snowflake(trimmed_owner_id) {
+            error = Some("Enter a numeric owner (user) ID (not a name).".to_string());
+        } else {
+            match client.list_user_applications(trimmed_owner_id).await {
+                Ok(apps) => {
+                    owner_count = Some(apps.len());
+                    applications = Some(apps);
+                }
+                Err(e) => {
+                    tracing::warn!(%e, owner_id = trimmed_owner_id, "admin API request failed: list applications by owner");
+                    error = Some(e.to_string());
+                }
             }
         }
     }

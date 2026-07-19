@@ -35,6 +35,7 @@ class Idle {
 	private systemIdleCheckInFlight = false;
 	private lastSystemIdleFailureAt = 0;
 	private activityVersion = 0;
+	private peakSystemIdleMs = 0;
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
@@ -111,6 +112,24 @@ class Idle {
 				return;
 			}
 			const now = Date.now();
+			this.peakSystemIdleMs = Math.max(this.peakSystemIdleMs, idleTimeMs);
+			// Electron's powerMonitor.getSystemIdleTime() is unreliable on some Linux
+			// desktops (e.g. X11/Cinnamon), where the OS idle D-Bus path is missing and
+			// it reports 0 even while the machine is genuinely idle. A raw 0 is finite,
+			// so it never hits the null failure path above; the old code then clobbered
+			// lastActivityTime back to "now" every poll, pinning the user active forever
+			// -> never away, never push-eligible. Detect a dead source: if the OS idle
+			// clock has NEVER advanced near the threshold this whole session yet we have
+			// gone a full idle window with no in-app activity, trust our own inactivity
+			// instead. Clients where the OS idle clock works (it has reached the
+			// threshold at least once) keep the exact original behavior.
+			const localInactivityMs = this.getInactiveDurationMs(now);
+			const systemIdleSourceIsBroken =
+				this.peakSystemIdleMs < IDLE_DURATION_MS && localInactivityMs >= IDLE_DURATION_MS;
+			if (systemIdleSourceIsBroken) {
+				this.applyIdleState(true);
+				return;
+			}
 			this.lastActivityTime = Math.max(0, now - idleTimeMs);
 			this.applyIdleState(idleTimeMs >= IDLE_DURATION_MS);
 		} catch {

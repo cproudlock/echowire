@@ -64,15 +64,21 @@ build_notification_message(DeviceToken, Payload) ->
     ),
     Data = build_notification_data(Payload, Title, Body, Tag, ImageUrl),
     Group = resolve_notification_group(maps:get(<<"data">>, Payload, #{}), Tag),
-    AndroidNotification = build_android_notification(Tag, ImageUrl, Group),
+    AndroidNotification = build_android_notification(Tag, ImageUrl),
     wrap_notification_message(DeviceToken, NotificationBody, Data, AndroidNotification, Group).
 
--spec build_android_notification(binary(), binary() | undefined, binary()) -> map().
-build_android_notification(Tag, ImageUrl, Group) ->
+%% NOTE: FCM v1's AndroidNotification has NO `group` field — including it makes
+%% the FCM REST API reject the entire message with HTTP 400 ("Unknown name
+%% \"group\" at 'message.android.notification'"), which push_fcm swallows
+%% silently. That dropped every message push. Android notification grouping is a
+%% client-side concern (NotificationCompat setGroup), so we simply omit it here;
+%% collapse_key (a valid field, set in wrap_notification_message) still handles
+%% collapsing.
+-spec build_android_notification(binary(), binary() | undefined) -> map().
+build_android_notification(Tag, ImageUrl) ->
     maybe_put(<<"image">>, ImageUrl, #{
         <<"channel_id">> => <<"fluxer_default_push">>,
         <<"tag">> => Tag,
-        <<"group">> => Group,
         <<"click_action">> => <<"FLUXER_MESSAGE">>
     }).
 
@@ -355,7 +361,9 @@ build_message_includes_android_chat_notification_fields_test() ->
     AndroidNotification = maps:get(<<"notification">>, maps:get(<<"android">>, Message)),
     ?assertEqual(<<"fluxer_default_push">>, maps:get(<<"channel_id">>, AndroidNotification)),
     ?assertEqual(<<"channel:123:456">>, maps:get(<<"tag">>, AndroidNotification)),
-    ?assertEqual(<<"channel:123">>, maps:get(<<"group">>, AndroidNotification)),
+    %% `group` is NOT a valid FCM v1 android.notification field — its presence
+    %% made FCM reject the whole message with HTTP 400. It must be absent.
+    ?assertEqual(false, maps:is_key(<<"group">>, AndroidNotification)),
     Android = maps:get(<<"android">>, Message),
     ?assertEqual(<<"channel:123">>, maps:get(<<"collapse_key">>, Android)),
     ?assertEqual(

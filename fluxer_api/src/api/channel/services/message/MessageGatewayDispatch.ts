@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import type {MessageResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import type {GuildID, UserID} from '../../../BrandedTypes';
 import type {IGatewayService} from '../../../infrastructure/IGatewayService';
 import type {Channel} from '../../../models/Channel';
 import type {Message} from '../../../models/Message';
+import {ThreadMemberRepository} from '../../repositories/ThreadMemberRepository';
 import {dispatchChannelEvent} from '../ChannelGatewayDispatch';
 import {createMessageResponseDataService} from './MessageResponseDataService';
 
@@ -26,6 +27,9 @@ type MessageCreateBroadcastData = MessageResponse & {
 	channel_type: Channel['type'];
 	nicks?: Record<string, string>;
 	mention_here?: true;
+	// Echowire: membership snapshot for thread messages, so the gateway push path can
+	// notify thread members (all messages) while limiting non-members to @mentions.
+	thread_member_ids?: Array<string>;
 };
 
 export async function buildBroadcastMessageData({
@@ -51,12 +55,29 @@ async function buildBroadcastMessageCreateData(
 ): Promise<MessageCreateBroadcastData> {
 	const messageResponse = await buildBroadcastMessageData(params);
 	const groupDmNicks = serializeGroupDmNicks(params.channel);
+	const threadMemberIds = await resolveThreadMemberIds(params.channel);
 	return {
 		...messageResponse,
 		channel_type: params.channel.type,
 		...(groupDmNicks ? {nicks: groupDmNicks} : {}),
 		...(params.mentionHere ? {mention_here: true} : {}),
+		...(threadMemberIds ? {thread_member_ids: threadMemberIds} : {}),
 	};
+}
+
+// Echowire: snapshot the thread's members so the push pipeline can gate notifications on
+// membership. Only threads carry this; a lookup failure degrades safely (members fall back
+// to @mention-only notifications rather than blocking the broadcast).
+async function resolveThreadMemberIds(channel: Channel): Promise<Array<string> | undefined> {
+	if (!THREAD_CHANNEL_TYPES.has(channel.type)) {
+		return undefined;
+	}
+	try {
+		const members = await new ThreadMemberRepository().listMembers(channel.id);
+		return members.map((member) => member.userId.toString());
+	} catch {
+		return undefined;
+	}
 }
 
 function serializeGroupDmNicks(channel: Channel): Record<string, string> | undefined {

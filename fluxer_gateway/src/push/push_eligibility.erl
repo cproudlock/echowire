@@ -14,6 +14,10 @@
 
 -define(MESSAGE_NOTIFICATIONS_NO_MESSAGES, 2).
 -define(MESSAGE_NOTIFICATIONS_ONLY_MENTIONS, 1).
+-define(MESSAGE_NOTIFICATIONS_ALL_MESSAGES, 0).
+
+-define(CHANNEL_TYPE_PUBLIC_THREAD, 11).
+-define(CHANNEL_TYPE_PRIVATE_THREAD, 12).
 
 -spec is_eligible_for_push(
     integer(), integer(), integer(), integer(), map(), integer(), map(), map()
@@ -86,12 +90,16 @@ is_eligible_for_push(
     LargeGuildMetadata
 ) ->
     Blocked = is_user_blocked(UserId, AuthorId),
+    %% Echowire: thread messages notify members (all messages) and limit everyone else to
+    %% @mentions, regardless of the guild default. A muted thread (channel override) still wins
+    %% downstream, and mentions still reach non-members via the ONLY_MENTIONS path.
+    EffectiveDefault = thread_effective_default(UserId, MessageData, GuildDefaultNotifications),
     SettingsOk = check_user_guild_settings(
         UserId,
         GuildId,
         ChannelId,
         MessageData,
-        GuildDefaultNotifications,
+        EffectiveDefault,
         UserRolesMap,
         ConnectedUsers,
         LargeGuildMetadata
@@ -295,6 +303,34 @@ evaluate_mentions(_EvMention, _SuppEv, SuppressRoles, UserId, MessageData, UserR
     HasRole = push_eligibility_checks:has_mentioned_role(UserRoles, MentionRoles),
     InMentions orelse (not SuppressRoles andalso HasRole).
 
+%% Echowire: for a thread message, override the guild default notification level based on
+%% thread membership — members get ALL_MESSAGES, non-members get ONLY_MENTIONS. For any other
+%% channel type the guild default is returned unchanged.
+-spec thread_effective_default(integer(), map(), integer()) -> integer().
+thread_effective_default(UserId, MessageData, GuildDefaultNotifications) ->
+    case maps:get(<<"channel_type">>, MessageData, undefined) of
+        ?CHANNEL_TYPE_PUBLIC_THREAD -> thread_member_default(UserId, MessageData);
+        ?CHANNEL_TYPE_PRIVATE_THREAD -> thread_member_default(UserId, MessageData);
+        _ -> GuildDefaultNotifications
+    end.
+
+-spec thread_member_default(integer(), map()) -> integer().
+thread_member_default(UserId, MessageData) ->
+    case is_thread_member(UserId, MessageData) of
+        true -> ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES;
+        false -> ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS
+    end.
+
+%% Echowire: membership snapshot is carried on the message payload as a list of stringified
+%% user ids (see MessageGatewayDispatch.resolveThreadMemberIds). When absent (older payloads or
+%% a lookup failure), we fall back to non-member semantics so notifications stay conservative.
+-spec is_thread_member(integer(), map()) -> boolean().
+is_thread_member(UserId, MessageData) ->
+    case maps:get(<<"thread_member_ids">>, MessageData, undefined) of
+        Ids when is_list(Ids) -> lists:member(integer_to_binary(UserId), Ids);
+        _ -> false
+    end.
+
 -spec get_setting(atom(), term(), term()) -> term().
 get_setting(Key, Settings, Default) when is_atom(Key), is_map(Settings) ->
     case Settings of
@@ -365,5 +401,44 @@ mention_here_respects_suppress_everyone_test() ->
     MessageData = #{<<"mention_everyone">> => true, <<"mention_here">> => true},
     Settings = #{suppress_everyone => true},
     ?assertEqual(false, is_user_mentioned(123, MessageData, Settings, #{}, #{123 => true})).
+
+thread_member_gets_all_messages_test() ->
+    MessageData = #{
+        <<"channel_type">> => ?CHANNEL_TYPE_PUBLIC_THREAD,
+        <<"thread_member_ids">> => [<<"123">>, <<"456">>]
+    },
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS)
+    ).
+
+thread_non_member_limited_to_mentions_test() ->
+    MessageData = #{
+        <<"channel_type">> => ?CHANNEL_TYPE_PRIVATE_THREAD,
+        <<"thread_member_ids">> => [<<"456">>]
+    },
+    %% Even when the guild default is ALL_MESSAGES, a non-member is capped at ONLY_MENTIONS.
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES)
+    ).
+
+thread_missing_member_ids_falls_back_to_mentions_test() ->
+    MessageData = #{<<"channel_type">> => ?CHANNEL_TYPE_PUBLIC_THREAD},
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES)
+    ).
+
+non_thread_keeps_guild_default_test() ->
+    MessageData = #{<<"channel_type">> => 0, <<"thread_member_ids">> => [<<"123">>]},
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES)
+    ),
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS)
+    ).
 
 -endif.

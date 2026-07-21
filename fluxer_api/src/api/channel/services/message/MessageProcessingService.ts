@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {CannotEditOtherUserMessageError} from '@fluxer/errors/src/domains/channel/CannotEditOtherUserMessageError';
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
 import type {AllowedMentionsRequest} from '@fluxer/schema/src/domains/message/SharedMessageSchemas';
@@ -17,6 +17,7 @@ import type {IUserRepository} from '../../../user/IUserRepository';
 import {mapChannelToResponse} from '../../ChannelMappers';
 import type {MessageRequest, MessageUpdateRequest} from '../../MessageTypes';
 import type {IChannelRepositoryAggregate} from '../../repositories/IChannelRepositoryAggregate';
+import {ThreadMemberRepository} from '../../repositories/ThreadMemberRepository';
 import type {MessageDispatchService} from './MessageDispatchService';
 import {isPersonalNotesChannel} from './MessageHelpers';
 import type {MessageMentionService} from './MessageMentionService';
@@ -52,13 +53,50 @@ export class MessageProcessingService {
 		referencedMessage: Message | null;
 		mentionHere?: boolean;
 	}): Promise<void> {
-		const {message, guild, user, mentionHere = false} = params;
+		const {message, channel, guild, user, mentionHere = false} = params;
 		await this.mentionService.handleMentionTasks({
 			guildId: guild ? createGuildID(BigInt(guild.id)) : null,
 			message,
 			authorId: user.id,
 			mentionHere,
 		});
+		// Echowire: posting in a thread auto-joins you as a member (Discord parity) so you
+		// receive follower push notifications for later replies. Runs before the message is
+		// broadcast, so this author lands in the thread_member_ids snapshot.
+		await this.autoJoinAuthorToThread(channel, user.id);
+	}
+
+	// Echowire: idempotent, best-effort thread auto-join. A membership failure must never
+	// fail the message send, and re-posting must not re-fire THREAD_MEMBERS_UPDATE.
+	private async autoJoinAuthorToThread(channel: Channel, userId: UserID): Promise<void> {
+		if (!channel.guildId || !THREAD_CHANNEL_TYPES.has(channel.type)) {
+			return;
+		}
+		try {
+			const threadMemberRepository = new ThreadMemberRepository();
+			const existing = await threadMemberRepository.getMember(channel.id, userId);
+			if (existing) {
+				return;
+			}
+			await threadMemberRepository.addMember(channel.id, userId);
+			const members = await threadMemberRepository.listMembers(channel.id);
+			await this.channelRepository.channelData.upsert({...channel.toRow(), thread_member_count: members.length});
+			await this.gatewayService.dispatchGuild({
+				guildId: channel.guildId,
+				event: 'THREAD_MEMBERS_UPDATE',
+				data: {
+					id: channel.id.toString(),
+					guild_id: channel.guildId.toString(),
+					member_count: members.length,
+					added_members: [{user_id: userId.toString()}],
+				},
+			});
+		} catch (error) {
+			Logger.warn(
+				{error, channelId: channel.id.toString(), userId: userId.toString()},
+				'Failed to auto-join thread member on send',
+			);
+		}
 	}
 
 	async updateDMRecipients({

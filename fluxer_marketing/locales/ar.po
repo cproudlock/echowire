@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-07-09 00:00+0000\n"
-"PO-Revision-Date: 2026-07-09 00:00+0000\n"
+"POT-Creation-Date: 2026-07-28 00:00+0000\n"
+"PO-Revision-Date: 2026-07-28 00:00+0000\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -389,8 +389,7 @@ msgstr "كيف بنيت {product_name}، تطبيق دردشة يشبه {discord
 msgctxt "blog.post.mobile_clients_and_fluxer_v2.description"
 msgid ""
 "{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
-msgstr ""
-"الإصدار v2 من {product_name} متاح الآن، عملاء الهاتف المحمول مفتوحة المصدر، الاستضافة الذاتية تتحسن، والتطوير العام يعود إلى GitHub."
+msgstr "تم إصدار {product_name} v2، وأصبحت تطبيقات الهاتف المحمول مفتوحة المصدر، ويتحسن الاستضافة الذاتية، ويعود التطوير العام إلى GitHub."
 
 #. Blog article title shown in cards, article pages, metadata, and feeds. Keep Fluxer as a product name and v2 as the release name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:blog.post.mobile_clients_and_fluxer_v2.title
@@ -870,8 +869,7 @@ msgstr "سجل تغييرات السياسات"
 msgctxt "content.policies.company_information.description"
 msgid ""
 "Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
-msgstr ""
-"التفاصيل القانونية لشركة {product_name} Platform AB، بما في ذلك كيف نحقق الإيرادات وكيفية التواصل معنا."
+msgstr "التفاصيل القانونية لـ {product_name}، والتي تديرها شركة Proudlock Technology LLC، بما في ذلك كيفية تحقيقنا للأرباح وكيفية التواصل معنا."
 
 #. Policy page title for legal company details. Translate as formal company information.
 #: fluxer_marketing/generated:content.policies.company_information.title
@@ -1320,7 +1318,7 @@ msgstr ""
 #: fluxer_marketing/generated:donations.manage.success
 msgctxt "donations.manage.success"
 msgid "If an account exists for that email, you'll receive a management link shortly."
-msgstr "إذا كان هناك حساب مرتبط بهذا البريد الإلكتروني، ستتلقى رابطًا لإدارة حسابك قريبًا."
+msgstr "إذا كان هناك حساب مسجل لهذا البريد الإلكتروني، فستتلقى رابطًا للإدارة قريبًا."
 
 #. Short UI label or heading in the donation flow. Prioritize clarity, trust, and form usability; preserve amount, currency, email, and status placeholders exactly.
 #: fluxer_marketing/generated:donations.manage.title
@@ -1541,7 +1539,7 @@ msgstr "{product_name}"
 msgctxt "footer.fluxer_platform_ab_swedish_limited"
 msgid ""
 "© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
-msgstr "© {product_name} Platform AB (شركة سويدية ذات مسؤولية محدودة: 559537-3993)"
+msgstr "© {product_name} — تديرها شركة Proudlock Technology LLC، وهي شركة ذات مسؤولية محدودة في ولاية كارولينا الشمالية"
 
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.help_support_an_independent_communication
@@ -2059,7 +2057,7 @@ msgstr "بضائع حصرية"
 #: fluxer_marketing/generated:partner_program.perks.free_plutonium.description
 msgctxt "partner_program.perks.free_plutonium.description"
 msgid "Get free {premium_tier_name} for your account to enjoy all premium features."
-msgstr "احصل على اشتراك مجاني في {premium_tier_name} لحسابك للاستمتاع بجميع الميزات المميزة."
+msgstr "احصل على {premium_tier_name} مجانًا لحسابك للاستمتاع بجميع الميزات المميزة."
 
 #. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
 #: fluxer_marketing/generated:partner_program.perks.free_plutonium.label
@@ -2426,7 +2424,7 @@ msgstr "تطبيق {ios}"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
-msgstr "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
+msgstr "تطبيق {ios} متاح الآن كإصدار تجريبي عام عبر {testflight}. انضم لتثبيته على جهاز iPhone أو iPad الخاص بك."
 
 #. Button or link label on the iOS app card that opens the public TestFlight beta invite. Keep TestFlight as a proper name; keep it short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta
@@ -2444,13 +2442,13 @@ msgstr "تطبيق {android}"
 #: fluxer_marketing/generated:platform_support.mobile.android.body
 msgctxt "platform_support.mobile.android.body"
 msgid "Get the {android} app on the Google Play Store."
-msgstr "Get the {android} app on the Google Play Store."
+msgstr "احصل على تطبيق {android} من متجر Google Play."
 
 #. Button or link label on the Android app card that opens the Google Play Store listing. Keep Google Play as a proper name; keep it short.
 #: fluxer_marketing/generated:platform_support.mobile.android.cta
 msgctxt "platform_support.mobile.android.cta"
 msgid "Get it on Google Play"
-msgstr "Get it on Google Play"
+msgstr "احصل عليه من Google Play"
 
 #. Disclaimer under the mobile section on the download page. Make clear the native iOS and Android apps are early alphas and may be buggy, while the web app (PWA) is not an alpha. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.alpha_disclaimer

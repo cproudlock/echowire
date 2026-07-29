@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-07-09 00:00+0000\n"
-"PO-Revision-Date: 2026-07-09 00:00+0000\n"
+"POT-Creation-Date: 2026-07-28 00:00+0000\n"
+"PO-Revision-Date: 2026-07-28 00:00+0000\n"
 "Language: en-GB\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -389,8 +389,7 @@ msgstr "How I built {product_name}, a {discord}-like chat app"
 msgctxt "blog.post.mobile_clients_and_fluxer_v2.description"
 msgid ""
 "{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
-msgstr ""
-"{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
+msgstr "{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
 
 #. Blog article title shown in cards, article pages, metadata, and feeds. Keep Fluxer as a product name and v2 as the release name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:blog.post.mobile_clients_and_fluxer_v2.title
@@ -871,8 +870,7 @@ msgstr "Policy Changelog"
 msgctxt "content.policies.company_information.description"
 msgid ""
 "Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
-msgstr ""
-"Legal details for {product_name} Platform AB, including how we make money and how to contact us."
+msgstr "Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
 
 #. Policy page title for legal company details. Translate as formal company information.
 #: fluxer_marketing/generated:content.policies.company_information.title
@@ -1549,7 +1547,7 @@ msgstr "{product_name}"
 msgctxt "footer.fluxer_platform_ab_swedish_limited"
 msgid ""
 "© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
-msgstr "© {product_name} Platform AB (Swedish limited liability company: 559537-3993)"
+msgstr "© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
 
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.help_support_an_independent_communication
@@ -2456,6 +2454,7 @@ msgctxt "platform_support.mobile.android.body"
 msgid "Get the {android} app on the Google Play Store."
 msgstr "Get the {android} app on the Google Play Store."
 
+# auto-i18n: reviewed unchanged
 #. Button or link label on the Android app card that opens the Google Play Store listing. Keep Google Play as a proper name; keep it short.
 #: fluxer_marketing/generated:platform_support.mobile.android.cta
 msgctxt "platform_support.mobile.android.cta"

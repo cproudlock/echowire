@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-07-09 00:00+0000\n"
-"PO-Revision-Date: 2026-07-09 00:00+0000\n"
+"POT-Creation-Date: 2026-07-28 00:00+0000\n"
+"PO-Revision-Date: 2026-07-28 00:00+0000\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -393,8 +393,7 @@ msgstr "Jak zbudowałem {product_name}, aplikację czatu podobną do {discord}"
 msgctxt "blog.post.mobile_clients_and_fluxer_v2.description"
 msgid ""
 "{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
-msgstr ""
-"v2 {product_name} jest już dostępne, klienty mobilne są open source, samo-hostowanie się poprawia, a publiczny rozwój wraca na GitHub."
+msgstr "{product_name} v2 jest już dostępny, klienty mobilne są open source, samo-hostowanie się poprawia, a publiczny rozwój wraca na GitHub."
 
 #. Blog article title shown in cards, article pages, metadata, and feeds. Keep Fluxer as a product name and v2 as the release name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:blog.post.mobile_clients_and_fluxer_v2.title
@@ -588,8 +587,7 @@ msgstr "Centrum pomocy"
 #: fluxer_marketing/generated:company_and_resources.help.help_center_description
 msgctxt "company_and_resources.help.help_center_description"
 msgid "Find answers to common questions about your account, privacy, and using {product_name}."
-msgstr ""
-"Znajdź odpowiedzi na najczęstsze pytania dotyczące twojego konta, prywatności i korzystania z {product_name}."
+msgstr "Znajdź odpowiedzi na często zadawane pytania dotyczące Twojego konta, prywatności i korzystania z {product_name}."
 
 #. Short UI label or heading for help-center links or descriptions in marketing navigation and resource sections. Keep it service-oriented and concise.
 #: fluxer_marketing/generated:company_and_resources.help.label
@@ -876,8 +874,7 @@ msgstr "Historia zmian zasad"
 msgctxt "content.policies.company_information.description"
 msgid ""
 "Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
-msgstr ""
-"Informacje prawne o {product_name} Platform AB, w tym o tym, jak zarabiamy i jak się z nami skontaktować."
+msgstr "Szczegóły prawne dotyczące {product_name}, obsługiwanego przez Proudlock Technology LLC, w tym informacje o tym, jak zarabiamy i jak się z nami skontaktować."
 
 #. Policy page title for legal company details. Translate as formal company information.
 #: fluxer_marketing/generated:content.policies.company_information.title
@@ -1333,7 +1330,7 @@ msgstr ""
 #: fluxer_marketing/generated:donations.manage.success
 msgctxt "donations.manage.success"
 msgid "If an account exists for that email, you'll receive a management link shortly."
-msgstr "Jeśli dla tego adresu e-mail istnieje konto, wkrótce otrzymasz link do zarządzania."
+msgstr "Jeśli istnieje konto dla tego adresu e-mail, wkrótce otrzymasz link do zarządzania."
 
 #. Short UI label or heading in the donation flow. Prioritize clarity, trust, and form usability; preserve amount, currency, email, and status placeholders exactly.
 #: fluxer_marketing/generated:donations.manage.title
@@ -1558,8 +1555,7 @@ msgstr "{product_name}"
 msgctxt "footer.fluxer_platform_ab_swedish_limited"
 msgid ""
 "© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
-msgstr ""
-"© {product_name} Platform AB (Szwedzka spółka z ograniczoną odpowiedzialnością: 559537-3993)"
+msgstr "© {product_name} — obsługiwane przez Proudlock Technology LLC, spółkę z ograniczoną odpowiedzialnością w Karolinie Północnej"
 
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.help_support_an_independent_communication
@@ -2083,8 +2079,7 @@ msgstr "Ekskluzywny merch"
 #: fluxer_marketing/generated:partner_program.perks.free_plutonium.description
 msgctxt "partner_program.perks.free_plutonium.description"
 msgid "Get free {premium_tier_name} for your account to enjoy all premium features."
-msgstr ""
-"Otrzymaj darmowe {premium_tier_name} na swoje konto, aby korzystać ze wszystkich funkcji premium."
+msgstr "Otrzymaj darmowy {premium_tier_name} dla swojego konta, aby korzystać ze wszystkich funkcji premium."
 
 #. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
 #: fluxer_marketing/generated:partner_program.perks.free_plutonium.label
@@ -2451,7 +2446,7 @@ msgstr "Aplikacja na {ios}"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
-msgstr "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
+msgstr "Aplikacja {ios} jest już dostępna jako publiczna beta w {testflight}. Dołącz, aby zainstalować ją na iPhonie lub iPadzie."
 
 #. Button or link label on the iOS app card that opens the public TestFlight beta invite. Keep TestFlight as a proper name; keep it short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta
@@ -2469,13 +2464,13 @@ msgstr "Aplikacja {android}"
 #: fluxer_marketing/generated:platform_support.mobile.android.body
 msgctxt "platform_support.mobile.android.body"
 msgid "Get the {android} app on the Google Play Store."
-msgstr "Get the {android} app on the Google Play Store."
+msgstr "Pobierz aplikację {android} w sklepie Google Play."
 
 #. Button or link label on the Android app card that opens the Google Play Store listing. Keep Google Play as a proper name; keep it short.
 #: fluxer_marketing/generated:platform_support.mobile.android.cta
 msgctxt "platform_support.mobile.android.cta"
 msgid "Get it on Google Play"
-msgstr "Get it on Google Play"
+msgstr "Pobierz w Google Play"
 
 #. Disclaimer under the mobile section on the download page. Make clear the native iOS and Android apps are early alphas and may be buggy, while the web app (PWA) is not an alpha. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.alpha_disclaimer

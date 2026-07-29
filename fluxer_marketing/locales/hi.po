@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-07-09 00:00+0000\n"
-"PO-Revision-Date: 2026-07-09 00:00+0000\n"
+"POT-Creation-Date: 2026-07-28 00:00+0000\n"
+"PO-Revision-Date: 2026-07-28 00:00+0000\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -392,8 +392,7 @@ msgstr "मैंने {product_name} कैसे बनाया, {discord} �
 msgctxt "blog.post.mobile_clients_and_fluxer_v2.description"
 msgid ""
 "{product_name} v2 is out, mobile clients are open source, self-hosting is improving, and public development is moving back to GitHub."
-msgstr ""
-"{product_name} v2 आ गया है, मोबाइल क्लाइंट ओपन सोर्स हैं, सेल्फ-होस्टिंग में सुधार हो रहा है, और पब्लिक डेवलपमेंट वापस GitHub पर जा रहा है।"
+msgstr "{product_name} v2 आ गया है, मोबाइल क्लाइंट ओपन सोर्स हैं, सेल्फ-होस्टिंग बेहतर हो रही है, और पब्लिक डेवलपमेंट वापस GitHub पर जा रहा है।"
 
 #. Blog article title shown in cards, article pages, metadata, and feeds. Keep Fluxer as a product name and v2 as the release name. Preserve placeholders exactly.
 #: fluxer_marketing/generated:blog.post.mobile_clients_and_fluxer_v2.title
@@ -588,7 +587,7 @@ msgstr "सहायता केंद्र"
 #: fluxer_marketing/generated:company_and_resources.help.help_center_description
 msgctxt "company_and_resources.help.help_center_description"
 msgid "Find answers to common questions about your account, privacy, and using {product_name}."
-msgstr "अपने अकाउंट, प्राइवेसी और {product_name} के उपयोग से जुड़े सामान्य सवालों के जवाब पाएँ।"
+msgstr "अपने खाते, गोपनीयता और {product_name} का उपयोग करने के बारे में सामान्य प्रश्नों के उत्तर पाएं।"
 
 #. Short UI label or heading for help-center links or descriptions in marketing navigation and resource sections. Keep it service-oriented and concise.
 #: fluxer_marketing/generated:company_and_resources.help.label
@@ -876,8 +875,7 @@ msgstr "पॉलिसी चेंजलॉग"
 msgctxt "content.policies.company_information.description"
 msgid ""
 "Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us."
-msgstr ""
-"{product_name} Platform AB की कानूनी जानकारी, हम कमाई कैसे करते हैं, और हमसे संपर्क कैसे करें।"
+msgstr "{product_name} के कानूनी विवरण, जिसे प्राउडलॉक टेक्नोलॉजी एलएलसी द्वारा संचालित किया जाता है, जिसमें यह भी शामिल है कि हम पैसा कैसे कमाते हैं और हमसे कैसे संपर्क करें।"
 
 #. Policy page title for legal company details. Translate as formal company information.
 #: fluxer_marketing/generated:content.policies.company_information.title
@@ -1330,7 +1328,7 @@ msgstr ""
 #: fluxer_marketing/generated:donations.manage.success
 msgctxt "donations.manage.success"
 msgid "If an account exists for that email, you'll receive a management link shortly."
-msgstr "यदि उस ईमेल के लिए कोई अकाउंट मौजूद है, तो आपको जल्द ही एक मैनेजमेंट लिंक मिलेगा।"
+msgstr "अगर उस ईमेल के लिए कोई खाता मौजूद है, तो आपको जल्द ही एक प्रबंधन लिंक मिल जाएगा।"
 
 #. Short UI label or heading in the donation flow. Prioritize clarity, trust, and form usability; preserve amount, currency, email, and status placeholders exactly.
 #: fluxer_marketing/generated:donations.manage.title
@@ -1555,7 +1553,7 @@ msgstr "{product_name}"
 msgctxt "footer.fluxer_platform_ab_swedish_limited"
 msgid ""
 "© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
-msgstr "© {product_name} Platform AB (स्वीडिश लिमिटेड लायबिलिटी कंपनी: 559537-3993)"
+msgstr "© {product_name} — Proudlock Technology LLC द्वारा संचालित, एक नॉर्थ कैरोलिना लिमिटेड लायबिलिटी कंपनी"
 
 #. Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.help_support_an_independent_communication
@@ -2077,7 +2075,7 @@ msgstr "एक्सक्लूसिव मर्चेंडाइज"
 #: fluxer_marketing/generated:partner_program.perks.free_plutonium.description
 msgctxt "partner_program.perks.free_plutonium.description"
 msgid "Get free {premium_tier_name} for your account to enjoy all premium features."
-msgstr "सभी प्रीमियम फीचर्स का आनंद लेने के लिए अपने अकाउंट के लिए मुफ्त {premium_tier_name} पाएं।"
+msgstr "अपने खाते के लिए मुफ़्त {premium_tier_name} प्राप्त करें ताकि सभी प्रीमियम सुविधाओं का आनंद ले सकें।"
 
 #. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
 #: fluxer_marketing/generated:partner_program.perks.free_plutonium.label
@@ -2445,7 +2443,7 @@ msgstr "{ios} ऐप"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
-msgstr "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
+msgstr "{ios} ऐप अब सार्वजनिक {testflight} बीटा के रूप में उपलब्ध है। इसे अपने आईफोन या आईपैड पर इंस्टॉल करने के लिए जुड़ें।"
 
 #. Button or link label on the iOS app card that opens the public TestFlight beta invite. Keep TestFlight as a proper name; keep it short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta
@@ -2463,13 +2461,13 @@ msgstr "{android} ऐप"
 #: fluxer_marketing/generated:platform_support.mobile.android.body
 msgctxt "platform_support.mobile.android.body"
 msgid "Get the {android} app on the Google Play Store."
-msgstr "Get the {android} app on the Google Play Store."
+msgstr "Google Play Store पर {android} ऐप प्राप्त करें।"
 
 #. Button or link label on the Android app card that opens the Google Play Store listing. Keep Google Play as a proper name; keep it short.
 #: fluxer_marketing/generated:platform_support.mobile.android.cta
 msgctxt "platform_support.mobile.android.cta"
 msgid "Get it on Google Play"
-msgstr "Get it on Google Play"
+msgstr "Google Play पर उपलब्ध है"
 
 #. Disclaimer under the mobile section on the download page. Make clear the native iOS and Android apps are early alphas and may be buggy, while the web app (PWA) is not an alpha. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.alpha_disclaimer

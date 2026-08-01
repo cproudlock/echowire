@@ -234,6 +234,26 @@ function applyStreamingModeDefaultMigrationV1(parsed: Record<string, unknown>): 
 	return true;
 }
 
+// Echowire: one-time move of every existing user onto the recommended low-processing voice
+// profile (Custom mode, AGC off, standard browser NS, enhanced DeepFilter NS off, echo
+// cancellation on, auto activity threshold on). The old 'voice' default forced enhanced NS
+// on, which over-processes and degrades audio over a long session (upstream #878).
+function applyVoiceProcessingDefaultsMigrationV1(parsed: Record<string, unknown>): boolean {
+	if (parsed.voiceProcessingDefaultsMigratedV1 === true) {
+		return false;
+	}
+	parsed.voiceProcessingMode = 'custom';
+	parsed.echoCancellation = true;
+	parsed.noiseSuppression = true;
+	parsed.autoGainControl = false;
+	parsed.deepFilterNoiseSuppressionPrefV2 = false;
+	parsed.vadAutoSensitivity = true;
+	// Clear per-device overrides so the Custom profile applies on every input device.
+	parsed.voiceProcessingModeByDeviceLabel = {};
+	parsed.voiceProcessingDefaultsMigratedV1 = true;
+	return true;
+}
+
 function validateBackgroundImages(images: unknown): Array<BackgroundImage> {
 	if (!Array.isArray(images)) return [];
 	const validated: Array<BackgroundImage> = [];
@@ -261,10 +281,13 @@ class VoiceSettings {
 	outputVolume = 100;
 	echoCancellation = true;
 	noiseSuppression = true;
-	autoGainControl = true;
-	deepFilterNoiseSuppressionPrefV2 = true;
+	// Echowire: AGC off + enhanced DeepFilter NS off by default (standard browser NS only).
+	// Enhanced NS over-processes and degrades voice over a session (upstream #878).
+	autoGainControl = false;
+	deepFilterNoiseSuppressionPrefV2 = false;
 	deepFilterNoiseSuppressionLevelPrefV2 = 80;
 	voiceProcessingMode: VoiceProcessingMode = DEFAULT_VOICE_PROCESSING_MODE;
+	voiceProcessingDefaultsMigratedV1 = false;
 	voiceProcessingModeByDeviceLabel: Record<string, VoiceProcessingMode> = {};
 	cameraResolution: CameraResolution = 'medium';
 	mirrorCamera = true;
@@ -413,6 +436,7 @@ class VoiceSettings {
 			changed = applyAdaptiveScreenShareQualityMigrationV2(parsed) || changed;
 			changed = applyScreenShareAudioConsentMigrationV1(parsed) || changed;
 			changed = applyStreamingModeDefaultMigrationV1(parsed) || changed;
+			changed = applyVoiceProcessingDefaultsMigrationV1(parsed) || changed;
 			if (changed) {
 				AppStorage.setItem('VoiceSettings', JSON.stringify(parsed));
 			}
@@ -436,6 +460,7 @@ class VoiceSettings {
 			'deepFilterNoiseSuppressionLevelPrefV2',
 			'voiceProcessingMode',
 			'voiceProcessingModeByDeviceLabel',
+			'voiceProcessingDefaultsMigratedV1',
 			'cameraResolution',
 			'mirrorCamera',
 			'screenshareResolution',

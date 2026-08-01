@@ -479,6 +479,18 @@
         "msgid": "Get free {premium_tier_name} for your account to enjoy all premium features."
       },
       {
+        "msgctxt": "platform_support.availability.meta_description",
+        "msgid": "Get {product_name} for your web browser, {windows}, {linux}, and {macos}. {ios} and {android} are in public testing."
+      },
+      {
+        "msgctxt": "platform_support.availability.summary",
+        "msgid": "Available in your web browser and on {windows}, {linux}, and {macos}, with {ios} and {android} in public testing."
+      },
+      {
+        "msgctxt": "platform_support.desktop.canary_windows_warning",
+        "msgid": "This Canary build may be flagged by {microsoft_defender} or other antivirus software on {windows} for now. See GitHub issue {issue_link} for more details."
+      },
+      {
         "msgctxt": "platform_support.mobile.android.body",
         "msgid": "Get the {android} app on the Google Play Store."
       },
@@ -489,6 +501,14 @@
       {
         "msgctxt": "platform_support.mobile.ios.body",
         "msgid": "The {ios} app is available now as a public {testflight} beta. Join to install it on your iPhone or iPad."
+      },
+      {
+        "msgctxt": "platform_support.mobile.ios.body",
+        "msgid": "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
+      },
+      {
+        "msgctxt": "platform_support.mobile.ios.cta",
+        "msgid": "Join on {testflight}"
       }
     ],
     "es-419": [

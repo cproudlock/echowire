@@ -1967,12 +1967,12 @@ fn build_source_tarball_step() -> Result<()> {
     let filename = format!("fluxer_desktop-source-{desktop_version}-{short_commit}.tar.gz");
     let archive_dir = Path::new("source_staging").join("by-commit").join(&commit);
     let required_linux_packaging = [
-        "packaging/linux/app.fluxer.Fluxer.desktop",
-        "packaging/linux/app.fluxer.Fluxer.metainfo.xml",
-        "packaging/linux/app.fluxer.Fluxer.svg",
-        "packaging/linux/app.fluxer.FluxerCanary.desktop",
-        "packaging/linux/app.fluxer.FluxerCanary.metainfo.xml",
-        "packaging/linux/app.fluxer.FluxerCanary.svg",
+        "packaging/linux/org.echowire.app.desktop",
+        "packaging/linux/org.echowire.app.metainfo.xml",
+        "packaging/linux/org.echowire.app.svg",
+        "packaging/linux/org.echowire.canary.desktop",
+        "packaging/linux/org.echowire.canary.metainfo.xml",
+        "packaging/linux/org.echowire.canary.svg",
     ];
 
     ensure!(
@@ -1990,7 +1990,7 @@ fn build_source_tarball_step() -> Result<()> {
     run_command(
         CommandSpec::new("desktop-file-validate").arg(
             workdir
-                .join("fluxer_desktop/packaging/linux/app.fluxer.Fluxer.desktop")
+                .join("fluxer_desktop/packaging/linux/org.echowire.app.desktop")
                 .to_string_lossy()
                 .as_ref(),
         ),
@@ -1998,14 +1998,14 @@ fn build_source_tarball_step() -> Result<()> {
     run_command(
         CommandSpec::new("desktop-file-validate").arg(
             workdir
-                .join("fluxer_desktop/packaging/linux/app.fluxer.FluxerCanary.desktop")
+                .join("fluxer_desktop/packaging/linux/org.echowire.canary.desktop")
                 .to_string_lossy()
                 .as_ref(),
         ),
     )?;
     for file in [
-        "app.fluxer.Fluxer.metainfo.xml",
-        "app.fluxer.FluxerCanary.metainfo.xml",
+        "org.echowire.app.metainfo.xml",
+        "org.echowire.canary.metainfo.xml",
     ] {
         run_command(
             CommandSpec::new("appstreamcli").args([

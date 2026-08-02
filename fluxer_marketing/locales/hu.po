@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-07-31 00:00+0000\n"
-"PO-Revision-Date: 2026-07-31 00:00+0000\n"
+"POT-Creation-Date: 2026-08-02 00:00+0000\n"
+"PO-Revision-Date: 2026-08-02 00:00+0000\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2154,15 +2154,15 @@ msgstr ""
 #: fluxer_marketing/generated:platform_support.availability.meta_description
 msgctxt "platform_support.availability.meta_description"
 msgid ""
-"Get {product_name} for your web browser, {windows}, {linux}, and {macos}. {ios} and {android} are in public testing."
-msgstr "Szerezd be a(z) {product_name} alkalmazást webböngésződre, {windows}, {linux} és {macos} rendszerekre. A(z) {ios} és {android} nyilvános tesztelés alatt áll."
+"Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing."
+msgstr "Szerezd be a(z) {product_name} alkalmazást webböngésződre, {windows} és {linux} rendszerekre. A(z) {ios} és {android} nyilvános tesztelés alatt áll."
 
 #. Intro copy below the download-page heading. Keep platform names conventional and make browser, desktop, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.summary
 msgctxt "platform_support.availability.summary"
 msgid ""
-"Available in your web browser and on {windows}, {linux}, and {macos}, with {ios} and {android} in public testing."
-msgstr "Elérhető a weben, valamint {windows}, {linux} és {macos} rendszereken, a {ios} és {android} pedig béta verzióban."
+"Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing."
+msgstr "Elérhető a webböngésződben, valamint {windows} és {linux} rendszereken, továbbá {ios} és {android} nyilvános tesztelés alatt áll."
 
 #. Alt text for a desktop product screenshot. Preserve {product_name} exactly; describe the image as the desktop interface, not as a download action. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.desktop.interface_label
@@ -2187,7 +2187,8 @@ msgstr "Használd az asztali alkalmazást (mobil verzió hamarosan)"
 msgctxt "platform_support.desktop.canary_windows_warning"
 msgid ""
 "This Canary build may be flagged by {microsoft_defender} or other antivirus software on {windows} for now. See GitHub issue {issue_link} for more details."
-msgstr "Ez a Canary build átmenetileg felkeltheti a figyelmet a(z) {microsoft_defender} vagy más víruskereső szoftvereknél {windows} rendszeren. További részletekért tekintsd meg a(z) {issue_link} GitHub problémát."
+msgstr ""
+"Ez a Canary build átmenetileg felkeltheti a figyelmet a(z) {microsoft_defender} vagy más víruskereső szoftvereknél {windows} rendszeren. További részletekért tekintsd meg a(z) {issue_link} GitHub problémát."
 
 #. Body copy for mobile/PWA install guidance on the download page. Keep instructions clear, device-appropriate, and concise; preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.install_as_app.done_desktop
@@ -2431,7 +2432,8 @@ msgstr "{ios} alkalmazás"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr "Az {ios} alkalmazás bárki számára elérhető a {testflight} bétaverzión keresztül. Csatlakozz most a nyilvános béta verzióhoz. A teljes {product_name} webalkalmazás Safari böngészőben is működik, és hozzáadható a Főképernyőhöz."
+msgstr ""
+"Az {ios} alkalmazás bárki számára elérhető a {testflight} bétaverzión keresztül. Csatlakozz most a nyilvános béta verzióhoz. A teljes {product_name} webalkalmazás Safari böngészőben is működik, és hozzáadható a Főképernyőhöz."
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta

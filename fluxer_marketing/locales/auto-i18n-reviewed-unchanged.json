@@ -480,7 +480,15 @@
       },
       {
         "msgctxt": "platform_support.availability.meta_description",
+        "msgid": "Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing."
+      },
+      {
+        "msgctxt": "platform_support.availability.meta_description",
         "msgid": "Get {product_name} for your web browser, {windows}, {linux}, and {macos}. {ios} and {android} are in public testing."
+      },
+      {
+        "msgctxt": "platform_support.availability.summary",
+        "msgid": "Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing."
       },
       {
         "msgctxt": "platform_support.availability.summary",

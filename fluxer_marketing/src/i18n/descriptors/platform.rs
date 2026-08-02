@@ -3,7 +3,7 @@
 crate::marketing_message!(
     pub const PLATFORM_SUPPORT_AVAILABILITY_META_DESCRIPTION_DESCRIPTOR = {
         key: "platform_support.availability.meta_description",
-        message: "Get {product_name} for your web browser, {windows}, {linux}, and {macos}. {ios} and {android} are in public testing.",
+        message: "Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing.",
         comment: "Download-page meta description. Preserve {product_name} exactly; keep platform names conventional and make desktop, browser, and public mobile testing availability clear. Preserve placeholders exactly.",
     };
 );
@@ -11,7 +11,7 @@ crate::marketing_message!(
 crate::marketing_message!(
     pub const PLATFORM_SUPPORT_AVAILABILITY_SUMMARY_DESCRIPTOR = {
         key: "platform_support.availability.summary",
-        message: "Available in your web browser and on {windows}, {linux}, and {macos}, with {ios} and {android} in public testing.",
+        message: "Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing.",
         comment: "Intro copy below the download-page heading. Keep platform names conventional and make browser, desktop, and public mobile testing availability clear. Preserve placeholders exactly.",
     };
 );

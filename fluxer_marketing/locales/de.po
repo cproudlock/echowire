@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-07-31 00:00+0000\n"
-"PO-Revision-Date: 2026-07-31 00:00+0000\n"
+"POT-Creation-Date: 2026-08-02 00:00+0000\n"
+"PO-Revision-Date: 2026-08-02 00:00+0000\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2159,15 +2159,15 @@ msgstr ""
 #: fluxer_marketing/generated:platform_support.availability.meta_description
 msgctxt "platform_support.availability.meta_description"
 msgid ""
-"Get {product_name} for your web browser, {windows}, {linux}, and {macos}. {ios} and {android} are in public testing."
-msgstr "Hol dir {product_name} für deinen Webbrowser, {windows}, {linux} und {macos}. {ios} und {android} sind im öffentlichen Test."
+"Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing."
+msgstr "Hol dir {product_name} für deinen Webbrowser, {windows} und {linux}. {ios} und {android} sind im öffentlichen Test."
 
 #. Intro copy below the download-page heading. Keep platform names conventional and make browser, desktop, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.summary
 msgctxt "platform_support.availability.summary"
 msgid ""
-"Available in your web browser and on {windows}, {linux}, and {macos}, with {ios} and {android} in public testing."
-msgstr "Verfügbar in deinem Webbrowser und auf {windows}, {linux} und {macos}, mit {ios} und {android} in öffentlicher Beta."
+"Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing."
+msgstr "Verfügbar in deinem Webbrowser und für {windows} und {linux}, mit {ios} und {android} in öffentlicher Beta."
 
 #. Alt text for a desktop product screenshot. Preserve {product_name} exactly; describe the image as the desktop interface, not as a download action. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.desktop.interface_label
@@ -2192,7 +2192,8 @@ msgstr "Nutze den Desktop-Client (Mobile Version bald verfügbar)"
 msgctxt "platform_support.desktop.canary_windows_warning"
 msgid ""
 "This Canary build may be flagged by {microsoft_defender} or other antivirus software on {windows} for now. See GitHub issue {issue_link} for more details."
-msgstr "Diese Canary-Version kann vorübergehend von {microsoft_defender} oder anderer Antivirensoftware unter {windows} erkannt werden. Weitere Details findest du in GitHub-Issue {issue_link}."
+msgstr ""
+"Diese Canary-Version kann vorübergehend von {microsoft_defender} oder anderer Antivirensoftware unter {windows} erkannt werden. Weitere Details findest du in GitHub-Issue {issue_link}."
 
 #. Body copy for mobile/PWA install guidance on the download page. Keep instructions clear, device-appropriate, and concise; preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.install_as_app.done_desktop
@@ -2435,7 +2436,8 @@ msgstr "{ios}-App"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr "Die {ios}-App ist über {testflight} für alle offen. Nimm jetzt an der öffentlichen Beta teil. Die vollständige {product_name}-Web-App funktioniert auch in Safari und kann zu deinem Home-Bildschirm hinzugefügt werden."
+msgstr ""
+"Die {ios}-App ist über {testflight} für alle offen. Nimm jetzt an der öffentlichen Beta teil. Die vollständige {product_name}-Web-App funktioniert auch in Safari und kann zu deinem Home-Bildschirm hinzugefügt werden."
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta

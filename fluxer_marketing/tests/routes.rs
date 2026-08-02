@@ -831,11 +831,12 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(!html.contains("/dl/desktop/source/latest"));
     assert!(html.contains(&expected_download_url));
     assert!(html.contains(&expected_game_capture_url));
-    if release_channel.is_canary() {
-        assert!(html.contains("/dl/desktop/canary/linux/x64/latest/appimage?test=1"));
-    } else {
-        assert!(html.contains("https://flathub.org/en/apps/app.fluxer.Fluxer"));
-    }
+    let channel = release_channel.segment();
+    assert!(html.contains(&format!("/dl/desktop/{channel}/linux/x64/latest/appimage?test=1")));
+    // Echowire: no macOS build, no arm64 Linux build, no Flatpak published -> none linked.
+    assert!(!html.contains("darwin"));
+    assert!(!html.contains("flathub"));
+    assert!(!html.contains(&format!("/dl/desktop/{channel}/linux/arm64/")));
 }
 
 #[tokio::test]

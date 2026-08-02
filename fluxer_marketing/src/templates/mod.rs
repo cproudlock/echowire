@@ -148,8 +148,8 @@ pub fn download_page(
                         }
                     }
                     ul class="border-gray-200 border-t" {
+                        // Echowire: no macOS build, so no macOS card (was a dead 404 link).
                         (download_strip(i18n, ctx, Platform::Windows, latest_versions.windows.as_ref()))
-                        (download_strip(i18n, ctx, Platform::Macos, latest_versions.macos.as_ref()))
                         (download_strip(i18n, ctx, Platform::Linux, latest_versions.linux.as_ref()))
                         (mobile_download_row(i18n, ctx, MobileDownload::WebApp))
                         (mobile_download_row(i18n, ctx, MobileDownload::Ios))
@@ -1667,12 +1667,11 @@ fn alternate_builds(
             )]
         }
         Platform::Linux => {
+            // Echowire: x64 only (no arm64 build) and no Flatpak published, so drop both the
+            // arm64 alternate (served a stale build) and the Flatpak link (wrong/unpublished app).
             let mut builds = Vec::new();
-            if !ctx.release_channel.is_canary() {
-                builds.push(alt("Flatpak".to_owned(), FLATPAK_URL.to_owned(), true));
-            }
-            // .deb is now the primary/recommended download, so offer AppImage here as the
-            // "any distro, no install" alternative (note: needs --no-sandbox on Ubuntu 24/Mint 22).
+            // .deb is the primary/recommended download; AppImage is the "any distro, no install"
+            // alternative (note: needs --no-sandbox on Ubuntu 24 / Mint 22).
             builds.push(alt(
                 "AppImage".to_owned(),
                 desktop_url(ctx, "linux", arch, "appimage"),
@@ -1686,11 +1685,6 @@ fn alternate_builds(
             builds.push(alt(
                 "tar.gz".to_owned(),
                 desktop_url(ctx, "linux", arch, "tar_gz"),
-                false,
-            ));
-            builds.push(alt(
-                other_arch.to_owned(),
-                desktop_url(ctx, "linux", other_arch, "appimage"),
                 false,
             ));
             builds
@@ -1899,7 +1893,6 @@ fn download_row(row: DownloadRow) -> Markup {
     }
 }
 
-const FLATPAK_URL: &str = "https://flathub.org/en/apps/app.fluxer.Fluxer";
 
 fn platform_icon(platform: Platform) -> Icon {
     match platform {

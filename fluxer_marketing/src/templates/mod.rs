@@ -1633,9 +1633,12 @@ fn alternate_builds(
     let other_arch = if arch == "arm64" { "x64" } else { "arm64" };
     match platform {
         Platform::Windows => {
+            // Echowire builds win32/x64 only (no arm64 Windows), plus the game-capture variant.
+            // Offer the game-capture build (dropped by upstream redesign #1515) as the alternate
+            // instead of a non-existent other-arch setup.
             let mut builds = vec![alt(
-                other_arch.to_owned(),
-                desktop_url(ctx, "win32", other_arch, "setup"),
+                "Game Capture".to_owned(),
+                desktop_url_variant(ctx, "win32", arch, "windows-game-capture", "setup"),
                 false,
             )];
             if ctx.release_channel.is_canary() {
@@ -1911,6 +1914,22 @@ fn platform_icon(platform: Platform) -> Icon {
 fn desktop_url(ctx: &RequestContext, platform: &str, arch: &str, format: &str) -> String {
     let channel = ctx.release_channel.segment();
     let path = format!("/dl/desktop/{channel}/{platform}/{arch}/latest/{format}");
+    let final_path = desktop_path_with_query(path, ctx.test_build);
+    ctx.api_url(&final_path)
+}
+
+// Echowire: variant-aware desktop URL (e.g. the Windows game-capture build). The upstream
+// download-page redesign (#1515) dropped the variant helper + the game-capture download entry,
+// but we still build the windows-game-capture variant, so re-expose it on the download page.
+fn desktop_url_variant(
+    ctx: &RequestContext,
+    platform: &str,
+    arch: &str,
+    variant: &str,
+    format: &str,
+) -> String {
+    let channel = ctx.release_channel.segment();
+    let path = format!("/dl/desktop/{channel}/{platform}/{arch}/{variant}/latest/{format}");
     let final_path = desktop_path_with_query(path, ctx.test_build);
     ctx.api_url(&final_path)
 }

@@ -11,7 +11,11 @@ const productName = isCanary ? 'Echowire Canary' : 'Echowire';
 const appId = isCanary ? 'org.echowire.canary' : 'org.echowire.app';
 const iconDir = isCanary ? 'icons-canary' : 'icons-stable';
 const packageName = isCanary ? 'fluxer_desktop_canary' : 'fluxer_desktop';
-const linuxPackageName = isCanary ? 'fluxer-canary' : 'fluxer';
+const linuxPackageName = isCanary ? 'echowire-canary' : 'echowire';
+// Echowire: prior releases installed under the upstream package name. Declare it so the
+// renamed package cleanly supersedes it (apt/dnf remove the old, install the new) instead of
+// leaving two installs side by side.
+const legacyLinuxPackageName = isCanary ? 'fluxer-canary' : 'fluxer';
 const desktopBuildVariant = process.env.FLUXER_DESKTOP_BUILD_VARIANT || process.env.DESKTOP_VARIANT || 'default';
 const windowsGameCaptureModuleEnabled =
 	desktopBuildVariant === 'windows-game-capture' || process.env.FLUXER_WINDOWS_GAME_CAPTURE_MODULE_ENABLED === 'true';
@@ -1266,6 +1270,15 @@ module.exports = {
 	},
 	deb: {
 		packageCategory: 'net',
+		// Echowire: supersede the old `fluxer` package on upgrade.
+		fpm: [
+			'--replaces',
+			legacyLinuxPackageName,
+			'--conflicts',
+			legacyLinuxPackageName,
+			'--provides',
+			legacyLinuxPackageName,
+		],
 		desktop: {
 			entry: linuxDesktopEntryWithActions,
 			desktopActions: linuxDesktopActions,
@@ -1291,7 +1304,14 @@ module.exports = {
 			entry: linuxDesktopEntryWithActions,
 			desktopActions: linuxDesktopActions,
 		},
-		fpm: rpmBuildIdLinkFpmArgs,
+		// Echowire: keep the rpm build-id link args + supersede the old `fluxer` package.
+		fpm: [
+			...rpmBuildIdLinkFpmArgs,
+			'--obsoletes',
+			legacyLinuxPackageName,
+			'--provides',
+			legacyLinuxPackageName,
+		],
 		depends: [
 			'gtk3',
 			'libnotify',

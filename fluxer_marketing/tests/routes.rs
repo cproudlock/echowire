@@ -802,8 +802,9 @@ async fn download_page_renders_strips_and_cache_header() {
         "/dl/desktop/{}/win32/x64/latest/setup?test=1",
         release_channel.segment()
     );
-    let expected_other_arch_url = format!(
-        "/dl/desktop/{}/win32/arm64/latest/setup?test=1",
+    // Echowire builds win32/x64 only; the Windows alternate is the game-capture build.
+    let expected_game_capture_url = format!(
+        "/dl/desktop/{}/win32/x64/windows-game-capture/latest/setup?test=1",
         release_channel.segment()
     );
     let app = build_router(config);
@@ -829,7 +830,7 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(!html.contains("download-card-grid"));
     assert!(!html.contains("/dl/desktop/source/latest"));
     assert!(html.contains(&expected_download_url));
-    assert!(html.contains(&expected_other_arch_url));
+    assert!(html.contains(&expected_game_capture_url));
     if release_channel.is_canary() {
         assert!(html.contains("/dl/desktop/canary/linux/x64/latest/appimage?test=1"));
     } else {

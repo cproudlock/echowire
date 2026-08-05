@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-08-02 00:00+0000\n"
-"PO-Revision-Date: 2026-08-02 00:00+0000\n"
+"POT-Creation-Date: 2026-08-04 00:00+0000\n"
+"PO-Revision-Date: 2026-08-04 00:00+0000\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2155,14 +2155,16 @@ msgstr ""
 msgctxt "platform_support.availability.meta_description"
 msgid ""
 "Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing."
-msgstr "Scarica {product_name} per il tuo browser web, {windows} e {linux}. {ios} e {android} sono in beta pubblica."
+msgstr ""
+"Scarica {product_name} per il tuo browser web, {windows} e {linux}. {ios} e {android} sono in beta pubblica."
 
 #. Intro copy below the download-page heading. Keep platform names conventional and make browser, desktop, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.summary
 msgctxt "platform_support.availability.summary"
 msgid ""
 "Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing."
-msgstr "Disponibile nel tuo browser web e su {windows} e {linux}, con {ios} e {android} in beta pubblica."
+msgstr ""
+"Disponibile nel tuo browser web e su {windows} e {linux}, con {ios} e {android} in beta pubblica."
 
 #. Alt text for a desktop product screenshot. Preserve {product_name} exactly; describe the image as the desktop interface, not as a download action. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.desktop.interface_label
@@ -2432,14 +2434,13 @@ msgstr "App per {ios}"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr ""
-"L'app {ios} è aperta a tutti tramite {testflight}. Partecipa subito alla beta pubblica. La web app completa di {product_name} funziona anche su Safari e può essere aggiunta alla schermata Home."
+msgstr "L'app {ios} è aperta a tutti tramite {testflight}. Partecipa subito alla beta pubblica. La web app completa di {product_name} funziona anche su Safari e può essere aggiunta alla schermata Home."
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta
 msgctxt "platform_support.mobile.ios.cta"
 msgid "Join on {testflight}"
-msgstr "Unisciti su {testflight}"
+msgstr "Partecipa su {testflight}"
 
 #. Card title for the Android app option on the download page. Keep the platform name conventional and short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.android.title

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-08-02 00:00+0000\n"
-"PO-Revision-Date: 2026-08-02 00:00+0000\n"
+"POT-Creation-Date: 2026-08-04 00:00+0000\n"
+"PO-Revision-Date: 2026-08-04 00:00+0000\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2129,14 +2129,16 @@ msgstr ""
 msgctxt "platform_support.availability.meta_description"
 msgid ""
 "Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing."
-msgstr "احصل على {product_name} لمتصفح الويب الخاص بك، و{windows}، و{linux}. يتوفر {ios} و{android} في مرحلة اختبار عامة."
+msgstr ""
+"احصل على {product_name} لمتصفح الويب الخاص بك، و{windows}، و{linux}. يتوفر {ios} و{android} في مرحلة اختبار عامة."
 
 #. Intro copy below the download-page heading. Keep platform names conventional and make browser, desktop, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.summary
 msgctxt "platform_support.availability.summary"
 msgid ""
 "Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing."
-msgstr "متوفر في متصفح الويب الخاص بك وعلى {windows} و {linux}، مع {ios} و {android} في الاختبار العام."
+msgstr ""
+"متوفر في متصفح الويب الخاص بك وعلى {windows} و {linux}، مع {ios} و {android} في الاختبار العام."
 
 #. Alt text for a desktop product screenshot. Preserve {product_name} exactly; describe the image as the desktop interface, not as a download action. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.desktop.interface_label
@@ -2405,8 +2407,7 @@ msgstr "تطبيق {ios}"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr ""
-"تطبيق {ios} متاح للجميع عبر {testflight}. انضم إلى النسخة التجريبية العامة الآن. تطبيق الويب الكامل {product_name} يعمل أيضًا في سفاري ويمكن إضافته إلى شاشتك الرئيسية."
+msgstr "تطبيق {ios} مفتوح للجميع عبر {testflight}. انضم إلى النسخة التجريبية العامة الآن. تطبيق الويب الكامل {product_name} يعمل أيضًا في سفاري ويمكن إضافته إلى شاشتك الرئيسية."
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta

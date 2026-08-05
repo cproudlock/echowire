@@ -361,6 +361,8 @@ crate::marketing_message!(
 );
 
 crate::marketing_message!(
+    // Echowire: our iOS TestFlight is PUBLIC (not Plutonium/premium-gated like upstream #1520).
+    // Keep the open-to-everyone copy + the CTA below that upstream removed.
     pub const PLATFORM_SUPPORT_MOBILE_IOS_BODY_DESCRIPTOR = {
         key: "platform_support.mobile.ios.body",
         message: "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen.",

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-08-02 00:00+0000\n"
-"PO-Revision-Date: 2026-08-02 00:00+0000\n"
+"POT-Creation-Date: 2026-08-04 00:00+0000\n"
+"PO-Revision-Date: 2026-08-04 00:00+0000\n"
 "Language: zh-TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2385,14 +2385,13 @@ msgstr "{ios} App"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr ""
-"{ios} app 透過 {testflight} 向所有人開放。立即加入公開測試版。完整的 {product_name} 網頁應用程式也能在 Safari 中運作，並可加入主畫面。"
+msgstr "{ios} app 透過 {testflight} 開放給所有人。立即加入公開測試版。完整的 {product_name} 網頁應用程式也能在 Safari 中運作，並可加入主畫面。"
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta
 msgctxt "platform_support.mobile.ios.cta"
 msgid "Join on {testflight}"
-msgstr "在 {testflight} 加入"
+msgstr "在 {testflight} 上加入"
 
 #. Card title for the Android app option on the download page. Keep the platform name conventional and short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.android.title

@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-08-02 00:00+0000\n"
-"PO-Revision-Date: 2026-08-02 00:00+0000\n"
+"POT-Creation-Date: 2026-08-04 00:00+0000\n"
+"PO-Revision-Date: 2026-08-04 00:00+0000\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2389,8 +2389,7 @@ msgstr "{ios} 앱"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr ""
-"{ios} 앱은 {testflight}을 통해 누구나 참여할 수 있습니다. 지금 공개 베타에 참여하세요. 전체 {product_name} 웹 앱은 Safari에서도 작동하며 홈 화면에 추가할 수 있습니다."
+msgstr "{ios} 앱은 {testflight}을 통해 누구나 참여할 수 있습니다. 지금 공개 베타에 참여하세요. 전체 {product_name} 웹 앱은 Safari에서도 작동하며 홈 화면에 추가할 수 있습니다."
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta

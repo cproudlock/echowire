@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-08-02 00:00+0000\n"
-"PO-Revision-Date: 2026-08-02 00:00+0000\n"
+"POT-Creation-Date: 2026-08-04 00:00+0000\n"
+"PO-Revision-Date: 2026-08-04 00:00+0000\n"
 "Language: hi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2149,14 +2149,16 @@ msgstr ""
 msgctxt "platform_support.availability.meta_description"
 msgid ""
 "Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing."
-msgstr "अपने वेब ब्राउज़र, {windows}, और {linux} के लिए {product_name} प्राप्त करें। {ios} और {android} सार्वजनिक परीक्षण में हैं।"
+msgstr ""
+"अपने वेब ब्राउज़र, {windows}, और {linux} के लिए {product_name} प्राप्त करें। {ios} और {android} सार्वजनिक परीक्षण में हैं।"
 
 #. Intro copy below the download-page heading. Keep platform names conventional and make browser, desktop, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.summary
 msgctxt "platform_support.availability.summary"
 msgid ""
 "Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing."
-msgstr "आपके वेब ब्राउज़र और {windows} और {linux} पर उपलब्ध है, साथ ही {ios} और {android} सार्वजनिक परीक्षण में हैं।"
+msgstr ""
+"आपके वेब ब्राउज़र और {windows} और {linux} पर उपलब्ध है, साथ ही {ios} और {android} सार्वजनिक परीक्षण में हैं।"
 
 #. Alt text for a desktop product screenshot. Preserve {product_name} exactly; describe the image as the desktop interface, not as a download action. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.desktop.interface_label
@@ -2425,8 +2427,7 @@ msgstr "{ios} ऐप"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr ""
-"{ios} ऐप {testflight} के माध्यम से सभी के लिए खुला है। अभी पब्लिक बीटा में शामिल हों। पूरा {product_name} वेब ऐप सफारी में भी काम करता है और इसे आपकी होम स्क्रीन में जोड़ा जा सकता है।"
+msgstr "{ios} ऐप {testflight} के माध्यम से सभी के लिए खुला है। अभी पब्लिक बीटा में शामिल हों। पूरा {product_name} वेब ऐप सफारी में भी काम करता है और इसे आपकी होम स्क्रीन में जोड़ा जा सकता है।"
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta

@@ -2,7 +2,6 @@
 
 import {createRequire} from 'node:module';
 import {BUILD_CHANNEL} from '@electron/common/BuildChannel';
-import {DESKTOP_BUILD_VARIANT} from '@electron/common/BuildVariant';
 import {isPortableMode} from '@electron/common/UserDataPath';
 import {destroyDesktopTray} from '@electron/main/DesktopTray';
 import {isFlatpakRuntime} from '@electron/main/LinuxSandbox';

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 use crate::{
+    config::DOWNLOAD_RELEASE_CHANNEL,
     content::{
         HELP_ARTICLES, HELP_CATEGORIES, HeadingEntry, HelpArticle, HelpCategory, JOBS, JobListing,
         POLICIES, Policy, get_help_category, render_markdown_with_copy_label,
@@ -1641,7 +1642,7 @@ fn alternate_builds(
                 desktop_url_variant(ctx, "win32", arch, "windows-game-capture", "setup"),
                 false,
             )];
-            if ctx.release_channel.is_canary() {
+            if DOWNLOAD_RELEASE_CHANNEL.is_canary() {
                 builds.push(alt(
                     tr(i18n, ctx, PLATFORM_SUPPORT_PLATFORMS_PORTABLE_DESCRIPTOR),
                     desktop_url(ctx, "win32", arch, "portable"),
@@ -1905,7 +1906,7 @@ fn platform_icon(platform: Platform) -> Icon {
 }
 
 fn desktop_url(ctx: &RequestContext, platform: &str, arch: &str, format: &str) -> String {
-    let channel = ctx.release_channel.segment();
+    let channel = DOWNLOAD_RELEASE_CHANNEL.segment();
     let path = format!("/dl/desktop/{channel}/{platform}/{arch}/latest/{format}");
     let final_path = desktop_path_with_query(path, ctx.test_build);
     ctx.api_url(&final_path)
@@ -1921,7 +1922,7 @@ fn desktop_url_variant(
     variant: &str,
     format: &str,
 ) -> String {
-    let channel = ctx.release_channel.segment();
+    let channel = DOWNLOAD_RELEASE_CHANNEL.segment();
     let path = format!("/dl/desktop/{channel}/{platform}/{arch}/{variant}/latest/{format}");
     let final_path = desktop_path_with_query(path, ctx.test_build);
     ctx.api_url(&final_path)

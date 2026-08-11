@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-08-04 00:00+0000\n"
-"PO-Revision-Date: 2026-08-04 00:00+0000\n"
+"POT-Creation-Date: 2026-08-10 00:00+0000\n"
+"PO-Revision-Date: 2026-08-10 00:00+0000\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2184,7 +2184,7 @@ msgctxt "platform_support.desktop.canary_windows_warning"
 msgid ""
 "This Canary build may be flagged by {microsoft_defender} or other antivirus software on {windows} for now. See GitHub issue {issue_link} for more details."
 msgstr ""
-"Deze Canary-build kan voorlopig worden gemarkeerd door {microsoft_defender} of andere antivirussoftware op {windows}. Zie GitHub-issue {issue_link} voor meer details."
+"This Canary build may be flagged by {microsoft_defender} or other antivirus software on {windows} for now. See GitHub issue {issue_link} for more details."
 
 #. Body copy for mobile/PWA install guidance on the download page. Keep instructions clear, device-appropriate, and concise; preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.install_as_app.done_desktop
@@ -2427,7 +2427,8 @@ msgstr "{ios}-app"
 msgctxt "platform_support.mobile.ios.body"
 msgid ""
 "The {ios} app is open to everyone through {testflight}. Join the public beta now. The full {product_name} web app also works in Safari and can be added to your Home Screen."
-msgstr "De {ios}-app is voor iedereen toegankelijk via {testflight}. Doe nu mee met de openbare bèta. De volledige {product_name}-web-app werkt ook in Safari en kan aan je beginscherm worden toegevoegd."
+msgstr ""
+"De {ios}-app is voor iedereen toegankelijk via {testflight}. Doe nu mee met de openbare bèta. De volledige {product_name}-web-app werkt ook in Safari en kan aan je beginscherm worden toegevoegd."
 
 #. Button label for the public iOS beta on the download page. Preserve TestFlight as a name and keep the action short. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.mobile.ios.cta

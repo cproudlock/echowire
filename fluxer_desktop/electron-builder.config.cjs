@@ -1297,9 +1297,10 @@ module.exports = {
 			desktopActions: linuxDesktopActions,
 		},
 		// Echowire: keep the rpm build-id link args + supersede the old `fluxer` package.
+		// fpm has no --obsoletes flag; for RPM it maps --replaces to the Obsoletes tag.
 		fpm: [
 			...rpmBuildIdLinkFpmArgs,
-			'--obsoletes',
+			'--replaces',
 			legacyLinuxPackageName,
 			'--provides',
 			legacyLinuxPackageName,

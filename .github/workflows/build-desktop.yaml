@@ -636,6 +636,14 @@ jobs:
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
           --step stage_signed_windows_artifacts
 
+  upload:
+    name: Upload to S3
+    if: ${{ !failure() && !cancelled() }}
+    needs:
+      - meta
+      - build
+      - sign_windows
+    runs-on: self-hosted-linux
     environment: desktop-releases
     timeout-minutes: 60
     env:

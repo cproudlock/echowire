@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 use crate::{
-    config::{DOWNLOAD_RELEASE_CHANNEL, MarketingConfig},
+    config::MarketingConfig,
     content::{
         BLOG_POSTS, BlogBookmarkAsset, BlogPost, HELP_ARTICLES, HELP_CATEGORIES, JOBS, POLICIES,
         blog_tag_label, blog_tag_slug, get_blog_post, get_help_article, get_job, get_policy,
@@ -599,7 +599,7 @@ async fn download(State(state): State<AppState>, headers: HeaderMap, uri: Uri) -
         &state.latest_versions_cache,
         &state.http_client,
         &state.config.api_endpoint,
-        DOWNLOAD_RELEASE_CHANNEL.segment(),
+        ctx.download_channel.segment(),
     )
     .await;
     let mut response =

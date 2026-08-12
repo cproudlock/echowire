@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 use crate::{
-    config::DOWNLOAD_RELEASE_CHANNEL,
     content::{
         HELP_ARTICLES, HELP_CATEGORIES, HeadingEntry, HelpArticle, HelpCategory, JOBS, JobListing,
         POLICIES, Policy, get_help_category, render_markdown_with_copy_label,
@@ -146,6 +145,17 @@ pub fn download_page(
                         h1 class="display text-4xl text-gray-950 md:text-5xl" { (tr(i18n, ctx, DOWNLOAD_DOWNLOAD_FLUXER_DESCRIPTOR)) }
                         p class="lead mt-4 max-w-2xl text-gray-600" {
                             (tr(i18n, ctx, PLATFORM_SUPPORT_AVAILABILITY_SUMMARY_DESCRIPTOR))
+                        }
+                        // Echowire: desktop release-channel toggle. Defaults to Stable;
+                        // ?channel=canary opts into the beta build.
+                        p class="mt-3 text-sm text-gray-500" {
+                            @if ctx.download_channel.is_canary() {
+                                "Showing Canary (beta) builds. "
+                                a href=(ctx.href("/download")) class="font-medium text-gray-900 underline hover:text-gray-700" { "Switch to Stable" }
+                            } @else {
+                                "Want early beta features? "
+                                a href=(format!("{}?channel=canary", ctx.href("/download"))) class="font-medium text-gray-900 underline hover:text-gray-700" { "Switch to Canary (beta)" }
+                            }
                         }
                     }
                     ul class="border-gray-200 border-t" {
@@ -1642,7 +1652,7 @@ fn alternate_builds(
                 desktop_url_variant(ctx, "win32", arch, "windows-game-capture", "setup"),
                 false,
             )];
-            if DOWNLOAD_RELEASE_CHANNEL.is_canary() {
+            if ctx.download_channel.is_canary() {
                 builds.push(alt(
                     tr(i18n, ctx, PLATFORM_SUPPORT_PLATFORMS_PORTABLE_DESCRIPTOR),
                     desktop_url(ctx, "win32", arch, "portable"),
@@ -1717,7 +1727,7 @@ fn download_strip(
         DOWNLOAD_DOWNLOAD_FOR_PLATFORM_DESCRIPTOR,
         &[("platform", &name)],
     );
-    let description = if platform == Platform::Windows && ctx.release_channel.is_canary() {
+    let description = if platform == Platform::Windows && ctx.download_channel.is_canary() {
         let warning = i18n.template(
             ctx.locale,
             PLATFORM_SUPPORT_DESKTOP_CANARY_WINDOWS_WARNING_DESCRIPTOR,
@@ -1906,7 +1916,7 @@ fn platform_icon(platform: Platform) -> Icon {
 }
 
 fn desktop_url(ctx: &RequestContext, platform: &str, arch: &str, format: &str) -> String {
-    let channel = DOWNLOAD_RELEASE_CHANNEL.segment();
+    let channel = ctx.download_channel.segment();
     let path = format!("/dl/desktop/{channel}/{platform}/{arch}/latest/{format}");
     let final_path = desktop_path_with_query(path, ctx.test_build);
     ctx.api_url(&final_path)
@@ -1922,7 +1932,7 @@ fn desktop_url_variant(
     variant: &str,
     format: &str,
 ) -> String {
-    let channel = DOWNLOAD_RELEASE_CHANNEL.segment();
+    let channel = ctx.download_channel.segment();
     let path = format!("/dl/desktop/{channel}/{platform}/{arch}/{variant}/latest/{format}");
     let final_path = desktop_path_with_query(path, ctx.test_build);
     ctx.api_url(&final_path)

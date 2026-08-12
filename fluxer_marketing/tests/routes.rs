@@ -7,7 +7,7 @@ use axum::{
 use base64::{Engine as _, engine::general_purpose::URL_SAFE_NO_PAD};
 use fluxer_marketing::{
     build_router,
-    config::{DOWNLOAD_RELEASE_CHANNEL, MarketingConfig, ReleaseChannel},
+    config::{MarketingConfig, ReleaseChannel},
 };
 use http_body_util::BodyExt;
 use std::collections::{BTreeMap, BTreeSet};
@@ -855,12 +855,12 @@ async fn download_page_renders_strips_and_cache_header() {
     config.release_channel = ReleaseChannel::Stable;
     let expected_download_url = format!(
         "/dl/desktop/{}/win32/x64/latest/setup?test=1",
-        DOWNLOAD_RELEASE_CHANNEL.segment()
+        ReleaseChannel::Stable.segment()
     );
     // Echowire builds win32/x64 only; the Windows alternate is the game-capture build.
     let expected_game_capture_url = format!(
         "/dl/desktop/{}/win32/x64/windows-game-capture/latest/setup?test=1",
-        DOWNLOAD_RELEASE_CHANNEL.segment()
+        ReleaseChannel::Stable.segment()
     );
     let app = build_router(config);
     let response = app
@@ -886,7 +886,7 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(!html.contains("/dl/desktop/source/latest"));
     assert!(html.contains(&expected_download_url));
     assert!(html.contains(&expected_game_capture_url));
-    let channel = DOWNLOAD_RELEASE_CHANNEL.segment();
+    let channel = ReleaseChannel::Stable.segment();
     assert!(html.contains(&format!("/dl/desktop/{channel}/linux/x64/latest/appimage?test=1")));
     // Echowire: no macOS build, no arm64 Linux build, no Flatpak published -> none linked.
     assert!(!html.contains("darwin"));

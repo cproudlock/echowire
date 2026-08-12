@@ -4,7 +4,15 @@ import {BUILD_CHANNEL} from '@electron/common/BuildChannel';
 
 export const DESKTOP_APP_NAME = BUILD_CHANNEL === 'canary' ? 'Echowire Canary' : 'Echowire';
 export const MACOS_BUNDLE_ID = BUILD_CHANNEL === 'canary' ? 'org.echowire.canary' : 'org.echowire.app';
-export const LINUX_DESKTOP_ENTRY_ID = BUILD_CHANNEL === 'canary' ? 'fluxer-canary' : 'fluxer';
+// Echowire: this MUST match the packaged Linux name (electron-builder linuxPackageName =
+// 'echowire'/'echowire-canary'), otherwise the app's runtime .desktop generator can't find
+// the system entry the .deb installed ('echowire.desktop') and writes a SECOND user-local
+// entry ('fluxer.desktop', same Name), producing a duplicate "Echowire (Echowire)" launcher.
+// It also feeds StartupWMClass + the freedesktop notification desktop-entry hint, so it has
+// to line up with the installed file. Was left as the upstream 'fluxer' id during the rebrand.
+export const LINUX_DESKTOP_ENTRY_ID = BUILD_CHANNEL === 'canary' ? 'echowire-canary' : 'echowire';
+// Old ids previous builds wrote; used to clean up stale user-local duplicates on upgrade.
+export const LINUX_LEGACY_DESKTOP_ENTRY_IDS = BUILD_CHANNEL === 'canary' ? ['fluxer-canary'] : ['fluxer'];
 export const WINDOWS_SHORTCUT_AUTHOR = 'Echowire';
 const WINDOWS_VELOPACK_ID = BUILD_CHANNEL === 'canary' ? 'fluxer_desktop_canary' : 'fluxer_desktop';
 export const WINDOWS_APP_USER_MODEL_ID = BUILD_CHANNEL === 'canary' ? 'Echowire.Echowire.Canary' : 'Echowire.Echowire';

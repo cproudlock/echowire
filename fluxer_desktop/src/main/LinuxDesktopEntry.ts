@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {APP_PROTOCOL} from '@electron/common/Constants';
-import {DESKTOP_APP_NAME, LINUX_DESKTOP_ENTRY_ID} from '@electron/common/DesktopIdentity';
+import {DESKTOP_APP_NAME, LINUX_DESKTOP_ENTRY_ID, LINUX_LEGACY_DESKTOP_ENTRY_IDS} from '@electron/common/DesktopIdentity';
 import {createChildLogger} from '@electron/common/Logger';
 import {TASK_ARG_PREFIX} from '@electron/main/JumpList';
 import {getStableLinuxLaunchPath} from '@electron/main/LinuxLaunchPath';
@@ -147,8 +147,48 @@ function runUpdateDesktopDatabase(applicationsDir: string): void {
 	});
 }
 
+// Echowire: earlier builds used the wrong entry id ('fluxer') and wrote a user-local
+// duplicate .desktop (+ hicolor icons) alongside the packaged 'echowire.desktop', showing
+// up as a redundant "Echowire (Echowire)" launcher. Remove those stale copies on startup so
+// upgraders lose the duplicate. Only touch files WE generated (GENERATED_MARKER present).
+function removeLegacyGeneratedDesktopEntries(): boolean {
+	let removedAny = false;
+	for (const legacyId of LINUX_LEGACY_DESKTOP_ENTRY_IDS) {
+		if (legacyId === APP_ID) continue;
+		const legacyDesktopPath = path.join(getUserApplicationsDir(), `${legacyId}.desktop`);
+		try {
+			const contents = fs.readFileSync(legacyDesktopPath, 'utf8');
+			if (contents.includes(GENERATED_MARKER)) {
+				fs.rmSync(legacyDesktopPath, {force: true});
+				removedAny = true;
+				logger.info('Removed stale legacy Linux .desktop entry', {legacyDesktopPath});
+			}
+		} catch {
+			// Not present (or unreadable); nothing to clean up.
+		}
+		for (const size of HICOLOR_ICON_SIZES) {
+			const legacyIconPath = path.join(
+				getXdgDataHome(),
+				'icons',
+				'hicolor',
+				`${size}x${size}`,
+				'apps',
+				`${legacyId}.png`,
+			);
+			try {
+				fs.rmSync(legacyIconPath, {force: true});
+			} catch {}
+		}
+	}
+	return removedAny;
+}
+
 export function ensureLinuxProtocolDesktopEntry(): void {
 	if (process.platform !== 'linux') return;
+	const removedLegacy = removeLegacyGeneratedDesktopEntries();
+	if (removedLegacy) {
+		runUpdateDesktopDatabase(getUserApplicationsDir());
+	}
 	if (isFlatpakRuntime()) {
 		logger.debug('Skipping .desktop entry creation in Flatpak; package export owns launcher/protocol integration');
 		try {

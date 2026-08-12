@@ -18,11 +18,19 @@ const isProduction =
 const skipNative = process.env.FLUXER_SKIP_NATIVE === 'true';
 const embeddedBuildVersion = process.env.PUBLIC_BUILD_VERSION || process.env.BUILD_VERSION || '';
 const embeddedReleaseChannel = process.env.PUBLIC_RELEASE_CHANNEL || process.env.RELEASE_CHANNEL || '';
+// Echowire: the Windows update feed is variant-scoped (default vs windows-game-capture).
+// Updater.ts references DESKTOP_BUILD_VARIANT as a compile-time global, so it MUST be
+// injected here — otherwise the bundled main process throws "ReferenceError:
+// DESKTOP_BUILD_VARIANT is not defined" on launch (crashes every desktop build). Mirror
+// the exact env expression electron-builder.config.cjs uses so packaging + updater agree.
+const embeddedBuildVariant =
+	process.env.FLUXER_DESKTOP_BUILD_VARIANT || process.env.DESKTOP_VARIANT || 'default';
 const publicBuildDefines = {
 	'process.env.PUBLIC_BUILD_VERSION': JSON.stringify(embeddedBuildVersion),
 	'process.env.BUILD_VERSION': JSON.stringify(embeddedBuildVersion),
 	'process.env.PUBLIC_RELEASE_CHANNEL': JSON.stringify(embeddedReleaseChannel),
 	'process.env.RELEASE_CHANNEL': JSON.stringify(embeddedReleaseChannel),
+	DESKTOP_BUILD_VARIANT: JSON.stringify(embeddedBuildVariant),
 };
 const electronExternals = [
 	'electron',

@@ -55,6 +55,11 @@ impl DiscoveryCache {
         self.cached.read().await.clone()
     }
 
+    #[cfg(test)]
+    pub async fn set_for_tests(&self, data: serde_json::Value) {
+        *self.cached.write().await = Some(DiscoveryResponse { data });
+    }
+
     pub fn start_background_refresh(
         self: &Arc<Self>,
         client: reqwest::Client,

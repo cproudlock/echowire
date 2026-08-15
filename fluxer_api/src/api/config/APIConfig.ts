@@ -34,6 +34,7 @@ export interface APIConfig {
 	nodeEnv: 'development' | 'production';
 	port: number;
 	ipBanExemptIps: Array<string>;
+	additionalCorsOrigins: Array<string>;
 	cassandra: {
 		hosts: string;
 		port: number;

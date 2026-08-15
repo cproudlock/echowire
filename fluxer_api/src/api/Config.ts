@@ -121,6 +121,7 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 		nodeEnv: master.env === 'test' ? 'development' : master.env,
 		port: master.services.api.port,
 		ipBanExemptIps: normalizeIpBanExemptIps(master.services.api.ip_ban_exempt_ips),
+		additionalCorsOrigins: master.services.api.additional_cors_origins ?? [],
 		cassandra: {
 			hosts: cassandraSource?.hosts.join(',') ?? '',
 			port: cassandraSource?.port ?? 9042,

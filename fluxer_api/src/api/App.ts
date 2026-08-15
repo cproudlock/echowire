@@ -45,7 +45,13 @@ export async function createAPIApp(options: CreateAPIAppOptions): Promise<APIApp
 	configureMiddleware(routes, {
 		logger,
 		nodeEnv: config.nodeEnv,
-		corsOrigins: [config.endpoints.webApp, config.endpoints.marketing],
+		corsOrigins: [
+			...new Set(
+				[config.endpoints.webApp, config.endpoints.marketing, ...config.additionalCorsOrigins].filter(
+					(origin) => origin.length > 0,
+				),
+			),
+		],
 		trustClientIpHeader: config.proxy.trust_client_ip_header,
 		clientIpHeaderName: config.proxy.client_ip_header,
 	});

@@ -8,13 +8,23 @@ type ConfigObject = Record<string, unknown>;
 
 let cachedConfig: MasterConfig | null = null;
 
+// The canary desktop loads the SPA from canary.echowire.org, which is the same
+// deployment served under a second hostname. Because instance config hands
+// clients an absolute api_client URL (https://echowire.org/api), every request
+// from that origin is cross-origin, so canary needs to be an allowed origin for
+// both CORS and passkey assertions.
+const CANARY_APP_ORIGIN = 'https://canary.echowire.org';
+
 const DEFAULT_PASSKEY_ORIGINS = [
 	'https://echowire.org',
 	'https://web.echowire.org',
+	CANARY_APP_ORIGIN,
 	'https://web.canary.echowire.org',
 	'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 	'android:apk-key-hash:zRmCKDKo3uCX2GDZISjJx8Rzo3J-Y3Gbp7s7mAaUH28',
 ];
+
+const DEFAULT_ADDITIONAL_CORS_ORIGINS = [CANARY_APP_ORIGIN];
 
 function defaultConfig(): MasterConfig {
 	return {
@@ -92,6 +102,7 @@ function defaultConfig(): MasterConfig {
 			api: {
 				port: 8080,
 				ip_ban_exempt_ips: [],
+				additional_cors_origins: DEFAULT_ADDITIONAL_CORS_ORIGINS,
 				presigned_attachment_uploads_enabled: false,
 				unfurl_ignored_hosts: [],
 				embeds: {

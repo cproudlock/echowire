@@ -9,7 +9,10 @@
 **/.git/**
 /.github/
 /.pnpm-store/
-/fluxer_marketing
+# NOTE: do NOT ignore /fluxer_marketing. Upstream added it here when marketing
+# became an (unpopulated) submodule; Echowire keeps marketing in-tree, and
+# excluding it from the build context breaks fluxer_marketing/Dockerfile at
+# `COPY fluxer_marketing` with "/fluxer_marketing: not found".
 
 **/.env
 **/.env.*.local

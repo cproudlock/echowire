@@ -3,6 +3,9 @@ members = [
 	"fluxer_admin",
 	"fluxer_app_proxy",
 	"fluxer_common",
+	# Echowire keeps marketing IN-TREE (upstream extracted it to a submodule in #1594).
+	# It holds our branding, legal pages and the Stable/Canary download toggle, so it
+	# stays a workspace member and must NOT be re-added to `exclude` on future merges.
 	"fluxer_marketing",
 	"fluxer_media_proxy",
 	"fluxer_gifs",
@@ -13,6 +16,8 @@ members = [
 	"tools/content/update-frozen-snapshot",
 	"tools/dev",
 	"tools/i18n_auto",
+	# Echowire: kept alongside the in-tree marketing crate — upstream deleted this with
+	# the extraction, but our catalog-update workflow still needs it.
 	"tools/marketing/update-gettext-catalogs",
 	"fluxer_users",
 	"fluxer_unfurl",

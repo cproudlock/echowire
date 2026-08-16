@@ -987,7 +987,9 @@
 }
 
 .repliedTextContent {
-	--mention-offset-block-end: 0px;
+	--markup-restricted-inline-icon-baseline-shift: -0.125em;
+	--markup-restricted-inline-emoji-size: var(--reply-height);
+	--markup-restricted-inline-emoji-baseline-shift: bottom;
 	display: inline;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -1004,15 +1006,15 @@
 }
 
 .repliedTextContent :global(.emoji) {
-	width: var(--reply-height);
-	height: var(--reply-height);
+	width: var(--markup-restricted-inline-emoji-size);
+	height: var(--markup-restricted-inline-emoji-size);
 	min-height: 0;
-	margin-bottom: 0;
-	vertical-align: text-bottom;
+	margin-block: 0;
+	vertical-align: var(--markup-restricted-inline-emoji-baseline-shift);
 }
 
 .repliedTextContent :global(.emoji:not(img)) {
-	font-size: var(--reply-height);
+	font-size: var(--markup-restricted-inline-emoji-size);
 	line-height: 1;
 }
 
@@ -1071,19 +1073,6 @@
 	align-items: flex-start;
 	justify-content: center;
 	padding-block-start: 0.15em;
-	padding-inline-start: max(
-		0px,
-		calc(
-			(
-				var(--textarea-horizontal-padding, 1rem) +
-				var(--textarea-side-button-padding, 0.34375rem) +
-				(var(--textarea-button-height, 2rem) / 2) -
-				var(--chat-horizontal-padding, 1rem) -
-				(var(--message-avatar-size) / 2)
-			) *
-			2
-		)
-	);
 	user-select: none;
 	-webkit-user-select: none;
 }
@@ -1259,7 +1248,10 @@
 
 .typingCluster {
 	display: grid;
-	grid-template-columns: var(--typing-upload-column-width) minmax(0, 1fr);
+	grid-template-columns: calc(var(--textarea-button-height, 2rem) + var(--textarea-side-button-padding, 0.25rem) * 2) minmax(
+			0,
+			1fr
+		);
 	column-gap: var(--textarea-upload-gap, 0.75rem);
 	align-items: center;
 	pointer-events: none;
@@ -1282,7 +1274,6 @@
 	grid-column: 1 / -1;
 	justify-self: flex-start;
 	margin-inline-start: 0;
-	transform: translateY(50%);
 }
 
 :global(.theme-light) .typingPill {
@@ -1324,8 +1315,21 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: 0.625rem;
+	font-size: 0.75rem;
 	line-height: var(--typing-pill-height);
+}
+
+.typingClusterComposerStatus {
+	display: inline-flex;
+	grid-template-columns: none;
+	column-gap: 0;
+	width: auto;
+	max-width: 100%;
+	flex: 0 1 auto;
+}
+
+.typingClusterComposerStatus .typingAvatarContainer {
+	--avatar-stack-outline-color: var(--composer-surface-color, var(--background-secondary-lighter));
 }
 
 .compactContentWrapper {

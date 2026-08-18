@@ -30,6 +30,7 @@ futures-lite = "2.6.1"
 libc = "0.2"
 pipewire = { version = "0.10.0", features = ["v0_3_33"] }
 zbus = "5.16.0"
+x11rb = {version = "0.13", default-features = false, features = ["randr", "shm"]}
 
 [dev-dependencies]
 criterion = { version = "0.8", default-features = false, features = ["cargo_bench_support"] }

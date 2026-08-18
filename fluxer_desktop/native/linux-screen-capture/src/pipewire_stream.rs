@@ -170,6 +170,8 @@ pub enum BridgeError {
     DaemonUnreachable,
     Spawn,
     Negotiate,
+    /// Echowire: the X11 backend could not reach the display or set up MIT-SHM.
+    X11Unavailable,
 }
 
 impl std::fmt::Display for BridgeError {
@@ -178,6 +180,7 @@ impl std::fmt::Display for BridgeError {
             Self::DaemonUnreachable => f.write_str("DaemonUnreachable"),
             Self::Spawn => f.write_str("Spawn"),
             Self::Negotiate => f.write_str("Negotiate"),
+            Self::X11Unavailable => f.write_str("X11Unavailable"),
         }
     }
 }

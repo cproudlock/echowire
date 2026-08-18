@@ -24,6 +24,7 @@ use crate::pipewire_stream::{
     daemon_reachable,
 };
 use crate::portal::{self, LiveSession, PortalError, SOURCE_TYPE_WINDOW, StreamInfo};
+use crate::x11_stream::{BACKEND_X11, X11VideoStream, list_monitors as x11_list_monitors, x11_available};
 
 fn generic_error(reason: impl Into<String>) -> napi::Error {
     napi::Error::new(Status::GenericFailure, reason.into())
@@ -122,6 +123,22 @@ pub async fn get_availability() -> Result<Availability> {
             info.portal_version.map(|v| format!("portal version {v}")),
         )
     } else {
+        // Echowire: no ScreenCast portal does NOT mean no screen capture. On an X11 session the
+        // portal is absent by design, but we can capture directly from the X server, which is
+        // what the pre-native-engine client always did.
+        if x11_available() {
+            return Ok(Availability {
+                available: true,
+                backend: BACKEND_X11.to_string(),
+                reason: None,
+                detail: Some("X11 MIT-SHM capture".to_string()),
+                portal_version: info.portal_version,
+                capabilities: Capabilities {
+                    process: false,
+                    system: true,
+                },
+            });
+        }
         let reason_code = if !info.pipewire_reachable {
             "pipewire-unreachable"
         } else if matches!(info.portal_version, Some(v) if v < 4) || info.portal_version.is_none() {
@@ -146,6 +163,12 @@ pub async fn get_availability() -> Result<Availability> {
 
 fn encode_source_id(node_id: u32) -> String {
     node_id.to_string()
+}
+
+/// Echowire: X11 sources are namespaced `x11:<monitor>` so they cannot collide with the
+/// portal's bare numeric PipeWire node ids.
+fn parse_x11_source_id(id: &str) -> Option<u32> {
+    id.strip_prefix("x11:").and_then(|rest| rest.parse::<u32>().ok())
 }
 
 fn parse_source_id(id: &str) -> Option<u32> {
@@ -182,6 +205,26 @@ pub async fn list_sources() -> Result<Vec<LinuxScreenCaptureSource>> {
     let (session, streams) = match result {
         Ok(parts) => parts,
         Err(err) => {
+            // Echowire: on X11 the portal legitimately does not exist; enumerate X server
+            // monitors rather than reporting the whole feature as unavailable.
+            if x11_available()
+                && let Ok(monitors) = x11_list_monitors()
+                && !monitors.is_empty()
+            {
+                return Ok(monitors
+                    .into_iter()
+                    .map(|monitor| LinuxScreenCaptureSource {
+                        kind: "screen".to_string(),
+                        id: format!("x11:{}", monitor.id),
+                        name: monitor.name,
+                        width: u32::from(monitor.width),
+                        height: u32::from(monitor.height),
+                        app_name: None,
+                        bundle_id: None,
+                        target_pid: None,
+                    })
+                    .collect());
+            }
             let code = portal_error_to_status(&err);
             return Err(napi::Error::new(
                 Status::GenericFailure,
@@ -374,6 +417,13 @@ pub struct ScreenCaptureDiagnostics {
 }
 
 impl ScreenCaptureDiagnostics {
+    fn x11() -> Self {
+        let mut diagnostics = Self::pipewire();
+        diagnostics.backend = Some(BACKEND_X11.to_string());
+        diagnostics.active_strategy = Some("x11-shm".to_string());
+        diagnostics
+    }
+
     fn pipewire() -> Self {
         Self {
             backend: Some(BACKEND.to_string()),
@@ -456,6 +506,7 @@ struct CaptureState {
     session: Option<LiveSession>,
     stream: Option<PipeWireVideoStream>,
     game_stream: Option<GameCaptureVideoStream>,
+    x11_stream: Option<X11VideoStream>,
 }
 
 struct CaptureInner {
@@ -486,6 +537,7 @@ impl ScreenCapture {
                     session: None,
                     stream: None,
                     game_stream: None,
+                    x11_stream: None,
                 }),
                 running: Arc::new(AtomicBool::new(false)),
                 capture_id: Arc::new(Mutex::new(None)),
@@ -636,11 +688,48 @@ impl ScreenCapture {
                 state.session = None;
                 state.stream = None;
                 state.game_stream = Some(game_stream);
+                state.x11_stream = None;
             }
             self.inner.running.store(true, Ordering::Release);
             return Ok(ScreenCaptureStartResult {
                 width,
                 height,
+                frame_rate: effective_fps,
+                pixel_format: "nv12".to_string(),
+            });
+        }
+
+        // Echowire: X11 sessions have no ScreenCast portal, so capture straight from the X
+        // server instead. Mirrors the game branch above: self-contained, no portal session.
+        if let Some(monitor_id) = parse_x11_source_id(&source_id) {
+            let monitor = x11_list_monitors()
+                .map_err(|e| generic_error(format!("X11 monitor enumeration failed: {e}")))?
+                .into_iter()
+                .find(|m| m.id == monitor_id)
+                .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 monitor id"))?;
+            let x11_width = u32::from(monitor.width) & !1;
+            let x11_height = u32::from(monitor.height) & !1;
+            let pool = build_linux_screen_pool(x11_width, x11_height)?;
+            let stream = X11VideoStream::open(
+                monitor,
+                Some(effective_fps),
+                frame_cb,
+                lifecycle_cb,
+                pool,
+                None,
+            )
+            .map_err(|e| generic_error(format!("X11 stream open failed: {e}")))?;
+            {
+                let mut state = lock_state(&self.inner)?;
+                state.session = None;
+                state.stream = None;
+                state.game_stream = None;
+                state.x11_stream = Some(stream);
+            }
+            self.inner.running.store(true, Ordering::Release);
+            return Ok(ScreenCaptureStartResult {
+                width: x11_width,
+                height: x11_height,
                 frame_rate: effective_fps,
                 pixel_format: "nv12".to_string(),
             });
@@ -687,6 +776,7 @@ impl ScreenCapture {
             state.session = Some(session);
             state.stream = Some(stream);
             state.game_stream = None;
+            state.x11_stream = None;
         }
         self.inner.running.store(true, Ordering::Release);
 
@@ -717,16 +807,18 @@ impl ScreenCapture {
         if let Ok(mut guard) = self.inner.native_frame_sink.lock() {
             guard.take();
         }
-        let (stream, game_stream, session) = {
+        let (stream, game_stream, x11_stream, session) = {
             let mut state = lock_state(&self.inner)?;
             (
                 state.stream.take(),
                 state.game_stream.take(),
+                state.x11_stream.take(),
                 state.session.take(),
             )
         };
         drop(stream);
         drop(game_stream);
+        drop(x11_stream);
         if let Some(s) = session {
             s.close();
         }
@@ -741,6 +833,12 @@ impl ScreenCapture {
         let state = lock_state(&self.inner)?;
         if let Some(game_stream) = state.game_stream.as_ref() {
             return Ok(Some(game_stream.diagnostics().into()));
+        }
+        if let Some(x11_stream) = state.x11_stream.as_ref() {
+            let mut diagnostics = ScreenCaptureDiagnostics::x11();
+            diagnostics.dropped_frame_counter =
+                Some(x11_stream.frames_dropped_pool_exhausted() as f64);
+            return Ok(Some(diagnostics));
         }
         if let Some(stream) = state.stream.as_ref() {
             let mut diagnostics = ScreenCaptureDiagnostics::pipewire();
@@ -773,12 +871,18 @@ impl Drop for ScreenCapture {
         if let Ok(mut guard) = self.inner.native_frame_sink.lock() {
             guard.take();
         }
-        let (stream, game_stream, session) = match self.inner.state.lock() {
-            Ok(mut s) => (s.stream.take(), s.game_stream.take(), s.session.take()),
-            Err(_) => (None, None, None),
+        let (stream, game_stream, x11_stream, session) = match self.inner.state.lock() {
+            Ok(mut s) => (
+                s.stream.take(),
+                s.game_stream.take(),
+                s.x11_stream.take(),
+                s.session.take(),
+            ),
+            Err(_) => (None, None, None, None),
         };
         drop(stream);
         drop(game_stream);
+        drop(x11_stream);
         if let Some(s) = session {
             s.close();
         }

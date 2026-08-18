@@ -29,8 +29,16 @@ const SELECT_PROTOCOL_OP = 1;
 const SESSION_UPDATE_OP = 14;
 const TEXT_ENCODER = new TextEncoder();
 const TEXT_DECODER = new TextDecoder();
-const CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['av1', 'h265', 'h264', 'vp9', 'vp8'];
-const SOFTWARE_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['av1', 'vp9', 'h264', 'vp8', 'h265'];
+// Echowire: AV1 is deliberately NOT offered as a screen-share publish codec.
+// A share negotiates once at start; if a participant who cannot decode the chosen codec joins
+// afterwards, the republish policy defers the switch "until the next share start"
+// (VoiceScreenShareCodecRepublishPolicy: allowLiveRepublish is tied to `force`), so that viewer
+// gets a green picture for the entire share. AV1 made this reachable in practice because it wins
+// the preference list whenever capabilities are momentarily unknown. LiveKit's backup-codec
+// regression would normally cover it, but the native publish path never sets a backup codec.
+// AV1 remains fully supported for RECEIVING - this list only controls what we publish.
+const CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['h265', 'h264', 'vp9', 'vp8'];
+const SOFTWARE_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['vp9', 'h264', 'vp8', 'h265'];
 const COMPATIBILITY_FALLBACK_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['vp9', 'vp8'];
 const BASELINE_VIDEO_CODEC: VideoCodec = 'vp8';
 const VIDEO_CODEC_NAMES: Record<VideoCodec, FluxerVideoCodecName> = {

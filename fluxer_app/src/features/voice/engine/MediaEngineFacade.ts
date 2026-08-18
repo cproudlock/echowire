@@ -306,7 +306,20 @@ class TimeoutError extends Error {
 	}
 }
 
-const NATIVE_VOICE_ENGINE_CONNECT_TIMEOUT_MS = 2_000;
+// Echowire: a native connect has to finish websocket signalling, ICE and DTLS, and on a cold
+// engine it also waits on device enumeration. 2s was far too tight - on Linux the first connect
+// of a session routinely blew past it, and because the local retry budget is a single attempt the
+// client then sat disconnected until the server happened to send a fresh VOICE_SERVER_UPDATE
+// (observed: a ~3 minute gap). Worse, an attempt that times out here but still lands on LiveKit
+// afterwards leaves a participant the gateway has no record of, which silently suppresses stream
+// announcements for the whole channel. Give the cold attempt a realistic budget and keep the
+// retry tighter so total worst-case failure time stays bounded.
+const NATIVE_VOICE_ENGINE_CONNECT_TIMEOUT_MS = 12_000;
+const NATIVE_VOICE_ENGINE_CONNECT_RETRY_TIMEOUT_MS = 6_000;
+
+function getNativeVoiceEngineConnectTimeoutMs(retryAttempt: number): number {
+	return retryAttempt > 0 ? NATIVE_VOICE_ENGINE_CONNECT_RETRY_TIMEOUT_MS : NATIVE_VOICE_ENGINE_CONNECT_TIMEOUT_MS;
+}
 const NATIVE_VOICE_ENGINE_CONNECT_RETRY_BACKOFF_BASE_MS = 25;
 const NATIVE_VOICE_ENGINE_CONNECT_RETRY_BACKOFF_CEILING_MS = 100;
 const NATIVE_VOICE_ENGINE_CONNECT_MAX_LOCAL_RETRIES = 1;
@@ -2415,7 +2428,7 @@ class MediaEngineFacade extends Store {
 			retryAttempt,
 			maxRetries: NATIVE_VOICE_ENGINE_CONNECT_MAX_LOCAL_RETRIES,
 			retryDelayMs,
-			timeoutMs: NATIVE_VOICE_ENGINE_CONNECT_TIMEOUT_MS,
+			timeoutMs: getNativeVoiceEngineConnectTimeoutMs(retryAttempt - 1),
 			error,
 		});
 		this.clearNativeVoiceTransportReconnect();
@@ -2664,6 +2677,11 @@ class MediaEngineFacade extends Store {
 				getParticipants: () => this.voiceEngineV2Participants.participants,
 				subscribeParticipants: (listener) => this.voiceEngineV2ProjectionStore.subscribe(listener),
 			});
+			const connectTimeoutMs = getNativeVoiceEngineConnectTimeoutMs(
+				this.nativeVoiceConnectRetryCounts.get(
+					this.getNativeVoiceConnectRetryKey(guildId, channelId, connectionId),
+				) ?? 0,
+			);
 			logger.info('Native voice engine connect issuing', {
 				guildId,
 				channelId,
@@ -2671,7 +2689,7 @@ class MediaEngineFacade extends Store {
 				attemptId: attempt.id,
 				reason,
 				hasE2EE: !!raw.e2ee_key,
-				timeoutMs: NATIVE_VOICE_ENGINE_CONNECT_TIMEOUT_MS,
+				timeoutMs: connectTimeoutMs,
 			});
 			void (async (): Promise<void> => {
 				const readiness = await awaitNativeVoiceEngineReadiness();
@@ -2688,8 +2706,8 @@ class MediaEngineFacade extends Store {
 				this.dispatchNativeAudioDeviceModuleStatus(audioDeviceModuleStatus);
 				await withTimeout(
 					engine.connect({url: endpoint, token, e2eeKey: encodeVoiceEngineE2EEKey(raw.e2ee_key)}),
-					NATIVE_VOICE_ENGINE_CONNECT_TIMEOUT_MS,
-					`Native voice engine connect timed out after ${NATIVE_VOICE_ENGINE_CONNECT_TIMEOUT_MS}ms`,
+					connectTimeoutMs,
+					`Native voice engine connect timed out after ${connectTimeoutMs}ms`,
 				);
 			})()
 				.then(() => {

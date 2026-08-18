@@ -89,7 +89,7 @@ interface RoomReconciliationResult {
 	readonly transientSkip?: boolean;
 }
 
-type LiveKitOnlyRepairResult = 'repaired' | 'not_repairable' | 'defer';
+type LiveKitOnlyRepairResult = 'repaired' | 'gateway_missing' | 'not_repairable' | 'defer';
 
 const DEFAULT_INTERVAL_MS = 15000;
 const DEFAULT_STAGGER_DELAY_MS = 25;
@@ -535,7 +535,7 @@ export class VoiceReconciliationWorker {
 					continue;
 				}
 				const heartbeatState = await this.getVoicePresenceHeartbeatState(room.channelId, participant);
-				if (heartbeatState === 'active') {
+				if (heartbeatState === 'active' && repairResult !== 'gateway_missing') {
 					await this.clearLiveKitOnlyCandidate(room.guildId, room.channelId, participant);
 					this.logger.debug(
 						{
@@ -547,6 +547,29 @@ export class VoiceReconciliationWorker {
 					);
 					livekitOnlyDeferred++;
 					continue;
+				}
+				if (heartbeatState === 'active') {
+					// Echowire: the gateway answered and has NO connection record for this participant,
+					// yet the client is still heartbeating. An active heartbeat therefore does not mean
+					// the state is healthy - it means the client believes it is in voice while the
+					// gateway cannot route voice or stream events to it. Such a participant publishes
+					// media fine but is never announced, so nobody can see their stream.
+					//
+					// The old code called clearLiveKitOnlyCandidate() here, which reset the grace timer
+					// on every pass, so these zombies never aged out and the desync persisted until the
+					// client happened to resync itself. Deliberately fall through instead: leave the
+					// candidate marker in place so the existing grace window applies, and then let the
+					// normal disconnect path force a clean reconnect that rebuilds gateway state.
+					this.logger.warn(
+						{
+							roomName: room.roomName,
+							userId: participant.userId.toString(),
+							connectionId: participant.connectionId,
+							regionId: participant.regionId,
+							serverId: participant.serverId,
+						},
+						'LiveKit-only participant is heartbeating but has no gateway connection record; aging out for a forced reconnect',
+					);
 				}
 				if (heartbeatState === 'expired') {
 					await this.clearLiveKitOnlyCandidate(room.guildId, room.channelId, participant);
@@ -827,7 +850,10 @@ export class VoiceReconciliationWorker {
 				'LiveKit-only participant could not be repaired from gateway cache',
 			);
 			if (VoiceReconciliationWorker.isDefinitiveVoiceRepairMiss(result.error)) {
-				return 'not_repairable';
+				// Echowire: the gateway answered and definitively has no record for this connection
+				// (e.g. `connection_not_found`). That is materially different from "we could not
+				// attempt a repair", so it gets its own result and is allowed to age out below.
+				return 'gateway_missing';
 			}
 			return 'defer';
 		} catch (error) {

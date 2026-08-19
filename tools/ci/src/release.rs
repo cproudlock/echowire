@@ -7,8 +7,12 @@ use clap::{Args, Subcommand};
 use serde::Deserialize;
 use serde_json::Value;
 
-const RELEASE_REPOSITORY: &str = "fluxerapp/fluxer";
-const RELEASE_COMPARE_URL: &str = "https://github.com/fluxerapp/fluxer/compare";
+// Echowire: releases are cut from this fork, not upstream. Pointing these at fluxerapp/fluxer
+// made the publish step resolve our own commits against a repository that has never seen them,
+// so every desktop release died with `No commit found for SHA` (HTTP 422) after the builds and
+// the S3 upload had already succeeded.
+const RELEASE_REPOSITORY: &str = "cproudlock/echowire";
+const RELEASE_COMPARE_URL: &str = "https://github.com/cproudlock/echowire/compare";
 
 #[derive(Debug, Args, Clone)]
 pub struct ReleaseArgs {

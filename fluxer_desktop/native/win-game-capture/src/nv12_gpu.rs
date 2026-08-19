@@ -6,7 +6,9 @@ use windows::Win32::Graphics::Direct3D11::{
     D3D11_VIDEO_PROCESSOR_INPUT_VIEW_DESC, D3D11_VIDEO_PROCESSOR_INPUT_VIEW_DESC_0,
     D3D11_VIDEO_PROCESSOR_OUTPUT_VIEW_DESC, D3D11_VIDEO_PROCESSOR_OUTPUT_VIEW_DESC_0,
     D3D11_VIDEO_PROCESSOR_STREAM, D3D11_VIDEO_USAGE_PLAYBACK_NORMAL,
-    D3D11_VPIV_DIMENSION_TEXTURE2D, D3D11_VPOV_DIMENSION_TEXTURE2D, ID3D11Device,
+    D3D11_VIDEO_PROCESSOR_FORMAT_SUPPORT, D3D11_VIDEO_PROCESSOR_FORMAT_SUPPORT_INPUT,
+    D3D11_VIDEO_PROCESSOR_FORMAT_SUPPORT_OUTPUT, D3D11_VPIV_DIMENSION_TEXTURE2D,
+    D3D11_VPOV_DIMENSION_TEXTURE2D, ID3D11Device,
     ID3D11DeviceContext, ID3D11Texture2D, ID3D11VideoContext, ID3D11VideoContext1,
     ID3D11VideoDevice, ID3D11VideoProcessor, ID3D11VideoProcessorEnumerator,
     ID3D11VideoProcessorInputView, ID3D11VideoProcessorOutputView,
@@ -14,7 +16,8 @@ use windows::Win32::Graphics::Direct3D11::{
 use windows::Win32::Graphics::Dxgi::Common::{
     DXGI_COLOR_SPACE_RGB_FULL_G10_NONE_P709, DXGI_COLOR_SPACE_RGB_FULL_G22_NONE_P709,
     DXGI_COLOR_SPACE_RGB_FULL_G2084_NONE_P2020, DXGI_COLOR_SPACE_TYPE,
-    DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709, DXGI_FORMAT_NV12, DXGI_RATIONAL, DXGI_SAMPLE_DESC,
+    DXGI_COLOR_SPACE_YCBCR_STUDIO_G22_LEFT_P709, DXGI_FORMAT, DXGI_FORMAT_NV12, DXGI_RATIONAL,
+    DXGI_SAMPLE_DESC,
 };
 use windows::Win32::Graphics::Dxgi::IDXGIResource;
 use windows::core::Interface;
@@ -98,6 +101,31 @@ impl Nv12GpuConverter {
         let enumerator = unsafe { video_device.CreateVideoProcessorEnumerator(&content_desc) }
             .inspect_err(|e| vlog(&format!("CreateVideoProcessorEnumerator: {e:?}")))
             .ok()?;
+        // Echowire: the video processor is not obliged to accept every input format, and when
+        // it cannot, VideoProcessorBlt very often still returns success while writing nothing.
+        // That surfaces as a perfectly healthy-looking stream of blank NV12 frames - a green
+        // picture for every viewer, encoded at a few kbps - with no error logged anywhere.
+        // Observed with the HDR/FP16 (R16G16B16A16_FLOAT) input the WGC path prefers. Ask the
+        // driver up front so the caller can fall back to the BGRA8 pipeline instead.
+        let mut probe_desc = D3D11_TEXTURE2D_DESC::default();
+        unsafe { input.GetDesc(&mut probe_desc) };
+        let format_supported = |format: DXGI_FORMAT, flag: D3D11_VIDEO_PROCESSOR_FORMAT_SUPPORT| {
+            unsafe { enumerator.CheckVideoProcessorFormat(format) }
+                .map(|flags| flags & flag.0 as u32 != 0)
+                .unwrap_or(false)
+        };
+        if !format_supported(probe_desc.Format, D3D11_VIDEO_PROCESSOR_FORMAT_SUPPORT_INPUT) {
+            vlog(&format!(
+                "video processor rejects input format {:?}; falling back to the BGRA8 pipeline",
+                probe_desc.Format
+            ));
+            return None;
+        }
+        if !format_supported(DXGI_FORMAT_NV12, D3D11_VIDEO_PROCESSOR_FORMAT_SUPPORT_OUTPUT) {
+            vlog("video processor cannot output NV12; falling back to the BGRA8 pipeline");
+            return None;
+        }
+
         let processor = unsafe { video_device.CreateVideoProcessor(&enumerator, 0) }
             .inspect_err(|e| vlog(&format!("CreateVideoProcessor: {e:?}")))
             .ok()?;

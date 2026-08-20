@@ -799,7 +799,14 @@ const ScreenSharePickerModalLoadedContent = observer(
 		useEffect(() => {
 			let cancelled = false;
 			const platform = getElectronAPI()?.platform;
-			const canMapDesktopSourcesToNativeCapture = platform === 'darwin' || platform === 'win32';
+			// Echowire: Linux was excluded from source mapping because upstream assumes it always
+			// shares through the portal's own system picker, which chooses the source for us. That
+			// holds on Wayland but not on X11, where there is no ScreenCast portal and we enumerate
+			// and capture sources ourselves. Leaving the native list empty there meant
+			// findNativeCaptureSourceForDesktopSource could never match, so selecting a display
+			// failed with "no desktop source is selected" no matter what the ids looked like.
+			const canMapDesktopSourcesToNativeCapture =
+				platform === 'darwin' || platform === 'win32' || (platform === 'linux' && !usesNativeDisplayPicker);
 			const canProbeNativeCaptureWithoutSourceList = platform === 'linux';
 			if (!canMapDesktopSourcesToNativeCapture && !canProbeNativeCaptureWithoutSourceList) {
 				setNativeScreenAvailable(false);

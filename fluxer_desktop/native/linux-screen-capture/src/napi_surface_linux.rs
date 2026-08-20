@@ -24,7 +24,10 @@ use crate::pipewire_stream::{
     daemon_reachable,
 };
 use crate::portal::{self, LiveSession, PortalError, SOURCE_TYPE_WINDOW, StreamInfo};
-use crate::x11_stream::{BACKEND_X11, X11VideoStream, list_monitors as x11_list_monitors, x11_available};
+use crate::x11_stream::{
+    BACKEND_X11, X11VideoStream, list_monitors as x11_list_monitors, list_windows as x11_list_windows,
+    x11_available,
+};
 
 fn generic_error(reason: impl Into<String>) -> napi::Error {
     napi::Error::new(Status::GenericFailure, reason.into())
@@ -218,7 +221,7 @@ pub async fn list_sources() -> Result<Vec<LinuxScreenCaptureSource>> {
                 && let Ok(monitors) = x11_list_monitors()
                 && !monitors.is_empty()
             {
-                return Ok(monitors
+                let mut sources: Vec<LinuxScreenCaptureSource> = monitors
                     .into_iter()
                     .map(|monitor| LinuxScreenCaptureSource {
                         kind: "screen".to_string(),
@@ -230,7 +233,20 @@ pub async fn list_sources() -> Result<Vec<LinuxScreenCaptureSource>> {
                         bundle_id: None,
                         target_pid: None,
                     })
-                    .collect());
+                    .collect();
+                if let Ok(windows) = x11_list_windows() {
+                    sources.extend(windows.into_iter().map(|window| LinuxScreenCaptureSource {
+                        kind: "window".to_string(),
+                        id: window.id.to_string(),
+                        name: window.title,
+                        width: u32::from(window.width),
+                        height: u32::from(window.height),
+                        app_name: None,
+                        bundle_id: None,
+                        target_pid: None,
+                    }));
+                }
+                return Ok(sources);
             }
             let code = portal_error_to_status(&err);
             return Err(napi::Error::new(
@@ -709,25 +725,48 @@ impl ScreenCapture {
         // Echowire: X11 sessions have no ScreenCast portal, so capture straight from the X
         // server instead. Mirrors the game branch above: self-contained, no portal session.
         if use_x11_backend()
-            && let Some(monitor_id) = parse_x11_source_id(&source_id)
+            && let Some(x11_id) = parse_x11_source_id(&source_id)
         {
-            let monitor = x11_list_monitors()
-                .map_err(|e| generic_error(format!("X11 monitor enumeration failed: {e}")))?
-                .into_iter()
-                .find(|m| m.id == monitor_id)
-                .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 monitor id"))?;
-            let x11_width = u32::from(monitor.width) & !1;
-            let x11_height = u32::from(monitor.height) & !1;
-            let pool = build_linux_screen_pool(x11_width, x11_height)?;
-            let stream = X11VideoStream::open(
-                monitor,
-                Some(effective_fps),
-                frame_cb,
-                lifecycle_cb,
-                pool,
-                None,
-            )
-            .map_err(|e| generic_error(format!("X11 stream open failed: {e}")))?;
+            let (x11_width, x11_height, stream) = if source_kind == "window" {
+                let window = x11_list_windows()
+                    .map_err(|e| generic_error(format!("X11 window enumeration failed: {e}")))?
+                    .into_iter()
+                    .find(|w| w.id == x11_id)
+                    .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 window id"))?;
+                let width = u32::from(window.width) & !1;
+                let height = u32::from(window.height) & !1;
+                let pool = build_linux_screen_pool(width, height)?;
+                let stream = X11VideoStream::open_window(
+                    window,
+                    Some(effective_fps),
+                    frame_cb,
+                    lifecycle_cb,
+                    pool,
+                    None,
+                )
+                .map_err(|e| generic_error(format!("X11 window stream open failed: {e}")))?;
+                (width, height, stream)
+            } else {
+                let monitor = x11_list_monitors()
+                    .map_err(|e| generic_error(format!("X11 monitor enumeration failed: {e}")))?
+                    .into_iter()
+                    .find(|m| m.id == x11_id)
+                    .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 monitor id"))?;
+                let width = u32::from(monitor.width) & !1;
+                let height = u32::from(monitor.height) & !1;
+                let pool = build_linux_screen_pool(width, height)?;
+                let stream = X11VideoStream::open(
+                    monitor,
+                    Some(effective_fps),
+                    frame_cb,
+                    lifecycle_cb,
+                    pool,
+                    None,
+                )
+                .map_err(|e| generic_error(format!("X11 stream open failed: {e}")))?;
+                (width, height, stream)
+            };
+
             {
                 let mut state = lock_state(&self.inner)?;
                 state.session = None;

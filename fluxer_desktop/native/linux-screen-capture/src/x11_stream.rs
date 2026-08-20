@@ -20,7 +20,7 @@ use std::time::{Duration, Instant, SystemTime, UNIX_EPOCH};
 use x11rb::connection::Connection;
 use x11rb::protocol::randr::ConnectionExt as _;
 use x11rb::protocol::shm::{self, ConnectionExt as _};
-use x11rb::protocol::xproto::{ConnectionExt as _, ImageFormat};
+use x11rb::protocol::xproto::{AtomEnum, ConnectionExt as _, ImageFormat, MapState, Window};
 use x11rb::rust_connection::RustConnection;
 
 use crate::frame_buffer_pool::LinuxFrameBufferPool;
@@ -44,6 +44,24 @@ pub struct X11Monitor {
     pub y: i16,
     pub width: u16,
     pub height: u16,
+}
+
+/// A capturable top-level window, as advertised by the window manager via EWMH.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct X11Window {
+    pub id: u32,
+    pub title: String,
+    pub width: u16,
+    pub height: u16,
+}
+
+/// What a stream is capturing from.
+#[derive(Clone, Debug, PartialEq, Eq)]
+enum CaptureTarget {
+    /// Root window, cropped to a monitor's rectangle.
+    Monitor { x: i16, y: i16 },
+    /// A specific top-level window.
+    Window { window: Window },
 }
 
 fn connect() -> Result<(RustConnection, usize), BridgeError> {
@@ -123,6 +141,89 @@ pub fn list_monitors() -> Result<Vec<X11Monitor>, BridgeError> {
     }])
 }
 
+fn atom(conn: &RustConnection, name: &str) -> Option<u32> {
+    conn.intern_atom(false, name.as_bytes())
+        .ok()?
+        .reply()
+        .ok()
+        .map(|reply| reply.atom)
+}
+
+fn window_title(conn: &RustConnection, window: Window) -> Option<String> {
+    // Prefer the UTF-8 EWMH title, fall back to the legacy WM_NAME.
+    if let Some(net_wm_name) = atom(conn, "_NET_WM_NAME")
+        && let Some(utf8) = atom(conn, "UTF8_STRING")
+        && let Ok(cookie) = conn.get_property(false, window, net_wm_name, utf8, 0, 1024)
+        && let Ok(reply) = cookie.reply()
+        && !reply.value.is_empty()
+    {
+        return Some(String::from_utf8_lossy(&reply.value).to_string());
+    }
+    let cookie = conn
+        .get_property(false, window, AtomEnum::WM_NAME, AtomEnum::STRING, 0, 1024)
+        .ok()?;
+    let reply = cookie.reply().ok()?;
+    if reply.value.is_empty() {
+        return None;
+    }
+    Some(String::from_utf8_lossy(&reply.value).to_string())
+}
+
+/// Enumerate top-level windows the window manager advertises via `_NET_CLIENT_LIST`.
+///
+/// Only viewable windows of a usable size are returned; iconified or tiny utility windows are not
+/// worth offering as share targets.
+pub fn list_windows() -> Result<Vec<X11Window>, BridgeError> {
+    let (conn, screen_num) = connect()?;
+    let root = conn
+        .setup()
+        .roots
+        .get(screen_num)
+        .ok_or(BridgeError::X11Unavailable)?
+        .root;
+    let Some(client_list) = atom(&conn, "_NET_CLIENT_LIST") else {
+        return Ok(Vec::new());
+    };
+    let Ok(cookie) = conn.get_property(false, root, client_list, AtomEnum::WINDOW, 0, 4096) else {
+        return Ok(Vec::new());
+    };
+    let Ok(reply) = cookie.reply() else {
+        return Ok(Vec::new());
+    };
+    let Some(windows) = reply.value32() else {
+        return Ok(Vec::new());
+    };
+
+    let mut out = Vec::new();
+    for window in windows {
+        let Ok(attrs_cookie) = conn.get_window_attributes(window) else {
+            continue;
+        };
+        let Ok(attrs) = attrs_cookie.reply() else {
+            continue;
+        };
+        if attrs.map_state != MapState::VIEWABLE {
+            continue;
+        }
+        let Ok(geom_cookie) = conn.get_geometry(window) else {
+            continue;
+        };
+        let Ok(geom) = geom_cookie.reply() else {
+            continue;
+        };
+        if geom.width < 32 || geom.height < 32 {
+            continue;
+        }
+        out.push(X11Window {
+            id: window,
+            title: window_title(&conn, window).unwrap_or_else(|| format!("Window {window}")),
+            width: geom.width,
+            height: geom.height,
+        });
+    }
+    Ok(out)
+}
+
 /// A POSIX shared memory segment attached to both this process and the X server.
 struct ShmBuffer {
     shmid: i32,
@@ -173,6 +274,31 @@ pub struct X11VideoStream {
 }
 
 impl X11VideoStream {
+    /// Capture a top-level window.
+    ///
+    /// Without an active compositor X11 does not keep offscreen contents for windows, so an
+    /// obscured region reads back as whatever is on screen in front of it. Capturing a visible
+    /// window - the case that matters for sharing something you are looking at - is correct.
+    pub fn open_window(
+        window: X11Window,
+        target_fps: Option<u32>,
+        on_frame: FrameCallback,
+        on_lifecycle: LifecycleCallback,
+        pool: Arc<LinuxFrameBufferPool>,
+        on_pool_exhausted: Option<PoolExhaustionCallback>,
+    ) -> Result<Self, BridgeError> {
+        Self::open_target(
+            CaptureTarget::Window { window: window.id },
+            u32::from(window.width),
+            u32::from(window.height),
+            target_fps,
+            on_frame,
+            on_lifecycle,
+            pool,
+            on_pool_exhausted,
+        )
+    }
+
     pub fn open(
         monitor: X11Monitor,
         target_fps: Option<u32>,
@@ -181,9 +307,35 @@ impl X11VideoStream {
         pool: Arc<LinuxFrameBufferPool>,
         on_pool_exhausted: Option<PoolExhaustionCallback>,
     ) -> Result<Self, BridgeError> {
-        // NV12 needs even dimensions; trim rather than fail so odd-sized monitors still work.
-        let width = u32::from(monitor.width) & !1;
-        let height = u32::from(monitor.height) & !1;
+        Self::open_target(
+            CaptureTarget::Monitor {
+                x: monitor.x,
+                y: monitor.y,
+            },
+            u32::from(monitor.width),
+            u32::from(monitor.height),
+            target_fps,
+            on_frame,
+            on_lifecycle,
+            pool,
+            on_pool_exhausted,
+        )
+    }
+
+    #[allow(clippy::too_many_arguments)]
+    fn open_target(
+        target: CaptureTarget,
+        source_width: u32,
+        source_height: u32,
+        target_fps: Option<u32>,
+        on_frame: FrameCallback,
+        on_lifecycle: LifecycleCallback,
+        pool: Arc<LinuxFrameBufferPool>,
+        on_pool_exhausted: Option<PoolExhaustionCallback>,
+    ) -> Result<Self, BridgeError> {
+        // NV12 needs even dimensions; trim rather than fail so odd-sized sources still work.
+        let width = source_width & !1;
+        let height = source_height & !1;
         if width == 0 || height == 0 {
             return Err(BridgeError::X11Unavailable);
         }
@@ -200,7 +352,7 @@ impl X11VideoStream {
             .name("fluxer-x11-capture".to_string())
             .spawn(move || {
                 let result = capture_loop(
-                    monitor,
+                    target,
                     width,
                     height,
                     interval,
@@ -246,7 +398,7 @@ impl Drop for X11VideoStream {
 
 #[allow(clippy::too_many_arguments)]
 fn capture_loop(
-    monitor: X11Monitor,
+    target: CaptureTarget,
     width: u32,
     height: u32,
     interval: Duration,
@@ -263,6 +415,10 @@ fn capture_loop(
         .get(screen_num)
         .ok_or(BridgeError::X11Unavailable)?
         .root;
+    let (drawable, src_x, src_y) = match target {
+        CaptureTarget::Monitor { x, y } => (root, x, y),
+        CaptureTarget::Window { window } => (window, 0, 0),
+    };
 
     conn.shm_query_version()
         .map_err(|_| BridgeError::X11Unavailable)?
@@ -291,9 +447,9 @@ fn capture_loop(
 
         let grabbed = conn
             .shm_get_image(
-                root,
-                monitor.x,
-                monitor.y,
+                drawable,
+                src_x,
+                src_y,
                 width as u16,
                 height as u16,
                 u32::MAX,

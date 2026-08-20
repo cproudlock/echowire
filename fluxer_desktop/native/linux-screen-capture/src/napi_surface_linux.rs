@@ -165,10 +165,17 @@ fn encode_source_id(node_id: u32) -> String {
     node_id.to_string()
 }
 
-/// Echowire: X11 sources are namespaced `x11:<monitor>` so they cannot collide with the
-/// portal's bare numeric PipeWire node ids.
+/// Echowire: X11 monitor ids are bare numerics, exactly like portal node ids, because the app's
+/// picker matches native sources to Electron cards numerically and cannot parse a namespaced id.
+/// The two can never be confused in practice: an X11 session has no ScreenCast portal, so only one
+/// of the two backends is ever live. Routing is decided by `use_x11_backend()`, not by the id.
 fn parse_x11_source_id(id: &str) -> Option<u32> {
-    id.strip_prefix("x11:").and_then(|rest| rest.parse::<u32>().ok())
+    id.parse::<u32>().ok()
+}
+
+/// True when the portal path is unavailable but X11 capture is, i.e. a plain X11 session.
+fn use_x11_backend() -> bool {
+    !get_backend_info().supported && x11_available()
 }
 
 fn parse_source_id(id: &str) -> Option<u32> {
@@ -215,7 +222,7 @@ pub async fn list_sources() -> Result<Vec<LinuxScreenCaptureSource>> {
                     .into_iter()
                     .map(|monitor| LinuxScreenCaptureSource {
                         kind: "screen".to_string(),
-                        id: format!("x11:{}", monitor.id),
+                        id: monitor.id.to_string(),
                         name: monitor.name,
                         width: u32::from(monitor.width),
                         height: u32::from(monitor.height),
@@ -701,7 +708,9 @@ impl ScreenCapture {
 
         // Echowire: X11 sessions have no ScreenCast portal, so capture straight from the X
         // server instead. Mirrors the game branch above: self-contained, no portal session.
-        if let Some(monitor_id) = parse_x11_source_id(&source_id) {
+        if use_x11_backend()
+            && let Some(monitor_id) = parse_x11_source_id(&source_id)
+        {
             let monitor = x11_list_monitors()
                 .map_err(|e| generic_error(format!("X11 monitor enumeration failed: {e}")))?
                 .into_iter()

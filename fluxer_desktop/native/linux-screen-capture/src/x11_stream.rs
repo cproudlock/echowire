@@ -79,6 +79,15 @@ pub fn list_monitors() -> Result<Vec<X11Monitor>, BridgeError> {
     {
         let mut out = Vec::new();
         for (index, monitor) in reply.monitors.iter().enumerate() {
+            // The app's picker maps native sources onto Electron desktopCapturer cards by bare
+            // numeric id (`screen:<token>:0`), and Electron reports the RandR output XID as that
+            // token. Identify monitors the same way; an ordinal here can never match, which is
+            // exactly why the first cut of this backend was never selected by the picker.
+            let output_id = monitor
+                .outputs
+                .first()
+                .copied()
+                .unwrap_or(index as u32 + 1);
             let name = conn
                 .get_atom_name(monitor.name)
                 .ok()
@@ -86,7 +95,7 @@ pub fn list_monitors() -> Result<Vec<X11Monitor>, BridgeError> {
                 .map(|r| String::from_utf8_lossy(&r.name).to_string())
                 .unwrap_or_else(|| format!("Display {}", index + 1));
             out.push(X11Monitor {
-                id: index as u32 + 1,
+                id: output_id,
                 name,
                 x: monitor.x,
                 y: monitor.y,

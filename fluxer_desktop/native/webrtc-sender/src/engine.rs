@@ -1584,7 +1584,6 @@ unsafe extern "C" fn enqueue_native_mac_cv_pixel_buffer(
     )
 }
 
-#[cfg(target_os = "linux")]
 // ---------------------------------------------------------------------------------------------
 // Echowire fork deviation: CPU screen frames are accepted.
 //
@@ -1656,6 +1655,7 @@ unsafe extern "C" fn enqueue_native_bgra(
     )))
 }
 
+#[cfg(target_os = "linux")]
 unsafe extern "C" fn enqueue_native_dmabuf(
     context: *const c_void,
     desc: frame_bus::DmabufDesc,

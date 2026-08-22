@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import i18n from '@app/app/I18n';
+import {LimitResolver} from '@app/features/app/utils/LimitResolverAdapter';
+import {isLimitToggleEnabled} from '@app/features/app/utils/LimitUtils';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import * as ToastCommands from '@app/features/ui/commands/ToastCommands';
 import {Store} from '@app/features/voice/engine/Store';
@@ -11,7 +13,7 @@ import {isNativeScreenShareTrack} from '@app/features/voice/utils/native_screen_
 import {
 	getScreenShareDimensions,
 	getScreenShareEncoding,
-	resolveScreenShareFrameRate,
+	resolveStreamingModeSettings,
 	SCREEN_SHARE_DEGRADATION_PREFERENCE,
 	SUPPORTED_SCREEN_SHARE_FRAME_RATES,
 	type SupportedScreenShareFrameRate,
@@ -138,14 +140,34 @@ interface ScreenShareSender {
 	sender: RTCRtpSender;
 }
 
+// Echowire: mirrors the private helpers in ScreenShareStartFlow/StatsForNerdsCopy. Kept local to
+// avoid importing those modules here purely for a limit lookup.
+function hasHigherVideoQuality(): boolean {
+	return isLimitToggleEnabled(
+		{
+			feature_higher_video_quality: LimitResolver.resolve({
+				key: 'feature_higher_video_quality',
+				fallback: 0,
+			}),
+		},
+		'feature_higher_video_quality',
+	);
+}
+
 function getConfiguredQuality(): {
 	resolution: ScreenshareResolution;
 	frameRate: SupportedScreenShareFrameRate;
 } {
-	return {
-		resolution: VoiceSettings.getScreenshareResolution(),
-		frameRate: resolveScreenShareFrameRate(VoiceSettings.getVideoFrameRate()),
-	};
+	// Echowire: judge against what the active streaming mode actually publishes, not the raw
+	// stored preferences. Reading the raw values meant that in 'screenshare' mode - which
+	// publishes 15fps - this compared against the stored videoFrameRate (default 30) and so
+	// reported "frame-rate limited" permanently, walking the quality ladder down on its own.
+	return resolveStreamingModeSettings(
+		VoiceSettings.getStreamingMode(),
+		VoiceSettings.getScreenshareResolution(),
+		VoiceSettings.getVideoFrameRate(),
+		hasHigherVideoQuality(),
+	);
 }
 
 function getResolutionIndex(resolution: ScreenshareResolution): number {

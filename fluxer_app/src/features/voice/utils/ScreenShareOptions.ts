@@ -135,7 +135,12 @@ export function resolveEffectiveScreenShareDimensions(
 	height: number;
 } {
 	const preset = getScreenShareDimensions(resolution);
-	if (resolution !== 'source' || !sourceDimensions) return preset;
+	// Echowire: clamp every preset to the real source size, not just 'source'. The presets are
+	// fixed pixel targets (gaming = ultra = 2560x1440), so on a 1080p display they asked the
+	// pipeline for more pixels than the capture has. That upscales, spends bitrate on invented
+	// detail, and - when the backend did not honour the request - produced a size mismatch.
+	// Never requesting more than the source has can only help: upscaling adds no information.
+	if (!sourceDimensions) return preset;
 	if (sourceDimensions.width <= 0 || sourceDimensions.height <= 0) return preset;
 	return {
 		width: Math.min(preset.width, sourceDimensions.width),

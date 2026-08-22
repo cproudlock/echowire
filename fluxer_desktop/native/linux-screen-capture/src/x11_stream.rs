@@ -267,6 +267,50 @@ impl Drop for ShmBuffer {
     }
 }
 
+/// Bilinear BGRA rescale, used when the caller asks for an output size that differs from the
+/// source. Column coefficients are precomputed because they repeat for every row.
+fn scale_bgra(
+    src: &[u8],
+    src_w: u32,
+    src_h: u32,
+    src_stride: u32,
+    dst: &mut [u8],
+    dst_w: u32,
+    dst_h: u32,
+) {
+    const SHIFT: u32 = 8;
+    const ONE: u32 = 1 << SHIFT;
+    let dst_stride = (dst_w * 4) as usize;
+    let mut col: Vec<(usize, usize, u32)> = Vec::with_capacity(dst_w as usize);
+    for x in 0..dst_w {
+        let sx = ((x as u64 * src_w as u64 * ONE as u64) / dst_w as u64) as u32;
+        let x0 = (sx >> SHIFT).min(src_w.saturating_sub(1));
+        let x1 = (x0 + 1).min(src_w.saturating_sub(1));
+        col.push(((x0 * 4) as usize, (x1 * 4) as usize, sx & (ONE - 1)));
+    }
+    for y in 0..dst_h {
+        let sy = ((y as u64 * src_h as u64 * ONE as u64) / dst_h as u64) as u32;
+        let y0 = (sy >> SHIFT).min(src_h.saturating_sub(1));
+        let y1 = (y0 + 1).min(src_h.saturating_sub(1));
+        let fy = sy & (ONE - 1);
+        let row0 = (y0 * src_stride) as usize;
+        let row1 = (y1 * src_stride) as usize;
+        let out = y as usize * dst_stride;
+        for (x, &(x0, x1, fx)) in col.iter().enumerate() {
+            let o = out + x * 4;
+            for c in 0..4 {
+                let p00 = src[row0 + x0 + c] as u32;
+                let p01 = src[row0 + x1 + c] as u32;
+                let p10 = src[row1 + x0 + c] as u32;
+                let p11 = src[row1 + x1 + c] as u32;
+                let top = p00 * (ONE - fx) + p01 * fx;
+                let bottom = p10 * (ONE - fx) + p11 * fx;
+                dst[o + c] = (((top * (ONE - fy) + bottom * fy) >> (SHIFT * 2)) & 0xff) as u8;
+            }
+        }
+    }
+}
+
 pub struct X11VideoStream {
     running: Arc<AtomicBool>,
     thread: Mutex<Option<JoinHandle<()>>>,
@@ -281,6 +325,7 @@ impl X11VideoStream {
     /// window - the case that matters for sharing something you are looking at - is correct.
     pub fn open_window(
         window: X11Window,
+        requested: Option<(u32, u32)>,
         target_fps: Option<u32>,
         on_frame: FrameCallback,
         on_lifecycle: LifecycleCallback,
@@ -291,6 +336,7 @@ impl X11VideoStream {
             CaptureTarget::Window { window: window.id },
             u32::from(window.width),
             u32::from(window.height),
+            requested,
             target_fps,
             on_frame,
             on_lifecycle,
@@ -301,6 +347,7 @@ impl X11VideoStream {
 
     pub fn open(
         monitor: X11Monitor,
+        requested: Option<(u32, u32)>,
         target_fps: Option<u32>,
         on_frame: FrameCallback,
         on_lifecycle: LifecycleCallback,
@@ -314,6 +361,7 @@ impl X11VideoStream {
             },
             u32::from(monitor.width),
             u32::from(monitor.height),
+            requested,
             target_fps,
             on_frame,
             on_lifecycle,
@@ -327,6 +375,7 @@ impl X11VideoStream {
         target: CaptureTarget,
         source_width: u32,
         source_height: u32,
+        requested: Option<(u32, u32)>,
         target_fps: Option<u32>,
         on_frame: FrameCallback,
         on_lifecycle: LifecycleCallback,
@@ -334,9 +383,16 @@ impl X11VideoStream {
         on_pool_exhausted: Option<PoolExhaustionCallback>,
     ) -> Result<Self, BridgeError> {
         // NV12 needs even dimensions; trim rather than fail so odd-sized sources still work.
-        let width = source_width & !1;
-        let height = source_height & !1;
-        if width == 0 || height == 0 {
+        let src_width = source_width & !1;
+        let src_height = source_height & !1;
+        // Honour the caller's requested output size. Ignoring it (the first cut of this backend)
+        // left the rest of the pipeline configured for one resolution while frames arrived at
+        // another, which is what produced a green picture for viewers.
+        let (width, height) = match requested {
+            Some((w, h)) if w >= 2 && h >= 2 => (w & !1, h & !1),
+            _ => (src_width, src_height),
+        };
+        if src_width == 0 || src_height == 0 || width == 0 || height == 0 {
             return Err(BridgeError::X11Unavailable);
         }
 
@@ -353,6 +409,8 @@ impl X11VideoStream {
             .spawn(move || {
                 let result = capture_loop(
                     target,
+                    src_width,
+                    src_height,
                     width,
                     height,
                     interval,
@@ -399,6 +457,8 @@ impl Drop for X11VideoStream {
 #[allow(clippy::too_many_arguments)]
 fn capture_loop(
     target: CaptureTarget,
+    src_width: u32,
+    src_height: u32,
     width: u32,
     height: u32,
     interval: Duration,
@@ -425,8 +485,14 @@ fn capture_loop(
         .reply()
         .map_err(|_| BridgeError::X11Unavailable)?;
 
-    let bgra_stride = width * 4;
-    let shm = ShmBuffer::new((bgra_stride * height) as usize)?;
+    let bgra_stride = src_width * 4;
+    let shm = ShmBuffer::new((bgra_stride * src_height) as usize)?;
+    let needs_scale = width != src_width || height != src_height;
+    let mut scaled: Vec<u8> = if needs_scale {
+        vec![0u8; (width * height * 4) as usize]
+    } else {
+        Vec::new()
+    };
 
     let seg: shm::Seg = conn.generate_id().map_err(|_| BridgeError::X11Unavailable)?;
     conn.shm_attach(seg, shm.shmid as u32, false)
@@ -450,8 +516,8 @@ fn capture_loop(
                 drawable,
                 src_x,
                 src_y,
-                width as u16,
-                height as u16,
+                src_width as u16,
+                src_height as u16,
                 u32::MAX,
                 ImageFormat::Z_PIXMAP.into(),
                 seg,
@@ -465,9 +531,22 @@ fn capture_loop(
             match pool.try_acquire() {
                 Some(mut buffer) => {
                     let converted = {
+                        let (bgra, stride) = if needs_scale {
+                            scale_bgra(
+                                shm.as_slice(),
+                                src_width,
+                                src_height,
+                                bgra_stride,
+                                &mut scaled,
+                                width,
+                                height,
+                            );
+                            (scaled.as_slice(), width * 4)
+                        } else {
+                            (shm.as_slice(), bgra_stride)
+                        };
                         let dst = buffer.buffer_mut();
-                        dst.len() >= packed
-                            && bgra_to_nv12(layout, shm.as_slice(), bgra_stride, dst, false)
+                        dst.len() >= packed && bgra_to_nv12(layout, bgra, stride, dst, false)
                     };
                     if converted {
                         buffer.set_len(packed);

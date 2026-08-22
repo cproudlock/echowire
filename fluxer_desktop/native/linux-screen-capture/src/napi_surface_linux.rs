@@ -176,6 +176,17 @@ fn parse_x11_source_id(id: &str) -> Option<u32> {
     id.parse::<u32>().ok()
 }
 
+/// The output size the caller asked for, when it is usable. `start()` passes 0 to mean
+/// "whatever the source is", and absurd values are ignored rather than trusted.
+fn requested_output_size(width: u32, height: u32) -> Option<(u32, u32)> {
+    let max = LINUX_FRAME_DIM_MAX as u32;
+    if width >= 2 && height >= 2 && width <= max && height <= max {
+        Some((width & !1, height & !1))
+    } else {
+        None
+    }
+}
+
 /// True when the portal path is unavailable but X11 capture is, i.e. a plain X11 session.
 fn use_x11_backend() -> bool {
     !get_backend_info().supported && x11_available()
@@ -733,11 +744,13 @@ impl ScreenCapture {
                     .into_iter()
                     .find(|w| w.id == x11_id)
                     .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 window id"))?;
-                let width = u32::from(window.width) & !1;
-                let height = u32::from(window.height) & !1;
-                let pool = build_linux_screen_pool(width, height)?;
+                let requested = requested_output_size(width, height);
+                let (out_w, out_h) = requested
+                    .unwrap_or((u32::from(window.width) & !1, u32::from(window.height) & !1));
+                let pool = build_linux_screen_pool(out_w, out_h)?;
                 let stream = X11VideoStream::open_window(
                     window,
+                    requested,
                     Some(effective_fps),
                     frame_cb,
                     lifecycle_cb,
@@ -745,18 +758,20 @@ impl ScreenCapture {
                     None,
                 )
                 .map_err(|e| generic_error(format!("X11 window stream open failed: {e}")))?;
-                (width, height, stream)
+                (out_w, out_h, stream)
             } else {
                 let monitor = x11_list_monitors()
                     .map_err(|e| generic_error(format!("X11 monitor enumeration failed: {e}")))?
                     .into_iter()
                     .find(|m| m.id == x11_id)
                     .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 monitor id"))?;
-                let width = u32::from(monitor.width) & !1;
-                let height = u32::from(monitor.height) & !1;
-                let pool = build_linux_screen_pool(width, height)?;
+                let requested = requested_output_size(width, height);
+                let (out_w, out_h) = requested
+                    .unwrap_or((u32::from(monitor.width) & !1, u32::from(monitor.height) & !1));
+                let pool = build_linux_screen_pool(out_w, out_h)?;
                 let stream = X11VideoStream::open(
                     monitor,
+                    requested,
                     Some(effective_fps),
                     frame_cb,
                     lifecycle_cb,
@@ -764,7 +779,7 @@ impl ScreenCapture {
                     None,
                 )
                 .map_err(|e| generic_error(format!("X11 stream open failed: {e}")))?;
-                (width, height, stream)
+                (out_w, out_h, stream)
             };
 
             {

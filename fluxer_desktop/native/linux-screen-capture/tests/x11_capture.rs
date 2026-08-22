@@ -36,6 +36,7 @@ fn x11_backend_captures_real_frames() {
     let variance_cb = Arc::clone(&luma_variance_seen);
     let stream = X11VideoStream::open(
         monitor,
+        None,
         Some(15),
         Arc::new(move |frame| {
             frames_cb.fetch_add(1, Ordering::Relaxed);
@@ -99,6 +100,7 @@ fn x11_backend_captures_a_window() {
 
     let stream = X11VideoStream::open_window(
         window,
+        None,
         Some(15),
         Arc::new(move |frame| {
             frames_cb.fetch_add(1, Ordering::Relaxed);
@@ -130,4 +132,58 @@ fn x11_backend_captures_a_window() {
     }
     }
     assert!(captured_any, "no window produced non-flat frames");
+}
+
+#[test]
+fn x11_backend_honours_a_requested_output_size() {
+    if !x11_available() {
+        eprintln!("skipping: no X11 display / MIT-SHM");
+        return;
+    }
+    let monitor = list_monitors().expect("monitors").into_iter().next().expect("one monitor");
+    let native_w = u32::from(monitor.width) & !1;
+    let native_h = u32::from(monitor.height) & !1;
+    // Ask for a size that is deliberately not the native one - this is the case that used to be
+    // ignored, leaving the pipeline expecting one resolution while frames arrived at another.
+    let want_w = 1280u32;
+    let want_h = 720u32;
+    assert!(want_w != native_w || want_h != native_h, "test needs a non-native request");
+
+    let pool = LinuxFrameBufferPool::new((want_w * want_h * 3 / 2) as usize).expect("pool");
+    let frames = Arc::new(AtomicU64::new(0));
+    let right_size = Arc::new(AtomicU64::new(0));
+    let varied = Arc::new(AtomicU64::new(0));
+    let (fc, rc, vc) = (Arc::clone(&frames), Arc::clone(&right_size), Arc::clone(&varied));
+
+    let stream = X11VideoStream::open(
+        monitor,
+        Some((want_w, want_h)),
+        Some(15),
+        Arc::new(move |frame| {
+            fc.fetch_add(1, Ordering::Relaxed);
+            if frame.width == want_w && frame.height == want_h {
+                rc.fetch_add(1, Ordering::Relaxed);
+            }
+            let y_len = (frame.stride_y * frame.height) as usize;
+            let data = frame.data.as_slice();
+            if data.len() >= y_len && y_len > 0 && data[..y_len].iter().any(|&b| b != data[0]) {
+                vc.fetch_add(1, Ordering::Relaxed);
+            }
+        }),
+        Arc::new(|state: &str, detail: &str| eprintln!("lifecycle: {state} {detail}")),
+        pool,
+        None,
+    )
+    .expect("scaled stream should open");
+
+    std::thread::sleep(std::time::Duration::from_millis(1200));
+    stream.stop();
+
+    let got = frames.load(Ordering::Relaxed);
+    let sized = right_size.load(Ordering::Relaxed);
+    let content = varied.load(Ordering::Relaxed);
+    eprintln!("scaled frames={got} at_requested_size={sized} with_content={content}");
+    assert!(got >= 5, "expected frames, got {got}");
+    assert_eq!(sized, got, "every frame must be emitted at the requested size");
+    assert!(content > 0, "scaled frames were all flat");
 }

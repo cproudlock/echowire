@@ -1390,7 +1390,32 @@ impl ScreenFrameSink for BusSenderSink {
     fn enqueue(&self, frame: BusScreenFrame) -> EnqueueOutcome {
         let timestamp_us = frame.timestamp_us();
         let pending = match frame {
-            BusScreenFrame::Nv12(_) | BusScreenFrame::Bgra(_) => return EnqueueOutcome::Rejected,
+            // Echowire: accept CPU frames instead of rejecting them. The sink previously took only
+            // zero-copy sources (macOS CVPixelBuffer, Linux dmabuf), so a capture backend that
+            // produces CPU buffers - the X11 backend, where no dmabuf is available without a
+            // compositor - had every frame dropped here silently. The publisher would advertise a
+            // track and then send nothing: no keyframes, no measured bitrate, and no error, because
+            // a rejection is not an error. The downstream path already handles both variants via
+            // publish_pending_video_frame -> capture_nv12_to_source / capture_bgra_to_source, so
+            // this only costs a copy and gives up zero-copy (and therefore hardware encode) for
+            // sources that could never have supplied a GPU buffer in the first place.
+            BusScreenFrame::Nv12(nv12) => PendingVideoFrame::Nv12 {
+                data: nv12.data.as_slice().to_vec(),
+                width: nv12.width,
+                height: nv12.height,
+                stride_y: nv12.stride_y,
+                stride_uv: nv12.stride_uv,
+                timestamp_us,
+                enqueued_at: Instant::now(),
+            },
+            BusScreenFrame::Bgra(bgra) => PendingVideoFrame::Bgra {
+                data: bgra.data,
+                width: bgra.width,
+                height: bgra.height,
+                stride: bgra.stride,
+                timestamp_us,
+                enqueued_at: Instant::now(),
+            },
             #[cfg(target_os = "macos")]
             BusScreenFrame::MacCvPixelBuffer(mac_frame) => {
                 let raw = mac_frame.into_raw_pixel_buffer();
@@ -1560,6 +1585,77 @@ unsafe extern "C" fn enqueue_native_mac_cv_pixel_buffer(
 }
 
 #[cfg(target_os = "linux")]
+// ---------------------------------------------------------------------------------------------
+// Echowire fork deviation: CPU screen frames are accepted.
+//
+// Upstream deliberately restricts native screen share to zero-copy sources - the sink rejected
+// Nv12/Bgra and this handle published null callbacks for them, asserted by three tests. That is a
+// reasonable default on macOS and on Wayland, where capture always yields a GPU buffer. It makes
+// screen sharing impossible on X11, where there is no compositor to redirect windows and no dmabuf
+// to hand over: the capture backend produced frames that were dropped before reaching the encoder,
+// so the publisher advertised a track and sent nothing - no keyframes, no bitrate, and no error,
+// because a rejection is not an error.
+//
+// We accept CPU frames so those sources work at all. The cost is a per-frame copy and software
+// encode; hardware encode still asserts zero-copy upstream and is unaffected. If this conflicts on
+// an upstream merge, that is intended - resolve it deliberately rather than taking either side.
+// ---------------------------------------------------------------------------------------------
+unsafe extern "C" fn enqueue_native_nv12(
+    context: *const c_void,
+    data: *const u8,
+    data_len: usize,
+    width: u32,
+    height: u32,
+    stride_y: u32,
+    stride_uv: u32,
+    timestamp_us: i64,
+) -> u32 {
+    let Some(sink) = bus_sender_sink_from_context(context) else {
+        return frame_bus::NATIVE_SCREEN_FRAME_SINK_REJECTED;
+    };
+    if data.is_null() || data_len == 0 || width == 0 || height == 0 {
+        return frame_bus::NATIVE_SCREEN_FRAME_SINK_REJECTED;
+    }
+    let copied = unsafe { std::slice::from_raw_parts(data, data_len) }.to_vec();
+    NativeScreenFrameSinkHandle::native_outcome(sink.enqueue(BusScreenFrame::Nv12(
+        frame_bus::Nv12Frame {
+            data: copied.into(),
+            width,
+            height,
+            stride_y,
+            stride_uv,
+            timestamp_us,
+        },
+    )))
+}
+
+unsafe extern "C" fn enqueue_native_bgra(
+    context: *const c_void,
+    data: *const u8,
+    data_len: usize,
+    width: u32,
+    height: u32,
+    stride: u32,
+    timestamp_us: i64,
+) -> u32 {
+    let Some(sink) = bus_sender_sink_from_context(context) else {
+        return frame_bus::NATIVE_SCREEN_FRAME_SINK_REJECTED;
+    };
+    if data.is_null() || data_len == 0 || width == 0 || height == 0 {
+        return frame_bus::NATIVE_SCREEN_FRAME_SINK_REJECTED;
+    }
+    let copied = unsafe { std::slice::from_raw_parts(data, data_len) }.to_vec();
+    NativeScreenFrameSinkHandle::native_outcome(sink.enqueue(BusScreenFrame::Bgra(
+        frame_bus::BgraFrame {
+            data: copied,
+            width,
+            height,
+            stride,
+            timestamp_us,
+        },
+    )))
+}
+
 unsafe extern "C" fn enqueue_native_dmabuf(
     context: *const c_void,
     desc: frame_bus::DmabufDesc,
@@ -1672,8 +1768,9 @@ fn create_native_screen_frame_sink_handle(sink: Arc<BusSenderSink>) -> NativeScr
         retain: retain_bus_sender_sink,
         release: release_bus_sender_sink,
         enqueue_screen_audio: None,
-        enqueue_nv12: None,
-        enqueue_bgra: None,
+        // Echowire: see the deviation note above enqueue_native_nv12.
+        enqueue_nv12: Some(enqueue_native_nv12),
+        enqueue_bgra: Some(enqueue_native_bgra),
         #[cfg(target_os = "macos")]
         enqueue_mac_cv_pixel_buffer: Some(enqueue_native_mac_cv_pixel_buffer),
         #[cfg(not(target_os = "macos"))]
@@ -6224,7 +6321,9 @@ mod tests {
     }
 
     #[test]
-    fn bus_sender_sink_rejects_copied_nv12_frames() {
+    // Echowire deviation: upstream asserted these are Rejected. We accept CPU frames so X11
+    // capture, which cannot supply a dmabuf, can publish at all. See enqueue_native_nv12.
+    fn bus_sender_sink_accepts_copied_nv12_frames() {
         let (sender, _stats) = sender_for_tests();
         let sink = BusSenderSink {
             sender: sender.clone(),
@@ -6240,12 +6339,13 @@ mod tests {
             stride_uv: 8,
             timestamp_us: 1234,
         });
-        assert_eq!(sink.enqueue(frame), EnqueueOutcome::Rejected);
-        assert_eq!(sender.pending.len(), 0);
+        assert_eq!(sink.enqueue(frame), EnqueueOutcome::Accepted);
+        assert_eq!(sender.pending.len(), 1);
     }
 
     #[test]
-    fn bus_sender_sink_rejects_copied_bgra_frames() {
+    // Echowire deviation: upstream asserted these are Rejected. See enqueue_native_bgra.
+    fn bus_sender_sink_accepts_copied_bgra_frames() {
         let (sender, _stats) = sender_for_tests();
         let sink = BusSenderSink {
             sender: sender.clone(),
@@ -6260,12 +6360,14 @@ mod tests {
             stride: 32,
             timestamp_us: 5678,
         });
-        assert_eq!(sink.enqueue(frame), EnqueueOutcome::Rejected);
-        assert_eq!(sender.pending.len(), 0);
+        assert_eq!(sink.enqueue(frame), EnqueueOutcome::Accepted);
+        assert_eq!(sender.pending.len(), 1);
     }
 
     #[test]
-    fn native_screen_frame_sink_handle_omits_copied_frame_callbacks() {
+    // Echowire deviation: upstream asserted these callbacks are absent, which made CPU-only
+    // capture backends silently undeliverable. They must be present.
+    fn native_screen_frame_sink_handle_exposes_copied_frame_callbacks() {
         let (sender, _stats) = sender_for_tests();
         let sink = BusSenderSink {
             sender: sender.clone(),
@@ -6275,8 +6377,8 @@ mod tests {
         };
         let handle = create_native_screen_frame_sink_handle(Arc::new(sink));
         assert!(handle.is_valid());
-        assert!(handle.enqueue_nv12.is_none());
-        assert!(handle.enqueue_bgra.is_none());
+        assert!(handle.enqueue_nv12.is_some());
+        assert!(handle.enqueue_bgra.is_some());
         assert!(handle.enqueue_screen_audio.is_none());
         unsafe { (handle.release)(handle.context) };
     }

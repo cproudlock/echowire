@@ -135,6 +135,12 @@ harness = false
 required-features = ["bench-internals"]
 
 [patch.crates-io]
+# Vendored verbatim from crates.io with one deviation in
+# src/rtc_engine/rtc_session.rs (create_sender): upstream restricts a video
+# transceiver to the single chosen codec, which permanently pins a connection to
+# whatever codec its first video publish used and leaves every later publish
+# declared as one codec and sent as another. See the comment at the patch site.
+livekit = { path = "vendor/livekit" }
 libwebrtc = { path = "vendor/libwebrtc" }
 webrtc-sys = { path = "vendor/webrtc-sys" }
 tract-linalg-019 = { package = "tract-linalg", path = "vendor/tract-linalg-0.19.16" }

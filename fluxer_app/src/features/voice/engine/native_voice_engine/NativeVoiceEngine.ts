@@ -6,6 +6,10 @@ import {
 	type NativeAudioDeviceModuleStatus,
 	nativeAudioDeviceModuleState,
 } from '@app/features/voice/engine/native_voice_engine/NativeAudioDeviceModuleState';
+import {
+	NATIVE_CONNECTION_DEFAULT_VIDEO_CODEC,
+	NativeConnectionVideoCodecLock,
+} from '@app/features/voice/engine/native_voice_engine/NativeConnectionVideoCodecLock';
 import {getNativeVoiceEngineConnectionEventAction} from '@app/features/voice/engine/native_voice_engine/nativeVoiceEngineEventMapper';
 import type {VoiceEngine} from '@app/features/voice/engine/native_voice_engine/VoiceEngine';
 import {
@@ -167,6 +171,7 @@ export class NativeVoiceEngine implements VoiceEngine {
 	private cameraPublishInFlightKey: string | null = null;
 	private screenShareVideoState: NativeVoiceEngineScreenShareVideoState = {kind: 'idle'};
 	private screenShareAudioState: NativeVoiceEngineScreenShareAudioState = {kind: 'idle'};
+	private readonly videoCodecLock = new NativeConnectionVideoCodecLock();
 
 	constructor(bridge: VoiceEngineV2BridgeApi) {
 		this.bridge = bridge;
@@ -225,6 +230,47 @@ export class NativeVoiceEngine implements VoiceEngine {
 		this.cameraPublishInFlightKey = null;
 		this.clearScreenShareVideoState();
 		this.clearScreenShareAudioState();
+		this.videoCodecLock.reset();
+	}
+
+	/**
+	 * The SFU negotiates video codecs once per connection, so a publish that asks for a different
+	 * codec than the connection already uses is declared as one codec and sent as another, and the
+	 * SFU forwards nothing. Keep every video publish on the connection's codec.
+	 * See NativeConnectionVideoCodecLock for the full mechanism.
+	 */
+	private resolveConnectionVideoCodec(
+		requested: VoiceEngineV2BridgePublishScreenOptions['codec'],
+		operation: string,
+	): VoiceEngineV2BridgePublishScreenOptions['codec'] {
+		const decision = this.videoCodecLock.resolve(requested);
+		if (decision.overridden) {
+			logger.warn('Keeping the codec this connection already negotiated', {
+				operation,
+				requested: requested ?? null,
+				published: decision.locked,
+			});
+		}
+		return decision.codec;
+	}
+
+	/**
+	 * Camera publishes never carry a codec, so they take the sdk default and claim the lock rather
+	 * than follow it. A camera published onto a connection that already negotiated another codec is
+	 * the same defect in the other direction, which only patching the crate fixes, so say so.
+	 */
+	private claimConnectionVideoCodecForCamera(): void {
+		if (!this.videoCodecLock.isLocked()) {
+			this.videoCodecLock.resolve(NATIVE_CONNECTION_DEFAULT_VIDEO_CODEC);
+			return;
+		}
+		const locked = this.videoCodecLock.getLockedCodec();
+		if (locked !== null && locked !== NATIVE_CONNECTION_DEFAULT_VIDEO_CODEC) {
+			logger.warn('Publishing camera on a connection that negotiated a different video codec', {
+				locked,
+				cameraCodec: NATIVE_CONNECTION_DEFAULT_VIDEO_CODEC,
+			});
+		}
 	}
 
 	isConnected(): boolean {
@@ -398,8 +444,14 @@ export class NativeVoiceEngine implements VoiceEngine {
 		if (params.codec != null) {
 			assert.ok(params.codec.length > 0, 'screen-share publish codec must be non-empty');
 		}
-		const configKey = this.getScreenSharePublishOptionsConfigKey(params);
-		const target: NativeVoiceEngineScreenShareVideoPublication = {kind: 'display', configKey, options: params};
+		const codec = this.resolveConnectionVideoCodec(params.codec, 'screen share');
+		const publishParams: VoiceEngineV2BridgePublishScreenOptions = codec === params.codec ? params : {...params, codec};
+		const configKey = this.getScreenSharePublishOptionsConfigKey(publishParams);
+		const target: NativeVoiceEngineScreenShareVideoPublication = {
+			kind: 'display',
+			configKey,
+			options: publishParams,
+		};
 		if (this.isPublishedScreenShareVideoConfig(configKey)) return;
 		const publishing = this.getPublishingScreenShareVideo();
 		if (publishing) {
@@ -410,7 +462,7 @@ export class NativeVoiceEngine implements VoiceEngine {
 			if (this.isPublishedScreenShareVideoConfig(configKey)) return;
 		}
 		const published = this.getPublishedScreenShareVideo();
-		if (published?.kind === 'display' && this.canUpdateScreenShareInPlace(published.options, params)) {
+		if (published?.kind === 'display' && this.canUpdateScreenShareInPlace(published.options, publishParams)) {
 			await this.updateScreenShareEncoding({
 				captureId: params.captureId,
 				width: params.width,
@@ -426,17 +478,17 @@ export class NativeVoiceEngine implements VoiceEngine {
 				this.clearScreenShareVideoState();
 			}
 			await this.bridge.publishScreen({
-				captureId: params.captureId,
-				width: params.width,
-				height: params.height,
-				codec: params.codec,
-				maxBitrateBps: params.maxBitrateBps,
-				maxFramerate: params.maxFramerate,
-				adaptiveSend: params.adaptiveSend,
-				minVideoFps: params.minVideoFps,
-				maxAudioBufferMs: params.maxAudioBufferMs,
-				pacing: params.pacing,
-				...(params.trackName ? {trackName: params.trackName} : {}),
+				captureId: publishParams.captureId,
+				width: publishParams.width,
+				height: publishParams.height,
+				codec: publishParams.codec,
+				maxBitrateBps: publishParams.maxBitrateBps,
+				maxFramerate: publishParams.maxFramerate,
+				adaptiveSend: publishParams.adaptiveSend,
+				minVideoFps: publishParams.minVideoFps,
+				maxAudioBufferMs: publishParams.maxAudioBufferMs,
+				pacing: publishParams.pacing,
+				...(publishParams.trackName ? {trackName: publishParams.trackName} : {}),
 			});
 			this.screenShareVideoState = {kind: 'published', publication: target};
 			logger.info('Native voice engine screen-share publish requested', {captureId: params.captureId});
@@ -573,6 +625,7 @@ export class NativeVoiceEngine implements VoiceEngine {
 				this.cameraConfigKey = null;
 				this.cameraTrackSid = null;
 			}
+			this.claimConnectionVideoCodecForCamera();
 			try {
 				await this.bridge.publishCamera(publishOptions);
 				this.cameraTrackSid = null;
@@ -633,6 +686,7 @@ export class NativeVoiceEngine implements VoiceEngine {
 	async publishNativeCameraSink(
 		params: VoiceEngineV2BridgePublishCameraOptions,
 	): Promise<VoiceEngineV2BridgePublishNativeCameraSinkResult> {
+		this.claimConnectionVideoCodecForCamera();
 		const result = await this.bridge.publishNativeCameraSink(params);
 		this.cameraPublished = true;
 		this.cameraConfigKey = `sink:${this.getCameraPublishOptionsConfigKey(params)}`;
@@ -665,6 +719,7 @@ export class NativeVoiceEngine implements VoiceEngine {
 				this.cameraConfigKey = null;
 				this.cameraTrackSid = null;
 			}
+			this.claimConnectionVideoCodecForCamera();
 			let result: VoiceEngineV2BridgePublishProcessedCameraResult;
 			try {
 				result = await this.bridge.publishProcessedCamera(publishOptions);
@@ -710,7 +765,7 @@ export class NativeVoiceEngine implements VoiceEngine {
 			width: params.width,
 			height: params.height,
 			frameRate: params.frameRate,
-			codec: params.codec,
+			codec: this.resolveConnectionVideoCodec(params.codec, 'device screen share'),
 			maxBitrateBps: params.maxBitrateBps,
 			maxFramerate: params.maxFramerate,
 		};

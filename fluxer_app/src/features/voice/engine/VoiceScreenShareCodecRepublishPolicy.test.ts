@@ -8,6 +8,41 @@ import {
 } from './VoiceScreenShareCodecRepublishPolicy';
 
 describe('selectScreenShareCodecRepublishDecision', () => {
+	it('interrupts a live share when a known participant cannot decode what is being published', () => {
+		expect(
+			selectScreenShareCodecRepublishDecision({
+				currentCodec: 'av1',
+				nextCodec: 'h264',
+				reason: 'participant-connected',
+				allowLiveRepublish: false,
+				currentCodecUndecodable: true,
+			}),
+		).toEqual({action: 'republish', reason: 'undecodable'});
+	});
+
+	it('still defers an ordinary codec change while a share is live', () => {
+		expect(
+			selectScreenShareCodecRepublishDecision({
+				currentCodec: 'vp8',
+				nextCodec: 'av1',
+				reason: 'participant-connected',
+				allowLiveRepublish: false,
+				currentCodecUndecodable: false,
+			}),
+		).toEqual({action: 'defer', reason: 'active-share-stability'});
+	});
+
+	it('leaves an undecodable flag alone when there is nothing to switch to', () => {
+		expect(
+			selectScreenShareCodecRepublishDecision({
+				currentCodec: 'av1',
+				nextCodec: 'av1',
+				reason: 'participant-connected',
+				currentCodecUndecodable: true,
+			}),
+		).toEqual({action: 'noop', reason: 'same-codec'});
+	});
+
 	it('does not republish when the selected codec already matches the active sender', () => {
 		expect(
 			selectScreenShareCodecRepublishDecision({

@@ -11,7 +11,7 @@ export type ScreenShareCodecRepublishDecision =
 	  }
 	| {
 			action: 'republish';
-			reason: 'forced' | 'manual' | 'automatic';
+			reason: 'forced' | 'manual' | 'automatic' | 'undecodable';
 	  }
 	| {
 			action: 'defer';
@@ -24,6 +24,7 @@ interface ScreenShareCodecPublicationContext {
 	reason: NegotiationReason | null;
 	force: boolean;
 	allowLiveRepublish: boolean;
+	currentCodecUndecodable: boolean;
 	decision: ScreenShareCodecRepublishDecision;
 }
 
@@ -34,6 +35,11 @@ type ScreenShareCodecPublicationEvent = {
 	reason: NegotiationReason;
 	force?: boolean;
 	allowLiveRepublish?: boolean;
+	/**
+	 * A known participant provably cannot decode the codec being published right now, so they are
+	 * seeing nothing at all. Only ever set for publishers with no backup codec to fall back on.
+	 */
+	currentCodecUndecodable?: boolean;
 };
 
 function initialContext(): ScreenShareCodecPublicationContext {
@@ -43,6 +49,7 @@ function initialContext(): ScreenShareCodecPublicationContext {
 		reason: null,
 		force: false,
 		allowLiveRepublish: false,
+		currentCodecUndecodable: false,
 		decision: {action: 'noop', reason: 'same-codec'},
 	};
 }
@@ -50,6 +57,11 @@ function initialContext(): ScreenShareCodecPublicationContext {
 function getRepublishDecision(event: ScreenShareCodecPublicationEvent): ScreenShareCodecRepublishDecision {
 	if (event.currentCodec === event.nextCodec && event.force !== true) {
 		return {action: 'noop', reason: 'same-codec'};
+	}
+	// Deferring here would leave that participant staring at a green picture for the rest of the
+	// share, so the interruption a live republish costs everyone is the cheaper of the two.
+	if (event.currentCodecUndecodable === true) {
+		return {action: 'republish', reason: 'undecodable'};
 	}
 	if (event.allowLiveRepublish === false) {
 		return {action: 'defer', reason: event.force === true ? 'live-republish-disabled' : 'active-share-stability'};
@@ -75,6 +87,7 @@ export const screenShareCodecPublicationStateMachine = setup({
 			reason: event.reason,
 			force: event.force === true,
 			allowLiveRepublish: event.allowLiveRepublish === true,
+			currentCodecUndecodable: event.currentCodecUndecodable === true,
 			decision: getRepublishDecision(event),
 		})),
 	},
@@ -136,6 +149,7 @@ export function selectScreenShareCodecRepublishDecision(options: {
 	reason: NegotiationReason;
 	force?: boolean;
 	allowLiveRepublish?: boolean;
+	currentCodecUndecodable?: boolean;
 }): ScreenShareCodecRepublishDecision {
 	const snapshot = transitionScreenShareCodecPublicationSnapshot(createScreenShareCodecPublicationSnapshot(), {
 		type: 'codec.selection',
@@ -144,6 +158,9 @@ export function selectScreenShareCodecRepublishDecision(options: {
 		reason: options.reason,
 		...(options.force !== undefined ? {force: options.force} : {}),
 		...(options.allowLiveRepublish !== undefined ? {allowLiveRepublish: options.allowLiveRepublish} : {}),
+		...(options.currentCodecUndecodable !== undefined
+			? {currentCodecUndecodable: options.currentCodecUndecodable}
+			: {}),
 	});
 	return snapshot.context.decision;
 }

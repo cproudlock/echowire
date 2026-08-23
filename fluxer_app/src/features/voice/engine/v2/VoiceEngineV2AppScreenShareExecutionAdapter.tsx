@@ -34,7 +34,10 @@ import {
 import {isVoiceEngineV2AppNativeScreenShareBridgeAvailable} from '@app/features/voice/engine/v2/VoiceEngineV2AppNativeBridge';
 import {VoiceEngineV2AppScreenShareAudioPump} from '@app/features/voice/engine/v2/VoiceEngineV2AppScreenShareAudioPump';
 import {VoiceEngineV2AppScreenShareCaptureCoordinator} from '@app/features/voice/engine/v2/VoiceEngineV2AppScreenShareCaptureCoordinator';
-import {VoiceEngineV2AppScreenShareCodecMigration} from '@app/features/voice/engine/v2/VoiceEngineV2AppScreenShareCodecMigration';
+import {
+	type ScreenShareCodecRenegotiationOptions,
+	VoiceEngineV2AppScreenShareCodecMigration,
+} from '@app/features/voice/engine/v2/VoiceEngineV2AppScreenShareCodecMigration';
 import {
 	selectVoiceEngineV2AppScreenShareSetEnabledOptions,
 	type VoiceEngineV2AppScreenShareControllerGateway,
@@ -1054,7 +1057,7 @@ class VoiceEngineV2AppScreenShareExecutionAdapter extends Store {
 		room: Room | null,
 		codec: VideoCodec,
 		reason: NegotiationReason,
-		options: {force?: boolean} = {},
+		options: ScreenShareCodecRenegotiationOptions = {},
 	): Promise<boolean> {
 		return this.codecMigration.renegotiateActiveCodec(room, codec, reason, options);
 	}

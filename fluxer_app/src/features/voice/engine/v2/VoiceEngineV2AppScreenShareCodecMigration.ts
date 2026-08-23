@@ -46,6 +46,30 @@ interface MigrationContext {
 	readonly previousTrackName: string | undefined;
 }
 
+export interface ScreenShareCodecRenegotiationOptions {
+	force?: boolean;
+	/**
+	 * Codecs every known remote participant advertised decode support for, straight from the
+	 * negotiation's capability intersection. Absent means we have nothing proven either way.
+	 */
+	decodableByKnownParticipants?: ReadonlyArray<VideoCodec>;
+}
+
+/**
+ * True only when we can prove someone is watching nothing: we know what is being published, we
+ * have a capability picture, and the published codec is not in it. Uncertainty never counts, since
+ * the cost of a false positive is interrupting a working share for everyone in the room.
+ */
+function isCodecUndecodableByKnownParticipants(
+	currentCodec: VideoCodec | undefined,
+	options: ScreenShareCodecRenegotiationOptions,
+): boolean {
+	const decodable = options.decodableByKnownParticipants;
+	if (currentCodec === undefined) return false;
+	if (decodable === undefined) return false;
+	return !decodable.includes(currentCodec);
+}
+
 interface MigrationState {
 	candidateMediaStreamTrack: MediaStreamTrack | null;
 	candidatePublication: LocalTrackPublication | null;
@@ -531,7 +555,7 @@ export class VoiceEngineV2AppScreenShareCodecMigration {
 		room: Room | null,
 		codec: VideoCodec,
 		reason: NegotiationReason,
-		options: {force?: boolean},
+		options: ScreenShareCodecRenegotiationOptions,
 	): Promise<boolean> {
 		if (!this.adapter.captureCoordinator.activeCaptureId) return false;
 		if (this.adapter.isScreenSharePending) {
@@ -540,12 +564,16 @@ export class VoiceEngineV2AppScreenShareCodecMigration {
 		}
 		const previousOptions = this.adapter.captureCoordinator.activeCapturePublishOptions ?? {};
 		const currentCodec = isVideoCodecValue(previousOptions.videoCodec) ? previousOptions.videoCodec : undefined;
+		// Only the native path escalates on an undecodable codec. The web path publishes a backup
+		// codec (voice_screen_share_manager/shared.ts sets BackupCodecPolicy.SIMULCAST), so an
+		// incompatible viewer there already receives the backup and needs no interruption.
 		const decision = selectScreenShareCodecRepublishDecision({
 			currentCodec,
 			nextCodec: codec,
 			reason,
 			force: options.force,
 			allowLiveRepublish: options.force === true,
+			currentCodecUndecodable: isCodecUndecodableByKnownParticipants(currentCodec, options),
 		});
 		if (decision.action === 'noop') return false;
 		if (decision.action === 'defer') {
@@ -570,7 +598,7 @@ export class VoiceEngineV2AppScreenShareCodecMigration {
 		room: Room | null,
 		codec: VideoCodec,
 		reason: NegotiationReason,
-		options: {force?: boolean} = {},
+		options: ScreenShareCodecRenegotiationOptions = {},
 	): Promise<boolean> {
 		assert.equal(typeof codec, 'string');
 		assert.ok(reason !== undefined, 'reason required');

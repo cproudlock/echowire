@@ -551,6 +551,7 @@ function buildRoomEventDependencies(facade: {
 					activeRoom,
 					selection.codec,
 					selection.reason,
+					{decodableByKnownParticipants: selection.decodableByKnownParticipants},
 				),
 		},
 		subscriptions: {
@@ -2678,9 +2679,8 @@ class MediaEngineFacade extends Store {
 				subscribeParticipants: (listener) => this.voiceEngineV2ProjectionStore.subscribe(listener),
 			});
 			const connectTimeoutMs = getNativeVoiceEngineConnectTimeoutMs(
-				this.nativeVoiceConnectRetryCounts.get(
-					this.getNativeVoiceConnectRetryKey(guildId, channelId, connectionId),
-				) ?? 0,
+				this.nativeVoiceConnectRetryCounts.get(this.getNativeVoiceConnectRetryKey(guildId, channelId, connectionId)) ??
+					0,
 			);
 			logger.info('Native voice engine connect issuing', {
 				guildId,
@@ -2889,7 +2889,9 @@ class MediaEngineFacade extends Store {
 			{
 				onSelectedCodecChanged: (selection) => {
 					void voiceEngineV2AppScreenShareExecutionAdapter
-						.renegotiateActiveScreenShareCodec(null, selection.codec, selection.reason)
+						.renegotiateActiveScreenShareCodec(null, selection.codec, selection.reason, {
+							decodableByKnownParticipants: selection.decodableByKnownParticipants,
+						})
 						.catch((error) => {
 							logger.warn('Failed to apply negotiated native screen share codec', {
 								error,

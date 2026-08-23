@@ -1,6 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {Logger} from '@app/features/platform/utils/AppLogger';
+import {
+	computeDecodableByKnownParticipants,
+	type FluxerVideoCodecName,
+	getDecodeSet,
+	getEncodeSet,
+	VIDEO_CODEC_NAMES,
+} from '@app/features/voice/engine/ScreenShareCodecDecodeSupport';
 import VoiceSettings from '@app/features/voice/state/VoiceSettings';
 import {
 	type CodecCapabilityReport,
@@ -29,32 +36,31 @@ const SELECT_PROTOCOL_OP = 1;
 const SESSION_UPDATE_OP = 14;
 const TEXT_ENCODER = new TextEncoder();
 const TEXT_DECODER = new TextDecoder();
-// Echowire: AV1 is deliberately NOT offered as a screen-share publish codec.
-// A share negotiates once at start; if a participant who cannot decode the chosen codec joins
-// afterwards, the republish policy defers the switch "until the next share start"
-// (VoiceScreenShareCodecRepublishPolicy: allowLiveRepublish is tied to `force`), so that viewer
-// gets a green picture for the entire share. AV1 made this reachable in practice because it wins
-// the preference list whenever capabilities are momentarily unknown. LiveKit's backup-codec
-// regression would normally cover it, but the native publish path never sets a backup codec.
-// AV1 remains fully supported for RECEIVING - this list only controls what we publish.
-const CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['h265', 'h264', 'vp9', 'vp8'];
+// Echowire: AV1 publishes again, but only because the failure that removed it is now handled.
+//
+// A share negotiates its codec once at start. When a participant who cannot decode that codec
+// joined afterwards, the republish policy deferred the switch "until the next share start", so
+// that viewer got a green picture for the whole share. AV1 made this reachable in practice
+// because it wins the preference order outright. The usual safety net does not exist here:
+// LiveKit's backup-codec regression needs a backup codec, and the native publish path cannot set
+// one, since the Rust SDK has no backup-codec support at all (simulcast_codecs is a single entry).
+//
+// What changed is that a live republish now works. Mid-connection codec changes used to be
+// answered by the SFU with the connection's FIRST codec, which silently produced dead video, so
+// interrupting a share to switch codec would have made things worse rather than better. With the
+// vendored SDK offering every codec on the first m-line, a switch is honoured, and the republish
+// policy escalates to a live republish for the one case that justifies the interruption: a known
+// participant who provably cannot decode what is currently being published. Every other codec
+// change still defers to the next share start.
+//
+// AV1 stays out of the software list: software AV1 encoding at share resolutions is far too
+// expensive. In hardware mode shouldAdvertiseVideoEncode already requires
+// hardwareAccelerated === 'hardware', so AV1 is only offered by machines that can actually
+// encode it. AV1 has always been, and remains, fully supported for RECEIVING.
+const CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['av1', 'h265', 'h264', 'vp9', 'vp8'];
 const SOFTWARE_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['vp9', 'h264', 'vp8', 'h265'];
 const COMPATIBILITY_FALLBACK_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['vp9', 'vp8'];
 const BASELINE_VIDEO_CODEC: VideoCodec = 'vp8';
-const VIDEO_CODEC_NAMES: Record<VideoCodec, FluxerVideoCodecName> = {
-	av1: 'AV1',
-	h265: 'H265',
-	h264: 'H264',
-	vp9: 'VP9',
-	vp8: 'VP8',
-};
-const NAME_TO_VIDEO_CODEC: Record<FluxerVideoCodecName, VideoCodec> = {
-	AV1: 'av1',
-	H265: 'h265',
-	H264: 'h264',
-	VP9: 'vp9',
-	VP8: 'vp8',
-};
 const VIDEO_CODEC_PROTOCOL_TABLE: Record<
 	VideoCodec,
 	{
@@ -70,7 +76,6 @@ const VIDEO_CODEC_PROTOCOL_TABLE: Record<
 	vp8: {payloadType: 107, rtxPayloadType: 108, priority: 1000},
 };
 
-type FluxerVideoCodecName = 'AV1' | 'H265' | 'H264' | 'VP9' | 'VP8';
 type FluxerCodecName = 'opus' | FluxerVideoCodecName;
 type FluxerCodecType = 'audio' | 'video';
 export type NegotiationReason =
@@ -121,6 +126,13 @@ export interface CodecNegotiationSelection {
 	reason: NegotiationReason;
 	candidates: Array<VideoCodec>;
 	unknownParticipants: number;
+	/**
+	 * Codecs every KNOWN remote participant advertised decode support for. Participants who have
+	 * advertised nothing are excluded rather than assumed incapable, so this only ever states what
+	 * we can prove. A currently published codec missing from this list means someone in the room is
+	 * definitely seeing nothing, which is what justifies interrupting a live share to switch.
+	 */
+	decodableByKnownParticipants: Array<VideoCodec>;
 }
 
 interface ScreenShareCodecNegotiationMachineContext {
@@ -283,26 +295,6 @@ export function buildLocalCodecAdvertisements(): Array<FluxerCodecAdvertisement>
 	];
 }
 
-function getDecodeSet(codecs: ReadonlyArray<FluxerCodecAdvertisement>): Set<VideoCodec> {
-	const result = new Set<VideoCodec>();
-	for (const codec of codecs) {
-		if (codec.type !== 'video' || codec.decode !== true) continue;
-		const mapped = NAME_TO_VIDEO_CODEC[codec.name as FluxerVideoCodecName];
-		if (mapped) result.add(mapped);
-	}
-	return result;
-}
-
-function getEncodeSet(codecs: ReadonlyArray<FluxerCodecAdvertisement>): Set<VideoCodec> {
-	const result = new Set<VideoCodec>();
-	for (const codec of codecs) {
-		if (codec.type !== 'video' || codec.encode !== true) continue;
-		const mapped = NAME_TO_VIDEO_CODEC[codec.name as FluxerVideoCodecName];
-		if (mapped) result.add(mapped);
-	}
-	return result;
-}
-
 function selectCompatibilityFallbackCodec(localEncode: ReadonlySet<VideoCodec>): VideoCodec {
 	for (const codec of COMPATIBILITY_FALLBACK_CODEC_PREFERENCE) {
 		if (localEncode.has(codec)) return codec;
@@ -331,6 +323,7 @@ export function computeNegotiatedVideoCodec(
 		reason: 'manual',
 		candidates: constrainedCandidates,
 		unknownParticipants,
+		decodableByKnownParticipants: computeDecodableByKnownParticipants(remoteCodecs),
 	};
 }
 

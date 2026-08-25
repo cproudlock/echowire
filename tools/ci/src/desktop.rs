@@ -1600,7 +1600,7 @@ fn pack_and_validate_windows_velopack(
         "--packTitle",
         config.pack_title,
         "--packAuthors",
-        "Fluxer Platform AB",
+        "Proudlock Technology LLC",
         "--shortcuts",
         "Desktop,StartMenu",
         "--runtime",
@@ -1831,8 +1831,11 @@ fn create_portable_zip_windows_step() -> Result<()> {
     Ok(())
 }
 
-const FLUXER_WINDOWS_SIGNER_COMMON_NAME: &str = "Fluxer Platform AB";
-const THIRD_PARTY_PUBLISHER_ALLOWLIST: &[&str] = &[];
+// Echowire: this fork signs with its own Azure Trusted Signing identity, not upstream's.
+const FLUXER_WINDOWS_SIGNER_COMMON_NAME: &str = "Proudlock Technology LLC";
+// Echowire: d3dcompiler_47.dll and dxil.dll ship from the Electron runtime already
+// signed by Microsoft and are not re-signed, so they can only pass as third-party.
+const THIRD_PARTY_PUBLISHER_ALLOWLIST: &[&str] = &["Microsoft Windows"];
 const KNOWN_OPTIONAL_WINDOWS_PE_INVENTORY: &[&str] = &["fluxer-vulkan-layer.win32-ia32-msvc.dll"];
 const WINDOWS_NATIVE_ADDON_STEMS: &[&str] = &[
     "webauthn",

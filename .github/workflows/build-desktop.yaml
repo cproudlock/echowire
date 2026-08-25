@@ -295,6 +295,16 @@ jobs:
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step set_build_channel
 
+      - name: Typecheck desktop
+        # Echowire: the desktop bundle is built with esbuild, which strips types without
+        # checking them, so type errors used to reach shipped builds. Runs after
+        # set_build_channel because that generates src/common/BuildChannel.ts. Linux only:
+        # the check is platform-independent, and the release job needs every leg to pass,
+        # so gating one leg gates the release.
+        if: matrix.platform == 'linux'
+        working-directory: ${{ env.WORKDIR }}/fluxer_desktop
+        run: pnpm typecheck
+
       - name: Build Electron main process
         working-directory: ${{ env.WORKDIR }}/fluxer_desktop
         env:
@@ -413,10 +423,9 @@ jobs:
           exclude-environment-credential: true
 
       - name: Verify unpacked Windows signatures
-        # Echowire: non-blocking. Signing is already enforced by the mandatory Azure
-        # Trusted Signing step above; this signtool-based self-check (added upstream)
-        # can't run on our self-hosted runner (no Windows SDK signing tools).
-        continue-on-error: true
+        # Echowire: blocking again. This was non-blocking on the claim that it could not
+        # run on our self-hosted runner; it always ran fine and failed only because the
+        # expected signer CN was still upstream's company. Fixed in tools/ci.
         if: matrix.platform == 'windows'
         working-directory: ${{ env.WORKDIR }}/fluxer_desktop
         env:
@@ -466,8 +475,7 @@ jobs:
           --step build_app_linux
 
       - name: Verify signed Windows artifacts
-        # Echowire: non-blocking (see note on the unpacked-signatures verify above).
-        continue-on-error: true
+        # Echowire: blocking again (see note on the unpacked-signatures verify above).
         if: matrix.platform == 'windows'
         working-directory: ${{ env.WORKDIR }}/fluxer_desktop
         env:

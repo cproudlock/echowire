@@ -187,3 +187,30 @@ fn x11_backend_honours_a_requested_output_size() {
     assert_eq!(sized, got, "every frame must be emitted at the requested size");
     assert!(content > 0, "scaled frames were all flat");
 }
+
+#[test]
+fn x11_backend_throughput_at_60fps() {
+    if !x11_available() { eprintln!("skipping"); return; }
+    let monitor = list_monitors().expect("monitors").into_iter().next().expect("one");
+    let native_w = u32::from(monitor.width) & !1;
+    let native_h = u32::from(monitor.height) & !1;
+    for (label, req) in [("native 1:1", None), ("scaled to 1080p", Some((1920u32, 1080u32)))] {
+        let (w, h) = req.unwrap_or((native_w, native_h));
+        let pool = LinuxFrameBufferPool::new((w * h * 3 / 2) as usize).expect("pool");
+        let frames = Arc::new(AtomicU64::new(0));
+        let fc = Arc::clone(&frames);
+        let stream = X11VideoStream::open(
+            monitor.clone(),
+            req,
+            Some(60),
+            Arc::new(move |_f| { fc.fetch_add(1, Ordering::Relaxed); }),
+            Arc::new(|_s: &str, _d: &str| {}),
+            pool,
+            None,
+        ).expect("open");
+        std::thread::sleep(std::time::Duration::from_millis(2000));
+        stream.stop();
+        let got = frames.load(Ordering::Relaxed);
+        eprintln!("{label}: {}x{} requested 60fps -> {} frames in 2s = {:.1} fps", w, h, got, got as f64 / 2.0);
+    }
+}

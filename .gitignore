@@ -70,3 +70,32 @@ fluxer_app/src/features/messaging/utils/markdown/parser/MarkdownParserWasmBytes.
 
 **/.DS_Store
 **/Thumbs.db
+
+# --- standards baseline (managed by standards-bootstrap) ---
+# build artifacts
+*.tsbuildinfo
+*.zip
+target/
+build/
+dist/
+.next/
+node_modules/
+__pycache__/
+.venv/
+
+# local data and caches for compose bind mounts
+.data/
+
+# AI tooling scratch - AGENTS.md is the one committed config
+.serena/
+.claude/settings.local.json
+.aiderignore
+.cursorrules
+GEMINI.md
+
+# secrets
+.env
+.env.*
+!.env.example
+secrets.md
+*.pem

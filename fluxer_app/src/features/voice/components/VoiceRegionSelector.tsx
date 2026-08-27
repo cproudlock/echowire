@@ -195,6 +195,7 @@ export function VoiceRegionSelector({channelId, currentRegion, compact = false}:
 						<img
 							src={emojiUrl}
 							alt={option.label}
+							aria-hidden={true}
 							className={styles.regionEmoji}
 							data-flx="voice.voice-region-selector.render-region-option.region-emoji"
 						/>

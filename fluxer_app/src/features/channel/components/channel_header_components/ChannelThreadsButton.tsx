@@ -28,7 +28,7 @@ export const ChannelThreadsButton = observer(({channel}: {channel: Channel}) => 
 				c.parentId === channel.id &&
 				THREAD_CHANNEL_TYPES.has(c.type) &&
 				!c.threadMetadata?.archived &&
-				ReadStates.hasUnreadOrMentions(c.id),
+				ReadStates.isUnreadOrMentioned(c.id),
 		);
 	return (
 		<Popout

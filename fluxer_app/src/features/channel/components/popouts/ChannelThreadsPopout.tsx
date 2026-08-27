@@ -106,7 +106,7 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 					</div>
 				) : (
 					threads.map((thread) => {
-						const unread = ReadStates.hasUnreadOrMentions(thread.id);
+						const unread = ReadStates.isUnreadOrMentioned(thread.id);
 						const mentionCount = ReadStates.getMentionCount(thread.id);
 						return (
 							<button

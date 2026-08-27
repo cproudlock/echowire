@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type {VoiceEngineV2BridgeApi} from '@fluxer/voice_engine_v2/bridge';
+import type {VoiceEngineV2BridgeHardwareEncoderApi} from '@fluxer/voice_engine_v2/bridge';
 import type {AuthenticationResponseJSON, RegistrationResponseJSON} from '@simplewebauthn/browser';
 
 export type InputMonitoringPermissionStatus = 'granted' | 'denied' | 'not-determined' | 'unsupported';
@@ -93,7 +93,6 @@ export interface DesktopWindowBehaviorSettings {
 	activeSmoothScrolling: boolean;
 	middleClickAutoscroll: boolean;
 	activeMiddleClickAutoscroll: boolean;
-	firstClickPassThroughWhenUnfocused: boolean;
 }
 
 export interface ThemeLocalFileReference {
@@ -378,7 +377,6 @@ export interface ElectronAPI {
 	clearThemeLocalFiles?(): Promise<void>;
 	importThemeDirectory?(): Promise<Array<ThemeDirectoryCssFile>>;
 	cacheVoiceBackgroundMedia?(options: VoiceBackgroundMediaCacheRequest): Promise<VoiceBackgroundMediaCacheResult>;
-	resolveVoiceBackgroundMedia?(id: string): Promise<VoiceBackgroundMediaCacheResult | null>;
 	readVoiceBackgroundMedia?(id: string): Promise<VoiceBackgroundMediaReadResult | null>;
 	deleteVoiceBackgroundMedia?(id: string): Promise<void>;
 	getDesktopTroubleshootingSettings?(): Promise<DesktopTroubleshootingSettings>;
@@ -486,14 +484,12 @@ export interface ElectronAPI {
 	passkeyRegister?(options: unknown, requestContext?: {pin?: string}): Promise<RegistrationResponseJSON>;
 	passkeyAuthenticate?(options: unknown, requestContext?: {pin?: string}): Promise<AuthenticationResponseJSON>;
 	onRpcNavigate?(callback: (path: string) => void): () => void;
-	switchInstanceUrl?(options: {instanceUrl: string; desktopHandoffCode?: string | null}): Promise<void>;
-	consumeDesktopHandoffCode?(): Promise<string | null>;
 	getOpenH264Status?(): Promise<OpenH264Status>;
 	setOpenH264Enabled?(enabled: boolean): Promise<OpenH264Status>;
 	virtmic?: VirtmicApi;
 	nativeAudio?: NativeAudioApi;
 	nativeScreenCapture?: NativeScreenCaptureApi;
-	voiceEngine?: VoiceEngineV2BridgeApi;
+	voiceEngine?: VoiceEngineV2BridgeHardwareEncoderApi;
 }
 
 export type VirtmicUnavailableReason =

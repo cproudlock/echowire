@@ -6,6 +6,7 @@ import {
 	getMessageGroupSpacingForDisplayMode,
 	migrateLegacyMessageGroupSpacing,
 } from '@app/features/accessibility/state/MessageGroupSpacing';
+import {DEFAULT_MESSAGE_GUTTER_PX} from '@app/features/accessibility/state/MessagePresentationDefaults';
 import type {AnimatedMediaKind} from '@app/features/accessibility/state/MotionPreferencesMachine';
 import {
 	AuthSessionStorageKey,
@@ -22,7 +23,6 @@ import {
 	ChannelTypingIndicatorMode as ProtoChannelTypingIndicatorMode,
 	DmMessagePreviewMode as ProtoDmMessagePreviewMode,
 	HdrDisplayMode as ProtoHdrDisplayMode,
-	MediaDimensionSize as ProtoMediaDimensionSize,
 } from '@fluxer/schema/src/gen/fluxer/user/preferences/v1/accessibility_pb';
 import {makeAutoObservable, reaction, runInAction} from 'mobx';
 
@@ -512,11 +512,6 @@ export enum GuildChannelPresenceIndicatorMode {
 	HIDDEN = 2,
 }
 
-export enum MediaDimensionSize {
-	SMALL = 'small',
-	LARGE = 'large',
-}
-
 export enum DMMessagePreviewMode {
 	ALL = 0,
 	UNREAD_ONLY = 1,
@@ -581,8 +576,6 @@ export interface AccessibilitySettings {
 	showCustomEmojisInExpressionAutocomplete: boolean;
 	showStickersInExpressionAutocomplete: boolean;
 	showMemesInExpressionAutocomplete: boolean;
-	attachmentMediaDimensionSize: MediaDimensionSize;
-	embedMediaDimensionSize: MediaDimensionSize;
 	voiceChannelJoinRequiresDoubleClick: boolean;
 	customThemeCss: string | null;
 	customThemeCssSyncAcrossDevices: boolean;
@@ -599,7 +592,6 @@ export interface AccessibilitySettings {
 	hdrDisplayMode: HdrDisplayMode;
 	preserveEditDraft: boolean;
 	stayInteractiveWhenUnfocused: boolean;
-	firstClickPassThroughWhenUnfocused: boolean;
 	scrollToBottomOnMessageSend: boolean;
 	sequentialFileSend: boolean;
 	showNeko: boolean;
@@ -631,15 +623,6 @@ const DM_PREVIEW_FROM_PROTO: Record<ProtoDmMessagePreviewMode, DMMessagePreviewM
 	[ProtoDmMessagePreviewMode.UNREAD_ONLY]: DMMessagePreviewMode.UNREAD_ONLY,
 	[ProtoDmMessagePreviewMode.NONE]: DMMessagePreviewMode.NONE,
 };
-const MEDIA_DIMENSION_TO_PROTO: Record<MediaDimensionSize, ProtoMediaDimensionSize> = {
-	[MediaDimensionSize.SMALL]: ProtoMediaDimensionSize.SMALL,
-	[MediaDimensionSize.LARGE]: ProtoMediaDimensionSize.LARGE,
-};
-const MEDIA_DIMENSION_FROM_PROTO: Record<ProtoMediaDimensionSize, MediaDimensionSize> = {
-	[ProtoMediaDimensionSize.UNSPECIFIED]: MediaDimensionSize.SMALL,
-	[ProtoMediaDimensionSize.SMALL]: MediaDimensionSize.SMALL,
-	[ProtoMediaDimensionSize.LARGE]: MediaDimensionSize.LARGE,
-};
 const HDR_TO_PROTO: Record<HdrDisplayMode, ProtoHdrDisplayMode> = {
 	[HdrDisplayMode.FULL]: ProtoHdrDisplayMode.FULL,
 	[HdrDisplayMode.STANDARD]: ProtoHdrDisplayMode.STANDARD,
@@ -667,7 +650,7 @@ class Accessibility {
 	keepStickerAnimationUnderReducedMotion = false;
 	messageGroupSpacing = COMFY_MESSAGE_GROUP_SPACING_DEFAULT;
 	compactMessageGroupSpacing = COMPACT_MESSAGE_GROUP_SPACING_DEFAULT;
-	messageGutter = 16;
+	messageGutter = DEFAULT_MESSAGE_GUTTER_PX;
 	fontSize = 16;
 	showUserAvatarsInCompactMode = false;
 	mobileStickerAnimationOverridden = false;
@@ -697,8 +680,6 @@ class Accessibility {
 	showCustomEmojisInExpressionAutocomplete = true;
 	showStickersInExpressionAutocomplete = true;
 	showMemesInExpressionAutocomplete = true;
-	attachmentMediaDimensionSize = MediaDimensionSize.LARGE;
-	embedMediaDimensionSize = MediaDimensionSize.SMALL;
 	voiceChannelJoinRequiresDoubleClick = false;
 	systemReducedMotion = false;
 	customThemeCss: string | null = null;
@@ -717,7 +698,6 @@ class Accessibility {
 	hdrDisplayMode = HdrDisplayMode.FULL;
 	preserveEditDraft = false;
 	stayInteractiveWhenUnfocused = false;
-	firstClickPassThroughWhenUnfocused = false;
 	scrollToBottomOnMessageSend = true;
 	sequentialFileSend = false;
 	showNeko = false;
@@ -812,8 +792,6 @@ class Accessibility {
 				'showCustomEmojisInExpressionAutocomplete',
 				'showStickersInExpressionAutocomplete',
 				'showMemesInExpressionAutocomplete',
-				'attachmentMediaDimensionSize',
-				'embedMediaDimensionSize',
 				'voiceChannelJoinRequiresDoubleClick',
 				'customThemeCssSyncAcrossDevices',
 				'showFavorites',
@@ -828,7 +806,6 @@ class Accessibility {
 				'hdrDisplayMode',
 				'preserveEditDraft',
 				'stayInteractiveWhenUnfocused',
-				'firstClickPassThroughWhenUnfocused',
 				'scrollToBottomOnMessageSend',
 				'sequentialFileSend',
 			],
@@ -873,8 +850,6 @@ class Accessibility {
 				showCustomEmojisInAutocomplete: s.showCustomEmojisInExpressionAutocomplete,
 				showStickersInAutocomplete: s.showStickersInExpressionAutocomplete,
 				showMemesInAutocomplete: s.showMemesInExpressionAutocomplete,
-				attachmentMediaDimensionSize: MEDIA_DIMENSION_TO_PROTO[s.attachmentMediaDimensionSize],
-				embedMediaDimensionSize: MEDIA_DIMENSION_TO_PROTO[s.embedMediaDimensionSize],
 				voiceChannelJoinRequiresDoubleClick: s.voiceChannelJoinRequiresDoubleClick,
 				customThemeCss: s.customThemeCssSyncAcrossDevices ? (s.customThemeCss ?? '') : (s.serverCustomThemeCss ?? ''),
 				showFavorites: s.showFavorites,
@@ -889,7 +864,6 @@ class Accessibility {
 				hdrDisplayMode: HDR_TO_PROTO[s.hdrDisplayMode],
 				preserveEditDraft: s.preserveEditDraft,
 				stayInteractiveWhenUnfocused: s.stayInteractiveWhenUnfocused,
-				firstClickPassThroughWhenUnfocused: s.firstClickPassThroughWhenUnfocused,
 				scrollToBottomOnMessageSend: s.scrollToBottomOnMessageSend,
 				sequentialFileSend: s.sequentialFileSend,
 			}),
@@ -951,8 +925,6 @@ class Accessibility {
 				if (m.showStickersInAutocomplete !== undefined)
 					s.showStickersInExpressionAutocomplete = m.showStickersInAutocomplete;
 				if (m.showMemesInAutocomplete !== undefined) s.showMemesInExpressionAutocomplete = m.showMemesInAutocomplete;
-				s.attachmentMediaDimensionSize = MEDIA_DIMENSION_FROM_PROTO[m.attachmentMediaDimensionSize];
-				s.embedMediaDimensionSize = MEDIA_DIMENSION_FROM_PROTO[m.embedMediaDimensionSize];
 				if (m.voiceChannelJoinRequiresDoubleClick !== undefined)
 					s.voiceChannelJoinRequiresDoubleClick = m.voiceChannelJoinRequiresDoubleClick;
 				if (m.customThemeCss !== undefined) {
@@ -979,8 +951,6 @@ class Accessibility {
 				if (m.preserveEditDraft !== undefined) s.preserveEditDraft = m.preserveEditDraft;
 				if (m.stayInteractiveWhenUnfocused !== undefined)
 					s.stayInteractiveWhenUnfocused = m.stayInteractiveWhenUnfocused;
-				if (m.firstClickPassThroughWhenUnfocused !== undefined)
-					s.firstClickPassThroughWhenUnfocused = m.firstClickPassThroughWhenUnfocused;
 				if (m.scrollToBottomOnMessageSend !== undefined) s.scrollToBottomOnMessageSend = m.scrollToBottomOnMessageSend;
 				if (m.sequentialFileSend !== undefined) s.sequentialFileSend = m.sequentialFileSend;
 			},
@@ -1283,10 +1253,6 @@ class Accessibility {
 			this.showStickersInExpressionAutocomplete = validated.showStickersInExpressionAutocomplete;
 		if (validated.showMemesInExpressionAutocomplete !== undefined)
 			this.showMemesInExpressionAutocomplete = validated.showMemesInExpressionAutocomplete;
-		if (validated.attachmentMediaDimensionSize !== undefined)
-			this.attachmentMediaDimensionSize = validated.attachmentMediaDimensionSize;
-		if (validated.embedMediaDimensionSize !== undefined)
-			this.embedMediaDimensionSize = validated.embedMediaDimensionSize;
 		if (validated.voiceChannelJoinRequiresDoubleClick !== undefined)
 			this.voiceChannelJoinRequiresDoubleClick = validated.voiceChannelJoinRequiresDoubleClick;
 		if (hasCustomThemeCssUpdate) {
@@ -1315,8 +1281,6 @@ class Accessibility {
 		if (validated.preserveEditDraft !== undefined) this.preserveEditDraft = validated.preserveEditDraft;
 		if (validated.stayInteractiveWhenUnfocused !== undefined)
 			this.stayInteractiveWhenUnfocused = validated.stayInteractiveWhenUnfocused;
-		if (validated.firstClickPassThroughWhenUnfocused !== undefined)
-			this.firstClickPassThroughWhenUnfocused = validated.firstClickPassThroughWhenUnfocused;
 		if (validated.scrollToBottomOnMessageSend !== undefined)
 			this.scrollToBottomOnMessageSend = validated.scrollToBottomOnMessageSend;
 		if (validated.sequentialFileSend !== undefined) this.sequentialFileSend = validated.sequentialFileSend;
@@ -1397,8 +1361,6 @@ class Accessibility {
 				data.showStickersInExpressionAutocomplete ?? this.showStickersInExpressionAutocomplete,
 			showMemesInExpressionAutocomplete:
 				data.showMemesInExpressionAutocomplete ?? this.showMemesInExpressionAutocomplete,
-			attachmentMediaDimensionSize: data.attachmentMediaDimensionSize ?? this.attachmentMediaDimensionSize,
-			embedMediaDimensionSize: data.embedMediaDimensionSize ?? this.embedMediaDimensionSize,
 			voiceChannelJoinRequiresDoubleClick:
 				data.voiceChannelJoinRequiresDoubleClick ?? this.voiceChannelJoinRequiresDoubleClick,
 			customThemeCss: data.customThemeCss !== undefined ? data.customThemeCss : this.customThemeCss,
@@ -1417,8 +1379,6 @@ class Accessibility {
 			hdrDisplayMode: data.hdrDisplayMode ?? this.hdrDisplayMode,
 			preserveEditDraft: data.preserveEditDraft ?? this.preserveEditDraft,
 			stayInteractiveWhenUnfocused: data.stayInteractiveWhenUnfocused ?? this.stayInteractiveWhenUnfocused,
-			firstClickPassThroughWhenUnfocused:
-				data.firstClickPassThroughWhenUnfocused ?? this.firstClickPassThroughWhenUnfocused,
 			scrollToBottomOnMessageSend: data.scrollToBottomOnMessageSend ?? this.scrollToBottomOnMessageSend,
 			sequentialFileSend: data.sequentialFileSend ?? this.sequentialFileSend,
 			showNeko: data.showNeko ?? this.showNeko,

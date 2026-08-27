@@ -24,10 +24,6 @@ import {
 	type VideoCodec,
 } from 'livekit-client';
 
-function isVideoCodecValue(value: unknown): value is VideoCodec {
-	return value === 'av1' || value === 'h265' || value === 'h264' || value === 'vp9' || value === 'vp8';
-}
-
 interface MigrationContext {
 	readonly room: Room;
 	readonly participant: LocalParticipant;
@@ -60,15 +56,6 @@ export interface ScreenShareCodecRenegotiationOptions {
  * have a capability picture, and the published codec is not in it. Uncertainty never counts, since
  * the cost of a false positive is interrupting a working share for everyone in the room.
  */
-function isCodecUndecodableByKnownParticipants(
-	currentCodec: VideoCodec | undefined,
-	options: ScreenShareCodecRenegotiationOptions,
-): boolean {
-	const decodable = options.decodableByKnownParticipants;
-	if (currentCodec === undefined) return false;
-	if (decodable === undefined) return false;
-	return !decodable.includes(currentCodec);
-}
 
 interface MigrationState {
 	candidateMediaStreamTrack: MediaStreamTrack | null;
@@ -138,9 +125,6 @@ export class VoiceEngineV2AppScreenShareCodecMigration {
 		if (Platform.OS !== 'web') {
 			logger.warn('Screen share updates are not supported on native');
 			return false;
-		}
-		if (this.adapter.captureCoordinator.activeCaptureId != null) {
-			return this.adapter.captureCoordinator.updateActiveSettings(room, options, publishOptions);
 		}
 		const participant = room?.localParticipant;
 		if (!participant || !participant.isScreenShareEnabled) return false;
@@ -551,49 +535,6 @@ export class VoiceEngineV2AppScreenShareCodecMigration {
 		return nextPublishOptions;
 	}
 
-	private async renegotiateNativeActiveCodec(
-		room: Room | null,
-		codec: VideoCodec,
-		reason: NegotiationReason,
-		options: ScreenShareCodecRenegotiationOptions,
-	): Promise<boolean> {
-		if (!this.adapter.captureCoordinator.activeCaptureId) return false;
-		if (this.adapter.isScreenSharePending) {
-			this.adapter.queuePendingCodecRepublishRequestInternal(codec, reason, options);
-			return false;
-		}
-		const previousOptions = this.adapter.captureCoordinator.activeCapturePublishOptions ?? {};
-		const currentCodec = isVideoCodecValue(previousOptions.videoCodec) ? previousOptions.videoCodec : undefined;
-		// Only the native path escalates on an undecodable codec. The web path publishes a backup
-		// codec (voice_screen_share_manager/shared.ts sets BackupCodecPolicy.SIMULCAST), so an
-		// incompatible viewer there already receives the backup and needs no interruption.
-		const decision = selectScreenShareCodecRepublishDecision({
-			currentCodec,
-			nextCodec: codec,
-			reason,
-			force: options.force,
-			allowLiveRepublish: options.force === true,
-			currentCodecUndecodable: isCodecUndecodableByKnownParticipants(currentCodec, options),
-		});
-		if (decision.action === 'noop') return false;
-		if (decision.action === 'defer') {
-			this.adapter.deferActiveCodecRepublishRequestInternal(codec, reason, options);
-			logger.info('Deferring negotiated native screen share codec change until the next share start', {
-				currentCodec,
-				codec,
-				reason,
-			});
-			return false;
-		}
-		const nextPublishOptions = this.buildCodecRenegotiationPublishOptions(
-			previousOptions,
-			codec,
-			currentCodec,
-			options.force === true,
-		);
-		return this.adapter.captureCoordinator.updateActiveSettings(room, undefined, nextPublishOptions);
-	}
-
 	async renegotiateActiveCodec(
 		room: Room | null,
 		codec: VideoCodec,
@@ -603,9 +544,6 @@ export class VoiceEngineV2AppScreenShareCodecMigration {
 		assert.equal(typeof codec, 'string');
 		assert.ok(reason !== undefined, 'reason required');
 		if (Platform.OS !== 'web') return false;
-		if (this.adapter.captureCoordinator.activeCaptureId != null) {
-			return this.renegotiateNativeActiveCodec(room, codec, reason, options);
-		}
 		const participant = room?.localParticipant;
 		if (!room) return false;
 		if (!participant) return false;

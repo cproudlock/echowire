@@ -104,6 +104,8 @@ function defaultConfig(): MasterConfig {
 				ip_ban_exempt_ips: [],
 				additional_cors_origins: DEFAULT_ADDITIONAL_CORS_ORIGINS,
 				presigned_attachment_uploads_enabled: false,
+				presigned_downloads_enabled: false,
+				presigned_harvest_downloads_enabled: true,
 				unfurl_ignored_hosts: [],
 				embeds: {
 					oembed_html_enabled: false,
@@ -160,6 +162,7 @@ function defaultConfig(): MasterConfig {
 		auth: {
 			sudo_mode_secret: '',
 			connection_initiation_secret: '',
+			sso_allow_private_addresses: false,
 			passkeys: {
 				rp_name: 'echowire',
 				rp_id: 'echowire.org',
@@ -190,6 +193,7 @@ function defaultConfig(): MasterConfig {
 				provider: 'none',
 				from_email: '',
 				from_name: 'echowire',
+				app_base_url: '',
 			},
 			sms: {
 				enabled: false,
@@ -203,6 +207,7 @@ function defaultConfig(): MasterConfig {
 				api_key: '',
 				api_secret: '',
 				url: '',
+				internal_url: '',
 				webhook_url: '',
 			},
 			search: {

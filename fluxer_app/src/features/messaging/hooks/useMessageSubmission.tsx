@@ -8,7 +8,7 @@ import {Message} from '@app/features/messaging/models/MessagingMessage';
 import * as MessageSubmitUtils from '@app/features/messaging/utils/MessageSubmitUtils';
 import {formatUploadingAttachmentSummary} from '@app/features/messaging/utils/UploadingAttachmentLabelUtils';
 import Permission from '@app/features/permissions/state/Permission';
-import {ComponentDispatch} from '@app/features/platform/utils/ComponentBus';
+import {ComponentBus} from '@app/features/platform/utils/ComponentBus';
 import * as SlowmodeCommands from '@app/features/slowmode/commands/SlowmodeCommands';
 import {SlowmodeRateLimitedModal} from '@app/features/slowmode/components/alerts/SlowmodeRateLimitedModal';
 import Slowmode from '@app/features/slowmode/state/Slowmode';
@@ -106,7 +106,6 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 					content,
 					messageReference,
 					replyingMessage?.mentioning,
-					favoriteMemeId,
 				),
 				{
 					formatMultipleFileLabel: (count) => formatUploadingAttachmentSummary(i18n, count),
@@ -132,6 +131,7 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 				referenced_message: referencedMessage?.toJSON(),
 			});
 			SlowmodeCommands.prepareMessageSend(channel.id);
+			const pendingSend = SlowmodeCommands.recordPendingMessageSend(channel.id);
 			void MessageCommands.send(channel.id, {
 				content: message.content,
 				nonce,
@@ -142,16 +142,22 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 				stickers,
 				favoriteMemeId,
 				tts,
-			}).then((sentMessage) => {
-				if (sentMessage) {
-					SlowmodeCommands.recordMessageSend(channel.id);
-					// Echowire: sending into an archived thread reopens it, like Discord.
-					if (channel.isThread() && channel.threadMetadata?.archived) {
-						void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
+			})
+				.then((sentMessage) => {
+					if (sentMessage) {
+						SlowmodeCommands.confirmMessageSend(channel.id, sentMessage.timestamp, pendingSend);
+						// Echowire: sending into an archived thread reopens it, like Discord.
+						if (channel.isThread() && channel.threadMetadata?.archived) {
+							void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
+						}
+						return;
 					}
-				}
-			});
-			ComponentDispatch.dispatch('MESSAGE_SENT', {channelId: channel.id});
+					SlowmodeCommands.discardPendingMessageSend(channel.id, pendingSend);
+				})
+				.catch(() => {
+					SlowmodeCommands.discardPendingMessageSend(channel.id, pendingSend);
+				});
+			ComponentBus.dispatch('MESSAGE_SENT', {channelId: channel.id});
 			return true;
 		},
 		[channel?.id, i18n, referencedMessage, replyingMessage],
@@ -201,6 +207,7 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 			});
 			SlowmodeCommands.prepareMessageSend(channel.id);
 			const allowedMentions: AllowedMentions = {replied_user: replyingMessage?.mentioning ?? true};
+			const pendingSend = SlowmodeCommands.recordPendingMessageSend(channel.id);
 			void MessageCommands.send(channel.id, {
 				content: messageData.content,
 				nonce,
@@ -212,16 +219,22 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 				flags: 0,
 				stickers: messageData.stickers || [],
 				favoriteMemeId: sendOptions.favoriteMemeId,
-			}).then((sentMessage) => {
-				if (sentMessage) {
-					SlowmodeCommands.recordMessageSend(channel.id);
-					// Echowire: sending into an archived thread reopens it, like Discord.
-					if (channel.isThread() && channel.threadMetadata?.archived) {
-						void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
+			})
+				.then((sentMessage) => {
+					if (sentMessage) {
+						SlowmodeCommands.confirmMessageSend(channel.id, sentMessage.timestamp, pendingSend);
+						// Echowire: sending into an archived thread reopens it, like Discord.
+						if (channel.isThread() && channel.threadMetadata?.archived) {
+							void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
+						}
+						return;
 					}
-				}
-			});
-			ComponentDispatch.dispatch('MESSAGE_SENT', {channelId: channel.id});
+					SlowmodeCommands.discardPendingMessageSend(channel.id, pendingSend);
+				})
+				.catch(() => {
+					SlowmodeCommands.discardPendingMessageSend(channel.id, pendingSend);
+				});
+			ComponentBus.dispatch('MESSAGE_SENT', {channelId: channel.id});
 		},
 		[channel?.id, referencedMessage, replyingMessage],
 	);

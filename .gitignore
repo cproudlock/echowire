@@ -12,6 +12,7 @@
 **/*.css.d.ts
 **/*.tsbuildinfo
 **/.cache/
+**/.swc/
 **/__pycache__/
 **/_build/
 **/coverage/
@@ -42,8 +43,6 @@
 /s3_payload/
 /upload_staging/
 
-/deploy/helm/**/Chart.lock
-/deploy/helm/**/charts/
 
 **/.idea/
 **/*.iml

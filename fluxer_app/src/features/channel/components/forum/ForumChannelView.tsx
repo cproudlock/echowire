@@ -54,7 +54,7 @@ const ForumPostCard = observer(
 			: SnowflakeUtils.extractTimestamp(thread.id);
 		const tagsById = new Map(channel.availableTags.map((tag) => [tag.id, tag]));
 		const resolvedTags = thread.appliedTags.map((id) => tagsById.get(id)).filter((t) => t != null);
-		const unread = ReadStates.hasUnreadOrMentions(thread.id);
+		const unread = ReadStates.isUnreadOrMentioned(thread.id);
 		const [preview, setPreview] = useState<string | null>(null);
 		useEffect(() => {
 			let cancelled = false;

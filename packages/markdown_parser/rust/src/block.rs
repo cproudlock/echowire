@@ -33,6 +33,13 @@ struct ExtraContent {
 }
 
 #[derive(Clone, Debug)]
+struct BlockSpoilerResult {
+    node: Node,
+    new_line_index: usize,
+    extra_content: Option<ExtraContent>,
+}
+
+#[derive(Clone, Debug)]
 struct ClosingFence<'a> {
     fence_index: usize,
     backtick_count: usize,
@@ -130,9 +137,13 @@ pub(crate) fn parse_block(state: &mut RuntimeState<'_>) -> Result<BlockParseResu
     if starts_with(trimmed, "||") && !trimmed[2..].contains("||") {
         if ParserFlags::has(state.parser.flags(), ParserFlags::ALLOW_SPOILERS) {
             let result = parse_block_spoiler(state.parser, &state.lines, current)?;
+            if let Some(extra) = &result.extra_content {
+                state.lines[result.new_line_index].text = extra.content.clone();
+                state.lines[result.new_line_index].offset = extra.offset;
+            }
             return Ok(BlockParseResult {
-                node: Some(result.0),
-                new_line_index: result.1,
+                node: Some(result.node),
+                new_line_index: result.new_line_index,
                 new_node_count: state.parser.node_count + 1,
                 extra_nodes: None,
             });
@@ -594,8 +605,9 @@ fn parse_block_spoiler(
     parser: &mut MarkdownParser,
     lines: &[Line],
     current: usize,
-) -> Result<(Node, usize), ParseError> {
+) -> Result<BlockSpoilerResult, ParseError> {
     let mut found_end = false;
+    let mut trailing_content: Option<ExtraContent> = None;
     let mut child_lines = Vec::new();
     let mut content_len = 0usize;
     let mut index = current;
@@ -617,6 +629,13 @@ fn parse_block_spoiler(
                 offset: lines[index].offset,
             });
             found_end = true;
+            let trailing = &line[end + 2..];
+            if !trailing.is_empty() {
+                trailing_content = Some(ExtraContent {
+                    content: trailing.to_owned(),
+                    offset: lines[index].offset + (line.len() - trailing.len()),
+                });
+            }
             index += 1;
             break;
         } else {
@@ -630,31 +649,38 @@ fn parse_block_spoiler(
     }
     if !found_end {
         let content = lines_to_text(&child_lines);
-        return Ok((
-            Node::Text {
+        return Ok(BlockSpoilerResult {
+            node: Node::Text {
                 content: concat("||", trim_right(&content)),
             },
-            index,
-        ));
+            new_line_index: index,
+            extra_content: None,
+        });
     }
     let mut child_parser = parser.child_with_flags(parser.flags());
     let mut window = child_lines;
     if !has_visible_content(&lines_to_text(&window)) {
-        return Ok((
-            Node::Text {
+        return Ok(BlockSpoilerResult {
+            node: Node::Text {
                 content: lines_to_text(&lines[current..index]),
             },
-            index,
-        ));
+            new_line_index: index,
+            extra_content: None,
+        });
     }
     let inner = child_parser.parse_lines(trim_line_window(&mut window))?;
-    Ok((
-        Node::Spoiler {
+    Ok(BlockSpoilerResult {
+        node: Node::Spoiler {
             children: inner,
             is_block: Some(true),
         },
-        index,
-    ))
+        new_line_index: if trailing_content.is_some() {
+            index - 1
+        } else {
+            index
+        },
+        extra_content: trailing_content,
+    })
 }
 
 fn parse_alert_lines(
@@ -1168,6 +1194,29 @@ pub(crate) fn is_block_start(line: &str, flags: u32) -> bool {
         || (ParserFlags::has(flags, ParserFlags::ALLOW_CODE_BLOCKS) && starts_with(line, "```"))
         || (ParserFlags::has(flags, ParserFlags::ALLOW_LISTS) && match_list_item(line).is_some())
         || is_blockquote_start(line, flags)
+}
+
+pub(crate) fn is_table_start(lines: &[Line], index: usize, flags: u32) -> bool {
+    if !ParserFlags::has(flags, ParserFlags::ALLOW_TABLES) || index + 2 >= lines.len() {
+        return false;
+    }
+    let header_line = trim_table_line(&lines[index]);
+    let align_line = trim_table_line(&lines[index + 1]);
+    if !header_line.text.contains('|') || !align_line.text.contains('|') {
+        return false;
+    }
+    let header_cells = split_table_cells(&header_line);
+    if header_cells.is_empty() || !cells_have_content(&header_cells) {
+        return false;
+    }
+    let Some(alignments) = parse_alignments(&split_table_cells(&align_line)) else {
+        return false;
+    };
+    if header_cells.len() != alignments.len() {
+        return false;
+    }
+    let body_line = trim_table_line(&lines[index + 2]);
+    body_line.text.contains('|') && !is_table_block_break(&body_line.text)
 }
 
 pub(crate) fn is_heading_start(line: &str, flags: u32) -> bool {

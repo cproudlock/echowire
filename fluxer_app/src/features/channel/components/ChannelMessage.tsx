@@ -16,8 +16,7 @@ import MessageEdit from '@app/features/messaging/state/MessageEdit';
 import MessageFocus from '@app/features/messaging/state/MessageFocus';
 import MessageReply from '@app/features/messaging/state/MessageReply';
 import {getMessageComponent} from '@app/features/messaging/utils/MessageComponentUtils';
-import {getParserFlagsForContext} from '@app/features/messaging/utils/markdown/MarkdownParserFlags';
-import {parseAndRenderToPlaintext} from '@app/features/messaging/utils/markdown/Plaintext';
+import {renderAstToPlaintext} from '@app/features/messaging/utils/markdown/Plaintext';
 import {NodeType} from '@app/features/messaging/utils/markdown/parser/Enums';
 import {SystemMessageUtils} from '@app/features/messaging/utils/SystemMessageUtils';
 import {subscribeWindowFocus} from '@app/features/platform/utils/WindowFocusBroadcast';
@@ -89,7 +88,6 @@ const shouldApplyGroupedLayout = (message: MessageModel, _prevMessage?: MessageM
 const isDisplaySystemMessage = (message: MessageModel): boolean =>
 	message.type !== MessageTypes.DEFAULT && message.type !== MessageTypes.REPLY;
 const isActivationKey = (key: string) => key === 'Enter' || key === ' ' || key === 'Spacebar' || key === 'Space';
-const MESSAGE_ARIA_PARSER_FLAGS = getParserFlagsForContext(MarkdownContext.STANDARD_WITHOUT_JUMBO);
 const MAX_ARIA_MESSAGE_TEXT_LENGTH = 220;
 const LONG_PRESS_DELAY = 500;
 const MOVEMENT_THRESHOLD = 10;
@@ -258,7 +256,6 @@ export type MessageBehaviorOverrides = Partial<{
 	mobileLayoutEnabled: boolean;
 	messageGroupSpacing: number;
 	messageDisplayCompact: boolean;
-	prefersReducedMotion: boolean;
 	isEditing: boolean;
 	isReplying: boolean;
 	isHighlight: boolean;
@@ -285,7 +282,7 @@ interface MessageProps {
 	behaviorOverrides?: MessageBehaviorOverrides;
 	compact?: boolean;
 	idPrefix?: string;
-	readonlyPreview?: boolean;
+	suppressMessageActions?: boolean;
 	onHeadingActivate?: () => void;
 }
 
@@ -304,7 +301,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 		behaviorOverrides,
 		compact,
 		idPrefix = 'message',
-		readonlyPreview,
+		suppressMessageActions,
 		onHeadingActivate,
 	} = props;
 	const {i18n} = useLingui();
@@ -326,7 +323,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 	const mobileLayoutEnabled = behaviorOverrides?.mobileLayoutEnabled ?? MobileLayout.isEnabled();
 	const messageDisplayCompact =
 		compact ?? behaviorOverrides?.messageDisplayCompact ?? UserSettings.getMessageDisplayCompact();
-	const prefersReducedMotion = behaviorOverrides?.prefersReducedMotion ?? Accessibility.useReducedMotion;
+	const prefersReducedMotion = Accessibility.useReducedMotion;
 	const isEditing = behaviorOverrides?.isEditing ?? MessageEdit.isEditing(message.channelId, message.id);
 	const isReplying = behaviorOverrides?.isReplying ?? MessageReply.isReplying(message.channelId, message.id);
 	const isHighlight = behaviorOverrides?.isHighlight ?? MessageReply.isHighlight(message.id);
@@ -336,12 +333,20 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 		behaviorOverrides?.messageGroupSpacing ?? Accessibility.getMessageGroupSpacingValue(messageDisplayCompact);
 	const authorName =
 		previewOverrides?.displayName || NicknameUtils.getNickname(message.author, channel.guildId, channel.id);
+	const {nodes: astNodes} = useMemo(
+		() =>
+			parse({
+				content: message.content,
+				context: MarkdownContext.STANDARD_WITH_JUMBO,
+			}),
+		[message.content],
+	);
 	const messageAriaLabel = useMemo(() => {
 		const timeLabel = DateUtils.getFormattedDateTime(message.timestamp);
 		const systemText = message.isSystemMessage() ? SystemMessageUtils.stringify(message, i18n) : null;
 		let text =
 			systemText ||
-			parseAndRenderToPlaintext(message.content, MESSAGE_ARIA_PARSER_FLAGS, {
+			renderAstToPlaintext(astNodes, {
 				channelId: channel.id,
 				preserveMarkdown: false,
 				includeEmojiNames: true,
@@ -370,6 +375,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 		}
 		return `${authorName}, ${truncateAriaLabelText(text)}, ${timeLabel}, ${i18n._(MESSAGE_DESCRIPTOR)}`;
 	}, [
+		astNodes,
 		authorName,
 		channel.id,
 		i18n.locale,
@@ -742,7 +748,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 					}
 				: undefined,
 			onPopoutToggle: handleMessagePopoutToggle,
-			readonlyPreview,
+			suppressMessageActions,
 			onHeadingActivate,
 		}),
 		[
@@ -756,7 +762,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 			previewOverrides,
 			previewMode,
 			handleMessagePopoutToggle,
-			readonlyPreview,
+			suppressMessageActions,
 			onHeadingActivate,
 		],
 	);
@@ -765,14 +771,6 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 			{getMessageComponent(message, channel, forceUnknownMessageType)}
 		</MessageViewContextProvider>
 	);
-	const {nodes: astNodes} = useMemo(
-		() =>
-			parse({
-				content: message.content,
-				context: MarkdownContext.STANDARD_WITH_JUMBO,
-			}),
-		[message.content],
-	);
 	const shouldHideContent =
 		UserSettings.getRenderEmbeds() &&
 		message.embeds.length > 0 &&
@@ -780,8 +778,9 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 		astNodes.length === 1 &&
 		astNodes[0].type === NodeType.Link &&
 		!message.suppressEmbeds;
-	const shouldDisableHoverBackground = (prefersReducedMotion && !isEditing) || readonlyPreview;
+	const shouldDisableHoverBackground = prefersReducedMotion && !isEditing;
 	const isKeyboardFocused = keyboardModeEnabled && isFocusedWithin;
+	const isPreview = previewContext != null;
 	const shouldApplySpacing = !shouldGroup && !removeTopSpacing && previewContext !== MessagePreviewContext.LIST_POPOUT;
 	const systemFollowsSystem = Boolean(
 		shouldGroup && prevMessage && isDisplaySystemMessage(prevMessage) && isDisplaySystemMessage(message),
@@ -790,7 +789,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 		() =>
 			clsx(
 				messageDisplayCompact ? styles.messageCompact : styles.message,
-				isHovering && styles.messageHovered,
+				isHovering && !isPreview && styles.messageHovered,
 				shouldDisableHoverBackground && styles.messageNoHover,
 				isEditing && styles.messageEditing,
 				!messageDisplayCompact &&
@@ -812,8 +811,8 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 					!isEditing &&
 					message.isUserMessage() &&
 					styles.messageNoText,
-				isKeyboardFocused && styles.keyboardFocused,
-				isKeyboardFocused && 'keyboard-focus-active',
+				isKeyboardFocused && !isPreview && styles.keyboardFocused,
+				isKeyboardFocused && !isPreview && 'keyboard-focus-active',
 				shouldApplySpacing && previewContext && styles.messagePreviewSpacing,
 			),
 		[
@@ -836,21 +835,26 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 			shouldHideContent,
 			isKeyboardFocused,
 			shouldApplySpacing,
+			isPreview,
 		],
 	);
 	const shouldShowActionBar = useMemo(
 		() =>
 			!previewContext &&
-			!readonlyPreview &&
+			!suppressMessageActions &&
 			message.state !== MessageStates.SENDING &&
 			!isEditing &&
 			!mobileLayoutEnabled,
-		[previewContext, readonlyPreview, message.state, isEditing, mobileLayoutEnabled],
+		[previewContext, suppressMessageActions, message.state, isEditing, mobileLayoutEnabled],
 	);
-	const shouldRenderInlineActionBar = useMemo(
-		() => shouldShowActionBar && (previewMode || isHovering || isKeyboardFocused || contextMenuOpen || isPopoutOpen),
-		[shouldShowActionBar, previewMode, isHovering, isKeyboardFocused, contextMenuOpen, isPopoutOpen],
+	const isActionBarForcedVisible = useMemo(
+		() => Boolean(previewMode || isKeyboardFocused || contextMenuOpen || isPopoutOpen),
+		[previewMode, isKeyboardFocused, contextMenuOpen, isPopoutOpen],
 	);
+	const isActionBarActive = isHovering || isActionBarForcedVisible;
+	const wasActionBarActivatedRef = useRef(false);
+	wasActionBarActivatedRef.current = wasActionBarActivatedRef.current || isActionBarActive;
+	const shouldMountActionBar = shouldShowActionBar && wasActionBarActivatedRef.current;
 	const shouldShowBottomSheet = useMemo(
 		() =>
 			mobileLayoutEnabled && showActionBar && !previewContext && message.state !== MessageStates.SENDING && !isEditing,
@@ -893,6 +897,8 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 					data-flx-edited={message.editedTimestamp != null ? 'true' : undefined}
 					data-flx-compact={messageDisplayCompact ? 'true' : undefined}
 					data-flx-grouped={shouldGroup && shouldApplyGroupedLayout(message, prevMessage) ? 'true' : undefined}
+					data-flx-action-bar={shouldShowActionBar ? 'true' : undefined}
+					data-flx-action-bar-forced={shouldShowActionBar && isActionBarForcedVisible ? 'true' : undefined}
 					tabIndex={keyboardModeEnabled ? -1 : undefined}
 					className={messageClasses}
 					ref={messageRef}
@@ -910,7 +916,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 					data-flx="channel.message.article.alt-click"
 				>
 					{messageComponent}
-					{shouldRenderInlineActionBar &&
+					{shouldMountActionBar &&
 						(previewMode ? (
 							<MessageActionBarCore
 								message={message}
@@ -925,8 +931,8 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 									canForwardMessage: true,
 									shouldRenderSuppressEmbeds: true,
 								}}
-								isSaved={false}
 								developerMode={false}
+								isActive={isActionBarActive}
 								onPopoutToggle={handleMessagePopoutToggle}
 								data-flx="channel.message.message-action-bar-core"
 							/>
@@ -935,6 +941,7 @@ export const Message: React.FC<MessageProps> = observer((props) => {
 								message={message}
 								handleDelete={handleDelete}
 								sourceChannel={channel}
+								isActive={isActionBarActive}
 								onPopoutToggle={handleMessagePopoutToggle}
 								data-flx="channel.message.message-action-bar"
 							/>

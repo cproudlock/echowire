@@ -16,6 +16,7 @@
     invalidate_user_subscriptions_local/1,
     invalidate_user_badge_count/1,
     invalidate_user_badge_count_local/1,
+    invalidate_user_badge_counts_local/1,
     clear_channel_notifications/3
 ]).
 -export([get_cache_stats/0]).
@@ -172,6 +173,15 @@ invalidate_user_badge_count_local(UserId) ->
         push_ets_cache:delete_badge_count(UserId)
     end).
 
+-spec invalidate_user_badge_counts_local(term()) -> ok.
+invalidate_user_badge_counts_local(UserIds) ->
+    case integer_list(UserIds) of
+        {ok, TypedUserIds} ->
+            lists:foreach(fun invalidate_user_badge_count_local/1, TypedUserIds);
+        error ->
+            ok
+    end.
+
 -spec maybe_cast(term(), term()) -> ok.
 maybe_cast(Key, Msg) ->
     case is_push_noop() of
@@ -323,6 +333,7 @@ filter_eligible_users(
     ConnectedUsers
 ) ->
     LargeGuildMetadata = large_guild_metadata(GuildId),
+    push_eligibility:prefetch_user_guild_settings(UserIds, AuthorId, GuildId),
     lists:filter(
         fun(UserId) ->
             push_eligibility:is_eligible_for_push(
@@ -550,6 +561,25 @@ sync_user_blocked_ids_local_updates_local_cache_test() ->
         ?assertEqual([20, 30], push_ets_cache:get_blocked_ids(10))
     end).
 
+invalidate_user_badge_counts_local_deletes_every_cached_entry_test() ->
+    push_ets_cache:init(),
+    push_ets_cache:put_badge_count(10, 5, 1000),
+    push_ets_cache:put_badge_count(11, 7, 1000),
+    with_registered_push(fun() ->
+        ok = invalidate_user_badge_counts_local([10, 11])
+    end),
+    ?assertEqual(undefined, push_ets_cache:get_badge_count(10)),
+    ?assertEqual(undefined, push_ets_cache:get_badge_count(11)).
+
+invalidate_user_badge_counts_local_ignores_untyped_ids_test() ->
+    push_ets_cache:init(),
+    push_ets_cache:put_badge_count(12, 5, 1000),
+    with_registered_push(fun() ->
+        ok = invalidate_user_badge_counts_local([<<"12">>])
+    end),
+    ?assertEqual({5, 1000}, push_ets_cache:get_badge_count(12)),
+    push_ets_cache:delete_badge_count(12).
+
 invalidate_user_subscriptions_local_deletes_local_cache_test() ->
     push_ets_cache:init(),
     push_ets_cache:put_subscriptions(10, [#{<<"endpoint">> => <<"test">>}]),
@@ -586,6 +616,36 @@ filter_eligible_users_fetches_large_metadata_once_test() ->
             fun(UserId) -> push_ets_cache:delete_user_guild_settings(UserId, 42) end,
             [1, 2, 3]
         )
+    end.
+
+filter_eligible_users_batches_missing_settings_lookups_test() ->
+    push_ets_cache:init(),
+    Self = self(),
+    ok = meck:new(rpc_client, [passthrough, no_link]),
+    try
+        ok = meck:expect(rpc_client, call, fun(Request) ->
+            Self ! {rpc_request, Request},
+            {ok, #{<<"user_guild_settings">> => [#{}, #{}, #{}]}}
+        end),
+        ?assertEqual(
+            [1, 2, 3],
+            filter_eligible_users([1, 2, 3], 999, 43, 10, #{}, 0, #{}, #{})
+        ),
+        ?assertEqual(1, drain_settings_request_count(0))
+    after
+        meck:unload(rpc_client),
+        lists:foreach(
+            fun(UserId) -> push_ets_cache:delete_user_guild_settings(UserId, 43) end,
+            [1, 2, 3]
+        )
+    end.
+
+drain_settings_request_count(Count) ->
+    receive
+        {rpc_request, #{<<"type">> := <<"get_user_guild_settings">>}} ->
+            drain_settings_request_count(Count + 1)
+    after 0 ->
+        Count
     end.
 
 drain_metadata_lookup_count(Count) ->

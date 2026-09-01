@@ -19,9 +19,11 @@ import type {UserCacheService} from '../../infrastructure/UserCacheService';
 import type {LimitConfigService} from '../../limits/LimitConfigService';
 import type {RequestCache} from '../../middleware/RequestCacheMiddleware';
 import type {MessageSystemService} from '../../channel/services/message/MessageSystemService';
+import type {IUserRepository} from '../../user/IUserRepository';
 import type {GuildAuditLogService} from '../GuildAuditLogService';
 import type {IGuildRepositoryAggregate} from '../repositories/IGuildRepositoryAggregate';
 import {ChannelOperationsService} from './channel/ChannelOperationsService';
+import {createGuildMfaEnforcer} from './GuildMfaEnforcement';
 
 export class GuildChannelService {
 	private readonly channelOps: ChannelOperationsService;
@@ -36,6 +38,7 @@ export class GuildChannelService {
 		guildAuditLogService: GuildAuditLogService,
 		limitConfigService: LimitConfigService,
 		messageSystemService: MessageSystemService,
+		private readonly userRepository: IUserRepository,
 	) {
 		this.channelOps = new ChannelOperationsService(
 			channelRepository,
@@ -200,5 +203,12 @@ export class GuildChannelService {
 			permission: params.permission,
 		});
 		if (!hasPermission) throw new MissingPermissionsError();
+		const guildData = await this.gatewayService.getGuildData({guildId: params.guildId, userId: params.userId});
+		const enforceGuildMfa = await createGuildMfaEnforcer({
+			userRepository: this.userRepository,
+			guildData,
+			userId: params.userId,
+		});
+		enforceGuildMfa(params.permission);
 	}
 }

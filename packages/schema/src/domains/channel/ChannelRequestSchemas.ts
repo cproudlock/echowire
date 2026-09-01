@@ -25,7 +25,6 @@ import {ContentWarningLevelSchema} from '@fluxer/schema/src/primitives/GuildVali
 import {QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
 import {SnowflakeStringType} from '@fluxer/schema/src/primitives/SchemaPrimitives';
 import {
-	coerceNumberFromString,
 	createNamedLiteral,
 	createNamedLiteralUnion,
 	createStringType,
@@ -305,9 +304,6 @@ export type ReadStateAckRequest = z.infer<typeof ReadStateAckRequest>;
 
 export const ReadStateAckResponse = z.object({
 	read_states: z.array(ReadStateResponse).describe('Authoritative read states after applying the acknowledgement'),
-	read_state_proto: z
-		.string()
-		.describe('Authoritative read states after applying the acknowledgement, encoded as a base64 protobuf bundle'),
 });
 
 export type ReadStateAckResponse = z.infer<typeof ReadStateAckResponse>;
@@ -346,46 +342,6 @@ export const CallRingBodySchema = z.object({
 });
 
 export type CallRingBodySchema = z.infer<typeof CallRingBodySchema>;
-
-export const VoiceDebugLoggingToggleBodySchema = z.object({
-	enabled: z.boolean().describe('Whether voice debug logging should be active for this channel'),
-	duration_ms: coerceNumberFromString(z.number().int().min(60000).max(14400000))
-		.optional()
-		.describe('Optional activation duration in milliseconds. Defaults to one hour and is capped at four hours.'),
-});
-
-export type VoiceDebugLoggingToggleBodySchema = z.infer<typeof VoiceDebugLoggingToggleBodySchema>;
-
-const VoiceDebugLoggingTimestampNs = z
-	.string()
-	.regex(/^[0-9]{1,32}$/)
-	.describe('Nanosecond timestamp encoded as an unsigned decimal string');
-
-export const VoiceDebugLoggingEventSchema = z
-	.object({
-		type: createStringType(1, 128).describe('Client-side diagnostic event type'),
-		timestamp_ns: VoiceDebugLoggingTimestampNs.describe('Client wall-clock Unix timestamp in nanoseconds'),
-		monotonic_ns: VoiceDebugLoggingTimestampNs.optional().describe('Client monotonic timestamp in nanoseconds'),
-		data: z.record(z.string(), z.unknown()).optional().describe('Event-specific diagnostic payload'),
-	})
-	.passthrough();
-
-export type VoiceDebugLoggingEventSchema = z.infer<typeof VoiceDebugLoggingEventSchema>;
-
-export const VoiceDebugLoggingEventsBodySchema = z.object({
-	session_id: createStringType(1, 128).describe('Active voice debug logging session id'),
-	connection_id: createStringType(1, 128).optional().describe('Client voice connection id'),
-	participant_identity: createStringType(1, 256).optional().describe('LiveKit participant identity'),
-	events: z.array(VoiceDebugLoggingEventSchema).min(1).max(200).describe('NDJSON batch events to store'),
-});
-
-export type VoiceDebugLoggingEventsBodySchema = z.infer<typeof VoiceDebugLoggingEventsBodySchema>;
-
-export const VoicePresenceHeartbeatBodySchema = z.object({
-	connection_id: createStringType(1, 128).describe('Client voice connection id'),
-});
-
-export type VoicePresenceHeartbeatBodySchema = z.infer<typeof VoicePresenceHeartbeatBodySchema>;
 
 export const StreamUpdateBodySchema = z.object({
 	region: createStringType(RTC_REGION_ID_MIN_LENGTH, RTC_REGION_ID_MAX_LENGTH)

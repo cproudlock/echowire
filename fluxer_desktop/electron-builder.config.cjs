@@ -365,10 +365,6 @@ function windowsGameCaptureArtifactExcludes(arch) {
 	];
 	const excludedNodeArchs = [...supportedTargetArchs, 'ia32'].filter((candidate) => candidate !== arch);
 	return packageRoots.flatMap((packageRoot) => [
-		`!${packageRoot}/compatibility.json`,
-		`!${packageRoot}/fluxer-game-hook.*`,
-		`!${packageRoot}/fluxer-inject-helper.*`,
-		`!${packageRoot}/fluxer-vulkan-layer.*`,
 		...excludedNodeArchs.map((excludedArch) => `!${packageRoot}/win-game-capture.win32-${excludedArch}-msvc.node`),
 	]);
 }
@@ -966,8 +962,22 @@ function throwLinuxGlibcCompatibilityError(violations, formatPath) {
 	throw new Error(lines.join('\n'));
 }
 
+function linuxDistributableTargetNames(context) {
+	if (!Array.isArray(context.targets)) {
+		throw new Error('Cannot verify Linux glibc compatibility: electron-builder did not provide a target list.');
+	}
+	return context.targets.map((target) => target.name).filter((name) => name !== 'dir');
+}
+
 async function verifyLinuxGlibcCompatibility(context) {
 	if (context.electronPlatformName !== 'linux') return;
+	const distributableTargets = linuxDistributableTargetNames(context);
+	if (distributableTargets.length === 0) {
+		console.log(
+			`Skipped the ${linuxGlibcBaseline.name} ABI baseline check: this pack produces no distributable Linux artifact.`,
+		);
+		return;
+	}
 	const elfFiles = await findPackagedElfFiles(context.appOutDir);
 	if (elfFiles.length === 0) {
 		throw new Error(`Linux package output contains no ELF files: ${context.appOutDir}`);
@@ -1433,8 +1443,7 @@ module.exports = {
 		target: winTargets,
 	},
 	portable: {
-		// biome-ignore lint/suspicious/noTemplateCurlyInString: electron-builder expands these placeholders.
-		artifactName: '${productName}-${version}-portable-${os}-${arch}.${ext}',
+		artifactName: `${artifactProductName}-\${version}-portable-\${os}-\${arch}.\${ext}`,
 	},
 	linux: {
 		icon: `build_resources/${iconDir}/1024x1024.png`,

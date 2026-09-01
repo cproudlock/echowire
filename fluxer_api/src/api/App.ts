@@ -54,6 +54,7 @@ export async function createAPIApp(options: CreateAPIAppOptions): Promise<APIApp
 		],
 		trustClientIpHeader: config.proxy.trust_client_ip_header,
 		clientIpHeaderName: config.proxy.client_ip_header,
+		maxInflightRequests: config.maxInflightRequests,
 	});
 	routes.onError(AbuseAwareAppErrorHandler);
 	routes.notFound(AppNotFoundHandler);

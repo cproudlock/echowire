@@ -65,6 +65,13 @@ function isBoolean(value: unknown): value is boolean {
 	return typeof value === 'boolean';
 }
 
+function resolveValidateResponses(master: MasterConfig): boolean {
+	if (isBoolean(master.dev.validate_responses)) {
+		return master.dev.validate_responses;
+	}
+	return master.env !== 'production' || master.instance.self_hosted;
+}
+
 function resolveTrustClientIpHeader(proxyConfig: object): boolean {
 	const configuredValue = Reflect.get(proxyConfig, 'trust_client_ip_header');
 	if (isBoolean(configuredValue)) {
@@ -83,6 +90,18 @@ function normalizeIpBanExemptIps(values: Array<string>): Array<string> {
 		normalized.add(parsed.normalized);
 	}
 	return Array.from(normalized);
+}
+
+function normalizeCountryCodes(values: Array<string>, configName: string): ReadonlySet<string> {
+	const normalized = new Set<string>();
+	for (const value of values) {
+		const countryCode = value.trim().toUpperCase();
+		if (!/^[A-Z]{2}$/u.test(countryCode)) {
+			throw new Error(`${configName} contains an invalid ISO 3166-1 alpha-2 country code: ${value}`);
+		}
+		normalized.add(countryCode);
+	}
+	return normalized;
 }
 
 function mapPushProviderApps(
@@ -141,8 +160,13 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 	return {
 		nodeEnv: master.env === 'test' ? 'development' : master.env,
 		port: master.services.api.port,
+		maxInflightRequests: master.services.api.max_inflight_requests,
 		ipBanExemptIps: normalizeIpBanExemptIps(master.services.api.ip_ban_exempt_ips),
 		additionalCorsOrigins: master.services.api.additional_cors_origins ?? [],
+		desktopGitHubRedirectCountries: normalizeCountryCodes(
+			master.services.api.desktop_github_redirect_countries,
+			'FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES',
+		),
 		cassandra: {
 			hosts: cassandraSource?.hosts.join(',') ?? '',
 			port: cassandraSource?.port ?? 9042,
@@ -452,6 +476,7 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 			disableRateLimits: master.dev.disable_rate_limits,
 			testModeEnabled: master.dev.test_mode_enabled,
 			testHarnessToken: master.dev.test_harness_token,
+			validateResponses: resolveValidateResponses(master),
 		},
 		presignedAttachmentUploadsEnabled: master.services.api.presigned_attachment_uploads_enabled ?? false,
 		presignedDownloadsEnabled: master.services.api.presigned_downloads_enabled ?? false,

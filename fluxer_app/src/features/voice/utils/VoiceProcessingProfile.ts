@@ -75,7 +75,7 @@ export function resolveVoiceProcessing(settings: VoiceProcessingSettingsLike): R
 			return {
 				mode: 'voice',
 				echoCancellation: true,
-				browserNoiseSuppression: false,
+				browserNoiseSuppression: true,
 				autoGainControl: settings.autoGainControl,
 				deepFilter: true,
 				deepFilterNoiseReductionLevel: FOCUSED_VOICE_DEEP_FILTER_NOISE_REDUCTION_LEVEL,

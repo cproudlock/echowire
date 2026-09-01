@@ -25,7 +25,7 @@ permissions:
 jobs:
   prepare:
     name: resolve build matrix
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
       matrix: ${{ steps.gen.outputs.matrix }}
@@ -63,7 +63,7 @@ jobs:
   build:
     name: build ${{ matrix.image }}
     needs: prepare
-    runs-on: [self-hosted, Linux, X64]
+    runs-on: ubuntu-latest
     timeout-minutes: 75
     strategy:
       fail-fast: false

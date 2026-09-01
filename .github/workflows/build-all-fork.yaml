@@ -17,6 +17,14 @@ on:
         description: "Moving tag to push; self-host compose pulls this via FLUXER_IMAGE_TAG (default v1)"
         required: false
         default: "v1"
+      runner:
+        description: "Where to build. ubuntu-latest is GitHub-hosted and always available; self-hosted is the ci-echowire container - faster and no GitHub minutes, but a dispatch queues silently if that container is down."
+        required: false
+        default: "ubuntu-latest"
+        type: choice
+        options:
+          - ubuntu-latest
+          - self-hosted
 
 permissions:
   contents: read
@@ -25,7 +33,7 @@ permissions:
 jobs:
   prepare:
     name: resolve build matrix
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     timeout-minutes: 5
     outputs:
       matrix: ${{ steps.gen.outputs.matrix }}
@@ -63,7 +71,7 @@ jobs:
   build:
     name: build ${{ matrix.image }}
     needs: prepare
-    runs-on: ubuntu-latest
+    runs-on: ${{ inputs.runner || 'ubuntu-latest' }}
     timeout-minutes: 75
     strategy:
       fail-fast: false

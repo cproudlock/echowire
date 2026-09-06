@@ -148,6 +148,7 @@
 			"!**/*.pb.*",
 			"!**/*_pb.*",
 			"!**/node_modules",
+			"!**/*.min.js",
 			"!packages/schema/src/gen",
 			"!**/tailwind.css",
 			"!**/*.html",

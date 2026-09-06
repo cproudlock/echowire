@@ -14,6 +14,7 @@ import {
 	useSkeletonLayoutReport,
 } from '@app/features/app/hooks/useSkeletonLayoutMemoryCapture';
 import {useTextOverflow} from '@app/features/app/hooks/useTextOverflow';
+import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {ChannelDetailsBottomSheet} from '@app/features/channel/components/bottomsheets/ChannelDetailsBottomSheet';
 import {ChannelSearchBottomSheet} from '@app/features/channel/components/bottomsheets/ChannelSearchBottomSheet';
 import styles from '@app/features/channel/components/ChannelHeader.module.css';
@@ -42,6 +43,9 @@ import {CallButtons} from '@app/features/channel/components/channel_header_compo
 import {ChannelHeaderIcon} from '@app/features/channel/components/channel_header_components/ChannelHeaderIcon';
 import {ChannelNotificationSettingsButton} from '@app/features/channel/components/channel_header_components/ChannelNotificationSettingsButton';
 import {ChannelPinsButton} from '@app/features/channel/components/channel_header_components/ChannelPinsButton';
+import {ChannelThreadsButton} from '@app/features/channel/components/channel_header_components/ChannelThreadsButton';
+import {ThreadManageButton} from '@app/features/channel/components/channel_header_components/ThreadManageButton';
+import {ThreadMembersButton} from '@app/features/channel/components/channel_header_components/ThreadMembersButton';
 import {
 	isUpdaterIconVisible,
 	UpdaterIcon,
@@ -109,6 +113,7 @@ import {VOICE_CALL_DESCRIPTOR} from '@app/features/voice/utils/VoiceMessageDescr
 import {ME} from '@fluxer/constants/src/AppConstants';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {RelationshipTypes} from '@fluxer/constants/src/UserConstants';
+import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {
 	ArchiveIcon,
@@ -124,11 +129,6 @@ import {
 	UsersIcon,
 	VideoCameraIcon,
 } from '@phosphor-icons/react';
-import {ChannelThreadsButton} from '@app/features/channel/components/channel_header_components/ChannelThreadsButton';
-import {ThreadManageButton} from '@app/features/channel/components/channel_header_components/ThreadManageButton';
-import {ThreadMembersButton} from '@app/features/channel/components/channel_header_components/ThreadMembersButton';
-import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
-import {msg} from '@lingui/core/macro';
 import {clsx} from 'clsx';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
@@ -1025,9 +1025,7 @@ export const ChannelHeader = observer(
 								<ChannelHeaderIcon
 									icon={ArchiveIcon}
 									label={i18n._(
-										channel.threadMetadata?.archived
-											? UNARCHIVE_THREAD_DESCRIPTOR
-											: ARCHIVE_THREAD_DESCRIPTOR,
+										channel.threadMetadata?.archived ? UNARCHIVE_THREAD_DESCRIPTOR : ARCHIVE_THREAD_DESCRIPTOR,
 									)}
 									onClick={() =>
 										void ThreadCommands.updateThread(channel.id, {

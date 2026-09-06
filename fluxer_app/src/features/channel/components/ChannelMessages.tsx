@@ -5,6 +5,7 @@ import {useMessageListPlaceholderSpecs} from '@app/features/app/components/skele
 import {ScrollFillerSkeleton} from '@app/features/app/components/skeleton/ScrollFillerSkeleton';
 import {reportSkeletonMessagePresentation} from '@app/features/app/components/skeleton/SkeletonLayoutMemory';
 import {measureSkeletonHeightPx, useSkeletonLayoutReport} from '@app/features/app/hooks/useSkeletonLayoutMemoryCapture';
+import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {
 	type MessageFocusCandidate,
 	resolveBottommostFocusableMessageId,
@@ -12,15 +13,14 @@ import {
 import {renderChannelStream} from '@app/features/channel/components/ChannelMessageStream';
 import styles from '@app/features/channel/components/ChannelMessages.module.css';
 import {ChannelWelcomeSection} from '@app/features/channel/components/ChannelWelcomeSection';
-import {ThreadStarterMessage} from '@app/features/channel/components/ThreadStarterMessage';
 import {CollapsedMessageVisibilityProvider} from '@app/features/channel/components/CollapsedMessageVisibilityContext';
 import {NewMessagesBar} from '@app/features/channel/components/NewMessagesBar';
+import {ThreadStarterMessage} from '@app/features/channel/components/ThreadStarterMessage';
 import {UploadManager} from '@app/features/channel/components/UploadManager';
 import type {Channel} from '@app/features/channel/models/Channel';
 import GatewayConnection from '@app/features/gateway/transport/GatewayConnection';
 import GuildVerification from '@app/features/guild/state/GuildVerification';
 import {TRY_AGAIN_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
-import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import * as MessageCommands from '@app/features/messaging/commands/MessageCommands';
 import {useMessageListKeyboardNavigation} from '@app/features/messaging/hooks/useMessageListKeyboardNavigation';
 import {useMessageSelectionCopyForMessageGetter} from '@app/features/messaging/hooks/useMessageSelectionCopy';

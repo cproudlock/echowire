@@ -35,6 +35,7 @@ import {createChannelID, createMessageID, createRoleID, createUserID} from '../.
 import {mapChannelToResponse} from '../../../channel/ChannelMappers';
 import type {IChannelRepository} from '../../../channel/IChannelRepository';
 import {ThreadMemberRepository} from '../../../channel/repositories/ThreadMemberRepository';
+import type {MessageSystemService} from '../../../channel/services/message/MessageSystemService';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '../../../database/types/ChannelTypes';
 import type {IGatewayService} from '../../../infrastructure/IGatewayService';
 import type {ISnowflakeService} from '../../../infrastructure/ISnowflakeService';
@@ -43,7 +44,6 @@ import {Logger} from '../../../Logger';
 import type {LimitConfigService} from '../../../limits/LimitConfigService';
 import {resolveLimitSafe} from '../../../limits/LimitConfigUtils';
 import {createLimitMatchContext} from '../../../limits/LimitMatchContextBuilder';
-import type {MessageSystemService} from '../../../channel/services/message/MessageSystemService';
 import type {RequestCache} from '../../../middleware/RequestCacheMiddleware';
 import type {Channel} from '../../../models/Channel';
 import {ChannelPermissionOverwrite} from '../../../models/ChannelPermissionOverwrite';
@@ -343,8 +343,7 @@ export class ChannelOperationsService {
 			permission_overwrites: null,
 			nicks: null,
 			thread_archived: false,
-			thread_auto_archive_duration:
-				params.data.auto_archive_duration ?? parent.forumDefaultAutoArchiveDuration ?? 1440,
+			thread_auto_archive_duration: params.data.auto_archive_duration ?? parent.forumDefaultAutoArchiveDuration ?? 1440,
 			thread_archive_timestamp: now,
 			thread_locked: false,
 			thread_invitable: threadType === ChannelTypes.PRIVATE_THREAD,

@@ -5,7 +5,11 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {APP_PROTOCOL} from '@electron/common/Constants';
-import {DESKTOP_APP_NAME, LINUX_DESKTOP_ENTRY_ID, LINUX_LEGACY_DESKTOP_ENTRY_IDS} from '@electron/common/DesktopIdentity';
+import {
+	DESKTOP_APP_NAME,
+	LINUX_DESKTOP_ENTRY_ID,
+	LINUX_LEGACY_DESKTOP_ENTRY_IDS,
+} from '@electron/common/DesktopIdentity';
 import {createChildLogger} from '@electron/common/Logger';
 import {TASK_ARG_PREFIX} from '@electron/main/JumpList';
 import {getStableLinuxLaunchPath} from '@electron/main/LinuxLaunchPath';

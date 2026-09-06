@@ -8,8 +8,8 @@ import type {
 } from '@app/features/channel/components/modals/channel_tabs/channel_overview_tab/shared';
 import * as EmojiUtils from '@app/features/expressions/utils/EmojiUtils';
 import type {ComboboxFilterOption} from '@app/features/ui/components/form/FormCombobox';
-import {latencyColor, useRegionLatencies} from '@app/features/voice/utils/useRegionLatencies';
 import {CompactComboboxRow} from '@app/features/user/components/modals/tabs/components/CompactComboboxRow';
+import {latencyColor, useRegionLatencies} from '@app/features/voice/utils/useRegionLatencies';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {observer} from 'mobx-react-lite';

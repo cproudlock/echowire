@@ -12,6 +12,8 @@ import {
 	requestSpeakMessage,
 	useMessagePermissions,
 } from '@app/features/channel/components/MessageActionUtils';
+import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
+import Channels from '@app/features/channel/state/Channels';
 import {useQuickReactionEmojis} from '@app/features/channel/state/QuickReactionStore';
 import {MessageDebugModal} from '@app/features/devtools/components/debug/MessageDebugModal';
 import type {FlatEmoji} from '@app/features/emoji/types/EmojiTypes';
@@ -64,11 +66,9 @@ import type {MenuGroupType, MenuItemType} from '@app/features/ui/menu_bottom_she
 import UserSettings from '@app/features/user/state/UserSettings';
 import TtsUtils from '@app/features/voice/utils/VoiceTtsUtils';
 import {ChannelTypes, MessageStates, Permissions} from '@fluxer/constants/src/ChannelConstants';
-import {ChatCircleIcon} from '@phosphor-icons/react';
-import Channels from '@app/features/channel/state/Channels';
-import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
+import {ChatCircleIcon} from '@phosphor-icons/react';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 
 const MESSAGE_DEBUG_DESCRIPTOR = msg({

@@ -70,8 +70,7 @@ class Permission {
 		let permissions = PermissionUtils.NONE;
 		if (isChannelLike(context)) {
 			permissions =
-				this.channelPermissions.get(this.resolveChannelPermissionsId(context.id) as ChannelId) ??
-				PermissionUtils.NONE;
+				this.channelPermissions.get(this.resolveChannelPermissionsId(context.id) as ChannelId) ?? PermissionUtils.NONE;
 		} else if (isGuildLike(context)) {
 			permissions = this.guildPermissions.get(context.id as GuildId) ?? PermissionUtils.NONE;
 		} else if (context.channelId) {

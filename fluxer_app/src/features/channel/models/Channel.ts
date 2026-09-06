@@ -99,7 +99,11 @@ export class Channel {
 	readonly messageCount: number | null;
 	// Echowire forum fields. availableTags/defaultReactionEmoji/defaultSortOrder: forum channels.
 	// appliedTags: forum posts (threads).
-	readonly availableTags: ReadonlyArray<{readonly id: string; readonly name: string; readonly emojiName: string | null}>;
+	readonly availableTags: ReadonlyArray<{
+		readonly id: string;
+		readonly name: string;
+		readonly emojiName: string | null;
+	}>;
 	readonly appliedTags: ReadonlyArray<string>;
 	readonly defaultReactionEmoji: {readonly emojiId: string | null; readonly emojiName: string | null} | null;
 	readonly defaultSortOrder: number | null;

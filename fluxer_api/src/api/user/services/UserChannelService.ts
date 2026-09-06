@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {ChannelTypes, MessageTypes} from '@fluxer/constants/src/ChannelConstants';
-import {NULL_THREAD_FIELDS} from '../../database/types/ChannelTypes';
 import type {LimitKey} from '@fluxer/constants/src/LimitConfigMetadata';
 import {MAX_GROUP_DM_RECIPIENTS, MAX_GROUP_DMS_PER_USER} from '@fluxer/constants/src/LimitConstants';
 import {RelationshipTypes} from '@fluxer/constants/src/UserConstants';
@@ -30,6 +29,7 @@ import {
 	createMessageResponseDataService,
 	messageResponseAccessForGuild,
 } from '../../channel/services/message/MessageResponseDataService';
+import {NULL_THREAD_FIELDS} from '../../database/types/ChannelTypes';
 import type {IGatewayService} from '../../infrastructure/IGatewayService';
 import type {ISnowflakeService} from '../../infrastructure/ISnowflakeService';
 import type {UserCacheService} from '../../infrastructure/UserCacheService';

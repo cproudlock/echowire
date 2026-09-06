@@ -628,12 +628,9 @@ export interface ThreadMemberRow {
 	join_timestamp: Date;
 	flags: number;
 }
-const THREAD_MEMBER_COLUMNS = [
-	'thread_id',
-	'user_id',
-	'join_timestamp',
-	'flags',
-] as const satisfies ReadonlyArray<keyof ThreadMemberRow>;
+const THREAD_MEMBER_COLUMNS = ['thread_id', 'user_id', 'join_timestamp', 'flags'] as const satisfies ReadonlyArray<
+	keyof ThreadMemberRow
+>;
 export const ThreadMembers = defineTable<ThreadMemberRow, 'thread_id' | 'user_id', 'thread_id'>({
 	name: 'thread_members',
 	columns: THREAD_MEMBER_COLUMNS,

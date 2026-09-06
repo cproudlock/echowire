@@ -23,8 +23,7 @@ const embeddedReleaseChannel = process.env.PUBLIC_RELEASE_CHANNEL || process.env
 // injected here — otherwise the bundled main process throws "ReferenceError:
 // DESKTOP_BUILD_VARIANT is not defined" on launch (crashes every desktop build). Mirror
 // the exact env expression electron-builder.config.cjs uses so packaging + updater agree.
-const embeddedBuildVariant =
-	process.env.FLUXER_DESKTOP_BUILD_VARIANT || process.env.DESKTOP_VARIANT || 'default';
+const embeddedBuildVariant = process.env.FLUXER_DESKTOP_BUILD_VARIANT || process.env.DESKTOP_VARIANT || 'default';
 const publicBuildDefines = {
 	'process.env.PUBLIC_BUILD_VERSION': JSON.stringify(embeddedBuildVersion),
 	'process.env.BUILD_VERSION': JSON.stringify(embeddedBuildVersion),

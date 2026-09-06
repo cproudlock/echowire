@@ -7,9 +7,9 @@ import {ChannelThreadsPopout} from '@app/features/channel/components/popouts/Cha
 import type {Channel} from '@app/features/channel/models/Channel';
 import Channels from '@app/features/channel/state/Channels';
 import ReadStates from '@app/features/read_state/state/ReadStates';
-import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {usePopout} from '@app/features/ui/hooks/usePopout';
 import {Popout} from '@app/features/ui/popover/PopoverPopout';
+import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {ChatCircleIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 

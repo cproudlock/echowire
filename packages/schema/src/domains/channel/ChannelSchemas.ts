@@ -160,10 +160,7 @@ export const ChannelResponse = z.object({
 			),
 			archive_timestamp: z.iso.datetime().nullish().describe('ISO 8601 timestamp of the last archive state change'),
 			locked: z.boolean().optional().describe('Whether the thread is locked (only moderators can unarchive)'),
-			invitable: z
-				.boolean()
-				.optional()
-				.describe('Whether non-moderators can add others to a private thread'),
+			invitable: z.boolean().optional().describe('Whether non-moderators can add others to a private thread'),
 			create_timestamp: z.iso.datetime().nullish().describe('ISO 8601 timestamp of thread creation'),
 		})
 		.nullish()

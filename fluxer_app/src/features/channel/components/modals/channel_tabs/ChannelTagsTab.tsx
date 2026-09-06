@@ -44,9 +44,7 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 	};
 
 	const save = async () => {
-		const cleaned = tags
-			.map((tag) => ({...tag, name: tag.name.trim()}))
-			.filter((tag) => tag.name.length > 0);
+		const cleaned = tags.map((tag) => ({...tag, name: tag.name.trim()})).filter((tag) => tag.name.length > 0);
 		setSaving(true);
 		try {
 			await ChannelCommands.update(channelId, {

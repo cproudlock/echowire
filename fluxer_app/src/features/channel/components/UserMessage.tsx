@@ -7,9 +7,9 @@ import {CompactAuthorPrefix, CompactMessageLayout} from '@app/features/channel/c
 import {EditingMessageInput} from '@app/features/channel/components/EditingMessageInput';
 import {isMediaOnlyEmbed} from '@app/features/channel/components/embeds/EmbedRenderUtils';
 import {MessageAttachments} from '@app/features/channel/components/MessageAttachments';
-import {MessageThreadLink} from '@app/features/channel/components/MessageThreadLink';
 import {MessageAuthorInfo} from '@app/features/channel/components/MessageAuthorInfo';
 import {MessageAvatar} from '@app/features/channel/components/MessageAvatar';
+import {MessageThreadLink} from '@app/features/channel/components/MessageThreadLink';
 import {MessageTimeoutIndicator} from '@app/features/channel/components/MessageTimeoutIndicator';
 import {MessageUsername} from '@app/features/channel/components/MessageUsername';
 import {useMessageViewContext} from '@app/features/channel/components/MessageViewContext';

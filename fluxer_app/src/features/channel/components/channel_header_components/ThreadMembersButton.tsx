@@ -61,10 +61,9 @@ export const ThreadMembersButton = observer(({channel}: {channel: Channel}) => {
 						<button
 							type="button"
 							onClick={() =>
-								void (isMember
-									? ThreadCommands.leaveThread(channel.id)
-									: ThreadCommands.joinThread(channel.id)
-								).catch(() => {})
+								void (isMember ? ThreadCommands.leaveThread(channel.id) : ThreadCommands.joinThread(channel.id)).catch(
+									() => {},
+								)
 							}
 							style={{
 								padding: '4px 10px',
@@ -89,10 +88,7 @@ export const ThreadMembersButton = observer(({channel}: {channel: Channel}) => {
 							members.map((member) => {
 								const user = Users.getUser(member.userId);
 								return (
-									<div
-										key={member.userId}
-										style={{display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px'}}
-									>
+									<div key={member.userId} style={{display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px'}}>
 										{user ? <Avatar user={user} size={24} /> : <span style={{width: 24, height: 24}} />}
 										<span
 											style={{

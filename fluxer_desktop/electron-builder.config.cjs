@@ -1518,13 +1518,7 @@ module.exports = {
 		},
 		// Echowire: keep the rpm build-id link args + supersede the old `fluxer` package.
 		// fpm has no --obsoletes flag; for RPM it maps --replaces to the Obsoletes tag.
-		fpm: [
-			...rpmBuildIdLinkFpmArgs,
-			'--replaces',
-			legacyLinuxPackageName,
-			'--provides',
-			legacyLinuxPackageName,
-		],
+		fpm: [...rpmBuildIdLinkFpmArgs, '--replaces', legacyLinuxPackageName, '--provides', legacyLinuxPackageName],
 		depends: [
 			'gtk3',
 			'libnotify',

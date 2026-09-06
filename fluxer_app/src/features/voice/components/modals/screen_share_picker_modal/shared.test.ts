@@ -31,9 +31,7 @@ describe('findNativeCaptureSourceForDesktopSource', () => {
 
 	it('does not mistake a large id token for an index into the native source list', () => {
 		const single = [X11_NATIVE_SOURCES[0]] as never[];
-		const match = findNativeCaptureSourceForDesktopSource(X11_DESKTOP_SOURCES[0], single) as
-			| {id: string}
-			| undefined;
+		const match = findNativeCaptureSourceForDesktopSource(X11_DESKTOP_SOURCES[0], single) as {id: string} | undefined;
 		expect(match?.id).toBe('84');
 	});
 });

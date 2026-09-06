@@ -17,8 +17,8 @@ import {modal} from '@app/features/ui/commands/ModalCommands';
 import {usePopout} from '@app/features/ui/hooks/usePopout';
 import {Popout} from '@app/features/ui/popover/PopoverPopout';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
-import {Trans, useLingui} from '@lingui/react/macro';
 import {msg} from '@lingui/core/macro';
+import {Trans, useLingui} from '@lingui/react/macro';
 import {DotsThreeIcon, LockIcon, LockOpenIcon, PushPinIcon, TagIcon, TrashIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
@@ -128,11 +128,7 @@ export const ThreadManageButton = observer(({channel}: {channel: Channel}) => {
 	);
 });
 
-function MenuRow({
-	children,
-	onClick,
-	danger,
-}: {children: React.ReactNode; onClick: () => void; danger?: boolean}) {
+function MenuRow({children, onClick, danger}: {children: React.ReactNode; onClick: () => void; danger?: boolean}) {
 	return (
 		<button
 			type="button"

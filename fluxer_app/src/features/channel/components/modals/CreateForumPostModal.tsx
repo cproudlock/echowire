@@ -140,7 +140,11 @@ export const CreateForumPostModal = observer(({channel}: {channel: Channel}) => 
 				/>
 			</Modal.Content>
 			<Modal.Footer data-flx="channel.create-forum-post-modal.modal-footer">
-				<Button onClick={ModalCommands.pop} variant="secondary" data-flx="channel.create-forum-post-modal.button.cancel">
+				<Button
+					onClick={ModalCommands.pop}
+					variant="secondary"
+					data-flx="channel.create-forum-post-modal.button.cancel"
+				>
 					{i18n._(CANCEL_DESCRIPTOR)}
 				</Button>
 				<Button

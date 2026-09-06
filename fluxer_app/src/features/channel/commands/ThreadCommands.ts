@@ -9,7 +9,7 @@ import Channels from '@app/features/channel/state/Channels';
 import ThreadMembers from '@app/features/channel/state/ThreadMembers';
 import {http} from '@app/features/platform/transport/RestTransport';
 import {Logger} from '@app/features/platform/utils/AppLogger';
-import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
+import type {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import type {Channel} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 
 const logger = new Logger('Threads');

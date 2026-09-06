@@ -48,7 +48,8 @@ export function ChannelController(app: HonoApp) {
 		OpenAPI({
 			operationId: 'create_thread',
 			summary: 'Create a thread',
-			description: 'Creates a thread under a text or forum channel. Requires permission to send messages in the parent.',
+			description:
+				'Creates a thread under a text or forum channel. Requires permission to send messages in the parent.',
 			responseSchema: ChannelResponse,
 			statusCode: 201,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
@@ -213,9 +214,7 @@ export function ChannelController(app: HonoApp) {
 			operationId: 'list_thread_members',
 			summary: 'List thread members',
 			description: 'Lists the members of a thread.',
-			responseSchema: z.array(
-				z.object({user_id: z.string(), join_timestamp: z.string(), flags: z.number()}),
-			),
+			responseSchema: z.array(z.object({user_id: z.string(), join_timestamp: z.string(), flags: z.number()})),
 			statusCode: 200,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
 			tags: 'Channels',

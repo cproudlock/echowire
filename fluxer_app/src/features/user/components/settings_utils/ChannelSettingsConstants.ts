@@ -2,8 +2,8 @@
 
 import ChannelInvitesTab from '@app/features/channel/components/modals/channel_tabs/ChannelInvitesTab';
 import ChannelOverviewTab from '@app/features/channel/components/modals/channel_tabs/ChannelOverviewTab';
-import ChannelTagsTab from '@app/features/channel/components/modals/channel_tabs/ChannelTagsTab';
 import ChannelPermissionsTab from '@app/features/channel/components/modals/channel_tabs/ChannelPermissionsTab';
+import ChannelTagsTab from '@app/features/channel/components/modals/channel_tabs/ChannelTagsTab';
 import ChannelWebhooksTab from '@app/features/channel/components/modals/channel_tabs/ChannelWebhooksTab';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import type {I18n, MessageDescriptor} from '@lingui/core';

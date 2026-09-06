@@ -68,10 +68,7 @@ export const ThreadCreateModal = observer(
 		return (
 			<Modal.Root size="small" centered data-flx="channel.thread-create-modal.modal-root">
 				<Form form={form} onSubmit={handleSubmit} data-flx="channel.thread-create-modal.form.submit">
-					<Modal.Header
-						title={i18n._(CREATE_THREAD_DESCRIPTOR)}
-						data-flx="channel.thread-create-modal.modal-header"
-					/>
+					<Modal.Header title={i18n._(CREATE_THREAD_DESCRIPTOR)} data-flx="channel.thread-create-modal.modal-header" />
 					<Modal.Content data-flx="channel.thread-create-modal.modal-content">
 						{starterMessageContent != null && starterMessageContent.length > 0 && (
 							<div
@@ -137,11 +134,7 @@ export const ThreadCreateModal = observer(
 						</div>
 					</Modal.Content>
 					<Modal.Footer data-flx="channel.thread-create-modal.modal-footer">
-						<Button
-							onClick={ModalCommands.pop}
-							variant="secondary"
-							data-flx="channel.thread-create-modal.button.pop"
-						>
+						<Button onClick={ModalCommands.pop} variant="secondary" data-flx="channel.thread-create-modal.button.pop">
 							{i18n._(CANCEL_DESCRIPTOR)}
 						</Button>
 						<Button

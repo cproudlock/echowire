@@ -232,8 +232,7 @@ export function findNativeCaptureSourceForDesktopSource(
 		// either, because it requires a unique match and identical monitors are common.
 		const tokenOrdinal = parseScreenOrdinal(parsed.token);
 		const namedOrdinal = parseNamedScreenOrdinal(desktopSource.name);
-		const ordinal =
-			tokenOrdinal != null && tokenOrdinal < nativeScreenSources.length ? tokenOrdinal : namedOrdinal;
+		const ordinal = tokenOrdinal != null && tokenOrdinal < nativeScreenSources.length ? tokenOrdinal : namedOrdinal;
 		const ordinalMatch = ordinal == null ? undefined : nativeScreenSources[ordinal];
 		if (ordinalMatch && dimensionsMatch(desktopSource, ordinalMatch)) {
 			return ordinalMatch;

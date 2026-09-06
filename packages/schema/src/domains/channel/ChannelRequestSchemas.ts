@@ -23,12 +23,12 @@ import {ChannelOverwriteTypeSchema, GeneralChannelNameType} from '@fluxer/schema
 import {base64LengthForBytes, createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
 import {ContentWarningLevelSchema} from '@fluxer/schema/src/primitives/GuildValidators';
 import {QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
-import {SnowflakeStringType} from '@fluxer/schema/src/primitives/SchemaPrimitives';
 import {
 	createNamedLiteral,
 	createNamedLiteralUnion,
 	createStringType,
 	Int32Type,
+	SnowflakeStringType,
 	SnowflakeType,
 	UnsignedInt64Type,
 } from '@fluxer/schema/src/primitives/SchemaPrimitives';

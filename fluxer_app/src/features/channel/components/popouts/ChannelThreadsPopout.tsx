@@ -4,13 +4,13 @@
 // channel header listing active / archived threads with a pill toggle.
 
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
+import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
 import type {Channel} from '@app/features/channel/models/Channel';
 import Channels from '@app/features/channel/state/Channels';
-import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
+import ReadStates from '@app/features/read_state/state/ReadStates';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
-import ReadStates from '@app/features/read_state/state/ReadStates';
 import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {ArchiveIcon, ChatCircleIcon, LockIcon, PlusIcon, PushPinIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';

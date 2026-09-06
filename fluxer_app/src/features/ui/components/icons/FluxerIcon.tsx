@@ -34,7 +34,11 @@ export const FluxerIcon = observer((props: React.SVGProps<SVGSVGElement>) => {
 			{...props}
 		>
 			<rect fill="var(--brand-primary)" height={512} rx={256} width={512} data-flx="ui.icons.fluxer-icon.rect" />
-			<g transform="translate(256,256) scale(1.6)" fill="var(--brand-primary-fill)" data-flx="ui.icons.fluxer-icon.mark">
+			<g
+				transform="translate(256,256) scale(1.6)"
+				fill="var(--brand-primary-fill)"
+				data-flx="ui.icons.fluxer-icon.mark"
+			>
 				<rect x="-24" y="-16" width="10" height="32" rx="5" opacity="0.2" />
 				<rect x="-8" y="-36" width="10" height="72" rx="5" opacity="0.2" />
 				<rect x="8" y="-50" width="10" height="100" rx="5" opacity="0.2" />

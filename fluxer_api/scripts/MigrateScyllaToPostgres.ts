@@ -44,16 +44,13 @@
  *   --verbose            per-row / progress logging
  */
 
-import {
-	BatchBuilder,
-	setDatabaseQueryExecutor,
-} from '@app/api/database/CassandraQueryExecution';
-import {ensurePostgresKvSchema, PostgresKvQueryExecutor} from '@app/api/database/PostgresKvQueryExecutor';
+import {parseArgs} from 'node:util';
+import {BatchBuilder, setDatabaseQueryExecutor} from '@app/api/database/CassandraQueryExecution';
 import type {PreparedQuery} from '@app/api/database/CassandraTypes';
+import {ensurePostgresKvSchema, PostgresKvQueryExecutor} from '@app/api/database/PostgresKvQueryExecutor';
 import * as Tables from '@app/api/Tables';
 import {getDefaultPostgresClient, initPostgres, shutdownPostgres} from '@pkgs/postgres/src/Client';
 import cassandra from 'cassandra-driver';
-import {parseArgs} from 'node:util';
 
 // ---------------------------------------------------------------------------
 // Table lists
@@ -475,7 +472,9 @@ async function main(): Promise<void> {
 	console.log(
 		`Source Scylla: ${scyllaConfig.contactPoints.join(',')}:${scyllaConfig.port} keyspace=${scyllaConfig.keyspace} dc=${scyllaConfig.localDc}`,
 	);
-	console.log(`Target Postgres: ${postgresConfig.url ? postgresConfig.url : `${postgresConfig.host}:${postgresConfig.port ?? 5432}`}`);
+	console.log(
+		`Target Postgres: ${postgresConfig.url ? postgresConfig.url : `${postgresConfig.host}:${postgresConfig.port ?? 5432}`}`,
+	);
 	console.log(options.dryRun ? 'Mode: DRY RUN (no writes)\n' : 'Mode: WRITE\n');
 
 	const authProvider = scyllaConfig.username
@@ -576,7 +575,7 @@ async function main(): Promise<void> {
 }
 
 main().catch((error: unknown) => {
-	const message = error instanceof Error ? error.stack ?? error.message : String(error);
+	const message = error instanceof Error ? (error.stack ?? error.message) : String(error);
 	console.error(`Migration failed: ${message}`);
 	process.exitCode = 1;
 });

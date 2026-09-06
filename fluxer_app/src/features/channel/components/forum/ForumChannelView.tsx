@@ -6,11 +6,11 @@
 
 import {Endpoints} from '@app/features/app/constants/Endpoints';
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
-import type {Channel} from '@app/features/channel/models/Channel';
-import {http} from '@app/features/platform/transport/RestTransport';
 import {CreateForumPostModal} from '@app/features/channel/components/modals/CreateForumPostModal';
+import type {Channel} from '@app/features/channel/models/Channel';
 import Channels from '@app/features/channel/state/Channels';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
+import {http} from '@app/features/platform/transport/RestTransport';
 import ReadStates from '@app/features/read_state/state/ReadStates';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
@@ -121,15 +121,22 @@ const ForumPostCard = observer(
 						))}
 					</div>
 				)}
-				<div style={{display: 'flex', alignItems: 'center', gap: 6, fontSize: 16, fontWeight: 600, color: 'var(--text-normal)'}}>
+				<div
+					style={{
+						display: 'flex',
+						alignItems: 'center',
+						gap: 6,
+						fontSize: 16,
+						fontWeight: 600,
+						color: 'var(--text-normal)',
+					}}
+				>
 					{thread.pinned && <PushPinIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />}
 					{thread.threadMetadata?.locked && (
 						<LockIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />
 					)}
 					{unread && (
-						<span
-							style={{width: 8, height: 8, borderRadius: '50%', background: 'var(--text-normal)', flexShrink: 0}}
-						/>
+						<span style={{width: 8, height: 8, borderRadius: '50%', background: 'var(--text-normal)', flexShrink: 0}} />
 					)}
 					{thread.name ?? 'post'}
 				</div>
@@ -182,9 +189,7 @@ export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
 	}, [showArchived, channel.id]);
 
 	const threads = guildId
-		? Channels.getGuildChannels(guildId).filter(
-				(c) => c.parentId === channel.id && THREAD_CHANNEL_TYPES.has(c.type),
-			)
+		? Channels.getGuildChannels(guildId).filter((c) => c.parentId === channel.id && THREAD_CHANNEL_TYPES.has(c.type))
 		: [];
 
 	const filtered = useMemo(() => {
@@ -306,9 +311,7 @@ export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
 							{showArchived ? 'No archived posts' : 'No posts yet'}
 						</div>
 						<div style={{fontSize: 13}}>
-							{showArchived
-								? 'Inactive posts will appear here.'
-								: 'Be the first to start a discussion in this forum.'}
+							{showArchived ? 'Inactive posts will appear here.' : 'Be the first to start a discussion in this forum.'}
 						</div>
 					</div>
 				) : (

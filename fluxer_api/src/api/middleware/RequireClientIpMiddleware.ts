@@ -19,6 +19,11 @@ const defaultExemptPaths: Array<string> = [
 	'/test',
 	'/connections/bluesky/client-metadata.json',
 	'/connections/bluesky/jwks.json',
+	// Echowire: the app-proxy discovery cache fetches /.well-known/fluxer internally (via
+	// caddy:8088) carrying only x-forwarded-for, not the configured client-IP
+	// header, so it would 403. Discovery is a public instance-info document, safe
+	// to exempt. (Replaces the fork's old requiredHeaders x-forwarded-for fallback.)
+	'/.well-known/fluxer',
 ];
 
 export function RequireClientIpMiddleware({exemptPaths = defaultExemptPaths}: RequireClientIpOptions = {}) {

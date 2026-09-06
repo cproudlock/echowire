@@ -12,6 +12,9 @@ pub struct I32Flag {
 
 pub mod user_flag_bits {
     pub const STAFF: u64 = 1 << 0;
+    // Echowire: keep the Community Team flag (upstream #2465 removed it; the fork
+    // still renders the CTP badge and maintains its l10n).
+    pub const CTP_MEMBER: u64 = 1 << 1;
     pub const PARTNER: u64 = 1 << 2;
     pub const BUG_HUNTER: u64 = 1 << 3;
     pub const FRIENDLY_BOT: u64 = 1 << 4;
@@ -38,6 +41,10 @@ pub const USER_FLAGS: &[U64Flag] = &[
     U64Flag {
         name: "STAFF",
         value: user_flag_bits::STAFF,
+    },
+    U64Flag {
+        name: "CTP_MEMBER",
+        value: user_flag_bits::CTP_MEMBER,
     },
     U64Flag {
         name: "PARTNER",

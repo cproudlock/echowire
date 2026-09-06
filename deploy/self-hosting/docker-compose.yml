@@ -19,7 +19,7 @@ x-fluxer-env: &fluxer-env
   FLUXER_PUBLIC_SCHEME: ${FLUXER_PUBLIC_SCHEME:-https}
   FLUXER_PUBLIC_PORT: ${FLUXER_PUBLIC_PORT:-443}
   FLUXER_TRUST_CLIENT_IP_HEADER: "true"
-  FLUXER_CLIENT_IP_HEADER_NAME: x-forwarded-for
+  FLUXER_CLIENT_IP_HEADER_NAME: cf-connecting-ip  # Echowire: prod is behind Cloudflare; edge trusted_proxies default (private_ranges) does not cover CF, so read cf-connecting-ip not XFF
   FLUXER_API_HEADERS_TIMEOUT_MS: ${FLUXER_API_HEADERS_TIMEOUT_MS:-30000}
   FLUXER_API_REQUEST_TIMEOUT_MS: ${FLUXER_API_REQUEST_TIMEOUT_MS:-120000}
 
@@ -508,6 +508,24 @@ services:
     depends_on:
       api: {condition: service_healthy}
       edge: {condition: service_healthy}
+
+  marketing:
+    # Echowire: vendored rebranded marketing site. Upstream #2486 dropped this
+    # service from the compose, but the fork still builds fluxer-marketing and serves
+    # /help, /blog, /terms, /reverb, etc. through it (routed by the edge Caddyfile).
+    <<: *fluxer-service
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-marketing:${FLUXER_IMAGE_TAG:-v1}
+    deploy:
+      resources:
+        limits:
+          memory: ${FLUXER_MARKETING_MEMORY_LIMIT:-256mb}
+    environment:
+      <<: *fluxer-env
+      FLUXER_MARKETING_HOST: 0.0.0.0
+      FLUXER_MARKETING_PORT: "3010"
+      FLUXER_API_ENDPOINT: ${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}/api
+      FLUXER_APP_ENDPOINT: ${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}
+      FLUXER_STATIC_CDN_ENDPOINT: ${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}
 
   snowflakes:
     <<: *fluxer-service

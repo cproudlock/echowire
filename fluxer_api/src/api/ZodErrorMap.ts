@@ -54,20 +54,13 @@ function fluxerZodErrorMap(issue: FluxerZodErrorMapIssue): FluxerZodErrorMapResu
 			break;
 		}
 		case 'too_small': {
-			const origin = 'origin' in issue ? String(issue.origin) : undefined;
-			if (origin === 'date') {
-				errorCode = ValidationErrorCodes.INVALID_DATE_OF_BIRTH_FORMAT;
-			} else {
-				errorCode = ValidationErrorCodes.INVALID_FORMAT;
-			}
+			errorCode = ValidationErrorCodes.INVALID_FORMAT;
 			break;
 		}
 		case 'too_big': {
 			const origin = 'origin' in issue ? String(issue.origin) : undefined;
 			if (origin === 'string') {
 				errorCode = ValidationErrorCodes.CONTENT_EXCEEDS_MAX_LENGTH;
-			} else if (origin === 'date') {
-				errorCode = ValidationErrorCodes.SCHEDULED_TIME_MUST_BE_FUTURE;
 			} else {
 				errorCode = ValidationErrorCodes.INVALID_FORMAT;
 			}

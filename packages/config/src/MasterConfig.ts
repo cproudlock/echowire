@@ -61,6 +61,7 @@ export interface MasterConfig {
 			ssl_ca: string;
 			max_connections: number;
 			kv_table: string;
+			prepared_statements: boolean;
 		};
 	};
 	s3?: {
@@ -76,7 +77,6 @@ export interface MasterConfig {
 			downloads: string;
 			reports: string;
 			harvests: string;
-			static: string;
 		};
 	};
 	s3_downloads?: {
@@ -90,6 +90,8 @@ export interface MasterConfig {
 	services: {
 		api: {
 			port: number;
+			headers_timeout_ms: number;
+			request_timeout_ms: number;
 			max_inflight_requests: number;
 			ip_ban_exempt_ips: Array<string>;
 			additional_cors_origins: Array<string>;
@@ -144,6 +146,7 @@ export interface MasterConfig {
 			mode: string;
 			upload_relay: {
 				endpoint: string;
+				secret_base64: string;
 				max_body_bytes: number;
 				token_ttl_secs: number;
 				keep_direct_countries: Array<string>;
@@ -154,7 +157,6 @@ export interface MasterConfig {
 			rpc_auth_token?: string;
 			media_proxy_endpoint?: string;
 			api_rpc_endpoint?: string;
-			push_enabled: boolean;
 		};
 		admin: {
 			port: number;
@@ -200,10 +202,6 @@ export interface MasterConfig {
 				private_key_path?: string;
 			}>;
 		};
-	};
-	cookie: {
-		domain: string;
-		secure: boolean;
 	};
 	integrations: {
 		email: {

@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {createECDH} from 'node:crypto';
 import {buildNamedFluxerEnvOverrides} from '@fluxer/config/src/config_loader/EnvironmentOverrides';
-import {deriveEndpointsFromDomain} from '@fluxer/config/src/EndpointDerivation';
+import {
+	type DerivedEndpoints,
+	deriveEndpointsFromDomain,
+	normalizePublicEndpoint,
+} from '@fluxer/config/src/EndpointDerivation';
 import type {MasterConfig} from '@fluxer/config/src/MasterConfig';
 
 type ConfigObject = Record<string, unknown>;
@@ -47,6 +52,7 @@ function defaultConfig(): MasterConfig {
 			media: '',
 			static_cdn: '',
 			admin: '',
+			docs: '',
 			marketing: '',
 			invite: '',
 			gift: '',
@@ -81,6 +87,7 @@ function defaultConfig(): MasterConfig {
 				ssl_ca: '',
 				max_connections: 20,
 				kv_table: 'fluxer_kv',
+				prepared_statements: true,
 			},
 		},
 		s3: {
@@ -95,12 +102,13 @@ function defaultConfig(): MasterConfig {
 				downloads: 'fluxer-downloads',
 				reports: 'fluxer-reports',
 				harvests: 'fluxer-harvests',
-				static: 'fluxer-static',
 			},
 		},
 		services: {
 			api: {
 				port: 8080,
+				headers_timeout_ms: 30_000,
+				request_timeout_ms: 120_000,
 				max_inflight_requests: 512,
 				ip_ban_exempt_ips: [],
 				additional_cors_origins: DEFAULT_ADDITIONAL_CORS_ORIGINS,
@@ -134,14 +142,14 @@ function defaultConfig(): MasterConfig {
 				mode: 'upload',
 				upload_relay: {
 					endpoint: 'http://localhost:8088/media',
-					max_body_bytes: 268_435_456,
+					secret_base64: '',
+					max_body_bytes: 524_288_000,
 					token_ttl_secs: 900,
 					keep_direct_countries: [],
 				},
 			},
 			gateway: {
 				port: 8771,
-				push_enabled: false,
 				rpc_auth_token: '',
 			},
 			admin: {
@@ -184,10 +192,6 @@ function defaultConfig(): MasterConfig {
 				policy_uri: 'https://echowire.org/privacy',
 				keys: [],
 			},
-		},
-		cookie: {
-			domain: '',
-			secure: false,
 		},
 		integrations: {
 			email: {
@@ -343,6 +347,22 @@ function requireString(value: string | undefined, envName: string): void {
 	}
 }
 
+function validateUploadRelaySecret(value: string, mode: string): void {
+	const trimmed = value.trim();
+	if (trimmed.length === 0) {
+		if (mode === 'upload') {
+			throw new Error('FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64 is required in upload mode');
+		}
+		return;
+	}
+	if (!/^[A-Za-z0-9+/]+={0,2}$/u.test(trimmed)) {
+		throw new Error('FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64 must be base64');
+	}
+	if (Buffer.from(trimmed, 'base64').length < 32) {
+		throw new Error('FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64 must decode to at least 32 bytes');
+	}
+}
+
 function assertBoolean(value: unknown, envName: string): asserts value is boolean {
 	if (typeof value !== 'boolean') {
 		throw new Error(`${envName} must be true or false`);
@@ -361,12 +381,37 @@ function assertIdentifier(value: string, envName: string): void {
 	}
 }
 
+function validateVapidConfig(config: MasterConfig): void {
+	requireString(config.auth.vapid.public_key, 'FLUXER_VAPID_PUBLIC_KEY');
+	requireString(config.auth.vapid.private_key, 'FLUXER_VAPID_PRIVATE_KEY');
+	const pub = Buffer.from(config.auth.vapid.public_key, 'base64url');
+	const priv = Buffer.from(config.auth.vapid.private_key, 'base64url');
+	if (pub.length !== 65 || pub[0] !== 0x04) {
+		throw new Error('FLUXER_VAPID_PUBLIC_KEY must be the base64url 65-byte uncompressed P-256 point');
+	}
+	if (priv.length !== 32) {
+		throw new Error('FLUXER_VAPID_PRIVATE_KEY must be the base64url 32-byte P-256 scalar');
+	}
+	let derived: Buffer;
+	try {
+		const curve = createECDH('prime256v1');
+		curve.setPrivateKey(priv);
+		derived = curve.getPublicKey();
+	} catch {
+		throw new Error('FLUXER_VAPID_PRIVATE_KEY does not match FLUXER_VAPID_PUBLIC_KEY');
+	}
+	if (!derived.equals(pub)) {
+		throw new Error('FLUXER_VAPID_PRIVATE_KEY does not match FLUXER_VAPID_PUBLIC_KEY');
+	}
+}
+
 function validatePostgresConfig(config: MasterConfig): void {
 	const postgres = config.database.postgres;
 	assertIntegerInRange(postgres.port, 'FLUXER_POSTGRES_PORT', 1, 65535);
 	assertIntegerInRange(postgres.max_connections, 'FLUXER_POSTGRES_MAX_CONNECTIONS', 1, 1000);
 	assertBoolean(postgres.ssl, 'FLUXER_POSTGRES_SSL');
 	assertIdentifier(postgres.kv_table, 'FLUXER_POSTGRES_KV_TABLE');
+	assertBoolean(postgres.prepared_statements, 'FLUXER_POSTGRES_PREPARED_STATEMENTS');
 	if (config.env !== 'production' || config.database.backend !== 'postgres') {
 		return;
 	}
@@ -385,6 +430,24 @@ function validatePostgresConfig(config: MasterConfig): void {
 	if (!postgres.ssl && !config.instance.self_hosted) {
 		throw new Error('FLUXER_POSTGRES_SSL must be true in production');
 	}
+}
+
+function validateCaptchaConfig(config: MasterConfig): void {
+	const captcha = config.integrations.captcha;
+	if (!captcha.enabled) {
+		return;
+	}
+	if (captcha.provider === 'hcaptcha') {
+		requireString(captcha.hcaptcha?.site_key, 'FLUXER_CAPTCHA_HCAPTCHA_SITE_KEY');
+		requireString(captcha.hcaptcha?.secret_key, 'FLUXER_CAPTCHA_HCAPTCHA_SECRET_KEY');
+		return;
+	}
+	if (captcha.provider === 'turnstile') {
+		requireString(captcha.turnstile?.site_key, 'FLUXER_CAPTCHA_TURNSTILE_SITE_KEY');
+		requireString(captcha.turnstile?.secret_key, 'FLUXER_CAPTCHA_TURNSTILE_SECRET_KEY');
+		return;
+	}
+	throw new Error('FLUXER_CAPTCHA_PROVIDER must be hcaptcha or turnstile when FLUXER_CAPTCHA_ENABLED is true');
 }
 
 function validateApiWorkerConfig(config: MasterConfig): void {
@@ -419,16 +482,19 @@ function normalizeConfig(config: MasterConfig): MasterConfig {
 		'FLUXER_ABUSE_DIRECT_CONTACT_SPAM_ACTION',
 	);
 	validatePostgresConfig(config);
+	validateCaptchaConfig(config);
 	validateApiWorkerConfig(config);
 	assertIntegerInRange(config.services.api.max_inflight_requests, 'FLUXER_API_MAX_INFLIGHT_REQUESTS', 1, 100_000);
+	assertIntegerInRange(config.services.api.headers_timeout_ms, 'FLUXER_API_HEADERS_TIMEOUT_MS', 1_000, 3_600_000);
+	assertIntegerInRange(config.services.api.request_timeout_ms, 'FLUXER_API_REQUEST_TIMEOUT_MS', 1_000, 3_600_000);
 	requireString(config.domain.base_domain, 'FLUXER_BASE_DOMAIN');
 	requireString(config.auth.sudo_mode_secret, 'FLUXER_SUDO_MODE_SECRET');
 	requireString(config.auth.connection_initiation_secret, 'FLUXER_CONNECTION_INITIATION_SECRET');
-	requireString(config.auth.vapid.public_key, 'FLUXER_VAPID_PUBLIC_KEY');
-	requireString(config.auth.vapid.private_key, 'FLUXER_VAPID_PRIVATE_KEY');
+	validateVapidConfig(config);
 	requireString(config.s3?.access_key_id, 'FLUXER_S3_ACCESS_KEY_ID');
 	requireString(config.s3?.secret_access_key, 'FLUXER_S3_SECRET_ACCESS_KEY');
 	requireString(config.services.media_proxy.secret_key, 'FLUXER_MEDIA_PROXY_SECRET_KEY');
+	validateUploadRelaySecret(config.services.media_proxy.upload_relay.secret_base64, config.services.media_proxy.mode);
 	requireString(config.services.admin.secret_key_base, 'FLUXER_ADMIN_SECRET_KEY_BASE');
 	requireString(config.services.admin.oauth_client_secret, 'FLUXER_ADMIN_OAUTH_CLIENT_SECRET');
 	if (!config.instance.self_hosted) {
@@ -438,15 +504,67 @@ function normalizeConfig(config: MasterConfig): MasterConfig {
 	return config;
 }
 
+function applyPublicPort(config: MasterConfig, endpoints: DerivedEndpoints): MasterConfig {
+	const {base_domain, public_port} = config.domain;
+	const normalize = (url: string) => normalizePublicEndpoint(url, base_domain, public_port);
+	const normalizedEndpoints = {...endpoints};
+	for (const key of Object.keys(normalizedEndpoints) as Array<keyof DerivedEndpoints>) {
+		normalizedEndpoints[key] = normalize(normalizedEndpoints[key]);
+	}
+	return {
+		...config,
+		endpoints: normalizedEndpoints,
+		services: {
+			...config.services,
+			media_proxy: {
+				...config.services.media_proxy,
+				upload_relay: {
+					...config.services.media_proxy.upload_relay,
+					endpoint: normalize(config.services.media_proxy.upload_relay.endpoint),
+				},
+			},
+		},
+		auth: {
+			...config.auth,
+			passkeys: {
+				...config.auth.passkeys,
+				additional_allowed_origins: config.auth.passkeys.additional_allowed_origins.map(normalize),
+			},
+		},
+	};
+}
+
+function resolveAppOrigin(appEndpoint: string): string {
+	try {
+		return new URL(appEndpoint).origin;
+	} catch {
+		throw new Error(`FLUXER_APP_ENDPOINT must be a valid URL: ${appEndpoint}`);
+	}
+}
+
+function applyPasskeyDefaults(config: MasterConfig, endpoints: DerivedEndpoints): void {
+	const passkeys = config.auth.passkeys;
+	if (passkeys.rp_id.trim().length === 0) {
+		passkeys.rp_id = config.domain.base_domain;
+	}
+	if (passkeys.additional_allowed_origins.length === 0) {
+		passkeys.additional_allowed_origins = [resolveAppOrigin(endpoints.app)];
+	}
+}
+
 export async function loadConfig(): Promise<MasterConfig> {
 	if (cachedConfig) {
 		return cachedConfig;
 	}
-	const merged = mergeConfig(defaultConfig(), buildNamedFluxerEnvOverrides(process.env));
+	const overrides = buildNamedFluxerEnvOverrides(process.env);
+	const merged = mergeConfig(defaultConfig(), overrides);
 	const normalized = normalizeConfig(merged);
 	const derived = deriveEndpointsFromDomain(normalized.domain);
 	const endpoints = {...derived, ...(normalized.endpoint_overrides ?? {})};
-	cachedConfig = {...normalized, endpoints};
+	requireString(endpoints.api_client, 'FLUXER_API_CLIENT_ENDPOINT');
+	const withPublicPort = applyPublicPort(normalized, endpoints);
+	applyPasskeyDefaults(withPublicPort, withPublicPort.endpoints);
+	cachedConfig = withPublicPort;
 	return cachedConfig;
 }
 

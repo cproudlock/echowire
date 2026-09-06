@@ -41,8 +41,6 @@ export const ChannelOverwriteTypesDescriptions: Record<keyof typeof ChannelOverw
 export const InviteTypes = {
 	GUILD: 0,
 	GROUP_DM: 1,
-	EMOJI_PACK: 2,
-	STICKER_PACK: 3,
 } as const;
 export const MessageTypes = {
 	DEFAULT: 0,

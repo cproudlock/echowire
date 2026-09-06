@@ -81,14 +81,12 @@ import {IpAuthorizationTokens, OAuth2AccessTokensByUser} from '../Tables';
 import type {HonoApp, HonoEnv} from '../types/HonoEnv';
 import {UserSearchRepository} from '../user/repositories/account/crud/UserSearchRepository';
 import {AuthSessionRepository} from '../user/repositories/auth/AuthSessionRepository';
-import {ScheduledMessageRepository} from '../user/repositories/ScheduledMessageRepository';
 import {UserChannelRepository} from '../user/repositories/UserChannelRepository';
 import {UserRepository} from '../user/repositories/UserRepository';
 import {processUserDeletion} from '../user/services/UserDeletionService';
 import {UserHarvestRepository} from '../user/UserHarvestRepository';
 import {getExpiryBucket} from '../utils/AttachmentDecay';
 import {parseReportedClientOs} from '../utils/SessionClientIdentity';
-import {ScheduledMessageExecutor} from '../worker/executors/ScheduledMessageExecutor';
 import {processExpiredAttachments} from '../worker/tasks/ExpireAttachments';
 import {processInactivityDeletionsCore} from '../worker/tasks/ProcessInactivityDeletions';
 import {setWorkerDependencies} from '../worker/WorkerContext';
@@ -1756,48 +1754,6 @@ export function TestHarnessController(app: HonoApp) {
 			await snowflakeService.shutdown();
 		}
 	});
-	app.post('/test/worker/send-scheduled-message/:userId/:scheduledMessageId', async (ctx) => {
-		ensureHarnessAccess(ctx);
-		const params = ctx.req.param() as {
-			userId?: string;
-			scheduledMessageId?: string;
-		};
-		const userIdParam = params.userId;
-		const scheduledMessageIdParam = params.scheduledMessageId;
-		if (!userIdParam) {
-			throw new Error('Missing userId parameter');
-		}
-		if (!scheduledMessageIdParam) {
-			throw new Error('Missing scheduledMessageId parameter');
-		}
-		const userId = createUserID(BigInt(userIdParam));
-		const scheduledMessageId = createMessageID(BigInt(scheduledMessageIdParam));
-		const snowflakeService = getSnowflakeService();
-		try {
-			const workerDeps = await initializeWorkerDepsWithHarnessEmail(ctx, snowflakeService);
-			setWorkerDependencies(workerDeps);
-			const scheduledMessageRepository = new ScheduledMessageRepository();
-			const scheduledMessage = await scheduledMessageRepository.getScheduledMessage(userId, scheduledMessageId);
-			if (!scheduledMessage) {
-				return ctx.json({success: false, reason: 'scheduled message not found'}, 404);
-			}
-			const logger = {
-				debug: (message: string, extra?: object) => Logger.debug(extra ?? {}, message),
-				info: (message: string, extra?: object) => Logger.info(extra ?? {}, message),
-				warn: (message: string, extra?: object) => Logger.warn(extra ?? {}, message),
-				error: (message: string, extra?: object) => Logger.error(extra ?? {}, message),
-			};
-			const executor = new ScheduledMessageExecutor(workerDeps, logger, scheduledMessageRepository);
-			await executor.execute({
-				userId: userId.toString(),
-				scheduledMessageId: scheduledMessageId.toString(),
-				expectedScheduledAt: scheduledMessage.scheduledAt.toISOString(),
-			});
-			return ctx.json({success: true}, 200);
-		} finally {
-			await snowflakeService.shutdown();
-		}
-	});
 	app.post('/test/attachment-decay/rows', async (ctx) => {
 		ensureHarnessAccess(ctx);
 		const payload = (await ctx.req.json()) as {
@@ -2307,7 +2263,6 @@ export function TestHarnessController(app: HonoApp) {
 				message_reference: null,
 				message_snapshots: null,
 				call: null,
-				nsfw_emojis: null,
 				has_reaction: false,
 				version: 1,
 			};
@@ -2843,6 +2798,7 @@ export function TestHarnessController(app: HonoApp) {
 		return ctx.json({cleared: true, deleted_count: totalDeleted});
 	});
 	app.post('/test/rpc-session-init', async (ctx) => {
+		ensureHarnessAccess(ctx);
 		const request = RpcRequest.parse(await ctx.req.json());
 		const response = await ctx.get('rpcService').handleRpcRequest({request, requestCache: ctx.get('requestCache')});
 		return ctx.json(response);

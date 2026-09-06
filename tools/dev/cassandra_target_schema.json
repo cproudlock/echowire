@@ -581,10 +581,6 @@
 				{
 					"name": "animated",
 					"type": "boolean"
-				},
-				{
-					"name": "nsfw",
-					"type": "boolean"
 				}
 			]
 		},
@@ -3969,84 +3965,6 @@
 			"options": "default_time_to_live = 86400 AND gc_grace_seconds = 864000 AND compaction = {'class': 'TimeWindowCompactionStrategy', 'compaction_window_unit': 'HOURS', 'compaction_window_size': '1'}"
 		},
 		{
-			"name": "expression_packs",
-			"columns": [
-				{
-					"name": "pack_id",
-					"type": "bigint"
-				},
-				{
-					"name": "pack_type",
-					"type": "text"
-				},
-				{
-					"name": "creator_id",
-					"type": "bigint"
-				},
-				{
-					"name": "name",
-					"type": "text"
-				},
-				{
-					"name": "description",
-					"type": "text"
-				},
-				{
-					"name": "created_at",
-					"type": "timestamp"
-				},
-				{
-					"name": "updated_at",
-					"type": "timestamp"
-				},
-				{
-					"name": "version",
-					"type": "int"
-				}
-			],
-			"primary_key": "(pack_id)",
-			"options": ""
-		},
-		{
-			"name": "expression_packs_by_creator",
-			"columns": [
-				{
-					"name": "creator_id",
-					"type": "bigint"
-				},
-				{
-					"name": "pack_id",
-					"type": "bigint"
-				},
-				{
-					"name": "pack_type",
-					"type": "text"
-				},
-				{
-					"name": "name",
-					"type": "text"
-				},
-				{
-					"name": "description",
-					"type": "text"
-				},
-				{
-					"name": "created_at",
-					"type": "timestamp"
-				},
-				{
-					"name": "updated_at",
-					"type": "timestamp"
-				},
-				{
-					"name": "version",
-					"type": "int"
-				}
-			],
-			"primary_key": "((creator_id), pack_id)",
-			"options": ""
-		},
-		{
 			"name": "favorite_memes",
 			"columns": [
 				{
@@ -5333,10 +5251,6 @@
 				{
 					"name": "version",
 					"type": "int"
-				},
-				{
-					"name": "nsfw",
-					"type": "boolean"
 				}
 			],
 			"primary_key": "((guild_id), emoji_id)",
@@ -5363,10 +5277,6 @@
 				},
 				{
 					"name": "animated",
-					"type": "boolean"
-				},
-				{
-					"name": "nsfw",
 					"type": "boolean"
 				}
 			],
@@ -5595,10 +5505,6 @@
 				{
 					"name": "version",
 					"type": "int"
-				},
-				{
-					"name": "nsfw",
-					"type": "boolean"
 				}
 			],
 			"primary_key": "((guild_id), sticker_id)",
@@ -5633,10 +5539,6 @@
 				},
 				{
 					"name": "animated",
-					"type": "boolean"
-				},
-				{
-					"name": "nsfw",
 					"type": "boolean"
 				}
 			],
@@ -6572,10 +6474,6 @@
 				{
 					"name": "version",
 					"type": "int"
-				},
-				{
-					"name": "nsfw_emojis",
-					"type": "set<bigint>"
 				}
 			],
 			"primary_key": "((channel_id, bucket), message_id)",
@@ -6906,29 +6804,6 @@
 			],
 			"primary_key": "((user_id), token_)",
 			"options": "CLUSTERING ORDER BY (token_ DESC) AND default_time_to_live = 2592000 AND gc_grace_seconds = 864000 AND compaction = {'class': 'TimeWindowCompactionStrategy', 'compaction_window_unit': 'DAYS', 'compaction_window_size': '1'}"
-		},
-		{
-			"name": "pack_installations",
-			"columns": [
-				{
-					"name": "user_id",
-					"type": "bigint"
-				},
-				{
-					"name": "pack_id",
-					"type": "bigint"
-				},
-				{
-					"name": "pack_type",
-					"type": "text"
-				},
-				{
-					"name": "installed_at",
-					"type": "timestamp"
-				}
-			],
-			"primary_key": "((user_id), pack_id)",
-			"options": ""
 		},
 		{
 			"name": "password_change_tickets",
@@ -7908,57 +7783,6 @@
 			],
 			"primary_key": "((user_id), message_id)",
 			"options": "CLUSTERING ORDER BY (message_id DESC)"
-		},
-		{
-			"name": "scheduled_messages",
-			"columns": [
-				{
-					"name": "user_id",
-					"type": "bigint"
-				},
-				{
-					"name": "scheduled_message_id",
-					"type": "bigint"
-				},
-				{
-					"name": "channel_id",
-					"type": "bigint"
-				},
-				{
-					"name": "payload",
-					"type": "text"
-				},
-				{
-					"name": "scheduled_at",
-					"type": "timestamp"
-				},
-				{
-					"name": "scheduled_local_at",
-					"type": "text"
-				},
-				{
-					"name": "timezone",
-					"type": "text"
-				},
-				{
-					"name": "status",
-					"type": "text"
-				},
-				{
-					"name": "status_reason",
-					"type": "text"
-				},
-				{
-					"name": "created_at",
-					"type": "timestamp"
-				},
-				{
-					"name": "invalidated_at",
-					"type": "timestamp"
-				}
-			],
-			"primary_key": "((user_id), scheduled_message_id)",
-			"options": "CLUSTERING ORDER BY (scheduled_message_id DESC)"
 		},
 		{
 			"name": "suspicious_email_domains",

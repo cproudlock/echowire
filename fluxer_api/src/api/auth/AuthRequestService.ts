@@ -84,7 +84,6 @@ interface AuthLoginMfaRequest {
 }
 
 interface AuthLogoutRequest {
-	authorizationHeader?: string;
 	authToken?: string;
 }
 
@@ -133,6 +132,12 @@ interface AuthHandoffInfoRequest {
 interface AuthHandoffStatusRequest {
 	code: string;
 	clientIp: string;
+	pollSecret?: string;
+}
+
+interface AuthHandoffCancelRequest {
+	code: string;
+	pollSecret: string;
 }
 
 export class AuthRequestService {
@@ -181,10 +186,9 @@ export class AuthRequestService {
 		return await this.toAuthTokenResponse(result);
 	}
 
-	async logout({authorizationHeader, authToken}: AuthLogoutRequest): Promise<void> {
-		const token = authorizationHeader ?? authToken;
-		if (token) {
-			await AuthSession.revokeToken(this.apiContext, token);
+	async logout({authToken}: AuthLogoutRequest): Promise<void> {
+		if (authToken) {
+			await AuthSession.revokeToken(this.apiContext, authToken);
 		}
 	}
 
@@ -305,6 +309,7 @@ export class AuthRequestService {
 		return {
 			code: result.code,
 			expires_at: result.expiresAt.toISOString(),
+			poll_secret: result.pollSecret,
 		};
 	}
 
@@ -352,8 +357,8 @@ export class AuthRequestService {
 		);
 	}
 
-	async getHandoffStatus({code, clientIp}: AuthHandoffStatusRequest): Promise<HandoffStatusResponse> {
-		const result = await this.desktopHandoffService.getHandoffStatus(code, clientIp);
+	async getHandoffStatus({code, clientIp, pollSecret}: AuthHandoffStatusRequest): Promise<HandoffStatusResponse> {
+		const result = await this.desktopHandoffService.getHandoffStatus(code, clientIp, pollSecret);
 		return {
 			status: result.status,
 			token: result.token,
@@ -362,8 +367,8 @@ export class AuthRequestService {
 		};
 	}
 
-	async cancelHandoff({code}: {code: string}): Promise<void> {
-		await this.desktopHandoffService.cancelHandoff(code);
+	async cancelHandoff({code, pollSecret}: AuthHandoffCancelRequest): Promise<void> {
+		await this.desktopHandoffService.cancelHandoff(code, pollSecret);
 	}
 
 	private async getUserPartial(userId: string): Promise<UserPartialResponse> {

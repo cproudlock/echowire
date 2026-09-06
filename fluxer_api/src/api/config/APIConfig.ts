@@ -34,6 +34,8 @@ export type APIGeoipConfig = APIGeoipFilesystemConfig | APIGeoipS3Config;
 export interface APIConfig {
 	nodeEnv: 'development' | 'production';
 	port: number;
+	headersTimeoutMs: number;
+	requestTimeoutMs: number;
 	maxInflightRequests: number;
 	ipBanExemptIps: Array<string>;
 	additionalCorsOrigins: Array<string>;
@@ -57,6 +59,7 @@ export interface APIConfig {
 		sslCa: string;
 		maxConnections: number;
 		kvTable: string;
+		preparedStatements: boolean;
 	};
 	database: {
 		backend: 'cassandra' | 'postgres';
@@ -151,7 +154,6 @@ export interface APIConfig {
 			reports: string;
 			harvests: string;
 			downloads: string;
-			static: string;
 		};
 	};
 	s3Downloads: ResolvedDownloadsProvider;
@@ -278,10 +280,6 @@ export interface APIConfig {
 			email?: string;
 		};
 		bluesky: BlueskyOAuthConfig;
-	};
-	cookie: {
-		domain: string;
-		secure: boolean;
 	};
 	klipy: {
 		apiKey?: string;

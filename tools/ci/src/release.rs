@@ -15,7 +15,7 @@ use std::path::{Path, PathBuf};
 // made the publish step resolve our own commits against a repository that has never seen them,
 // so every desktop release died with `No commit found for SHA` (HTTP 422) after the builds and
 // the S3 upload had already succeeded.
-const RELEASE_REPOSITORY: &str = "cproudlock/echowire";
+pub(crate) const RELEASE_REPOSITORY: &str = "cproudlock/echowire";
 const RELEASE_COMPARE_URL: &str = "https://github.com/cproudlock/echowire/compare";
 pub(crate) const DESKTOP_RELEASE_DESCRIPTOR_SCHEMA_VERSION: u8 = 1;
 pub(crate) const DESKTOP_RELEASE_ROUTE_COUNT: usize = 28;
@@ -506,7 +506,7 @@ fn validate_component(component: &str) -> Result<()> {
     Ok(())
 }
 
-fn validate_full_sha(label: &str, value: &str) -> Result<String> {
+pub(crate) fn validate_full_sha(label: &str, value: &str) -> Result<String> {
     let value = value.trim();
     ensure!(
         value.len() == 40 && value.bytes().all(|byte| byte.is_ascii_hexdigit()),
@@ -563,7 +563,7 @@ fn qualified_releases(
     Ok(qualified)
 }
 
-fn resolve_commit_sha(reference: &str) -> Result<String> {
+pub(crate) fn resolve_commit_sha(reference: &str) -> Result<String> {
     let sha = output_text(
         CommandSpec::new("gh")
             .arg("api")
@@ -995,7 +995,7 @@ fn verify_release_assets(
     Ok(())
 }
 
-fn release_tag(component: &str, version: &str) -> String {
+pub(crate) fn release_tag(component: &str, version: &str) -> String {
     format!("{component}@{version}")
 }
 

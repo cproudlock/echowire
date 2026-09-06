@@ -23,11 +23,13 @@
 		"fluxer_desktop/src/main/Autostart.ts": ["exports"],
 		"fluxer_desktop/src/main/LinuxDesktopEntry.ts": ["exports"],
 		"fluxer_desktop/src/main/NotificationState.ts": ["exports", "types"],
+		"packages/schema/src/domains/admin/AdminUserSchemas.ts": ["exports"],
 		"packages/schema/src/domains/geolocation/GeolocationSchemas.ts": ["exports"],
 		"pnpm-workspace.yaml": ["catalog"]
 	},
 	"workspaces": {
 		".": {
+			"ignoreDependencies": ["vite"],
 			"project": ["scripts/**/*.mjs"]
 		},
 		"fluxer_api": {
@@ -43,6 +45,7 @@
 				"nodemailer",
 				"pg",
 				"pino",
+				"undici",
 				"validator"
 			]
 		},
@@ -62,7 +65,12 @@
 				"native/*/test/**/*.mjs"
 			],
 			"project": ["src/**/*.{ts,tsx,mjs,js}", "scripts/**/*.mjs", "native/**/*.{js,mjs,cjs,d.ts}"],
-			"ignoreDependencies": ["electron-builder"]
+			"ignoreDependencies": ["electron-builder", "electron-builder-squirrel-windows"]
+		},
+		"fluxer_docs": {
+			"entry": ["scripts/*.ts", "src/**/*.astro"],
+			"project": ["src/**/*.{ts,astro}", "scripts/**/*.ts"],
+			"ignoreDependencies": ["sharp"]
 		},
 		"packages/openapi": {
 			"entry": ["src/GenerateOpenAPISpec.ts"],

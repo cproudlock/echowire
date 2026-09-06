@@ -18,6 +18,7 @@ import {
 } from '@fluxer/schema/src/domains/user/UserRequestSchemas';
 import {SavedMessageEntryListResponse} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
 import {createChannelID, createMessageID} from '../../BrandedTypes';
+import {StorageObjectRangeNotSatisfiableError} from '../../infrastructure/IStorageService';
 import {DefaultUserOnly, LoginRequired} from '../../middleware/AuthMiddleware';
 import {RateLimitMiddleware} from '../../middleware/RateLimitMiddleware';
 import {OpenAPI} from '../../middleware/ResponseTypeMiddleware';
@@ -122,9 +123,11 @@ export function UserContentController(app: HonoApp) {
 				'Retrieves all messages saved by the current user. Messages are saved privately for easy reference. Returns paginated list of saved messages with metadata.',
 		}),
 		async (ctx) => {
+			const {limit, before} = ctx.req.valid('query');
 			const response = await ctx.get('userContentRequestService').listSavedMessages({
 				userId: ctx.get('user').id,
-				limit: ctx.req.valid('query').limit,
+				limit,
+				before: before ? createMessageID(before) : undefined,
 				requestCache: ctx.get('requestCache'),
 			});
 			return ctx.json(response, 200);
@@ -290,28 +293,35 @@ export function UserContentController(app: HonoApp) {
 			if (!token) {
 				return ctx.text('Not Found', 404);
 			}
-			const result = await ctx.get('userContentRequestService').streamHarvestDownload({
-				harvestId,
-				token,
-				range: ctx.req.header('range') ?? undefined,
-				storageService: ctx.get('storageService'),
-			});
-			if (!result) {
-				return ctx.text('Not Found', 404);
+			try {
+				const result = await ctx.get('userContentRequestService').streamHarvestDownload({
+					harvestId,
+					token,
+					range: ctx.req.header('range') ?? undefined,
+					storageService: ctx.get('storageService'),
+				});
+				if (!result) {
+					return ctx.text('Not Found', 404);
+				}
+				const headers = new Headers();
+				headers.set('Content-Type', result.contentType ?? 'application/zip');
+				headers.set('Content-Disposition', `attachment; filename="${encodeURIComponent(result.filename)}"`);
+				headers.set('Content-Length', String(result.contentLength));
+				headers.set('Cache-Control', 'private, no-store');
+				headers.set('Accept-Ranges', 'bytes');
+				if (result.contentRange) {
+					headers.set('Content-Range', result.contentRange);
+				}
+				return new Response(Readable.toWeb(result.body) as ReadableStream, {
+					status: result.contentRange ? 206 : 200,
+					headers,
+				});
+			} catch (error) {
+				if (error instanceof StorageObjectRangeNotSatisfiableError) {
+					return ctx.text('Range Not Satisfiable', 416);
+				}
+				throw error;
 			}
-			const headers = new Headers();
-			headers.set('Content-Type', result.contentType ?? 'application/zip');
-			headers.set('Content-Disposition', `attachment; filename="${encodeURIComponent(result.filename)}"`);
-			headers.set('Content-Length', String(result.contentLength));
-			headers.set('Cache-Control', 'private, no-store');
-			headers.set('Accept-Ranges', 'bytes');
-			if (result.contentRange) {
-				headers.set('Content-Range', result.contentRange);
-			}
-			return new Response(Readable.toWeb(result.body) as ReadableStream, {
-				status: result.contentRange ? 206 : 200,
-				headers,
-			});
 		},
 	);
 	app.get(

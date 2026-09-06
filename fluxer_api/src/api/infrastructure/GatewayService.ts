@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
 import {CallAlreadyExistsError} from '@fluxer/errors/src/domains/channel/CallAlreadyExistsError';
 import {InvalidChannelTypeForCallError} from '@fluxer/errors/src/domains/channel/InvalidChannelTypeForCallError';
 import {NoActiveCallError} from '@fluxer/errors/src/domains/channel/NoActiveCallError';
 import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
 import {BadGatewayError} from '@fluxer/errors/src/domains/core/BadGatewayError';
+import {BadRequestError} from '@fluxer/errors/src/domains/core/BadRequestError';
 import {GatewayTimeoutError} from '@fluxer/errors/src/domains/core/GatewayTimeoutError';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ServiceUnavailableError} from '@fluxer/errors/src/domains/core/ServiceUnavailableError';
@@ -47,6 +49,8 @@ const GATEWAY_ERROR_TO_DOMAIN_ERROR: Record<string, () => Error> = {
 	[GatewayRpcMethodErrorCodes.CONNECTION_NOT_FOUND]: () => new UserNotInVoiceError(),
 	[GatewayRpcMethodErrorCodes.MODERATOR_MISSING_CONNECT]: () => new MissingPermissionsError(),
 	[GatewayRpcMethodErrorCodes.TARGET_MISSING_CONNECT]: () => new MissingPermissionsError(),
+	[GatewayRpcMethodErrorCodes.INVALID_PARAMS]: () => new BadRequestError({code: APIErrorCodes.INVALID_FORM_BODY}),
+	[GatewayRpcMethodErrorCodes.BATCH_TOO_LARGE]: () => new BadRequestError({code: APIErrorCodes.INVALID_FORM_BODY}),
 };
 
 interface DispatchGuildParams {
@@ -281,6 +285,8 @@ export class GatewayService {
 	private readonly MAX_BATCH_CONCURRENCY = 50;
 	private readonly PENDING_REQUEST_TIMEOUT_MS = ms('30 seconds');
 	private readonly AUTH_CONTEXT_FALLBACK_MS = ms('5 minutes');
+	private readonly BADGE_COUNTS_FALLBACK_MS = ms('5 minutes');
+	private badgeCountsUnsupportedUntil = 0;
 
 	constructor() {
 		this.rpcClient = GatewayRpcClient.getInstance();
@@ -703,15 +709,33 @@ export class GatewayService {
 	}
 
 	async invalidatePushBadgeCounts({userIds}: InvalidatePushBadgeCountsParams): Promise<void> {
+		if (Date.now() < this.badgeCountsUnsupportedUntil) {
+			await this.invalidatePushBadgeCountsIndividually(userIds);
+			return;
+		}
 		const batches: Array<Array<UserID>> = [];
 		for (let index = 0; index < userIds.length; index += PUSH_BADGE_COUNT_BATCH_SIZE) {
 			batches.push(userIds.slice(index, index + PUSH_BADGE_COUNT_BATCH_SIZE));
 		}
-		await Promise.all(
-			batches.map((batch) =>
-				this.call('push.invalidate_badge_counts', {user_ids: batch.map((userId) => userId.toString())}),
-			),
-		);
+		try {
+			await Promise.all(
+				batches.map((batch) =>
+					this.call('push.invalidate_badge_counts', {user_ids: batch.map((userId) => userId.toString())}),
+				),
+			);
+		} catch (error) {
+			const transformedError = this.transformGatewayError(error);
+			if (!this.isAuthContextUnsupportedError(transformedError)) {
+				throw transformedError;
+			}
+			this.badgeCountsUnsupportedUntil = Date.now() + this.BADGE_COUNTS_FALLBACK_MS;
+			Logger.warn({error}, '[gateway-rpc] push.invalidate_badge_counts unavailable, falling back to per-user calls');
+			await this.invalidatePushBadgeCountsIndividually(userIds);
+		}
+	}
+
+	private async invalidatePushBadgeCountsIndividually(userIds: ReadonlyArray<UserID>): Promise<void> {
+		await Promise.all(userIds.map((userId) => this.invalidatePushBadgeCount({userId})));
 	}
 
 	async invalidatePushSubscriptions({userId}: InvalidatePushSubscriptionsParams): Promise<void> {

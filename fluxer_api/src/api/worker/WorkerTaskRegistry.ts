@@ -5,6 +5,7 @@ import applicationProcessDeletion from './tasks/ApplicationProcessDeletion';
 import archiveInactiveThreads from './tasks/ArchiveInactiveThreads';
 import bulkAddGuildMembers from './tasks/admin_bulk/BulkAddGuildMembers';
 import bulkBanFileShas from './tasks/admin_bulk/BulkBanFileShas';
+import bulkDeleteMessagesForUsers from './tasks/admin_bulk/BulkDeleteMessagesForUsers';
 import bulkScheduleUserDeletion from './tasks/admin_bulk/BulkScheduleUserDeletion';
 import bulkUpdateGuildFeatures from './tasks/admin_bulk/BulkUpdateGuildFeatures';
 import bulkUpdateSuspiciousActivityFlags from './tasks/admin_bulk/BulkUpdateSuspiciousActivityFlags';
@@ -31,13 +32,11 @@ import processExpiredPremiumSweep from './tasks/ProcessExpiredPremiumSweep';
 import processInactivityDeletions from './tasks/ProcessInactivityDeletions';
 import processPendingBulkMessageDeletions from './tasks/ProcessPendingBulkMessageDeletions';
 import processPremiumStateReconciliationQueue from './tasks/ProcessPremiumStateReconciliationQueue';
-import processScheduledJobQueue from './tasks/ProcessScheduledJobQueue';
 import processStripeWebhook from './tasks/ProcessStripeWebhook';
 import prunePostgresKvTtl from './tasks/PrunePostgresKvTtl';
 import reconcileUserPayments from './tasks/ReconcileUserPayments';
 import refreshSearchIndex from './tasks/RefreshSearchIndex';
 import revalidateUserConnections from './tasks/RevalidateUserConnections';
-import {sendScheduledMessage} from './tasks/SendScheduledMessage';
 import {sendSystemDm} from './tasks/SendSystemDm';
 import syncDiscoveryIndex from './tasks/SyncDiscoveryIndex';
 import syncDisposableEmailDomains from './tasks/SyncDisposableEmailDomains';
@@ -53,6 +52,7 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	batchGuildAuditLogMessageDeletes,
 	bulkAddGuildMembers: bulkAddGuildMembers,
 	bulkBanFileShas: bulkBanFileShas,
+	bulkDeleteMessagesForUsers: bulkDeleteMessagesForUsers,
 	bulkDeleteSelfMessagesImmediate,
 	bulkDeleteUserMessages,
 	bulkDeleteUserMessagesScoped,
@@ -78,12 +78,10 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	processInactivityDeletions,
 	processPendingBulkMessageDeletions,
 	processPremiumStateReconciliationQueue,
-	processScheduledJobQueue,
 	reconcileUserPayments,
 	prunePostgresKvTtl,
 	refreshSearchIndex,
 	revalidateUserConnections,
-	sendScheduledMessage,
 	sendSystemDm,
 	syncFileShaBlocklists,
 	syncUrlBlocklists,

@@ -65,6 +65,7 @@
     pending_presences => pending_presence_buffer(),
     guild_connect_inflight => #{guild_id() => non_neg_integer()},
     guild_connect_workers => #{reference() => {guild_id(), non_neg_integer(), pid()}},
+    guild_connect_timers => #{guild_id() => {reference(), reference()}},
     voice_queue => queue:queue(map()),
     voice_queue_timer => reference() | undefined,
     debounce_reactions => boolean(),
@@ -131,11 +132,13 @@ handle_cast({dispatch, Event, {pre_encoded, EncodedData} = Data}, State) when
 ->
     session_dispatch:handle_dispatch(Event, Data, State);
 handle_cast({dispatch, Event, Data}, State) when
-    is_atom(Event), is_map(Data)
+    is_atom(Event), is_map(Data);
+    is_atom(Event), is_list(Data)
 ->
     session_dispatch:handle_dispatch(Event, Data, State);
 handle_cast({dispatch, Event, Data}, State) when
-    is_binary(Event), is_map(Data)
+    is_binary(Event), is_map(Data);
+    is_binary(Event), is_list(Data)
 ->
     session_dispatch:handle_dispatch(Event, Data, State);
 handle_cast({initial_global_presences, Presences}, State) ->
@@ -225,10 +228,10 @@ handle_info({guild_connect, GuildId, Attempt}, State) when
     session_connection:handle_guild_connect(GuildId, Attempt, State);
 handle_info({guild_connect_result, _, _, _} = Msg, State) ->
     handle_info_guild_connect_result(Msg, State);
-handle_info({guild_connect_timeout, GuildId, Attempt}, State) when
-    is_integer(GuildId), is_integer(Attempt), Attempt >= 0
+handle_info({guild_connect_timeout, GuildId, Attempt, Token}, State) when
+    is_integer(GuildId), is_integer(Attempt), Attempt >= 0, is_reference(Token)
 ->
-    session_connection:handle_guild_connect_timeout(GuildId, Attempt, State);
+    session_connection:handle_guild_connect_timeout(GuildId, Attempt, Token, State);
 handle_info({call_reconnect, ChannelId, Attempt}, State) when
     is_integer(ChannelId), is_integer(Attempt), Attempt >= 0
 ->

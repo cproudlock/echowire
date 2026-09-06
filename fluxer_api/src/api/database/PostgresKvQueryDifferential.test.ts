@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {execFileSync, spawnSync} from 'node:child_process';
+import {spawnSync} from 'node:child_process';
 import {createServer} from 'node:net';
 import {
 	getDefaultPostgresClient,
@@ -12,6 +12,7 @@ import {
 import cassandra from 'cassandra-driver';
 import {afterAll, beforeAll, describe, expect, it} from 'vitest';
 import * as Tables from '../Tables';
+import {startDockerContainer} from '../test/DockerTestContainer';
 import {LegacyPostgresKvQueryExecutor} from './__testref__/LegacyPostgresKvQueryExecutor';
 import {defineTable} from './CassandraTableDsl';
 import type {CassandraParam, CassandraParams, KvQueryMeta, KvTableSpec, WhereExpr} from './CassandraTypes';
@@ -798,8 +799,7 @@ suite('PostgresKvQueryExecutor differential', () => {
 	const corpus = new Map<string, Array<Row>>();
 	const shapeCache = new Map<string, Array<Shape>>();
 	const unstableShapes: Array<string> = [];
-	const reproducibleOrders: Array<string> = [];
-	const traffic = {legacy: 0, next: 0, shapes: 0, improved: 0};
+	const traffic = {legacy: 0, next: 0, shapes: 0};
 	const keysetOrderDeltas: Array<string> = [];
 	const legacyThrowDeltas: Array<string> = [];
 
@@ -906,7 +906,6 @@ suite('PostgresKvQueryExecutor differential', () => {
 		executor: LegacyPostgresKvQueryExecutor,
 		tableName: string,
 		shape: Shape,
-		candidate: string,
 	): Promise<boolean> {
 		const observed = new Set<string>();
 		for (const ordering of HEAP_ORDERINGS) {
@@ -914,7 +913,6 @@ suite('PostgresKvQueryExecutor differential', () => {
 		}
 		await restoreOne(kv, tableName, HEAP_ORDERINGS[0]!);
 		if (observed.size === 1) return false;
-		if (observed.has(candidate)) reproducibleOrders.push(`${tableName} ${shape.name}`);
 		return true;
 	}
 
@@ -950,7 +948,6 @@ suite('PostgresKvQueryExecutor differential', () => {
 		traffic.legacy += left.rowsRead;
 		traffic.next += right.rowsRead;
 		traffic.shapes += 1;
-		if (right.rowsRead < left.rowsRead) traffic.improved += 1;
 		if (left.fingerprint === right.fingerprint) {
 			if (right.rowsRead > left.rowsRead) {
 				mismatches.push({
@@ -976,7 +973,7 @@ suite('PostgresKvQueryExecutor differential', () => {
 			});
 			return;
 		}
-		if (!(await legacyIsOrderUnstable(kv, executor, tableName, shape, right.fingerprint))) {
+		if (!(await legacyIsOrderUnstable(kv, executor, tableName, shape))) {
 			mismatches.push({
 				kind: sameMultiset ? 'order' : 'rowset',
 				table: tableName,
@@ -1005,31 +1002,27 @@ suite('PostgresKvQueryExecutor differential', () => {
 
 	beforeAll(async () => {
 		const port = await freePort();
-		execFileSync(
-			'docker',
-			[
-				'run',
-				'-d',
-				'--name',
-				CONTAINER,
-				'-e',
-				'POSTGRES_USER=fluxer',
-				'-e',
-				'POSTGRES_PASSWORD=fluxer',
-				'-e',
-				'POSTGRES_DB=fluxer',
-				'-p',
-				`127.0.0.1:${port}:5432`,
-				POSTGRES_IMAGE,
-				'-c',
-				'fsync=off',
-				'-c',
-				'synchronous_commit=off',
-				'-c',
-				'full_page_writes=off',
-			],
-			{stdio: 'ignore'},
-		);
+		startDockerContainer([
+			'run',
+			'-d',
+			'--name',
+			CONTAINER,
+			'-e',
+			'POSTGRES_USER=fluxer',
+			'-e',
+			'POSTGRES_PASSWORD=fluxer',
+			'-e',
+			'POSTGRES_DB=fluxer',
+			'-p',
+			`127.0.0.1:${port}:5432`,
+			POSTGRES_IMAGE,
+			'-c',
+			'fsync=off',
+			'-c',
+			'synchronous_commit=off',
+			'-c',
+			'full_page_writes=off',
+		]);
 		let ready = false;
 		for (let attempt = 0; attempt < 180 && !ready; attempt += 1) {
 			await sleep(500);
@@ -1159,7 +1152,6 @@ suite('PostgresKvQueryExecutor differential', () => {
 			}
 		}
 		expect(shapeCount).toBeGreaterThan(3000);
-		console.log(`select sweep: tables=${specs.length} shapes=${shapeCount}`);
 		expect(mismatches.length, report(mismatches)).toBe(0);
 	}, 1_800_000);
 
@@ -1210,7 +1202,6 @@ suite('PostgresKvQueryExecutor differential', () => {
 				traffic.legacy += left.rowsRead;
 				traffic.next += right.rowsRead;
 				traffic.shapes += 1;
-				if (right.rowsRead < left.rowsRead) traffic.improved += 1;
 				if (right.rowsRead > left.rowsRead) {
 					mismatches.push({
 						kind: 'rowsread',
@@ -1309,7 +1300,7 @@ suite('PostgresKvQueryExecutor differential', () => {
 						keysetOrderDeltas.push(`${spec.name} ${label}`);
 						continue;
 					}
-					if (await legacyIsOrderUnstable(NEXT_TABLE, readLegacy, spec.name, shape, fingerprint(rightAll))) {
+					if (await legacyIsOrderUnstable(NEXT_TABLE, readLegacy, spec.name, shape)) {
 						unstableShapes.push(`${spec.name} ${label}`);
 						continue;
 					}
@@ -1454,14 +1445,5 @@ suite('PostgresKvQueryExecutor differential', () => {
 		}
 		expect(traffic.shapes).toBeGreaterThan(3000);
 		expect(traffic.next).toBeLessThan(traffic.legacy);
-		console.log(
-			`row payload traffic: shapes=${traffic.shapes} legacyRows=${traffic.legacy} nextRows=${traffic.next} reduction=${(100 - (traffic.next / traffic.legacy) * 100).toFixed(1)}% shapesImproved=${traffic.improved}`,
-		);
-		console.log(
-			`accepted deltas: order-unstable=${unstableShapes.length} (legacy-reproducible=${reproducibleOrders.length}) keyset-order=${keysetOrderDeltas.length} legacy-throw=${legacyThrowDeltas.length}`,
-		);
-		console.log(`order-unstable sample: ${unstableShapes.slice(0, 5).join(' | ')}`);
-		console.log(`keyset-order sample: ${keysetOrderDeltas.slice(0, 5).join(' | ')}`);
-		console.log(`legacy-throw: ${[...new Set(legacyThrowDeltas.map((entry) => entry.split(': ')[1]))].join(' | ')}`);
 	});
 });

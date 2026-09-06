@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {DELETED_USER_ID} from '@fluxer/constants/src/UserConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
+import {UnknownUserError} from '@fluxer/errors/src/domains/user/UnknownUserError';
 import {
 	ChannelIdParam,
 	GuildIdParam,
@@ -19,13 +21,21 @@ import {
 	WebhookExecuteQueryRequest,
 	WebhookMessageEditRequest,
 	WebhookMessageRequest,
+	WebhookMultipartMessageRequest,
 	WebhookTokenUpdateRequest,
 	WebhookUpdateRequest,
 } from '@fluxer/schema/src/domains/webhook/WebhookRequestSchemas';
 import {WebhookResponse, WebhookTokenResponse} from '@fluxer/schema/src/domains/webhook/WebhookSchemas';
 import type {Context} from 'hono';
 import {z} from 'zod';
-import {createChannelID, createGuildID, createMessageID, createWebhookID, createWebhookToken} from '../BrandedTypes';
+import {
+	createChannelID,
+	createGuildID,
+	createMessageID,
+	createUserID,
+	createWebhookID,
+	createWebhookToken,
+} from '../BrandedTypes';
 import type {MessageRequest} from '../channel/MessageTypes';
 import {normalizeMessageRequestPayload} from '../channel/services/message/MessageRequestCompatibility';
 import {parseMultipartMessageData} from '../channel/services/message/MessageRequestParser';
@@ -41,6 +51,14 @@ import type {WebhookExecuteMessageData} from './WebhookService';
 
 function validateWebhookMessagePayload(data: unknown): WebhookMessageRequest {
 	const validationResult = WebhookMessageRequest.safeParse(normalizeMessageRequestPayload(data));
+	if (!validationResult.success) {
+		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
+	}
+	return validationResult.data;
+}
+
+function validateWebhookMultipartMessagePayload(data: unknown): WebhookMultipartMessageRequest {
+	const validationResult = WebhookMultipartMessageRequest.safeParse(normalizeMessageRequestPayload(data));
 	if (!validationResult.success) {
 		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
 	}
@@ -67,12 +85,12 @@ async function parseWebhookMultipartMessageData(
 		webhookId: createWebhookID(webhookId),
 		token: createWebhookToken(token),
 	});
-	if (!webhook.creatorId) {
-		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
-	}
-	const creator = await ctx.get('userRepository').findUnique(webhook.creatorId);
+	const userRepository = ctx.get('userRepository');
+	const creator =
+		(webhook.creatorId ? await userRepository.findUnique(webhook.creatorId) : null) ??
+		(await userRepository.findUnique(createUserID(DELETED_USER_ID)));
 	if (!creator) {
-		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
+		throw new UnknownUserError();
 	}
 	let parsedPayload: unknown = null;
 	const messageData: MessageRequest = await parseMultipartMessageData(
@@ -89,10 +107,11 @@ async function parseWebhookMultipartMessageData(
 	if (!parsedPayload) {
 		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
 	}
-	const webhookData = validateWebhookMessagePayload(parsedPayload);
+	const webhookData = validateWebhookMultipartMessagePayload(parsedPayload);
 	return {
 		...webhookData,
 		...messageData,
+		attachments: messageData.attachments,
 		username: webhookData.username,
 		avatar_url: webhookData.avatar_url,
 	};
@@ -333,7 +352,7 @@ export function WebhookController(app: HonoApp) {
 				'Executes the webhook by sending a message to its configured channel. If the wait query parameter is true, returns the created message object; otherwise returns a 204 status with no content.',
 			responseSchema: MessageResponseSchema,
 			requestSchema: WebhookMessageRequest,
-			requestFormSchema: WebhookMessageRequest,
+			requestFormSchema: WebhookMultipartMessageRequest,
 			statusCode: 200,
 			tags: ['Webhooks'],
 		}),

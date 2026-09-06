@@ -77,16 +77,14 @@ export function configureMiddleware(routes: HonoApp, options: MiddlewarePipeline
 	}
 	routes.use(TorExitMiddleware);
 	routes.use(AuditLogMiddleware);
-	routes.use(
-		// Echowire: also accept x-forwarded-for as a valid gate. Our ingress is
-		// Cloudflare -> NetBird frontend -> Caddy, so the client-IP header is
-		// cf-connecting-ip, but internal service calls (e.g. app-proxy discovery via
-		// caddy:8088) only carry x-forwarded-for. Requiring only cf-connecting-ip 403s
-		// those. The client-IP *value* still comes from resolvedHeader (cf-connecting-ip).
-		RequireClientIpMiddleware({
-			requiredHeaders: [resolvedHeader, resolveClientIpHeaderName('x-forwarded-for')],
-		}),
-	);
+	// Echowire: upstream reworked RequireClientIpMiddleware to take {exemptPaths}
+	// and resolve the client IP from Config.proxy.client_ip_header (single header)
+	// instead of the old requiredHeaders list. Our ingress is
+	// Cloudflare -> NetBird -> Caddy (client IP = cf-connecting-ip), but internal
+	// service calls (app-proxy discovery via caddy:8088) carry only x-forwarded-for.
+	// TODO(echowire): verify those internal calls are not 403d; if they are, add
+	// their paths to exemptPaths rather than reinstating a broad header fallback.
+	routes.use(RequireClientIpMiddleware());
 	routes.use(ServiceMiddleware);
 	routes.use(UserMiddleware);
 	routes.use(ContentFilterMiddleware);

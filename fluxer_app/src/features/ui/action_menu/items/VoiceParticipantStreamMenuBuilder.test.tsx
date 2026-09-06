@@ -103,7 +103,7 @@ test('own stream keeps a More options submenu with the screen-share preferences'
 	const groups = streamMenu(OWN_STREAM_SOURCE);
 	const moreOptions = findLeaf(groups, 'More options');
 	expect(moreOptions).not.toBeNull();
-	expect(findLeaf(groups, 'Show My Screen Share')).not.toBeNull();
+	expect(findLeaf(groups, 'Show my screen share')).not.toBeNull();
 	expect(findLeaf(groups, 'Report Problem')).toBeNull();
 });
 

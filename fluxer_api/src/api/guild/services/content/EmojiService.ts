@@ -109,14 +109,10 @@ export class EmojiService {
 		if (allEmojis.length >= maxEmojis) {
 			throw new MaxGuildEmojisError(maxEmojis);
 		}
-		const {
-			animated,
-			imageBuffer,
-			contentType,
-			nsfw: isNsfw,
-		} = await this.avatarService.processEmoji({
+		const {animated, imageBuffer, contentType} = await this.avatarService.processEmoji({
 			errorPath: 'image',
 			base64Image: image,
+			guildFeatures,
 		});
 		const emojiId = createEmojiID(await this.snowflakeService.generate());
 		await this.avatarService.uploadEmoji({
@@ -131,7 +127,6 @@ export class EmojiService {
 			name,
 			creator_id: user.id,
 			animated,
-			nsfw: isNsfw,
 			version: 1,
 		});
 		const updatedEmojis = [...allEmojis, emoji];
@@ -184,7 +179,6 @@ export class EmojiService {
 			name: sourceEmoji.name,
 			creator_id: user.id,
 			animated: sourceEmoji.isAnimated,
-			nsfw: sourceEmoji.hasNsfwClassification ? sourceEmoji.isNsfw : null,
 			version: 1,
 		});
 		const updatedEmojis = [...allEmojis, emoji];
@@ -247,14 +241,10 @@ export class EmojiService {
 					});
 					continue;
 				}
-				const {
-					animated,
-					imageBuffer,
-					contentType,
-					nsfw: isNsfw,
-				} = await this.avatarService.processEmoji({
+				const {animated, imageBuffer, contentType} = await this.avatarService.processEmoji({
 					errorPath: `emojis[${success.length + failed.length}].image`,
 					base64Image: emojiData.image,
+					guildFeatures,
 				});
 				const emojiId = createEmojiID(await this.snowflakeService.generate());
 				await this.avatarService.uploadEmoji({
@@ -268,7 +258,6 @@ export class EmojiService {
 					emoji_id: emojiId,
 					name: emojiData.name,
 					animated,
-					nsfw: isNsfw,
 					creator_id: user.id,
 					version: 1,
 				});

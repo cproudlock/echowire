@@ -28,12 +28,14 @@ import {
 	getUserRepository,
 } from '../middleware/ServiceSingletons';
 import {torExitListCache} from '../middleware/TorExitListCache';
+import {ensureApnsSigningKey} from '../push/ApnsPushService';
 import {initializeSearch, shutdownSearch} from '../SearchFactory';
 import {warmupAdminSearchIndexes} from '../search/SearchWarmup';
 import {VisionarySlotInitializer} from '../stripe/VisionarySlotInitializer';
 import {VoiceDataInitializer} from '../voice/VoiceDataInitializer';
 import {JetStreamWorkerQueue} from '../worker/JetStreamWorkerQueue';
 import {WorkerService} from '../worker/WorkerService';
+import {ensureDeletionQueueState} from './DeletionQueueStartup';
 
 let jsConnectionManager: JetStreamConnectionManager | null = null;
 
@@ -45,6 +47,7 @@ export function createInitializer(config: APIConfig, logger: ILogger): () => Pro
 	return async (): Promise<void> => {
 		try {
 			logger.info('Initializing API service...');
+			await ensureApnsSigningKey();
 			const geoipStartupResult = await ensureGeoipDatabaseOnStartup({
 				geoip: config.geoip,
 				s3Config: {
@@ -133,18 +136,7 @@ export function createInitializer(config: APIConfig, logger: ILogger): () => Pro
 				setInjectedWorkerService(new WorkerService(workerQueue, getSnowflakeService(), new JobLedgerRepository()));
 				logger.info('JetStream worker service initialized');
 			}
-			try {
-				const kvDeletionQueue = getKVAccountDeletionQueue();
-				if (await kvDeletionQueue.needsRebuild()) {
-					logger.info('KV deletion queue needs rebuild, rebuilding...');
-					await kvDeletionQueue.rebuildState();
-				} else {
-					logger.info('KV deletion queue state is healthy');
-				}
-			} catch (error) {
-				logger.error({error}, 'Failed to verify KV deletion queue state');
-				throw error;
-			}
+			await ensureDeletionQueueState(getKVAccountDeletionQueue(), logger);
 			logger.info('Initializing search indexes...');
 			let searchInitialized = false;
 			try {

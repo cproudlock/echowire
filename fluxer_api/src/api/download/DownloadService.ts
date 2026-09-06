@@ -11,8 +11,13 @@ import type {
 	DesktopPlatform,
 } from '@fluxer/schema/src/domains/download/DownloadSchemas';
 import {Config} from '../Config';
-import type {IStorageService} from '../infrastructure/IStorageService';
-import {isJsonRecord, parseJsonUnknown} from '../utils/JsonBoundaryUtils';
+import {
+	type IStorageService,
+	StorageObjectListingOverflowError,
+	StorageObjectRangeNotSatisfiableError,
+} from '../infrastructure/IStorageService';
+import {Logger} from '../Logger';
+import {isJsonRecord, parseJsonRecord, parseJsonUnknown} from '../utils/JsonBoundaryUtils';
 import {
 	parseDesktopArtifactScope,
 	parseDesktopReleaseDescriptor,
@@ -45,14 +50,17 @@ function isStorageNotFoundError(error: unknown): boolean {
 }
 
 function isUnsatisfiableRangeError(error: unknown): boolean {
+	if (error instanceof StorageObjectRangeNotSatisfiableError) {
+		return true;
+	}
 	return (
 		error instanceof S3ServiceException && (error.name === 'InvalidRange' || error.$metadata?.httpStatusCode === 416)
 	);
 }
+const MAX_DESKTOP_OBJECTS_PER_PREFIX = 10_000;
 const DESKTOP_BUCKET_PREFIX = 'desktop';
 const DESKTOP_TEST_BUCKET_PREFIX = 'desktop-test';
 const DOWNLOAD_KEY_ALLOWED_PREFIXES = [`${DESKTOP_BUCKET_PREFIX}/`, `${DESKTOP_TEST_BUCKET_PREFIX}/`];
-const DEFAULT_API_CLIENT_BASE_URL = 'https://api.fluxer.app';
 const GITHUB_RELEASE_DOWNLOAD_BASE_URL = 'https://github.com/fluxerapp/fluxer/releases/download';
 const GITHUB_RELEASE_MARKER_DIRECTORY = 'github-releases';
 
@@ -349,11 +357,8 @@ export class DownloadService {
 		}
 		const prefix = `${basePrefix}/`;
 		try {
-			const objects = await this.storageService.listObjects({
-				bucket: Config.s3.buckets.downloads,
-				prefix,
-			});
-			if (!objects || objects.length === 0) {
+			const objects = await this.listDesktopArtifacts(prefix);
+			if (objects.length === 0) {
 				return {versions: [], hasMore: false};
 			}
 			const versionMap = new Map<
@@ -681,11 +686,7 @@ export class DownloadService {
 	}
 
 	private buildBaseUrl(baseUrl?: string): string {
-		const configuredBaseUrl = (baseUrl ?? Config.endpoints.apiClient).trim();
-		if (configuredBaseUrl.length > 0) {
-			return configuredBaseUrl.replace(/\/+$/u, '');
-		}
-		return DEFAULT_API_CLIENT_BASE_URL;
+		return (baseUrl ?? Config.endpoints.apiClient).trim().replace(/\/+$/u, '');
 	}
 
 	private buildDesktopVersionUrl(params: {
@@ -730,7 +731,7 @@ export class DownloadService {
 
 	private async readJsonObjectFromStorage(key: string): Promise<unknown | null> {
 		const text = await this.readTextFromStorage(key);
-		return text == null ? null : parseJsonUnknown(text);
+		return text == null ? null : parseJsonRecord(text);
 	}
 
 	private async readTextFromStorage(key: string): Promise<string | null> {
@@ -791,6 +792,22 @@ export class DownloadService {
 		return this.findLatestFilenameForRequestedArch(params);
 	}
 
+	private async listDesktopArtifacts(prefix: string): Promise<ReadonlyArray<{key: string; lastModified?: Date}>> {
+		try {
+			return await this.storageService.listObjects({
+				bucket: Config.s3.buckets.downloads,
+				prefix,
+				maxObjects: MAX_DESKTOP_OBJECTS_PER_PREFIX,
+			});
+		} catch (error) {
+			if (error instanceof StorageObjectListingOverflowError) {
+				Logger.warn({prefix, maxObjects: error.maxObjects}, 'Desktop artifact prefix outgrew its listing cap');
+				return [];
+			}
+			throw error;
+		}
+	}
+
 	private isFilenameCompatibleWithRequestedArch(params: ManifestFilenameResolutionParams): boolean {
 		const parsed = this.parseVersionFromFilename(params.filename, params.channel, params.plat, params.arch);
 		if (!parsed) {
@@ -815,11 +832,8 @@ export class DownloadService {
 			return null;
 		}
 		const prefix = `${basePrefix}/`;
-		const objects = await this.storageService.listObjects({
-			bucket: Config.s3.buckets.downloads,
-			prefix,
-		});
-		if (!objects || objects.length === 0) {
+		const objects = await this.listDesktopArtifacts(prefix);
+		if (objects.length === 0) {
 			return null;
 		}
 		let latestFilename: string | null = null;

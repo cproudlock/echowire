@@ -111,9 +111,9 @@ skip = [
     { crate = "sha1@0.10.6", reason = "transitive dependency requires the older digest API" },
     { crate = "sha2@0.10.9", reason = "transitive dependency requires the older digest API" },
     { crate = "socket2@0.5.10", reason = "transitive dependency requires the older socket API" },
+    { crate = "syn@2.0.117", reason = "transitive dependency requires the prior proc-macro API" },
     { crate = "wasi@0.11.1+wasi-snapshot-preview1", reason = "transitive dependency requires the legacy WASI API" },
     { crate = "windows-sys@0.52.0", reason = "transitive dependency requires the older Windows API" },
-    { crate = "windows-sys@0.59.0", reason = "transitive dependency requires the prior Windows API" },
     { crate = "wit-bindgen@0.51.0", reason = "transitive dependency requires the older WASI binding API" },
 ]
 skip-tree = []

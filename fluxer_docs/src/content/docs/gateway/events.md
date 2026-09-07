@@ -511,6 +511,41 @@ A user left a group direct message the session belongs to.
 | channel_id | snowflake | Group direct message channel |
 | user | [partial user](/http-api/users/#partial-user-object) object | The user that left |
 
+### <span id="thread-create"></span>THREAD_CREATE
+
+A thread was created under a text or forum channel. The payload is the complete [channel object](/http-api/channels/#channel-object) for the thread, with `guild_id` present.
+
+Recipients are every session subscribed to the guild. The creator is already a member when the Dispatch arrives, so `member_count` is 1.
+
+### <span id="thread-update"></span>THREAD_UPDATE
+
+A thread changed, whether renamed, archived, unarchived, locked, pinned, retagged, or given a new auto-archive duration. The payload is the complete [channel object](/http-api/channels/#channel-object) for the thread.
+
+### <span id="thread-delete"></span>THREAD_DELETE
+
+A thread was deleted. Unlike [Thread Update](#thread-update), the payload is a partial object rather than the complete channel.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| id | snowflake | The thread that was deleted |
+| guild_id | snowflake | Guild the thread belonged to |
+| parent_id | ?snowflake | The text or forum channel the thread hung under |
+| type | integer | The [channel type](/http-api/channels/#channel-types) of the deleted thread |
+
+### <span id="thread-members-update"></span>THREAD_MEMBERS_UPDATE
+
+The membership of a thread changed. One Dispatch carries either a single join or a single leave, so `added_members` and `removed_member_ids` never both appear.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| id | snowflake | The thread whose membership changed |
+| guild_id | snowflake | Guild the thread belongs to |
+| member_count | integer | Member count recounted from the membership records after the change |
+| added_members | ?array[object] | Present on a join, each entry carrying `user_id` |
+| removed_member_ids | ?array[snowflake] | Present on a leave |
+
+A join or leave that changes nothing, such as joining a thread the user already belongs to, produces no Dispatch.
+
 ### <span id="webhooks-update"></span>WEBHOOKS_UPDATE
 
 The webhook set of a guild channel changed. The event has no webhook data, so a client that needs the new set reads it over the HTTP API.

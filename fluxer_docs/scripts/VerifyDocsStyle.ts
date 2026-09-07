@@ -317,7 +317,9 @@ const ACCEPTED_TABLE_FINDINGS = new Map<string, Readonly<Partial<Record<TableRul
 	['http-api/authentication.mdx', {'table-identifier': 1}],
 	['http-api/billing.mdx', {'table-identifier': 5}],
 	['http-api/calls.mdx', {'table-fit': 1, 'table-cell': 3}],
-	['http-api/channels.mdx', {'table-cell': 6}],
+	// Echowire: default_auto_archive_duration? is a live schema field name, so the
+	// identifier cannot be shortened without breaking the schema check.
+	['http-api/channels.mdx', {'table-cell': 6, 'table-identifier': 1}],
 	['http-api/connections.mdx', {'table-fit': 1, 'table-cell': 4, 'table-identifier': 1}],
 	['http-api/deployment-availability.md', {'table-fit': 1}],
 	['http-api/discovery.mdx', {'table-cell': 3}],

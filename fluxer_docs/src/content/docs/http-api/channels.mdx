@@ -42,6 +42,16 @@ A channel object always has its identity and type. Every other field is present 
 | content_warning_text?<sup>10</sup> | ?string | The content warning text stored on this channel, or null when the channel inherits |
 | rate_limit_per_user?<sup>11</sup> | integer | The slowmode interval in seconds, present only for a guild text or voice channel |
 | nicks?<sup>12</sup> | map[snowflake, string] | The group direct message nicknames keyed by the decimal user ID (each 1-32 characters) |
+| thread_metadata? | ?[thread metadata](#thread-metadata-object) object | The thread state, present only for a thread channel |
+| member_count? | integer | Approximate member count, present only for a thread channel |
+| message_count? | integer | Approximate message count, present only for a thread channel |
+| pinned? | boolean | Whether the forum post is pinned to the top of its forum |
+| available_tags? | array[[forum tag](#forum-tag-object) object] | The tags a post in this forum may apply (max 20), present only for a forum channel |
+| applied_tags? | array[snowflake] | The tag IDs this forum post applies (max 5), present only for a post under a forum channel |
+| default_reaction_emoji? | ?object | The reaction shown by default on posts in this forum, carrying `emoji_id` and `emoji_name`, exactly one of which is null |
+| default_sort_order? | ?integer | The default post ordering for a forum channel, where `0` is latest activity and `1` is creation |
+| default_auto_archive_duration? | ?integer | The auto-archive duration in minutes that new posts in this forum inherit |
+| require_tag? | boolean | Whether a post in this forum must apply at least one tag |
 
 <sup>1</sup> Omitted when a group direct message stores no name, and never present on a direct message or on the personal notes channel
 
@@ -198,6 +208,7 @@ An RTC region names one voice routing target the deployment operates. Its identi
 | id | string | The ID of the RTC region |
 | name | string | The name shown for the region in a client |
 | emoji | string | The emoji the operator configured for the region |
+| ping_endpoint | ?string | The URL a client pings to measure latency to the region, or null when the operator configured none |
 
 ### Example
 
@@ -206,6 +217,78 @@ An RTC region names one voice routing target the deployment operates. Its identi
   "id": "eu-central",
   "name": "Frankfurt",
   "emoji": "🇩🇪"
+}
+```
+
+## Thread metadata object
+
+Thread metadata carries the archive and lock state a thread channel owns. A channel that is not a thread does not carry it.
+
+### Structure
+
+| Field | Type | Description |
+| --- | --- | --- |
+| archived | boolean | Whether the thread is archived |
+| auto_archive_duration | integer | Minutes of inactivity before the thread auto-archives, one of 60, 1440, 4320, or 10080 |
+| archive_timestamp? | ?ISO8601 timestamp | When the archive state last changed |
+| locked? | boolean | Whether the thread is locked, so that only a moderator can unarchive it |
+| invitable? | boolean | Whether a non-moderator can add others to a private thread |
+| create_timestamp? | ?ISO8601 timestamp | When the thread was created |
+
+### Example
+
+```json
+{
+  "archived": false,
+  "auto_archive_duration": 1440,
+  "archive_timestamp": "2026-09-06T21:04:11.615Z",
+  "locked": false,
+  "invitable": false,
+  "create_timestamp": "2026-09-06T21:04:11.615Z"
+}
+```
+
+## Forum tag object
+
+A forum tag is one selectable label a forum channel defines in `available_tags`. A post under that forum applies tags by ID through `applied_tags`.
+
+### Structure
+
+| Field | Type | Description |
+| --- | --- | --- |
+| id | snowflake | The ID of the tag |
+| name | string | The name shown for the tag |
+| emoji_name | ?string | The emoji shown beside the tag, or null when it has none |
+
+### Example
+
+```json
+{
+  "id": "1472454332581490688",
+  "name": "Bug report",
+  "emoji_name": "🐛"
+}
+```
+
+## Thread member object
+
+A thread member records one user's membership of a thread. [List thread members](#list-thread-members) returns these, and their count is what a thread reports as `member_count`.
+
+### Structure
+
+| Field | Type | Description |
+| --- | --- | --- |
+| user_id | snowflake | The user this membership belongs to |
+| join_timestamp | ISO8601 timestamp | When the user joined the thread |
+| flags | integer | Membership flags stored for the user on this thread |
+
+### Example
+
+```json
+{
+  "user_id": "1472410036750807040",
+  "join_timestamp": "2026-09-06T21:04:11.615Z",
+  "flags": 0
 }
 ```
 
@@ -785,3 +868,273 @@ Fluxer emits [Channel Update](/gateway/events/#channel-update) to every session 
 ### Rate limit
 
 20 requests per 10 seconds for each authenticated user and channel ID, on the `channel:update::channel_id` bucket.
+
+## Create a thread
+
+<RouteHeader method="POST" path="/v1/channels/{channel_id}/threads" bot />
+
+Creates a thread under a guild text or forum channel and returns the new [channel object](#channel-object).
+
+### Limitations
+
+- The parent must be a guild text channel or a guild forum channel.
+- The caller needs [SEND_MESSAGES](/http-api/permissions/) in the guild that owns the parent.
+- `applied_tags` is accepted only when the parent is a forum channel, and every ID must appear in that forum's `available_tags`.
+- A forum channel that requires a tag rejects a post that applies none.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the parent text or forum channel |
+
+### JSON body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| name | string | The name of the thread, 1 to 100 characters |
+| message_id? | snowflake | The message to start the thread from. The thread adopts this ID so the message can render an inline link to it |
+| applied_tags? | array[snowflake] | Forum tag IDs to apply, at most 5, for a forum parent only |
+| auto_archive_duration? | integer | Minutes before auto-archiving: 60, 1440, 4320, or 10080. Defaults to the parent forum's default, then 1440 |
+| type? | integer | 11 for a public thread or 12 for a private thread, defaulting to 11. A private thread starts invitable |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 201 | [channel](#channel-object) object | Thread was created, or the thread that already adopted `message_id` was returned unchanged |
+| 400 | [error response](/http-api/#error-response) | `applied_tags` names an undefined tag, or the parent is not a forum, each returning `FORUM_TAG_INVALID` |
+| 400 | [error response](/http-api/#error-response) | The parent forum requires a tag and none was applied, returning `FORUM_TAG_REQUIRED` |
+| 403 | [error response](/http-api/#error-response) | Caller lacks `SEND_MESSAGES`, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Parent does not exist, is deleted, or is neither a text nor a forum channel, each returning `UNKNOWN_CHANNEL` |
+| 404 | [error response](/http-api/#error-response) | `message_id` names no message in the parent channel, returning `UNKNOWN_MESSAGE` |
+
+:::note[Starting a thread from a message is idempotent]
+When `message_id` already has a thread under the same parent, that thread is returned and nothing is created or dispatched. An adopted ID that resolves to a channel which is not a thread under this parent returns `UNKNOWN_CHANNEL`.
+:::
+
+### Side effects
+
+Fluxer emits [Thread Create](/gateway/events/#thread-create) to every session subscribed to the guild. The creator joins the thread, so `member_count` starts at 1. Fluxer also posts a thread-created system message in the parent channel on a best-effort basis, and a failure to post it does not fail the request.
+
+### Rate limit
+
+10 requests per minute for each authenticated user and guild ID, on the `guild:channel:create::guild_id` bucket.
+
+## List active threads
+
+<RouteHeader method="GET" path="/v1/channels/{channel_id}/threads" bot />
+
+Returns the [channel objects](#channel-object) for the threads under a text or forum channel that are not archived. The array can be empty.
+
+### Limitations
+
+- The caller needs [VIEW_CHANNEL](/http-api/permissions/) in the guild that owns the parent.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the parent text or forum channel |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | array[[channel](#channel-object) object] | Threads were returned |
+| 403 | [error response](/http-api/#error-response) | Caller lacks `VIEW_CHANNEL`, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Parent does not exist, is deleted, or is not a guild channel, each returning `UNKNOWN_CHANNEL` |
+
+### Rate limit
+
+100 requests per 10 seconds for each authenticated user and channel ID, on the `channel:read::channel_id` bucket.
+
+## List archived threads
+
+<RouteHeader method="GET" path="/v1/channels/{channel_id}/threads/archived" bot />
+
+Returns the [channel objects](#channel-object) for the archived threads under a text or forum channel. It takes the same access as [List active threads](#list-active-threads) and returns the complement of that list. The array can be empty.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the parent text or forum channel |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | array[[channel](#channel-object) object] | Archived threads were returned |
+| 403 | [error response](/http-api/#error-response) | Caller lacks `VIEW_CHANNEL`, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Parent does not exist, is deleted, or is not a guild channel, each returning `UNKNOWN_CHANNEL` |
+
+### Rate limit
+
+100 requests per 10 seconds for each authenticated user and channel ID, on the `channel:read::channel_id` bucket.
+
+## Update a thread
+
+<RouteHeader method="PATCH" path="/v1/channels/{channel_id}/thread" bot />
+
+Updates a thread and returns the changed [channel object](#channel-object). Every field is optional, and an omitted field keeps its stored value.
+
+### Limitations
+
+- `channel_id` must name a thread, not the parent that holds it.
+- The caller must own the thread, or hold [MANAGE_CHANNELS](/http-api/permissions/) in the guild.
+- `applied_tags` is validated against the parent forum's `available_tags`, so it is accepted only when the thread hangs under a forum channel.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread to update |
+
+### JSON body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| name? | string | New thread name, 1 to 100 characters |
+| archived? | boolean | Whether the thread is archived |
+| locked? | boolean | Whether the thread is locked |
+| auto_archive_duration? | integer | Minutes of inactivity before auto-archiving, one of 60, 1440, 4320, or 10080 |
+| invitable? | boolean | Whether non-moderators can add others to a private thread |
+| applied_tags? | array[snowflake] | Replacement set of forum tag IDs, at most 5. An empty array clears the tags |
+| pinned? | boolean | Whether the forum post is pinned to the top |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | [channel](#channel-object) object | Thread was updated |
+| 400 | [error response](/http-api/#error-response) | `applied_tags` names an undefined tag, or the thread's parent is not a forum, returning `FORUM_TAG_INVALID` |
+| 403 | [error response](/http-api/#error-response) | Caller neither owns the thread nor holds `MANAGE_CHANNELS`, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel does not exist, is deleted, or is not a thread, each returning `UNKNOWN_CHANNEL` |
+
+### Side effects
+
+Fluxer emits [Thread Update](/gateway/events/#thread-update) to every session subscribed to the guild. Changing `archived` also restamps the thread's archive timestamp, and a request that sets `archived` to the value it already holds leaves that timestamp alone.
+
+### Rate limit
+
+10 requests per minute for each authenticated user and guild ID, on the `guild:channel:create::guild_id` bucket.
+
+## Delete a thread
+
+<RouteHeader method="DELETE" path="/v1/channels/{channel_id}/thread" bot />
+
+Deletes a thread. The caller must own the thread, or hold [MANAGE_CHANNELS](/http-api/permissions/) in the guild.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread to delete |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 204 | empty | Thread was deleted |
+| 403 | [error response](/http-api/#error-response) | Caller neither owns the thread nor holds `MANAGE_CHANNELS`, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel does not exist, is deleted, or is not a thread, each returning `UNKNOWN_CHANNEL` |
+
+### Side effects
+
+Fluxer emits [Thread Delete](/gateway/events/#thread-delete) to every session subscribed to the guild. That Dispatch carries only the thread's identifiers and type, not the complete channel.
+
+### Rate limit
+
+10 requests per minute for each authenticated user and guild ID, on the `guild:channel:create::guild_id` bucket.
+
+## Join a thread
+
+<RouteHeader method="PUT" path="/v1/channels/{channel_id}/thread-members/@me" bot />
+
+Adds the authenticated user to a thread. The call is idempotent.
+
+### Limitations
+
+- Joining a thread the caller does not already belong to needs [VIEW_CHANNEL](/http-api/permissions/) in the guild.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread to join |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 204 | empty | Caller joined the thread, or already belonged to it |
+| 403 | [error response](/http-api/#error-response) | Caller lacks `VIEW_CHANNEL`, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel does not exist, is deleted, or is not a thread, each returning `UNKNOWN_CHANNEL` |
+
+:::note[An existing membership returns before the permission check]
+A caller who already belongs to the thread receives 204 even when they no longer hold `VIEW_CHANNEL`, because the membership check runs first.
+:::
+
+### Side effects
+
+A join that adds a membership recounts the thread's `member_count` and emits [Thread Members Update](/gateway/events/#thread-members-update) carrying the caller in `added_members`. A join by a user who already belongs to the thread changes nothing and emits no Dispatch.
+
+### Rate limit
+
+100 requests per 10 seconds for each authenticated user and channel ID, on the `channel:read::channel_id` bucket.
+
+## Leave a thread
+
+<RouteHeader method="DELETE" path="/v1/channels/{channel_id}/thread-members/@me" bot />
+
+Removes the authenticated user from a thread. The call is idempotent and needs no permission beyond naming a thread that exists.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread to leave |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 204 | empty | Caller left the thread, or did not belong to it |
+| 404 | [error response](/http-api/#error-response) | Channel does not exist, is deleted, or is not a thread, each returning `UNKNOWN_CHANNEL` |
+
+### Side effects
+
+A leave that removes a membership recounts the thread's `member_count` and emits [Thread Members Update](/gateway/events/#thread-members-update) carrying the caller in `removed_member_ids`. A leave by a user who does not belong to the thread changes nothing and emits no Dispatch.
+
+### Rate limit
+
+100 requests per 10 seconds for each authenticated user and channel ID, on the `channel:read::channel_id` bucket.
+
+## List thread members
+
+<RouteHeader method="GET" path="/v1/channels/{channel_id}/thread-members" bot />
+
+Returns the [thread member objects](#thread-member-object) for a thread.
+
+### Limitations
+
+- The caller needs [VIEW_CHANNEL](/http-api/permissions/) in the guild that owns the thread.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread whose members are returned |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | array[[thread member](#thread-member-object) object] | Members were returned |
+| 403 | [error response](/http-api/#error-response) | Caller lacks `VIEW_CHANNEL`, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel does not exist, is deleted, or is not a thread, each returning `UNKNOWN_CHANNEL` |
+
+### Rate limit
+
+100 requests per 10 seconds for each authenticated user and channel ID, on the `channel:read::channel_id` bucket.

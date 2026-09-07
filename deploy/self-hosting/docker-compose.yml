@@ -334,9 +334,10 @@ services:
           udp_port: ${FLUXER_LIVEKIT_UDP_PORT:-7882}
           use_external_ip: ${FLUXER_LIVEKIT_USE_EXTERNAL_IP:-true}
           node_ip: "${FLUXER_LIVEKIT_NODE_IP:-}"
+          # Echowire: our own SFUs answer STUN Binding on their TURN listener (3478); no google
           stun_servers:
-            - ${FLUXER_LIVEKIT_STUN_PRIMARY:-stun.l.google.com:19302}
-            - ${FLUXER_LIVEKIT_STUN_SECONDARY:-stun1.l.google.com:19302}
+            - ${FLUXER_LIVEKIT_STUN_PRIMARY:-voice-ewr.echowire.org:3478}
+            - ${FLUXER_LIVEKIT_STUN_SECONDARY:-voice-atl.echowire.org:3478}
         webhook:
           api_key: ${LIVEKIT_API_KEY:?set LIVEKIT_API_KEY in .env}
           urls:

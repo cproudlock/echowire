@@ -30,12 +30,12 @@ function normalizeIdleTimeMs(value: number): number | null {
 
 class Idle {
 	idle = false;
-	private lastActivityTime = Date.now();
+	private lastLocalActivityTime = Date.now();
+	private lastSystemActivityTime = 0;
+	private peakSystemIdleMs = 0;
 	private checkInterval: NodeJS.Timeout | null = null;
 	private systemIdleCheckInFlight = false;
 	private lastSystemIdleFailureAt = 0;
-	private activityVersion = 0;
-	private peakSystemIdleMs = 0;
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
@@ -57,16 +57,15 @@ class Idle {
 	}
 
 	recordActivity(): void {
-		this.lastActivityTime = Date.now();
-		this.activityVersion++;
+		this.lastLocalActivityTime = Date.now();
 		if (this.idle) {
 			this.applyIdleState(false);
 		}
 	}
 
 	markBackground(): void {
-		this.lastActivityTime = 0;
-		this.activityVersion++;
+		this.lastLocalActivityTime = 0;
+		this.lastSystemActivityTime = 0;
 		this.applyIdleState(true);
 	}
 
@@ -75,16 +74,42 @@ class Idle {
 	}
 
 	getIdleSince(): number {
-		return this.idle ? this.lastActivityTime : 0;
+		return this.idle ? this.getLastActivityTime() : 0;
 	}
 
 	getInactiveDurationMs(now = Date.now()): number {
-		return Math.max(0, now - this.lastActivityTime);
+		return Math.max(0, now - this.getLastActivityTime(now));
+	}
+
+	// Echowire: Electron's powerMonitor.getSystemIdleTime() reports 0 forever on a
+	// Linux desktop with no D-Bus idle path that Chromium reads. Cinnamon on X11
+	// exposes org.cinnamon.Muffin.IdleMonitor and the MIT-SCREEN-SAVER extension,
+	// neither of which Chromium queries, so it always answers 0. A constant 0 keeps
+	// lastSystemActivityTime pinned to now, so those clients never go idle: never
+	// away, never push-eligible. Treat the source as dead once a full idle window
+	// has passed with no in-app activity while the OS clock has never once reached
+	// the threshold, and trust in-app inactivity instead. A machine whose clock
+	// works reaches the threshold the first time the user steps away, which retires
+	// this for the rest of the session.
+	private systemIdleSourceIsDead(now: number): boolean {
+		if (this.peakSystemIdleMs >= IDLE_DURATION_MS) return false;
+		return now - this.lastLocalActivityTime >= IDLE_DURATION_MS;
+	}
+
+	private getLastActivityTime(now = Date.now()): number {
+		if (this.systemIdleSourceIsDead(now)) {
+			return this.lastLocalActivityTime;
+		}
+		return Math.max(this.lastLocalActivityTime, this.lastSystemActivityTime);
 	}
 
 	private updateIdleState(): void {
 		const desktopIdleApi = getDesktopIdleApi();
-		if (desktopIdleApi && Date.now() - this.lastSystemIdleFailureAt >= SYSTEM_IDLE_RETRY_DELAY_MS) {
+		if (
+			desktopIdleApi &&
+			!this.systemIdleCheckInFlight &&
+			Date.now() - this.lastSystemIdleFailureAt >= SYSTEM_IDLE_RETRY_DELAY_MS
+		) {
 			void this.updateIdleStateFromSystem(desktopIdleApi);
 			return;
 		}
@@ -97,47 +122,21 @@ class Idle {
 	}
 
 	private async updateIdleStateFromSystem(desktopIdleApi: Required<DesktopIdleApi>): Promise<void> {
-		if (this.systemIdleCheckInFlight) return;
 		this.systemIdleCheckInFlight = true;
-		const activityVersion = this.activityVersion;
-		const requestedAt = Date.now();
 		try {
 			const idleTimeMs = normalizeIdleTimeMs(await desktopIdleApi.getSystemIdleTimeMs());
 			if (idleTimeMs === null) {
 				this.lastSystemIdleFailureAt = Date.now();
-				this.updateIdleStateFromLocalActivity();
-				return;
+			} else {
+				this.peakSystemIdleMs = Math.max(this.peakSystemIdleMs, idleTimeMs);
+				this.lastSystemActivityTime = Math.max(this.lastSystemActivityTime, Date.now() - idleTimeMs);
 			}
-			if (activityVersion !== this.activityVersion && this.lastActivityTime >= requestedAt) {
-				return;
-			}
-			const now = Date.now();
-			this.peakSystemIdleMs = Math.max(this.peakSystemIdleMs, idleTimeMs);
-			// Electron's powerMonitor.getSystemIdleTime() is unreliable on some Linux
-			// desktops (e.g. X11/Cinnamon), where the OS idle D-Bus path is missing and
-			// it reports 0 even while the machine is genuinely idle. A raw 0 is finite,
-			// so it never hits the null failure path above; the old code then clobbered
-			// lastActivityTime back to "now" every poll, pinning the user active forever
-			// -> never away, never push-eligible. Detect a dead source: if the OS idle
-			// clock has NEVER advanced near the threshold this whole session yet we have
-			// gone a full idle window with no in-app activity, trust our own inactivity
-			// instead. Clients where the OS idle clock works (it has reached the
-			// threshold at least once) keep the exact original behavior.
-			const localInactivityMs = this.getInactiveDurationMs(now);
-			const systemIdleSourceIsBroken =
-				this.peakSystemIdleMs < IDLE_DURATION_MS && localInactivityMs >= IDLE_DURATION_MS;
-			if (systemIdleSourceIsBroken) {
-				this.applyIdleState(true);
-				return;
-			}
-			this.lastActivityTime = Math.max(0, now - idleTimeMs);
-			this.applyIdleState(idleTimeMs >= IDLE_DURATION_MS);
 		} catch {
 			this.lastSystemIdleFailureAt = Date.now();
-			this.updateIdleStateFromLocalActivity();
 		} finally {
 			this.systemIdleCheckInFlight = false;
 		}
+		this.updateIdleStateFromLocalActivity();
 	}
 
 	private applyIdleState(idle: boolean): void {

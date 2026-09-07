@@ -75,9 +75,26 @@ describe('Idle', () => {
 		expect(Idle.isIdle()).toBe(false);
 	});
 
-	it('stays active while the system reports input the app never sees', async () => {
+	// Echowire: upstream reads a constant 0 as input the app never sees and stays
+	// active. On Cinnamon/X11, Chromium finds no idle path it reads and Electron
+	// answers 0 forever, which pinned those clients active permanently: never away,
+	// never push-eligible. A clock that has never once approached the threshold is
+	// treated as dead, and in-app inactivity decides instead.
+	it('goes idle when a dead system idle clock reports zero forever', async () => {
 		const Idle = await loadIdle(async () => 0);
 		await vi.advanceTimersByTimeAsync(IDLE_DURATION_MS * 2);
+		expect(Idle.isIdle()).toBe(true);
+	});
+
+	// The other half of that rule: a clock that has proven it works keeps its
+	// authority, so input the app never sees still counts as activity.
+	it('stays active on input the app never sees once the system clock has proven it works', async () => {
+		let systemIdleMs = IDLE_DURATION_MS;
+		const Idle = await loadIdle(async () => systemIdleMs);
+		await vi.advanceTimersByTimeAsync(IDLE_DURATION_MS);
+		expect(Idle.isIdle()).toBe(true);
+		systemIdleMs = 0;
+		await vi.advanceTimersByTimeAsync(IDLE_CHECK_INTERVAL_MS);
 		expect(Idle.isIdle()).toBe(false);
 	});
 

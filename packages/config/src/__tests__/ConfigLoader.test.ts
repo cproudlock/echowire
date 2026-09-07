@@ -207,9 +207,10 @@ describe('ConfigLoader', () => {
 		stubMinimalEnv();
 		const config = await loadConfig();
 		expect(config.auth.passkeys.additional_allowed_origins).toEqual([
-			'https://fluxer.app',
-			'https://web.fluxer.app',
-			'https://web.canary.fluxer.app',
+			'https://echowire.org',
+			'https://web.echowire.org',
+			'https://canary.echowire.org',
+			'https://web.canary.echowire.org',
 			'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 			'android:apk-key-hash:zRmCKDKo3uCX2GDZISjJx8Rzo3J-Y3Gbp7s7mAaUH28',
 		]);
@@ -530,14 +531,16 @@ describe('ConfigLoader', () => {
 		expect((await loadConfig()).integrations.captcha.enabled).toBe(false);
 	});
 
-	test('leaves Bluesky login off with no legal URLs by default', async () => {
+	// Echowire: the fork ships Bluesky login on, pointing at its own legal pages,
+	// where upstream ships it off with no URLs.
+	test('enables Bluesky login with the fork legal URLs by default', async () => {
 		stubMinimalEnv();
 
 		const config = await loadConfig();
 
-		expect(config.auth.bluesky.enabled).toBe(false);
-		expect(config.auth.bluesky.tos_uri).toBe('');
-		expect(config.auth.bluesky.policy_uri).toBe('');
+		expect(config.auth.bluesky.enabled).toBe(true);
+		expect(config.auth.bluesky.tos_uri).toBe('https://echowire.org/terms');
+		expect(config.auth.bluesky.policy_uri).toBe('https://echowire.org/privacy');
 		expect(config.auth.bluesky.keys).toEqual([]);
 	});
 

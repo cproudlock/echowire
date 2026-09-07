@@ -159,6 +159,7 @@ $FluxerSecretKeys = @(
 	@{Name = 'FLUXER_MEDIA_PROXY_SECRET_KEY'; Kind = 'hex'}
 	@{Name = 'FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64'; Kind = 'base64'}
 	@{Name = 'FLUXER_ADMIN_SECRET_KEY_BASE'; Kind = 'hex'}
+	@{Name = 'FLUXER_MARKETING_SECRET_KEY_BASE'; Kind = 'hex'}
 	@{Name = 'FLUXER_ADMIN_OAUTH_CLIENT_SECRET'; Kind = 'hex'}
 	@{Name = 'LIVEKIT_API_SECRET'; Kind = 'hex'}
 	@{Name = 'FLUXER_VAPID_PUBLIC_KEY'; Kind = 'vapid_public'}

@@ -1901,7 +1901,6 @@ fn download_row(row: DownloadRow) -> Markup {
     }
 }
 
-
 fn platform_icon(platform: Platform) -> Icon {
     match platform {
         Platform::Windows => Icon::Windows,

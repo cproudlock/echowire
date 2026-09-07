@@ -887,7 +887,9 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(html.contains(&expected_download_url));
     assert!(html.contains(&expected_game_capture_url));
     let channel = ReleaseChannel::Stable.segment();
-    assert!(html.contains(&format!("/dl/desktop/{channel}/linux/x64/latest/appimage?test=1")));
+    assert!(html.contains(&format!(
+        "/dl/desktop/{channel}/linux/x64/latest/appimage?test=1"
+    )));
     // Echowire: no macOS build, no arm64 Linux build, no Flatpak published -> none linked.
     assert!(!html.contains("darwin"));
     assert!(!html.contains("flathub"));

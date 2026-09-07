@@ -13,7 +13,6 @@ use crate::{
 };
 use maud::{Markup, PreEscaped, html};
 
-
 const SWISH_LOGO_SVG: &str = r##"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" fill-rule="evenodd" class="h-8 w-8 shrink-0" aria-hidden="true" focusable="false">
 <defs>
 <linearGradient id="swish-grad-1" x1="-746" y1="822.6" x2="-746.2" y2="823.1" gradientTransform="translate(224261.6 305063) scale(300.3 -370.5)" gradientUnits="userSpaceOnUse">

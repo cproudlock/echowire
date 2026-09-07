@@ -5,7 +5,7 @@ on:
   pull_request:
   push:
     branches:
-      - main
+      - echowire
 
 permissions:
   contents: read
@@ -237,7 +237,7 @@ jobs:
           echo "/opt/fluxer-native/bin" >> "$GITHUB_PATH"
 
       - name: Install Node.js dependencies
-        run: pnpm --filter fluxer_admin install
+        run: pnpm --filter fluxer_admin --filter fluxer_marketing install
 
       - name: Check formatting
         run: cargo fmt --all -- --check

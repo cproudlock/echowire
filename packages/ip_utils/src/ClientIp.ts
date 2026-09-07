@@ -109,14 +109,18 @@ function extractClientIpDetailsFromReader(
 		return null;
 	}
 	const headerName = resolveClientIpHeaderName(options.clientIpHeaderName);
-	let clientIpHeader = parseClientIpHeaderValue(headerReader.get(headerName));
+	const configuredHeaderValue = headerReader.get(headerName);
+	let clientIpHeader = parseClientIpHeaderValue(configuredHeaderValue);
 	// Echowire: fall back to x-forwarded-for when the primary header is absent.
 	// Our ingress is Cloudflare -> NetBird frontend -> Caddy, so external requests
 	// carry the real client in cf-connecting-ip, but internal service-to-service
 	// calls (app-proxy discovery, admin -> api, etc.) only carry x-forwarded-for.
 	// Without this fallback, requireClientIp throws (500) on every internal call.
+	// The fallback covers an ABSENT configured header only. A header that is present
+	// but malformed is a misconfigured or hostile edge, so it keeps upstream's
+	// rejection rather than quietly trusting x-forwarded-for instead.
 	const fallbackHeaderName = 'x-forwarded-for';
-	if (!clientIpHeader && headerName !== fallbackHeaderName) {
+	if (!clientIpHeader && configuredHeaderValue === null && headerName !== fallbackHeaderName) {
 		clientIpHeader = parseClientIpHeaderValue(headerReader.get(fallbackHeaderName));
 	}
 	if (clientIpHeader) {

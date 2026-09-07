@@ -12,8 +12,16 @@
 		"tailwindcss",
 		"upng-js"
 	],
-	"ignoreFiles": ["fluxer_admin/src/styles/app.css", "fluxer_admin/static/htmx.min.js"],
+	"ignoreFiles": [
+		"fluxer_admin/src/styles/app.css",
+		"fluxer_admin/static/htmx.min.js",
+		"fluxer_api/scripts/MigrateScyllaToPostgres.ts",
+		"fluxer_marketing/src/styles/app.css",
+		"fluxer_marketing/static/htmx.min.js"
+	],
 	"ignoreIssues": {
+		"fluxer_api/src/api/channel/repositories/ThreadMemberRepository.ts": ["types"],
+		"fluxer_api/src/api/models/Channel.ts": ["types"],
 		"fluxer_app/scripts/build/Config.tsx": ["exports"],
 		"fluxer_app/scripts/build/rspack/static-files.mjs": ["exports"],
 		"fluxer_app/src/index.tsx": ["unlisted"],
@@ -24,6 +32,9 @@
 		"fluxer_desktop/src/main/LinuxDesktopEntry.ts": ["exports"],
 		"fluxer_desktop/src/main/NotificationState.ts": ["exports", "types"],
 		"packages/schema/src/domains/admin/AdminUserSchemas.ts": ["exports"],
+		"packages/schema/src/domains/channel/ChannelRequestSchemas.ts": ["exports"],
+		"packages/schema/src/domains/channel/ChannelSchemas.ts": ["exports"],
+		"packages/schema/src/domains/download/DownloadSchemas.ts": ["exports"],
 		"packages/schema/src/domains/geolocation/GeolocationSchemas.ts": ["exports"],
 		"pnpm-workspace.yaml": ["catalog"]
 	},
@@ -50,7 +61,7 @@
 			]
 		},
 		"fluxer_app": {
-			"entry": ["lingui.config.js", "scripts/build-sw.mjs", "scripts/Generate*.ts"],
+			"entry": ["lingui.config.js", "scripts/build-sw.mjs", "scripts/Generate*.ts", "scripts/build/**/*.{ts,tsx,mjs}"],
 			"ignoreDependencies": ["@lingui/swc-plugin"]
 		},
 		"fluxer_desktop": {

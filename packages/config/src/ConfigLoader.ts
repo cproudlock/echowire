@@ -175,7 +175,9 @@ function defaultConfig(): MasterConfig {
 			sso_allow_private_addresses: false,
 			passkeys: {
 				rp_name: 'echowire',
-				rp_id: 'echowire.org',
+				// Echowire: left empty so it derives from base_domain below. Hardcoding
+				// echowire.org bound every other deployment of this fork to our domain.
+				rp_id: '',
 				additional_allowed_origins: DEFAULT_PASSKEY_ORIGINS,
 			},
 			vapid: {

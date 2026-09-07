@@ -25,8 +25,8 @@ use crate::pipewire_stream::{
 };
 use crate::portal::{self, LiveSession, PortalError, SOURCE_TYPE_WINDOW, StreamInfo};
 use crate::x11_stream::{
-    BACKEND_X11, X11VideoStream, list_monitors as x11_list_monitors, list_windows as x11_list_windows,
-    x11_available,
+    BACKEND_X11, X11VideoStream, list_monitors as x11_list_monitors,
+    list_windows as x11_list_windows, x11_available,
 };
 
 fn generic_error(reason: impl Into<String>) -> napi::Error {
@@ -766,8 +766,10 @@ impl ScreenCapture {
                     .find(|m| m.id == x11_id)
                     .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 monitor id"))?;
                 let requested = requested_output_size(width, height);
-                let (out_w, out_h) = requested
-                    .unwrap_or((u32::from(monitor.width) & !1, u32::from(monitor.height) & !1));
+                let (out_w, out_h) = requested.unwrap_or((
+                    u32::from(monitor.width) & !1,
+                    u32::from(monitor.height) & !1,
+                ));
                 let pool = build_linux_screen_pool(out_w, out_h)?;
                 let stream = X11VideoStream::open(
                     monitor,

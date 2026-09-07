@@ -1,10 +1,10 @@
 {
 	"openapi": "3.0.3",
 	"info": {
-		"title": "Fluxer API",
+		"title": "Echowire API",
 		"version": "1.0.0",
-		"description": "API for Fluxer, a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.",
-		"contact": {"name": "Fluxer Platform AB", "email": "support@fluxer.app"},
+		"description": "API for Echowire, an instant messaging and VoIP chat app built for friends, groups, and communities.",
+		"contact": {"name": "Proudlock Technology LLC", "email": "support@fluxer.app"},
 		"license": {"name": "AGPL-3.0", "url": "https://www.gnu.org/licenses/agpl-3.0.html"}
 	},
 	"servers": [{"url": "https://api.fluxer.app/v1", "description": "Production API"}],
@@ -9196,7 +9196,7 @@
 							"type": {
 								"type": "integer",
 								"format": "int32",
-								"enum": [0, 1, 2, 3, 4, 998, 999],
+								"enum": [0, 1, 2, 3, 4, 11, 12, 15, 998, 999],
 								"description": "The type of the channel"
 							},
 							"guild_id": {"nullable": true, "allOf": [{"$ref": "#/components/schemas/SnowflakeType"}]}
@@ -9253,7 +9253,7 @@
 								"type": {
 									"type": "integer",
 									"format": "int32",
-									"enum": [0, 1, 2, 3, 4, 998, 999],
+									"enum": [0, 1, 2, 3, 4, 11, 12, 15, 998, 999],
 									"description": "The type of the channel"
 								},
 								"guild_id": {"nullable": true, "allOf": [{"$ref": "#/components/schemas/SnowflakeType"}]}
@@ -9269,7 +9269,7 @@
 									"type": {
 										"type": "integer",
 										"format": "int32",
-										"enum": [0, 1, 2, 3, 4, 998, 999],
+										"enum": [0, 1, 2, 3, 4, 11, 12, 15, 998, 999],
 										"description": "The type of the channel"
 									},
 									"guild_id": {"nullable": true, "allOf": [{"$ref": "#/components/schemas/SnowflakeType"}]}
@@ -11314,7 +11314,7 @@
 										"type": {
 											"type": "integer",
 											"format": "int32",
-											"enum": [0, 1, 2, 3, 4, 998, 999],
+											"enum": [0, 1, 2, 3, 4, 11, 12, 15, 998, 999],
 											"description": "The type of the channel"
 										},
 										"position": {"$ref": "#/components/schemas/Int32Type"},

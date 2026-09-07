@@ -8,7 +8,9 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use fluxer_linux_screen_capture::frame_buffer_pool::LinuxFrameBufferPool;
-use fluxer_linux_screen_capture::x11_stream::{X11VideoStream, list_monitors, list_windows, x11_available};
+use fluxer_linux_screen_capture::x11_stream::{
+    X11VideoStream, list_monitors, list_windows, x11_available,
+};
 
 #[test]
 fn x11_backend_captures_real_frames() {
@@ -87,49 +89,52 @@ fn x11_backend_captures_a_window() {
     candidates.sort_by_key(|w| std::cmp::Reverse(u32::from(w.width) * u32::from(w.height)));
     let mut captured_any = false;
     for window in candidates.into_iter().take(6) {
-        eprintln!("trying window '{}' ({}x{})", window.title, window.width, window.height);
+        eprintln!(
+            "trying window '{}' ({}x{})",
+            window.title, window.width, window.height
+        );
 
-    let width = u32::from(window.width) & !1;
-    let height = u32::from(window.height) & !1;
-    let pool = LinuxFrameBufferPool::new((width * height * 3 / 2) as usize).expect("pool");
+        let width = u32::from(window.width) & !1;
+        let height = u32::from(window.height) & !1;
+        let pool = LinuxFrameBufferPool::new((width * height * 3 / 2) as usize).expect("pool");
 
-    let frames = Arc::new(AtomicU64::new(0));
-    let varied = Arc::new(AtomicU64::new(0));
-    let frames_cb = Arc::clone(&frames);
-    let varied_cb = Arc::clone(&varied);
+        let frames = Arc::new(AtomicU64::new(0));
+        let varied = Arc::new(AtomicU64::new(0));
+        let frames_cb = Arc::clone(&frames);
+        let varied_cb = Arc::clone(&varied);
 
-    let stream = X11VideoStream::open_window(
-        window,
-        None,
-        Some(15),
-        Arc::new(move |frame| {
-            frames_cb.fetch_add(1, Ordering::Relaxed);
-            let y_len = (frame.stride_y * frame.height) as usize;
-            let data = frame.data.as_slice();
-            if data.len() >= y_len && y_len > 0 {
-                let first = data[0];
-                if data[..y_len].iter().any(|&b| b != first) {
-                    varied_cb.fetch_add(1, Ordering::Relaxed);
+        let stream = X11VideoStream::open_window(
+            window,
+            None,
+            Some(15),
+            Arc::new(move |frame| {
+                frames_cb.fetch_add(1, Ordering::Relaxed);
+                let y_len = (frame.stride_y * frame.height) as usize;
+                let data = frame.data.as_slice();
+                if data.len() >= y_len && y_len > 0 {
+                    let first = data[0];
+                    if data[..y_len].iter().any(|&b| b != first) {
+                        varied_cb.fetch_add(1, Ordering::Relaxed);
+                    }
                 }
-            }
-        }),
-        Arc::new(|state: &str, detail: &str| eprintln!("lifecycle: {state} {detail}")),
-        pool,
-        None,
-    )
-    .expect("window stream should open");
+            }),
+            Arc::new(|state: &str, detail: &str| eprintln!("lifecycle: {state} {detail}")),
+            pool,
+            None,
+        )
+        .expect("window stream should open");
 
-    std::thread::sleep(std::time::Duration::from_millis(600));
-    stream.stop();
+        std::thread::sleep(std::time::Duration::from_millis(600));
+        stream.stop();
 
-    let got = frames.load(Ordering::Relaxed);
-    let with_content = varied.load(Ordering::Relaxed);
-    eprintln!("  frames={got} with_content={with_content}");
-    assert!(got >= 3, "expected frames from window capture, got {got}");
-    if with_content > 0 {
-        captured_any = true;
-        break;
-    }
+        let got = frames.load(Ordering::Relaxed);
+        let with_content = varied.load(Ordering::Relaxed);
+        eprintln!("  frames={got} with_content={with_content}");
+        assert!(got >= 3, "expected frames from window capture, got {got}");
+        if with_content > 0 {
+            captured_any = true;
+            break;
+        }
     }
     assert!(captured_any, "no window produced non-flat frames");
 }
@@ -140,20 +145,31 @@ fn x11_backend_honours_a_requested_output_size() {
         eprintln!("skipping: no X11 display / MIT-SHM");
         return;
     }
-    let monitor = list_monitors().expect("monitors").into_iter().next().expect("one monitor");
+    let monitor = list_monitors()
+        .expect("monitors")
+        .into_iter()
+        .next()
+        .expect("one monitor");
     let native_w = u32::from(monitor.width) & !1;
     let native_h = u32::from(monitor.height) & !1;
     // Ask for a size that is deliberately not the native one - this is the case that used to be
     // ignored, leaving the pipeline expecting one resolution while frames arrived at another.
     let want_w = 1280u32;
     let want_h = 720u32;
-    assert!(want_w != native_w || want_h != native_h, "test needs a non-native request");
+    assert!(
+        want_w != native_w || want_h != native_h,
+        "test needs a non-native request"
+    );
 
     let pool = LinuxFrameBufferPool::new((want_w * want_h * 3 / 2) as usize).expect("pool");
     let frames = Arc::new(AtomicU64::new(0));
     let right_size = Arc::new(AtomicU64::new(0));
     let varied = Arc::new(AtomicU64::new(0));
-    let (fc, rc, vc) = (Arc::clone(&frames), Arc::clone(&right_size), Arc::clone(&varied));
+    let (fc, rc, vc) = (
+        Arc::clone(&frames),
+        Arc::clone(&right_size),
+        Arc::clone(&varied),
+    );
 
     let stream = X11VideoStream::open(
         monitor,
@@ -184,17 +200,30 @@ fn x11_backend_honours_a_requested_output_size() {
     let content = varied.load(Ordering::Relaxed);
     eprintln!("scaled frames={got} at_requested_size={sized} with_content={content}");
     assert!(got >= 5, "expected frames, got {got}");
-    assert_eq!(sized, got, "every frame must be emitted at the requested size");
+    assert_eq!(
+        sized, got,
+        "every frame must be emitted at the requested size"
+    );
     assert!(content > 0, "scaled frames were all flat");
 }
 
 #[test]
 fn x11_backend_throughput_at_60fps() {
-    if !x11_available() { eprintln!("skipping"); return; }
-    let monitor = list_monitors().expect("monitors").into_iter().next().expect("one");
+    if !x11_available() {
+        eprintln!("skipping");
+        return;
+    }
+    let monitor = list_monitors()
+        .expect("monitors")
+        .into_iter()
+        .next()
+        .expect("one");
     let native_w = u32::from(monitor.width) & !1;
     let native_h = u32::from(monitor.height) & !1;
-    for (label, req) in [("native 1:1", None), ("scaled to 1080p", Some((1920u32, 1080u32)))] {
+    for (label, req) in [
+        ("native 1:1", None),
+        ("scaled to 1080p", Some((1920u32, 1080u32))),
+    ] {
         let (w, h) = req.unwrap_or((native_w, native_h));
         let pool = LinuxFrameBufferPool::new((w * h * 3 / 2) as usize).expect("pool");
         let frames = Arc::new(AtomicU64::new(0));
@@ -203,14 +232,23 @@ fn x11_backend_throughput_at_60fps() {
             monitor.clone(),
             req,
             Some(60),
-            Arc::new(move |_f| { fc.fetch_add(1, Ordering::Relaxed); }),
+            Arc::new(move |_f| {
+                fc.fetch_add(1, Ordering::Relaxed);
+            }),
             Arc::new(|_s: &str, _d: &str| {}),
             pool,
             None,
-        ).expect("open");
+        )
+        .expect("open");
         std::thread::sleep(std::time::Duration::from_millis(2000));
         stream.stop();
         let got = frames.load(Ordering::Relaxed);
-        eprintln!("{label}: {}x{} requested 60fps -> {} frames in 2s = {:.1} fps", w, h, got, got as f64 / 2.0);
+        eprintln!(
+            "{label}: {}x{} requested 60fps -> {} frames in 2s = {:.1} fps",
+            w,
+            h,
+            got,
+            got as f64 / 2.0
+        );
     }
 }

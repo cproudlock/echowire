@@ -101,11 +101,7 @@ pub fn list_monitors() -> Result<Vec<X11Monitor>, BridgeError> {
             // numeric id (`screen:<token>:0`), and Electron reports the RandR output XID as that
             // token. Identify monitors the same way; an ordinal here can never match, which is
             // exactly why the first cut of this backend was never selected by the picker.
-            let output_id = monitor
-                .outputs
-                .first()
-                .copied()
-                .unwrap_or(index as u32 + 1);
+            let output_id = monitor.outputs.first().copied().unwrap_or(index as u32 + 1);
             let name = conn
                 .get_atom_name(monitor.name)
                 .ok()
@@ -494,7 +490,9 @@ fn capture_loop(
         Vec::new()
     };
 
-    let seg: shm::Seg = conn.generate_id().map_err(|_| BridgeError::X11Unavailable)?;
+    let seg: shm::Seg = conn
+        .generate_id()
+        .map_err(|_| BridgeError::X11Unavailable)?;
     conn.shm_attach(seg, shm.shmid as u32, false)
         .map_err(|_| BridgeError::X11Unavailable)?
         .check()

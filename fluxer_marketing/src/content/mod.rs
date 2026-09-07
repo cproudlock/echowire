@@ -1269,7 +1269,8 @@ mod tests {
 
     #[test]
     fn paragraph_soft_breaks_render_as_visual_line_breaks() {
-        let html = rendered("**Support:** <support@echowire.org>\n**Privacy:** <privacy@echowire.org>");
+        let html =
+            rendered("**Support:** <support@echowire.org>\n**Privacy:** <privacy@echowire.org>");
         assert!(
             html.contains(
                 r#"<strong>Support:</strong> <a href="mailto:support@echowire.org">support@echowire.org</a><br>"#

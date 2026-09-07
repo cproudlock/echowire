@@ -33,9 +33,18 @@ describe('extractClientIp', () => {
 		});
 		expect(extractClientIp(request, {trustClientIpHeader: true})).toBe('203.0.113.50');
 	});
-	it('returns null when configured header is missing', () => {
+	// Echowire: the fork falls back to x-forwarded-for when the configured header is
+	// absent, because internal service calls (app-proxy discovery, admin to api) carry
+	// only that one while external traffic carries cf-connecting-ip. See ClientIp.ts.
+	it('falls back to x-forwarded-for when the configured header is missing', () => {
 		const request = new Request('http://example.com', {
 			headers: {'X-Forwarded-For': '192.168.1.3'},
+		});
+		expect(extractClientIp(request, {trustClientIpHeader: true, clientIpHeaderName: 'x-real-ip'})).toBe('192.168.1.3');
+	});
+	it('returns null when neither the configured header nor x-forwarded-for is present', () => {
+		const request = new Request('http://example.com', {
+			headers: {'X-Client-Address': '192.168.1.3'},
 		});
 		expect(extractClientIp(request, {trustClientIpHeader: true, clientIpHeaderName: 'x-real-ip'})).toBeNull();
 	});

@@ -60,6 +60,12 @@ const COMPONENTS: &[Component] = &[
         image: "fluxer-gifs",
         services: &["gifs", "gifs-shard"],
     },
+    // Echowire: the fork keeps fluxer_marketing in-tree and runs it as a
+    // self-host service; upstream extracted it and ships no such image.
+    Component {
+        image: "fluxer-marketing",
+        services: &["marketing"],
+    },
     Component {
         image: "fluxer-media-proxy",
         services: &["media-proxy"],
@@ -900,7 +906,7 @@ mod tests {
             .collect();
         let unique: BTreeSet<&str> = services.iter().copied().collect();
         assert_eq!(services.len(), unique.len());
-        assert_eq!(services.len(), 17);
+        assert_eq!(services.len(), 18);
     }
 
     #[test]
@@ -1004,7 +1010,7 @@ mod tests {
                 .lines()
                 .filter(|line| line.starts_with("    image: "))
                 .count(),
-            17
+            18
         );
 
         let api = manifest
@@ -1056,7 +1062,7 @@ mod tests {
         let mut sorted = services.clone();
         sorted.sort_unstable();
         assert_eq!(services, sorted);
-        assert_eq!(services.len(), 17);
+        assert_eq!(services.len(), 18);
     }
 
     #[test]

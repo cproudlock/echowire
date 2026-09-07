@@ -8,7 +8,7 @@ import {DownloadService} from '../DownloadService';
 
 const PREFIX = 'desktop/stable/darwin/x64';
 const MANIFEST_KEY = `${PREFIX}/manifest.json`;
-const FILENAME = 'Fluxer-1.3.0-mac-universal.dmg';
+const FILENAME = 'Echowire-1.3.0-mac-universal.dmg';
 const SHA256 = 'a'.repeat(64);
 
 const LATEST_PARAMS = {

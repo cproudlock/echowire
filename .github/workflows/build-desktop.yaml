@@ -48,7 +48,7 @@ env:
 jobs:
   meta:
     name: Resolve build metadata
-    runs-on: self-hosted-linux
+    runs-on: ubuntu-24.04-arm
     environment: desktop-releases
     timeout-minutes: 25
     permissions:
@@ -96,7 +96,7 @@ jobs:
 
   matrix:
     name: Resolve build matrix
-    runs-on: self-hosted-linux
+    runs-on: ubuntu-24.04-arm
     environment: desktop-releases
     timeout-minutes: 25
     permissions:
@@ -525,13 +525,152 @@ jobs:
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step upload_handoff
 
+  check_signing:
+    name: Check signing secrets
+    runs-on: ubuntu-24.04-arm
+    environment: desktop-releases
+    timeout-minutes: 5
+    outputs:
+      enabled: ${{ steps.check.outputs.enabled }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Set up Rust toolchain (CI helpers)
+        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9
+        with:
+          toolchain: "1.93.0"
+
+      - name: Check for Azure signing secrets
+        id: check
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step check_signing_secrets
+
+  sign_windows:
+    name: Sign Windows artifacts (${{ matrix.arch }}, ${{ matrix.desktop_variant }})
+    if: ${{ needs.check_signing.outputs.enabled == 'true' }}
+    needs:
+      - meta
+      - matrix
+      - build
+      - check_signing
+    runs-on: blacksmith-32vcpu-windows-2025
+    environment: desktop-releases
+    timeout-minutes: 25
+    env:
+      BUILD_CHANNEL: ${{ needs.meta.outputs.build_channel }}
+      DESKTOP_HANDOFF_PREFIX: _handoff/desktop/${{ needs.meta.outputs.build_channel }}/${{ needs.meta.outputs.version }}/${{ needs.meta.outputs.source_sha }}
+      S3_ENDPOINT: https://e54c5c050e04de8b819ab033506f952c.r2.cloudflarestorage.com
+      S3_BUCKET: fluxer-downloads
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      EXPECT_WINDOWS_X64: ${{ needs.matrix.outputs.windows_x64 }}
+      EXPECT_WINDOWS_ARM64: ${{ needs.matrix.outputs.windows_arm64 }}
+      EXPECT_WINDOWS_X64_DEFAULT: ${{ needs.matrix.outputs.windows_x64_default }}
+      EXPECT_WINDOWS_ARM64_DEFAULT: ${{ needs.matrix.outputs.windows_arm64_default }}
+      EXPECT_WINDOWS_GAME_CAPTURE_X64: ${{ needs.matrix.outputs.windows_game_capture_x64 }}
+      EXPECT_WINDOWS_GAME_CAPTURE_ARM64: ${{ needs.matrix.outputs.windows_game_capture_arm64 }}
+      EXPECT_WINDOWS_ARTIFACTS: ${{ (matrix.desktop_variant == 'default' && matrix.arch == 'x64' && needs.matrix.outputs.windows_x64_default == 'true') || (matrix.desktop_variant == 'default' && matrix.arch == 'arm64' && needs.matrix.outputs.windows_arm64_default == 'true') || (matrix.desktop_variant == 'windows-game-capture' && matrix.arch == 'x64' && needs.matrix.outputs.windows_game_capture_x64 == 'true') || (matrix.desktop_variant == 'windows-game-capture' && matrix.arch == 'arm64' && needs.matrix.outputs.windows_game_capture_arm64 == 'true') }}
+      DESKTOP_VARIANT: ${{ matrix.desktop_variant }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            desktop_variant: default
+          - arch: arm64
+            desktop_variant: default
+          - arch: x64
+            desktop_variant: windows-game-capture
+          - arch: arm64
+            desktop_variant: windows-game-capture
+    steps:
+      - name: Checkout CI helpers
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        with:
+          ref: ${{ needs.meta.outputs.source_sha }}
+
+      - name: Set up Rust toolchain (CI helpers)
+        uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9
+        with:
+          toolchain: "1.93.0"
+
+      - name: Download Windows artifacts from S3 handoff
+        id: download_artifact
+        if: env.EXPECT_WINDOWS_ARTIFACTS == 'true'
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step download_windows_handoff
+
+      - name: Check whether artifacts exist for this arch
+        id: check_artifacts
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step check_windows_artifacts
+
+      - name: Azure login for Artifact Signing
+        if: steps.check_artifacts.outputs.found == 'true'
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Sign Windows executables with Artifact Signing
+        if: steps.check_artifacts.outputs.found == 'true'
+        uses: azure/artifact-signing-action@c7ab2a863ab5f9a846ddb8265964877ef296ee82
+        with:
+          endpoint: ${{ secrets.AZURE_ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ secrets.AZURE_ARTIFACT_SIGNING_ACCOUNT_NAME }}
+          certificate-profile-name: ${{ secrets.AZURE_ARTIFACT_SIGNING_CERTIFICATE_PROFILE_NAME }}
+          files-folder: ${{ github.workspace }}\artifacts\windows-${{ matrix.arch }}${{ matrix.desktop_variant == 'windows-game-capture' && '-windows-game-capture' || '' }}
+          files-folder-filter: exe
+          files-folder-recurse: true
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+
+      - name: Verify Authenticode signatures
+        if: steps.check_artifacts.outputs.found == 'true'
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step verify_authenticode
+
+      - name: Regenerate SHA256 checksums for signed executables
+        if: steps.check_artifacts.outputs.found == 'true'
+        env:
+          ARCH: ${{ matrix.arch }}
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step regenerate_signed_checksums
+
+      - name: Re-upload signed Windows artifacts to S3 handoff
+        if: steps.check_artifacts.outputs.found == 'true'
+        env:
+          DESKTOP_PLATFORM: windows
+          DESKTOP_ARCH: ${{ matrix.arch }}
+          DESKTOP_VARIANT: ${{ matrix.desktop_variant }}
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step stage_signed_windows_artifacts
+
   upload:
     name: Upload to S3
     if: ${{ !failure() && !cancelled() }}
     needs:
       - meta
       - build
-    runs-on: self-hosted-linux
+      - sign_windows
+    runs-on: ubuntu-24.04-arm
     environment: desktop-releases
     timeout-minutes: 180
     permissions:
@@ -620,7 +759,7 @@ jobs:
     needs:
       - meta
       - upload
-    runs-on: self-hosted-linux
+    runs-on: ubuntu-24.04-arm
     environment: desktop-releases
     timeout-minutes: 60
     permissions:
@@ -655,8 +794,9 @@ jobs:
         with:
           client-id: ${{ vars.FLUXER_CI_APP_ID }}
           private-key: ${{ secrets.FLUXER_CI_APP_KEY }}
-          owner: fluxerapp
-          repositories: fluxer
+          # Echowire fork: token targets our repo, not fluxerapp/fluxer
+          owner: cproudlock
+          repositories: echowire
           permission-contents: write
       - name: Publish GitHub desktop release
         env:

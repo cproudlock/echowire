@@ -41,6 +41,9 @@ allow = [
     "ISC",
     "MPL-2.0",
     "Unicode-3.0",
+    # Echowire: finl_unicode (fluxer_marketing -> comrak) is MIT/Apache AND
+    # Unicode-DFS-2016, which cargo-deny itself reports as OSI approved.
+    "Unicode-DFS-2016",
     "Zlib",
     "CC0-1.0",
     "AGPL-3.0-or-later",

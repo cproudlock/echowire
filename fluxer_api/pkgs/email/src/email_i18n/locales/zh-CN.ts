@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_ZH_CN_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_ZH_CN_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "你的 {product_name} 账号已被暂时禁用",
 		"body": "你好 {username}，\n\n我们检测到你的 {product_name} 账号存在可疑活动，因此暂时禁用了你的账号。\n\n{reason, select,\n  null {}\n  other {原因： {reason}}\n}\n\n要重新获得账号访问权限，你需要重置密码：\n\n{forgotUrl}\n\n重置密码后，你将能够再次登录。\n\n如果你认为这是误操作，请联系我们的支持团队。\n\n– {product_name} 安全团队"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_ZH_CN_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "授权新 IP 地址登录",
 		"body": "你好 {username}，\n\n我们检测到你的 {product_name} 账号有来自新 IP 地址的登录尝试：\n\nIP 地址：{ipAddress}\n位置：{location}\n\n如果你本人进行了此操作，请点击下方链接授权此 IP 地址：\n\n{authUrl}\n\n如果你没有进行此操作，请立即更改密码。\n\n此链接 30 分钟内有效。\n\n– {product_name} 团队"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "确认访问你的 {product_name} 备用码",
+		"body": "你好 {username}，\n\n我们收到了查看你的 {product_name} 账号备用码的请求。\n\n要确认此请求，请在应用中输入此验证码：\n\n{code}\n\n此验证码将于 {expiresAt, date, full} {expiresAt, time, short} 失效。\n\n如果你未请求此操作，可能有人访问了你的账号。请立即更改密码。\n\n– {product_name} 团队"
 	},
 	"password_change_verification": {
 		"subject": "确认你的 {product_name} 密码更改",

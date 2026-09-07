@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {MessageTypes} from '@fluxer/constants/src/ChannelConstants';
-import type {GuildID, UserID} from '../../../BrandedTypes';
+import type {ChannelID, GuildID, UserID} from '../../../BrandedTypes';
 import {createMessageID} from '../../../BrandedTypes';
 import type {IGuildRepositoryAggregate} from '../../../guild/repositories/IGuildRepositoryAggregate';
 import type {ISnowflakeService} from '../../../infrastructure/ISnowflakeService';
@@ -44,5 +44,37 @@ export class MessageSystemService {
 			channel: systemChannel,
 		});
 		await this.dispatchService.dispatchMessageCreate({channel: systemChannel, message, requestCache});
+	}
+
+	// Echowire: post a "started a thread" system message in the thread's PARENT channel,
+	// like Discord. content holds the thread's channel id so the client can resolve the
+	// thread name and link to it.
+	async sendThreadCreatedSystemMessage({
+		parentChannelId,
+		threadChannelId,
+		userId,
+		guildId,
+		requestCache,
+	}: {
+		parentChannelId: ChannelID;
+		threadChannelId: ChannelID;
+		userId: UserID;
+		guildId: GuildID;
+		requestCache: RequestCache;
+	}): Promise<void> {
+		const parentChannel = await this.channelRepository.channelData.findUnique(parentChannelId);
+		if (!parentChannel) return;
+		const messageId = createMessageID(await this.snowflakeService.generateForChannel(parentChannel.id));
+		const {message} = await this.persistenceService.createMessage({
+			messageId,
+			channelId: parentChannel.id,
+			userId,
+			type: MessageTypes.THREAD_CREATED,
+			content: threadChannelId.toString(),
+			flags: 0,
+			guildId,
+			channel: parentChannel,
+		});
+		await this.dispatchService.dispatchMessageCreate({channel: parentChannel, message, requestCache});
 	}
 }

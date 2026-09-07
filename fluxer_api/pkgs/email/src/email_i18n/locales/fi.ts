@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_FI_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_FI_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Käyttäjätilisi {product_name}-palvelussa on tilapäisesti poistettu käytöstä",
 		"body": "Hei {username},\n\nOlemme poistaneet {product_name}-tilisi tilapäisesti käytöstä, koska havaitsimme epäilyttävää toimintaa.\n\n{reason, select,\n  null {}\n  other {Syy: {reason}}\n}\n\nPäästäksesi takaisin tilillesi sinun on nollattava salasanasi:\n\n{forgotUrl}\n\nKun olet nollannut salasanasi, voit kirjautua sisään uudelleen.\n\nJos uskot, että tämä oli virhe, ota yhteyttä tukitiimiimme.\n\n– {product_name}-turvallisuustiimi"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_FI_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Hyväksy kirjautuminen uudesta IP-osoitteesta",
 		"body": "Hei {username},\n\nHavaitsimme kirjautumisyrityksen {product_name}-tilillesi uudesta IP-osoitteesta:\n\nIP-osoite: {ipAddress}\nSijainti: {location}\n\nJos tämä olit sinä, valtuuta tämä IP-osoite napsauttamalla alla olevaa linkkiä:\n\n{authUrl}\n\nJos et yrittänyt kirjautua sisään, vaihda salasanasi välittömästi.\n\nTämä linkki on voimassa 30 minuuttia.\n\n– {product_name}-tiimi"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Vahvista pääsy {product_name}-tilisi varmuuskoodeihin",
+		"body": "Hei {username},\n\nSaimme pyynnön tarkastella varmuuskoodeja {product_name}-tililläsi.\n\nVahvistaaksesi tämän pyynnön, syötä tämä koodi sovellukseen:\n\n{code}\n\nTämä koodi vanhenee {expiresAt, date, full} klo {expiresAt, time, short}.\n\nJos et pyytänyt tätä, joku saattaa päästä tilillesi. Vaihda salasanasi välittömästi.\n\n– {product_name}-tiimi"
 	},
 	"password_change_verification": {
 		"subject": "Vahvista salasanan muutos {product_name}-tilillä",

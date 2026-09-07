@@ -134,6 +134,8 @@ handle_resume_call_result({ok, MissedEvents, CurrentSeq}, Pid, GwTimings, State)
     finalize_resume(Pid, CurrentSeq, MissedEvents, GwTimings, State);
 handle_resume_call_result(invalid_seq, _Pid, _GwTimings, State) ->
     gateway_handler_encode:close_with_reason(invalid_seq, <<"Invalid sequence">>, State);
+handle_resume_call_result(not_resumable, _Pid, _GwTimings, State) ->
+    send_invalid_session(State);
 handle_resume_call_result(_ResumeResult, _Pid, _GwTimings, State) ->
     gateway_handler_encode:close_with_reason(
         unknown_error,
@@ -154,7 +156,7 @@ finalize_resume(Pid, Seq, MissedEvents, GwTimings0, State) ->
         ReplayStartedAt,
         GwTimings0
     ),
-    ResumedData = put_resumed_gateway_timings(GwTimings),
+    ResumedData = put_resumed_gateway_timings(session_is_staff(Pid), GwTimings),
     SocketPid ! {dispatch, resumed, ResumedData, Seq},
     erlang:garbage_collect(self(), [{type, major}]),
     {ok, State#{
@@ -180,7 +182,7 @@ resume_lookup_trace_meta(SessionId) ->
 session_pid_trace_meta(Pid) ->
     node_trace_meta(session, node(Pid)).
 
--spec node_trace_meta(term(), node()) -> map().
+-spec node_trace_meta(atom(), node()) -> map().
 node_trace_meta(Operation, NodeName) ->
     #{
         remote => #{
@@ -189,13 +191,9 @@ node_trace_meta(Operation, NodeName) ->
         }
     }.
 
--spec trace_key(term()) -> binary().
-trace_key(Value) when is_binary(Value) ->
-    Value;
-trace_key(Value) when is_atom(Value) ->
-    atom_to_binary(Value, utf8);
+-spec trace_key(atom()) -> binary().
 trace_key(Value) ->
-    list_to_binary(io_lib:format("~p", [Value])).
+    atom_to_binary(Value, utf8).
 
 -spec node_pod_name_or_name(node()) -> binary().
 node_pod_name_or_name(NodeName) ->
@@ -213,9 +211,20 @@ remote_trace_meta(Operation, NodeName) ->
         _ -> #{}
     end.
 
--spec put_resumed_gateway_timings(gateway_timings:recorder()) -> map().
-put_resumed_gateway_timings(GwTimings) ->
-    #{<<"_timings_gw">> => gateway_timings_payload:finalize(GwTimings)}.
+-spec session_is_staff(pid()) -> boolean().
+session_is_staff(Pid) ->
+    try gen_server:call(Pid, {is_staff}, 5000) of
+        IsStaff when is_boolean(IsStaff) -> IsStaff;
+        _Other -> false
+    catch
+        exit:_Reason -> false
+    end.
+
+-spec put_resumed_gateway_timings(boolean(), gateway_timings:recorder()) -> map().
+put_resumed_gateway_timings(true, GwTimings) ->
+    #{<<"_timings_gw">> => gateway_timings_payload:finalize(GwTimings)};
+put_resumed_gateway_timings(false, _GwTimings) ->
+    #{}.
 
 -spec replay_missed_events([term()], pid()) -> ok.
 replay_missed_events([], _SocketPid) ->

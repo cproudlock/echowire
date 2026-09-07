@@ -7,12 +7,15 @@ import {WellKnownFluxerResponse} from '@fluxer/schema/src/domains/instance/Insta
 import type {Hono} from 'hono';
 import {Config} from '../Config';
 import type {GifService} from '../gif/GifService';
-import type {LimitConfigService} from '../limits/LimitConfigService';
+import type {IGifProvider} from '../gif/IGifProvider';
 import {RateLimitMiddleware} from '../middleware/RateLimitMiddleware';
 import {OpenAPI} from '../middleware/ResponseTypeMiddleware';
 import {RateLimitConfigs} from '../RateLimitConfig';
 import type {HonoEnv} from '../types/HonoEnv';
-import type {InstanceCaptchaEffectiveConfig, InstanceGifEffectiveConfig} from './InstanceConfigRepository';
+import {type DiscoveryValidators, isDiscoveryNotModified, nextDiscoveryValidators} from './DiscoveryValidators';
+import type {InstanceCaptchaEffectiveConfig} from './InstanceConfigRepository';
+
+let discoveryValidators: DiscoveryValidators | null = null;
 
 function buildDiscoveryStaticInput(
 	gifService: GifService | undefined,
@@ -20,12 +23,22 @@ function buildDiscoveryStaticInput(
 	runtime: {
 		captcha: InstanceCaptchaEffectiveConfig;
 		emailEnabled: boolean;
-		gif: InstanceGifEffectiveConfig;
 	},
 ): DiscoveryStaticInput {
 	const apiClientEndpoint = Config.endpoints.apiClient;
 	const apiPublicEndpoint = Config.endpoints.apiPublic;
-	const activeGif = gifService?.getByName(runtime.gif.provider);
+	let gifProvider: IGifProvider | undefined;
+	if (gifService !== undefined) {
+		gifProvider = gifService.getProvider();
+	}
+	let gifProviderName = 'klipy';
+	let gifDisplayName = 'Klipy';
+	let gifAttributionRequired = false;
+	if (gifProvider !== undefined) {
+		gifProviderName = gifProvider.meta.name;
+		gifDisplayName = gifProvider.meta.displayName;
+		gifAttributionRequired = gifProvider.meta.attributionRequired;
+	}
 	return {
 		apiCodeVersion: API_CODE_VERSION,
 		endpoints: {
@@ -43,8 +56,8 @@ function buildDiscoveryStaticInput(
 		},
 		captcha: {
 			provider: runtime.captcha.provider,
-			hcaptcha_site_key: runtime.captcha.hcaptcha_site_key,
-			turnstile_site_key: runtime.captcha.turnstile_site_key,
+			hcaptcha_site_key: runtime.captcha.provider === 'hcaptcha' ? runtime.captcha.hcaptcha_site_key : null,
+			turnstile_site_key: runtime.captcha.provider === 'turnstile' ? runtime.captcha.turnstile_site_key : null,
 		},
 		features: {
 			voice_enabled: Config.voice.enabled,
@@ -54,9 +67,9 @@ function buildDiscoveryStaticInput(
 			emails_enabled: runtime.emailEnabled,
 		},
 		gif: {
-			provider: runtime.gif.provider,
-			display_name: activeGif?.meta.displayName ?? runtime.gif.provider,
-			attribution_required: activeGif?.meta.attributionRequired ?? false,
+			provider: gifProviderName,
+			display_name: gifDisplayName,
+			attribution_required: gifAttributionRequired,
 		},
 		push: {
 			public_vapid_key: Config.push.publicVapidKey ?? null,
@@ -82,22 +95,17 @@ export function InstanceController(app: Hono<HonoEnv>) {
 		async (ctx) => {
 			ctx.header('Access-Control-Allow-Origin', '*');
 			const gifService = ctx.get('gifService') as GifService | undefined;
-			const limitConfigService = ctx.get('limitConfigService') as LimitConfigService | undefined;
-			const limits = limitConfigService?.getConfigWireFormat();
+			const limits = ctx.get('limitConfigService').getConfigWireFormat();
 			const sso = await ctx.get('ssoService').getPublicStatus();
 			const instanceConfigRepository = ctx.get('instanceConfigRepository');
-			const [registration, community, services, appPublicConfig, captcha, email, gif] = await Promise.all([
+			const [registration, community, services, appPublicConfig, captcha, email] = await Promise.all([
 				instanceConfigRepository.getRegistrationPublicConfig(),
 				instanceConfigRepository.getInstanceCommunityPublicConfig(),
 				instanceConfigRepository.getResolvedServicesConfig(),
 				instanceConfigRepository.getAppPublicConfig(),
 				instanceConfigRepository.getEffectiveCaptchaConfig(),
 				instanceConfigRepository.getEffectiveEmailConfig(),
-				instanceConfigRepository.getEffectiveGifConfig(),
 			]);
-			if (!limits) {
-				throw new Error('limit_config_service is not bound');
-			}
 			const response = buildDiscoveryResponse(
 				buildDiscoveryStaticInput(
 					gifService,
@@ -111,7 +119,6 @@ export function InstanceController(app: Hono<HonoEnv>) {
 					{
 						captcha,
 						emailEnabled: email.enabled,
-						gif,
 					},
 				),
 				{
@@ -122,6 +129,18 @@ export function InstanceController(app: Hono<HonoEnv>) {
 					limits,
 				},
 			);
+			discoveryValidators = nextDiscoveryValidators(response, discoveryValidators);
+			ctx.header('ETag', discoveryValidators.etag);
+			ctx.header('Last-Modified', discoveryValidators.lastModified.toUTCString());
+			if (
+				isDiscoveryNotModified(
+					discoveryValidators,
+					ctx.req.header('If-None-Match'),
+					ctx.req.header('If-Modified-Since'),
+				)
+			) {
+				return ctx.body(null, 304);
+			}
 			return ctx.json(response);
 		},
 	);

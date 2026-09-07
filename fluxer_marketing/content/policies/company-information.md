@@ -1,35 +1,24 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Who we are
 
-Fluxer Platform AB is a Swedish limited liability company, founded in Stockholm in 2025, that operates Fluxer, a community chat app.
+Proudlock Technology LLC is a limited liability company organized in the State of North Carolina, USA, that operates Echowire, a community chat app.
 
 ## Company registration
 
-- **Legal name:** Fluxer Platform AB
-- **Registration authority:** Swedish Companies Registration Office (Bolagsverket)
-- **Organisation number:** 559537-3993
-- **Swedish VAT identification number:** SE559537399301
-- **UK VAT registration number:** GB 518 3631 91
-
-The UK VAT registration covers tax compliance on sales to UK customers. Fluxer is incorporated and operated entirely from Sweden.
+- **Legal name:** Proudlock Technology LLC
+- **Jurisdiction:** State of North Carolina, USA
+- **D-U-N-S number:** 128658797
 
 ## Registered address
 
-Fluxer Platform AB
-c/o Embassy House
-Östgötagatan 12
-116 25 Stockholm
-Sweden
+Proudlock Technology LLC
+502 Buck Mountain Circle
+West Jefferson, NC 28694
+USA
 
-## Authorised representative
+## How we sustain Echowire
 
-**Hampus Kraft**, Founder and CEO
-
-Hampus is also the primary contact for privacy and data protection (see our [Privacy Policy](/privacy)).
-
-## How we sustain Fluxer
-
-Fluxer is funded by an optional premium subscription, Fluxer Plutonium. As binding commitments in our [Privacy Policy](/privacy) and [Terms of Service](/terms), we do not:
+Echowire is funded by an optional premium subscription, Echowire Reverb. As binding commitments in our [Privacy Policy](/privacy) and [Terms of Service](/terms), we do not:
 
 - sell advertising or maintain advertising partnerships
 - sell, rent, license, monetise, or broker user data
@@ -37,48 +26,29 @@ Fluxer is funded by an optional premium subscription, Fluxer Plutonium. As bindi
 
 ## Contact information
 
-- **General support and account help:** <support@fluxer.app>
-- **Privacy and data protection:** <privacy@fluxer.app>
-- **Security vulnerabilities:** use our [Security Bug Bounty](/security) process
-- **Copyright and intellectual property:** <copyright@fluxer.app>
-- **Trust and safety:** <safety@fluxer.app>
-- **Legal requests and law enforcement:** <legal@fluxer.app>
-- **Account appeals:** <appeals@fluxer.app>
-- **Press:** <press@fluxer.app>
-- **Partnerships:** <partners@fluxer.app>
-- **Accessibility:** <accessibility@fluxer.app>
-- **Legal phone:** +46 79 101 18 18 (legal enquiries only; no support by phone)
+- **General support and account help:** <support@echowire.org>
+- **Privacy and data protection:** <privacy@echowire.org>
+- **Security vulnerabilities:** <security@echowire.org> (see our [Security](/security) process)
+- **Copyright / DMCA notices:** <dmca@echowire.org>
+- **Account appeals:** <appeals@echowire.org>
+- **Legal and administrative requests:** <admin@echowire.org>
 
-For account-related support, contact us from the email address on your Fluxer account when possible.
+For account-related support, contact us from the email address on your Echowire account when possible.
 
 ## Official accounts
 
-- **Bluesky:** [@fluxer.app](https://bsky.app/profile/fluxer.app)
-- **GitHub organisation:** [fluxerapp](https://github.com/fluxerapp)
-- **Reddit (employee accounts):** [u/Hampasaurus](https://www.reddit.com/user/Hampasaurus) and [u/Fluxer-Lilith](https://www.reddit.com/user/Fluxer-Lilith)
+- **Source code:** [github.com/cproudlock/echowire](https://github.com/cproudlock/echowire) (a fork of upstream [fluxerapp/fluxer](https://github.com/fluxerapp/fluxer))
 
-Only accounts listed on this page or linked from `fluxer.app` are official. Contact <support@fluxer.app> if you are unsure.
-
-## EU Digital Services Act: single point of contact
-
-As required by Article 11 of the EU Digital Services Act (Regulation (EU) 2022/2065):
-
-- **Authorities, the European Commission, and the European Board for Digital Services:** <legal@fluxer.app>
-- **Users contacting us about DSA questions:** <support@fluxer.app>
-- **Postal address:** Fluxer Platform AB, c/o Embassy House, Östgötagatan 12, 116 25 Stockholm, Sweden
-- **Phone for legal enquiries only:** +46 79 101 18 18
-- **Languages:** English or Swedish
-
-Because Fluxer Platform AB is established in Sweden, an EU Member State, no separate legal representative is required under DSA Article 13.
+Only accounts listed on this page or linked from `echowire.org` are official. Contact <support@echowire.org> if you are unsure.
 
 ## Legal documents
 
 - [Privacy Policy](/privacy)
 - [Terms of Service](/terms)
 - [Community Guidelines](/guidelines)
-- [Security Bug Bounty](/security)
+- [Security](/security)
 - [Changelog](/changelog)
 
 ## Communication security
 
-Fluxer will never ask for your password, payment details, or other credentials by email. All official Fluxer emails come from addresses ending in `@fluxer.app` or `@fluxer.com`, or a subdomain of either (such as `@m.fluxer.app`). Today, `@fluxer.com` is used for staff addresses; over time, all Fluxer email will move to it. If you receive a suspicious message claiming to be from Fluxer, do not click links or provide information. Contact <support@fluxer.app> instead.
+Echowire will never ask for your password, payment details, or other credentials by email. All official Echowire emails come from addresses ending in `@echowire.org` (or a subdomain of it). If you receive a suspicious message claiming to be from Echowire, do not click links or provide information. Contact <support@echowire.org> instead.

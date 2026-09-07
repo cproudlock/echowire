@@ -24,6 +24,10 @@ use crate::pipewire_stream::{
     daemon_reachable,
 };
 use crate::portal::{self, LiveSession, PortalError, SOURCE_TYPE_WINDOW, StreamInfo};
+use crate::x11_stream::{
+    BACKEND_X11, X11VideoStream, list_monitors as x11_list_monitors, list_windows as x11_list_windows,
+    x11_available,
+};
 
 fn generic_error(reason: impl Into<String>) -> napi::Error {
     napi::Error::new(Status::GenericFailure, reason.into())
@@ -122,6 +126,22 @@ pub async fn get_availability() -> Result<Availability> {
             info.portal_version.map(|v| format!("portal version {v}")),
         )
     } else {
+        // Echowire: no ScreenCast portal does NOT mean no screen capture. On an X11 session the
+        // portal is absent by design, but we can capture directly from the X server, which is
+        // what the pre-native-engine client always did.
+        if x11_available() {
+            return Ok(Availability {
+                available: true,
+                backend: BACKEND_X11.to_string(),
+                reason: None,
+                detail: Some("X11 MIT-SHM capture".to_string()),
+                portal_version: info.portal_version,
+                capabilities: Capabilities {
+                    process: false,
+                    system: true,
+                },
+            });
+        }
         let reason_code = if !info.pipewire_reachable {
             "pipewire-unreachable"
         } else if matches!(info.portal_version, Some(v) if v < 4) || info.portal_version.is_none() {
@@ -146,6 +166,30 @@ pub async fn get_availability() -> Result<Availability> {
 
 fn encode_source_id(node_id: u32) -> String {
     node_id.to_string()
+}
+
+/// Echowire: X11 monitor ids are bare numerics, exactly like portal node ids, because the app's
+/// picker matches native sources to Electron cards numerically and cannot parse a namespaced id.
+/// The two can never be confused in practice: an X11 session has no ScreenCast portal, so only one
+/// of the two backends is ever live. Routing is decided by `use_x11_backend()`, not by the id.
+fn parse_x11_source_id(id: &str) -> Option<u32> {
+    id.parse::<u32>().ok()
+}
+
+/// The output size the caller asked for, when it is usable. `start()` passes 0 to mean
+/// "whatever the source is", and absurd values are ignored rather than trusted.
+fn requested_output_size(width: u32, height: u32) -> Option<(u32, u32)> {
+    let max = LINUX_FRAME_DIM_MAX as u32;
+    if width >= 2 && height >= 2 && width <= max && height <= max {
+        Some((width & !1, height & !1))
+    } else {
+        None
+    }
+}
+
+/// True when the portal path is unavailable but X11 capture is, i.e. a plain X11 session.
+fn use_x11_backend() -> bool {
+    !get_backend_info().supported && x11_available()
 }
 
 fn parse_source_id(id: &str) -> Option<u32> {
@@ -182,6 +226,39 @@ pub async fn list_sources() -> Result<Vec<LinuxScreenCaptureSource>> {
     let (session, streams) = match result {
         Ok(parts) => parts,
         Err(err) => {
+            // Echowire: on X11 the portal legitimately does not exist; enumerate X server
+            // monitors rather than reporting the whole feature as unavailable.
+            if x11_available()
+                && let Ok(monitors) = x11_list_monitors()
+                && !monitors.is_empty()
+            {
+                let mut sources: Vec<LinuxScreenCaptureSource> = monitors
+                    .into_iter()
+                    .map(|monitor| LinuxScreenCaptureSource {
+                        kind: "screen".to_string(),
+                        id: monitor.id.to_string(),
+                        name: monitor.name,
+                        width: u32::from(monitor.width),
+                        height: u32::from(monitor.height),
+                        app_name: None,
+                        bundle_id: None,
+                        target_pid: None,
+                    })
+                    .collect();
+                if let Ok(windows) = x11_list_windows() {
+                    sources.extend(windows.into_iter().map(|window| LinuxScreenCaptureSource {
+                        kind: "window".to_string(),
+                        id: window.id.to_string(),
+                        name: window.title,
+                        width: u32::from(window.width),
+                        height: u32::from(window.height),
+                        app_name: None,
+                        bundle_id: None,
+                        target_pid: None,
+                    }));
+                }
+                return Ok(sources);
+            }
             let code = portal_error_to_status(&err);
             return Err(napi::Error::new(
                 Status::GenericFailure,
@@ -374,6 +451,13 @@ pub struct ScreenCaptureDiagnostics {
 }
 
 impl ScreenCaptureDiagnostics {
+    fn x11() -> Self {
+        let mut diagnostics = Self::pipewire();
+        diagnostics.backend = Some(BACKEND_X11.to_string());
+        diagnostics.active_strategy = Some("x11-shm".to_string());
+        diagnostics
+    }
+
     fn pipewire() -> Self {
         Self {
             backend: Some(BACKEND.to_string()),
@@ -456,6 +540,7 @@ struct CaptureState {
     session: Option<LiveSession>,
     stream: Option<PipeWireVideoStream>,
     game_stream: Option<GameCaptureVideoStream>,
+    x11_stream: Option<X11VideoStream>,
 }
 
 struct CaptureInner {
@@ -486,6 +571,7 @@ impl ScreenCapture {
                     session: None,
                     stream: None,
                     game_stream: None,
+                    x11_stream: None,
                 }),
                 running: Arc::new(AtomicBool::new(false)),
                 capture_id: Arc::new(Mutex::new(None)),
@@ -636,11 +722,77 @@ impl ScreenCapture {
                 state.session = None;
                 state.stream = None;
                 state.game_stream = Some(game_stream);
+                state.x11_stream = None;
             }
             self.inner.running.store(true, Ordering::Release);
             return Ok(ScreenCaptureStartResult {
                 width,
                 height,
+                frame_rate: effective_fps,
+                pixel_format: "nv12".to_string(),
+            });
+        }
+
+        // Echowire: X11 sessions have no ScreenCast portal, so capture straight from the X
+        // server instead. Mirrors the game branch above: self-contained, no portal session.
+        if use_x11_backend()
+            && let Some(x11_id) = parse_x11_source_id(&source_id)
+        {
+            let (x11_width, x11_height, stream) = if source_kind == "window" {
+                let window = x11_list_windows()
+                    .map_err(|e| generic_error(format!("X11 window enumeration failed: {e}")))?
+                    .into_iter()
+                    .find(|w| w.id == x11_id)
+                    .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 window id"))?;
+                let requested = requested_output_size(width, height);
+                let (out_w, out_h) = requested
+                    .unwrap_or((u32::from(window.width) & !1, u32::from(window.height) & !1));
+                let pool = build_linux_screen_pool(out_w, out_h)?;
+                let stream = X11VideoStream::open_window(
+                    window,
+                    requested,
+                    Some(effective_fps),
+                    frame_cb,
+                    lifecycle_cb,
+                    pool,
+                    None,
+                )
+                .map_err(|e| generic_error(format!("X11 window stream open failed: {e}")))?;
+                (out_w, out_h, stream)
+            } else {
+                let monitor = x11_list_monitors()
+                    .map_err(|e| generic_error(format!("X11 monitor enumeration failed: {e}")))?
+                    .into_iter()
+                    .find(|m| m.id == x11_id)
+                    .ok_or_else(|| invalid_arg("ScreenCapture.start: unknown X11 monitor id"))?;
+                let requested = requested_output_size(width, height);
+                let (out_w, out_h) = requested
+                    .unwrap_or((u32::from(monitor.width) & !1, u32::from(monitor.height) & !1));
+                let pool = build_linux_screen_pool(out_w, out_h)?;
+                let stream = X11VideoStream::open(
+                    monitor,
+                    requested,
+                    Some(effective_fps),
+                    frame_cb,
+                    lifecycle_cb,
+                    pool,
+                    None,
+                )
+                .map_err(|e| generic_error(format!("X11 stream open failed: {e}")))?;
+                (out_w, out_h, stream)
+            };
+
+            {
+                let mut state = lock_state(&self.inner)?;
+                state.session = None;
+                state.stream = None;
+                state.game_stream = None;
+                state.x11_stream = Some(stream);
+            }
+            self.inner.running.store(true, Ordering::Release);
+            return Ok(ScreenCaptureStartResult {
+                width: x11_width,
+                height: x11_height,
                 frame_rate: effective_fps,
                 pixel_format: "nv12".to_string(),
             });
@@ -687,6 +839,7 @@ impl ScreenCapture {
             state.session = Some(session);
             state.stream = Some(stream);
             state.game_stream = None;
+            state.x11_stream = None;
         }
         self.inner.running.store(true, Ordering::Release);
 
@@ -717,16 +870,18 @@ impl ScreenCapture {
         if let Ok(mut guard) = self.inner.native_frame_sink.lock() {
             guard.take();
         }
-        let (stream, game_stream, session) = {
+        let (stream, game_stream, x11_stream, session) = {
             let mut state = lock_state(&self.inner)?;
             (
                 state.stream.take(),
                 state.game_stream.take(),
+                state.x11_stream.take(),
                 state.session.take(),
             )
         };
         drop(stream);
         drop(game_stream);
+        drop(x11_stream);
         if let Some(s) = session {
             s.close();
         }
@@ -741,6 +896,12 @@ impl ScreenCapture {
         let state = lock_state(&self.inner)?;
         if let Some(game_stream) = state.game_stream.as_ref() {
             return Ok(Some(game_stream.diagnostics().into()));
+        }
+        if let Some(x11_stream) = state.x11_stream.as_ref() {
+            let mut diagnostics = ScreenCaptureDiagnostics::x11();
+            diagnostics.dropped_frame_counter =
+                Some(x11_stream.frames_dropped_pool_exhausted() as f64);
+            return Ok(Some(diagnostics));
         }
         if let Some(stream) = state.stream.as_ref() {
             let mut diagnostics = ScreenCaptureDiagnostics::pipewire();
@@ -773,12 +934,18 @@ impl Drop for ScreenCapture {
         if let Ok(mut guard) = self.inner.native_frame_sink.lock() {
             guard.take();
         }
-        let (stream, game_stream, session) = match self.inner.state.lock() {
-            Ok(mut s) => (s.stream.take(), s.game_stream.take(), s.session.take()),
-            Err(_) => (None, None, None),
+        let (stream, game_stream, x11_stream, session) = match self.inner.state.lock() {
+            Ok(mut s) => (
+                s.stream.take(),
+                s.game_stream.take(),
+                s.x11_stream.take(),
+                s.session.take(),
+            ),
+            Err(_) => (None, None, None, None),
         };
         drop(stream);
         drop(game_stream);
+        drop(x11_stream);
         if let Some(s) = session {
             s.close();
         }
@@ -952,12 +1119,13 @@ fn retain_native_frame_sink_handle(
         ));
     }
 
-    let handle = unsafe {
-        NativeScreenFrameSinkHandle::retain_from_raw(data.cast::<NativeScreenFrameSinkHandle>())
-    }
-    .ok_or_else(|| {
-        invalid_arg("ScreenCapture.setFrameSinkHandle received an invalid native frame sink handle")
-    })?;
+    let handle = unsafe { data.cast::<NativeScreenFrameSinkHandle>().as_ref() }
+        .and_then(NativeScreenFrameSinkHandle::retain_ref)
+        .ok_or_else(|| {
+            invalid_arg(
+                "ScreenCapture.setFrameSinkHandle received an invalid native frame sink handle",
+            )
+        })?;
 
     Ok(Arc::new(handle))
 }
@@ -967,7 +1135,7 @@ fn enqueue_native_bus_video_frame(
     frame: &VideoFrame,
 ) -> EnqueueOutcome {
     if let Some(dmabuf) = frame.dmabuf.as_ref() {
-        if sink.handle().enqueue_dmabuf.is_none() {
+        if !sink.supports_dmabuf() {
             return EnqueueOutcome::Rejected;
         }
         let plane_count = dmabuf.plane_count as usize;
@@ -975,18 +1143,13 @@ fn enqueue_native_bus_video_frame(
             return EnqueueOutcome::Rejected;
         }
 
-        let mut duped_fds: Vec<i32> = Vec::with_capacity(plane_count);
+        let mut duped_fds: Vec<OwnedFd> = Vec::with_capacity(plane_count);
         for raw in dmabuf.fds.iter().take(plane_count) {
             let duped = unsafe { libc::dup(*raw) };
             if duped < 0 {
-                for fd in duped_fds {
-                    unsafe {
-                        libc::close(fd);
-                    }
-                }
                 return EnqueueOutcome::Rejected;
             }
-            duped_fds.push(duped);
+            duped_fds.push(unsafe { OwnedFd::from_raw_fd(duped) });
         }
 
         let desc = BusDmabufDesc {
@@ -1001,7 +1164,7 @@ fn enqueue_native_bus_video_frame(
             timestamp_us: frame.timestamp_us,
         };
 
-        return unsafe { sink.enqueue_dmabuf_take_fds(desc, &duped_fds) };
+        return sink.enqueue_dmabuf_take_fds(desc, duped_fds);
     }
 
     sink.enqueue_nv12_copy(

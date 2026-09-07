@@ -28,6 +28,7 @@ import type {Currency} from '../../utils/CurrencyUtils';
 import type {RecurringBillingCycle} from '../ProductRegistry';
 import {
 	getPrimarySubscriptionItem,
+	getSubscriptionEntitlementPeriodEndUnix,
 	getSubscriptionItemPeriodEndUnix,
 	getSubscriptionPremiumPeriodEnd,
 } from '../StripeSubscriptionPeriod';
@@ -147,10 +148,12 @@ export class StripeSubscriptionService {
 				premium_grace_ends_at: null,
 			};
 			if (user.premiumType !== UserPremiumTypes.LIFETIME) {
+				const hasActiveGift =
+					user.premiumGiftExtensionEndsAt != null && user.premiumGiftExtensionEndsAt.getTime() > Date.now();
 				Object.assign(patch, {
-					premium_type: UserPremiumTypes.NONE,
-					premium_since: null,
-					premium_until: null,
+					premium_type: hasActiveGift ? user.premiumType : UserPremiumTypes.NONE,
+					premium_since: hasActiveGift ? user.premiumSince : null,
+					premium_until: new Date(),
 				});
 			}
 			const updatedUser = await this.userRepository.patchUpsert(userId, patch, user.toRow());
@@ -448,7 +451,7 @@ export class StripeSubscriptionService {
 		if (!this.stripe) {
 			throw new StripePaymentNotAvailableError();
 		}
-		const periodEnd = getSubscriptionItemPeriodEndUnix(item);
+		const periodEnd = getSubscriptionEntitlementPeriodEndUnix(subscription, item);
 		if (!periodEnd || periodEnd <= Math.floor(Date.now() / 1000)) {
 			throw new StripeError('Subscription is missing a future period end for scheduled billing cycle change');
 		}
@@ -478,6 +481,7 @@ export class StripeSubscriptionService {
 				});
 		const currentPhase = this.buildCurrentSchedulePhase(schedule, currentSubscription, item, periodEnd);
 		const firstInvoiceCredit = await this.buildPeriodEndCycleSwapCredit({
+			subscription: currentSubscription,
 			item,
 			currentBillingCycle,
 			targetBillingCycle,
@@ -549,7 +553,7 @@ export class StripeSubscriptionService {
 			throw new StripePaymentNotAvailableError();
 		}
 		const item = getPrimarySubscriptionItem(subscription);
-		const periodEnd = getSubscriptionItemPeriodEndUnix(item);
+		const periodEnd = getSubscriptionEntitlementPeriodEndUnix(subscription, item);
 		if (!item || !periodEnd || periodEnd <= Math.floor(Date.now() / 1000)) {
 			throw new StripeError('Subscription is missing a future period end for scheduled cancellation');
 		}
@@ -599,17 +603,22 @@ export class StripeSubscriptionService {
 	}
 
 	private async buildPeriodEndCycleSwapCredit({
+		subscription,
 		item,
 		currentBillingCycle,
 		targetBillingCycle,
 		targetPriceId,
 	}: {
+		subscription: Stripe.Subscription;
 		item: Stripe.SubscriptionItem;
 		currentBillingCycle: RecurringBillingCycle;
 		targetBillingCycle: RecurringBillingCycle;
 		targetPriceId: string;
 	}): Promise<Stripe.SubscriptionScheduleUpdateParams.Phase.AddInvoiceItem | null> {
 		if (!this.stripe || currentBillingCycle !== 'monthly' || targetBillingCycle !== 'yearly') {
+			return null;
+		}
+		if (subscription.trial_end != null && subscription.trial_end > Math.floor(Date.now() / 1000)) {
 			return null;
 		}
 		const currentAmountMinor = item.price.unit_amount;
@@ -739,7 +748,7 @@ export class StripeSubscriptionService {
 					};
 				})
 				.filter((phaseItem): phaseItem is {price: string; quantity: number} => phaseItem !== null) ?? [];
-		return {
+		const currentPhase: Stripe.SubscriptionScheduleUpdateParams.Phase = {
 			start_date: phase?.start_date ?? subscription.start_date ?? subscription.created,
 			end_date: periodEnd,
 			items:
@@ -753,6 +762,15 @@ export class StripeSubscriptionService {
 						],
 			proration_behavior: 'none',
 		};
+		const trialEnd = subscription.trial_end;
+		if (trialEnd != null && trialEnd > now) {
+			if (trialEnd >= periodEnd) {
+				currentPhase.trial = true;
+			} else {
+				currentPhase.trial_end = trialEnd;
+			}
+		}
+		return currentPhase;
 	}
 
 	async getCurrentSubscriptionPrice(userId: UserID): Promise<CurrentSubscriptionPriceResponse> {
@@ -772,6 +790,7 @@ export class StripeSubscriptionService {
 				cacheKey,
 				async () => this.loadCurrentSubscriptionPrice(user.stripeSubscriptionId!),
 				StripeSubscriptionService.CURRENT_PRICE_CACHE_TTL_SECONDS,
+				StripeSubscriptionService.PRICE_CACHE_PRODUCE_TIMEOUT_MS,
 			);
 		} catch (error) {
 			Logger.warn(
@@ -825,6 +844,7 @@ export class StripeSubscriptionService {
 					return price.unit_amount ?? null;
 				},
 				StripeSubscriptionService.LIST_PRICE_CACHE_TTL_SECONDS,
+				StripeSubscriptionService.PRICE_CACHE_PRODUCE_TIMEOUT_MS,
 			);
 		} catch (error) {
 			Logger.warn({error, priceId}, 'Failed to retrieve Stripe list price amount');
@@ -1005,6 +1025,7 @@ export class StripeSubscriptionService {
 
 	private static readonly CURRENT_PRICE_CACHE_TTL_SECONDS = seconds('5 minutes');
 	private static readonly LIST_PRICE_CACHE_TTL_SECONDS = seconds('1 hour');
+	private static readonly PRICE_CACHE_PRODUCE_TIMEOUT_MS = 90000;
 	private static readonly USER_TRIAL_LOCK_TTL_SECONDS = seconds('30 seconds');
 	private static readonly USER_TRIAL_LOCK_MAX_WAIT_MS = 15000;
 	private static readonly USER_TRIAL_LOCK_RETRY_DELAY_MS = 100;

@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_TH_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_TH_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "บัญชี {product_name} ของคุณถูกปิดใช้งานชั่วคราว",
 		"body": "สวัสดี {username},\n\nเราปิดใช้งานบัญชี {product_name} ของคุณชั่วคราว เนื่องจากเราตรวจพบกิจกรรมที่น่าสงสัย\n\n{reason, select,\n  null {}\n  other {เหตุผล: {reason}}\n}\n\nหากต้องการเข้าถึงบัญชีอีกครั้ง ให้รีเซ็ตรหัสผ่าน:\n\n{forgotUrl}\n\nหลังจากรีเซ็ตรหัสผ่านแล้ว คุณจะสามารถเข้าสู่ระบบได้อีกครั้ง\n\nหากคุณเชื่อว่านี่เป็นข้อผิดพลาด โปรดติดต่อทีมสนับสนุนของเรา\n\n– ทีมความปลอดภัย {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_TH_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "อนุมัติการเข้าสู่ระบบจาก IP ใหม่",
 		"body": "สวัสดี {username},\n\nเราตรวจพบความพยายามในการเข้าสู่ระบบบัญชี {product_name} ของคุณจากที่อยู่ IP ใหม่:\n\nที่อยู่ IP: {ipAddress}\nตำแหน่ง: {location}\n\nหากเป็นคุณ โปรดอนุญาตที่อยู่ IP นี้โดยคลิกที่ลิงก์ด้านล่าง:\n\n{authUrl}\n\nหากคุณไม่ได้พยายามเข้าสู่ระบบ เปลี่ยนรหัสผ่านทันที\n\nลิงก์นี้ใช้ได้เป็นเวลา 30 นาที\n\n– ทีม {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "ยืนยันการเข้าถึงรหัสสำรองสำหรับ {product_name}",
+		"body": "สวัสดี {username},\n\nเราได้รับคำขอให้ดูรหัสสำรองในบัญชี {product_name} ของคุณ\n\nหากต้องการยืนยันคำขอนี้ ให้ป้อนรหัสนี้ในแอป:\n\n{code}\n\nรหัสนี้จะหมดอายุในวันที่ {expiresAt, date, full} เวลา {expiresAt, time, short}\n\nหากคุณไม่ได้ร้องขอ อาจมีคนเข้าถึงบัญชีของคุณได้ เปลี่ยนรหัสผ่านทันที\n\n– ทีม {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "ยืนยันการเปลี่ยนรหัสผ่านสำหรับ {product_name}",

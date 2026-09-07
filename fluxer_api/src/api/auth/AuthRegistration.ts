@@ -39,6 +39,7 @@ import {
 	normalizePolicyContactDomain,
 } from '../risk/AccountPolicyEvaluator';
 import type {IRegistrationEventsRepository} from '../risk/adapters/VelocityAdapter';
+import {deferPhoneFlagsUntilCommunityJoin} from '../risk/DeferredPhoneGate';
 import type {IRiskHistoryRepository} from '../risk/HistoricalOutcomeRepository';
 import type {IRiskAssessmentRepository} from '../risk/RiskAssessmentRepository';
 import {deriveLatestRiskContext} from '../risk/RiskHistoryContext';
@@ -51,10 +52,38 @@ import {deriveUsernameFromDisplayName} from '../utils/UsernameSuggestionUtils';
 import * as AuthPassword from './AuthPassword';
 import * as AuthSession from './AuthSession';
 import * as AuthUtility from './AuthUtility';
-import {assertFlutterClientRegistrationAllowed} from './FlutterClientGate';
 import type {IRegistrationRiskEvaluator} from './services/IRegistrationRiskEvaluator';
 
 const DEFAULT_MINIMUM_AGE = 13;
+
+// Fire-and-forget notification to a channel webhook when a new registration is
+// pending admin approval, so admins get pinged instead of having to poll the
+// pending list. Configured via FLUXER_REGISTRATION_PENDING_WEBHOOK_URL (a
+// channel webhook URL). Never blocks or fails the registration.
+function notifyPendingRegistrationWebhook(params: {username: string; email: string | null}): void {
+	const webhookUrl = process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_URL;
+	if (!webhookUrl) return;
+	const emailPart = params.email ? ` (${params.email})` : '';
+	const content = `🆕 New registration pending approval: **${params.username}**${emailPart} — approve in Admin → Instance Config → Pending Registrations`;
+	void (async () => {
+		try {
+			const controller = new AbortController();
+			const timeout = setTimeout(() => controller.abort(), 5000);
+			try {
+				await fetch(webhookUrl, {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify({content}),
+					signal: controller.signal,
+				});
+			} finally {
+				clearTimeout(timeout);
+			}
+		} catch (error) {
+			Logger.warn({error}, '[AuthRegistration] Failed to POST pending-registration notification webhook');
+		}
+	})();
+}
 
 function getRetryAfterSeconds(result: RateLimitResult): number {
 	return result.retryAfter ?? Math.max(0, Math.ceil((result.resetTime.getTime() - Date.now()) / 1000));
@@ -69,11 +98,18 @@ function throwRegistrationRateLimit(result: RateLimitResult): never {
 }
 
 function parseDobLocalDate(dateOfBirth: string): types.LocalDate {
-	try {
-		return types.LocalDate.fromString(dateOfBirth);
-	} catch {
+	const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateOfBirth);
+	if (!match) {
 		throw InputValidationError.fromCode('date_of_birth', ValidationErrorCodes.INVALID_DATE_OF_BIRTH_FORMAT);
 	}
+	const year = Number(match[1]);
+	const month = Number(match[2]);
+	const day = Number(match[3]);
+	const probe = new Date(Date.UTC(year, month - 1, day));
+	if (probe.getUTCFullYear() !== year || probe.getUTCMonth() !== month - 1 || probe.getUTCDate() !== day) {
+		throw InputValidationError.fromCode('date_of_birth', ValidationErrorCodes.INVALID_DATE_OF_BIRTH_FORMAT);
+	}
+	return new types.LocalDate(year, month, day);
 }
 
 interface RegisterParams {
@@ -133,7 +169,6 @@ export async function register(
 		riskAssessmentRepository,
 		riskHistoryRepository,
 	} = deps;
-	assertFlutterClientRegistrationAllowed(request, data.email ?? null);
 	const appPublicConfig = await instanceConfigRepository.getAppPublicConfig();
 	const emailEnabled = await instanceConfigRepository.isEmailEnabled();
 	const requiresTermsConsent = shouldRequireHostedLegalConsent(config) || appPublicConfig.legal.terms_url !== null;
@@ -157,11 +192,11 @@ export async function register(
 		if (!dateOfBirthInput) {
 			throw InputValidationError.fromCode('date_of_birth', ValidationErrorCodes.INVALID_DATE_OF_BIRTH_FORMAT);
 		}
+		dateOfBirth = parseDobLocalDate(dateOfBirthInput);
 		const minAge = accountPolicyEvaluator.getMinimumAgeForRegion(countryCode, DEFAULT_MINIMUM_AGE);
 		if (!AuthUtility.validateAge(ctx, {dateOfBirth: dateOfBirthInput, minAge})) {
 			throw InputValidationError.fromCode('date_of_birth', ValidationErrorCodes.MUST_BE_MINIMUM_AGE, {minAge});
 		}
-		dateOfBirth = parseDobLocalDate(dateOfBirthInput);
 		isAdult = AgeUtils.isUserAdult(dateOfBirthInput);
 	}
 	if (data.password && (await AuthPassword.isPasswordPwned(ctx, data.password))) {
@@ -293,7 +328,6 @@ export async function register(
 		last_voice_activity_sharing_change_at: null,
 		version: 1,
 	});
-	await kvActivityTracker.updateActivity(user.id, now);
 	await users.upsertSettings(
 		UserSettings.getDefaultUserSettings({
 			userId,
@@ -302,6 +336,9 @@ export async function register(
 			theme: data.theme,
 		}),
 	);
+	void kvActivityTracker.updateActivity(user.id, now).catch((error: unknown) => {
+		Logger.warn({error, userId: user.id}, 'Failed to update real-time user activity');
+	});
 	const isUnclaimed = !rawEmail;
 	const usernameIsUserChosen = data.username != null || data.global_name != null;
 	const riskResult = await registrationRiskEvaluator.evaluate({
@@ -334,7 +371,7 @@ export async function register(
 			action: riskResult.recommendedAction,
 		},
 	});
-	const combinedFlags = policyDecision.flagBits;
+	const combinedFlags = await deferPhoneFlagsUntilCommunityJoin(policyDecision.flagBits);
 	const createdAt = new Date();
 	const riskContext = deriveLatestRiskContext({
 		userId: userId.toString(),
@@ -419,6 +456,7 @@ export async function register(
 			registration_url_id: registrationAccess.registrationUrl?.id ?? null,
 			client_ip: clientIp,
 		});
+		notifyPendingRegistrationWebhook({username: user.username, email: rawEmail});
 		return {
 			registration_pending_approval: true,
 			user_id: user.id.toString(),
@@ -443,7 +481,10 @@ export async function register(
 		);
 	}
 	await singleCommunityService.joinStockCommunity(userId, requestCache);
-	const [token] = await AuthSession.createAuthSession(ctx, {user, request});
+	const [token] = await AuthSession.createAuthSession(ctx, {
+		user,
+		origin: AuthSession.resolveSessionOrigin(ctx, request),
+	});
 	if (grantBootstrapAdmin) {
 		await instanceConfigRepository.markAdminBootstrapped();
 	}

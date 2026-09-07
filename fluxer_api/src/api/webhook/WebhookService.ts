@@ -13,6 +13,7 @@ import {MaxWebhooksPerGuildError} from '@fluxer/errors/src/domains/guild/MaxWebh
 import {UnknownWebhookError} from '@fluxer/errors/src/domains/webhook/UnknownWebhookError';
 import type {AllowedMentionsRequest} from '@fluxer/schema/src/domains/message/SharedMessageSchemas';
 import type {GitHubWebhook} from '@fluxer/schema/src/domains/webhook/GitHubWebhookSchemas';
+import type {InstatusWebhook} from '@fluxer/schema/src/domains/webhook/InstatusWebhookSchemas';
 import type {
 	WebhookCreateRequest,
 	WebhookMessageRequest,
@@ -41,9 +42,11 @@ import type {RequestCache} from '../middleware/RequestCacheMiddleware';
 import type {Channel} from '../models/Channel';
 import type {Message} from '../models/Message';
 import type {Webhook} from '../models/Webhook';
+import {resolveAssetPath} from '../utils/AssetPaths';
 import * as RandomUtils from '../utils/RandomUtils';
 import type {IWebhookRepository} from './IWebhookRepository';
 import {transform as GitHubTransform} from './transformers/GitHubTransformer';
+import {instatusDeliveryKey, transformInstatusWebhook} from './transformers/InstatusTransformer';
 
 export interface WebhookExecuteMessageData extends Omit<WebhookMessageRequest, 'attachments'> {
 	attachments?: WebhookMessageRequest['attachments'] | MessageRequest['attachments'];
@@ -86,6 +89,11 @@ interface WebhookExecuteGitHubParams extends WebhookTokenParams {
 	event: string;
 	delivery: string;
 	data: GitHubWebhook;
+	requestCache: RequestCache;
+}
+
+interface WebhookExecuteInstatusParams extends WebhookTokenParams {
+	data: InstatusWebhook;
 	requestCache: RequestCache;
 }
 
@@ -135,7 +143,15 @@ export class WebhookService {
 	async getGuildWebhooks({userId, guildId}: {userId: UserID; guildId: GuildID}): Promise<Array<Webhook>> {
 		const {checkPermission} = await this.guildService.getGuildAuthenticated({userId, guildId});
 		await checkPermission(Permissions.MANAGE_WEBHOOKS);
-		return await this.repository.listByGuild(guildId);
+		const webhooks = await this.repository.listByGuild(guildId);
+		const visibility = await Promise.all(
+			webhooks.map((webhook) =>
+				webhook.channelId
+					? this.canManageChannelWebhooks({userId, guildId, channelId: webhook.channelId})
+					: Promise.resolve(false),
+			),
+		);
+		return webhooks.filter((_webhook, index) => visibility[index]);
 	}
 
 	async getChannelWebhooks({userId, channelId}: {userId: UserID; channelId: ChannelID}): Promise<Array<Webhook>> {
@@ -146,6 +162,7 @@ export class WebhookService {
 			guildId: channel.guildId,
 		});
 		await checkPermission(Permissions.MANAGE_WEBHOOKS);
+		await this.assertChannelWebhookPermission({userId, guildId: channel.guildId, channelId});
 		return await this.repository.listByChannel(channelId);
 	}
 
@@ -165,6 +182,7 @@ export class WebhookService {
 			guildId: channel.guildId,
 		});
 		await checkPermission(Permissions.MANAGE_WEBHOOKS);
+		await this.assertChannelWebhookPermission({userId, guildId: channel.guildId, channelId});
 		const guildLimit = this.resolveWebhookLimit(guildData.features, 'max_webhooks_per_guild', MAX_WEBHOOKS_PER_GUILD);
 		const guildWebhookCount = await this.repository.countByGuild(channel.guildId);
 		if (guildWebhookCount >= guildLimit) {
@@ -408,6 +426,27 @@ export class WebhookService {
 		if (delivery) await this.cacheService.set(`github:${webhookId}:${delivery}`, 1, seconds('1 day'));
 	}
 
+	async executeInstatusWebhook(params: WebhookExecuteInstatusParams): Promise<void> {
+		const {webhookId, token, data, requestCache} = params;
+		const webhook = await this.getTokenAuthenticatedWebhook({webhookId, token});
+		await this.assertWebhookGuildChannel(webhook);
+		const delivery = instatusDeliveryKey(data);
+		if (delivery) {
+			const isCached = await this.cacheService.get<number>(`instatus:${webhookId}:${delivery}`);
+			if (isCached) return;
+		}
+		const embed = transformInstatusWebhook(data);
+		if (!embed) return;
+		await this.channelService.messages.send.sendWebhookMessage({
+			webhook,
+			data: {embeds: [embed], allowed_mentions: WebhookService.NO_ALLOWED_MENTIONS},
+			username: 'Instatus',
+			avatar: await this.getInstatusWebhookAvatar(webhook.id),
+			requestCache,
+		});
+		if (delivery) await this.cacheService.set(`instatus:${webhookId}:${delivery}`, 1, seconds('1 day'));
+	}
+
 	async dispatchWebhooksUpdate({
 		guildId,
 		channelId,
@@ -429,7 +468,39 @@ export class WebhookService {
 		if (!webhook) throw new UnknownWebhookError();
 		const {checkPermission} = await this.guildService.getGuildAuthenticated({userId, guildId: webhook.guildId!});
 		await checkPermission(Permissions.MANAGE_WEBHOOKS);
+		if (webhook.guildId && webhook.channelId) {
+			await this.assertChannelWebhookPermission({
+				userId,
+				guildId: webhook.guildId,
+				channelId: webhook.channelId,
+			});
+		}
 		return webhook;
+	}
+
+	private async canManageChannelWebhooks({
+		userId,
+		guildId,
+		channelId,
+	}: {
+		userId: UserID;
+		guildId: GuildID;
+		channelId: ChannelID;
+	}): Promise<boolean> {
+		const [canView, canManage] = await Promise.all([
+			this.gatewayService.checkPermission({guildId, userId, permission: Permissions.VIEW_CHANNEL, channelId}),
+			this.gatewayService.checkPermission({guildId, userId, permission: Permissions.MANAGE_WEBHOOKS, channelId}),
+		]);
+		return canView && canManage;
+	}
+
+	private async assertChannelWebhookPermission(params: {
+		userId: UserID;
+		guildId: GuildID;
+		channelId: ChannelID;
+	}): Promise<void> {
+		const allowed = await this.canManageChannelWebhooks(params);
+		if (!allowed) throw new MissingPermissionsError();
 	}
 
 	private async getTokenAuthenticatedWebhook({webhookId, token}: WebhookTokenParams): Promise<Webhook> {
@@ -515,7 +586,7 @@ export class WebhookService {
 				type: 'external',
 				url: avatarUrl,
 				with_base64: true,
-				nsfw: 'block',
+				nsfw: 'allow',
 			});
 			if (!metadata?.base64) {
 				await this.cacheService.set(cacheKey, WEBHOOK_AVATAR_MISSING_CACHE_VALUE, seconds('5 minutes'));
@@ -539,26 +610,24 @@ export class WebhookService {
 	}
 
 	private async getGitHubWebhookAvatar(webhookId: WebhookID): Promise<string | null> {
-		return this.getStaticWebhookAvatar({
-			webhookId,
-			provider: 'github',
-			assetFileName: 'github.webp',
-		});
+		return this.getStaticWebhookAvatar({webhookId, provider: 'github'});
+	}
+
+	private async getInstatusWebhookAvatar(webhookId: WebhookID): Promise<string | null> {
+		return this.getStaticWebhookAvatar({webhookId, provider: 'instatus'});
 	}
 
 	private async getStaticWebhookAvatar({
 		webhookId,
 		provider,
-		assetFileName,
 	}: {
 		webhookId: WebhookID;
-		provider: 'github';
-		assetFileName: 'github.webp';
+		provider: 'github' | 'instatus';
 	}): Promise<string | null> {
 		const cacheKey = `webhook:${webhookId}:avatar:${provider}`;
 		const avatarCache = await this.cacheService.get<string | null>(cacheKey);
 		if (avatarCache) return avatarCache;
-		const avatarFile = await fs.readFile(new URL(`../assets/${assetFileName}`, import.meta.url));
+		const avatarFile = await fs.readFile(resolveAssetPath('assets', `${provider}.webp`));
 		const avatar = await this.avatarService.uploadAvatar({
 			prefix: 'avatars',
 			entityId: webhookId,

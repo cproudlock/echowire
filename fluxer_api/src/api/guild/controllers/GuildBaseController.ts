@@ -16,6 +16,7 @@ import {
 } from '@fluxer/schema/src/domains/guild/GuildRequestSchemas';
 import {GuildResponse, GuildVanityURLResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
 import {z} from 'zod';
+import {requireEmailVerified} from '../../auth/EmailVerificationUtils';
 import {requireSudoMode} from '../../auth/services/SudoVerificationService';
 import {createGuildID} from '../../BrandedTypes';
 import {LoginRequired} from '../../middleware/AuthMiddleware';
@@ -39,7 +40,7 @@ export function GuildBaseController(app: HonoApp) {
 			description: 'Only claimed, email-verified non-bot users can create guilds.',
 			responseSchema: GuildResponse,
 			statusCode: 200,
-			security: ['botToken', 'bearerToken', 'sessionToken'],
+			security: ['bearerToken', 'sessionToken'],
 			tags: ['Guilds'],
 		}),
 		async (ctx) => {
@@ -48,6 +49,9 @@ export function GuildBaseController(app: HonoApp) {
 			const policy = await ctx.get('instanceConfigRepository').getInstancePolicyConfig();
 			if (policy.single_community_enabled) {
 				throw new SingleCommunityCannotCreateGuildsError();
+			}
+			if (!user.isUnclaimedAccount()) {
+				requireEmailVerified(user, 'guild_creation');
 			}
 			const auditLogReason = ctx.get('auditLogReason') ?? null;
 			const locale = ctx.get('requestLocale') ?? null;

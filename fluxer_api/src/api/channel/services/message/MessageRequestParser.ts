@@ -20,6 +20,7 @@ import {createLimitMatchContext} from '../../../limits/LimitMatchContextBuilder'
 import type {User} from '../../../models/User';
 import type {HonoEnv} from '../../../types/HonoEnv';
 import {parseJsonPreservingLargeIntegers} from '../../../utils/LosslessJsonParser';
+import {inputValidationErrorFromZodIssues} from '../../../Validator';
 import {type AttachmentRequestData, mergeUploadWithClientData, type UploadedAttachment} from '../../AttachmentDTOs';
 import type {IChannelRepository} from '../../IChannelRepository';
 import type {MessageRequest, MessageUpdateRequest} from '../../MessageTypes';
@@ -32,7 +33,6 @@ type MultipartBody = Record<string, string | File | Array<string | File>>;
 type AttachmentMetadata = ClientAttachmentRequest | ClientUploadedAttachmentRequest | ClientAttachmentReferenceRequest;
 
 interface ParseMultipartMessageDataOptions {
-	uploadExpiresAt?: Date;
 	onPayloadParsed?: (payload: unknown) => void;
 }
 
@@ -54,7 +54,7 @@ export async function parseMultipartMessageData(
 	options?.onPayloadParsed?.(mergedJsonData);
 	const validationResult = schema.safeParse(mergedJsonData);
 	if (!validationResult.success) {
-		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
+		throw inputValidationErrorFromZodIssues(validationResult.error.issues);
 	}
 	const data = validationResult.data as Partial<MessageRequest> &
 		Partial<MessageUpdateRequest> & {
@@ -158,7 +158,6 @@ export async function parseMultipartMessageData(
 				clientIp,
 				files: filesWithIndices,
 				attachmentMetadata: inlineNewAttachments,
-				expiresAt: options?.uploadExpiresAt,
 			});
 		const uploadedMap = new Map(uploadedAttachments.map((attachment) => [attachment.id, attachment]));
 		const processedInlineAttachments = inlineNewAttachments.map((clientData) => {

@@ -52,7 +52,7 @@ export class ChannelDataService {
 		storageService: IStorageService,
 		gatewayService: IGatewayService,
 		avatarService: AvatarService,
-		snowflakeService: ISnowflakeService,
+		private readonly snowflakeService: ISnowflakeService,
 		purgeQueue: IPurgeQueue,
 		voiceRoomStore: IVoiceRoomStore,
 		liveKitService: ILiveKitService,
@@ -175,6 +175,42 @@ export class ChannelDataService {
 		}
 		if (guildChannelData.nicks !== undefined) {
 			channelUpdateData.nicks = guildChannelData.nicks ?? null;
+		}
+		// Echowire: forum tag/sort/reaction edits. New tags (no id) get a server-assigned snowflake;
+		// existing tags keep theirs. The discriminated-union `type` is Omit'd here, so narrow via a cast.
+		const forumData = guildChannelData as {
+			available_tags?: Array<{id?: string; name: string; emoji_name?: string | null}> | null;
+			default_reaction_emoji?: {emoji_id?: string | null; emoji_name?: string | null} | null;
+			default_sort_order?: number | null;
+			default_auto_archive_duration?: number | null;
+			require_tag?: boolean;
+		};
+		if (forumData.available_tags !== undefined) {
+			const tags = forumData.available_tags ?? [];
+			channelUpdateData.available_tags = await Promise.all(
+				tags.map(async (tag) => ({
+					id: tag.id ?? (await this.snowflakeService.generate()).toString(),
+					name: tag.name,
+					emoji_name: tag.emoji_name ?? null,
+				})),
+			);
+		}
+		if (forumData.default_reaction_emoji !== undefined) {
+			channelUpdateData.default_reaction_emoji = forumData.default_reaction_emoji
+				? {
+						emoji_id: forumData.default_reaction_emoji.emoji_id ?? null,
+						emoji_name: forumData.default_reaction_emoji.emoji_name ?? null,
+					}
+				: null;
+		}
+		if (forumData.default_sort_order !== undefined) {
+			channelUpdateData.default_sort_order = forumData.default_sort_order ?? null;
+		}
+		if (forumData.default_auto_archive_duration !== undefined) {
+			channelUpdateData.default_auto_archive_duration = forumData.default_auto_archive_duration ?? null;
+		}
+		if (forumData.require_tag !== undefined) {
+			channelUpdateData.require_tag = forumData.require_tag;
 		}
 		return this.operations.editChannel({
 			userId,

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {Readable} from 'node:stream';
 import {HarvestIdParam, MessageIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import {MessageListResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import {
@@ -17,6 +18,7 @@ import {
 } from '@fluxer/schema/src/domains/user/UserRequestSchemas';
 import {SavedMessageEntryListResponse} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
 import {createChannelID, createMessageID} from '../../BrandedTypes';
+import {StorageObjectRangeNotSatisfiableError} from '../../infrastructure/IStorageService';
 import {DefaultUserOnly, LoginRequired} from '../../middleware/AuthMiddleware';
 import {RateLimitMiddleware} from '../../middleware/RateLimitMiddleware';
 import {OpenAPI} from '../../middleware/ResponseTypeMiddleware';
@@ -121,9 +123,11 @@ export function UserContentController(app: HonoApp) {
 				'Retrieves all messages saved by the current user. Messages are saved privately for easy reference. Returns paginated list of saved messages with metadata.',
 		}),
 		async (ctx) => {
+			const {limit, before} = ctx.req.valid('query');
 			const response = await ctx.get('userContentRequestService').listSavedMessages({
 				userId: ctx.get('user').id,
-				limit: ctx.req.valid('query').limit,
+				limit,
+				before: before ? createMessageID(before) : undefined,
 				requestCache: ctx.get('requestCache'),
 			});
 			return ctx.json(response, 200);
@@ -267,6 +271,57 @@ export function UserContentController(app: HonoApp) {
 				harvestId,
 			});
 			return ctx.json(harvest, 200);
+		},
+	);
+	app.get(
+		'/harvest-downloads/:harvestId',
+		RateLimitMiddleware(RateLimitConfigs.USER_HARVEST_DOWNLOAD_FILE),
+		Validator('param', HarvestIdParam),
+		OpenAPI({
+			operationId: 'download_data_harvest_archive',
+			summary: 'Download data harvest archive',
+			responseSchema: null,
+			statusCode: 200,
+			security: [],
+			tags: ['Users'],
+			description:
+				'Streams a completed data harvest archive. Authorised by a signed, expiring token rather than a session, so the link works from the harvest completion email. Only active when presigned harvest downloads are disabled.',
+		}),
+		async (ctx) => {
+			const {harvestId} = ctx.req.valid('param');
+			const token = ctx.req.query('token');
+			if (!token) {
+				return ctx.text('Not Found', 404);
+			}
+			try {
+				const result = await ctx.get('userContentRequestService').streamHarvestDownload({
+					harvestId,
+					token,
+					range: ctx.req.header('range') ?? undefined,
+					storageService: ctx.get('storageService'),
+				});
+				if (!result) {
+					return ctx.text('Not Found', 404);
+				}
+				const headers = new Headers();
+				headers.set('Content-Type', result.contentType ?? 'application/zip');
+				headers.set('Content-Disposition', `attachment; filename="${encodeURIComponent(result.filename)}"`);
+				headers.set('Content-Length', String(result.contentLength));
+				headers.set('Cache-Control', 'private, no-store');
+				headers.set('Accept-Ranges', 'bytes');
+				if (result.contentRange) {
+					headers.set('Content-Range', result.contentRange);
+				}
+				return new Response(Readable.toWeb(result.body) as ReadableStream, {
+					status: result.contentRange ? 206 : 200,
+					headers,
+				});
+			} catch (error) {
+				if (error instanceof StorageObjectRangeNotSatisfiableError) {
+					return ctx.text('Range Not Satisfiable', 416);
+				}
+				throw error;
+			}
 		},
 	);
 	app.get(

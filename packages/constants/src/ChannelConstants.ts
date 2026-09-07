@@ -8,15 +8,23 @@ export const ChannelTypes = {
 	GUILD_VOICE: 2,
 	GROUP_DM: 3,
 	GUILD_CATEGORY: 4,
+	// Echowire: Threads + Forum channels (re-ported from the old fork; absent upstream).
+	PUBLIC_THREAD: 11,
+	PRIVATE_THREAD: 12,
+	GUILD_FORUM: 15,
 	GUILD_LINK: 998,
 	DM_PERSONAL_NOTES: 999,
 } as const;
 
 export type ChannelType = ValueOf<typeof ChannelTypes>;
 
+// Echowire: thread channel types (live as sub-channels of a text/forum parent).
+export const THREAD_CHANNEL_TYPES = new Set<number>([ChannelTypes.PUBLIC_THREAD, ChannelTypes.PRIVATE_THREAD]);
+
 export const GUILD_TEXT_BASED_CHANNEL_TYPES = new Set<number>([ChannelTypes.GUILD_TEXT, ChannelTypes.GUILD_VOICE]);
 export const TEXT_BASED_CHANNEL_TYPES = new Set<number>([
 	...GUILD_TEXT_BASED_CHANNEL_TYPES,
+	...THREAD_CHANNEL_TYPES,
 	ChannelTypes.DM,
 	ChannelTypes.DM_PERSONAL_NOTES,
 	ChannelTypes.GROUP_DM,
@@ -33,8 +41,6 @@ export const ChannelOverwriteTypesDescriptions: Record<keyof typeof ChannelOverw
 export const InviteTypes = {
 	GUILD: 0,
 	GROUP_DM: 1,
-	EMOJI_PACK: 2,
-	STICKER_PACK: 3,
 } as const;
 export const MessageTypes = {
 	DEFAULT: 0,
@@ -45,6 +51,7 @@ export const MessageTypes = {
 	CHANNEL_ICON_CHANGE: 5,
 	CHANNEL_PINNED_MESSAGE: 6,
 	USER_JOIN: 7,
+	THREAD_CREATED: 18,
 	REPLY: 19,
 	CLIENT_SYSTEM: 99,
 } as const;
@@ -61,6 +68,7 @@ const MESSAGE_TYPE_DELETABLE = {
 	[MessageTypes.CALL]: false,
 	[MessageTypes.CHANNEL_NAME_CHANGE]: false,
 	[MessageTypes.CHANNEL_ICON_CHANGE]: false,
+	[MessageTypes.THREAD_CREATED]: false,
 	[MessageTypes.CLIENT_SYSTEM]: false,
 } as const satisfies Record<MessageTypeValue, boolean>;
 
@@ -93,19 +101,14 @@ export const MessageFlags = {
 	SUPPRESS_EMBEDS: 1 << 2,
 	SUPPRESS_NOTIFICATIONS: 1 << 12,
 	VOICE_MESSAGE: 1 << 13,
-	COMPACT_ATTACHMENTS: 1 << 17,
 } as const;
 export const MessageFlagsDescriptions: Record<keyof typeof MessageFlags, string> = {
 	SUPPRESS_EMBEDS: 'Do not include embeds when serialising this message',
 	SUPPRESS_NOTIFICATIONS: 'This message will not trigger push or desktop notifications',
 	VOICE_MESSAGE: 'This message is a voice message',
-	COMPACT_ATTACHMENTS: 'Display attachments in a compact format',
 };
 export const SENDABLE_MESSAGE_FLAGS =
-	MessageFlags.SUPPRESS_EMBEDS |
-	MessageFlags.SUPPRESS_NOTIFICATIONS |
-	MessageFlags.COMPACT_ATTACHMENTS |
-	MessageFlags.VOICE_MESSAGE;
+	MessageFlags.SUPPRESS_EMBEDS | MessageFlags.SUPPRESS_NOTIFICATIONS | MessageFlags.VOICE_MESSAGE;
 export const MessageAttachmentFlags = {
 	IS_SPOILER: 1 << 3,
 	CONTAINS_EXPLICIT_MEDIA: 1 << 4,

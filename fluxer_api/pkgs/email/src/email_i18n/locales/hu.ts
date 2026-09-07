@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_HU_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_HU_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "A {product_name} fiókodat ideiglenesen letiltottuk",
 		"body": "Szia {username},\n\nIdeiglenesen letiltottuk a {product_name} fiókodat, mert gyanús tevékenységet észleltünk.\n\n{reason, select,\n  null {}\n  other {Indok: {reason}}\n}\n\nA fiókodhoz való hozzáférés visszaszerzéséhez vissza kell állítanod a jelszavadat:\n\n{forgotUrl}\n\nA jelszó visszaállítása után újra be tudsz jelentkezni.\n\nHa úgy gondolod, hogy ez tévedésből történt, vedd fel a kapcsolatot a támogatási csapatunkkal.\n\n– {product_name} Biztonsági Csapat"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_HU_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Új IP-címről való bejelentkezés engedélyezése",
 		"body": "Szia {username},\n\nBejelentkezési kísérletet észleltünk a {product_name} fiókodba egy új IP-címről:\n\nIP-cím: {ipAddress}\nHelyszín: {location}\n\nHa te voltál, engedélyezd ezt az IP-címet az alábbi linkre kattintva:\n\n{authUrl}\n\nHa nem te próbáltál bejelentkezni, azonnal változtasd meg a jelszavadat.\n\nEz a link 30 percig érvényes.\n\n– {product_name} Csapat"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Erősítsd meg a {product_name} biztonsági kódjaidhoz való hozzáférést",
+		"body": "Szia {username},\n\nKérést kaptunk a {product_name} fiókod biztonsági kódjainak megtekintésére.\n\nA kérés megerősítéséhez add meg ezt a kódot az alkalmazásban:\n\n{code}\n\nEz a kód {expiresAt, date, full} {expiresAt, time, short} időpontban jár le.\n\nHa nem kérted ezt, valaki hozzáférhet a fiókodhoz. Azonnal változtasd meg a jelszavadat.\n\n– {product_name} Csapat"
 	},
 	"password_change_verification": {
 		"subject": "Erősítsd meg a {product_name} jelszócserédet",

@@ -19,8 +19,11 @@ import {
 import {resolveMessagePageState} from '@app/features/messaging/commands/MessagePageStateMachine';
 import {MessageDeleteFailedModal} from '@app/features/messaging/components/alerts/MessageDeleteFailedModal';
 import {MessageDeleteTooQuickModal} from '@app/features/messaging/components/alerts/MessageDeleteTooQuickModal';
+import {MessageEditFailedModal} from '@app/features/messaging/components/alerts/MessageEditFailedModal';
+import {MessageEditTooQuickModal} from '@app/features/messaging/components/alerts/MessageEditTooQuickModal';
 import type {Message as MessageModel} from '@app/features/messaging/models/MessagingMessage';
 import type {JumpOptions} from '@app/features/messaging/state/ChannelMessages';
+import {selectChannelMessagesTailProbeOutcome} from '@app/features/messaging/state/ChannelMessagesLoadStateMachine';
 import MessageEdit from '@app/features/messaging/state/MessageEdit';
 import MessageEditMobile from '@app/features/messaging/state/MessageEditMobile';
 import MessageQueue from '@app/features/messaging/state/MessageQueue';
@@ -31,17 +34,21 @@ import {
 	collectMessageModelGuildMemberUserIds,
 	collectWireMessageGuildMemberUserIds,
 } from '@app/features/messaging/utils/MessageMemberLoadUtils';
-import type {
-	ApiAttachmentMetadata,
-	ApiMessageEditAttachmentMetadata,
+import {
+	type ApiAttachmentMetadata,
+	type ApiMessageEditAttachmentMetadata,
+	buildMessageEditRequest,
+	normalizeMessageContent,
 } from '@app/features/messaging/utils/MessageRequestUtils';
+import {resolveRetryAfterMs} from '@app/features/messaging/utils/RetryAfterUtils';
 import * as IARCommands from '@app/features/moderation/commands/IARCommands';
 import * as NavigationCommands from '@app/features/navigation/commands/NavigationCommands';
 import Permission from '@app/features/permissions/state/Permission';
 import {http} from '@app/features/platform/transport/RestTransport';
 import {HttpError} from '@app/features/platform/types/EndpointError';
+import type {RestResponse} from '@app/features/platform/types/TransportTypes';
 import {Logger} from '@app/features/platform/utils/AppLogger';
-import {ComponentDispatch} from '@app/features/platform/utils/ComponentBus';
+import {ComponentBus} from '@app/features/platform/utils/ComponentBus';
 import {failureCode} from '@app/features/platform/utils/ResponseInspection';
 import * as ReadStateCommands from '@app/features/read_state/commands/ReadStateCommands';
 import ReadStates from '@app/features/read_state/state/ReadStates';
@@ -78,6 +85,8 @@ const ALSO_REPORT_TO_SAFETY_TEAM_DESCRIPTOR = msg({
 		'Toggle-switch label in the moderator delete-message confirmation dialog. When enabled, the message is reported (category: other) before being deleted. {productName} is the product name (e.g., Fluxer).',
 });
 const logger = new Logger('MessageCommands');
+const MESSAGE_EDIT_MAX_RETRIES = 5;
+const MESSAGE_EDIT_TIMEOUT_MS = 30_000;
 const pendingDeletePromises = new Map<string, Promise<void>>();
 const pendingFetchPromises = new Map<string, Promise<Array<WireMessage>>>();
 
@@ -99,7 +108,7 @@ export interface JumpToMessageOptions {
 	messageId: string;
 	flash?: boolean;
 	offset?: number;
-	returnTargetId?: string | null;
+	returnToMessageId?: string | null;
 	returnChannelId?: string | null;
 	returnGuildId?: string | null;
 	jumpType?: JumpType;
@@ -107,6 +116,19 @@ export interface JumpToMessageOptions {
 
 interface FetchMessagesOptions {
 	throwOnError?: boolean;
+	tailProbe?: TailProbeContext;
+}
+
+export type TailProbeSettlement = 'applied' | 'retry' | 'failed';
+
+export interface TailProbeContext {
+	watermarkMessageId: string;
+	onSettled: (settlement: TailProbeSettlement) => void;
+}
+
+interface TailProbeEpoch {
+	loadGeneration: number;
+	jumpTicket: number;
 }
 
 interface MessagePageState {
@@ -134,13 +156,14 @@ function makeFetchKey(
 ): string {
 	const SEP = '\x1f';
 	const throwOnError = options?.throwOnError ? '1' : '0';
+	const tailProbe = options?.tailProbe ? `1.${options.tailProbe.watermarkMessageId}` : '0';
 	if (!jump) {
-		return `${channelId}${SEP}${before ?? ''}${SEP}${after ?? ''}${SEP}${limit}${SEP}${throwOnError}`;
+		return `${channelId}${SEP}${before ?? ''}${SEP}${after ?? ''}${SEP}${limit}${SEP}${throwOnError}${SEP}${tailProbe}`;
 	}
 	return (
-		`${channelId}${SEP}${before ?? ''}${SEP}${after ?? ''}${SEP}${limit}${SEP}${throwOnError}${SEP}` +
+		`${channelId}${SEP}${before ?? ''}${SEP}${after ?? ''}${SEP}${limit}${SEP}${throwOnError}${SEP}${tailProbe}${SEP}` +
 		`${jump.present ? '1' : '0'}${SEP}${jump.messageId ?? ''}${SEP}${jump.offset ?? 0}${SEP}` +
-		`${jump.flash ? '1' : '0'}${SEP}${jump.returnMessageId ?? ''}${SEP}` +
+		`${jump.flash ? '1' : '0'}${SEP}${jump.returnToMessageId ?? ''}${SEP}` +
 		`${jump.returnChannelId ?? ''}${SEP}${jump.returnGuildId ?? ''}${SEP}${jump.jumpType ?? ''}`
 	);
 }
@@ -236,6 +259,7 @@ function handleMessageFetchSuccess(
 	messages: Array<WireMessage>,
 	pageState: MessagePageState,
 	jump?: JumpOptions,
+	tailProbe?: TailProbeContext,
 ): void {
 	Messages.handleLoadMessagesSuccess({
 		channelId,
@@ -246,11 +270,13 @@ function handleMessageFetchSuccess(
 		hasMoreAfter: pageState.hasMoreAfter,
 		cached: false,
 		jump,
+		tailProbe: tailProbe != null,
 	});
 	ReadStates.handleLoadMessages({
 		channelId,
 		isAfter: pageState.isAfter,
 		messages,
+		tailProbeWatermarkId: tailProbe?.watermarkMessageId ?? null,
 	});
 	MessageReferences.handleMessagesFetchSuccess(channelId, messages);
 	void requestMissingGuildMembers(channelId, messages);
@@ -290,14 +316,14 @@ interface SendMessageParams {
 	tts?: boolean;
 }
 
-export function jumpToPresent(channelId: string, limit = MAX_MESSAGES_PER_CHANNEL): void {
+export function jumpToLiveEdge(channelId: string, limit = MAX_MESSAGES_PER_CHANNEL): void {
 	NavigationCommands.clearMessageIdForChannel(channelId);
 	logger.debug(`Jumping to present in channel ${channelId}`);
 	ReadStateCommands.clearStickyUnread(channelId);
 	const jump: JumpOptions = {
 		present: true,
 	};
-	if (Messages.hasPresent(channelId)) {
+	if (Messages.hasNewestMessages(channelId)) {
 		Messages.handleLoadMessagesSuccessCached({channelId, jump, limit});
 	} else {
 		fetchMessages(channelId, null, null, limit, jump);
@@ -309,7 +335,7 @@ export function jumpToMessage({
 	messageId,
 	flash = true,
 	offset,
-	returnTargetId,
+	returnToMessageId,
 	returnChannelId,
 	returnGuildId,
 	jumpType,
@@ -319,7 +345,7 @@ export function jumpToMessage({
 		messageId: messageId as MessageId,
 		flash,
 		offset,
-		returnMessageId: returnTargetId as MessageId | null | undefined,
+		returnToMessageId: returnToMessageId as MessageId | null | undefined,
 		returnChannelId,
 		returnGuildId,
 		jumpType,
@@ -336,10 +362,10 @@ function getMessageFetchCacheHit(
 	if (jump?.messageId && messages.has(jump.messageId, false)) {
 		return 'jump';
 	}
-	if (before && messages.hasBeforeCached(before)) {
+	if (before && messages.canServeOlderFrom(before)) {
 		return 'before';
 	}
-	if (after && messages.hasAfterCached(after)) {
+	if (after && messages.canServeNewerFrom(after)) {
 		return 'after';
 	}
 	return null;
@@ -366,6 +392,30 @@ function applyMessageFetchCacheHit(
 	}
 }
 
+function isTailProbeApplicable(channelId: string, probe: TailProbeEpoch, after: string | null): boolean {
+	const current = Messages.getMessages(channelId);
+	const outcome = selectChannelMessagesTailProbeOutcome({
+		probeGeneration: probe.loadGeneration,
+		currentGeneration: current.loadGeneration,
+		probeJumpTicket: probe.jumpTicket,
+		currentJumpTicket: current.jumpTicket,
+		ready: current.ready,
+		hasMoreAfter: current.hasMoreAfter,
+		anchorMessageId: after,
+		newestLoadedMessageId: current.last()?.id ?? null,
+	});
+	if (outcome === 'apply') {
+		return true;
+	}
+	logger.debug(`Discarding tail probe for channel ${channelId} (${outcome})`);
+	Messages.handleTailProbeSettled({channelId});
+	return false;
+}
+
+function settleTailProbe(options: FetchMessagesOptions | undefined, settlement: TailProbeSettlement): void {
+	options?.tailProbe?.onSettled(settlement);
+}
+
 export async function fetchMessages(
 	channelId: string,
 	before: string | null,
@@ -384,13 +434,16 @@ export async function fetchMessages(
 	switch (preflightDecision.type) {
 		case 'useInFlightRequest':
 			logger.debug(`Using in-flight fetchMessages for channel ${channelId} (deduped)`);
+			settleTailProbe(options, 'retry');
 			return inFlight as Promise<Array<WireMessage>>;
 		case 'blockForGate':
 			logger.debug(`Skipping message fetch for gated channel ${channelId}`);
 			Messages.handleLoadMessagesBlocked({channelId});
+			settleTailProbe(options, 'retry');
 			return [];
 		case 'useCache':
 			applyMessageFetchCacheHit(channelId, preflightDecision.cacheHit, before, after, limit, jump);
+			settleTailProbe(options, 'retry');
 			return [];
 		case 'startFetch':
 			break;
@@ -401,19 +454,38 @@ export async function fetchMessages(
 			forceFailure: DeveloperOptions.forceFailMessageLoads,
 		});
 		if (executionDecision.type === 'simulateFailure') {
+			if (options?.tailProbe != null) {
+				settleTailProbe(options, 'failed');
+				return [];
+			}
 			return handleForcedMessageLoadFailure(channelId, jump);
 		}
-		Messages.handleLoadMessages({channelId, jump});
+		Messages.handleLoadMessages({channelId, jump, tailProbe: options?.tailProbe != null});
+		let probeEpoch: TailProbeEpoch | null = null;
+		if (options?.tailProbe) {
+			const started = Messages.getMessages(channelId);
+			probeEpoch = {loadGeneration: started.loadGeneration, jumpTicket: started.jumpTicket};
+		}
 		try {
 			const timeStart = Date.now();
 			logger.debug(`Fetching messages for channel ${channelId}`);
 			const messages = await requestChannelMessages(channelId, before, after, limit, jump);
+			if (probeEpoch != null && !isTailProbeApplicable(channelId, probeEpoch, after)) {
+				settleTailProbe(options, 'retry');
+				return [];
+			}
 			const pageState = calculateMessagePageState(channelId, before, after, limit, messages, jump);
 			logger.info(`Fetched ${messages.length} messages for channel ${channelId}, took ${Date.now() - timeStart}ms`);
-			handleMessageFetchSuccess(channelId, messages, pageState, jump);
+			handleMessageFetchSuccess(channelId, messages, pageState, jump, options?.tailProbe);
+			settleTailProbe(options, 'applied');
 			return messages;
 		} catch (error) {
 			logger.error(`Failed to fetch messages for channel ${channelId}:`, error);
+			if (probeEpoch != null) {
+				Messages.handleTailProbeSettled({channelId});
+				settleTailProbe(options, 'failed');
+				return [];
+			}
 			Messages.handleLoadMessagesFailure({channelId});
 			if (options?.throwOnError) {
 				throw error;
@@ -424,6 +496,61 @@ export async function fetchMessages(
 	pendingFetchPromises.set(key, promise);
 	promise.finally(() => pendingFetchPromises.delete(key));
 	return promise;
+}
+
+interface SequentialSendEntry {
+	task: () => Promise<RestResponse<WireMessage> | undefined>;
+	resolve: (value: RestResponse<WireMessage> | undefined) => void;
+}
+
+interface ChannelSendOrderState {
+	nextOrder: number;
+	nextExpected: number;
+	pending: Map<number, SequentialSendEntry>;
+	processing: boolean;
+	channelId: string;
+}
+
+const channelSendOrders = new Map<string, ChannelSendOrderState>();
+
+function getOrCreateChannelState(channelId: string): ChannelSendOrderState {
+	let state = channelSendOrders.get(channelId);
+	if (!state) {
+		state = {nextOrder: 0, nextExpected: 0, pending: new Map(), processing: false, channelId};
+		channelSendOrders.set(channelId, state);
+	}
+	return state;
+}
+
+function orderedSendImmediately(
+	channelId: string,
+	order: number,
+	task: () => Promise<RestResponse<WireMessage> | undefined>,
+): Promise<RestResponse<WireMessage> | undefined> {
+	return new Promise<RestResponse<WireMessage> | undefined>((resolve) => {
+		const state = getOrCreateChannelState(channelId);
+		state.pending.set(order, {task, resolve});
+		void processSequentialQueue(state);
+	});
+}
+
+async function processSequentialQueue(state: ChannelSendOrderState): Promise<void> {
+	if (state.processing) return;
+	state.processing = true;
+	try {
+		while (state.pending.has(state.nextExpected)) {
+			const entry = state.pending.get(state.nextExpected)!;
+			state.pending.delete(state.nextExpected);
+			state.nextExpected++;
+			const result = await entry.task();
+			entry.resolve(result);
+		}
+	} finally {
+		state.processing = false;
+		if (state.pending.size === 0 && state.nextExpected === state.nextOrder) {
+			channelSendOrders.delete(state.channelId);
+		}
+	}
 }
 
 async function prepareSendAttachments(
@@ -445,13 +572,23 @@ async function prepareSendAttachments(
 	return {attachments: prepared.attachments, files: prepared.files};
 }
 
+function nextChannelOrder(channelId: string): number {
+	return getOrCreateChannelState(channelId).nextOrder++;
+}
+
 export async function send(channelId: string, params: SendMessageParams): Promise<WireMessage | null> {
 	if (!MessageQueue.consumeLocalSendReservation(channelId, params.nonce)) {
 		MessageQueue.rejectLocalRateLimitedSend(channelId, params.nonce, params.hasAttachments);
 		return null;
 	}
+	const sendOrder = Accessibility.sequentialFileSend && params.hasAttachments ? nextChannelOrder(channelId) : -1;
 	const prepared = await prepareSendAttachments(channelId, params);
-	if (!prepared) return null;
+	if (!prepared) {
+		if (Accessibility.sequentialFileSend) {
+			orderedSendImmediately(channelId, sendOrder, () => Promise.resolve(undefined));
+		}
+		return null;
+	}
 	const payload = {
 		type: 'send' as const,
 		channelId,
@@ -469,7 +606,9 @@ export async function send(channelId: string, params: SendMessageParams): Promis
 	};
 	if (params.hasAttachments) {
 		logger.debug(`Sending attachment message immediately for channel ${channelId}`);
-		const result = await MessageQueue.sendImmediately(payload);
+		const result = Accessibility.sequentialFileSend
+			? await orderedSendImmediately(channelId, sendOrder, () => MessageQueue.sendImmediately(payload))
+			: await MessageQueue.sendImmediately(payload);
 		if (result?.body) {
 			logger.debug(`Attachment message sent successfully in channel ${channelId}`);
 			Messages.handleIncomingMessage({channelId, message: result.body});
@@ -532,7 +671,42 @@ function showDeleteFailureModal(error: unknown, messageId: string): void {
 	);
 }
 
-export function edit(
+function showEditFailureModal(error: unknown): void {
+	if (error instanceof HttpError) {
+		const errorCode = failureCode(error);
+		if (error.status === 429) {
+			const retryAfterMs = resolveRetryAfterMs(error);
+			ModalCommands.push(
+				modal(() => (
+					<MessageEditTooQuickModal
+						retryAfter={retryAfterMs === null ? undefined : Math.ceil(retryAfterMs / 1000)}
+						data-flx="messaging.message-commands.message-edit-too-quick-modal"
+					/>
+				)),
+			);
+			return;
+		}
+		if (error.status === 403 && errorCode === APIErrorCodes.FEATURE_TEMPORARILY_DISABLED) {
+			ModalCommands.push(
+				modal(() => (
+					<FeatureTemporarilyDisabledModal data-flx="messaging.message-commands.message-edit-feature-temporarily-disabled-modal" />
+				)),
+			);
+			return;
+		}
+		if (errorCode === APIErrorCodes.CONTENT_BLOCKED) {
+			void import('@app/features/auth/components/ContentBlockedHandler').then((module) =>
+				module.showContentBlockedModal(),
+			);
+			return;
+		}
+	}
+	ModalCommands.push(
+		modal(() => <MessageEditFailedModal data-flx="messaging.message-commands.message-edit-failed-modal" />),
+	);
+}
+
+export async function edit(
 	channelId: string,
 	messageId: string,
 	content?: string,
@@ -540,31 +714,22 @@ export function edit(
 	allowedMentions?: AllowedMentions,
 	attachments?: Array<ApiMessageEditAttachmentMetadata>,
 ): Promise<WireMessage | null> {
-	return new Promise<WireMessage | null>((resolve) => {
-		logger.debug(`Enqueueing edit for message ${messageId} in channel ${channelId}`);
-		MessageQueue.enqueue(
-			{
-				type: 'edit',
-				channelId,
-				messageId,
-				content,
-				allowedMentions,
-				flags,
-				attachments,
-			},
-			(result, error) => {
-				if (result?.body) {
-					logger.debug(`Message edited successfully: ${messageId} in channel ${channelId}`);
-					resolve(result.body);
-				} else {
-					if (error) {
-						logger.debug(`Message edit failed: ${messageId} in channel ${channelId}`, error);
-					}
-					resolve(null);
-				}
-			},
-		);
-	});
+	logger.debug(`Editing message ${messageId} in channel ${channelId}`);
+	try {
+		const response = await http.patch<WireMessage>(Endpoints.CHANNEL_MESSAGE(channelId, messageId), {
+			body: buildMessageEditRequest({content, flags, allowedMentions, attachments}),
+			mode: 'auto-retry',
+			retries: MESSAGE_EDIT_MAX_RETRIES,
+			timeoutMs: MESSAGE_EDIT_TIMEOUT_MS,
+			suppressContentBlockedModal: true,
+		});
+		logger.debug(`Message edited successfully: ${messageId} in channel ${channelId}`);
+		return response.body ?? null;
+	} catch (error) {
+		logger.error(`Message edit failed: ${messageId} in channel ${channelId}`, error);
+		showEditFailureModal(error);
+		return null;
+	}
 }
 
 export async function remove(channelId: string, messageId: string): Promise<void> {
@@ -660,12 +825,12 @@ export function revealMessage(channelId: string, messageId: string | null): void
 export function startReply(channelId: string, messageId: string, mentioning: boolean): void {
 	logger.debug(`Starting reply to message ${messageId} in channel ${channelId}, mentioning=${mentioning}`);
 	MessageReply.startReply(channelId, messageId, mentioning);
-	ComponentDispatch.dispatch('FOCUS_TEXTAREA', {channelId});
+	ComponentBus.dispatch('FOCUS_TEXTAREA', {channelId});
 	window.requestAnimationFrame(() => {
-		ComponentDispatch.dispatch('FOCUS_TEXTAREA', {channelId});
+		ComponentBus.dispatch('FOCUS_TEXTAREA', {channelId});
 	});
 	window.setTimeout(() => {
-		ComponentDispatch.dispatch('FOCUS_TEXTAREA', {channelId});
+		ComponentBus.dispatch('FOCUS_TEXTAREA', {channelId});
 	}, 300);
 }
 
@@ -746,6 +911,7 @@ export async function forward(
 	optionalMessage?: string,
 ): Promise<boolean> {
 	logger.debug(`Forwarding message ${messageReference.message_id} to ${channelIds.length} channels`);
+	const normalizedComment = optionalMessage == null ? null : normalizeMessageContent(optionalMessage);
 	try {
 		for (const channelId of channelIds) {
 			const nonce = SnowflakeUtils.fromTimestamp(Date.now());
@@ -766,18 +932,19 @@ export async function forward(
 				logger.warn(`Forward send failed in channel ${channelId}`);
 				return false;
 			}
-			SlowmodeCommands.recordMessageSend(channelId);
-			if (optionalMessage) {
+			SlowmodeCommands.confirmMessageSend(channelId, forwardedMessage.timestamp);
+			if (normalizedComment != null && normalizedComment.content.length > 0) {
 				const commentNonce = SnowflakeUtils.fromTimestamp(Date.now() + 1);
 				const commentMessage = await send(channelId, {
-					content: optionalMessage,
+					content: normalizedComment.content,
 					nonce: commentNonce,
+					flags: normalizedComment.flags,
 				});
 				if (!commentMessage) {
 					logger.warn(`Forward comment send failed in channel ${channelId}`);
 					return false;
 				}
-				SlowmodeCommands.recordMessageSend(channelId);
+				SlowmodeCommands.confirmMessageSend(channelId, commentMessage.timestamp);
 			}
 		}
 		logger.debug('Successfully forwarded message to all channels');

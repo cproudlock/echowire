@@ -59,7 +59,7 @@ crate::marketing_message!(
 crate::marketing_message!(
     pub const FOOTER_FLUXER_PLATFORM_AB_SWEDISH_LIMITED_DESCRIPTOR = {
         key: "footer.fluxer_platform_ab_swedish_limited",
-        message: "© {product_name} Platform AB (Swedish limited liability company: 559537-3993)",
+        message: "© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company",
         comment: "Body copy in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.",
     };
 );

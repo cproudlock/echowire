@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_PT_BR_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_PT_BR_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Sua conta do {product_name} foi desativada temporariamente",
 		"body": "Olá, {username},\n\nDesativamos temporariamente sua conta do {product_name} porque detectamos atividades suspeitas.\n\n{reason, select,\n  null {}\n  other {Motivo: {reason}}\n}\n\nPara acessar sua conta novamente, você precisará redefinir sua senha:\n\n{forgotUrl}\n\nDepois de redefinir sua senha, você poderá entrar novamente.\n\nSe você acredita que isso foi um erro, entre em contato com nossa equipe de suporte.\n\n– Equipe de Segurança do {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_PT_BR_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autorizar login de um novo endereço IP",
 		"body": "Olá, {username},\n\nDetectamos uma tentativa de login em sua conta do {product_name} de um novo endereço IP:\n\nEndereço IP: {ipAddress}\nLocalização: {location}\n\nSe foi você, por favor, autorize este endereço IP clicando no link abaixo:\n\n{authUrl}\n\nSe você não tentou entrar, por favor, altere sua senha imediatamente.\n\nEste link é válido por 30 minutos.\n\n– Equipe do {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Confirme o acesso aos códigos de backup da sua conta do {product_name}",
+		"body": "Olá, {username},\n\nRecebemos uma solicitação para visualizar os códigos de backup da sua conta do {product_name}.\n\nPara confirmar esta solicitação, insira este código no aplicativo:\n\n{code}\n\nEste código expira em {expiresAt, date, full} às {expiresAt, time, short}.\n\nSe você não solicitou isso, alguém pode ter acesso à sua conta. Altere sua senha imediatamente.\n\n– Equipe do {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Confirme a alteração da senha da sua conta do {product_name}",

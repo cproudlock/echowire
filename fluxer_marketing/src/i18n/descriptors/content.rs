@@ -179,7 +179,7 @@ crate::marketing_message!(
 crate::marketing_message!(
     pub const CONTENT_POLICIES_COMPANY_INFORMATION_DESCRIPTION_DESCRIPTOR = {
         key: "content.policies.company_information.description",
-        message: "Legal details for {product_name} Platform AB, including how we make money and how to contact us.",
+        message: "Legal details for {product_name}, operated by Proudlock Technology LLC, including how we make money and how to contact us.",
         comment: "Policy page summary for company information. Keep company name and legal framing precise. Preserve placeholders exactly.",
     };
 );
@@ -349,6 +349,22 @@ crate::marketing_message!(
         key: "content.help.article.visionary.description",
         message: "{visionary_tier_full_name} was a limited lifetime {premium_tier_name} offering that sold out in February 2026. Learn about the numbered badge and what {visionary_tier_name} includes.",
         comment: "Help article summary about the retired Fluxer Visionary lifetime tier. Keep 'Fluxer Visionary' and 'Plutonium' as proper names. Preserve placeholders exactly.",
+    };
+);
+
+crate::marketing_message!(
+    pub const CONTENT_HELP_ARTICLE_COMMUNITY_PROGRAMMES_TITLE_DESCRIPTOR = {
+        key: "content.help.article.community_programmes.title",
+        message: "Partner, Verified, and Discovery programmes",
+        comment: "Help article title listing the three programmes that showcase a community on Fluxer. Keep 'Partner', 'Verified', and 'Discovery' as programme names.",
+    };
+);
+
+crate::marketing_message!(
+    pub const CONTENT_HELP_ARTICLE_COMMUNITY_PROGRAMMES_DESCRIPTION_DESCRIPTOR = {
+        key: "content.help.article.community_programmes.description",
+        message: "The three ways to get your community showcased on {product_name}, what each programme requires, and how to apply.",
+        comment: "Help article summary about the Partner, Verified, and Discovery programmes. Preserve placeholders exactly.",
     };
 );
 

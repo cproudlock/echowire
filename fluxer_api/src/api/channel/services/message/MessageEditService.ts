@@ -18,6 +18,7 @@ import type {IUserRepository} from '../../../user/IUserRepository';
 import {assertGuildMemberCanCommunicate} from '../../../utils/GuildCommunicationUtils';
 import type {MessageUpdateRequest} from '../../MessageTypes';
 import type {IChannelRepositoryAggregate} from '../../repositories/IChannelRepositoryAggregate';
+import type {AuthenticatedChannel} from '../AuthenticatedChannel';
 import type {MessageChannelAuthService} from './MessageChannelAuthService';
 import type {MessageDispatchService} from './MessageDispatchService';
 import type {MessageEmbedAttachmentResolver} from './MessageEmbedAttachmentResolver';
@@ -31,6 +32,11 @@ import type {MessageValidationService} from './MessageValidationService';
 const MESSAGE_LOCK_TTL_SECONDS = 5;
 const MESSAGE_LOCK_ACQUIRE_ATTEMPTS = 6;
 const MESSAGE_LOCK_RETRY_DELAY_MS = 50;
+
+interface EditMessageResult {
+	message: Message;
+	authChannel: AuthenticatedChannel;
+}
 
 interface MessageEditServiceDeps {
 	channelRepository: IChannelRepositoryAggregate;
@@ -61,16 +67,28 @@ export class MessageEditService {
 		messageId: MessageID;
 		data: MessageUpdateRequest;
 		requestCache: RequestCache;
-	}): Promise<Message> {
-		const {channel, guild, hasPermission, member} = await this.deps.channelAuthService.getChannelAuthenticated({
+	}): Promise<EditMessageResult> {
+		const authChannel = await this.deps.channelAuthService.getChannelAuthenticated({
 			userId,
 			channelId,
 		});
-		const [canEmbedLinks, canMentionEveryone] = await Promise.all([
+		const {channel, guild, hasPermission, member} = authChannel;
+		const hasNewAttachments =
+			data.attachments?.some(
+				(attachment) =>
+					'upload_filename' in attachment &&
+					typeof attachment.upload_filename === 'string' &&
+					attachment.upload_filename.length > 0,
+			) ?? false;
+		const [canEmbedLinks, canMentionEveryone, canAttachFiles] = await Promise.all([
 			hasPermission(Permissions.EMBED_LINKS),
 			hasPermission(Permissions.MENTION_EVERYONE),
+			hasPermission(Permissions.ATTACH_FILES),
 		]);
 		if (data.embeds && data.embeds.length > 0 && !canEmbedLinks) {
+			throw new MissingPermissionsError();
+		}
+		if (hasNewAttachments && !canAttachFiles) {
 			throw new MissingPermissionsError();
 		}
 		if (isOperationDisabled(guild, GuildOperations.SEND_MESSAGE)) {
@@ -82,19 +100,7 @@ export class MessageEditService {
 			assertGuildMemberCanCommunicate(member);
 		}
 		if (data.message_snapshots !== undefined) {
-			const isAuthor = message.authorId === userId;
-			const canManage = isAuthor ? true : await hasPermission(Permissions.MANAGE_MESSAGES);
-			if (!isAuthor && !canManage) {
-				throw new MissingPermissionsError();
-			}
-			const updatedMessage = await this.withMessageLock(channelId, messageId, () =>
-				this.deps.persistenceService.updateSnapshotAttachments({
-					message,
-					snapshotEdits: data.message_snapshots ?? [],
-				}),
-			);
-			await this.deps.dispatchService.dispatchMessageUpdate({channel, message: updatedMessage, requestCache});
-			return updatedMessage;
+			throw new MissingPermissionsError();
 		}
 		const user = await this.deps.userRepository.findUnique(userId);
 		this.deps.validationService.validateMessageEditable(message);
@@ -132,7 +138,7 @@ export class MessageEditService {
 			});
 		}
 		if (message.authorId !== userId) {
-			return await this.withMessageLock(channelId, messageId, () =>
+			const editedMessage = await this.withMessageLock(channelId, messageId, () =>
 				this.deps.processingService.handleNonAuthorEdit({
 					message,
 					messageId,
@@ -145,6 +151,7 @@ export class MessageEditService {
 					dispatchService: this.deps.dispatchService,
 				}),
 			);
+			return {message: editedMessage, authChannel};
 		}
 		const isBugHunterBot = !!user?.isBot && (user.flags & UserFlags.BUG_HUNTER) !== 0n;
 		const updateResult = await this.withMessageLock(channelId, messageId, () =>
@@ -155,6 +162,7 @@ export class MessageEditService {
 				channel,
 				guild,
 				member,
+				attachmentUploadUserId: userId,
 				allowEmbeds: canEmbedLinks,
 				isBot: user?.isBot,
 				isBugHunterBot,
@@ -184,7 +192,7 @@ export class MessageEditService {
 		if (channel.indexedAt != null) {
 			void this.deps.searchService.updateMessageIndex(updatedMessage);
 		}
-		return updatedMessage;
+		return {message: updatedMessage, authChannel};
 	}
 
 	private getEffectiveAllowedMentionsForEdit({
@@ -222,7 +230,7 @@ export class MessageEditService {
 		if (!lockToken) {
 			throw new ThrottledError({
 				code: APIErrorCodes.RESOURCE_LOCKED,
-				headers: {'Retry-After': '1'},
+				retryAfterSeconds: 1,
 				data: {retry_after: 1},
 			});
 		}

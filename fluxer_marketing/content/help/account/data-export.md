@@ -2,7 +2,7 @@ You can request a complete export of your account data, including every message 
 
 ## How to request an export
 
-1. Sign in at [web.fluxer.app/login](https://web.fluxer.app/login).
+1. Sign in at [web.echowire.org/login](https://web.echowire.org/login).
 2. Open Settings (the cogwheel at the bottom left).
 3. Go to Privacy Dashboard.
 4. Select the Data Export tab.

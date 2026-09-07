@@ -21,9 +21,10 @@ use std::{
 
 type HmacSha256 = Hmac<Sha256>;
 
-const CANARY_API_ENDPOINT: &str = "https://api.canary.fluxer.app";
+const CANARY_API_ENDPOINT: &str = "https://api.canary.echowire.org";
+pub const CANARY_WEB_APP_ENDPOINT: &str = "https://echowire.org";
 const LOCALE_COOKIE_MAX_AGE_SECONDS: u64 = 60 * 60 * 24 * 365;
-const STABLE_API_ENDPOINT: &str = "https://api.fluxer.app";
+const STABLE_API_ENDPOINT: &str = "https://api.echowire.org";
 
 #[derive(Clone)]
 pub struct AppState {
@@ -42,12 +43,15 @@ pub struct RequestContext {
     pub current_path: String,
     pub base_path: String,
     pub base_url: String,
-    pub app_endpoint: String,
     pub api_endpoint: String,
     pub static_cdn_endpoint: String,
     pub asset_version: String,
     pub country_code: String,
     pub release_channel: ReleaseChannel,
+    // Echowire: which desktop build channel the download page links to. Defaults to
+    // Stable; users opt into the beta build via ?channel=canary. Independent of
+    // release_channel (which is the marketing site's own deploy channel).
+    pub download_channel: ReleaseChannel,
     pub platform: Platform,
     pub architecture: Architecture,
     pub test_build: bool,
@@ -92,12 +96,18 @@ impl RequestContext {
             current_path,
             base_path: state.config.base_path.clone(),
             base_url: state.config.base_url(),
-            app_endpoint: state.config.app_endpoint.clone(),
             api_endpoint: state.config.api_endpoint.clone(),
             static_cdn_endpoint: state.config.static_cdn_endpoint.clone(),
             asset_version: state.config.build_version.clone(),
             country_code: state.geoip.country_code(headers),
             release_channel: state.config.release_channel,
+            download_channel: match uri.query() {
+                Some(query) if query.contains("channel=canary") => ReleaseChannel::Canary,
+                Some(query) if query.contains("channel=stable") => ReleaseChannel::Stable,
+                // Default follows the marketing site's own channel (Stable on echowire.org),
+                // so the stable site offers Stable downloads and users opt into Canary.
+                _ => state.config.release_channel,
+            },
             platform,
             architecture,
             test_build: uri
@@ -141,7 +151,7 @@ impl RequestContext {
     }
 
     pub fn app_url(&self, path: &str) -> String {
-        format!("{}{}", self.app_endpoint, path)
+        format!("{CANARY_WEB_APP_ENDPOINT}{path}")
     }
 
     pub fn api_url(&self, path: &str) -> String {

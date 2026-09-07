@@ -2,7 +2,6 @@
 
 import {createRequire} from 'node:module';
 import {BUILD_CHANNEL} from '@electron/common/BuildChannel';
-import {DESKTOP_BUILD_VARIANT} from '@electron/common/BuildVariant';
 import {isPortableMode} from '@electron/common/UserDataPath';
 import {destroyDesktopTray} from '@electron/main/DesktopTray';
 import {isFlatpakRuntime} from '@electron/main/LinuxSandbox';
@@ -71,12 +70,17 @@ function getDesktopDownloadArch(arch: NodeJS.Architecture): DesktopDownloadArch 
 }
 
 const DESKTOP_DOWNLOAD_ARCH = getDesktopDownloadArch(process.arch);
-const UPDATE_API_ENDPOINT = BUILD_CHANNEL === 'canary' ? 'https://api.canary.fluxer.app' : 'https://api.fluxer.app';
+// Echowire serves the API (and its /dl download routes) behind the /api path on the
+// main domain — there is no separate api. subdomain like upstream's api.fluxer.app.
+// The edge/internal Caddy strips /api and the DownloadController serves /dl at the api
+// root, and the API also generates binary URLs under this same base (Config.endpoints.
+// apiClient == https://echowire.org/api), so the updater base must include /api.
+const UPDATE_API_ENDPOINT = BUILD_CHANNEL === 'canary' ? 'https://canary.echowire.org/api' : 'https://echowire.org/api';
 const UPDATE_VARIANT_SEGMENT =
 	process.platform === 'win32' && DESKTOP_BUILD_VARIANT !== 'default' ? `/${DESKTOP_BUILD_VARIANT}` : '';
 const UPDATE_BASE_URL = `${UPDATE_API_ENDPOINT}/dl/desktop/${BUILD_CHANNEL}/${process.platform}/${DESKTOP_DOWNLOAD_ARCH}${UPDATE_VARIANT_SEGMENT}`;
 const DOWNLOAD_PAGE_URL =
-	BUILD_CHANNEL === 'canary' ? 'https://canary.fluxer.app/download' : 'https://fluxer.app/download';
+	BUILD_CHANNEL === 'canary' ? 'https://canary.echowire.org/download' : 'https://echowire.org/download';
 
 let lastContext: UpdaterContext = 'background';
 let pendingVelopackUpdate: UpdateInfo | null = null;
@@ -311,6 +315,8 @@ function registerVelopackUpdater(getMainWindow: () => BrowserWindow | null): voi
 function registerElectronUpdater(getMainWindow: () => BrowserWindow | null): void {
 	let electronUpdateDownloading = false;
 	let electronDownloadRetries = 0;
+	let electronUpdateDownloaded = false;
+	let electronDownloadedVersion: string | null = null;
 	const {UpdateSourceType, updateElectronApp} = requireModule(
 		'update-electron-app',
 	) as typeof import('update-electron-app');
@@ -326,7 +332,14 @@ function registerElectronUpdater(getMainWindow: () => BrowserWindow | null): voi
 	autoUpdater.on('checking-for-update', () => {
 		send(getMainWindow(), {type: 'checking', context: lastContext});
 	});
+	const sendPendingRestart = () => {
+		send(getMainWindow(), {type: 'downloaded', context: lastContext, version: electronDownloadedVersion});
+	};
 	autoUpdater.on('update-available', () => {
+		if (electronUpdateDownloaded) {
+			sendPendingRestart();
+			return;
+		}
 		electronUpdateDownloading = true;
 		send(getMainWindow(), {
 			type: 'available',
@@ -337,10 +350,19 @@ function registerElectronUpdater(getMainWindow: () => BrowserWindow | null): voi
 		});
 	});
 	autoUpdater.on('update-not-available', () => {
+		if (electronUpdateDownloaded) {
+			sendPendingRestart();
+			return;
+		}
 		send(getMainWindow(), {type: 'not-available', context: lastContext});
 	});
 	autoUpdater.on('update-downloaded', (_event, _releaseNotes, releaseName) => {
-		send(getMainWindow(), {type: 'downloaded', context: lastContext, version: releaseName ?? null});
+		electronUpdateDownloading = false;
+		electronUpdateDownloaded = true;
+		if (releaseName) {
+			electronDownloadedVersion = releaseName;
+		}
+		sendPendingRestart();
 	});
 	autoUpdater.on('error', (err: Error) => {
 		const message = err?.message ?? String(err);
@@ -363,6 +385,10 @@ function registerElectronUpdater(getMainWindow: () => BrowserWindow | null): voi
 			return;
 		}
 		electronUpdateDownloading = false;
+		if (electronUpdateDownloaded) {
+			sendPendingRestart();
+			return;
+		}
 		send(getMainWindow(), {type: 'error', context: lastContext, phase, message});
 	});
 	ipcMain.handle('updater-check', async (_e, context: UpdaterContext) => {
@@ -476,14 +502,14 @@ function buildManualLatestDownloadUrl(format: ManualDesktopFormat): string {
 	return `${UPDATE_BASE_URL}/latest/${format}`;
 }
 
-function getModernProductName(): string {
-	return BUILD_CHANNEL === 'canary' ? 'Fluxer Canary' : 'Fluxer';
+function getArtifactProductName(): string {
+	return BUILD_CHANNEL === 'canary' ? 'Echowire Canary' : 'Echowire';
 }
 
 function getManualUpdateSuggestedName(format: LinuxManualDesktopFormat, version: string): string {
 	const archToken = LINUX_MANUAL_ARCH_TOKENS[format][DESKTOP_DOWNLOAD_ARCH];
 	const extension = LINUX_MANUAL_FORMAT_EXTENSIONS[format];
-	return `${getModernProductName()}-${version}-linux-${archToken}${extension}`;
+	return `${getArtifactProductName()}-${version}-linux-${archToken}${extension}`;
 }
 
 function getManualDownloadOptions(info: ManualLatestInfo): Array<UpdaterDownloadOption> {

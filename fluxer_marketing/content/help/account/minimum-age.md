@@ -1,4 +1,4 @@
-You must meet the minimum age requirement for your country to create and use a Fluxer account. In most countries this is 13, but some jurisdictions set a higher minimum.
+You must meet the minimum age requirement for your country to create and use a Echowire account. In most countries this is 13, but some jurisdictions set a higher minimum.
 
 ## Minimum age by country
 
@@ -38,7 +38,7 @@ A handful of countries set a minimum age higher than the default of 13. All othe
 
 ## Age-restricted content
 
-Regardless of the minimum age to use Fluxer in your country, you must be 18 or older to access age-restricted content. This covers NSFW channels inside Communities, Communities marked as age-restricted, and media flagged as containing explicit content by our automated classifier (see [section 5.1 of our Privacy Policy](/privacy) for how that classifier works).
+Regardless of the minimum age to use Echowire in your country, you must be 18 or older to access age-restricted content. This covers NSFW channels inside Communities, Communities marked as age-restricted, and media flagged as containing explicit content by our automated classifier (see [section 5.1 of our Privacy Policy](/privacy) for how that classifier works).
 
 Your basic access is set by the date of birth you provide when you register. In some regions, age-restricted content may also require an extra regional adult verification step. For current region-specific requirements and methods, see our [regional restrictions](/help/regional-restrictions) page.
 
@@ -56,16 +56,16 @@ Reports are confidential. The reported user receives a statement of reasons expl
 
 ## Appealing a suspension
 
-If your account is suspended because it is suspected of belonging to someone under the minimum age, you can appeal by contacting [appeals@fluxer.app](mailto:appeals@fluxer.app) from the address linked to your account.
+If your account is suspended because it is suspected of belonging to someone under the minimum age, you can appeal by contacting [appeals@echowire.org](mailto:appeals@echowire.org) from the address linked to your account.
 
 As part of the appeal, you may be asked to submit a government-issued identification document to verify your age. ID requests are limited to two narrow situations: this age appeal, and the rare case of correcting a date of birth on an existing account (see [change your date of birth](/help/change-date-of-birth)). We do not require ID uploads or biometric scans for general access. Any document you submit is used only to verify your age. Authorised staff can access it, each access is logged, and it is deleted within 60 days after the appeal closes, regardless of the outcome.
 
 ## Accounts that do not meet the minimum age
 
-If Fluxer becomes aware that an account belongs to someone who does not meet the minimum age requirement in their country, we take steps to delete the account and the associated personal data. If you are a parent or legal guardian and believe your child has created an account without your consent or does not meet the minimum age, please contact [privacy@fluxer.app](mailto:privacy@fluxer.app) from the child's registered email address, or with enough proof that you are their parent or guardian.
+If Echowire becomes aware that an account belongs to someone who does not meet the minimum age requirement in their country, we take steps to delete the account and the associated personal data. If you are a parent or legal guardian and believe your child has created an account without your consent or does not meet the minimum age, please contact [privacy@echowire.org](mailto:privacy@echowire.org) from the child's registered email address, or with enough proof that you are their parent or guardian.
 
 For more information about how we handle children's data, see [section 11 of our Privacy Policy](/privacy).
 
 ## Contact
 
-For questions about minimum age requirements, write to [support@fluxer.app](mailto:support@fluxer.app). For privacy-related questions, see our [Privacy Policy](/privacy).
+For questions about minimum age requirements, write to [support@echowire.org](mailto:support@echowire.org). For privacy-related questions, see our [Privacy Policy](/privacy).

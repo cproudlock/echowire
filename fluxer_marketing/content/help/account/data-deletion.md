@@ -2,7 +2,7 @@ You can delete your messages and other content at any time through the Privacy D
 
 ## Delete all messages
 
-1. Sign in at [web.fluxer.app/login](https://web.fluxer.app/login).
+1. Sign in at [web.echowire.org/login](https://web.echowire.org/login).
 2. Open Settings (the cogwheel at the bottom left).
 3. Go to Privacy Dashboard.
 4. Select the Data Deletion tab.
@@ -14,7 +14,7 @@ Deleted messages leave active systems within minutes. They may persist in our en
 
 ## Delete specific data
 
-Email [privacy@fluxer.app](mailto:privacy@fluxer.app) from your account's registered address, with details of what you would like removed.
+Email [privacy@echowire.org](mailto:privacy@echowire.org) from your account's registered address, with details of what you would like removed.
 
 ## Before you delete
 

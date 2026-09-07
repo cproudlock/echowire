@@ -2,12 +2,14 @@
 
 import crypto from 'node:crypto';
 import {PremiumFlags, UserPremiumTypes} from '@fluxer/constants/src/UserConstants';
+import {HttpResponse, http} from 'msw';
 import {afterAll, beforeAll, beforeEach, describe, expect, test} from 'vitest';
 import {createTestAccount} from '../../auth/tests/AuthTestUtils';
 import {createUserID} from '../../BrandedTypes';
 import {Config} from '../../Config';
 import {type ApiTestHarness, createApiTestHarness} from '../../test/ApiTestHarness';
 import {createMockWebhookPayload, type StripeWebhookEventData} from '../../test/msw/handlers/StripeApiHandlers';
+import {server} from '../../test/msw/server';
 import {createBuilder} from '../../test/TestRequestBuilder';
 import {UserRepository} from '../../user/repositories/UserRepository';
 import {setupSyncStripeWebhookWorker} from './StripeWebhookTestUtils';
@@ -47,6 +49,20 @@ describe('Stripe Webhook Refund', () => {
 			.body(payload)
 			.execute();
 	}
+	function useRefundListHandler(chargeId: string): void {
+		server.use(
+			http.get(
+				({request}) => request.url === `https://api.stripe.com/v1/refunds?charge=${chargeId}&limit=100`,
+				() =>
+					HttpResponse.json({
+						object: 'list',
+						data: [],
+						has_more: false,
+						url: '/v1/refunds',
+					}),
+			),
+		);
+	}
 	describe('charge.refunded', () => {
 		test('revokes premium and records first refund', async () => {
 			const account = await createTestAccount(harness);
@@ -71,6 +87,7 @@ describe('Stripe Webhook Refund', () => {
 				payment_intent_id: paymentIntentId,
 				completed_at: new Date(),
 			});
+			useRefundListHandler('ch_test_refund_123');
 			await sendWebhook({
 				type: 'charge.refunded',
 				data: {
@@ -119,6 +136,7 @@ describe('Stripe Webhook Refund', () => {
 				payment_intent_id: paymentIntentId,
 				completed_at: new Date(),
 			});
+			useRefundListHandler('ch_test_refund_456');
 			await sendWebhook({
 				type: 'charge.refunded',
 				data: {
@@ -148,6 +166,7 @@ describe('Stripe Webhook Refund', () => {
 				{stripe_customer_id: stripeCustomerId},
 				(await userRepository.findUnique(userId))!.toRow(),
 			);
+			useRefundListHandler('ch_test_refund_sub_789');
 			await sendWebhook({
 				type: 'charge.refunded',
 				data: {
@@ -180,6 +199,7 @@ describe('Stripe Webhook Refund', () => {
 				subscriptionCurrentPeriodEnd: null,
 				subscriptionCancelAt: null,
 			});
+			useRefundListHandler('ch_test_refund_donation_101');
 			const result = await sendWebhook({
 				type: 'charge.refunded',
 				data: {
@@ -232,6 +252,7 @@ describe('Stripe Webhook Refund', () => {
 					premium_until: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000).toISOString(),
 				})
 				.execute();
+			useRefundListHandler('ch_test_refund_gift_multi_123');
 			await sendWebhook({
 				type: 'charge.refunded',
 				data: {
@@ -285,6 +306,7 @@ describe('Stripe Webhook Refund', () => {
 				.get('/users/@me')
 				.execute();
 			expect(redeemerBefore.premium_type).toBe(UserPremiumTypes.SUBSCRIPTION);
+			useRefundListHandler('ch_test_refund_stripe_cus_only');
 			await sendWebhook({
 				type: 'charge.refunded',
 				data: {
@@ -323,6 +345,7 @@ describe('Stripe Webhook Refund', () => {
 					premium_type: UserPremiumTypes.LIFETIME,
 				})
 				.execute();
+			useRefundListHandler('ch_test_refund_gift_override_123');
 			await sendWebhook({
 				type: 'charge.refunded',
 				data: {
@@ -339,6 +362,92 @@ describe('Stripe Webhook Refund', () => {
 				.get('/users/@me')
 				.execute();
 			expect(updatedRedeemer.premium_type).toBe(UserPremiumTypes.LIFETIME);
+		});
+	});
+	describe('refund.updated', () => {
+		test('finalizes self-serve cooldown and cancels the subscription once the refund is confirmed succeeded', async () => {
+			const account = await createTestAccount(harness);
+			const userId = createUserID(BigInt(account.userId));
+			const userRepository = new UserRepository();
+			const subscriptionId = 'sub_test_webhook_finalize';
+			await userRepository.patchUpsert(
+				userId,
+				{stripe_subscription_id: subscriptionId},
+				(await userRepository.findUnique(userId))!.toRow(),
+			);
+			server.use(
+				http.delete('https://api.stripe.com/v1/subscriptions/:id', ({params}) =>
+					HttpResponse.json({id: params.id, object: 'subscription', status: 'canceled'}),
+				),
+			);
+			await sendWebhook({
+				type: 'refund.updated',
+				data: {
+					object: {
+						id: 'pyr_test_webhook_finalize',
+						status: 'succeeded',
+						amount: 2499,
+						currency: 'brl',
+						metadata: {
+							refund_kind: 'self_serve',
+							user_id: account.userId.toString(),
+							invoice_id: 'in_test_webhook_finalize',
+							subscription_id: subscriptionId,
+						},
+					},
+				},
+			});
+			const updatedUser = await userRepository.findUnique(userId);
+			expect(updatedUser!.firstRefundAt).not.toBeNull();
+		});
+		test('does not finalize cooldown while the refund is still pending', async () => {
+			const account = await createTestAccount(harness);
+			const userId = createUserID(BigInt(account.userId));
+			const userRepository = new UserRepository();
+			await sendWebhook({
+				type: 'refund.updated',
+				data: {
+					object: {
+						id: 'pyr_test_webhook_pending',
+						status: 'pending',
+						amount: 2499,
+						currency: 'brl',
+						metadata: {
+							refund_kind: 'self_serve',
+							user_id: account.userId.toString(),
+							invoice_id: 'in_test_webhook_pending',
+						},
+					},
+				},
+			});
+			const updatedUser = await userRepository.findUnique(userId);
+			expect(updatedUser!.firstRefundAt).toBeNull();
+		});
+	});
+	describe('refund.failed', () => {
+		test('does not finalize cooldown when the refund ultimately fails', async () => {
+			const account = await createTestAccount(harness);
+			const userId = createUserID(BigInt(account.userId));
+			const userRepository = new UserRepository();
+			await sendWebhook({
+				type: 'refund.failed',
+				data: {
+					object: {
+						id: 'pyr_test_webhook_failed',
+						status: 'failed',
+						failure_reason: 'unknown',
+						amount: 2499,
+						currency: 'brl',
+						metadata: {
+							refund_kind: 'self_serve',
+							user_id: account.userId.toString(),
+							invoice_id: 'in_test_webhook_failed',
+						},
+					},
+				},
+			});
+			const updatedUser = await userRepository.findUnique(userId);
+			expect(updatedUser!.firstRefundAt).toBeNull();
 		});
 	});
 });

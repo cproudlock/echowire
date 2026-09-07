@@ -81,6 +81,72 @@ describe('InstanceConfigRepository', () => {
 		});
 	});
 
+	it('reuses the memoized effective bluesky config until the integrations blob changes', async () => {
+		const executor = new CountingInMemoryCassandraQueryExecutor();
+		setCassandraQueryExecutorForTesting(executor);
+		const kvProvider = new MockKVProvider();
+		const repository = createRepository(kvProvider);
+
+		const first = await repository.getEffectiveBlueskyConfig();
+		expect(await repository.getEffectiveBlueskyConfig()).toBe(first);
+
+		await repository.setInstanceIntegrationsConfig({bluesky: {client_name: 'Memoized Instance'}});
+
+		const updated = await repository.getEffectiveBlueskyConfig();
+		expect(updated).not.toBe(first);
+		expect(updated.client_name).toBe('Memoized Instance');
+		expect(await repository.getEffectiveBlueskyConfig()).toBe(updated);
+	});
+
+	it('recomputes the effective bluesky config after another repository publishes an integrations update', async () => {
+		const executor = new CountingInMemoryCassandraQueryExecutor();
+		setCassandraQueryExecutorForTesting(executor);
+		const kvProvider = new MockKVProvider();
+		const reader = createRepository(kvProvider);
+		const writer = createRepository(kvProvider);
+
+		const before = await reader.getEffectiveBlueskyConfig();
+		expect(await reader.getEffectiveBlueskyConfig()).toBe(before);
+
+		await writer.setInstanceIntegrationsConfig({bluesky: {client_name: 'Refreshed Instance'}});
+
+		await vi.waitFor(async () => {
+			expect((await reader.getEffectiveBlueskyConfig()).client_name).toBe('Refreshed Instance');
+		});
+	});
+
+	it('reports the effective captcha provider as none while the selected pair is incomplete', async () => {
+		const executor = new CountingInMemoryCassandraQueryExecutor();
+		setCassandraQueryExecutorForTesting(executor);
+		const kvProvider = new MockKVProvider();
+		const repository = createRepository(kvProvider);
+
+		await repository.setInstanceIntegrationsConfig({
+			captcha: {
+				provider: 'turnstile',
+				hcaptcha_site_key: 'hcaptcha-site-key',
+				hcaptcha_secret_key: 'hcaptcha-secret-key',
+			},
+		});
+
+		await expect(repository.getEffectiveCaptchaConfig()).resolves.toMatchObject({
+			enabled: false,
+			provider: 'none',
+		});
+
+		await repository.setInstanceIntegrationsConfig({
+			captcha: {
+				turnstile_site_key: 'turnstile-site-key',
+				turnstile_secret_key: 'turnstile-secret-key',
+			},
+		});
+
+		await expect(repository.getEffectiveCaptchaConfig()).resolves.toMatchObject({
+			enabled: true,
+			provider: 'turnstile',
+		});
+	});
+
 	it('uses the registration URL id as the admin-visible registration code', async () => {
 		const executor = new CountingInMemoryCassandraQueryExecutor();
 		setCassandraQueryExecutorForTesting(executor);

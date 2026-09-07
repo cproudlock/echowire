@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_TR_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_TR_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "{product_name} hesabın geçici olarak devre dışı bırakıldı",
 		"body": "Merhaba {username},\n\nŞüpheli etkinlik tespit ettiğimiz için {product_name} hesabını geçici olarak devre dışı bıraktık.\n\n{reason, select,\n  null {}\n  other {Sebep: {reason}}\n}\n\nHesabına tekrar erişmek için şifreni sıfırlaman gerekiyor:\n\n{forgotUrl}\n\nŞifreni sıfırladıktan sonra tekrar giriş yapabilirsin.\n\nBunun bir hata olduğunu düşünüyorsan, lütfen destek ekibimizle iletişime geç.\n\n– {product_name} Güvenlik Ekibi"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_TR_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Yeni bir IP adresinden girişi yetkilendir",
 		"body": "Merhaba {username},\n\n{product_name} hesabına yeni bir IP adresinden giriş denemesi tespit ettik:\n\nIP adresi: {ipAddress}\nKonum: {location}\n\nBu sen isen, lütfen aşağıdaki bağlantıya tıklayarak bu IP adresini yetkilendir:\n\n{authUrl}\n\nGiriş yapmaya sen çalışmadıysan, lütfen hemen şifreni değiştir.\n\nBu bağlantı 30 dakika boyunca geçerlidir.\n\n– {product_name} Ekibi"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "{product_name} yedek kodlarına erişimi onayla",
+		"body": "Merhaba {username},\n\n{product_name} hesabındaki yedek kodları görüntüleme isteği aldık.\n\nBu isteği onaylamak için bu kodu uygulamaya gir:\n\n{code}\n\nBu kod {expiresAt, date, full} {expiresAt, time, short} tarihinde sona erecektir.\n\nBunu sen talep etmediysen, birisi hesabına erişmiş olabilir. Şifreni hemen değiştir.\n\n– {product_name} Ekibi"
 	},
 	"password_change_verification": {
 		"subject": "{product_name} şifre değişikliğini onayla",

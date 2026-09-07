@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {DEFERRED_PHONE_ON_COMMUNITY_JOIN, imposePhoneRequirements} from '@fluxer/constants/src/UserConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {getCurrentTimeZoneOffsetMinutes} from '@fluxer/date_utils/src/TimeZoneUtils';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
@@ -299,7 +300,7 @@ export class UserAccountRequestService {
 					action: emailSetRecommendedAction,
 				},
 			});
-			nextSuspiciousFlags |= policyDecision.flagBits;
+			nextSuspiciousFlags = imposePhoneRequirements(nextSuspiciousFlags, policyDecision.flagBits);
 			if (nextSuspiciousFlags !== currentSuspiciousFlags) {
 				user = await this.userRepository.patchUpsert(
 					user.id,
@@ -478,19 +479,17 @@ export class UserAccountRequestService {
 		const guildMemberProfile = mapGuildMemberToProfileResponse(profile.guildMemberDomain ?? null, {restrictProfile});
 		const timezoneOffset = profile.timezoneVisible ? getCurrentTimeZoneOffsetMinutes(profileUser.timezone) : null;
 		const mutualFriends = profile.mutualFriends
-			? await Promise.all(
-					profile.mutualFriends.map((user) =>
-						mapUserToPartialResponseWithCache({
-							user,
-							userCacheService: this.userCacheService,
-							requestCache: params.requestCache,
-						}),
-					),
+			? profile.mutualFriends.map((user) =>
+					mapUserToPartialResponseWithCache({
+						user,
+						userCacheService: this.userCacheService,
+						requestCache: params.requestCache,
+					}),
 				)
 			: undefined;
 		const connectedAccounts = profile.connections ? this.mapConnectionsToResponse(profile.connections) : undefined;
 		return {
-			user: await mapUserToPartialResponseWithCache({
+			user: mapUserToPartialResponseWithCache({
 				user: profileUser,
 				userCacheService: this.userCacheService,
 				requestCache: params.requestCache,
@@ -550,7 +549,7 @@ export class UserAccountRequestService {
 	}
 
 	private shouldSkipFollowupRiskChecks(user: User): boolean {
-		return user.hasEverPurchased || user.suspiciousActivityFlags === 0;
+		return user.hasEverPurchased || ((user.suspiciousActivityFlags ?? 0) & ~DEFERRED_PHONE_ON_COMMUNITY_JOIN) === 0;
 	}
 
 	private enforceUserAccess(user: User): void {

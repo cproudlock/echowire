@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {remFromPx} from '@app/features/theme/layout/RemFromPx';
 import styles from '@app/features/ui/components/StatusIndicator.module.css';
 import {StatusTypes} from '@fluxer/constants/src/StatusConstants';
 import clsx from 'clsx';
@@ -17,14 +18,14 @@ const normalizeStatus = (status: string) => (status === StatusTypes.INVISIBLE ? 
 export const StatusIndicator = memo(
 	({status, size = 12, className, appearance = 'default', monochromeColor}: StatusIndicatorProps) => {
 		const normalizedStatus = normalizeStatus(status);
-		const maskId = `svg-mask-status-${normalizedStatus}`;
+		const maskId = `flx-mask-presence-${normalizedStatus}`;
 		const fill =
 			appearance === 'monochrome' ? (monochromeColor ?? 'currentColor') : `var(--status-${normalizedStatus})`;
 		return (
 			<svg
 				className={clsx(className, styles.displayBlock)}
-				width={size}
-				height={size}
+				width={remFromPx(size)}
+				height={remFromPx(size)}
 				viewBox="0 0 1 1"
 				preserveAspectRatio="none"
 				aria-hidden={false}
@@ -54,12 +55,12 @@ interface RenderStatusIconOptions {
 export const renderStatusIconContent = (status: string, size: number, options: RenderStatusIconOptions = {}) => {
 	const {appearance = 'default', monochromeColor} = options;
 	const normalizedStatus = normalizeStatus(status);
-	const maskId = `svg-mask-status-${normalizedStatus}`;
+	const maskId = `flx-mask-presence-${normalizedStatus}`;
 	const fill = appearance === 'monochrome' ? (monochromeColor ?? 'currentColor') : `var(--status-${normalizedStatus})`;
 	return (
 		<svg
-			width={size}
-			height={size}
+			width={remFromPx(size)}
+			height={remFromPx(size)}
 			viewBox="0 0 1 1"
 			preserveAspectRatio="none"
 			className={styles.displayBlock}

@@ -107,7 +107,7 @@ function collectOwnWindowMediaSourceIds(): Set<string> {
 			}
 		}
 	} catch (error) {
-		log.debug('[DisplayMedia] Failed to enumerate Fluxer windows for own-source detection', {error});
+		log.debug('[DisplayMedia] Failed to enumerate Echowire windows for own-source detection', {error});
 	}
 	return ids;
 }
@@ -128,7 +128,7 @@ function consumeWaylandPortalSurfacePreference(): DisplayMediaPortalSurfacePrefe
 	return preference;
 }
 
-export const DISPLAY_MEDIA_PORTAL_EMPTY_CHANNEL = 'display-media-portal-empty';
+const DISPLAY_MEDIA_PORTAL_EMPTY_CHANNEL = 'display-media-portal-empty';
 
 type WaylandPortalUnavailableReason = 'empty' | 'error';
 
@@ -152,7 +152,7 @@ async function defaultWaylandPortalSourceProvider(
 	return desktopCapturer.getSources({types});
 }
 
-export async function resolveWaylandPortalDisplayMedia(
+async function resolveWaylandPortalDisplayMedia(
 	context: WaylandPortalResolutionContext,
 ): Promise<Electron.Streams | null> {
 	const {requestId, preference, getSources, notifyUnavailable} = context;

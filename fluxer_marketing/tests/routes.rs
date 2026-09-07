@@ -22,7 +22,6 @@ fn test_config() -> MarketingConfig {
     config.marketing_endpoint = "https://fluxer.test".to_owned();
     config.base_path.clear();
     config.api_endpoint = "https://api.fluxer.test".to_owned();
-    config.app_endpoint = "https://app.fluxer.test".to_owned();
     config.build_version = "test".to_owned();
     config.geoip_db_path.clear();
     config.trust_client_ip_header = false;
@@ -99,23 +98,10 @@ async fn assetlinks_serves_android_login_credentials_association() {
                 ],
                 "target": {
                     "namespace": "android_app",
-                    "package_name": "com.fluxer",
+                    "package_name": "org.echowire.twa",
                     "sha256_cert_fingerprints": [
-                        "91:E4:98:E1:B8:A6:C8:BA:99:41:5E:DB:29:78:29:6B:6C:58:BA:A5:E2:D2:A6:49:CE:C6:2D:A7:A8:29:C7:BC"
-                    ]
-                }
-            },
-            {
-                "relation": [
-                    "delegate_permission/common.handle_all_urls",
-                    "delegate_permission/common.get_login_creds"
-                ],
-                "target": {
-                    "namespace": "android_app",
-                    "package_name": "com.fluxer.canary",
-                    "sha256_cert_fingerprints": [
-                        "91:E4:98:E1:B8:A6:C8:BA:99:41:5E:DB:29:78:29:6B:6C:58:BA:A5:E2:D2:A6:49:CE:C6:2D:A7:A8:29:C7:BC",
-                        "CD:19:82:28:32:A8:DE:E0:97:D8:60:D9:21:28:C9:C7:C4:73:A3:72:7E:63:71:9B:A7:BB:3B:98:06:94:1F:6F"
+                        "02:9C:A2:1A:C9:A6:96:C3:F9:8B:FC:84:3F:9D:3D:63:89:29:5F:5B:4F:91:B3:D5:67:AC:AA:4D:B9:41:7E:7E",
+                        "2F:7A:6D:CA:0D:B4:B7:4D:6F:66:BA:AB:4A:D9:5C:8E:1D:05:C3:C2:BD:DF:BC:17:A6:38:CF:0B:49:BE:04:B1"
                     ]
                 }
             }
@@ -182,10 +168,10 @@ async fn document_titles_use_marketing_title_patterns() {
     let app = build_router(test_config());
 
     let home = render_path(app.clone(), "/").await;
-    assert_document_title(&home, "Fluxer - A chat app that puts you first");
+    assert_document_title(&home, "echowire - A chat app that puts you first");
 
     let download = render_path(app.clone(), "/download").await;
-    assert_document_title(&download, "Download Fluxer | Fluxer");
+    assert_document_title(&download, "Download echowire | echowire");
 
     let response = app
         .oneshot(
@@ -199,8 +185,8 @@ async fn document_titles_use_marketing_title_patterns() {
     assert_eq!(response.status(), StatusCode::NOT_FOUND);
     let body = response.into_body().collect().await.unwrap().to_bytes();
     let not_found = String::from_utf8(body.to_vec()).unwrap();
-    assert_document_title(&not_found, "Page not found | Fluxer");
-    assert!(!not_found.contains("Fluxer | Page not found"));
+    assert_document_title(&not_found, "Page not found | echowire");
+    assert!(!not_found.contains("echowire | Page not found"));
 }
 
 #[tokio::test]
@@ -225,40 +211,10 @@ async fn home_uses_accept_language_catalog() {
     assert!(!html.contains("/marketing/flags/se.svg"));
 }
 
-#[tokio::test]
-async fn blog_post_under_base_path_prefixes_embedded_asset_urls() {
-    let mut config = test_config();
-    config.base_path = "/marketing".to_owned();
-    let app = build_router(config);
-
-    let html = render_path(app, "/blog/mobile-clients-and-fluxer-v2").await;
-    assert!(
-        html.contains(
-            "poster=\"/marketing/blog/assets/tenor-cable-guy-well-look-who-decided-to-show-poster.jpg\""
-        ),
-        "video poster prefixed: {html}"
-    );
-    assert!(
-        html.contains(
-            "src=\"/marketing/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.webm\""
-        ),
-        "video source prefixed: {html}"
-    );
-    assert!(
-        html.contains(
-            "/marketing/blog/assets/mobile-clients-and-fluxer-v2-feature-image-2000.avif 2000w"
-        ),
-        "feature srcset prefixed: {html}"
-    );
-    assert!(
-        !html.contains("poster=\"/blog/assets/tenor-cable-guy"),
-        "no unprefixed embed url: {html}"
-    );
-    assert!(
-        !html.contains("/marketing/marketing"),
-        "no double prefix: {html}"
-    );
-}
+// Removed `blog_post_under_base_path_prefixes_embedded_asset_urls`: it rendered the
+// `mobile-clients-and-fluxer-v2` blog post to verify base-path prefixing of embedded
+// assets, but all blog posts (and their assets) were intentionally dropped in the
+// echowire fork, so there is no remaining content to exercise this contract.
 
 #[tokio::test]
 async fn accept_language_prefers_exact_supported_locale_before_fallback() {
@@ -340,8 +296,8 @@ async fn sitemap_contains_content_routes() {
     assert!(xml.contains("https://fluxer.test/privacy"));
     assert!(xml.contains("https://fluxer.test/help/report-bug"));
     assert!(xml.contains("https://fluxer.test/blog"));
-    assert!(xml.contains("https://fluxer.test/blog/roadmap-2026"));
-    assert!(xml.contains("https://fluxer.test/careers/product-engineer"));
+    // Per-post `/blog/<slug>` and per-job `/careers/<slug>` sitemap entries were dropped
+    // along with the blog posts and job postings deleted in the echowire fork.
 }
 
 #[tokio::test]
@@ -350,7 +306,8 @@ async fn help_center_serves_imported_articles_and_legacy_redirects() {
 
     let help = render_path(app.clone(), "/help").await;
     assert!(help.contains("Help center"));
-    assert!(help.contains("March 2026 Plutonium promotion"));
+    // The "March 2026 Plutonium promotion" help article was intentionally deleted in the
+    // echowire fork, so it no longer appears in the help center listing.
     assert!(help.contains("How to delete or disable your account"));
     assert!(help.contains("Legal &amp; Policy"));
     assert!(!help.contains("https://help.fluxer.app"));
@@ -422,7 +379,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -439,7 +396,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/en/articles/13984933-minimum-age-requirements")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -456,7 +413,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/help/13984986-reporting-a-bug")
-                .header(header::HOST, "help.fluxer.app:443")
+                .header(header::HOST, "help.echowire.org:443")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -473,7 +430,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/en/collections/18821560-account")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -489,7 +446,7 @@ async fn help_host_only_redirects_to_canonical_marketing_help_routes() {
         .oneshot(
             Request::builder()
                 .uri("/download")
-                .header(header::HOST, "help.fluxer.app")
+                .header(header::HOST, "help.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -511,7 +468,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
         .oneshot(
             Request::builder()
                 .uri("/docs?ref=old")
-                .header(header::HOST, "www.fluxer.app")
+                .header(header::HOST, "www.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -537,7 +494,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
     assert_eq!(response.status(), StatusCode::TEMPORARY_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://app.fluxer.test/invite/"
+        "https://echowire.org/invite/"
     );
 
     let response = app
@@ -554,7 +511,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
     assert_eq!(response.status(), StatusCode::TEMPORARY_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://app.fluxer.test/invite/guild"
+        "https://echowire.org/invite/guild"
     );
 
     let response = app
@@ -571,7 +528,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
     assert_eq!(response.status(), StatusCode::TEMPORARY_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://app.fluxer.test/gift/spring"
+        "https://echowire.org/gift/spring"
     );
 
     let response = app
@@ -588,7 +545,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
     assert_eq!(response.status(), StatusCode::PERMANENT_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://docs.fluxer.app/install"
+        "https://docs.echowire.org/install"
     );
 
     let response = app
@@ -621,7 +578,7 @@ async fn old_origin_marketing_redirects_are_preserved() {
     assert_eq!(response.status(), StatusCode::TEMPORARY_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://app.fluxer.test/channels/@me?source=old"
+        "https://echowire.org/channels/@me?source=old"
     );
 
     let response = app
@@ -657,14 +614,72 @@ async fn old_origin_marketing_redirects_are_preserved() {
 }
 
 #[tokio::test]
+async fn app_redirects_and_cta_links_share_the_canary_web_app_origin_on_every_channel() {
+    const CANARY_WEB_APP_ORIGIN: &str = "https://echowire.org";
+
+    for channel in [ReleaseChannel::Stable, ReleaseChannel::Canary] {
+        let mut config = test_config();
+        config.release_channel = channel;
+        let app = build_router(config);
+
+        for (host, uri, expected) in [
+            ("fluxer.gg", "/", format!("{CANARY_WEB_APP_ORIGIN}/invite/")),
+            (
+                "fluxer.gg",
+                "/guild",
+                format!("{CANARY_WEB_APP_ORIGIN}/invite/guild"),
+            ),
+            (
+                "fluxer.gift",
+                "/spring",
+                format!("{CANARY_WEB_APP_ORIGIN}/gift/spring"),
+            ),
+            (
+                "fluxer.app",
+                "/channels/@me?source=old",
+                format!("{CANARY_WEB_APP_ORIGIN}/channels/@me?source=old"),
+            ),
+            (
+                "fluxer.app",
+                "/channels",
+                format!("{CANARY_WEB_APP_ORIGIN}/channels"),
+            ),
+        ] {
+            let response = app
+                .clone()
+                .oneshot(
+                    Request::builder()
+                        .uri(uri)
+                        .header(header::HOST, host)
+                        .body(Body::empty())
+                        .unwrap(),
+                )
+                .await
+                .unwrap();
+            assert_eq!(response.status(), StatusCode::TEMPORARY_REDIRECT);
+            assert_eq!(
+                response.headers().get(header::LOCATION).unwrap(),
+                expected.as_str()
+            );
+        }
+
+        let html = render_path(app, "/").await;
+        assert!(html.contains(&format!("{CANARY_WEB_APP_ORIGIN}/channels/@me")));
+        assert!(!html.contains("https://app.fluxer."));
+    }
+}
+
+#[tokio::test]
 async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     let app = build_router(test_config());
 
+    // All blog posts (and their embedded assets) were intentionally deleted in the
+    // echowire fork, so the index renders empty. The blog index, feeds, and legacy
+    // redirect routes still exist and are exercised below; per-post rendering, post
+    // search/tag results, and blog asset serving have been removed because there is no
+    // remaining content to exercise them.
     let blog = render_path(app.clone(), "/blog").await;
-    assert!(blog.contains("Fluxer Blog"));
-    assert!(blog.contains("Mobile clients and Fluxer v2"));
-    assert!(blog.contains("Roadmap 2026"));
-    assert!(blog.contains("How I built Fluxer, a Discord-like chat app"));
+    assert!(blog.contains("echowire Blog"));
     assert!(blog.contains("href=\"/blog/rss.xml\""));
     assert!(blog.contains("href=\"/blog/atom.xml\""));
     assert!(!blog.contains("https://blog.fluxer.app/rss/"));
@@ -672,103 +687,9 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
 
     let search = render_path(app.clone(), "/blog?q=federation").await;
     assert!(search.contains("Search results"));
-    assert!(search.contains("Roadmap 2026"));
-    assert!(search.contains("How I built Fluxer, a Discord-like chat app"));
 
     let tag = render_path(app.clone(), "/blog?tag=news").await;
     assert!(tag.contains("Filtered by News"));
-    assert!(tag.contains("Mobile clients and Fluxer v2"));
-    assert!(tag.contains("Roadmap 2026"));
-
-    let mobile_article = render_path(app.clone(), "/blog/mobile-clients-and-fluxer-v2").await;
-    assert!(mobile_article.contains("Hampus Kraft"));
-    assert!(mobile_article.contains("/blog/assets/hampus-kraft-avatar.jpg"));
-    assert!(mobile_article.contains(
-        "og:image\" content=\"https://fluxer.test/blog/assets/mobile-clients-and-fluxer-v2-feature-image-1280.jpg\""
-    ));
-    assert!(
-        mobile_article
-            .contains("/blog/assets/mobile-clients-and-fluxer-v2-feature-image-2000.avif 2000w")
-    );
-    assert!(mobile_article.contains("Fluxer has grown to more than 300,000 users"));
-    assert!(mobile_article.contains("https://github.com/fluxerapp/fluxer"));
-    assert!(mobile_article.contains("https://github.com/fluxerapp/flutter_client"));
-    assert!(mobile_article.contains("https://flathub.org/en/apps/app.fluxer.Fluxer"));
-    assert!(
-        mobile_article.contains("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.webm")
-    );
-    assert!(mobile_article.contains("https://docs.fluxer.app/operator/get-started/"));
-    assert!(mobile_article.contains("Download Fluxer Canary"));
-    assert!(mobile_article.contains("https://canary.fluxer.app/download"));
-    assert!(mobile_article.contains("dozens of testers"));
-    assert!(mobile_article.contains("native A/V architecture"));
-    assert!(mobile_article.contains("1440p 60fps without audio or video frame drops"));
-    assert!(mobile_article.contains("Fluxer Developers community"));
-    assert!(mobile_article.contains("<del>Linux</del> Fluxer"));
-    assert!(mobile_article.contains("instance moderation"));
-    assert!(mobile_article.contains("$1,500 in developer bounties"));
-    assert!(mobile_article.contains("kg-bookmark-card"));
-
-    let article = render_path(app.clone(), "/blog/roadmap-2026").await;
-    assert!(article.contains("article:published_time\" content=\"2026-01-26T12:49:48Z\""));
-    assert!(article.contains("article:tag\" content=\"News\""));
-    assert!(article.contains(
-        "og:image\" content=\"https://fluxer.test/blog/assets/roadmap-2026-feature-image-1280.jpg\""
-    ));
-    assert!(article.contains("type=\"image/avif\""));
-    assert!(article.contains("/blog/assets/roadmap-2026-feature-image-640.avif 640w"));
-    assert!(article.contains("src=\"/blog/assets/roadmap-2026-feature-image-1280.jpg\""));
-    assert!(!article.contains("src=\"https://fluxer.test/blog/assets/roadmap-2026-feature-image"));
-    assert!(article.contains("href=\"/donate\""));
-    assert!(!article.contains("href=\"https://fluxer.test/donate\""));
-    assert!(!article.contains("this roadmap has been revised since the January beta"));
-    assert!(!article.contains("min read"));
-    assert!(article.contains("DeepFilterNet3"));
-    assert!(article.contains("newer Rust services for users, messages, search, unfurling"));
-    assert!(article.contains("custom backends through in-app account switching"));
-    assert!(article.contains("simultaneous connections to multiple backends"));
-    assert!(article.contains("$199 or €199"));
-    assert!(article.contains("Free users get an allowance"));
-    assert!(article.contains("https://fluxerstatus.com/cmpiwlw5e057vpbi74zh7ohmh"));
-    assert!(article.contains("specialised tiers"));
-    assert!(article.contains("/blog/assets/bookmark-fluxer-status-thumb.jpg"));
-    assert!(article.contains("/blog/assets/bookmark-fluxer-status-icon.jpg"));
-    assert!(article.contains("LiveKit-backed E2EE"));
-    assert!(article.contains("GIFs are proxied through Fluxer"));
-    assert!(article.contains("kg-bookmark-card"));
-    assert!(article.contains("/blog/assets/bookmark-discord-age-verification-thumb.jpg"));
-    assert!(!article.contains("blog-link-card"));
-    assert!(article.contains("application/ld+json"));
-    assert!(article.contains("heading-anchor-link"));
-
-    let how_article = render_path(
-        app.clone(),
-        "/blog/how-i-built-fluxer-a-discord-like-chat-app",
-    )
-    .await;
-    assert!(how_article.contains("blog-bsky-card"));
-    assert!(how_article.contains("/blog/assets/bsky-jake-gold-avatar.jpg"));
-    assert!(!how_article.contains("blog-bsky-brand"));
-    assert!(!how_article.contains("blog-bsky-meta"));
-    assert!(!how_article.contains("GitHub Sponsors"));
-    assert!(!how_article.contains("github.com/sponsors"));
-    assert!(how_article.contains("What the backend looks like now"));
-    assert!(how_article.contains("Operator Pass"));
-    assert!(how_article.contains("custom backends in the Electron desktop app"));
-    assert!(how_article.contains("simultaneous connections to multiple backends"));
-    assert!(how_article.contains("30 June 2026"));
-    assert!(how_article.contains("/blog/assets/discord-ui-revolutionary-640.avif 640w"));
-    assert!(how_article.contains("/blog/assets/discord-ui-revolutionary-1280.png"));
-    assert!(how_article.contains(
-        "Source: <a href=\"https://imgur.com/whenever-someone-says-discords-ui-is-revolutionary-b5kdlfM\" target=\"_blank\" rel=\"noopener noreferrer\">Imgur</a>"
-    ));
-    assert!(!how_article.contains("/blog/assets/discord-ui-revolutionary.png"));
-    assert!(how_article.contains("/blog/assets/tenor-freebie.webm"));
-    assert!(how_article.contains("/blog/assets/tenor-delorean.webm"));
-    assert!(how_article.contains("/blog/assets/erlang-the-movie.mp4"));
-    assert!(!how_article.contains("https://embed.bsky.app/static/embed.js"));
-    assert!(!how_article.contains("https://tenor.com/embed/"));
-    assert!(!how_article.contains("https://www.youtube.com/embed/"));
 
     let rss = app
         .clone()
@@ -787,13 +708,7 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     );
     let body = rss.into_body().collect().await.unwrap().to_bytes();
     let rss_xml = String::from_utf8(body.to_vec()).unwrap();
-    assert!(rss_xml.contains("<title>Fluxer Blog</title>"));
-    assert!(rss_xml.contains("<link>https://fluxer.test/blog/mobile-clients-and-fluxer-v2</link>"));
-    assert!(rss_xml.contains("<link>https://fluxer.test/blog/roadmap-2026</link>"));
-    assert!(rss_xml.contains("<dc:creator>Hampus Kraft</dc:creator>"));
-    assert!(rss_xml.contains("<content:encoded><![CDATA["));
-    assert!(rss_xml.contains("https://fluxer.test/blog/assets/bookmark-"));
-    assert!(!rss_xml.contains("src=\"/blog/assets/bookmark-"));
+    assert!(rss_xml.contains("<title>echowire Blog</title>"));
 
     let atom = app
         .clone()
@@ -813,180 +728,6 @@ async fn blog_serves_imported_posts_feeds_assets_and_legacy_redirects() {
     let body = atom.into_body().collect().await.unwrap().to_bytes();
     let atom_xml = String::from_utf8(body.to_vec()).unwrap();
     assert!(atom_xml.contains("<feed xmlns=\"http://www.w3.org/2005/Atom\">"));
-    assert!(atom_xml.contains("<id>https://fluxer.test/blog/mobile-clients-and-fluxer-v2</id>"));
-    assert!(atom_xml.contains("<id>https://fluxer.test/blog/roadmap-2026</id>"));
-
-    let asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/roadmap-2026-feature-image-1280.avif")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(asset.status(), StatusCode::OK);
-    assert_eq!(
-        asset.headers().get(header::CONTENT_TYPE).unwrap(),
-        "image/avif"
-    );
-    assert_eq!(
-        asset.headers().get(header::CACHE_CONTROL).unwrap(),
-        "public, max-age=31536000, immutable"
-    );
-    assert_eq!(asset.headers().get(header::ACCEPT_RANGES).unwrap(), "bytes");
-
-    let mobile_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/mobile-clients-and-fluxer-v2-feature-image-2000.avif")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_asset.headers().get(header::CONTENT_TYPE).unwrap(),
-        "image/avif"
-    );
-
-    let mobile_video_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.webm")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_video_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_video_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "video/webm"
-    );
-
-    let mobile_video_poster_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show-poster.jpg")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_video_poster_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_video_poster_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "image/jpeg"
-    );
-
-    let mobile_video_mp4_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/tenor-cable-guy-well-look-who-decided-to-show.mp4")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_video_mp4_asset.status(), StatusCode::OK);
-    assert_eq!(
-        mobile_video_mp4_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "video/mp4"
-    );
-
-    let discord_ui_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/discord-ui-revolutionary-640.avif")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(discord_ui_asset.status(), StatusCode::OK);
-    assert_eq!(
-        discord_ui_asset
-            .headers()
-            .get(header::CONTENT_TYPE)
-            .unwrap(),
-        "image/avif"
-    );
-
-    let legacy_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/roadmap-2026-feature-image.png")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(legacy_asset.status(), StatusCode::PERMANENT_REDIRECT);
-    assert_eq!(
-        legacy_asset.headers().get(header::LOCATION).unwrap(),
-        "/blog/assets/roadmap-2026-feature-image-1280.jpg"
-    );
-
-    let mobile_legacy_asset = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/mobile-clients-and-fluxer-v2-feature-image.png")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(mobile_legacy_asset.status(), StatusCode::PERMANENT_REDIRECT);
-    assert_eq!(
-        mobile_legacy_asset.headers().get(header::LOCATION).unwrap(),
-        "/blog/assets/mobile-clients-and-fluxer-v2-feature-image-1280.jpg"
-    );
-
-    let range = app
-        .clone()
-        .oneshot(
-            Request::builder()
-                .uri("/blog/assets/erlang-the-movie.mp4")
-                .header(header::RANGE, "bytes=0-15")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    assert_eq!(range.status(), StatusCode::PARTIAL_CONTENT);
-    assert_eq!(
-        range.headers().get(header::CONTENT_TYPE).unwrap(),
-        "video/mp4"
-    );
-    assert_eq!(range.headers().get(header::CONTENT_LENGTH).unwrap(), "16");
-    assert!(
-        range
-            .headers()
-            .get(header::CONTENT_RANGE)
-            .unwrap()
-            .to_str()
-            .unwrap()
-            .starts_with("bytes 0-15/")
-    );
 
     let response = app
         .clone()
@@ -1025,7 +766,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1042,16 +783,18 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/roadmap-2026/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
         .await
         .unwrap();
+    // The `roadmap-2026` post was deleted in the echowire fork, so a legacy per-post
+    // blog-host URL now gracefully degrades to the blog index instead of the post.
     assert_eq!(response.status(), StatusCode::PERMANENT_REDIRECT);
     assert_eq!(
         response.headers().get(header::LOCATION).unwrap(),
-        "https://fluxer.test/blog/roadmap-2026"
+        "https://fluxer.test/blog"
     );
 
     let response = app
@@ -1059,7 +802,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/rss/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1076,7 +819,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/tag/news/")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1092,7 +835,7 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
         .oneshot(
             Request::builder()
                 .uri("/content/images/2026/04/cover.png")
-                .header(header::HOST, "blog.fluxer.app")
+                .header(header::HOST, "blog.echowire.org")
                 .body(Body::empty())
                 .unwrap(),
         )
@@ -1109,18 +852,15 @@ async fn blog_host_only_redirects_to_canonical_marketing_blog_routes() {
 async fn download_page_renders_strips_and_cache_header() {
     let mut config = test_config();
     config.api_endpoint = "http://127.0.0.1:9".to_owned();
-    let release_channel = config.release_channel;
+    config.release_channel = ReleaseChannel::Stable;
     let expected_download_url = format!(
         "/dl/desktop/{}/win32/x64/latest/setup?test=1",
-        release_channel.segment()
+        ReleaseChannel::Stable.segment()
     );
-    let expected_other_arch_url = format!(
-        "/dl/desktop/{}/win32/arm64/latest/setup?test=1",
-        release_channel.segment()
-    );
-    let expected_game_capture_download_url = format!(
+    // Echowire builds win32/x64 only; the Windows alternate is the game-capture build.
+    let expected_game_capture_url = format!(
         "/dl/desktop/{}/win32/x64/windows-game-capture/latest/setup?test=1",
-        release_channel.segment()
+        ReleaseChannel::Stable.segment()
     );
     let app = build_router(config);
     let response = app
@@ -1145,14 +885,13 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(!html.contains("download-card-grid"));
     assert!(!html.contains("/dl/desktop/source/latest"));
     assert!(html.contains(&expected_download_url));
-    assert!(html.contains(&expected_other_arch_url));
-    assert!(html.contains(&expected_game_capture_download_url));
-    assert!(html.contains("Microsoft Defender may quarantine it"));
-    if release_channel.is_canary() {
-        assert!(html.contains("/dl/desktop/canary/linux/x64/latest/appimage?test=1"));
-    } else {
-        assert!(html.contains("https://flathub.org/en/apps/app.fluxer.Fluxer"));
-    }
+    assert!(html.contains(&expected_game_capture_url));
+    let channel = ReleaseChannel::Stable.segment();
+    assert!(html.contains(&format!("/dl/desktop/{channel}/linux/x64/latest/appimage?test=1")));
+    // Echowire: no macOS build, no arm64 Linux build, no Flatpak published -> none linked.
+    assert!(!html.contains("darwin"));
+    assert!(!html.contains("flathub"));
+    assert!(!html.contains(&format!("/dl/desktop/{channel}/linux/arm64/")));
 }
 
 #[tokio::test]
@@ -1174,54 +913,8 @@ async fn download_page_uses_channel_api_endpoint_fallback_when_configured_endpoi
     let body = response.into_body().collect().await.unwrap().to_bytes();
     let html = String::from_utf8(body.to_vec()).unwrap();
     assert!(html.contains(
-        "https://api.canary.fluxer.app/dl/desktop/canary/linux/x64/latest/appimage?test=1"
+        "https://api.canary.echowire.org/dl/desktop/canary/linux/x64/latest/appimage?test=1"
     ));
-}
-
-#[tokio::test]
-async fn download_page_renders_latest_sha256_from_api_metadata() {
-    let checksum = "ced8b5a045b799b7ca9954b08c77f67b140640a1abb958b99636e659e867449a";
-    let download_api = axum::Router::new().route(
-        "/dl/desktop/canary/linux/x64/latest",
-        axum::routing::get(move || async move {
-            axum::Json(serde_json::json!({
-                "version": "0.0.33",
-                "pub_date": "2026-04-23T15:53:00Z",
-                "files": {
-                    "appimage": {
-                        "url": "http://127.0.0.1/dl/desktop/canary/linux/x64/0.0.33/appimage",
-                        "sha256": checksum,
-                        "checksum_url": "http://127.0.0.1/dl/desktop/canary/linux/x64/0.0.33/appimage.sha256"
-                    }
-                }
-            }))
-        }),
-    );
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let api_endpoint = format!("http://{}", listener.local_addr().unwrap());
-    let server = tokio::spawn(async move {
-        axum::serve(listener, download_api).await.unwrap();
-    });
-    let mut config = test_config();
-    config.release_channel = ReleaseChannel::Canary;
-    config.api_endpoint = api_endpoint;
-    let app = build_router(config);
-
-    let response = app
-        .oneshot(
-            Request::builder()
-                .uri("/download")
-                .body(Body::empty())
-                .unwrap(),
-        )
-        .await
-        .unwrap();
-    server.abort();
-    assert_eq!(response.status(), StatusCode::OK);
-    let body = response.into_body().collect().await.unwrap().to_bytes();
-    let html = String::from_utf8(body.to_vec()).unwrap();
-    assert!(html.contains(checksum));
-    assert!(html.contains("appimage.sha256"));
 }
 
 #[tokio::test]
@@ -1428,7 +1121,7 @@ async fn donation_page_renders_business_tab_and_swish_proxy_rejects_bad_amount()
 async fn product_program_and_press_pages_are_not_placeholders() {
     let app = build_router(test_config());
     for (path, expected) in [
-        ("/plutonium", "Free vs Plutonium"),
+        ("/reverb", "Free vs Reverb"),
         ("/partners", "Partner perks"),
         ("/press", "logo-color.svg"),
     ] {
@@ -1443,7 +1136,7 @@ async fn product_program_and_press_pages_are_not_placeholders() {
         assert!(html.contains(expected), "{path} did not contain {expected}");
     }
 
-    let plutonium = render_path(app, "/plutonium").await;
+    let plutonium = render_path(app, "/reverb").await;
     for expected in [
         "<table",
         "--fluxer-premium-inner: #4641D9;",
@@ -1464,7 +1157,7 @@ async fn product_program_and_press_pages_are_not_placeholders() {
     ] {
         assert!(
             plutonium.contains(expected),
-            "/plutonium did not contain {expected}"
+            "/reverb did not contain {expected}"
         );
     }
 }
@@ -1485,11 +1178,11 @@ async fn rendered_pages_keep_no_js_and_accessibility_contracts() {
         "/help",
         "/help/report-bug",
         "/blog",
-        "/blog/roadmap-2026",
+        // `/blog/<slug>` dropped: all blog posts were deleted in the echowire fork.
         "/careers",
         "/partners",
         "/press",
-        "/plutonium",
+        "/reverb",
         "/does-not-exist",
     ];
 
@@ -1852,4 +1545,103 @@ fn attribute_values(html: &str, name: &str) -> Vec<String> {
         rest = &after_start[value_end + 1..];
     }
     values
+}
+
+#[tokio::test]
+async fn fonts_are_served_locally_content_hashed_and_immutable() {
+    let app = build_router(test_config());
+
+    let stylesheet_path = format!(
+        "/static/fonts/{}",
+        fluxer_marketing::fonts::STYLESHEET_FILE_NAME
+    );
+    let response = app
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri(stylesheet_path.as_str())
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
+    assert_eq!(
+        response.headers().get(header::CACHE_CONTROL).unwrap(),
+        "public, max-age=31536000, immutable"
+    );
+    let body = response.into_body().collect().await.unwrap().to_bytes();
+    let css = String::from_utf8(body.to_vec()).unwrap();
+
+    for fragment in css.split("url('").skip(1) {
+        let file_name = fragment.split('\'').next().unwrap();
+        let response = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri(format!("/static/fonts/{file_name}").as_str())
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(
+            response.status(),
+            StatusCode::OK,
+            "missing font {file_name}"
+        );
+        assert_eq!(
+            response.headers().get(header::CONTENT_TYPE).unwrap(),
+            "font/woff2"
+        );
+        assert_eq!(
+            response.headers().get(header::CACHE_CONTROL).unwrap(),
+            "public, max-age=31536000, immutable"
+        );
+    }
+
+    let response = app
+        .oneshot(
+            Request::builder()
+                .uri("/static/fonts/does-not-exist.woff2")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::NOT_FOUND);
+}
+
+#[tokio::test]
+async fn pages_never_reference_the_static_cdn_for_fonts() {
+    let app = build_router(test_config());
+
+    for path in ["/", "/download", "/blog", "/missing"] {
+        let html = render_path(app.clone(), path).await;
+        assert!(
+            !html.contains("/fonts/ibm-plex.css"),
+            "{path} still links the CDN font stylesheets"
+        );
+        assert!(
+            html.contains("/static/fonts/"),
+            "{path} does not link the bundled font stylesheet"
+        );
+    }
+
+    let response = app
+        .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
+        .await
+        .unwrap();
+    let csp = response
+        .headers()
+        .get(header::CONTENT_SECURITY_POLICY)
+        .unwrap()
+        .to_str()
+        .unwrap()
+        .to_owned();
+    assert!(csp.contains("font-src 'self';"), "font-src was {csp}");
+    assert!(
+        csp.contains("style-src 'self' 'unsafe-inline';"),
+        "style-src was {csp}"
+    );
 }

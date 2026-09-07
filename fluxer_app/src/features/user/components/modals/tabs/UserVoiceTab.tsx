@@ -13,7 +13,6 @@ import {
 import {KeybindRecorder} from '@app/features/input/components/KeybindRecorder';
 import Keybind, {getDefaultKeybind} from '@app/features/input/state/InputKeybind';
 import {openMacPermissionsModal} from '@app/features/permissions/system/commands/MacPermissionsModalCommands';
-import {MacPermissionsSettingsRow} from '@app/features/permissions/system/components/MacPermissionsSettingsRow';
 import NativePermission from '@app/features/permissions/system/state/NativePermission';
 import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
@@ -169,8 +168,8 @@ const resolvePushToTalkReleaseDelayInput = (
 	).value;
 };
 const AUTO_GAIN_DESCRIPTION_DESCRIPTOR = msg({
-	message: 'Evens out your mic volume. Off when enhanced suppression is on.',
-	comment: 'Description for the automatic gain control toggle in the custom voice processing settings.',
+	message: 'Evens out your mic volume so you are not too quiet.',
+	comment: 'Description for the automatic gain control toggle in the voice processing settings.',
 });
 const INPUT_AND_OUTPUT_DESCRIPTOR = msg({
 	message: 'Input and output',
@@ -188,10 +187,6 @@ const ENTRANCE_SOUND_DESCRIPTOR = msg({
 	message: 'Entrance sound',
 	comment: 'Subsection title in the voice tab. Keep it concise.',
 });
-const MACOS_DESCRIPTOR = msg({
-	message: 'macOS',
-	comment: 'Subsection title in the voice tab for macOS-specific settings. Keep it concise.',
-});
 
 type NoiseSuppressionMethod = 'enhanced' | 'standard' | 'none';
 
@@ -207,7 +202,7 @@ function resolveNoiseSuppressionMethod(deepFilterEnabled: boolean, browserNsEnab
 	return 'none';
 }
 
-export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoRequestPermission = true}) => {
+export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoRequestPermission = false}) => {
 	const {i18n} = useLingui();
 	const {
 		inputDeviceId,
@@ -293,7 +288,6 @@ export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoR
 		},
 	];
 	const noiseSuppressionMethod = resolveNoiseSuppressionMethod(deepFilterNoiseSuppression, noiseSuppression);
-	const effectiveAutoGainControl = !deepFilterNoiseSuppression && autoGainControl;
 	const noiseSuppressionOptions: Array<ComboboxOption<NoiseSuppressionMethod>> = [
 		{value: 'enhanced', label: i18n._(NOISE_SUPPRESSION_ENHANCED_DESCRIPTOR)},
 		{value: 'standard', label: i18n._(NOISE_SUPPRESSION_STANDARD_DESCRIPTOR)},
@@ -449,6 +443,16 @@ export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoR
 			)}
 		</>
 	);
+	const renderAutoGainControlSwitch = () => (
+		<Switch
+			label={i18n._(VOICE_AUTOMATIC_GAIN_CONTROL_DESCRIPTOR)}
+			description={i18n._(AUTO_GAIN_DESCRIPTION_DESCRIPTOR)}
+			value={autoGainControl}
+			onChange={(value) => VoiceSettingsCommands.update({autoGainControl: value})}
+			ariaLabel={i18n._(VOICE_AUTOMATIC_GAIN_CONTROL_DESCRIPTOR)}
+			data-flx="user.voice-tab.render-auto-gain-control-switch.switch.update-auto-gain-control"
+		/>
+	);
 	const renderCustomProfile = () => (
 		<div className={styles.profileSubSection} data-flx="user.voice-tab.render-custom-profile.profile-sub-section">
 			{renderPttControls()}
@@ -507,21 +511,13 @@ export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoR
 				ariaLabel={i18n._(VOICE_ECHO_CANCELLATION_DESCRIPTOR)}
 				data-flx="user.voice-tab.render-custom-profile.switch.update--2"
 			/>
-			<Switch
-				label={i18n._(VOICE_AUTOMATIC_GAIN_CONTROL_DESCRIPTOR)}
-				description={i18n._(AUTO_GAIN_DESCRIPTION_DESCRIPTOR)}
-				value={effectiveAutoGainControl}
-				disabled={deepFilterNoiseSuppression}
-				onChange={(value) => VoiceSettingsCommands.update({autoGainControl: value})}
-				ariaLabel={i18n._(VOICE_AUTOMATIC_GAIN_CONTROL_DESCRIPTOR)}
-				data-flx="user.voice-tab.render-custom-profile.switch.update-auto-gain-control"
-			/>
+			{renderAutoGainControlSwitch()}
 		</div>
 	);
 	return (
 		<>
 			<SettingsTabSection title={i18n._(INPUT_AND_OUTPUT_DESCRIPTOR)} data-flx="user.voice-tab.devices-section">
-				{devices.length === 0 && permissionStatus !== 'loading' && permissionStatus !== 'granted' ? (
+				{inputDevices.length === 0 && permissionStatus !== 'loading' ? (
 					<div className={styles.deviceNotice} data-flx="user.voice-tab.device-notice">
 						<div className={styles.deviceNoticeText} data-flx="user.voice-tab.device-notice-text">
 							<div className={styles.deviceNoticeTitle} data-flx="user.voice-tab.device-notice-title">
@@ -539,21 +535,25 @@ export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoR
 											Allow {PRODUCT_NAME} to access your microphone. Check your browser's address bar or settings.
 										</Trans>
 									)
+								) : permissionStatus === 'granted' ? (
+									<Trans>Connect a microphone and try again.</Trans>
 								) : (
 									i18n._(PRODUCT_NEEDS_MICROPHONE_ACCESS_DESCRIPTOR, {productName: PRODUCT_NAME})
 								)}
 							</p>
 						</div>
-						<Button
-							variant="secondary"
-							small={true}
-							onClick={() => {
-								void requestPermission();
-							}}
-							data-flx="user.voice-tab.button"
-						>
-							<Trans>Allow microphone</Trans>
-						</Button>
+						{permissionStatus !== 'granted' ? (
+							<Button
+								variant="secondary"
+								small={true}
+								onClick={() => {
+									void requestPermission();
+								}}
+								data-flx="user.voice-tab.button"
+							>
+								<Trans>Allow microphone</Trans>
+							</Button>
+						) : null}
 					</div>
 				) : null}
 				<CompactComboboxRow
@@ -662,6 +662,7 @@ export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoR
 						{voiceProcessingMode === 'voice' && (
 							<div className={styles.profileSubSection} data-flx="user.voice-tab.profile-sub-section">
 								{renderPttControls()}
+								{renderAutoGainControlSwitch()}
 							</div>
 						)}
 						{voiceProcessingMode === 'studio' && pttCombo?.key && isPushToTalk && (
@@ -682,7 +683,7 @@ export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoR
 						outputVolume,
 						echoCancellation,
 						noiseSuppression,
-						autoGainControl: effectiveAutoGainControl,
+						autoGainControl,
 						deepFilterNoiseSuppression,
 						deepFilterNoiseSuppressionLevel,
 						voiceProcessingMode,
@@ -696,11 +697,6 @@ export const VoiceTab: React.FC<VoiceTabProps> = observer(({voiceSettings, autoR
 			>
 				<EntranceSoundSection data-flx="user.voice-tab.entrance-sound-section" />
 			</SettingsTabSection>
-			{NativePermission.isNativeMacDesktop && (
-				<SettingsTabSection title={i18n._(MACOS_DESCRIPTOR)} data-flx="user.voice-tab.macos-section">
-					<MacPermissionsSettingsRow data-flx="user.voice-tab.macos-permissions-row" />
-				</SettingsTabSection>
-			)}
 		</>
 	);
 });

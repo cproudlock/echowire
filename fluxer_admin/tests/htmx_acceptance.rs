@@ -16,10 +16,41 @@ use tokio::net::TcpListener;
 use tower::ServiceExt;
 
 const SECRET_KEY: &str = "htmx-acceptance-test-secret";
+const ADMIN_API_KEY_SECRET: &str = "fa_1900000000000000001_OneTimeSecretForAcceptance";
 
 struct TestApp {
     router: Router,
     session_cookie: String,
+}
+
+#[tokio::test]
+async fn admin_api_key_create_form_renders_the_one_time_secret() {
+    let app = setup().await;
+    let (headers, page) = get_with_headers(&app, "/admin-api-keys", &[]).await;
+    let csrf_token = csrf_cookie(&headers)
+        .unwrap_or_else(|| panic!("Admin API keys page did not set csrf_token cookie\n{page}"));
+    assert!(page.contains(r#"data-admin-result-form="true""#), "{page}");
+
+    let (status, _, response_body) = post_form_with_headers(
+        &app,
+        "/admin-api-keys?action=create",
+        &[
+            ("HX-Request", "true"),
+            ("HX-Boosted", "true"),
+            ("HX-Target", "body"),
+            (
+                "Cookie",
+                &format!("{}; csrf_token={}", app.session_cookie, csrf_token),
+            ),
+        ],
+        &format!("_csrf={csrf_token}&name=Acceptance+Key&acls=*"),
+    )
+    .await;
+
+    assert_eq!(status, StatusCode::OK, "{response_body}");
+    assert_full_layout(&response_body);
+    assert!(response_body.contains(r#"hx-history="false""#));
+    assert!(response_body.contains(ADMIN_API_KEY_SECRET));
 }
 
 #[tokio::test]
@@ -185,6 +216,16 @@ async fn user_fragment_alias_returns_drawer_fragment() {
 
     assert_fragment(&fragment);
     assert!(fragment.contains("SearchedUser"), "{fragment}");
+}
+
+#[tokio::test]
+async fn user_peek_alias_is_gone() {
+    let app = setup().await;
+
+    assert_eq!(
+        get_status(&app, "/users/1500000000000000001/peek").await,
+        StatusCode::NOT_FOUND
+    );
 }
 
 #[tokio::test]
@@ -404,41 +445,6 @@ async fn mutating_admin_pages_render_usable_csrf_tokens() {
 }
 
 #[tokio::test]
-async fn hosted_instance_config_hides_self_host_setup_controls() {
-    let app = setup().await;
-    let body = get(&app, "/instance-config", &[]).await;
-
-    assert_full_layout(&body);
-    assert!(body.contains("Registration Controls"), "{body}");
-    assert!(body.contains("Runtime Integrations"), "{body}");
-    assert!(body.contains("Gateway Rollout Configuration"), "{body}");
-    assert!(!body.contains("Public App Identity"), "{body}");
-    assert!(!body.contains("Setup complete"), "{body}");
-    assert!(!body.contains("Community & Policy"), "{body}");
-    assert!(!body.contains("Single community"), "{body}");
-    assert!(!body.contains("Direct messages &amp; friends"), "{body}");
-    assert!(!body.contains("Premium model"), "{body}");
-    assert!(!body.contains("Optional services"), "{body}");
-    assert!(!body.contains("Registration Fields"), "{body}");
-    assert!(
-        !body.contains("Collect date of birth during registration"),
-        "{body}"
-    );
-    assert!(
-        !body.contains("/instance-config?action=update_app_public"),
-        "{body}"
-    );
-    assert!(
-        !body.contains("/instance-config?action=update_app_registration"),
-        "{body}"
-    );
-    assert!(
-        !body.contains("/instance-config?action=update_policy"),
-        "{body}"
-    );
-}
-
-#[tokio::test]
 async fn instance_config_registration_tables_show_copyable_urls_and_compact_pending_actions() {
     let app = setup().await;
     let body = get(&app, "/instance-config", &[]).await;
@@ -542,6 +548,84 @@ async fn creating_registration_url_swaps_copyable_url_list_fragment() {
     assert!(toast.contains("Registration URL created"), "{toast}");
 }
 
+#[tokio::test]
+async fn fonts_are_served_locally_content_hashed_and_immutable() {
+    let app = setup().await;
+
+    let stylesheet_path = format!(
+        "/static/fonts/{}",
+        fluxer_admin::fonts::STYLESHEET_FILE_NAME
+    );
+    let (headers, css) = get_with_headers(&app, &stylesheet_path, &[]).await;
+    assert_eq!(
+        headers.get(header::CACHE_CONTROL).unwrap(),
+        "public, max-age=31536000, immutable"
+    );
+
+    for fragment in css.split("url('").skip(1) {
+        let file_name = fragment.split('\'').next().unwrap();
+        let response = app
+            .router
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri(format!("/static/fonts/{file_name}"))
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(
+            response.status(),
+            StatusCode::OK,
+            "missing font {file_name}"
+        );
+        assert_eq!(
+            response.headers().get(header::CONTENT_TYPE).unwrap(),
+            "font/woff2"
+        );
+        assert_eq!(
+            response.headers().get(header::CACHE_CONTROL).unwrap(),
+            "public, max-age=31536000, immutable"
+        );
+    }
+
+    let response = app
+        .router
+        .clone()
+        .oneshot(
+            Request::builder()
+                .uri("/static/fonts/does-not-exist.woff2")
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::NOT_FOUND);
+}
+
+#[tokio::test]
+async fn rendered_heads_never_reference_the_static_cdn_for_fonts() {
+    let app = setup().await;
+
+    let (headers, page) = get_with_headers(&app, "/users", &[]).await;
+    assert!(
+        !page.contains("/fonts/ibm-plex.css"),
+        "the admin layout still links the CDN font stylesheets"
+    );
+    assert!(page.contains("/static/fonts/"), "{page}");
+
+    let csp = headers
+        .get(header::CONTENT_SECURITY_POLICY)
+        .and_then(|value| value.to_str().ok())
+        .expect("missing CSP");
+    assert!(csp.contains("font-src 'self';"), "font-src was {csp}");
+    assert!(
+        csp.contains("style-src 'self' 'unsafe-inline';"),
+        "style-src was {csp}"
+    );
+}
+
 struct SearchCase {
     path: &'static str,
     result_target: &'static str,
@@ -568,6 +652,23 @@ async fn setup() -> TestApp {
 
 async fn get(app: &TestApp, uri: &str, headers: &[(&str, &str)]) -> String {
     get_with_headers(app, uri, headers).await.1
+}
+
+async fn get_status(app: &TestApp, uri: &str) -> StatusCode {
+    let response = app
+        .router
+        .clone()
+        .oneshot(
+            Request::builder()
+                .method(Method::GET)
+                .uri(uri)
+                .header(header::COOKIE, &app.session_cookie)
+                .body(Body::empty())
+                .unwrap(),
+        )
+        .await
+        .unwrap();
+    response.status()
 }
 
 async fn get_with_headers(
@@ -634,11 +735,11 @@ fn csrf_cookie(headers: &HeaderMap) -> Option<String> {
         .iter()
         .filter_map(|value| value.to_str().ok())
         .find_map(|value| {
-            value
-                .split(';')
-                .next()
-                .and_then(|pair| pair.strip_prefix("csrf_token="))
-                .map(str::to_owned)
+            let pair = value.split(';').next()?;
+            let token = pair
+                .strip_prefix("__Host-csrf_token=")
+                .or_else(|| pair.strip_prefix("csrf_token="))?;
+            (!token.is_empty()).then(|| token.to_owned())
         })
 }
 
@@ -678,62 +779,68 @@ async fn spawn_mock_api() -> String {
 }
 
 async fn mock_api(method: Method, uri: Uri) -> Response {
-    match (method, uri.path()) {
-        (Method::GET, "/admin/users/me") => json_response(json!({ "user": admin_user() })),
-        (Method::POST, "/admin/users/search") => {
+    let path = uri.path().to_owned();
+    match (method, path.as_str()) {
+        (Method::GET, "/admin/users/@me") => json_response(json!({ "user": admin_user() })),
+        (Method::GET, "/admin/api-keys") => json_response(json!([])),
+        (Method::POST, "/admin/api-keys") => json_response(json!({
+            "key_id": "1900000000000000001",
+            "key": ADMIN_API_KEY_SECRET,
+            "name": "Acceptance key",
+            "created_at": "2026-07-10T15:00:00.000Z",
+            "expires_at": null,
+            "acls": ["*"]
+        })),
+        (Method::GET, "/admin/users") => {
             json_response(json!({ "users": [searched_user()], "total": 1 }))
         }
-        (Method::POST, "/admin/users/lookup") => {
+        (Method::GET, "/admin/users/1500000000000000001") => {
             json_response(json!({ "users": [searched_user()] }))
         }
-        (Method::POST, "/admin/users/update-has-verified-phone") => {
+        (Method::PUT, "/admin/users/1500000000000000001/phone-verification") => {
             json_response(json!({ "user": searched_user() }))
         }
-        (Method::POST, "/admin/guilds/search") => {
+        (Method::GET, "/admin/guilds") => {
             json_response(json!({ "guilds": [searched_guild()], "total": 1 }))
         }
-        (Method::POST, "/admin/guilds/lookup") => {
+        (Method::GET, "/admin/guilds/1600000000000000001") => {
             json_response(json!({ "guild": searched_guild_detail() }))
         }
-        (Method::POST, "/admin/applications/lookup") => {
-            json_response(json!({ "application": searched_application() }))
-        }
-        (Method::POST, "/admin/applications/list-by-owner") => {
+        (Method::GET, "/admin/applications") => {
             json_response(json!({ "applications": [searched_application()] }))
         }
-        (Method::POST, "/admin/reports/search") => json_response(
+        (Method::GET, "/admin/reports") => json_response(
             json!({ "reports": [searched_report()], "total": 1, "offset": 0, "limit": 25 }),
         ),
         (Method::GET, "/admin/reports/1800000000000000001") => json_response(searched_report()),
         (Method::GET, "/admin/reports/1800000000000000002") => {
             json_response(searched_message_report())
         }
-        (Method::POST, "/admin/reports/resolve") => json_response(json!({
+        (Method::PATCH, "/admin/reports/1800000000000000001") => json_response(json!({
             "report_id": "1800000000000000001",
             "status": 1,
             "resolved_at": "2026-05-26T12:03:00.000Z",
             "public_comment": "done"
         })),
-        (Method::POST, "/admin/jobs/list") => {
+        (Method::GET, "/admin/jobs") => {
             json_response(json!({ "jobs": [searched_job()], "next_cursor": null, "cursor": null }))
         }
-        (Method::POST, "/admin/jobs/get") => json_response(json!({ "job": searched_job() })),
-        (Method::POST, "/admin/instance-config/get") => json_response(instance_config()),
-        (Method::POST, "/admin/instance-config/registration-urls/create") => json_response(json!({
+        (Method::GET, "/admin/jobs/1900000000000000001") => {
+            json_response(json!({ "job": searched_job() }))
+        }
+        (Method::GET, "/admin/instance/config") => json_response(instance_config()),
+        (Method::POST, "/admin/instance/registration-urls") => json_response(json!({
             "registration_url": registration_url_fixture(),
             "code": "11111111-1111-4111-8111-111111111111",
             "url": "https://app.example.test/register?registration_url=11111111-1111-4111-8111-111111111111"
         })),
-        (Method::POST, "/admin/instance-config/registration-urls/revoke") => {
+        (Method::DELETE, path) if path.starts_with("/admin/instance/registration-urls/") => {
             json_response(instance_config_without_registration_urls())
         }
-        (Method::POST, "/admin/instance-config/pending-registrations/approve") => {
+        (Method::PATCH, path) if path.starts_with("/admin/instance/pending-registrations/") => {
             json_response(instance_config_without_pending_registrations())
         }
-        (Method::POST, "/admin/instance-config/pending-registrations/reject") => {
-            json_response(instance_config_without_pending_registrations())
-        }
-        (Method::POST, "/admin/limit-config/get") => json_response(limit_config()),
+        (Method::GET, "/admin/limit-config") => json_response(limit_config()),
         _ => (StatusCode::NOT_FOUND, Json(json!({ "error": "not found" }))).into_response(),
     }
 }
@@ -780,6 +887,7 @@ fn user(id: &str, username: &str) -> Value {
         "premium_grace_ends_at": null,
         "premium_lifetime_sequence": null,
         "suspicious_activity_flags": 0,
+        "phone_verification_deferred": false,
         "has_totp": false,
         "authenticator_types": [],
         "has_verified_phone": false,

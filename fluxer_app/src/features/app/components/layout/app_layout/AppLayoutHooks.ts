@@ -6,16 +6,15 @@ import {
 	type NagbarState,
 	NagbarType,
 } from '@app/features/app/components/layout/app_layout/AppLayoutTypes';
-import {isCanaryTesterCtaDismissed} from '@app/features/app/components/layout/app_layout/CanaryTesterDismissal';
 import {isScheduledMaintenanceNagbarDismissed} from '@app/features/app/components/layout/app_layout/ScheduledMaintenanceDismissal';
 import Config from '@app/features/app/config/Config';
+import {isClientReconnecting} from '@app/features/app/state/ClientReadiness';
 import Initialization from '@app/features/app/state/Initialization';
 import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import Authentication from '@app/features/auth/state/Authentication';
 import Channels from '@app/features/channel/state/Channels';
 import DeveloperOptions from '@app/features/devtools/state/DeveloperOptions';
 import GatewayConnection from '@app/features/gateway/transport/GatewayConnection';
-import GuildMembers from '@app/features/member/state/GuildMembers';
 import * as NotificationUtils from '@app/features/notification/utils/NotificationUtils';
 import NativePermission from '@app/features/permissions/system/state/NativePermission';
 import StreamerMode from '@app/features/streamer_mode/state/StreamerMode';
@@ -33,12 +32,10 @@ import {
 	getVoiceSessionRestoreSnapshotKey,
 	isRestorableVoiceChannelType,
 } from '@app/features/voice/utils/VoiceSessionRestoreUtils';
-import {CANARY_TESTER_MIN_ACCOUNT_AGE_MS, CANARY_TESTERS_GUILD_ID} from '@fluxer/constants/src/AppConstants';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {PRIVACY_POLICY_LAST_UPDATED, TERMS_OF_SERVICE_LAST_UPDATED} from '@fluxer/constants/src/PolicyConstants';
 import {UserPremiumTypes} from '@fluxer/constants/src/UserConstants';
 import {MS_PER_DAY} from '@fluxer/date_utils/src/DateConstants';
-import * as SnowflakeUtils from '@fluxer/snowflake/src/SnowflakeUtils';
 import {useEffect, useMemo, useState} from 'react';
 
 function sortNagbarsByPriority(a: NagbarState, b: NagbarState): number {
@@ -47,12 +44,16 @@ function sortNagbarsByPriority(a: NagbarState, b: NagbarState): number {
 
 export function selectVisibleNagbars(nagbars: Array<NagbarState>): Array<NagbarState> {
 	const visibleNagbars = nagbars.filter((nagbar) => nagbar.visible).sort(sortNagbarsByPriority);
-	const nonDismissible = visibleNagbars.filter((nagbar) => !nagbar.dismissible);
-	const dismissible = visibleNagbars.filter((nagbar) => nagbar.dismissible);
+	const pinned = visibleNagbars.filter((nagbar) => nagbar.type === NagbarType.BUILD_ENVIRONMENT);
+	const selectable = visibleNagbars.filter((nagbar) => nagbar.type !== NagbarType.BUILD_ENVIRONMENT);
+	const nonDismissible = selectable.filter((nagbar) => !nagbar.dismissible);
+	const dismissible = selectable.filter((nagbar) => nagbar.dismissible);
 	const selectedNonDismissible = nonDismissible.slice(0, 1);
 	const selectedDismissible = dismissible.slice(0, 1);
-	return [...selectedNonDismissible, ...selectedDismissible].sort(sortNagbarsByPriority);
+	return [...pinned, ...selectedNonDismissible, ...selectedDismissible].sort(sortNagbarsByPriority);
 }
+
+const BUILD_ENVIRONMENT_HIDDEN_RELEASE_CHANNELS = new Set<string>(['stable', 'canary']);
 
 export const useAppLayoutState = (): AppLayoutState => {
 	const [isStandalone, setIsStandalone] = useState(isStandalonePwa());
@@ -111,9 +112,11 @@ export const useNagbarConditions = (): NagbarConditions => {
 		const now = new Date();
 		const expiryDate = new Date(user.premiumUntil);
 		const gracePeriodMs = 3 * MS_PER_DAY;
-		const graceEndDate = new Date(expiryDate.getTime() + gracePeriodMs);
+		const graceEndDate = user.premiumGraceEndsAt
+			? new Date(user.premiumGraceEndsAt)
+			: new Date(expiryDate.getTime() + gracePeriodMs);
 		const isInGracePeriod = now > expiryDate && now <= graceEndDate;
-		return isInGracePeriod;
+		return isInGracePeriod && !nagbarState.premiumGracePeriodDismissed;
 	})();
 	const canShowPremiumExpired = (() => {
 		if (isSelfHosted) return false;
@@ -124,11 +127,13 @@ export const useNagbarConditions = (): NagbarConditions => {
 		const expiryDate = new Date(user.premiumUntil);
 		const gracePeriodMs = 3 * MS_PER_DAY;
 		const expiredStateDurationMs = 30 * MS_PER_DAY;
-		const graceEndDate = new Date(expiryDate.getTime() + gracePeriodMs);
-		const expiredStateEndDate = new Date(expiryDate.getTime() + expiredStateDurationMs);
+		const graceEndDate = user.premiumGraceEndsAt
+			? new Date(user.premiumGraceEndsAt)
+			: new Date(expiryDate.getTime() + gracePeriodMs);
+		const expiredStateEndDate = new Date(graceEndDate.getTime() + expiredStateDurationMs);
 		const isExpired = now > graceEndDate;
 		const showExpiredState = isExpired && now <= expiredStateEndDate;
-		return showExpiredState;
+		return showExpiredState && !nagbarState.premiumExpiredDismissed;
 	})();
 	const canShowGiftInventory = (() => {
 		if (isSelfHosted) return false;
@@ -167,21 +172,6 @@ export const useNagbarConditions = (): NagbarConditions => {
 		if (!user) return false;
 		if (isSelfHosted) return false;
 		return !nagbarState.guildMembershipCtaDismissed;
-	})();
-	void nagbarState.canaryTesterCtaDismissalVersion;
-	const canShowCanaryTesterCta = (() => {
-		if (nagbarState.forceHideCanaryTesterCta) return false;
-		if (nagbarState.forceCanaryTesterCta) return true;
-		if (!user) return false;
-		if (isSelfHosted) return false;
-		if (Config.PUBLIC_RELEASE_CHANNEL !== 'canary') return false;
-		if (user.bot) return false;
-		if (!user.email || !user.verified) return false;
-		if (user.requiredActions && user.requiredActions.length > 0) return false;
-		if (SnowflakeUtils.age(user.id) < CANARY_TESTER_MIN_ACCOUNT_AGE_MS) return false;
-		if (GuildMembers.getMember(CANARY_TESTERS_GUILD_ID, user.id)) return false;
-		if (isCanaryTesterCtaDismissed()) return false;
-		return true;
 	})();
 	void nagbarState.scheduledMaintenanceDismissalVersion;
 	const canShowScheduledMaintenance = (() => {
@@ -240,6 +230,14 @@ export const useNagbarConditions = (): NagbarConditions => {
 	const canShowLinuxInputAccess = NativePermission.shouldShowLinuxInputAccessNagbar;
 	const canShowSoftwareEncoder = SoftwareEncoderWarning.showWarning;
 	const canShowStreamerMode = StreamerMode.shouldShowNagbar;
+	const canShowBuildEnvironment =
+		!BUILD_ENVIRONMENT_HIDDEN_RELEASE_CHANNELS.has(Config.PUBLIC_RELEASE_CHANNEL) &&
+		!nagbarState.buildEnvironmentDismissedThisSession;
+	const canShowConnection = nagbarState.forceHideConnectionNotice
+		? false
+		: nagbarState.forceConnectionNotice
+			? true
+			: isClientReconnecting();
 	const needsTermsAcceptance = (() => {
 		if (!user) return false;
 		if (isSelfHosted) return false;
@@ -255,6 +253,8 @@ export const useNagbarConditions = (): NagbarConditions => {
 		return termsOutdated || privacyOutdated;
 	})();
 	return {
+		canShowBuildEnvironment,
+		canShowConnection,
 		canShowCorruptedInstallation: nagbarState.forceHideCorruptedInstallation
 			? false
 			: nagbarState.forceCorruptedInstallation
@@ -285,7 +285,6 @@ export const useNagbarConditions = (): NagbarConditions => {
 		canShowVisionaryMfa,
 		canShowVoiceSessionRestore,
 		needsTermsAcceptance,
-		canShowCanaryTesterCta,
 		canShowLinuxInputAccess,
 		canShowSoftwareEncoder,
 		canShowStreamerMode,
@@ -294,6 +293,18 @@ export const useNagbarConditions = (): NagbarConditions => {
 export const useActiveNagbars = (conditions: NagbarConditions): Array<NagbarState> => {
 	return useMemo(() => {
 		const nagbars: Array<NagbarState> = [
+			{
+				type: NagbarType.BUILD_ENVIRONMENT,
+				priority: -1000,
+				visible: conditions.canShowBuildEnvironment,
+				dismissible: true,
+			},
+			{
+				type: NagbarType.CONNECTION,
+				priority: -100,
+				visible: conditions.canShowConnection,
+				dismissible: false,
+			},
 			{
 				type: NagbarType.CORRUPTED_INSTALLATION,
 				priority: -10,
@@ -382,12 +393,6 @@ export const useActiveNagbars = (conditions: NagbarConditions): Array<NagbarStat
 				type: NagbarType.DESKTOP_DOWNLOAD,
 				priority: 9,
 				visible: conditions.canShowDesktopDownload,
-				dismissible: true,
-			},
-			{
-				type: NagbarType.CANARY_TESTER_CTA,
-				priority: 6.5,
-				visible: conditions.canShowCanaryTesterCta,
 				dismissible: true,
 			},
 			{

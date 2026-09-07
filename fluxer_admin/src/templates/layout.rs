@@ -69,9 +69,8 @@ pub fn admin_layout_ext(
                 @if options.auto_refresh {
                     meta http-equiv="refresh" content="3";
                 }
-                title { (title) " ~ Fluxer Admin" }
-                link rel="stylesheet" href={(config.static_cdn_endpoint) "/fonts/ibm-plex.css?v=3"};
-                link rel="stylesheet" href={(config.static_cdn_endpoint) "/fonts/bricolage.css?v=3"};
+                title { (title) " ~ Echowire Admin" }
+                link rel="stylesheet" href={(base) "/static/fonts/" (crate::fonts::STYLESHEET_FILE_NAME)};
                 link rel="stylesheet" href=(cache_busted_asset(base, asset_version, "/static/app.css"));
                 link rel="icon" type="image/x-icon" href={(config.static_cdn_endpoint) "/web/favicon.ico"};
                 link rel="apple-touch-icon" href={(config.static_cdn_endpoint) "/web/apple-touch-icon.png"};

@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_RU_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_RU_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Твой аккаунт {product_name} временно отключён",
 		"body": "Привет, {username},\n\nМы временно отключили твой аккаунт {product_name}, так как обнаружили подозрительную активность.\n\n{reason, select,\n  null {}\n  other {Причина: {reason}}\n}\n\nЧтобы восстановить доступ к аккаунту, тебе нужно сбросить пароль:\n\n{forgotUrl}\n\nПосле сброса пароля ты сможешь снова войти в аккаунт.\n\nЕсли ты считаешь, что это ошибка, пожалуйста, свяжись с нашей службой поддержки.\n\n– Команда безопасности {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_RU_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Подтверди вход с нового IP-адреса",
 		"body": "Привет, {username},\n\nМы обнаружили попытку входа в твой аккаунт {product_name} с нового IP-адреса:\n\nIP-адрес: {ipAddress}\nМестоположение: {location}\n\nЕсли это был ты, пожалуйста, подтверди этот IP-адрес, нажав на ссылку ниже:\n\n{authUrl}\n\nЕсли ты не пытался войти, пожалуйста, немедленно смени пароль.\n\nЭта ссылка действительна в течение 30 минут.\n\n– Команда {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Подтверди доступ к резервным кодам {product_name}",
+		"body": "Привет, {username},\n\nМы получили запрос на просмотр резервных кодов твоего аккаунта {product_name}.\n\nЧтобы подтвердить этот запрос, введи этот код в приложении:\n\n{code}\n\nЭтот код истекает {expiresAt, date, full} в {expiresAt, time, short}.\n\nЕсли ты не запрашивал это, возможно, кто-то получил доступ к твоему аккаунту. Немедленно смени пароль.\n\n– Команда {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Подтверди смену пароля для {product_name}",

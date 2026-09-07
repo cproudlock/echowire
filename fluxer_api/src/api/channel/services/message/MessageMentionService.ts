@@ -22,10 +22,12 @@ import {
 } from '../../../BrandedTypes';
 import type {IGuildRepositoryAggregate} from '../../../guild/repositories/IGuildRepositoryAggregate';
 import type {GatewayChannelMention, IGatewayService} from '../../../infrastructure/IGatewayService';
+import {Logger} from '../../../Logger';
 import type {Channel} from '../../../models/Channel';
 import type {Message} from '../../../models/Message';
 import type {IUserRepository} from '../../../user/IUserRepository';
 import type {WorkerTaskName} from '../../../worker/WorkerLaneConfig';
+import {WorkerQueueOverflowError} from '../../../worker/WorkerQueueOverflowError';
 import {isOperationDisabled, isPersonalNotesChannel} from './MessageHelpers';
 import type {MessageResponseDataService} from './MessageResponseDataService';
 
@@ -441,8 +443,7 @@ export class MessageMentionService {
 			return validUserIds;
 		}
 		const authorHasStaffFlag = (author.flags & UserFlags.STAFF) === UserFlags.STAFF;
-		const authorHasCtpFlag = (author.flags & UserFlags.CTP_MEMBER) === UserFlags.CTP_MEMBER;
-		if (authorHasStaffFlag || authorHasCtpFlag) {
+		if (authorHasStaffFlag) {
 			return validUserIds;
 		}
 		const staffTargets = validUsers.filter((user) => (user.flags & UserFlags.STAFF) === UserFlags.STAFF);
@@ -498,8 +499,19 @@ export class MessageMentionService {
 			mentionHere ||
 			mentionEveryone ||
 			(message.reference && message.type === MessageTypes.REPLY);
-		if (hasMentions) {
-			await this.workerService.addJob('handleMentions', taskData);
+		if (!hasMentions) {
+			return;
+		}
+		try {
+			await this.workerService.addJob('handleMentions', taskData, {skipLedger: true});
+		} catch (error) {
+			if (!(error instanceof WorkerQueueOverflowError)) {
+				throw error;
+			}
+			Logger.warn(
+				{channelId: message.channelId.toString(), messageId: message.id.toString()},
+				'Dropped mention fanout, jobs stream is at its limit',
+			);
 		}
 	}
 }

@@ -47,7 +47,12 @@ import {verifyPassword} from '../utils/PasswordUtils';
 import type {ApplicationService} from './ApplicationService';
 import {ApplicationNotOwnedError} from './ApplicationService';
 import type {BotAuthService} from './BotAuthService';
-import {mapApplicationToResponse, mapBotTokenResetResponse, mapBotUserToResponse} from './OAuth2Mappers';
+import {
+	mapApplicationToResponse,
+	mapBotProfileToResponse,
+	mapBotTokenResetResponse,
+	mapBotUserToResponse,
+} from './OAuth2Mappers';
 import {filterOAuth2Scopes} from './OAuth2ScopeUtils';
 import {ACCESS_TOKEN_TTL_SECONDS, type OAuth2Service} from './OAuth2Service';
 import type {IApplicationRepository} from './repositories/IApplicationRepository';
@@ -273,6 +278,7 @@ export class OAuth2RequestService {
 						}
 					}
 					await this.guildService.members.addUserToGuild({
+						skipRiskGate: true,
 						userId: botUserId,
 						guildId,
 						skipGuildLimitCheck: true,
@@ -315,7 +321,10 @@ export class OAuth2RequestService {
 				throw err;
 			}
 		}
-		Logger.info({redirectTo}, 'OAuth2 consent: returning redirect URL');
+		Logger.info(
+			{clientId: params.body.client_id.toString(), userId: params.userId.toString()},
+			'OAuth2 consent: returning redirect URL',
+		);
 		return {redirect_to: redirectTo};
 	}
 
@@ -386,7 +395,7 @@ export class OAuth2RequestService {
 			redirect_uris: Array.from(application.oauth2RedirectUris),
 			scopes,
 			bot_public: application.botIsPublic || isOwner,
-			bot: botUser ? mapBotUserToResponse(botUser) : null,
+			bot: botUser ? mapBotProfileToResponse(botUser) : null,
 			current_user: requestingUser ? mapUserToPartialResponse(requestingUser) : null,
 		};
 	}

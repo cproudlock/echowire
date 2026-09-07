@@ -20,15 +20,15 @@ import {
 import {ChannelNicknameOverrides} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {ReadStateResponse} from '@fluxer/schema/src/domains/gateway/GatewaySchemas';
 import {ChannelOverwriteTypeSchema, GeneralChannelNameType} from '@fluxer/schema/src/primitives/ChannelValidators';
-import {createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
+import {base64LengthForBytes, createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
 import {ContentWarningLevelSchema} from '@fluxer/schema/src/primitives/GuildValidators';
 import {QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
 import {
-	coerceNumberFromString,
 	createNamedLiteral,
 	createNamedLiteralUnion,
 	createStringType,
 	Int32Type,
+	SnowflakeStringType,
 	SnowflakeType,
 	UnsignedInt64Type,
 } from '@fluxer/schema/src/primitives/SchemaPrimitives';
@@ -83,6 +83,13 @@ const ChannelCommonBase = z.object({
 		.array(ChannelOverwriteRequest)
 		.optional()
 		.describe('Permission overwrites for roles and members'),
+	rate_limit_per_user: z
+		.number()
+		.int()
+		.min(CHANNEL_RATE_LIMIT_PER_USER_MIN)
+		.max(CHANNEL_RATE_LIMIT_PER_USER_MAX)
+		.nullish()
+		.describe(`Slowmode delay in seconds (${CHANNEL_RATE_LIMIT_PER_USER_MIN}-${CHANNEL_RATE_LIMIT_PER_USER_MAX})`),
 });
 const ChannelContentWarningFields = {
 	nsfw_override: z
@@ -112,14 +119,7 @@ const ChannelUpdateCommon = ChannelCommonBase.extend({
 			'Legacy: setting true maps to nsfw_override=true; setting false maps to nsfw_override=null (inherit). Prefer nsfw_override.',
 		),
 	...ChannelContentWarningFields,
-	rate_limit_per_user: z
-		.number()
-		.int()
-		.min(CHANNEL_RATE_LIMIT_PER_USER_MIN)
-		.max(CHANNEL_RATE_LIMIT_PER_USER_MAX)
-		.nullish()
-		.describe(`Slowmode delay in seconds (${CHANNEL_RATE_LIMIT_PER_USER_MIN}-${CHANNEL_RATE_LIMIT_PER_USER_MAX})`),
-	icon: createBase64StringType(1, Math.ceil(AVATAR_MAX_SIZE * (4 / 3)))
+	icon: createBase64StringType(1, base64LengthForBytes(AVATAR_MAX_SIZE))
 		.nullish()
 		.describe('Base64-encoded icon image for group DM channels'),
 	owner_id: SnowflakeType.nullish().describe('ID of the new owner for group DM channels'),
@@ -150,11 +150,41 @@ const ChannelCreateLinkRequest = ChannelCreateCommon.extend({
 	name: GeneralChannelNameType.describe('The name of the channel'),
 });
 
+// Echowire: a forum tag as supplied by the client. id is present when editing an existing tag and
+// omitted when creating a new one (the server assigns a snowflake).
+export const ForumTagInput = z.object({
+	id: SnowflakeStringType.optional().describe('Existing tag ID (omit to create a new tag)'),
+	name: createStringType(1, 20).describe('Tag name (1-20 characters)'),
+	emoji_name: z.string().nullish().describe('Optional emoji for the tag'),
+});
+export type ForumTagInput = z.infer<typeof ForumTagInput>;
+
+const DefaultReactionEmojiInput = z
+	.object({
+		emoji_id: SnowflakeStringType.nullish().describe('Custom emoji ID'),
+		emoji_name: z.string().nullish().describe('Unicode emoji'),
+	})
+	.describe('Default reaction shown on forum posts');
+
+const ChannelCreateForumRequest = ChannelCreateCommon.extend({
+	type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
+	name: GeneralChannelNameType.describe('The name of the forum channel'),
+	available_tags: z.array(ForumTagInput).max(20).optional().describe('Tags available for posts (max 20)'),
+	default_reaction_emoji: DefaultReactionEmojiInput.nullish(),
+	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
+	default_auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.nullish()
+		.describe('Default inactivity (minutes) new posts inherit'),
+	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
+});
+
 export const ChannelCreateRequest = z.discriminatedUnion('type', [
 	ChannelCreateTextRequest,
 	ChannelCreateVoiceRequest,
 	ChannelCreateCategoryRequest,
 	ChannelCreateLinkRequest,
+	ChannelCreateForumRequest,
 ]);
 
 export type ChannelCreateRequest = z.infer<typeof ChannelCreateRequest>;
@@ -179,10 +209,33 @@ const ChannelUpdateLinkRequest = ChannelUpdateCommon.extend({
 	name: GeneralChannelNameType.nullish().describe('The name of the channel'),
 });
 
+const ChannelUpdateForumRequest = ChannelUpdateCommon.extend({
+	type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
+	name: GeneralChannelNameType.nullish().describe('The name of the forum channel'),
+	available_tags: z
+		.array(ForumTagInput)
+		.max(20)
+		.nullish()
+		.describe('Full replacement set of available tags (max 20); existing tags keep their id'),
+	default_reaction_emoji: z
+		.object({
+			emoji_id: SnowflakeStringType.nullish(),
+			emoji_name: z.string().nullish(),
+		})
+		.nullish()
+		.describe('Default reaction shown on forum posts (null to clear)'),
+	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
+	default_auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.nullish()
+		.describe('Default inactivity (minutes) new posts inherit'),
+	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
+});
+
 const ChannelUpdateGroupDmRequest = z.object({
 	type: createNamedLiteral(ChannelTypes.GROUP_DM, 'GROUP_DM', 'Channel type (group DM)'),
 	name: GeneralChannelNameType.nullish().describe('The name of the group DM'),
-	icon: createBase64StringType(1, Math.ceil(AVATAR_MAX_SIZE * (4 / 3)))
+	icon: createBase64StringType(1, base64LengthForBytes(AVATAR_MAX_SIZE))
 		.nullish()
 		.describe('Base64-encoded icon image for the group DM'),
 	owner_id: SnowflakeType.nullish().describe('ID of the new owner of the group DM'),
@@ -194,6 +247,7 @@ export const ChannelUpdateRequest = z.discriminatedUnion('type', [
 	ChannelUpdateVoiceRequest,
 	ChannelUpdateCategoryRequest,
 	ChannelUpdateLinkRequest,
+	ChannelUpdateForumRequest,
 	ChannelUpdateGroupDmRequest,
 ]);
 
@@ -250,9 +304,6 @@ export type ReadStateAckRequest = z.infer<typeof ReadStateAckRequest>;
 
 export const ReadStateAckResponse = z.object({
 	read_states: z.array(ReadStateResponse).describe('Authoritative read states after applying the acknowledgement'),
-	read_state_proto: z
-		.string()
-		.describe('Authoritative read states after applying the acknowledgement, encoded as a base64 protobuf bundle'),
 });
 
 export type ReadStateAckResponse = z.infer<typeof ReadStateAckResponse>;
@@ -292,46 +343,6 @@ export const CallRingBodySchema = z.object({
 
 export type CallRingBodySchema = z.infer<typeof CallRingBodySchema>;
 
-export const VoiceDebugLoggingToggleBodySchema = z.object({
-	enabled: z.boolean().describe('Whether voice debug logging should be active for this channel'),
-	duration_ms: coerceNumberFromString(z.number().int().min(60000).max(14400000))
-		.optional()
-		.describe('Optional activation duration in milliseconds. Defaults to one hour and is capped at four hours.'),
-});
-
-export type VoiceDebugLoggingToggleBodySchema = z.infer<typeof VoiceDebugLoggingToggleBodySchema>;
-
-const VoiceDebugLoggingTimestampNs = z
-	.string()
-	.regex(/^[0-9]{1,32}$/)
-	.describe('Nanosecond timestamp encoded as an unsigned decimal string');
-
-export const VoiceDebugLoggingEventSchema = z
-	.object({
-		type: createStringType(1, 128).describe('Client-side diagnostic event type'),
-		timestamp_ns: VoiceDebugLoggingTimestampNs.describe('Client wall-clock Unix timestamp in nanoseconds'),
-		monotonic_ns: VoiceDebugLoggingTimestampNs.optional().describe('Client monotonic timestamp in nanoseconds'),
-		data: z.record(z.string(), z.unknown()).optional().describe('Event-specific diagnostic payload'),
-	})
-	.passthrough();
-
-export type VoiceDebugLoggingEventSchema = z.infer<typeof VoiceDebugLoggingEventSchema>;
-
-export const VoiceDebugLoggingEventsBodySchema = z.object({
-	session_id: createStringType(1, 128).describe('Active voice debug logging session id'),
-	connection_id: createStringType(1, 128).optional().describe('Client voice connection id'),
-	participant_identity: createStringType(1, 256).optional().describe('LiveKit participant identity'),
-	events: z.array(VoiceDebugLoggingEventSchema).min(1).max(200).describe('NDJSON batch events to store'),
-});
-
-export type VoiceDebugLoggingEventsBodySchema = z.infer<typeof VoiceDebugLoggingEventsBodySchema>;
-
-export const VoicePresenceHeartbeatBodySchema = z.object({
-	connection_id: createStringType(1, 128).describe('Client voice connection id'),
-});
-
-export type VoicePresenceHeartbeatBodySchema = z.infer<typeof VoicePresenceHeartbeatBodySchema>;
-
 export const StreamUpdateBodySchema = z.object({
 	region: createStringType(RTC_REGION_ID_MIN_LENGTH, RTC_REGION_ID_MAX_LENGTH)
 		.optional()
@@ -367,3 +378,49 @@ export const StreamPreviewUploadUrlResponseSchema = z.object({
 });
 
 export type StreamPreviewUploadUrlResponseSchema = z.infer<typeof StreamPreviewUploadUrlResponseSchema>;
+
+// Echowire: create a thread under a text/forum channel (POST /channels/:channel_id/threads).
+export const ThreadCreateRequest = z.object({
+	name: GeneralChannelNameType.describe('The name of the thread (1-100 characters)'),
+	message_id: SnowflakeStringType.optional().describe(
+		'When creating a thread from an existing message, the source message ID. The thread adopts this ID so the message can render an inline link to it (Discord semantics).',
+	),
+	applied_tags: z
+		.array(SnowflakeStringType)
+		.max(5)
+		.optional()
+		.describe('Tag IDs to apply to this forum post (max 5). Only valid when the parent is a forum channel.'),
+	auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.optional()
+		.describe('Minutes of inactivity before auto-archiving (60, 1440, 4320, or 10080); defaults to 1440'),
+	type: z
+		.union([
+			createNamedLiteral(ChannelTypes.PUBLIC_THREAD, 'PUBLIC_THREAD'),
+			createNamedLiteral(ChannelTypes.PRIVATE_THREAD, 'PRIVATE_THREAD'),
+		])
+		.optional()
+		.describe('The thread type (11 = public, 12 = private); defaults to public'),
+});
+
+export type ThreadCreateRequest = z.infer<typeof ThreadCreateRequest>;
+
+// Echowire: update a thread (PATCH /channels/:channel_id/thread). All fields optional.
+export const ThreadUpdateRequest = z.object({
+	name: GeneralChannelNameType.optional().describe('New thread name (1-100 characters)'),
+	archived: z.boolean().optional().describe('Whether the thread is archived'),
+	locked: z.boolean().optional().describe('Whether the thread is locked (only moderators can unarchive)'),
+	auto_archive_duration: z
+		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
+		.optional()
+		.describe('Minutes of inactivity before auto-archiving'),
+	invitable: z.boolean().optional().describe('Whether non-moderators can add others to a private thread'),
+	applied_tags: z
+		.array(SnowflakeStringType)
+		.max(5)
+		.optional()
+		.describe('Replacement set of tag IDs for a forum post (max 5)'),
+	pinned: z.boolean().optional().describe('Whether to pin this forum post to the top (moderators only)'),
+});
+
+export type ThreadUpdateRequest = z.infer<typeof ThreadUpdateRequest>;

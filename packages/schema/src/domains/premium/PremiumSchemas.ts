@@ -258,8 +258,8 @@ export type SelfServeRefundEligibilityResponse = z.infer<typeof SelfServeRefundE
 
 const PremiumBillingState = z.object({
 	stripe_customer_id: z.string().nullable(),
-	current_subscription_price: CurrentSubscriptionPriceResponse,
-	pending_subscription_change: PendingSubscriptionChangeResponse,
+	current_subscription_price: CurrentSubscriptionPriceResponse.nullable(),
+	pending_subscription_change: PendingSubscriptionChangeResponse.nullable(),
 	subscription: PremiumBillingSubscriptionResponse.nullable(),
 	invoices: z.array(PremiumBillingInvoiceResponse),
 	invoices_has_more: z.boolean(),
@@ -301,13 +301,20 @@ export const SelfServeRefundResponse = z.object({
 	payment_intent_id: z.string().nullable(),
 	charge_id: z.string().nullable(),
 	refund_id: z.string().nullable(),
-	refunded_amount_cents: z.number().int(),
+	refunded_amount_cents: z
+		.number()
+		.int()
+		.describe('Amount actually refunded so far, in the currency minor unit; 0 until the provider confirms success'),
 	invoice_amount_paid_cents: z.number().int(),
 	currency: z.string(),
 	subscription_id: z
 		.string()
 		.nullable()
 		.describe('Subscription that was cancelled along with the refund, when applicable'),
+	status: z
+		.string()
+		.nullable()
+		.describe('Provider status of the refund (e.g. pending, succeeded, failed); money only moved once succeeded'),
 });
 
 export type SelfServeRefundResponse = z.infer<typeof SelfServeRefundResponse>;

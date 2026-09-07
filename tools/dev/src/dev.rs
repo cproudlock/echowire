@@ -1,17 +1,18 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-use crate::gateway::setup_gateway_config;
+use crate::gateway::{build_gateway_cluster_nodes, setup_gateway_config};
 use crate::manifest::{
-    ADMIN_PORT, ANY_HOST, API_PORT, APP_PORT, APP_PROXY_PORT, DEV_PROXY_PORT, LOOPBACK_HOST,
-    MEDIA_PROXY_PORT, rust_services,
+    ADMIN_PORT, ANY_HOST, API_PORT, APP_PORT, APP_PROXY_PORT, DEV_PROXY_GATEWAY_PORTS_ENV,
+    DEV_PROXY_PORT, GATEWAY_PORT, LOOPBACK_HOST, MEDIA_PROXY_PORT, rust_services,
 };
+use crate::object_store::s3_endpoint;
 use crate::paths::{DESKTOP_DIR, ROOT};
 use crate::proc::{
-    PNPM_INSTALL_ENV, RESTART_LIMIT, RESTART_WINDOW, RunOptions, ShutdownSignal, format_command,
-    merged_env, restart_budget_exceeded, run_command, wait_http,
+    AwaitOutcome, PNPM_INSTALL_ENV, RESTART_LIMIT, RESTART_WINDOW, RunOptions, ShutdownSignal,
+    await_or_shutdown, configure_process_group, format_command, merged_env, prefix_output,
+    restart_budget_exceeded, run_command_interruptible, wait_http,
 };
-use crate::smoke::s3_endpoint;
-use anyhow::{Result, bail};
+use anyhow::{Context, Result, bail};
 use std::collections::{BTreeMap, VecDeque};
 use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
@@ -30,10 +31,10 @@ const DEFAULT_TASKS: &[&str] = &[
     "proxy",
     "services",
     "media",
-    "gateway",
     "marketing",
     "admin",
     "api",
+    "gateway-single",
     "worker",
     "app",
     "app-proxy",
@@ -44,12 +45,32 @@ const OBJECT_STORE_TASKS: &[&str] = &["api", "worker", "media"];
 const CLOUDFLARE_TUNNEL_TASK: &str = "cloudflare-tunnel";
 const OBJECT_STORE_STARTUP_REPAIR_TIMEOUT_SECS: u64 = 60;
 const DEFAULT_OBJECT_STORE_MONITOR_INTERVAL_SECS: u64 = 15;
+const MARKETING_MANIFEST: &str = "fluxer_marketing/Cargo.toml";
+const MARKETING_INITIALIZE_COMMAND: &str =
+    "git -c submodule.fluxer_marketing.update=checkout submodule update --init -- fluxer_marketing";
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum MarketingAvailability {
+    Unavailable,
+    Available,
+}
 
 pub async fn run_dev(task_names: &[String], cloudflare_tunnel: bool) -> Result<i32> {
-    let tasks = task_table()?;
+    let marketing_availability = marketing_availability()?;
+    if task_names.iter().any(|name| name == "marketing")
+        && marketing_availability == MarketingAvailability::Unavailable
+    {
+        bail!(
+            "The private marketing project is unavailable. Authorized maintainers can initialize it with:\n  {MARKETING_INITIALIZE_COMMAND}"
+        );
+    }
+    let mut tasks = task_table_for_availability(marketing_availability)?;
     let selected = if task_names.is_empty() {
         DEFAULT_TASKS
             .iter()
+            .filter(|name| {
+                **name != "marketing" || marketing_availability == MarketingAvailability::Available
+            })
             .map(|name| (*name).to_owned())
             .collect::<Vec<_>>()
     } else {
@@ -68,11 +89,30 @@ pub async fn run_dev(task_names: &[String], cloudflare_tunnel: bool) -> Result<i
             unknown.join(", ")
         );
     }
-    ensure_js_dependencies_if_needed(&selected)?;
-    ensure_object_store_if_needed(&selected).await?;
-    wait_for_search_backend_if_needed(&selected).await?;
-    setup_gateway_config()?;
+    let gateway_readiness_port = configure_gateway_proxy_ports(&mut tasks, &selected)?;
     let mut shutdown = ShutdownSignal::new()?;
+    match ensure_js_dependencies_if_needed(&selected, &mut shutdown).await? {
+        AwaitOutcome::Completed(()) => {}
+        AwaitOutcome::Shutdown(signal) => {
+            println!("Received {signal}; stopping dev startup...");
+            return Ok(0);
+        }
+    }
+    match await_or_shutdown(&mut shutdown, ensure_object_store_if_needed(&selected)).await {
+        AwaitOutcome::Completed(result) => result?,
+        AwaitOutcome::Shutdown(signal) => {
+            println!("Received {signal}; stopping dev startup...");
+            return Ok(0);
+        }
+    }
+    match await_or_shutdown(&mut shutdown, wait_for_search_backend_if_needed(&selected)).await {
+        AwaitOutcome::Completed(result) => result?,
+        AwaitOutcome::Shutdown(signal) => {
+            println!("Received {signal}; stopping dev startup...");
+            return Ok(0);
+        }
+    }
+    setup_gateway_config()?;
     let mut processes = Vec::new();
     let mut task_names = Vec::new();
     let mut task_specs = Vec::new();
@@ -82,29 +122,82 @@ pub async fn run_dev(task_names: &[String], cloudflare_tunnel: bool) -> Result<i
     let mut next_object_store_check = Instant::now() + object_store_monitor_interval;
     let selected_for_readiness = selected.clone();
     for name in selected {
-        if name == CLOUDFLARE_TUNNEL_TASK
-            && let Err(error) =
-                wait_for_cloudflare_tunnel_routes(&mut processes, &selected_for_readiness).await
-        {
-            crate::gateway::stop_processes(&mut processes);
-            return Err(error);
+        if name == CLOUDFLARE_TUNNEL_TASK {
+            match await_or_shutdown(
+                &mut shutdown,
+                wait_for_cloudflare_tunnel_routes(&mut processes, &selected_for_readiness),
+            )
+            .await
+            {
+                AwaitOutcome::Completed(Ok(())) => {}
+                AwaitOutcome::Completed(Err(error)) => {
+                    crate::gateway::stop_processes(&mut processes);
+                    return Err(error);
+                }
+                AwaitOutcome::Shutdown(signal) => {
+                    println!("Received {signal}; stopping dev tasks...");
+                    crate::gateway::stop_processes(&mut processes);
+                    return Ok(0);
+                }
+            }
         }
-        let process = start_task(tasks.get(name.as_str()).expect("validated task"))?;
+        let process = match start_task(tasks.get(name.as_str()).expect("validated task")) {
+            Ok(process) => process,
+            Err(error) => {
+                crate::gateway::stop_processes(&mut processes);
+                return Err(error);
+            }
+        };
         processes.push(process);
         task_names.push(name.clone());
         task_specs.push(tasks.get(name.as_str()).expect("validated task").clone());
         task_restarts.push(VecDeque::new());
-        if name == "services"
-            && let Err(error) = wait_for_rust_services(&mut processes).await
-        {
-            crate::gateway::stop_processes(&mut processes);
-            return Err(error);
+        if name == "services" {
+            match await_or_shutdown(&mut shutdown, wait_for_rust_services(&mut processes)).await {
+                AwaitOutcome::Completed(Ok(())) => {}
+                AwaitOutcome::Completed(Err(error)) => {
+                    crate::gateway::stop_processes(&mut processes);
+                    return Err(error);
+                }
+                AwaitOutcome::Shutdown(signal) => {
+                    println!("Received {signal}; stopping dev tasks...");
+                    crate::gateway::stop_processes(&mut processes);
+                    return Ok(0);
+                }
+            }
         }
-        if name == "api"
-            && let Err(error) = wait_for_api(&mut processes).await
-        {
-            crate::gateway::stop_processes(&mut processes);
-            return Err(error);
+        if name == "gateway" || name == "gateway-single" {
+            match await_or_shutdown(
+                &mut shutdown,
+                wait_for_gateway(&mut processes, gateway_readiness_port),
+            )
+            .await
+            {
+                AwaitOutcome::Completed(Ok(())) => {}
+                AwaitOutcome::Completed(Err(error)) => {
+                    crate::gateway::stop_processes(&mut processes);
+                    return Err(error);
+                }
+                AwaitOutcome::Shutdown(signal) => {
+                    println!("Received {signal}; stopping dev tasks...");
+                    crate::gateway::stop_processes(&mut processes);
+                    return Ok(0);
+                }
+            }
+        }
+        if name == "api" {
+            match await_or_shutdown(&mut shutdown, wait_for_api(&mut processes)).await {
+                AwaitOutcome::Completed(Ok(())) => {}
+                AwaitOutcome::Completed(Err(error)) => {
+                    crate::gateway::stop_processes(&mut processes);
+                    return Err(error);
+                }
+                AwaitOutcome::Shutdown(signal) => {
+                    println!("Received {signal}; stopping dev tasks...");
+                    crate::gateway::stop_processes(&mut processes);
+                    return Ok(0);
+                }
+            }
         }
     }
     loop {
@@ -115,9 +208,17 @@ pub async fn run_dev(task_names: &[String], cloudflare_tunnel: bool) -> Result<i
             return Err(error);
         }
         if monitor_object_store && Instant::now() >= next_object_store_check {
-            if let Err(error) = monitor_object_store_dependency().await {
-                crate::gateway::stop_processes(&mut processes);
-                return Err(error);
+            match await_or_shutdown(&mut shutdown, monitor_object_store_dependency()).await {
+                AwaitOutcome::Completed(Ok(())) => {}
+                AwaitOutcome::Completed(Err(error)) => {
+                    crate::gateway::stop_processes(&mut processes);
+                    return Err(error);
+                }
+                AwaitOutcome::Shutdown(signal) => {
+                    println!("Received {signal}; stopping dev tasks...");
+                    crate::gateway::stop_processes(&mut processes);
+                    return Ok(0);
+                }
             }
             next_object_store_check = Instant::now() + object_store_monitor_interval;
         }
@@ -130,6 +231,38 @@ pub async fn run_dev(task_names: &[String], cloudflare_tunnel: bool) -> Result<i
             _ = sleep(Duration::from_millis(500)) => {}
         }
     }
+}
+
+fn configure_gateway_proxy_ports(
+    tasks: &mut BTreeMap<&'static str, DevTask>,
+    selected: &[String],
+) -> Result<u16> {
+    let cluster_selected = selected.iter().any(|name| name == "gateway");
+    let single_selected = selected.iter().any(|name| name == "gateway-single");
+    if cluster_selected && single_selected {
+        bail!("Select either `gateway` or `gateway-single`, not both");
+    }
+    let ports = if cluster_selected {
+        build_gateway_cluster_nodes()?
+            .into_iter()
+            .filter(|node| node.role == "websocket")
+            .map(|node| node.http_port)
+            .collect::<Vec<_>>()
+    } else {
+        vec![GATEWAY_PORT]
+    };
+    let value = ports
+        .iter()
+        .map(u16::to_string)
+        .collect::<Vec<_>>()
+        .join(",");
+    let proxy = tasks
+        .get_mut("proxy")
+        .context("dev task table is missing the proxy task")?;
+    proxy
+        .env
+        .push((DEV_PROXY_GATEWAY_PORTS_ENV.to_owned(), Some(value)));
+    Ok(*ports.first().expect("gateway proxy ports are non-empty"))
 }
 
 async fn ensure_object_store_if_needed(selected: &[String]) -> Result<()> {
@@ -182,6 +315,7 @@ fn restart_exited_tasks(
         let Some(status) = process.try_wait()? else {
             continue;
         };
+        crate::gateway::stop_child_processes(&mut [process]);
         if restart_budget_exceeded(&mut task_restarts[index], Instant::now()) {
             bail!(
                 "Dev task {} exited with {status} after {RESTART_LIMIT} restarts within {}s; giving up",
@@ -210,7 +344,17 @@ fn normalize_selected_tasks(mut selected: Vec<String>, cloudflare_tunnel: bool) 
 }
 
 pub fn task_table() -> Result<BTreeMap<&'static str, DevTask>> {
+    task_table_for_availability(marketing_availability()?)
+}
+
+fn task_table_for_availability(
+    marketing_availability: MarketingAvailability,
+) -> Result<BTreeMap<&'static str, DevTask>> {
     let self_tool = self_tool_command()?;
+    let api_dir = ROOT.join("fluxer_api");
+    let api_tsx = api_dir.join("node_modules/.bin/tsx");
+    let app_dir = ROOT.join("fluxer_app");
+    let app_dev_server = ROOT.join("tools/ci/run.sh");
     let public_url = public_url();
     let marketing_endpoint = std::env::var("FLUXER_MARKETING_ENDPOINT")
         .unwrap_or_else(|_| format!("{public_url}/marketing"));
@@ -234,8 +378,13 @@ pub fn task_table() -> Result<BTreeMap<&'static str, DevTask>> {
     });
     insert(DevTask {
         name: "api",
-        args: strings(&["pnpm", "--filter", "fluxer_api", "dev"]),
-        cwd: ROOT.clone(),
+        args: vec![
+            api_tsx.display().to_string(),
+            "watch".to_owned(),
+            "--clear-screen=false".to_owned(),
+            "src/AppEntrypoint.ts".to_owned(),
+        ],
+        cwd: api_dir.clone(),
         env: vec![
             (
                 "FLUXER_S3_PUBLIC_ENDPOINT".to_owned(),
@@ -260,29 +409,26 @@ pub fn task_table() -> Result<BTreeMap<&'static str, DevTask>> {
     });
     insert(DevTask {
         name: "worker",
-        args: strings(&[
-            "pnpm",
-            "--filter",
-            "fluxer_api",
-            "exec",
-            "tsx",
-            "watch",
-            "--clear-screen=false",
-            "src/WorkerEntrypoint.ts",
-        ]),
-        cwd: ROOT.clone(),
+        args: vec![
+            api_tsx.display().to_string(),
+            "watch".to_owned(),
+            "--clear-screen=false".to_owned(),
+            "src/WorkerEntrypoint.ts".to_owned(),
+        ],
+        cwd: api_dir,
         env: Vec::new(),
     });
     insert(DevTask {
         name: "app",
-        args: strings(&["pnpm", "--filter", "fluxer_app", "dev"]),
-        cwd: ROOT.clone(),
+        args: vec![
+            app_dev_server.display().to_string(),
+            "app-dev-server".to_owned(),
+        ],
+        cwd: app_dir,
         env: vec![
+            ("TOKIO_WORKER_THREADS".to_owned(), Some("4".to_owned())),
+            ("RAYON_NUM_THREADS".to_owned(), Some("4".to_owned())),
             ("FLUXER_APP_DEV_PORT".to_owned(), Some(APP_PORT.to_string())),
-            (
-                "FLUXER_APP_SKIP_I18N_COMPILE".to_owned(),
-                Some("true".to_owned()),
-            ),
             (
                 "FLUXER_STATIC_CDN_ENDPOINT".to_owned(),
                 Some(public_url.clone()),
@@ -369,42 +515,70 @@ pub fn task_table() -> Result<BTreeMap<&'static str, DevTask>> {
             Some("true".to_owned()),
         )],
     });
-    insert(DevTask {
-        name: "marketing",
-        args: strings(&[
-            "cargo",
-            "watch",
-            "--no-dot-ignores",
-            "-w",
-            "fluxer_marketing/src",
-            "-w",
-            "fluxer_marketing/Cargo.toml",
-            "-w",
-            "fluxer_marketing/build.rs",
-            "-w",
-            "fluxer_marketing/locales",
-            "-w",
-            "fluxer_marketing/content",
-            "-x",
-            "run -p fluxer_marketing",
-        ]),
-        cwd: ROOT.clone(),
-        env: vec![
-            ("FLUXER_APP_ENDPOINT".to_owned(), Some(public_url.clone())),
-            (
-                "FLUXER_MARKETING_BASE_PATH".to_owned(),
-                Some("/marketing".to_owned()),
-            ),
-            (
-                "FLUXER_MARKETING_ENDPOINT".to_owned(),
-                Some(marketing_endpoint),
-            ),
-            (
-                "FLUXER_STATIC_CDN_ENDPOINT".to_owned(),
-                Some(public_url.clone()),
-            ),
-        ],
-    });
+    if marketing_availability == MarketingAvailability::Available {
+        insert(DevTask {
+            name: "marketing",
+            args: strings(&[
+                "cargo",
+                "watch",
+                "--no-dot-ignores",
+                "-w",
+                "fluxer_marketing/src",
+                "-w",
+                MARKETING_MANIFEST,
+                "-w",
+                "fluxer_marketing/build.rs",
+                "-w",
+                "fluxer_marketing/content",
+                "-w",
+                "fluxer_marketing/Cargo.lock",
+                "-w",
+                "fluxer_marketing/package.json",
+                "-w",
+                "fluxer_marketing/pnpm-lock.yaml",
+                "-w",
+                "fluxer_marketing/pnpm-workspace.yaml",
+                "-w",
+                "fluxer_marketing/static",
+                "-w",
+                "Cargo.toml",
+                "-w",
+                "fluxer_common",
+                "-w",
+                "packages/fonts/manifest.json",
+                "-w",
+                "packages/fonts/NOTICE.md",
+                "-w",
+                "packages/fonts/LICENSE-IBM-PLEX.txt",
+                "-w",
+                "packages/fonts/css/locale-fallbacks.css",
+                "-w",
+                "packages/fonts/files/FluxerSans",
+                "-w",
+                "packages/fonts/files/FluxerMono",
+                "-w",
+                "packages/i18n/marketing",
+                "-x",
+                "run --manifest-path fluxer_marketing/Cargo.toml -p fluxer_marketing",
+            ]),
+            cwd: ROOT.clone(),
+            env: vec![
+                ("FLUXER_APP_ENDPOINT".to_owned(), Some(public_url.clone())),
+                (
+                    "FLUXER_MARKETING_BASE_PATH".to_owned(),
+                    Some("/marketing".to_owned()),
+                ),
+                (
+                    "FLUXER_MARKETING_ENDPOINT".to_owned(),
+                    Some(marketing_endpoint),
+                ),
+                (
+                    "FLUXER_STATIC_CDN_ENDPOINT".to_owned(),
+                    Some(public_url.clone()),
+                ),
+            ],
+        });
+    }
     insert(DevTask {
         name: "admin",
         args: strings(&[
@@ -454,6 +628,74 @@ pub fn task_table() -> Result<BTreeMap<&'static str, DevTask>> {
     Ok(tasks)
 }
 
+fn marketing_availability() -> Result<MarketingAvailability> {
+    let marketing_path = ROOT.join("fluxer_marketing");
+    let manifest_path = ROOT.join(MARKETING_MANIFEST);
+    if manifest_path.is_file() {
+        ensure_marketing_manifest(&manifest_path)?;
+        return Ok(MarketingAvailability::Available);
+    }
+    if marketing_path.exists() {
+        let mut entries = std::fs::read_dir(&marketing_path)
+            .with_context(|| format!("failed to inspect {}", marketing_path.display()))?;
+        if entries.next().transpose()?.is_some() {
+            bail!(
+                "The marketing path {} exists but does not contain the required Cargo.toml; remove the inconsistent checkout and run:\n  {MARKETING_INITIALIZE_COMMAND}",
+                marketing_path.display()
+            );
+        }
+    }
+    Ok(MarketingAvailability::Unavailable)
+}
+
+fn ensure_marketing_manifest(path: &Path) -> Result<()> {
+    let output = Command::new("cargo")
+        .args([
+            "metadata",
+            "--manifest-path",
+            MARKETING_MANIFEST,
+            "--locked",
+            "--offline",
+            "--no-deps",
+            "--format-version",
+            "1",
+        ])
+        .current_dir(ROOT.as_path())
+        .output()
+        .with_context(|| format!("failed to validate {}", path.display()))?;
+    if !output.status.success() {
+        bail!(
+            "The initialized private marketing manifest {} is malformed or inconsistent: {}",
+            path.display(),
+            String::from_utf8_lossy(&output.stderr).trim()
+        );
+    }
+    let metadata: serde_json::Value = serde_json::from_slice(&output.stdout)
+        .with_context(|| format!("Cargo emitted invalid metadata for {}", path.display()))?;
+    let packages = metadata["packages"]
+        .as_array()
+        .with_context(|| format!("Cargo metadata for {} is missing packages", path.display()))?;
+    let expected_manifest_path = path
+        .canonicalize()
+        .with_context(|| format!("failed to resolve {}", path.display()))?;
+    let valid_package = packages.iter().any(|package| {
+        package["name"].as_str() == Some("fluxer_marketing")
+            && package["manifest_path"]
+                .as_str()
+                .map(Path::new)
+                .and_then(|manifest_path| manifest_path.canonicalize().ok())
+                .as_deref()
+                == Some(expected_manifest_path.as_path())
+    });
+    if !valid_package {
+        bail!(
+            "The initialized private marketing manifest {} does not define the root package fluxer_marketing",
+            path.display()
+        );
+    }
+    Ok(())
+}
+
 async fn wait_for_search_backend_if_needed(selected: &[String]) -> Result<()> {
     if !selected
         .iter()
@@ -461,9 +703,41 @@ async fn wait_for_search_backend_if_needed(selected: &[String]) -> Result<()> {
     {
         return Ok(());
     }
-    let search_url =
-        std::env::var("FLUXER_SEARCH_URL").unwrap_or_else(|_| "http://127.0.0.1:9200".to_owned());
-    wait_http("Elasticsearch", &search_url, 120).await
+    let env = merged_env(None, true)?;
+    let backend = SearchBackend::from_env(&env)?;
+    let search_url = env
+        .get("FLUXER_SEARCH_URL")
+        .filter(|url| !url.trim().is_empty())
+        .context("Missing FLUXER_SEARCH_URL for the selected search backend")?;
+    wait_http(backend.label(), search_url, 120).await
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum SearchBackend {
+    Elasticsearch,
+    Meilisearch,
+}
+
+impl SearchBackend {
+    fn from_env(env: &BTreeMap<String, String>) -> Result<Self> {
+        match env.get("FLUXER_SEARCH_ENGINE").map(String::as_str) {
+            Some("elasticsearch") => Ok(Self::Elasticsearch),
+            Some("meilisearch") => Ok(Self::Meilisearch),
+            Some(engine) => bail!(
+                "Unsupported FLUXER_SEARCH_ENGINE value {engine:?}; expected `meilisearch` or `elasticsearch`"
+            ),
+            None => {
+                bail!("Missing FLUXER_SEARCH_ENGINE; expected `meilisearch` or `elasticsearch`")
+            }
+        }
+    }
+
+    fn label(self) -> &'static str {
+        match self {
+            Self::Elasticsearch => "Elasticsearch",
+            Self::Meilisearch => "Meilisearch",
+        }
+    }
 }
 
 fn self_tool_command() -> Result<Vec<String>> {
@@ -485,21 +759,49 @@ fn public_url() -> String {
         .unwrap_or_else(|_| format!("http://localhost:{DEV_PROXY_PORT}"))
 }
 
-fn ensure_js_dependencies_if_needed(selected: &[String]) -> Result<()> {
-    if !selected_needs_js_dependency_preflight(selected) {
-        return Ok(());
+async fn ensure_js_dependencies_if_needed(
+    selected: &[String],
+    shutdown: &mut ShutdownSignal,
+) -> Result<AwaitOutcome<()>> {
+    if selected_needs_js_dependency_preflight(selected) {
+        match run_command_interruptible(
+            &["pnpm", "install", "--frozen-lockfile"],
+            RunOptions {
+                env: PNPM_INSTALL_ENV
+                    .iter()
+                    .map(|(key, value)| ((*key).to_owned(), Some((*value).to_owned())))
+                    .collect(),
+                ..RunOptions::default()
+            },
+            shutdown,
+        )
+        .await?
+        {
+            AwaitOutcome::Completed(_) => {}
+            AwaitOutcome::Shutdown(signal) => return Ok(AwaitOutcome::Shutdown(signal)),
+        }
     }
-    run_command(
-        &["pnpm", "install", "--frozen-lockfile"],
-        RunOptions {
-            env: PNPM_INSTALL_ENV
-                .iter()
-                .map(|(key, value)| ((*key).to_owned(), Some((*value).to_owned())))
-                .collect(),
-            ..RunOptions::default()
-        },
-    )?;
-    Ok(())
+    if selected.iter().any(|name| name == "marketing") {
+        let marketing_dir = ROOT.join("fluxer_marketing");
+        match run_command_interruptible(
+            &["pnpm", "install", "--frozen-lockfile"],
+            RunOptions {
+                cwd: &marketing_dir,
+                env: PNPM_INSTALL_ENV
+                    .iter()
+                    .map(|(key, value)| ((*key).to_owned(), Some((*value).to_owned())))
+                    .collect(),
+                ..RunOptions::default()
+            },
+            shutdown,
+        )
+        .await?
+        {
+            AwaitOutcome::Completed(_) => {}
+            AwaitOutcome::Shutdown(signal) => return Ok(AwaitOutcome::Shutdown(signal)),
+        }
+    }
+    Ok(AwaitOutcome::Completed(()))
 }
 
 fn selected_needs_js_dependency_preflight(selected: &[String]) -> bool {
@@ -534,14 +836,7 @@ fn start_task(task: &DevTask) -> Result<Child> {
         .envs(env)
         .stdout(Stdio::piped())
         .stderr(Stdio::piped());
-    #[cfg(unix)]
-    unsafe {
-        use std::os::unix::process::CommandExt;
-        command.pre_exec(|| {
-            libc::setsid();
-            Ok(())
-        });
-    }
+    configure_process_group(&mut command);
     let mut child = command.spawn()?;
     if let Some(stdout) = child.stdout.take() {
         let label = task.name.to_owned();
@@ -563,18 +858,40 @@ async fn wait_for_rust_services(processes: &mut [Child]) -> Result<()> {
         .len()
         .checked_sub(1)
         .expect("services process was just pushed");
+    let deadline = Instant::now() + Duration::from_secs(timeout);
     for spec in rust_services() {
         for (mode, port) in [("router", spec.port_base), ("shard", spec.port_base + 1)] {
-            check_startup_processes(processes, services_index, spec.name, mode)?;
-            wait_http(
-                &format!("Rust service {}:{mode}", spec.name),
+            let name = format!("Rust service {}:{mode}", spec.name);
+            wait_http_with_startup_checks_until(
+                processes,
+                services_index,
+                &name,
                 &format!("http://{LOOPBACK_HOST}:{port}/_health"),
-                timeout,
+                deadline,
             )
             .await?;
         }
     }
     Ok(())
+}
+
+async fn wait_for_gateway(processes: &mut [Child], port: u16) -> Result<()> {
+    let timeout = std::env::var("FLUXER_DEV_GATEWAY_READY_TIMEOUT")
+        .ok()
+        .and_then(|value| value.parse().ok())
+        .unwrap_or(180);
+    let gateway_index = processes
+        .len()
+        .checked_sub(1)
+        .expect("gateway process was just pushed");
+    wait_http_with_startup_checks(
+        processes,
+        gateway_index,
+        "Gateway",
+        &format!("http://{LOOPBACK_HOST}:{port}/_health/ready"),
+        timeout,
+    )
+    .await
 }
 
 async fn wait_for_api(processes: &mut [Child]) -> Result<()> {
@@ -672,7 +989,7 @@ async fn wait_http_for_dev_tasks(
     while Instant::now() < deadline {
         check_dev_startup_processes(processes, name)?;
         match client.get(url).send().await {
-            Ok(response) if response.status().as_u16() < 500 => {
+            Ok(response) if response.status().is_success() => {
                 println!("{name} is reachable at {url}");
                 return Ok(());
             }
@@ -695,15 +1012,31 @@ async fn wait_http_with_startup_checks(
     url: &str,
     timeout_secs: u64,
 ) -> Result<()> {
+    wait_http_with_startup_checks_until(
+        processes,
+        watched_index,
+        name,
+        url,
+        Instant::now() + Duration::from_secs(timeout_secs),
+    )
+    .await
+}
+
+async fn wait_http_with_startup_checks_until(
+    processes: &mut [Child],
+    watched_index: usize,
+    name: &str,
+    url: &str,
+    deadline: Instant,
+) -> Result<()> {
     let client = reqwest::Client::builder()
         .timeout(Duration::from_secs(5))
         .build()?;
-    let deadline = Instant::now() + Duration::from_secs(timeout_secs);
     let mut last_error = None;
     while Instant::now() < deadline {
         check_startup_task_processes(processes, watched_index, name)?;
         match client.get(url).send().await {
-            Ok(response) if response.status().as_u16() < 500 => {
+            Ok(response) if response.status().is_success() => {
                 println!("{name} is reachable at {url}");
                 return Ok(());
             }
@@ -746,35 +1079,6 @@ fn check_startup_task_processes(
     Ok(())
 }
 
-fn check_startup_processes(
-    processes: &mut [Child],
-    services_index: usize,
-    service_name: &str,
-    mode: &str,
-) -> Result<()> {
-    for (index, process) in processes.iter_mut().enumerate() {
-        if let Some(status) = process.try_wait()? {
-            let code = status.code().unwrap_or(1);
-            if index == services_index {
-                bail!(
-                    "Rust service supervisor exited with status {code} before {service_name}:{mode} became ready"
-                );
-            }
-            bail!(
-                "Dev task exited with status {code} before Rust service {service_name}:{mode} became ready"
-            );
-        }
-    }
-    Ok(())
-}
-
-fn prefix_output(label: &str, reader: impl std::io::Read) {
-    use std::io::{BufRead, BufReader};
-    for line in BufReader::new(reader).lines().map_while(|line| line.ok()) {
-        println!("[{label}] {line}");
-    }
-}
-
 #[allow(dead_code)]
 fn _cwd_is_root(path: &Path) -> bool {
     path == ROOT.as_path()
@@ -785,17 +1089,17 @@ mod tests {
     use super::*;
 
     #[test]
-    fn default_tasks_keep_legacy_order() {
+    fn default_tasks_use_lightweight_gateway() {
         assert_eq!(
             DEFAULT_TASKS,
             &[
                 "proxy",
                 "services",
                 "media",
-                "gateway",
                 "marketing",
                 "admin",
                 "api",
+                "gateway-single",
                 "worker",
                 "app",
                 "app-proxy"
@@ -867,7 +1171,7 @@ mod tests {
 
     #[test]
     fn task_table_contains_recursive_binary_tasks() {
-        let tasks = task_table().unwrap();
+        let tasks = task_table_for_availability(MarketingAvailability::Available).unwrap();
         let expected_public_url = public_url();
         let expected_app_port = APP_PORT.to_string();
         let expected_admin_port = ADMIN_PORT.to_string();
@@ -996,11 +1300,37 @@ mod tests {
                 "-w".to_owned(),
                 "fluxer_marketing/build.rs".to_owned(),
                 "-w".to_owned(),
-                "fluxer_marketing/locales".to_owned(),
-                "-w".to_owned(),
                 "fluxer_marketing/content".to_owned(),
+                "-w".to_owned(),
+                "fluxer_marketing/Cargo.lock".to_owned(),
+                "-w".to_owned(),
+                "fluxer_marketing/package.json".to_owned(),
+                "-w".to_owned(),
+                "fluxer_marketing/pnpm-lock.yaml".to_owned(),
+                "-w".to_owned(),
+                "fluxer_marketing/pnpm-workspace.yaml".to_owned(),
+                "-w".to_owned(),
+                "fluxer_marketing/static".to_owned(),
+                "-w".to_owned(),
+                "Cargo.toml".to_owned(),
+                "-w".to_owned(),
+                "fluxer_common".to_owned(),
+                "-w".to_owned(),
+                "packages/fonts/manifest.json".to_owned(),
+                "-w".to_owned(),
+                "packages/fonts/NOTICE.md".to_owned(),
+                "-w".to_owned(),
+                "packages/fonts/LICENSE-IBM-PLEX.txt".to_owned(),
+                "-w".to_owned(),
+                "packages/fonts/css/locale-fallbacks.css".to_owned(),
+                "-w".to_owned(),
+                "packages/fonts/files/FluxerSans".to_owned(),
+                "-w".to_owned(),
+                "packages/fonts/files/FluxerMono".to_owned(),
+                "-w".to_owned(),
+                "packages/i18n/marketing".to_owned(),
                 "-x".to_owned(),
-                "run -p fluxer_marketing".to_owned()
+                "run --manifest-path fluxer_marketing/Cargo.toml -p fluxer_marketing".to_owned()
             ]
         );
         assert_eq!(

@@ -7,6 +7,7 @@ import * as Modal from '@app/features/app/components/dialogs/Modal';
 import FavoriteGif from '@app/features/expressions/state/FavoriteGif';
 import Guilds from '@app/features/guild/state/Guilds';
 import Inbox from '@app/features/inbox/state/Inbox';
+import {remFromPx} from '@app/features/theme/layout/RemFromPx';
 import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
@@ -108,6 +109,10 @@ const SHOW_MEDIA_BUTTON_DESCRIPTOR = msg({
 const UPLOAD_ATTACHMENTS_BEFORE_SENDING_DESCRIPTOR = msg({
 	message: 'Upload attachments before sending',
 	comment: 'Short label for an advanced message input privacy preference.',
+});
+const SEND_FILES_IN_SEQUENTIAL_ORDER_DESCRIPTOR = msg({
+	message: 'Send file messages in order',
+	comment: 'Short label for an advanced message input preference.',
 });
 const SHOW_STICKERS_BUTTON_DESCRIPTOR = msg({
 	message: 'Show stickers button',
@@ -336,7 +341,11 @@ const SearchProviderSettingsButton = observer(({mode, title, dataFlx}: SearchPro
 			variant="secondary"
 			compact
 			leftIcon={
-				<GearIcon size={14} weight="bold" data-flx="user.advanced-settings-tab.provider-settings-button.gear-icon" />
+				<GearIcon
+					size={remFromPx(14)}
+					weight="bold"
+					data-flx="user.advanced-settings-tab.provider-settings-button.gear-icon"
+				/>
 			}
 			onClick={handleOpen}
 			data-flx={dataFlx}
@@ -513,7 +522,7 @@ const SwitchGroupSettingsButton = observer(({mode, title, dataFlx}: SwitchGroupS
 			compact
 			leftIcon={
 				<GearIcon
-					size={14}
+					size={remFromPx(14)}
 					weight="bold"
 					data-flx="user.advanced-settings-tab.switch-group-settings-button.gear-icon"
 				/>
@@ -575,6 +584,19 @@ export const PreuploadMessageAttachmentsControl = observer(() => {
 			onChange={PrivacyPreferences.setPreuploadMessageAttachments}
 			compact
 			data-flx="user.advanced-settings-tab.switch.preupload-message-attachments"
+		/>
+	);
+});
+
+export const SequentialFileSendControl = observer(() => {
+	const {i18n} = useLingui();
+	return (
+		<Switch
+			ariaLabel={i18n._(SEND_FILES_IN_SEQUENTIAL_ORDER_DESCRIPTOR)}
+			value={Accessibility.sequentialFileSend}
+			onChange={(value) => AccessibilityCommands.update({sequentialFileSend: value})}
+			compact
+			data-flx="user.advanced-settings-tab.switch.sequential-file-send"
 		/>
 	);
 });

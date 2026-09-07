@@ -3,6 +3,8 @@
 	"extends": "./tsconfig.base.json",
 	"compilerOptions": {
 		"target": "ES2023",
+		"jsx": "react-jsx",
+		"jsxImportSource": "react",
 		"lib": ["DOM", "DOM.Iterable", "DOM.AsyncIterable", "ES2023"],
 		"moduleDetection": "force",
 		"verbatimModuleSyntax": true,
@@ -15,6 +17,7 @@
 		"emitDecoratorMetadata": true,
 		"paths": {
 			"@app/*": ["./src/*"],
+			"onnxruntime-web/ort-wasm-simd-threaded.asyncify.wasm": ["./src/types/ort-wasm-asset.d.ts"],
 			"@fluxer/*": ["../packages/*", "../packages/*/src/index.ts"],
 			"@app_scripts/*": ["./scripts/*"],
 			"@pkgs/*": ["./pkgs/*"],

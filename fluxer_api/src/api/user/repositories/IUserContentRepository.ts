@@ -27,6 +27,7 @@ export interface IUserContentRepository {
 	deleteRecentMentions(mentions: Array<RecentMention>): Promise<void>;
 	deleteAllRecentMentions(userId: UserID): Promise<void>;
 	listSavedMessages(userId: UserID, limit?: number, before?: MessageID): Promise<Array<SavedMessage>>;
+	countSavedMessages(userId: UserID): Promise<number>;
 	createSavedMessage(userId: UserID, channelId: ChannelID, messageId: MessageID): Promise<SavedMessage>;
 	deleteSavedMessage(userId: UserID, messageId: MessageID): Promise<void>;
 	deleteAllSavedMessages(userId: UserID): Promise<void>;
@@ -37,6 +38,7 @@ export interface IUserContentRepository {
 	findGiftCodesByRedeemer(userId: UserID): Promise<Array<GiftCode>>;
 	redeemGiftCode(code: string, userId: UserID): Promise<void>;
 	unredeemGiftCode(code: string, userId: UserID): Promise<void>;
+	revokeGiftCode(code: string): Promise<void>;
 	updateGiftCode(code: string, data: Partial<GiftCodeRow>): Promise<void>;
 	linkGiftCodeToCheckoutSession(code: string, checkoutSessionId: string): Promise<void>;
 	listPushSubscriptions(userId: UserID): Promise<Array<PushSubscription>>;

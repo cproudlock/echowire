@@ -21,6 +21,9 @@ interface HeadersLike {
 }
 
 export class MissingClientIpError extends Error {
+	readonly code = 'FORBIDDEN';
+	readonly status = 403;
+
 	constructor() {
 		super('Client IP header is required');
 		this.name = 'MissingClientIpError';
@@ -106,7 +109,16 @@ function extractClientIpDetailsFromReader(
 		return null;
 	}
 	const headerName = resolveClientIpHeaderName(options.clientIpHeaderName);
-	const clientIpHeader = parseClientIpHeaderValue(headerReader.get(headerName));
+	let clientIpHeader = parseClientIpHeaderValue(headerReader.get(headerName));
+	// Echowire: fall back to x-forwarded-for when the primary header is absent.
+	// Our ingress is Cloudflare -> NetBird frontend -> Caddy, so external requests
+	// carry the real client in cf-connecting-ip, but internal service-to-service
+	// calls (app-proxy discovery, admin -> api, etc.) only carry x-forwarded-for.
+	// Without this fallback, requireClientIp throws (500) on every internal call.
+	const fallbackHeaderName = 'x-forwarded-for';
+	if (!clientIpHeader && headerName !== fallbackHeaderName) {
+		clientIpHeader = parseClientIpHeaderValue(headerReader.get(fallbackHeaderName));
+	}
 	if (clientIpHeader) {
 		return {
 			ip: clientIpHeader.normalized,

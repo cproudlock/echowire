@@ -2,12 +2,12 @@
 
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
-import {GuildFeatures, GuildMFALevel} from '@fluxer/constants/src/GuildConstants';
+import {GuildFeatures} from '@fluxer/constants/src/GuildConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
-import {MfaNotEnabledError} from '@fluxer/errors/src/domains/auth/MfaNotEnabledError';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
 import {MissingAccessError} from '@fluxer/errors/src/domains/core/MissingAccessError';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
+import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
 import {UnknownGuildEmojiError} from '@fluxer/errors/src/domains/guild/UnknownGuildEmojiError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
 import {UnknownGuildStickerError} from '@fluxer/errors/src/domains/guild/UnknownGuildStickerError';
@@ -18,6 +18,7 @@ import type {
 import type {GuildUpdateRequest} from '@fluxer/schema/src/domains/guild/GuildRequestSchemas';
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
 import type {UserPartialResponse} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
+import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import type {IpInfoService} from '@pkgs/geoip/src/IpInfoService';
 import type {ApiContext} from '../../ApiContext';
 import type {EmojiID, GuildID, RoleID, StickerID, UserID} from '../../BrandedTypes';
@@ -44,6 +45,7 @@ import {GuildChannelService} from './GuildChannelService';
 import {GuildContentService} from './GuildContentService';
 import {GuildDataService} from './GuildDataService';
 import {GuildMemberService} from './GuildMemberService';
+import {createGuildMfaEnforcer} from './GuildMfaEnforcement';
 import {GuildModerationService} from './GuildModerationService';
 import {GuildRoleService} from './GuildRoleService';
 import {GuildSearchService} from './GuildSearchService';
@@ -95,16 +97,9 @@ interface GuildAuth {
 	canManageRoles: (targetUserId: UserID, targetRoleId: RoleID) => Promise<boolean>;
 }
 
-const ELEVATED_MFA_PERMISSIONS =
-	Permissions.KICK_MEMBERS |
-	Permissions.BAN_MEMBERS |
-	Permissions.ADMINISTRATOR |
-	Permissions.MANAGE_CHANNELS |
-	Permissions.MANAGE_GUILD |
-	Permissions.MANAGE_MESSAGES |
-	Permissions.MANAGE_ROLES |
-	Permissions.MANAGE_WEBHOOKS |
-	Permissions.MODERATE_MEMBERS;
+const GUILD_UPDATE_LOCK_TTL_SECONDS = 10;
+const GUILD_UPDATE_LOCK_RETRY_DELAY_MS = 50;
+const GUILD_UPDATE_LOCK_MAX_WAIT_MS = 5000;
 
 export class GuildService {
 	public readonly data: GuildDataService;
@@ -115,6 +110,7 @@ export class GuildService {
 	public readonly channels: GuildChannelService;
 	public readonly search: GuildSearchService;
 	private readonly guildRepository: IGuildRepositoryAggregate;
+	private readonly cacheService: ICacheService;
 	private readonly userCacheService: UserCacheService;
 	private readonly webhookRepository: IWebhookRepository;
 	private readonly guildAuditLogService: GuildAuditLogService;
@@ -146,6 +142,7 @@ export class GuildService {
 		} = apiContext.services;
 		this.gatewayService = gatewayService;
 		this.guildRepository = guildRepository;
+		this.cacheService = cacheService;
 		this.userCacheService = userCacheService;
 		this.webhookRepository = webhookRepository;
 		this.guildAuditLogService = guildAuditLogService;
@@ -182,6 +179,7 @@ export class GuildService {
 			gatewayService,
 			guildAuditLogService,
 			limitConfigService,
+			userRepository,
 		);
 		this.moderation = new GuildModerationService(
 			guildRepository,
@@ -211,6 +209,8 @@ export class GuildService {
 			snowflakeService,
 			guildAuditLogService,
 			limitConfigService,
+			channelService.messages.system,
+			userRepository,
 		);
 		this.search = new GuildSearchService(
 			channelRepository,
@@ -219,12 +219,6 @@ export class GuildService {
 			userRepository,
 			workerService,
 		);
-	}
-
-	async getGuildFeaturesForToggle(guildId: GuildID): Promise<Set<string>> {
-		const guild = await this.guildRepository.findUnique(guildId);
-		if (!guild) throw new UnknownGuildError();
-		return new Set(guild.features);
 	}
 
 	async updateGuild(
@@ -237,7 +231,9 @@ export class GuildService {
 		auditLogReason?: string | null,
 	): Promise<GuildResponse> {
 		const {guildId, requestCache} = params;
-		const {guild, previousFeatures, updatedFeatures} = await this.data.updateGuild(params, auditLogReason);
+		const {guild, previousFeatures, updatedFeatures} = await this.withGuildUpdateLock(guildId, requestCache, () =>
+			this.data.updateGuild(params, auditLogReason),
+		);
 		if (
 			previousFeatures.has(GuildFeatures.TEXT_CHANNEL_FLEXIBLE_NAMES) &&
 			!updatedFeatures.has(GuildFeatures.TEXT_CHANNEL_FLEXIBLE_NAMES)
@@ -245,6 +241,32 @@ export class GuildService {
 			await this.channels.sanitizeTextChannelNames({guildId, requestCache});
 		}
 		return guild;
+	}
+
+	private async withGuildUpdateLock<T>(guildId: GuildID, requestCache: RequestCache, fn: () => Promise<T>): Promise<T> {
+		const lockKey = `guild:${guildId}:update`;
+		const lockToken = await this.acquireGuildUpdateLock(lockKey);
+		if (!lockToken) {
+			throw new ResourceLockedError();
+		}
+		try {
+			requestCache.guilds.delete(guildId);
+			return await fn();
+		} finally {
+			await this.cacheService.releaseLock(lockKey, lockToken);
+		}
+	}
+
+	private async acquireGuildUpdateLock(lockKey: string): Promise<string | null> {
+		const startTime = Date.now();
+		while (Date.now() - startTime < GUILD_UPDATE_LOCK_MAX_WAIT_MS) {
+			const token = await this.cacheService.acquireLock(lockKey, GUILD_UPDATE_LOCK_TTL_SECONDS);
+			if (token) {
+				return token;
+			}
+			await new Promise((resolve) => setTimeout(resolve, GUILD_UPDATE_LOCK_RETRY_DELAY_MS));
+		}
+		return null;
 	}
 
 	async getEmojiMetadata(emojiId: EmojiID): Promise<GuildEmojiMetadataResponse> {
@@ -327,10 +349,7 @@ export class GuildService {
 		let processedLogs: Array<GuildAuditLog> = [];
 		let currentBeforeLogId = beforeLogId;
 		let currentAfterLogId = afterLogId;
-		const maxIterations = 5;
-		let iterations = 0;
-		while (processedLogs.length < effectiveLimit && iterations < maxIterations) {
-			iterations++;
+		while (processedLogs.length < effectiveLimit) {
 			const fetchLimit = Math.min(effectiveLimit * 2, 200);
 			const logs = await this.guildRepository.listAuditLogs({
 				guildId,
@@ -561,17 +580,7 @@ export class GuildService {
 	async getGuildAuthenticated({userId, guildId}: {userId: UserID; guildId: GuildID}): Promise<GuildAuth> {
 		const guildData = await this.gatewayService.getGuildData({guildId, userId});
 		if (!guildData) throw new MissingAccessError();
-		const requiresGuildMfa = guildData.mfa_level === GuildMFALevel.ELEVATED && guildData.owner_id !== userId.toString();
-		let actorLacksMfa = false;
-		if (requiresGuildMfa) {
-			const actor = await this.userRepository.findUnique(userId);
-			actorLacksMfa = !actor || actor.authenticatorTypes.size === 0;
-		}
-		const enforceGuildMfa = (permission: bigint) => {
-			if (requiresGuildMfa && actorLacksMfa && (permission & ELEVATED_MFA_PERMISSIONS) !== 0n) {
-				throw new MfaNotEnabledError();
-			}
-		};
+		const enforceGuildMfa = await createGuildMfaEnforcer({userRepository: this.userRepository, guildData, userId});
 		const checkPermission = async (permission: bigint) => {
 			const hasPermission = await this.gatewayService.checkPermission({guildId, userId, permission});
 			if (!hasPermission) throw new MissingPermissionsError();

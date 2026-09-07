@@ -11,6 +11,20 @@ export interface VoiceAccessContext {
 	guildFeatures?: Set<string>;
 }
 
+/**
+ * Derives the client-facing latency ping URL for a voice region from a representative server's
+ * LiveKit endpoint: swap the WebSocket scheme for HTTP(S) and append `/ping`. Returns null when
+ * the region has no accessible server. The `/ping` route is expected to be a CORS-enabled health
+ * endpoint on the voice host (see the transition plan's external-dependency note).
+ */
+export function deriveVoicePingEndpoint(server: VoiceServerRecord | null): string | null {
+	if (!server) {
+		return null;
+	}
+	const httpEndpoint = server.endpoint.replace(/^wss:\/\//, 'https://').replace(/^ws:\/\//, 'http://');
+	return `${httpEndpoint.replace(/\/+$/, '')}/ping`;
+}
+
 export class VoiceAvailabilityService {
 	private rotationIndex: Map<string, number> = new Map();
 
@@ -105,6 +119,7 @@ export class VoiceAvailabilityService {
 			const servers = this.topology.getServersForRegion(region.id);
 			const accessibleServers = servers.filter((server) => this.isServerAccessible(server, context));
 			const regionAccessible = this.isRegionAccessible(region, context);
+			const representativeServer = accessibleServers[0] ?? null;
 			return {
 				id: region.id,
 				name: region.name,
@@ -118,6 +133,7 @@ export class VoiceAvailabilityService {
 				activeServerCount: accessibleServers.length,
 				isAccessible: regionAccessible && accessibleServers.length > 0,
 				restrictions: region.restrictions,
+				pingEndpoint: deriveVoicePingEndpoint(representativeServer),
 			};
 		});
 	}

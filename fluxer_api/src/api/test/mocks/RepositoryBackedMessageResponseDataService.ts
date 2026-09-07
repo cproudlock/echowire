@@ -42,6 +42,7 @@ import type {Message} from '../../models/Message';
 import type {MessageSnapshot} from '../../models/MessageSnapshot';
 import type {StickerItem} from '../../models/StickerItem';
 import {mapUserToPartialResponse} from '../../user/UserMappers';
+import {assertSafeByteSize} from '../../utils/ByteSizeUtils';
 
 class NoopNatsConnectionManager implements INatsConnectionManager {
 	async connect(): Promise<void> {}
@@ -254,7 +255,6 @@ export class RepositoryBackedMessageResponseDataService extends MessageResponseD
 			embeds: this.mapEmbeds(message.embeds, message),
 			attachments: await this.mapAttachments(message.attachments, message),
 			stickers: this.mapStickers(message.stickers),
-			nsfw_emojis: message.nsfwEmojis.size > 0 ? [...message.nsfwEmojis].map((id) => id.toString()) : undefined,
 			reactions,
 			message_reference: message.reference
 				? {
@@ -373,7 +373,7 @@ export class RepositoryBackedMessageResponseDataService extends MessageResponseD
 					description: attachment.description,
 					content_type: attachment.contentType,
 					content_hash: attachment.contentHash,
-					size: Number(attachment.size),
+					size: assertSafeByteSize(attachment.size, 'message attachment size'),
 					url,
 					proxy_url: url,
 					width: attachment.width,
@@ -480,7 +480,6 @@ export class RepositoryBackedMessageResponseDataService extends MessageResponseD
 			id: sticker.id.toString(),
 			name: sticker.name,
 			animated: sticker.animated,
-			nsfw: sticker.nsfw,
 		}));
 	}
 

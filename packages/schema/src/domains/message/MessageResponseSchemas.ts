@@ -11,7 +11,12 @@ import type {GuildMemberData} from '@fluxer/schema/src/domains/guild/GuildMember
 import {type MessageEmbed, MessageEmbedResponse} from '@fluxer/schema/src/domains/message/EmbedSchemas';
 import {type UserPartial, UserPartialResponse} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
 import {MessageReferenceTypeSchema, MessageTypeSchema} from '@fluxer/schema/src/primitives/MessageValidators';
-import {createBitflagInt32Type, Int32Type, SnowflakeStringType} from '@fluxer/schema/src/primitives/SchemaPrimitives';
+import {
+	createBitflagInt32Type,
+	Int32Type,
+	NonNegativeSafeIntegerType,
+	SnowflakeStringType,
+} from '@fluxer/schema/src/primitives/SchemaPrimitives';
 import {z} from 'zod';
 
 export const MessageAttachmentResponse = z.object({
@@ -21,7 +26,7 @@ export const MessageAttachmentResponse = z.object({
 	description: z.string().nullish().describe('The description of the attachment'),
 	content_type: z.string().nullish().describe('The MIME type of the attachment'),
 	content_hash: z.string().nullish().describe('The hash of the attachment content'),
-	size: Int32Type.describe('The size of the attachment in bytes'),
+	size: NonNegativeSafeIntegerType.describe('The size of the attachment in bytes'),
 	url: z.string().nullish().describe('The URL of the attachment'),
 	proxy_url: z.string().nullish().describe('The proxied URL of the attachment'),
 	width: Int32Type.nullish().describe('The width of the attachment in pixels (for images/videos)'),
@@ -58,7 +63,7 @@ const ReactionEmojiResponse = z.object({
 export const MessageReactionResponse = z.object({
 	emoji: ReactionEmojiResponse.describe('The emoji used for the reaction'),
 	count: Int32Type.describe('The total number of times this reaction has been used'),
-	me: z.literal(true).nullish().describe('Whether the current user has reacted with this emoji'),
+	me: z.boolean().nullish().describe('Whether the current user has reacted with this emoji'),
 });
 
 export type MessageReactionResponse = z.infer<typeof MessageReactionResponse>;
@@ -67,7 +72,6 @@ export const MessageStickerResponse = z.object({
 	id: SnowflakeStringType.describe('The unique identifier of the sticker'),
 	name: z.string().describe('The name of the sticker'),
 	animated: z.boolean().describe('Whether the sticker is animated'),
-	nsfw: z.boolean().optional().describe('Whether this sticker is classified as NSFW'),
 });
 
 export type MessageStickerResponse = z.infer<typeof MessageStickerResponse>;
@@ -145,10 +149,6 @@ const MessageBaseResponseSchema = z.object({
 	embeds: z.array(MessageEmbedResponse).nullish().describe('The embeds attached to the message'),
 	attachments: z.array(MessageAttachmentResponse).nullish().describe('The files attached to the message'),
 	stickers: z.array(MessageStickerResponse).nullish().describe('The stickers sent with the message'),
-	nsfw_emojis: z
-		.array(SnowflakeStringType)
-		.optional()
-		.describe('IDs of custom emojis in this message that are classified as NSFW'),
 	reactions: z.array(MessageReactionResponse).nullish().describe('The reactions on the message'),
 	message_reference: MessageReferenceResponse.nullish().describe('Reference data for replies or forwards'),
 	message_snapshots: z.array(MessageSnapshotResponse).nullish().describe('Snapshots of forwarded messages'),
@@ -164,7 +164,7 @@ export interface MessageResponse extends MessageBaseResponse {
 
 export const MessageResponseSchema = MessageBaseResponseSchema.extend({
 	referenced_message: MessageBaseResponseSchema.nullish().describe(
-		'The message that this message is replying to or forwarding',
+		'The reply target. Present and populated when the target resolved, present and null when the target is gone, absent when this message carries no default reference. Clients must tell null apart from absent by key presence.',
 	),
 });
 const ChannelPinMessageResponse = MessageResponseSchema.omit({
@@ -305,7 +305,6 @@ export interface MessageStickerItem {
 	readonly id: string;
 	readonly name: string;
 	readonly animated: boolean;
-	readonly nsfw?: boolean;
 }
 
 export interface AllowedMentions {
@@ -347,7 +346,6 @@ export interface Message {
 	readonly embeds?: ReadonlyArray<MessageEmbed>;
 	readonly attachments?: ReadonlyArray<MessageAttachment>;
 	readonly stickers?: ReadonlyArray<MessageStickerItem>;
-	readonly nsfw_emojis?: ReadonlyArray<string>;
 	readonly reactions?: ReadonlyArray<MessageReaction>;
 	readonly message_reference?: MessageReference;
 	readonly referenced_message?: Message | null;

@@ -15,7 +15,7 @@ A few things are commonly assumed to be kept that we do not actually keep:
 - **Individual messages and attachments.** Delete them in the app. Deleting a message also deletes its attachments.
 - **All your messages in bulk.** Privacy Dashboard > Data Deletion. See [requesting data deletion](/help/data-deletion).
 - **Your whole account.** Settings > Account. See [how to delete or disable your account](/help/delete-account). After a 14-day grace period (during which signing in cancels the deletion), the account is removed.
-- **A specific piece of data.** Email <privacy@fluxer.app> from your registered address.
+- **A specific piece of data.** Email <privacy@echowire.org> from your registered address.
 
 ## What happens when you delete something
 
@@ -33,7 +33,7 @@ A few kinds of data outlive your account, but only for specific, narrow reasons:
 - **Report snapshots.** When someone reports a message, user, Community, or invite, we snapshot the reported item so there is a stable record for investigation and appeals. Snapshots live in an isolated bucket, are not served to users or included in exports, and are deleted after one year. Deleting the original does not remove the snapshot during that window.
 - **Security and usage logs.** Up to 90 days under normal conditions. Specific logs may be kept longer only for an active security investigation, a legal obligation, or an ongoing dispute.
 - **Audit logs.** Records of administrative actions and enforcement decisions are kept as long as needed for accountability and appeals, and reviewed periodically.
-- **Payment and transaction records.** Kept at least seven years, as Swedish bookkeeping law (Bokföringslag 1999:1078) requires. Full card numbers are not stored.
+- **Payment and transaction records.** Kept at least seven years, as applicable tax and accounting law requires. Full card numbers are not stored.
 - **Photo IDs sent to support** (for an age appeal or a date-of-birth correction): deleted within 60 days after the request is closed.
 - **Support correspondence.** Held in Intercom for as long as needed to handle the conversation and any follow-up, then deleted on review.
 - **Backups.** Encrypted, off-site, kept on a rolling cycle of up to about 30 days, then overwritten.
@@ -47,6 +47,6 @@ Accounts may be scheduled for deletion after two years of inactivity, with advan
 
 ## Your rights
 
-You can export your data, delete your messages, and close your account from the Privacy Dashboard and account settings. Anything you cannot do through the app can be requested at <privacy@fluxer.app> from your registered email.
+You can export your data, delete your messages, and close your account from the Privacy Dashboard and account settings. Anything you cannot do through the app can be requested at <privacy@echowire.org> from your registered email.
 
 If you are in the EEA or UK, the GDPR also gives you rights of access, rectification, erasure, restriction, portability, and objection, as well as rights around automated decisions. California residents have parallel rights under CCPA/CPRA. Both are described in section 10 of the [Privacy Policy](/privacy), along with how to exercise them and how to lodge a complaint with your local supervisory authority.

@@ -9,6 +9,7 @@ import {resolveClientIpHeaderName} from '@fluxer/ip_utils/src/ClientIp';
 import type {ILogger} from '../ILogger';
 import {ClientErrorAbuseSignalMiddleware} from '../middleware/AbusiveIpAutoBanner';
 import {AuditLogMiddleware} from '../middleware/AuditLogMiddleware';
+import {ConcurrencyLimitMiddleware} from '../middleware/ConcurrencyLimitMiddleware';
 import ContentFilterMiddleware from '../middleware/ContentFilterMiddleware';
 import {GuildAvailabilityMiddleware} from '../middleware/GuildAvailabilityMiddleware';
 import {IpBanMiddleware} from '../middleware/IpBanMiddleware';
@@ -27,10 +28,11 @@ interface MiddlewarePipelineOptions {
 	corsOrigins: Array<string>;
 	trustClientIpHeader: boolean;
 	clientIpHeaderName?: string;
+	maxInflightRequests: number;
 }
 
 export function configureMiddleware(routes: HonoApp, options: MiddlewarePipelineOptions): void {
-	const {logger, nodeEnv, corsOrigins, trustClientIpHeader, clientIpHeaderName} = options;
+	const {logger, nodeEnv, corsOrigins, trustClientIpHeader, clientIpHeaderName, maxInflightRequests} = options;
 	const resolvedHeader = resolveClientIpHeaderName(clientIpHeaderName);
 	routes.use('/webhooks/:webhook_id/:token', cors({origins: '*'}));
 	routes.use('/webhooks/:webhook_id/:token/messages/:message_id', cors({origins: '*'}));
@@ -40,6 +42,7 @@ export function configureMiddleware(routes: HonoApp, options: MiddlewarePipeline
 		skipLogger: true,
 		skipErrorHandler: true,
 	});
+	routes.use(ConcurrencyLimitMiddleware({maxInflightRequests}));
 	routes.get('/_health', async (ctx) => ctx.text('OK'));
 	routes.use(IpBanMiddleware);
 	routes.use(
@@ -68,17 +71,20 @@ export function configureMiddleware(routes: HonoApp, options: MiddlewarePipeline
 				enabled: true,
 				logger,
 				trustClientIpHeader,
-				clientIpHeaderName: clientIpHeaderName ?? 'x-forwarded-for',
+				clientIpHeaderName: resolvedHeader,
 			}),
 		);
 	}
 	routes.use(TorExitMiddleware);
 	routes.use(AuditLogMiddleware);
-	routes.use(
-		RequireClientIpMiddleware({
-			requiredHeaders: [resolvedHeader],
-		}),
-	);
+	// Echowire: upstream reworked RequireClientIpMiddleware to take {exemptPaths}
+	// and resolve the client IP from Config.proxy.client_ip_header (single header)
+	// instead of the old requiredHeaders list. Our ingress is
+	// Cloudflare -> NetBird -> Caddy (client IP = cf-connecting-ip), but internal
+	// service calls (app-proxy discovery via caddy:8088) carry only x-forwarded-for.
+	// TODO(echowire): verify those internal calls are not 403d; if they are, add
+	// their paths to exemptPaths rather than reinstating a broad header fallback.
+	routes.use(RequireClientIpMiddleware());
 	routes.use(ServiceMiddleware);
 	routes.use(UserMiddleware);
 	routes.use(ContentFilterMiddleware);

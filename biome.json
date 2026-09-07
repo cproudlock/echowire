@@ -20,7 +20,7 @@
 			"bracketSpacing": false,
 			"bracketSameLine": false
 		},
-		"globals": ["React"]
+		"globals": ["React", "__webpack_base_uri__"]
 	},
 	"json": {
 		"formatter": {
@@ -115,6 +115,17 @@
 		}
 	},
 	"assist": {"actions": {"source": {"organizeImports": "on"}}},
+	"overrides": [
+		{
+			"includes": ["fluxer_docs/scripts/VerifyDocsCoverage.ts"],
+			"linter": {"rules": {"suspicious": {"noTemplateCurlyInString": "off"}}}
+		},
+		{
+			"includes": ["**/*.astro"],
+			"linter": {"rules": {"correctness": {"noUnusedImports": "off", "noUnusedVariables": "off"}}},
+			"assist": {"actions": {"source": {"organizeImports": "off"}}}
+		}
+	],
 	"vcs": {
 		"enabled": true,
 		"clientKind": "git",
@@ -137,15 +148,23 @@
 			"!**/*.pb.*",
 			"!**/*_pb.*",
 			"!**/node_modules",
+			"!**/*.min.js",
 			"!packages/schema/src/gen",
 			"!**/tailwind.css",
 			"!**/*.html",
 			"!**/*.module.css.d.ts",
 			"!**/fluxer_app/src/features/ui/components/SVGMasks.tsx",
 			"!fluxer_static",
+			"!packages/fonts",
 			"!fluxer_admin/static/htmx.min.js",
-			"!fluxer_marketing/static/htmx.min.js",
-			"!fluxer_api/src/api/openapi/openapi.json"
+			"!fluxer_api/src/api/openapi/openapi.json",
+			"!fluxer_api/pkgs/email/src/email_i18n/locales",
+			"!fluxer_api/pkgs/email/src/email_i18n/weblate",
+			"!fluxer_api/src/api/content_i18n/locales",
+			"!fluxer_api/src/api/content_i18n/weblate",
+			"!packages/errors/src/i18n/locales",
+			"!packages/errors/src/i18n/weblate",
+			"!**/auto-i18n-reviewed-unchanged.json"
 		],
 		"ignoreUnknown": true
 	}

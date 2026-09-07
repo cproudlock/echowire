@@ -18,7 +18,7 @@ import {FeatureTemporarilyDisabledError} from '@fluxer/errors/src/domains/core/F
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
-import {NsfwEmojiStickerBlockedError} from '@fluxer/errors/src/domains/moderation/NsfwEmojiStickerBlockedError';
+import {NsfwContentRequiresAgeVerificationError} from '@fluxer/errors/src/domains/moderation/NsfwContentRequiresAgeVerificationError';
 import type {GuildMemberResponse} from '@fluxer/schema/src/domains/guild/GuildMemberSchemas';
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
 import {snowflakeToDate} from '@fluxer/snowflake/src/Snowflake';
@@ -53,6 +53,7 @@ import {assertGuildMemberCanCommunicate} from '../../../utils/GuildCommunication
 import type {AttachmentRequestData, AttachmentToProcess} from '../../AttachmentDTOs';
 import type {MessageRequest, MessageUpdateRequest} from '../../MessageTypes';
 import type {IChannelRepositoryAggregate} from '../../repositories/IChannelRepositoryAggregate';
+import type {AttachmentUploadTraceRepository} from '../../repositories/message/AttachmentUploadTraceRepository';
 import type {AuthenticatedChannel} from '../AuthenticatedChannel';
 import type {MessageChannelAuthService} from './MessageChannelAuthService';
 import type {DmNsfwContext} from './MessageContentService';
@@ -88,8 +89,14 @@ interface MessageSendServiceDeps {
 	dispatchService: MessageDispatchService;
 	operationsHelpers: MessageOperationsHelpers;
 	embedAttachmentResolver: MessageEmbedAttachmentResolver;
+	attachmentUploadTraceRepository: AttachmentUploadTraceRepository;
 	limitConfigService: LimitConfigService;
 	directMessageSpamMitigationService: DirectMessageSpamMitigationService;
+}
+
+interface SendMessageResult {
+	message: Message;
+	authChannel: AuthenticatedChannel;
 }
 
 interface SendMentionData {
@@ -204,6 +211,17 @@ export class MessageSendService {
 		return processed.length > 0 ? processed : undefined;
 	}
 
+	private resolveWebhookAttachmentUploadUserId(
+		webhook: Webhook,
+		attachments?: Array<AttachmentRequestData>,
+	): UserID | undefined {
+		const uploadUserId = webhook.creatorId ?? undefined;
+		if (uploadUserId === undefined && this.attachmentsToProcess(attachments) !== undefined) {
+			throw InputValidationError.fromCode('attachments', ValidationErrorCodes.INVALID_MESSAGE_DATA);
+		}
+		return uploadUserId;
+	}
+
 	private getOneToOneDmRecipientId(channel: Channel, senderId: UserID): UserID | null {
 		if (channel.guildId || channel.type !== ChannelTypes.DM) {
 			return null;
@@ -220,7 +238,6 @@ export class MessageSendService {
 		user,
 		checkPermission,
 		hasPermission,
-		channelId,
 	}: {
 		guild: GuildResponse | null;
 		member: GuildMemberResponse | null;
@@ -229,7 +246,6 @@ export class MessageSendService {
 		user: User;
 		checkPermission: (permission: bigint) => Promise<void>;
 		hasPermission: (permission: bigint) => Promise<boolean>;
-		channelId: ChannelID;
 	}): Promise<{
 		canEmbedLinks: boolean;
 		canMentionEveryone: boolean;
@@ -241,10 +257,14 @@ export class MessageSendService {
 			hasPermission(Permissions.ATTACH_FILES),
 		]);
 		const hasFavoriteMeme = data.favorite_meme_id != null;
+		const hasUploadedAttachments = this.attachmentsToProcess(data.attachments) !== undefined;
 		if (data.embeds && data.embeds.length > 0 && !canEmbedLinks) {
 			throw new MissingPermissionsError();
 		}
-		if (hasFavoriteMeme && (!canEmbedLinks || !canAttachFiles)) {
+		if (hasFavoriteMeme && !canEmbedLinks) {
+			throw new MissingPermissionsError();
+		}
+		if ((hasFavoriteMeme || hasUploadedAttachments) && !canAttachFiles) {
 			throw new MissingPermissionsError();
 		}
 		if (guild) {
@@ -264,7 +284,7 @@ export class MessageSendService {
 			}
 			await this.deps.channelAuthService.checkGuildVerification({user, guild, member});
 		} else if (channel.type === ChannelTypes.DM || channel.type === ChannelTypes.GROUP_DM) {
-			await this.deps.channelAuthService.validateDMSendPermissions({channelId, userId: user.id});
+			await this.deps.channelAuthService.validateDMSendPermissions({channel, userId: user.id});
 		}
 		return {canEmbedLinks, canMentionEveryone, canAttachFiles};
 	}
@@ -298,7 +318,6 @@ export class MessageSendService {
 			user,
 			checkPermission,
 			hasPermission,
-			channelId,
 		});
 		this.deps.validationService.ensureTextChannel(channel);
 		const isForwardMessage = this.ensureMessageRequestIsValid({user, data, guildFeatures: guild?.features ?? null});
@@ -369,6 +388,7 @@ export class MessageSendService {
 		await this.ensureAttachmentsExist({
 			attachments: data.attachments,
 			user,
+			channelId,
 			guildFeatures: guild?.features ?? null,
 		});
 	}
@@ -435,6 +455,7 @@ export class MessageSendService {
 		await this.ensureAttachmentsExist({
 			attachments: data.attachments,
 			user,
+			channelId,
 			guildFeatures: null,
 		});
 	}
@@ -481,10 +502,12 @@ export class MessageSendService {
 	private async ensureAttachmentsExist({
 		attachments,
 		user,
+		channelId,
 		guildFeatures,
 	}: {
 		attachments?: Array<AttachmentRequestData>;
 		user: User;
+		channelId: ChannelID;
 		guildFeatures: Iterable<string> | null;
 	}): Promise<void> {
 		if (!attachments || attachments.length === 0) return;
@@ -494,6 +517,18 @@ export class MessageSendService {
 		for (let index = 0; index < attachments.length; index++) {
 			const attachment = attachments[index];
 			if (!('upload_filename' in attachment) || !attachment.upload_filename) continue;
+			const pendingUpload = await this.deps.attachmentUploadTraceRepository.getPendingUpload({
+				uploadKey: attachment.upload_filename,
+				userId: user.id,
+				channelId,
+			});
+			if (!pendingUpload) {
+				throw InputValidationError.fromCode(
+					`attachments.${index}.upload_filename`,
+					ValidationErrorCodes.UPLOADED_ATTACHMENT_NOT_FOUND,
+					{filename: attachment.filename},
+				);
+			}
 			const metadata = await this.deps.storageService.getObjectMetadata(
 				Config.s3.buckets.uploads,
 				attachment.upload_filename,
@@ -750,7 +785,7 @@ export class MessageSendService {
 		channelId: ChannelID;
 		data: MessageRequest;
 		requestCache: RequestCache;
-	}): Promise<Message> {
+	}): Promise<SendMessageResult> {
 		const authChannel = await this.deps.channelAuthService.getChannelAuthenticated({
 			userId: user.id,
 			channelId,
@@ -759,9 +794,14 @@ export class MessageSendService {
 			throw InputValidationError.fromCode('content', ValidationErrorCodes.MUST_START_SESSION_BEFORE_SENDING);
 		}
 		if (isPersonalNotesChannel({userId: user.id, channelId})) {
-			return this.sendPersonalNoteMessage({user, channelId, data, requestCache});
+			const message = await this.sendPersonalNoteMessage({authChannel, user, channelId, data, requestCache});
+			return {message, authChannel};
 		}
 		const {channel, guild, checkPermission, hasPermission, member} = authChannel;
+		// Echowire: a locked thread/forum post accepts messages only from moderators (Manage Channels).
+		if (channel.threadMetadata?.locked && !(await hasPermission(Permissions.MANAGE_CHANNELS))) {
+			throw new MissingPermissionsError();
+		}
 		const {canEmbedLinks, canMentionEveryone, canAttachFiles} = await this.checkMessageSendPermissions({
 			guild,
 			member,
@@ -770,7 +810,6 @@ export class MessageSendService {
 			user,
 			checkPermission,
 			hasPermission,
-			channelId,
 		});
 		const needsSlowmodeCheck = guild && channel.rateLimitPerUser && channel.rateLimitPerUser > 0 && !user.isBot;
 		const slowmodeBypass = needsSlowmodeCheck ? await hasPermission(Permissions.BYPASS_SLOWMODE) : false;
@@ -787,7 +826,7 @@ export class MessageSendService {
 			expectedChannelId: channelId,
 		});
 		if (existingMessage) {
-			return existingMessage;
+			return {message: existingMessage, authChannel};
 		}
 		const referenceContext = await this.resolveReferenceContext({
 			data,
@@ -810,7 +849,7 @@ export class MessageSendService {
 			const guildNsfw = guild != null && guild.nsfw_level === GuildNSFWLevel.AGE_RESTRICTED;
 			const destAllowsNsfw = channel.isNsfw || guildNsfw;
 			if (!destAllowsNsfw) {
-				throw new NsfwEmojiStickerBlockedError();
+				throw new NsfwContentRequiresAgeVerificationError();
 			}
 		}
 		if (data.message_reference && guild && !isForwardMessage) {
@@ -832,6 +871,7 @@ export class MessageSendService {
 		await this.ensureAttachmentsExist({
 			attachments: data.attachments,
 			user,
+			channelId,
 			guildFeatures: guild?.features ?? null,
 		});
 		const {attachmentsToProcess, favoriteMemeAttachment} = await this.prepareMessageAttachments({
@@ -895,9 +935,8 @@ export class MessageSendService {
 				algorithm: 'leaky_bucket',
 			});
 			if (!slowmodeResult.allowed) {
-				const retryAfter = Math.max(0, slowmodeResult.resetTime.getTime() - Date.now());
 				throw new SlowmodeRateLimitError({
-					retryAfter,
+					retryAfter: slowmodeResult.retryAfter,
 					retryAfterDecimal: slowmodeResult.retryAfterDecimal,
 				});
 			}
@@ -920,6 +959,7 @@ export class MessageSendService {
 			flags: this.deps.validationService.calculateMessageFlags(data),
 			embeds: data.embeds,
 			attachments: attachmentsToProcess,
+			attachmentUploadUserId: user.id,
 			processedAttachments: favoriteMemeAttachment ? [favoriteMemeAttachment] : undefined,
 			stickerIds: data.sticker_ids ? data.sticker_ids.flatMap((stickerId) => createStickerID(stickerId)) : undefined,
 			messageReference,
@@ -997,7 +1037,7 @@ export class MessageSendService {
 		if (searchIndexOptions && !suppressDmRecipientDelivery) {
 			void this.deps.searchService.indexMessage(message, user.isBot, searchIndexOptions);
 		}
-		return message;
+		return {message, authChannel};
 	}
 
 	async sendWebhookMessage({
@@ -1052,6 +1092,15 @@ export class MessageSendService {
 			embeds: data.embeds,
 			attachments: data.attachments,
 		});
+		const webhookActorId = createUserID(BigInt(webhook.id));
+		const existingMessage = await this.deps.operationsHelpers.findExistingMessage({
+			userId: webhookActorId,
+			nonce: data.nonce,
+			expectedChannelId: channelId,
+		});
+		if (existingMessage) {
+			return existingMessage;
+		}
 		let referencedMessage: Message | null = null;
 		let messageSnapshots: Array<MessageSnapshot> | undefined;
 		if (data.message_reference) {
@@ -1139,6 +1188,8 @@ export class MessageSendService {
 			flags: this.deps.validationService.calculateMessageFlags(data),
 			embeds: data.embeds,
 			attachments: this.attachmentsToProcess(data.attachments),
+			attachmentUploadUserId: this.resolveWebhookAttachmentUploadUserId(webhook, data.attachments),
+			stickerIds: data.sticker_ids ? data.sticker_ids.flatMap((stickerId) => createStickerID(stickerId)) : undefined,
 			messageReference,
 			messageSnapshots,
 			guildId: channel.guildId,
@@ -1156,15 +1207,17 @@ export class MessageSendService {
 		await this.deps.mentionService.handleMentionTasks({
 			guildId: channel.guildId,
 			message,
-			authorId: createUserID(0n),
+			authorId: webhookActorId,
 			mentionHere: mentionData?.mentionHere ?? false,
 		});
 		await this.deps.dispatchService.dispatchMessageCreate({
 			channel,
 			message,
 			requestCache,
+			nonce: data.nonce,
 			mentionHere: mentionData?.mentionHere ?? false,
 		});
+		await this.cacheMessageNonceIfPresent({userId: webhookActorId, nonce: data.nonce, channelId, messageId});
 		void enqueueDeferredEmbeds().catch((error) => {
 			Logger.warn({error, messageId: messageId.toString()}, 'Failed to enqueue deferred embed extraction');
 		});
@@ -1220,6 +1273,7 @@ export class MessageSendService {
 			data,
 			channel,
 			guild,
+			attachmentUploadUserId: this.resolveWebhookAttachmentUploadUserId(webhook, data.attachments),
 			allowEmbeds: true,
 		});
 		await this.deps.dispatchService.dispatchMessageUpdate({channel, message: updatedMessage, requestCache});
@@ -1234,17 +1288,19 @@ export class MessageSendService {
 	}
 
 	private async sendPersonalNoteMessage({
+		authChannel,
 		user,
 		channelId,
 		data,
 		requestCache,
 	}: {
+		authChannel: AuthenticatedChannel;
 		user: User;
 		channelId: ChannelID;
 		data: MessageRequest;
 		requestCache: RequestCache;
 	}): Promise<Message> {
-		const {channel} = await this.deps.channelAuthService.getChannelAuthenticated({userId: user.id, channelId});
+		const {channel} = authChannel;
 		const isForwardMessage = this.ensureMessageRequestIsValid({user, data, guildFeatures: null});
 		this.deps.embedAttachmentResolver.validateAttachmentReferences({
 			embeds: data.embeds,
@@ -1268,6 +1324,7 @@ export class MessageSendService {
 		await this.ensureAttachmentsExist({
 			attachments: data.attachments,
 			user,
+			channelId,
 			guildFeatures: null,
 		});
 		const {attachmentsToProcess, favoriteMemeAttachment} = await this.prepareMessageAttachments({
@@ -1292,6 +1349,7 @@ export class MessageSendService {
 			flags: data.flags ? data.flags & SENDABLE_MESSAGE_FLAGS : 0,
 			embeds: data.embeds,
 			attachments: attachmentsToProcess,
+			attachmentUploadUserId: user.id,
 			processedAttachments: favoriteMemeAttachment ? [favoriteMemeAttachment] : undefined,
 			messageReference,
 			messageSnapshots,

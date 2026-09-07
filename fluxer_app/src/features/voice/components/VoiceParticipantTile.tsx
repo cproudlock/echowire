@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {LongPressable} from '@app/features/app/components/LongPressable';
+import Channels from '@app/features/channel/state/Channels';
 import {WATCH_STREAM_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import {isKeyboardActivationKey} from '@app/features/input/utils/KeyboardUtils';
 import Permission from '@app/features/permissions/state/Permission';
 import {dimColor} from '@app/features/theme/utils/ColorUtils';
+import type {VoiceParticipantMenuSource} from '@app/features/ui/action_menu/items/VoiceParticipantMenuTypes';
+import {UserContextMenu} from '@app/features/ui/action_menu/UserContextMenu';
 import {VoiceParticipantContextMenu} from '@app/features/ui/action_menu/VoiceParticipantContextMenu';
 import {Button} from '@app/features/ui/button/Button';
 import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuCommands';
@@ -39,6 +42,7 @@ import {StreamInfoPill} from '@app/features/voice/components/StreamInfoPill';
 import {getStreamKey} from '@app/features/voice/components/StreamKeys';
 import {StreamSpectatorsPopout} from '@app/features/voice/components/StreamSpectatorsPopout';
 import {StreamWatchHoverCard} from '@app/features/voice/components/StreamWatchHoverCard';
+import {useScreenShareUnderperformance} from '@app/features/voice/components/useScreenShareUnderperformance';
 import {useScreenShareWatchFailure} from '@app/features/voice/components/useScreenShareWatchFailure';
 import {useStreamPreview} from '@app/features/voice/components/useStreamPreview';
 import {useStreamSpectators} from '@app/features/voice/components/useStreamSpectators';
@@ -61,17 +65,13 @@ import {
 	useAutoVideoSubscription,
 	useEffectiveTrackRef,
 	useIntersection,
-	useNativeCameraSubscriptionQuality,
 	useScreenShareAudioPublication,
+	useScreenShareViewerDemand,
 	useScreensharePreviewUploader,
 	useScreenshareWatchSubscription,
 	useTileContextMenuActive,
 } from '@app/features/voice/components/voice_participant_tile/hooks';
 import LastFrameSnapshotCache from '@app/features/voice/components/voice_participant_tile/LastFrameSnapshotCache';
-import {
-	NativeParticipantVideo,
-	useNativeParticipantVideoTrack,
-} from '@app/features/voice/components/voice_participant_tile/NativeParticipantVideo';
 import {ScreenSharePlaceholder} from '@app/features/voice/components/voice_participant_tile/ScreenSharePlaceholder';
 import {
 	CAMERA_BUFFERING_DESCRIPTOR,
@@ -79,7 +79,7 @@ import {
 	CONNECTION_DESCRIPTOR,
 	DESKTOP_DEVICE_DESCRIPTOR,
 	getSourceDataAttr,
-	isAudioTrackWithVolume,
+	getStreamUnderperformanceLabel,
 	isCameraSource,
 	logger,
 	MOBILE_DEVICE_DESCRIPTOR,
@@ -90,7 +90,9 @@ import {
 	STREAM_BUFFERING_DESCRIPTOR,
 	STREAM_ENDED_DESCRIPTOR,
 	STREAM_HIDDEN_DESCRIPTOR,
+	STREAM_NOT_KEEPING_UP_DESCRIPTOR,
 	TILE_AVATAR_BASE,
+	TILE_AVATAR_MEDIA_SIZE,
 	TILE_AVATAR_STYLE,
 	type VoiceParticipantTileInnerProps,
 	type VoiceParticipantTileProps,
@@ -102,10 +104,8 @@ import {
 } from '@app/features/voice/components/voice_participant_tile/shared';
 import {WatchStreamOverlay} from '@app/features/voice/components/voice_participant_tile/WatchStreamOverlay';
 import MediaEngine, {useMediaEngineVersion, useVoiceEngineV2Model} from '@app/features/voice/engine/MediaEngineFacade';
-import NativeVideoTileManager from '@app/features/voice/engine/native_voice_engine/NativeVideoTileManager';
 import ScreenSharePublicationMigration from '@app/features/voice/engine/ScreenSharePublicationMigration';
 import {useStoreVersion} from '@app/features/voice/engine/Store';
-import {isVoiceEngineV2NativeProjectionActiveFromMediaEngine} from '@app/features/voice/engine/VoiceMediaEngineBridge';
 import {
 	selectVoiceMediaGraphDeferredStopKeys,
 	selectVoiceMediaGraphFailure,
@@ -118,11 +118,9 @@ import {
 	asVoiceTrackSource,
 	VoiceTrackSource,
 } from '@app/features/voice/engine/VoiceTrackSource';
-import voiceEngineV2AppDebugLoggingHostAdapter from '@app/features/voice/engine/v2/VoiceEngineV2AppDebugLoggingHostAdapter';
 import {selectVoiceEngineV2AppEffectiveSelfMuteForVoiceStatePayload} from '@app/features/voice/engine/v2/VoiceEngineV2AppSelectors';
 import CallMediaPrefs from '@app/features/voice/state/CallMediaPrefs';
 import LocalVoiceState from '@app/features/voice/state/LocalVoiceState';
-import ParticipantVolume from '@app/features/voice/state/ParticipantVolume';
 import PopoutWindowManager, {getVoiceTilePopoutKey} from '@app/features/voice/state/PopoutWindowManager';
 import {
 	getScreenShareWatchFailureForPublicationOperation,
@@ -145,7 +143,7 @@ import {
 } from '@app/features/voice/utils/VoiceMessageDescriptors';
 import {parseVoiceParticipantIdentity} from '@app/features/voice/utils/VoiceParticipantIdentity';
 import {isParticipantVoicePermissionMuted} from '@app/features/voice/utils/VoicePermissionUtils';
-import {boostedVoiceVolumePercentToTrackVolume} from '@app/features/voice/utils/VoiceVolumeUtils';
+import {VOICE_VOLUME_MAX_SLIDER_VOLUME} from '@app/features/voice/utils/VoiceVolumeUtils';
 import {DEFAULT_ACCENT_COLOR} from '@fluxer/constants/src/AppConstants';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {msg, plural} from '@lingui/core/macro';
@@ -160,6 +158,7 @@ import {
 	PauseIcon,
 	SpeakerSlashIcon,
 	VideoCameraSlashIcon,
+	WarningIcon,
 } from '@phosphor-icons/react';
 import {clsx} from 'clsx';
 import type {Participant, RemoteTrackPublication, Track} from 'livekit-client';
@@ -344,6 +343,9 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 	const streamKey = useMemo(() => getStreamKey(guildId, channelId, connectionId), [guildId, channelId, connectionId]);
 	const {viewerIds, viewerUsers, spectatorEntries} = useStreamSpectators(isScreenShare ? streamKey : '', userId);
 	const hasSpectatorDemand = viewerIds.length > 0;
+	const streamUnderperformanceReason = useScreenShareUnderperformance(
+		isOwnScreenShare && !isFocusedPlaceholderTile && viewerUsers.length > 0,
+	);
 	const isCameraTile = isCameraSource(trackRef.source);
 	const cameraLocallyDisabled = callId !== '' && isCameraTile && CallMediaPrefs.isVideoDisabled(callId, identity);
 	const screenSharePublicationMigrationVersion = ScreenSharePublicationMigration.version;
@@ -360,26 +362,16 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		isScreenShare,
 	);
 	const hasScreenShareAudio = Boolean(screenShareAudioPublication);
-	const isNativeEngine = isVoiceEngineV2NativeProjectionActiveFromMediaEngine();
-	const nativeParticipantSid = isNativeEngine ? (MediaEngine.participants[identity]?.sid ?? participant.sid ?? '') : '';
-	const nativeVideoSource = asPinnableVoiceTrackSource(trackRef.source);
-	const nativeVideoTrack = useNativeParticipantVideoTrack(nativeParticipantSid, nativeVideoSource, identity);
-	const hasNativeVideo = nativeVideoTrack != null;
-	const hasNativeVideoFrame = (nativeVideoTrack?.width ?? 0) > 0 && (nativeVideoTrack?.height ?? 0) > 0;
 	const hasVideo = useMemo(() => {
-		if (isNativeEngine) {
-			const hasRenderableNativeVideo = hasNativeVideo;
-			return hasRenderableNativeVideo && !cameraLocallyDisabled;
-		}
 		if (!isTrackReference(trackRef)) return false;
 		const pub = trackRef.publication;
 		return Boolean(pub?.track) && !pub?.isMuted && !cameraLocallyDisabled;
-	}, [cameraLocallyDisabled, hasNativeVideo, isNativeEngine, trackRef]);
+	}, [cameraLocallyDisabled, trackRef]);
 	const videoRef = useRef<HTMLVideoElement | null>(null);
 	const liveKitCameraTrackSid = isTrackReference(trackRef) ? trackRef.publication.trackSid : '';
-	const cameraVideoFrameTrackKey = nativeVideoTrack?.trackSid ?? publication?.trackSid ?? liveKitCameraTrackSid ?? '';
+	const cameraVideoFrameTrackKey = publication?.trackSid ?? liveKitCameraTrackSid ?? '';
 	const cameraVideoFrameResetKey = isCameraTile
-		? `${isNativeEngine ? 'native' : 'livekit'}:${identity}:${cameraVideoFrameTrackKey}:${hasVideo ? 'video' : 'waiting'}`
+		? `livekit:${identity}:${cameraVideoFrameTrackKey}:${hasVideo ? 'video' : 'waiting'}`
 		: '';
 	const hasRenderedCameraVideoFrame = useVideoRenderedFrame({
 		enabled: isCameraTile && hasVideo,
@@ -388,7 +380,6 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 	});
 	const streamVolume = StreamAudioPrefs.getVolume(streamKey);
 	const isStreamMuted = StreamAudioPrefs.isMuted(streamKey);
-	const isParticipantLocallyMuted = ParticipantVolume.isLocalMuted(userId);
 	const hasStreamAudioPrefsEntry = StreamAudioPrefs.hasEntry(streamKey);
 	const isSubscribed = Boolean(publication?.isSubscribed);
 	const hasSubscribedScreenShareVideo = isSubscribed && hasVideo;
@@ -396,10 +387,6 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		isScreenShare && !isOwnScreenShare && ScreenSharePublicationMigration.isScreenShareBuffering(participant);
 	const shouldAutoSubscribe = allowAutoSubscribe && !isFocusedPlaceholderTile;
 	const {ref: tileRef, isIntersecting} = useIntersection<HTMLDivElement>(shouldAutoSubscribe);
-	const nativeCameraQuality = useNativeCameraSubscriptionQuality(
-		tileRef,
-		isNativeEngine && isCameraTile && shouldAutoSubscribe && isIntersecting,
-	);
 	useAutoVideoSubscription({
 		enabled: shouldAutoSubscribe,
 		trackRef,
@@ -407,7 +394,6 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		videoLocallyDisabled: cameraLocallyDisabled,
 		isLocalParticipant,
 		isScreenShare,
-		nativeCameraQuality,
 	});
 	useStoreVersion(voiceMediaGraphStore);
 	const graphSnapshot = voiceMediaGraphStore.getGraphSnapshot();
@@ -453,15 +439,14 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 			ScreenShareWatchFailures.reportFailure({
 				streamKey,
 				participantIdentity: identity,
-				participantSid: nativeParticipantSid || undefined,
-				trackSid: publication?.trackSid ?? nativeVideoTrack?.trackSid,
+				trackSid: publication?.trackSid,
 				source: VoiceTrackSource.ScreenShare,
 				code: failure.code,
 				reason: failure.reason,
 				error,
 			});
 		},
-		[identity, isWatching, nativeParticipantSid, nativeVideoTrack?.trackSid, publication?.trackSid, streamKey],
+		[identity, isWatching, publication?.trackSid, streamKey],
 	);
 	useScreenshareWatchSubscription({
 		isScreenShare: isInteractiveScreenShareTile,
@@ -469,31 +454,28 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		userWantsToWatch: isWatching,
 		videoLocallyDisabled: false,
 		isOwnScreenShare,
-		audioEnabled: !isStreamMuted && !isParticipantLocallyMuted,
+		audioEnabled: !isStreamMuted,
 		audioPublication: screenShareAudioPublication,
 		streamKey,
 		onVideoSubscriptionError: reportVideoSubscriptionError,
 		getGraphSnapshot: getVoiceMediaGraphSnapshotForTile,
+	});
+	useScreenShareViewerDemand({
+		enabled: isInteractiveScreenShareTile && !isOwnScreenShare && isWatching && hasSubscribedScreenShareVideo,
+		publication,
+		videoRef,
+		onError: reportVideoSubscriptionError,
 	});
 	useEffect(() => {
 		if (!isScreenShare || isOwnScreenShare || isFocusedPlaceholderTile) return;
 		if (!isWatching) return;
 		const pub = screenShareAudioPublication;
 		if (!pub) return;
-		const track = pub.track;
-		if (isAudioTrackWithVolume(track)) {
-			try {
-				track.setVolume(boostedVoiceVolumePercentToTrackVolume(streamVolume));
-			} catch (err) {
-				logger.error('setVolume failed for stream audio', err);
-			}
-		}
-		const shouldEnable = !isStreamMuted && !isParticipantLocallyMuted;
+		const shouldEnable = !isStreamMuted;
 		logger.debug('Applying runtime screen share audio enabled state', {
 			trackSid: pub.trackSid,
 			isWatching,
 			isStreamMuted,
-			isParticipantLocallyMuted,
 			shouldEnable,
 		});
 		syncScreenSharePublication({
@@ -513,7 +495,6 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		screenShareAudioPublication,
 		streamVolume,
 		isStreamMuted,
-		isParticipantLocallyMuted,
 		userId,
 	]);
 	useEffect(() => {
@@ -545,7 +526,7 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		canFetchStreamPreview;
 	const {previewUrl, isPreviewLoading} = useStreamPreview(previewEnabled, streamKey);
 	const isStreamPlaceholder = isScreenShare && !isTrackReference(trackRef);
-	const screenShareTrackSid = publication?.trackSid ?? nativeVideoTrack?.trackSid ?? null;
+	const screenShareTrackSid = publication?.trackSid ?? null;
 	const trackInfo = useStreamTrackInfo(isScreenShare && !isFocusPresentationTile ? trackRef : null, {
 		nativeSource: isScreenShare ? VoiceTrackSource.ScreenShare : null,
 		nativeTrackSid: screenShareTrackSid,
@@ -562,12 +543,10 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 			!isStreamPlaceholder,
 		streamKey,
 		participantIdentity: identity,
-		participantSid: nativeParticipantSid || undefined,
 		trackSid: screenShareTrackSid,
-		hasPublication: publication != null || nativeVideoTrack != null,
+		hasPublication: publication != null,
 		isPublicationDesired,
 		hasSubscribedVideo: hasSubscribedScreenShareVideo,
-		hasNativeFrame: hasNativeVideoFrame,
 		operationKey: isScreenShareRepublishBuffering ? `republish:${screenSharePublicationMigrationVersion}` : null,
 		videoRef,
 	});
@@ -580,12 +559,6 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		if (!lastFrameSnapshotKey) return;
 		if (!isScreenShareRepublishBuffering) return;
 		LastFrameSnapshotCache.captureFromVideoElement(lastFrameSnapshotKey, videoRef.current);
-		if (screenShareTrackSid && LastFrameSnapshotCache.getSnapshotUrl(lastFrameSnapshotKey) === null) {
-			LastFrameSnapshotCache.captureFromNativeFrame(
-				lastFrameSnapshotKey,
-				NativeVideoTileManager.getRetainedLastFrame(screenShareTrackSid),
-			);
-		}
 	}, [isScreenShareRepublishBuffering, lastFrameSnapshotKey, screenShareTrackSid]);
 	useEffect(() => {
 		if (!lastFrameSnapshotKey) return;
@@ -619,12 +592,10 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 	const isLocalCameraRequested = isCameraTile && isOwnContent && LocalVoiceState.getSelfVideo();
 	const isCameraActive = selectVoiceParticipantTileCameraActive({
 		isCameraTile,
-		isNativeEngine,
 		isOwnContent,
 		isCameraPublicationActive,
 		isParticipantCameraActive,
 		isLocalCameraRequested,
-		hasNativeVideo,
 	});
 	const isCameraBuffering = shouldShowCameraBuffering({
 		isScreenShare,
@@ -635,50 +606,6 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		hasVideo,
 		hasRenderedVideoFrame: hasRenderedCameraVideoFrame,
 	});
-	useEffect(() => {
-		if (!isNativeEngine) return;
-		if (!isCameraTile) return;
-		voiceEngineV2AppDebugLoggingHostAdapter.recordNativeVideoDiagnostic('tile.camera_state', {
-			participantIdentity: identity,
-			participantSid: nativeParticipantSid,
-			source: nativeVideoSource,
-			trackSid: nativeVideoTrack?.trackSid ?? null,
-			hasNativeVideo,
-			hasNativeVideoFrame,
-			hasVideo,
-			hasRenderedVideoFrame: hasRenderedCameraVideoFrame,
-			isCameraActive,
-			isCameraPublicationActive,
-			isParticipantCameraActive,
-			isLocalCameraRequested,
-			isCameraBuffering,
-			cameraLocallyDisabled,
-			isOwnCameraHidden,
-			width: nativeVideoTrack?.width ?? null,
-			height: nativeVideoTrack?.height ?? null,
-		});
-	}, [
-		cameraLocallyDisabled,
-		hasNativeVideo,
-		hasNativeVideoFrame,
-		hasRenderedCameraVideoFrame,
-		hasVideo,
-		identity,
-		isCameraActive,
-		isCameraPublicationActive,
-		isCameraBuffering,
-		isCameraTile,
-		isNativeEngine,
-		isParticipantCameraActive,
-		isLocalCameraRequested,
-		isOwnCameraHidden,
-		isOwnContent,
-		nativeParticipantSid,
-		nativeVideoSource,
-		nativeVideoTrack?.height,
-		nativeVideoTrack?.trackSid,
-		nativeVideoTrack?.width,
-	]);
 	const cameraBufferingLabel = i18n._(CAMERA_BUFFERING_DESCRIPTOR);
 	const screenShareBufferingLabel = i18n._(STREAM_BUFFERING_DESCRIPTOR);
 	const watchFailedTitle = i18n._(WATCHING_FAILED_DESCRIPTOR);
@@ -705,7 +632,7 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 	const participantDisplayName =
 		(participantUser ? NicknameUtils.getNickname(participantUser, guildId, channelId) : participant.name) ||
 		i18n._(UNKNOWN_USER_DESCRIPTOR);
-	const showStreamAudioControls = isScreenShare && !isOwnScreenShare && isWatching;
+	const showStreamAudioControls = isScreenShare && !isOwnScreenShare && isWatching && hasScreenShareAudio;
 	const viewerStreamCount = graphViewerStreamKeys.length;
 	const addStreamTooltipText = plural(
 		{count: viewerStreamCount},
@@ -714,44 +641,93 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 			other: 'Keep watching # streams and add this one',
 		},
 	);
+	const participantMenuSource = useMemo<VoiceParticipantMenuSource>(() => {
+		if (!isScreenShare) {
+			return isCameraTile && isCameraActive ? {kind: 'camera'} : {kind: 'participant'};
+		}
+		if (isOwnScreenShare) {
+			return {kind: 'screen-share', streamKey, state: {kind: 'own'}};
+		}
+		if (isWatching) {
+			return {
+				kind: 'screen-share',
+				streamKey,
+				state: {kind: 'remote-watched', hasAudio: hasScreenShareAudio, onStopWatching: stopWatching},
+			};
+		}
+		return {
+			kind: 'screen-share',
+			streamKey,
+			state: {
+				kind: 'remote-unwatched',
+				onWatch: () => {
+					startWatching();
+					VoiceCallLayoutCommands.setPinnedParticipant(identity, VoiceTrackSource.ScreenShare);
+				},
+			},
+		};
+	}, [
+		hasScreenShareAudio,
+		identity,
+		isCameraActive,
+		isCameraTile,
+		isOwnScreenShare,
+		isScreenShare,
+		isWatching,
+		startWatching,
+		stopWatching,
+		streamKey,
+	]);
+	const privateCallChannel = channelId ? Channels.getChannel(channelId) : null;
+	const usePrivateCallCameraMenu = participantMenuSource.kind === 'camera' && Boolean(privateCallChannel?.isPrivate());
+	const isGroupedParticipantItem =
+		isCurrentUser && participantUser !== undefined && hasMultipleConnectionsForCurrentUser(guildId, participantUser.id);
 	const handleContextMenu = useCallback(
 		(event: React.MouseEvent | MouseEvent) => {
 			if (!participantUser) return;
-			const isGroupedItem = isCurrentUser && hasMultipleConnectionsForCurrentUser(guildId, participantUser.id);
-			ContextMenuCommands.openFromEvent(event, ({onClose}) => (
-				<VoiceParticipantContextMenu
-					user={participantUser}
-					participantName={participantDisplayName}
-					onClose={onClose}
-					guildId={guildId}
-					connectionId={connectionId}
-					isGroupedItem={isGroupedItem}
-					streamKey={streamKey}
-					isScreenShare={isScreenShare}
-					isWatching={isWatching}
-					hasScreenShareAudio={hasScreenShareAudio}
-					isOwnScreenShare={isOwnScreenShare}
-					onStopWatching={stopWatching}
-					hiddenConnectionCount={groupHiddenCount}
-					deviceConnectionCount={groupDeviceConnectionCount}
-					isDeviceGroupExpanded={tileGroup?.isExpanded ?? false}
-					onToggleDeviceGroup={tileGroup?.onExpand}
-					data-flx="voice.voice-participant-tile.handle-context-menu.voice-participant-context-menu"
-				/>
-			));
+			ContextMenuCommands.openFromEvent(event, ({onClose}) =>
+				usePrivateCallCameraMenu && channelId ? (
+					<UserContextMenu
+						user={participantUser}
+						onClose={onClose}
+						channelId={channelId}
+						isCallContext
+						privateCallContext={{
+							connectionId,
+							isConnected: true,
+							participantName: participantDisplayName,
+							visualSource: 'camera',
+						}}
+						data-flx="voice.voice-participant-tile.handle-context-menu.user-context-menu"
+					/>
+				) : (
+					<VoiceParticipantContextMenu
+						user={participantUser}
+						participantName={participantDisplayName}
+						onClose={onClose}
+						guildId={guildId}
+						connectionId={connectionId}
+						surface="call-tile"
+						source={participantMenuSource}
+						isGroupedItem={isGroupedParticipantItem}
+						hiddenConnectionCount={groupHiddenCount}
+						deviceConnectionCount={groupDeviceConnectionCount}
+						isDeviceGroupExpanded={tileGroup?.isExpanded ?? false}
+						onToggleDeviceGroup={tileGroup?.onExpand}
+						data-flx="voice.voice-participant-tile.handle-context-menu.voice-participant-context-menu"
+					/>
+				),
+			);
 		},
 		[
 			participantUser,
 			participantDisplayName,
 			guildId,
 			connectionId,
-			isCurrentUser,
-			streamKey,
-			isScreenShare,
-			isWatching,
-			hasScreenShareAudio,
-			isOwnScreenShare,
-			stopWatching,
+			isGroupedParticipantItem,
+			participantMenuSource,
+			usePrivateCallCameraMenu,
+			channelId,
 			groupHiddenCount,
 			groupDeviceConnectionCount,
 			tileGroup,
@@ -854,10 +830,7 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		videoRef,
 	});
 	const hasVisibleMediaTile =
-		!isFocusedPlaceholderTile &&
-		(isNativeEngine ? hasVideo : isTrackReference(trackRef)) &&
-		hasVideo &&
-		!shouldHideOwnScreenShareVideo;
+		!isFocusedPlaceholderTile && isTrackReference(trackRef) && hasVideo && !shouldHideOwnScreenShareVideo;
 	const isAvatarOnlyTile = !hasVisibleMediaTile && !isScreenShare;
 	const shouldShowTileSpeakingIndicator =
 		!isFocusedPlaceholderTile && isActuallySpeaking && !isScreenShare && !isAvatarOnlyTile;
@@ -895,17 +868,6 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 					participantUser={participantUser}
 					style={focusedCameraPlaceholderStyle}
 					data-flx="voice.voice-participant-tile.media-node.focused-camera-placeholder"
-				/>
-			);
-		}
-		if (isNativeEngine && hasVideo && nativeVideoSource != null && !shouldHideOwnScreenShareVideo) {
-			return (
-				<NativeParticipantVideo
-					ref={videoRef}
-					participantSid={nativeParticipantSid}
-					participantIdentity={identity}
-					source={nativeVideoSource}
-					data-flx="voice.voice-participant-tile.media-node.native-participant-video"
 				/>
 			);
 		}
@@ -977,6 +939,7 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 						<Avatar
 							user={participantUser}
 							size={TILE_AVATAR_BASE}
+							mediaSize={TILE_AVATAR_MEDIA_SIZE}
 							className={styles.avatarFlexShrink}
 							style={TILE_AVATAR_STYLE}
 							guildId={guildId}
@@ -993,10 +956,8 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 		hasVideo,
 		isActuallySpeaking,
 		isFocusedPlaceholderTile,
-		isNativeEngine,
 		isOwnScreenShare,
 		isScreenShare,
-		nativeParticipantSid,
 		participantUser,
 		placeholderStyle,
 		previewUrl,
@@ -1258,6 +1219,7 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 										<MediaVerticalVolumeControl
 											volume={streamVolume / 100}
 											isMuted={isStreamMuted}
+											maxVolume={VOICE_VOLUME_MAX_SLIDER_VOLUME}
 											onVolumeChange={handleStreamVolumeChange}
 											onToggleMute={handleStreamAudioToggle}
 											iconSize={14}
@@ -1332,6 +1294,26 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 												{groupHiddenCount}
 											</div>
 										</FocusRing>
+									</Tooltip>
+								)}
+								{isOwnScreenShare && viewerUsers.length > 0 && streamUnderperformanceReason && (
+									<Tooltip
+										text={getStreamUnderperformanceLabel(i18n, streamUnderperformanceReason)}
+										position="top"
+										data-flx="voice.voice-participant-tile.voice-participant-tile-inner.tooltip"
+									>
+										<div
+											className={clsx(voiceCallStyles.tileControlPillSlot, styles.streamUnderperformanceSlot)}
+											role="img"
+											aria-label={i18n._(STREAM_NOT_KEEPING_UP_DESCRIPTOR)}
+											data-flx="voice.voice-participant-tile.voice-participant-tile-inner.stream-underperformance-slot"
+										>
+											<WarningIcon
+												weight="fill"
+												className={styles.tilePillIcon}
+												data-flx="voice.voice-participant-tile.voice-participant-tile-inner.tile-pill-icon"
+											/>
+										</div>
 									</Tooltip>
 								)}
 								{isScreenShare && viewerUsers.length > 0 && (
@@ -1499,13 +1481,9 @@ const VoiceParticipantTileInner = observer(function VoiceParticipantTileInner({
 					participant={connectionParticipant}
 					guildId={guildId}
 					connectionId={connectionId}
-					isConnectionItem
-					streamKey={streamKey}
-					isScreenShare={isScreenShare}
-					isWatching={isWatching}
-					hasScreenShareAudio={hasScreenShareAudio}
-					isOwnScreenShare={isOwnScreenShare}
-					onStopWatching={stopWatching}
+					surface="call-tile"
+					source={participantMenuSource}
+					isConnectionItem={isGroupedParticipantItem}
 					data-flx="voice.voice-participant-tile.voice-participant-tile-inner.voice-participant-bottom-sheet"
 				/>
 			)}

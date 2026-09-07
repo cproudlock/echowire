@@ -61,11 +61,13 @@ import {cleanupVirtmic, registerVirtmicHandlers} from '@electron/main/LinuxAudio
 import {initializeMainI18n} from '@electron/main/MainI18n';
 import {createApplicationMenu} from '@electron/main/Menu';
 import {cleanupNativeAudio, registerNativeAudioHandlers} from '@electron/main/NativeAudio';
+import {
+	cleanupNativeHardwareEncoderHandlers,
+	registerNativeHardwareEncoderHandlers,
+} from '@electron/main/NativeHardwareEncoder';
 import {runNativeModulePreflight} from '@electron/main/NativeModulePreflight';
 import {cleanupNativeScreenCapture, registerNativeScreenCaptureHandlers} from '@electron/main/NativeScreenCapture';
-import {cleanupNativeVoiceEngine, registerNativeVoiceEngineHandlers} from '@electron/main/NativeVoiceEngine';
 import {appendOpenH264Switches} from '@electron/main/OpenH264Manager';
-import {startRpcServer, stopRpcServer} from '@electron/main/RpcServer';
 import {cleanupLinuxChromiumSpellcheckDictionaries} from '@electron/main/Spellcheck';
 import {registerUpdater} from '@electron/main/Updater';
 import {
@@ -76,7 +78,7 @@ import {
 	setQuitting,
 	showWindow,
 } from '@electron/main/Window';
-import {initializeWindowsVulkanGameCaptureLayer} from '@electron/main/WindowsVulkanGameCaptureLayer';
+import {removeFluxerVulkanLayerRegistrations} from '@electron/main/WindowsVulkanLayerCleanup';
 import {app, dialog, netLog} from 'electron';
 import log from 'electron-log';
 
@@ -152,7 +154,7 @@ try {
 }
 
 if (launchConfigurationError) {
-	console.error(`Fluxer desktop launch configuration error: ${launchConfigurationError.message}`);
+	console.error(`Echowire desktop launch configuration error: ${launchConfigurationError.message}`);
 	log.error('Launch configuration error:', launchConfigurationError);
 	app.exit(1);
 } else if (hasDesktopDebugInfoArg(process.argv)) {
@@ -166,7 +168,7 @@ if (launchConfigurationError) {
 		.catch((error: unknown) => {
 			const message = error instanceof Error ? error.message : String(error);
 			log.error('Failed to collect desktop debug info:', error);
-			writeCliAndExit(process.stderr, `Failed to collect Fluxer desktop debug info: ${message}`, 1);
+			writeCliAndExit(process.stderr, `Failed to collect Echowire desktop debug info: ${message}`, 1);
 		});
 } else {
 	if (shouldResetWindowStateOnLaunch(process.argv)) {
@@ -243,7 +245,7 @@ if (launchConfigurationError) {
 		log.error('[NativeModulePreflight] Fatal native module preflight failure:', error);
 		console.error(message);
 		try {
-			dialog.showErrorBox('Fluxer failed to start', message);
+			dialog.showErrorBox('Echowire failed to start', message);
 		} catch {}
 		app.exit(1);
 		process.exit(1);
@@ -311,6 +313,15 @@ if (launchConfigurationError) {
 			.then(() => app.whenReady())
 			.then(async () => {
 				log.info('App ready, initializing...');
+				runStartupPhase('user-agent-tag', () => {
+					// Echowire: append `EchowireApp` to the UA so Cloudflare's skip rule
+					// (http.user_agent contains "EchowireApp") matches the desktop wrapper.
+					// Without it, CF fires an interactive bot challenge that renders blank
+					// inside Electron and traps the user. Mirrors the old fork + the iOS
+					// WKWebView wrapper. Set as the global fallback so every window/session
+					// (initial load + IpcHandlers instance switch) carries it.
+					app.userAgentFallback = `${app.userAgentFallback} EchowireApp/${app.getVersion()}`;
+				});
 				await runStartupPhaseAsync('launch-net-log', startLaunchNetLog);
 				try {
 					await runStartupPhaseAsync('desktop-debug-info', async () => {
@@ -376,9 +387,9 @@ if (launchConfigurationError) {
 					log.error('[Init] Failed to register native audio handlers:', error);
 				}
 				try {
-					runStartupPhase('vulkan-game-capture-layer', initializeWindowsVulkanGameCaptureLayer);
+					runStartupPhase('vulkan-layer-cleanup', removeFluxerVulkanLayerRegistrations);
 				} catch (error: unknown) {
-					log.error('[Init] Failed to initialize Vulkan game capture layer:', error);
+					log.error('[Init] Failed to remove stale Vulkan layer registrations:', error);
 				}
 				try {
 					runStartupPhase('native-screen-capture-handlers', registerNativeScreenCaptureHandlers);
@@ -386,9 +397,9 @@ if (launchConfigurationError) {
 					log.error('[Init] Failed to register native screen capture handlers:', error);
 				}
 				try {
-					runStartupPhase('native-voice-engine-handlers', registerNativeVoiceEngineHandlers);
+					runStartupPhase('native-hardware-encoder-handlers', registerNativeHardwareEncoderHandlers);
 				} catch (error: unknown) {
-					log.error('[Init] Failed to register native voice engine handlers:', error);
+					log.error('[Init] Failed to register native hardware encoder handlers:', error);
 				}
 				try {
 					runStartupPhase('application-menu', createApplicationMenu);
@@ -426,9 +437,6 @@ if (launchConfigurationError) {
 					} else {
 						showWindow();
 					}
-				});
-				void startRpcServer().catch((error: unknown) => {
-					log.error('[RPC] Failed to start RPC server:', error);
 				});
 				log.info('App initialized successfully');
 			})
@@ -472,9 +480,10 @@ if (launchConfigurationError) {
 			cleanupGlobalKeyHook();
 			cleanupNativeAudio();
 			cleanupNativeScreenCapture();
+			cleanupNativeHardwareEncoderHandlers();
 			cleanupVirtmic();
 			destroyDesktopTray();
-			const asyncCleanups: Array<Promise<unknown>> = [cleanupNativeVoiceEngine(), stopRpcServer()];
+			const asyncCleanups: Array<Promise<unknown>> = [];
 			if (netLog.currentlyLogging) {
 				asyncCleanups.push(
 					netLog.stopLogging().catch((error) => {

@@ -103,6 +103,7 @@ pub fn instance_config_page(
                             instance_config.self_hosted,
                         ))
                         (sso_config_section(base, csrf_token, &instance_config.sso))
+                        (deferred_phone_gate_form(base, csrf_token, &instance_config.policy))
                     },
                 ))
                 @if instance_config.self_hosted {
@@ -208,18 +209,14 @@ fn single_community_form(base: &str, csrf_token: &str, policy: &InstancePolicyRe
             div class="flex flex-wrap items-center gap-2" {
                 h3 class="text-sm font-semibold text-neutral-900" { "Single community" }
                 (badge(status.0, status.1))
-                @if policy.single_community_locked {
-                    (badge("Locked", BadgeVariant::Warning))
-                }
             }
             @if let Some(guild_id) = policy.single_community_guild_id.as_deref() {
                 p class="break-all text-xs text-neutral-500" { "Community guild ID: " (guild_id) }
             }
-            @if policy.single_community_enabled && !policy.single_community_locked {
+            @if policy.single_community_enabled {
                 p class="text-sm text-neutral-500" {
-                    "This instance funnels every member into a single community. Disabling it is \
-                     permanent: single-community mode can only be enabled again from the \
-                     self-host setup wizard, never from this panel."
+                    "This instance funnels every member into a single community. You can turn this \
+                     off and on again from here. The community itself is kept either way."
                 }
                 form method="post" action={(base) "/instance-config?action=disable_single_community"} {
                     (csrf_input(csrf_token))
@@ -227,15 +224,21 @@ fn single_community_form(base: &str, csrf_token: &str, policy: &InstancePolicyRe
                         (danger_button("Disable single-community mode"))
                     }))
                 }
-            } @else if policy.single_community_enabled {
+            } @else if policy.single_community_guild_id.is_some() {
                 p class="text-sm text-neutral-500" {
-                    "Single-community mode is enabled and locked for this instance. It cannot be \
-                     changed from the admin panel."
+                    "Single-community mode is off. Turning it on again reuses the community above \
+                     if it still exists, otherwise a new one is created."
+                }
+                form method="post" action={(base) "/instance-config?action=enable_single_community"} {
+                    (csrf_input(csrf_token))
+                    (form_actions(html! {
+                        (submit_button("Enable single-community mode"))
+                    }))
                 }
             } @else {
                 p class="text-sm text-neutral-500" {
-                    "Single-community mode is off. It can only be turned on from the self-host \
-                     setup wizard, not from this panel."
+                    "Single-community mode is off. It can only be turned on for the first time \
+                     from the self-host setup wizard."
                 }
             }
         }
@@ -281,6 +284,57 @@ fn direct_messages_form(base: &str, csrf_token: &str, policy: &InstancePolicyRes
     }
 }
 
+fn deferred_phone_gate_form(
+    base: &str,
+    csrf_token: &str,
+    policy: &InstancePolicyResponse,
+) -> Markup {
+    let gate = &policy.deferred_phone_gate;
+    let status = if gate.enabled {
+        ("Enabled", BadgeVariant::Success)
+    } else {
+        ("Disabled", BadgeVariant::Default)
+    };
+    html! {
+        div class="space-y-4 border-t border-neutral-200 pt-6" {
+            div class="flex flex-wrap items-center gap-2" {
+                h3 class="text-sm font-semibold text-neutral-900" { "Deferred phone verification" }
+                (badge(status.0, status.1))
+            }
+            p class="text-sm text-neutral-500" {
+                "When enabled, a phone requirement raised at registration is held back and only \
+                 applied if the account joins a discoverable community, or one above the member \
+                 threshold, within the window. Accounts that wait out the window are not challenged. \
+                 Inbound-SMS requirements are never deferred."
+            }
+            form method="post" action={(base) "/instance-config?action=update_policy"} {
+                (csrf_input(csrf_token))
+                div class="space-y-4" {
+                    (select_input("policy_deferred_phone_gate_enabled", "Deferred phone verification", &[
+                        ("true", "Enabled"),
+                        ("false", "Disabled"),
+                    ], if gate.enabled { "true" } else { "false" }))
+                    (text_input(
+                        "policy_deferred_phone_gate_window_hours",
+                        "Window (hours)",
+                        &gate.window_hours.to_string(),
+                        "6",
+                    ))
+                    (text_input(
+                        "policy_deferred_phone_gate_member_threshold",
+                        "Member threshold",
+                        &gate.member_threshold.to_string(),
+                        "50",
+                    ))
+                    (form_actions(html! {
+                        (submit_button("Save deferred phone verification"))
+                    }))
+                }
+            }
+        }
+    }
+}
+
 fn premium_mode_form(base: &str, csrf_token: &str, policy: &InstancePolicyResponse) -> Markup {
     html! {
         div class="space-y-4 border-t border-neutral-200 pt-6" {
@@ -290,7 +344,7 @@ fn premium_mode_form(base: &str, csrf_token: &str, policy: &InstancePolicyRespon
                 div class="space-y-4" {
                     (select_input("policy_premium_mode", "Premium model", &[
                         ("mirror", "Mirror (Free and Premium tiers)"),
-                        ("everyone", "Everyone (every member gets Plutonium limits)"),
+                        ("everyone", "Everyone (every member gets Reverb limits)"),
                     ], policy.premium_mode.as_str()))
                     (form_actions(html! {
                         (submit_button("Save premium model"))
@@ -408,11 +462,6 @@ fn integrations_config_section(
     csrf_token: &str,
     integrations: &InstanceIntegrationsResponse,
 ) -> Markup {
-    let gif_provider = integrations
-        .gif
-        .provider
-        .as_deref()
-        .unwrap_or(integrations.gif.effective_provider.as_str());
     let captcha_provider = integrations
         .captcha
         .provider
@@ -435,15 +484,9 @@ fn integrations_config_section(
                         div class="flex flex-wrap items-center gap-2" {
                             h3 class="text-sm font-semibold text-neutral-900" { "GIF provider" }
                             (secret_badge("KLIPY key", integrations.gif.klipy_api_key_set))
-                            (secret_badge("Tenor key", integrations.gif.tenor_api_key_set))
                         }
-                        div class="grid grid-cols-1 gap-4 sm:grid-cols-3" {
-                            (select_input("integration_gif_provider", "Provider", &[
-                                ("klipy", "KLIPY"),
-                                ("tenor", "Tenor"),
-                            ], gif_provider))
+                        div class="grid grid-cols-1 gap-4" {
                             (password_input("integration_klipy_api_key", "KLIPY API key", Some("Leave blank to keep the current key.")))
-                            (password_input("integration_tenor_api_key", "Tenor API key", Some("Leave blank to keep the current key.")))
                         }
                     }
 
@@ -492,6 +535,11 @@ fn integrations_config_section(
                             } @else {
                                 (badge("Effective: disabled", BadgeVariant::Default))
                             }
+                            @if integrations.email.effective_disable_new_ip_authorization {
+                                (badge("IP auth disabled", BadgeVariant::Warning))
+                            } @else {
+                                (badge("IP auth required", BadgeVariant::Default))
+                            }
                             (secret_badge("SMTP password", integrations.email.smtp.password_set))
                         }
                         (checkbox("integration_email_enabled", "true", "Enable email delivery", integrations.email.effective_enabled, true))
@@ -506,7 +554,7 @@ fn integrations_config_section(
                                 "integration_email_from_name",
                                 "From name",
                                 integrations.email.from_name.as_deref().unwrap_or(""),
-                                "Fluxer",
+                                "Echowire",
                             ))
                             (text_input(
                                 "integration_smtp_host",
@@ -529,6 +577,7 @@ fn integrations_config_section(
                             (password_input("integration_smtp_password", "SMTP password", Some("Leave blank to keep the current password.")))
                         }
                         (checkbox("integration_smtp_secure", "true", "Use TLS", integrations.email.smtp.secure.unwrap_or(true), true))
+                        (checkbox("integration_email_disable_new_ip_authorization", "true", "Disable new IP login authorisation", integrations.email.disable_new_ip_authorization, true))
                         div class="flex flex-wrap gap-2" {
                             button type="submit"
                                 formaction={(base) "/instance-config?action=test_smtp"}
@@ -554,7 +603,7 @@ fn integrations_config_section(
                                 "integration_bluesky_client_name",
                                 "Client name",
                                 integrations.bluesky.client_name.as_deref().unwrap_or(""),
-                                "Fluxer",
+                                "Echowire",
                             ))
                             (text_input(
                                 "integration_bluesky_client_uri",
@@ -744,7 +793,7 @@ fn app_public_config_section(
                                 "app_product_name",
                                 "Product Name",
                                 &app_public.branding.product_name,
-                                "Fluxer",
+                                "Echowire",
                             ))
                             (text_input(
                                 "app_theme_color",

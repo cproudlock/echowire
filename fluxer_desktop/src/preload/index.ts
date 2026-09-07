@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {BUILD_CHANNEL} from '@electron/common/BuildChannel';
-import {DESKTOP_BUILD_VARIANT} from '@electron/common/BuildVariant';
 import type {
 	AppMetricsSnapshot,
 	ClipboardWriteFileOptions,
@@ -50,7 +49,6 @@ import type {
 	SpellcheckState,
 	StreamerModeCaptureAppStatus,
 	StreamingPriorityDiagnostics,
-	SwitchInstanceUrlOptions,
 	TextareaContextMenuParams,
 	TrayActionPayload,
 	TrayRuntimeStatePayload,
@@ -62,15 +60,9 @@ import type {
 	VirtmicRoutingGraphResult,
 	VirtmicSystemLinkOptions,
 } from '@electron/common/Types';
-import type {
-	VoiceEngineV2BridgeApi,
-	VoiceEngineV2BridgeEvent,
-	VoiceEngineV2BridgeVideoFrame,
-} from '@fluxer/voice_engine_v2/bridge';
 import {
-	VOICE_ENGINE_V2_BRIDGE_VERSION,
-	VOICE_ENGINE_V2_EVENT_CHANNELS,
-	VOICE_ENGINE_V2_IPC_CHANNELS,
+	VOICE_ENGINE_V2_HARDWARE_ENCODER_IPC_CHANNEL,
+	type VoiceEngineV2BridgeHardwareEncoderApi,
 } from '@fluxer/voice_engine_v2/bridge';
 import type {
 	AuthenticationResponseJSON,
@@ -87,6 +79,7 @@ const ACTIVE_USE_NATIVE_TITLEBAR_RENDERER_ARG = '--fluxer-active-use-native-titl
 const CUSTOM_TITLEBAR_HEIGHT = '32px';
 const NATIVE_TITLEBAR_HEIGHT = '0px';
 const STARTUP_NATIVE_TITLEBAR_ID = 'fluxer-startup-native-titlebar';
+const THEME_STUDIO_STANDALONE_PATHNAME = '/theme-studio';
 const ZOOM_LEVEL_MIN = 0.5;
 const ZOOM_LEVEL_MAX = 2.0;
 
@@ -137,18 +130,6 @@ function validateNativeScreenCaptureLifecycleMessage(value: unknown): NativeScre
 	return source === undefined
 		? {captureId, kind: kind as NativeScreenCaptureLifecycleEventKind, message}
 		: {captureId, kind: kind as NativeScreenCaptureLifecycleEventKind, message, source};
-}
-
-interface VoiceEngineV2BridgeVideoFrameWire {
-	meta: VoiceEngineV2BridgeVideoFrame['meta'];
-	data: Uint8Array<ArrayBuffer>;
-}
-
-function videoFrameWireDataToArrayBuffer(data: Uint8Array<ArrayBuffer>): ArrayBuffer {
-	if (data.byteOffset === 0 && data.byteLength === data.buffer.byteLength) {
-		return data.buffer;
-	}
-	return data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
 }
 
 function clampZoomLevel(level: number): number {
@@ -300,7 +281,7 @@ function getStartupPlatformClass(): string {
 }
 
 function installStartupNativeTitlebar(activeUseNativeTitleBar: boolean): void {
-	if (process.platform === 'darwin' || activeUseNativeTitleBar) return;
+	if (activeUseNativeTitleBar || window.location.pathname === THEME_STUDIO_STANDALONE_PATHNAME) return;
 	const install = (): void => {
 		if (!document.body || document.getElementById(STARTUP_NATIVE_TITLEBAR_ID)) return;
 		const titlebar = document.createElement('div');
@@ -356,7 +337,6 @@ applyStartupAccessibilitySettings();
 const api: ElectronAPI = {
 	platform: process.platform,
 	buildChannel: BUILD_CHANNEL,
-	buildVariant: DESKTOP_BUILD_VARIANT,
 	getDesktopInfo: (): Promise<DesktopInfo> => ipcRenderer.invoke('get-desktop-info'),
 	getGpuInfo: (): Promise<GpuInfo> => ipcRenderer.invoke('get-gpu-info'),
 	getAppMetrics: (): Promise<AppMetricsSnapshot> => ipcRenderer.invoke('get-app-metrics'),
@@ -377,7 +357,6 @@ const api: ElectronAPI = {
 	clearThemeLocalFiles: () => ipcRenderer.invoke('theme-local-files-clear'),
 	importThemeDirectory: () => ipcRenderer.invoke('theme-directory-import'),
 	cacheVoiceBackgroundMedia: (options) => ipcRenderer.invoke('voice-background-media-cache:write', options),
-	resolveVoiceBackgroundMedia: (id) => ipcRenderer.invoke('voice-background-media-cache:resolve', id),
 	readVoiceBackgroundMedia: (id) => ipcRenderer.invoke('voice-background-media-cache:read', id),
 	deleteVoiceBackgroundMedia: (id) => ipcRenderer.invoke('voice-background-media-cache:delete', id),
 	getDesktopTroubleshootingSettings: (): Promise<DesktopTroubleshootingSettings> =>
@@ -446,15 +425,6 @@ const api: ElectronAPI = {
 		};
 	},
 	getInitialDeepLink: (): Promise<string | null> => ipcRenderer.invoke('get-initial-deep-link'),
-	onRpcNavigate: (callback: (path: string) => void): (() => void) => {
-		const handler = (_event: Electron.IpcRendererEvent, path: string): void => {
-			callback(path);
-		};
-		ipcRenderer.on('rpc-navigate', handler);
-		return () => {
-			ipcRenderer.removeListener('rpc-navigate', handler);
-		};
-	},
 	autostartEnable: (): Promise<void> => ipcRenderer.invoke('autostart-enable'),
 	autostartDisable: (): Promise<void> => ipcRenderer.invoke('autostart-disable'),
 	autostartIsEnabled: (): Promise<boolean> => ipcRenderer.invoke('autostart-is-enabled'),
@@ -485,9 +455,6 @@ const api: ElectronAPI = {
 		options: PublicKeyCredentialCreationOptionsJSON,
 		requestContext?: {pin?: string},
 	): Promise<RegistrationResponseJSON> => ipcRenderer.invoke('passkey-register', options, requestContext),
-	switchInstanceUrl: (options: SwitchInstanceUrlOptions): Promise<void> =>
-		ipcRenderer.invoke('switch-instance-url', options),
-	consumeDesktopHandoffCode: (): Promise<string | null> => ipcRenderer.invoke('consume-desktop-handoff-code'),
 	toggleDevTools: (): void => {
 		ipcRenderer.send('toggle-devtools');
 	},
@@ -717,6 +684,8 @@ const api: ElectronAPI = {
 			ipcRenderer.invoke('native-audio:resolve-root-pid', sourceId),
 		start: (options: NativeAudioStartOptions): Promise<NativeAudioStartResult> =>
 			ipcRenderer.invoke('native-audio:start', options),
+		setRule: (captureId: string, linuxRule: NonNullable<NativeAudioStartOptions['linuxRule']>): Promise<boolean> =>
+			ipcRenderer.invoke('native-audio:set-rule', captureId, linuxRule),
 		stop: (captureId: string): Promise<void> => ipcRenderer.invoke('native-audio:stop', captureId),
 		getRoutingGraph: (captureId?: string): Promise<NativeAudioRoutingGraphResult> =>
 			ipcRenderer.invoke('native-audio:get-routing-graph', captureId),
@@ -763,71 +732,8 @@ const api: ElectronAPI = {
 		},
 	},
 	voiceEngine: {
-		bridgeVersion: VOICE_ENGINE_V2_BRIDGE_VERSION,
-		isSupported: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.isSupported),
-		getCapabilities: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.getCapabilities),
-		prewarm: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.prewarm),
-		getHardwareEncoderCapabilities: () =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.getHardwareEncoderCapabilities),
-		connect: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.connect, options),
-		disconnect: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.disconnect),
-		isConnected: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.isConnected),
-		publishMicrophone: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishMicrophone, options),
-		pushPcm: (frame) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.pushPcm, frame),
-		publishScreen: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishScreen, options),
-		updateScreenShareEncoding: (options) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.updateScreenShareEncoding, options),
-		unpublishScreen: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.unpublishScreen),
-		publishScreenAudio: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishScreenAudio, options),
-		pushScreenAudioPcm: (frame) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.pushScreenAudioPcm, frame),
-		pushScreenAudioFloat: (frame) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.pushScreenAudioFloat, frame),
-		unpublishScreenAudio: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.unpublishScreenAudio),
-		setMicEnabled: (enabled) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.setMicEnabled, enabled),
-		setSpeakingDetection: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.setSpeakingDetection, options),
-		listAudioInputDevices: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.listAudioInputDevices),
-		listAudioOutputDevices: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.listAudioOutputDevices),
-		setAudioOutputDevice: (deviceId) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.setAudioOutputDevice, deviceId),
-		setParticipantVolume: (participantSid, volume) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.setParticipantVolume, {participantSid, volume}),
-		setRemoteTrackSubscription: (options) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.setRemoteTrackSubscription, options),
-		publishData: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishData, options),
-		listCameraDevices: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.listCameraDevices),
-		publishCamera: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishCamera, options),
-		publishNativeCameraSink: (options) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishNativeCameraSink, options),
-		publishProcessedCamera: (options) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishProcessedCamera, options),
-		pushProcessedCameraFrame: (frame) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.pushProcessedCameraFrame, frame),
-		pushCameraBackgroundFrame: (frame) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.pushCameraBackgroundFrame, frame),
-		clearCameraBackgroundFrame: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.clearCameraBackgroundFrame),
-		updateCameraCapture: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.updateCameraCapture, options),
-		publishDeviceScreenShare: (options) =>
-			ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.publishDeviceScreenShare, options),
-		unpublishCamera: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.unpublishCamera),
-		isPublishingCamera: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.isPublishingCamera),
-		startCameraPreview: (options) => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.startCameraPreview, options),
-		stopCameraPreview: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.stopCameraPreview),
-		getConnectionStats: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.getConnectionStats),
-		getVoiceEngineReadiness: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.getVoiceEngineReadiness),
-		getAudioDeviceModuleState: () => ipcRenderer.invoke(VOICE_ENGINE_V2_IPC_CHANNELS.getAudioDeviceModuleState),
-		onEvent: (callback) => {
-			const handler = (_event: Electron.IpcRendererEvent, payload: VoiceEngineV2BridgeEvent): void => {
-				callback(payload);
-			};
-			ipcRenderer.on(VOICE_ENGINE_V2_EVENT_CHANNELS.event, handler);
-			return () => ipcRenderer.removeListener(VOICE_ENGINE_V2_EVENT_CHANNELS.event, handler);
-		},
-		onVideoFrame: (callback) => {
-			const handler = (_event: Electron.IpcRendererEvent, payload: VoiceEngineV2BridgeVideoFrameWire): void => {
-				callback({meta: payload.meta, data: videoFrameWireDataToArrayBuffer(payload.data)});
-			};
-			ipcRenderer.on(VOICE_ENGINE_V2_EVENT_CHANNELS.videoFrame, handler);
-			return () => ipcRenderer.removeListener(VOICE_ENGINE_V2_EVENT_CHANNELS.videoFrame, handler);
-		},
-	} satisfies VoiceEngineV2BridgeApi,
+		getHardwareEncoderCapabilities: () => ipcRenderer.invoke(VOICE_ENGINE_V2_HARDWARE_ENCODER_IPC_CHANNEL),
+	} satisfies VoiceEngineV2BridgeHardwareEncoderApi,
 };
 
 window.addEventListener(

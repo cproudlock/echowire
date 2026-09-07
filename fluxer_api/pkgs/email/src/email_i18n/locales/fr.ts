@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_FR_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_FR_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Ton compte {product_name} a été temporairement désactivé",
 		"body": "Bonjour {username},\n\nNous avons temporairement désactivé ton compte {product_name} car nous avons détecté une activité suspecte.\n\n{reason, select,\n  null {}\n  other {Raison : {reason}}\n}\n\nPour retrouver l'accès à ton compte, tu devras réinitialiser ton mot de passe :\n\n{forgotUrl}\n\nAprès avoir réinitialisé ton mot de passe, tu pourras te connecter à nouveau.\n\nSi tu penses qu'il s'agit d'une erreur, contacte notre équipe d'assistance.\n\n– Équipe de sécurité de {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_FR_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autoriser la connexion depuis une nouvelle adresse IP",
 		"body": "Bonjour {username},\n\nNous avons détecté une tentative de connexion à ton compte {product_name} depuis une nouvelle adresse IP :\n\nAdresse IP : {ipAddress}\nLocalisation : {location}\n\nSi c'était toi, autorise cette adresse IP en cliquant sur le lien ci-dessous :\n\n{authUrl}\n\nSi tu n'as pas tenté de te connecter, change ton mot de passe immédiatement.\n\nCe lien est valide pendant 30 minutes.\n\n– L'équipe {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Confirme l'accès à tes codes de secours {product_name}",
+		"body": "Bonjour {username},\n\nNous avons reçu une demande de consultation des codes de secours de ton compte {product_name}.\n\nPour confirmer cette demande, saisis ce code dans l'application :\n\n{code}\n\nCe code expire le {expiresAt, date, full} à {expiresAt, time, short}.\n\nSi tu n'as pas demandé cela, quelqu'un a peut-être eu accès à ton compte. Change ton mot de passe immédiatement.\n\n– L'équipe {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Confirme la modification de ton mot de passe {product_name}",

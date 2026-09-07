@@ -18,7 +18,7 @@ import {app, type BrowserWindow, clipboard, Menu, nativeImage, Tray} from 'elect
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const logger = createChildLogger('DesktopTray');
 const isCanary = BUILD_CHANNEL === 'canary';
-const APP_NAME = isCanary ? 'Fluxer Canary' : 'Fluxer';
+const APP_NAME = isCanary ? 'Echowire Canary' : 'Echowire';
 const ICON_DIR_NAME = isCanary ? 'icons-canary' : 'icons-stable';
 const TRAY_POSITION_GUID = isCanary ? '1a39981b-b4cc-46a4-8f7e-9fce187110f5' : '11c70c9f-a35d-4328-9040-f722dc5fa0a0';
 
@@ -61,8 +61,18 @@ export function updateTrayRuntimeState(update: Partial<TrayRuntimeStatePayload>,
 	if (webContentsId !== undefined) {
 		trayActionBridgeWebContentsId = webContentsId;
 	}
+	// Echowire: only rebuild the tray menu when a menu-relevant value actually
+	// changes. The renderer re-pushes the full tray state on a heartbeat; every
+	// field here is rendered in the menu, so an unconditional refresh rebuilt the
+	// context menu ~2x/sec. On Linux (AppIndicator) setContextMenu() closes an
+	// open menu, so the status submenu flickered shut before it could be clicked.
+	const menuChanged = (Object.keys(update) as Array<keyof TrayRuntimeStatePayload>).some(
+		(key) => trayState[key] !== update[key],
+	);
 	Object.assign(trayState, update);
-	refreshDesktopTrayMenu();
+	if (menuChanged) {
+		refreshDesktopTrayMenu();
+	}
 	schedulePendingTrayActionFlush();
 }
 
@@ -383,7 +393,9 @@ function buildTrayMenu(): Menu {
 			label: t('desktop.tray.copyBuildInfo'),
 			click: () => {
 				runTrayMenuAction(() => {
-					clipboard.writeText(trayState.buildInfo ?? '');
+					void clipboard.writeText(trayState.buildInfo ?? '').catch((error) => {
+						logger.error('Failed to copy build info to the clipboard', {error});
+					});
 				});
 			},
 		});

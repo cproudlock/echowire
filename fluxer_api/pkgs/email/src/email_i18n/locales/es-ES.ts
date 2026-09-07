@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_ES_ES_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_ES_ES_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Tu cuenta de {product_name} ha sido deshabilitada temporalmente",
 		"body": "Hola {username}:\n\nHemos deshabilitado temporalmente tu cuenta de {product_name} porque hemos detectado actividad sospechosa.\n\n{reason, select,\n  null {}\n  other {Motivo: {reason}}\n}\n\nPara recuperar el acceso a tu cuenta, tendrás que restablecer tu contraseña:\n\n{forgotUrl}\n\nDespués de restablecer tu contraseña, podrás iniciar sesión de nuevo.\n\nSi crees que esto ha sido un error, ponte en contacto con nuestro equipo de soporte.\n\n– Equipo de Seguridad de {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_ES_ES_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autorizar inicio de sesión desde una nueva dirección IP",
 		"body": "Hola {username}:\n\nHemos detectado un intento de inicio de sesión en tu cuenta de {product_name} desde una nueva IP:\n\nDirección IP: {ipAddress}\nUbicación: {location}\n\nSi fuiste tú, autoriza esta dirección IP haciendo clic en el siguiente enlace:\n\n{authUrl}\n\nSi no intentaste iniciar sesión, cambia tu contraseña de inmediato.\n\nEste enlace es válido durante 30 minutos.\n\n– Equipo de {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Confirma el acceso a tus códigos de respaldo de {product_name}",
+		"body": "Hola {username}:\n\nHemos recibido una solicitud para ver los códigos de respaldo de tu cuenta de {product_name}.\n\nPara confirmar esta solicitud, introduce este código en la aplicación:\n\n{code}\n\nEste código caduca el {expiresAt, date, full} a las {expiresAt, time, short}.\n\nSi no solicitaste esto, alguien podría tener acceso a tu cuenta. Cambia tu contraseña inmediatamente.\n\n– Equipo de {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Confirma tu cambio de contraseña en {product_name}",

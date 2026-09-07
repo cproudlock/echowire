@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_HR_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_HR_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Tvoj {product_name} račun je privremeno onemogućen",
 		"body": "Pozdrav {username},\n\nPrivremeno smo onemogućili tvoj {product_name} račun jer smo otkrili sumnjivu aktivnost.\n\n{reason, select,\n  null {}\n  other {Razlog: {reason}}\n}\n\nDa bi ponovno pristupio svom računu, morat ćeš poništiti lozinku:\n\n{forgotUrl}\n\nNakon što poništiš lozinku, moći ćeš se ponovno prijaviti.\n\nAko misliš da je ovo pogreška, kontaktiraj naš tim za podršku.\n\n– {product_name} Sigurnosni Tim"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_HR_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autoriziraj prijavu s nove IP adrese",
 		"body": "Pozdrav {username},\n\nOtkrili smo pokušaj prijave na tvoj {product_name} račun s nove IP adrese:\n\nIP adresa: {ipAddress}\nLokacija: {location}\n\nAko si to bio ti, potvrdi ovu IP adresu klikom na poveznicu ispod:\n\n{authUrl}\n\nAko se nisi ti pokušao prijaviti, odmah promijeni lozinku.\n\nOva poveznica vrijedi 30 minuta.\n\n– {product_name} Tim"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Potvrdi pristup svojim {product_name} rezervnim kodovima",
+		"body": "Pozdrav {username},\n\nPrimili smo zahtjev za prikaz rezervnih kodova na tvom {product_name} računu.\n\nDa bi potvrdio ovaj zahtjev, unesi ovaj kod u aplikaciju:\n\n{code}\n\nOvaj kod istječe {expiresAt, date, full} u {expiresAt, time, short}.\n\nAko ovo nisi zatražio, netko je možda dobio pristup tvom računu. Odmah promijeni lozinku.\n\n– {product_name} Tim"
 	},
 	"password_change_verification": {
 		"subject": "Potvrdi promjenu lozinke za {product_name}",

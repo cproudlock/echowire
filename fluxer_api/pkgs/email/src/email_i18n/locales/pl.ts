@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_PL_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_PL_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Twoje konto {product_name} zostało tymczasowo wyłączone",
 		"body": "Witaj {username},\n\nTymczasowo wyłączyliśmy Twoje konto {product_name}, ponieważ wykryliśmy podejrzaną aktywność.\n\n{reason, select,\n  null {}\n  other {Powód: {reason}}\n}\n\nAby odzyskać dostęp do konta, musisz zresetować hasło:\n\n{forgotUrl}\n\nPo zresetowaniu hasła będziesz mógł ponownie się zalogować.\n\nJeśli uważasz, że to błąd, skontaktuj się z naszym zespołem wsparcia.\n\n– Zespół Bezpieczeństwa {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_PL_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autoryzuj logowanie z nowego adresu IP",
 		"body": "Witaj {username},\n\nWykryliśmy próbę logowania do Twojego konta {product_name} z nowego adresu IP:\n\nAdres IP: {ipAddress}\nLokalizacja: {location}\n\nJeśli to Ty, autoryzuj ten adres IP, klikając poniższy link:\n\n{authUrl}\n\nJeśli nie próbowałeś się zalogować, natychmiast zmień hasło.\n\nTen link jest ważny przez 30 minut.\n\n– Zespół {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Potwierdź dostęp do kodów zapasowych w {product_name}",
+		"body": "Witaj {username},\n\nOtrzymaliśmy prośbę o wyświetlenie kodów zapasowych Twojego konta {product_name}.\n\nAby potwierdzić tę prośbę, wprowadź ten kod w aplikacji:\n\n{code}\n\nTen kod wygasa {expiresAt, date, full} o {expiresAt, time, short}.\n\nJeśli nie prosiłeś o to, ktoś może mieć dostęp do Twojego konta. Natychmiast zmień hasło.\n\n– Zespół {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Potwierdź zmianę hasła w {product_name}",

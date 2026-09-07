@@ -19,6 +19,56 @@ export interface PermissionOverwrite {
 	deny_: Nullish<bigint>;
 }
 
+// Echowire: forum channel tag (available_tags) + default reaction shapes.
+export interface ForumTag {
+	id: string;
+	name: string;
+	emoji_name: Nullish<string>;
+}
+export interface DefaultReactionEmoji {
+	emoji_id: Nullish<string>;
+	emoji_name: Nullish<string>;
+}
+
+// Echowire: spread into any non-thread / non-forum ChannelRow literal to satisfy the full-row-upsert
+// DSL (it requires every CHANNEL_COLUMNS key present). Covers both the thread_* fields and the forum
+// fields (available_tags/applied_tags/default_reaction_emoji/default_sort_order) so the common
+// channel-create sites stay terse; forum/thread sites override the relevant keys.
+export const NULL_THREAD_FIELDS = {
+	thread_archived: null,
+	thread_auto_archive_duration: null,
+	thread_archive_timestamp: null,
+	thread_locked: null,
+	thread_invitable: null,
+	thread_create_timestamp: null,
+	thread_member_count: null,
+	thread_message_count: null,
+	thread_pinned: null,
+	available_tags: null,
+	applied_tags: null,
+	default_reaction_emoji: null,
+	default_sort_order: null,
+	forum_default_auto_archive_duration: null,
+	forum_require_tag: null,
+} satisfies Pick<
+	ChannelRow,
+	| 'thread_archived'
+	| 'thread_auto_archive_duration'
+	| 'thread_archive_timestamp'
+	| 'thread_locked'
+	| 'thread_invitable'
+	| 'thread_create_timestamp'
+	| 'thread_member_count'
+	| 'thread_message_count'
+	| 'thread_pinned'
+	| 'available_tags'
+	| 'applied_tags'
+	| 'default_reaction_emoji'
+	| 'default_sort_order'
+	| 'forum_default_auto_archive_duration'
+	| 'forum_require_tag'
+>;
+
 export interface ChannelRow {
 	channel_id: ChannelID;
 	guild_id: Nullish<GuildID>;
@@ -43,6 +93,27 @@ export interface ChannelRow {
 	last_pin_timestamp: Nullish<Date>;
 	permission_overwrites: Nullish<Map<RoleID | UserID, PermissionOverwrite>>;
 	nicks: Nullish<Map<string, string>>;
+	// Echowire: thread fields (flat, like other Date/scalar columns so they round-trip through the KV layer).
+	// Present only when `type` is a thread; owner_id (above) is the thread creator. NON-optional Nullish so
+	// the full-row-upsert DSL (which requires every CHANNEL_COLUMNS key present) is satisfied at all sites.
+	thread_archived: Nullish<boolean>;
+	thread_auto_archive_duration: Nullish<number>;
+	thread_archive_timestamp: Nullish<Date>;
+	thread_locked: Nullish<boolean>;
+	thread_invitable: Nullish<boolean>;
+	thread_create_timestamp: Nullish<Date>;
+	thread_member_count: Nullish<number>;
+	thread_message_count: Nullish<number>;
+	thread_pinned: Nullish<boolean>;
+	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order are set on
+	// GUILD_FORUM channels; applied_tags is set on threads (forum posts). NON-optional Nullish so the
+	// full-row-upsert DSL is satisfied at every construction site.
+	available_tags: Nullish<Array<ForumTag>>;
+	applied_tags: Nullish<Array<string>>;
+	default_reaction_emoji: Nullish<DefaultReactionEmoji>;
+	default_sort_order: Nullish<number>;
+	forum_default_auto_archive_duration: Nullish<number>;
+	forum_require_tag: Nullish<boolean>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;
@@ -130,6 +201,21 @@ export const CHANNEL_COLUMNS = [
 	'last_pin_timestamp',
 	'permission_overwrites',
 	'nicks',
+	'thread_archived',
+	'thread_auto_archive_duration',
+	'thread_archive_timestamp',
+	'thread_locked',
+	'thread_invitable',
+	'thread_create_timestamp',
+	'thread_member_count',
+	'thread_message_count',
+	'thread_pinned',
+	'available_tags',
+	'applied_tags',
+	'default_reaction_emoji',
+	'default_sort_order',
+	'forum_default_auto_archive_duration',
+	'forum_require_tag',
 	'soft_deleted',
 	'indexed_at',
 	'version',

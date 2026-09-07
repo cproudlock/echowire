@@ -9,7 +9,6 @@ import type {
 	VoiceEngineV2AudioControls,
 	VoiceEngineV2CameraOptions,
 	VoiceEngineV2Capabilities,
-	VoiceEngineV2CodecNegotiationState,
 	VoiceEngineV2ConnectionStatus,
 	VoiceEngineV2ConnectOptions,
 	VoiceEngineV2DeviceInventory,
@@ -27,7 +26,6 @@ import type {
 	VoiceEngineV2LiveKitRoomState,
 	VoiceEngineV2MediaStatus,
 	VoiceEngineV2MicrophoneOptions,
-	VoiceEngineV2NativeAudioDeviceModuleState,
 	VoiceEngineV2NativeAudioTapOptions,
 	VoiceEngineV2NativeCaptureOptions,
 	VoiceEngineV2NativeFrameSinkOptions,
@@ -162,7 +160,6 @@ export interface VoiceEngineV2Snapshot {
 	connection: VoiceEngineV2ConnectionState;
 	gateway: VoiceEngineV2GatewayState;
 	liveKit: VoiceEngineV2LiveKitState;
-	nativeAudioDeviceModule: VoiceEngineV2NativeAudioDeviceModuleState;
 	microphone: VoiceEngineV2MicrophoneState;
 	camera: VoiceEngineV2LocalMediaState<VoiceEngineV2CameraOptions>;
 	screen: VoiceEngineV2LocalMediaState<VoiceEngineV2ScreenOptions>;
@@ -172,7 +169,6 @@ export interface VoiceEngineV2Snapshot {
 	participantVolumes: Record<string, number>;
 	remoteTrackSubscriptions: Record<string, VoiceEngineV2RemoteTrackSubscriptionOptions>;
 	watchedStreams: Record<string, VoiceEngineV2WatchedStream>;
-	codecNegotiation: VoiceEngineV2CodecNegotiationState;
 	stats: VoiceEngineV2Stats | null;
 	statsOperationId: VoiceEngineV2OperationId | null;
 	statsFailure: VoiceEngineV2Error | null;
@@ -286,10 +282,6 @@ export function createVoiceEngineV2InitialSnapshot(
 			serverRegion: null,
 			failure: null,
 		},
-		nativeAudioDeviceModule: {
-			status: 'unsupported',
-			detail: null,
-		},
 		microphone: {
 			status: 'idle',
 			desired: null,
@@ -344,12 +336,6 @@ export function createVoiceEngineV2InitialSnapshot(
 		participantVolumes: {},
 		remoteTrackSubscriptions: {},
 		watchedStreams: {},
-		codecNegotiation: {
-			overrides: {},
-			localSupportedVideoCodecs: [],
-			remoteSupportedVideoCodecs: {},
-			streams: {},
-		},
 		stats: null,
 		statsOperationId: null,
 		statsFailure: null,

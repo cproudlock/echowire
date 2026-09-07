@@ -3,7 +3,13 @@
 import {existsSync, mkdirSync, readdirSync, writeFileSync} from 'node:fs';
 import path, {dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {CopyRspackPlugin, DefinePlugin, HtmlRspackPlugin, SwcJsMinimizerRspackPlugin} from '@rspack/core';
+import {
+	CopyRspackPlugin,
+	DefinePlugin,
+	HtmlRspackPlugin,
+	LightningCssMinimizerRspackPlugin,
+	SwcJsMinimizerRspackPlugin,
+} from '@rspack/core';
 import {createPoFileRule, getLinguiSwcPluginConfig} from './scripts/build/rspack/lingui.mjs';
 import {staticFilesPlugin} from './scripts/build/rspack/static-files.mjs';
 
@@ -372,6 +378,13 @@ export default () => {
 					},
 				},
 				{
+					test: /\.onnx$/,
+					type: 'asset/resource',
+					generator: {
+						filename: isProduction ? 'assets/[contenthash:16][ext]' : 'assets/[name].[hash][ext]',
+					},
+				},
+				{
 					test: /\.(png|jpg|jpeg|gif|webp|ico|woff|woff2|ttf|eot|mp3|wav|ogg|mp4|webm)$/,
 					type: 'asset/resource',
 					generator: {
@@ -411,7 +424,10 @@ export default () => {
 					},
 				],
 			}),
-			staticFilesPlugin({staticCdnEndpoint: normalizedStaticCdnEndpoint}),
+			staticFilesPlugin({
+				staticCdnEndpoint: normalizedStaticCdnEndpoint,
+				fontsDir: path.join(MONOREPO_ROOT, 'packages', 'fonts'),
+			}),
 			new DefinePlugin({
 				__FLUXER_PRECACHE_MANIFEST__: JSON.stringify([]),
 				__FLUXER_SW_VERSION__: JSON.stringify(publicValues.PUBLIC_BUILD_VERSION || 'dev'),
@@ -458,7 +474,7 @@ export default () => {
 								priority: 55,
 								reuseExistingChunk: true,
 								enforce: true,
-								chunks: 'async',
+								chunks: (chunk) => !chunk.canBeInitial() && !isWorkerPath({chunk}),
 							},
 							livekit: {
 								test: /[\\/]node_modules[\\/](livekit-client|@livekit)[\\/]/,
@@ -576,6 +592,7 @@ export default () => {
 					mangle: true,
 					format: {comments: false},
 				}),
+				new LightningCssMinimizerRspackPlugin(),
 			],
 		},
 		devServer: {

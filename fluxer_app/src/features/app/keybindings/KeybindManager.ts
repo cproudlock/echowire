@@ -381,6 +381,12 @@ class KeybindManager {
 	private async checkInputMonitoringPermission(): Promise<boolean> {
 		if (!isNativeMacOS()) return true;
 		if (this.inputMonitoringHookStatus === 'granted') return true;
+		const electronApi = getElectronAPI();
+		if (await electronApi?.checkInputMonitoringAccess?.()) {
+			NativePermission.setInputMonitoringStatus('granted');
+			this.inputMonitoringHookStatus = 'granted';
+			return true;
+		}
 		const result = await ensureMacPermission('input-monitoring', {behavior: 'passive'});
 		switch (result) {
 			case 'granted':
@@ -1337,7 +1343,9 @@ class KeybindManager {
 			event.backend === 'evdev' || (event.backend === 'native' && isNativeMacOS())
 				? (binding.physicalKeyName ?? binding.keyName)
 				: binding.keyName;
-		if (expectedName !== null) return event.keyName === expectedName;
+		if (expectedName !== null && event.keyName === expectedName) {
+			return true;
+		}
 		return binding.keycode !== null && event.keycode === binding.keycode;
 	}
 

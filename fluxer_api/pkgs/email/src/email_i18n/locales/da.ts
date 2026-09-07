@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_DA_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_DA_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Din {product_name}-konto er midlertidigt deaktiveret",
 		"body": "Hej {username},\n\nVi har midlertidigt deaktiveret din {product_name}-konto, fordi vi har registreret mistænkelig aktivitet.\n\n{reason, select,\n  null {}\n  other {Årsag: {reason}}\n}\n\nFor at få adgang til din konto igen skal du nulstille din adgangskode:\n\n{forgotUrl}\n\nNår du har nulstillet din adgangskode, kan du logge ind igen.\n\nHvis du mener, at dette er sket ved en fejl, kan du kontakte vores supportteam.\n\n– {product_name} Safety Team"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_DA_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Godkend login fra en ny IP-adresse",
 		"body": "Hej {username},\n\nVi har registreret et login-forsøg på din {product_name}-konto fra en ny IP-adresse:\n\nIP-adresse: {ipAddress}\nSted: {location}\n\nHvis dette var dig, skal du godkende denne IP-adresse ved at klikke på linket nedenfor:\n\n{authUrl}\n\nHvis du ikke har forsøgt at logge ind, skal du straks ændre din adgangskode.\n\nDette link er gyldigt i 30 minutter.\n\n– {product_name} Team"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Bekræft adgang til dine {product_name}-backupkoder",
+		"body": "Hej {username},\n\nVi har modtaget en anmodning om at se backupkoderne på din {product_name}-konto.\n\nFor at bekræfte denne anmodning skal du indtaste denne kode i appen:\n\n{code}\n\nDenne kode udløber den {expiresAt, date, full} kl. {expiresAt, time, short}.\n\nHvis du ikke har anmodet om dette, har nogen muligvis adgang til din konto. Skift din adgangskode med det samme.\n\n– {product_name} Team"
 	},
 	"password_change_verification": {
 		"subject": "Bekræft din {product_name}-adgangskodeændring",

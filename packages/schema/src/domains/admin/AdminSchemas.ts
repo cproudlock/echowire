@@ -11,6 +11,7 @@ import {
 	SystemChannelFlagsDescriptions,
 } from '@fluxer/constants/src/GuildConstants';
 import {LIMIT_KEYS} from '@fluxer/constants/src/LimitConfigMetadata';
+import {ADMIN_ACL_COUNT, AdminAclType} from '@fluxer/schema/src/domains/admin/AdminAclType';
 import {GuildAdminResponse} from '@fluxer/schema/src/domains/admin/AdminGuildSchemas';
 import {UserAdminResponseSchema} from '@fluxer/schema/src/domains/admin/AdminUserSchemas';
 import {
@@ -29,6 +30,7 @@ import {
 	NSFWLevelSchema,
 } from '@fluxer/schema/src/primitives/GuildValidators';
 import {PermissionStringType} from '@fluxer/schema/src/primitives/PermissionValidators';
+import {createQueryIntegerType, QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
 import {
 	createBitflagInt32Type,
 	createInt32EnumType,
@@ -36,6 +38,7 @@ import {
 	createStringType,
 	Int32Type,
 	Int64StringType,
+	NonNegativeSafeIntegerType,
 	SnowflakeStringType,
 	SnowflakeType,
 	withOpenApiType,
@@ -109,28 +112,26 @@ const SearchIndexTypeEnum = createNamedStringLiteralUnion(
 	],
 	'Type of search index to refresh',
 );
-export const ListAuditLogsRequest = z.object({
-	admin_user_id: SnowflakeType.optional().describe('Filter by admin user who performed the action'),
-	target_type: createStringType(1, 64).optional().describe('Filter by target entity type'),
-	target_id: z.string().optional().describe('Filter by target entity ID (user, channel, role, invite code, etc.)'),
-	limit: z.number().int().min(1).max(200).default(50).describe('Maximum number of entries to return'),
-	offset: z.number().int().min(0).default(0).describe('Number of entries to skip'),
+export const AuditLogIdParam = z.object({
+	log_id: SnowflakeType.describe('The ID of the audit log entry'),
 });
 
-export type ListAuditLogsRequest = z.infer<typeof ListAuditLogsRequest>;
+export type AuditLogIdParam = z.infer<typeof AuditLogIdParam>;
 
-export const SearchAuditLogsRequest = z.object({
-	query: createStringType(1, 1024).optional().describe('Search query string'),
+export const ListAdminAuditLogsQuery = z.object({
+	q: createStringType(1, 1024).optional().describe('Free-text query run against the audit log search index'),
 	admin_user_id: SnowflakeType.optional().describe('Filter by admin user who performed the action'),
 	target_type: createStringType(1, 64).optional().describe('Filter by target entity type'),
 	target_id: z.string().optional().describe('Filter by target entity ID (user, channel, role, invite code, etc.)'),
 	sort_by: AuditLogSortByEnum.default('createdAt'),
 	sort_order: SortOrderEnum.default('desc'),
-	limit: z.number().int().min(1).max(200).default(50).describe('Maximum number of entries to return'),
-	offset: z.number().int().min(0).default(0).describe('Number of entries to skip'),
+	limit: createQueryIntegerType({defaultValue: 50, minValue: 1, maxValue: 200}).describe(
+		'Maximum number of entries to return',
+	),
+	offset: createQueryIntegerType({defaultValue: 0, minValue: 0}).describe('Number of entries to skip'),
 });
 
-export type SearchAuditLogsRequest = z.infer<typeof SearchAuditLogsRequest>;
+export type ListAdminAuditLogsQuery = z.infer<typeof ListAdminAuditLogsQuery>;
 
 export const SearchReportsRequest = z.object({
 	query: createStringType(1, 1024).optional().describe('Search query string'),
@@ -151,34 +152,78 @@ export const SearchReportsRequest = z.object({
 
 export type SearchReportsRequest = z.infer<typeof SearchReportsRequest>;
 
-export const ListReportsRequest = z.object({
-	status: ReportStatusSchema.optional(),
-	limit: z.number().int().min(1).max(200).optional().describe('Maximum number of reports to return'),
-	offset: z.number().int().min(0).optional().describe('Number of reports to skip'),
+const ReportStatusFilterEnum = createNamedStringLiteralUnion(
+	[
+		['pending', 'pending', 'Only reports that are waiting to be reviewed'],
+		['resolved', 'resolved', 'Only reports that have been resolved'],
+	],
+	'Only return reports with this status',
+);
+
+const ReportTypeFilterEnum = createNamedStringLiteralUnion(
+	[
+		['message', 'message', 'Only reports about a message'],
+		['user', 'user', 'Only reports about a user'],
+		['guild', 'guild', 'Only reports about a community'],
+	],
+	'Only return reports about this kind of entity',
+);
+
+const ReportSortByQueryEnum = createNamedStringLiteralUnion(
+	[
+		['created_at', 'created_at', 'Sort by the time the report was created'],
+		['reported_at', 'reported_at', 'Sort by the time the report was submitted'],
+		['resolved_at', 'resolved_at', 'Sort by the time the report was resolved'],
+	],
+	'The field to sort the reports by',
+);
+
+export const ListReportsQuery = z.object({
+	q: createStringType(1, 1024).optional().describe('Free-text query matched against the searchable report fields'),
+	status: ReportStatusFilterEnum.optional().describe('Only return reports with this status'),
+	report_type: ReportTypeFilterEnum.optional().describe('Only return reports about this kind of entity'),
+	category: createStringType(1, 128).optional().describe('Only return reports filed under this category'),
+	reporter_id: SnowflakeType.optional().describe('Only return reports submitted by this user'),
+	reported_user_id: SnowflakeType.optional().describe('Only return reports about this user'),
+	reported_guild_id: SnowflakeType.optional().describe('Only return reports about this community'),
+	reported_channel_id: SnowflakeType.optional().describe('Only return reports about content in this channel'),
+	guild_context_id: SnowflakeType.optional().describe('Only return reports filed from within this community'),
+	resolved_by_admin_id: SnowflakeType.optional().describe('Only return reports resolved by this admin'),
+	sort_by: ReportSortByQueryEnum.default('reported_at').describe('The field to sort the reports by'),
+	sort_order: SortOrderEnum.default('desc').describe('The direction to sort the reports in'),
+	limit: createQueryIntegerType({defaultValue: 50, minValue: 1, maxValue: 200}).describe(
+		'Maximum number of reports to return (1-200, default 50)',
+	),
+	offset: createQueryIntegerType({defaultValue: 0, minValue: 0, maxValue: 10000}).describe('Number of reports to skip'),
 });
 
-export type ListReportsRequest = z.infer<typeof ListReportsRequest>;
+export type ListReportsQuery = z.infer<typeof ListReportsQuery>;
 
-export const ResolveReportRequest = z.object({
-	report_id: SnowflakeType.describe('The ID of the report to resolve'),
+export const UpdateReportRequest = z.object({
+	status: z.literal('resolved').describe('The status to move the report to'),
 	public_comment: createStringType(0, 512).optional().describe('Public comment to include with the resolution'),
 });
 
-export type ResolveReportRequest = z.infer<typeof ResolveReportRequest>;
+export type UpdateReportRequest = z.infer<typeof UpdateReportRequest>;
+
+export const SearchIndexNameParam = z.object({
+	index_name: SearchIndexTypeEnum.describe('The name of the search index'),
+});
+
+export type SearchIndexNameParam = z.infer<typeof SearchIndexNameParam>;
 
 export const RefreshSearchIndexRequest = z.object({
-	index_type: SearchIndexTypeEnum,
 	guild_id: SnowflakeType.optional().describe('Specific guild ID to reindex'),
 	user_id: SnowflakeType.optional().describe('Specific user ID to reindex'),
 });
 
 export type RefreshSearchIndexRequest = z.infer<typeof RefreshSearchIndexRequest>;
 
-export const GetIndexRefreshStatusRequest = z.object({
-	job_id: createStringType(1, 128).describe('ID of the index refresh job to check'),
+export const SearchIndexRefreshIdParam = z.object({
+	job_id: createStringType(1, 128).describe('ID of the index refresh to read'),
 });
 
-export type GetIndexRefreshStatusRequest = z.infer<typeof GetIndexRefreshStatusRequest>;
+export type SearchIndexRefreshIdParam = z.infer<typeof SearchIndexRefreshIdParam>;
 
 export const PurgeGuildAssetsRequest = z.object({
 	ids: z.array(createStringType(1, 64)).max(100).describe('List of asset IDs to purge'),
@@ -186,29 +231,33 @@ export const PurgeGuildAssetsRequest = z.object({
 
 export type PurgeGuildAssetsRequest = z.infer<typeof PurgeGuildAssetsRequest>;
 
-export const TriggerUserArchiveRequest = z.object({
-	user_id: SnowflakeType.describe('ID of the user to archive'),
+export const AdminArchiveCreateRequest = z.object({
 	include_attachments: z.boolean().default(false).describe('Whether to include attachment binaries in the archive'),
 });
 
-export type TriggerUserArchiveRequest = z.infer<typeof TriggerUserArchiveRequest>;
+export type AdminArchiveCreateRequest = z.infer<typeof AdminArchiveCreateRequest>;
 
-export const TriggerGuildArchiveRequest = z.object({
-	guild_id: SnowflakeType.describe('ID of the guild to archive'),
-	include_attachments: z.boolean().default(false).describe('Whether to include attachment binaries in the archive'),
-});
+export const ListArchivesQuery = z
+	.object({
+		subject_type: ArchiveListSubjectTypeEnum.default('all'),
+		subject_id: SnowflakeType.optional().describe('Filter by specific subject ID'),
+		requested_by: SnowflakeType.optional().describe('Filter by user who requested the archive'),
+		limit: createQueryIntegerType({defaultValue: 50, minValue: 1, maxValue: 200}).describe(
+			'Maximum number of archives to return (1-200, default 50)',
+		),
+		include_expired: QueryBooleanType.describe('Whether to include archives past their expires_at'),
+	})
+	.superRefine((value, ctx) => {
+		if (value.subject_id !== undefined && value.subject_type === 'all') {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'subject_type must name user or guild when subject_id is supplied',
+				path: ['subject_type'],
+			});
+		}
+	});
 
-export type TriggerGuildArchiveRequest = z.infer<typeof TriggerGuildArchiveRequest>;
-
-export const ListArchivesRequest = z.object({
-	subject_type: ArchiveListSubjectTypeEnum.default('all'),
-	subject_id: SnowflakeType.optional().describe('Filter by specific subject ID'),
-	requested_by: SnowflakeType.optional().describe('Filter by user who requested the archive'),
-	limit: z.number().min(1).max(200).default(50).describe('Maximum number of archives to return'),
-	include_expired: z.boolean().default(false).describe('Whether to include expired archives'),
-});
-
-export type ListArchivesRequest = z.infer<typeof ListArchivesRequest>;
+export type ListArchivesQuery = z.infer<typeof ListArchivesQuery>;
 
 const IP_OR_CIDR_REGEX = /^(?:(?:\d{1,3}\.){3}\d{1,3}(?:\/\d{1,2})?|(?:[a-fA-F0-9:]+)(?:\/\d{1,3})?)$/;
 export const BanIpRequest = z.object({
@@ -264,12 +313,6 @@ export const BanUrlRequest = z.object({
 
 export type BanUrlRequest = z.infer<typeof BanUrlRequest>;
 
-export const UnbanUrlRequest = z.object({
-	url: createStringType(1, 2048).describe('URL to unban (must match the canonicalized form in storage)'),
-});
-
-export type UnbanUrlRequest = z.infer<typeof UnbanUrlRequest>;
-
 export const BanUrlDomainRequest = z.object({
 	domain: createStringType(1, 253)
 		.refine(
@@ -292,12 +335,6 @@ export const BanUrlDomainRequest = z.object({
 
 export type BanUrlDomainRequest = z.infer<typeof BanUrlDomainRequest>;
 
-export const UnbanUrlDomainRequest = z.object({
-	domain: createStringType(1, 253).describe('Domain to unban'),
-});
-
-export type UnbanUrlDomainRequest = z.infer<typeof UnbanUrlDomainRequest>;
-
 export const BanFileShaRequest = z.object({
 	sha256_hex: createStringType(64, 64)
 		.refine((v) => /^[0-9a-fA-F]{64}$/.test(v), 'Must be a 64-character hex SHA-256')
@@ -310,24 +347,6 @@ export const BanFileShaRequest = z.object({
 });
 
 export type BanFileShaRequest = z.infer<typeof BanFileShaRequest>;
-
-export const UnbanFileShaRequest = z.object({
-	sha256_hex: createStringType(64, 64).refine((v) => /^[0-9a-fA-F]{64}$/.test(v), 'Must be a 64-character hex SHA-256'),
-});
-
-export type UnbanFileShaRequest = z.infer<typeof UnbanFileShaRequest>;
-
-export const CheckUrlBlocklistRequest = z.object({
-	url: createStringType(1, 2048).describe('URL to check against the blocklist'),
-});
-
-export type CheckUrlBlocklistRequest = z.infer<typeof CheckUrlBlocklistRequest>;
-
-export const CheckFileShaRequest = z.object({
-	sha256_hex: createStringType(64, 64).refine((v) => /^[0-9a-fA-F]{64}$/.test(v), 'Must be a 64-character hex SHA-256'),
-});
-
-export type CheckFileShaRequest = z.infer<typeof CheckFileShaRequest>;
 
 const AvatarHashShortType = createStringType(8, 10).refine(
 	(v) => /^(a_)?[0-9a-fA-F]{8}$/.test(v),
@@ -504,7 +523,6 @@ const AppPublicConfigUpdateRequest = z.object({
 
 const InstancePolicyResponse = z.object({
 	single_community_enabled: z.boolean(),
-	single_community_locked: z.boolean(),
 	single_community_guild_id: z.string().nullable(),
 	direct_messages_disabled: z.boolean(),
 	direct_messages_locked: z.boolean(),
@@ -524,9 +542,13 @@ const InstancePolicyResponse = z.object({
 		youtube: z.boolean(),
 		bluesky: z.boolean(),
 	}),
+	deferred_phone_gate: z.object({
+		enabled: z.boolean(),
+		window_hours: z.number(),
+		member_threshold: z.number(),
+	}),
 });
 
-const GifProviderSchema = z.enum(['tenor', 'klipy']);
 const CaptchaProviderSchema = z.enum(['hcaptcha', 'turnstile', 'none']);
 const EmailProviderSchema = z.enum(['smtp', 'none']);
 
@@ -559,9 +581,6 @@ const InstanceMediaResponse = z.object({
 
 const InstanceIntegrationsResponse = z.object({
 	gif: z.object({
-		provider: GifProviderSchema.nullable(),
-		effective_provider: GifProviderSchema,
-		tenor_api_key_set: z.boolean(),
 		klipy_api_key_set: z.boolean(),
 		effective_available: z.boolean(),
 	}),
@@ -592,6 +611,8 @@ const InstanceIntegrationsResponse = z.object({
 			password_set: z.boolean(),
 			secure: z.boolean().nullable(),
 		}),
+		disable_new_ip_authorization: z.boolean(),
+		effective_disable_new_ip_authorization: z.boolean(),
 	}),
 	bluesky: z.object({
 		enabled: z.boolean().nullable(),
@@ -648,8 +669,6 @@ export const InstanceConfigUpdateRequest = z.object({
 		.object({
 			gif: z
 				.object({
-					provider: GifProviderSchema.nullish(),
-					tenor_api_key: z.string().trim().max(4096).nullish(),
 					klipy_api_key: z.string().trim().max(4096).nullish(),
 				})
 				.nullish(),
@@ -682,6 +701,7 @@ export const InstanceConfigUpdateRequest = z.object({
 							secure: z.boolean().nullish(),
 						})
 						.nullish(),
+					disable_new_ip_authorization: z.boolean().nullish(),
 				})
 				.nullish(),
 			bluesky: z
@@ -727,12 +747,20 @@ export const InstanceConfigUpdateRequest = z.object({
 			single_community_enabled: z.boolean().optional(),
 			single_community_name: z.string().trim().min(1).max(100).optional(),
 			direct_messages_disabled: z.boolean().optional(),
+			direct_messages_locked: z.literal(false).optional(),
 			premium_mode: z.enum(['mirror', 'everyone']).optional(),
 			services: z
 				.object({
 					gif_enabled: z.boolean().nullish(),
 					youtube_enabled: z.boolean().nullish(),
 					bluesky_enabled: z.boolean().nullish(),
+				})
+				.nullish(),
+			deferred_phone_gate: z
+				.object({
+					enabled: z.boolean().optional(),
+					window_hours: z.number().positive().max(8760).optional(),
+					member_threshold: z.number().int().positive().max(1_000_000).optional(),
 				})
 				.nullish(),
 		})
@@ -782,14 +810,22 @@ export const CreateRegistrationUrlResponse = z.object({
 
 export type CreateRegistrationUrlResponse = z.infer<typeof CreateRegistrationUrlResponse>;
 
-export const RegistrationUrlActionRequest = z.object({
-	id: createStringType(1, 128),
+export const RegistrationUrlIdParam = z.object({
+	registration_url_id: createStringType(1, 128).describe('The ID of the registration URL'),
 });
 
-export type RegistrationUrlActionRequest = z.infer<typeof RegistrationUrlActionRequest>;
+export type RegistrationUrlIdParam = z.infer<typeof RegistrationUrlIdParam>;
+
+const PendingRegistrationStatusSchema = createNamedStringLiteralUnion(
+	[
+		['approved', 'approved', 'The account may log in'],
+		['rejected', 'rejected', 'The account is blocked from logging in'],
+	],
+	'Pending registration decision',
+);
 
 export const PendingRegistrationActionRequest = z.object({
-	user_id: SnowflakeStringType,
+	status: PendingRegistrationStatusSchema,
 });
 
 export type PendingRegistrationActionRequest = z.infer<typeof PendingRegistrationActionRequest>;
@@ -803,7 +839,7 @@ const LimitRuleSchema = z.object({
 	id: z.string().min(1).describe('Unique rule identifier'),
 	filters: LimitFilterSchema.optional().describe('Optional filters that scope the rule'),
 	limits: z
-		.record(z.string(), z.number().min(0))
+		.record(z.string(), NonNegativeSafeIntegerType)
 		.refine(
 			(limits) => {
 				const limitKeys = Object.keys(limits);
@@ -848,7 +884,7 @@ export const CreateAdminApiKeyRequest = z.object({
 		.refine((value) => value.trim().length > 0, 'Name cannot be empty')
 		.describe('Display name for the API key'),
 	expires_in_days: z.number().int().min(1).max(365).optional().describe('Number of days until the key expires'),
-	acls: z.array(z.string()).max(100).describe('List of access control permissions for the key'),
+	acls: z.array(AdminAclType).max(ADMIN_ACL_COUNT).describe('List of access control permissions for the key'),
 });
 
 export type CreateAdminApiKeyRequest = z.infer<typeof CreateAdminApiKeyRequest>;
@@ -859,7 +895,7 @@ export const CreateAdminApiKeyResponse = z.object({
 	name: z.string().describe('Display name for the API key'),
 	created_at: z.string().describe('ISO 8601 timestamp when the key was created'),
 	expires_at: z.string().nullable().describe('ISO 8601 timestamp when the key expires, or null if no expiration'),
-	acls: z.array(z.string()).max(100).describe('List of access control permissions for the key'),
+	acls: z.array(z.string()).max(ADMIN_ACL_COUNT).describe('List of access control permissions for the key'),
 });
 
 export type CreateAdminApiKeyResponse = z.infer<typeof CreateAdminApiKeyResponse>;
@@ -871,10 +907,27 @@ export const ListAdminApiKeyResponse = z.object({
 	last_used_at: z.string().nullable().describe('ISO 8601 timestamp when the key was last used, or null if never used'),
 	expires_at: z.string().nullable().describe('ISO 8601 timestamp when the key expires, or null if no expiration'),
 	created_by_user_id: SnowflakeStringType.describe('User ID of the admin who created this key'),
-	acls: z.array(z.string()).max(100).describe('List of access control permissions for the key'),
+	acls: z.array(z.string()).max(ADMIN_ACL_COUNT).describe('List of access control permissions for the key'),
 });
 
 export type ListAdminApiKeyResponse = z.infer<typeof ListAdminApiKeyResponse>;
+
+export const UpdateAdminApiKeyRequest = z.object({
+	name: z
+		.string()
+		.min(1)
+		.max(100)
+		.refine((value) => value.trim().length > 0, 'Name cannot be empty')
+		.optional()
+		.describe('New display name for the API key'),
+	acls: z
+		.array(AdminAclType)
+		.max(ADMIN_ACL_COUNT)
+		.optional()
+		.describe('Replacement list of access control permissions for the key'),
+});
+
+export type UpdateAdminApiKeyRequest = z.infer<typeof UpdateAdminApiKeyRequest>;
 
 export const SearchGuildsResponse = z.object({
 	guilds: z.array(GuildAdminResponse),
@@ -1004,7 +1057,7 @@ const AdminAuditLogChannelSummarySchema = z.object({
 	type: ChannelTypeSchema,
 	guild_id: SnowflakeStringType.nullable(),
 });
-const AdminAuditLogResponseSchema = z.object({
+export const AdminAuditLogResponseSchema = z.object({
 	log_id: SnowflakeStringType,
 	admin_user_id: SnowflakeStringType,
 	admin_user: AdminAuditLogUserSummarySchema.nullable(),
@@ -1216,8 +1269,8 @@ const AdminLookupGuildSchema = z.object({
 	rules_channel_id: SnowflakeStringType.nullable(),
 	disabled_operations: Int32Type,
 	member_count: Int32Type,
-	channels: z.array(AdminGuildChannelSummarySchema).max(500),
-	roles: z.array(AdminGuildRoleSummarySchema).max(250),
+	channels: z.array(AdminGuildChannelSummarySchema),
+	roles: z.array(AdminGuildRoleSummarySchema),
 });
 export const LookupGuildResponse = z.object({
 	guild: AdminLookupGuildSchema.nullable(),
@@ -1238,14 +1291,14 @@ const GuildAssetItemSchema = z.object({
 
 export const ListGuildEmojisResponse = z.object({
 	guild_id: SnowflakeStringType,
-	emojis: z.array(GuildAssetItemSchema).max(500),
+	emojis: z.array(GuildAssetItemSchema),
 });
 
 export type ListGuildEmojisResponse = z.infer<typeof ListGuildEmojisResponse>;
 
 export const ListGuildStickersResponse = z.object({
 	guild_id: SnowflakeStringType,
-	stickers: z.array(GuildAssetItemSchema).max(500),
+	stickers: z.array(GuildAssetItemSchema),
 });
 
 export type ListGuildStickersResponse = z.infer<typeof ListGuildStickersResponse>;
@@ -1261,7 +1314,7 @@ const AdminMessageAttachmentSchema = z.object({
 	content_type: z.string().nullable(),
 	width: Int32Type.nullable(),
 	height: Int32Type.nullable(),
-	size: Int32Type.nullable().optional(),
+	size: NonNegativeSafeIntegerType.nullable().optional(),
 	ncmec_status: NcmecSubmissionStatusEnum,
 	ncmec_report_id: createStringType(1, 256).nullable(),
 	ncmec_failure_reason: createStringType(1, 4000).nullable(),
@@ -1391,21 +1444,19 @@ export const ReportAdminResponseSchema = z.object({
 	message_context: z.array(ReportMessageContextSchema).optional(),
 	message_responses: z.array(MessageResponseSchema).optional(),
 });
-export const ListReportsResponse = z.object({
-	reports: z.array(ReportAdminResponseSchema),
-});
 export const ResolveReportResponse = z.object({
 	report_id: SnowflakeStringType,
 	status: ReportStatusSchema,
 	resolved_at: z.string().nullable(),
 	public_comment: z.string().nullable(),
 });
-export const SearchReportsResponse = z.object({
+const SearchReportsResponse = z.object({
 	reports: z.array(ReportAdminResponseSchema),
 	total: z.number(),
 	offset: z.number(),
 	limit: z.number(),
 });
+export const AdminReportListResponse = SearchReportsResponse;
 const LimitKeyMetadataSchema = z.object({
 	key: z.string(),
 	label: z.string(),
@@ -1428,7 +1479,7 @@ export const LimitConfigGetResponse = z.object({
 	}),
 	limit_config_json: z.string(),
 	self_hosted: z.boolean(),
-	defaults: z.record(z.string(), z.record(LimitKeySchema, z.number())),
+	defaults: z.record(z.string(), z.partialRecord(LimitKeySchema, z.number())),
 	metadata: z.record(LimitKeySchema, LimitKeyMetadataSchema),
 	categories: z.record(z.string(), z.string()),
 	limit_keys: z.array(z.string()),

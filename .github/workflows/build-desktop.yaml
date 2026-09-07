@@ -22,10 +22,15 @@ on:
         default: ""
         type: string
       skip_targets:
-        description: Comma-separated platforms or targets to skip, such as windows, macos-arm64, linux-x64.
+        description: Comma-separated platforms or targets to skip, such as windows, macos, linux-x64.
         required: false
         default: ""
         type: string
+      force_overwrite:
+        description: Allow overwriting existing stable S3 artifacts (bypasses the immutable-release guard). Use only when intentionally republishing.
+        required: false
+        default: false
+        type: boolean
 permissions:
   contents: write
   id-token: write
@@ -46,6 +51,8 @@ jobs:
     runs-on: ubuntu-24.04-arm
     environment: desktop-releases
     timeout-minutes: 25
+    permissions:
+      contents: read
     outputs:
       version: ${{ steps.meta.outputs.version }}
       pub_date: ${{ steps.meta.outputs.pub_date }}
@@ -67,10 +74,19 @@ jobs:
         with:
           toolchain: "1.93.0"
 
+      - name: Create token
+        id: create-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          client-id: ${{ vars.FLUXER_CI_APP_ID }}
+          private-key: ${{ secrets.FLUXER_CI_APP_KEY }}
+          owner: fluxerapp
+          repositories: fluxer
+          permission-contents: read
       - name: Set metadata
         id: meta
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.create-token.outputs.token }}
           FLUXER_BUILD_VERSION: ${{ inputs.build_version }}
         run: >-
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
@@ -83,14 +99,10 @@ jobs:
     runs-on: ubuntu-24.04-arm
     environment: desktop-releases
     timeout-minutes: 25
+    permissions:
+      contents: read
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
-      windows_x64: ${{ steps.set-matrix.outputs.windows_x64 }}
-      windows_arm64: ${{ steps.set-matrix.outputs.windows_arm64 }}
-      windows_x64_default: ${{ steps.set-matrix.outputs.windows_x64_default }}
-      windows_arm64_default: ${{ steps.set-matrix.outputs.windows_arm64_default }}
-      windows_game_capture_x64: ${{ steps.set-matrix.outputs.windows_game_capture_x64 }}
-      windows_game_capture_arm64: ${{ steps.set-matrix.outputs.windows_game_capture_arm64 }}
     steps:
       - name: Checkout source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -114,7 +126,11 @@ jobs:
       - matrix
     runs-on: ${{ matrix.os }}
     environment: desktop-releases
-    timeout-minutes: 60
+    timeout-minutes: 180
+    permissions:
+      actions: read
+      contents: read
+      id-token: write
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
@@ -137,11 +153,9 @@ jobs:
       DESKTOP_PLATFORM: ${{ matrix.platform }}
       DESKTOP_ARCH: ${{ matrix.arch }}
       DESKTOP_VARIANT: ${{ matrix.desktop_variant }}
-      FLUXER_DESKTOP_BUILD_VARIANT: ${{ matrix.desktop_variant }}
       PLATFORM: ${{ matrix.platform }}
       ARCH: ${{ matrix.arch }}
       ELECTRON_ARCH: ${{ matrix.electron_arch }}
-      FLUXER_WINDOWS_GAME_CAPTURE_MODULE_ENABLED: ${{ matrix.desktop_variant == 'windows-game-capture' && 'true' || 'false' }}
     steps:
       - name: Checkout CI helpers
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -214,7 +228,7 @@ jobs:
         uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9
         with:
           path: ${{ env.PNPM_STORE_PATH }}
-          key: ${{ runner.os }}-${{ matrix.arch }}-pnpm-store-${{ hashFiles('source/**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ matrix.arch }}-pnpm-store-${{ hashFiles('source/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.arch }}-pnpm-store-
 
@@ -234,6 +248,8 @@ jobs:
         if: matrix.platform == 'linux'
         env:
           DEBIAN_FRONTEND: noninteractive
+          # Echowire self-hosted Linux runner has deps pre-installed + no passwordless sudo.
+          FLUXER_SKIP_LINUX_DEPS: "true"
         run: >-
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step install_linux_deps
@@ -243,7 +259,7 @@ jobs:
         uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9
         with:
           toolchain: "1.93.0"
-          targets: ${{ matrix.platform == 'macos' && (matrix.arch == 'arm64' && 'aarch64-apple-darwin' || 'x86_64-apple-darwin') || (matrix.arch == 'arm64' && 'aarch64-unknown-linux-gnu' || 'x86_64-unknown-linux-gnu') }}
+          targets: ${{ matrix.platform == 'macos' && 'aarch64-apple-darwin,x86_64-apple-darwin' || (matrix.arch == 'arm64' && 'aarch64-unknown-linux-gnu' || 'x86_64-unknown-linux-gnu') }}
 
       - name: Install MSVC ARM64 build tools
         if: matrix.platform == 'windows' && matrix.arch == 'arm64'
@@ -284,6 +300,16 @@ jobs:
         run: >-
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step set_build_channel
+
+      - name: Typecheck desktop
+        # Echowire: the desktop bundle is built with esbuild, which strips types without
+        # checking them, so type errors used to reach shipped builds. Runs after
+        # set_build_channel because that generates src/common/BuildChannel.ts. Linux only:
+        # the check is platform-independent, and the release job needs every leg to pass,
+        # so gating one leg gates the release.
+        if: matrix.platform == 'linux'
+        working-directory: ${{ env.WORKDIR }}/fluxer_desktop
+        run: pnpm typecheck
 
       - name: Build Electron main process
         working-directory: ${{ env.WORKDIR }}/fluxer_desktop
@@ -341,6 +367,88 @@ jobs:
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step build_app_windows
 
+      - name: Validate Windows signing inputs
+        if: matrix.platform == 'windows'
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_ARTIFACT_SIGNING_ENDPOINT: ${{ secrets.AZURE_ARTIFACT_SIGNING_ENDPOINT }}
+          AZURE_ARTIFACT_SIGNING_ACCOUNT_NAME: ${{ secrets.AZURE_ARTIFACT_SIGNING_ACCOUNT_NAME }}
+          AZURE_ARTIFACT_SIGNING_CERTIFICATE_PROFILE_NAME: ${{ secrets.AZURE_ARTIFACT_SIGNING_CERTIFICATE_PROFILE_NAME }}
+        run: >-
+          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
+          --step validate_windows_signing_inputs
+
+      - name: Azure login for Artifact Signing
+        if: matrix.platform == 'windows'
+        uses: azure/login@532459ea530d8321f2fb9bb10d1e0bcf23869a43
+        with:
+          # Echowire: service-principal client-secret auth (not OIDC/federated). The
+          # echowire-signing-ci SP's federated credential isn't matching this job's OIDC
+          # subject; the client secret is configured and is what signs our releases.
+          creds: >-
+            {"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}
+
+      - name: Write Velopack Trusted Signing metadata
+        if: matrix.platform == 'windows'
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          AZURE_ARTIFACT_SIGNING_ENDPOINT: ${{ secrets.AZURE_ARTIFACT_SIGNING_ENDPOINT }}
+          AZURE_ARTIFACT_SIGNING_ACCOUNT_NAME: ${{ secrets.AZURE_ARTIFACT_SIGNING_ACCOUNT_NAME }}
+          AZURE_ARTIFACT_SIGNING_CERTIFICATE_PROFILE_NAME: ${{ secrets.AZURE_ARTIFACT_SIGNING_CERTIFICATE_PROFILE_NAME }}
+        run: >-
+          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
+          --step write_windows_signing_metadata
+
+      - name: Resolve unpacked Windows app directory
+        id: resolve_unpacked
+        if: matrix.platform == 'windows'
+        working-directory: ${{ env.WORKDIR }}/fluxer_desktop
+        env:
+          BUILD_CHANNEL: ${{ env.BUILD_CHANNEL }}
+        run: >-
+          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
+          --step resolve_windows_unpacked_dir
+
+      - name: Sign unpacked Windows binaries with Artifact Signing
+        if: matrix.platform == 'windows'
+        uses: azure/artifact-signing-action@c7ab2a863ab5f9a846ddb8265964877ef296ee82
+        with:
+          endpoint: ${{ secrets.AZURE_ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ secrets.AZURE_ARTIFACT_SIGNING_ACCOUNT_NAME }}
+          certificate-profile-name: ${{ secrets.AZURE_ARTIFACT_SIGNING_CERTIFICATE_PROFILE_NAME }}
+          files-folder: ${{ steps.resolve_unpacked.outputs.unpacked_dir }}
+          files-folder-filter: exe,dll,node
+          files-folder-recurse: true
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+          exclude-environment-credential: true
+
+      - name: Verify unpacked Windows signatures
+        # Echowire: blocking again. This was non-blocking on the claim that it could not
+        # run on our self-hosted runner; it always ran fine and failed only because the
+        # expected signer CN was still upstream's company. Fixed in tools/ci.
+        if: matrix.platform == 'windows'
+        working-directory: ${{ env.WORKDIR }}/fluxer_desktop
+        env:
+          BUILD_CHANNEL: ${{ env.BUILD_CHANNEL }}
+        run: >-
+          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
+          --step verify_windows_unpacked_signatures
+
+      - name: Create portable ZIP (Windows)
+        if: matrix.platform == 'windows'
+        working-directory: ${{ env.WORKDIR }}/fluxer_desktop
+        env:
+          BUILD_CHANNEL: ${{ env.BUILD_CHANNEL }}
+        run: >-
+          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
+          --step create_portable_zip_windows
+
       - name: Package Windows app with Velopack
         if: matrix.platform == 'windows'
         working-directory: ${{ env.WORKDIR }}/fluxer_desktop
@@ -372,14 +480,15 @@ jobs:
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step build_app_linux
 
-      - name: Create portable ZIP (Windows)
+      - name: Verify signed Windows artifacts
+        # Echowire: blocking again (see note on the unpacked-signatures verify above).
         if: matrix.platform == 'windows'
         working-directory: ${{ env.WORKDIR }}/fluxer_desktop
         env:
           BUILD_CHANNEL: ${{ env.BUILD_CHANNEL }}
         run: >-
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
-          --step create_portable_zip_windows
+          --step verify_windows_signed_artifacts
 
       - name: Prepare artifacts (Windows)
         if: runner.os == 'Windows'
@@ -393,8 +502,8 @@ jobs:
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step prepare_artifacts_unix
 
-      - name: Normalize updater YAML (arm64)
-        if: matrix.arch == 'arm64'
+      - name: Normalize updater YAML (macOS)
+        if: matrix.platform == 'macos'
         run: >-
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step normalise_updater_yaml
@@ -410,12 +519,6 @@ jobs:
         run: >-
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step generate_checksums_windows
-
-      - name: Build desktop source tarball
-        if: matrix.platform == 'linux' && matrix.arch == 'x64' && needs.meta.outputs.build_channel == 'canary'
-        run: >-
-          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
-          --step build_source_tarball
 
       - name: Upload artifacts to S3 handoff
         run: >-
@@ -569,7 +672,9 @@ jobs:
       - sign_windows
     runs-on: ubuntu-24.04-arm
     environment: desktop-releases
-    timeout-minutes: 60
+    timeout-minutes: 180
+    permissions:
+      contents: read
     env:
       CHANNEL: ${{ needs.meta.outputs.build_channel }}
       DISPLAY_CHANNEL: ${{ needs.meta.outputs.channel }}
@@ -583,9 +688,11 @@ jobs:
       SOURCE_SHA: ${{ needs.meta.outputs.source_sha }}
       S3_DESKTOP_PREFIX: ${{ needs.meta.outputs.s3_prefix }}
       DESKTOP_HANDOFF_PREFIX: _handoff/desktop/${{ needs.meta.outputs.build_channel }}/${{ needs.meta.outputs.version }}/${{ needs.meta.outputs.source_sha }}
+      DESKTOP_RELEASE_ASSETS_PREFIX: _handoff/desktop-release-assets/${{ needs.meta.outputs.build_channel }}/${{ needs.meta.outputs.version }}/${{ needs.meta.outputs.source_sha }}
       S3_ENDPOINT: https://e54c5c050e04de8b819ab033506f952c.r2.cloudflarestorage.com
       S3_BUCKET: fluxer-downloads
       PUBLIC_DL_BASE: https://api.fluxer.app/dl
+      FLUXER_FORCE_DESKTOP_OVERWRITE: ${{ inputs.force_overwrite }}
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
@@ -612,48 +719,33 @@ jobs:
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
           --step build_payload
 
+      - name: Prepare GitHub release assets
+        if: needs.meta.outputs.test_build != 'true'
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step prepare_release_assets
+
+      - name: Publish GitHub release descriptor
+        if: needs.meta.outputs.test_build != 'true'
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step publish_release_descriptor
+
       - name: Upload payload to S3
         run: >-
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
           --step upload_payload
 
-      - name: Verify uploaded source tarball
+      - name: Upload GitHub release asset handoff
+        if: needs.meta.outputs.test_build != 'true'
         run: >-
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
-          --step verify_source_tarball
+          --step upload_release_assets
 
       - name: Build summary
         run: >-
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
           --step build_summary
-
-      - name: Write GitHub release desktop fragment
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: >-
-          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- release
-          publish-desktop
-          --build-version "${{ needs.meta.outputs.version }}"
-          --channel "${{ needs.meta.outputs.build_channel }}"
-          --test-build "${{ needs.meta.outputs.test_build }}"
-          --s3-prefix "${{ needs.meta.outputs.s3_prefix }}"
-          --payload-root s3_payload
-          --source-sha "${{ needs.meta.outputs.source_sha }}"
-      - name: Upload GitHub release fragment
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
-        with:
-          name: release-fragment-desktop
-          path: release-out/fragments/fluxer-release-fragment-desktop-${{ needs.meta.outputs.build_channel }}.json
-          if-no-files-found: error
-          retention-days: 14
-
-      - name: Notify canary desktop webhook
-        if: ${{ success() && needs.meta.outputs.channel == 'canary' }}
-        env:
-          FLUXER_WEBHOOK_URL: ${{ secrets.FLUXER_WEBHOOK_URL }}
-        run: >-
-          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
-          --step notify_webhook
 
       - name: Cleanup S3 handoff
         if: ${{ success() }}
@@ -661,15 +753,25 @@ jobs:
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
           --step cleanup_handoff
 
-  finalise_release:
-    name: Finalise GitHub desktop release
-    if: ${{ !failure() && !cancelled() && needs.meta.outputs.test_build != 'true' }}
+  publish_release:
+    name: Publish GitHub desktop release
+    if: ${{ !cancelled() && needs.upload.result == 'success' && needs.meta.outputs.test_build != 'true' }}
     needs:
       - meta
       - upload
     runs-on: ubuntu-24.04-arm
     environment: desktop-releases
-    timeout-minutes: 10
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    env:
+      CHANNEL: ${{ needs.meta.outputs.build_channel }}
+      VERSION: ${{ needs.meta.outputs.version }}
+      DESKTOP_RELEASE_ASSETS_PREFIX: _handoff/desktop-release-assets/${{ needs.meta.outputs.build_channel }}/${{ needs.meta.outputs.version }}/${{ needs.meta.outputs.source_sha }}
+      S3_ENDPOINT: ${{ vars.DOWNLOADS_S3_ENDPOINT }}
+      S3_BUCKET: ${{ vars.DOWNLOADS_S3_BUCKET }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.DOWNLOADS_AWS_ACCESS_KEY_ID || secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DOWNLOADS_AWS_SECRET_ACCESS_KEY || secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
       - name: Checkout source
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
@@ -680,18 +782,47 @@ jobs:
         uses: dtolnay/rust-toolchain@e97e2d8cc328f1b50210efc529dca0028893a2d9
         with:
           toolchain: "1.93.0"
-      - name: Download GitHub release fragments
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c
-        with:
-          pattern: release-fragment-*
-          path: release-out/fragments
-          merge-multiple: true
 
-      - name: Finalise GitHub desktop release
-        env:
-          GH_TOKEN: ${{ github.token }}
+      - name: Download GitHub release assets
         run: >-
-          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- release
-          finalise
-          --build-version "${{ needs.meta.outputs.version }}"
-          --source-sha "${{ needs.meta.outputs.source_sha }}"
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step download_release_assets
+
+      - name: Create token
+        id: create-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
+        with:
+          client-id: ${{ vars.FLUXER_CI_APP_ID }}
+          private-key: ${{ secrets.FLUXER_CI_APP_KEY }}
+          # Echowire fork: token targets our repo, not fluxerapp/fluxer
+          owner: cproudlock
+          repositories: echowire
+          permission-contents: write
+      - name: Publish GitHub desktop release
+        env:
+          GH_TOKEN: ${{ steps.create-token.outputs.token }}
+          CHANNEL: ${{ needs.meta.outputs.build_channel }}
+          VERSION: ${{ needs.meta.outputs.version }}
+          SOURCE_SHA: ${{ needs.meta.outputs.source_sha }}
+          RELEASE_BASELINE_SHA: ${{ vars.RELEASE_BASELINE_SHA }}
+        run: |
+          set -euo pipefail
+          release_args=(
+            release publish
+            --component "fluxer-desktop-${CHANNEL}"
+            --build-version "${VERSION}"
+            --source-sha "${SOURCE_SHA}"
+            --previous-sha "${RELEASE_BASELINE_SHA}"
+            --asset-dir release_assets
+          )
+          if [[ "${CHANNEL}" == "canary" ]]; then
+            release_args+=(--prerelease)
+          fi
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- "${release_args[@]}"
+
+      - name: Publish GitHub release readiness marker
+        env:
+          SOURCE_SHA: ${{ needs.meta.outputs.source_sha }}
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step publish_release_marker

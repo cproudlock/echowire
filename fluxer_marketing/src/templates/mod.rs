@@ -89,12 +89,12 @@ impl PageMeta {
 
     fn formatted_title(&self) -> String {
         if self.title.is_empty() {
-            return "Fluxer".to_owned();
+            return "echowire".to_owned();
         }
 
         match self.title_format {
-            PageTitleFormat::BrandTagline => format!("Fluxer - {}", self.title),
-            PageTitleFormat::Page => format!("{} | Fluxer", self.title),
+            PageTitleFormat::BrandTagline => format!("echowire - {}", self.title),
+            PageTitleFormat::Page => format!("{} | echowire", self.title),
         }
     }
 }
@@ -134,69 +134,42 @@ pub fn download_page(
             description: tr(
                 i18n,
                 ctx,
-                PLATFORM_SUPPORT_DESKTOP_DOWNLOAD_DESKTOP_INTRO_DESCRIPTOR,
+                PLATFORM_SUPPORT_AVAILABILITY_META_DESCRIPTION_DESCRIPTOR,
             ),
             ..Default::default()
         },
         html! {
-            section class="flex flex-col items-center justify-center px-6 pt-48 pb-16 sm:px-8 md:px-12 md:pt-60 lg:px-16 xl:px-20" {
-                div class="mx-auto max-w-4xl space-y-8 text-center" {
-                    div class="mx-auto inline-flex h-28 w-28 items-center justify-center rounded-3xl bg-white/10 backdrop-blur-sm md:h-36 md:w-36" {
-                        (icon(Icon::Download, "h-14 w-14 text-white md:h-18 md:w-18"))
+            main class="bg-white px-6 pt-32 pb-20 text-gray-950 sm:px-8 md:px-12 md:pt-40 md:pb-28 lg:px-16 xl:px-20" {
+                div class="mx-auto max-w-4xl" {
+                    header class="mb-6 md:mb-8" {
+                        h1 class="display text-4xl text-gray-950 md:text-5xl" { (tr(i18n, ctx, DOWNLOAD_DOWNLOAD_FLUXER_DESCRIPTOR)) }
+                        p class="lead mt-4 max-w-2xl text-gray-600" {
+                            (tr(i18n, ctx, PLATFORM_SUPPORT_AVAILABILITY_SUMMARY_DESCRIPTOR))
+                        }
+                        // Echowire: desktop release-channel toggle. Defaults to Stable;
+                        // ?channel=canary opts into the beta build.
+                        p class="mt-3 text-sm text-gray-500" {
+                            @if ctx.download_channel.is_canary() {
+                                "Showing Canary (beta) builds. "
+                                a href=(ctx.href("/download")) class="font-medium text-gray-900 underline hover:text-gray-700" { "Switch to Stable" }
+                            } @else {
+                                "Want early beta features? "
+                                a href=(format!("{}?channel=canary", ctx.href("/download"))) class="font-medium text-gray-900 underline hover:text-gray-700" { "Switch to Canary (beta)" }
+                            }
+                        }
                     }
-                    h1 class="hero" { (tr(i18n, ctx, DOWNLOAD_DOWNLOAD_FLUXER_DESCRIPTOR)) }
-                    p class="lead mx-auto max-w-2xl text-white/90" {
-                        (tr(i18n, ctx, PLATFORM_SUPPORT_DESKTOP_AVAILABLE_ON_DESKTOP_AND_WEB_DESCRIPTOR))
-                    }
-                }
-                div class="mt-12 w-full max-w-3xl md:mt-16" {
-                    div class="flex flex-col gap-5" {
+                    ul class="border-gray-200 border-t" {
+                        // Echowire: no macOS build, so no macOS card (was a dead 404 link).
                         (download_strip(i18n, ctx, Platform::Windows, latest_versions.windows.as_ref()))
-                        (download_strip(i18n, ctx, Platform::Macos, latest_versions.macos.as_ref()))
                         (download_strip(i18n, ctx, Platform::Linux, latest_versions.linux.as_ref()))
+                        (mobile_download_row(i18n, ctx, MobileDownload::WebApp))
+                        (mobile_download_row(i18n, ctx, MobileDownload::Ios))
+                        (mobile_download_row(i18n, ctx, MobileDownload::Android))
                     }
-                }
-            }
-            (section_headered(i18n, ctx, "light", None, PLATFORM_SUPPORT_MOBILE_ON_MOBILE_TITLE_DESCRIPTOR, PLATFORM_SUPPORT_MOBILE_ON_MOBILE_INTRO_DESCRIPTOR, html! {
-                div class="mx-auto grid max-w-5xl gap-6 md:grid-cols-3" {
-                    div class="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm" {
-                        div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#4641D9]/10" {
-                            (icon(Icon::Devices, "h-6 w-6 text-[#4641D9]"))
-                        }
-                        h3 class="mt-4 font-semibold text-gray-900 text-lg" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_WEB_APP_TITLE_DESCRIPTOR)) }
-                        p class="mt-2 flex-1 text-sm leading-relaxed text-gray-600" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_WEB_APP_BODY_DESCRIPTOR)) }
-                        div class="mt-5" { (pwa::pwa_install_trigger(i18n, ctx)) }
-                    }
-                    div class="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm" {
-                        div class="caption absolute top-4 right-4 rounded-full bg-[#4641D9] px-3 py-1 font-semibold text-xs text-white uppercase shadow-lg" {
-                            (tr(i18n, ctx, BETA_AND_ACCESS_BETA_LABEL_DESCRIPTOR))
-                        }
-                        div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#4641D9]/10" {
-                            (icon(Icon::Apple, "h-6 w-6 text-[#4641D9]"))
-                        }
-                        h3 class="mt-4 font-semibold text-gray-900 text-lg" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_TITLE_DESCRIPTOR)) }
-                        p class="mt-2 flex-1 text-sm leading-relaxed text-gray-600" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_BODY_DESCRIPTOR)) }
-                    }
-                    div class="relative flex flex-col rounded-2xl border border-gray-200 bg-white p-6 text-left shadow-sm" {
-                        div class="caption absolute top-4 right-4 rounded-full bg-[#4641D9] px-3 py-1 font-semibold text-xs text-white uppercase shadow-lg" {
-                            (tr(i18n, ctx, BETA_AND_ACCESS_BETA_LABEL_DESCRIPTOR))
-                        }
-                        div class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#4641D9]/10" {
-                            (icon(Icon::Android, "h-6 w-6 text-[#4641D9]"))
-                        }
-                        h3 class="mt-4 font-semibold text-gray-900 text-lg" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_TITLE_DESCRIPTOR)) }
-                        p class="mt-2 flex-1 text-sm leading-relaxed text-gray-600" { (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_BODY_DESCRIPTOR)) }
-                        a class="mt-5 inline-flex items-center gap-2 self-start rounded-xl bg-[#4641D9] px-5 py-3 font-medium text-sm text-white shadow-md transition-colors hover:bg-[#3832B8]" href="https://github.com/fluxerapp/flutter_client" target="_blank" rel="noopener noreferrer" {
-                            (icon(Icon::Github, "h-5 w-5"))
-                            (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_CTA_DESCRIPTOR))
-                        }
-                    }
-                }
-                p class="mx-auto mt-8 max-w-3xl text-center text-gray-500 text-sm leading-relaxed" {
-                    (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ALPHA_DISCLAIMER_DESCRIPTOR))
                 }
                 (pwa::pwa_install_modal(i18n, ctx))
-            }))
+            }
+            (final_cta(i18n, ctx))
         },
     )
 }
@@ -987,7 +960,7 @@ fn base_document(
                 meta charset="utf-8";
                 meta name="viewport" content="width=device-width, initial-scale=1.0";
                 meta name="description" content=(meta.description);
-                meta property="og:site_name" content="Fluxer";
+                meta property="og:site_name" content="echowire";
                 meta property="og:locale" content=(og_locale);
                 meta property="og:title" content=(page_title.as_str());
                 meta property="og:description" content=(meta.description);
@@ -1025,13 +998,10 @@ fn base_document(
                 }
                 title { (page_title.as_str()) }
                 link rel="preconnect" href=(cdn);
-                link rel="stylesheet" href=(format!("{cdn}/fonts/ibm-plex.css?v=3"));
-                link rel="stylesheet" href=(format!("{cdn}/fonts/bricolage.css?v=3"));
+                link rel="stylesheet" href=(format!("{}/static/fonts/{}", ctx.base_path, crate::fonts::STYLESHEET_FILE_NAME));
                 link rel="stylesheet" href=(format!("{}/static/app.css?v={}", ctx.base_path, ctx.asset_version));
-                link rel="icon" type="image/x-icon" href=(format!("{cdn}/web/favicon.ico"));
+                link rel="icon" type="image/x-icon" sizes="256x256" href=(format!("{cdn}/web/favicon.ico"));
                 link rel="apple-touch-icon" href=(format!("{cdn}/web/apple-touch-icon.png"));
-                link rel="icon" type="image/png" sizes="32x32" href=(format!("{cdn}/web/favicon-32x32.png"));
-                link rel="icon" type="image/png" sizes="16x16" href=(format!("{cdn}/web/favicon-16x16.png"));
                 @if meta.enable_htmx {
                     script src=(format!("{}/static/htmx.min.js?v={}", ctx.base_path, ctx.asset_version)) defer {}
                 }
@@ -1071,19 +1041,14 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                             }
                             div class="marketing-nav-links hidden items-center gap-4 lg:flex xl:gap-6" {
                                 (nav_link(i18n, ctx, "/download", DOWNLOAD_DOWNLOAD_DESCRIPTOR))
-                                (nav_link(i18n, ctx, "/plutonium", PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR))
+                                (nav_link(i18n, ctx, "/reverb", PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/help", COMPANY_AND_RESOURCES_HELP_LABEL_DESCRIPTOR))
-                                a class="body-lg text-gray-900/90 transition-colors hover:text-gray-900" href="https://docs.fluxer.app" {
-                                    (tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR))
-                                }
-                                (nav_link(i18n, ctx, "/blog", COMPANY_AND_RESOURCES_BLOG_DESCRIPTOR))
                                 (nav_link(i18n, ctx, "/donate", DONATIONS_DONATE_ACTION_DESCRIPTOR))
                             }
                         }
                         div class="flex items-center gap-1 xl:gap-2" {
-                            (nav_icon_link("https://bsky.app/profile/fluxer.app", tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR), Icon::Bluesky, "hidden lg:flex"))
+                            (nav_icon_link("https://bsky.app/profile/echowire.org", tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR), Icon::Bluesky, "hidden lg:flex"))
                             (nav_icon_link("https://github.com/fluxerapp/fluxer", tr(i18n, ctx, SOCIAL_AND_FEEDS_GITHUB_DESCRIPTOR), Icon::Github, "hidden lg:flex"))
-                            (nav_icon_link(&ctx.href("/blog/rss.xml"), tr(i18n, ctx, SOCIAL_AND_FEEDS_RSS_LABEL_DESCRIPTOR), Icon::Rss, "marketing-nav-rss hidden xl:flex"))
                             button
                                 type="button"
                                 class="locale-toggle hidden items-center rounded-lg p-2 text-[#4641D9] transition-colors hover:bg-gray-100 hover:text-[#3d38c7] lg:flex"
@@ -1122,7 +1087,7 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                         div class="flex flex-col gap-6" {
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_PRODUCT_DESCRIPTOR, &[
                                 (ctx.href("/download"), DOWNLOAD_DOWNLOAD_DESCRIPTOR),
-                                (ctx.href("/plutonium"), PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR),
+                                (ctx.href("/reverb"), PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR),
                                 (ctx.href("/partners"), PARTNER_PROGRAM_LABEL_DESCRIPTOR),
                             ]))
                             div {
@@ -1131,24 +1096,16 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                                     a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href=(ctx.href("/help")) {
                                         (tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR))
                                     }
-                                    a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href="https://docs.fluxer.app" {
-                                        (tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR))
-                                    }
-                                    a class="flex items-center gap-2 rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href=(ctx.href("/blog")) {
-                                        (tr(i18n, ctx, COMPANY_AND_RESOURCES_BLOG_DESCRIPTOR))
-                                        (icon(Icon::Rss, "h-4 w-4 text-gray-500"))
-                                    }
                                     a class="rounded-lg py-2.5 pr-3 pl-0 text-base text-gray-900 transition-colors hover:bg-gray-100" href=(ctx.href("/press")) {
                                         (tr(i18n, ctx, COMPANY_AND_RESOURCES_PRESS_LABEL_DESCRIPTOR))
                                     }
                                 }
                             }
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_CONNECT_DESCRIPTOR, &[
-                                ("https://bsky.app/profile/fluxer.app".to_owned(), SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR),
+                                ("https://bsky.app/profile/echowire.org".to_owned(), SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR),
                                 ("https://github.com/fluxerapp/fluxer".to_owned(), COMPANY_AND_RESOURCES_SOURCE_AND_CONTRIBUTION_SOURCE_CODE_DESCRIPTOR),
                             ]))
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_COMPANY_DESCRIPTOR, &[
-                                (ctx.href("/careers"), COMPANY_AND_RESOURCES_CAREERS_LABEL_DESCRIPTOR),
                                 (ctx.href("/donate"), DONATIONS_DONATE_ACTION_DESCRIPTOR),
                                 (ctx.href("/company-information"), COMPANY_AND_RESOURCES_COMPANY_INFO_DESCRIPTOR),
                             ]))
@@ -1282,22 +1239,12 @@ fn hero(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
             div class="max-w-4xl space-y-8 text-center" {
                 @if ctx.locale.code() == "ja" {
                     div class="flex justify-center" {
-                        span class="font-bold text-3xl text-white" { "Fluxer（フラクサー）" }
+                        span class="font-bold text-3xl text-white" { "echowire" }
                     }
                 }
                 @if ctx.locale.code() == "ko" {
                     div class="flex justify-center" {
-                        span class="font-bold text-3xl text-white" { "Fluxer (플럭서)" }
-                    }
-                }
-                div class="flex flex-wrap items-center justify-center gap-3 pb-2" {
-                    a class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-1.5 font-medium text-sm text-white transition-colors hover:bg-white/20" href=(ctx.href("/blog/how-i-built-fluxer-a-discord-like-chat-app")) {
-                        (tr(i18n, ctx, LAUNCH_HEADING_DESCRIPTOR))
-                        (icon(Icon::ArrowRight, "h-3.5 w-3.5"))
-                    }
-                    a class="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-4 py-1.5 font-medium text-sm text-white transition-colors hover:bg-white/20" href=(ctx.href("/blog/roadmap-2026")) {
-                        (tr(i18n, ctx, LAUNCH_VIEW_FULL_ROADMAP_DESCRIPTOR))
-                        (icon(Icon::ArrowRight, "h-3.5 w-3.5"))
+                        span class="font-bold text-3xl text-white" { "echowire" }
                     }
                 }
                 h1 class="hero" { (tr(i18n, ctx, GENERAL_TAGLINE_DESCRIPTOR)) }
@@ -1421,7 +1368,7 @@ fn features_section(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 PLATFORM_SUPPORT_DESKTOP_USE_DESKTOP_CLIENT_MOBILE_SOON_DESCRIPTOR,
                 PRODUCT_POSITIONING_SELF_HOSTING_SWITCH_BETWEEN_INSTANCES_DESCRIPTOR,
             ],
-            Some("https://docs.fluxer.app/operator/get-started/"),
+            Some("https://github.com/fluxerapp/fluxer/tree/main/deploy/self-hosting"),
         ),
     ];
     html! {
@@ -1535,7 +1482,7 @@ fn bluesky_support_card(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 h3 class="title mb-4 text-xl text-black md:text-2xl" { (tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_FOLLOW_US_DESCRIPTOR)) }
                 p class="body-lg text-gray-700 leading-relaxed" {
                     (tr(i18n, ctx, SOCIAL_AND_FEEDS_STAY_UPDATED_CTA_DESCRIPTOR)) " "
-                    a class="underline hover:text-[#4641D9]" href="https://bsky.app/profile/fluxer.app/rss" target="_blank" rel="noopener noreferrer" {
+                    a class="underline hover:text-[#4641D9]" href="https://bsky.app/profile/echowire.org/rss" target="_blank" rel="noopener noreferrer" {
                         (tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_RSS_FEED_DESCRIPTOR))
                     }
                     " " (tr(i18n, ctx, GENERAL_OR_DESCRIPTOR)) " "
@@ -1546,7 +1493,7 @@ fn bluesky_support_card(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 }
             }
             div class="mt-auto flex flex-col items-center" {
-                a class="label w-full rounded-xl bg-[#4641D9] px-6 py-3 text-center font-semibold text-base text-white shadow-md transition hover:bg-[#3832B8] md:text-lg" href="https://bsky.app/profile/fluxer.app" target="_blank" rel="noopener noreferrer" {
+                a class="label w-full rounded-xl bg-[#4641D9] px-6 py-3 text-center font-semibold text-base text-white shadow-md transition hover:bg-[#3832B8] md:text-lg" href="https://bsky.app/profile/echowire.org" target="_blank" rel="noopener noreferrer" {
                     (tr(i18n, ctx, SOCIAL_AND_FEEDS_FOLLOW_FLUXER_DESCRIPTOR))
                 }
             }
@@ -1568,9 +1515,9 @@ fn is_external_href(href: &str) -> bool {
 
 fn final_cta(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
     html! {
-        section class="gradient-light" {
+        section class="bg-white" {
             div class="gradient-cta rounded-t-3xl" {
-                div class="px-6 py-24 text-center sm:px-8 md:px-12 md:py-40 lg:px-16 lg:py-40 xl:px-20" {
+                div class="px-6 py-24 text-center sm:px-8 md:px-12 md:py-40 lg:px-16 xl:px-20" {
                     h2 class="display mb-8 font-bold text-5xl text-white md:mb-10 md:text-6xl lg:text-7xl" {
                         (tr(i18n, ctx, MISC_LABELS_READY_TO_GET_STARTED_DESCRIPTOR))
                     }
@@ -1608,7 +1555,12 @@ fn recommended_desktop_url(ctx: &RequestContext, platform: Platform) -> String {
     match platform {
         Platform::Windows => desktop_url(ctx, "win32", recommended_arch(ctx, platform), "setup"),
         Platform::Macos => desktop_url(ctx, "darwin", recommended_arch(ctx, platform), "dmg"),
-        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "appimage"),
+        // Echowire: recommend the .deb (Debian/Ubuntu/Mint — the desktop-Linux majority).
+        // The AppImage's Chromium sandbox is blocked by Ubuntu 24 / Mint 22's userns
+        // restriction (a read-only AppImage can't set a SUID chrome-sandbox or install an
+        // AppArmor profile), so it fails to launch there; the .deb's postinst does both and
+        // works. AppImage/RPM/Flatpak remain as labeled alternatives below.
+        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "deb"),
         Platform::Ios | Platform::Android | Platform::Unknown => ctx.href("/download"),
     }
 }
@@ -1666,13 +1618,10 @@ fn render_desktop_or_download_button(i18n: &MarketingI18n, ctx: &RequestContext)
     }
 }
 
-#[derive(Default)]
 struct AltBuild {
     label: String,
     url: String,
     external: bool,
-    note_title: Option<MarketingMessageDescriptor>,
-    note_body: Option<MarketingMessageDescriptor>,
 }
 
 fn alt(label: String, url: String, external: bool) -> AltBuild {
@@ -1680,7 +1629,6 @@ fn alt(label: String, url: String, external: bool) -> AltBuild {
         label,
         url,
         external,
-        ..AltBuild::default()
     }
 }
 
@@ -1693,35 +1641,15 @@ fn alternate_builds(
     let other_arch = if arch == "arm64" { "x64" } else { "arm64" };
     match platform {
         Platform::Windows => {
-            let mut builds = vec![
-                alt(
-                    other_arch.to_owned(),
-                    desktop_url(ctx, "win32", other_arch, "setup"),
-                    false,
-                ),
-                AltBuild {
-                    label: tr(
-                        i18n,
-                        ctx,
-                        PLATFORM_SUPPORT_PLATFORMS_WINDOWS_GAME_CAPTURE_BUILD_DESCRIPTOR,
-                    ),
-                    url: desktop_url_with_variant(
-                        ctx,
-                        "win32",
-                        arch,
-                        "setup",
-                        Some(WINDOWS_GAME_CAPTURE_VARIANT),
-                    ),
-                    external: false,
-                    note_title: Some(
-                        PLATFORM_SUPPORT_DESKTOP_WINDOWS_GAME_CAPTURE_WARNING_TITLE_DESCRIPTOR,
-                    ),
-                    note_body: Some(
-                        PLATFORM_SUPPORT_DESKTOP_WINDOWS_GAME_CAPTURE_WARNING_BODY_DESCRIPTOR,
-                    ),
-                },
-            ];
-            if ctx.release_channel.is_canary() {
+            // Echowire builds win32/x64 only (no arm64 Windows), plus the game-capture variant.
+            // Offer the game-capture build (dropped by upstream redesign #1515) as the alternate
+            // instead of a non-existent other-arch setup.
+            let mut builds = vec![alt(
+                "Game Capture".to_owned(),
+                desktop_url_variant(ctx, "win32", arch, "windows-game-capture", "setup"),
+                false,
+            )];
+            if ctx.download_channel.is_canary() {
                 builds.push(alt(
                     tr(i18n, ctx, PLATFORM_SUPPORT_PLATFORMS_PORTABLE_DESCRIPTOR),
                     desktop_url(ctx, "win32", arch, "portable"),
@@ -1747,13 +1675,14 @@ fn alternate_builds(
             )]
         }
         Platform::Linux => {
+            // Echowire: x64 only (no arm64 build) and no Flatpak published, so drop both the
+            // arm64 alternate (served a stale build) and the Flatpak link (wrong/unpublished app).
             let mut builds = Vec::new();
-            if !ctx.release_channel.is_canary() {
-                builds.push(alt("Flatpak".to_owned(), FLATPAK_URL.to_owned(), true));
-            }
+            // .deb is the primary/recommended download; AppImage is the "any distro, no install"
+            // alternative (note: needs --no-sandbox on Ubuntu 24 / Mint 22).
             builds.push(alt(
-                "DEB".to_owned(),
-                desktop_url(ctx, "linux", arch, "deb"),
+                "AppImage".to_owned(),
+                desktop_url(ctx, "linux", arch, "appimage"),
                 false,
             ));
             builds.push(alt(
@@ -1764,11 +1693,6 @@ fn alternate_builds(
             builds.push(alt(
                 "tar.gz".to_owned(),
                 desktop_url(ctx, "linux", arch, "tar_gz"),
-                false,
-            ));
-            builds.push(alt(
-                other_arch.to_owned(),
-                desktop_url(ctx, "linux", other_arch, "appimage"),
                 false,
             ));
             builds
@@ -1794,93 +1718,189 @@ fn download_strip(
     };
     let arch = recommended_arch(ctx, platform);
     let primary_url = recommended_desktop_url(ctx, platform);
-    let checksum = latest_version.and_then(|info| latest_version_checksum(platform, info));
     let alternates = alternate_builds(i18n, ctx, platform, arch);
     let button_label = i18n.text_with(
         ctx.locale,
         DOWNLOAD_DOWNLOAD_FOR_PLATFORM_DESCRIPTOR,
         &[("platform", &name)],
     );
-    html! {
-        div class="flex flex-col gap-5 rounded-2xl border border-white/10 bg-white/[0.04] p-6 md:flex-row md:items-center md:gap-8 md:p-7" {
-            div class="flex items-center gap-4 md:w-64 md:shrink-0" {
-                div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-white/10" {
-                    (icon(platform_icon(platform), "h-7 w-7 text-white"))
-                }
-                div class="min-w-0" {
-                    p class="font-semibold text-lg text-white" { (name) }
-                    @if !requirement.is_empty() {
-                        p class="text-sm text-white/50" { (requirement) }
-                    }
-                    @if let Some(info) = latest_version {
-                        p class="text-white/40 text-xs" { (format_latest_version_line(ctx.locale, info)) }
+    let description = if platform == Platform::Windows && ctx.download_channel.is_canary() {
+        let warning = i18n.template(
+            ctx.locale,
+            PLATFORM_SUPPORT_DESKTOP_CANARY_WINDOWS_WARNING_DESCRIPTOR,
+        );
+        html! {
+            p class="body-sm mt-2 max-w-xl text-amber-800" {
+                (message_with_links(&warning, &[LinkReplacement {
+                    variable: "issue_link",
+                    text: "#1393",
+                    href: "https://github.com/fluxerapp/fluxer/issues/1393",
+                    class: "font-medium underline decoration-amber-400 underline-offset-2 hover:text-amber-950",
+                }]))
+            }
+        }
+    } else {
+        html! {}
+    };
+    let details = html! {
+        @if let Some(info) = latest_version {
+            p class="caption mt-2 text-gray-500" { (format_latest_version_line(info)) }
+        }
+    };
+    let actions = html! {
+        a class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#4641D9] px-5 py-3 font-semibold text-sm text-white shadow-md transition hover:bg-[#3832B8] sm:w-auto" href=(primary_url) {
+            (icon(Icon::Download, "h-5 w-5 shrink-0"))
+            span { (button_label) }
+        }
+        @if !alternates.is_empty() {
+            div class="flex flex-wrap items-center gap-x-3 gap-y-1 md:justify-end" {
+                span class="body-sm text-gray-500" { (tr(i18n, ctx, DOWNLOAD_OTHER_DOWNLOADS_DESCRIPTOR)) }
+                @for alt in &alternates {
+                    a class="body-sm text-gray-600 underline decoration-gray-300 underline-offset-2 transition hover:text-[#4641D9]" href=(alt.url) target=[alt.external.then_some("_blank")] rel=[alt.external.then_some("noopener noreferrer")] {
+                        (alt.label)
                     }
                 }
             }
-            div class="flex min-w-0 flex-1 flex-col gap-3" {
-                a class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-sm text-[#4641D9] shadow-lg transition hover:bg-white/90 sm:w-auto sm:self-start" href=(primary_url) {
-                    (icon(Icon::Download, "h-5 w-5 shrink-0"))
-                    span { (button_label) }
+        }
+    };
+    download_row(DownloadRow {
+        icon: platform_icon(platform),
+        title: name,
+        beta_label: None,
+        requirement,
+        description,
+        details,
+        actions,
+    })
+}
+
+#[derive(Clone, Copy)]
+enum MobileDownload {
+    WebApp,
+    Ios,
+    Android,
+}
+
+struct DownloadRow {
+    icon: Icon,
+    title: String,
+    beta_label: Option<String>,
+    requirement: String,
+    description: Markup,
+    details: Markup,
+    actions: Markup,
+}
+
+fn mobile_download_row(
+    i18n: &MarketingI18n,
+    ctx: &RequestContext,
+    download: MobileDownload,
+) -> Markup {
+    match download {
+        MobileDownload::WebApp => download_row(DownloadRow {
+            icon: Icon::Devices,
+            title: tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_WEB_APP_TITLE_DESCRIPTOR),
+            beta_label: None,
+            requirement: String::new(),
+            description: html! {
+                p class="body-sm mt-2 max-w-xl text-gray-600" {
+                    (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_WEB_APP_BODY_DESCRIPTOR))
                 }
-                @if let Some((sha256, checksum_url)) = checksum.as_ref() {
-                    p class="text-white/45 text-xs" {
-                        span class="font-semibold text-white/55" { "SHA-256 " }
-                        @if let Some(checksum_url) = checksum_url {
-                            a class="break-all font-mono underline decoration-white/20 underline-offset-2 hover:text-white" href=(checksum_url) { (sha256) }
-                        } @else {
-                            code class="break-all font-mono" { (sha256) }
-                        }
+            },
+            details: html! {},
+            actions: html! {
+                a class="inline-flex w-full items-center justify-center rounded-xl bg-[#4641D9] px-5 py-3 font-semibold text-sm text-white shadow-md transition hover:bg-[#3832B8] sm:w-auto" href=(ctx.app_url("/channels/@me")) {
+                    (tr(i18n, ctx, DOWNLOAD_OPEN_IN_BROWSER_DESCRIPTOR))
+                }
+                (pwa::pwa_install_trigger(i18n, ctx))
+            },
+        }),
+        MobileDownload::Ios => download_row(DownloadRow {
+            icon: Icon::Apple,
+            title: tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_TITLE_DESCRIPTOR),
+            beta_label: Some(tr(i18n, ctx, BETA_AND_ACCESS_BETA_LABEL_DESCRIPTOR)),
+            requirement: system_requirement(i18n, ctx, Platform::Ios),
+            description: html! {
+                p class="body-sm mt-2 max-w-xl text-gray-600" {
+                    (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_BODY_DESCRIPTOR))
+                }
+            },
+            details: html! {},
+            actions: html! {
+                a class="inline-flex w-full items-center justify-center rounded-xl bg-[#4641D9] px-5 py-3 font-semibold text-sm text-white shadow-md transition hover:bg-[#3832B8] sm:w-auto" href="https://testflight.apple.com/join/andaUq51" target="_blank" rel="noopener noreferrer" {
+                    (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_IOS_CTA_DESCRIPTOR))
+                }
+                div class="flex flex-wrap items-center gap-x-3 gap-y-1 md:justify-end" {
+                    span class="body-sm text-gray-500" { (tr(i18n, ctx, DOWNLOAD_OTHER_DOWNLOADS_DESCRIPTOR)) }
+                    a class="body-sm text-gray-600 underline decoration-gray-300 underline-offset-2 transition hover:text-[#4641D9]" href=(ctx.app_url("/channels/@me")) {
+                        (tr(i18n, ctx, DOWNLOAD_OPEN_IN_BROWSER_DESCRIPTOR))
                     }
+                    (pwa::pwa_install_trigger(i18n, ctx))
                 }
-                @if !alternates.is_empty() {
-                    div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm" {
-                        span class="text-white/40" { (tr(i18n, ctx, DOWNLOAD_OTHER_DOWNLOADS_DESCRIPTOR)) }
-                        @for alt in &alternates {
-                            @if let Some(note_body) = alt.note_body {
-                                span class="group relative inline-flex" {
-                                    a class="text-white/60 underline decoration-white/30 decoration-dotted underline-offset-2 transition hover:text-white" href=(alt.url) target=[alt.external.then_some("_blank")] rel=[alt.external.then_some("noopener noreferrer")] {
-                                        (alt.label)
-                                    }
-                                    span role="tooltip" class="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 w-64 -translate-x-1/2 rounded-lg bg-gray-900 p-3 text-left opacity-0 shadow-xl ring-1 ring-white/10 transition-opacity duration-150 group-hover:opacity-100 group-focus-within:opacity-100" {
-                                        @if let Some(note_title) = alt.note_title {
-                                            span class="block font-semibold text-white text-xs" { (tr(i18n, ctx, note_title)) }
-                                        }
-                                        span class="mt-1 block text-white/70 text-xs leading-relaxed" { (tr(i18n, ctx, note_body)) }
-                                    }
-                                }
-                            } @else {
-                                a class="text-white/60 underline decoration-white/25 underline-offset-2 transition hover:text-white" href=(alt.url) target=[alt.external.then_some("_blank")] rel=[alt.external.then_some("noopener noreferrer")] {
-                                    (alt.label)
+            },
+        }),
+        MobileDownload::Android => download_row(DownloadRow {
+            icon: Icon::Android,
+            title: tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_TITLE_DESCRIPTOR),
+            beta_label: Some(tr(i18n, ctx, BETA_AND_ACCESS_BETA_LABEL_DESCRIPTOR)),
+            requirement: system_requirement(i18n, ctx, Platform::Android),
+            description: html! {
+                p class="body-sm mt-2 max-w-xl text-gray-600" {
+                    (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_BODY_DESCRIPTOR))
+                }
+            },
+            details: html! {},
+            actions: html! {
+                a class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#4641D9] px-5 py-3 font-semibold text-sm text-white shadow-md transition hover:bg-[#3832B8] sm:w-auto" href="https://play.google.com/store/apps/details?id=org.echowire.twa" target="_blank" rel="noopener noreferrer" {
+                    (icon(Icon::Android, "h-5 w-5 shrink-0"))
+                    (tr(i18n, ctx, PLATFORM_SUPPORT_MOBILE_ANDROID_CTA_DESCRIPTOR))
+                }
+            },
+        }),
+    }
+}
+
+fn download_row(row: DownloadRow) -> Markup {
+    let DownloadRow {
+        icon: row_icon,
+        title,
+        beta_label,
+        requirement,
+        description,
+        details,
+        actions,
+    } = row;
+    html! {
+        li class="flex flex-col gap-5 border-gray-200 border-b py-7 last:border-b-0 md:flex-row md:items-start md:gap-10" {
+            div class="flex min-w-0 flex-1 items-start gap-4" {
+                div class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#4641D9]/10" {
+                    (icon(row_icon, "h-6 w-6 text-[#4641D9]"))
+                }
+                div class="min-w-0" {
+                    div class="flex flex-wrap items-center gap-x-3 gap-y-1.5" {
+                        div class="flex items-center gap-x-2" {
+                            h2 class="title-sm text-gray-950" { (title) }
+                            @if let Some(beta_label) = beta_label {
+                                span class="caption rounded-full border border-amber-200 bg-amber-50 px-2.5 py-0.5 font-semibold text-amber-800 uppercase" {
+                                    (beta_label)
                                 }
                             }
                         }
+                        @if !requirement.is_empty() {
+                            span class="body-sm text-gray-500" { (requirement) }
+                        }
                     }
+                    (description)
+                    (details)
                 }
+            }
+            div class="flex shrink-0 flex-col gap-2.5 md:w-60 md:items-end" {
+                (actions)
             }
         }
     }
 }
 
-fn latest_version_checksum(
-    platform: Platform,
-    info: &LatestVersionInfo,
-) -> Option<(String, Option<String>)> {
-    let format = match platform {
-        Platform::Windows => "setup",
-        Platform::Macos => "dmg",
-        Platform::Linux => "appimage",
-        Platform::Ios | Platform::Android | Platform::Unknown => return None,
-    };
-    let file = info.files.get(format)?;
-    let sha256 = file.sha256.as_ref()?.clone();
-    if !sha256.chars().all(|ch| ch.is_ascii_hexdigit()) || sha256.len() != 64 {
-        return None;
-    }
-    Some((sha256, file.checksum_url.clone()))
-}
-
-const FLATPAK_URL: &str = "https://flathub.org/en/apps/app.fluxer.Fluxer";
-const WINDOWS_GAME_CAPTURE_VARIANT: &str = "windows-game-capture";
 
 fn platform_icon(platform: Platform) -> Icon {
     match platform {
@@ -1893,19 +1913,24 @@ fn platform_icon(platform: Platform) -> Icon {
 }
 
 fn desktop_url(ctx: &RequestContext, platform: &str, arch: &str, format: &str) -> String {
-    desktop_url_with_variant(ctx, platform, arch, format, None)
+    let channel = ctx.download_channel.segment();
+    let path = format!("/dl/desktop/{channel}/{platform}/{arch}/latest/{format}");
+    let final_path = desktop_path_with_query(path, ctx.test_build);
+    ctx.api_url(&final_path)
 }
 
-fn desktop_url_with_variant(
+// Echowire: variant-aware desktop URL (e.g. the Windows game-capture build). The upstream
+// download-page redesign (#1515) dropped the variant helper + the game-capture download entry,
+// but we still build the windows-game-capture variant, so re-expose it on the download page.
+fn desktop_url_variant(
     ctx: &RequestContext,
     platform: &str,
     arch: &str,
+    variant: &str,
     format: &str,
-    variant: Option<&str>,
 ) -> String {
-    let channel = ctx.release_channel.segment();
-    let variant_segment = variant.map(|value| format!("/{value}")).unwrap_or_default();
-    let path = format!("/dl/desktop/{channel}/{platform}/{arch}{variant_segment}/latest/{format}");
+    let channel = ctx.download_channel.segment();
+    let path = format!("/dl/desktop/{channel}/{platform}/{arch}/{variant}/latest/{format}");
     let final_path = desktop_path_with_query(path, ctx.test_build);
     ctx.api_url(&final_path)
 }
@@ -2003,27 +2028,13 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                     div {
                         h3 class="title mb-4 text-white md:mb-6" { (tr(i18n, ctx, FOOTER_FLUXER_DESCRIPTOR)) }
                         ul class="space-y-3" {
-                            (footer_link(ctx.href("/plutonium"), tr(i18n, ctx, FOOTER_PLUTONIUM_TIER_DESCRIPTOR), link_class))
+                            (footer_link(ctx.href("/reverb"), tr(i18n, ctx, FOOTER_PLUTONIUM_TIER_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/partners"), tr(i18n, ctx, FOOTER_PARTNERS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/download"), tr(i18n, ctx, FOOTER_DOWNLOAD_DESCRIPTOR), link_class))
                             (footer_link("https://github.com/fluxerapp/fluxer".to_owned(), tr(i18n, ctx, FOOTER_SOURCE_CODE_DESCRIPTOR), link_class))
-                            (footer_link("https://bsky.app/profile/fluxer.app".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))
-                            li {
-                                div class="flex items-center gap-2" {
-                                    a href=(ctx.href("/blog")) class=(link_class) {
-                                        (tr(i18n, ctx, COMPANY_AND_RESOURCES_BLOG_DESCRIPTOR))
-                                    }
-                                    a href=(ctx.href("/blog/rss.xml")) title=(tr(i18n, ctx, FOOTER_RSS_FEED_DESCRIPTOR)) class="text-white/90 transition-colors hover:text-white" {
-                                        (icon(Icon::Rss, "h-[1em] w-[1em]"))
-                                    }
-                                }
-                            }
-                            (footer_link(ctx.href("/blog/roadmap-2026"), tr(i18n, ctx, FOOTER_ROADMAP_DESCRIPTOR), link_class))
+                            (footer_link("https://bsky.app/profile/echowire.org".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/help"), tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR), link_class))
-                            (footer_link("https://fluxerstatus.com".to_owned(), tr(i18n, ctx, FOOTER_STATUS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/press"), tr(i18n, ctx, FOOTER_PRESS_DESCRIPTOR), link_class))
-                            (footer_link("https://docs.fluxer.app".to_owned(), tr(i18n, ctx, COMPANY_AND_RESOURCES_DOCS_DESCRIPTOR), link_class))
-                            (footer_link(ctx.href("/careers"), tr(i18n, ctx, COMPANY_AND_RESOURCES_CAREERS_LABEL_DESCRIPTOR), link_class))
                         }
                     }
                     div {
@@ -2039,8 +2050,8 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                     div class="sm:col-span-1 min-[480px]:col-span-2" {
                         h3 class="title mb-4 text-white md:mb-6" { (tr(i18n, ctx, FOOTER_CONNECT_DESCRIPTOR)) }
                         ul class="space-y-3" {
-                            (footer_link("mailto:press@fluxer.app".to_owned(), "press@fluxer.app".to_owned(), link_class))
-                            (footer_link("mailto:support@fluxer.app".to_owned(), "support@fluxer.app".to_owned(), link_class))
+                            (footer_link("mailto:press@echowire.org".to_owned(), "press@echowire.org".to_owned(), link_class))
+                            (footer_link("mailto:support@echowire.org".to_owned(), "support@echowire.org".to_owned(), link_class))
                             (footer_link(ctx.href("/help/report-bug"), tr(i18n, ctx, FOOTER_REPORT_A_BUG_DESCRIPTOR), link_class))
                         }
                     }

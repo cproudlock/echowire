@@ -7,13 +7,14 @@ import {
 	MessageFlagsDescriptions,
 } from '@fluxer/constants/src/ChannelConstants';
 import {AVATAR_MAX_SIZE, MAX_MESSAGE_LENGTH_PREMIUM} from '@fluxer/constants/src/LimitConstants';
+import {ClientUploadedAttachmentRequest} from '@fluxer/schema/src/domains/message/AttachmentSchemas';
 import {
 	MessageContentRequest,
 	MessageNonceRequest,
 	RichEmbedRequest,
 } from '@fluxer/schema/src/domains/message/MessageRequestSchemas';
 import {AllowedMentionsRequest, MessageReferenceRequest} from '@fluxer/schema/src/domains/message/SharedMessageSchemas';
-import {createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
+import {base64LengthForBytes, createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
 import {QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
 import {
 	coerceNumberFromString,
@@ -21,6 +22,7 @@ import {
 	createStringType,
 	createUnboundedStringType,
 	Int32Type,
+	NonNegativeSafeIntegerType,
 	SnowflakeType,
 } from '@fluxer/schema/src/primitives/SchemaPrimitives';
 import {URLType} from '@fluxer/schema/src/primitives/UrlValidators';
@@ -29,7 +31,7 @@ import {z} from 'zod';
 
 export const WebhookCreateRequest = z.object({
 	name: WebhookNameType.describe('The name of the webhook'),
-	avatar: createBase64StringType(1, Math.ceil(AVATAR_MAX_SIZE * (4 / 3)))
+	avatar: createBase64StringType(1, base64LengthForBytes(AVATAR_MAX_SIZE))
 		.nullish()
 		.describe('The avatar image as a base64-encoded data URI'),
 });
@@ -39,7 +41,7 @@ export type WebhookCreateRequest = z.infer<typeof WebhookCreateRequest>;
 export const WebhookUpdateRequest = z
 	.object({
 		name: WebhookNameType.describe('The new name of the webhook'),
-		avatar: createBase64StringType(1, Math.ceil(AVATAR_MAX_SIZE * (4 / 3)))
+		avatar: createBase64StringType(1, base64LengthForBytes(AVATAR_MAX_SIZE))
 			.nullish()
 			.describe('The new avatar image as a base64-encoded data URI'),
 		channel_id: SnowflakeType.describe('The ID of the channel to move the webhook to'),
@@ -51,7 +53,7 @@ export type WebhookUpdateRequest = z.infer<typeof WebhookUpdateRequest>;
 export const WebhookTokenUpdateRequest = z
 	.object({
 		name: WebhookNameType.describe('The new name of the webhook'),
-		avatar: createBase64StringType(1, Math.ceil(AVATAR_MAX_SIZE * (4 / 3)))
+		avatar: createBase64StringType(1, base64LengthForBytes(AVATAR_MAX_SIZE))
 			.nullish()
 			.describe('The new avatar image as a base64-encoded data URI'),
 	})
@@ -60,7 +62,7 @@ export const WebhookTokenUpdateRequest = z
 
 export type WebhookTokenUpdateRequest = z.infer<typeof WebhookTokenUpdateRequest>;
 
-const WebhookAttachmentRequest = z.object({
+const WebhookMultipartAttachmentRequest = z.object({
 	id: z
 		.union([SnowflakeType, coerceNumberFromString(Int32Type)])
 		.optional()
@@ -68,7 +70,7 @@ const WebhookAttachmentRequest = z.object({
 	filename: createStringType(1, 1024).optional().describe('Name of the file (1-1024 characters)'),
 	description: createStringType(1, 4096).optional().describe('Description for the attachment (max 4096 characters)'),
 	content_type: createStringType(1, 256).optional().describe('MIME type of the file'),
-	size: z.number().int().optional().describe('Size of the file in bytes'),
+	size: NonNegativeSafeIntegerType.optional().describe('Size of the file in bytes'),
 	url: URLType.optional().describe('URL of the attachment'),
 	proxy_url: URLType.optional().describe('Proxied URL of the attachment'),
 	height: z.number().int().optional().describe('Height of the image/video in pixels'),
@@ -84,11 +86,10 @@ const WebhookAttachmentRequest = z.object({
 	).optional(),
 });
 
-export const WebhookMessageRequest = z
+const WebhookMessageRequestBase = z
 	.object({
 		content: MessageContentRequest.nullish(),
 		embeds: z.array(RichEmbedRequest).optional().describe('Array of embed objects to include in the message'),
-		attachments: z.array(WebhookAttachmentRequest).optional().describe('Array of attachment objects'),
 		message_reference: MessageReferenceRequest.nullish().describe(
 			'Reference to another message (for replies or forwards)',
 		),
@@ -108,7 +109,23 @@ export const WebhookMessageRequest = z
 	})
 	.partial();
 
+export const WebhookMessageRequest = WebhookMessageRequestBase.extend({
+	attachments: z
+		.array(ClientUploadedAttachmentRequest)
+		.optional()
+		.describe('Array of attachments uploaded through the presigned upload endpoint'),
+});
+
 export type WebhookMessageRequest = z.infer<typeof WebhookMessageRequest>;
+
+export const WebhookMultipartMessageRequest = WebhookMessageRequestBase.extend({
+	attachments: z
+		.array(WebhookMultipartAttachmentRequest)
+		.optional()
+		.describe('Array of multipart attachment metadata objects'),
+});
+
+export type WebhookMultipartMessageRequest = z.infer<typeof WebhookMultipartMessageRequest>;
 
 export const WebhookMessageEditRequest = z
 	.object({

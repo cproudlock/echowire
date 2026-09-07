@@ -3,6 +3,7 @@
 import {ContentBlockedError} from '@fluxer/errors/src/domains/content/ContentBlockedError';
 import {createMiddleware} from 'hono/factory';
 import {Logger} from '../Logger';
+import {readRequestJsonBody} from '../utils/RequestJsonBody';
 import {extractUrlCandidates} from '../utils/UrlNormalizer';
 import {phraseBlocklistCache} from './PhraseBlocklistCache';
 import {urlBlocklistCache} from './UrlBlocklistCache';
@@ -71,6 +72,7 @@ const SKIP_FIELD_SUFFIXES = [
 	'_tokens',
 ] as const;
 const SKIP_CONTENT_FILTER_PATH_PARTS = [
+	'/admin/blocklists/phrase/',
 	'/auth/',
 	'/oauth2/',
 	'/reports/dsa/email/',
@@ -126,16 +128,14 @@ const ContentFilterMiddleware = createMiddleware(async (ctx, next) => {
 		return next();
 	}
 	const contentType = ctx.req.header('content-type') ?? '';
-	if (!contentType.includes('application/json')) {
+	if (contentType.includes('multipart/form-data') || contentType.includes('application/x-www-form-urlencoded')) {
 		return next();
 	}
-	let body: unknown;
-	try {
-		body = await ctx.req.json();
-	} catch {
+	const body = await readRequestJsonBody(ctx.req);
+	if (!body.parsed) {
 		return next();
 	}
-	const strings = extractStringValues(body);
+	const strings = extractStringValues(body.value);
 	if (strings.length === 0) {
 		return next();
 	}

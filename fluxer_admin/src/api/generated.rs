@@ -32,8 +32,12 @@ pub(crate) fn nonzero_u32(value: u32, field: &str) -> Result<std::num::NonZeroU3
     std::num::NonZeroU32::new(value).ok_or_else(|| format!("{field} must be greater than zero"))
 }
 
-pub(crate) fn nonzero_u64(value: u64, field: &str) -> Result<std::num::NonZeroU64, String> {
-    std::num::NonZeroU64::new(value).ok_or_else(|| format!("{field} must be greater than zero"))
+pub(crate) fn deletion_reason_code(
+    value: i32,
+    field: &str,
+) -> Result<types::DeletionReasonCode, String> {
+    types::DeletionReasonCode::try_from(value)
+        .map_err(|_| format!("{field} is not a deletion reason code: {value}"))
 }
 
 #[cfg(test)]
@@ -69,6 +73,7 @@ mod tests {
                 "premium_grace_ends_at": null,
                 "premium_lifetime_sequence": null,
                 "suspicious_activity_flags": 0,
+                "phone_verification_deferred": false,
                 "temp_banned_until": null,
                 "pending_deletion_at": null,
                 "pending_bulk_message_deletion_at": null,

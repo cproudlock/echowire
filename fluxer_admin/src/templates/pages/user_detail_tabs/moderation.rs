@@ -432,7 +432,7 @@ const MESSAGE_SHRED_FORM_SCRIPT: &str = r#"
 		document.body.dispatchEvent(new CustomEvent('showFlash', {detail: {level: level, message: message}}));
 	}
 	function toastFromResponse(response) {
-		var raw = response.headers.get('X-Fluxer-Admin-Toast');
+		var raw = response.headers.get('X-Echowire-Admin-Toast');
 		if (!raw) return null;
 		try {
 			var parsed = JSON.parse(raw);

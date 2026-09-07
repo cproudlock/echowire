@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_LT_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_LT_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Tavo {product_name} paskyra laikinai išjungta",
 		"body": "Sveikas, {username},\n\nLaikinai išjungėme tavo {product_name} paskyrą, nes aptikome įtartiną veiklą.\n\n{reason, select,\n  null {}\n  other {Priežastis: {reason}}\n}\n\nNorėdamas atgauti prieigą prie paskyros, turėsi iš naujo nustatyti slaptažodį:\n\n{forgotUrl}\n\nNustatęs slaptažodį iš naujo, galėsi vėl prisijungti.\n\nJei manai, kad tai įvyko per klaidą, susisiek su mūsų palaikymo komanda.\n\n– {product_name} saugos komanda"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_LT_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Leisti prisijungimą iš naujo IP adreso",
 		"body": "Sveikas, {username},\n\nAptikome bandymą prisijungti prie tavo {product_name} paskyros iš naujo IP adreso:\n\nIP adresas: {ipAddress}\nVieta: {location}\n\nJei tai buvai tu, patvirtink šį IP adresą spustelėdamas žemiau esančią nuorodą:\n\n{authUrl}\n\nJei nebandei prisijungti, nedelsdamas pakeisk slaptažodį.\n\nŠi nuoroda galioja 30 minučių.\n\n– {product_name} komanda"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Patvirtink prieigą prie savo {product_name} atsarginių kodų",
+		"body": "Sveikas, {username},\n\nGavome prašymą peržiūrėti tavo {product_name} paskyros atsarginius kodus.\n\nNorėdamas patvirtinti šį prašymą, įvesk šį kodą programėlėje:\n\n{code}\n\nŠis kodas galioja iki {expiresAt, date, full} {expiresAt, time, short}.\n\nJei to neprašei, kažkas gali turėti prieigą prie tavo paskyros. Nedelsdamas pakeisk slaptažodį.\n\n– {product_name} komanda"
 	},
 	"password_change_verification": {
 		"subject": "Patvirtink savo {product_name} slaptažodžio keitimą",

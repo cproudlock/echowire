@@ -89,14 +89,17 @@ export class UserAccountLookupService {
 		let guildMember: GuildMemberResponse | null = null;
 		let guildMemberDomain: GuildMember | null = null;
 		if (guildId != null) {
-			guildMemberDomain = await this.deps.guildRepository.getMember(guildId, targetId);
-			if (guildMemberDomain) {
-				guildMember = await this.deps.guildService.members.getMember({
-					userId,
-					targetId,
-					guildId,
-					requestCache,
-				});
+			const viewerMember = await this.deps.guildRepository.getMember(guildId, userId);
+			if (viewerMember) {
+				guildMemberDomain = await this.deps.guildRepository.getMember(guildId, targetId);
+				if (guildMemberDomain) {
+					guildMember = await this.deps.guildService.members.getMember({
+						userId,
+						targetId,
+						guildId,
+						requestCache,
+					});
+				}
 			}
 		}
 		let premiumType = user.premiumType ?? undefined;
@@ -276,14 +279,6 @@ export class UserAccountLookupService {
 			id: guildId.toString(),
 			nick: members[index]?.nickname ?? null,
 		}));
-	}
-
-	async generateUniqueDiscriminator(username: string): Promise<number> {
-		const usedDiscriminators = await this.deps.userAccountRepository.findDiscriminatorsByUsername(username);
-		for (let i = 1; i <= 9999; i++) {
-			if (!usedDiscriminators.has(i)) return i;
-		}
-		throw new Error('No available discriminators for this username');
 	}
 
 	async checkUsernameDiscriminatorAvailability(params: {username: string; discriminator: number}): Promise<boolean> {

@@ -11,6 +11,9 @@ import {
 	type VoiceMediaGraphSnapshot,
 } from '../engine/VoiceMediaGraph';
 import {voiceMediaGraphStore} from '../engine/VoiceMediaGraphStore';
+import type {ScreenSharePublicationOperation} from '../utils/ScreenShareSubscriptionPolicy';
+
+export type {ScreenSharePublicationOperation};
 
 export const ScreenShareWatchErrorCode = {
 	SubscriptionSetSubscribedFailed: -2101,
@@ -19,7 +22,7 @@ export const ScreenShareWatchErrorCode = {
 	SubscriptionEmitTrackUpdateFailed: -2104,
 	ObserverAttachFailed: -2105,
 	ObserverDetachFailed: -2106,
-	NativeSubscriptionCommandFailed: -2201,
+	SubscriptionSetVideoDimensionsFailed: -2107,
 	RemoteTrackSubscriptionFailed: -2202,
 	PublicationMissingTimeout: -2301,
 	SubscriptionAttachTimeout: -2302,
@@ -35,9 +38,9 @@ export type ScreenShareWatchFailureReason =
 	| 'subscription-set-enabled-failed'
 	| 'subscription-set-video-quality-failed'
 	| 'subscription-emit-track-update-failed'
+	| 'subscription-set-video-dimensions-failed'
 	| 'observer-attach-failed'
 	| 'observer-detach-failed'
-	| 'native-subscription-command-failed'
 	| 'remote-track-subscription-failed'
 	| 'publication-missing-timeout'
 	| 'subscription-attach-timeout'
@@ -66,8 +69,6 @@ export interface ScreenShareWatchFailureTarget {
 	source?: string | null;
 }
 
-export type ScreenSharePublicationOperation = 'setEnabled' | 'setSubscribed' | 'setVideoQuality' | 'emitTrackUpdate';
-
 export interface ScreenShareWatchAttempt {
 	attemptKey: string;
 	startedAt: number;
@@ -93,6 +94,11 @@ export function getScreenShareWatchFailureForPublicationOperation(
 			return {
 				code: ScreenShareWatchErrorCode.SubscriptionSetVideoQualityFailed,
 				reason: 'subscription-set-video-quality-failed',
+			};
+		case 'setVideoDimensions':
+			return {
+				code: ScreenShareWatchErrorCode.SubscriptionSetVideoDimensionsFailed,
+				reason: 'subscription-set-video-dimensions-failed',
 			};
 		case 'emitTrackUpdate':
 			return {

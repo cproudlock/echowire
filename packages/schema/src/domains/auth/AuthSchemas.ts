@@ -135,7 +135,7 @@ export type SsoStatusResponse = z.infer<typeof SsoStatusResponse>;
 export const SsoStartResponse = z.object({
 	authorization_url: z.string().describe('URL to redirect user to for SSO authentication'),
 	state: z.string().describe('State parameter for CSRF protection'),
-	redirect_uri: z.string().describe('Redirect URI after SSO completion'),
+	redirect_uri: z.string().describe('OAuth redirect URI used for the SSO provider callback'),
 });
 
 export type SsoStartResponse = z.infer<typeof SsoStartResponse>;
@@ -196,6 +196,7 @@ const AuthSessionClientInfo = z.object({
 	platform: z.string().nullish().describe('The platform reported by the client'),
 	os: z.string().nullish().describe('The operating system reported by the client'),
 	browser: z.string().nullish().describe('The browser reported by the client'),
+	device: z.enum(['mobile', 'desktop']).describe('Device class of the session, decided by the server'),
 	location: AuthSessionLocation.nullish().describe('The geolocation data sent by the client'),
 });
 
@@ -226,6 +227,7 @@ export type UsernameSuggestionsResponse = z.infer<typeof UsernameSuggestionsResp
 export const HandoffInitiateResponse = z.object({
 	code: z.string().describe('Handoff code to share with the receiving device'),
 	expires_at: z.iso.datetime().describe('ISO 8601 timestamp when the handoff code expires'),
+	poll_secret: z.string().optional().describe('Secret the initiating device must present to retrieve the token'),
 });
 
 export type HandoffInitiateResponse = z.infer<typeof HandoffInitiateResponse>;
@@ -233,6 +235,7 @@ export type HandoffInitiateResponse = z.infer<typeof HandoffInitiateResponse>;
 const HandoffInfoClientInfo = z.object({
 	platform: z.string().nullish().describe('The platform of the requesting device'),
 	os: z.string().nullish().describe('The operating system of the requesting device'),
+	device: z.enum(['mobile', 'desktop']).describe('Device class of the requesting device, decided by the server'),
 	location: AuthSessionLocation.nullish().describe('The approximate location of the requesting device'),
 });
 
@@ -254,13 +257,14 @@ export type HandoffStatusResponse = z.infer<typeof HandoffStatusResponse>;
 
 export const SsoStartRequest = z.object({
 	redirect_to: createStringType(0, 2048).nullish().describe('URL to redirect to after SSO completion'),
+	redirect_uri: createStringType(0, 2048).nullish().describe('OAuth redirect URI to use for the SSO provider callback'),
 });
 
 export type SsoStartRequest = z.infer<typeof SsoStartRequest>;
 
 export const SsoCompleteRequest = z.object({
-	code: createStringType().describe('Authorization code from the SSO provider'),
-	state: createStringType().describe('State parameter for CSRF protection'),
+	code: createStringType(1, 4096).describe('Authorization code from the SSO provider'),
+	state: createStringType(1, 4096).describe('State parameter for CSRF protection'),
 });
 
 export type SsoCompleteRequest = z.infer<typeof SsoCompleteRequest>;
@@ -328,6 +332,18 @@ export const HandoffCodeParam = z.object({
 
 export type HandoffCodeParam = z.infer<typeof HandoffCodeParam>;
 
+export const HandoffStatusRequest = z.object({
+	poll_secret: createStringType().describe('The poll secret issued when the handoff was initiated'),
+});
+
+export type HandoffStatusRequest = z.infer<typeof HandoffStatusRequest>;
+
+export const HandoffCancelRequest = z.object({
+	poll_secret: createStringType().describe('The poll secret issued when the handoff was initiated'),
+});
+
+export type HandoffCancelRequest = z.infer<typeof HandoffCancelRequest>;
+
 export const EnableMfaTotpRequest = z
 	.object({
 		secret: createStringType(1, 256).describe('The TOTP secret key'),
@@ -366,6 +382,38 @@ export const MfaBackupCodesResponse = z.object({
 
 export type MfaBackupCodesResponse = z.infer<typeof MfaBackupCodesResponse>;
 
+export const MfaBackupCodesChallengeStartResponse = z.object({
+	ticket: z.string().describe('Ticket for backup codes challenge actions'),
+	code_expires_at: z.string().describe('ISO8601 timestamp when the verification code expires'),
+	resend_available_at: z.string().describe('ISO8601 timestamp when the code can be resent'),
+});
+
+export type MfaBackupCodesChallengeStartResponse = z.infer<typeof MfaBackupCodesChallengeStartResponse>;
+
+export const MfaBackupCodesChallengeResendRequest = z.object({
+	ticket: createStringType().describe('Backup codes challenge ticket identifier'),
+});
+
+export type MfaBackupCodesChallengeResendRequest = z.infer<typeof MfaBackupCodesChallengeResendRequest>;
+
+export const MfaBackupCodesChallengeVerifyRequest = MfaBackupCodesChallengeResendRequest.extend({
+	code: createStringType().describe('Verification code sent to the email address'),
+});
+
+export type MfaBackupCodesChallengeVerifyRequest = z.infer<typeof MfaBackupCodesChallengeVerifyRequest>;
+
+export const MfaBackupCodesChallengeVerifyResponse = MfaBackupCodesResponse.extend({
+	verification_proof: z.string().describe('Proof token authorizing backup code regeneration on this ticket'),
+});
+
+export type MfaBackupCodesChallengeVerifyResponse = z.infer<typeof MfaBackupCodesChallengeVerifyResponse>;
+
+export const MfaBackupCodesChallengeRegenerateRequest = MfaBackupCodesChallengeResendRequest.extend({
+	verification_proof: createStringType().describe('Proof token obtained from verifying the email code'),
+});
+
+export type MfaBackupCodesChallengeRegenerateRequest = z.infer<typeof MfaBackupCodesChallengeRegenerateRequest>;
+
 export const PhoneSendVerificationRequest = z.object({
 	phone: PhoneNumberType.describe('Phone number to send verification code'),
 	channel: z
@@ -385,7 +433,7 @@ const PhoneSendVerificationDeliveredResponse = z.object({
 });
 
 const PhoneSendVerificationInboundChallengeResponse = z.object({
-	channel: z.literal('inbound_challenge').describe('The user must send Fluxer an SMS instead of receiving one'),
+	channel: z.literal('inbound_challenge').describe('The user must send Echowire an SMS instead of receiving one'),
 	challenge_code: createStringType(4, 12).describe('The numeric code the user must text to our number'),
 	our_number: createStringType(4, 32).describe('The Twilio number the user must text the code to (E.164)'),
 	expires_at: z.iso.datetime().describe('ISO 8601 timestamp when this inbound challenge expires'),

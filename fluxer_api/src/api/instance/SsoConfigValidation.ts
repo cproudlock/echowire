@@ -3,7 +3,9 @@
 import {domainToASCII} from 'node:url';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
+import type {RequestUrlPolicy} from '@pkgs/http_client/src/HttpClientTypes';
 import {createPublicInternetRequestUrlPolicy} from '@pkgs/http_client/src/PublicInternetRequestUrlPolicy';
+import {Config} from '../Config';
 
 interface SsoConfigValidationInput {
 	enabled: boolean;
@@ -21,7 +23,20 @@ interface NormalizedSsoConfigValidationResult extends SsoConfigValidationInput {
 	ready: boolean;
 }
 
-const SSO_REQUEST_URL_POLICY = createPublicInternetRequestUrlPolicy();
+let ssoRequestUrlPolicy: RequestUrlPolicy | null = null;
+
+export function resetSsoRequestUrlPolicyForTesting(): void {
+	ssoRequestUrlPolicy = null;
+}
+
+export function getSsoRequestUrlPolicy(): RequestUrlPolicy {
+	if (ssoRequestUrlPolicy === null) {
+		ssoRequestUrlPolicy = createPublicInternetRequestUrlPolicy({
+			allowPrivateAddresses: Config.auth.ssoAllowPrivateAddresses,
+		});
+	}
+	return ssoRequestUrlPolicy;
+}
 const DOMAIN_LABEL_REGEX = /^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
 
 function normalizeOptionalSsoString(value: string | null): string | null {
@@ -86,7 +101,7 @@ export function normalizeSsoAllowedEmailDomains(domains: Array<string>): Array<s
 	return Array.from(normalized);
 }
 
-export async function validateSsoPublicOutboundUrl(rawUrl: string, fieldName: string): Promise<URL> {
+export async function validateSsoPublicOutboundUrl(rawUrl: string, fieldName: string): Promise<string> {
 	let parsedUrl: URL;
 	try {
 		parsedUrl = new URL(rawUrl);
@@ -97,14 +112,17 @@ export async function validateSsoPublicOutboundUrl(rawUrl: string, fieldName: st
 		throw InputValidationError.fromCode(fieldName, ValidationErrorCodes.INVALID_URL_FORMAT);
 	}
 	try {
-		await SSO_REQUEST_URL_POLICY.validate(parsedUrl, {
+		await getSsoRequestUrlPolicy().validate(parsedUrl, {
 			phase: 'initial',
 			redirectCount: 0,
 		});
 	} catch {
-		throw InputValidationError.fromCode(fieldName, ValidationErrorCodes.INVALID_URL_FORMAT);
+		throw InputValidationError.fromCode(fieldName, ValidationErrorCodes.URL_NOT_PUBLICLY_ROUTABLE);
 	}
-	return parsedUrl;
+	// Return the caller's exact input rather than parsedUrl.toString(), which would normalize
+	// the URL (e.g. appending a trailing slash) and break exact-match comparisons such as the
+	// OIDC issuer check in jwtVerify. Invalid URLs have already thrown above.
+	return rawUrl;
 }
 
 async function normalizeOptionalSsoUrl(
@@ -116,8 +134,7 @@ async function normalizeOptionalSsoUrl(
 	if (!normalized || skipValidation) {
 		return normalized;
 	}
-	const validUrl = await validateSsoPublicOutboundUrl(normalized, fieldName);
-	return validUrl.toString();
+	return validateSsoPublicOutboundUrl(normalized, fieldName);
 }
 
 function resolveSsoReadiness(config: SsoConfigValidationInput, isTestProvider: boolean): boolean {

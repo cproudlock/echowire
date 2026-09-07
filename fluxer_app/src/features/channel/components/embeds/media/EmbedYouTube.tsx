@@ -7,9 +7,14 @@ import {OverlayActionButton, OverlayPlayButton} from '@app/features/channel/comp
 import {useNearViewport} from '@app/features/messaging/hooks/useNearViewport';
 import {openExternalUrlWithWarning} from '@app/features/messaging/utils/ExternalLinkUtils';
 import * as ImageCacheUtils from '@app/features/messaging/utils/ImageCacheUtils';
+import {
+	EMBED_MAX_HEIGHT,
+	EMBED_MAX_WIDTH,
+	EMBED_TALL_MAX_HEIGHT,
+} from '@app/features/messaging/utils/MediaDimensionConfig';
 import {decodeThumbHashDataURL} from '@app/features/messaging/utils/ThumbHashUtils';
 import {remFromPx} from '@app/features/theme/layout/RemFromPx';
-import {createCalculator} from '@app/features/ui/utils/DimensionUtils';
+import {createCalculator, mediaAspectRatioValue} from '@app/features/ui/utils/DimensionUtils';
 import type {MessageEmbed} from '@fluxer/schema/src/domains/message/EmbedSchemas';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
@@ -18,10 +23,6 @@ import {AnimatePresence, motion} from 'framer-motion';
 import {observer} from 'mobx-react-lite';
 import {type FC, useCallback, useEffect, useMemo, useState} from 'react';
 
-const VIDEO_THUMBNAIL_DESCRIPTOR = msg({
-	message: 'Video thumbnail',
-	comment: 'Short label in the channel and chat embed you tube. Keep it concise.',
-});
 const PLAY_VIDEO_DESCRIPTOR = msg({
 	message: 'Play video',
 	comment: 'Short label in the channel and chat embed you tube. Keep it concise.',
@@ -41,7 +42,8 @@ const YOUTUBE_CONFIG = {
 	BUTTON_DELAY: 0.1,
 } as const;
 const youtubeCalculator = createCalculator({
-	maxWidth: YOUTUBE_CONFIG.DEFAULT_WIDTH,
+	maxWidth: EMBED_MAX_WIDTH,
+	maxHeight: EMBED_MAX_HEIGHT,
 	responsive: true,
 });
 
@@ -74,7 +76,8 @@ const Thumbnail: FC<ThumbnailProps> = observer(
 								exit={{opacity: 0}}
 								transition={{duration: Accessibility.useReducedMotion ? 0 : 0.2}}
 								src={thumbHashURL}
-								alt={i18n._(VIDEO_THUMBNAIL_DESCRIPTOR)}
+								alt=""
+								aria-hidden={true}
 								className={styles.thumbnailPlaceholder}
 								data-flx="channel.embeds.media.embed-you-tube.thumbnail.thumbnail-placeholder"
 							/>
@@ -116,7 +119,7 @@ const Thumbnail: FC<ThumbnailProps> = observer(
 							onClick={onPlay}
 							icon={
 								<PlayIcon
-									size={28}
+									size={remFromPx(28)}
 									aria-hidden="true"
 									data-flx="channel.embeds.media.embed-you-tube.thumbnail.play-icon"
 								/>
@@ -128,7 +131,7 @@ const Thumbnail: FC<ThumbnailProps> = observer(
 							onClick={onOpenInNewTab}
 							icon={
 								<ArrowSquareOutIcon
-									size={24}
+									size={remFromPx(24)}
 									aria-hidden="true"
 									data-flx="channel.embeds.media.embed-you-tube.thumbnail.arrow-square-out-icon"
 								/>
@@ -147,23 +150,27 @@ export const EmbedYouTube: FC<EmbedYouTubeProps> = observer(({embed, width = YOU
 	const [hasInteracted, setHasInteracted] = useState(false);
 	const posterSrc = embed.thumbnail?.proxy_url || '';
 	const {ref: visibilityRef, isNearViewport} = useNearViewport<HTMLDivElement>({rememberKey: posterSrc});
-	const [posterCachedOnMount] = useState(() => ImageCacheUtils.hasImage(posterSrc));
-	const [posterLoaded, setPosterLoaded] = useState(posterCachedOnMount);
+	const [posterCacheAtMount] = useState(() => ({src: posterSrc, cached: ImageCacheUtils.hasImage(posterSrc)}));
+	const posterCachedOnMount = posterCacheAtMount.src === posterSrc && posterCacheAtMount.cached;
+	const [loadedPosterSrc, setLoadedPosterSrc] = useState<string | null>(() => {
+		if (posterSrc.length > 0 && ImageCacheUtils.hasImage(posterSrc)) return posterSrc;
+		return null;
+	});
+	const posterLoaded = posterSrc.length > 0 && loadedPosterSrc === posterSrc;
 	useEffect(() => {
 		if (!isNearViewport) return;
-		if (posterSrc) {
-			if (ImageCacheUtils.hasImage(posterSrc)) {
-				setPosterLoaded(true);
-				return;
-			}
-			setPosterLoaded(false);
-			ImageCacheUtils.loadImage(
-				posterSrc,
-				() => setPosterLoaded(true),
-				() => setPosterLoaded(false),
-			);
+		if (posterSrc.length === 0 || loadedPosterSrc === posterSrc) return;
+		if (ImageCacheUtils.hasImage(posterSrc)) {
+			setLoadedPosterSrc(posterSrc);
+			return;
 		}
-	}, [isNearViewport, posterSrc]);
+		const cleanup = ImageCacheUtils.loadImage(
+			posterSrc,
+			() => setLoadedPosterSrc(posterSrc),
+			() => setLoadedPosterSrc((currentSource) => (currentSource === posterSrc ? null : currentSource)),
+		);
+		return cleanup;
+	}, [isNearViewport, loadedPosterSrc, posterSrc]);
 	const handleInitialPlay = useCallback((event: React.MouseEvent | React.KeyboardEvent) => {
 		event.stopPropagation();
 		setHasInteracted(true);
@@ -184,14 +191,16 @@ export const EmbedYouTube: FC<EmbedYouTubeProps> = observer(({embed, width = YOU
 	if (!(embed.video && embed.thumbnail && embed.thumbnail.proxy_url)) {
 		return null;
 	}
+	const videoWidth = embed.video.width ?? YOUTUBE_CONFIG.DEFAULT_WIDTH;
+	const videoHeight = embed.video.height ?? YOUTUBE_CONFIG.DEFAULT_WIDTH;
 	const {style: containerStyle, dimensions} = youtubeCalculator.calculate(
+		{width: videoWidth, height: videoHeight},
 		{
-			width: embed.video.width!,
-			height: embed.video.height!,
+			maxWidth: width,
+			maxHeight: videoHeight > videoWidth ? EMBED_TALL_MAX_HEIGHT : EMBED_MAX_HEIGHT,
 		},
-		{maxWidth: width, forceScale: true},
 	);
-	const aspectRatio = `${dimensions.width} / ${dimensions.height}`;
+	const aspectRatio = mediaAspectRatioValue(dimensions);
 	if (!hasInteracted) {
 		return (
 			<div
@@ -229,7 +238,7 @@ export const EmbedYouTube: FC<EmbedYouTubeProps> = observer(({embed, width = YOU
 			className={styles.videoContainer}
 			style={{
 				...containerStyle,
-				width: `${dimensions.width}px`,
+				width: remFromPx(dimensions.width),
 				aspectRatio,
 				maxWidth: '100%',
 			}}
@@ -238,7 +247,6 @@ export const EmbedYouTube: FC<EmbedYouTubeProps> = observer(({embed, width = YOU
 			{/* biome-ignore lint/a11y/useIframeTitle: project policy forbids the native title attribute (NoNativeTitleAttribute test); aria-label provides the accessible name */}
 			<iframe
 				allow="autoplay; fullscreen"
-				allowFullScreen
 				sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
 				src={embedVideoUrl.toString()}
 				className={styles.iframe}

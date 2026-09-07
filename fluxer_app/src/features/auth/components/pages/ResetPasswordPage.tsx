@@ -32,6 +32,24 @@ const CONFIRM_NEW_PASSWORD_DESCRIPTOR = msg({
 type TokenStatus = 'validating' | 'valid' | 'invalid';
 
 const API_RENDERED_FIELDS = new Set(['password']);
+
+function resolveBannerError(
+	error: string | null,
+	fieldErrors: ReadonlyMap<string, string> | null | undefined,
+): string | null {
+	if (error != null) {
+		return error;
+	}
+	if (fieldErrors == null) {
+		return null;
+	}
+	for (const [fieldName, message] of fieldErrors) {
+		if (!API_RENDERED_FIELDS.has(fieldName)) {
+			return message;
+		}
+	}
+	return null;
+}
 const ResetPasswordPage = observer(function ResetPasswordPage() {
 	const {i18n} = useLingui();
 	const passwordId = useId();
@@ -86,12 +104,7 @@ const ResetPasswordPage = observer(function ResetPasswordPage() {
 			cancelled = true;
 		};
 	}, [token]);
-	const unrenderedFieldErrors = fieldErrors
-		? Object.entries(fieldErrors)
-				.filter(([field]) => !API_RENDERED_FIELDS.has(field))
-				.map(([, message]) => message)
-		: [];
-	const bannerError = error ?? unrenderedFieldErrors[0] ?? null;
+	const bannerError = resolveBannerError(error, fieldErrors);
 	if (tokenStatus === 'validating') {
 		return (
 			<>
@@ -111,7 +124,7 @@ const ResetPasswordPage = observer(function ResetPasswordPage() {
 					<Trans>Reset link invalid or expired</Trans>
 				</h1>
 				<p className={styles.description} data-flx="auth.reset-password-page.description">
-					<Trans>This reset link has expired. Reset links last 24 hours. Request a new one.</Trans>
+					<Trans>This reset link has expired. Reset links last 1 hour. Please request a new one.</Trans>
 				</p>
 				<div className={styles.footer} data-flx="auth.reset-password-page.footer">
 					<AuthRouterLink to="/forgot" className={styles.link} data-flx="auth.reset-password-page.link">
@@ -144,7 +157,7 @@ const ResetPasswordPage = observer(function ResetPasswordPage() {
 					label={i18n._(NEW_PASSWORD_DESCRIPTOR)}
 					value={form.getValue('password')}
 					onChange={(value) => form.setValue('password', value)}
-					error={form.getError('password') || fieldErrors?.password}
+					error={form.getError('password') || fieldErrors?.get('password')}
 					data-flx="auth.reset-password-page.form-field.set-value.password"
 				/>
 				<FormField

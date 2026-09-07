@@ -1,9 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
+import {noteText} from '@app/features/theme/fonts/ScriptFontLoader';
 import UserPinnedDM from '@app/features/user/state/UserPinnedDM';
 import Users from '@app/features/user/state/Users';
-import {ChannelTypes, GUILD_TEXT_BASED_CHANNEL_TYPES, Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {
+	ChannelTypes,
+	GUILD_TEXT_BASED_CHANNEL_TYPES,
+	Permissions,
+	THREAD_CHANNEL_TYPES,
+} from '@fluxer/constants/src/ChannelConstants';
 import {VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT} from '@fluxer/constants/src/LimitConstants';
 import type {ChannelOverwrite, Channel as WireChannel} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {UserPartial} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
@@ -81,12 +87,36 @@ export class Channel {
 	readonly contentWarningText: string | null;
 	readonly rateLimitPerUser: number;
 	readonly nicks: Readonly<Record<string, string>>;
+	// Echowire: thread state (non-null only for thread channels).
+	readonly threadMetadata: {
+		readonly archived: boolean;
+		readonly autoArchiveDuration: number;
+		readonly archiveTimestamp: Date | null;
+		readonly locked: boolean;
+		readonly invitable: boolean;
+	} | null;
+	readonly memberCount: number | null;
+	readonly messageCount: number | null;
+	// Echowire forum fields. availableTags/defaultReactionEmoji/defaultSortOrder: forum channels.
+	// appliedTags: forum posts (threads).
+	readonly availableTags: ReadonlyArray<{
+		readonly id: string;
+		readonly name: string;
+		readonly emojiName: string | null;
+	}>;
+	readonly appliedTags: ReadonlyArray<string>;
+	readonly defaultReactionEmoji: {readonly emojiId: string | null; readonly emojiName: string | null} | null;
+	readonly defaultSortOrder: number | null;
+	readonly forumDefaultAutoArchiveDuration: number | null;
+	readonly forumRequireTag: boolean;
+	readonly pinned: boolean;
 
 	constructor(channel: WireChannel, options?: ChannelRecordOptions) {
 		this.instanceId = options?.instanceId ?? RuntimeConfig.localInstanceDomain;
 		this.id = channel.id;
 		this.guildId = channel.guild_id;
 		this.name = channel.name;
+		noteText(this.name);
 		this.topic = channel.topic ?? null;
 		this.url = channel.url ?? null;
 		this.icon = channel.icon ?? null;
@@ -108,6 +138,32 @@ export class Channel {
 		this.contentWarningText = channel.content_warning_text ?? null;
 		this.rateLimitPerUser = channel.rate_limit_per_user ?? 0;
 		this.nicks = channel.nicks ?? {};
+		this.threadMetadata = channel.thread_metadata
+			? {
+					archived: channel.thread_metadata.archived,
+					autoArchiveDuration: channel.thread_metadata.auto_archive_duration,
+					archiveTimestamp: channel.thread_metadata.archive_timestamp
+						? new Date(channel.thread_metadata.archive_timestamp)
+						: null,
+					locked: channel.thread_metadata.locked ?? false,
+					invitable: channel.thread_metadata.invitable ?? false,
+				}
+			: null;
+		this.memberCount = channel.member_count ?? null;
+		this.messageCount = channel.message_count ?? null;
+		this.availableTags = (channel.available_tags ?? []).map((tag) => ({
+			id: tag.id,
+			name: tag.name,
+			emojiName: tag.emoji_name,
+		}));
+		this.appliedTags = channel.applied_tags ?? [];
+		this.defaultReactionEmoji = channel.default_reaction_emoji
+			? {emojiId: channel.default_reaction_emoji.emoji_id, emojiName: channel.default_reaction_emoji.emoji_name}
+			: null;
+		this.defaultSortOrder = channel.default_sort_order ?? null;
+		this.forumDefaultAutoArchiveDuration = channel.default_auto_archive_duration ?? null;
+		this.forumRequireTag = channel.require_tag ?? false;
+		this.pinned = channel.pinned ?? false;
 		if ((this.type === ChannelTypes.DM || this.type === ChannelTypes.GROUP_DM) && channel.recipients) {
 			Users?.cacheUsers(Array.from(channel.recipients));
 		}
@@ -144,6 +200,14 @@ export class Channel {
 
 	isDM(): boolean {
 		return this.type === ChannelTypes.DM;
+	}
+
+	isThread(): boolean {
+		return THREAD_CHANNEL_TYPES.has(this.type);
+	}
+
+	isForum(): boolean {
+		return this.type === ChannelTypes.GUILD_FORUM;
 	}
 
 	isGroupDM(): boolean {
@@ -248,6 +312,48 @@ export class Channel {
 					updates.content_warning_text !== undefined ? updates.content_warning_text : this.contentWarningText,
 				rate_limit_per_user: updates.rate_limit_per_user ?? this.rateLimitPerUser,
 				nicks: updates.nicks ?? this.nicks,
+				// Echowire: preserve/merge thread state so THREAD_UPDATE events don't wipe it.
+				thread_metadata:
+					updates.thread_metadata !== undefined
+						? updates.thread_metadata
+						: this.threadMetadata
+							? {
+									archived: this.threadMetadata.archived,
+									auto_archive_duration: this.threadMetadata.autoArchiveDuration,
+									archive_timestamp: this.threadMetadata.archiveTimestamp?.toISOString() ?? null,
+									locked: this.threadMetadata.locked,
+									invitable: this.threadMetadata.invitable,
+								}
+							: null,
+				member_count: updates.member_count ?? this.memberCount ?? undefined,
+				message_count: updates.message_count ?? this.messageCount ?? undefined,
+				pinned: updates.pinned !== undefined ? updates.pinned : this.pinned,
+				// Echowire: preserve/merge forum state so partial channel updates don't wipe tags etc.
+				available_tags:
+					updates.available_tags !== undefined
+						? updates.available_tags
+						: this.availableTags.length > 0
+							? this.availableTags.map((tag) => ({id: tag.id, name: tag.name, emoji_name: tag.emojiName}))
+							: undefined,
+				applied_tags:
+					updates.applied_tags !== undefined
+						? updates.applied_tags
+						: this.appliedTags.length > 0
+							? [...this.appliedTags]
+							: undefined,
+				default_reaction_emoji:
+					updates.default_reaction_emoji !== undefined
+						? updates.default_reaction_emoji
+						: this.defaultReactionEmoji
+							? {emoji_id: this.defaultReactionEmoji.emojiId, emoji_name: this.defaultReactionEmoji.emojiName}
+							: null,
+				default_sort_order:
+					updates.default_sort_order !== undefined ? updates.default_sort_order : (this.defaultSortOrder ?? null),
+				default_auto_archive_duration:
+					updates.default_auto_archive_duration !== undefined
+						? updates.default_auto_archive_duration
+						: (this.forumDefaultAutoArchiveDuration ?? null),
+				require_tag: updates.require_tag !== undefined ? updates.require_tag : this.forumRequireTag,
 			},
 			{instanceId: this.instanceId},
 		);
@@ -305,6 +411,35 @@ export class Channel {
 				return false;
 			}
 		}
+		// Echowire: thread state must be part of identity equality, otherwise an
+		// archive/unarchive (which changes only thread_metadata) is treated as "equal"
+		// and the store skips the update — the UI then needs a hard refresh to reflect it.
+		if (this.threadMetadata?.archived !== other.threadMetadata?.archived) return false;
+		if (this.threadMetadata?.locked !== other.threadMetadata?.locked) return false;
+		if (this.threadMetadata?.autoArchiveDuration !== other.threadMetadata?.autoArchiveDuration) return false;
+		if (this.threadMetadata?.invitable !== other.threadMetadata?.invitable) return false;
+		if (this.threadMetadata?.archiveTimestamp?.getTime() !== other.threadMetadata?.archiveTimestamp?.getTime()) {
+			return false;
+		}
+		if (this.memberCount !== other.memberCount) return false;
+		if (this.messageCount !== other.messageCount) return false;
+		if (this.pinned !== other.pinned) return false;
+		if (this.forumDefaultAutoArchiveDuration !== other.forumDefaultAutoArchiveDuration) return false;
+		if (this.forumRequireTag !== other.forumRequireTag) return false;
+		// Echowire: forum tag/sort/reaction state — same live-update reasoning as thread state above.
+		if (this.defaultSortOrder !== other.defaultSortOrder) return false;
+		if (this.defaultReactionEmoji?.emojiId !== other.defaultReactionEmoji?.emojiId) return false;
+		if (this.defaultReactionEmoji?.emojiName !== other.defaultReactionEmoji?.emojiName) return false;
+		if (this.appliedTags.length !== other.appliedTags.length) return false;
+		for (let i = 0; i < this.appliedTags.length; i++) {
+			if (this.appliedTags[i] !== other.appliedTags[i]) return false;
+		}
+		if (this.availableTags.length !== other.availableTags.length) return false;
+		for (let i = 0; i < this.availableTags.length; i++) {
+			if (this.availableTags[i].id !== other.availableTags[i].id) return false;
+			if (this.availableTags[i].name !== other.availableTags[i].name) return false;
+			if (this.availableTags[i].emojiName !== other.availableTags[i].emojiName) return false;
+		}
 		return true;
 	}
 
@@ -337,6 +472,18 @@ export class Channel {
 			content_warning_text: this.contentWarningText,
 			rate_limit_per_user: this.rateLimitPerUser,
 			nicks: this.nicks,
+			available_tags:
+				this.availableTags.length > 0
+					? this.availableTags.map((tag) => ({id: tag.id, name: tag.name, emoji_name: tag.emojiName}))
+					: undefined,
+			applied_tags: this.appliedTags.length > 0 ? [...this.appliedTags] : undefined,
+			default_reaction_emoji: this.defaultReactionEmoji
+				? {emoji_id: this.defaultReactionEmoji.emojiId, emoji_name: this.defaultReactionEmoji.emojiName}
+				: null,
+			default_sort_order: this.defaultSortOrder,
+			default_auto_archive_duration: this.forumDefaultAutoArchiveDuration,
+			require_tag: this.forumRequireTag ? true : undefined,
+			pinned: this.pinned ? true : undefined,
 		};
 	}
 }

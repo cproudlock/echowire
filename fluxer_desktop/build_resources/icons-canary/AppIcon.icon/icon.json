@@ -1,11 +1,12 @@
 {
 	"fill": {
-		"solid": "display-p3:0.95215,0.66553,0.23462,1.00000"
+		"solid": "display-p3:0.27100,0.25562,0.81934,1.00000"
 	},
 	"groups": [
 		{
 			"layers": [
 				{
+					"fill": "automatic",
 					"image-name": "Vector.svg",
 					"name": "Vector"
 				}

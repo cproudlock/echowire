@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_EL_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_EL_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Ο λογαριασμός σου στο {product_name} έχει απενεργοποιηθεί προσωρινά",
 		"body": "Γεια σου {username},\n\nΑπενεργοποιήσαμε προσωρινά τον λογαριασμό σου στο {product_name} επειδή εντοπίσαμε ύποπτη δραστηριότητα.\n\n{reason, select,\n  null {}\n  other {Λόγος: {reason}}\n}\n\nΓια να αποκτήσεις ξανά πρόσβαση στον λογαριασμό σου, θα πρέπει να επαναφέρεις τον κωδικό πρόσβασής σου:\n\n{forgotUrl}\n\nΑφού επαναφέρεις τον κωδικό πρόσβασής σου, θα μπορείς να συνδεθείς ξανά.\n\nΕάν πιστεύεις ότι αυτό έγινε κατά λάθος, επικοινώνησε με την ομάδα υποστήριξής μας.\n\n– Ομάδα Ασφαλείας {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_EL_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Εξουσιοδότησε τη σύνδεση από μια νέα διεύθυνση IP",
 		"body": "Γεια σου {username},\n\nΕντοπίσαμε μια προσπάθεια σύνδεσης στον λογαριασμό σου στο {product_name} από μια νέα διεύθυνση IP:\n\nΔιεύθυνση IP: {ipAddress}\nΤοποθεσία: {location}\n\nΕάν ήσουν εσύ, εξουσιοδότησε αυτήν τη διεύθυνση IP κάνοντας κλικ στον παρακάτω σύνδεσμο:\n\n{authUrl}\n\nΕάν δεν προσπάθησες να συνδεθείς, άλλαξε αμέσως τον κωδικό πρόσβασής σου.\n\nΑυτός ο σύνδεσμος ισχύει για 30 λεπτά.\n\n– Ομάδα {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Επιβεβαίωσε την πρόσβαση στους εφεδρικούς κωδικούς σου στο {product_name}",
+		"body": "Γεια σου {username},\n\nΛάβαμε ένα αίτημα για προβολή των εφεδρικών κωδικών στον λογαριασμό σου στο {product_name}.\n\nΓια να επιβεβαιώσεις αυτό το αίτημα, εισήγαγε αυτόν τον κωδικό στην εφαρμογή:\n\n{code}\n\nΑυτός ο κωδικός λήγει στις {expiresAt, date, full} στις {expiresAt, time, short}.\n\nΕάν δεν το ζήτησες, κάποιος μπορεί να έχει πρόσβαση στον λογαριασμό σου. Άλλαξε αμέσως τον κωδικό πρόσβασής σου.\n\n– Ομάδα {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Επιβεβαίωσε την αλλαγή κωδικού πρόσβασης στο {product_name}",

@@ -167,9 +167,7 @@ user_nickname(UserId0, UserNicknames) when is_map(UserNicknames) ->
     case user_id_binary(UserId0) of
         Id when is_binary(Id) -> maps:get(Id, UserNicknames, undefined);
         undefined -> undefined
-    end;
-user_nickname(_UserId0, _UserNicknames) ->
-    undefined.
+    end.
 
 -spec user_id_binary(term()) -> binary() | undefined.
 user_id_binary(UserId) when is_integer(UserId), UserId > 0 ->
@@ -266,9 +264,7 @@ channel_names_from_guild_data(ChannelIds, GuildData) when is_map(GuildData) ->
         fun(ChannelId, Acc) -> put_index_channel_name(ChannelId, ChannelIndex, Acc) end,
         #{},
         ChannelIds
-    );
-channel_names_from_guild_data(_ChannelIds, _GuildData) ->
-    #{}.
+    ).
 
 -spec put_index_channel_name(integer(), map(), map()) -> map().
 put_index_channel_name(ChannelId, ChannelIndex, Acc) ->
@@ -330,9 +326,17 @@ first_nonempty_binary([Value | Rest]) ->
 
 -spec truncate_preview(binary()) -> binary().
 truncate_preview(Content) when byte_size(Content) > 100 ->
-    binary:part(Content, 0, 100);
+    valid_utf8_prefix(binary:part(Content, 0, 100));
 truncate_preview(Content) ->
-    Content.
+    valid_utf8_prefix(Content).
+
+-spec valid_utf8_prefix(binary()) -> binary().
+valid_utf8_prefix(Content) ->
+    case unicode:characters_to_binary(Content, utf8, utf8) of
+        Valid when is_binary(Valid) -> Valid;
+        {incomplete, Valid, _Rest} -> Valid;
+        {error, Valid, _Rest} -> Valid
+    end.
 
 -spec build_content_fallback_preview(map()) -> binary().
 build_content_fallback_preview(MessageData) ->
@@ -571,6 +575,23 @@ lowercase_binary(Value) ->
 
 -ifdef(TEST).
 -include_lib("eunit/include/eunit.hrl").
+
+truncate_preview_never_splits_a_utf8_character_test() ->
+    Emoji = <<"\xF0\x9F\x98\x80">>,
+    Content = <<(binary:copy(<<"a">>, 98))/binary, Emoji/binary>>,
+    ?assert(byte_size(Content) > 100),
+    Truncated = truncate_preview(Content),
+    ?assert(byte_size(Truncated) =< 100),
+    ?assertMatch(Bin when is_binary(Bin), unicode:characters_to_binary(Truncated, utf8, utf8)),
+    ?assertEqual(binary:copy(<<"a">>, 98), Truncated).
+
+truncate_preview_is_unchanged_for_valid_ascii_test() ->
+    Content = binary:copy(<<"a">>, 150),
+    ?assertEqual(binary:copy(<<"a">>, 100), truncate_preview(Content)).
+
+truncate_preview_keeps_short_valid_content_identical_test() ->
+    Content = <<"hello \xC3\xA9 world">>,
+    ?assertEqual(Content, truncate_preview(Content)).
 
 build_url_dm_test() ->
     ?assertEqual(<<"/channels/@me/456/789">>, build_url(0, 456, 789)).

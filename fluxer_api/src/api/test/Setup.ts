@@ -32,6 +32,9 @@ function defaultNatsUrl(): string {
 }
 
 function setDefaultTestEnv(): void {
+	// API tests use a non-self-hosted baseline; self-hosted scenarios override the loaded config explicitly.
+	process.env.FLUXER_SELF_HOSTED = 'false';
+
 	const natsUrl = defaultNatsUrl();
 	const defaults: Record<string, string> = {
 		FLUXER_ENV: 'test',
@@ -65,17 +68,22 @@ function setDefaultTestEnv(): void {
 		FLUXER_APP_PROXY_PORT: '8773',
 		FLUXER_GATEWAY_MEDIA_PROXY_ENDPOINT: 'http://127.0.0.1:8088/media',
 		FLUXER_GATEWAY_RPC_AUTH_TOKEN: 'test-gateway-rpc-token',
-		FLUXER_GATEWAY_PUSH_ENABLED: 'false',
 		FLUXER_SUDO_MODE_SECRET: 'test-sudo-secret',
 		FLUXER_CONNECTION_INITIATION_SECRET: 'test-connection-secret',
-		FLUXER_VAPID_PUBLIC_KEY: 'test-vapid-public-key',
-		FLUXER_VAPID_PRIVATE_KEY: 'test-vapid-private-key',
+		FLUXER_VAPID_PUBLIC_KEY: 'BB76bTFIuoqmxJtTfZX0yGTn1f_qu9H03B_nkj8OyExJFkN7Y-HBZZzShnHZoEhXKc5ZRy3jFu7OkBbnaQG-4aw',
+		FLUXER_VAPID_PRIVATE_KEY: 'Xgi-3P8J-I3Q6U1HlCcXMuc_tKLGAM9nIfznX3Hz68o',
 		FLUXER_VAPID_EMAIL: 'test@example.com',
 		FLUXER_PASSKEY_RP_NAME: 'Fluxer Test',
 		FLUXER_PASSKEY_RP_ID: 'localhost',
 		FLUXER_PASSKEY_ADDITIONAL_ALLOWED_ORIGINS: 'http://localhost',
-		FLUXER_EMAIL_ENABLED: 'false',
-		FLUXER_EMAIL_PROVIDER: 'none',
+		FLUXER_EMAIL_ENABLED: 'true',
+		FLUXER_EMAIL_PROVIDER: 'smtp',
+		FLUXER_EMAIL_FROM_EMAIL: 'noreply@example.com',
+		FLUXER_EMAIL_SMTP_HOST: 'localhost',
+		FLUXER_EMAIL_SMTP_PORT: '1025',
+		FLUXER_EMAIL_SMTP_USERNAME: 'test',
+		FLUXER_EMAIL_SMTP_PASSWORD: 'test',
+		FLUXER_EMAIL_SMTP_SECURE: 'false',
 		FLUXER_LIVEKIT_ENABLED: 'false',
 		FLUXER_STRIPE_ENABLED: 'true',
 		FLUXER_SEARCH_ENGINE: 'elasticsearch',
@@ -83,7 +91,6 @@ function setDefaultTestEnv(): void {
 		FLUXER_SEARCH_API_KEY: 'test',
 		FLUXER_CAPTCHA_ENABLED: 'false',
 		FLUXER_CAPTCHA_PROVIDER: 'none',
-		FLUXER_SELF_HOSTED: 'false',
 		FLUXER_DISCOVERY_ENABLED: 'true',
 		FLUXER_RELAX_REGISTRATION_RATE_LIMITS: 'true',
 		FLUXER_DISABLE_RATE_LIMITS: 'true',

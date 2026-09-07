@@ -84,6 +84,14 @@ export const UserRateLimitConfigs = {
 		bucket: 'user:account:delete',
 		config: {limit: 5, windowMs: ms('1 hour')},
 	} as RouteRateLimitConfig,
+	USER_PHONE_GATE_ESCAPE_PREVIEW: {
+		bucket: 'user:phone_gate_escape:preview',
+		config: {limit: 20, windowMs: ms('1 minute')},
+	} as RouteRateLimitConfig,
+	USER_PHONE_GATE_ESCAPE: {
+		bucket: 'user:phone_gate_escape:execute',
+		config: {limit: 5, windowMs: ms('1 hour')},
+	} as RouteRateLimitConfig,
 	USER_DATA_HARVEST: {
 		bucket: 'user:data:harvest',
 		config: {limit: 5, windowMs: ms('30 minutes')},
@@ -115,6 +123,14 @@ export const UserRateLimitConfigs = {
 	USER_CHANNELS: {
 		bucket: 'user:channels',
 		config: {limit: 40, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	USER_GROUP_DM_CREATE: {
+		bucket: 'user:group_dm:create',
+		config: {limit: 10, windowMs: ms('1 hour'), exemptFromGlobal: true},
+	} as RouteRateLimitConfig,
+	USER_GROUP_DM_RECIPIENT_ADD: {
+		bucket: 'user:group_dm:recipient:add',
+		config: {limit: 10, windowMs: ms('1 hour'), exemptFromGlobal: true},
 	} as RouteRateLimitConfig,
 	USER_RELATIONSHIPS_LIST: {
 		bucket: 'user:relationships:list',
@@ -184,6 +200,22 @@ export const UserRateLimitConfigs = {
 		bucket: 'user:mfa:backup_codes',
 		config: {limit: 6, windowMs: ms('1 minute')},
 	} as RouteRateLimitConfig,
+	USER_MFA_BACKUP_CODES_CHALLENGE_START: {
+		bucket: 'user:mfa:backup_codes_challenge:start',
+		config: {limit: 6, windowMs: ms('1 minute')},
+	} as RouteRateLimitConfig,
+	USER_MFA_BACKUP_CODES_CHALLENGE_RESEND: {
+		bucket: 'user:mfa:backup_codes_challenge:resend',
+		config: {limit: 6, windowMs: ms('1 minute')},
+	} as RouteRateLimitConfig,
+	USER_MFA_BACKUP_CODES_CHALLENGE_VERIFY: {
+		bucket: 'user:mfa:backup_codes_challenge:verify',
+		config: {limit: 20, windowMs: ms('1 minute')},
+	} as RouteRateLimitConfig,
+	USER_MFA_BACKUP_CODES_CHALLENGE_REGENERATE: {
+		bucket: 'user:mfa:backup_codes_challenge:regenerate',
+		config: {limit: 6, windowMs: ms('1 minute')},
+	} as RouteRateLimitConfig,
 	USER_PUSH_SUBSCRIBE: {
 		bucket: 'user:push:subscribe',
 		config: {limit: 20, windowMs: ms('1 minute')},
@@ -208,9 +240,9 @@ export const UserRateLimitConfigs = {
 		bucket: 'user:harvest:download',
 		config: {limit: 10, windowMs: ms('1 minute')},
 	} as RouteRateLimitConfig,
-	USER_CANARY_TESTER_JOIN: {
-		bucket: 'user:canary_tester:join',
-		config: {limit: 3, windowMs: ms('1 hour')},
+	USER_HARVEST_DOWNLOAD_FILE: {
+		bucket: 'user:harvest:download_file',
+		config: {limit: 60, windowMs: ms('1 minute')},
 	} as RouteRateLimitConfig,
 	USER_ENTRANCE_SOUND_LIST: {
 		bucket: 'user:entrance_sound:list',

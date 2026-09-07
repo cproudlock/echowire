@@ -352,6 +352,7 @@ pub const HTMX_FLASH_SCRIPT: &str = r#"
 			window.clearTimeout(hideTimer);
 			hideTimer = 0;
 		}
+		if (activeToast && !activeToast.isConnected) activeToast = null;
 		if (!activeToast) {
 			activeToast = document.createElement('div');
 			activeToast.setAttribute('role', 'status');
@@ -500,7 +501,7 @@ pub const HTMX_FLASH_SCRIPT: &str = r#"
 
 	function parseAdminToastHeader(xhr) {
 		if (!xhr || typeof xhr.getResponseHeader !== 'function') return null;
-		var raw = xhr.getResponseHeader('X-Fluxer-Admin-Toast');
+		var raw = xhr.getResponseHeader('X-Echowire-Admin-Toast');
 		if (!raw) return null;
 		try {
 			var parsed = JSON.parse(raw);

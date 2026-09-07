@@ -24,7 +24,7 @@ import {
 	SYNCED_PREFERENCES_MAX_ENCODED_LENGTH,
 } from '@fluxer/schema/src/domains/user/SyncedPreferencesCodec';
 import {isValidSingleUnicodeEmoji} from '@fluxer/schema/src/primitives/EmojiValidators';
-import {createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
+import {base64LengthForBytes, createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
 import {LocaleSchema} from '@fluxer/schema/src/primitives/LocaleSchema';
 import {createQueryIntegerType, DateTimeType, QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
 import {
@@ -68,10 +68,10 @@ export const UserUpdateRequest = z
 		email: EmailType.describe('The email address for the account'),
 		new_password: PasswordType.describe('The new password to set'),
 		password: PasswordType.describe('The current password for verification'),
-		avatar: createBase64StringType(1, AVATAR_MAX_SIZE * 1.33)
+		avatar: createBase64StringType(1, base64LengthForBytes(AVATAR_MAX_SIZE))
 			.nullish()
 			.describe('Base64-encoded avatar image'),
-		banner: createBase64StringType(1, AVATAR_MAX_SIZE * 1.33)
+		banner: createBase64StringType(1, base64LengthForBytes(AVATAR_MAX_SIZE))
 			.nullish()
 			.describe('Base64-encoded profile banner image'),
 		bio: createStringType(1, 320).nullish().describe('User biography text (max 320 characters)'),
@@ -136,6 +136,9 @@ export type EmailChangeVerifyOriginalRequest = z.infer<typeof EmailChangeVerifyO
 export const EmailChangeRequestNewRequest = EmailChangeTicketRequest.extend({
 	new_email: EmailType.describe('New email address to switch to'),
 	original_proof: createStringType().describe('Proof token obtained from verifying the original email'),
+	new_password: PasswordType.optional().describe(
+		'Password the caller intends to set, rejected here instead of after the code is sent',
+	),
 });
 
 export type EmailChangeRequestNewRequest = z.infer<typeof EmailChangeRequestNewRequest>;
@@ -272,9 +275,13 @@ export const CreatePrivateChannelRequest = z
 			.optional()
 			.describe(`Array of user IDs for creating a group DM (max ${MAX_GROUP_DM_OTHER_RECIPIENTS})`),
 	})
-	.refine((data) => (data.recipient_id && !data.recipients) || (!data.recipient_id && data.recipients), {
-		message: 'Either recipient_id or recipients must be provided, but not both',
-	});
+	.refine(
+		(data) =>
+			(data.recipient_id != null && data.recipients == null) || (data.recipient_id == null && data.recipients != null),
+		{
+			message: 'Either recipient_id or recipients must be provided, but not both',
+		},
+	);
 
 export type CreatePrivateChannelRequest = z.infer<typeof CreatePrivateChannelRequest>;
 
@@ -507,6 +514,13 @@ export const RegisterMobileDeviceRequest = z
 	})
 	.superRefine((value, ctx) => {
 		if (value.platform !== 'android_unified_push') return;
+		if (!URLType.safeParse(value.token).success) {
+			ctx.addIssue({
+				code: z.ZodIssueCode.custom,
+				path: ['token'],
+				message: 'UnifiedPush registrations require a valid endpoint URL',
+			});
+		}
 		if (!value.encryption_key) {
 			ctx.addIssue({
 				code: z.ZodIssueCode.custom,
@@ -576,6 +590,7 @@ export const UserSavedMessagesQueryRequest = z.object({
 	limit: createQueryIntegerType({minValue: 1, maxValue: 100, defaultValue: 25}).describe(
 		'Maximum number of saved messages to return (1-100, default 25)',
 	),
+	before: SnowflakeType.optional().describe('Get saved messages before this message ID'),
 });
 
 export type UserSavedMessagesQueryRequest = z.infer<typeof UserSavedMessagesQueryRequest>;

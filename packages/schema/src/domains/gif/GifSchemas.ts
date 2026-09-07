@@ -9,7 +9,7 @@ export const GIF_PROVIDER_DISPLAY_NAME_HEADER = 'X-Fluxer-GIF-Provider-Display-N
 export const GIF_PROVIDER_ATTRIBUTION_HEADER = 'X-Fluxer-GIF-Provider-Attribution-Required';
 const LocaleType = LocaleSchema.default('en-US').transform((v) => v.replace('-', '_'));
 const GifProviderName = createStringType(1, 32).describe(
-	'Identifier of the active GIF provider (e.g. "klipy", "tenor"). Vendor names are opaque to clients.',
+	'Identifier of the active GIF provider. KLIPY is currently the only supported provider.',
 );
 
 export const GifSearchQuery = z.object({
@@ -55,7 +55,7 @@ export const GifResponse = z.object({
 	media: z
 		.record(z.string(), GifMediaFormat)
 		.describe(
-			'Map of format-name → media descriptor. Keys are provider-issued format names (e.g. "webm", "mp4", "webp", "gif", "tinygif", "nanogif"). Clients without webm support should pick "webp" / "gif" / "tinygif" / "nanogif" in that order.',
+			'Map of format-name → media descriptor. Keys are a size prefix (none for full size, "medium", "tiny", "nano") joined to a codec name ("webm", "mp4", "webp", "gif"), plus "loopedmp4". Video keys are "webm" / "mp4" / "loopedmp4" / "mediumwebm" / "mediummp4" / "tinywebm" / "tinymp4" / "nanowebm" / "nanomp4"; image keys are "webp" / "gif" / "mediumwebp" / "mediumgif" / "tinywebp" / "tinygif" / "nanowebp" / "nanogif". Every key is optional, so clients must walk a priority list rather than index a single key. Clients that cannot decode the video keys should prefer "tinywebp" / "tinygif" / "mediumwebp" / "mediumgif" / "webp" / "gif" / "nanowebp" / "nanogif" in that order.',
 		),
 	placeholder: z
 		.string()
@@ -69,10 +69,10 @@ export type GifResponse = z.infer<typeof GifResponse>;
 
 export const GifCategoryTagResponse = z.object({
 	name: z.string().describe('Category search term (locale-translated label suitable for display).'),
-	src: z.string().describe('URL to the category preview image (legacy / fallback).'),
-	proxy_src: z.string().describe('Proxied URL to the category preview image (legacy / fallback).'),
+	src: z.string().describe('Category preview image URL from the top GIF for this category search term.'),
+	proxy_src: z.string().describe('Proxied category preview image URL from the top GIF for this category search term.'),
 	gif: GifResponse.nullable().describe(
-		'Full enriched GIF for the category (first search result for `name`). Null until the background cache is populated for this locale; fall back to `src` / `proxy_src` in that case.',
+		'Enriched category preview GIF from the top search result for this category. Null only when no preview GIF was available.',
 	),
 });
 

@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_RO_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_RO_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Contul tău {product_name} a fost dezactivat temporar",
 		"body": "Salut {username},\n\nAm dezactivat temporar contul tău {product_name} deoarece am detectat activitate suspectă.\n\n{reason, select,\n  null {}\n  other {Motiv: {reason}}\n}\n\nPentru a recăpăta accesul la contul tău, va trebui să-ți resetezi parola:\n\n{forgotUrl}\n\nDupă ce îți resetezi parola, te vei putea conecta din nou.\n\nDacă crezi că aceasta a fost o eroare, te rugăm să contactezi echipa noastră de suport.\n\n– {product_name} Safety Team"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_RO_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autorizează conectarea de la o nouă adresă IP",
 		"body": "Salut {username},\n\nAm detectat o tentativă de conectare la contul tău {product_name} de la o nouă adresă IP:\n\nAdresă IP: {ipAddress}\nLocație: {location}\n\nDacă ai fost tu, te rugăm să autorizezi această adresă IP apăsând pe linkul de mai jos:\n\n{authUrl}\n\nDacă nu ai încercat să te conectezi, te rugăm să-ți schimbi parola imediat.\n\nAcest link este valabil 30 de minute.\n\n– Echipa {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Confirmă accesul la codurile tale de rezervă pentru {product_name}",
+		"body": "Salut {username},\n\nAm primit o solicitare de vizualizare a codurilor de rezervă ale contului tău {product_name}.\n\nPentru a confirma această solicitare, introdu acest cod în aplicație:\n\n{code}\n\nAcest cod expiră la data de {expiresAt, date, full} la ora {expiresAt, time, short}.\n\nDacă nu ai solicitat acest lucru, cineva ar putea avea acces la contul tău. Schimbă-ți parola imediat.\n\n– Echipa {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Confirmă schimbarea parolei pentru {product_name}",

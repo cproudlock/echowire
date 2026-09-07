@@ -2,29 +2,41 @@
 
 import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
 import {UserPremiumTypes} from '@fluxer/constants/src/UserConstants';
+import {UnknownUserError} from '@fluxer/errors/src/domains/user/UnknownUserError';
 import {afterAll, beforeAll, beforeEach, describe, expect, test} from 'vitest';
 import {createTestAccount} from '../../auth/tests/AuthTestUtils';
+import {createUserID} from '../../BrandedTypes';
 import {Config} from '../../Config';
-import {createGuild} from '../../guild/tests/GuildTestUtils';
+import type {IGuildRepositoryAggregate} from '../../guild/repositories/IGuildRepositoryAggregate';
+import type {GuildService} from '../../guild/services/GuildService';
+import {createGuild, createRole, getMember} from '../../guild/tests/GuildTestUtils';
+import type {IGatewayService} from '../../infrastructure/IGatewayService';
 import {type ApiTestHarness, createApiTestHarness} from '../../test/ApiTestHarness';
 import {createBuilder} from '../../test/TestRequestBuilder';
+import {UserRepository} from '../../user/repositories/UserRepository';
+import {StripePremiumService} from '../services/StripePremiumService';
 
 describe('StripePremiumService', () => {
 	let harness: ApiTestHarness;
 	let originalVisionariesGuildId: string | undefined;
+	let originalVisionariesGuildVisionaryRoleId: string | undefined;
 	beforeAll(async () => {
 		harness = await createApiTestHarness();
 		originalVisionariesGuildId = Config.instance.visionariesGuildId ?? undefined;
+		originalVisionariesGuildVisionaryRoleId = Config.instance.visionariesGuildVisionaryRoleId ?? undefined;
 	});
 	afterAll(async () => {
 		await harness.shutdown();
 		Config.instance.visionariesGuildId = originalVisionariesGuildId;
+		Config.instance.visionariesGuildVisionaryRoleId = originalVisionariesGuildVisionaryRoleId;
 	});
 	beforeEach(async () => {
 		await harness.resetData();
 		const owner = await createTestAccount(harness);
 		const visionariesGuild = await createGuild(harness, owner.token, 'Visionaries Test Guild');
+		const visionaryRole = await createRole(harness, owner.token, visionariesGuild.id, {name: 'Visionary'});
 		Config.instance.visionariesGuildId = visionariesGuild.id;
+		Config.instance.visionariesGuildVisionaryRoleId = visionaryRole.id;
 	});
 	describe('POST /premium/visionary/rejoin', () => {
 		test('allows visionary users to rejoin guild', async () => {
@@ -37,6 +49,8 @@ describe('StripePremiumService', () => {
 				})
 				.execute();
 			await createBuilder(harness, account.token).post('/premium/visionary/rejoin').expect(204).execute();
+			const member = await getMember(harness, account.token, Config.instance.visionariesGuildId!, account.userId);
+			expect(member.roles).toContain(Config.instance.visionariesGuildVisionaryRoleId);
 		});
 		test('rejects users without visionary access', async () => {
 			const account = await createTestAccount(harness);
@@ -54,6 +68,23 @@ describe('StripePremiumService', () => {
 		});
 		test('requires authentication', async () => {
 			await createBuilder(harness, 'invalid-token').post('/premium/visionary/rejoin').expect(401).execute();
+		});
+	});
+	describe('POST /premium/grace/end', () => {
+		test('rejects with UNKNOWN_USER when the account record is gone', async () => {
+			const premiumService = new StripePremiumService(
+				new UserRepository(),
+				{} as IGatewayService,
+				{} as IGuildRepositoryAggregate,
+				{} as GuildService,
+			);
+			const error = await premiumService.endGracePeriod(createUserID(999999999999999997n)).then(
+				() => null,
+				(caught: unknown) => caught,
+			);
+			expect(error).toBeInstanceOf(UnknownUserError);
+			expect((error as UnknownUserError).status).toBe(404);
+			expect((error as UnknownUserError).code).toBe(APIErrorCodes.UNKNOWN_USER);
 		});
 	});
 	describe('premium duration and stacking', () => {

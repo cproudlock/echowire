@@ -35,13 +35,13 @@ const AuthLayoutContent = observer(function AuthLayoutContent({children}: {child
 	const [splashAlignment, setSplashAlignment] = useState<GuildSplashCardAlignmentValue>(
 		GuildSplashCardAlignment.CENTER,
 	);
-	const {isNative, isMacOS, platform} = useNativePlatform();
+	const {isNative, platform} = useNativePlatform();
 	const useSystemTitleBar = useNativeTitleBar();
 	const splashUrlRef = useRef<string | null>(null);
 	const registerFormDraftsRef = useRef<Map<string, AuthRegisterFormDraft>>(new Map());
 	const scrollerRef = useRef<ScrollerHandle>(null);
 	const location = useLocation();
-	const {patternReady, splashLoaded, splashDimensions} = useAuthBackground(splashUrl, foodPatternUrl);
+	const {patternReady, splashDimensions} = useAuthBackground(splashUrl, foodPatternUrl);
 	const handleSetSplashUrl = useCallback(
 		(url: string | null) => {
 			if (splashUrlRef.current === url) return;
@@ -69,7 +69,7 @@ const AuthLayoutContent = observer(function AuthLayoutContent({children}: {child
 		};
 	}, []);
 	useEffect(() => {
-		scrollerRef.current?.scrollToTop();
+		scrollerRef.current?.jumpToStartEdge();
 	}, [location.pathname]);
 	const splashScale = useMemo(() => {
 		if (!splashDimensions) return null;
@@ -187,7 +187,7 @@ const AuthLayoutContent = observer(function AuthLayoutContent({children}: {child
 						key="auth-layout-scroller"
 						data-flx="app.auth-layout.auth-layout-content.container"
 					>
-						{isNative && !isMacOS && !useSystemTitleBar && (
+						{isNative && !useSystemTitleBar && (
 							<NativeTitlebar platform={platform} data-flx="app.auth-layout.auth-layout-content.native-titlebar" />
 						)}
 						<div
@@ -196,7 +196,6 @@ const AuthLayoutContent = observer(function AuthLayoutContent({children}: {child
 						>
 							<AuthBackground
 								splashUrl={splashUrl}
-								splashLoaded={splashLoaded}
 								splashDimensions={splashDimensions}
 								splashScale={splashScale}
 								patternReady={patternReady}

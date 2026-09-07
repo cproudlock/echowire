@@ -10,9 +10,9 @@ import type {EmailTemplate, EmailTemplateKey} from '@pkgs/email/src/email_i18n/E
 
 const DEFAULT_LOCALE = 'en-US';
 const DEFAULT_EMAIL_TEMPLATE_VARIABLES = {
-	product_name: 'Fluxer',
-	appeals_email: 'appeals@fluxer.app',
-	safety_email: 'safety@fluxer.app',
+	product_name: 'echowire',
+	appeals_email: 'appeals@echowire.org',
+	safety_email: 'safety@echowire.org',
 } satisfies Record<string, string>;
 const emailI18n = createStaticI18n<EmailTemplateKey, EmailTemplate, Record<string, unknown>>(
 	{
@@ -46,10 +46,6 @@ export function getEmailTemplate(
 	variables: Record<string, unknown>,
 ): I18nResult<EmailTemplateKey, EmailTemplate> {
 	return emailI18n.getTemplate(templateKey, locale, {...DEFAULT_EMAIL_TEMPLATE_VARIABLES, ...variables});
-}
-
-export function hasEmailLocale(locale: string): boolean {
-	return emailI18n.hasLocale(locale);
 }
 
 export function resetEmailI18n(): void {

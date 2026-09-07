@@ -1,10 +1,19 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {type ChannelType, ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
+import {type ChannelType, ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT} from '@fluxer/constants/src/LimitConstants';
 import type {ChannelID, GuildID, MessageID, RoleID, UserID} from '../BrandedTypes';
-import type {ChannelRow, PermissionOverwrite} from '../database/types/ChannelTypes';
+import type {ChannelRow, DefaultReactionEmoji, ForumTag, PermissionOverwrite} from '../database/types/ChannelTypes';
 import {ChannelPermissionOverwrite} from './ChannelPermissionOverwrite';
+
+export interface ThreadMetadata {
+	readonly archived: boolean;
+	readonly autoArchiveDuration: number;
+	readonly archiveTimestamp: Date | null;
+	readonly locked: boolean;
+	readonly invitable: boolean;
+	readonly createTimestamp: Date | null;
+}
 
 export class Channel {
 	readonly id: ChannelID;
@@ -31,6 +40,18 @@ export class Channel {
 	readonly lastPinTimestamp: Date | null;
 	readonly permissionOverwrites: Map<RoleID | UserID, ChannelPermissionOverwrite>;
 	readonly nicknames: Map<string, string>;
+	// Echowire: thread state (non-null only for thread channels).
+	readonly threadMetadata: ThreadMetadata | null;
+	readonly memberCount: number | null;
+	readonly messageCount: number | null;
+	// Echowire forum fields: tags live on the forum channel; appliedTags on its threads (posts).
+	readonly availableTags: Array<ForumTag> | null;
+	readonly appliedTags: Array<string> | null;
+	readonly defaultReactionEmoji: DefaultReactionEmoji | null;
+	readonly defaultSortOrder: number | null;
+	readonly forumDefaultAutoArchiveDuration: number | null;
+	readonly forumRequireTag: boolean;
+	readonly pinned: boolean;
 	readonly isSoftDeleted: boolean;
 	readonly indexedAt: Date | null;
 	readonly version: number;
@@ -67,6 +88,26 @@ export class Channel {
 			}
 		}
 		this.nicknames = row.nicks ?? new Map();
+		this.threadMetadata = THREAD_CHANNEL_TYPES.has(this.type)
+			? {
+					archived: row.thread_archived ?? false,
+					autoArchiveDuration: row.thread_auto_archive_duration ?? 1440,
+					archiveTimestamp: row.thread_archive_timestamp ?? null,
+					locked: row.thread_locked ?? false,
+					invitable: row.thread_invitable ?? false,
+					createTimestamp: row.thread_create_timestamp ?? null,
+				}
+			: null;
+		this.memberCount = this.threadMetadata ? (row.thread_member_count ?? 0) : null;
+		this.messageCount = this.threadMetadata ? (row.thread_message_count ?? 0) : null;
+		this.availableTags = this.type === ChannelTypes.GUILD_FORUM ? (row.available_tags ?? []) : null;
+		this.appliedTags = this.threadMetadata ? (row.applied_tags ?? []) : null;
+		this.defaultReactionEmoji = this.type === ChannelTypes.GUILD_FORUM ? (row.default_reaction_emoji ?? null) : null;
+		this.defaultSortOrder = this.type === ChannelTypes.GUILD_FORUM ? (row.default_sort_order ?? null) : null;
+		this.forumDefaultAutoArchiveDuration =
+			this.type === ChannelTypes.GUILD_FORUM ? (row.forum_default_auto_archive_duration ?? null) : null;
+		this.forumRequireTag = this.type === ChannelTypes.GUILD_FORUM ? (row.forum_require_tag ?? false) : false;
+		this.pinned = this.threadMetadata ? (row.thread_pinned ?? false) : false;
 		this.isSoftDeleted = row.soft_deleted;
 		this.indexedAt = row.indexed_at ?? null;
 		this.version = row.version;
@@ -106,6 +147,21 @@ export class Channel {
 			last_pin_timestamp: this.lastPinTimestamp,
 			permission_overwrites: permOverwritesMap,
 			nicks: this.nicknames.size > 0 ? this.nicknames : null,
+			thread_archived: this.threadMetadata?.archived ?? null,
+			thread_auto_archive_duration: this.threadMetadata?.autoArchiveDuration ?? null,
+			thread_archive_timestamp: this.threadMetadata?.archiveTimestamp ?? null,
+			thread_locked: this.threadMetadata?.locked ?? null,
+			thread_invitable: this.threadMetadata?.invitable ?? null,
+			thread_create_timestamp: this.threadMetadata?.createTimestamp ?? null,
+			thread_member_count: this.memberCount ?? null,
+			thread_message_count: this.messageCount ?? null,
+			thread_pinned: this.threadMetadata ? this.pinned : null,
+			available_tags: this.availableTags ?? null,
+			applied_tags: this.appliedTags ?? null,
+			default_reaction_emoji: this.defaultReactionEmoji ?? null,
+			default_sort_order: this.defaultSortOrder ?? null,
+			forum_default_auto_archive_duration: this.forumDefaultAutoArchiveDuration ?? null,
+			forum_require_tag: this.type === ChannelTypes.GUILD_FORUM ? this.forumRequireTag : null,
 			soft_deleted: this.isSoftDeleted,
 			indexed_at: this.indexedAt,
 			version: this.version,

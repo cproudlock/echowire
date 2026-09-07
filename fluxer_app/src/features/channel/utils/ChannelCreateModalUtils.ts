@@ -39,6 +39,11 @@ export const channelTypeOptions: Array<ChannelTypeOption> = [
 		desc: 'Hang out together with voice, video, and screen share',
 	},
 	{
+		value: ChannelTypes.GUILD_FORUM,
+		name: 'Forum Channel',
+		desc: 'Organize discussion into posts with tags',
+	},
+	{
 		value: ChannelTypes.GUILD_LINK,
 		name: 'Link Channel',
 		desc: 'Quick access to an external website or resource',
@@ -56,7 +61,7 @@ export async function createChannel(guildId: string, data: FormInputs, parentId?
 		user_limit: channelType === ChannelTypes.GUILD_VOICE ? 0 : null,
 		voice_connection_limit: channelType === ChannelTypes.GUILD_VOICE ? VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT : null,
 	});
-	if (GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type)) {
+	if (GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) || channel.type === ChannelTypes.GUILD_FORUM) {
 		setTimeout(() => {
 			selectChannel(guildId, channel.id);
 		}, 50);

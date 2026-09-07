@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {CONTENT_WARNING_TEXT_MAX_LENGTH} from '@fluxer/constants/src/GuildConstants';
-import {MAX_GROUP_DM_OTHER_RECIPIENTS} from '@fluxer/constants/src/LimitConstants';
+import {MAX_GROUP_DM_OTHER_RECIPIENTS, MAX_GROUP_DM_RECIPIENTS} from '@fluxer/constants/src/LimitConstants';
 import {type UserPartial, UserPartialResponse} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
 import {ChannelOverwriteTypeSchema, ChannelTypeSchema} from '@fluxer/schema/src/primitives/ChannelValidators';
 import {ContentWarningLevelSchema} from '@fluxer/schema/src/primitives/GuildValidators';
@@ -22,6 +22,7 @@ export const RtcRegionResponse = z.object({
 	id: z.string().describe('The unique identifier for this RTC region'),
 	name: z.string().describe('The display name of the RTC region'),
 	emoji: z.string().describe('The emoji associated with this RTC region'),
+	ping_endpoint: z.string().nullable().describe('The URL to ping for latency measurement'),
 });
 
 export type RtcRegionResponse = z.infer<typeof RtcRegionResponse>;
@@ -87,6 +88,15 @@ export const VoicePresenceHeartbeatEndResponse = z.object({
 
 export type VoicePresenceHeartbeatEndResponse = z.infer<typeof VoicePresenceHeartbeatEndResponse>;
 
+// Echowire: a tag definition for a forum channel's available_tags.
+export const ForumTagResponse = z.object({
+	id: SnowflakeStringType.describe('The unique identifier for this tag'),
+	name: z.string().describe('The name of the tag'),
+	emoji_name: z.string().nullable().describe('The emoji associated with this tag, or null'),
+});
+
+export type ForumTagResponse = z.infer<typeof ForumTagResponse>;
+
 export const ChannelResponse = z.object({
 	id: SnowflakeStringType.describe('The unique identifier (snowflake) for this channel'),
 	guild_id: SnowflakeStringType.optional().describe('The ID of the guild this channel belongs to'),
@@ -111,7 +121,6 @@ export const ChannelResponse = z.object({
 		.describe('The ISO 8601 timestamp of when the last pinned message was pinned'),
 	permission_overwrites: z
 		.array(ChannelOverwriteResponse)
-		.max(500)
 		.optional()
 		.describe('The permission overwrites for this channel'),
 	recipients: z
@@ -142,6 +151,45 @@ export const ChannelResponse = z.object({
 		.record(z.string(), createStringType(1, 32))
 		.optional()
 		.describe('Custom nicknames for users in this channel (for group DMs)'),
+	// Echowire: thread fields. Present only when `type` is a thread; `owner_id` above doubles as the thread creator.
+	thread_metadata: z
+		.object({
+			archived: z.boolean().describe('Whether the thread is archived'),
+			auto_archive_duration: Int32Type.describe(
+				'Minutes of inactivity before auto-archiving (60, 1440, 4320, or 10080)',
+			),
+			archive_timestamp: z.iso.datetime().nullish().describe('ISO 8601 timestamp of the last archive state change'),
+			locked: z.boolean().optional().describe('Whether the thread is locked (only moderators can unarchive)'),
+			invitable: z.boolean().optional().describe('Whether non-moderators can add others to a private thread'),
+			create_timestamp: z.iso.datetime().nullish().describe('ISO 8601 timestamp of thread creation'),
+		})
+		.nullish()
+		.describe('Thread metadata; present only for thread channels'),
+	member_count: Int32Type.optional().describe('Approximate count of members in the thread (threads only)'),
+	message_count: Int32Type.optional().describe('Approximate count of messages in the thread (threads only)'),
+	pinned: z.boolean().optional().describe('Whether this forum post / thread is pinned to the top'),
+	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order: forum channels.
+	// applied_tags: forum posts (threads).
+	available_tags: z
+		.array(ForumTagResponse)
+		.max(20)
+		.optional()
+		.describe('Tags that can be applied to posts in a forum channel (max 20)'),
+	applied_tags: z
+		.array(SnowflakeStringType)
+		.max(5)
+		.optional()
+		.describe('Tag IDs applied to a forum post / thread (max 5)'),
+	default_reaction_emoji: z
+		.object({
+			emoji_id: SnowflakeStringType.nullable().describe('Custom emoji ID, or null for a unicode emoji'),
+			emoji_name: z.string().nullable().describe('Unicode emoji, or null for a custom emoji'),
+		})
+		.nullish()
+		.describe('The default reaction shown on forum posts'),
+	default_sort_order: Int32Type.nullish().describe('Default sort for forum posts (0 = latest activity, 1 = creation)'),
+	default_auto_archive_duration: Int32Type.nullish().describe('Default inactivity (minutes) new forum posts inherit'),
+	require_tag: z.boolean().optional().describe('Whether a forum post must have at least one tag'),
 });
 
 export type ChannelResponse = z.infer<typeof ChannelResponse>;
@@ -165,7 +213,7 @@ export const ChannelPartialResponse = z.object({
 	type: ChannelTypeSchema.describe('The type of the channel'),
 	recipients: z
 		.array(ChannelPartialRecipientResponse)
-		.max(MAX_GROUP_DM_OTHER_RECIPIENTS)
+		.max(MAX_GROUP_DM_RECIPIENTS)
 		.optional()
 		.describe('The recipients of the DM channel'),
 });
@@ -204,4 +252,30 @@ export interface Channel {
 	readonly content_warning_text?: string | null;
 	readonly rate_limit_per_user?: number;
 	readonly nicks?: Readonly<Record<string, string>>;
+	// Echowire: thread fields (present only for thread channels).
+	readonly thread_metadata?: {
+		readonly archived: boolean;
+		readonly auto_archive_duration: number;
+		readonly archive_timestamp?: string | null;
+		readonly locked?: boolean;
+		readonly invitable?: boolean;
+		readonly create_timestamp?: string | null;
+	} | null;
+	readonly member_count?: number;
+	readonly message_count?: number;
+	readonly pinned?: boolean;
+	// Echowire forum fields.
+	readonly available_tags?: ReadonlyArray<{
+		readonly id: string;
+		readonly name: string;
+		readonly emoji_name: string | null;
+	}>;
+	readonly applied_tags?: ReadonlyArray<string>;
+	readonly default_reaction_emoji?: {
+		readonly emoji_id: string | null;
+		readonly emoji_name: string | null;
+	} | null;
+	readonly default_sort_order?: number | null;
+	readonly default_auto_archive_duration?: number | null;
+	readonly require_tag?: boolean;
 }

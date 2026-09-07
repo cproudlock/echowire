@@ -62,6 +62,10 @@ export class UserContentRepository implements IUserContentRepository {
 		return this.giftCodeRepository.unredeemGiftCode(code, userId);
 	}
 
+	async revokeGiftCode(code: string): Promise<void> {
+		return this.giftCodeRepository.revokeGiftCode(code);
+	}
+
 	async updateGiftCode(code: string, data: Partial<GiftCodeRow>): Promise<void> {
 		return this.giftCodeRepository.updateGiftCode(code, data);
 	}
@@ -180,6 +184,10 @@ export class UserContentRepository implements IUserContentRepository {
 
 	async listSavedMessages(userId: UserID, limit: number = 25, before?: MessageID): Promise<Array<SavedMessage>> {
 		return this.savedMessageRepository.listSavedMessages(userId, limit, before);
+	}
+
+	async countSavedMessages(userId: UserID): Promise<number> {
+		return this.savedMessageRepository.countSavedMessages(userId);
 	}
 
 	async createSavedMessage(userId: UserID, channelId: ChannelID, messageId: MessageID): Promise<SavedMessage> {

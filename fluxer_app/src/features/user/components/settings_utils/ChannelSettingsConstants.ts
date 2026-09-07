@@ -3,17 +3,23 @@
 import ChannelInvitesTab from '@app/features/channel/components/modals/channel_tabs/ChannelInvitesTab';
 import ChannelOverviewTab from '@app/features/channel/components/modals/channel_tabs/ChannelOverviewTab';
 import ChannelPermissionsTab from '@app/features/channel/components/modals/channel_tabs/ChannelPermissionsTab';
+import ChannelTagsTab from '@app/features/channel/components/modals/channel_tabs/ChannelTagsTab';
 import ChannelWebhooksTab from '@app/features/channel/components/modals/channel_tabs/ChannelWebhooksTab';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import type {I18n, MessageDescriptor} from '@lingui/core';
 import {msg} from '@lingui/core/macro';
-import {GearIcon, type Icon, ShieldIcon, TicketIcon, WebhooksLogoIcon} from '@phosphor-icons/react';
+import {GearIcon, type Icon, ShieldIcon, TagIcon, TicketIcon, WebhooksLogoIcon} from '@phosphor-icons/react';
 import type React from 'react';
 
 const OVERVIEW_DESCRIPTOR = msg({
 	message: 'Overview',
 	context: 'channel-settings-tab',
 	comment: 'Channel settings tab for basic channel details.',
+});
+const TAGS_DESCRIPTOR = msg({
+	message: 'Tags',
+	context: 'channel-settings-tab',
+	comment: 'Channel settings tab for managing forum post tags.',
 });
 const PERMISSIONS_DESCRIPTOR = msg({
 	message: 'Permissions',
@@ -31,7 +37,7 @@ const WEBHOOKS_DESCRIPTOR = msg({
 	comment: 'Channel settings tab for configuring channel webhooks.',
 });
 
-export type ChannelSettingsTabType = 'overview' | 'permissions' | 'invites' | 'webhooks';
+export type ChannelSettingsTabType = 'overview' | 'tags' | 'permissions' | 'invites' | 'webhooks';
 type ChannelSettingsTabCategories = 'channel_settings';
 
 export interface ChannelSettingsTab {
@@ -63,6 +69,14 @@ const CHANNEL_SETTINGS_TABS_DESCRIPTORS: Array<ChannelSettingsTabDescriptor> = [
 		label: OVERVIEW_DESCRIPTOR,
 		icon: GearIcon,
 		component: ChannelOverviewTab,
+		permission: Permissions.MANAGE_CHANNELS,
+	},
+	{
+		type: 'tags',
+		category: 'channel_settings',
+		label: TAGS_DESCRIPTOR,
+		icon: TagIcon,
+		component: ChannelTagsTab,
 		permission: Permissions.MANAGE_CHANNELS,
 	},
 	{

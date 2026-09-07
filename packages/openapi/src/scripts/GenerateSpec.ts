@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import type {OpenAPIRouteScope} from '@fluxer/openapi/src/OpenAPIGenerationTypes';
+import type {OpenAPIGenerationStats, OpenAPIRouteScope, SkippedRoute} from '@fluxer/openapi/src/OpenAPIGenerationTypes';
 import {OpenAPIGenerator} from '@fluxer/openapi/src/OpenAPIGenerator';
 import {transformAdminOpenAPISpec} from '@fluxer/openapi/src/output/AdminSpecTransform';
 import {printValidationResult, validateSpec} from '@fluxer/openapi/src/output/SpecValidator';
@@ -16,7 +16,7 @@ import {
 
 type GenerateTarget = 'admin' | 'public';
 const API_DESCRIPTION =
-	'API for Fluxer, a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.';
+	'API for Echowire, an instant messaging and VoIP chat app built for friends, groups, and communities.';
 function parseArgs(): {
 	validateOnly: boolean;
 	outputPath: string | null;
@@ -62,20 +62,36 @@ function getTargetOutputPath(basePath: string, target: GenerateTarget, customOut
 function getRouteScope(target: GenerateTarget): OpenAPIRouteScope {
 	return target === 'admin' ? 'admin' : 'public';
 }
+function reportRoutesLeftOut(target: GenerateTarget, stats: OpenAPIGenerationStats): void {
+	const groups: Array<[string, ReadonlyArray<SkippedRoute>]> = [
+		['registered but not written to the spec', stats.skippedRoutes],
+		['registered but not expressible as an OpenAPI path', stats.untemplatableRoutes],
+	];
+	for (const [title, routes] of groups) {
+		if (routes.length === 0) {
+			continue;
+		}
+		console.log(`${target} routes ${title}: ${routes.length.toString()}`);
+		for (const route of [...routes].sort((a, b) => `${a.path} ${a.method}`.localeCompare(`${b.path} ${b.method}`))) {
+			console.log(`  ${route.method} ${route.path}  ${route.reason}  (${route.source})`);
+		}
+	}
+}
 async function buildTargetSpec(basePath: string, target: GenerateTarget): Promise<WritableOpenAPISpec> {
 	const generator = new OpenAPIGenerator({
 		basePath,
-		title: 'Fluxer API',
+		title: 'Echowire API',
 		version: '1.0.0',
 		description: API_DESCRIPTION,
 		serverUrl: 'https://api.fluxer.app/v1',
 		routeScope: getRouteScope(target),
 	});
-	const spec = await generator.generate();
+	const {document, stats} = await generator.generateWithStats();
+	reportRoutesLeftOut(target, stats);
 	if (target === 'admin') {
-		return transformAdminOpenAPISpec(spec);
+		return transformAdminOpenAPISpec(document);
 	}
-	return spec;
+	return document;
 }
 function validateTargetSpec(target: GenerateTarget, spec: WritableOpenAPISpec): boolean {
 	const validationResult = validateSpec(spec, {
@@ -116,7 +132,7 @@ async function main(): Promise<void> {
 		throw new Error('--output requires --target when generating or validating multiple specs.');
 	}
 	const targets: Array<GenerateTarget> = requestedTarget ? [requestedTarget] : ['public', 'admin'];
-	console.log('Fluxer OpenAPI Specification Generator');
+	console.log('Echowire OpenAPI Specification Generator');
 	console.log('======================================');
 	console.log(`Base path: ${basePath}`);
 	console.log(`Targets: ${targets.join(', ')}`);

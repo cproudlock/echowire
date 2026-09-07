@@ -13,6 +13,7 @@ use crate::{
 };
 use maud::{Markup, PreEscaped, html};
 
+
 const SWISH_LOGO_SVG: &str = r##"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" fill-rule="evenodd" class="h-8 w-8 shrink-0" aria-hidden="true" focusable="false">
 <defs>
 <linearGradient id="swish-grad-1" x1="-746" y1="822.6" x2="-746.2" y2="823.1" gradientTransform="translate(224261.6 305063) scale(300.3 -370.5)" gradientUnits="userSpaceOnUse">
@@ -232,6 +233,22 @@ pub fn donate_page(
                     }
                     p class="text-lg text-muted-foreground" {
                         (tr(i18n, ctx, DONATIONS_SUPPORT_MESSAGE_DESCRIPTOR))
+                    }
+                }
+                // Echowire: recipient selector — support this instance (echowire, active)
+                // or the upstream Fluxer project (links out to fluxer.app/donate).
+                div class="mb-8 flex flex-col items-center gap-2" {
+                    div class="inline-flex rounded-lg bg-gray-100 p-1" {
+                        span class="rounded-md bg-white px-5 py-2 font-semibold text-gray-900 shadow-sm" {
+                            "echowire"
+                        }
+                        a href="https://fluxer.app/donate" target="_blank" rel="noopener noreferrer"
+                            class="rounded-md px-5 py-2 font-semibold text-gray-500 transition-colors hover:text-gray-900" {
+                            "fluxer.app"
+                        }
+                    }
+                    p class="text-xs text-muted-foreground" {
+                        "Choose who to support — this instance or the upstream Fluxer project."
                     }
                 }
                 div id="donation-interaction" {

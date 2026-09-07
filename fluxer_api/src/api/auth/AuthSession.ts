@@ -15,26 +15,24 @@ import {Logger} from '../Logger';
 import type {AuthSession} from '../models/AuthSession';
 import type {User} from '../models/User';
 import {lookupGeoip} from '../utils/IpUtils';
+import {isFluxerNativeUserAgent, parseReportedClientOs} from '../utils/SessionClientIdentity';
 import {mapAuthSessionsToResponse} from './AuthModel';
 import * as AuthUtility from './AuthUtility';
 
+export interface SessionOrigin {
+	ip: string;
+	userAgent: string | null;
+	clientOs: string | null;
+}
+
 interface CreateAuthSessionParams {
 	user: User;
-	request: Request;
+	origin: SessionOrigin;
 }
 
 interface LogoutAuthSessionsParams {
 	user: User;
 	sessionIdHashes: Array<string>;
-}
-
-interface UpdateUserActivityParams {
-	userId: UserID;
-	clientIp: string;
-	user?: User;
-	action?: 'session_authenticated' | 'bearer_fallback_session_authenticated' | 'unknown';
-	tokenType?: 'session' | 'bearer';
-	sessionId?: string;
 }
 
 interface DispatchAuthSessionChangeParams {
@@ -60,29 +58,36 @@ interface ReplaceCurrentAuthSessionResult {
 interface CreateAdditionalAuthSessionFromTokenParams {
 	token: string;
 	expectedUserId?: string;
-	request: Request;
+	origin: SessionOrigin;
 }
 
-export async function createAuthSession(
-	ctx: ApiContext,
-	{user, request}: CreateAuthSessionParams,
-): Promise<[token: string, AuthSession]> {
-	const {users, config} = ctx.services;
-	if (user.isBot) throw new BotUserAuthSessionCreationDeniedError();
-	if (user.traits.has(REGISTRATION_PENDING_APPROVAL_TRAIT)) throw new RegistrationPendingApprovalError();
-	if (user.traits.has(REGISTRATION_REJECTED_TRAIT)) throw new RegistrationRejectedError();
-	const now = new Date();
-	const token = await AuthUtility.generateAuthToken(ctx);
+export function resolveSessionOrigin(ctx: ApiContext, request: Request): SessionOrigin {
+	const {config} = ctx.services;
 	const ip = requireClientIp(request, {
 		trustClientIpHeader: config.proxy.trust_client_ip_header,
 		clientIpHeaderName: config.proxy.client_ip_header,
 	});
-	const platformHeader = request.headers.get('x-fluxer-platform')?.trim().toLowerCase() ?? null;
-	const uaRaw = request.headers.get('user-agent') ?? '';
-	const isDesktopClient = platformHeader === 'desktop';
+	const userAgent = request.headers.get('user-agent')?.trim() || null;
+	const clientOs = isFluxerNativeUserAgent(userAgent)
+		? parseReportedClientOs(request.headers.get('x-fluxer-client-properties'))
+		: null;
+	return {ip, userAgent, clientOs};
+}
+
+export async function createAuthSession(
+	ctx: ApiContext,
+	{user, origin}: CreateAuthSessionParams,
+): Promise<[token: string, AuthSession]> {
+	const {users} = ctx.services;
+	if (user.isBot) throw new BotUserAuthSessionCreationDeniedError();
+	if (user.traits.has(REGISTRATION_PENDING_APPROVAL_TRAIT)) throw new RegistrationPendingApprovalError();
+	if (user.traits.has(REGISTRATION_REJECTED_TRAIT)) throw new RegistrationRejectedError();
+	user = await AuthUtility.handleBanStatus(ctx, user);
+	const now = new Date();
+	const token = await AuthUtility.generateAuthToken(ctx);
 	let clientCountry: string | null = null;
 	try {
-		const geoip = await lookupGeoip(ip);
+		const geoip = await lookupGeoip(origin.ip);
 		clientCountry = geoip.countryCode ? geoip.countryCode.toUpperCase() : null;
 	} catch (error) {
 		Logger.warn({userId: user.id.toString(), error}, 'GeoIP lookup failed at session creation');
@@ -92,11 +97,9 @@ export async function createAuthSession(
 		session_id_hash: Buffer.from(AuthUtility.getTokenIdHash(ctx, token)),
 		created_at: now,
 		approx_last_used_at: now,
-		client_ip: ip,
-		client_user_agent: uaRaw || null,
-		client_is_desktop: isDesktopClient,
-		client_os: null,
-		client_platform: null,
+		client_ip: origin.ip,
+		client_user_agent: origin.userAgent,
+		client_os: origin.clientOs,
 		client_country: clientCountry,
 		version: 1,
 	});
@@ -105,7 +108,7 @@ export async function createAuthSession(
 
 export async function createAdditionalAuthSessionFromToken(
 	ctx: ApiContext,
-	{token, expectedUserId, request}: CreateAdditionalAuthSessionFromTokenParams,
+	{token, expectedUserId, origin}: CreateAdditionalAuthSessionFromTokenParams,
 ): Promise<{
 	token: string;
 	userId: string;
@@ -122,7 +125,7 @@ export async function createAdditionalAuthSessionFromToken(
 	if (expectedUserId && user.id.toString() !== expectedUserId) {
 		throw new SessionTokenMismatchError();
 	}
-	const [newToken] = await createAuthSession(ctx, {user, request});
+	const [newToken] = await createAuthSession(ctx, {user, origin});
 	return {token: newToken, userId: user.id.toString()};
 }
 
@@ -139,11 +142,6 @@ export async function getAuthSessions(ctx: ApiContext, userId: UserID): Promise<
 
 export async function updateAuthSessionLastUsed(ctx: ApiContext, tokenHash: Uint8Array): Promise<void> {
 	await ctx.services.userActivityBuffer.recordAuthSessionActivity(Buffer.from(tokenHash), new Date());
-}
-
-export async function updateUserActivity(ctx: ApiContext, {userId, clientIp}: UpdateUserActivityParams): Promise<void> {
-	const {users} = ctx.services;
-	await users.updateUserActivity(userId, clientIp);
 }
 
 export async function revokeToken(ctx: ApiContext, token: string): Promise<void> {
@@ -180,18 +178,19 @@ export async function logoutAuthSessions(
 	});
 }
 
-export async function terminateAllUserSessions(ctx: ApiContext, userId: UserID): Promise<void> {
+export async function terminateAllUserSessions(ctx: ApiContext, userId: UserID): Promise<number> {
 	const {users, gateway} = ctx.services;
 	const authSessions = await users.listAuthSessions(userId);
 	await users.deleteAllPushSubscriptions(userId);
 	await gateway.invalidatePushSubscriptions({userId});
-	if (authSessions.length === 0) return;
+	if (authSessions.length === 0) return 0;
 	const hashes = authSessions.map((s) => s.sessionIdHash);
 	await users.deleteAuthSessions(userId, hashes);
 	await gateway.terminateSession({
 		userId,
 		sessionIdHashes: authSessions.map((s) => Buffer.from(s.sessionIdHash).toString('base64url')),
 	});
+	return authSessions.length;
 }
 
 export async function replaceCurrentAuthSession(
@@ -205,7 +204,7 @@ export async function replaceCurrentAuthSession(
 		(authSession) => !authSession.sessionIdHash.equals(currentAuthSession.sessionIdHash),
 	);
 	await deleteAndTerminateAuthSessions(ctx, user.id, otherAuthSessions);
-	const [newToken, newAuthSession] = await createAuthSession(ctx, {user, request});
+	const [newToken, newAuthSession] = await createAuthSession(ctx, {user, origin: resolveSessionOrigin(ctx, request)});
 	const newAuthSessionIdHash = encodeSessionIdHash(newAuthSession.sessionIdHash);
 	await dispatchAuthSessionChange(ctx, {
 		userId: user.id,

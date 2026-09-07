@@ -34,7 +34,7 @@ import type {WorkerTaskName} from '../worker/WorkerLaneConfig';
 const DEFAULT_SNOWFLAKE_SERVICE_BATCH_SIZE = 128;
 const DEFAULT_SNOWFLAKE_SERVICE_LOW_WATERMARK = 32;
 const DEFAULT_SNOWFLAKE_SERVICE_MAX_BUFFER_AGE_MS = 5000;
-const DEFAULT_SNOWFLAKE_SERVICE_REQUEST_TIMEOUT_MS = 5000;
+const DEFAULT_SNOWFLAKE_SERVICE_REQUEST_TIMEOUT_MS = 6000;
 
 function readPositiveIntegerEnv(names: string | Array<string>, fallback: number): number {
 	const envNames = Array.isArray(names) ? names : [names];
@@ -181,6 +181,8 @@ let _blueskyOAuthService: IBlueskyOAuthService | undefined;
 let _blueskyOAuthInitializationPromise: Promise<IBlueskyOAuthService> | null = null;
 let _blueskyOAuthConfigSignature: string | null = null;
 let _blueskyOAuthInitializationSignature: string | null = null;
+let _blueskyOAuthSignatureSource: BlueskyOAuthConfig | null = null;
+let _blueskyOAuthSignatureValue: string | null = null;
 let _disabledBlueskyOAuthService: DisabledBlueskyOAuthService | undefined;
 
 export function setInjectedBlueskyOAuthService(service: IBlueskyOAuthService | undefined): void {
@@ -195,7 +197,13 @@ function getDisabledBlueskyOAuthService(): DisabledBlueskyOAuthService {
 }
 
 function getBlueskyOAuthConfigSignature(config: BlueskyOAuthConfig): string {
-	return JSON.stringify(config);
+	if (_blueskyOAuthSignatureSource === config && _blueskyOAuthSignatureValue !== null) {
+		return _blueskyOAuthSignatureValue;
+	}
+	const signature = JSON.stringify(config);
+	_blueskyOAuthSignatureSource = config;
+	_blueskyOAuthSignatureValue = signature;
+	return signature;
 }
 
 export async function resolveBlueskyOAuthService(
@@ -235,6 +243,12 @@ export async function resolveBlueskyOAuthService(
 				_blueskyOAuthService = service;
 				_blueskyOAuthConfigSignature = signature;
 				return service;
+			})
+			.catch((error) => {
+				Logger.error({error}, 'Bluesky OAuth signing keys were rejected – disabling Bluesky OAuth.');
+				_blueskyOAuthService = getDisabledBlueskyOAuthService();
+				_blueskyOAuthConfigSignature = signature;
+				return _blueskyOAuthService;
 			})
 			.finally(() => {
 				_blueskyOAuthInitializationPromise = null;
@@ -299,4 +313,23 @@ export function getLiveKitServiceInstance(): ILiveKitService | null {
 
 export function getVoiceRoomStoreInstance(): IVoiceRoomStore | null {
 	return voiceRoomStoreInstance;
+}
+
+export function resetServiceRegistryForTesting(): void {
+	_kvClient = null;
+	_snowflakeService = null;
+	_billingRepository = null;
+	_blueskyOAuthService = undefined;
+	_blueskyOAuthInitializationPromise = null;
+	_blueskyOAuthConfigSignature = null;
+	_blueskyOAuthInitializationSignature = null;
+	_blueskyOAuthSignatureSource = null;
+	_blueskyOAuthSignatureValue = null;
+	_disabledBlueskyOAuthService = undefined;
+	voiceTopology = null;
+	voiceAvailabilityService = null;
+	liveKitServiceInstance = null;
+	voiceRoomStoreInstance = null;
+	voiceConfigSubscriber = null;
+	voiceInitializationPromise = null;
 }

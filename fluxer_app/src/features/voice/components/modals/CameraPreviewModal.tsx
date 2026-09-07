@@ -6,6 +6,7 @@ import {CAMERA_DESCRIPTOR, SOMETHING_WENT_WRONG_DESCRIPTOR} from '@app/features/
 import Permission from '@app/features/permissions/state/Permission';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import BackgroundImageGalleryModal from '@app/features/theme/components/modals/BackgroundImageGalleryModal';
+import {remFromPx} from '@app/features/theme/layout/RemFromPx';
 import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
@@ -19,15 +20,11 @@ import {Tooltip} from '@app/features/ui/tooltip/Tooltip';
 import {formatRoundedPercentage} from '@app/features/ui/utils/PercentageFormatting';
 import * as VoiceSettingsCommands from '@app/features/voice/commands/VoiceSettingsCommands';
 import styles from '@app/features/voice/components/modals/CameraPreviewModal.module.css';
-import {
-	NATIVE_CAMERA_PREVIEW_RETRY_DELAY_MS,
-	selectNativeCameraPreviewFallback,
-} from '@app/features/voice/components/modals/CameraPreviewSessionPolicy';
+import {useMaybeVoiceRoom} from '@app/features/voice/components/VoiceRoomContext';
 import MediaEngine, {useMediaEngineVersion} from '@app/features/voice/engine/MediaEngineFacade';
 import {VOICE_CAMERA_USER_LIMIT_REACHED_DESCRIPTOR} from '@app/features/voice/engine/media_engine_facade/shared';
-import NativeVideoTileManager from '@app/features/voice/engine/native_voice_engine/NativeVideoTileManager';
-import {useStoreVersion} from '@app/features/voice/engine/Store';
 import VoiceDevicePermissionState from '@app/features/voice/engine/VoiceDevicePermissionState';
+import {getCameraCaptureDimensions} from '@app/features/voice/engine/v2/VoiceEngineV2AppCameraResolutionPresets';
 import {useCameraUserCapBlocked} from '@app/features/voice/hooks/useCameraUserCapBlocked';
 import VoiceSettings, {
 	BLUR_BACKGROUND_ID,
@@ -47,7 +44,6 @@ import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {VOICE_CHANNEL_CAMERA_USER_LIMIT} from '@fluxer/constants/src/LimitConstants';
 import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
-import {useMaybeRoomContext} from '@livekit/components-react';
 import {CameraIcon, ImageIcon} from '@phosphor-icons/react';
 import type {LocalParticipant, LocalVideoTrack, Room} from 'livekit-client';
 import {createLocalVideoTrack, RoomEvent} from 'livekit-client';
@@ -81,11 +77,6 @@ const YOU_DON_T_HAVE_PERMISSION_TO_TURN_ON_DESCRIPTOR = msg({
 	comment:
 		'Tooltip / error shown in the camera preview modal when the user lacks Video permission in the current channel. Tone stays plain.',
 });
-const EFFECTS_PREVIEW_UNAVAILABLE_DESCRIPTOR = msg({
-	message: 'Effects preview unavailable — showing unprocessed camera',
-	comment:
-		'Inline notice in the camera preview modal when the native effects preview cannot start and the raw camera feed is shown instead.',
-});
 const BLUR_STRENGTH_DESCRIPTOR = msg({
 	message: 'Blur strength',
 	comment: 'Slider label in the camera preview modal controlling how strong the background blur effect is.',
@@ -100,12 +91,6 @@ interface CameraPreviewModalProps {
 	isCameraEnabled?: boolean;
 }
 
-interface VideoResolutionPreset {
-	width: number;
-	height: number;
-	frameRate: number;
-}
-
 const TARGET_ASPECT_RATIO = 16 / 9;
 const ASPECT_RATIO_TOLERANCE = 0.1;
 const RESOLUTION_WAIT_TIMEOUT = 2000;
@@ -118,15 +103,11 @@ const VIDEO_READY_STATE_HAS_CURRENT_DATA = 2;
 const RESOLUTION_FIX_TRIGGER_DELAY = 800;
 const RESOLUTION_FIX_SETTLE_DELAY = 1200;
 const RESOLUTION_FIX_SWITCH_BACK_DELAY = 500;
-const CAMERA_RESOLUTION_PRESETS: Record<'low' | 'medium' | 'high', VideoResolutionPreset> = {
-	low: {width: 640, height: 360, frameRate: 24},
-	medium: {width: 1280, height: 720, frameRate: 30},
-	high: {width: 1920, height: 1080, frameRate: 30},
-};
 
 interface CameraPreviewConfig {
 	videoDeviceId: string;
 	backgroundImageId: string;
+	backgroundBlurStrength: number;
 	mirrorCamera: boolean;
 	cameraResolution: 'low' | 'medium' | 'high';
 	videoFrameRate: number;
@@ -160,7 +141,8 @@ function getCameraPreviewParticipantState(room: Room | undefined): CameraPreview
 }
 
 function useCameraPreviewParticipantState(): CameraPreviewParticipantState {
-	const room = useMaybeRoomContext();
+	useMediaEngineVersion();
+	const room = useMaybeVoiceRoom() ?? MediaEngine.room ?? undefined;
 	const [state, setState] = useState<CameraPreviewParticipantState>(() => getCameraPreviewParticipantState(room));
 	useEffect(() => {
 		if (!room) {
@@ -187,6 +169,16 @@ interface CameraPreviewProcessor {
 
 function isSameCameraPreviewConfig(previous: CameraPreviewConfig | null, next: CameraPreviewConfig): boolean {
 	return previous != null && JSON.stringify(previous) === JSON.stringify(next);
+}
+
+function hasSameCameraPreviewTopology(previous: CameraPreviewConfig | null, next: CameraPreviewConfig): boolean {
+	return (
+		previous != null &&
+		previous.videoDeviceId === next.videoDeviceId &&
+		previous.mirrorCamera === next.mirrorCamera &&
+		previous.cameraResolution === next.cameraResolution &&
+		previous.videoFrameRate === next.videoFrameRate
+	);
 }
 
 function isNear16x9AspectRatio(resolution: {width: number; height: number}): boolean {
@@ -259,6 +251,8 @@ function waitForNegotiatedResolution(
 interface CameraPreviewTrackSetupArgs {
 	videoElement: HTMLVideoElement;
 	effectiveVideoDeviceId: string | null;
+	backgroundImageId: string;
+	mirrorCamera: boolean;
 	cameraResolution: 'low' | 'medium' | 'high';
 	videoFrameRate: number;
 	isCurrentInitialization: () => boolean;
@@ -276,15 +270,15 @@ async function setupPreviewTrackAndProcessor(args: CameraPreviewTrackSetupArgs):
 		await args.processorRef.current.destroy();
 		args.processorRef.current = null;
 	}
-	const resolutionPreset = CAMERA_RESOLUTION_PRESETS[args.cameraResolution];
+	const captureDimensions = getCameraCaptureDimensions(args.cameraResolution);
 	const track = await createLocalVideoTrack({
 		deviceId:
 			args.effectiveVideoDeviceId && args.effectiveVideoDeviceId !== 'default'
 				? args.effectiveVideoDeviceId
 				: undefined,
 		resolution: {
-			width: resolutionPreset.width,
-			height: resolutionPreset.height,
+			width: captureDimensions.width,
+			height: captureDimensions.height,
 			frameRate: args.videoFrameRate,
 			aspectRatio: TARGET_ASPECT_RATIO,
 		},
@@ -308,9 +302,12 @@ async function setupPreviewTrackAndProcessor(args: CameraPreviewTrackSetupArgs):
 	args.onResolutionNegotiated(negotiatedResolution);
 	let processor: CameraPreviewProcessor | null = null;
 	try {
-		processor = await applyBackgroundProcessor(track);
-	} catch (_webglError) {
-		logger.warn('WebGL not supported for background processing, falling back to basic camera');
+		processor = await applyBackgroundProcessor(track, {
+			backgroundImageId: args.backgroundImageId,
+			mirrorCamera: args.mirrorCamera,
+		});
+	} catch (error) {
+		logger.warn('Camera background processing failed; falling back to basic camera', {error});
 	}
 	if (!args.isCurrentInitialization()) {
 		await processor?.destroy().catch((destroyError) => {
@@ -323,93 +320,6 @@ async function setupPreviewTrackAndProcessor(args: CameraPreviewTrackSetupArgs):
 	}
 	args.processorRef.current = processor;
 	return 'ready';
-}
-
-function usePublishedNativeCameraPreviewStream(
-	enabled: boolean,
-	localParticipant: LocalParticipant | undefined,
-): MediaStream | null {
-	useStoreVersion(NativeVideoTileManager);
-	if (!enabled) return null;
-	return MediaEngine.getNativeCameraLocalPreviewStream(localParticipant ?? null);
-}
-
-interface NativeCameraPreviewSession {
-	stream: MediaStream | null;
-	failed: boolean;
-}
-
-function useNativeCameraPreviewSession(enabled: boolean): NativeCameraPreviewSession {
-	useStoreVersion(NativeVideoTileManager);
-	const [trackSid, setTrackSid] = useState<string | null>(null);
-	const [failed, setFailed] = useState(false);
-	const [retryNonce, setRetryNonce] = useState(0);
-	const retryAttemptRef = useRef(0);
-	const voiceSettings = VoiceSettings;
-	const videoDeviceId = voiceSettings.videoDeviceId;
-	const backgroundImageId = voiceSettings.backgroundImageId;
-	const cameraResolution = voiceSettings.cameraResolution;
-	const videoFrameRate = voiceSettings.videoFrameRate;
-	const backgroundBlurStrength = voiceSettings.backgroundBlurStrength;
-	useEffect(() => {
-		retryAttemptRef.current = 0;
-	}, [enabled, videoDeviceId, backgroundImageId, cameraResolution, videoFrameRate, backgroundBlurStrength]);
-	useEffect(() => {
-		if (!enabled) {
-			return;
-		}
-		let cancelled = false;
-		let retryTimeoutId: number | null = null;
-		const scheduleRetry = () => {
-			const decision = selectNativeCameraPreviewFallback({
-				sessionFailed: true,
-				backgroundEffectConfigured: backgroundImageId !== NONE_BACKGROUND_ID,
-				retryAttempt: retryAttemptRef.current,
-			});
-			if (!decision.shouldScheduleRetry) return;
-			retryAttemptRef.current += 1;
-			retryTimeoutId = window.setTimeout(() => {
-				retryTimeoutId = null;
-				setRetryNonce((nonce) => nonce + 1);
-			}, NATIVE_CAMERA_PREVIEW_RETRY_DELAY_MS);
-		};
-		setFailed(false);
-		MediaEngine.startNativeCameraPreviewSession()
-			.then((startedTrackSid) => {
-				if (cancelled) return;
-				setTrackSid(startedTrackSid);
-				if (startedTrackSid) {
-					retryAttemptRef.current = 0;
-					return;
-				}
-				setFailed(true);
-				scheduleRetry();
-			})
-			.catch((error) => {
-				logger.warn('Failed to start native camera preview session', {error});
-				if (cancelled) return;
-				setTrackSid(null);
-				setFailed(true);
-				scheduleRetry();
-			});
-		return () => {
-			cancelled = true;
-			if (retryTimeoutId !== null) {
-				window.clearTimeout(retryTimeoutId);
-			}
-		};
-	}, [enabled, retryNonce, videoDeviceId, backgroundImageId, cameraResolution, videoFrameRate, backgroundBlurStrength]);
-	useEffect(() => {
-		if (!enabled) {
-			return;
-		}
-		return () => {
-			setTrackSid(null);
-			void MediaEngine.stopNativeCameraPreviewSession();
-		};
-	}, [enabled]);
-	const stream = enabled && trackSid ? (NativeVideoTileManager.tracks[trackSid]?.stream ?? null) : null;
-	return {stream, failed};
 }
 
 interface CameraEffectStrengthSliderProps {
@@ -492,33 +402,20 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 	const {i18n} = useLingui();
 	useMediaEngineVersion();
 	const {localParticipant, onEnabled, onEnableCamera, isCameraEnabled, showEnableCameraButton = true} = props;
-	const nativeCameraPublished = MediaEngine.isNativeCameraPublished();
-	const nativePreviewStream = usePublishedNativeCameraPreviewStream(nativeCameraPublished, localParticipant);
-	const hasPublishedNativePreview = nativePreviewStream != null;
-	const cameraAlreadyOn = isCameraEnabled === true || nativeCameraPublished;
-	const nativePreviewSessionEnabled =
-		!nativeCameraPublished && !hasPublishedNativePreview && MediaEngine.isNativeCameraPreviewSessionAvailable();
-	const nativePreviewSession = useNativeCameraPreviewSession(nativePreviewSessionEnabled);
-	const usesNativePreviewSession = nativePreviewSessionEnabled && !nativePreviewSession.failed;
-	const activeNativeStream = nativePreviewStream ?? (usesNativePreviewSession ? nativePreviewSession.stream : null);
+	const cameraAlreadyOn = isCameraEnabled === true;
 	const voiceBackgroundsAvailable = areVoiceBackgroundsAvailable();
 	const channelId = MediaEngine.channelId;
 	const guildId = MediaEngine.guildId;
 	const canStream = !localParticipant || !guildId || !channelId || Permission.can(Permissions.STREAM, {channelId});
 	const cameraCapBlocked = useCameraUserCapBlocked(cameraAlreadyOn);
 	const selectedBackgroundImageId = voiceBackgroundsAvailable ? VoiceSettings.backgroundImageId : NONE_BACKGROUND_ID;
-	const backgroundEffectConfigured = selectedBackgroundImageId !== NONE_BACKGROUND_ID;
-	const showEffectsUnavailableNotice = selectNativeCameraPreviewFallback({
-		sessionFailed: nativePreviewSessionEnabled && nativePreviewSession.failed,
-		backgroundEffectConfigured,
-		retryAttempt: 0,
-	}).showEffectsUnavailableNotice;
 	const [videoDevices, setVideoDevices] = useState<Array<MediaDeviceInfo>>([]);
 	const [status, setStatus] = useState<
 		'idle' | 'initializing' | 'ready' | 'error' | 'fixing' | 'fix-settling' | 'fix-switching-back'
 	>('initializing');
 	const [error, setError] = useState<string | null>(null);
 	const [backgroundOverrideId, setBackgroundOverrideId] = useState<string | null>(null);
+	const [cameraPermissionGranted, setCameraPermissionGranted] = useState(false);
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const trackRef = useRef<LocalVideoTrack | null>(null);
 	const processorRef = useRef<CameraPreviewProcessor | null>(null);
@@ -579,12 +476,6 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 			}
 			return;
 		}
-		if (hasPublishedNativePreview || usesNativePreviewSession || nativeCameraPublished) {
-			if (isCurrentInitialization()) {
-				setError(null);
-			}
-			return;
-		}
 		if (!isCurrentInitialization()) {
 			return;
 		}
@@ -604,14 +495,14 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 			const currentConfig: CameraPreviewConfig = {
 				videoDeviceId: effectiveVideoDeviceId ?? 'default',
 				backgroundImageId,
+				backgroundBlurStrength: voiceSettings.backgroundBlurStrength,
 				mirrorCamera: voiceSettings.mirrorCamera,
-				cameraResolution: voiceSettings.cameraResolution,
-				videoFrameRate: voiceSettings.videoFrameRate,
+				cameraResolution: voiceSettings.getCameraResolution(),
+				videoFrameRate: voiceSettings.getVideoFrameRate(),
 			};
 			if (trackRef.current && isSameCameraPreviewConfig(prevConfigRef.current, currentConfig)) {
 				return;
 			}
-			prevConfigRef.current = currentConfig;
 			if (isCurrentInitialization()) {
 				setStatus(isApplyingFixRef.current ? 'fixing' : 'initializing');
 				setError(null);
@@ -619,11 +510,37 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 			videoElement.muted = true;
 			videoElement.autoplay = true;
 			videoElement.playsInline = true;
+			const activeTrack = trackRef.current;
+			const activeProcessor = processorRef.current;
+			if (activeTrack && activeProcessor && hasSameCameraPreviewTopology(prevConfigRef.current, currentConfig)) {
+				try {
+					const updatedProcessor = await applyBackgroundProcessor(activeTrack, {
+						backgroundImageId,
+						mirrorCamera: currentConfig.mirrorCamera,
+					});
+					if (!isCurrentInitialization()) {
+						return;
+					}
+					processorRef.current = updatedProcessor;
+					prevConfigRef.current = currentConfig;
+					setStatus('ready');
+					return;
+				} catch (error) {
+					if (isCurrentInitialization()) {
+						logger.warn('Camera background update failed; retained the previous preview processor', {error});
+						setStatus('ready');
+					}
+					return;
+				}
+			}
+			prevConfigRef.current = currentConfig;
 			const setupResult = await setupPreviewTrackAndProcessor({
 				videoElement,
 				effectiveVideoDeviceId,
-				cameraResolution: voiceSettings.cameraResolution,
-				videoFrameRate: voiceSettings.videoFrameRate,
+				backgroundImageId,
+				mirrorCamera: currentConfig.mirrorCamera,
+				cameraResolution: voiceSettings.getCameraResolution(),
+				videoFrameRate: voiceSettings.getVideoFrameRate(),
 				isCurrentInitialization,
 				trackRef,
 				processorRef,
@@ -653,16 +570,7 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 				});
 			}
 		}
-	}, [
-		applyResolutionFix,
-		backgroundOverrideId,
-		hasPublishedNativePreview,
-		usesNativePreviewSession,
-		nativeCameraPublished,
-		i18n,
-		videoDevices,
-		voiceBackgroundsAvailable,
-	]);
+	}, [applyResolutionFix, backgroundOverrideId, i18n, videoDevices, voiceBackgroundsAvailable]);
 	const handleDeviceChange = useCallback((deviceId: string) => {
 		VoiceSettingsCommands.update({videoDeviceId: deviceId});
 	}, []);
@@ -678,7 +586,6 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 	}, [voiceBackgroundsAvailable]);
 	const handleEnableCamera = useCallback(async () => {
 		try {
-			await MediaEngine.stopNativeCameraPreviewSession();
 			if (!localParticipant) {
 				await onEnableCamera?.();
 				onEnabled?.();
@@ -708,9 +615,19 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 	useEffect(() => {
 		isMountedRef.current = true;
 		const unsubscribeDevices = VoiceDevicePermissionState.subscribe(handleDeviceUpdate);
-		void VoiceDevicePermissionState.ensureDevices({requestPermissions: true}).catch((error) => {
-			logger.warn('Failed to enumerate camera preview devices', {error});
-		});
+		void VoiceDevicePermissionState.requestPermissionFor('video')
+			.then((granted) => {
+				if (!isMountedRef.current) return;
+				setCameraPermissionGranted(granted);
+				if (!granted) {
+					logger.warn('Camera permission was not granted for preview');
+					setStatus('error');
+					setError(i18n._(FAILED_TO_START_CAMERA_PREVIEW_PLEASE_CHECK_YOUR_DESCRIPTOR));
+				}
+			})
+			.catch((error) => {
+				logger.warn('Failed to enumerate camera preview devices', {error});
+			});
 		return () => {
 			isMountedRef.current = false;
 			initializationGenerationRef.current++;
@@ -737,76 +654,38 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 			}
 			unsubscribeDevices?.();
 		};
-	}, [handleDeviceUpdate]);
+	}, [handleDeviceUpdate, i18n]);
 	useEffect(() => {
-		if (!activeNativeStream) return;
-		initializationGenerationRef.current++;
-		if (trackRef.current) {
-			trackRef.current.stop();
-			trackRef.current = null;
-		}
-		if (processorRef.current) {
-			processorRef.current.destroy().catch((error) => {
-				logger.warn('Failed to destroy browser camera preview processor after native preview became available', {
-					error,
-				});
-			});
-			processorRef.current = null;
-		}
-		const videoElement = videoRef.current;
-		if (!videoElement) return;
-		videoElement.muted = true;
-		videoElement.autoplay = true;
-		videoElement.playsInline = true;
-		videoElement.srcObject = activeNativeStream;
-		setStatus('ready');
-		setError(null);
-		const playResult = videoElement.play();
-		if (playResult && typeof playResult.catch === 'function') {
-			playResult.catch((error) => {
-				logger.debug('Native camera preview play() rejected', {error});
-			});
-		}
-		return () => {
-			if (videoRef.current?.srcObject === activeNativeStream) {
-				videoRef.current.srcObject = null;
-			}
-		};
-	}, [activeNativeStream]);
-	useEffect(() => {
-		if (hasPublishedNativePreview || usesNativePreviewSession || nativeCameraPublished) {
-			return;
-		}
+		if (!cameraPermissionGranted) return;
 		const voiceSettings = VoiceSettings;
 		const backgroundImageId =
 			backgroundOverrideId ?? (voiceBackgroundsAvailable ? voiceSettings.backgroundImageId : NONE_BACKGROUND_ID);
 		const currentConfig: CameraPreviewConfig = {
 			videoDeviceId: voiceSettings.videoDeviceId,
 			backgroundImageId,
+			backgroundBlurStrength: voiceSettings.backgroundBlurStrength,
 			mirrorCamera: voiceSettings.mirrorCamera,
-			cameraResolution: voiceSettings.cameraResolution,
-			videoFrameRate: voiceSettings.videoFrameRate,
+			cameraResolution: voiceSettings.getCameraResolution(),
+			videoFrameRate: voiceSettings.getVideoFrameRate(),
 		};
 		if (!isSameCameraPreviewConfig(prevConfigRef.current, currentConfig)) {
 			initializeCamera();
 		}
 	}, [
+		cameraPermissionGranted,
 		initializeCamera,
 		backgroundOverrideId,
-		hasPublishedNativePreview,
-		usesNativePreviewSession,
-		nativeCameraPublished,
 		VoiceSettings.videoDeviceId,
 		VoiceSettings.backgroundImageId,
+		VoiceSettings.backgroundBlurStrength,
 		VoiceSettings.mirrorCamera,
-		VoiceSettings.cameraResolution,
-		VoiceSettings.videoFrameRate,
+		VoiceSettings.getCameraResolution(),
+		VoiceSettings.getVideoFrameRate(),
 		voiceBackgroundsAvailable,
 	]);
 	const voiceSettings = VoiceSettings;
 	const effectiveVideoDeviceId = resolveEffectiveDeviceId(voiceSettings.videoDeviceId, videoDevices) ?? 'default';
-	const previewVideoClassName =
-		activeNativeStream && voiceSettings.mirrorCamera ? `${styles.video} ${styles.videoMirrored}` : styles.video;
+	const previewVideoClassName = styles.video;
 	const videoDeviceOptions =
 		videoDevices.length > 0
 			? videoDevices.map((device) => ({
@@ -849,7 +728,10 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 								variant="primary"
 								onClick={handleOpenBackgroundGallery}
 								leftIcon={
-									<ImageIcon size={16} data-flx="voice.camera-preview-modal.camera-preview-modal-content.image-icon" />
+									<ImageIcon
+										size={remFromPx(16)}
+										data-flx="voice.camera-preview-modal.camera-preview-modal-content.image-icon"
+									/>
 								}
 								data-flx="voice.camera-preview-modal.camera-preview-modal-content.button.open-background-gallery"
 							>
@@ -865,14 +747,6 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 									data-flx="voice.camera-preview-modal.camera-preview-modal-content.camera-effect-strength-slider.update"
 								/>
 							)}
-						</div>
-					)}
-					{showEffectsUnavailableNotice && (
-						<div
-							className={styles.effectsNotice}
-							data-flx="voice.camera-preview-modal.camera-preview-modal-content.effects-notice"
-						>
-							{i18n._(EFFECTS_PREVIEW_UNAVAILABLE_DESCRIPTOR)}
 						</div>
 					)}
 					<div
@@ -970,7 +844,10 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 						<Button
 							onClick={handleEnableCamera}
 							leftIcon={
-								<CameraIcon size={16} data-flx="voice.camera-preview-modal.camera-preview-modal-content.camera-icon" />
+								<CameraIcon
+									size={remFromPx(16)}
+									data-flx="voice.camera-preview-modal.camera-preview-modal-content.camera-icon"
+								/>
 							}
 							data-flx="voice.camera-preview-modal.camera-preview-modal-content.button.enable-camera"
 						>
@@ -991,7 +868,7 @@ const CameraPreviewModalContent = observer((props: CameraPreviewModalProps) => {
 								onClick={undefined}
 								leftIcon={
 									<CameraIcon
-										size={16}
+										size={remFromPx(16)}
 										data-flx="voice.camera-preview-modal.camera-preview-modal-content.camera-icon--2"
 									/>
 								}

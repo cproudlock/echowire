@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_BG_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_BG_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Акаунтът ти във {product_name} е временно деактивиран",
 		"body": "Здравей, {username},\n\nВременно деактивирахме акаунта ти във {product_name}, защото открихме подозрителна активност.\n\n{reason, select,\n  null {}\n  other {Причина: {reason}}\n}\n\nЗа да възстановиш достъпа до акаунта си, трябва да нулираш паролата си:\n\n{forgotUrl}\n\nСлед като нулираш паролата си, ще можеш да влезеш отново.\n\nАко смяташ, че това е грешка, свържи се с нашия екип за поддръжка.\n\n– Екип за безопасност на {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_BG_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Разреши влизане от нов IP адрес",
 		"body": "Здравей, {username},\n\nОткрихме опит за влизане в акаунта ти във {product_name} от нов IP адрес:\n\nIP адрес: {ipAddress}\nМестоположение: {location}\n\nАко това си бил ти, разреши този IP адрес, като кликнеш върху линка по-долу:\n\n{authUrl}\n\nАко не си се опитвал да влезеш, смени паролата си незабавно.\n\nТози линк е валиден 30 минути.\n\n– Екип на {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Потвърди достъпа до кодовете си за възстановяване във {product_name}",
+		"body": "Здравей, {username},\n\nПолучихме искане за преглед на кодовете за възстановяване на акаунта ти във {product_name}.\n\nЗа да потвърдиш това искане, въведи този код в приложението:\n\n{code}\n\nТози код изтича на {expiresAt, date, full} в {expiresAt, time, short}.\n\nАко не си го поискал, някой може да има достъп до акаунта ти. Смени паролата си незабавно.\n\n– Екип на {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Потвърди промяната на паролата си във {product_name}",

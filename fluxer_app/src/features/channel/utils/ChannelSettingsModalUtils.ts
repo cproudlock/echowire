@@ -25,6 +25,10 @@ export function getAvailableTabs(i18n: I18n, channelId: string): Array<ChannelSe
 	if (channel.type === ChannelTypes.GUILD_LINK) {
 		filteredTabs = filteredTabs.filter((tab) => tab.type !== 'webhooks');
 	}
+	// Echowire: the Tags tab only applies to forum channels.
+	if (channel.type !== ChannelTypes.GUILD_FORUM) {
+		filteredTabs = filteredTabs.filter((tab) => tab.type !== 'tags');
+	}
 	const permissionContext = {channelId: channel.id, guildId: channel.guildId};
 	const canUpdateRtcRegion =
 		channel.type === ChannelTypes.GUILD_VOICE && Permission.can(Permissions.UPDATE_RTC_REGION, permissionContext);

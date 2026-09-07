@@ -36,13 +36,12 @@ import type {
 	TemplateSerializedGuild,
 } from '@fluxer/schema/src/domains/guild/GuildTemplateSchemas';
 import {extractTimestamp} from '@fluxer/snowflake/src/SnowflakeUtils';
-import {requireEmailVerified} from '../../../auth/EmailVerificationUtils';
 import type {ChannelID, GuildID, RoleID, UserID} from '../../../BrandedTypes';
 import {createChannelID, createGuildID, createRoleID, guildIdToRoleId} from '../../../BrandedTypes';
 import type {IChannelRepository} from '../../../channel/IChannelRepository';
 import type {ChannelService} from '../../../channel/services/ChannelService';
 import {BatchBuilder} from '../../../database/CassandraQueryExecution';
-import type {PermissionOverwrite} from '../../../database/types/ChannelTypes';
+import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '../../../database/types/ChannelTypes';
 import type {GuildRow} from '../../../database/types/GuildTypes';
 import {contentModerationService} from '../../../infrastructure/ContentModerationService';
 import type {EntityAssetService, PreparedAssetUpload} from '../../../infrastructure/EntityAssetService';
@@ -58,7 +57,7 @@ import {Guild} from '../../../models/Guild';
 import type {User} from '../../../models/User';
 import {getGuildSearchService} from '../../../SearchFactory';
 import type {GuildDiscoveryContext} from '../../../search/guild/GuildSearchSerializer';
-import {deleteGuildMessageSearchDocuments} from '../../../search/MessageSearchIndexCleanup';
+import {deleteChannelMessageSearchDocuments} from '../../../search/MessageSearchIndexCleanup';
 import {Channels, ChannelsByGuild, GuildMembers, GuildMembersByUserId, GuildRoles, Guilds} from '../../../Tables';
 import type {IUserRepository} from '../../../user/IUserRepository';
 import {mapUserSettingsToResponse} from '../../../user/UserMappers';
@@ -257,7 +256,6 @@ export class GuildOperationsService {
 		if (user.isUnclaimedAccount()) {
 			throw new UnclaimedAccountCannotCreateGuildsError();
 		}
-		requireEmailVerified(user, 'guild_creation');
 		const currentGuildCount = await this.guildRepository.countUserGuilds(user.id);
 		const ctx = createLimitMatchContext({user});
 		const maxGuilds = resolveLimitSafe(
@@ -860,7 +858,9 @@ export class GuildOperationsService {
 		await Promise.all(webhooks.map((webhook) => this.webhookRepository.delete(webhook.id)));
 		const channels = await this.channelRepository.listGuildChannels(guildId);
 		await Promise.all(channels.map((channel) => this.channelRepository.deleteAllChannelMessages(channel.id)));
-		await deleteGuildMessageSearchDocuments(guildId, {context: {source: 'guild_delete'}});
+		await Promise.all(
+			channels.map((channel) => deleteChannelMessageSearchDocuments(channel.id, {context: {source: 'guild_delete'}})),
+		);
 		await Promise.all(channels.map((channel) => this.channelService.attachments.purgeChannelAttachments(channel)));
 		const discoveryRow = await this.discoveryRepository.findByGuildId(guildId);
 		if (discoveryRow) {
@@ -919,6 +919,7 @@ export class GuildOperationsService {
 					last_pin_timestamp: null,
 					permission_overwrites: null,
 					nicks: null,
+					...NULL_THREAD_FIELDS,
 					soft_deleted: false,
 					indexed_at: null,
 					version: 1,
@@ -1115,6 +1116,7 @@ export class GuildOperationsService {
 					last_pin_timestamp: null,
 					permission_overwrites: permissionOverwrites,
 					nicks: null,
+					...NULL_THREAD_FIELDS,
 					soft_deleted: false,
 					indexed_at: null,
 					version: 1,
@@ -1165,6 +1167,7 @@ export class GuildOperationsService {
 					last_pin_timestamp: null,
 					permission_overwrites: null,
 					nicks: null,
+					...NULL_THREAD_FIELDS,
 					soft_deleted: false,
 					indexed_at: null,
 					version: 1,

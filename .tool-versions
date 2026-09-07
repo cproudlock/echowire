@@ -1,0 +1,6 @@
+# Exact versions only. "latest" and "lts" are not pins and the checker rejects them.
+# Read by mise (and asdf). Delete the lines this project does not use.
+# node 22.11.0
+# python 3.12.7
+# rust 1.82.0
+# go 1.23.3

@@ -2,8 +2,10 @@
 
 import type {WorkerTaskHandler} from '@pkgs/worker/src/contracts/WorkerTask';
 import applicationProcessDeletion from './tasks/ApplicationProcessDeletion';
+import archiveInactiveThreads from './tasks/ArchiveInactiveThreads';
 import bulkAddGuildMembers from './tasks/admin_bulk/BulkAddGuildMembers';
 import bulkBanFileShas from './tasks/admin_bulk/BulkBanFileShas';
+import bulkDeleteMessagesForUsers from './tasks/admin_bulk/BulkDeleteMessagesForUsers';
 import bulkScheduleUserDeletion from './tasks/admin_bulk/BulkScheduleUserDeletion';
 import bulkUpdateGuildFeatures from './tasks/admin_bulk/BulkUpdateGuildFeatures';
 import bulkUpdateSuspiciousActivityFlags from './tasks/admin_bulk/BulkUpdateSuspiciousActivityFlags';
@@ -13,7 +15,6 @@ import bulkDeleteSelfMessagesImmediate from './tasks/BulkDeleteSelfMessagesImmed
 import bulkDeleteUserMessages from './tasks/BulkDeleteUserMessages';
 import bulkDeleteUserMessagesScoped from './tasks/BulkDeleteUserMessagesScoped';
 import deleteUserMessagesInGuildByTime from './tasks/DeleteUserMessagesInGuildByTime';
-import enqueueGifFeaturedCategoriesRefresh from './tasks/EnqueueGifFeaturedCategoriesRefresh';
 import expireAttachments from './tasks/ExpireAttachments';
 import extractEmbeds from './tasks/ExtractEmbeds';
 import finalizeNcmecAttachmentReport from './tasks/FinalizeNcmecAttachmentReport';
@@ -34,10 +35,8 @@ import processPremiumStateReconciliationQueue from './tasks/ProcessPremiumStateR
 import processStripeWebhook from './tasks/ProcessStripeWebhook';
 import prunePostgresKvTtl from './tasks/PrunePostgresKvTtl';
 import reconcileUserPayments from './tasks/ReconcileUserPayments';
-import refreshGifFeaturedCategories from './tasks/RefreshGifFeaturedCategories';
 import refreshSearchIndex from './tasks/RefreshSearchIndex';
 import revalidateUserConnections from './tasks/RevalidateUserConnections';
-import {sendScheduledMessage} from './tasks/SendScheduledMessage';
 import {sendSystemDm} from './tasks/SendSystemDm';
 import syncDiscoveryIndex from './tasks/SyncDiscoveryIndex';
 import syncDisposableEmailDomains from './tasks/SyncDisposableEmailDomains';
@@ -49,9 +48,11 @@ import type {WorkerTaskName} from './WorkerLaneConfig';
 
 export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	applicationProcessDeletion,
+	archiveInactiveThreads,
 	batchGuildAuditLogMessageDeletes,
 	bulkAddGuildMembers: bulkAddGuildMembers,
 	bulkBanFileShas: bulkBanFileShas,
+	bulkDeleteMessagesForUsers: bulkDeleteMessagesForUsers,
 	bulkDeleteSelfMessagesImmediate,
 	bulkDeleteUserMessages,
 	bulkDeleteUserMessagesScoped,
@@ -60,7 +61,6 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	bulkUpdateSuspiciousActivityFlags: bulkUpdateSuspiciousActivityFlags,
 	bulkUpdateUserFlags: bulkUpdateUserFlags,
 	deleteUserMessagesInGuildByTime,
-	enqueueGifFeaturedCategoriesRefresh,
 	expireAttachments,
 	extractEmbeds,
 	finalizeNcmecAttachmentReport,
@@ -80,10 +80,8 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	processPremiumStateReconciliationQueue,
 	reconcileUserPayments,
 	prunePostgresKvTtl,
-	refreshGifFeaturedCategories,
 	refreshSearchIndex,
 	revalidateUserConnections,
-	sendScheduledMessage,
 	sendSystemDm,
 	syncFileShaBlocklists,
 	syncUrlBlocklists,

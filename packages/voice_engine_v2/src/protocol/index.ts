@@ -1,14 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-export {
-	decodeVoiceEngineV2CodecGossip,
-	encodeVoiceEngineV2CodecGossip,
-	VOICE_ENGINE_V2_CODEC_GOSSIP_TOPIC,
-} from './codecGossip';
 export type {VoiceEngineV2Command, VoiceEngineV2CommandType} from './commands';
 export {getVoiceEngineV2CommandResourceKey, getVoiceEngineV2CommandTypeResourceKey} from './commands';
 export type {
 	VoiceEngineV2Event,
+	VoiceEngineV2SourceLifecycleRemovedEvent,
 	VoiceEngineV2SourceLifecycleTransitionedEvent,
 	VoiceEngineV2SourceLifecycleTransitionKind,
 } from './events';
@@ -23,9 +19,6 @@ export type {
 	VoiceEngineV2CameraEncodingOptions,
 	VoiceEngineV2CameraOptions,
 	VoiceEngineV2Capabilities,
-	VoiceEngineV2CodecGossipMessage,
-	VoiceEngineV2CodecNegotiationState,
-	VoiceEngineV2CodecStreamNegotiation,
 	VoiceEngineV2ConnectionModel,
 	VoiceEngineV2ConnectionQuality,
 	VoiceEngineV2ConnectionStatus,
@@ -59,8 +52,6 @@ export type {
 	VoiceEngineV2MediaStatus,
 	VoiceEngineV2MicrophoneOptions,
 	VoiceEngineV2Model,
-	VoiceEngineV2NativeAudioDeviceModuleState,
-	VoiceEngineV2NativeAudioDeviceModuleStatus,
 	VoiceEngineV2NativeAudioTapOptions,
 	VoiceEngineV2NativeCaptureFrame,
 	VoiceEngineV2NativeCaptureKind,
@@ -87,7 +78,6 @@ export type {
 	VoiceEngineV2SendStats,
 	VoiceEngineV2Stats,
 	VoiceEngineV2StatsSample,
-	VoiceEngineV2StreamNegotiationProjection,
 	VoiceEngineV2TimerOptions,
 	VoiceEngineV2Track,
 	VoiceEngineV2TrackKind,

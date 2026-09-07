@@ -19,8 +19,10 @@ import {ChannelCompactCallSurface} from '@app/features/channel/components/channe
 import {ChannelViewScaffold} from '@app/features/channel/components/channel_view/ChannelViewScaffold';
 import {useChannelSearchState} from '@app/features/channel/components/channel_view/useChannelSearchState';
 import {useVoiceCallChromePinState} from '@app/features/channel/components/channel_view/useVoiceCallChromePinState';
+import {ForumChannelView} from '@app/features/channel/components/forum/ForumChannelView';
 import {MatureContentChannelGate} from '@app/features/channel/components/MatureContentChannelGate';
 import {useMessagesBottomBarVisibility} from '@app/features/channel/components/MessagesBottomBarVisibility';
+import {ThreadArchivedBanner} from '@app/features/channel/components/ThreadArchivedBanner';
 import {VerificationBarrier} from '@app/features/channel/components/VerificationBarrier';
 import {useChannelMemberListVisibility} from '@app/features/channel/hooks/useChannelMemberListVisibility';
 import {useChannelSearchVisibility} from '@app/features/channel/hooks/useChannelSearchVisibility';
@@ -33,7 +35,7 @@ import Guilds from '@app/features/guild/state/Guilds';
 import GuildVerification from '@app/features/guild/state/GuildVerification';
 import {useMemberListVisible} from '@app/features/member/hooks/useMemberListVisible';
 import Permission from '@app/features/permissions/state/Permission';
-import {ComponentDispatch} from '@app/features/platform/utils/ComponentBus';
+import {ComponentBus} from '@app/features/platform/utils/ComponentBus';
 import ReadStates from '@app/features/read_state/state/ReadStates';
 import {Button} from '@app/features/ui/button/Button';
 import MobileLayout from '@app/features/ui/state/MobileLayout';
@@ -44,7 +46,6 @@ import {useVoiceCallFullscreenViewState} from '@app/features/voice/components/us
 import {VoiceCallView} from '@app/features/voice/components/VoiceCallView';
 import {VoiceE2EEIndicator} from '@app/features/voice/components/VoiceE2EEIndicator';
 import MediaEngine from '@app/features/voice/engine/MediaEngineFacade';
-import {isNativeVoiceEngineSelected} from '@app/features/voice/engine/native_voice_engine/getVoiceEngine';
 import {useCompactCallExpansionState} from '@app/features/voice/hooks/useCompactCallExpansionState';
 import {usePendingVoiceConnection} from '@app/features/voice/hooks/usePendingVoiceConnection';
 import {getGuildVoiceCallExpansionKey} from '@app/features/voice/state/CompactVoiceCallHeight';
@@ -182,7 +183,7 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 		isVoiceChannel &&
 			connectedChannelId === channelId &&
 			(connectedGuildId ?? null) === (channel?.guildId ?? null) &&
-			(room || (isNativeVoiceEngineSelected() && MediaEngine.connected)),
+			room,
 	);
 	const matureContentGateReason = GuildMatureContentAgree.getGateReason({channelId, guildId});
 	const matureContentResolved = GuildMatureContentAgree.getResolvedContext({channelId, guildId});
@@ -198,7 +199,7 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 		activeSearchSegments,
 	} = searchState;
 	const isSearchPanelVisible = isSearchActive && !isMobileLayout;
-	const {hasMessagesBottomBar, onBottomBarVisibilityChange} = useMessagesBottomBarVisibility(channelId);
+	const {onBottomBarVisibilityChange} = useMessagesBottomBarVisibility(channelId);
 	const {
 		showFullscreenView: showVoiceCallFullscreenView,
 		fullscreenRequestNonce: voiceCallFullscreenRequestNonce,
@@ -256,7 +257,7 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 	}, [handleOpenVoiceCallFromTextChat, handleOpenVoiceTextChat, isVoiceTextCallExpanded]);
 	useEffect(() => {
 		if (!isVoiceChannel) return;
-		return ComponentDispatch.subscribe('COMPACT_VOICE_CALL_EXPANSION_TOGGLE', (payload?: unknown) => {
+		return ComponentBus.subscribe('COMPACT_VOICE_CALL_EXPANSION_TOGGLE', (payload?: unknown) => {
 			const {channelId: targetChannelId} = (payload ?? {}) as {channelId?: string};
 			if (targetChannelId && targetChannelId !== channelId) return false;
 			handleToggleVoiceTextCallExpanded();
@@ -485,7 +486,6 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 				}
 				chatArea={
 					<ChannelChatLayout
-						channel={channel}
 						messages={
 							<Messages
 								key={channel.id}
@@ -495,8 +495,12 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 								data-flx="channel.channel-view.guild-channel-view.messages"
 							/>
 						}
-						textarea={renderChatArea(isVoiceTextCallExpanded)}
-						hideBottomBar={hasMessagesBottomBar}
+						textarea={
+							<>
+								<ThreadArchivedBanner channel={channel} />
+								{renderChatArea(isVoiceTextCallExpanded)}
+							</>
+						}
 						data-flx="channel.channel-view.guild-channel-view.channel-chat-layout"
 					/>
 				}
@@ -527,6 +531,23 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 		);
 	}
 	const shouldRenderMemberList = isMemberListVisible && !isMobileLayout && !isSearchActive;
+	// Echowire: forum channels render a post grid instead of a message stream + composer.
+	if (channel.isForum()) {
+		return (
+			<ChannelViewScaffold
+				header={
+					<ChannelHeader
+						channel={channel}
+						showMembersToggle={false}
+						showPins={false}
+						data-flx="channel.channel-view.guild-channel-view.channel-header--forum"
+					/>
+				}
+				chatArea={<ForumChannelView channel={channel} />}
+				data-flx="channel.channel-view.guild-channel-view.channel-view-scaffold--forum"
+			/>
+		);
+	}
 	return (
 		<ChannelViewScaffold
 			header={
@@ -542,7 +563,6 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 			}
 			chatArea={
 				<ChannelChatLayout
-					channel={channel}
 					messages={
 						<Messages
 							key={channel.id}
@@ -551,8 +571,12 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 							data-flx="channel.channel-view.guild-channel-view.messages--2"
 						/>
 					}
-					textarea={renderChatArea()}
-					hideBottomBar={hasMessagesBottomBar}
+					textarea={
+						<>
+							<ThreadArchivedBanner channel={channel} />
+							{renderChatArea()}
+						</>
+					}
 					data-flx="channel.channel-view.guild-channel-view.channel-chat-layout--2"
 				/>
 			}

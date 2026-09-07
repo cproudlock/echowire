@@ -3,7 +3,7 @@
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelID, UserID} from '../../BrandedTypes';
 import {userIdToChannelId} from '../../BrandedTypes';
-import type {ChannelRow} from '../../database/types/ChannelTypes';
+import {type ChannelRow, NULL_THREAD_FIELDS} from '../../database/types/ChannelTypes';
 import type {Channel} from '../../models/Channel';
 
 interface PersonalNotesChannelRepository {
@@ -40,6 +40,7 @@ function buildPersonalNotesChannelRow(userId: UserID): ChannelRow {
 		last_pin_timestamp: null,
 		permission_overwrites: null,
 		nicks: null,
+		...NULL_THREAD_FIELDS,
 		soft_deleted: false,
 		indexed_at: null,
 		version: 1,

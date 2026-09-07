@@ -66,3 +66,13 @@
 	text-overflow: clip;
 	color: var(--voice-text-strong);
 }
+
+.latencyBadge {
+	margin-left: auto;
+	padding-left: 0.4rem;
+	font-size: 0.6875rem;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
+	flex-shrink: 0;
+}

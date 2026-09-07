@@ -6,6 +6,7 @@
 -export([is_user_blocked/2]).
 -export([check_user_guild_settings/7]).
 -export([check_user_guild_settings/8]).
+-export([prefetch_user_guild_settings/3]).
 -export([should_allow_notification/6]).
 -export([is_user_mentioned/5]).
 -export([is_eligible_for_push/8]).
@@ -14,6 +15,11 @@
 
 -define(MESSAGE_NOTIFICATIONS_NO_MESSAGES, 2).
 -define(MESSAGE_NOTIFICATIONS_ONLY_MENTIONS, 1).
+-define(MESSAGE_NOTIFICATIONS_ALL_MESSAGES, 0).
+
+-define(CHANNEL_TYPE_PUBLIC_THREAD, 11).
+-define(CHANNEL_TYPE_PRIVATE_THREAD, 12).
+-define(SETTINGS_PREFETCH_CHUNK_SIZE, 200).
 
 -spec is_eligible_for_push(
     integer(), integer(), integer(), integer(), map(), integer(), map(), map()
@@ -86,12 +92,16 @@ is_eligible_for_push(
     LargeGuildMetadata
 ) ->
     Blocked = is_user_blocked(UserId, AuthorId),
+    %% Echowire: thread messages notify members (all messages) and limit everyone else to
+    %% @mentions, regardless of the guild default. A muted thread (channel override) still wins
+    %% downstream, and mentions still reach non-members via the ONLY_MENTIONS path.
+    EffectiveDefault = thread_effective_default(UserId, MessageData, GuildDefaultNotifications),
     SettingsOk = check_user_guild_settings(
         UserId,
         GuildId,
         ChannelId,
         MessageData,
-        GuildDefaultNotifications,
+        EffectiveDefault,
         UserRolesMap,
         ConnectedUsers,
         LargeGuildMetadata
@@ -226,6 +236,112 @@ fetch_settings_rpc(UserId, GuildId) ->
         exit:_ -> #{}
     end.
 
+-spec prefetch_user_guild_settings([integer()], integer(), integer()) -> ok.
+prefetch_user_guild_settings(_UserIds, _AuthorId, 0) ->
+    ok;
+prefetch_user_guild_settings(UserIds, AuthorId, GuildId) ->
+    prefetch_settings_chunks(uncached_settings_user_ids(UserIds, AuthorId, GuildId), GuildId).
+
+-spec uncached_settings_user_ids([integer()], integer(), integer()) -> [integer()].
+uncached_settings_user_ids(UserIds, AuthorId, GuildId) ->
+    lists:usort(
+        lists:filter(
+            fun(UserId) -> is_settings_uncached(UserId, AuthorId, GuildId) end,
+            UserIds
+        )
+    ).
+
+-spec is_settings_uncached(integer(), integer(), integer()) -> boolean().
+is_settings_uncached(AuthorId, AuthorId, _GuildId) ->
+    false;
+is_settings_uncached(UserId, _AuthorId, GuildId) ->
+    push_ets_cache:get_user_guild_settings(UserId, GuildId) =:= undefined.
+
+-spec prefetch_settings_chunks([integer()], integer()) -> ok.
+prefetch_settings_chunks([], _GuildId) ->
+    ok;
+prefetch_settings_chunks(UserIds, GuildId) ->
+    {Chunk, Rest} = take_settings_chunk(UserIds, ?SETTINGS_PREFETCH_CHUNK_SIZE, []),
+    prefetch_settings_chunk(Chunk, GuildId),
+    prefetch_settings_chunks(Rest, GuildId).
+
+-spec take_settings_chunk([integer()], non_neg_integer(), [integer()]) ->
+    {[integer()], [integer()]}.
+take_settings_chunk(Rest, 0, Acc) ->
+    {lists:reverse(Acc), Rest};
+take_settings_chunk([], _Remaining, Acc) ->
+    {lists:reverse(Acc), []};
+take_settings_chunk([UserId | Rest], Remaining, Acc) ->
+    take_settings_chunk(Rest, Remaining - 1, [UserId | Acc]).
+
+-spec prefetch_settings_chunk([integer()], integer()) -> ok.
+prefetch_settings_chunk(UserIds, GuildId) ->
+    try prefetch_settings_chunk_rpc(UserIds, GuildId) of
+        ok -> ok
+    catch
+        throw:_ -> ok;
+        error:_ -> ok;
+        exit:_ -> ok
+    end.
+
+-spec prefetch_settings_chunk_rpc([integer()], integer()) -> ok.
+prefetch_settings_chunk_rpc(UserIds, GuildId) ->
+    Req = #{
+        <<"type">> => <<"get_user_guild_settings">>,
+        <<"user_ids">> => [integer_to_binary(UserId) || UserId <- UserIds],
+        <<"guild_id">> => integer_to_binary(GuildId)
+    },
+    logger:debug(
+        "Push: prefetching user guild settings via RPC",
+        #{user_count => length(UserIds), guild_id => GuildId}
+    ),
+    case rpc_client:call(Req) of
+        {ok, Data} ->
+            cache_prefetched_settings(UserIds, GuildId, settings_list(Data));
+        {error, Reason} ->
+            logger:debug(
+                "Push: RPC failed to prefetch user guild settings",
+                #{user_count => length(UserIds), guild_id => GuildId, reason => Reason}
+            ),
+            ok
+    end.
+
+-spec settings_list(map()) -> [term()].
+settings_list(Data) ->
+    case maps:get(<<"user_guild_settings">>, Data, []) of
+        Settings when is_list(Settings) -> Settings;
+        _ -> []
+    end.
+
+-spec cache_prefetched_settings([integer()], integer(), [term()]) -> ok.
+cache_prefetched_settings(UserIds, GuildId, Settings) when
+    length(UserIds) =:= length(Settings)
+->
+    lists:foreach(
+        fun({UserId, UserSettings}) ->
+            push_ets_cache:put_user_guild_settings(
+                UserId, GuildId, settings_map(UserSettings)
+            )
+        end,
+        lists:zip(UserIds, Settings)
+    );
+cache_prefetched_settings(UserIds, GuildId, Settings) ->
+    logger:debug(
+        "Push: prefetched user guild settings did not match requested users",
+        #{
+            user_count => length(UserIds),
+            guild_id => GuildId,
+            settings_count => length(Settings)
+        }
+    ),
+    ok.
+
+-spec settings_map(term()) -> map().
+settings_map(Settings) when is_map(Settings) ->
+    Settings;
+settings_map(_Settings) ->
+    #{}.
+
 -spec should_allow_notification(
     integer(), map(), integer(), map(), map(), map()
 ) -> boolean().
@@ -294,6 +410,34 @@ evaluate_mentions(_EvMention, _SuppEv, SuppressRoles, UserId, MessageData, UserR
     InMentions = push_eligibility_checks:is_user_in_mentions(UserId, Mentions),
     HasRole = push_eligibility_checks:has_mentioned_role(UserRoles, MentionRoles),
     InMentions orelse (not SuppressRoles andalso HasRole).
+
+%% Echowire: for a thread message, override the guild default notification level based on
+%% thread membership — members get ALL_MESSAGES, non-members get ONLY_MENTIONS. For any other
+%% channel type the guild default is returned unchanged.
+-spec thread_effective_default(integer(), map(), integer()) -> integer().
+thread_effective_default(UserId, MessageData, GuildDefaultNotifications) ->
+    case maps:get(<<"channel_type">>, MessageData, undefined) of
+        ?CHANNEL_TYPE_PUBLIC_THREAD -> thread_member_default(UserId, MessageData);
+        ?CHANNEL_TYPE_PRIVATE_THREAD -> thread_member_default(UserId, MessageData);
+        _ -> GuildDefaultNotifications
+    end.
+
+-spec thread_member_default(integer(), map()) -> integer().
+thread_member_default(UserId, MessageData) ->
+    case is_thread_member(UserId, MessageData) of
+        true -> ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES;
+        false -> ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS
+    end.
+
+%% Echowire: membership snapshot is carried on the message payload as a list of stringified
+%% user ids (see MessageGatewayDispatch.resolveThreadMemberIds). When absent (older payloads or
+%% a lookup failure), we fall back to non-member semantics so notifications stay conservative.
+-spec is_thread_member(integer(), map()) -> boolean().
+is_thread_member(UserId, MessageData) ->
+    case maps:get(<<"thread_member_ids">>, MessageData, undefined) of
+        Ids when is_list(Ids) -> lists:member(integer_to_binary(UserId), Ids);
+        _ -> false
+    end.
 
 -spec get_setting(atom(), term(), term()) -> term().
 get_setting(Key, Settings, Default) when is_atom(Key), is_map(Settings) ->
@@ -365,5 +509,44 @@ mention_here_respects_suppress_everyone_test() ->
     MessageData = #{<<"mention_everyone">> => true, <<"mention_here">> => true},
     Settings = #{suppress_everyone => true},
     ?assertEqual(false, is_user_mentioned(123, MessageData, Settings, #{}, #{123 => true})).
+
+thread_member_gets_all_messages_test() ->
+    MessageData = #{
+        <<"channel_type">> => ?CHANNEL_TYPE_PUBLIC_THREAD,
+        <<"thread_member_ids">> => [<<"123">>, <<"456">>]
+    },
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS)
+    ).
+
+thread_non_member_limited_to_mentions_test() ->
+    MessageData = #{
+        <<"channel_type">> => ?CHANNEL_TYPE_PRIVATE_THREAD,
+        <<"thread_member_ids">> => [<<"456">>]
+    },
+    %% Even when the guild default is ALL_MESSAGES, a non-member is capped at ONLY_MENTIONS.
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES)
+    ).
+
+thread_missing_member_ids_falls_back_to_mentions_test() ->
+    MessageData = #{<<"channel_type">> => ?CHANNEL_TYPE_PUBLIC_THREAD},
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES)
+    ).
+
+non_thread_keeps_guild_default_test() ->
+    MessageData = #{<<"channel_type">> => 0, <<"thread_member_ids">> => [<<"123">>]},
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ALL_MESSAGES)
+    ),
+    ?assertEqual(
+        ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS,
+        thread_effective_default(123, MessageData, ?MESSAGE_NOTIFICATIONS_ONLY_MENTIONS)
+    ).
 
 -endif.

@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_IT_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_IT_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Il tuo account {product_name} è stato temporaneamente disabilitato",
 		"body": "Ciao {username},\n\nAbbiamo temporaneamente disabilitato il tuo account {product_name} perché abbiamo rilevato attività sospette.\n\n{reason, select,\n  null {}\n  other {Motivo: {reason}}\n}\n\nPer riottenere l'accesso al tuo account, dovrai reimpostare la password:\n\n{forgotUrl}\n\nDopo aver reimpostato la password, potrai accedere di nuovo.\n\nSe ritieni che ciò sia stato fatto per errore, contatta il nostro team di supporto.\n\n– Team di Sicurezza {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_IT_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autorizza l'accesso da un nuovo indirizzo IP",
 		"body": "Ciao {username},\n\nAbbiamo rilevato un tentativo di accesso al tuo account {product_name} da un nuovo indirizzo IP:\n\nIndirizzo IP: {ipAddress}\nPosizione: {location}\n\nSe sei stato tu, autorizza questo indirizzo IP cliccando sul link qui sotto:\n\n{authUrl}\n\nSe non hai tentato di accedere, cambia subito la password.\n\nQuesto link è valido per 30 minuti.\n\n– Team {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Conferma l'accesso ai tuoi codici di backup di {product_name}",
+		"body": "Ciao {username},\n\nAbbiamo ricevuto una richiesta di visualizzazione dei codici di backup del tuo account {product_name}.\n\nPer confermare questa richiesta, inserisci questo codice nell'app:\n\n{code}\n\nQuesto codice scade il {expiresAt, date, full} alle {expiresAt, time, short}.\n\nSe non hai richiesto questa operazione, qualcuno potrebbe avere accesso al tuo account. Cambia immediatamente la password.\n\n– Team {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Conferma la modifica della password di {product_name}",

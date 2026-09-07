@@ -12,6 +12,8 @@ import {
 	requestSpeakMessage,
 	useMessagePermissions,
 } from '@app/features/channel/components/MessageActionUtils';
+import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
+import Channels from '@app/features/channel/state/Channels';
 import {useQuickReactionEmojis} from '@app/features/channel/state/QuickReactionStore';
 import {MessageDebugModal} from '@app/features/devtools/components/debug/MessageDebugModal';
 import type {FlatEmoji} from '@app/features/emoji/types/EmojiTypes';
@@ -63,9 +65,10 @@ import {KeybindHint} from '@app/features/ui/keybind_hint/KeybindHint';
 import type {MenuGroupType, MenuItemType} from '@app/features/ui/menu_bottom_sheet/MenuBottomSheet';
 import UserSettings from '@app/features/user/state/UserSettings';
 import TtsUtils from '@app/features/voice/utils/VoiceTtsUtils';
-import {MessageStates, Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, MessageStates, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
+import {ChatCircleIcon} from '@phosphor-icons/react';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 
 const MESSAGE_DEBUG_DESCRIPTOR = msg({
@@ -115,11 +118,18 @@ interface MessageActionMenuOptions {
 	submenuReactionCount?: number;
 }
 
+// Echowire: "Create Thread" message action.
+const CREATE_THREAD_DESCRIPTOR = msg({
+	message: 'Create Thread',
+	comment: 'Message right-click action that starts a thread from the message.',
+});
+
 export const messageActionMenuItemIds = {
 	addReaction: 'add-reaction',
 	viewReactions: 'view_reactions',
 	removeAllReactions: 'remove_all_reactions',
 	reply: 'reply',
+	createThread: 'message_create_thread',
 	forward: 'forward',
 	edit: 'edit',
 	pinMessage: 'message_pin',
@@ -282,6 +292,38 @@ export const useMessageActionMenuData = (
 						<KeybindHint action="message_reply" data-flx="channel.message-action-menu.groups.keybind-hint--3" />
 					),
 				});
+			}
+			// Echowire: create a thread from this message (guild text channels only).
+			{
+				const liveChannel = Channels.getChannel(message.channelId);
+				if (
+					message.isUserMessage() &&
+					supportsInteractiveActions &&
+					liveChannel?.type === ChannelTypes.GUILD_TEXT &&
+					liveChannel.guildId
+				) {
+					const threadGuildId = liveChannel.guildId;
+					const threadParentId = liveChannel.id;
+					interactionActions.push({
+						id: messageActionMenuItemIds.createThread,
+						icon: <ChatCircleIcon size={20} />,
+						label: i18n._(CREATE_THREAD_DESCRIPTOR),
+						onClick: () => {
+							onClose?.();
+							ModalCommands.push(
+								modal(() => (
+									<ThreadCreateModal
+										guildId={threadGuildId}
+										parentChannelId={threadParentId}
+										starterMessageId={message.id}
+										starterMessageContent={message.content}
+										starterMessageAuthor={message.author.displayName}
+									/>
+								)),
+							);
+						},
+					});
+				}
 			}
 			if (message.isUserMessage() && supportsInteractiveActions && permissions?.canForwardMessage) {
 				interactionActions.push({

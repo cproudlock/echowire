@@ -22,7 +22,7 @@ import * as NicknameUtils from '@app/features/user/utils/NicknameUtils';
 import {FLUXERBOT_ID} from '@fluxer/constants/src/AppConstants';
 import {ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {msg} from '@lingui/core/macro';
-import {CaretDownIcon, type IconProps, NotePencilIcon} from '@phosphor-icons/react';
+import {CaretDownIcon, ChatsCircleIcon, type IconProps, NotePencilIcon} from '@phosphor-icons/react';
 
 const VOICE_MATURE_DESCRIPTOR = msg({
 	message: 'Voice (mature)',
@@ -130,6 +130,8 @@ export function getIcon(
 				return <LockedLinkChannelIcon data-flx="channel.channel-utils.get-icon.locked-link-channel-icon" {...props} />;
 			return <LinkChannelIcon data-flx="channel.channel-utils.get-icon.link-channel-icon" {...props} />;
 		}
+		case ChannelTypes.GUILD_FORUM:
+			return <ChatsCircleIcon weight="fill" data-flx="channel.channel-utils.get-icon.forum-channel-icon" {...props} />;
 		case ChannelTypes.GUILD_CATEGORY:
 			return <CaretDownIcon weight="bold" data-flx="channel.channel-utils.get-icon.caret-down-icon" {...props} />;
 		case ChannelTypes.DM_PERSONAL_NOTES:
@@ -157,7 +159,7 @@ const getDirectMessageDisplayName = (channel: Channel): string => {
 		return i18n._(UNKNOWN_USER_DESCRIPTOR);
 	}
 	const recipient = Users.getUser(channel.recipientIds[0]);
-	const nickname = recipient ? NicknameUtils.getNickname(recipient) : null;
+	const nickname = recipient ? NicknameUtils.getNickname(recipient, null, channel.id) : null;
 	return nickname ?? i18n._(UNKNOWN_USER_DESCRIPTOR);
 };
 const getGroupDMDisplayName = (channel: Channel): string => {

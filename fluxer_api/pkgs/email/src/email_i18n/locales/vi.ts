@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_VI_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_VI_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Tài khoản {product_name} của bạn đã bị vô hiệu hóa tạm thời",
 		"body": "Xin chào {username},\n\nChúng tôi đã tạm thời vô hiệu hóa tài khoản {product_name} của bạn vì phát hiện hoạt động đáng ngờ.\n\n{reason, select,\n  null {}\n  other {Lý do: {reason}}\n}\n\nĐể truy cập lại tài khoản, bạn cần đặt lại mật khẩu:\n\n{forgotUrl}\n\nSau khi đặt lại mật khẩu, bạn sẽ có thể đăng nhập lại.\n\nNếu bạn cho rằng đây là lỗi, vui lòng liên hệ đội ngũ hỗ trợ của chúng tôi.\n\n– Đội ngũ An toàn {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_VI_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Cho phép đăng nhập từ địa chỉ IP mới",
 		"body": "Xin chào {username},\n\nChúng tôi đã phát hiện một nỗ lực đăng nhập vào tài khoản {product_name} của bạn từ một địa chỉ IP mới:\n\nĐịa chỉ IP: {ipAddress}\nVị trí: {location}\n\nNếu đây là bạn, vui lòng cho phép địa chỉ IP này bằng cách nhấp vào liên kết bên dưới:\n\n{authUrl}\n\nNếu bạn không thực hiện nỗ lực đăng nhập, vui lòng thay đổi mật khẩu ngay lập tức.\n\nLiên kết này có hiệu lực trong 30 phút.\n\n– Đội ngũ {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Xác nhận quyền truy cập mã dự phòng {product_name} của bạn",
+		"body": "Xin chào {username},\n\nChúng tôi đã nhận được yêu cầu xem mã dự phòng trên tài khoản {product_name} của bạn.\n\nĐể xác nhận yêu cầu này, hãy nhập mã này vào ứng dụng:\n\n{code}\n\nMã này hết hạn vào {expiresAt, date, full} lúc {expiresAt, time, short}.\n\nNếu bạn không yêu cầu điều này, ai đó có thể đã truy cập vào tài khoản của bạn. Thay đổi mật khẩu ngay lập tức.\n\n– Đội ngũ {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Xác nhận thay đổi mật khẩu của bạn trên {product_name}",

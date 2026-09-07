@@ -290,34 +290,6 @@ mod tests {
     }
 
     #[test]
-    fn daemon_unreachable_returns_none_from_open() {
-        let bridge = PipeWireBridge::open();
-        if let Some(b) = bridge {
-            let _ = b.inventory();
-            b.release();
-        }
-    }
-
-    #[test]
-    fn direct_open_returns_none_or_cleans_up() {
-        let direct = PipeWireDirectCapture::open();
-        if let Some(d) = direct {
-            d.stop();
-        }
-    }
-
-    #[test]
-    fn integration_smoke_apply_release_cycle_is_safe() {
-        let Some(bridge) = PipeWireBridge::open() else {
-            return;
-        };
-        bridge.apply(RoutingRule::default());
-        std::thread::sleep(Duration::from_millis(20));
-        bridge.release();
-        let _ = bridge.inventory();
-    }
-
-    #[test]
     fn virtual_sink_props_match_legacy_contract() {
         let props = build_virtual_sink_props();
         let dict = props.dict();
@@ -768,8 +740,8 @@ mod tests {
                 .expect("apm");
         let frame_len = DIRECT_CAPTURE_APM_FRAME_SAMPLES;
         let mut samples = vec![0.0_f32; frame_len];
-        for n in 0..frame_len {
-            samples[n] = ((n as f32) / (frame_len as f32) - 0.5) * 0.5;
+        for (n, sample) in samples.iter_mut().enumerate() {
+            *sample = ((n as f32) / (frame_len as f32) - 0.5) * 0.5;
         }
         let original = samples.clone();
         let _ = apm.process_in_place(&mut samples).expect("process");

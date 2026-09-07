@@ -32,11 +32,6 @@ export interface BannedIpEntry {
 	createdAt: Date | null;
 }
 
-export interface DisposableEmailDomainPage {
-	domains: Array<string>;
-	pageState: string | null;
-}
-
 export abstract class IAdminRepository {
 	abstract createAuditLog(log: AdminAuditLogRow): Promise<AdminAuditLog>;
 
@@ -62,13 +57,15 @@ export abstract class IAdminRepository {
 
 	abstract unbanEmail(email: string): Promise<void>;
 
+	abstract loadAllBannedEmails(): Promise<Array<string>>;
+
 	abstract isEmailDomainSuspicious(domain: string): Promise<boolean>;
 
 	abstract addSuspiciousEmailDomain(domain: string): Promise<void>;
 
 	abstract removeSuspiciousEmailDomain(domain: string): Promise<void>;
 
-	abstract listSuspiciousEmailDomains(limit?: number): Promise<Array<string>>;
+	abstract loadAllSuspiciousEmailDomains(): Promise<Array<string>>;
 
 	abstract isEmailDomainDisposable(domain: string): Promise<boolean>;
 
@@ -77,8 +74,6 @@ export abstract class IAdminRepository {
 	abstract removeDisposableEmailDomain(domain: string): Promise<void>;
 
 	abstract listDisposableEmailDomains(limit?: number): Promise<Array<string>>;
-
-	abstract listDisposableEmailDomainsPage(limit: number, pageState?: string | null): Promise<DisposableEmailDomainPage>;
 
 	abstract isPhraseBanned(phrase: string): Promise<boolean>;
 

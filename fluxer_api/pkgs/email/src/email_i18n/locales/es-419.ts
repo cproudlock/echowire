@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_ES_419_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_ES_419_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Tu cuenta de {product_name} ha sido deshabilitada temporalmente",
 		"body": "Hola {username}:\n\nDeshabilitamos temporalmente tu cuenta de {product_name} porque detectamos actividad sospechosa.\n\n{reason, select,\n  null {}\n  other {Motivo: {reason}}\n}\n\nPara recuperar el acceso a tu cuenta, deberás restablecer tu contraseña:\n\n{forgotUrl}\n\nDespués de restablecer tu contraseña, podrás iniciar sesión de nuevo.\n\nSi crees que esto fue un error, comunícate con nuestro equipo de soporte.\n\n– Equipo de Seguridad de {product_name}"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_ES_419_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Autoriza el inicio de sesión desde una nueva dirección IP",
 		"body": "Hola {username}:\n\nDetectamos un intento de inicio de sesión en tu cuenta de {product_name} desde una nueva dirección IP:\n\nDirección IP: {ipAddress}\nUbicación: {location}\n\nSi fuiste tú, por favor, autoriza esta dirección IP haciendo clic en el siguiente enlace:\n\n{authUrl}\n\nSi no intentaste iniciar sesión, por favor, cambia tu contraseña de inmediato.\n\nEste enlace es válido por 30 minutos.\n\n– Equipo de {product_name}"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Confirma el acceso a tus códigos de respaldo de {product_name}",
+		"body": "Hola {username}:\n\nRecibimos una solicitud para ver los códigos de respaldo de tu cuenta de {product_name}.\n\nPara confirmar esta solicitud, ingresa este código en la aplicación:\n\n{code}\n\nEste código vence el {expiresAt, date, full} a las {expiresAt, time, short}.\n\nSi no solicitaste esto, alguien podría tener acceso a tu cuenta. Cambia tu contraseña inmediatamente.\n\n– Equipo de {product_name}"
 	},
 	"password_change_verification": {
 		"subject": "Confirma tu cambio de contraseña de {product_name}",

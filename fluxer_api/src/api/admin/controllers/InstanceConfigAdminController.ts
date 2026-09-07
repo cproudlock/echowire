@@ -11,9 +11,10 @@ import {
 	InstanceEmailSmtpTestRequest,
 	InstanceEmailSmtpTestResponse,
 	PendingRegistrationActionRequest,
-	RegistrationUrlActionRequest,
+	RegistrationUrlIdParam,
 } from '@fluxer/schema/src/domains/admin/AdminSchemas';
 import {GatewayRolloutConfigSchema} from '@fluxer/schema/src/domains/admin/GatewayRolloutSchemas';
+import {UserIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import {SmtpEmailProvider} from '@pkgs/email/src/SmtpEmailProvider';
 import type {Context} from 'hono';
 import {createMiddleware} from 'hono/factory';
@@ -91,7 +92,6 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 		app_public: appPublic,
 		policy: {
 			single_community_enabled: policy.single_community_enabled,
-			single_community_locked: policy.single_community_locked,
 			single_community_guild_id: policy.single_community_guild_id,
 			direct_messages_disabled: policy.direct_messages_disabled,
 			direct_messages_locked: policy.direct_messages_locked,
@@ -100,6 +100,11 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 				gif_enabled: policy.gif_enabled,
 				youtube_enabled: policy.youtube_enabled,
 				bluesky_enabled: policy.bluesky_enabled,
+			},
+			deferred_phone_gate: {
+				enabled: policy.deferred_phone_gate_enabled,
+				window_hours: policy.deferred_phone_gate_window_hours,
+				member_threshold: policy.deferred_phone_gate_member_threshold,
 			},
 			services_resolved: resolvedServices,
 			services_available: {
@@ -162,12 +167,12 @@ async function grantSetupCompleterAdminACL(ctx: Context<HonoEnv>): Promise<void>
 
 export function InstanceConfigAdminController(app: HonoApp) {
 	const instanceConfigRepository = getInstanceConfigRepository();
-	app.post(
-		'/admin/instance-config/get',
+	app.get(
+		'/admin/instance/config',
 		RateLimitMiddleware(RateLimitConfigs.ADMIN_LOOKUP),
 		requireSetupSessionOrAdminACL(AdminACLs.INSTANCE_CONFIG_VIEW),
 		OpenAPI({
-			operationId: 'get_instance_config',
+			operationId: 'get_admin_instance_config',
 			summary: 'Get instance configuration',
 			description:
 				'Retrieves instance-wide configuration including webhooks and SSO configuration. Requires INSTANCE_CONFIG_VIEW permission.',
@@ -180,13 +185,13 @@ export function InstanceConfigAdminController(app: HonoApp) {
 			return ctx.json(await buildInstanceConfigResponse());
 		},
 	);
-	app.post(
-		'/admin/instance-config/update',
+	app.patch(
+		'/admin/instance/config',
 		RateLimitMiddleware(RateLimitConfigs.ADMIN_USER_MODIFY),
 		requireSetupSessionOrAdminACL(AdminACLs.INSTANCE_CONFIG_UPDATE),
 		Validator('json', InstanceConfigUpdateRequest),
 		OpenAPI({
-			operationId: 'update_instance_config',
+			operationId: 'update_admin_instance_config',
 			summary: 'Update instance configuration',
 			description:
 				'Updates instance configuration settings including webhook URLs and SSO parameters. Changes apply immediately. Requires INSTANCE_CONFIG_UPDATE permission.',
@@ -268,11 +273,6 @@ export function InstanceConfigAdminController(app: HonoApp) {
 								theme_color: readOptionalField(data.app_public.branding, 'theme_color'),
 							})
 						: undefined,
-					setup: data.app_public.setup
-						? omitUndefinedFields({
-								configured: readOptionalField(data.app_public.setup, 'configured'),
-							})
-						: undefined,
 					legal: data.app_public.legal
 						? omitUndefinedFields({
 								terms_url: readOptionalField(data.app_public.legal, 'terms_url'),
@@ -290,8 +290,6 @@ export function InstanceConfigAdminController(app: HonoApp) {
 				await instanceConfigRepository.setInstanceIntegrationsConfig({
 					gif: data.integrations.gif
 						? omitUndefinedFields({
-								provider: readOptionalField(data.integrations.gif, 'provider'),
-								tenor_api_key: readOptionalField(data.integrations.gif, 'tenor_api_key'),
 								klipy_api_key: readOptionalField(data.integrations.gif, 'klipy_api_key'),
 							})
 						: undefined,
@@ -316,6 +314,10 @@ export function InstanceConfigAdminController(app: HonoApp) {
 									provider: readOptionalField(data.integrations.email, 'provider'),
 									from_email: readOptionalField(data.integrations.email, 'from_email'),
 									from_name: readOptionalField(data.integrations.email, 'from_name'),
+									disable_new_ip_authorization: readOptionalField(
+										data.integrations.email,
+										'disable_new_ip_authorization',
+									),
 								}),
 								smtp: data.integrations.email.smtp
 									? omitUndefinedFields({
@@ -363,6 +365,13 @@ export function InstanceConfigAdminController(app: HonoApp) {
 			if (data.policy) {
 				await applyInstancePolicyUpdate(ctx, data.policy);
 			}
+			if (data.app_public?.setup) {
+				await instanceConfigRepository.setAppPublicConfig({
+					setup: omitUndefinedFields({
+						configured: readOptionalField(data.app_public.setup, 'configured'),
+					}),
+				});
+			}
 			if (shouldGrantSetupCompleterAdmin) {
 				await grantSetupCompleterAdminACL(ctx);
 				await instanceConfigRepository.markAdminBootstrapped();
@@ -371,13 +380,13 @@ export function InstanceConfigAdminController(app: HonoApp) {
 		},
 	);
 	app.post(
-		'/admin/instance-config/branding-asset',
+		'/admin/instance/config/branding-assets',
 		RateLimitMiddleware(RateLimitConfigs.ADMIN_USER_MODIFY),
 		requireSetupSessionOrAdminACL(AdminACLs.INSTANCE_CONFIG_UPDATE),
 		Validator('json', BrandingAssetUploadRequest),
 		OpenAPI({
-			operationId: 'upload_instance_branding_asset',
-			summary: 'Upload or clear an instance branding asset',
+			operationId: 'create_admin_instance_branding_asset',
+			summary: 'Upload an instance branding asset',
 			description:
 				'Uploads a branding image served by the media proxy and stores its URL, or clears it when no image is provided. Requires INSTANCE_CONFIG_UPDATE permission.',
 			responseSchema: InstanceConfigResponse,
@@ -401,13 +410,13 @@ export function InstanceConfigAdminController(app: HonoApp) {
 		},
 	);
 	app.post(
-		'/admin/instance-config/integrations/smtp/test',
+		'/admin/instance/config/smtp-tests',
 		RateLimitMiddleware(RateLimitConfigs.ADMIN_USER_MODIFY),
 		requireSetupSessionOrAdminACL(AdminACLs.INSTANCE_CONFIG_UPDATE),
 		Validator('json', InstanceEmailSmtpTestRequest),
 		OpenAPI({
-			operationId: 'test_instance_smtp_config',
-			summary: 'Validate SMTP configuration',
+			operationId: 'create_admin_instance_smtp_test',
+			summary: 'Run an SMTP configuration test',
 			description:
 				'Validates that an SMTP configuration can authenticate and accept a connection. Requires INSTANCE_CONFIG_UPDATE permission.',
 			responseSchema: InstanceEmailSmtpTestResponse,
@@ -436,12 +445,12 @@ export function InstanceConfigAdminController(app: HonoApp) {
 		},
 	);
 	app.post(
-		'/admin/instance-config/registration-urls/create',
+		'/admin/instance/registration-urls',
 		RateLimitMiddleware(RateLimitConfigs.ADMIN_USER_MODIFY),
 		requireAdminACL(AdminACLs.INSTANCE_CONFIG_UPDATE),
 		Validator('json', CreateRegistrationUrlRequest),
 		OpenAPI({
-			operationId: 'create_registration_url',
+			operationId: 'create_admin_registration_url',
 			summary: 'Create an admin-issued registration URL',
 			description:
 				'Creates a one-time-display registration URL that can be sent manually by an administrator. Requires INSTANCE_CONFIG_UPDATE permission.',
@@ -466,13 +475,13 @@ export function InstanceConfigAdminController(app: HonoApp) {
 			});
 		},
 	);
-	app.post(
-		'/admin/instance-config/registration-urls/revoke',
+	app.delete(
+		'/admin/instance/registration-urls/:registration_url_id',
 		RateLimitMiddleware(RateLimitConfigs.ADMIN_USER_MODIFY),
 		requireAdminACL(AdminACLs.INSTANCE_CONFIG_UPDATE),
-		Validator('json', RegistrationUrlActionRequest),
+		Validator('param', RegistrationUrlIdParam),
 		OpenAPI({
-			operationId: 'revoke_registration_url',
+			operationId: 'revoke_admin_registration_url',
 			summary: 'Revoke an admin-issued registration URL',
 			description:
 				'Revokes an admin-issued registration URL so it can no longer be used. Requires INSTANCE_CONFIG_UPDATE permission.',
@@ -482,50 +491,30 @@ export function InstanceConfigAdminController(app: HonoApp) {
 			tags: 'Admin',
 		}),
 		async (ctx) => {
-			await instanceConfigRepository.revokeRegistrationUrl(ctx.req.valid('json').id);
+			await instanceConfigRepository.revokeRegistrationUrl(ctx.req.valid('param').registration_url_id);
 			return ctx.json(await buildInstanceConfigResponse());
 		},
 	);
-	app.post(
-		'/admin/instance-config/pending-registrations/approve',
+	app.patch(
+		'/admin/instance/pending-registrations/:user_id',
 		RateLimitMiddleware(RateLimitConfigs.ADMIN_USER_MODIFY),
 		requireAdminACL(AdminACLs.INSTANCE_CONFIG_UPDATE),
+		Validator('param', UserIdParam),
 		Validator('json', PendingRegistrationActionRequest),
 		OpenAPI({
-			operationId: 'approve_pending_registration',
-			summary: 'Approve a pending registration',
+			operationId: 'update_admin_pending_registration',
+			summary: 'Approve or reject a pending registration',
 			description:
-				'Approves a registration waiting for manual review by removing its pending registration trait. Requires INSTANCE_CONFIG_UPDATE permission.',
+				'Decides a registration waiting for manual review. Approving removes its pending registration trait, rejecting also prevents the account from logging in. Requires INSTANCE_CONFIG_UPDATE permission.',
 			responseSchema: InstanceConfigResponse,
 			statusCode: 200,
 			security: 'adminApiKey',
 			tags: 'Admin',
 		}),
 		async (ctx) => {
-			const userId = ctx.req.valid('json').user_id;
-			await updatePendingRegistrationUser(ctx, userId, 'approve');
-			await instanceConfigRepository.removePendingRegistration(userId);
-			return ctx.json(await buildInstanceConfigResponse());
-		},
-	);
-	app.post(
-		'/admin/instance-config/pending-registrations/reject',
-		RateLimitMiddleware(RateLimitConfigs.ADMIN_USER_MODIFY),
-		requireAdminACL(AdminACLs.INSTANCE_CONFIG_UPDATE),
-		Validator('json', PendingRegistrationActionRequest),
-		OpenAPI({
-			operationId: 'reject_pending_registration',
-			summary: 'Reject a pending registration',
-			description:
-				'Rejects a registration waiting for manual review and prevents the account from logging in. Requires INSTANCE_CONFIG_UPDATE permission.',
-			responseSchema: InstanceConfigResponse,
-			statusCode: 200,
-			security: 'adminApiKey',
-			tags: 'Admin',
-		}),
-		async (ctx) => {
-			const userId = ctx.req.valid('json').user_id;
-			await updatePendingRegistrationUser(ctx, userId, 'reject');
+			const userId = ctx.req.valid('param').user_id.toString();
+			const decision = ctx.req.valid('json').status === 'approved' ? 'approve' : 'reject';
+			await updatePendingRegistrationUser(ctx, userId, decision);
 			await instanceConfigRepository.removePendingRegistration(userId);
 			return ctx.json(await buildInstanceConfigResponse());
 		},
@@ -547,27 +536,30 @@ async function applyInstancePolicyUpdate(
 		policy.single_community_enabled !== current.single_community_enabled
 	) {
 		if (policy.single_community_enabled) {
-			if (appPublic.setup.configured || current.single_community_locked) {
+			if (appPublic.setup.configured && current.single_community_guild_id == null) {
 				throw new InstancePolicyTransitionNotAllowedError();
 			}
 			const adminUser = await ctx.get('userRepository').findUnique(ctx.get('adminUserId'));
 			if (!adminUser) {
 				throw new InstancePolicyTransitionNotAllowedError();
 			}
-			await ctx.get('singleCommunityService').createStockCommunity({
+			await ctx.get('singleCommunityService').ensureStockCommunity({
 				owner: adminUser,
 				name: policy.single_community_name?.trim() || appPublic.branding.product_name,
 			});
 		} else {
 			patch.single_community_enabled = false;
-			patch.single_community_locked = true;
 		}
+	}
+	const unlockDirectMessages = policy.direct_messages_locked === false;
+	if (unlockDirectMessages && current.direct_messages_locked) {
+		patch.direct_messages_locked = false;
 	}
 	if (
 		policy.direct_messages_disabled !== undefined &&
 		policy.direct_messages_disabled !== current.direct_messages_disabled
 	) {
-		if (current.direct_messages_locked) {
+		if (current.direct_messages_locked && !unlockDirectMessages) {
 			throw new InstancePolicyTransitionNotAllowedError();
 		}
 		patch.direct_messages_disabled = policy.direct_messages_disabled;
@@ -589,6 +581,17 @@ async function applyInstancePolicyUpdate(
 			patch.bluesky_enabled = policy.services.bluesky_enabled ?? null;
 		}
 	}
+	if (policy.deferred_phone_gate) {
+		if (policy.deferred_phone_gate.enabled !== undefined) {
+			patch.deferred_phone_gate_enabled = policy.deferred_phone_gate.enabled;
+		}
+		if (policy.deferred_phone_gate.window_hours !== undefined) {
+			patch.deferred_phone_gate_window_hours = policy.deferred_phone_gate.window_hours;
+		}
+		if (policy.deferred_phone_gate.member_threshold !== undefined) {
+			patch.deferred_phone_gate_member_threshold = policy.deferred_phone_gate.member_threshold;
+		}
+	}
 	if (Object.keys(patch).length > 0) {
 		await instanceConfigRepository.setInstancePolicyConfig(patch);
 	}
@@ -608,11 +611,21 @@ async function updatePendingRegistrationUser(
 		return;
 	}
 	const traits = new Set(user.traits);
-	traits.delete(REGISTRATION_PENDING_APPROVAL_TRAIT);
+	const wasPendingApproval = traits.delete(REGISTRATION_PENDING_APPROVAL_TRAIT);
 	if (decision === 'reject') {
 		traits.add(REGISTRATION_REJECTED_TRAIT);
 	} else {
 		traits.delete(REGISTRATION_REJECTED_TRAIT);
 	}
 	await userRepository.patchUpsert(user.id, {traits: traits.size > 0 ? traits : null}, user.toRow());
+	if (decision === 'approve' && wasPendingApproval) {
+		await ctx.get('singleCommunityService').joinStockCommunity(user.id, ctx.get('requestCache'));
+	}
+	await ctx.get('adminService').auditService.createAuditLog({
+		adminUserId: ctx.get('adminUserId'),
+		targetType: 'user',
+		targetId: user.id,
+		action: decision === 'approve' ? 'approve_registration' : 'reject_registration',
+		auditLogReason: ctx.get('auditLogReason'),
+	});
 }

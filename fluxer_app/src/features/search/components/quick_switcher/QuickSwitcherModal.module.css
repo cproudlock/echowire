@@ -14,16 +14,8 @@
 	color: var(--qs-text-primary, var(--text-primary));
 }
 
-.option:hover {
-	background-color: var(--qs-row-hover, var(--background-modifier-accent));
-}
-
 .optionActive {
 	background-color: var(--qs-row-hover, var(--background-modifier-accent));
-}
-
-:global(html.theme-light) .option:hover {
-	background-color: var(--qs-row-hover-light, var(--background-modifier-hover));
 }
 
 :global(html.theme-light) .optionActive {
@@ -339,7 +331,7 @@
 	flex-direction: column;
 	height: 100%;
 	background-color: var(--background-secondary);
-	padding: 0 1rem calc(env(safe-area-inset-bottom, 0) + 1rem);
+	padding: 0 1rem calc(env(safe-area-inset-bottom, 0px) + 1rem);
 }
 
 .mobileSearchContainer {

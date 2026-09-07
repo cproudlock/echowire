@@ -10,6 +10,7 @@
     flush_all_pending_presences/1,
     dispatch_presence_now/2,
     maybe_sync_presence_targets/3,
+    sync_presence_targets/1,
     event_changes_presence_targets/1,
     presence_user_id/1,
     relationship_target_id/1
@@ -26,27 +27,34 @@
 -type event() :: atom() | binary().
 -type user_id() :: session:user_id().
 
--spec should_buffer_presence(event(), map(), session_state()) -> boolean().
+-spec should_buffer_presence(event(), map() | list(), session_state()) -> boolean().
 should_buffer_presence(presence_update, Data, State) ->
     case maps:get(suppress_presence_updates, State, true) of
         true ->
             true;
         false ->
-            check_non_guild_presence(Data, State)
+            check_presence_scope(Data, State)
     end;
 should_buffer_presence(_, _, _) ->
     false.
 
--spec check_non_guild_presence(map(), session_state()) -> boolean().
-check_non_guild_presence(Data, State) ->
-    HasGuildId =
-        is_map(Data) andalso (maps:get(<<"guild_id">>, Data, undefined) =/= undefined),
-    case HasGuildId of
-        true ->
-            false;
-        false ->
+-spec check_presence_scope(map(), session_state()) -> boolean().
+check_presence_scope(Data, State) ->
+    case maps:find(<<"guild_id">>, Data) of
+        error ->
             UserId = presence_user_id(Data),
-            check_user_presence_buffering(UserId, State)
+            check_user_presence_buffering(UserId, State);
+        {ok, GuildIdValue} ->
+            should_buffer_guild_presence(GuildIdValue, State)
+    end.
+
+-spec should_buffer_guild_presence(term(), session_state()) -> boolean().
+should_buffer_guild_presence(GuildIdValue, State) ->
+    case snowflake_id:parse_maybe(GuildIdValue) of
+        GuildId when is_integer(GuildId) ->
+            not maps:is_key(GuildId, maps:get(guilds, State, #{}));
+        undefined ->
+            true
     end.
 
 -spec check_user_presence_buffering(user_id() | undefined, session_state()) -> boolean().
@@ -55,8 +63,8 @@ check_user_presence_buffering(undefined, _State) ->
 check_user_presence_buffering(UserId, State) ->
     Relationships = maps:get(relationships, State, #{}),
     IsRelationship = relationship_allows_presence(UserId, Relationships),
-    IsDmRecipient = is_dm_recipient(UserId, State),
-    not (IsRelationship orelse IsDmRecipient).
+    IsGroupDmRecipient = is_group_dm_recipient(UserId, State),
+    not (IsRelationship orelse IsGroupDmRecipient).
 
 -spec relationship_allows_presence(user_id(), #{user_id() => integer()}) -> boolean().
 relationship_allows_presence(UserId, Relationships) when
@@ -64,34 +72,33 @@ relationship_allows_presence(UserId, Relationships) when
 ->
     case maps:get(UserId, Relationships, undefined) of
         1 -> true;
-        3 -> true;
         _ -> false
     end;
 relationship_allows_presence(_, _) ->
     false.
 
--spec is_dm_recipient(user_id(), session_state()) -> boolean().
-is_dm_recipient(UserId, State) when is_map(State) ->
-    DmRecipients = presence_targets:dm_recipients_from_state(State),
+-spec is_group_dm_recipient(user_id(), session_state()) -> boolean().
+is_group_dm_recipient(UserId, State) when is_map(State) ->
+    GroupDmRecipients = presence_targets:group_dm_recipients_from_state(State),
     maps:fold(
         fun
             (_, Recipients, false) -> maps:is_key(UserId, Recipients);
             (_, _, true) -> true
         end,
         false,
-        DmRecipients
+        GroupDmRecipients
     ).
 
 -spec buffer_presence(event(), map(), session_state()) -> session_state().
 buffer_presence(Event, Data, State) ->
-    Pending = maps:get(pending_presences, State, []),
+    Pending = ensure_queue(maps:get(pending_presences, State, [])),
     UserId = presence_user_id(Data),
     Entry = #{event => Event, data => Data, user_id => UserId},
-    Trimmed = trim_rev_list(Pending, ?MAX_PENDING_PRESENCE_BUFFER_SIZE - 1),
-    NewPending = [Entry | Trimmed],
+    Trimmed = trim_queue_from_front(Pending, ?MAX_PENDING_PRESENCE_BUFFER_SIZE - 1),
+    NewPending = queue:in(Entry, Trimmed),
     State#{pending_presences => NewPending}.
 
--spec maybe_flush_pending_presences(event(), map(), session_state()) ->
+-spec maybe_flush_pending_presences(event(), map() | list(), session_state()) ->
     {session_state(), [user_id()]}.
 maybe_flush_pending_presences(relationship_add, Data, State) ->
     maybe_flush_relationship_pending_presences(Data, State);
@@ -110,7 +117,7 @@ maybe_flush_pending_presences(_, _, State) ->
     {session_state(), [user_id()]}.
 flush_dm_channel_pending_presences(Data, State) ->
     SelfUserId = maps:get(user_id, State, undefined),
-    RecipientIds = presence_targets:dm_channel_recipient_ids(Data, SelfUserId),
+    RecipientIds = presence_targets:group_dm_channel_recipient_ids(Data, SelfUserId),
     flush_pending_presences_for_ids(RecipientIds, State).
 
 -spec flush_added_recipient_pending_presences(map(), session_state()) ->
@@ -137,9 +144,6 @@ flush_pending_presences_for_ids(UserIds, State) ->
 maybe_flush_relationship_pending_presences(Data, State) ->
     case maps:get(<<"type">>, Data, undefined) of
         1 ->
-            TargetId = relationship_target_id(Data),
-            {flush_pending_presences(TargetId, State), flushed_id_list(TargetId)};
-        3 ->
             TargetId = relationship_target_id(Data),
             {flush_pending_presences(TargetId, State), flushed_id_list(TargetId)};
         _ ->
@@ -183,12 +187,17 @@ dispatch_presence_now(P, State) ->
             false ->
                 Buffer
         end,
-    NewBuffer = limited_deque:push(Request, Deque),
+    {NewBuffer, Dropped} = limited_deque:push_trimmed(
+        Request, limited_deque:entry_bytes(Request), Deque
+    ),
     send_to_socket(SocketPid, Event, Data, NewSeq),
     State#{
         seq => NewSeq,
         buffer => NewBuffer,
-        buffer_bytes => limited_deque:bytes(NewBuffer)
+        buffer_bytes => limited_deque:bytes(NewBuffer),
+        replay_floor => session_dispatch:replay_floor_after_eviction(
+            Dropped, maps:get(replay_floor, State, 0)
+        )
     }.
 
 -spec flush_all_pending_presences(session_state()) -> session_state().
@@ -206,6 +215,10 @@ maybe_sync_presence_targets(Event, FlushedIds, State) ->
         true -> sync_presence_targets(FlushedIds, State);
         false -> State
     end.
+
+-spec sync_presence_targets(session_state()) -> session_state().
+sync_presence_targets(State) ->
+    sync_presence_targets([], State).
 
 -spec event_changes_presence_targets(event()) -> boolean().
 event_changes_presence_targets(relationship_add) -> true;
@@ -226,9 +239,9 @@ sync_presence_targets(FlushedIds, State) when is_map(State) ->
             State;
         Pid when is_pid(Pid) ->
             FriendIds = presence_targets:friend_ids_from_state(State),
-            DmRecipients = presence_targets:dm_recipients_from_state(State),
+            GroupDmRecipients = presence_targets:group_dm_recipients_from_state(State),
             gen_server:cast(Pid, {sync_friends, FriendIds, FlushedIds}),
-            gen_server:cast(Pid, {sync_group_dm_recipients, DmRecipients}),
+            gen_server:cast(Pid, {sync_group_dm_recipients, GroupDmRecipients}),
             State
     end.
 
@@ -253,11 +266,14 @@ relationship_target_id(Data) when is_map(Data) ->
 ensure_queue(List) when is_list(List) -> queue:from_list(List);
 ensure_queue(Q) -> Q.
 
--spec trim_rev_list([T], non_neg_integer()) -> [T].
-trim_rev_list(List, MaxLen) when length(List) =< MaxLen -> List;
-trim_rev_list(List, MaxLen) -> lists:sublist(List, MaxLen).
+-spec trim_queue_from_front(queue:queue(T), non_neg_integer()) -> queue:queue(T).
+trim_queue_from_front(Queue, MaxLen) ->
+    case queue:len(Queue) > MaxLen of
+        true -> trim_queue_from_front(queue:drop(Queue), MaxLen);
+        false -> Queue
+    end.
 
--spec send_to_socket(pid() | undefined, event(), map(), non_neg_integer()) -> ok.
+-spec send_to_socket(pid() | undefined, event(), map() | list(), non_neg_integer()) -> ok.
 send_to_socket(undefined, _Event, _Data, _Seq) ->
     ok;
 send_to_socket(Pid, Event, Data, Seq) when is_pid(Pid) ->
@@ -269,7 +285,7 @@ send_to_socket(Pid, Event, Data, Seq) when is_pid(Pid) ->
 
 relationship_allows_presence_test() ->
     ?assertEqual(true, relationship_allows_presence(1, #{1 => 1})),
-    ?assertEqual(true, relationship_allows_presence(1, #{1 => 3})),
+    ?assertEqual(false, relationship_allows_presence(1, #{1 => 3})),
     ?assertEqual(false, relationship_allows_presence(1, #{1 => 0})),
     ?assertEqual(false, relationship_allows_presence(1, #{1 => 2})),
     ?assertEqual(false, relationship_allows_presence(1, #{1 => 4})),
@@ -299,10 +315,10 @@ buffering_test_state() ->
 presence_data(UserIdBin) ->
     #{<<"user">> => #{<<"id">> => UserIdBin}, <<"status">> => <<"online">>}.
 
-should_buffer_presence_passes_one_to_one_dm_recipient_test() ->
+should_buffer_presence_buffers_one_to_one_dm_recipient_test() ->
     State = buffering_test_state(),
     ?assertEqual(
-        false, should_buffer_presence(presence_update, presence_data(<<"2">>), State)
+        true, should_buffer_presence(presence_update, presence_data(<<"2">>), State)
     ).
 
 should_buffer_presence_passes_group_dm_recipient_test() ->
@@ -323,10 +339,15 @@ should_buffer_presence_passes_friend_test() ->
         false, should_buffer_presence(presence_update, presence_data(<<"4">>), State)
     ).
 
-should_buffer_presence_passes_guild_presence_test() ->
-    State = buffering_test_state(),
-    Data = (presence_data(<<"99">>))#{<<"guild_id">> => <<"42">>},
+one_to_one_dm_presence_passes_attached_guild_scope_test() ->
+    State = (buffering_test_state())#{guilds => #{42 => undefined}},
+    Data = (presence_data(<<"2">>))#{<<"guild_id">> => <<"42">>},
     ?assertEqual(false, should_buffer_presence(presence_update, Data, State)).
+
+one_to_one_dm_presence_buffers_unattached_guild_scope_test() ->
+    State = (buffering_test_state())#{guilds => #{42 => undefined}},
+    Data = (presence_data(<<"2">>))#{<<"guild_id">> => <<"99">>},
+    ?assertEqual(true, should_buffer_presence(presence_update, Data, State)).
 
 flush_test_state(PendingUserIds) ->
     #{
@@ -344,7 +365,7 @@ flush_test_state(PendingUserIds) ->
         ]
     }.
 
-channel_create_flushes_pending_dm_recipient_presence_test() ->
+channel_create_does_not_flush_one_to_one_dm_recipient_presence_test() ->
     State = flush_test_state([2, 99]),
     ChannelData = #{
         <<"id">> => <<"100">>,
@@ -354,10 +375,10 @@ channel_create_flushes_pending_dm_recipient_presence_test() ->
     {NewState, FlushedIds} = maybe_flush_pending_presences(
         channel_create, ChannelData, State
     ),
-    ?assertEqual([2], FlushedIds),
-    ?assertEqual(1, maps:get(seq, NewState)),
+    ?assertEqual([], FlushedIds),
+    ?assertEqual(0, maps:get(seq, NewState)),
     Remaining = queue:to_list(ensure_queue(maps:get(pending_presences, NewState))),
-    ?assertEqual([99], [maps:get(user_id, P) || P <- Remaining]).
+    ?assertEqual([2, 99], [maps:get(user_id, P) || P <- Remaining]).
 
 channel_create_ignores_guild_channels_test() ->
     State = flush_test_state([2]),
@@ -420,5 +441,85 @@ flushed_id_list_test() ->
     ?assertEqual([], flushed_id_list(undefined)),
     ?assertEqual([42], flushed_id_list(42)),
     ok.
+
+presence_status_data(UserIdBin, Status) ->
+    #{<<"user">> => #{<<"id">> => UserIdBin}, <<"status">> => Status}.
+
+buffered_presences_flush_in_arrival_order_test() ->
+    drain_mailbox(),
+    Base = #{
+        user_id => 1,
+        seq => 0,
+        buffer => [],
+        socket_pid => self(),
+        pending_presences => queue:new()
+    },
+    S1 = buffer_presence(presence_update, presence_status_data(<<"2">>, <<"online">>), Base),
+    S2 = buffer_presence(presence_update, presence_status_data(<<"2">>, <<"dnd">>), S1),
+    Flushed = flush_all_pending_presences(S2),
+    ?assertEqual(2, maps:get(seq, Flushed)),
+    ?assertEqual([{1, <<"online">>}, {2, <<"dnd">>}], collect_dispatched_statuses(2)).
+
+pending_presence_buffer_drops_oldest_when_full_test() ->
+    Total = ?MAX_PENDING_PRESENCE_BUFFER_SIZE + 2,
+    Filled = lists:foldl(
+        fun(N, Acc) ->
+            buffer_presence(
+                presence_update,
+                presence_status_data(integer_to_binary(N), <<"online">>),
+                Acc
+            )
+        end,
+        #{user_id => 1, pending_presences => queue:new()},
+        lists:seq(1, Total)
+    ),
+    Pending = queue:to_list(maps:get(pending_presences, Filled)),
+    ?assertEqual(?MAX_PENDING_PRESENCE_BUFFER_SIZE, length(Pending)),
+    ?assertEqual(3, maps:get(user_id, hd(Pending))),
+    ?assertEqual(Total, maps:get(user_id, lists:last(Pending))).
+
+presence_flush_eviction_raises_replay_floor_test() ->
+    Base = #{
+        user_id => 1,
+        seq => 0,
+        buffer => limited_deque:new(2, 0),
+        socket_pid => undefined,
+        pending_presences => queue:new()
+    },
+    Filled = lists:foldl(
+        fun(N, Acc) ->
+            buffer_presence(
+                presence_update,
+                presence_status_data(integer_to_binary(N), <<"online">>),
+                Acc
+            )
+        end,
+        Base,
+        lists:seq(2, 4)
+    ),
+    Flushed = flush_all_pending_presences(Filled),
+    ?assertEqual(3, maps:get(seq, Flushed)),
+    ?assertEqual(1, maps:get(replay_floor, Flushed)),
+    ?assertEqual(
+        [2, 3],
+        [maps:get(seq, E) || E <- limited_deque:to_list(maps:get(buffer, Flushed))]
+    ).
+
+collect_dispatched_statuses(0) ->
+    [];
+collect_dispatched_statuses(N) ->
+    receive
+        {dispatch, presence_update, Data, Seq} ->
+            [{Seq, maps:get(<<"status">>, Data)} | collect_dispatched_statuses(N - 1)]
+    after 100 ->
+        []
+    end.
+
+drain_mailbox() ->
+    receive
+        _Message -> drain_mailbox()
+    after 0 ->
+        ok
+    end.
 
 -endif.

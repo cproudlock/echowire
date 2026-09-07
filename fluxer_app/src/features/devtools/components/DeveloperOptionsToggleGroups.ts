@@ -38,9 +38,13 @@ const APP_STATE_DESCRIPTOR = msg({
 	message: 'App state',
 	comment: 'Developer options group for overriding app/account state.',
 });
-const BYPASS_SPLASH_SCREEN_DESCRIPTOR = msg({
-	message: 'Bypass splash screen',
+const BYPASS_LOADING_SKELETON_DESCRIPTOR = msg({
+	message: 'Bypass loading skeleton',
 	comment: 'Developer option label.',
+});
+const FORCE_LOADING_SKELETON_DESCRIPTOR = msg({
+	message: 'Force loading skeleton',
+	comment: 'Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.',
 });
 const FORCE_UPDATE_READY_DESCRIPTOR = msg({
 	message: 'Force update ready',
@@ -118,15 +122,6 @@ const FORCE_SHOW_VOICE_CONNECTION_DESCRIPTOR = msg({
 	message: 'Force show voice connection',
 	comment: 'Developer option label for always showing the voice connection status bar.',
 });
-const SHOW_EXPRESSION_PACKS_SETTINGS_DESCRIPTOR = msg({
-	message: 'Show expression packs settings',
-	comment: 'Developer option label for exposing the staff-only Expression packs page in user settings.',
-});
-const SHOW_EXPRESSION_PACKS_SETTINGS_DESC_DESCRIPTOR = msg({
-	message: 'Expose the staff-only Expression packs page in user settings.',
-	comment:
-		'Developer / debug surface — keep terse and technical. Tooltip / description for the Expression packs settings toggle.',
-});
 const SHOW_PROFILE_TIMEZONE_SETTINGS_DESCRIPTOR = msg({
 	message: 'Show profile timezone settings',
 	comment: 'Developer option label for exposing the staff-only profile timezone section in profile settings.',
@@ -163,7 +158,8 @@ export const getToggleGroups = (): Array<ToggleGroup> => [
 	{
 		title: APP_STATE_DESCRIPTOR,
 		items: [
-			{key: 'bypassSplashScreen', label: BYPASS_SPLASH_SCREEN_DESCRIPTOR},
+			{key: 'bypassLoadingSkeleton', label: BYPASS_LOADING_SKELETON_DESCRIPTOR},
+			{key: 'forceLoadingSkeleton', label: FORCE_LOADING_SKELETON_DESCRIPTOR},
 			{
 				key: 'forceUpdateReady',
 				label: FORCE_UPDATE_READY_DESCRIPTOR,
@@ -248,11 +244,6 @@ export const getToggleGroups = (): Array<ToggleGroup> => [
 				key: 'forceShowVoiceConnection',
 				label: FORCE_SHOW_VOICE_CONNECTION_DESCRIPTOR,
 				description: ALWAYS_DISPLAY_THE_VOICE_CONNECTION_STATUS_BAR_IN_DESCRIPTOR,
-			},
-			{
-				key: 'showExpressionPacksSettings',
-				label: SHOW_EXPRESSION_PACKS_SETTINGS_DESCRIPTOR,
-				description: SHOW_EXPRESSION_PACKS_SETTINGS_DESC_DESCRIPTOR,
 			},
 			{
 				key: 'showProfileTimezoneSettings',

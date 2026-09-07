@@ -1,19 +1,29 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-use anyhow::Result;
+use anyhow::{Context, Result, bail};
 use clap::{Args, Parser, Subcommand};
 use fluxer_dev::cassandra::{
     apply_schema, compute_diff, render_target_schema, verify_schema, write_diff_file,
 };
 use fluxer_dev::desktop::{
     build_desktop, install_desktop, package_desktop, run_desktop, run_desktop_canary,
-    smoke_build_desktop, typecheck_desktop,
+    typecheck_desktop,
 };
 use fluxer_dev::env::merge_default_env_with_current;
 use fluxer_dev::manifest::{DEV_PROXY_PORT, LOCAL_APP_URL};
-use fluxer_dev::paths::{DEV_ENV_FILE, DEV_LOCAL_ENV_FILE, ROOT_LOCAL_ENV_FILE};
+use fluxer_dev::paths::{DEV_ENV_FILE, DEV_LOCAL_ENV_FILE, ROOT, ROOT_LOCAL_ENV_FILE};
 use std::collections::BTreeMap;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
+use std::process::Command as ProcessCommand;
+
+const DEV_INFRA_SERVICES: &[&str] = &[
+    "postgres",
+    "valkey",
+    "nats",
+    "livekit",
+    "meilisearch",
+    "mailpit",
+];
 
 #[derive(Debug, Parser)]
 #[command(name = "fluxer-dev")]
@@ -34,22 +44,17 @@ enum Command {
     Proxy(ProxyArgs),
     Dev(DevArgs),
     RustServices(RustServicesArgs),
-    Smoke(SmokeArgs),
+    Infra(InfraArgs),
     Cassandra(CassandraArgs),
     Desktop(DesktopArgs),
-    LocalK8s(LocalK8sArgs),
-    Marketing(MarketingArgs),
     MediaProxy(MediaProxyArgs),
     Tunnel(TunnelArgs),
-    NativeVoiceIt(fluxer_dev::native_voice_it::NativeVoiceItArgs),
 }
 
 #[derive(Debug, Args)]
 struct BootstrapArgs {
     #[arg(long)]
     skip_install: bool,
-    #[arg(long)]
-    skip_desktop_install: bool,
 }
 
 #[derive(Debug, Args)]
@@ -81,11 +86,16 @@ struct RustServicesArgs {
 }
 
 #[derive(Debug, Args)]
-struct SmokeArgs {
-    #[arg(long)]
-    quick: bool,
-    #[arg(long)]
-    public: bool,
+struct InfraArgs {
+    #[command(subcommand)]
+    command: InfraCommand,
+}
+
+#[derive(Debug, Subcommand)]
+enum InfraCommand {
+    Start,
+    Stop,
+    Status,
 }
 
 #[derive(Debug, Args)]
@@ -119,7 +129,6 @@ enum DesktopCommand {
         skip_native: bool,
     },
     Typecheck,
-    SmokeBuild,
     Package {
         #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
         builder_args: Vec<String>,
@@ -149,48 +158,13 @@ enum DesktopCommand {
 }
 
 #[derive(Debug, Args)]
-struct LocalK8sArgs {
-    #[command(subcommand)]
-    command: LocalK8sCommand,
-}
-
-#[derive(Debug, Subcommand)]
-enum LocalK8sCommand {
-    CreateCluster,
-    Kubectl {
-        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-        args: Vec<String>,
-    },
-    Helm {
-        #[arg(trailing_var_arg = true, allow_hyphen_values = true)]
-        args: Vec<String>,
-    },
-    HotpatchSmoke,
-    HandoffRolloutSmoke,
-}
-
-#[derive(Debug, Args)]
-struct MarketingArgs {
-    #[command(subcommand)]
-    command: MarketingCommand,
-}
-
-#[derive(Debug, Subcommand)]
-enum MarketingCommand {
-    PreprocessBlogImage(fluxer_dev::marketing::PreprocessBlogImageArgs),
-    PreprocessBlogVideo(fluxer_dev::marketing::PreprocessBlogVideoArgs),
-}
-
-#[derive(Debug, Args)]
 struct MediaProxyArgs {
     #[command(subcommand)]
     command: MediaProxyCommand,
 }
 
 #[derive(Debug, Subcommand)]
-#[allow(clippy::large_enum_variant)]
 enum MediaProxyCommand {
-    BeeGifBench,
     Doctor {
         #[arg(long)]
         repair: bool,
@@ -199,13 +173,8 @@ enum MediaProxyCommand {
         #[arg(long)]
         path: Option<String>,
     },
-    SeaweedfsIntegration {
-        #[arg(long)]
-        isolated_store: bool,
-    },
     RustStressSmoke,
-    StressCompare(fluxer_dev::media_stress::StressCompareArgs),
-    SignExternalUrl(fluxer_dev::media_stress::SignExternalUrlArgs),
+    SignExternalUrl(fluxer_dev::media_external::SignExternalUrlArgs),
 }
 
 #[derive(Debug, Args)]
@@ -236,21 +205,6 @@ enum TunnelCommand {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    if std::env::args_os()
-        .next()
-        .and_then(|path| {
-            std::path::PathBuf::from(path)
-                .file_name()
-                .map(|name| name.to_owned())
-        })
-        .as_deref()
-        == Some(std::ffi::OsStr::new("docker"))
-    {
-        std::process::exit(fluxer_dev::local_k8s::run_docker_wrapper(
-            std::env::args_os().skip(1),
-        ));
-    }
-
     let cli = Cli::parse();
     if !matches!(
         cli.command,
@@ -261,10 +215,12 @@ async fn main() -> Result<()> {
 
     match cli.command {
         Command::Bootstrap(args) => {
-            fluxer_dev::bootstrap::bootstrap(args.skip_install, args.skip_desktop_install).await?;
+            fluxer_dev::bootstrap::bootstrap(args.skip_install).await?;
         }
         Command::PostStart => fluxer_dev::bootstrap::post_start().await?,
-        Command::Gateway(args) if args.mode == "single" => fluxer_dev::gateway::run_gateway()?,
+        Command::Gateway(args) if args.mode == "single" => {
+            std::process::exit(fluxer_dev::gateway::run_gateway().await?)
+        }
         Command::Gateway(_) => {
             std::process::exit(fluxer_dev::gateway::run_gateway_cluster().await?)
         }
@@ -284,7 +240,7 @@ async fn main() -> Result<()> {
         Command::RustServices(args) => {
             std::process::exit(fluxer_dev::rust_services::run_rust_services(&args.services).await?)
         }
-        Command::Smoke(args) => fluxer_dev::smoke::run_smoke(args.quick, args.public).await?,
+        Command::Infra(args) => run_infra(args.command)?,
         Command::Cassandra(args) => match args.command {
             CassandraCommand::Diff { output } => {
                 let diff = compute_diff(None).await?;
@@ -307,7 +263,6 @@ async fn main() -> Result<()> {
             DesktopCommand::Install => install_desktop()?,
             DesktopCommand::Build { skip_native } => build_desktop(skip_native)?,
             DesktopCommand::Typecheck => typecheck_desktop()?,
-            DesktopCommand::SmokeBuild => smoke_build_desktop()?,
             DesktopCommand::Package { builder_args } => package_desktop(&builder_args)?,
             DesktopCommand::Run {
                 app_url,
@@ -329,25 +284,7 @@ async fn main() -> Result<()> {
                 fluxer_dev::disclaim::exec_disclaimed(&program, &args)?
             }
         },
-        Command::LocalK8s(args) => match args.command {
-            LocalK8sCommand::CreateCluster => fluxer_dev::local_k8s::create_cluster().await?,
-            LocalK8sCommand::Kubectl { args } => fluxer_dev::local_k8s::run_kubectl_cli(&args)?,
-            LocalK8sCommand::Helm { args } => fluxer_dev::local_k8s::run_helm_cli(&args)?,
-            LocalK8sCommand::HotpatchSmoke => fluxer_dev::local_k8s::run_hotpatch_smoke().await?,
-            LocalK8sCommand::HandoffRolloutSmoke => {
-                fluxer_dev::local_k8s::run_handoff_rollout_smoke().await?
-            }
-        },
-        Command::Marketing(args) => match args.command {
-            MarketingCommand::PreprocessBlogImage(args) => {
-                fluxer_dev::marketing::preprocess_blog_image(args)?
-            }
-            MarketingCommand::PreprocessBlogVideo(args) => {
-                fluxer_dev::marketing::preprocess_blog_video(args)?
-            }
-        },
         Command::MediaProxy(args) => match args.command {
-            MediaProxyCommand::BeeGifBench => fluxer_dev::media_proxy::run_bee_gif_bench().await?,
             MediaProxyCommand::Doctor {
                 repair,
                 base_url,
@@ -356,20 +293,13 @@ async fn main() -> Result<()> {
                 fluxer_dev::media_proxy::run_dev_media_doctor(repair, &base_url, path.as_deref())
                     .await?;
             }
-            MediaProxyCommand::SeaweedfsIntegration { isolated_store } => {
-                fluxer_dev::media_proxy::run_seaweedfs_media_proxy_integration(isolated_store)
-                    .await?;
-            }
             MediaProxyCommand::RustStressSmoke => {
                 fluxer_dev::media_proxy::run_rust_stress_smoke()?;
-            }
-            MediaProxyCommand::StressCompare(args) => {
-                std::process::exit(fluxer_dev::media_stress::run_stress_compare(args).await?)
             }
             MediaProxyCommand::SignExternalUrl(args) => {
                 println!(
                     "{}",
-                    fluxer_dev::media_stress::sign_external_url(
+                    fluxer_dev::media_external::sign_external_url(
                         &args.secret_key,
                         &args.server_url,
                         &args.upstream
@@ -391,7 +321,6 @@ async fn main() -> Result<()> {
                 fluxer_dev::tunnel::run_cloudflare_tunnel(token, token_file).await?,
             ),
         },
-        Command::NativeVoiceIt(args) => fluxer_dev::native_voice_it::run(args).await?,
     }
     Ok(())
 }
@@ -410,4 +339,79 @@ fn apply_default_env() -> Result<()> {
         }
     }
     Ok(())
+}
+
+fn run_infra(command: InfraCommand) -> Result<()> {
+    let project = compose_project_name()?;
+    let compose_file = ROOT.join(".devcontainer/docker-compose.yml");
+    let mut args = vec![
+        "compose".to_owned(),
+        "--project-name".to_owned(),
+        project,
+        "-f".to_owned(),
+        compose_file.display().to_string(),
+    ];
+    match command {
+        InfraCommand::Start => args.push("start".to_owned()),
+        InfraCommand::Stop => args.push("stop".to_owned()),
+        InfraCommand::Status => {
+            args.push("ps".to_owned());
+            args.push("--all".to_owned());
+        }
+    }
+    args.extend(
+        DEV_INFRA_SERVICES
+            .iter()
+            .map(|service| (*service).to_owned()),
+    );
+    let status = ProcessCommand::new("docker")
+        .args(&args)
+        .status()
+        .context("failed to run Docker Compose for the dev infrastructure")?;
+    if !status.success() {
+        bail!("Docker Compose dev infrastructure command failed with {status}");
+    }
+    Ok(())
+}
+
+fn compose_project_name() -> Result<String> {
+    if Path::new("/.dockerenv").exists() {
+        let container = std::fs::read_to_string("/etc/hostname")
+            .context("failed to read the current devcontainer hostname")?;
+        let container = container.trim();
+        if container.is_empty()
+            || !container
+                .bytes()
+                .all(|byte| byte.is_ascii_alphanumeric() || matches!(byte, b'_' | b'.' | b'-'))
+        {
+            bail!("Current devcontainer hostname is invalid");
+        }
+        let output = ProcessCommand::new("docker")
+            .args([
+                "inspect",
+                "--format",
+                "{{ index .Config.Labels \"com.docker.compose.project\" }}",
+                container,
+            ])
+            .output()
+            .context("failed to inspect the current devcontainer Compose project")?;
+        if !output.status.success() {
+            bail!(
+                "Could not discover the current devcontainer Compose project: {}",
+                String::from_utf8_lossy(&output.stderr).trim()
+            );
+        }
+        let project = String::from_utf8(output.stdout)
+            .context("devcontainer Compose project label is not valid UTF-8")?
+            .trim()
+            .to_owned();
+        if project.is_empty() || project == "<no value>" {
+            bail!("Current container has no com.docker.compose.project label");
+        }
+        return Ok(project);
+    }
+    std::env::var("COMPOSE_PROJECT_NAME")
+        .ok()
+        .filter(|project| !project.trim().is_empty())
+        .context("COMPOSE_PROJECT_NAME must be set when managing dev infrastructure from the host")
 }

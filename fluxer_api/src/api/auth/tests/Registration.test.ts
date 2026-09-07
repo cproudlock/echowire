@@ -128,7 +128,7 @@ describe('Auth registration', () => {
 			await instanceConfigRepository.markAdminBootstrapped();
 			const account = await registerUser(harness, bootstrapRegistrationBody('stalesetupmarker'));
 			await expectUserACLs(account.user_id, []);
-			await createBuilder(harness, account.token).post('/admin/instance-config/get').body({}).execute();
+			await createBuilder(harness, account.token).get('/admin/instance/config').execute();
 		});
 	});
 	it('repairs setup completer admin ACL when bootstrap marker is stale', async () => {
@@ -140,12 +140,12 @@ describe('Auth registration', () => {
 			await expectUserACLs(account.user_id, []);
 
 			await createBuilder(harness, account.token)
-				.post('/admin/instance-config/update')
+				.patch('/admin/instance/config')
 				.body({app_public: {setup: {configured: true}}})
 				.execute();
 
 			await expectUserACLs(account.user_id, [AdminACLs.WILDCARD]);
-			await createBuilder(harness, account.token).post('/admin/instance-config/get').body({}).execute();
+			await createBuilder(harness, account.token).get('/admin/instance/config').execute();
 		});
 	});
 	it('allows emoji global name', async () => {
@@ -311,7 +311,7 @@ describe('Auth registration', () => {
 					date_of_birth: '2000-01-01',
 					consent: true,
 				})
-				.expect(403, 'TOR_BLOCKED')
+				.expect(403, 'GLOBAL_IP_BANNED')
 				.execute();
 		} finally {
 			torExitListCache.clearForTesting();

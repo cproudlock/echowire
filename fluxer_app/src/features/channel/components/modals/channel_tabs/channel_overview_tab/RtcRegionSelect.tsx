@@ -9,6 +9,7 @@ import type {
 import * as EmojiUtils from '@app/features/expressions/utils/EmojiUtils';
 import type {ComboboxFilterOption} from '@app/features/ui/components/form/FormCombobox';
 import {CompactComboboxRow} from '@app/features/user/components/modals/tabs/components/CompactComboboxRow';
+import {latencyColor, useRegionLatencies} from '@app/features/voice/utils/useRegionLatencies';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {observer} from 'mobx-react-lite';
@@ -35,6 +36,7 @@ interface RtcRegionSelectProps {
 
 export const RtcRegionSelect: React.FC<RtcRegionSelectProps> = observer(({form, rtcRegions, isLoadingRegions}) => {
 	const {i18n} = useLingui();
+	const latencies = useRegionLatencies(rtcRegions);
 	const automaticLabel = useMemo(() => i18n._(AUTOMATIC_DESCRIPTOR), [i18n.locale]);
 	const getRegionDisplayName = useCallback((_regionId: string, regionName: string): string => {
 		return regionName;
@@ -53,6 +55,7 @@ export const RtcRegionSelect: React.FC<RtcRegionSelectProps> = observer(({form, 
 						<img
 							src={emojiUrl}
 							alt={displayName}
+							aria-hidden={true}
 							className={styles.regionEmoji}
 							data-flx="channel.channel-tabs.channel-overview-tab.rtc-region-option.region-emoji"
 						/>
@@ -65,10 +68,30 @@ export const RtcRegionSelect: React.FC<RtcRegionSelectProps> = observer(({form, 
 						</span>
 					)}
 					<span data-flx="channel.channel-tabs.channel-overview-tab.rtc-region-option.name">{displayName}</span>
+					{(() => {
+						const latency = latencies.get(region.id);
+						if (latency == null) {
+							return null;
+						}
+						return (
+							<span
+								style={{
+									marginInlineStart: 'auto',
+									color: latencyColor(latency),
+									fontSize: '0.75rem',
+									fontWeight: 600,
+									fontVariantNumeric: 'tabular-nums',
+								}}
+								data-flx="channel.channel-tabs.channel-overview-tab.rtc-region-option.latency-badge"
+							>
+								{latency}ms
+							</span>
+						);
+					})()}
 				</div>
 			);
 		},
-		[getRegionDisplayName],
+		[getRegionDisplayName, latencies],
 	);
 	return (
 		<Controller

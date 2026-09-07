@@ -7,13 +7,11 @@ use anyhow::{Context, Result, bail};
 use std::env;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
-use std::thread;
-use std::time::{Duration, Instant};
+use std::time::Duration;
 use url::Url;
 
 const CANARY_APP_NAME: &str = "Fluxer Canary";
 const CANARY_BUNDLE_ID: &str = "app.fluxer.canary";
-const CANARY_RPC_PORT: u16 = 21864;
 const MACOS_DEV_ELECTRON_USAGE_DESCRIPTIONS: &[(&str, &str)] = &[
     (
         "NSMicrophoneUsageDescription",
@@ -109,18 +107,9 @@ pub fn electron_args(args: &[String]) -> Vec<String> {
     runtime_args
 }
 
-pub fn electron_command(args: &[String], headless: bool) -> Vec<String> {
+pub fn electron_command(args: &[String]) -> Vec<String> {
     let mut command = base_electron_command();
     command.extend(electron_args(args));
-    if headless
-        && cfg!(target_os = "linux")
-        && env::var_os("DISPLAY").is_none()
-        && crate::paths::which("xvfb-run").is_some()
-    {
-        let mut wrapped = vec!["xvfb-run".to_owned(), "-a".to_owned()];
-        wrapped.extend(command);
-        return wrapped;
-    }
     command
 }
 
@@ -151,29 +140,41 @@ fn disclaimed_electron_command(launcher: &Path, electron_binary: &Path) -> Vec<S
     ]
 }
 
-pub fn smoke_build_desktop() -> Result<()> {
-    install_desktop()?;
-    build_desktop(true)?;
-    let command = electron_command(
-        &[
-            "--fluxer-debug-info".to_owned(),
-            format!("--fluxer-app-url={LOCAL_APP_URL}"),
-        ],
-        true,
-    );
-    let args: Vec<_> = command.iter().map(String::as_str).collect();
-    run_command(
-        &args,
-        RunOptions {
-            cwd: DESKTOP_DIR.as_path(),
-            env: vec![("FLUXER_SKIP_NATIVE".to_owned(), Some("true".to_owned()))],
-            ..RunOptions::default()
-        },
-    )
-    .map(drop)
+fn packages_for_windows(args: &[String]) -> bool {
+    if args.iter().any(|arg| arg == "--win") {
+        return true;
+    }
+    if args.iter().any(|arg| arg == "--mac" || arg == "--linux") {
+        return false;
+    }
+    cfg!(target_os = "windows")
+}
+
+fn host_electron_arch() -> Result<&'static str> {
+    match env::consts::ARCH {
+        "x86_64" => Ok("x64"),
+        "aarch64" => Ok("arm64"),
+        other => bail!(
+            "cannot package the desktop app for Windows on host architecture {other}; set ELECTRON_ARCH to x64 or arm64"
+        ),
+    }
+}
+
+fn packaging_env(args: &[String]) -> Result<Vec<(String, Option<String>)>> {
+    if !packages_for_windows(args)
+        || env::var_os("ELECTRON_ARCH").is_some()
+        || args.iter().any(|arg| arg == "--x64" || arg == "--arm64")
+    {
+        return Ok(Vec::new());
+    }
+    Ok(vec![(
+        "ELECTRON_ARCH".to_owned(),
+        Some(host_electron_arch()?.to_owned()),
+    )])
 }
 
 pub fn package_desktop(args: &[String]) -> Result<()> {
+    let env = packaging_env(args)?;
     build_desktop(false)?;
     let mut builder_args = vec![
         "pnpm".to_owned(),
@@ -189,6 +190,7 @@ pub fn package_desktop(args: &[String]) -> Result<()> {
         &refs,
         RunOptions {
             cwd: DESKTOP_DIR.as_path(),
+            env,
             ..RunOptions::default()
         },
     )
@@ -226,7 +228,7 @@ fn run_desktop_process(app_url: &str, extra_args: &[String]) -> Result<()> {
         "--fluxer-log-renderer-console".to_owned(),
     ];
     args.extend(extra_args.iter().cloned());
-    let command = electron_command(&args, false);
+    let command = electron_command(&args);
     let refs: Vec<_> = command.iter().map(String::as_str).collect();
     run_command(
         &refs,
@@ -462,7 +464,6 @@ fn stop_running_canary_on_host() -> Result<()> {
         ],
     );
     run_best_effort("pkill", &["-TERM", "-x", CANARY_APP_NAME]);
-    terminate_rpc_port_processes(CANARY_RPC_PORT)?;
     Ok(())
 }
 
@@ -473,60 +474,6 @@ fn run_best_effort(program: &str, args: &[&str]) {
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .status();
-}
-
-fn terminate_rpc_port_processes(port: u16) -> Result<()> {
-    let mut pids = pids_listening_on_tcp_port(port)?;
-    if pids.is_empty() {
-        return Ok(());
-    }
-    kill_pids("-TERM", &pids)?;
-    let deadline = Instant::now() + Duration::from_secs(5);
-    while Instant::now() < deadline {
-        thread::sleep(Duration::from_millis(250));
-        pids = pids_listening_on_tcp_port(port)?;
-        if pids.is_empty() {
-            return Ok(());
-        }
-    }
-    kill_pids("-KILL", &pids)
-}
-
-fn pids_listening_on_tcp_port(port: u16) -> Result<Vec<String>> {
-    let output = Command::new("lsof")
-        .args(["-ti", &format!("tcp:{port}")])
-        .stdout(Stdio::piped())
-        .stderr(Stdio::null())
-        .output()
-        .context("failed to run lsof while stopping Fluxer Canary")?;
-    if !output.status.success() {
-        return Ok(Vec::new());
-    }
-    Ok(String::from_utf8_lossy(&output.stdout)
-        .lines()
-        .map(str::trim)
-        .filter(|line| !line.is_empty())
-        .map(ToOwned::to_owned)
-        .collect())
-}
-
-fn kill_pids(signal: &str, pids: &[String]) -> Result<()> {
-    if pids.is_empty() {
-        return Ok(());
-    }
-    let status = Command::new("kill")
-        .arg(signal)
-        .args(pids)
-        .status()
-        .context("failed to run kill while stopping Fluxer Canary")?;
-    if status.success() {
-        Ok(())
-    } else {
-        bail!(
-            "failed to stop Fluxer Canary process(es): {}",
-            pids.join(", ")
-        )
-    }
 }
 
 #[cfg(test)]

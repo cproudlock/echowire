@@ -114,6 +114,49 @@ function serializeGuildVoiceChannel(channel: Channel, ctx: ContentWarningCtx): C
 	};
 }
 
+// Echowire: thread channels (PUBLIC_THREAD / PRIVATE_THREAD) live under a text/forum parent.
+function serializeThreadChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
+	const meta = channel.threadMetadata;
+	return {
+		...serializeBaseChannelFields(channel),
+		...serializeMessageableFields(channel),
+		...serializePositionableGuildChannelFields(channel),
+		owner_id: channel.ownerId ? channel.ownerId.toString() : null,
+		...serializeContentWarningFields(channel, ctx),
+		rate_limit_per_user: channel.rateLimitPerUser,
+		member_count: channel.memberCount ?? undefined,
+		message_count: channel.messageCount ?? undefined,
+		pinned: channel.pinned ? true : undefined,
+		applied_tags: channel.appliedTags && channel.appliedTags.length > 0 ? channel.appliedTags : undefined,
+		thread_metadata: meta
+			? {
+					archived: meta.archived,
+					auto_archive_duration: meta.autoArchiveDuration,
+					archive_timestamp: meta.archiveTimestamp?.toISOString() ?? null,
+					locked: meta.locked,
+					invitable: meta.invitable,
+					create_timestamp: meta.createTimestamp?.toISOString() ?? null,
+				}
+			: null,
+	};
+}
+
+// Echowire: forum channels (GUILD_FORUM) hold posts (threads) and define available tags.
+function serializeGuildForumChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
+	return {
+		...serializeBaseChannelFields(channel),
+		...serializePositionableGuildChannelFields(channel),
+		topic: channel.topic,
+		...serializeContentWarningFields(channel, ctx),
+		rate_limit_per_user: channel.rateLimitPerUser,
+		available_tags: channel.availableTags && channel.availableTags.length > 0 ? channel.availableTags : undefined,
+		default_reaction_emoji: channel.defaultReactionEmoji ?? undefined,
+		default_sort_order: channel.defaultSortOrder ?? undefined,
+		default_auto_archive_duration: channel.forumDefaultAutoArchiveDuration ?? undefined,
+		require_tag: channel.forumRequireTag ? true : undefined,
+	};
+}
+
 function serializeGuildCategoryChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
 	return {
 		...serializeBaseChannelFields(channel),
@@ -206,6 +249,13 @@ export async function mapChannelToResponse(params: MapChannelToResponseParams): 
 			break;
 		case ChannelTypes.GUILD_LINK:
 			response = serializeGuildLinkChannel(channel, ctx);
+			break;
+		case ChannelTypes.PUBLIC_THREAD:
+		case ChannelTypes.PRIVATE_THREAD:
+			response = serializeThreadChannel(channel, ctx);
+			break;
+		case ChannelTypes.GUILD_FORUM:
+			response = serializeGuildForumChannel(channel, ctx);
 			break;
 		case ChannelTypes.DM:
 			response = serializeDMChannel(channel);

@@ -21,7 +21,6 @@ import {
 } from '@electron/main/DesktopDebugInfo';
 import {hasActiveDesktopTray, refreshDesktopTrayMenu} from '@electron/main/DesktopTray';
 import {drainPendingDisplayMediaRequests, registerDisplayMediaRequestHandler} from '@electron/main/DisplayMedia';
-import {shouldRestoreHtmlFullscreenWindowBounds} from '@electron/main/HtmlFullscreenWindowBounds';
 import {shouldDisableV8CodeCache} from '@electron/main/LaunchOptions';
 import {openExternalDeduped} from '@electron/main/OpenExternal';
 import {registerSpellcheck} from '@electron/main/Spellcheck';
@@ -45,7 +44,7 @@ const ACTIVE_USE_NATIVE_TITLEBAR_RENDERER_ARG = '--fluxer-active-use-native-titl
 const INSECURE_ORIGIN_RENDERER_ARG_PREFIX = '--unsafely-treat-insecure-origin-as-secure=';
 const THEME_STUDIO_POPOUT_WINDOW_NAME = 'fluxer_theme_studio';
 const THEME_STUDIO_POPOUT_PATHNAME = '/theme-studio';
-const THEME_STUDIO_POPOUT_TITLE = 'Fluxer | Theme Studio';
+const THEME_STUDIO_POPOUT_TITLE = 'Echowire | Theme Studio';
 const THEME_STUDIO_POPOUT_MIN_WIDTH = 900;
 const THEME_STUDIO_POPOUT_MIN_HEIGHT = 620;
 export const THEME_STUDIO_POPOUT_KEY = THEME_STUDIO_POPOUT_WINDOW_NAME;
@@ -54,11 +53,11 @@ const VOICE_POPOUT_WINDOW_NAME_LENGTH_MAX = 256;
 const VOICE_POPOUT_MIN_WIDTH = 360;
 const VOICE_POPOUT_MIN_HEIGHT = 240;
 const VOICE_POPOUT_WINDOWS_MAX = 8;
-const VOICE_POPOUT_TITLEBAR_HEIGHT_MAC = 28;
-const VOICE_POPOUT_TRAFFIC_LIGHT_DIAMETER = 14;
-const VOICE_POPOUT_TRAFFIC_LIGHT_POSITION = {
+const CUSTOM_TITLEBAR_HEIGHT_MAC = 32;
+const CUSTOM_TITLEBAR_TRAFFIC_LIGHT_DIAMETER = 14;
+const CUSTOM_TITLEBAR_TRAFFIC_LIGHT_POSITION = {
 	x: 12,
-	y: Math.round((VOICE_POPOUT_TITLEBAR_HEIGHT_MAC - VOICE_POPOUT_TRAFFIC_LIGHT_DIAMETER) / 2),
+	y: Math.round((CUSTOM_TITLEBAR_HEIGHT_MAC - CUSTOM_TITLEBAR_TRAFFIC_LIGHT_DIAMETER) / 2),
 };
 const trustedWebOrigins = new Set(
 	[STABLE_APP_URL, CANARY_APP_URL]
@@ -107,7 +106,7 @@ function getOrigin(url?: string): string | null {
 	}
 }
 
-function isTrustedOrigin(url?: string): boolean {
+export function isTrustedOrigin(url?: string): boolean {
 	const origin = getOrigin(url);
 	if (!origin) return false;
 	if (trustedWebOrigins.has(origin)) return true;
@@ -146,7 +145,6 @@ interface CreateWindowOptions {
 let mainWindow: BrowserWindow | null = null;
 let windowStateFile: string;
 let isQuitting = false;
-let initialAcceptFirstMouseOnFocus: boolean | null = null;
 let initialUseNativeTitleBar: boolean | null = null;
 let initialAllowTransparency: boolean | null = null;
 let themeStudioPopoutWindow: BrowserWindow | null = null;
@@ -159,6 +157,7 @@ const windowsHtmlFullscreenStates = new WeakMap<
 	BrowserWindow,
 	{resizable: boolean; bounds: Bounds; isMaximized: boolean; customChromeGuardActive: boolean}
 >();
+let lastGoodWindowBounds: Bounds | null = null;
 
 function getWindowStateFile(): string {
 	if (!windowStateFile) {
@@ -296,6 +295,7 @@ function saveWindowBounds(): void {
 			height: bounds.height,
 			isMaximized,
 		};
+		lastGoodWindowBounds = bounds;
 		const filePath = getWindowStateFile();
 		fs.writeFileSync(filePath, JSON.stringify(windowState, null, 2), 'utf-8');
 		log.debug('Saved window bounds:', windowState);
@@ -328,12 +328,6 @@ function shouldHideMainWindowOnMinimize(): boolean {
 
 export function getMainWindow(): BrowserWindow | null {
 	return mainWindow;
-}
-
-export function desktopFirstClickPassThroughPendingRestart(): boolean {
-	if (process.platform !== 'darwin') return false;
-	if (initialAcceptFirstMouseOnFocus === null) return false;
-	return getDesktopWindowBehaviorSettings().firstClickPassThroughWhenUnfocused !== initialAcceptFirstMouseOnFocus;
 }
 
 export function getActiveUseNativeTitleBar(): boolean {
@@ -501,10 +495,12 @@ function enterWindowsHtmlFullscreenChromeGuard(window: BrowserWindow): void {
 	if (process.platform !== 'win32') return;
 	if (windowsHtmlFullscreenStates.has(window)) return;
 	const customChromeGuardActive = !getActiveUseNativeTitleBar();
+	const bounds = lastGoodWindowBounds ?? window.getNormalBounds();
+	const isMaximized = window.isMaximized();
 	windowsHtmlFullscreenStates.set(window, {
 		resizable: window.isResizable(),
-		bounds: window.getNormalBounds(),
-		isMaximized: window.isMaximized(),
+		bounds,
+		isMaximized,
 		customChromeGuardActive,
 	});
 	if (!customChromeGuardActive) return;
@@ -516,32 +512,10 @@ function restoreWindowsHtmlFullscreenBounds(
 	window: BrowserWindow,
 	previous: {bounds: Bounds; isMaximized: boolean},
 ): void {
-	const restoreIfNeeded = () => {
-		if (!isAliveWindow(window)) return;
-		if (windowsHtmlFullscreenStates.has(window)) return;
-		const currentBounds = window.getBounds();
-		const display = screen.getDisplayMatching(currentBounds);
-		if (
-			!shouldRestoreHtmlFullscreenWindowBounds({
-				previousBounds: previous.bounds,
-				currentBounds,
-				displayBounds: display.bounds,
-				wasMaximized: previous.isMaximized,
-				isMaximized: window.isMaximized(),
-			})
-		) {
-			return;
-		}
-		logger.info('Restoring window bounds after HTML fullscreen exit', {
-			currentBounds,
-			restoredBounds: previous.bounds,
-			displayBounds: display.bounds,
-		});
-		window.setBounds(previous.bounds);
-		saveWindowBounds();
-	};
-	setTimeout(restoreIfNeeded, 0);
-	setTimeout(restoreIfNeeded, 100);
+	if (!isAliveWindow(window) || windowsHtmlFullscreenStates.has(window)) return;
+	if (previous.isMaximized || window.isMaximized()) return;
+	window.setBounds(previous.bounds);
+	saveWindowBounds();
 }
 
 function leaveWindowsHtmlFullscreenChromeGuard(window: BrowserWindow): void {
@@ -683,7 +657,7 @@ function getVoicePopoutWindowOptions(): Electron.BrowserWindowConstructorOptions
 		...getTitleBarWindowOptions(getActiveUseNativeTitleBar()),
 		minWidth: VOICE_POPOUT_MIN_WIDTH,
 		minHeight: VOICE_POPOUT_MIN_HEIGHT,
-		trafficLightPosition: isMac ? VOICE_POPOUT_TRAFFIC_LIGHT_POSITION : undefined,
+		trafficLightPosition: isMac ? CUSTOM_TITLEBAR_TRAFFIC_LIGHT_POSITION : undefined,
 		backgroundColor: getWindowBackgroundColor(false),
 		transparent: false,
 		hasShadow: getWindowHasShadow(false),
@@ -749,8 +723,7 @@ export function createWindow(options: CreateWindowOptions = {}): BrowserWindow {
 	const desktopWindowBehavior = getDesktopWindowBehaviorSettings();
 	const allowTransparency = desktopWindowBehavior.allowTransparency;
 	const useNativeTitleBar = getEffectiveUseNativeTitleBar(desktopWindowBehavior);
-	const acceptFirstMouseOnFocus = isMac && desktopWindowBehavior.firstClickPassThroughWhenUnfocused;
-	initialAcceptFirstMouseOnFocus = acceptFirstMouseOnFocus;
+	const acceptFirstMouseOnFocus = isMac;
 	initialUseNativeTitleBar = useNativeTitleBar;
 	initialAllowTransparency = allowTransparency;
 	const appUrl = getAppUrl();
@@ -764,7 +737,7 @@ export function createWindow(options: CreateWindowOptions = {}): BrowserWindow {
 		transparent: allowTransparency,
 		hasShadow: getWindowHasShadow(allowTransparency),
 		...getTitleBarWindowOptions(useNativeTitleBar),
-		trafficLightPosition: isMac ? {x: 9, y: 9} : undefined,
+		trafficLightPosition: isMac ? CUSTOM_TITLEBAR_TRAFFIC_LIGHT_POSITION : undefined,
 		acceptFirstMouse: acceptFirstMouseOnFocus,
 		webPreferences: getSharedWebPreferences(allowTransparency, useNativeTitleBar, appUrl),
 	};
@@ -783,6 +756,7 @@ export function createWindow(options: CreateWindowOptions = {}): BrowserWindow {
 	mainWindow = new BrowserWindow(windowOptions);
 	mainWindowRendererGone = false;
 	installHtmlFullscreenChromeGuard(mainWindow);
+	lastGoodWindowBounds = mainWindow.getNormalBounds();
 	logPhase('browser-window');
 	if (savedBounds?.isMaximized) {
 		mainWindow.maximize();
@@ -1088,7 +1062,7 @@ export function createWindow(options: CreateWindowOptions = {}): BrowserWindow {
 				title: isThemeStudioPopout ? THEME_STUDIO_POPOUT_TITLE : undefined,
 				minWidth: isThemeStudioPopout ? THEME_STUDIO_POPOUT_MIN_WIDTH : undefined,
 				minHeight: isThemeStudioPopout ? THEME_STUDIO_POPOUT_MIN_HEIGHT : undefined,
-				trafficLightPosition: isMac ? {x: 12, y: 5} : undefined,
+				trafficLightPosition: isMac ? CUSTOM_TITLEBAR_TRAFFIC_LIGHT_POSITION : undefined,
 				backgroundColor: getWindowBackgroundColor(allowPopoutTransparency),
 				transparent: allowPopoutTransparency,
 				hasShadow: getWindowHasShadow(allowPopoutTransparency),

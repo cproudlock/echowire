@@ -4,11 +4,47 @@
 -typing([eqwalizer]).
 -include_lib("eunit/include/eunit.hrl").
 
+-define(TEST_GATEWAY_RATE_LIMIT_MAX_EVENTS, 600).
+-define(TEST_IDENTIFY_MAX_PER_IP, 300).
+
 websocket_info_session_reconnect_sends_reconnect_then_close_test() ->
     assert_reconnect_close(
         gateway_handler:websocket_info(session_reconnect, new_json_state()),
         <<"Session drain requested; reconnect to continue">>
     ).
+
+websocket_info_dispatch_list_payload_emits_frame_test() ->
+    Decoded = decode_dispatch_frame(
+        gateway_handler:websocket_info(
+            {dispatch, user_pinned_dms_update, [<<"1">>, <<"2">>], 1}, new_json_state()
+        )
+    ),
+    ?assertEqual(<<"USER_PINNED_DMS_UPDATE">>, maps:get(<<"t">>, Decoded)),
+    ?assertEqual([<<"1">>, <<"2">>], maps:get(<<"d">>, Decoded)),
+    ?assertEqual(1, maps:get(<<"s">>, Decoded)).
+
+websocket_info_sessions_replace_list_payload_emits_frame_test() ->
+    Sessions = [
+        #{<<"session_id">> => <<"abc">>, <<"status">> => <<"online">>},
+        #{<<"session_id">> => <<"def">>, <<"status">> => <<"idle">>}
+    ],
+    Decoded = decode_dispatch_frame(
+        gateway_handler:websocket_info(
+            {dispatch, sessions_replace, Sessions, 7}, new_json_state()
+        )
+    ),
+    ?assertEqual(<<"SESSIONS_REPLACE">>, maps:get(<<"t">>, Decoded)),
+    ?assertEqual(Sessions, maps:get(<<"d">>, Decoded)),
+    ?assertEqual(7, maps:get(<<"s">>, Decoded)).
+
+websocket_info_empty_list_payload_emits_json_array_test() ->
+    Decoded = decode_dispatch_frame(
+        gateway_handler:websocket_info(
+            {dispatch, webauthn_credentials_update, [], 3}, new_json_state()
+        )
+    ),
+    ?assertEqual(<<"WEBAUTHN_CREDENTIALS_UPDATE">>, maps:get(<<"t">>, Decoded)),
+    ?assertEqual([], maps:get(<<"d">>, Decoded)).
 
 start_session_with_drain_guard_holds_during_drain_test() ->
     Request = #{},
@@ -79,6 +115,17 @@ handle_session_start_result_server_error_closes_with_unknown_error_test() ->
             {error, {server_error, 500}}, State
         ),
     ?assertEqual(constants:close_code_to_num(unknown_error), CloseCode).
+
+handle_session_start_result_unknown_reason_closes_failed_to_start_test() ->
+    State = (gateway_handler:new_state())#{
+        version => 1, encoding => json, compress_ctx => gateway_compress:new_context(none)
+    },
+    {[{close, CloseCode, Reason}], _NewState} =
+        gateway_handler_identify:handle_session_start_result(
+            {error, something_unmapped}, State
+        ),
+    ?assertEqual(constants:close_code_to_num(unknown_error), CloseCode),
+    ?assertEqual(<<"Failed to start session">>, Reason).
 
 websocket_init_schedules_tokened_heartbeat_timer_test() ->
     {[{text, _Frame}], State} = gateway_handler:websocket_init(new_json_state()),
@@ -191,7 +238,7 @@ adjust_status_test() ->
 check_rate_limit_blocks_general_flood_test() ->
     with_rate_limits_enabled(fun() ->
         Now = erlang:system_time(millisecond),
-        Events = lists:duplicate(120, Now - 1000),
+        Events = lists:duplicate(?TEST_GATEWAY_RATE_LIMIT_MAX_EVENTS, Now - 1000),
         State = (gateway_handler:new_state())#{
             rate_limit_state => #{events => Events, op_events => #{}}
         },
@@ -404,28 +451,32 @@ validate_identify_data_rejects_invalid_shard_test() ->
     ).
 
 handle_identify_runs_identify_rate_check_at_zero_rollout_test() ->
-    session_abuse_protection:ensure_tables(),
-    OldConfig = gateway_rollout_config:get(),
-    IP = <<"203.0.113.55">>,
-    try
-        persistent_term:put(gateway_rollout_config, OldConfig#{
-            <<"session_rollout_percentage">> => 0
-        }),
-        lists:foreach(
-            fun(_) ->
-                gateway_handler_identify:handle_identify(
-                    valid_identify_data(#{}), IP, new_json_state()
-                )
-            end,
-            lists:seq(1, 60)
-        ),
-        ?assertEqual(
-            {error, identify_rate_limited},
-            session_abuse_protection:check_identify_rate(IP)
-        )
-    after
-        persistent_term:put(gateway_rollout_config, OldConfig)
-    end.
+    with_rate_limits_enabled(fun() ->
+        session_abuse_protection:ensure_tables(),
+        OldConfig = gateway_rollout_config:get(),
+        IP = unique_test_peer_ip(<<"zero-rollout-identify">>),
+        try
+            persistent_term:put(gateway_rollout_config, OldConfig#{
+                <<"session_rollout_percentage">> => 0
+            }),
+            lists:foreach(
+                fun(_) ->
+                    ?assertEqual(ok, session_abuse_protection:check_identify_rate(IP))
+                end,
+                lists:seq(1, ?TEST_IDENTIFY_MAX_PER_IP - 1)
+            ),
+            {ok, HeldState} = gateway_handler_identify:handle_identify(
+                valid_identify_data(#{}), IP, new_json_state()
+            ),
+            cancel_pending_identify_timer(HeldState),
+            ?assertEqual(
+                {error, identify_rate_limited},
+                session_abuse_protection:check_identify_rate(IP)
+            )
+        after
+            persistent_term:put(gateway_rollout_config, OldConfig)
+        end
+    end).
 
 handle_session_start_result_invalid_shard_closes_4010_test() ->
     {[{close, CloseCode, _Reason}], _NewState} =
@@ -440,6 +491,20 @@ handle_session_start_result_sharding_required_closes_4011_test() ->
             {error, sharding_required}, new_json_state()
         ),
     ?assertEqual(constants:close_code_to_num(sharding_required), CloseCode).
+
+identify_with_non_map_payload_closes_test() ->
+    State = (new_json_state())#{peer_ip => unique_test_peer_ip(<<"198.51.100.61">>)},
+    {[{close, CloseCode, _Reason}], _NewState} = gateway_handler_dispatch:handle_opcode(
+        identify, #{<<"d">> => null}, State
+    ),
+    ?assertEqual(constants:close_code_to_num(decode_error), CloseCode).
+
+voice_state_update_with_non_map_payload_closes_test() ->
+    State = (new_json_state())#{session_pid => self()},
+    {[{close, CloseCode, _Reason}], _NewState} = gateway_handler_dispatch:handle_opcode(
+        voice_state_update, #{<<"d">> => <<"not-a-map">>}, State
+    ),
+    ?assertEqual(constants:close_code_to_num(decode_error), CloseCode).
 
 new_json_state() ->
     (gateway_handler:new_state())#{
@@ -466,6 +531,13 @@ valid_identify_data(Extra) ->
         },
         Extra
     ).
+
+decode_dispatch_frame(Result) ->
+    {[Frame], _NewState} = Result,
+    {_FrameType, EncodedFrame} = Frame,
+    {ok, DecodedFrame} = gateway_codec:decode(EncodedFrame, json),
+    ?assertEqual(constants:opcode_to_num(dispatch), maps:get(<<"op">>, DecodedFrame)),
+    DecodedFrame.
 
 assert_reconnect_close(Result, CloseReason) ->
     {[Frame, {close, CloseCode, CloseReason}], _NewState} = Result,
@@ -520,3 +592,7 @@ restore_env(Key, false) ->
     os:unsetenv(Key);
 restore_env(Key, Value) ->
     os:putenv(Key, Value).
+
+unique_test_peer_ip(Prefix) ->
+    Suffix = integer_to_binary(erlang:unique_integer([positive])),
+    <<Prefix/binary, "-", Suffix/binary>>.

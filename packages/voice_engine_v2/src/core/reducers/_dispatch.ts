@@ -6,7 +6,6 @@ import type {VoiceEngineV2Snapshot, VoiceEngineV2Transition} from '../state';
 import {planDesiredState} from './_plan';
 import {transitionCamera} from './camera';
 import {transitionCapabilities} from './capabilities';
-import {transitionCodecNegotiation} from './codecNegotiation';
 import {transitionCommand} from './command';
 import {transitionConnection} from './connection';
 import {transitionData} from './data';
@@ -17,7 +16,6 @@ import {transitionImplementation} from './implementation';
 import {transitionInboundVideo} from './inboundVideo';
 import {transitionLifecycle} from './lifecycle';
 import {transitionMicrophone} from './microphone';
-import {transitionNativeAudioDeviceModule} from './nativeAudioDeviceModule';
 import {transitionNativeAudioTap} from './nativeAudioTap';
 import {transitionNativeCapture} from './nativeCapture';
 import {transitionNativeFrameSink} from './nativeFrameSink';
@@ -138,13 +136,6 @@ export function dispatchSessionEvent(
 		case 'data.publishSucceeded':
 		case 'data.publishFailed':
 			return transitionData(snapshot, event);
-		case 'codecNegotiation.overrideSetRequested':
-		case 'codecNegotiation.localCapabilityChanged':
-		case 'codecNegotiation.remoteCapabilityChanged':
-		case 'codecNegotiation.streamRegistered':
-		case 'codecNegotiation.streamUnregistered':
-		case 'codecNegotiation.viewerChanged':
-			return transitionCodecNegotiation(snapshot, event);
 		case 'stats.collectRequested':
 		case 'stats.collected':
 		case 'stats.collectFailed':
@@ -179,8 +170,6 @@ export function dispatchPlatformEvent(
 		case 'devices.selectAudioOutputRequested':
 		case 'devices.selectCameraRequested':
 			return transitionDevices(snapshot, event);
-		case 'nativeAudioDeviceModule.statusChanged':
-			return transitionNativeAudioDeviceModule(snapshot, event);
 		case 'nativeCapture.startRequested':
 		case 'nativeCapture.updateRequested':
 		case 'nativeCapture.stopRequested':
@@ -279,6 +268,7 @@ export function dispatchObservabilityEvent(
 	assert.equal(typeof event.type, 'string', 'dispatchObservabilityEvent event.type must be a string');
 	switch (event.type) {
 		case 'sourceLifecycle.transitioned':
+		case 'sourceLifecycle.removed':
 			return transitionSourceLifecycles(snapshot, event);
 		default:
 			return null;

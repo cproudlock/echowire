@@ -5,14 +5,12 @@ import {
 	type DesktopWindowBehaviorSettings,
 	getDesktopTroubleshootingSettings,
 	getDesktopWindowBehaviorSettings,
-	setCustomAppUrl,
 	setDesktopWindowBehaviorSettings,
 } from '@electron/common/DesktopConfig';
 import type {
 	ClipboardWriteFileResult,
 	DownloadFileResult,
 	MediaAccessType,
-	SwitchInstanceUrlOptions,
 	TrayPresenceStatus,
 } from '@electron/common/Types';
 import {hasEnabledBlinkFeature, MIDDLE_CLICK_AUTOSCROLL_BLINK_FEATURE} from '@electron/main/ChromiumRuntime';
@@ -37,6 +35,7 @@ import {openExternalDeduped} from '@electron/main/OpenExternal';
 import {getStatus as getOpenH264Status, setEnabled as setOpenH264Enabled} from '@electron/main/OpenH264Manager';
 import {registerPasskeyHandlers} from '@electron/main/Passkeys';
 import {getAppMetricsSnapshot, getDesktopInfo, getGpuInfo} from '@electron/main/PlatformInfo';
+import {requirePrivilegedRendererDocumentSender} from '@electron/main/PrivilegedRendererDocuments';
 import {getStreamerModeCaptureAppStatus} from '@electron/main/StreamerModeProcessDetection';
 import {
 	acquireStreamingPriority,
@@ -64,7 +63,6 @@ import {
 import {
 	clearSavedWindowBounds,
 	closeThemeStudioPopoutWindow,
-	desktopFirstClickPassThroughPendingRestart,
 	desktopTransparencyPendingRestart,
 	desktopUseNativeTitleBarPendingRestart,
 	focusThemeStudioPopoutWindow,
@@ -92,59 +90,8 @@ interface TrayRuntimeStateUpdate {
 	buildInfo?: string | null;
 }
 
-let pendingDesktopHandoffCode: string | null = null;
-
-function normalizeInstanceOrigin(rawUrl: string): string {
-	const trimmed = rawUrl.trim();
-	if (!trimmed) {
-		throw new Error('Instance URL is required');
-	}
-	let candidate = trimmed;
-	if (!/^[a-zA-Z][a-zA-Z0-9+\-.]*:\/\//.test(candidate)) {
-		candidate = `https://${candidate}`;
-	}
-	let url: URL;
-	try {
-		url = new URL(candidate);
-	} catch {
-		throw new Error('Invalid instance URL');
-	}
-	if (url.protocol !== 'https:' && url.protocol !== 'http:') {
-		throw new Error('Instance URL must use http or https');
-	}
-	return url.origin;
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
 	return value !== null && typeof value === 'object';
-}
-
-function isValidWellKnownPayload(payload: unknown): boolean {
-	if (!isRecord(payload)) {
-		return false;
-	}
-	if (!('endpoints' in payload)) {
-		return false;
-	}
-	const endpoints = (
-		payload as {
-			endpoints?: unknown;
-		}
-	).endpoints;
-	if (!endpoints || typeof endpoints !== 'object') {
-		return false;
-	}
-	const api = (
-		endpoints as {
-			api?: unknown;
-		}
-	).api;
-	const gateway = (
-		endpoints as {
-			gateway?: unknown;
-		}
-	).gateway;
-	return typeof api === 'string' && typeof gateway === 'string';
 }
 
 function normalizeDesktopWindowBehaviorUpdate(value: unknown): Partial<DesktopWindowBehaviorSettings> {
@@ -176,9 +123,6 @@ function normalizeDesktopWindowBehaviorUpdate(value: unknown): Partial<DesktopWi
 	if (typeof value.middleClickAutoscroll === 'boolean') {
 		update.middleClickAutoscroll = value.middleClickAutoscroll;
 	}
-	if (typeof value.firstClickPassThroughWhenUnfocused === 'boolean') {
-		update.firstClickPassThroughWhenUnfocused = value.firstClickPassThroughWhenUnfocused;
-	}
 	return update;
 }
 
@@ -190,59 +134,9 @@ function getActiveMiddleClickAutoscroll(): boolean {
 	return process.platform === 'linux' && hasEnabledBlinkFeature(MIDDLE_CLICK_AUTOSCROLL_BLINK_FEATURE);
 }
 
-async function assertValidFluxerInstance(instanceOrigin: string): Promise<void> {
-	const url = new URL('/.well-known/fluxer', instanceOrigin).toString();
-	const controller = new AbortController();
-	const timeout = setTimeout(() => controller.abort(), 5000);
-	try {
-		const response = await fetch(url, {
-			method: 'GET',
-			headers: {
-				Accept: 'application/json',
-			},
-			signal: controller.signal,
-		});
-		if (!response.ok) {
-			throw new Error(`HTTP ${response.status}`);
-		}
-		const payload = (await response.json()) as unknown;
-		if (!isValidWellKnownPayload(payload)) {
-			throw new Error('Malformed discovery document');
-		}
-	} catch (error) {
-		const message = error instanceof Error ? error.message : String(error);
-		throw new Error(`Not a valid Fluxer instance (${message})`);
-	} finally {
-		clearTimeout(timeout);
-	}
-}
-
 export function registerIpcHandlers(): void {
 	registerVoiceDebugEventSinkPopoutIpcHandlers();
 	registerVoiceBackgroundMediaCacheHandlers();
-	ipcMain.handle('switch-instance-url', async (_event, options: SwitchInstanceUrlOptions): Promise<void> => {
-		const instanceOrigin = normalizeInstanceOrigin(options.instanceUrl);
-		await assertValidFluxerInstance(instanceOrigin);
-		const mainWindow = getMainWindow();
-		if (!mainWindow || mainWindow.isDestroyed()) {
-			throw new Error('Main window not available');
-		}
-		pendingDesktopHandoffCode = options.desktopHandoffCode ?? null;
-		setCustomAppUrl(instanceOrigin);
-		try {
-			await mainWindow.loadURL(instanceOrigin);
-		} catch (error) {
-			setCustomAppUrl(null);
-			pendingDesktopHandoffCode = null;
-			const detail = error instanceof Error ? error.message : String(error);
-			throw new Error(`Failed to load instance: ${detail}`);
-		}
-	});
-	ipcMain.handle('consume-desktop-handoff-code', (): string | null => {
-		const code = pendingDesktopHandoffCode;
-		pendingDesktopHandoffCode = null;
-		return code;
-	});
 	ipcMain.handle('get-desktop-info', () => getDesktopInfo());
 	ipcMain.handle('get-gpu-info', () => getGpuInfo());
 	ipcMain.handle('get-app-metrics', () => getAppMetricsSnapshot());
@@ -358,7 +252,6 @@ export function registerIpcHandlers(): void {
 	ipcMain.handle('desktop-window-behavior-pending-restart', (): boolean => {
 		return (
 			desktopTrayChangePendingRestart() ||
-			desktopFirstClickPassThroughPendingRestart() ||
 			desktopUseNativeTitleBarPendingRestart() ||
 			desktopTransparencyPendingRestart()
 		);
@@ -449,13 +342,14 @@ export function registerIpcHandlers(): void {
 		}
 		await openExternalDeduped(url);
 	});
-	ipcMain.handle('clipboard-write-text', (_event, text: string): void => {
-		clipboard.writeText(text);
+	ipcMain.handle('clipboard-write-text', async (_event, text: string): Promise<void> => {
+		await clipboard.writeText(text);
 	});
-	ipcMain.handle('clipboard-read-text', (): string => {
+	ipcMain.handle('clipboard-read-text', (): Promise<string> => {
 		return clipboard.readText();
 	});
-	ipcMain.handle('clipboard-write-file', async (_event, rawOptions: unknown): Promise<ClipboardWriteFileResult> => {
+	ipcMain.handle('clipboard-write-file', async (event, rawOptions: unknown): Promise<ClipboardWriteFileResult> => {
+		requirePrivilegedRendererDocumentSender(event, 'clipboard-write-file');
 		try {
 			return await copyRemoteFileToClipboard(parseClipboardWriteFileOptions(rawOptions));
 		} catch (error) {
@@ -463,6 +357,7 @@ export function registerIpcHandlers(): void {
 		}
 	});
 	ipcMain.handle('clipboard-paste', (event): void => {
+		requirePrivilegedRendererDocumentSender(event, 'clipboard-paste');
 		event.sender.paste();
 	});
 	ipcMain.handle(
@@ -494,6 +389,7 @@ export function registerIpcHandlers(): void {
 				defaultPath: string;
 			},
 		): Promise<DownloadFileResult> => {
+			requirePrivilegedRendererDocumentSender(event, 'download-file');
 			const win = BrowserWindow.fromWebContents(event.sender);
 			if (!win) {
 				return {success: false, error: 'No window found'};

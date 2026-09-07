@@ -10,7 +10,7 @@ import type {ValidationError} from '@fluxer/errors/src/domains/core/ValidationEr
 import type {Context, Env, Input, MiddlewareHandler, TypedResponse, ValidationTargets} from 'hono';
 import {getCookie} from 'hono/cookie';
 import type {ZodError, ZodTypeAny} from 'zod';
-import {parseJsonPreservingLargeIntegers} from './utils/LosslessJsonParser';
+import {requireRequestJsonBody} from './utils/RequestJsonBody';
 import {initializeFluxerErrorMap} from './ZodErrorMap';
 
 initializeFluxerErrorMap();
@@ -144,6 +144,23 @@ type ValidatorOptions<
 	post?: Hook<T, E, P, Target, V>;
 };
 
+export function inputValidationErrorFromZodIssues(issues: ZodError['issues']): InputValidationError {
+	const errors: Array<ValidationError> = [];
+	const localizedErrors: Array<LocalizedValidationError> = [];
+	const seen = new Set<string>();
+	for (const issue of issues) {
+		const path = issue.path.length > 0 ? issue.path.map(String).join('.') : 'root';
+		const code = getValidationErrorCode(issue.message);
+		const key = `${path}|${code}`;
+		if (seen.has(key)) continue;
+		seen.add(key);
+		const variables = extractVariablesFromIssue(issue);
+		errors.push({path, message: code, code});
+		localizedErrors.push({path, code, variables});
+	}
+	return new InputValidationError(errors, localizedErrors);
+}
+
 export const Validator = <
 	T extends ZodTypeAny,
 	Target extends keyof ValidationTargets,
@@ -183,12 +200,7 @@ export const Validator = <
 		let value: unknown;
 		switch (target) {
 			case 'json':
-				try {
-					const raw = await c.req.text();
-					value = raw.trim().length === 0 ? {} : parseJsonPreservingLargeIntegers(raw);
-				} catch {
-					value = {};
-				}
+				value = await requireRequestJsonBody(c.req);
 				break;
 			case 'form': {
 				const formData = await c.req.formData();
@@ -246,20 +258,7 @@ export const Validator = <
 			}
 		}
 		if (!result.success) {
-			const errors: Array<ValidationError> = [];
-			const localizedErrors: Array<LocalizedValidationError> = [];
-			const seen = new Set<string>();
-			for (const issue of result.error.issues) {
-				const path = issue.path.length > 0 ? issue.path.map(String).join('.') : 'root';
-				const code = getValidationErrorCode(issue.message);
-				const key = `${path}|${code}`;
-				if (seen.has(key)) continue;
-				seen.add(key);
-				const variables = extractVariablesFromIssue(issue);
-				errors.push({path, message: code, code});
-				localizedErrors.push({path, code, variables});
-			}
-			throw new InputValidationError(errors, localizedErrors);
+			throw inputValidationErrorFromZodIssues(result.error.issues);
 		}
 		c.req.addValidatedData(target, result.data as ValidationTargets[Target]);
 		await next();

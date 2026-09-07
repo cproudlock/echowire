@@ -34,6 +34,18 @@ export function getSubscriptionItemPeriodEnd(item: Stripe.SubscriptionItem | nul
 	return periodEnd == null ? null : new Date(periodEnd * 1000);
 }
 
+export function getSubscriptionEntitlementPeriodEndUnix(
+	subscription: Stripe.Subscription,
+	item: Stripe.SubscriptionItem | null,
+): number | null {
+	const periodEnd = getSubscriptionItemPeriodEndUnix(item);
+	const trialEnd = subscription.trial_end ?? null;
+	if (trialEnd != null && periodEnd != null) {
+		return Math.max(trialEnd, periodEnd);
+	}
+	return trialEnd ?? periodEnd;
+}
+
 function getSubscriptionCurrentPeriodEnd(subscription: Stripe.Subscription): Date | null {
 	const items = subscription.items?.data ?? [];
 	if (items.length === 0) {
@@ -102,16 +114,4 @@ export function getFirstInvoicePaymentIntentId(invoice: Stripe.Invoice | null): 
 		return paymentIntent;
 	}
 	return paymentIntent.id ?? null;
-}
-
-export function getFirstInvoicePaymentIntentLatestChargeId(invoice: Stripe.Invoice | null): string | null {
-	const paymentIntent = getFirstInvoicePaymentIntent(invoice);
-	if (!paymentIntent || typeof paymentIntent === 'string') {
-		return null;
-	}
-	const latestCharge = paymentIntent.latest_charge ?? null;
-	if (typeof latestCharge === 'string') {
-		return latestCharge;
-	}
-	return latestCharge?.id ?? null;
 }

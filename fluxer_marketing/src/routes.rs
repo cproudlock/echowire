@@ -10,7 +10,7 @@ use crate::{
     downloads::fetch_latest_desktop_versions_cached,
     geoip::resolver_from_marketing_config,
     i18n::{Locale, MarketingI18n, descriptors::*},
-    request_context::{AppState, RequestContext, create_locale_cookie},
+    request_context::{AppState, CANARY_WEB_APP_ENDPOINT, RequestContext, create_locale_cookie},
     swish::SwishQrCache,
     templates,
 };
@@ -35,7 +35,13 @@ use time::{
     OffsetDateTime,
     format_description::well_known::{Rfc2822, Rfc3339},
 };
-use tower_http::{compression::CompressionLayer, trace::TraceLayer};
+use tower_http::{
+    compression::{
+        CompressionLayer,
+        predicate::{DefaultPredicate, NotForContentType, Predicate},
+    },
+    trace::TraceLayer,
+};
 
 const APP_CSS: &str = include_str!(concat!(env!("OUT_DIR"), "/static/app.css"));
 const HTMX_JS: &str = include_str!("../static/htmx.min.js");
@@ -57,6 +63,7 @@ const STRICT_TRANSPORT_SECURITY_VALUE: &str = "max-age=31536000; includeSubDomai
 const REFERRER_POLICY_VALUE: &str = "strict-origin-when-cross-origin";
 const PERMISSIONS_POLICY_VALUE: &str = "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()";
 const X_FRAME_OPTIONS_VALUE: &str = "DENY";
+const IMMUTABLE_CACHE_CONTROL: &str = "public, max-age=31536000, immutable";
 
 #[derive(Deserialize)]
 struct LocaleForm {
@@ -162,12 +169,14 @@ pub fn build_router(config: MarketingConfig) -> Router {
         .route("/_donations/checkout", post(donation_checkout))
         .route("/_donations/request-link", post(donation_request_link))
         .route("/static/app.css", get(app_css))
+        .route("/static/fonts/{file_name}", get(font_asset))
         .route("/static/htmx.min.js", get(htmx_js))
         .route("/static/world-map-equirectangular.svg", get(world_map_svg))
         .route(
             "/static/voice-region-flags/{flag_file}",
             get(voice_region_flag_svg),
         )
+        .route("/favicon.ico", get(favicon_ico))
         .route("/robots.txt", get(robots))
         .route("/security.txt", get(security_txt))
         .route("/sitemap.xml", get(sitemap))
@@ -214,7 +223,7 @@ pub fn build_router(config: MarketingConfig) -> Router {
         .route("/donate", get(donate))
         .route("/donate/manage", get(donate_manage))
         .route("/donate/success", get(donate_success))
-        .route("/plutonium", get(plutonium))
+        .route("/reverb", get(plutonium))
         .route("/partners", get(partners))
         .route("/press", get(press))
         .route("/press/download/{asset_id}", get(press_download))
@@ -238,7 +247,10 @@ pub fn build_router(config: MarketingConfig) -> Router {
             state.clone(),
             security_headers_middleware,
         ))
-        .layer(CompressionLayer::new())
+        .layer(
+            CompressionLayer::new()
+                .compress_when(DefaultPredicate::new().and(NotForContentType::const_new("font/"))),
+        )
         .layer(TraceLayer::new_for_http())
         .with_state(state)
 }
@@ -294,9 +306,9 @@ fn build_marketing_content_security_policy(config: &MarketingConfig) -> String {
     [
         "default-src 'self'".to_owned(),
         format!("script-src 'self' {}", inline_script_csp_source()),
-        format!("style-src 'self' 'unsafe-inline' {static_cdn}"),
+        "style-src 'self' 'unsafe-inline'".to_owned(),
         format!("img-src 'self' data: blob: {static_cdn}"),
-        format!("font-src 'self' data: {static_cdn}"),
+        "font-src 'self'".to_owned(),
         format!("media-src 'self' {static_cdn}"),
         "connect-src 'self'".to_owned(),
         "frame-src 'none'".to_owned(),
@@ -329,41 +341,35 @@ async fn canonical_host_redirect_middleware(
     next: Next,
 ) -> Response {
     match request_host(request.headers()).as_deref() {
-        Some("help.fluxer.app") => {
+        Some("help.echowire.org") => {
             let target_path = help_host_redirect_path(request.uri());
             let target = absolute_marketing_url(&state.config.base_url(), &target_path);
             return Redirect::permanent(&target).into_response();
         }
-        Some("blog.fluxer.app") => {
+        Some("blog.echowire.org") => {
             let target_path = blog_host_redirect_path(request.uri());
             let target = absolute_marketing_url(&state.config.base_url(), &target_path);
             return Redirect::permanent(&target).into_response();
         }
-        Some("www.fluxer.app" | "fluxerapp.com" | "www.fluxerapp.com") => {
+        Some("www.echowire.org" | "fluxerapp.com" | "www.fluxerapp.com") => {
             let target =
                 absolute_marketing_url(&state.config.base_url(), uri_path_and_query(request.uri()));
             return Redirect::permanent(&target).into_response();
         }
         Some("fluxer.gg") => {
-            let target = append_uri(
-                &format!("{}/invite", state.config.app_endpoint),
-                request.uri(),
-            );
+            let target = append_uri(&format!("{CANARY_WEB_APP_ENDPOINT}/invite"), request.uri());
             return Redirect::temporary(&target).into_response();
         }
         Some("fluxer.gift") => {
             let target = if request.uri().path() == "/" {
                 state.config.base_url()
             } else {
-                append_uri(
-                    &format!("{}/gift", state.config.app_endpoint),
-                    request.uri(),
-                )
+                append_uri(&format!("{CANARY_WEB_APP_ENDPOINT}/gift"), request.uri())
             };
             return Redirect::temporary(&target).into_response();
         }
         Some("fluxer.dev" | "www.fluxer.dev") => {
-            let target = append_uri("https://docs.fluxer.app", request.uri());
+            let target = append_uri("https://docs.echowire.org", request.uri());
             return Redirect::permanent(&target).into_response();
         }
         Some("every.day.im.fluxer.ing") => {
@@ -406,7 +412,7 @@ fn request_host(headers: &HeaderMap) -> Option<String> {
 fn legacy_marketing_redirect(config: &MarketingConfig, uri: &Uri) -> Option<Response> {
     match uri.path().trim_end_matches('/') {
         "/channels" => {
-            let target = append_uri(&config.app_endpoint, uri);
+            let target = append_uri(CANARY_WEB_APP_ENDPOINT, uri);
             Some(Redirect::temporary(&target).into_response())
         }
         "/delete-my-account" => Some(Redirect::temporary("/help/delete-account").into_response()),
@@ -418,7 +424,7 @@ fn legacy_marketing_redirect(config: &MarketingConfig, uri: &Uri) -> Option<Resp
             Some(Redirect::permanent(&target).into_response())
         }
         _ if uri.path().starts_with("/channels/") => {
-            let target = append_uri(&config.app_endpoint, uri);
+            let target = append_uri(CANARY_WEB_APP_ENDPOINT, uri);
             Some(Redirect::temporary(&target).into_response())
         }
         _ => None,
@@ -605,7 +611,7 @@ async fn download(State(state): State<AppState>, headers: HeaderMap, uri: Uri) -
         &state.latest_versions_cache,
         &state.http_client,
         &state.config.api_endpoint,
-        state.config.release_channel.segment(),
+        ctx.download_channel.segment(),
     )
     .await;
     let mut response =
@@ -1007,6 +1013,20 @@ async fn app_css() -> impl IntoResponse {
     ([(header::CONTENT_TYPE, "text/css; charset=utf-8")], APP_CSS)
 }
 
+async fn font_asset(Path(file_name): Path<String>) -> Response {
+    match crate::fonts::asset(&file_name) {
+        Some((content_type, bytes)) => (
+            [
+                (header::CONTENT_TYPE, content_type),
+                (header::CACHE_CONTROL, IMMUTABLE_CACHE_CONTROL),
+            ],
+            bytes,
+        )
+            .into_response(),
+        None => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+
 async fn htmx_js() -> impl IntoResponse {
     (
         [(
@@ -1061,6 +1081,11 @@ async fn voice_region_flag_svg(Path(flag_file): Path<String>) -> Response {
     }
 }
 
+async fn favicon_ico(State(state): State<AppState>) -> impl IntoResponse {
+    let cdn = state.config.static_cdn_endpoint.trim_end_matches('/');
+    Redirect::permanent(&format!("{cdn}/web/favicon.ico"))
+}
+
 async fn robots(State(state): State<AppState>) -> impl IntoResponse {
     let base_url = state.config.base_url();
     let body = format!("User-agent: *\nAllow: /\nSitemap: {base_url}/sitemap.xml\n");
@@ -1076,7 +1101,7 @@ async fn security_txt(State(state): State<AppState>) -> impl IntoResponse {
         .format(&Rfc3339)
         .unwrap_or_default();
     let body = format!(
-        "Contact: {base_url}/security\nContact: mailto:security@fluxer.app\nExpires: {expires}\nPreferred-Languages: en\nPolicy: {base_url}/security\n"
+        "Contact: {base_url}/security\nContact: mailto:security@echowire.org\nExpires: {expires}\nPreferred-Languages: en\nPolicy: {base_url}/security\n"
     );
     ([(header::CONTENT_TYPE, "text/plain; charset=utf-8")], body)
 }
@@ -1129,12 +1154,17 @@ async fn apple_app_site_association() -> impl IntoResponse {
     (
         [(header::CACHE_CONTROL, "public, max-age=1800")],
         Json(serde_json::json!({
+            "applinks": {
+                "apps": [],
+                "details": [
+                    {"appID": "34589PFK6A.org.echowire.ios", "paths": ["/channels/*", "/invite/*", "/gift/*", "/users/*", "/settings/user/*", "/reset/*", "/notifications/*", "/you/*"]},
+                    {"appID": "34589PFK6A.org.echowire.ios.canary", "paths": ["/channels/*", "/invite/*", "/gift/*", "/users/*", "/settings/user/*", "/reset/*", "/notifications/*", "/you/*"]}
+                ]
+            },
             "webcredentials": {
                 "apps": [
-                    "3G5837T29K.app.fluxer",
-                    "3G5837T29K.app.fluxer.canary",
-                    "3G5837T29K.com.fluxer",
-                    "3G5837T29K.com.fluxer.canary"
+                    "34589PFK6A.org.echowire.ios",
+                    "34589PFK6A.org.echowire.ios.canary"
                 ]
             }
         })),
@@ -1152,21 +1182,10 @@ async fn assetlinks() -> impl IntoResponse {
                 ],
                 "target": {
                     "namespace": "android_app",
-                    "package_name": "com.fluxer",
-                    "sha256_cert_fingerprints": ["91:E4:98:E1:B8:A6:C8:BA:99:41:5E:DB:29:78:29:6B:6C:58:BA:A5:E2:D2:A6:49:CE:C6:2D:A7:A8:29:C7:BC"]
-                }
-            },
-            {
-                "relation": [
-                    "delegate_permission/common.handle_all_urls",
-                    "delegate_permission/common.get_login_creds"
-                ],
-                "target": {
-                    "namespace": "android_app",
-                    "package_name": "com.fluxer.canary",
+                    "package_name": "org.echowire.twa",
                     "sha256_cert_fingerprints": [
-                        "91:E4:98:E1:B8:A6:C8:BA:99:41:5E:DB:29:78:29:6B:6C:58:BA:A5:E2:D2:A6:49:CE:C6:2D:A7:A8:29:C7:BC",
-                        "CD:19:82:28:32:A8:DE:E0:97:D8:60:D9:21:28:C9:C7:C4:73:A3:72:7E:63:71:9B:A7:BB:3B:98:06:94:1F:6F"
+                        "02:9C:A2:1A:C9:A6:96:C3:F9:8B:FC:84:3F:9D:3D:63:89:29:5F:5B:4F:91:B3:D5:67:AC:AA:4D:B9:41:7E:7E",
+                        "2F:7A:6D:CA:0D:B4:B7:4D:6F:66:BA:AB:4A:D9:5C:8E:1D:05:C3:C2:BD:DF:BC:17:A6:38:CF:0B:49:BE:04:B1"
                     ]
                 }
             }

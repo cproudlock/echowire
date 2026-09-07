@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_HI_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_HI_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "आपका {product_name} अकाउंट अस्थायी रूप से डिसेबल कर दिया गया है",
 		"body": "नमस्ते {username},\n\nहमने आपके {product_name} अकाउंट को अस्थायी रूप से डिसेबल कर दिया है क्योंकि हमें संदिग्ध एक्टिविटी देखी गई है।\n\n{reason, select,\n  null {}\n  other {वजह: {reason}}\n}\n\nअपने अकाउंट का एक्सेस फिर से पाने के लिए, आपको अपना पासवर्ड रीसेट करना होगा:\n\n{forgotUrl}\n\nअपना पासवर्ड रीसेट करने के बाद, आप फिर से लॉगिन कर पाएंगे।\n\nअगर आपको लगता है कि यह गलती से हुआ है, तो कृपया हमारी सपोर्ट टीम से संपर्क करें।\n\n– {product_name} सेफ्टी टीम"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_HI_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "एक नए IP एड्रेस से लॉगिन को ऑथराइज़ करें",
 		"body": "नमस्ते {username},\n\nहमें एक नए IP एड्रेस से आपके {product_name} अकाउंट में लॉगिन करने का प्रयास किया गया है:\n\nIP एड्रेस: {ipAddress}\nलोकेशन: {location}\n\nअगर यह आपने ही किया था, तो कृपया नीचे दिए गए लिंक पर क्लिक करके इस IP एड्रेस को ऑथराइज़ करें:\n\n{authUrl}\n\nअगर आपने लॉगिन करने का प्रयास नहीं किया था, तो कृपया तुरंत अपना पासवर्ड बदलें।\n\nयह लिंक 30 मिनट के लिए वैलिड है।\n\n– {product_name} टीम"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "अपने {product_name} बैकअप कोड के एक्सेस की पुष्टि करें",
+		"body": "नमस्ते {username},\n\nहमें आपके {product_name} अकाउंट के बैकअप कोड देखने का अनुरोध मिला है।\n\nइस अनुरोध की पुष्टि करने के लिए, ऐप में यह कोड एंटर करें:\n\n{code}\n\nयह कोड {expiresAt, date, full} को {expiresAt, time, short} पर एक्सपायर हो जाएगा।\n\nअगर आपने इसकी रिक्वेस्ट नहीं की थी, तो हो सकता है कि किसी और के पास आपके अकाउंट का एक्सेस हो। तुरंत अपना पासवर्ड बदलें।\n\n– {product_name} टीम"
 	},
 	"password_change_verification": {
 		"subject": "अपने {product_name} पासवर्ड चेंज की पुष्टि करें",

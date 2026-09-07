@@ -24,6 +24,7 @@ import {
 } from 'jose';
 import type {ApiContext} from '../../ApiContext';
 import type {UserID} from '../../BrandedTypes';
+import type {ILogger} from '../../ILogger';
 import type {IDiscriminatorService} from '../../infrastructure/DiscriminatorService';
 import type {KVActivityTracker} from '../../infrastructure/KVActivityTracker';
 import {
@@ -33,6 +34,7 @@ import {
 } from '../../instance/InstanceConfigRepository';
 import {
 	deriveSsoRedirectUri,
+	getSsoRequestUrlPolicy,
 	isTestSsoProvider,
 	validateSsoPublicOutboundUrl,
 } from '../../instance/SsoConfigValidation';
@@ -53,6 +55,7 @@ interface SsoStatePayload {
 	codeVerifier: string;
 	nonce: string;
 	redirectTo?: string;
+	redirectUri?: string;
 	createdAt: number;
 }
 
@@ -96,6 +99,14 @@ interface JwksCacheEntry {
 const CODE_VERIFIER_BYTE_LENGTH = 32;
 const STATE_BYTE_LENGTH = 16;
 const NONCE_BYTE_LENGTH = 16;
+const MOBILE_SSO_REDIRECT_URI = 'fluxer://auth/sso/callback';
+
+let ssoLogger: ILogger | undefined;
+
+function getLogger(): ILogger {
+	ssoLogger ??= Logger.child({logger: 'SsoService'});
+	return ssoLogger;
+}
 
 function randomBase64UrlToken(byteLength: number): string {
 	return randomBytes(byteLength).toString('base64url');
@@ -116,6 +127,14 @@ function buildStateCacheKey(state: string): string {
 function buildDiscoveryCacheKey(issuer: string): string {
 	const key = createHash('sha256').update(issuer).digest('hex').slice(0, 32);
 	return `sso:oidc-discovery:${key}`;
+}
+
+function resolveSsoRedirectUri(requestedRedirectUri: string | undefined, defaultRedirectUri: string): string {
+	if (!requestedRedirectUri) return defaultRedirectUri;
+	const trimmed = requestedRedirectUri.trim();
+	if (!trimmed) return defaultRedirectUri;
+	if (trimmed === defaultRedirectUri || trimmed === MOBILE_SSO_REDIRECT_URI) return trimmed;
+	throw InputValidationError.fromCode('redirect_uri', ValidationErrorCodes.INVALID_URL_FORMAT);
 }
 
 function coerceEmailVerified(value: unknown): boolean | undefined {
@@ -214,7 +233,7 @@ function resolveEmailVerified({
 	if (values.includes(false)) {
 		return false;
 	}
-	return values.includes(true);
+	return values.length > 0 && values.includes(true);
 }
 
 function isJsonWebKeySet(value: unknown): value is JSONWebKeySet {
@@ -224,7 +243,6 @@ function isJsonWebKeySet(value: unknown): value is JSONWebKeySet {
 }
 
 export class SsoService {
-	private readonly logger = Logger.child({logger: 'SsoService'});
 	private static readonly STATE_TTL_SECONDS = seconds('10 minutes');
 	private static readonly DISCOVERY_TTL_SECONDS = seconds('1 hour');
 	private static readonly JWKS_CACHE_TTL_MS = ms('1 hour');
@@ -254,7 +272,7 @@ export class SsoService {
 		return config.enabled && config.ready && config.enforced;
 	}
 
-	async startLogin(redirectTo?: string): Promise<{
+	async startLogin({redirectTo, redirectUri}: {redirectTo?: string; redirectUri?: string} = {}): Promise<{
 		authorization_url: string;
 		state: string;
 		redirect_uri: string;
@@ -264,10 +282,12 @@ export class SsoService {
 		const codeVerifier = randomBase64UrlToken(CODE_VERIFIER_BYTE_LENGTH);
 		const codeChallenge = buildCodeChallenge(codeVerifier);
 		const nonce = randomBase64UrlToken(NONCE_BYTE_LENGTH);
+		const ssoRedirectUri = resolveSsoRedirectUri(redirectUri, config.redirectUri);
 		const statePayload: SsoStatePayload = {
 			codeVerifier,
 			nonce,
 			redirectTo: sanitizeSsoRedirectTo(redirectTo),
+			redirectUri: ssoRedirectUri,
 			createdAt: Date.now(),
 		};
 		const {cache} = this.apiContext.services;
@@ -275,7 +295,7 @@ export class SsoService {
 		const searchParams = new URLSearchParams({
 			response_type: 'code',
 			client_id: config.clientId ?? '',
-			redirect_uri: config.redirectUri,
+			redirect_uri: ssoRedirectUri,
 			scope: config.scope,
 			state,
 			code_challenge: codeChallenge,
@@ -297,7 +317,7 @@ export class SsoService {
 				throw new FeatureTemporarilyDisabledError();
 			}
 		}
-		return {authorization_url: authorizationUrlString, state, redirect_uri: config.redirectUri};
+		return {authorization_url: authorizationUrlString, state, redirect_uri: ssoRedirectUri};
 	}
 
 	async completeLogin({code, state, request}: {code: string; state: string; request: Request}): Promise<{
@@ -314,11 +334,15 @@ export class SsoService {
 		const tokenResponse = await this.exchangeCode({
 			code,
 			codeVerifier: statePayload.codeVerifier,
+			redirectUri: statePayload.redirectUri ?? config.redirectUri,
 			config,
 		});
 		const claims = await this.resolveClaims(tokenResponse, config, statePayload.nonce);
 		const user = await this.resolveUserFromClaims(claims, config);
-		const [token] = await AuthSession.createAuthSession(this.apiContext, {user, request});
+		const [token] = await AuthSession.createAuthSession(this.apiContext, {
+			user,
+			origin: AuthSession.resolveSessionOrigin(this.apiContext, request),
+		});
 		return {token, user_id: user.id.toString(), redirect_to: statePayload.redirectTo ?? ''};
 	}
 
@@ -327,12 +351,12 @@ export class SsoService {
 			throw InputValidationError.fromCode('email_verified', ValidationErrorCodes.INVALID_SSO_TOKEN);
 		}
 		const emailLower = claims.email.toLowerCase();
-		this.logger.info({email: emailLower, has_sub: true}, 'SSO login with sub claim');
+		getLogger().info({email: emailLower, has_sub: true}, 'SSO login with sub claim');
 		const identityUserId = await this.ssoIdentityRepository.findUserId(config.providerId, claims.sub);
 		if (identityUserId) {
 			const user = await this.apiContext.services.users.findUnique(identityUserId);
 			if (!user) {
-				this.logger.error(
+				getLogger().error(
 					{user_id: identityUserId.toString()},
 					'SSO identity mapping points at a missing user; refusing reassignment',
 				);
@@ -384,7 +408,7 @@ export class SsoService {
 		if (ownerId?.toString() === userId.toString()) {
 			return;
 		}
-		this.logger.error(
+		getLogger().error(
 			{user_id: userId.toString(), owner_user_id: ownerId?.toString() ?? null},
 			'SSO identity is already linked to another account',
 		);
@@ -396,7 +420,7 @@ export class SsoService {
 		const traits = user.traits;
 		const existingIdentities = Array.from(traits).filter((trait) => trait.startsWith('sso_identity:'));
 		if (existingIdentities.length > 0 && !traits.has(identityTrait)) {
-			this.logger.error({user_id: user.id.toString()}, 'SSO identity claim did not match linked account');
+			getLogger().error({user_id: user.id.toString()}, 'SSO identity claim did not match linked account');
 			throw InputValidationError.fromCode('sub', ValidationErrorCodes.SSO_IDENTITY_MISMATCH);
 		}
 		await this.claimSsoIdentity(user.id, sub, config);
@@ -516,12 +540,14 @@ export class SsoService {
 					isAdult: true,
 				}),
 			);
-			await this.kvActivityTracker.updateActivity(user.id, now);
+			void this.kvActivityTracker.updateActivity(user.id, now).catch((error: unknown) => {
+				getLogger().warn({error, userId: user.id}, 'Failed to update real-time user activity');
+			});
 			return user;
 		} catch (error) {
 			if (!userCreated) {
 				await this.ssoIdentityRepository.releaseIdentity(config.providerId, claims.sub).catch((releaseError) => {
-					this.logger.error({releaseError}, 'Failed to release SSO identity after user provisioning failed');
+					getLogger().error({releaseError}, 'Failed to release SSO identity after user provisioning failed');
 				});
 			}
 			throw error;
@@ -548,7 +574,7 @@ export class SsoService {
 		let claims: JWTPayload | null = null;
 		if (tokenResponse.id_token) {
 			if (!config.jwksUrl) {
-				this.logger.warn('SSO id_token returned but no JWKS URL is configured; ignoring id_token claims');
+				getLogger().warn('SSO id_token returned but no JWKS URL is configured; ignoring id_token claims');
 			} else {
 				claims = await this.verifyIdToken(tokenResponse.id_token, config, expectedNonce);
 			}
@@ -561,7 +587,7 @@ export class SsoService {
 		const userInfoSub = userInfo ? readStringClaim(userInfo, 'sub') : undefined;
 		if (claims && userInfo) {
 			if (!idTokenSub || !userInfoSub || idTokenSub !== userInfoSub) {
-				this.logger.error('SSO sub mismatch between id_token and userinfo');
+				getLogger().error('SSO sub mismatch between id_token and userinfo');
 				throw InputValidationError.fromCode('sub', ValidationErrorCodes.SSO_IDENTITY_MISMATCH);
 			}
 		}
@@ -578,7 +604,7 @@ export class SsoService {
 		const normalizedIdTokenEmail = idTokenEmail ? normalizeSsoEmail(idTokenEmail) : undefined;
 		const normalizedUserInfoEmail = userInfoEmail ? normalizeSsoEmail(userInfoEmail) : undefined;
 		if (normalizedIdTokenEmail && normalizedUserInfoEmail && normalizedIdTokenEmail !== normalizedUserInfoEmail) {
-			this.logger.error('SSO email mismatch between id_token and userinfo');
+			getLogger().error('SSO email mismatch between id_token and userinfo');
 			throw InputValidationError.fromCode('email', ValidationErrorCodes.SSO_IDENTITY_MISMATCH);
 		}
 		const email =
@@ -615,7 +641,7 @@ export class SsoService {
 				});
 				const nonce = payload['nonce'];
 				if (nonce === undefined) {
-					this.logger.warn('SSO id_token missing required nonce claim');
+					getLogger().warn('SSO id_token missing required nonce claim');
 					throw new Error('nonce missing');
 				}
 				if (typeof nonce !== 'string' || nonce.length === 0 || nonce !== expectedNonce) {
@@ -625,26 +651,29 @@ export class SsoService {
 			}
 			return decodeJwt(idToken);
 		} catch (error) {
-			this.logger.error({error}, 'Failed to verify SSO id_token');
+			getLogger().error({error}, 'Failed to verify SSO id_token');
 			throw InputValidationError.fromCode('id_token', ValidationErrorCodes.INVALID_SSO_TOKEN);
 		}
 	}
 
 	private async getOrCreateJwks(jwksUrl: string): Promise<RemoteJwkSetResolver> {
-		await this.validatePublicOutboundUrl(jwksUrl, 'jwks_url');
+		await this.assertPublicOutboundUrl(jwksUrl, 'jwks_url');
 		const now = Date.now();
 		const cached = this.jwksCache.get(jwksUrl);
 		if (cached && now - cached.cachedAt < SsoService.JWKS_CACHE_TTL_MS) {
 			return cached.jwks;
 		}
 		const fetchJwks = async (): Promise<JSONWebKeySet> => {
-			const response = await FetchUtils.sendRequest({
-				url: jwksUrl,
-				method: 'GET',
-				headers: {Accept: 'application/json'},
-				timeout: ms('5 seconds'),
-				serviceName: 'sso_jwks',
-			});
+			const response = await FetchUtils.sendRequest(
+				{
+					url: jwksUrl,
+					method: 'GET',
+					headers: {Accept: 'application/json'},
+					timeout: ms('5 seconds'),
+					serviceName: 'sso_jwks',
+				},
+				{requestUrlPolicy: getSsoRequestUrlPolicy()},
+			);
 			if (response.status < 200 || response.status >= 300) {
 				throw new Error(`Failed to fetch JWKS: HTTP ${response.status}`);
 			}
@@ -731,16 +760,19 @@ export class SsoService {
 	}
 
 	private async fetchUserInfo(userInfoUrl: string, accessToken: string): Promise<Record<string, unknown>> {
-		const resp = await FetchUtils.sendRequest({
-			url: userInfoUrl,
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-				Accept: 'application/json',
+		const resp = await FetchUtils.sendRequest(
+			{
+				url: userInfoUrl,
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${accessToken}`,
+					Accept: 'application/json',
+				},
+				timeout: ms('15 seconds'),
+				serviceName: 'sso_user_info',
 			},
-			timeout: ms('15 seconds'),
-			serviceName: 'sso_user_info',
-		});
+			{requestUrlPolicy: getSsoRequestUrlPolicy()},
+		);
 		if (resp.status < 200 || resp.status >= 300) {
 			throw InputValidationError.fromCode('access_token', ValidationErrorCodes.FAILED_TO_FETCH_SSO_USER_INFO);
 		}
@@ -764,10 +796,12 @@ export class SsoService {
 	private async exchangeCode({
 		code,
 		codeVerifier,
+		redirectUri,
 		config,
 	}: {
 		code: string;
 		codeVerifier: string;
+		redirectUri: string;
 		config: ResolvedSsoConfig;
 	}): Promise<{
 		id_token?: string;
@@ -779,7 +813,7 @@ export class SsoService {
 		const body = new URLSearchParams({
 			grant_type: 'authorization_code',
 			code,
-			redirect_uri: config.redirectUri,
+			redirect_uri: redirectUri,
 			client_id: config.clientId ?? '',
 			code_verifier: codeVerifier,
 		});
@@ -790,14 +824,17 @@ export class SsoService {
 			Accept: 'application/json',
 			'Content-Type': 'application/x-www-form-urlencoded',
 		};
-		const resp = await FetchUtils.sendRequest({
-			url: config.tokenUrl ?? '',
-			method: 'POST',
-			headers,
-			body,
-			timeout: ms('15 seconds'),
-			serviceName: 'sso_token_exchange',
-		});
+		const resp = await FetchUtils.sendRequest(
+			{
+				url: config.tokenUrl ?? '',
+				method: 'POST',
+				headers,
+				body,
+				timeout: ms('15 seconds'),
+				serviceName: 'sso_token_exchange',
+			},
+			{requestUrlPolicy: getSsoRequestUrlPolicy()},
+		);
 		if (resp.status < 200 || resp.status >= 300) {
 			throw InputValidationError.fromCode('code', ValidationErrorCodes.INVALID_SSO_AUTHORIZATION_CODE);
 		}
@@ -878,7 +915,7 @@ export class SsoService {
 		};
 	}
 
-	private async validatePublicOutboundUrl(rawUrl: string, fieldName: string): Promise<URL> {
+	private async assertPublicOutboundUrl(rawUrl: string, fieldName: string): Promise<string> {
 		return validateSsoPublicOutboundUrl(rawUrl, fieldName);
 	}
 
@@ -887,10 +924,9 @@ export class SsoService {
 			return null;
 		}
 		try {
-			const validUrl = await this.validatePublicOutboundUrl(rawUrl, fieldName);
-			return validUrl.toString();
+			return await this.assertPublicOutboundUrl(rawUrl, fieldName);
 		} catch (error) {
-			this.logger.warn({fieldName, rawUrl, error}, 'Ignoring SSO URL that failed outbound policy validation');
+			getLogger().warn({fieldName, rawUrl, error}, 'Ignoring SSO URL that failed outbound policy validation');
 			return null;
 		}
 	}

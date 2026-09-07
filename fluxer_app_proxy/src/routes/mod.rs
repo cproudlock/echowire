@@ -3,9 +3,11 @@
 mod android_association;
 mod apple_association;
 mod assets_proxy;
+mod file_stream;
 mod health;
 mod spa_index;
 mod spa_static;
+mod well_known_fluxer;
 
 use crate::state::AppState;
 use axum::{
@@ -13,11 +15,17 @@ use axum::{
     extract::Request,
     http::{HeaderName, HeaderValue, header},
     middleware::{Next, from_fn, from_fn_with_state},
-    response::Response,
+    response::{IntoResponse, Response},
     routing::get,
 };
 use rand::RngExt;
-use tower_http::{compression::CompressionLayer, trace::TraceLayer};
+use tower_http::{
+    compression::{
+        CompressionLayer,
+        predicate::{DefaultPredicate, NotForContentType, Predicate},
+    },
+    trace::TraceLayer,
+};
 
 const STRICT_TRANSPORT_SECURITY_VALUE: &str = "max-age=31536000; includeSubDomains; preload";
 const REFERRER_POLICY_VALUE: &str = "strict-origin-when-cross-origin";
@@ -27,6 +35,7 @@ const PERMISSIONS_POLICY_VALUE: &str = "accelerometer=(), camera=(self), ch-dpr=
 pub fn build_router(state: AppState) -> Router {
     Router::new()
         .route("/_health", get(health::health))
+        .route("/_ready", get(health::ready))
         .route(
             "/.well-known/apple-app-site-association",
             get(apple_association::apple_app_site_association),
@@ -34,6 +43,10 @@ pub fn build_router(state: AppState) -> Router {
         .route(
             "/.well-known/assetlinks.json",
             get(android_association::assetlinks),
+        )
+        .route(
+            "/.well-known/fluxer",
+            get(well_known_fluxer::well_known_fluxer),
         )
         .route(
             "/apple-app-site-association",
@@ -52,7 +65,10 @@ pub fn build_router(state: AppState) -> Router {
             state.clone(),
             security_headers_middleware,
         ))
-        .layer(CompressionLayer::new())
+        .layer(
+            CompressionLayer::new()
+                .compress_when(DefaultPredicate::new().and(NotForContentType::const_new("font/"))),
+        )
         .layer(TraceLayer::new_for_http())
         .with_state(state)
 }
@@ -114,6 +130,14 @@ async fn request_id_middleware(request: Request, next: Next) -> Response {
 fn generate_request_id() -> String {
     let bytes: [u8; 16] = rand::rng().random();
     hex::encode(bytes)
+}
+
+pub(super) fn capacity_refused_response() -> Response {
+    let mut response = axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response();
+    let headers = response.headers_mut();
+    headers.insert(header::RETRY_AFTER, HeaderValue::from_static("1"));
+    headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
+    response
 }
 
 fn set_static_header(headers: &mut axum::http::HeaderMap, name: HeaderName, value: &'static str) {

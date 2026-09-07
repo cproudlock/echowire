@@ -264,7 +264,8 @@ dispatch_ready_data_includes_gateway_timings_test() ->
         #{},
         []
     ))#{
-        gw_timings => GwTimings
+        gw_timings => GwTimings,
+        is_staff => true
     },
     {noreply, _State1} = session_ready:dispatch_ready_data(State0),
     receive
@@ -300,6 +301,39 @@ dispatch_ready_data_includes_gateway_timings_test() ->
             ?assertNot(maps:is_key(<<"role">>, Timings)),
             ?assertNot(maps:is_key(<<"steps">>, Timings)),
             ?assertNot(maps:is_key(<<"nodes">>, Timings));
+        OtherReady ->
+            ?assert(false, {unexpected_ready_message, OtherReady})
+    after 1000 ->
+        ?assert(false, ready_not_dispatched)
+    end.
+
+dispatch_ready_data_omits_timings_for_non_staff_test() ->
+    drain_mailbox(),
+    GwTimings = gateway_timings:record(
+        test_gateway_step, gateway_timings:start() - 10, gateway_timings:new()
+    ),
+    ApiTimings = #{
+        <<"unit">> => <<"microseconds">>,
+        <<"total_us">> => 1234,
+        <<"pod_name">> => <<"fluxer-api-abc123">>
+    },
+    BaseState = base_ready_state(
+        <<"session-ready-non-staff-timings-test">>,
+        49,
+        false,
+        #{},
+        []
+    ),
+    State0 = BaseState#{
+        gw_timings => GwTimings,
+        is_staff => false,
+        ready => (maps:get(ready, BaseState))#{<<"_timings">> => ApiTimings}
+    },
+    {noreply, _State1} = session_ready:dispatch_ready_data(State0),
+    receive
+        {dispatch, ready, ReadyData, _ReadySeq} ->
+            ?assertNot(maps:is_key(<<"_timings_gw">>, ReadyData)),
+            ?assertNot(maps:is_key(<<"_timings">>, ReadyData));
         OtherReady ->
             ?assert(false, {unexpected_ready_message, OtherReady})
     after 1000 ->
@@ -367,7 +401,7 @@ base_state_for_guild_dispatch_test() ->
         collected_guild_states => []
     }.
 
-collect_ready_presences_includes_one_to_one_dm_recipients_test() ->
+collect_ready_presences_does_not_add_one_to_one_dm_as_global_target_test() ->
     {ok, CachePid} = maybe_start_presence_cache(),
     OnlineDmUser = #{
         <<"status">> => <<"online">>,
@@ -398,7 +432,7 @@ collect_ready_presences_includes_one_to_one_dm_recipients_test() ->
         maps:get(<<"id">>, maps:get(<<"user">>, P, #{}), undefined)
      || P <- Presences
     ],
-    ?assertEqual([<<"2">>], PresenceIds),
+    ?assertEqual([], PresenceIds),
     ?assertEqual(ok, gen_server:stop(CachePid)).
 
 collect_ready_presences_includes_friend_without_dm_recipients_test() ->

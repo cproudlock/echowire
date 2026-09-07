@@ -19,6 +19,64 @@ const AUTOMATIC_DESCRIPTOR = msg({
 });
 const logger = new Logger('VoiceRegionSelector');
 
+const LATENCY_PING_TIMEOUT_MS = 4000;
+
+/**
+ * Measures round-trip latency to each region's `ping_endpoint` (a CORS-enabled `/ping` on the voice
+ * host). Times a single `fetch` with `performance.now()`, all regions in parallel, with a timeout so
+ * an unreachable host yields `null` instead of hanging. Re-runs only when the region list changes.
+ */
+function useRegionLatencies(regions: Array<RtcRegionResponse>): Map<string, number | null> {
+	const [latencies, setLatencies] = useState<Map<string, number | null>>(new Map());
+	useEffect(() => {
+		if (regions.length === 0) {
+			setLatencies(new Map());
+			return undefined;
+		}
+		let cancelled = false;
+		const controllers: Array<AbortController> = [];
+		const measure = async (region: RtcRegionResponse): Promise<[string, number | null]> => {
+			if (!region.ping_endpoint) {
+				return [region.id, null];
+			}
+			const controller = new AbortController();
+			controllers.push(controller);
+			const timeout = setTimeout(() => controller.abort(), LATENCY_PING_TIMEOUT_MS);
+			try {
+				const start = performance.now();
+				await fetch(region.ping_endpoint, {cache: 'no-store', signal: controller.signal});
+				return [region.id, Math.round(performance.now() - start)];
+			} catch {
+				return [region.id, null];
+			} finally {
+				clearTimeout(timeout);
+			}
+		};
+		Promise.all(regions.map(measure)).then((results) => {
+			if (!cancelled) setLatencies(new Map(results));
+		});
+		return () => {
+			cancelled = true;
+			for (const controller of controllers) {
+				controller.abort();
+			}
+		};
+	}, [regions]);
+	return latencies;
+}
+
+function LatencyBadge({latency}: {latency: number | null | undefined}) {
+	if (latency == null) {
+		return null;
+	}
+	const color = latency < 80 ? 'var(--status-online)' : latency < 150 ? 'var(--status-idle)' : 'var(--status-dnd)';
+	return (
+		<span className={styles.latencyBadge} style={{color}} data-flx="voice.voice-region-selector.latency-badge">
+			{latency}ms
+		</span>
+	);
+}
+
 interface VoiceRegionSelectorProps {
 	channelId?: string | null;
 	currentRegion?: string | null;
@@ -33,6 +91,7 @@ export function VoiceRegionSelector({channelId, currentRegion, compact = false}:
 	const {i18n} = useLingui();
 	const [regions, setRegions] = useState<Array<RtcRegionResponse>>([]);
 	const [isChangingRegion, setIsChangingRegion] = useState(false);
+	const latencies = useRegionLatencies(regions);
 	useEffect(() => {
 		if (!channelId) {
 			setRegions([]);
@@ -76,7 +135,7 @@ export function VoiceRegionSelector({channelId, currentRegion, compact = false}:
 		const automatic: RtcRegionOption = {
 			value: AUTOMATIC_VOICE_REGION_ID,
 			label: i18n._(AUTOMATIC_DESCRIPTOR),
-			region: automaticRegion ?? {id: AUTOMATIC_VOICE_REGION_ID, name: 'Automatic', emoji: '🌐'},
+			region: automaticRegion ?? {id: AUTOMATIC_VOICE_REGION_ID, name: 'Automatic', emoji: '🌐', ping_endpoint: null},
 		};
 		const regionOptions = otherRegions
 			.map((region) => ({
@@ -115,14 +174,18 @@ export function VoiceRegionSelector({channelId, currentRegion, compact = false}:
 	}, [currentRegion, options]);
 	const renderRegionOption = useCallback(
 		(option: RtcRegionOption) => {
+			const latency = latencies.get(option.region.id);
 			if (compact) {
 				return (
-					<span
-						className={clsx(styles.regionName, styles.regionNameCompact)}
-						data-flx="voice.voice-region-selector.render-region-option.region-name"
-					>
-						{option.label}
-					</span>
+					<>
+						<span
+							className={clsx(styles.regionName, styles.regionNameCompact)}
+							data-flx="voice.voice-region-selector.render-region-option.region-name"
+						>
+							{option.label}
+						</span>
+						<LatencyBadge latency={latency} />
+					</>
 				);
 			}
 			const emojiUrl = EmojiUtils.getEmojiURL(option.region.emoji);
@@ -132,6 +195,7 @@ export function VoiceRegionSelector({channelId, currentRegion, compact = false}:
 						<img
 							src={emojiUrl}
 							alt={option.label}
+							aria-hidden={true}
 							className={styles.regionEmoji}
 							data-flx="voice.voice-region-selector.render-region-option.region-emoji"
 						/>
@@ -149,10 +213,11 @@ export function VoiceRegionSelector({channelId, currentRegion, compact = false}:
 					>
 						{option.label}
 					</span>
+					<LatencyBadge latency={latency} />
 				</div>
 			);
 		},
-		[compact],
+		[compact, latencies],
 	);
 	return (
 		<div

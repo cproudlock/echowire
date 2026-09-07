@@ -12,12 +12,7 @@
 		"tailwindcss",
 		"upng-js"
 	],
-	"ignoreFiles": [
-		"fluxer_admin/src/styles/app.css",
-		"fluxer_admin/static/htmx.min.js",
-		"fluxer_marketing/src/styles/app.css",
-		"fluxer_marketing/static/htmx.min.js"
-	],
+	"ignoreFiles": ["fluxer_admin/src/styles/app.css", "fluxer_admin/static/htmx.min.js"],
 	"ignoreIssues": {
 		"fluxer_app/scripts/build/Config.tsx": ["exports"],
 		"fluxer_app/scripts/build/rspack/static-files.mjs": ["exports"],
@@ -28,15 +23,31 @@
 		"fluxer_desktop/src/main/Autostart.ts": ["exports"],
 		"fluxer_desktop/src/main/LinuxDesktopEntry.ts": ["exports"],
 		"fluxer_desktop/src/main/NotificationState.ts": ["exports", "types"],
-		"fluxer_desktop/src/main/WindowsVulkanGameCaptureLayer.ts": ["exports"],
+		"packages/schema/src/domains/admin/AdminUserSchemas.ts": ["exports"],
+		"packages/schema/src/domains/geolocation/GeolocationSchemas.ts": ["exports"],
 		"pnpm-workspace.yaml": ["catalog"]
 	},
 	"workspaces": {
 		".": {
+			"ignoreDependencies": ["vite"],
 			"project": ["scripts/**/*.mjs"]
 		},
 		"fluxer_api": {
-			"entry": ["src/api/test/fake-ncmec/Bin.ts"]
+			"ignoreDependencies": [
+				"@elastic/elasticsearch",
+				"@hono/node-server",
+				"@messageformat/core",
+				"@messageformat/parser",
+				"@vvo/tzdb",
+				"emoji-regex",
+				"ioredis",
+				"maxmind",
+				"nodemailer",
+				"pg",
+				"pino",
+				"undici",
+				"validator"
+			]
 		},
 		"fluxer_app": {
 			"entry": ["lingui.config.js", "scripts/build-sw.mjs", "scripts/Generate*.ts"],
@@ -51,12 +62,15 @@
 				"native/*/index.{js,d.ts}",
 				"native/*/loader-diagnostics.cjs",
 				"native/*/*.test.mjs",
-				"native/*/test/**/*.mjs",
-				"native/*/vm_tests/*.mjs",
-				"native/*/scripts/**/*.mjs"
+				"native/*/test/**/*.mjs"
 			],
 			"project": ["src/**/*.{ts,tsx,mjs,js}", "scripts/**/*.mjs", "native/**/*.{js,mjs,cjs,d.ts}"],
-			"ignoreDependencies": ["electron-builder"]
+			"ignoreDependencies": ["electron-builder", "electron-builder-squirrel-windows"]
+		},
+		"fluxer_docs": {
+			"entry": ["scripts/*.ts", "src/**/*.astro"],
+			"project": ["src/**/*.{ts,astro}", "scripts/**/*.ts"],
+			"ignoreDependencies": ["sharp"]
 		},
 		"packages/openapi": {
 			"entry": ["src/GenerateOpenAPISpec.ts"],

@@ -21,7 +21,7 @@ import {
 	verifyAuthenticationResponse,
 	verifyRegistrationResponse,
 } from '@simplewebauthn/server';
-import {seconds} from 'itty-time';
+import {ms, seconds} from 'itty-time';
 import type {ApiContext} from '../ApiContext';
 import {createUserID, type UserID} from '../BrandedTypes';
 import {Logger} from '../Logger';
@@ -30,6 +30,7 @@ import type {WebAuthnCredential} from '../models/WebAuthnCredential';
 import {getUserSearchService} from '../SearchFactory';
 import {mapUserToPrivateResponse} from '../user/UserMappers';
 import {TotpGenerator} from '../utils/TotpGenerator';
+import {deriveSudoMethods, userHasMfa} from './services/SudoMethods';
 
 type WebAuthnChallengeContext = 'registration' | 'discoverable' | 'mfa' | 'sudo';
 
@@ -68,6 +69,10 @@ function constantTimeEquals(a: string, b: string): boolean {
 	return timingSafeEqual(bufferA, bufferB);
 }
 
+function normalizeBackupCode(code: string): string {
+	return code.toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
 export async function verifyMfaCode(ctx: ApiContext, params: VerifyMfaCodeParams): Promise<boolean> {
 	const {userId, mfaSecret, code, allowBackup = false} = params;
 	const {users, cache, config} = ctx.services;
@@ -79,7 +84,7 @@ export async function verifyMfaCode(ctx: ApiContext, params: VerifyMfaCodeParams
 				return true;
 			}
 			const reuseKey = `mfa-totp:${userId}:${code}`;
-			const lockToken = await cache.acquireLock(reuseKey, seconds('30 seconds'));
+			const lockToken = await cache.acquireLock(reuseKey, seconds('90 seconds'));
 			if (lockToken) {
 				return true;
 			}
@@ -88,11 +93,16 @@ export async function verifyMfaCode(ctx: ApiContext, params: VerifyMfaCodeParams
 		Logger.error({userId, code: `${code.slice(0, 3)}***`, error}, 'Failed to validate TOTP code');
 	}
 	if (allowBackup) {
-		const backupCodes = await users.listMfaBackupCodes(userId);
-		const backupCode = backupCodes.find((bc) => !bc.consumed && constantTimeEquals(bc.code, code));
-		if (backupCode) {
-			await users.consumeMfaBackupCode(userId, code);
-			return true;
+		const normalizedCode = normalizeBackupCode(code);
+		if (normalizedCode.length > 0) {
+			const backupCodes = await users.listMfaBackupCodes(userId);
+			const backupCode = backupCodes.find(
+				(bc) => !bc.consumed && constantTimeEquals(normalizeBackupCode(bc.code), normalizedCode),
+			);
+			if (backupCode) {
+				await users.consumeMfaBackupCode(userId, backupCode.code);
+				return true;
+			}
 		}
 	}
 	return false;
@@ -410,6 +420,20 @@ export async function generateWebAuthnOptionsForSudo(ctx: ApiContext, userId: Us
 	return options;
 }
 
+const SUDO_MFA_USER_MAX_ATTEMPTS = 10;
+
+async function consumeSudoMfaAttempt(ctx: ApiContext, userId: UserID): Promise<void> {
+	const {rateLimit} = ctx.services;
+	const userLimit = await rateLimit.checkLimit({
+		identifier: `sudo-mfa:user:${userId}`,
+		maxAttempts: SUDO_MFA_USER_MAX_ATTEMPTS,
+		windowMs: ms('15 minutes'),
+	});
+	if (!userLimit.allowed) {
+		throw InputValidationError.fromCode('mfa_code', ValidationErrorCodes.INVALID_MFA_CODE);
+	}
+}
+
 export async function verifySudoMfa(
 	ctx: ApiContext,
 	params: SudoMfaVerificationParams,
@@ -427,7 +451,11 @@ export async function verifySudoMfa(
 		case 'totp': {
 			if (!code) return {success: false, error: 'TOTP code is required'};
 			if (!user.totpSecret) return {success: false, error: 'TOTP is not enabled'};
+			await consumeSudoMfaAttempt(ctx, userId);
 			const isValid = await verifyMfaCode(ctx, {userId, mfaSecret: user.totpSecret, code, allowBackup: true});
+			if (isValid) {
+				await ctx.services.rateLimit.resetLimit(`sudo-mfa:user:${userId}`);
+			}
 			return {success: isValid, error: isValid ? undefined : 'Invalid TOTP code'};
 		}
 		case 'webauthn': {
@@ -454,10 +482,11 @@ export async function getAvailableMfaMethods(ctx: ApiContext, userId: UserID): P
 	if (!user) {
 		return {totp: false, webauthn: false, has_mfa: false};
 	}
+	const methods = deriveSudoMethods(user);
 	return {
-		totp: user.totpSecret !== null,
-		webauthn: user.authenticatorTypes?.has(UserAuthenticatorTypes.WEBAUTHN) ?? false,
-		has_mfa: (user.authenticatorTypes?.size ?? 0) > 0,
+		totp: methods.totp,
+		webauthn: methods.webauthn,
+		has_mfa: userHasMfa(user),
 	};
 }
 

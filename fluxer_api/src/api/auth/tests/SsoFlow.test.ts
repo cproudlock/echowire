@@ -29,6 +29,13 @@ interface SsoStatusResponse {
 	enabled: boolean;
 	enforced: boolean;
 	display_name?: string;
+	redirect_uri: string;
+}
+
+function getAuthorizationUrlParam(authorizationUrlString: string, param: string): string | null {
+	const queryStart = authorizationUrlString.indexOf('?');
+	if (queryStart === -1) return null;
+	return new URLSearchParams(authorizationUrlString.slice(queryStart + 1)).get(param);
 }
 
 describe('Auth SSO flow', () => {
@@ -83,7 +90,7 @@ describe('Auth SSO flow', () => {
 		});
 		it('rejects enforced SSO config that cannot resolve claims', async () => {
 			await createBuilder(harness, admin.token)
-				.post('/admin/instance-config/update')
+				.patch('/admin/instance/config')
 				.body({
 					sso: {
 						enabled: true,
@@ -130,6 +137,7 @@ describe('Auth SSO flow', () => {
 			expect(authUrlString).toContain('code_challenge_method=S256');
 			expect(authUrlString).toContain('code_challenge=');
 			expect(authUrlString).toContain('nonce=');
+			expect(getAuthorizationUrlParam(authUrlString, 'redirect_uri')).toBe(startData.redirect_uri);
 			if (authUrlString.startsWith('http://') || authUrlString.startsWith('https://')) {
 				const authUrl = new URL(authUrlString);
 				const stateParam = authUrl.searchParams.get('state');
@@ -151,6 +159,7 @@ describe('Auth SSO flow', () => {
 				.execute();
 			expect(completeData.token).toBeTruthy();
 			expect(completeData.user_id).toBeTruthy();
+			expect(completeData.redirect_to).toBe('/me');
 			const meData = await createBuilder<{
 				email: string | null;
 			}>(harness, completeData.token)
@@ -169,6 +178,34 @@ describe('Auth SSO flow', () => {
 			expect(startData.redirect_uri).toContain('/auth/sso/callback');
 			expect(startData.redirect_uri).not.toContain('evil.example');
 			expect(startData.authorization_url).toContain(encodeURIComponent(startData.redirect_uri));
+		});
+		it('uses the requested mobile SSO redirect URI without changing the post-login redirect', async () => {
+			const startData = await createBuilderWithoutAuth<SsoStartResponse>(harness)
+				.post('/auth/sso/start')
+				.body({
+					redirect_to: '/me',
+					redirect_uri: 'fluxer://auth/sso/callback',
+				})
+				.execute();
+			expect(startData.redirect_uri).toBe('fluxer://auth/sso/callback');
+			expect(getAuthorizationUrlParam(startData.authorization_url, 'redirect_uri')).toBe('fluxer://auth/sso/callback');
+			const email = `sso-mobile-redirect-${Date.now()}@example.com`;
+			const completeData = await createBuilderWithoutAuth<SsoCompleteResponse>(harness)
+				.post('/auth/sso/complete')
+				.body({
+					code: email,
+					state: startData.state,
+				})
+				.execute();
+			expect(completeData.token).toBeTruthy();
+			expect(completeData.redirect_to).toBe('/me');
+		});
+		it('rejects unapproved SSO redirect URIs', async () => {
+			await createBuilderWithoutAuth(harness)
+				.post('/auth/sso/start')
+				.body({redirect_uri: 'https://evil.example/auth/sso/callback'})
+				.expect(400, 'INVALID_FORM_BODY')
+				.execute();
 		});
 	});
 	describe('redirect validation', () => {
@@ -421,7 +458,7 @@ describe('Auth SSO flow', () => {
 		});
 		it('rejects invalid allowed domains during config update', async () => {
 			await createBuilder(harness, admin.token)
-				.post('/admin/instance-config/update')
+				.patch('/admin/instance/config')
 				.body({
 					sso: {
 						enabled: true,
@@ -440,7 +477,7 @@ describe('Auth SSO flow', () => {
 		});
 		it('rejects unsafe provider URLs during config update', async () => {
 			await createBuilder(harness, admin.token)
-				.post('/admin/instance-config/update')
+				.patch('/admin/instance/config')
 				.body({
 					sso: {
 						enabled: true,
@@ -467,8 +504,7 @@ describe('Auth SSO flow', () => {
 					allowed_domains: Array<string>;
 				};
 			}>(harness, admin.token)
-				.post('/admin/instance-config/get')
-				.body({})
+				.get('/admin/instance/config')
 				.execute();
 			expect(config.sso.allowed_domains).toEqual(['example.com', 'xn--bcher-kva.example']);
 		});
@@ -678,7 +714,7 @@ describe('Auth SSO flow', () => {
 		});
 		it('does not advertise enabled SSO when optional SSO cannot resolve claims', async () => {
 			await createBuilder(harness, admin.token)
-				.post('/admin/instance-config/update')
+				.patch('/admin/instance/config')
 				.body({
 					sso: {
 						enabled: true,

@@ -2,7 +2,7 @@
 
 import {defineEmailI18nLocaleMessages} from '../EmailI18nMessages';
 
-export const EMAIL_I18N_SV_SE_MESSAGES = defineEmailI18nLocaleMessages({
+const EMAIL_I18N_SV_SE_MESSAGES = defineEmailI18nLocaleMessages({
 	"account_disabled_suspicious": {
 		"subject": "Ditt {product_name}-konto har tillfälligt inaktiverats",
 		"body": "Hej {username},\n\nVi har tillfälligt inaktiverat ditt {product_name}-konto eftersom vi upptäckte misstänkt aktivitet.\n\n{reason, select,\n  null {}\n  other {Anledning: {reason}}\n}\n\nFör att återfå åtkomst till ditt konto måste du återställa ditt lösenord:\n\n{forgotUrl}\n\nEfter att du har återställt ditt lösenord kan du logga in igen.\n\nOm du anser att detta har skett av misstag, kontakta vårt supportteam.\n\n– {product_name} Safety Team"
@@ -58,6 +58,10 @@ export const EMAIL_I18N_SV_SE_MESSAGES = defineEmailI18nLocaleMessages({
 	"ip_authorization": {
 		"subject": "Auktorisera inloggning från en ny IP-adress",
 		"body": "Hej {username},\n\nVi upptäckte ett inloggningsförsök till ditt {product_name}-konto från en ny IP-adress:\n\nIP-adress: {ipAddress}\nPlats: {location}\n\nOm detta var du, godkänn denna IP-adress genom att klicka på länken nedan:\n\n{authUrl}\n\nOm du inte försökte logga in, ändra ditt lösenord omedelbart.\n\nDenna länk är giltig i 30 minuter.\n\n– {product_name} Team"
+	},
+	"mfa_backup_codes_view": {
+		"subject": "Bekräfta åtkomst till dina {product_name}-reservkoder",
+		"body": "Hej {username},\n\nVi har mottagit en begäran om att visa reservkoderna för ditt {product_name}-konto.\n\nFör att bekräfta denna begäran, ange denna kod i appen:\n\n{code}\n\nDenna kod upphör att gälla {expiresAt, date, full} kl. {expiresAt, time, short}.\n\nOm du inte begärde detta kan någon ha åtkomst till ditt konto. Ändra ditt lösenord omedelbart.\n\n– {product_name} Team"
 	},
 	"password_change_verification": {
 		"subject": "Bekräfta din {product_name}-lösenordsändring",

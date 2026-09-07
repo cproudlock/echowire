@@ -15,6 +15,11 @@ export interface VoiceEngineV2SourceLifecycleTransitionedEvent {
 	atMs: number;
 }
 
+export interface VoiceEngineV2SourceLifecycleRemovedEvent {
+	type: 'sourceLifecycle.removed';
+	sourceId: string;
+}
+
 import type {
 	VoiceEngineV2AudioControlsPatch,
 	VoiceEngineV2CameraEncodingOptions,
@@ -37,9 +42,7 @@ import type {
 	VoiceEngineV2InboundVideoTrackSubscription,
 	VoiceEngineV2LifecycleReason,
 	VoiceEngineV2LiveKitRoomState,
-	VoiceEngineV2LocalStreamSource,
 	VoiceEngineV2MicrophoneOptions,
-	VoiceEngineV2NativeAudioDeviceModuleStatus,
 	VoiceEngineV2NativeAudioTapOptions,
 	VoiceEngineV2NativeCaptureFrame,
 	VoiceEngineV2NativeCaptureOptions,
@@ -58,7 +61,6 @@ import type {
 	VoiceEngineV2Stats,
 	VoiceEngineV2TimerOptions,
 	VoiceEngineV2Track,
-	VoiceEngineV2VideoCodec,
 	VoiceEngineV2WatchedStream,
 	VoiceEngineV2WatchedStreamKey,
 } from './types';
@@ -198,11 +200,6 @@ export type VoiceEngineV2Event =
 	| {type: 'devices.selectAudioInputRequested'; deviceId: string | null}
 	| {type: 'devices.selectAudioOutputRequested'; deviceId: string | null}
 	| {type: 'devices.selectCameraRequested'; deviceId: string | null}
-	| {
-			type: 'nativeAudioDeviceModule.statusChanged';
-			status: VoiceEngineV2NativeAudioDeviceModuleStatus;
-			detail?: string | null;
-	  }
 	| {type: 'audioControls.changed'; controls: VoiceEngineV2AudioControlsPatch}
 	| {type: 'nativeCapture.startRequested'; options: VoiceEngineV2NativeCaptureOptions}
 	| {type: 'nativeCapture.updateRequested'; options: VoiceEngineV2NativeCaptureOptions}
@@ -238,31 +235,6 @@ export type VoiceEngineV2Event =
 	| {type: 'room.trackUnpublished'; trackSid: string}
 	| {type: 'room.trackMuted'; trackSid: string}
 	| {type: 'room.trackUnmuted'; trackSid: string}
-	| {
-			type: 'codecNegotiation.overrideSetRequested';
-			source: VoiceEngineV2LocalStreamSource;
-			codec: VoiceEngineV2VideoCodec | null;
-	  }
-	| {type: 'codecNegotiation.localCapabilityChanged'; supportedVideoCodecs: Array<VoiceEngineV2VideoCodec>}
-	| {
-			type: 'codecNegotiation.streamRegistered';
-			source: VoiceEngineV2LocalStreamSource;
-			streamIdentity: string;
-			preferredCodec: VoiceEngineV2VideoCodec;
-	  }
-	| {type: 'codecNegotiation.streamUnregistered'; source: VoiceEngineV2LocalStreamSource}
-	| {
-			type: 'codecNegotiation.viewerChanged';
-			source: VoiceEngineV2LocalStreamSource;
-			viewerIdentity: string;
-			watching: boolean;
-			supportedVideoCodecs: Array<VoiceEngineV2VideoCodec>;
-	  }
-	| {
-			type: 'codecNegotiation.remoteCapabilityChanged';
-			identity: string;
-			supportedVideoCodecs: Array<VoiceEngineV2VideoCodec>;
-	  }
 	| {type: 'watchedStream.watchRequested'; stream: VoiceEngineV2WatchedStream}
 	| {type: 'watchedStream.unwatchRequested'; stream: VoiceEngineV2WatchedStreamKey}
 	| {type: 'watchedStreams.replaced'; streams: Array<VoiceEngineV2WatchedStream>}
@@ -270,4 +242,5 @@ export type VoiceEngineV2Event =
 	| {type: 'inboundVideo.trackUnsubscribed'; trackSid: string}
 	| {type: 'inboundVideo.frameReceived'; frame: VoiceEngineV2InboundVideoFrame}
 	| {type: 'inboundVideo.frameStats'; stats: VoiceEngineV2InboundVideoFrameStats}
-	| VoiceEngineV2SourceLifecycleTransitionedEvent;
+	| VoiceEngineV2SourceLifecycleTransitionedEvent
+	| VoiceEngineV2SourceLifecycleRemovedEvent;

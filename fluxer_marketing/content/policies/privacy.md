@@ -3,26 +3,25 @@
 
 ## The short version
 
-Fluxer is a chat service run by Fluxer Platform AB, a Swedish company based in Stockholm. This policy explains how we handle your data. It is binding under EU consumer protection law and part of our Terms of Service, so you can hold us to it.
+Echowire is a chat service run by Proudlock Technology LLC, a company organized in North Carolina, USA. This policy explains how we handle your data. It is binding under EU consumer protection law and part of our Terms of Service, so you can hold us to it.
 
-- We do not sell, rent, or license your personal data. We have no advertising partners and no dealings with data brokers. Our revenue comes from Fluxer Plutonium, our optional premium subscription.
-- AI does not read what you share on Fluxer. We run no AI or LLM inference over your messages, files, or voice and video calls, and none of your content is used to train or fine-tune AI models. The only automated content check is a local image classifier that helps respect explicit-content preferences.
+- We do not sell, rent, or license your personal data. We have no advertising partners and no dealings with data brokers. Our revenue comes from Echowire Reverb, our optional premium subscription.
+- AI does not read what you share on Echowire. We run no AI or LLM inference over your messages, files, or voice and video calls, and none of your content is used to train or fine-tune AI models. The only automated content check is a local image classifier that helps respect explicit-content preferences.
 - We do not track you around the web: no tracking cookies, no analytics SDKs, no browser fingerprinting.
 - You can export your data, delete your messages, and close your account whenever you like.
 - Most account data currently lives on servers in Piscataway, New Jersey, where US law, including the CLOUD Act, applies. Section 6 explains why, the privacy trade-offs, and the direction we are evaluating.
 
 ## 1. Who we are
 
-Fluxer Platform AB is a Swedish limited liability company, organisation number 559537-3993. We operate Fluxer and related services. For GDPR purposes, we are the data controller for your personal data: we decide what data is processed and why, under the General Data Protection Regulation as implemented in Sweden, supervised by the Swedish Authority for Privacy Protection (Integritetsskyddsmyndigheten, known as IMY).
+Proudlock Technology LLC is a limited liability company organized in North Carolina, USA. We operate Echowire and related services. Where the EU/UK General Data Protection Regulation applies to your personal data, we act as the data controller: we decide what data is processed and why.
 
-**Privacy contact:** Hampus Kraft, Founder and CEO
-**Email:** <privacy@fluxer.app>
-**Phone:** +46 79 101 18 18 (legal enquiries only; no phone support)
-**Postal address:** Fluxer Platform AB, c/o Embassy House, Östgötagatan 12, 116 25 Stockholm, Sweden
+**Privacy contact:** Cameron Proudlock, Owner
+**Email:** <privacy@echowire.org>
+**Postal address:** Proudlock Technology LLC, 502 Buck Mountain Circle, West Jefferson, NC 28694, USA
 
-Hampus handles privacy and data protection questions, including data subject requests.
+Cameron handles privacy and data protection questions, including data subject requests.
 
-We have not appointed a formal Data Protection Officer (GDPR Article 37) or a UK representative (UK GDPR Article 27). Both are kept under review as the service and its safety and security processing grow, and this section will be updated if that changes. In the meantime, UK residents can direct any data protection enquiry to <privacy@fluxer.app>.
+We have not appointed a formal Data Protection Officer (GDPR Article 37) or a UK representative (UK GDPR Article 27). Both are kept under review as the service and its safety and security processing grow, and this section will be updated if that changes. In the meantime, UK residents can direct any data protection enquiry to <privacy@echowire.org>.
 
 ## 2. What we collect, and what we do not
 
@@ -32,11 +31,11 @@ We have not appointed a formal Data Protection Officer (GDPR Article 37) or a UK
 
 **Phone verification.** When registration triggers anti-spam checks, we may request phone verification to prevent large-scale registration abuse. The number is not linked to your account; completing verification stores only a flag saying it happened (full details in Section 7.3). SMS-based 2FA is not available for accounts registered on or after 25 April 2026.
 
-**Content.** What you do on Fluxer: messages, files, images, voice and video calls where supported, Community data, reactions, and profile details such as your avatar, bio, and display name, plus any Communities you create or administer. All of it belongs to you.
+**Content.** What you do on Echowire: messages, files, images, voice and video calls where supported, Community data, reactions, and profile details such as your avatar, bio, and display name, plus any Communities you create or administer. All of it belongs to you.
 
 **Support.** Support correspondence passes through Intercom, which handles the message body, attachments, anything else you choose to share, and the basic technical details (IP address, browser type) needed for support to work.
 
-**Payments.** Stripe processes payments, not us. If you buy Fluxer Plutonium or anything else premium, we receive only what is needed to record and manage the purchase: billing country, the card's last four digits and expiry, payment status, and timestamps.
+**Payments.** Stripe processes payments, not us. If you buy Echowire Reverb or anything else premium, we receive only what is needed to record and manage the purchase: billing country, the card's last four digits and expiry, payment status, and timestamps.
 
 We do not ask for special-category personal data such as health, religion, race, ethnic origin, sexual orientation, political views, or trade union membership. If you choose to share any of that in a message or on your profile, it will not be used to profile you, target you, or treat you differently.
 
@@ -48,7 +47,7 @@ We do not ask for special-category personal data such as health, religion, race,
 
 **Security and operational logs:** login attempts and authentication events, account setting changes, rate-limit triggers, API and system errors, and IP-based signals relating to spam, abuse, or unusual behaviour.
 
-Fluxer has no advertising trackers, third-party analytics SDKs, browser fingerprinting, or cross-site tracking pixels. We do not build behavioural profiles or track which other sites you visit before or after using Fluxer.
+Echowire has no advertising trackers, third-party analytics SDKs, browser fingerprinting, or cross-site tracking pixels. We do not build behavioural profiles or track which other sites you visit before or after using Echowire.
 
 ### 2.3 What we receive from other sources
 
@@ -58,22 +57,22 @@ Fluxer has no advertising trackers, third-party analytics SDKs, browser fingerpr
 
 **Public sources and fraud signals** occasionally reach us too, such as a reputation signal about a particular IP, or a risk score Stripe attaches to a transaction.
 
-All of this is combined with what we collect directly only to run, secure, and maintain Fluxer.
+All of this is combined with what we collect directly only to run, secure, and maintain Echowire.
 
 ## 3. How we use your information, and how we do not
 
 ### What we use it for
 
-- **Operating Fluxer:** creating and managing your account, routing messages to the right recipients, and keeping features working end to end.
+- **Operating Echowire:** creating and managing your account, routing messages to the right recipients, and keeping features working end to end.
 - **Security and abuse prevention:** blocking unauthorised access; investigating abuse, fraud, and spam; enforcing our Terms of Service and Community Guidelines.
 - **Service communications:** security alerts, service updates, and the administrative emails your account needs to function.
-- **Payments:** processing payments and managing subscriptions if you buy Plutonium or anything else premium.
+- **Payments:** processing payments and managing subscriptions if you buy Reverb or anything else premium.
 - **Maintenance and improvement:** aggregate metrics showing which features are used, how performance is holding up, and where bugs occur. The data involved is error rates and feature counts, not message or file content.
-- **Legal:** meeting legal requirements, responding to valid legal requests, and protecting the safety, rights, and property of our users, the public, and Fluxer.
+- **Legal:** meeting legal requirements, responding to valid legal requests, and protecting the safety, rights, and property of our users, the public, and Echowire.
 
 ### What we do not use it for
 
-Your messages, files, voice or video calls, and anything else you create or share on Fluxer will never be used for:
+Your messages, files, voice or video calls, and anything else you create or share on Echowire will never be used for:
 
 - advertising, targeted or otherwise
 - training, fine-tuning, or evaluating AI or machine learning models
@@ -89,7 +88,7 @@ For readers in the EEA, the UK, or any other jurisdiction requiring a lawful bas
 
 **Legitimate interests (Article 6(1)(f)).** Service security, fraud prevention, reliability and performance, aggregate feature-use analysis, and writing to you about changes to our services or policies. Each activity has a documented assessment covering its purpose, necessity, and the balance against your rights. For example, abuse prevention uses IP signals, login events, device metadata, and rate-limit triggers; these are used only for security and administration, never for advertising or profiling. You can object at any time (Section 10).
 
-**Legal obligations (Article 6(1)(c)).** Accounting, tax, and bookkeeping under Swedish law, responses to lawful requests from public authorities, and compliance with applicable data protection, security, and consumer laws.
+**Legal obligations (Article 6(1)(c)).** Accounting, tax, and bookkeeping under applicable law, responses to lawful requests from public authorities, and compliance with applicable data protection, security, and consumer laws.
 
 **Consent (Article 6(1)(a)).** A smaller set of processing, such as optional communications or specific cookie uses on our marketing site where local law requires consent. Consent can be withdrawn at any time through your settings or by writing to us; withdrawal does not affect processing that was lawful beforehand.
 
@@ -105,11 +104,11 @@ Your IP address is used to determine approximate location (city, region, country
 
 We prefer a fully local geolocation database (MaxMind GeoIP, downloaded periodically and queried entirely on our own servers, with no per-lookup network call to a third party) whenever it can answer the question.
 
-Registration and abuse-prevention checks sometimes need IP network signals a local database cannot provide: VPN provider, commercial proxy, Tor exit-node status, residential-proxy use, and related risk indicators. For those we query IPinfo, sending only the IP address (no account identifier, user identifier, session token, or device information), so the lookup cannot be linked back to your Fluxer account. Responses are cached on our own servers, so an IP is sent at most once per cache window; stable residential IPs are cached longer, rotating proxy-pool IPs for less time. These signals are used only for security and abuse prevention, including registration checks and, in some cases, rejecting Tor or residential-proxy traffic at the API edge. They are never used for advertising, profiling, or personalisation.
+Registration and abuse-prevention checks sometimes need IP network signals a local database cannot provide: VPN provider, commercial proxy, Tor exit-node status, residential-proxy use, and related risk indicators. For those we query IPinfo, sending only the IP address (no account identifier, user identifier, session token, or device information), so the lookup cannot be linked back to your Echowire account. Responses are cached on our own servers, so an IP is sent at most once per cache window; stable residential IPs are cached longer, rotating proxy-pool IPs for less time. These signals are used only for security and abuse prevention, including registration checks and, in some cases, rejecting Tor or residential-proxy traffic at the API edge. They are never used for advertising, profiling, or personalisation.
 
-**Automated regional access decisions.** Where local law requires platforms to verify user age, we rely on automated regional restrictions driven primarily by IP geolocation instead of government ID uploads or biometric scans, which are more invasive than we are willing to require for general access. This can affect whether you can use Fluxer, or specific features, from a given region.
+**Automated regional access decisions.** Where local law requires platforms to verify user age, we rely on automated regional restrictions driven primarily by IP geolocation instead of government ID uploads or biometric scans, which are more invasive than we are willing to require for general access. This can affect whether you can use Echowire, or specific features, from a given region.
 
-The approach is imperfect: travel, VPNs, proxies, and unusual network setups can all produce the wrong outcome. If you believe your access has been restricted in error, write to <privacy@fluxer.app>. We will acknowledge your request promptly, conduct a human review while your account stays in its current state, and send you the outcome with the reasoning. You can put your point of view at any stage, and rights around automated decision-making under applicable law (GDPR Article 22, for instance) are honoured per Section 10. Current regional restrictions, their basis, and their effect are listed in our [Regional restrictions](/help/regional-restrictions) help article.
+The approach is imperfect: travel, VPNs, proxies, and unusual network setups can all produce the wrong outcome. If you believe your access has been restricted in error, write to <privacy@echowire.org>. We will acknowledge your request promptly, conduct a human review while your account stays in its current state, and send you the outcome with the reasoning. You can put your point of view at any stage, and rights around automated decision-making under applicable law (GDPR Article 22, for instance) are honoured per Section 10. Current regional restrictions, their basis, and their effect are listed in our [Regional restrictions](/help/regional-restrictions) help article.
 
 ## 4. Who we share data with, and who we do not
 
@@ -117,7 +116,7 @@ Your personal data is not sold, rented, traded, or licensed to any third party. 
 
 ### 4.1 Sharing you initiate
 
-Messages go to their recipients, Community posts are visible to members, your profile is visible to the extent you choose, and integrations you connect can access the data you grant them. Once shared, content can be saved or redistributed by other users outside Fluxer; as with any chat app, be deliberate about what you share and with whom.
+Messages go to their recipients, Community posts are visible to members, your profile is visible to the extent you choose, and integrations you connect can access the data you grant them. Once shared, content can be saved or redistributed by other users outside Echowire; as with any chat app, be deliberate about what you share and with whom.
 
 ### 4.2 Our service providers (processors)
 
@@ -129,7 +128,7 @@ _Security and safety._ IPinfo provides IP network signals for registration and a
 
 _Third-party content._ Google provides YouTube embeds and GIF search (Tenor); KLIPY provides additional GIF search. Traffic to Tenor and KLIPY is proxied through our servers, so your IP address and device identifiers never reach them. YouTube metadata is fetched server-side (see Section 13).
 
-_Payments and communications._ Stripe handles payment processing, Sweego (hosted in the EU) transactional email, Twilio SMS-based account verification, and Intercom our support tool. Phone numbers used for verification are never linked to Fluxer accounts (Section 7.3). Intercom handles your support messages, email address, and basic technical information under our instructions, not for its own purposes.
+_Payments and communications._ Stripe handles payment processing, Sweego (hosted in the EU) transactional email, Twilio SMS-based account verification, and Intercom our support tool. Phone numbers used for verification are never linked to Echowire accounts (Section 7.3). Intercom handles your support messages, email address, and basic technical information under our instructions, not for its own purposes.
 
 _Error monitoring and observability._ Our observability stack (metrics, logs, and traces) runs on infrastructure we control. No application errors or crash data are sent to any third-party monitoring service.
 
@@ -137,18 +136,18 @@ Data processing agreements are in place with Vultr, Bunny.net, IPinfo, hCaptcha,
 
 ### 4.3 When law or safety requires disclosure
 
-Disclosure outside Fluxer happens only for:
+Disclosure outside Echowire happens only for:
 
 - compliance with a valid legal obligation, legal process, or enforceable governmental request
 - enforcement of our Terms of Service or other agreements
-- protection of the safety, rights, or property of users, the public, or Fluxer
+- protection of the safety, rights, or property of users, the public, or Echowire
 - detection, prevention, or handling of fraud, security, or technical issues
 
 Where the law allows, and where notice would not create a safety, security, or legal-process risk, we try to notify affected users before disclosing data in response to a legal request, particularly when it concerns an account or its content.
 
 ### 4.4 Business transfers
 
-If Fluxer Platform AB is part of a merger, acquisition, reorganisation, sale of assets, or similar transaction, personal data may need to be transferred. In that event:
+If Proudlock Technology LLC is part of a merger, acquisition, reorganisation, sale of assets, or similar transaction, personal data may need to be transferred. In that event:
 
 - affected users receive at least 30 days' advance notice, where legally permitted, before personal data is transferred
 - the acquiring entity is bound by this Privacy Policy for as long as it holds your data, unless it obtains your affirmative consent to a new policy
@@ -157,7 +156,7 @@ If Fluxer Platform AB is part of a merger, acquisition, reorganisation, sale of 
 
 ## 5. Content safety
 
-Fluxer does not run AI or LLM inference on your content, and nothing you share is used to train or evaluate AI models, ours or anyone else's (Section 3). What we run instead is a small set of automated safety measures, plus limited human review in defined circumstances.
+Echowire does not run AI or LLM inference on your content, and nothing you share is used to train or evaluate AI models, ours or anyone else's (Section 3). What we run instead is a small set of automated safety measures, plus limited human review in defined circumstances.
 
 ### 5.1 Explicit-content classification
 
@@ -208,7 +207,7 @@ Because we operate globally and use providers in multiple countries, your data m
 
 Where the law requires it (under GDPR, for instance), safeguards are in place. Our data processing agreements include Standard Contractual Clauses approved by the European Commission or UK authorities, maintained even where other adequacy mechanisms may apply. Transfer Impact Assessments are carried out for each destination, covering the legal framework in the recipient country and the actual ability of authorities there to access data. Supplementary measures are contractual, organisational, and technical: encryption in transit and at rest, strict access controls, audit logging of access to user data, and contractual limits on provider use.
 
-These measures have limits. We do not currently rely on jurisdiction-specific key separation, customer-controlled encryption keys, or an architecture that would make server-side data inaccessible to a provider served with a lawful order. For data we need to process on our servers to run Fluxer, these measures reduce transfer and access risk but do not eliminate it. Your data is never transferred to any third party for that party's independent advertising or marketing purposes.
+These measures have limits. We do not currently rely on jurisdiction-specific key separation, customer-controlled encryption keys, or an architecture that would make server-side data inaccessible to a provider served with a lawful order. For data we need to process on our servers to run Echowire, these measures reduce transfer and access risk but do not eliminate it. Your data is never transferred to any third party for that party's independent advertising or marketing purposes.
 
 ## 7. Data retention
 
@@ -224,9 +223,9 @@ Attachments may remain available only for a limited time, depending on factors s
 
 ### 7.3 Phone verification markers
 
-Phone numbers used for account verification are not stored on your Fluxer account; when verification succeeds, your account stores only `has_verified_phone: true`.
+Phone numbers used for account verification are not stored on your Echowire account; when verification succeeds, your account stores only `has_verified_phone: true`.
 
-To prevent repeated reuse during suspicious registrations, we keep an internal encrypted marker for the phone number for about 30 days. The marker contains no user ID or account reference, so it cannot be linked to an individual Fluxer account. It is used only to allow the same phone number to verify at most twice during that period, and not for SMS 2FA, recovery, advertising, profiling, contact discovery, or linking accounts together. The encryption key for these markers is rotated roughly every 30 days, with a short primary/secondary rollover so existing markers can expire naturally.
+To prevent repeated reuse during suspicious registrations, we keep an internal encrypted marker for the phone number for about 30 days. The marker contains no user ID or account reference, so it cannot be linked to an individual Echowire account. It is used only to allow the same phone number to verify at most twice during that period, and not for SMS 2FA, recovery, advertising, profiling, contact discovery, or linking accounts together. The encryption key for these markers is rotated roughly every 30 days, with a short primary/secondary rollover so existing markers can expire naturally.
 
 ### 7.4 Deleted content
 
@@ -246,7 +245,7 @@ Accounts may be scheduled for deletion after 2 years of inactivity, with advance
 
 ### 7.7 Payment and transaction data
 
-Transaction records are kept for at least seven years, as required by Swedish bookkeeping law (Bokföringslag 1999:1078), and for as long thereafter as needed for legal compliance, dispute resolution, or fraud prevention. Retention is reviewed periodically. Full payment card numbers are not stored.
+Transaction records are kept for at least seven years, as required by applicable tax and accounting law, and for as long thereafter as needed for legal compliance, dispute resolution, or fraud prevention. Retention is reviewed periodically. Full payment card numbers are not stored.
 
 ### 7.8 Logs and security data
 
@@ -271,7 +270,7 @@ Snapshots are kept for up to 1 year from the report date, after which an automat
 - **Report snapshots (in-app reports):** up to 1 year; access limited to authorised staff and audit-logged.
 - **Security and usage logs:** up to 90 days (longer only for active investigations or legal obligations).
 - **Audit logs:** kept as needed; reviewed periodically.
-- **Payment and transaction records:** at least 7 years (Swedish bookkeeping law); reviewed periodically after that.
+- **Payment and transaction records:** at least 7 years (applicable tax law); reviewed periodically after that.
 - **Inactive accounts:** scheduled for deletion after 2 years of inactivity, with advance notice.
 
 ## 8. Your controls
@@ -288,7 +287,7 @@ Snapshots are kept for up to 1 year from the report date, after which an automat
 
 ### 8.2 Requests by email
 
-To remove or correct a specific piece of data rather than delete everything, write to <privacy@fluxer.app> from the address associated with your Fluxer account, telling us clearly what you want us to do. We may ask for more information to verify your identity. If you want a copy of your data before deleting messages or your account, request an export first and wait for it to complete.
+To remove or correct a specific piece of data rather than delete everything, write to <privacy@echowire.org> from the address associated with your Echowire account, telling us clearly what you want us to do. We may ask for more information to verify your identity. If you want a copy of your data before deleting messages or your account, request an export first and wait for it to complete.
 
 ## 9. Security
 
@@ -303,15 +302,15 @@ Technical and organisational measures protect your personal data against acciden
 - regular encrypted backups for disaster recovery
 - audit logging of access to user data
 
-**A note on encryption.** Nothing on Fluxer is currently end-to-end encrypted. Your data is encrypted in transit between your device and our servers, and at rest on our servers and backups, but because the service relies on server-side processing to function, message content is technically accessible to our systems while it is being handled. The same holds for real-time voice and video, which runs on Vultr across multiple regions (Section 6.1) with traffic encrypted in transit. In plain terms, you are trusting Fluxer and our hosting provider to protect that traffic.
+**A note on encryption.** Nothing on Echowire is currently end-to-end encrypted. Your data is encrypted in transit between your device and our servers, and at rest on our servers and backups, but because the service relies on server-side processing to function, message content is technically accessible to our systems while it is being handled. The same holds for real-time voice and video, which runs on Vultr across multiple regions (Section 6.1) with traffic encrypted in transit. In plain terms, you are trusting Echowire and our hosting provider to protect that traffic.
 
-Opt-in end-to-end encryption is planned for Personal Notes, DMs, Group DMs, and voice chats. Until that feature exists and you turn it on for a supported area, content and call media are not end-to-end encrypted on Fluxer.
+Opt-in end-to-end encryption is planned for Personal Notes, DMs, Group DMs, and voice chats. Until that feature exists and you turn it on for a supported area, content and call media are not end-to-end encrypted on Echowire.
 
 **Responsible disclosure.** Security vulnerabilities can be reported through our [Security bug bounty page](/security). Responsible disclosure is appreciated and may be acknowledged publicly with your consent.
 
 ### 9.1 Data breaches
 
-In the event of a personal data breach, we will investigate and take appropriate remedial steps. The relevant supervisory authority (IMY) will be notified within 72 hours of our becoming aware of a breach likely to pose a risk to your rights and freedoms, as GDPR Article 33 requires; affected users will be notified without undue delay where the risk is high, as Article 34 requires; and other applicable breach notification obligations will be met. Notifications will explain what happened, what data is likely affected, the likely consequences, and what you can do to protect yourself.
+In the event of a personal data breach, we will investigate and take appropriate remedial steps. The relevant supervisory authority will be notified within 72 hours of our becoming aware of a breach likely to pose a risk to your rights and freedoms, as GDPR Article 33 requires; affected users will be notified without undue delay where the risk is high, as Article 34 requires; and other applicable breach notification obligations will be met. Notifications will explain what happened, what data is likely affected, the likely consequences, and what you can do to protect yourself.
 
 ## 10. Your rights
 
@@ -343,43 +342,43 @@ Additional California-specific disclosures are in Section 17.
 
 ### 10.3 Exercising your rights
 
-Several of these rights can be exercised directly through your Privacy dashboard and account settings. Requests can also be sent to <privacy@fluxer.app>. We may need to verify your identity, for instance by asking you to reply from your registered email or provide additional details. Responses are returned within the timeframe required by applicable law, usually within 30 days, or up to 45 days where permitted. If we cannot fully comply (due to legal obligations or the rights of others, for example), we will explain why and what options remain. You can authorise an agent to submit requests on your behalf where the law permits; proof of authorisation may be requested.
+Several of these rights can be exercised directly through your Privacy dashboard and account settings. Requests can also be sent to <privacy@echowire.org>. We may need to verify your identity, for instance by asking you to reply from your registered email or provide additional details. Responses are returned within the timeframe required by applicable law, usually within 30 days, or up to 45 days where permitted. If we cannot fully comply (due to legal obligations or the rights of others, for example), we will explain why and what options remain. You can authorise an agent to submit requests on your behalf where the law permits; proof of authorisation may be requested.
 
 ### 10.4 Complaints to supervisory authorities
 
-You have the right to lodge a complaint with your local data protection authority. In Sweden, that is the Swedish Authority for Privacy Protection (IMY) at [imy.se](https://www.imy.se); in the UK, the Information Commissioner's Office (ICO) at [ico.org.uk](https://ico.org.uk); the authority in your country of residence is also an option. You can also raise concerns with us first, so we have an opportunity to resolve them directly.
+You have the right to lodge a complaint with your local data protection authority. For example, in the UK, the Information Commissioner's Office (ICO) at [ico.org.uk](https://ico.org.uk); the authority in your country of residence is also an option. You can also raise concerns with us first, so we have an opportunity to resolve them directly.
 
 ## 11. Children's privacy
 
 ### 11.1 Minimum age
 
-Meeting the minimum age requirement in your region is a condition of using Fluxer. The general minimum, including in Sweden, is 13, though some countries set it higher; the full list is in our [help article on minimum age requirements](/help/minimum-age). Users above the minimum age but below the age of legal majority (for example, under 18) may use Fluxer, but our Terms require a parent or guardian to review and agree to them on the user's behalf.
+Meeting the minimum age requirement in your region is a condition of using Echowire. The general minimum is 13, though some countries set it higher; the full list is in our [help article on minimum age requirements](/help/minimum-age). Users above the minimum age but below the age of legal majority (for example, under 18) may use Echowire, but our Terms require a parent or guardian to review and agree to them on the user's behalf.
 
 ### 11.2 Protections for younger users
 
-Eligibility is determined from approximate geographic location and self-reported information. Users identified as under 18 may have stricter safety features enabled by default, including tighter privacy defaults and restrictions on age-restricted features. Because no user is profiled for advertising or commercial purposes on Fluxer, minors are not either. Invasive verification methods such as government ID uploads or biometric scans are not used for general access; where a legal framework would require methods we do not support, access is restricted as described in Section 3.2 and on the [Regional restrictions](/help/regional-restrictions) page.
+Eligibility is determined from approximate geographic location and self-reported information. Users identified as under 18 may have stricter safety features enabled by default, including tighter privacy defaults and restrictions on age-restricted features. Because no user is profiled for advertising or commercial purposes on Echowire, minors are not either. Invasive verification methods such as government ID uploads or biometric scans are not used for general access; where a legal framework would require methods we do not support, access is restricted as described in Section 3.2 and on the [Regional restrictions](/help/regional-restrictions) page.
 
 ### 11.3 If a child below the minimum age is identified
 
-We do not knowingly collect personal information from children below the minimum age for their region; in the United States, that means children under 13, in line with the Children's Online Privacy Protection Act (COPPA). If information from such a child reaches us, we take steps to delete it and, where appropriate, the account. A parent or legal guardian who believes their child has used Fluxer without consent, or does not meet the minimum age, should write to <privacy@fluxer.app> from the child's registered email, or with sufficient proof of guardianship, to request deletion of the account and data.
+We do not knowingly collect personal information from children below the minimum age for their region; in the United States, that means children under 13, in line with the Children's Online Privacy Protection Act (COPPA). If information from such a child reaches us, we take steps to delete it and, where appropriate, the account. A parent or legal guardian who believes their child has used Echowire without consent, or does not meet the minimum age, should write to <privacy@echowire.org> from the child's registered email, or with sufficient proof of guardianship, to request deletion of the account and data.
 
 ## 12. Cookies and similar technologies
 
 ### 12.1 Approach
 
-Third-party advertising and tracking cookies are not used anywhere on Fluxer (Section 2.2). Operational logging and limited feature-usage telemetry live server-side and are not used for advertising or cross-site profiling.
+Third-party advertising and tracking cookies are not used anywhere on Echowire (Section 2.2). Operational logging and limited feature-usage telemetry live server-side and are not used for advertising or cross-site profiling.
 
 ### 12.2 Cookies we set
 
 A small number of cookies are set, all strictly necessary for operation and security, which under the ePrivacy Directive do not require consent:
 
-- **`locale`:** remembers your language preference. Lasts 1 year; set on the marketing site (`fluxer.app`).
+- **`locale`:** remembers your language preference. Lasts 1 year; set on the marketing site (`echowire.org`).
 - **`csrf_token`:** protects against cross-site request forgery (CSRF) attacks. Lasts 24 hours; set on the marketing site.
-- **`__flx_sudo` or `__flx_sudo_<user_id>`:** verifies your identity during sensitive account operations. Lasts 5 minutes; set in the Fluxer application. Sudo-mode cookies tied to a specific account have the user ID appended to the cookie name.
+- **`__flx_sudo` or `__flx_sudo_<user_id>`:** verifies your identity during sensitive account operations. Lasts 5 minutes; set in the Echowire application. Sudo-mode cookies tied to a specific account have the user ID appended to the cookie name.
 
 ### 12.3 Client-side storage
 
-The Fluxer application does not use cookies for authentication or session management. It uses your browser's local and session storage for preferences such as theme, media volume, and playback settings. That data stays on your device and is not sent to our servers.
+The Echowire application does not use cookies for authentication or session management. It uses your browser's local and session storage for preferences such as theme, media volume, and playback settings. That data stays on your device and is not sent to our servers.
 
 ### 12.4 Third-party cookies
 
@@ -387,19 +386,19 @@ Embedded third-party content may set its own cookies when you interact with it. 
 
 ### 12.5 Managing cookies
 
-Cookies can be controlled through your browser settings, though because all Fluxer cookies are strictly necessary, disabling them may stop some features from working. If non-essential cookies are ever introduced, for example analytics cookies, this section will be updated and consent obtained before they are set.
+Cookies can be controlled through your browser settings, though because all Echowire cookies are strictly necessary, disabling them may stop some features from working. If non-essential cookies are ever introduced, for example analytics cookies, this section will be updated and consent obtained before they are set.
 
 ### 12.6 Opt-out preference signals
 
-Browser-level opt-out signals such as Global Privacy Control (GPC) are honoured and recognised as valid opt-out requests as the CCPA requires. Because we do not sell or share personal information for advertising, they do not change underlying processing. Do Not Track (DNT) signals are not treated differently, as there is no industry consensus on interpreting them; in practice, Fluxer already reflects the intent behind DNT, since users are not tracked across third-party sites.
+Browser-level opt-out signals such as Global Privacy Control (GPC) are honoured and recognised as valid opt-out requests as the CCPA requires. Because we do not sell or share personal information for advertising, they do not change underlying processing. Do Not Track (DNT) signals are not treated differently, as there is no industry consensus on interpreting them; in practice, Echowire already reflects the intent behind DNT, since users are not tracked across third-party sites.
 
 ## 13. Third-party services and links
 
-Fluxer may include links to, or integrations with, third-party services.
+Echowire may include links to, or integrations with, third-party services.
 
 _GIF search (Tenor, KLIPY)._ Search queries and GIF embedding are both proxied through our servers. These providers never see your IP address or device identifiers.
 
-_Links sent in messages._ Sending a URL in a message may cause our backend to fetch it to generate a rich embed or embedded media. Such requests identify themselves with a `User-Agent` string containing `Fluxerbot`. Site operators can block requests whose `User-Agent` contains `Fluxerbot`; doing so prevents rich embeds and embedded media from appearing in Fluxer when someone links to the site.
+_Links sent in messages._ Sending a URL in a message may cause our backend to fetch it to generate a rich embed or embedded media. Such requests identify themselves with a `User-Agent` string containing `Fluxerbot`. Site operators can block requests whose `User-Agent` contains `Fluxerbot`; doing so prevents rich embeds and embedded media from appearing in Echowire when someone links to the site.
 
 _YouTube links._ Video metadata is fetched server-side from the YouTube API so previews render without your device contacting YouTube. Playing an embedded video loads content directly from YouTube, which may collect information under its own privacy policy.
 
@@ -409,22 +408,22 @@ Third-party services operate under their own privacy policies and data practices
 
 ## 14. Law enforcement and legal requests
 
-Every legal request for user data receives careful review, with the privacy and security of the people involved as the primary consideration. Requests should be directed to <legal@fluxer.app> and must identify the requesting authority, legal basis, and scope of data requested. Overbroad, legally invalid, or inconsistent requests may be narrowed or refused. Where the law allows, and where notice would not create a safety, security, or legal-process risk, affected users are notified before disclosure so they have an opportunity to object. In genuine emergencies, disclosure may occur without prior notice where reasonably necessary to prevent harm, protect safety, or respond to an urgent situation, in line with applicable law.
+Every legal request for user data receives careful review, with the privacy and security of the people involved as the primary consideration. Requests should be directed to <legal@echowire.org> and must identify the requesting authority, legal basis, and scope of data requested. Overbroad, legally invalid, or inconsistent requests may be narrowed or refused. Where the law allows, and where notice would not create a safety, security, or legal-process risk, affected users are notified before disclosure so they have an opportunity to object. In genuine emergencies, disclosure may occur without prior notice where reasonably necessary to prevent harm, protect safety, or respond to an urgent situation, in line with applicable law.
 
 ## 15. Changes to this policy
 
 This policy may be updated to reflect changes in our practices, services, or legal obligations. Material changes come with at least 30 days' advance notice through email, in-app notification, or a notice on our website, and the effective date at the top is updated. In the app, a persistent notice may link to the new version, and you may be asked to review and acknowledge the changes so we have a record that you saw them.
 
-After the effective date, the updated policy applies to your continued use of Fluxer. If you disagree with an updated policy, you can export your data, delete your messages, and delete your account at any time, using the tools in Section 8. A [changelog](/changelog) is maintained for reference.
+After the effective date, the updated policy applies to your continued use of Echowire. If you disagree with an updated policy, you can export your data, delete your messages, and delete your account at any time, using the tools in Section 8. A [changelog](/changelog) is maintained for reference.
 
 ## 16. Contact
 
-**Privacy and data protection:** <privacy@fluxer.app> (Hampus Kraft, Founder and CEO)
-**General support:** <support@fluxer.app>
+**Privacy and data protection:** <privacy@echowire.org> (Cameron Proudlock, Owner)
+**General support:** <support@echowire.org>
 
 Our postal address, phone number, and all other contact routes (press, security, legal requests) are listed in Section 1 and on our [Company Information page](/company-information).
 
-For account-related requests, write from the email address on your Fluxer account where possible; it makes verifying your identity easier and protects the account.
+For account-related requests, write from the email address on your Echowire account where possible; it makes verifying your identity easier and protects the account.
 
 ## 17. Additional information for California residents
 
@@ -445,7 +444,7 @@ Biometric information, professional or employment information, and education inf
 
 Of the categories of "sensitive personal information" defined by the CCPA, only account log-in credentials (email address combined with password) are collected, for the purposes of running the service and securing the account.
 
-From 1 January 2026, the CPRA also classifies personal information of consumers under 16 as sensitive. Because Fluxer permits account creation from age 13 (depending on jurisdiction), information meeting that definition may be collected and processed. It is not used or disclosed beyond what is needed to run the service.
+From 1 January 2026, the CPRA also classifies personal information of consumers under 16 as sensitive. Because Echowire permits account creation from age 13 (depending on jurisdiction), information meeting that definition may be collected and processed. It is not used or disclosed beyond what is needed to run the service.
 
 ### 17.3 Business purposes for collection
 
@@ -469,7 +468,7 @@ Each category of personal information is retained for the periods set out in Sec
 
 ### 17.7 Your California rights
 
-California residents have the rights listed in Section 10: to know, to delete, to correct, to opt out of sale or sharing (none occurs), and to be free from discrimination. These rights can be exercised by writing to <privacy@fluxer.app> or through the controls described in Section 8. An authorised agent may be designated.
+California residents have the rights listed in Section 10: to know, to delete, to correct, to opt out of sale or sharing (none occurs), and to be free from discrimination. These rights can be exercised by writing to <privacy@echowire.org> or through the controls described in Section 8. An authorised agent may be designated.
 
 ### 17.8 Opt-out preference signals
 

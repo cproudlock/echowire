@@ -13,11 +13,7 @@ import type {ILogger} from '../ILogger';
 import {JobLedgerRepository} from '../jobs/JobLedgerRepository';
 import {startAbuseReplicationSubscriber, stopAbuseReplicationSubscriber} from '../middleware/AbusiveIpAutoBanner';
 import {ipBanCache} from '../middleware/IpBanMiddleware';
-import {
-	getRiskCacheManagerInstance,
-	initializeServiceSingletons,
-	shutdownReportService,
-} from '../middleware/ServiceMiddleware';
+import {initializeServiceSingletons, shutdownReportService} from '../middleware/ServiceMiddleware';
 import {
 	ensureVoiceResourcesInitialized,
 	getKVClient,
@@ -32,69 +28,26 @@ import {
 	getUserRepository,
 } from '../middleware/ServiceSingletons';
 import {torExitListCache} from '../middleware/TorExitListCache';
+import {ensureApnsSigningKey} from '../push/ApnsPushService';
 import {initializeSearch, shutdownSearch} from '../SearchFactory';
 import {warmupAdminSearchIndexes} from '../search/SearchWarmup';
 import {VisionarySlotInitializer} from '../stripe/VisionarySlotInitializer';
 import {VoiceDataInitializer} from '../voice/VoiceDataInitializer';
 import {JetStreamWorkerQueue} from '../worker/JetStreamWorkerQueue';
 import {WorkerService} from '../worker/WorkerService';
+import {ensureDeletionQueueState} from './DeletionQueueStartup';
 
 let jsConnectionManager: JetStreamConnectionManager | null = null;
-let riskCacheRefreshInterval: NodeJS.Timeout | null = null;
-let riskCacheRefreshInFlight = false;
 
-const RISK_CACHE_REFRESH_INTERVAL_MS = 5 * 60 * 1000;
-
-async function refreshRiskCache(logger: ILogger, source: 'startup' | 'interval'): Promise<void> {
-	if (riskCacheRefreshInFlight) {
-		return;
-	}
-	riskCacheRefreshInFlight = true;
-	try {
-		const result = await getRiskCacheManagerInstance().refresh();
-		if (result.subtaskErrors.length > 0) {
-			logger.warn({source, errors: result.subtaskErrors}, 'Risk cache refresh completed with errors');
-			return;
-		}
-		logger.info(
-			{
-				source,
-				disposableDomainCount: result.disposableDomainCount,
-			},
-			source === 'startup' ? 'Risk cache initialized on API startup' : 'Risk cache refresh complete on API',
-		);
-	} catch (error) {
-		if (source === 'startup') {
-			logger.warn({error}, 'Risk cache initialisation failed on API startup');
-			return;
-		}
-		logger.warn({error}, 'Periodic risk cache refresh failed on API');
-	} finally {
-		riskCacheRefreshInFlight = false;
-	}
-}
-
-function startRiskCacheRefreshLoop(logger: ILogger): void {
-	if (riskCacheRefreshInterval) {
-		return;
-	}
-	riskCacheRefreshInterval = setInterval(() => {
-		void refreshRiskCache(logger, 'interval');
-	}, RISK_CACHE_REFRESH_INTERVAL_MS);
-}
-
-function stopRiskCacheRefreshLoop(): void {
-	if (!riskCacheRefreshInterval) {
-		return;
-	}
-	clearInterval(riskCacheRefreshInterval);
-	riskCacheRefreshInterval = null;
+function unsupportedDatabaseBackend(backend: never): never {
+	throw new Error(`Unsupported database backend during shutdown: ${String(backend)}`);
 }
 
 export function createInitializer(config: APIConfig, logger: ILogger): () => Promise<void> {
 	return async (): Promise<void> => {
 		try {
 			logger.info('Initializing API service...');
+			await ensureApnsSigningKey();
 			const geoipStartupResult = await ensureGeoipDatabaseOnStartup({
 				geoip: config.geoip,
 				s3Config: {
@@ -171,8 +124,6 @@ export function createInitializer(config: APIConfig, logger: ILogger): () => Pro
 			logger.info('Profile substring blocklist cache initialized');
 			await initializeServiceSingletons();
 			logger.info('Service singletons initialized');
-			await refreshRiskCache(logger, 'startup');
-			startRiskCacheRefreshLoop(logger);
 			if (!config.dev.testModeEnabled) {
 				jsConnectionManager = new JetStreamConnectionManager({
 					url: config.nats.jetStreamUrl,
@@ -185,19 +136,8 @@ export function createInitializer(config: APIConfig, logger: ILogger): () => Pro
 				setInjectedWorkerService(new WorkerService(workerQueue, getSnowflakeService(), new JobLedgerRepository()));
 				logger.info('JetStream worker service initialized');
 			}
-			try {
-				const kvDeletionQueue = getKVAccountDeletionQueue();
-				if (await kvDeletionQueue.needsRebuild()) {
-					logger.warn('KV deletion queue needs rebuild, rebuilding...');
-					await kvDeletionQueue.rebuildState();
-				} else {
-					logger.info('KV deletion queue state is healthy');
-				}
-			} catch (error) {
-				logger.error({error}, 'Failed to verify KV deletion queue state');
-				throw error;
-			}
-			logger.info('Initializing data-service search...');
+			await ensureDeletionQueueState(getKVAccountDeletionQueue(), logger);
+			logger.info('Initializing search indexes...');
 			let searchInitialized = false;
 			try {
 				await initializeSearch(getCacheService());
@@ -261,13 +201,13 @@ export function createInitializer(config: APIConfig, logger: ILogger): () => Pro
 			logger.info('API service initialization complete');
 		} catch (error) {
 			logger.error({error}, 'API service initialization failed');
-			await createShutdown(logger)();
+			await createShutdown(config, logger)();
 			throw error;
 		}
 	};
 }
 
-export function createShutdown(logger: ILogger): () => Promise<void> {
+export function createShutdown(config: APIConfig, logger: ILogger): () => Promise<void> {
 	return async (): Promise<void> => {
 		logger.info('Shutting down API service...');
 		if (jsConnectionManager) {
@@ -284,12 +224,6 @@ export function createShutdown(logger: ILogger): () => Promise<void> {
 			logger.info('Search service shut down');
 		} catch (error) {
 			logger.error({error}, 'Error shutting down search service');
-		}
-		try {
-			stopRiskCacheRefreshLoop();
-			logger.info('Risk cache refresh loop shut down');
-		} catch (error) {
-			logger.error({error}, 'Error shutting down risk cache refresh loop');
 		}
 		try {
 			ipBanCache.shutdown();
@@ -321,18 +255,26 @@ export function createShutdown(logger: ILogger): () => Promise<void> {
 		} catch (error) {
 			logger.error({error}, 'Error shutting down report service');
 		}
-		try {
-			setDatabaseQueryExecutor(null);
-			await shutdownPostgres();
-			logger.info('Postgres client shut down');
-		} catch (error) {
-			logger.error({error}, 'Error shutting down Postgres client');
-		}
-		try {
-			await shutdownCassandra();
-			logger.info('Cassandra client shut down');
-		} catch (error) {
-			logger.error({error}, 'Error shutting down Cassandra client');
+		setDatabaseQueryExecutor(null);
+		switch (config.database.backend) {
+			case 'postgres':
+				try {
+					await shutdownPostgres();
+					logger.info('Postgres client shut down');
+				} catch (error) {
+					logger.error({error}, 'Error shutting down Postgres client');
+				}
+				break;
+			case 'cassandra':
+				try {
+					await shutdownCassandra();
+					logger.info('Cassandra client shut down');
+				} catch (error) {
+					logger.error({error}, 'Error shutting down Cassandra client');
+				}
+				break;
+			default:
+				unsupportedDatabaseBackend(config.database.backend);
 		}
 		logger.info('API service shutdown complete');
 	};

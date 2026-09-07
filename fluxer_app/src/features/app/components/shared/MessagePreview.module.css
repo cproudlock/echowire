@@ -9,8 +9,8 @@
 	-webkit-user-select: none;
 	overflow: visible;
 	flex-shrink: 0;
-	border-radius: 0.375rem;
-	border: 0.0625rem solid var(--background-header-secondary);
+	border-radius: 0.5rem;
+	border: 0.0625rem solid var(--message-preview-card-border, var(--background-header-secondary));
 	background-color: var(--message-preview-card-background, transparent);
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
@@ -41,7 +41,7 @@
 
 .actionButton {
 	composes: item textItem from '@app/features/ui/action_toolbar/ActionToolbar.module.css';
-	--action-toolbar-item-border-width: 0;
+	--action-toolbar-item-border-width: 0px;
 	--action-toolbar-item-radius: 0.25rem;
 	--action-toolbar-item-background: var(--background-primary);
 	--action-toolbar-item-color: var(--text-primary-muted);
@@ -54,7 +54,7 @@
 .actionIconButton {
 	composes: item from '@app/features/ui/action_toolbar/ActionToolbar.module.css';
 	--action-toolbar-item-size: 1.5rem;
-	--action-toolbar-item-border-width: 0;
+	--action-toolbar-item-border-width: 0px;
 	--action-toolbar-item-radius: 0.25rem;
 	--action-toolbar-item-background: var(--background-primary);
 	--action-toolbar-item-color: var(--text-primary-muted);

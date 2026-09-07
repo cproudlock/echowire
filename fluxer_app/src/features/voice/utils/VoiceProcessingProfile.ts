@@ -25,10 +25,18 @@ export interface ResolvedVoiceProcessing {
 	contentHint: '' | 'speech' | 'music';
 }
 
-export const DEFAULT_VOICE_PROCESSING_MODE: VoiceProcessingMode = 'voice';
+// Echowire: default to 'custom' (AGC off, standard browser NS, DeepFilter/enhanced NS off,
+// echo cancellation on, auto activity threshold on). The old 'voice' preset forced the
+// enhanced DeepFilter noise suppressor on, which over-processes and degrades audio over a
+// session (see upstream fluxerapp/fluxer#878). Existing users are moved onto this profile by
+// applyVoiceProcessingDefaultsMigrationV1 in VoiceSettings.
+export const DEFAULT_VOICE_PROCESSING_MODE: VoiceProcessingMode = 'custom';
 export const DEEP_FILTER_NOISE_REDUCTION_LEVEL_MIN = 0;
 export const DEEP_FILTER_NOISE_REDUCTION_LEVEL_MAX = 100;
-export const FOCUSED_VOICE_DEEP_FILTER_NOISE_REDUCTION_LEVEL = 100;
+// Echowire: was 100 (max), which over-processed voice into a "digital/robotic" timbre.
+// 80 matches the Custom-mode DeepFilter default users confirmed sounds natural while still
+// suppressing noise. See also the contentHint change in the default 'voice' profile below.
+export const FOCUSED_VOICE_DEEP_FILTER_NOISE_REDUCTION_LEVEL = 80;
 
 export function clampDeepFilterNoiseReductionLevel(level: number): number {
 	if (!Number.isFinite(level)) {
@@ -50,13 +58,12 @@ export function resolveVoiceProcessing(settings: VoiceProcessingSettingsLike): R
 				contentHint: 'music',
 			};
 		case 'custom': {
-			const autoGain = settings.deepFilterNoiseSuppression ? false : settings.autoGainControl;
 			const browserNs = settings.noiseSuppression && !settings.deepFilterNoiseSuppression;
 			return {
 				mode: 'custom',
 				echoCancellation: settings.echoCancellation,
 				browserNoiseSuppression: browserNs,
-				autoGainControl: autoGain,
+				autoGainControl: settings.autoGainControl,
 				deepFilter: settings.deepFilterNoiseSuppression,
 				deepFilterNoiseReductionLevel: settings.deepFilterNoiseSuppression
 					? clampDeepFilterNoiseReductionLevel(settings.deepFilterNoiseSuppressionLevel)
@@ -68,11 +75,14 @@ export function resolveVoiceProcessing(settings: VoiceProcessingSettingsLike): R
 			return {
 				mode: 'voice',
 				echoCancellation: true,
-				browserNoiseSuppression: false,
-				autoGainControl: false,
+				browserNoiseSuppression: true,
+				autoGainControl: settings.autoGainControl,
 				deepFilter: true,
 				deepFilterNoiseReductionLevel: FOCUSED_VOICE_DEEP_FILTER_NOISE_REDUCTION_LEVEL,
-				contentHint: 'speech',
+				// Echowire: was 'speech', which forced Opus into narrowband and made voice sound
+				// nasally/telephone-y. '' lets Opus run full-band (as the Custom profiles do, which
+				// users confirmed sound natural). This is the primary fix for the "nasally" report.
+				contentHint: '',
 			};
 	}
 }

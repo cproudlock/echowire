@@ -1,0 +1,74 @@
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+// Echowire: "Threads" header button — opens the threads popout (active/archived).
+
+import {ChannelHeaderIcon} from '@app/features/channel/components/channel_header_components/ChannelHeaderIcon';
+import {ChannelThreadsPopout} from '@app/features/channel/components/popouts/ChannelThreadsPopout';
+import type {Channel} from '@app/features/channel/models/Channel';
+import Channels from '@app/features/channel/state/Channels';
+import ReadStates from '@app/features/read_state/state/ReadStates';
+import {usePopout} from '@app/features/ui/hooks/usePopout';
+import {Popout} from '@app/features/ui/popover/PopoverPopout';
+import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {ChatCircleIcon} from '@phosphor-icons/react';
+import {observer} from 'mobx-react-lite';
+
+// Echowire: plain string — this is a fork-added feature label and isn't in the
+// lingui message catalog, so i18n._(msg(...)) logged an "uncompiled message"
+// warning on every render. English-only label; use it directly.
+const THREADS_LABEL = 'Threads';
+
+export const ChannelThreadsButton = observer(({channel}: {channel: Channel}) => {
+	const {isOpen, openProps} = usePopout('channel-threads');
+	// Aggregate unread: any active thread under this channel with unread/mentions.
+	const hasUnreadThread =
+		channel.guildId != null &&
+		Channels.getGuildChannels(channel.guildId).some(
+			(c) =>
+				c.parentId === channel.id &&
+				THREAD_CHANNEL_TYPES.has(c.type) &&
+				!c.threadMetadata?.archived &&
+				ReadStates.isUnreadOrMentioned(c.id),
+		);
+	return (
+		<Popout
+			data-flx="channel.channel-threads-button.popout"
+			{...openProps}
+			render={({onClose}) => (
+				<ChannelThreadsPopout
+					channel={channel}
+					onClose={onClose}
+					data-flx="channel.channel-threads-button.channel-threads-popout"
+				/>
+			)}
+			position="bottom-end"
+		>
+			<span style={{position: 'relative', display: 'inline-flex'}}>
+				<ChannelHeaderIcon
+					icon={ChatCircleIcon}
+					label={THREADS_LABEL}
+					isSelected={isOpen}
+					aria-haspopup={true}
+					aria-expanded={isOpen}
+					data-flx="channel.channel-threads-button.channel-header-icon"
+				/>
+				{hasUnreadThread && (
+					<span
+						aria-hidden={true}
+						style={{
+							position: 'absolute',
+							top: 4,
+							right: 4,
+							width: 8,
+							height: 8,
+							borderRadius: '50%',
+							background: 'var(--text-normal)',
+							border: '2px solid var(--background-primary, var(--background-secondary))',
+							pointerEvents: 'none',
+						}}
+					/>
+				)}
+			</span>
+		</Popout>
+	);
+});

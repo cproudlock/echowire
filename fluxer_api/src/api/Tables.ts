@@ -245,7 +245,6 @@ import {
 	VISIONARY_SLOT_COLUMNS,
 	type VisionarySlotRow,
 } from './database/types/PaymentTypes';
-import {PNEUMATIC_POST_DELIVERY_COLUMNS, type PneumaticPostDeliveryRow} from './database/types/PneumaticPostTypes';
 import {
 	DSA_REPORT_EMAIL_VERIFICATION_COLUMNS,
 	DSA_REPORT_TICKET_COLUMNS,
@@ -291,13 +290,10 @@ import {
 	type SuspiciousIpRow,
 } from './database/types/RiskTypes';
 import {
-	EXPRESSION_PACK_COLUMNS,
-	type ExpressionPackRow,
 	FAVORITE_MEME_COLUMNS,
 	type FavoriteMemeRow,
 	NOTE_COLUMNS,
 	type NoteRow,
-	type PackInstallationRow,
 	PUSH_SUBSCRIPTION_COLUMNS,
 	type PushSubscriptionRow,
 	RECENT_MENTION_COLUMNS,
@@ -306,8 +302,6 @@ import {
 	type RelationshipRow,
 	SAVED_MESSAGE_COLUMNS,
 	type SavedMessageRow,
-	SCHEDULED_MESSAGE_COLUMNS,
-	type ScheduledMessageRow,
 	USER_BY_EMAIL_COLUMNS,
 	USER_BY_LAST_ACTIVE_IP_COLUMNS,
 	USER_BY_LAST_ACTIVE_IP_TRUST_KEY_COLUMNS,
@@ -432,11 +426,6 @@ export const UserContactChangeLogs = defineTable<UserContactChangeLogRow, 'user_
 	name: 'user_contact_change_logs',
 	columns: USER_CONTACT_CHANGE_LOG_COLUMNS,
 	primaryKey: ['user_id', 'event_id'],
-});
-export const PneumaticPostDeliveries = defineTable<PneumaticPostDeliveryRow, 'user_id' | 'dispatch_key'>({
-	name: 'pneumatic_post_deliveries',
-	columns: PNEUMATIC_POST_DELIVERY_COLUMNS,
-	primaryKey: ['user_id', 'dispatch_key'],
 });
 export const UserConnections = defineTable<UserConnectionRow, 'user_id' | 'connection_type' | 'connection_id'>({
 	name: 'user_connections',
@@ -631,6 +620,23 @@ export const ReadStates = defineTable<ReadStateRow, 'user_id' | 'channel_id'>({
 	columns: READ_STATE_COLUMNS,
 	primaryKey: ['user_id', 'channel_id'],
 });
+
+// Echowire: thread membership. Partition by thread so all members of a thread list together.
+export interface ThreadMemberRow {
+	thread_id: bigint;
+	user_id: bigint;
+	join_timestamp: Date;
+	flags: number;
+}
+const THREAD_MEMBER_COLUMNS = ['thread_id', 'user_id', 'join_timestamp', 'flags'] as const satisfies ReadonlyArray<
+	keyof ThreadMemberRow
+>;
+export const ThreadMembers = defineTable<ThreadMemberRow, 'thread_id' | 'user_id', 'thread_id'>({
+	name: 'thread_members',
+	columns: THREAD_MEMBER_COLUMNS,
+	primaryKey: ['thread_id', 'user_id'],
+	partitionKey: ['thread_id'],
+});
 export const Messages = defineTable<MessageRow, 'channel_id' | 'bucket' | 'message_id', 'channel_id' | 'bucket'>({
 	name: 'messages',
 	columns: MESSAGE_COLUMNS,
@@ -689,11 +695,6 @@ export const SavedMessages = defineTable<SavedMessageRow, 'user_id' | 'message_i
 	name: 'saved_messages',
 	columns: SAVED_MESSAGE_COLUMNS,
 	primaryKey: ['user_id', 'message_id'],
-});
-export const ScheduledMessages = defineTable<ScheduledMessageRow, 'user_id' | 'scheduled_message_id'>({
-	name: 'scheduled_messages',
-	columns: SCHEDULED_MESSAGE_COLUMNS,
-	primaryKey: ['user_id', 'scheduled_message_id'],
 });
 export const PushSubscriptions = defineTable<PushSubscriptionRow, 'user_id' | 'subscription_id'>({
 	name: 'push_subscriptions',
@@ -1016,25 +1017,6 @@ export const FavoriteMemesByMemeId = defineTable<FavoriteMemesByMemeIdRow, 'meme
 	name: 'favorite_memes_by_meme_id',
 	columns: FAVORITE_MEMES_BY_MEME_ID_COLUMNS,
 	primaryKey: ['meme_id', 'user_id'],
-});
-export const ExpressionPacks = defineTable<ExpressionPackRow, 'pack_id'>({
-	name: 'expression_packs',
-	columns: EXPRESSION_PACK_COLUMNS,
-	primaryKey: ['pack_id'],
-});
-export const ExpressionPacksByCreator = defineTable<ExpressionPackRow, 'creator_id' | 'pack_id'>({
-	name: 'expression_packs_by_creator',
-	columns: EXPRESSION_PACK_COLUMNS,
-	primaryKey: ['creator_id', 'pack_id'],
-	partitionKey: ['creator_id'],
-});
-const PACK_INSTALLATION_COLUMNS = ['user_id', 'pack_id', 'pack_type', 'installed_at'] as const satisfies ReadonlyArray<
-	keyof PackInstallationRow
->;
-export const PackInstallations = defineTable<PackInstallationRow, 'user_id' | 'pack_id'>({
-	name: 'pack_installations',
-	columns: PACK_INSTALLATION_COLUMNS,
-	primaryKey: ['user_id', 'pack_id'],
 });
 
 interface InvitesByChannelRow {

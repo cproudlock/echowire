@@ -1,0 +1,454 @@
+#!/usr/bin/env python3
+"""standards-check - verify a project against the Proudlock project contract.
+
+Vendored into each project as .standards/standards-check. Python 3 stdlib only,
+so it runs in any container without a toolchain being installed first.
+
+Exit 0 when there are no ERR findings, 1 otherwise. --strict promotes WARN to ERR.
+Rule ids (C1.1, C3.2, ...) refer to sections of contract/CONTRACT.md.
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+CONTRACT_VERSION = "1.2.0"
+ERR = "ERR"
+WARN = "WARN"
+
+
+class Finding:
+    __slots__ = ("rule", "severity", "message")
+
+    def __init__(self, rule: str, severity: str, message: str) -> None:
+        self.rule = rule
+        self.severity = severity
+        self.message = message
+
+    def as_dict(self) -> dict:
+        return {"rule": self.rule, "severity": self.severity, "message": self.message}
+
+
+# ---------------------------------------------------------------- helpers
+
+def git(root: Path, *args: str):
+    """Run a git command in root. Returns stdout, or None if git failed."""
+    try:
+        p = subprocess.run(
+            ["git", "-C", str(root), *args],
+            capture_output=True, text=True,
+        )
+    except FileNotFoundError:
+        return None
+    return p.stdout if p.returncode == 0 else None
+
+
+def is_git_repo(root: Path) -> bool:
+    return git(root, "rev-parse", "--git-dir") is not None
+
+
+def tracked_files(root: Path) -> list[str]:
+    out = git(root, "ls-files")
+    return out.splitlines() if out else []
+
+
+def read_conf(root: Path) -> dict:
+    """Parse .standards/project.conf - simple key=value, # comments."""
+    conf: dict = {}
+    path = root / ".standards" / "project.conf"
+    if not path.is_file():
+        return conf
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        conf[key.strip()] = value.strip()
+    return conf
+
+
+def conf_flag(conf: dict, key: str) -> bool:
+    return conf.get(key, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+# ------------------------------------------------------- language detection
+
+LANGUAGES = [
+    # (language, marker files, acceptable .tool-versions tool names)
+    ("node",   ["package.json"],                                   ["node", "nodejs", "bun", "deno"]),
+    ("python", ["pyproject.toml", "requirements.txt", "setup.py"], ["python", "uv"]),
+    ("rust",   ["Cargo.toml"],                                     ["rust", "rustc"]),
+    ("elixir", ["mix.exs"],                                        ["elixir"]),
+    ("go",     ["go.mod"],                                         ["go", "golang"]),
+    ("ruby",   ["Gemfile"],                                        ["ruby"]),
+]
+
+
+def detect_languages(root: Path) -> list[tuple[str, list[str]]]:
+    found = []
+    for lang, markers, tools in LANGUAGES:
+        if any((root / m).is_file() for m in markers):
+            found.append((lang, tools))
+    if not found and list(root.glob("*.csproj")) + list(root.glob("*.sln")):
+        found.append(("dotnet", ["dotnet", "dotnet-core"]))
+    return found
+
+
+# -------------------------------------------------------------- rule sets
+
+REQUIRED_README_SECTIONS = [
+    ("## What it is", WARN),
+    ("## Run it", ERR),
+    ("## Deploy", WARN),
+]
+
+ARTIFACT_RULES = [
+    (re.compile(r"(^|/)node_modules/"),  "node_modules/",   ERR),
+    (re.compile(r"(^|/)target/"),        "target/",         ERR),
+    (re.compile(r"(^|/)\.next/"),        ".next/",          ERR),
+    (re.compile(r"(^|/)__pycache__/"),   "__pycache__/",    ERR),
+    (re.compile(r"(^|/)\.venv/"),        ".venv/",          ERR),
+    (re.compile(r"\.tsbuildinfo$"),      "*.tsbuildinfo",   ERR),
+    (re.compile(r"(^|/)build/"),         "build/",          WARN),
+    (re.compile(r"(^|/)dist/"),          "dist/",           WARN),
+    (re.compile(r"\.zip$"),              "*.zip",           WARN),
+]
+
+SECRET_RULES = [
+    (re.compile(r"(^|/)\.env$"),            ".env"),
+    (re.compile(r"(^|/)\.env\.[^/]*$"),     ".env.*"),
+    (re.compile(r"(^|/)secrets\.md$"),      "secrets.md"),
+    (re.compile(r"\.pem$"),                 "*.pem"),
+    (re.compile(r"(^|/)id_(rsa|ed25519)$"), "ssh private key"),
+    (re.compile(r"(^|/)\.smbcredentials$"), ".smbcredentials"),
+    (re.compile(r"(^|/)credentials\.json$"), "credentials.json"),
+]
+SECRET_ALLOW = re.compile(r"(^|/)\.env\.example$")
+
+AI_FORBIDDEN = {
+    "GEMINI.md": ERR,
+    "CONVENTIONS.md": ERR,
+    ".aiderignore": ERR,
+    ".cursorrules": ERR,
+    ".windsurfrules": ERR,
+    ".github/copilot-instructions.md": ERR,
+    ".claude/settings.local.json": ERR,
+}
+
+GITIGNORE_BASELINE = [".env", "node_modules/", "__pycache__/", ".venv/", "target/", "*.tsbuildinfo"]
+
+STYLE_SKIP_PREFIXES = (".standards/", "vendor/", "third_party/", "node_modules/")
+STYLE_SKIP_NAMES = {
+    "package-lock.json", "pnpm-lock.yaml", "yarn.lock",
+    "poetry.lock", "Cargo.lock", "uv.lock", "composer.lock",
+}
+STYLE_MAX_BYTES = 1_048_576
+STYLE_MAX_REPORTED = 8
+# The two marks standards-check prints in its own output. Exempt by codepoint so
+# a project can contain the checker's transcript without tripping C7.1.
+EMOJI_ALLOW = {"\u2713", "\u2717"}
+EM_DASH = {"\u2014", "\u2015"}
+EN_DASH = "\u2013"
+
+
+def is_emoji(ch: str) -> bool:
+    if ch in EMOJI_ALLOW:
+        return False
+    o = ord(ch)
+    return (
+        0x1F000 <= o <= 0x1FAFF     # pictographs, symbols, flags
+        or 0x2600 <= o <= 0x27BF    # misc symbols and dingbats
+        or 0x2B00 <= o <= 0x2BFF    # arrows and stars used as emoji
+        or o == 0xFE0F              # emoji presentation selector
+    )
+
+
+def scan_style(root, tracked, no_emoji: bool, no_emdash: bool) -> list:
+    """C7 - prose style, opt-in per project via .standards/project.conf."""
+    hits: dict = {"C7.1": [], "C7.2": [], "C7.3": []}
+    for rel in sorted(tracked):
+        if rel.startswith(STYLE_SKIP_PREFIXES) or rel.rsplit("/", 1)[-1] in STYLE_SKIP_NAMES:
+            continue
+        path = root / rel
+        try:
+            if not path.is_file() or path.is_symlink() or path.stat().st_size > STYLE_MAX_BYTES:
+                continue
+            text = path.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue  # binary or unreadable - not prose
+        if "\x00" in text:
+            continue
+        for lineno, line in enumerate(text.splitlines(), 1):
+            for ch in line:
+                if no_emoji and is_emoji(ch):
+                    hits["C7.1"].append((rel, lineno, ch))
+                elif no_emdash and ch in EM_DASH:
+                    hits["C7.2"].append((rel, lineno, ch))
+                elif no_emdash and ch == EN_DASH:
+                    hits["C7.3"].append((rel, lineno, ch))
+
+    labels = {
+        "C7.1": (ERR, "emoji"),
+        "C7.2": (ERR, "em dash"),
+        "C7.3": (WARN, "en dash"),
+    }
+    out = []
+    for rule, found in hits.items():
+        if not found:
+            continue
+        severity, label = labels[rule]
+        for rel, lineno, ch in found[:STYLE_MAX_REPORTED]:
+            # Report the codepoint, never the character - output goes to CI logs too.
+            out.append(Finding(rule, severity, f"{rel}:{lineno}: {label} U+{ord(ch):04X}"))
+        extra = len(found) - STYLE_MAX_REPORTED
+        if extra > 0:
+            out.append(Finding(rule, severity, f"...and {extra} more {label} occurrence{'s' if extra > 1 else ''}"))
+    return out
+
+
+TOKEN_IN_URL = re.compile(r"https?://[^/\s@]*:[^/\s@]*@")
+ADR_NAME = re.compile(r"^\d{4}-[a-z0-9][a-z0-9-]*\.md$")
+ADR_SECTIONS = ["## Status", "## Context", "## Decision", "## Consequences"]
+
+
+# ------------------------------------------------------------ the checks
+
+def check_project(root: Path) -> list[Finding]:
+    f: list[Finding] = []
+    conf = read_conf(root)
+    tracked = set(tracked_files(root)) if is_git_repo(root) else set()
+    repo = is_git_repo(root)
+
+    if not (root / ".standards").is_dir():
+        f.append(Finding("C0.1", WARN, ".standards/: not bootstrapped - run standards-bootstrap"))
+
+    # ---- C1 layout and naming
+    if repo:
+        remotes = git(root, "remote", "-v") or ""
+        origin = ""
+        for line in remotes.splitlines():
+            parts = line.split()
+            if len(parts) >= 2 and parts[0] == "origin":
+                origin = parts[1]
+                break
+        if origin:
+            name = origin.rstrip("/").rsplit("/", 1)[-1]
+            if name.endswith(".git"):
+                name = name[:-4]
+            if name and name != root.name:
+                f.append(Finding(
+                    "C1.1", ERR,
+                    f"layout: directory is '{root.name}' but origin is '{name}' - rename to match the remote",
+                ))
+        else:
+            f.append(Finding("C1.1", WARN, "git: no origin remote"))
+
+    # ---- C2.1 README
+    readme = root / "README.md"
+    if not readme.is_file():
+        f.append(Finding("C2.1", ERR, "README.md: missing"))
+    else:
+        body = readme.read_text(encoding="utf-8", errors="replace")
+        for section, severity in REQUIRED_README_SECTIONS:
+            if not re.search(rf"^{re.escape(section)}\s*$", body, re.M):
+                f.append(Finding("C2.1", severity, f'README.md: no "{section}" section'))
+
+    # ---- C2.2 toolchain pins
+    langs = detect_languages(root)
+    tv = root / ".tool-versions"
+    if langs and not tv.is_file():
+        detected = ", ".join(lang for lang, _ in langs)
+        f.append(Finding("C2.2", ERR, f".tool-versions: missing ({detected} detected)"))
+    elif tv.is_file():
+        pinned = {}
+        for line in tv.read_text(encoding="utf-8", errors="replace").splitlines():
+            parts = line.split()
+            if len(parts) >= 2 and not line.strip().startswith("#"):
+                pinned[parts[0].lower()] = parts[1]
+        for lang, tools in langs:
+            if not any(t in pinned for t in tools):
+                f.append(Finding("C2.2", ERR, f".tool-versions: {lang} detected but not pinned"))
+        for tool, version in pinned.items():
+            if version in ("latest", "lts", "system"):
+                f.append(Finding("C2.2", ERR, f".tool-versions: {tool} is '{version}' - pin an exact version"))
+
+    # ---- C2.3 env
+    env_example = root / ".env.example"
+    if (root / ".env").exists() and not env_example.is_file():
+        f.append(Finding("C2.3", ERR, ".env.example: missing but .env exists - commit the example"))
+
+    # ---- C2.4 compose
+    compose = root / "compose.dev.yml"
+    legacy = [n for n in ("docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml")
+              if (root / n).is_file()]
+    if compose.is_file():
+        body = compose.read_text(encoding="utf-8", errors="replace")
+        if not re.search(r"^name:\s*\S", body, re.M):
+            f.append(Finding("C2.4", ERR, "compose.dev.yml: no explicit project name (-p)"))
+        if re.search(r"^volumes:\s*$", body, re.M):
+            f.append(Finding("C3.4", WARN, "compose.dev.yml: declares named volumes - bind-mount caches under ./.data instead"))
+    if legacy:
+        target = "compose.dev.yml"
+        f.append(Finding("C2.4", WARN, f"compose: {', '.join(legacy)} present - the standard name is {target}"))
+
+    # ---- C3 hygiene
+    for path in sorted(tracked):
+        if SECRET_ALLOW.search(path):
+            continue
+        for pattern, label in SECRET_RULES:
+            if pattern.search(path):
+                f.append(Finding("C3.2", ERR, f"git: {path} is tracked ({label} must never be committed)"))
+                break
+        else:
+            for pattern, label, severity in ARTIFACT_RULES:
+                if pattern.search(path):
+                    f.append(Finding("C3.1", severity, f"git: {path} is tracked ({label} is a build artifact)"))
+                    break
+
+    gitignore = root / ".gitignore"
+    if repo and not gitignore.is_file():
+        f.append(Finding("C3.3", ERR, ".gitignore: missing"))
+    elif gitignore.is_file():
+        body = gitignore.read_text(encoding="utf-8", errors="replace")
+        lines = {line.strip() for line in body.splitlines()}
+        missing = [entry for entry in GITIGNORE_BASELINE if entry not in lines]
+        if missing:
+            f.append(Finding("C3.3", WARN, f".gitignore: baseline entries missing - {', '.join(missing)}"))
+
+    # ---- C4 credentials and identity
+    if repo:
+        for line in (git(root, "remote", "-v") or "").splitlines():
+            if TOKEN_IN_URL.search(line):
+                name = line.split()[0] if line.split() else "remote"
+                f.append(Finding("C4.1", ERR, f"git: remote '{name}' has a credential in its URL - use a credential helper"))
+                break
+        # A project may legitimately have more than one home - an origin plus a
+        # mirror on another host - so remote_prefix is a comma-separated list.
+        prefixes = tuple(p.strip() for p in conf.get("remote_prefix", "").split(",") if p.strip())
+        if prefixes:
+            for line in (git(root, "remote", "-v") or "").splitlines():
+                parts = line.split()
+                if len(parts) >= 2 and not parts[1].startswith(prefixes):
+                    allowed = " or ".join(prefixes)
+                    f.append(Finding("C4.2", ERR, f"git: remote '{parts[0]}' ({parts[1]}) is outside this container's owner prefix {allowed}"))
+                    break
+        expected = conf.get("identity_email")
+        if expected:
+            actual = (git(root, "config", "user.email") or "").strip()
+            if actual != expected:
+                f.append(Finding("C4.3", ERR, f"git: user.email is '{actual or 'unset'}', expected '{expected}'"))
+
+    # ---- C5 one AI config
+    if repo:
+        if "AGENTS.md" not in tracked:
+            f.append(Finding("C5.1", WARN, "AGENTS.md: missing - it is the one committed AI-config file"))
+        for path in sorted(tracked):
+            severity = AI_FORBIDDEN.get(path)
+            if severity:
+                f.append(Finding("C5.1", severity, f"git: {path} is tracked - AGENTS.md is the only committed AI config"))
+            elif path.startswith(".serena/"):
+                f.append(Finding("C5.1", ERR, "git: .serena/ is tracked - gitignore it"))
+        if "CLAUDE.md" in tracked:
+            link = root / "CLAUDE.md"
+            if not link.is_symlink() or os.readlink(link) != "AGENTS.md":
+                f.append(Finding("C5.1", ERR, "CLAUDE.md: must be a symlink to AGENTS.md, not a second copy"))
+
+    # ---- C6 ADRs
+    adr_dir = next((d for d in (root / "docs" / "adr", root / "adr") if d.is_dir()), root / "docs" / "adr")
+    if not adr_dir.is_dir():
+        f.append(Finding("C6.1", WARN, "docs/adr/: missing - record project-local decisions here"))
+    else:
+        for entry in sorted(adr_dir.glob("*.md")):
+            if entry.name == "0000-template.md":
+                continue
+            if not ADR_NAME.match(entry.name):
+                f.append(Finding("C6.1", ERR, f"{adr_dir.name}/{entry.name}: name must be NNNN-kebab-title.md"))
+                continue
+            body = entry.read_text(encoding="utf-8", errors="replace")
+            missing = [s for s in ADR_SECTIONS if s not in body]
+            if missing:
+                f.append(Finding("C6.2", ERR, f"{adr_dir.name}/{entry.name}: missing {', '.join(missing)}"))
+
+    # ---- C7 prose style, only where the project has opted in
+    no_emoji = conf_flag(conf, "style_no_emoji")
+    no_emdash = conf_flag(conf, "style_no_emdash")
+    if repo and (no_emoji or no_emdash):
+        f.extend(scan_style(root, tracked, no_emoji, no_emdash))
+
+    return f
+
+
+# ------------------------------------------------------------- reporting
+
+def resolve_targets(paths: list[str], scan_all: bool) -> list[Path]:
+    if scan_all:
+        base = Path(os.environ.get("DEV_ROOT", Path.home() / "dev"))
+        return sorted(p for p in base.iterdir() if p.is_dir()) if base.is_dir() else []
+    return [Path(p).resolve() for p in (paths or ["."])]
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description="Check projects against the Proudlock project contract.")
+    ap.add_argument("paths", nargs="*", help="project directories (default: .)")
+    ap.add_argument("--all", action="store_true", help="check every project under $DEV_ROOT (default ~/dev)")
+    ap.add_argument("--strict", action="store_true", help="treat warnings as errors")
+    ap.add_argument("--json", action="store_true", help="machine-readable output")
+    ap.add_argument("--version", action="store_true", help="print the contract version")
+    args = ap.parse_args()
+
+    if args.version:
+        print(CONTRACT_VERSION)
+        return 0
+
+    targets = resolve_targets(args.paths, args.all)
+    if not targets:
+        print("no projects to check", file=sys.stderr)
+        return 0
+
+    results = []
+    for root in targets:
+        if not root.is_dir():
+            print(f"not a directory: {root}", file=sys.stderr)
+            return 2
+        results.append((root, check_project(root)))
+
+    fatal = {ERR, WARN} if args.strict else {ERR}
+    problems = sum(1 for _, fs in results for f in fs if f.severity in fatal)
+    counted = sum(len(fs) for _, fs in results)
+
+    if args.json:
+        print(json.dumps({
+            "schema_version": 1,
+            "contract_version": CONTRACT_VERSION,
+            "strict": args.strict,
+            "projects": [
+                {"path": str(r), "name": r.name, "findings": [f.as_dict() for f in fs]}
+                for r, fs in results
+            ],
+        }, indent=2))
+        return 1 if problems else 0
+
+    for root, fs in results:
+        if not fs:
+            print(f"✓ {root.name}")
+            continue
+        print(f"✗ {root.name}")
+        for f in fs:
+            print(f"  {f.severity:<4} {f.message}")
+
+    noun = "problem" if counted == 1 else "problems"
+    scope = "project" if len(results) == 1 else "projects"
+    if counted:
+        print(f"\n{counted} {noun} in {len(results)} {scope} - exit {1 if problems else 0}")
+    else:
+        print(f"\n{len(results)} {scope} clean")
+    return 1 if problems else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

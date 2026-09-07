@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
 import {SudoVerificationSchema} from '@fluxer/schema/src/domains/auth/AuthSchemas';
 import {
 	ChannelUpdateRequest,
 	DeleteChannelQuery,
 	PermissionOverwriteCreateRequest,
+	ThreadCreateRequest,
+	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import {
 	ChannelResponse,
@@ -21,6 +24,7 @@ import {z} from 'zod';
 import {requireSudoMode} from '../../auth/services/SudoVerificationService';
 import {createChannelID, createUserID} from '../../BrandedTypes';
 import {DefaultUserOnly, LoginRequired} from '../../middleware/AuthMiddleware';
+import {GroupDmRecipientAddProtectionMiddleware} from '../../middleware/GroupDmProtectionMiddleware';
 import {RateLimitMiddleware} from '../../middleware/RateLimitMiddleware';
 import {OpenAPI} from '../../middleware/ResponseTypeMiddleware';
 import {SudoModeMiddleware} from '../../middleware/SudoModeMiddleware';
@@ -34,6 +38,193 @@ function isPlainObject(value: unknown): value is Record<string, unknown> {
 }
 
 export function ChannelController(app: HonoApp) {
+	// Echowire: create a thread under a text/forum channel.
+	app.post(
+		'/channels/:channel_id/threads',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		Validator('json', ThreadCreateRequest),
+		OpenAPI({
+			operationId: 'create_thread',
+			summary: 'Create a thread',
+			description:
+				'Creates a thread under a text or forum channel. Requires permission to send messages in the parent.',
+			responseSchema: ChannelResponse,
+			statusCode: 201,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const parentChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const data = ctx.req.valid('json');
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(
+				await ctx.get('guildService').channels.createThread({userId, parentChannelId, data, requestCache}),
+				201,
+			);
+		},
+	);
+	// Echowire: list active threads under a text/forum channel.
+	app.get(
+		'/channels/:channel_id/threads',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'list_active_threads',
+			summary: 'List active threads',
+			description: 'Lists the active (non-archived) threads under a text or forum channel.',
+			responseSchema: z.array(ChannelResponse),
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const parentChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(
+				await ctx.get('guildService').channels.listActiveThreads({userId, parentChannelId, requestCache}),
+			);
+		},
+	);
+	// Echowire: update a thread (archive/unarchive/lock/rename).
+	app.patch(
+		'/channels/:channel_id/thread',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		Validator('json', ThreadUpdateRequest),
+		OpenAPI({
+			operationId: 'update_thread',
+			summary: 'Update a thread',
+			description: 'Updates a thread (name, archived, locked, auto-archive duration, invitable).',
+			responseSchema: ChannelResponse,
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const data = ctx.req.valid('json');
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(
+				await ctx.get('guildService').channels.updateThread({userId, threadChannelId, data, requestCache}),
+			);
+		},
+	);
+	// Echowire: delete a thread.
+	app.delete(
+		'/channels/:channel_id/thread',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'delete_thread',
+			summary: 'Delete a thread',
+			description: 'Deletes a thread. Requires being the thread owner or having Manage Channels.',
+			responseSchema: z.object({}),
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			await ctx.get('guildService').channels.deleteThread({userId, threadChannelId});
+			return ctx.body(null, 204);
+		},
+	);
+	// Echowire: list archived threads under a text/forum channel.
+	app.get(
+		'/channels/:channel_id/threads/archived',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'list_archived_threads',
+			summary: 'List archived threads',
+			description: 'Lists the archived threads under a text or forum channel.',
+			responseSchema: z.array(ChannelResponse),
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const parentChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(
+				await ctx.get('guildService').channels.listArchivedThreads({userId, parentChannelId, requestCache}),
+			);
+		},
+	);
+	// Echowire: thread membership — join (@me), leave (@me), list.
+	app.put(
+		'/channels/:channel_id/thread-members/@me',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'join_thread',
+			summary: 'Join a thread',
+			description: 'Adds the current user to a thread.',
+			responseSchema: z.object({}),
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			await ctx.get('guildService').channels.joinThread({userId, threadChannelId});
+			return ctx.body(null, 204);
+		},
+	);
+	app.delete(
+		'/channels/:channel_id/thread-members/@me',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'leave_thread',
+			summary: 'Leave a thread',
+			description: 'Removes the current user from a thread.',
+			responseSchema: z.object({}),
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			await ctx.get('guildService').channels.leaveThread({userId, threadChannelId});
+			return ctx.body(null, 204);
+		},
+	);
+	app.get(
+		'/channels/:channel_id/thread-members',
+		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		OpenAPI({
+			operationId: 'list_thread_members',
+			summary: 'List thread members',
+			description: 'Lists the members of a thread.',
+			responseSchema: z.array(z.object({user_id: z.string(), join_timestamp: z.string(), flags: z.number()})),
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			return ctx.json(await ctx.get('guildService').channels.listThreadMembers({userId, threadChannelId}));
+		},
+	);
 	app.get(
 		'/channels/:channel_id',
 		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
@@ -130,7 +321,7 @@ export function ChannelController(app: HonoApp) {
 			pre: async (raw: unknown, ctx: Context<HonoEnv>) => {
 				const channelType = ctx.get('channelUpdateType');
 				if (channelType === undefined) {
-					throw new Error('Missing channel type for update validation');
+					throw new UnknownChannelError();
 				}
 				const body = isPlainObject(raw) ? raw : {};
 				return {...body, type: channelType};
@@ -208,11 +399,12 @@ export function ChannelController(app: HonoApp) {
 		RateLimitMiddleware(RateLimitConfigs.CHANNEL_UPDATE),
 		LoginRequired,
 		Validator('param', ChannelIdUserIdParam),
+		GroupDmRecipientAddProtectionMiddleware,
 		OpenAPI({
 			operationId: 'add_group_dm_recipient',
 			summary: 'Add recipient to group DM',
 			description:
-				'Adds a user to a group direct message channel. The requesting user must be a member of the group DM.',
+				'Adds a user to a group direct message channel. The requesting user must be a member of the group DM. Requires CAPTCHA verification.',
 			responseSchema: null,
 			statusCode: 204,
 			security: ['botToken', 'bearerToken', 'sessionToken'],

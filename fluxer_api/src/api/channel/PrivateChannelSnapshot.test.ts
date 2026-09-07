@@ -3,7 +3,7 @@
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {describe, expect, test} from 'vitest';
 import {createChannelID, createMessageID, createUserID} from '../BrandedTypes';
-import type {ChannelRow, PrivateChannelRow} from '../database/types/ChannelTypes';
+import {type ChannelRow, NULL_THREAD_FIELDS, type PrivateChannelRow} from '../database/types/ChannelTypes';
 import {
 	channelRowFromPrivateChannelSnapshot,
 	isPrivateChannelType,
@@ -44,6 +44,7 @@ function gdmRow(overrides: Partial<ChannelRow> = {}): ChannelRow {
 		last_pin_timestamp: null,
 		permission_overwrites: null,
 		nicks: new Map([['2', 'Al']]),
+		...NULL_THREAD_FIELDS,
 		soft_deleted: false,
 		indexed_at: null,
 		version: 7,

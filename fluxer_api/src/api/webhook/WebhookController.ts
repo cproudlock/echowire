@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {DELETED_USER_ID} from '@fluxer/constants/src/UserConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
+import {UnknownUserError} from '@fluxer/errors/src/domains/user/UnknownUserError';
 import {
 	ChannelIdParam,
 	GuildIdParam,
@@ -12,19 +14,28 @@ import {
 import {MessageRequestSchema} from '@fluxer/schema/src/domains/message/MessageRequestSchemas';
 import {MessageResponseSchema} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import {GitHubWebhook} from '@fluxer/schema/src/domains/webhook/GitHubWebhookSchemas';
+import {InstatusWebhook} from '@fluxer/schema/src/domains/webhook/InstatusWebhookSchemas';
 import {
 	SlackWebhookRequest,
 	WebhookCreateRequest,
 	WebhookExecuteQueryRequest,
 	WebhookMessageEditRequest,
 	WebhookMessageRequest,
+	WebhookMultipartMessageRequest,
 	WebhookTokenUpdateRequest,
 	WebhookUpdateRequest,
 } from '@fluxer/schema/src/domains/webhook/WebhookRequestSchemas';
 import {WebhookResponse, WebhookTokenResponse} from '@fluxer/schema/src/domains/webhook/WebhookSchemas';
 import type {Context} from 'hono';
 import {z} from 'zod';
-import {createChannelID, createGuildID, createMessageID, createWebhookID, createWebhookToken} from '../BrandedTypes';
+import {
+	createChannelID,
+	createGuildID,
+	createMessageID,
+	createUserID,
+	createWebhookID,
+	createWebhookToken,
+} from '../BrandedTypes';
 import type {MessageRequest} from '../channel/MessageTypes';
 import {normalizeMessageRequestPayload} from '../channel/services/message/MessageRequestCompatibility';
 import {parseMultipartMessageData} from '../channel/services/message/MessageRequestParser';
@@ -40,6 +51,14 @@ import type {WebhookExecuteMessageData} from './WebhookService';
 
 function validateWebhookMessagePayload(data: unknown): WebhookMessageRequest {
 	const validationResult = WebhookMessageRequest.safeParse(normalizeMessageRequestPayload(data));
+	if (!validationResult.success) {
+		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
+	}
+	return validationResult.data;
+}
+
+function validateWebhookMultipartMessagePayload(data: unknown): WebhookMultipartMessageRequest {
+	const validationResult = WebhookMultipartMessageRequest.safeParse(normalizeMessageRequestPayload(data));
 	if (!validationResult.success) {
 		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
 	}
@@ -66,12 +85,12 @@ async function parseWebhookMultipartMessageData(
 		webhookId: createWebhookID(webhookId),
 		token: createWebhookToken(token),
 	});
-	if (!webhook.creatorId) {
-		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
-	}
-	const creator = await ctx.get('userRepository').findUnique(webhook.creatorId);
+	const userRepository = ctx.get('userRepository');
+	const creator =
+		(webhook.creatorId ? await userRepository.findUnique(webhook.creatorId) : null) ??
+		(await userRepository.findUnique(createUserID(DELETED_USER_ID)));
 	if (!creator) {
-		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
+		throw new UnknownUserError();
 	}
 	let parsedPayload: unknown = null;
 	const messageData: MessageRequest = await parseMultipartMessageData(
@@ -88,10 +107,11 @@ async function parseWebhookMultipartMessageData(
 	if (!parsedPayload) {
 		throw InputValidationError.fromCode('message_data', ValidationErrorCodes.INVALID_MESSAGE_DATA);
 	}
-	const webhookData = validateWebhookMessagePayload(parsedPayload);
+	const webhookData = validateWebhookMultipartMessagePayload(parsedPayload);
 	return {
 		...webhookData,
 		...messageData,
+		attachments: messageData.attachments,
 		username: webhookData.username,
 		avatar_url: webhookData.avatar_url,
 	};
@@ -332,7 +352,7 @@ export function WebhookController(app: HonoApp) {
 				'Executes the webhook by sending a message to its configured channel. If the wait query parameter is true, returns the created message object; otherwise returns a 204 status with no content.',
 			responseSchema: MessageResponseSchema,
 			requestSchema: WebhookMessageRequest,
-			requestFormSchema: WebhookMessageRequest,
+			requestFormSchema: WebhookMultipartMessageRequest,
 			statusCode: 200,
 			tags: ['Webhooks'],
 		}),
@@ -487,6 +507,31 @@ export function WebhookController(app: HonoApp) {
 			});
 			ctx.header('Content-Type', 'text/html; charset=utf-8');
 			return ctx.body('ok', 200);
+		},
+	);
+	app.post(
+		'/webhooks/:webhook_id/:token/instatus',
+		RateLimitMiddleware(RateLimitConfigs.WEBHOOK_INSTATUS),
+		OpenAPI({
+			operationId: 'execute_instatus_webhook',
+			summary: 'Execute Instatus webhook',
+			description:
+				'Receives and processes Instatus status page webhook events, formatting them as messages in the configured channel.',
+			responseSchema: null,
+			statusCode: 204,
+			tags: ['Webhooks'],
+		}),
+		Validator('param', WebhookIdTokenParam),
+		Validator('json', InstatusWebhook),
+		async (ctx) => {
+			const {webhook_id: webhookId, token} = ctx.req.valid('param');
+			await ctx.get('webhookRequestService').executeInstatusWebhook({
+				webhookId: createWebhookID(webhookId),
+				token: createWebhookToken(token),
+				data: ctx.req.valid('json'),
+				requestCache: ctx.get('requestCache'),
+			});
+			return ctx.body(null, 204);
 		},
 	);
 	app.post('/webhooks/livekit', async (ctx) => {

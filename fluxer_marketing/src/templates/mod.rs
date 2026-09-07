@@ -1677,25 +1677,25 @@ fn alternate_builds(
         Platform::Linux => {
             // Echowire: x64 only (no arm64 build) and no Flatpak published, so drop both the
             // arm64 alternate (served a stale build) and the Flatpak link (wrong/unpublished app).
-            let mut builds = Vec::new();
             // .deb is the primary/recommended download; AppImage is the "any distro, no install"
             // alternative (note: needs --no-sandbox on Ubuntu 24 / Mint 22).
-            builds.push(alt(
-                "AppImage".to_owned(),
-                desktop_url(ctx, "linux", arch, "appimage"),
-                false,
-            ));
-            builds.push(alt(
-                "RPM".to_owned(),
-                desktop_url(ctx, "linux", arch, "rpm"),
-                false,
-            ));
-            builds.push(alt(
-                "tar.gz".to_owned(),
-                desktop_url(ctx, "linux", arch, "tar_gz"),
-                false,
-            ));
-            builds
+            vec![
+                alt(
+                    "AppImage".to_owned(),
+                    desktop_url(ctx, "linux", arch, "appimage"),
+                    false,
+                ),
+                alt(
+                    "RPM".to_owned(),
+                    desktop_url(ctx, "linux", arch, "rpm"),
+                    false,
+                ),
+                alt(
+                    "tar.gz".to_owned(),
+                    desktop_url(ctx, "linux", arch, "tar_gz"),
+                    false,
+                ),
+            ]
         }
         _ => Vec::new(),
     }

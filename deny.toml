@@ -19,7 +19,12 @@ unmaintained = "all"
 # Placeholder for future per-advisory ignores. Prefer fixing/upgrading the
 # crate before adding an entry here. Each entry should be a string ID, e.g.
 # "RUSTSEC-2024-0000", optionally as { id = "...", reason = "..." }.
-ignore = []
+ignore = [
+	# Echowire: the fork's vendored fluxer_marketing pulls gettext 0.4.0, which
+	# depends on the unmaintained encoding crate. Advisory is unmaintained-only,
+	# not a vulnerability, and RUSTSEC lists no safe upgrade.
+	{ id = "RUSTSEC-2021-0153", reason = "unmaintained encoding via fluxer_marketing -> gettext; no safe upgrade exists" },
+]
 
 # ---------------------------------------------------------------------------
 # Licenses

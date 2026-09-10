@@ -10,6 +10,7 @@ use crate::{
             exact_response_stream, local_reader_stream, read_exact_bytes, read_response_bytes,
             validate_stream_response,
         },
+        response_body_limit,
     },
 };
 use bytes::Bytes;
@@ -22,6 +23,12 @@ fn byte_stream(chunks: Vec<Result<Bytes, std::io::Error>>) -> ByteStream {
 
 fn provider_response(body: Vec<u8>) -> reqwest::Response {
     reqwest::Response::from(http::Response::new(body))
+}
+
+fn provider_chunked_response(chunks: Vec<Result<Bytes, std::io::Error>>) -> reqwest::Response {
+    reqwest::Response::from(http::Response::new(reqwest::Body::wrap_stream(
+        stream::iter(chunks),
+    )))
 }
 
 #[tokio::test]
@@ -281,4 +288,33 @@ async fn exact_stream_accepts_small_transport_chunks_and_bounds_empty_ones() {
         .await
         .expect_err("empty chunk flood");
     assert_eq!(error.kind(), std::io::ErrorKind::InvalidData);
+}
+
+#[tokio::test]
+async fn buffered_read_accepts_small_transport_chunks_and_bounds_empty_ones() {
+    // Cloudflare R2 answers a small object in many more, and much smaller,
+    // frames than the bundled SeaweedFS does. Counting every frame against the
+    // chunk allowance rejected every R2 read; only frames carrying no bytes may
+    // spend it, which is what the streaming path has always done.
+    const CHUNK_BYTES: usize = 64;
+    const BODY_BYTES: usize = 4 * 1024;
+    let budget = ByteBudget::new(4 << 20);
+    let chunks: Vec<Result<Bytes, std::io::Error>> = (0..BODY_BYTES / CHUNK_BYTES)
+        .map(|_| Ok(Bytes::from(vec![7u8; CHUNK_BYTES])))
+        .collect();
+    assert!(
+        chunks.len() as u64 > response_body_limit::response_body_chunk_limit(BODY_BYTES as u64)
+    );
+    let data = read_response_bytes(provider_chunked_response(chunks), BODY_BYTES, &budget)
+        .await
+        .expect("small transport chunks");
+    assert_eq!(data.as_ref().len(), BODY_BYTES);
+
+    let mut flood: Vec<Result<Bytes, std::io::Error>> =
+        (0..4096).map(|_| Ok(Bytes::new())).collect();
+    flood.push(Ok(Bytes::from_static(b"abcd")));
+    assert!(matches!(
+        read_response_bytes(provider_chunked_response(flood), 4, &budget).await,
+        Err(StorageError::ObjectStorage(_))
+    ));
 }

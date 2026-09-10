@@ -80,22 +80,32 @@ pub(super) async fn read_response_bytes(
     body.try_reserve_exact(expected_length)
         .map_err(|_| StorageError::BufferAllocationFailed)?;
     buffer_budget.grow_to(body.capacity())?;
-    let mut chunks_read = 0_u64;
-    let chunks_max = response_body_limit::response_body_chunk_limit(expected_length as u64);
+    // Echowire: count only the chunks that carry no bytes, exactly as the
+    // streaming sibling `exact_byte_stream` does with this same limit. Spending
+    // the allowance on every chunk assumes a provider answers a read in frames
+    // of at least RESPONSE_BODY_CHUNK_BYTES_MIN, which the bundled SeaweedFS
+    // does and Cloudflare R2 does not: R2 returns a 4 KiB avatar in far more,
+    // far smaller frames, so the bound rejected every R2 read and 502'd the
+    // whole media path. A chunk that carries bytes cannot loop forever because
+    // the running length below refuses to pass expected_length, which is itself
+    // capped by the caller's limit, so bounding the empty ones is what this
+    // counter is actually for.
+    let mut empty_chunks_remaining =
+        response_body_limit::response_body_chunk_limit(expected_length as u64);
     while let Some(chunk) = response.chunk().await? {
         if chunk.len() > response_body_limit::RESPONSE_BODY_TRANSPORT_CHUNK_BYTES_MAX {
             return Err(StorageError::ObjectStorage(anyhow::anyhow!(
                 "object storage response transport chunk exceeded its byte bound"
             )));
         }
-        chunks_read = chunks_read
-            .checked_add(1)
-            .filter(|chunks| *chunks <= chunks_max)
-            .ok_or_else(|| {
+        if chunk.is_empty() {
+            empty_chunks_remaining = empty_chunks_remaining.checked_sub(1).ok_or_else(|| {
                 StorageError::ObjectStorage(anyhow::anyhow!(
-                    "object storage response exceeded its chunk limit"
+                    "object storage response exceeded its empty chunk limit"
                 ))
             })?;
+            continue;
+        }
         let next_length = body
             .len()
             .checked_add(chunk.len())

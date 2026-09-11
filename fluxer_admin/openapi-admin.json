@@ -14147,7 +14147,7 @@
 			"MessageType": {
 				"description": "The type of message",
 				"type": "integer",
-				"enum": [0, 1, 2, 3, 4, 5, 6, 7, 19],
+				"enum": [0, 1, 2, 3, 4, 5, 6, 7, 18, 19],
 				"format": "int32",
 				"x-enumNames": [
 					"DEFAULT",
@@ -14158,6 +14158,7 @@
 					"CHANNEL_ICON_CHANGE",
 					"CHANNEL_PINNED_MESSAGE",
 					"USER_JOIN",
+					"THREAD_CREATED",
 					"REPLY"
 				],
 				"x-enumDescriptions": [
@@ -14169,6 +14170,7 @@
 					"A system message indicating the channel icon changed",
 					"A system message indicating a message was pinned",
 					"A system message indicating a user joined",
+					"A system message indicating a thread was created",
 					"A reply message"
 				]
 			},

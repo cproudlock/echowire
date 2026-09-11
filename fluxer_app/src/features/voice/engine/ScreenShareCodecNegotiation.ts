@@ -32,7 +32,7 @@ import {
 } from '@app/features/voice/utils/VideoDecoderCapabilities';
 import type {Participant, Room, VideoCodec} from 'livekit-client';
 import {RoomEvent} from 'livekit-client';
-import {assign, getInitialSnapshot, type SnapshotFrom, setup, transition} from 'xstate';
+import {assign, initialTransition, type SnapshotFrom, setup, transition} from 'xstate';
 
 const logger = new Logger('ScreenShareCodecNegotiation');
 const PROTOCOL_TOPIC = 'fluxer.rtc.codec-negotiation.v1';
@@ -387,7 +387,7 @@ export const screenShareCodecNegotiationStateMachine = setup({
 export type ScreenShareCodecNegotiationSnapshot = SnapshotFrom<typeof screenShareCodecNegotiationStateMachine>;
 
 export function createScreenShareCodecNegotiationSnapshot(): ScreenShareCodecNegotiationSnapshot {
-	return getInitialSnapshot(screenShareCodecNegotiationStateMachine);
+	return initialTransition(screenShareCodecNegotiationStateMachine)[0];
 }
 
 export function transitionScreenShareCodecNegotiationSnapshot(
@@ -515,6 +515,19 @@ class ScreenShareCodecNegotiation {
 
 	getSelectedCodec(): VideoCodec | null {
 		return this.selectedCodec;
+	}
+
+	getLocalCodecAdvertisements(): Array<FluxerCodecAdvertisement> {
+		if (this.localCodecs.length === 0) return buildLocalCodecAdvertisements();
+		return [...this.localCodecs];
+	}
+
+	getRemoteDecodeCodecsByIdentity(): Record<string, Array<VideoCodec>> {
+		const result: Record<string, Array<VideoCodec>> = {};
+		for (const [identity, codecs] of this.remoteCodecsByIdentity) {
+			result[identity] = [...getDecodeSet(codecs)];
+		}
+		return result;
 	}
 
 	setSelectionChangeListener(

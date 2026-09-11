@@ -14,14 +14,16 @@ import {
 	RegistrationUrlIdParam,
 } from '@fluxer/schema/src/domains/admin/AdminSchemas';
 import {GatewayRolloutConfigSchema} from '@fluxer/schema/src/domains/admin/GatewayRolloutSchemas';
+import {VoiceNoiseSuppressionConfigSchema} from '@fluxer/schema/src/domains/admin/VoiceNoiseSuppressionSchemas';
 import {UserIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
+import {ExperimentDeliveryConfigSchema} from '@fluxer/schema/src/domains/experiment/ExperimentSchemas';
+import type {InstanceBranding} from '@fluxer/schema/src/domains/instance/InstanceSchemas';
 import {SmtpEmailProvider} from '@pkgs/email/src/SmtpEmailProvider';
 import type {Context} from 'hono';
 import {createMiddleware} from 'hono/factory';
 import {createUserID} from '../../BrandedTypes';
 import {Config} from '../../Config';
 import {
-	type InstanceBrandingConfig,
 	type InstancePolicyConfig,
 	REGISTRATION_PENDING_APPROVAL_TRAIT,
 	REGISTRATION_REJECTED_TRAIT,
@@ -51,9 +53,19 @@ function omitUndefinedFields<T extends object>(value: T): Partial<T> {
 
 async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 	const instanceConfigRepository = getInstanceConfigRepository();
-	const [ssoConfig, gatewayRollout, registrationConfig, registrationUrls, pendingRegistrations] = await Promise.all([
+	const [
+		ssoConfig,
+		gatewayRollout,
+		voiceNoiseSuppression,
+		experimentDelivery,
+		registrationConfig,
+		registrationUrls,
+		pendingRegistrations,
+	] = await Promise.all([
 		instanceConfigRepository.getSsoConfig(),
 		instanceConfigRepository.getGatewayRolloutConfig(),
+		instanceConfigRepository.getVoiceNoiseSuppressionConfig(),
+		instanceConfigRepository.getExperimentDeliveryConfig(),
 		instanceConfigRepository.getRegistrationConfig(),
 		instanceConfigRepository.getRegistrationUrlsForAdmin(),
 		instanceConfigRepository.getPendingRegistrations(),
@@ -83,6 +95,8 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 			redirect_uri: deriveSsoRedirectUri(Config.endpoints.webApp),
 		},
 		gateway_rollout: gatewayRollout,
+		voice_noise_suppression: voiceNoiseSuppression,
+		experiment_delivery: experimentDelivery,
 		registration: {
 			...registrationConfig,
 			urls: registrationUrls,
@@ -213,6 +227,26 @@ export function InstanceConfigAdminController(app: HonoApp) {
 				const validated = GatewayRolloutConfigSchema.parse(merged);
 				await instanceConfigRepository.setGatewayRolloutConfig(validated);
 				await getGatewayRolloutConfigPublisher().publish(validated);
+			}
+			if (data.voice_noise_suppression) {
+				const patch = omitUndefinedFields(data.voice_noise_suppression);
+				if (Object.keys(patch).length > 0) {
+					const currentNoiseSuppression = await instanceConfigRepository.getVoiceNoiseSuppressionConfig();
+					const validated = VoiceNoiseSuppressionConfigSchema.parse({
+						...currentNoiseSuppression,
+						...patch,
+						config_version: currentNoiseSuppression.config_version + 1,
+					});
+					await instanceConfigRepository.setVoiceNoiseSuppressionConfig(validated);
+				}
+			}
+			if (data.experiment_delivery) {
+				const currentExperimentDelivery = await instanceConfigRepository.getExperimentDeliveryConfig();
+				const validated = ExperimentDeliveryConfigSchema.parse({
+					...currentExperimentDelivery,
+					...data.experiment_delivery,
+				});
+				await instanceConfigRepository.setExperimentDeliveryConfig(validated);
 			}
 			if (data.sso) {
 				const sso = data.sso;
@@ -404,7 +438,7 @@ export function InstanceConfigAdminController(app: HonoApp) {
 				base64Image: image ?? null,
 				errorPath: 'image',
 			});
-			const brandingPatch: Partial<InstanceBrandingConfig> = {[`${kind}_url`]: prepared.newCdnUrl};
+			const brandingPatch: Partial<InstanceBranding> = {[`${kind}_url`]: prepared.newCdnUrl};
 			await instanceConfigRepository.setAppPublicConfig({branding: brandingPatch});
 			return ctx.json(await buildInstanceConfigResponse());
 		},

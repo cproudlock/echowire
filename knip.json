@@ -35,6 +35,7 @@
 		"packages/schema/src/domains/channel/ChannelRequestSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelSchemas.ts": ["exports"],
 		"packages/schema/src/domains/download/DownloadSchemas.ts": ["exports"],
+		"packages/schema/src/domains/admin/VoiceNoiseSuppressionSchemas.ts": ["exports"],
 		"packages/schema/src/domains/geolocation/GeolocationSchemas.ts": ["exports"],
 		"pnpm-workspace.yaml": ["catalog"]
 	},
@@ -62,7 +63,7 @@
 		},
 		"fluxer_app": {
 			"entry": ["lingui.config.js", "scripts/build-sw.mjs", "scripts/Generate*.ts", "scripts/build/**/*.{ts,tsx,mjs}"],
-			"ignoreDependencies": ["@lingui/swc-plugin"]
+			"ignoreDependencies": ["@sapphi-red/web-noise-suppressor", "@lingui/swc-plugin"]
 		},
 		"fluxer_desktop": {
 			"entry": [
@@ -84,7 +85,6 @@
 			"ignoreDependencies": ["sharp"]
 		},
 		"packages/openapi": {
-			"entry": ["src/GenerateOpenAPISpec.ts"],
 			"project": ["src/**/*.ts"]
 		},
 		"packages/schema": {

@@ -38,7 +38,18 @@ export function configureMiddleware(routes: HonoApp, options: MiddlewarePipeline
 	routes.use('/webhooks/:webhook_id/:token/messages/:message_id', cors({origins: '*'}));
 	applyMiddlewareStack(routes, {
 		requestId: {},
-		cors: {origins: corsOrigins, exposedHeaders: [HttpHeaders.X_FLUXER_VERSION]},
+		cors: {
+			origins: corsOrigins,
+			allowedHeaders: [
+				HttpHeaders.CONTENT_TYPE,
+				HttpHeaders.AUTHORIZATION,
+				'X-Requested-With',
+				'Accept-Language',
+				HttpHeaders.X_REQUEST_ID,
+				HttpHeaders.IF_NONE_MATCH,
+			],
+			exposedHeaders: [HttpHeaders.X_FLUXER_VERSION, HttpHeaders.ETAG],
+		},
 		skipLogger: true,
 		skipErrorHandler: true,
 	});

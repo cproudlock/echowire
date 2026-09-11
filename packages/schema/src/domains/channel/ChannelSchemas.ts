@@ -12,8 +12,8 @@ import {z} from 'zod';
 export const ChannelOverwriteResponse = z.object({
 	id: SnowflakeStringType.describe('The unique identifier for the role or user this overwrite applies to'),
 	type: ChannelOverwriteTypeSchema.describe('The type of entity the overwrite applies to'),
-	allow: PermissionStringType.describe('fluxer:PermissionStringType The bitwise value of allowed permissions'),
-	deny: PermissionStringType.describe('fluxer:PermissionStringType The bitwise value of denied permissions'),
+	allow: PermissionStringType.describe('The bitwise value of allowed permissions'),
+	deny: PermissionStringType.describe('The bitwise value of denied permissions'),
 });
 
 export type ChannelOverwriteResponse = z.infer<typeof ChannelOverwriteResponse>;
@@ -279,3 +279,19 @@ export interface Channel {
 	readonly default_auto_archive_duration?: number | null;
 	readonly require_tag?: boolean;
 }
+
+export const ChannelListResponse = z.array(ChannelResponse);
+
+// Echowire: thread membership. The generator resolves response schemas by
+// registered name, so the fork's thread routes need named schemas rather than
+// inline z.array(...) literals.
+export const ThreadMemberResponse = z.object({
+	user_id: z.string().describe('ID of the member'),
+	join_timestamp: z.string().describe('When the member joined the thread'),
+	flags: z.number().describe('Thread member flags'),
+});
+export type ThreadMemberResponse = z.infer<typeof ThreadMemberResponse>;
+
+export const ThreadMemberListResponse = z.array(ThreadMemberResponse);
+export type ThreadMemberListResponse = z.infer<typeof ThreadMemberListResponse>;
+export const RtcRegionListResponse = z.array(RtcRegionResponse);

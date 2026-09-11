@@ -3,6 +3,7 @@
 import {describe, expect, it} from 'vitest';
 import type {VoiceRegionAvailability, VoiceServerRecord} from '../VoiceModel';
 import {
+	preferServersUnderSoftLimit,
 	resolveVoiceRegionPreference,
 	selectClosestPseudoRegionServer,
 	selectVoiceRegionId,
@@ -46,11 +47,13 @@ function createVoiceServer({
 	serverId,
 	latitude,
 	longitude,
+	softConnectionLimit = null,
 }: {
 	regionId: string;
 	serverId: string;
 	latitude: number | null;
 	longitude: number | null;
+	softConnectionLimit?: number | null;
 }): VoiceServerRecord {
 	return {
 		regionId,
@@ -61,6 +64,7 @@ function createVoiceServer({
 		latitude,
 		longitude,
 		isActive: true,
+		softConnectionLimit,
 		restrictions: {
 			vipOnly: false,
 			requiredGuildFeatures: new Set(),
@@ -124,6 +128,7 @@ describe('VoiceRegionSelection', () => {
 		const selectedServer = selectClosestPseudoRegionServer({
 			mode: 'automatic',
 			accessibleServers: [serverA, serverB],
+			connectionCounts: new Map(),
 			latitude: '50',
 			longitude: '50',
 			selectionKey: 'guild:1:channel:1',
@@ -137,6 +142,7 @@ describe('VoiceRegionSelection', () => {
 		const selectedFromForwardOrder = selectClosestPseudoRegionServer({
 			mode: 'automatic',
 			accessibleServers: [serverB, serverA],
+			connectionCounts: new Map(),
 			latitude: '50',
 			longitude: '50',
 			selectionKey: 'guild:1:channel:1',
@@ -144,6 +150,7 @@ describe('VoiceRegionSelection', () => {
 		const selectedFromReverseOrder = selectClosestPseudoRegionServer({
 			mode: 'automatic',
 			accessibleServers: [serverA, serverB],
+			connectionCounts: new Map(),
 			latitude: '50',
 			longitude: '50',
 			selectionKey: 'guild:1:channel:1',
@@ -151,6 +158,7 @@ describe('VoiceRegionSelection', () => {
 		const selectedForAnotherRoom = selectClosestPseudoRegionServer({
 			mode: 'automatic',
 			accessibleServers: [serverB, serverA],
+			connectionCounts: new Map(),
 			latitude: '50',
 			longitude: '50',
 			selectionKey: 'guild:1:channel:2',
@@ -165,6 +173,7 @@ describe('VoiceRegionSelection', () => {
 		const selectedServer = selectClosestPseudoRegionServer({
 			mode: 'explicit',
 			accessibleServers: [serverA, serverB],
+			connectionCounts: new Map(),
 			latitude: '50',
 			longitude: '50',
 			selectionKey: 'guild:1:channel:1',
@@ -206,5 +215,92 @@ describe('VoiceRegionSelection', () => {
 		expect(selectedFromForwardOrder).toBe('b');
 		expect(selectedFromReverseOrder).toBe('b');
 		expect(selectedForAnotherRoom).toBe('a');
+	});
+	it('skips a pseudo-region server that reached its soft connection limit', () => {
+		const nearServer = createVoiceServer({
+			regionId: 'a',
+			serverId: 'a1',
+			latitude: 51,
+			longitude: 51,
+			softConnectionLimit: 100,
+		});
+		const farServer = createVoiceServer({regionId: 'b', serverId: 'b1', latitude: 0, longitude: 0});
+		const selectedServer = selectClosestPseudoRegionServer({
+			mode: 'automatic',
+			accessibleServers: [nearServer, farServer],
+			connectionCounts: new Map([['a1', 100]]),
+			latitude: '50',
+			longitude: '50',
+			selectionKey: 'guild:1:channel:1',
+		});
+		expect(selectedServer?.serverId).toBe('b1');
+	});
+	it('keeps a pseudo-region server that is still below its soft connection limit', () => {
+		const nearServer = createVoiceServer({
+			regionId: 'a',
+			serverId: 'a1',
+			latitude: 51,
+			longitude: 51,
+			softConnectionLimit: 100,
+		});
+		const farServer = createVoiceServer({regionId: 'b', serverId: 'b1', latitude: 0, longitude: 0});
+		const selectedServer = selectClosestPseudoRegionServer({
+			mode: 'automatic',
+			accessibleServers: [nearServer, farServer],
+			connectionCounts: new Map([['a1', 99]]),
+			latitude: '50',
+			longitude: '50',
+			selectionKey: 'guild:1:channel:1',
+		});
+		expect(selectedServer?.serverId).toBe('a1');
+	});
+	it('falls back to a server over its soft connection limit when every candidate is over', () => {
+		const serverA = createVoiceServer({
+			regionId: 'a',
+			serverId: 'a1',
+			latitude: 51,
+			longitude: 51,
+			softConnectionLimit: 10,
+		});
+		const serverB = createVoiceServer({
+			regionId: 'b',
+			serverId: 'b1',
+			latitude: 0,
+			longitude: 0,
+			softConnectionLimit: 10,
+		});
+		const selectedServer = selectClosestPseudoRegionServer({
+			mode: 'automatic',
+			accessibleServers: [serverA, serverB],
+			connectionCounts: new Map([
+				['a1', 40],
+				['b1', 40],
+			]),
+			latitude: '50',
+			longitude: '50',
+			selectionKey: 'guild:1:channel:1',
+		});
+		expect(selectedServer?.serverId).toBe('a1');
+	});
+	it('ignores a soft connection limit when no count is known for the server', () => {
+		const serverA = createVoiceServer({
+			regionId: 'a',
+			serverId: 'a1',
+			latitude: null,
+			longitude: null,
+			softConnectionLimit: 1,
+		});
+		const serverB = createVoiceServer({regionId: 'b', serverId: 'b1', latitude: null, longitude: null});
+		expect(preferServersUnderSoftLimit([serverA, serverB], new Map())).toEqual([serverA, serverB]);
+	});
+	it('ignores a soft connection limit that is not positive', () => {
+		const serverA = createVoiceServer({
+			regionId: 'a',
+			serverId: 'a1',
+			latitude: null,
+			longitude: null,
+			softConnectionLimit: 0,
+		});
+		expect(preferServersUnderSoftLimit([serverA], new Map([['a1', 500]]))).toEqual([serverA]);
 	});
 });

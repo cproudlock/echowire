@@ -18,6 +18,7 @@ import {
 	type VoiceProcessingMode,
 } from '@app/features/voice/utils/VoiceProcessingProfile';
 import {clampVoiceVolumePercent} from '@app/features/voice/utils/VoiceVolumeUtils';
+import type {VoiceNoiseSuppressionBackend} from '@fluxer/schema/src/domains/admin/VoiceNoiseSuppressionSchemas';
 import {makeAutoObservable} from 'mobx';
 
 export type VoiceBackgroundMediaKind = 'static' | 'animated' | 'video';
@@ -400,6 +401,8 @@ class VoiceSettings {
 	deepFilterNoiseSuppressionPrefV2 = false;
 	deepFilterNoiseSuppressionLevelPrefV2 = 80;
 	noiseSuppressionStandardDefaultMigratedV1 = false;
+	noiseSuppressionBackendPrefV1: VoiceNoiseSuppressionBackend | null = null;
+	stereoMicrophonePrefV1: boolean | null = null;
 	voiceProcessingMode: VoiceProcessingMode = DEFAULT_VOICE_PROCESSING_MODE;
 	voiceProcessingDefaultsMigratedV1 = false;
 	voiceProcessingModeByDeviceLabel: Record<string, VoiceProcessingMode> = {};
@@ -594,6 +597,8 @@ class VoiceSettings {
 			'deepFilterNoiseSuppressionPrefV2',
 			'deepFilterNoiseSuppressionLevelPrefV2',
 			'noiseSuppressionStandardDefaultMigratedV1',
+			'noiseSuppressionBackendPrefV1',
+			'stereoMicrophonePrefV1',
 			'voiceProcessingMode',
 			'voiceProcessingModeByDeviceLabel',
 			'voiceProcessingDefaultsMigratedV1',
@@ -672,6 +677,30 @@ class VoiceSettings {
 
 	set pauseOwnScreenSharePreviewOnUnfocus(value: boolean) {
 		this.pauseOwnScreenSharePreviewOnUnfocusPrefV2 = value;
+	}
+
+	get noiseSuppressionBackend(): VoiceNoiseSuppressionBackend | null {
+		return this.noiseSuppressionBackendPrefV1;
+	}
+
+	set noiseSuppressionBackend(value: VoiceNoiseSuppressionBackend | null) {
+		this.noiseSuppressionBackendPrefV1 = value;
+	}
+
+	getNoiseSuppressionBackend(): VoiceNoiseSuppressionBackend | null {
+		return this.noiseSuppressionBackendPrefV1;
+	}
+
+	get stereoMicrophone(): boolean | null {
+		return this.stereoMicrophonePrefV1;
+	}
+
+	set stereoMicrophone(value: boolean | null) {
+		this.stereoMicrophonePrefV1 = value;
+	}
+
+	getStereoMicrophone(): boolean | null {
+		return this.stereoMicrophonePrefV1;
 	}
 
 	get deepFilterNoiseSuppression(): boolean {

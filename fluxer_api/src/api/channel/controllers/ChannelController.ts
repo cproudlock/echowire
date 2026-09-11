@@ -4,15 +4,18 @@ import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownCha
 import {SudoVerificationSchema} from '@fluxer/schema/src/domains/auth/AuthSchemas';
 import {
 	ChannelUpdateRequest,
+	ChannelUpdateRequestBody,
 	DeleteChannelQuery,
 	PermissionOverwriteCreateRequest,
 	ThreadCreateRequest,
 	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import {
+	ChannelListResponse,
 	ChannelResponse,
 	ChannelSlowmodeStateResponse,
-	RtcRegionResponse,
+	RtcRegionListResponse,
+	ThreadMemberListResponse,
 } from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {
 	ChannelIdOverwriteIdParam,
@@ -20,7 +23,7 @@ import {
 	ChannelIdUserIdParam,
 } from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import type {Context} from 'hono';
-import {z} from 'zod';
+
 import {requireSudoMode} from '../../auth/services/SudoVerificationService';
 import {createChannelID, createUserID} from '../../BrandedTypes';
 import {DefaultUserOnly, LoginRequired} from '../../middleware/AuthMiddleware';
@@ -76,7 +79,7 @@ export function ChannelController(app: HonoApp) {
 			operationId: 'list_active_threads',
 			summary: 'List active threads',
 			description: 'Lists the active (non-archived) threads under a text or forum channel.',
-			responseSchema: z.array(ChannelResponse),
+			responseSchema: ChannelListResponse,
 			statusCode: 200,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
 			tags: 'Channels',
@@ -148,7 +151,7 @@ export function ChannelController(app: HonoApp) {
 			operationId: 'list_archived_threads',
 			summary: 'List archived threads',
 			description: 'Lists the archived threads under a text or forum channel.',
-			responseSchema: z.array(ChannelResponse),
+			responseSchema: ChannelListResponse,
 			statusCode: 200,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
 			tags: 'Channels',
@@ -214,7 +217,7 @@ export function ChannelController(app: HonoApp) {
 			operationId: 'list_thread_members',
 			summary: 'List thread members',
 			description: 'Lists the members of a thread.',
-			responseSchema: z.array(z.object({user_id: z.string(), join_timestamp: z.string(), flags: z.number()})),
+			responseSchema: ThreadMemberListResponse,
 			statusCode: 200,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
 			tags: 'Channels',
@@ -287,7 +290,7 @@ export function ChannelController(app: HonoApp) {
 			summary: 'List RTC regions',
 			description:
 				'Returns available voice and video calling regions for the channel, used to optimise connection quality. Requires membership with call permissions.',
-			responseSchema: z.array(RtcRegionResponse),
+			responseSchema: RtcRegionListResponse,
 			statusCode: 200,
 			security: ['bearerToken', 'sessionToken'],
 			tags: 'Channels',
@@ -330,6 +333,7 @@ export function ChannelController(app: HonoApp) {
 		}),
 		OpenAPI({
 			operationId: 'update_channel',
+			requestSchema: ChannelUpdateRequestBody,
 			summary: 'Update channel settings',
 			description:
 				'Modifies channel properties such as name, description, topic, nsfw flag, and slowmode. Requires management permissions in the channel.',

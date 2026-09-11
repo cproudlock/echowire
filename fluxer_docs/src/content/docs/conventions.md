@@ -4,7 +4,7 @@ title: API conventions
 description: Normative keywords, protocol subjects, wire table notation, and endpoint entry structure.
 ---
 
-This page defines the notation every reference page uses: the wire tables, the type names, the footnote markers, the endpoint entry layout, and what an omitted field means. An operation that states a different rule and names the difference overrides anything here. A code example illustrates the contract and never overrides prose, a wire table, a registry, or a state-transition table.
+This page defines the notation every reference page uses. An operation that states a different rule and names the difference overrides anything here. A code example shows the contract and never overrides prose, a wire table, a registry, or a state-transition table.
 
 ## Normative language
 
@@ -14,7 +14,7 @@ Normative force does not depend on a keyword appearing. A direct statement such 
 
 ## Protocol subjects
 
-These subjects have the meanings below throughout the reference.
+Each subject below has the same meaning on every reference page.
 
 | Subject | Description |
 | --- | --- |
@@ -32,7 +32,7 @@ These subjects have the meanings below throughout the reference.
 
 A Dispatch is one Gateway server-to-client event, and a command is one client-to-server message. The reference writes ordinary user or non-bot user where a rule excludes bots.
 
-Several of these words have an unrelated second sense. An authentication session is the stored login record defined by [Authentication](/authentication/), a voice server is the registered media machine defined by [Admin Voice](/admin-api/voice/), and a guild administrator is a member holding guild permissions.
+Several of these words have an unrelated second sense. An authentication session is the stored login record defined by [Authentication](/authentication/). A voice server is the registered media machine defined by [Admin Voice](/admin-api/voice/). A guild administrator is a member holding guild permissions.
 
 ## Wire table notation
 
@@ -51,15 +51,15 @@ The `Type` column uses this notation.
 | `integer string`, `base64 string` | That representation in a JSON string |
 | `binary`, `file` | A multipart file part |
 
-The description of a duration field names its unit.
+A duration field's description names its unit.
 
-The type of a union lists its alternatives separated by a vertical bar, written as `type \| type` in a table cell. A field that accepts a small fixed set of literal values lists those exact wire values in the same form, as in `emoji \| sticker`.
+The type of a union lists its alternatives separated by a vertical bar, written as `type | type` in a table cell. A field that accepts a small fixed set of literal values lists those exact wire values in the same form, as in `emoji | sticker`.
 
-A superscript marker such as <sup>1</sup> refers to the numbered footnote written beneath its table or paragraph. Numbering restarts in every table. A footnote records a presence condition, gate, bound, or computed value that does not fit in a description cell.
+A superscript marker such as <sup>1</sup> refers to the numbered footnote written below its table or paragraph. Numbering restarts in every table. A footnote records a presence condition, gate, bound, or computed value that does not fit in a description cell.
 
 Bitfield tables and enumeration tables with symbolic names share the `Value`, `Name`, and `Description` columns. A table is a bitfield when every non-zero value cell holds a shift expression of the form `1 << n`. An enumeration whose values have no symbolic name uses `Value` and `Description` alone.
 
-A registry is closed when its page states that it is complete, gives an exact count, or states that a value outside it is rejected. A value absent from a closed registry is unsupported even when its wire type could represent it.
+A registry is closed when its page states it is complete, gives an exact count, or states that a value outside it is rejected. A value absent from a closed registry is unsupported even when its wire type could represent it.
 
 A state-transition table uses `Event and condition`, `Action`, and `Next state` columns. Its first cell names an event one state accepts and then the condition that selects this outcome. A state accepts an event only when it appears in that state's table or in a table the section declares for every open state.
 
@@ -67,7 +67,7 @@ A state-transition table uses `Event and condition`, `Action`, and `Next state` 
 
 On a request that modifies a stored entity and accepts a subset of its fields, omitting an optional field leaves the stored value unchanged. Sending `null` for a nullable field clears it. A field that is optional but not nullable can be set or left unchanged. A field that is nullable but not optional is always present, even when its value is `null`.
 
-An operation that departs from either default states the departure in the field's description, in a footnote, or beside its body table. A departure can run in either direction, so an operation can accept `null` without clearing and can change a stored value that the request never named. An operation can also define an empty string or an empty array as the clearing value, and a supplied array replaces the stored collection completely.
+Where an operation departs from either default, it states the departure in the field's description, in a footnote, or beside its body table. A departure can run in either direction, so an operation can accept `null` without clearing and can change a stored value that the request never named. An operation can also define an empty string or an empty array as the clearing value, and a supplied array replaces the stored collection completely.
 
 [Modify meme](/http-api/memes/#modify-meme) accepts this body, which leaves the stored tags unchanged, clears the alt text, and sets the name:
 
@@ -78,7 +78,7 @@ An operation that departs from either default states the departure in the field'
 }
 ```
 
-On a response, the page that owns a field states what an absent field means. That is commonly that the operation did not populate it, that the object variant does not own it, or that its value has been cleared. Each of those is distinct from a present field whose value is `null`.
+On a response, the page that owns a field states what an absent field means. That is commonly that the operation did not fill it, that the object variant does not own it, or that its value has been cleared. An absent field is not the same as a present field whose value is `null`.
 
 ## Endpoint entries
 
@@ -109,17 +109,20 @@ Prose then states the contract. The subsections that apply follow it in this ord
 10. `Side effects`.
 11. `Rate limit`, which states the bucket the operation draws on.
 
-A subsection that does not apply is omitted. An object that a page defines has its own field table under `Structure`.
+Subsections that do not apply are omitted. An object that a page defines has its own field table under `Structure`.
 
-A response table uses `Status`, `Body`, and `Condition` columns. A `Body` cell uses the same type notation as a wire table, names `empty` where the response has no body, and names `response body` where the preceding subsection defines it. A response table has no header column. The shared contract is defined once under [standard response headers](/http-api/#standard-response-headers). A header an operation sets for itself is stated in prose under the operation.
+A response table uses `Status`, `Body`, and `Condition` columns. A `Body` cell uses the same type notation as a wire table, names `empty` where the response has no body, and names `response body` where the preceding subsection defines it. A response table has no header column. The shared contract is defined once under [standard response headers](/http-api/#standard-response-headers), and a header an operation sets for itself is stated in prose under the operation.
 
 ## Describing behaviour
 
 A present-tense statement about Fluxer states an observable contract. An internal storage, service, queue, or worker detail appears only where it determines an observable ordering rule, durability guarantee, limit, timeout, error, or security boundary.
 
-Each failure names the value a client branches on. An HTTP API or Admin API failure names its status and its stable error `code`. An OAuth2 protocol failure answers with the RFC 6749 envelope, which has no Fluxer `code` and is matched on its `error` value. A Media Proxy failure has a plain-text reason phrase and no machine-readable code, so a client branches on its HTTP status. A WebSocket failure names its close code and, where the protocol defines one, the exact close reason.
+Each failure names the value a client branches on. A human-readable message can be localised, so a client matches only the machine-readable value its surface defines.
 
-A human-readable message can be localised, so a client matches only the machine-readable value its surface defines.
+- An HTTP API or Admin API failure names its status and its stable error `code`.
+- An OAuth2 protocol failure answers with the RFC 6749 envelope, which has no Fluxer `code` and is matched on its `error` value.
+- A Media Proxy failure has a plain-text reason phrase and no machine-readable code, so a client branches on its HTTP status.
+- A WebSocket failure names its close code and, where the protocol defines one, the exact close reason.
 
 ## Limits and bounds
 
@@ -129,16 +132,16 @@ An array bound counts elements. A string bound names its unit, written as charac
 
 ## Examples and notes
 
-A `json` example shows one valid or representative wire value, and a `text` example shows an expression or a string form. Every identifier, token, hash, and host in an example is fabricated, and an example host uses the reserved `example.com` domain.
+A `json` example shows one valid or representative wire value, and a `text` example shows an expression or a string form. Every identifier, token, hash, and host in an example is made up, and an example host uses the reserved `example.com` domain.
 
-Inside inline code, angle brackets mark descriptive placeholder text standing for a real value, as in `Bot <token>` or `attachment://<filename>`. An ellipsis inside a JSON string value elides content the example does not need to show. Where inline code quotes an exact response body, the brackets are part of the literal value.
+Inside inline code, angle brackets mark descriptive placeholder text standing for a real value, as in `Bot <token>` or `attachment://<filename>`. An ellipsis inside a JSON string value leaves out content the example does not need to show. Where inline code quotes an exact response body, the brackets are part of the literal value.
 
-A note states a consequence or a relationship to another rule. A caution states a detail a client would otherwise get wrong, which covers a contract that breaks the opposite assumption, a value the client must keep confidential, and an effect that cannot be undone. A danger is reserved for an outcome that destroys stored data, files an external report, revokes every credential on an account, or discloses a credential no later operation can return. All three are binding.
+A note states a consequence or a relationship to another rule. A caution states a detail a client would otherwise get wrong. That covers a contract that breaks the opposite assumption, a value the client must keep confidential, and an effect that cannot be undone. A danger is reserved for an outcome that destroys stored data, files an external report, revokes every credential on an account, or discloses a credential no later operation can return. All three are binding.
 
 ## Independent protocol surfaces
 
-The HTTP API and the Gateway each own an error registry, and the Media Proxy API owns none because its failures have no code. The Gateway alone defines opcodes and close codes.
+The HTTP API and the Gateway each own an error registry. The Media Proxy API owns none because its failures have no code. The Gateway alone defines opcodes and close codes.
 
 The Admin API is a privileged namespace inside the HTTP API. It shares the `/v1` prefix, the request and response framing, the error envelope, and the standard response headers. It adds its own credential policy, ACL registry, audit contract, and rate limit registry.
 
-An identifier other than a [snowflake](/snowflakes/) reaches a second surface only where that surface names it, as the Media Proxy API does for the upload capability and the asset hash the HTTP API issues.
+An identifier other than a [snowflake](/snowflakes/) reaches a second surface only where that surface names it. The Media Proxy API does that for the upload capability and the asset hash the HTTP API issues.

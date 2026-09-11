@@ -87,7 +87,7 @@ The result has no `avatar`, `banner`, `accent_color`, `mute`, `deaf`, `communica
 
 ## Guild member search supplemental object
 
-A guild member search supplemental object has the join provenance the [guild member object](/http-api/guild-members/#guild-member-object) never exposes. Only a caller that can already manage the guild reads it.
+A guild member search supplemental object has the join source the [guild member object](/http-api/guild-members/#guild-member-object) never exposes. Only a caller that can already manage the guild reads it.
 
 ### Structure
 
@@ -121,7 +121,7 @@ One search returns this envelope. Every field is always present.
 
 <sup>3</sup> A true value always comes with an empty `members` array and both counts at zero
 
-An Elasticsearch instance reports the true `total_result_count`. A Meilisearch instance reports an estimate that saturates at 10000. In a very large guild that value can be lower than the true number of matches.
+An Elasticsearch instance reports the true `total_result_count`. A Meilisearch instance reports an estimate that caps at 10000. In a very large guild that value can be lower than the true number of matches.
 
 ### Example
 
@@ -144,12 +144,12 @@ Searches the guild member index. Returns a [guild member search response](#guild
 ### Limitations
 
 - The caller must also hold at least one of [MANAGE_GUILD](/http-api/permissions/), [MANAGE_ROLES](/http-api/permissions/), [MANAGE_NICKNAMES](/http-api/permissions/), [BAN_MEMBERS](/http-api/permissions/), [MODERATE_MEMBERS](/http-api/permissions/), or [KICK_MEMBERS](/http-api/permissions/).
-- Five of the six qualifying bits are [elevated permissions](/http-api/permissions/#elevated-permissions). In a guild whose [MFA level](/http-api/guilds/#mfa-levels) is elevated, a caller other than the guild owner who holds one of those five and has no enrolled authenticator receives 400 `TWO_FACTOR_REQUIRED`. `MANAGE_NICKNAMES` is not elevated, so a caller who qualifies through it alone never receives that code.
+- Every qualifying bit except `MANAGE_NICKNAMES` is one of the [elevated permissions](/http-api/permissions/#elevated-permissions). In a guild whose [MFA level](/http-api/guilds/#mfa-levels) is elevated, a caller other than the guild owner who holds one of those elevated bits and has no enrolled authenticator receives 400 `TWO_FACTOR_REQUIRED`. A caller who qualifies through `MANAGE_NICKNAMES` alone never receives that code.
 - A non-member of an existing guild receives the same 403 `MISSING_PERMISSIONS` as a member holding none of the qualifying bits, so a caller cannot tell the two apart.
 
 A guild that does not exist returns 404 `UNKNOWN_GUILD`.
 
-[List guild members](/http-api/guild-members/#list-guild-members) needs only membership and returns the complete member object for everyone. The permissions above gate the filtering, the sorting, the deep paging, and the [supplemental](#guild-member-search-supplemental-object) join provenance.
+[List guild members](/http-api/guild-members/#list-guild-members) needs only membership and returns the complete member object for everyone. The permissions above gate the filtering, the sorting, the deep paging, and the [supplemental](#guild-member-search-supplemental-object) join source.
 
 ### Path parameters
 
@@ -191,11 +191,11 @@ Every field is optional, and an omitted filter is not applied. The route reads a
 
 <sup>7</sup> The sort field is camel-cased `joinedAt`, where the result object names the same value `joined_at`
 
-[Input normalisation](/http-api/#input-normalisation) rewrites `""` to null, which this field rejects with 400 `INVALID_FORM_BODY`. `" "` is accepted.
+[Input normalisation](/http-api/#input-normalisation) rewrites `""` to null, which the `query` field rejects with 400 `INVALID_FORM_BODY`. `" "` is accepted.
 
-With no `sort_by`, the route sorts by join time and defaults `sort_order` to `desc`. Two members with the same join time are ordered by descending `id`. `relevance` ignores `sort_order`. A Meilisearch instance orders `relevance` by its own ranking rules. An Elasticsearch instance orders `relevance` by descending `id`.
+With no `sort_by`, the route sorts by join time and defaults `sort_order` to `desc`. Two members with the same join time are ordered by descending `id`. `relevance` ignores `sort_order`. A Meilisearch instance orders a `relevance` search by its own ranking rules, and an Elasticsearch instance by descending `id`.
 
-Text matching runs over the username, the discriminator, the global display name, the guild nickname, and the user ID, and a query can match the middle of a username as well as its start. Term matching and typo tolerance belong to the search backend. Filter matching is exact in every case.
+Text matching runs over the username, the discriminator, the global display name, the guild nickname, and the user ID. A query can match the middle of a username as well as its start. The search backend defines term matching and typo tolerance. Filter matching is exact in every case.
 
 :::caution[A deep `offset` returns 200 with an empty page]
 Elasticsearch walks past its 10000 document window with an internal cursor and serves an arbitrary `offset`. Meilisearch caps the window at 10000 and returns an empty page beyond it.
@@ -212,7 +212,7 @@ Elasticsearch walks past its 10000 document window with an internal cursor and s
 
 <sup>1</sup> The [error code](/http-api/errors/) is `MISSING_ACCESS` for an unavailable guild, `CONTENT_BLOCKED` for a blocked body string, and `MISSING_PERMISSIONS` otherwise
 
-An index that has never been built, or that predates the instance forced reindex point, returns 200 with an empty page and `indexing` set to true, and the request schedules the rebuild. The same empty body with `indexing` false covers a guild whose record disappeared between the membership check and the index read, an instance with no search backend configured, and an instance still initialising. This operation never returns `FEATURE_TEMPORARILY_DISABLED`.
+An index that has never been built, or that predates the instance forced reindex point, returns 200 with an empty page and `indexing` set to true, and the request schedules the rebuild. The same empty body with `indexing` false covers a guild whose record disappeared between the membership check and the index read, an instance with no search backend configured, and an instance still starting up. This operation never returns `FEATURE_TEMPORARILY_DISABLED`.
 
 :::note[`indexing` false does not mean zero matches]
 True means the rebuild is scheduled and the page is empty for that reason alone. False covers a genuine zero-match search and every other index that could not answer.
@@ -220,7 +220,7 @@ True means the rebuild is scheduled and the page is empty for that reason alone.
 
 ### Side effects
 
-The route enqueues a rebuild of the guild's member index when the guild has never been indexed or was last indexed before the instance forced reindex point.
+The route queues a rebuild of the guild's member index when the guild has never been indexed or was last indexed before the instance forced reindex point.
 
 ### Rate limit
 

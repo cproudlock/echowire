@@ -6,7 +6,7 @@ description: The four gates a Dispatch passes before it reaches a socket, and th
 
 A [Dispatch](/gateway/events/) is one event Fluxer sends to a connected client. Each one passes four independent gates on its way to a socket, and a client shapes its traffic with [Lazy Request](/gateway/commands/#lazy-request) subscriptions and the [Identify](/gateway/commands/#identify) `ignored_events` list.
 
-Fluxer has no intent bitfield. A client ported from a protocol that uses intents replaces its intent mask with those two mechanisms. There is no `intents` field, no intent close code, and no privileged-intent approval.
+Fluxer has no `intents` field, no intent close code, and no privileged-intent approval. A client ported from a protocol that uses intents replaces its intent mask with those two mechanisms.
 
 ## The four gates
 
@@ -25,7 +25,7 @@ An account-scoped Dispatch skips gates 1 through 3 and is subject only to gate 4
 
 ## Permission and visibility
 
-The guild resolves each event to one of five recipient sets.
+The guild resolves each event to one of these recipient sets.
 
 | Event class | Events | Recipients |
 | --- | --- | --- |
@@ -39,7 +39,7 @@ The guild resolves each event to one of five recipient sets.
 
 <sup>2</sup> The channel is read from the payload's `channel_id`, and from a nested `channel.id` when that field is absent. An invite payload with neither field reaches no session
 
-Every one of those sets also excludes a session whose connection to the guild is still in flight, so a session receives none of the events above until the guild has given it that initial state.
+Every one of those sets excludes a session that has not yet received the guild's initial state.
 
 Channel visibility is `VIEW_CHANNEL` on the channel, plus two extensions. A category is visible when at least one of its children is visible. A user with a live voice connection in a channel keeps virtual access to it whenever the channel would otherwise stop being visible. That covers a role or overwrite change removing `VIEW_CHANNEL`, and a move into a channel the user cannot view. Virtual access is keyed by user, so it applies to every session of that user. It is dropped when the user's voice connection to the channel ends.
 
@@ -102,13 +102,13 @@ The override applies to every session, including a bot session. A bot suppresses
 
 A session that no longer shares a viewable channel with the subject is dropped from that subject's subscriber set, so a client that regains access MUST resend `members` to restore delivery. Each `members` array replaces the session's previous subscription set for that guild.
 
-The session holds a presence back in two cases. Every presence that arrives before [Ready](/gateway/events/#ready) is held. Fluxer releases the queue once it has dispatched Ready. A held presence whose subject already appears in the Ready `presences` array is dropped, and the session sends the rest in one burst. When Ready has not been dispatched within 10,000 milliseconds of session start, a fallback timer releases the queue. After that the session buffers a guild presence whose `guild_id` names a guild it is not connected to, and an account-scoped presence for a user that is neither a friend nor a recipient of a group direct message it belongs to.
+A session holds a presence back in two cases. It holds every presence that arrives before [Ready](/gateway/events/#ready), and releases the queue once it has dispatched Ready. A held presence whose subject already appears in the Ready `presences` array is dropped, and the session sends the rest in one burst. When Ready has not been dispatched within 10,000 milliseconds of session start, a fallback timer releases the queue. After that the session holds a guild presence whose `guild_id` names a guild it is not connected to, and an account-scoped presence for a user that is neither a friend nor a recipient of a group direct message it belongs to.
 
 A bot session holds no friend or group direct message presence subscriptions, so a bot receives a presence through this guild path alone.
 
 ## Ignored events
 
-Identify accepts `ignored_events`, an array of up to 256 Dispatch event names. Fluxer upper-cases and deduplicates the names at Identify. An absent field and a JSON `null` both mean the empty list. Any other value that is not an array of strings, and any array holding more than 256 entries, close the connection with `4002` and reason `Invalid identify payload`. A Dispatch whose `t` appears in the list is dropped and never enters the replay buffer.
+Identify accepts `ignored_events`, an array of up to 256 Dispatch event names. Fluxer upper-cases and deduplicates the names at Identify. An absent field and a JSON `null` both mean the empty list. Fluxer closes the connection with `4002` and reason `Invalid identify payload` for any other value that is not an array of strings, and for any array of more than 256 entries. A Dispatch whose `t` appears in the list is dropped and never enters the replay buffer.
 
 ```json
 {
@@ -121,7 +121,7 @@ Identify accepts `ignored_events`, an array of up to 256 Dispatch event names. F
 }
 ```
 
-One exception overrides the list. [Message Create](/gateway/events/#message-create) is delivered even when `MESSAGE_CREATE` is ignored, if the message names the session's user in `mentions`, sets `mention_here`, or sets `mention_everyone`. A role mention does not defeat the list.
+[Message Create](/gateway/events/#message-create) is the one exception. Fluxer delivers it even when `MESSAGE_CREATE` is ignored, if the message names the session's user in `mentions`, sets `mention_here`, or sets `mention_everyone`. A role mention does not defeat the list.
 
 A suppressed Dispatch consumes no sequence number, so a client MUST NOT expect a gap in the sequence where the list dropped one.
 
@@ -137,7 +137,7 @@ A session that identified with a `shard` pair whose `shard_id` is not 0 drops ev
 
 Account-level traffic, direct message traffic, relationship changes, and calls therefore never reach a session on a shard other than 0.
 
-A session on shard 0, and a session that identified without a `shard` pair, filter nothing at this gate. Fluxer still applies guild ownership at Identify, as [Sharding](/gateway/overview/#sharding) describes, so a shard 0 session is only ever connected to the guilds its shard owns.
+Sessions on shard 0, and sessions that identified without a `shard` pair, filter nothing at this gate. Fluxer still applies guild ownership at Identify, as [Sharding](/gateway/overview/#sharding) describes, so a shard 0 session is only ever connected to the guilds its shard owns.
 
 ## What a bot should send
 

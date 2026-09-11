@@ -108,6 +108,32 @@ $FluxerStackFiles = @(
 	'.env.example'
 )
 
+$FluxerComposeNames = @(
+	'compose.yaml'
+	'compose.yml'
+	'docker-compose.yml'
+	'docker-compose.yaml'
+)
+
+$script:FluxerComposeBase = 'docker-compose.yml'
+$script:FluxerComposeBaseFrom = ''
+
+function Get-FluxerComposeNameIn([string]$Directory) {
+	foreach ($name in $FluxerComposeNames) {
+		if (Test-Path -LiteralPath (Join-Path $Directory $name)) {
+			return $name
+		}
+	}
+	return ''
+}
+
+function Get-FluxerPlacedName([string]$Name) {
+	if ($Name -eq 'docker-compose.yml') {
+		return $script:FluxerComposeBase
+	}
+	return $Name
+}
+
 # The file Compose bind-mounts from the working directory, with the service that mounts it.
 # Compose decides whether to recreate a container by comparing its configuration, and the
 # contents of a bind-mounted file are not part of that comparison, so a changed Caddyfile survives
@@ -642,7 +668,7 @@ function Get-FluxerStackFiles([string]$StagingDir, [string]$RefValue) {
 # for an edit.
 function Move-FluxerStackFiles([string]$StagingDir, [string]$TargetDir) {
 	foreach ($name in $FluxerStackFiles) {
-		Move-Item -LiteralPath (Join-Path $StagingDir $name) -Destination (Join-Path $TargetDir $name) -Force
+		Move-Item -LiteralPath (Join-Path $StagingDir $name) -Destination (Join-Path $TargetDir (Get-FluxerPlacedName $name)) -Force
 	}
 }
 
@@ -776,15 +802,64 @@ function Wait-FluxerStack([string]$Lead) {
 	Stop-Fluxer "The stack did not report healthy within $FluxerReadyTimeoutSeconds seconds. Read docker compose ps and docker compose logs." $FluxerExitUnhealthy
 }
 
+# The origin browsers use. .env states it outright when FLUXER_PUBLIC_ORIGIN is set, and Compose
+# otherwise builds the same string from the scheme, the domain and the port, dropping a port that
+# is the default for its scheme.
+#
+# Compose expands a ${...} reference inside an .env value and this script does not, so a
+# FLUXER_PUBLIC_ORIGIN written that way is skipped rather than printed back with the braces still
+# in it. The three names below say the same address, so the derived string is the right one to
+# fall back to.
+#
+# By hand:
+#   Select-String -Path .env -Pattern '^FLUXER_(PUBLIC_ORIGIN|PUBLIC_SCHEME|DOMAIN|PUBLIC_PORT)='
+function Get-FluxerPublicOrigin([string]$EnvPath) {
+	$origin = Get-FluxerEnvValue $EnvPath 'FLUXER_PUBLIC_ORIGIN'
+	if ($origin.Contains('${')) {
+		Write-FluxerProblem 'FLUXER_PUBLIC_ORIGIN in .env holds a ${...} reference. This script does not expand those, so the address below comes from FLUXER_PUBLIC_SCHEME, FLUXER_DOMAIN and FLUXER_PUBLIC_PORT instead.'
+		$origin = ''
+	}
+	if ($origin.Length -gt 0) {
+		return $origin.TrimEnd('/')
+	}
+	$originHost = Get-FluxerEnvValue $EnvPath 'FLUXER_DOMAIN'
+	if ($originHost.Length -eq 0) {
+		return ''
+	}
+	$scheme = Get-FluxerEnvValue $EnvPath 'FLUXER_PUBLIC_SCHEME'
+	if ($scheme.Length -eq 0) {
+		$scheme = 'https'
+	}
+	$port = Get-FluxerEnvValue $EnvPath 'FLUXER_PUBLIC_PORT'
+	$suffix = ''
+	if ($port.Length -gt 0 -and -not (($scheme -eq 'http' -and $port -eq '80') -or ($scheme -eq 'https' -and $port -eq '443'))) {
+		$suffix = ":$port"
+	}
+	return "${scheme}://${originHost}${suffix}"
+}
+
 # The public probe is informational. A host behind hairpin NAT cannot always reach its own
-# hostname, and a false failure there would be worse than no probe.
-function Test-FluxerPublicHealth([string]$DomainValue) {
-	$url = "https://$DomainValue$FluxerHealthPath"
+# hostname, and a false failure there would be worse than no probe. It asks the origin .env
+# advertises, so an instance on a non-default port is probed where it actually answers.
+function Test-FluxerPublicHealth([string]$Origin) {
+	$url = "$Origin$FluxerHealthPath"
+	$authority = $Origin
+	$separator = $Origin.IndexOf('://')
+	if ($separator -ge 0) {
+		$authority = $Origin.Substring($separator + 3)
+	}
+	$probeHost = $authority
+	$probePort = if ($Origin.StartsWith('http://')) { '80' } else { '443' }
+	$colon = $authority.IndexOf(':')
+	if ($colon -ge 0) {
+		$probeHost = $authority.Substring(0, $colon)
+		$probePort = $authority.Substring($colon + 1)
+	}
 	try {
 		$response = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 20
 		Write-FluxerLine "$url returned $([int]$response.StatusCode)."
 	} catch {
-		Write-FluxerLine "$url did not answer with 200. Confirm the DNS record for $DomainValue and that ports 80 and 443 reach this host."
+		Write-FluxerLine "$url did not answer with 200. Confirm the DNS record for $probeHost and that inbound port $probePort reaches this host."
 	}
 }
 
@@ -792,7 +867,7 @@ function Get-FluxerComposeProject([string]$TargetDir) {
 	if ($null -ne $env:COMPOSE_PROJECT_NAME -and $env:COMPOSE_PROJECT_NAME.Length -gt 0) {
 		return $env:COMPOSE_PROJECT_NAME
 	}
-	foreach ($line in [System.IO.File]::ReadAllText((Join-Path $TargetDir 'docker-compose.yml')).Split("`n")) {
+	foreach ($line in [System.IO.File]::ReadAllText((Join-Path $TargetDir $script:FluxerComposeBase)).Split("`n")) {
 		if ($line -match '^name:\s*(\S+)') {
 			return $Matches[1]
 		}
@@ -998,7 +1073,7 @@ function Restart-FluxerMounts($Entries, [string]$TargetDir) {
 	$services = @(Get-FluxerComposeServices)
 	foreach ($entry in $Entries) {
 		if ($services -notcontains $entry.Service) {
-			Write-FluxerLine "Skipping the restart of $($entry.Service), because the docker-compose.yml in $TargetDir defines no service by that name."
+			Write-FluxerLine "Skipping the restart of $($entry.Service), because the $($script:FluxerComposeBase) in $TargetDir defines no service by that name."
 			continue
 		}
 		Write-FluxerLine "Restarting $($entry.Service), because $($entry.Name) is mounted into it and up -d does not reload a mounted file."
@@ -1177,7 +1252,7 @@ function Save-FluxerCurrentFiles([string]$Record, [string]$TargetDir, [string]$E
 	Copy-Item -LiteralPath $EnvPath -Destination $envCopy -Force
 	Set-FluxerPrivateFile $envCopy
 	foreach ($name in $FluxerStackFiles) {
-		$source = Join-Path $TargetDir $name
+		$source = Join-Path $TargetDir (Get-FluxerPlacedName $name)
 		$length = Get-FluxerFileLength $source
 		if ($length -gt 0) {
 			Copy-Item -LiteralPath $source -Destination (Join-Path $Record $name) -Force
@@ -1233,7 +1308,28 @@ function Test-FluxerDumpHeader([string]$Path) {
 # The volume copy measures its volume and refuses when the disk is short. This step does not,
 # because the size of a custom-format dump is not knowable before pg_dump writes it. Point
 # -BackupDir at a drive with room for the database.
+# The bundled data stores are services in the stack file. An operator who points the stack at a
+# database or an object store outside it takes those services out, and the two backup steps that
+# reach into them then have nothing to reach. That is a supported shape rather than a fault, so
+# each step says what it skipped and the upgrade goes on. Backing up a store outside the stack
+# belongs to whoever runs it.
+$script:FluxerStackServices = $null
+
+function Test-FluxerStackDefinesService([string]$Name, [string]$TargetDir) {
+	if ($null -eq $script:FluxerStackServices) {
+		if ((Invoke-FluxerComposeQuery '--services') -ne 0) {
+			Stop-Fluxer "docker compose config --services failed in $TargetDir, so the services this stack defines cannot be read. Compose printed:`n$(Get-FluxerComposeError '  ')" $FluxerExitUnhealthy
+		}
+		$script:FluxerStackServices = @(Get-FluxerComposeServices)
+	}
+	return $script:FluxerStackServices -contains $Name
+}
+
 function Backup-FluxerDatabase([string]$Record, [string]$TargetDir) {
+	if (-not (Test-FluxerStackDefinesService 'postgres' $TargetDir)) {
+		Write-FluxerLine 'Skipping the database dump. This stack defines no postgres service, so its database runs outside the stack and only the operator of that database can dump it.'
+		return
+	}
 	if (-not (Test-FluxerPostgresRunning)) {
 		Write-FluxerLine 'Postgres is not running. Starting it for the dump.'
 		if ((Invoke-FluxerDocker @('compose', 'up', '-d', '--wait', 'postgres')) -ne 0) {
@@ -1292,7 +1388,11 @@ function Get-FluxerFreeKb([string]$Path) {
 #   docker compose stop
 #   docker run --rm -v fluxer_seaweedfs-data:/data -v "${PWD}\backups:/backup" alpine tar czf /backup/seaweedfs-data.tgz -C /data .
 #   docker compose up -d
-function Copy-FluxerVolumes([string]$Record, [string]$Project) {
+function Copy-FluxerVolumes([string]$Record, [string]$Project, [string]$TargetDir) {
+	if (-not (Test-FluxerStackDefinesService 'seaweedfs' $TargetDir)) {
+		Write-FluxerLine 'Skipping the uploads copy. This stack defines no seaweedfs service, so its objects live outside the stack and only the operator of that store can copy them.'
+		return
+	}
 	$present = @()
 	foreach ($volume in $FluxerBackupVolumes) {
 		$full = "${Project}_$volume"
@@ -1343,7 +1443,7 @@ function Backup-FluxerInstance([string]$Record, [string]$TargetDir, [string]$Pro
 		Write-FluxerLine 'Skipping the uploads copy. -NoVolumeBackup was given.'
 		return
 	}
-	Copy-FluxerVolumes $Record $Project
+	Copy-FluxerVolumes $Record $Project $TargetDir
 }
 
 # A newer Postgres major does not read the data directory an older major wrote, so moving between
@@ -1354,7 +1454,7 @@ function Backup-FluxerInstance([string]$Record, [string]$TargetDir, [string]$Pro
 # The refreshed file is still staged when this runs, so a refusal here leaves the instance exactly
 # as it was.
 function Assert-FluxerPostgresMajor([string]$TargetDir, [string]$StagingDir) {
-	$old = Get-FluxerPostgresMajor (Join-Path $TargetDir 'docker-compose.yml')
+	$old = Get-FluxerPostgresMajor (Join-Path $TargetDir $script:FluxerComposeBase)
 	$new = Get-FluxerPostgresMajor (Join-Path $StagingDir 'docker-compose.yml')
 	if ($old.Length -eq 0 -or $new.Length -eq 0 -or $old -eq $new) {
 		return
@@ -1442,21 +1542,22 @@ function Show-FluxerUpdatePlan([string]$TargetDir, [string]$EnvPath, [string]$Ba
 		Write-FluxerLine '  File changes:'
 		$changed = 0
 		foreach ($name in $FluxerStackFiles) {
-			$current = Join-Path $TargetDir $name
+			$placed = Get-FluxerPlacedName $name
+			$current = Join-Path $TargetDir $placed
 			if (-not (Test-Path -LiteralPath $current)) {
-				Write-FluxerLine "    $name is new"
+				Write-FluxerLine "    $placed is new"
 				$changed++
 			} elseif (Test-FluxerSameFile $current (Join-Path $staging $name)) {
-				Write-FluxerLine "    $name is unchanged"
+				Write-FluxerLine "    $placed is unchanged"
 			} else {
-				Write-FluxerLine "    $name changes"
+				Write-FluxerLine "    $placed changes"
 				$changed++
 			}
 		}
 		if ($changed -eq 0) {
 			Write-FluxerLine "  Note:       ref $Ref moves no stack file"
 		}
-		$old = Get-FluxerPostgresMajor (Join-Path $TargetDir 'docker-compose.yml')
+		$old = Get-FluxerPostgresMajor (Join-Path $TargetDir $script:FluxerComposeBase)
 		$new = Get-FluxerPostgresMajor (Join-Path $staging 'docker-compose.yml')
 		if ($old.Length -gt 0 -and $new.Length -gt 0 -and $old -ne $new) {
 			Write-FluxerLine "  Refusal:    postgres moves from $old to $new, which this script does not do"
@@ -1559,9 +1660,9 @@ function Invoke-FluxerUpgrade([string]$TargetDir, [string]$EnvPath, [string]$Bac
 	}
 	Restart-FluxerMounts $changedMounts $TargetDir
 	Wait-FluxerStack 'Waiting for every service to report ready.'
-	$domainValue = Get-FluxerEnvValue $EnvPath 'FLUXER_DOMAIN'
-	if ($domainValue.Length -gt 0) {
-		Test-FluxerPublicHealth $domainValue
+	$originValue = Get-FluxerPublicOrigin $EnvPath
+	if ($originValue.Length -gt 0) {
+		Test-FluxerPublicHealth $originValue
 	}
 	Write-FluxerLine "Instance upgraded in $TargetDir."
 	Write-FluxerLine "The record of what it ran before is in $record."
@@ -1633,7 +1734,7 @@ function Invoke-FluxerRollback([string]$TargetDir, [string]$EnvPath, [string]$Ba
 		$source = Join-Path $record $name
 		$length = Get-FluxerFileLength $source
 		if ($length -gt 0) {
-			Copy-Item -LiteralPath $source -Destination (Join-Path $TargetDir $name) -Force
+			Copy-Item -LiteralPath $source -Destination (Join-Path $TargetDir (Get-FluxerPlacedName $name)) -Force
 		} elseif (Test-Path -LiteralPath $source) {
 			Stop-Fluxer "$source is empty, so restoring it would replace a working file with nothing. Nothing was restored. Take the file from another record or from the ref the record names." $FluxerExitRefused
 		}
@@ -1648,9 +1749,9 @@ function Invoke-FluxerRollback([string]$TargetDir, [string]$EnvPath, [string]$Ba
 	# would save one restart and cost the reader a reason.
 	Restart-FluxerMounts $FluxerMountedFiles $TargetDir
 	Wait-FluxerStack 'Waiting for every service to report ready.'
-	$domainValue = Get-FluxerEnvValue $EnvPath 'FLUXER_DOMAIN'
-	if ($domainValue.Length -gt 0) {
-		Test-FluxerPublicHealth $domainValue
+	$originValue = Get-FluxerPublicOrigin $EnvPath
+	if ($originValue.Length -gt 0) {
+		Test-FluxerPublicHealth $originValue
 	}
 	Write-FluxerLine "Instance rolled back in $TargetDir."
 	$dumpPath = Join-Path $record $FluxerDumpFile
@@ -1666,12 +1767,19 @@ function Assert-FluxerInstance([string]$TargetDir, [string]$EnvPath) {
 	if (-not (Test-Path -LiteralPath $EnvPath)) {
 		Stop-Fluxer "No .env in $TargetDir. That directory holds no instance. Run install.ps1 with neither -Update nor -Rollback to set one up." $FluxerExitPrerequisite
 	}
-	$compose = Join-Path $TargetDir 'docker-compose.yml'
+	Resolve-FluxerComposeBase $TargetDir $EnvPath
+	$compose = Join-Path $TargetDir $script:FluxerComposeBase
 	if (-not (Test-Path -LiteralPath $compose)) {
-		Stop-Fluxer "No docker-compose.yml in $TargetDir. That directory does not hold an instance." $FluxerExitPrerequisite
+		if ($script:FluxerComposeBaseFrom.Length -gt 0) {
+			Stop-Fluxer "$($script:FluxerComposeBaseFrom) names $($script:FluxerComposeBase) first, and $compose is not there. Put that file back, or name the file the instance runs on first in COMPOSE_FILE." $FluxerExitPrerequisite
+		}
+		Stop-Fluxer "No compose file in $TargetDir. Compose looks for compose.yaml, compose.yml, docker-compose.yml and docker-compose.yaml there, and that directory holds none of them, so it does not hold an instance." $FluxerExitPrerequisite
 	}
 	if ((Get-FluxerFileLength $compose) -eq 0) {
 		Stop-Fluxer "$compose is empty. A redirect that captured a failed download leaves that, and Compose refuses an empty compose file. Put the file back from a backup or from the record of the last upgrade, then run this again." $FluxerExitPrerequisite
+	}
+	if ($script:FluxerComposeBase -ne 'docker-compose.yml') {
+		Write-FluxerLine "Compose loads $($script:FluxerComposeBase) in $TargetDir, so the stack's docker-compose.yml is written to that name."
 	}
 }
 
@@ -1703,7 +1811,7 @@ function Get-FluxerEnvScalar([string]$EnvPath, [string]$Name) {
 	return $raw
 }
 
-function Assert-FluxerComposeFiles([string]$TargetDir, [string]$EnvPath) {
+function Get-FluxerComposeSetting([string]$EnvPath) {
 	$value = ''
 	$source = 'the environment'
 	if ($null -ne $env:COMPOSE_FILE) {
@@ -1712,9 +1820,6 @@ function Assert-FluxerComposeFiles([string]$TargetDir, [string]$EnvPath) {
 	if ($value.Length -eq 0) {
 		$value = Get-FluxerEnvScalar $EnvPath 'COMPOSE_FILE'
 		$source = $EnvPath
-	}
-	if ($value.Length -eq 0) {
-		return
 	}
 	$separator = ''
 	if ($null -ne $env:COMPOSE_PATH_SEPARATOR) {
@@ -1725,6 +1830,50 @@ function Assert-FluxerComposeFiles([string]$TargetDir, [string]$EnvPath) {
 	}
 	if ($separator.Length -eq 0) {
 		$separator = [System.IO.Path]::PathSeparator
+	}
+	return [pscustomobject]@{Value = $value; Source = $source; Separator = $separator}
+}
+
+function Resolve-FluxerComposeBase([string]$TargetDir, [string]$EnvPath) {
+	$setting = Get-FluxerComposeSetting $EnvPath
+	$script:FluxerComposeBaseFrom = ''
+	foreach ($name in $setting.Value.Split([string[]]$setting.Separator, [System.StringSplitOptions]::None)) {
+		if ($name.Length -eq 0) {
+			continue
+		}
+		$base = $name
+		foreach ($prefix in @('./', '.\')) {
+			if ($base.StartsWith($prefix, [System.StringComparison]::Ordinal)) {
+				$base = $base.Substring($prefix.Length)
+			}
+		}
+		foreach ($root in @("$TargetDir/", "$TargetDir\")) {
+			if ($base.StartsWith($root, [System.StringComparison]::OrdinalIgnoreCase)) {
+				$base = $base.Substring($root.Length)
+			}
+		}
+		$script:FluxerComposeBaseFrom = "COMPOSE_FILE from $($setting.Source)"
+		if ($base.Contains('/') -or $base.Contains('\')) {
+			Stop-Fluxer "$($script:FluxerComposeBaseFrom) names $name first, and that file is not directly in $TargetDir. This script refreshes only the files in the directory it acts on, so the upgrade would leave the file Compose loads on the old stack. Move it into $TargetDir and name it there, or upgrade by hand." $FluxerExitPrerequisite
+		}
+		$script:FluxerComposeBase = $base
+		return
+	}
+	$found = Get-FluxerComposeNameIn $TargetDir
+	if ($found.Length -gt 0) {
+		$script:FluxerComposeBase = $found
+	} else {
+		$script:FluxerComposeBase = 'docker-compose.yml'
+	}
+}
+
+function Assert-FluxerComposeFiles([string]$TargetDir, [string]$EnvPath) {
+	$setting = Get-FluxerComposeSetting $EnvPath
+	$value = $setting.Value
+	$source = $setting.Source
+	$separator = $setting.Separator
+	if ($value.Length -eq 0) {
+		return
 	}
 	foreach ($name in $value.Split([string[]]$separator, [System.StringSplitOptions]::None)) {
 		if ($name.Length -eq 0) {
@@ -1782,15 +1931,18 @@ function Invoke-FluxerInstall {
 
 	$targetPath = $Dir
 	$adoptedCwd = $false
+	$fellBack = $false
 	if ($targetPath.Length -eq 0) {
 		$here = (Get-Location).Path
 		$hereEnv = Join-Path $here '.env'
 		$hereIsFluxer = (Test-Path -LiteralPath $hereEnv) -and (@(Get-FluxerEnvLines $hereEnv | Where-Object {$_.StartsWith('FLUXER_')}).Count -gt 0)
-		if (($Update -or $Rollback) -and (Get-FluxerFileLength (Join-Path $here 'docker-compose.yml')) -gt 0 -and $hereIsFluxer) {
+		$hereCompose = Get-FluxerComposeNameIn $here
+		if (($Update -or $Rollback) -and $hereCompose.Length -gt 0 -and (Get-FluxerFileLength (Join-Path $here $hereCompose)) -gt 0 -and $hereIsFluxer) {
 			$targetPath = $here
 			$adoptedCwd = $true
 		} else {
 			$targetPath = Join-Path $HOME 'fluxer'
+			$fellBack = $Update -or $Rollback
 		}
 	}
 	$targetDir = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($targetPath)
@@ -1803,6 +1955,9 @@ function Invoke-FluxerInstall {
 	if ($adoptedCwd) {
 		Write-FluxerLine "Acting on the instance in $targetDir, the working directory. Pass -Dir to name another."
 	}
+	if ($fellBack) {
+		Write-FluxerLine "The working directory holds no instance, so this acts on $targetDir. Pass -Dir to name another."
+	}
 
 	if ($Update -or $Rollback) {
 		Assert-FluxerInstance $targetDir $envPath
@@ -1813,7 +1968,7 @@ function Invoke-FluxerInstall {
 		Assert-FluxerComposeFiles $targetDir $envPath
 		$project = Get-FluxerComposeProject $targetDir
 		if ($project.Length -eq 0) {
-			Stop-Fluxer "docker-compose.yml in $targetDir declares no project name, so the volume names cannot be derived." $FluxerExitPrerequisite
+			Stop-Fluxer "$($script:FluxerComposeBase) in $targetDir declares no project name, so the volume names cannot be derived." $FluxerExitPrerequisite
 		}
 		Push-Location -LiteralPath $targetDir
 		try {
@@ -1939,8 +2094,12 @@ function Invoke-FluxerInstall {
 			Stop-Fluxer 'docker compose up -d failed.' $FluxerExitUnhealthy
 		}
 		Wait-FluxerStack 'Waiting for the stack to report healthy. The first start pulls images and takes several minutes.'
-		Test-FluxerPublicHealth $domainValue
-		Write-FluxerLine "Instance ready at https://$domainValue"
+		$readyOrigin = Get-FluxerPublicOrigin $envPath
+		if ($readyOrigin.Length -eq 0) {
+			$readyOrigin = "https://$domainValue"
+		}
+		Test-FluxerPublicHealth $readyOrigin
+		Write-FluxerLine "Instance ready at $readyOrigin"
 		Write-FluxerLine 'Open it and create the first admin account. Finish the setup wizard in the same sitting.'
 		Write-FluxerLine "Secrets live in $envPath. Back that file up."
 	} finally {

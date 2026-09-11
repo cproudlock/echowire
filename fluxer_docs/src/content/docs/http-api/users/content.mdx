@@ -8,7 +8,7 @@ import RouteHeader from '@/components/RouteHeader.astro';
 
 Recent mentions and saved messages are private lists that only the account owning them can read. Two further routes delete the messages the caller authored, one filtered and immediate, the other unfiltered and delayed by a day. Data harvests live on [Data harvests](/http-api/users/data-harvest/).
 
-Every route here is user-only. Fluxer rejects a bot or OAuth2 bearer credential with 403 `ACCESS_DENIED`, and an account that has an outstanding required action with 403 `ACCOUNT_SUSPICIOUS_ACTIVITY`.
+These routes are user-only. Fluxer rejects a bot or OAuth2 bearer credential with 403 `ACCESS_DENIED`, and an account that has an outstanding required action with 403 `ACCOUNT_SUSPICIOUS_ACTIVITY`.
 
 Every route except [Delete current user's messages](#delete-current-users-messages) reaches the main Gateway, and a Gateway failure returns 502 `BAD_GATEWAY`, 503 `SERVICE_UNAVAILABLE`, or 504 `GATEWAY_TIMEOUT`. [Save message](#save-message) resolves the channel before it writes, so a failure there stores nothing. The request still returns 204 when a [Saved Message Create](/gateway/events/#saved-message-create), [Saved Message Delete](/gateway/events/#saved-message-delete), or [Recent Mention Delete](/gateway/events/#recent-mention-delete) Dispatch fails to publish after the write.
 
@@ -20,7 +20,7 @@ Every route except [Delete current user's messages](#delete-current-users-messag
 
 A saved entry is a private bookmark pairing one message with the channel it was saved from. Saving a message notifies nobody, including its author.
 
-An entry stores no copy of the message. Fluxer resolves the message against current permissions on every read, so one entry can have a message on one read and none on the next.
+The entry stores no copy of the message. Fluxer resolves the message against current permissions on every read, so one entry can have a message on one read and none on the next.
 
 ### Structure
 
@@ -108,7 +108,7 @@ Fluxer omits an entry whose channel the caller cannot reach. An entry that needs
 | Status | Body | Condition |
 | --- | --- | --- |
 | 200 | array[[message](/http-api/messages/#message-object) object] | Readable mentions were returned |
-| 403 | [error response](/http-api/#error-response) | A retained entry sits in a guild whose membership state cannot be resolved, returning `ACCESS_DENIED`, or in an age-restricted channel the account has not verified for, returning `NSFW_CONTENT_AGE_RESTRICTED` |
+| 403 | [error response](/http-api/#error-response) | A retained entry is in a guild whose membership state cannot be resolved, returning `ACCESS_DENIED`, or in an age-restricted channel the account has not verified for, returning `NSFW_CONTENT_AGE_RESTRICTED` |
 
 ### Rate limit
 
@@ -202,7 +202,7 @@ A guild configuring [message_history_cutoff](/http-api/guilds/#guild-object) sti
 | Status | Body | Condition |
 | --- | --- | --- |
 | 200 | array[[saved message](#saved-message-object) object] | Saved entries were returned |
-| 403 | [error response](/http-api/#error-response) | A stored entry sits in a guild whose membership state cannot be resolved, returning `ACCESS_DENIED`, or in an age-restricted channel, returning `NSFW_CONTENT_AGE_RESTRICTED` |
+| 403 | [error response](/http-api/#error-response) | A stored entry is in a guild whose membership state cannot be resolved, returning `ACCESS_DENIED`, or in an age-restricted channel, returning `NSFW_CONTENT_AGE_RESTRICTED` |
 
 ### Side effects
 
@@ -274,7 +274,7 @@ No current access to the channel is required.
 
 ### Side effects
 
-Fluxer issues the delete unconditionally, and [Saved Message Delete](/gateway/events/#saved-message-delete) reaches the caller's own sessions on every accepted request, including one naming a message the account never saved. The saved entry is removed and the message stays in its channel.
+Fluxer always issues the delete, and [Saved Message Delete](/gateway/events/#saved-message-delete) reaches the caller's own sessions on every accepted request, including one naming a message the account never saved. The saved entry is removed and the message stays in its channel.
 
 ### Rate limit
 
@@ -294,7 +294,7 @@ Every message the filter selects is deleted from its channel for every recipient
 
 ### JSON body
 
-The caller proves sudo mode either with the five sudo fields below or with an existing proof in the request. An existing proof travels in the `X-Fluxer-Sudo-Mode-JWT` request header.
+The caller proves sudo mode either with the sudo fields below or with an existing proof in the `X-Fluxer-Sudo-Mode-JWT` request header.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -322,7 +322,7 @@ The caller proves sudo mode either with the five sudo fields below or with an ex
 
 <sup>4</sup> Supplying both bounds requires `start_date` strictly earlier than `end_date`, and an equal pair fails validation on `end_date`
 
-<sup>5</sup> The five sudo fields are the [sudo verification object](/http-api/users/mfa/#sudo-verification-object). Which combination is accepted depends on the account's configured authenticators
+<sup>5</sup> These fields are the [sudo verification object](/http-api/users/mfa/#sudo-verification-object). Which combination is accepted depends on the account's configured authenticators
 
 The `selected` scope requires at least one of the four context toggles to be true, and a request that disables all four fails validation on `include_dms`. The `inaccessible_only` scope ignores the toggles and the guild filter.
 
@@ -337,13 +337,13 @@ Neither scope includes the caller's personal notes channel, so this operation ca
 | 202 | empty | Deletion was accepted for asynchronous processing |
 | 400 | [error response](/http-api/#error-response) | The date range or context selection is invalid, or a supplied sudo proof is wrong and the request returns `INVALID_PASSWORD`, `PASSWORD_NOT_SET`, or `INVALID_MFA_CODE` |
 | 403 | [error response](/http-api/#error-response) | No accepted sudo proof is present and the request returns `SUDO_MODE_REQUIRED` |
-| 500 | [error response](/http-api/#error-response) | Deletion could not be enqueued |
+| 500 | [error response](/http-api/#error-response) | Deletion could not be queued |
 
 ### Side effects
 
 An account holding an MFA authenticator that proved sudo mode with MFA receives a fresh proof in the response header. A request that already had a valid proof gets that same token echoed back without an extended lifetime.
 
-Fluxer enqueues the work with at most 5 attempts. As deletion progresses, each affected channel emits [Message Delete Bulk](/gateway/events/#message-delete-bulk) in batches of at most 100 message IDs, and the deleted messages' attachments are permanently removed.
+Fluxer queues the work with at most 5 attempts. As deletion progresses, each affected channel emits [Message Delete Bulk](/gateway/events/#message-delete-bulk) in batches of at most 100 message IDs, and the deleted messages' attachments are permanently removed.
 
 On completion the system account sends the caller a direct message in the account locale reporting the total deleted message count and the number of channels touched. That message arrives through the ordinary [Message Create](/gateway/events/#message-create) Dispatch.
 
@@ -357,7 +357,7 @@ On completion the system account sends the caller a direct message in the accoun
 
 Schedules deletion of every message the caller has ever sent. Returns 204 with an empty body. Emits a [User Update](/gateway/events/#user-update) Gateway event.
 
-The request requires [sudo mode](/http-api/users/mfa/#sudo-mode). [Delete current user's messages](#delete-current-users-messages) is the immediate counterpart and takes a filter. This form takes none and waits a day, so the caller can change their mind.
+The request requires [sudo mode](/http-api/users/mfa/#sudo-mode). [Delete current user's messages](#delete-current-users-messages) is the immediate counterpart and takes a filter. This form takes none and waits a day.
 
 Calling the operation again replaces the pending schedule. The account holds at most one pending deletion, reported by the [pending bulk message deletion object](/http-api/users/#pending-bulk-message-deletion-object) on the [user object](/http-api/users/#user-object).
 
@@ -367,7 +367,7 @@ The schedule targets every message the caller authored before the scheduled mome
 
 ### JSON body
 
-The body is the [sudo verification object](/http-api/users/mfa/#sudo-verification-object). It has no other field, and an existing proof travels in the `X-Fluxer-Sudo-Mode-JWT` request header.
+The body is the [sudo verification object](/http-api/users/mfa/#sudo-verification-object) and has no other field. An existing proof is in the `X-Fluxer-Sudo-Mode-JWT` request header.
 
 ### Response
 

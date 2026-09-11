@@ -32,10 +32,7 @@ describe('the shipped compose stack wires every service it starts', () => {
 	});
 
 	test('the shared block sets the client-IP trust the merged services read', () => {
-		expect(sharedEnv).toContain('FLUXER_TRUST_CLIENT_IP_HEADER: "true"');
-		// Echowire: prod sits behind Cloudflare, so the shared block reads
-		// cf-connecting-ip rather than upstream's x-forwarded-for. The edge
-		// trusted_proxies default (private_ranges) does not cover CF ranges.
-		expect(sharedEnv).toContain('FLUXER_CLIENT_IP_HEADER_NAME: cf-connecting-ip');
+		expect(sharedEnv).toContain('FLUXER_TRUST_CLIENT_IP_HEADER: "${FLUXER_TRUST_CLIENT_IP_HEADER:-true}"');
+		expect(sharedEnv).toContain('FLUXER_CLIENT_IP_HEADER_NAME: ${FLUXER_CLIENT_IP_HEADER_NAME:-x-forwarded-for}');
 	});
 });

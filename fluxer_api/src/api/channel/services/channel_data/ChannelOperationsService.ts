@@ -96,8 +96,20 @@ export class ChannelOperationsService {
 		private rateLimitService: IRateLimitService,
 	) {}
 
-	async getChannel({userId, channelId}: {userId: UserID; channelId: ChannelID}): Promise<Channel> {
-		const {channel} = await this.channelAuthService.getChannelAuthenticated({userId, channelId});
+	async getChannel({
+		userId,
+		channelId,
+		skipNsfwValidation,
+	}: {
+		userId: UserID;
+		channelId: ChannelID;
+		skipNsfwValidation?: boolean;
+	}): Promise<Channel> {
+		const {channel} = await this.channelAuthService.getChannelAuthenticated({
+			userId,
+			channelId,
+			skipNsfwValidation,
+		});
 		return channel;
 	}
 
@@ -133,6 +145,7 @@ export class ChannelOperationsService {
 		const {channel, guild, checkPermission} = await this.channelAuthService.getChannelAuthenticated({
 			userId,
 			channelId,
+			skipNsfwValidation: true,
 		});
 		if (channel.type === ChannelTypes.GROUP_DM) {
 			throw new InvalidChannelTypeError();
@@ -484,7 +497,11 @@ export class ChannelOperationsService {
 		if (this.voiceAvailabilityService === null) {
 			return [];
 		}
-		const {channel, guild} = await this.channelAuthService.getChannelAuthenticated({userId, channelId});
+		const {channel, guild} = await this.channelAuthService.getChannelAuthenticated({
+			userId,
+			channelId,
+			skipNsfwValidation: true,
+		});
 		if (channel.type !== ChannelTypes.GUILD_VOICE) {
 			throw new InvalidChannelTypeError();
 		}

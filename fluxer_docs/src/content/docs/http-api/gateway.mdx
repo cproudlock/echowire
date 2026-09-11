@@ -48,12 +48,12 @@ Fluxer appends no query string, so a client appends the [connection parameters](
 [Identify](/gateway/commands/#identify) accepts a `shard` pair whose `shard_count` element is from 1 through 16,384 under the [sharding](/gateway/overview/#sharding) contract, whatever `shards` reports. A bot session whose shard is assigned more than 2,500 guilds closes with `4011`, and the bot must shard further. A user session is never checked against the guild ceiling.
 
 :::note[The response is currently static]
-Fluxer resolves only `url` from deployment configuration. `shards` and `session_start_limit` are fixed values that do not track the bot's guild count. Starting a session decrements neither value.
+Fluxer resolves only `url` from deployment configuration. `shards` and `session_start_limit` are fixed values that do not track the bot's guild count.
 :::
 
 ## Session start limit object
 
-A session start limit reports how many new Gateway sessions a bot may open in a window. Fluxer publishes four constants here for client-library compatibility.
+A session start limit reports how many new Gateway sessions a bot may open in a window. Fluxer publishes constants here for client-library compatibility.
 
 ### Structure
 
@@ -70,7 +70,7 @@ A session start limit reports how many new Gateway sessions a bot may open in a 
 
 <sup>3</sup> Fluxer runs no Identify concurrency bucket, so a bot MAY identify its shards without pacing them against this value
 
-The limits the Gateway actually enforces live in [Session lifecycle](/gateway/limits-and-rate-limits/#session-lifecycle). Fluxer budgets Identify per source address. It caps a user account at a fixed number of concurrent sessions. Neither bound is reported here.
+The limits the Gateway enforces are in [Session lifecycle](/gateway/limits-and-rate-limits/#session-lifecycle). Fluxer budgets Identify per source address and caps a user account at a fixed number of concurrent sessions. Neither bound is reported here.
 
 :::caution[A remaining session start does not guarantee admission]
 A non-zero `remaining` reserves nothing, and neither does the constant `max_concurrency`. [Session admission](/gateway/limits-and-rate-limits/#session-lifecycle) can still hold or reject a connection.

@@ -32,6 +32,10 @@ export const MessageTypeSchema = withOpenApiType(
 				'A system message indicating a message was pinned',
 			],
 			[MessageTypes.USER_JOIN, 'USER_JOIN', 'A system message indicating a user joined'],
+			// Echowire: threads are a fork feature, and this system message type was
+			// declared in MessageTypes without ever being added here, so the schema
+			// rejected it and it was absent from the published enum.
+			[MessageTypes.THREAD_CREATED, 'THREAD_CREATED', 'A system message indicating a thread was created'],
 			[MessageTypes.REPLY, 'REPLY', 'A reply message'],
 		],
 		'The type of message',

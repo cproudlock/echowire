@@ -17,7 +17,9 @@ describe('OpenAPI generation from API controllers', () => {
 			content: {'application/json': {schema: {$ref: '#/components/schemas/ChannelUpdateRequestBody'}}},
 		});
 		const options = document.components.schemas.ChannelUpdateRequestBody.anyOf;
-		expect(options).toHaveLength(5);
+		// Echowire: six, not upstream's five, because this fork adds the forum
+		// channel variant with its tag and auto-archive fields.
+		expect(options).toHaveLength(6);
 		for (const option of options ?? []) {
 			expect(option.properties).not.toHaveProperty('type');
 			expect(option.required).toBeUndefined();

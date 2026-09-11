@@ -22,6 +22,12 @@ const cloudUpload = vi.hoisted(() => ({
 
 vi.mock('@app/features/messaging/commands/MessageCommands', () => messageCommands);
 vi.mock('@app/features/messaging/commands/DraftCommands', () => draftCommands);
+// Echowire: the fork's hook unarchives a thread on send. Without this mock the
+// real module loads RuntimeConfig, which refuses to initialise outside the app
+// proxy because window.__FLUXER_BOOTSTRAP__ is absent in tests.
+vi.mock('@app/features/channel/commands/ThreadCommands', () => ({
+	updateThread: vi.fn(() => Promise.resolve(null)),
+}));
 vi.mock('@app/features/messaging/upload/CloudUpload', () => ({CloudUpload: cloudUpload}));
 vi.mock('@app/features/messaging/models/MessagingMessage', () => ({
 	Message: class {

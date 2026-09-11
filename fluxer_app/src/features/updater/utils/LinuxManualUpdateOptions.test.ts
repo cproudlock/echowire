@@ -65,28 +65,28 @@ describe('buildLinuxManualUpdateOptions', () => {
 				format: 'appimage',
 				label: 'AppImage',
 				url: `${STABLE_X64}/${REPORTED_VERSION}/appimage`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-x86_64.AppImage`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-x86_64.AppImage`,
 				sha256: null,
 			},
 			{
 				format: 'deb',
 				label: 'DEB package',
 				url: `${STABLE_X64}/${REPORTED_VERSION}/deb`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-amd64.deb`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-amd64.deb`,
 				sha256: null,
 			},
 			{
 				format: 'rpm',
 				label: 'RPM package',
 				url: `${STABLE_X64}/${REPORTED_VERSION}/rpm`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-x86_64.rpm`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-x86_64.rpm`,
 				sha256: null,
 			},
 			{
 				format: 'tar_gz',
 				label: 'tar.gz archive',
 				url: `${STABLE_X64}/${REPORTED_VERSION}/tar_gz`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-x64.tar.gz`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-x64.tar.gz`,
 				sha256: null,
 			},
 		]);
@@ -100,7 +100,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 			version: REPORTED_VERSION,
 			knownOptions: desktopMainOptions({
 				linkBase: CANARY_X64,
-				productName: 'Fluxer-Canary',
+				productName: 'Echowire-Canary',
 				version: REPORTED_VERSION,
 				linkVersion: 'latest',
 			}),
@@ -108,7 +108,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 		expect(options).toEqual(
 			desktopMainOptions({
 				linkBase: CANARY_X64,
-				productName: 'Fluxer-Canary',
+				productName: 'Echowire-Canary',
 				version: REPORTED_VERSION,
 				linkVersion: REPORTED_VERSION,
 			}),
@@ -118,7 +118,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 	it('keeps the pinned links sent by newer desktop builds', () => {
 		const pinnedOptions = desktopMainOptions({
 			linkBase: CANARY_X64,
-			productName: 'Fluxer-Canary',
+			productName: 'Echowire-Canary',
 			version: REPORTED_VERSION,
 			linkVersion: REPORTED_VERSION,
 		});
@@ -140,16 +140,16 @@ describe('buildLinuxManualUpdateOptions', () => {
 			version: null,
 			knownOptions: desktopMainOptions({
 				linkBase: STABLE_X64,
-				productName: 'Fluxer',
+				productName: 'Echowire',
 				version: REPORTED_VERSION,
 				linkVersion: 'latest',
 			}),
 		});
 		expect(options.map(({url, suggestedName, sha256}) => ({url, suggestedName, sha256}))).toEqual([
-			{url: `${STABLE_X64}/latest/appimage`, suggestedName: 'Fluxer-latest-linux-x86_64.AppImage', sha256: null},
-			{url: `${STABLE_X64}/latest/deb`, suggestedName: 'Fluxer-latest-linux-amd64.deb', sha256: null},
-			{url: `${STABLE_X64}/latest/rpm`, suggestedName: 'Fluxer-latest-linux-x86_64.rpm', sha256: null},
-			{url: `${STABLE_X64}/latest/tar_gz`, suggestedName: 'Fluxer-latest-linux-x64.tar.gz', sha256: null},
+			{url: `${STABLE_X64}/latest/appimage`, suggestedName: 'Echowire-latest-linux-x86_64.AppImage', sha256: null},
+			{url: `${STABLE_X64}/latest/deb`, suggestedName: 'Echowire-latest-linux-amd64.deb', sha256: null},
+			{url: `${STABLE_X64}/latest/rpm`, suggestedName: 'Echowire-latest-linux-x86_64.rpm', sha256: null},
+			{url: `${STABLE_X64}/latest/tar_gz`, suggestedName: 'Echowire-latest-linux-x64.tar.gz', sha256: null},
 		]);
 	});
 
@@ -157,19 +157,19 @@ describe('buildLinuxManualUpdateOptions', () => {
 		const expected = [
 			{
 				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/appimage`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-arm64.AppImage`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-arm64.AppImage`,
 			},
 			{
 				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-arm64.deb`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-arm64.deb`,
 			},
 			{
 				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/rpm`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-aarch64.rpm`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-aarch64.rpm`,
 			},
 			{
 				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/tar_gz`,
-				suggestedName: `Fluxer-${REPORTED_VERSION}-linux-arm64.tar.gz`,
+				suggestedName: `Echowire-${REPORTED_VERSION}-linux-arm64.tar.gz`,
 			},
 		];
 		const fromDesktopInfo = buildLinuxManualUpdateOptions({
@@ -242,14 +242,14 @@ describe('buildLinuxManualUpdateOptions', () => {
 			apiEndpoint: 'https://api.canary.fluxer.app',
 			knownOptions: desktopMainOptions({
 				linkBase: CANARY_X64,
-				productName: 'Fluxer-Canary',
+				productName: 'Echowire-Canary',
 				version: REPORTED_VERSION,
 				linkVersion: 'latest',
 			}),
 		});
 		expect(options.find((option) => option.format === 'deb')).toMatchObject({
 			url: `${CANARY_X64}/${REPORTED_VERSION}/deb`,
-			suggestedName: `Fluxer-Canary-${REPORTED_VERSION}-linux-amd64.deb`,
+			suggestedName: `Echowire-Canary-${REPORTED_VERSION}-linux-amd64.deb`,
 			sha256: `deb-${REPORTED_VERSION}`,
 		});
 		for (const option of options) {
@@ -270,7 +270,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 			version,
 			knownOptions: desktopMainOptions({
 				linkBase: STABLE_X64,
-				productName: 'Fluxer',
+				productName: 'Echowire',
 				version,
 				linkVersion: 'latest',
 			}),
@@ -279,7 +279,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 			format: 'deb',
 			label: 'DEB package',
 			url: `${STABLE_X64}/latest/deb`,
-			suggestedName: 'Fluxer-latest-linux-amd64.deb',
+			suggestedName: 'Echowire-latest-linux-amd64.deb',
 			sha256: null,
 		});
 	});
@@ -309,7 +309,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 					format: 'deb',
 					label: 'DEB package',
 					url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
-					suggestedName: `Fluxer-${REPORTED_VERSION}-linux-amd64.deb`,
+					suggestedName: `Echowire-${REPORTED_VERSION}-linux-amd64.deb`,
 					sha256: 'arm64-deb',
 				},
 			],
@@ -318,7 +318,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 			format: 'deb',
 			label: 'DEB package',
 			url: `${STABLE_X64}/${REPORTED_VERSION}/deb`,
-			suggestedName: `Fluxer-${REPORTED_VERSION}-linux-amd64.deb`,
+			suggestedName: `Echowire-${REPORTED_VERSION}-linux-amd64.deb`,
 			sha256: null,
 		});
 	});

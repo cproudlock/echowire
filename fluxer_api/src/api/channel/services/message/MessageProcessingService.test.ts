@@ -10,7 +10,7 @@ import {
 	type MessageID,
 	type UserID,
 } from '../../../BrandedTypes';
-import type {ChannelRow} from '../../../database/types/ChannelTypes';
+import {type ChannelRow, NULL_THREAD_FIELDS} from '../../../database/types/ChannelTypes';
 import type {IGatewayService} from '../../../infrastructure/IGatewayService';
 import type {UserCacheService} from '../../../infrastructure/UserCacheService';
 import type {RequestCache} from '../../../middleware/RequestCacheMiddleware';
@@ -25,6 +25,8 @@ const MESSAGE_ID = createMessageID(1546325276953149440n);
 
 function dmChannelRow(lastMessageId: MessageID | null): ChannelRow {
 	return {
+		// Echowire: this fork adds thread and forum columns to ChannelRow.
+		...NULL_THREAD_FIELDS,
 		channel_id: CHANNEL_ID,
 		guild_id: null,
 		type: ChannelTypes.DM,

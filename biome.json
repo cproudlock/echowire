@@ -20,7 +20,7 @@
 			"bracketSpacing": false,
 			"bracketSameLine": false
 		},
-		"globals": ["React", "__webpack_base_uri__"]
+		"globals": ["DESKTOP_BUILD_VARIANT", "React", "__webpack_base_uri__"]
 	},
 	"json": {
 		"formatter": {

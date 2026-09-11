@@ -56,7 +56,8 @@ export const ThreadMembersButton = observer(({channel}: {channel: Channel}) => {
 						}}
 					>
 						<span style={{fontSize: 13, fontWeight: 700, color: 'var(--text-muted)'}}>
-							<Trans>Members</Trans> — {count}
+							<Trans>Members</Trans>
+							<span>{` — ${count}`}</span>
 						</span>
 						<button
 							type="button"

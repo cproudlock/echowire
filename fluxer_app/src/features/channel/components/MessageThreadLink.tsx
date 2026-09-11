@@ -55,7 +55,7 @@ export const MessageThreadLink = observer(() => {
 			</span>
 			{replyCount > 0 && (
 				<span style={{color: 'var(--text-muted)', fontWeight: 500, flexShrink: 0}}>
-					{replyCount} {replyCount === 1 ? 'message' : 'messages'}
+					{`${replyCount} ${replyCount === 1 ? 'message' : 'messages'}`}
 				</span>
 			)}
 		</button>

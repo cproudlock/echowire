@@ -14,12 +14,12 @@ import {describe, expect, it} from 'vitest';
 const X11_DESKTOP_SOURCES = [
 	{id: 'screen:385:0', name: 'Screen 1', display_id: '1263913556', nativeWidth: 1920, nativeHeight: 1080},
 	{id: 'screen:384:0', name: 'Screen 2', display_id: '1263913555', nativeWidth: 1920, nativeHeight: 1080},
-] as never[];
+] as Array<never>;
 
 const X11_NATIVE_SOURCES = [
 	{kind: 'screen', id: '84', name: 'DisplayPort-2', width: 1920, height: 1080},
 	{kind: 'screen', id: '83', name: 'DisplayPort-1', width: 1920, height: 1080},
-] as never[];
+] as Array<never>;
 
 describe('findNativeCaptureSourceForDesktopSource', () => {
 	it('resolves X11 screen cards whose id token is not an ordinal', () => {
@@ -30,7 +30,7 @@ describe('findNativeCaptureSourceForDesktopSource', () => {
 	});
 
 	it('does not mistake a large id token for an index into the native source list', () => {
-		const single = [X11_NATIVE_SOURCES[0]] as never[];
+		const single = [X11_NATIVE_SOURCES[0]] as Array<never>;
 		const match = findNativeCaptureSourceForDesktopSource(X11_DESKTOP_SOURCES[0], single) as {id: string} | undefined;
 		expect(match?.id).toBe('84');
 	});

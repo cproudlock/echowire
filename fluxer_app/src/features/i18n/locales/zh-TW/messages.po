@@ -272,16 +272,6 @@ msgstr "{backgroundCount} / {maxBackgroundImages} 個自訂背景"
 msgid "{backgroundCount} / {maxBackgroundImages} custom backgrounds"
 msgstr "自訂背景 {backgroundCount} / {maxBackgroundImages}"
 
-#. Plutonium gift checkout guidance for Poland. Explains that BLIK works for gifts but not for recurring subscriptions.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:53
-msgid "{blikPaymentMethod} can be used for one-time PLN gift payments, even though it does not support subscriptions in {paymentProviderName} checkout."
-msgstr "{blikPaymentMethod} 可用於一次性波蘭茲羅提禮物付款，即使 {paymentProviderName} 結帳不支援訂閱。"
-
-#. Plutonium subscription checkout guidance for Poland. Clarifies that BLIK is not available for recurring subscriptions.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:181
-msgid "{blikPaymentMethod} does not support subscriptions in {paymentProviderName} checkout."
-msgstr "在 {paymentProviderName} 結帳時，{blikPaymentMethod} 不支援訂閱。"
-
 #. Accessible label for a category row in the Discovery search sidebar. {categoryLabel} is the category name and {count} is how many communities match the current search in it. Both are inserted by code.
 #: src/features/discovery/discovery/DiscoverySearchFilters.tsx:37
 msgid "{categoryLabel}, {count, plural, one {# community} other {# communities}}"
@@ -355,7 +345,7 @@ msgstr "{count, plural, one {# 個書籤} other {# 個書籤}}"
 msgid "{count, plural, one {# community found} other {# communities found}}"
 msgstr "{count, plural, one {# 個社群} other {# 個社群}}"
 
-#: src/features/app/components/layout/GuildsLayout.tsx:1950
+#: src/features/app/components/layout/GuildsLayout.tsx:1953
 msgid "{count, plural, one {# community is temporarily unavailable due to a flux capacitor malfunction.} other {# communities are temporarily unavailable due to a flux capacitor malfunction.}}"
 msgstr "{count, plural, one {# 個社群} other {# 個社群}}因時空電容器故障，暫時無法使用"
 
@@ -404,7 +394,7 @@ msgstr "{count, plural, one {# 個共同社群} other {# 個共同社群}}"
 msgid "{count, plural, one {# other} other {# others}}"
 msgstr "{count, plural, one {# 位} other {# 位}}"
 
-#: src/features/voice/components/VoiceCallView.tsx:506
+#: src/features/voice/components/VoiceCallView.tsx:507
 msgid "{count, plural, one {# participant in call} other {# participants in call}}"
 msgstr "{count, plural, one {# 位參與者在通話中} other {# 位參與者在通話中}}"
 
@@ -450,7 +440,7 @@ msgstr "{count, plural, one {展開（# 行）} other {展開（# 行）}}"
 msgid "{count, plural, one {Expand (# row)} other {Expand (# rows)}}"
 msgstr "{count, plural, one {展開 (# 列)} other {展開 (# 列)}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:311
+#: src/features/voice/components/VoiceParticipantTile.tsx:315
 msgid "{count, plural, one {Expand # other device} other {Expand # other devices}}"
 msgstr "{count, plural, one {展開其他 {count} 個裝置} other {展開其他 {count} 個裝置}}"
 
@@ -471,7 +461,7 @@ msgstr "{count, plural, one {通話中} other {# 人通話中}}"
 msgid "{count, plural, one {Join video call (# participant)} other {Join video call (# participants)}}"
 msgstr "{count, plural, one {加入視訊通話（#位參與者）} other {加入視訊通話（#位參與者）}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:637
+#: src/features/voice/components/VoiceParticipantTile.tsx:655
 msgid "{count, plural, one {Keep watching # stream and add this one} other {Keep watching # streams and add this one}}"
 msgstr "{count, plural, one {繼續觀看 # 個直播並新增這個} other {繼續觀看 # 個直播並新增這個}}"
 
@@ -850,16 +840,6 @@ msgstr "{lineCount, plural, one {# 行} other {# 行}}"
 msgid "{matchCount, plural, one {# match} other {# matches}}"
 msgstr "{matchCount, plural, one {# 個符合項目} other {# 個符合項目}}"
 
-#. Plutonium gift checkout guidance for Portugal. Explains that MB WAY can be used for one-time EUR gift purchases.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:83
-msgid "{mbWayPaymentMethod} can be used for one-time EUR gift payments when {paymentProviderName} offers it on the checkout page."
-msgstr "當 {paymentProviderName} 在結帳頁面提供服務時，{mbWayPaymentMethod} 可用於一次性歐元禮物付款。"
-
-#. Plutonium subscription checkout guidance for Portugal. Explains that MB WAY cannot be used for recurring subscriptions.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:103
-msgid "{mbWayPaymentMethod} is a one-time payment method in {paymentProviderName} checkout, so it is not a recurring subscription path here."
-msgstr "在 {paymentProviderName} 結帳時，{mbWayPaymentMethod} 是一次性付款方式，因此無法用於定期訂閱。"
-
 #. Community tooltip stat showing the total member count. memberCount is already localized for display; rawMemberCount controls plural grammar.
 #: src/features/app/components/layout/sidebar_nav/GuildListItemTooltip.tsx:36
 msgid "{memberCount} {rawMemberCount, plural, one {member} other {members}}"
@@ -936,19 +916,9 @@ msgid "{overrideCount, plural, one {# override} other {# overrides}}"
 msgstr "{overrideCount, plural, one {# 個覆寫} other {# 個覆寫}}"
 
 #. Modal body for the mobile card verification confirmation. Explains the two-step flow and the return path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:182
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:181
 msgid "{paymentProviderName} will first verify that your card is eligible for localized pricing, then continue you to payment. Return to {productName} once you've completed it."
 msgstr "{paymentProviderName} 會先驗證您的卡片是否符合當地定價資格，然後再繼續付款。完成後請返回 {productName}。"
-
-#. Plutonium gift checkout guidance for Brazil. Explains that Pix is available for one-time gift purchases via the payment provider.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:24
-msgid "{pixPaymentMethod} can be used for one-time BRL payments when {paymentProviderName} offers it on the checkout page."
-msgstr "當 {paymentProviderName} 在結帳頁面提供服務時，{pixPaymentMethod} 可用於一次性巴西雷亞爾付款。"
-
-#. Plutonium subscription checkout guidance for Brazil. Explains that recurring Pix avoids card verification.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:140
-msgid "{pixPaymentMethod} can skip the card verification step when {paymentProviderName} offers recurring {pixPaymentMethod2} for your checkout."
-msgstr "如果 {paymentProviderName} 為您的結帳提供定期 {pixPaymentMethod2}，則 {pixPaymentMethod} 可以跳過信用卡驗證步驟。"
 
 #. Badge label with a date in the user profile badges popout. Preserve {premiumProductFullName}, {premiumSinceFormatted}; they are inserted by code. In English, keep "subscriber since" lowercase. Other locales should use natural local capitalization.
 #: src/features/user/components/popouts/UserProfileBadges.tsx:51
@@ -959,6 +929,16 @@ msgstr "自 {premiumSinceFormatted} 起訂閱 {premiumProductFullName}"
 #: src/features/user/components/modals/tabs/my_profile_tab/PremiumBadgeSettings.tsx:58
 msgid "{premiumProductName} badge privacy"
 msgstr "{premiumProductName} 徽章隱私設定"
+
+#. Nagbar body shown to monthly subscribers who are still billed the older, higher price after a price cut. {premiumProductName} is the short paid product name. {currentPrice} and {newPrice} are monthly currency amounts already formatted and localized by code, and {effectiveDate} is a date already formatted and localized by code; never write an amount or a date into the translation. Keep the tone calm and plain.
+#: src/features/premium/config/PriceAnnouncementCampaign.ts:13
+msgid "{premiumProductName} costs less now. Switch from {currentPrice} to {newPrice} a month starting {effectiveDate}, and nothing is charged today."
+msgstr "{premiumProductName} 現在更便宜了。從每月 {currentPrice} 調整為每月 {newPrice}，生效日期為 {effectiveDate}，今天不會收取任何費用。"
+
+#. Nagbar body shown to yearly subscribers who are still billed the older, higher price after a price cut. {premiumProductName} is the short paid product name. {currentPrice} and {newPrice} are yearly currency amounts already formatted and localized by code, and {effectiveDate} is a date already formatted and localized by code; never write an amount or a date into the translation. Keep the tone calm and plain.
+#: src/features/premium/config/PriceAnnouncementCampaign.ts:19
+msgid "{premiumProductName} costs less now. Switch from {currentPrice} to {newPrice} a year starting {effectiveDate}, and nothing is charged today."
+msgstr "{premiumProductName} 現在價格更優惠。從每年 {currentPrice} 調整為每年 {newPrice}，生效日期為 {effectiveDate}，今天不會收取任何費用。"
 
 #. Link label that opens the premium perks list. premiumProductName is the premium plan name.
 #: src/features/app/components/dialogs/components/PerksButton.tsx:10
@@ -1337,16 +1317,6 @@ msgstr "自 {compactTime} 起有 {unreadCount}+ 則新訊息"
 msgid "{unreadCount}+ new since {shortTime}"
 msgstr "有 {unreadCount}+ 則新訊息，自 {shortTime}"
 
-#. Plutonium gift checkout guidance for India. Explains that UPI is available for one-time gift purchases via the payment provider.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:39
-msgid "{upiPaymentMethod} can be used for one-time INR payments when {paymentProviderName} offers it on the checkout page."
-msgstr "當 {paymentProviderName} 在結帳頁面提供時，{upiPaymentMethod} 可用於一次性印度盧比付款。"
-
-#. Plutonium subscription checkout guidance for India. Explains that recurring UPI avoids card verification.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:160
-msgid "{upiPaymentMethod} can skip the card verification step when {paymentProviderName} offers recurring {upiPaymentMethod2} for your checkout."
-msgstr "{upiPaymentMethod} 可以跳過信用卡驗證步驟，如果 {paymentProviderName} 在結帳時提供定期 {upiPaymentMethod2}。"
-
 #. System message in a group DM when a member adds another user. username is the actor, userName is the added user.
 #: src/features/messaging/utils/SystemMessageUtils.tsx:100
 msgid "{username} added {userName} to the group."
@@ -1398,7 +1368,7 @@ msgid "{username} started a call."
 msgstr "{username} 已開始通話。"
 
 #. Short label in the channel and chat embed you tube. Keep it concise. Preserve {youtubeProviderName}; it is inserted by code.
-#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:34
+#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:35
 msgid "{youtubeProviderName} video"
 msgstr "{youtubeProviderName} 影片"
 
@@ -1522,10 +1492,6 @@ msgstr "<0>已移除</0>暱稱「{0}」。"
 msgid "<0>Removed</0> the vanity URL."
 msgstr "<0>移除了</0>自訂網址。"
 
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:84
-msgid "<0>Saved media</0>: uploaded, taggable, searchable, and persistent, but counts against your saved media limit."
-msgstr "<0>已儲存的媒體</0>：可上傳、標記、搜尋及永久保存，但會計入您的已儲存媒體上限。"
-
 #. Activity-log sentence. A moderator removed voice deafen from a member, meaning the member can hear others again. Preserve the rich-text tags.
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTabRenderers.tsx:489
 msgid "<0>Undeafened</0> the member."
@@ -1534,10 +1500,6 @@ msgstr "<0>已解除</0>成員的靜音。"
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTabRenderers.tsx:499
 msgid "<0>Unmuted</0> the member."
 msgstr "<0>解除靜音</0>了成員。"
-
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:72
-msgid "<0>URL-only favorites (default)</0>: synced across your devices, no upload, doesn't count against saved media. The original media may disappear if its host removes it."
-msgstr "<0>僅限網址的珍藏項目（預設）</0>：在你的所有裝置上同步，不需上傳，也不會計入已儲存的媒體。如果原始媒體的主機將其移除，該媒體可能會消失。"
 
 #. Summary chip text in the mobile channel search sheet when exactly one channel is selected as a filter.
 #: src/features/channel/components/bottomsheets/ChannelSearchBottomSheet.tsx:167
@@ -1576,14 +1538,14 @@ msgstr "1 分鐘"
 msgid "1 month"
 msgstr "1 個月"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:144
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:119
 msgid "1 month {giftMonthlyPrice}"
 msgstr "1 個月 {giftMonthlyPrice}"
 
 #. Billing plan title for a one-month gift subscription.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:34
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:68
+#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:32
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:66
 msgid "1 month gift"
 msgstr "贈送 1 個月"
 
@@ -1629,14 +1591,14 @@ msgstr "1 週"
 msgid "1 year"
 msgstr "1 年"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:128
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:103
 msgid "1 year {giftYearlyPrice}"
 msgstr "1 年 {giftYearlyPrice}"
 
 #. Billing plan title for a one-year gift subscription.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:26
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:60
+#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:24
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:58
 msgid "1 year gift"
 msgstr "1 年贈禮"
 
@@ -1883,6 +1845,11 @@ msgstr "主機名稱，例如 {exampleDomain}"
 #: src/features/updater/commands/UpdaterModalCommands.tsx:130
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
 msgstr "有一個 Linux 桌面更新可用。請選擇此系統的套件格式，{productName} 會將其儲存到本地。"
+
+#. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682
+msgid "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
+msgstr "有較低的價格可供選擇。切換將於 <0>{listPriceEffectiveDate}</0> 生效，且不會改變其他任何設定。"
 
 #. Duration label component for an elapsed call. Shown when the call lasted about a minute.
 #: src/features/channel/components/CallMessage.tsx:35
@@ -2176,13 +2143,13 @@ msgstr "動作"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning the paid subscription is active.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:370
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:445
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:37
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:19
 msgid "Active"
 msgstr "啟用中"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:358
+#: src/features/app/components/floating/UserAreaPopout.tsx:356
 #: src/features/auth/components/accounts/AccountRow.tsx:136
 msgid "Active account"
 msgstr "使用中的帳號"
@@ -2483,6 +2450,11 @@ msgstr "新增項目"
 msgid "Add local files"
 msgstr "新增本機檔案"
 
+#. Permission description in the channel-scoped permissions editor for the Add Reactions permission. "New" reaction means starting a new reaction emoji on a message (not stacking onto an existing one).
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:269
+msgid "Add new reactions to messages in this channel."
+msgstr "在此頻道中為訊息新增表情符號反應。"
+
 #. Permission description in the role/permission editor for the Add Reactions permission. "New" reaction means starting a new reaction emoji on a message (not stacking onto an existing one).
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:83
 msgid "Add new reactions to messages."
@@ -2512,7 +2484,7 @@ msgid "Add reaction"
 msgstr "新增心情"
 
 #. Permission name: allows adding reactions to messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:245
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:436
 msgid "Add reactions"
 msgstr "新增心情回應"
 
@@ -2651,7 +2623,7 @@ msgid "Added roles."
 msgstr "已新增身分組。"
 
 #. Button or menu action label in the messaging commands. Keep it concise.
-#: src/features/messaging/commands/SavedMessageCommands.tsx:19
+#: src/features/messaging/commands/SavedMessageCommands.tsx:20
 msgid "Added to bookmarks"
 msgstr "已加入書籤"
 
@@ -2735,7 +2707,7 @@ msgid "Adjust the overall zoom level of the app. Use {zoomIn} / {zoomOut} to adj
 msgstr "調整應用程式的整體縮放等級。使用 {zoomIn} / {zoomOut} 可快速調整。"
 
 #. Permission name: grants all permissions and bypasses restrictions.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:157
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:348
 msgid "Administrator"
 msgstr "管理員"
 
@@ -2830,19 +2802,19 @@ msgstr "對齊控制項僅適用於較寬的螢幕"
 msgid "All"
 msgstr "全部"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:447
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:522
 msgid "All <0/> for <1>{effectiveMonthlyPrice}/month</1>."
 msgstr "全部 <0/> 只要 <1>{effectiveMonthlyPrice}/月</1>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:469
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:544
 msgid "All <0/> for <1>{effectiveYearlyPrice}/year</1>."
 msgstr "全部 <0/>，每年只要 <1>{effectiveYearlyPrice}</1>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:490
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:565
 msgid "All <0/> included with your subscription."
 msgstr "您的訂閱方案包含所有<0/>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:437
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:512
 msgid "All <0/>, forever. No billing, no renewals."
 msgstr "永久擁有所有 <0/>。無須付費，無須續訂。"
 
@@ -3160,7 +3132,7 @@ msgid "Already set to cancel"
 msgstr "已設定為取消"
 
 #. Toggle-switch label in the moderator delete-message confirmation dialog. When enabled, the message is reported (category: other) before being deleted. {productName} is the product name (e.g., Fluxer).
-#: src/features/messaging/commands/MessageCommands.tsx:81
+#: src/features/messaging/commands/MessageCommands.tsx:84
 msgid "Also report this message to the {productName} Safety Team"
 msgstr "同時將此訊息回報給 {productName} 安全團隊"
 
@@ -3649,7 +3621,7 @@ msgid "App settings"
 msgstr "應用程式設定"
 
 #. Developer options group for overriding app/account state.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:37
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:47
 msgid "App state"
 msgstr "應用程式狀態"
 
@@ -3920,7 +3892,7 @@ msgid "Arrow keys review suggestions. Enter selects, Escape clears, Tab moves on
 msgstr "使用方向鍵檢閱建議。按下 Enter 鍵選取，按下 Esc 鍵清除，按下 Tab 鍵移至下一個。"
 
 #. Purchase mode option for buying a gift subscription for another user.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:32
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:30
 msgid "As a gift"
 msgstr "做為贈禮"
 
@@ -3954,7 +3926,7 @@ msgid "At least one channel must have \"{viewChannelPermissionLabel}\" permissio
 msgstr "您的專屬網址必須至少有一個頻道啟用「{viewChannelPermissionLabel}」權限，並開放給{EVERYONE_MENTION}才能正常運作。目前沒有任何頻道可供{EVERYONE_MENTION}查看。"
 
 #. Permission name: allows uploading files to messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:229
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:420
 msgid "Attach files"
 msgstr "附加檔案"
 
@@ -4058,7 +4030,7 @@ msgid "Audio"
 msgstr "音訊"
 
 #. Permission category for voice, video, and streaming permissions.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:149
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:340
 msgid "Audio & video"
 msgstr "語音與視訊"
 
@@ -4573,9 +4545,9 @@ msgstr "目前不在線上"
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
 #. OAuth authorization secondary button. Returns to the previous carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:75
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:77
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAuthorizeActions.tsx:14
-#: src/features/auth/flow/IpAuthorizationScreen.tsx:150
+#: src/features/auth/flow/IpAuthorizationScreen.tsx:152
 #: src/features/channel/components/channel_header/shared.ts:27
 #: src/features/connection/components/modals/AddConnectionModal.tsx:397
 #: src/features/guild/components/modals/add_guild_modal/GuildCreateForm.tsx:164
@@ -4637,7 +4609,7 @@ msgid "Back to sticker"
 msgstr "返回貼圖"
 
 #. Tooltip / aria label on the back button that returns from the call view to the voice channel view.
-#: src/features/voice/components/VoiceCallView.tsx:114
+#: src/features/voice/components/VoiceCallView.tsx:115
 msgid "Back to voice channel"
 msgstr "返回語音頻道"
 
@@ -4773,9 +4745,14 @@ msgid "Ban member"
 msgstr "停用成員"
 
 #. Permission name: allows banning members from a community.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:181
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:372
 msgid "Ban members"
 msgstr "停權成員"
+
+#. Permission description in the role/permission editor for the Ban Members permission. A ban keeps the member out until it is lifted, and the moderator chooses how much recent message history to delete.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:123
+msgid "Ban members from the community, with the option to delete their recent messages."
+msgstr "封鎖成員加入社群，並可選擇刪除他們近期的訊息。"
 
 #. IAR modal: quick-action card title for banning the reported user (moderator-only).
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:121
@@ -4860,6 +4837,16 @@ msgstr "基本設定和允許的重新導向 URI。"
 msgid "Basic text inputs"
 msgstr "基本文字輸入"
 
+#. Permission description in the channel-scoped permissions editor for the Priority Speaker permission. "Push to talk (priority)" is the name of a keybind in the keybind settings, so match the wording used there.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:300
+msgid "Be heard over other members in this channel while holding the push to talk (priority) keybind."
+msgstr "在按下「優先麥克風」快速鍵時，讓你在這個頻道中比其他成員更容易被聽見。"
+
+#. Permission description in the role/permission editor for the Priority Speaker permission at community scope. "Push to talk (priority)" is the name of a keybind in the keybind settings, so match the wording used there.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:176
+msgid "Be heard over other members while holding the push to talk (priority) keybind."
+msgstr "在按下「優先語音」快速鍵時，讓你的聲音蓋過其他成員。"
+
 #. Short label in the guild members date range modal. Keep it concise.
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:19
 msgid "Before date"
@@ -4902,7 +4889,7 @@ msgstr "帳單週期"
 
 #. Accordion title in the premium billing panel.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:56
+#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:50
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:104
 msgid "Billing history"
 msgstr "帳單記錄"
@@ -5099,7 +5086,7 @@ msgstr "將訊息加到書籤"
 
 #. Description text in the saved messages content popout.
 #. Description text in the saved messages page.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:169
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:185
 #: src/features/messaging/components/pages/SavedMessagesPage.tsx:31
 #: src/features/messaging/components/popouts/SavedMessagesContent.tsx:34
 msgid "Bookmark messages to save them for later."
@@ -5118,7 +5105,7 @@ msgstr "已加入書籤。"
 #. Short label in the bookmarks bottom sheet. Keep it concise.
 #. Short label in the saved messages page. Keep it concise.
 #. Tab label in the inbox popout listing the user bookmarks.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:33
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:34
 #: src/features/messaging/components/pages/SavedMessagesPage.tsx:23
 #: src/features/messaging/components/popouts/InboxPopout.tsx:34
 msgid "Bookmarks"
@@ -5444,7 +5431,7 @@ msgstr "使用 {productName} 即表示您同意更新後的政策。"
 #. Developer option label.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:41
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:41
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:51
 msgid "Bypass loading skeleton"
 msgstr "略過載入骨架"
 
@@ -5454,7 +5441,7 @@ msgid "Bypass mention suppression"
 msgstr "略過提及抑制"
 
 #. Permission name: allows ignoring per-channel message rate limits.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:249
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:440
 msgid "Bypass slowmode"
 msgstr "略過慢速模式"
 
@@ -5712,6 +5699,11 @@ msgstr "如果你想選擇其他使用者名稱，請取消。"
 msgid "Cancel import"
 msgstr "取消匯入"
 
+#. Billing button that cancels a scheduled move to a lower subscription price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:819
+msgid "Cancel price change"
+msgstr "取消價格變更"
+
 #. Accessible label and tooltip for the cancel-reply button in the reply bar.
 #: src/features/channel/components/ChannelReplyBar.tsx:66
 msgid "Cancel reply"
@@ -5723,21 +5715,26 @@ msgid "Cancel request"
 msgstr "取消邀請"
 
 #. Billing button that cancels a scheduled billing-cycle change.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:668
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:827
 msgid "Cancel scheduled switch"
 msgstr "取消排定的切換"
 
 #. Billing button that starts subscription cancellation.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:683
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:138
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:842
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:127
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "取消訂閱"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:131
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:120
 msgid "Cancel subscription?"
 msgstr "取消訂閱？"
+
+#. Plutonium subscription card hint shown to a subscriber who could move to a lower price but has another billing change already scheduled.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:645
+msgid "Cancel the scheduled change to move to the current price instead."
+msgstr "取消已排定的變更，改為目前的價格。"
 
 #. Button or menu action label in the channel and chat message upload progress. Keep it concise.
 #: src/features/channel/components/MessageUploadProgress.tsx:21
@@ -5745,7 +5742,7 @@ msgid "Cancel upload"
 msgstr "取消上傳"
 
 #. Billing button that cancels a scheduled yearly upgrade.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:664
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:823
 msgid "Cancel yearly upgrade"
 msgstr "取消年度升級"
 
@@ -5755,7 +5752,7 @@ msgid "Cancel your friend request to {displayName}?"
 msgstr "要取消對 {displayName} 的好友邀請嗎？"
 
 #. Subscription status badge meaning cancellation is scheduled for the renewal date.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:358
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:433
 msgid "Canceling"
 msgstr "正在取消"
 
@@ -5764,7 +5761,7 @@ msgstr "正在取消"
 msgid "Cancellation"
 msgstr "取消"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:424
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:499
 msgid "Cancels on <0>{cancelDate}</0>. <1/> remain active until then."
 msgstr "將於 <0>{cancelDate}</0> 取消。<1/> 在此之前仍會保持啟用。"
 
@@ -5821,26 +5818,6 @@ msgstr "此卡不適用"
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:261
 msgid "Card verification was canceled. You can close this tab and return to the app."
 msgstr "信用卡驗證已取消。您可以關閉此分頁並返回應用程式。"
-
-#. Plutonium subscription checkout guidance for Brazil. Explains that BRL card subscriptions need a verification step and a Brazil-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:134
-msgid "Cards can keep BRL pricing after a quick {paymentProviderName} verification, but the card must be issued in Brazil."
-msgstr "卡片在經過快速的 {paymentProviderName} 驗證後，可以保留巴西雷亞爾定價，但該卡片必須在巴西發行。"
-
-#. Plutonium subscription checkout guidance for India. Explains that INR card subscriptions need a verification step and an India-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:154
-msgid "Cards can keep INR pricing after a quick {paymentProviderName} verification, but the card must be issued in India."
-msgstr "卡片在經過 {paymentProviderName} 快速驗證後，可保留印度盧比定價，但該卡片必須在印度發行。"
-
-#. Plutonium subscription checkout guidance for Poland. Explains that PLN card subscriptions need a verification step and a Poland-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:175
-msgid "Cards can keep PLN pricing after a quick {paymentProviderName} verification, but the card must be issued in Poland."
-msgstr "卡片在經過 {paymentProviderName} 快速驗證後，可以保留波蘭茲羅提 (PLN) 的價格，但該卡片必須在波蘭發行。"
-
-#. Plutonium subscription checkout guidance for Türkiye. Explains that TRY card subscriptions need a verification step and a Türkiye-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:195
-msgid "Cards can keep TRY pricing after a quick {paymentProviderName} verification, but the card must be issued in Türkiye."
-msgstr "卡片在經過快速的 {paymentProviderName} 驗證後，可以保留土耳其里拉定價，但該卡片必須是在土耳其發行的。"
 
 #. Heading above the category filter list in the Discovery search sidebar.
 #. Short label in the discovery category bottom sheet. Keep it concise.
@@ -6031,7 +6008,7 @@ msgid "Change other members' nicknames."
 msgstr "更改其他成員的暱稱."
 
 #. Permission name: allows a member to edit their own nickname.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:189
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:380
 msgid "Change own nickname"
 msgstr "變更自己的暱稱"
 
@@ -6055,7 +6032,7 @@ msgid "Change password form"
 msgstr "變更密碼表單"
 
 #. Subscription status badge meaning a future billing plan change is scheduled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:362
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:437
 msgid "Change scheduled"
 msgstr "已排定變更"
 
@@ -6090,6 +6067,16 @@ msgstr "變更使用者名稱表單"
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryCutoffSection.tsx:22
 msgid "Change what users without \"{readMessageHistoryPermissionLabel}\" can see"
 msgstr "變更沒有「{readMessageHistoryPermissionLabel}」權限的使用者能看見的內容"
+
+#. Permission description in the role/permission editor for the Set Voice Region permission at community scope. The region is the geographic location of the voice server.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:190
+msgid "Change which voice region a voice channel uses."
+msgstr "更改語音頻道使用的語音區域。"
+
+#. Permission description in the channel-scoped permissions editor for the Set Voice Region permission. The region is the geographic location of the voice server.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:319
+msgid "Change which voice region this channel uses."
+msgstr "更改此頻道使用的語音區域。"
 
 #. IAR modal: quick-action card description.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:437
@@ -6185,7 +6172,7 @@ msgid "Channel {id}"
 msgstr "頻道 {id}"
 
 #. Permission category for viewing or entering channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:145
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:336
 msgid "Channel access"
 msgstr "頻道存取權"
 
@@ -6243,7 +6230,7 @@ msgstr "頻道詳細資訊區塊"
 
 #. Toast confirming the channel ID was copied to the clipboard.
 #. Toast confirming the channel ID was copied to the clipboard.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:108
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:106
 #: src/features/ui/action_menu/items/dm_menu_data/shared.ts:37
 msgid "Channel ID copied"
 msgstr "頻道 ID 已複製"
@@ -6261,7 +6248,7 @@ msgid "channel link"
 msgstr "頻道連結"
 
 #. Toast confirming the channel link was copied to the clipboard.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:100
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:98
 msgid "Channel link copied"
 msgstr "頻道連結已複製"
 
@@ -6285,7 +6272,7 @@ msgid "Channel list typing indicators"
 msgstr "頻道列表輸入提示"
 
 #. Permission category for managing channels and channel settings.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:153
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:344
 msgid "Channel management"
 msgstr "頻道管理"
 
@@ -6509,12 +6496,12 @@ msgid "Checkout"
 msgstr "結帳"
 
 #. Modal body for the generic "checkout blocked" state. Provides the support email.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:148
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:147
 msgid "Checkout is blocked for this account. Contact {supportEmail} if you need help."
 msgstr "此帳號的結帳功能已遭封鎖。如需協助，請聯絡 {supportEmail}。"
 
 #. Modal title for the generic "checkout blocked" state when no more specific reason is known.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:144
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:143
 msgid "Checkout unavailable"
 msgstr "無法結帳"
 
@@ -6682,7 +6669,7 @@ msgid "Choose how times are displayed throughout the app"
 msgstr "選擇應用程式中時間的顯示方式"
 
 #. Plutonium subscription payment method picker description, generic fallback when no country-specific copy applies.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:58
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:57
 msgid "Choose how you'd like to pay for this subscription."
 msgstr "請選擇此訂閱的付款方式。"
 
@@ -6701,7 +6688,7 @@ msgid "Choose one verification method. Either method can clear this check."
 msgstr "請選擇一種驗證方式。任一種方式皆可通過此檢查。"
 
 #. Modal title for the payment method picker (local card vs alternative method).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:196
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:195
 msgid "Choose payment method"
 msgstr "選擇付款方式"
 
@@ -6891,7 +6878,7 @@ msgstr "認領您的帳號，即可加入您未擁有的語音頻道。"
 
 #. Billing tooltip shown when an unclaimed account cannot start premium checkout. premiumProductFullName is the full paid product name.
 #. Plutonium upsell CTA tooltip shown to guests/unclaimed accounts: claiming the account is required before purchase. Product name is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:15
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:13
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:17
 msgid "Claim your account to purchase {premiumProductFullName}."
 msgstr "請先認領您的帳號，才能購買 {premiumProductFullName}。"
@@ -7467,7 +7454,7 @@ msgstr "收合頻道主題"
 #. Tooltip / aria label on a voice participant tile button that collapses expanded device tiles for one user.
 #. Voice menu action that collapses expanded device tiles back into a single tile.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:122
-#: src/features/voice/components/VoiceParticipantTile.tsx:173
+#: src/features/voice/components/VoiceParticipantTile.tsx:176
 msgid "Collapse devices"
 msgstr "收合裝置"
 
@@ -7845,7 +7832,7 @@ msgid "Community voice"
 msgstr "社群語音"
 
 #. Permission category for permissions that affect the whole community.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:133
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:324
 msgid "Community-wide"
 msgstr "社群範圍"
 
@@ -7880,7 +7867,7 @@ msgid "Complete one of the verification paths below to continue using {productNa
 msgstr "請完成以下其中一個驗證路徑，以繼續使用 {productName}。"
 
 #. Modal title for the mobile checkout confirmation when opening the payment provider in a browser.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:178
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:177
 msgid "Complete payment"
 msgstr "完成付款"
 
@@ -8099,7 +8086,7 @@ msgstr "請連接麥克風後再試一次。"
 
 #. Permission name: allows joining voice channels.
 #. Primary CTA in the mobile voice-channel lobby bottom sheet. Joins the voice channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:265
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:456
 #: src/features/voice/components/bottomsheets/VoiceLobbyBottomSheet.tsx:56
 msgid "Connect to voice"
 msgstr "連線語音"
@@ -8127,7 +8114,7 @@ msgstr "已連線到語音"
 #. Action label state in the DM channel header pill while the join request is in flight. Trailing ASCII ellipsis is intentional.
 #. Overlay status in the voice call view while joining. Trailing ellipsis indicates in-progress.
 #: src/features/channel/components/channel_view/dm_channel_view/shared.ts:129
-#: src/features/voice/components/VoiceCallView.tsx:93
+#: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Connecting..."
 msgstr "正在連線..."
 
@@ -8188,7 +8175,7 @@ msgid "Connection removed"
 msgstr "已移除連結"
 
 #. Tooltip / aria label on the connection-stats button in the voice call header. Opens the voice connection status popout.
-#: src/features/voice/components/VoiceCallView.tsx:118
+#: src/features/voice/components/VoiceCallView.tsx:119
 msgid "Connection stats"
 msgstr "連線狀態"
 
@@ -8337,7 +8324,7 @@ msgid "Continue"
 msgstr "繼續"
 
 #. Plutonium checkout pre-approval prompt secondary button. Continues straight to the standard checkout screen.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:89
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:88
 msgid "Continue to checkout"
 msgstr "繼續結帳"
 
@@ -8436,7 +8423,7 @@ msgid "Copied"
 msgstr "已複製"
 
 #. Toast shown after copying stats for nerds JSON to clipboard.
-#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:13
+#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:9
 msgid "Copied stats JSON to clipboard"
 msgstr "已將統計資料 JSON 複製到剪貼簿"
 
@@ -8468,11 +8455,6 @@ msgstr "已複製網址"
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx:59
 msgid "Copy"
 msgstr "複製"
-
-#. Aria label for a button that copies stats for nerds data as JSON to the clipboard.
-#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:5
-msgid "Copy as JSON"
-msgstr "複製為 JSON"
 
 #. Developer-mode action that copies the attachment ID to the clipboard.
 #: src/features/ui/action_menu/MessageContextMenu.tsx:67
@@ -8510,7 +8492,7 @@ msgid "Copy banner URL"
 msgstr "複製封面圖片網址"
 
 #. Tray menu item. Copies build / version diagnostics to the clipboard for bug reports.
-#: src/features/app/components/floating/UserAreaPopout.tsx:714
+#: src/features/app/components/floating/UserAreaPopout.tsx:707
 #: src/features/platform/utils/DesktopLocaleBridge.ts:164
 msgid "Copy build info"
 msgstr "複製版本資訊"
@@ -8530,7 +8512,7 @@ msgstr "複製頻道 ID"
 #. Action that copies a deep link to the selected channel.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:205
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:132
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:130
 msgid "Copy channel link"
 msgstr "複製頻道連結"
 
@@ -8713,8 +8695,8 @@ msgstr "複製設定金鑰"
 msgid "Copy stack trace"
 msgstr "複製堆疊追蹤"
 
-#. Button label in audio and video settings. Copies stats for nerds data as JSON to the clipboard.
-#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:9
+#. Menu item label in the screen share menu. Copies stats for nerds data as JSON to the clipboard.
+#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:5
 msgid "Copy stats JSON"
 msgstr "複製統計資料 JSON"
 
@@ -8742,7 +8724,7 @@ msgid "Copy the setup key into your authenticator app."
 msgstr "將設定金鑰複製到您的驗證器應用程式。"
 
 #. Developer-mode action that copies a user snowflake/ID to the clipboard.
-#: src/features/app/components/floating/UserAreaPopout.tsx:699
+#: src/features/app/components/floating/UserAreaPopout.tsx:692
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:172
 msgid "Copy user ID"
 msgstr "複製使用者 ID"
@@ -8767,7 +8749,7 @@ msgstr "複製影片"
 msgid "Copy video link"
 msgstr "複製影片連結"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:727
+#: src/features/app/components/floating/UserAreaPopout.tsx:720
 msgid "Copy voice diagnostics"
 msgstr "複製語音診斷資訊"
 
@@ -8797,7 +8779,7 @@ msgid "Could not decode this audio file."
 msgstr "無法解碼此音訊檔案。"
 
 #. Error shown when the setup wizard fails to load the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:91
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:93
 msgid "Could not load the instance configuration. Try reloading the page."
 msgstr "無法載入執行個體設定。請嘗試重新載入頁面。"
 
@@ -8856,19 +8838,24 @@ msgid "Couldn't cancel the friend request. Try again."
 msgstr "無法取消好友邀請。請再試一次。"
 
 #. Title of the generic fallback error modal shown when canceling a scheduled Plutonium billing cycle change fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:84
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:86
 msgid "Couldn't cancel your pending billing change"
 msgstr "無法取消您待處理的帳單變更"
 
 #. Title of the generic fallback error modal shown when cancelling a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:24
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:26
 msgid "Couldn't cancel your subscription"
 msgstr "無法取消您的訂閱"
 
 #. Title of the generic fallback error modal shown when changing the Plutonium billing cycle fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:76
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:78
 msgid "Couldn't change your billing cycle"
 msgstr "無法變更您的帳單週期"
+
+#. Title of the generic fallback error modal shown when moving a Plutonium subscription down to the current price fails.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:111
+msgid "Couldn't change your price"
+msgstr "無法變更您的價格"
 
 #. Modal title shown when a user-initiated update check fails.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:104
@@ -8983,12 +8970,12 @@ msgid "Couldn't download the desktop update"
 msgstr "無法下載桌面版更新"
 
 #. Title of the error modal shown when duplicating a channel fails.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:140
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:138
 msgid "Couldn't duplicate this channel"
 msgstr "無法複製此頻道"
 
 #. Title of the generic fallback error modal shown when ending the Plutonium grace period fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:36
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:38
 msgid "Couldn't end your grace period"
 msgstr "無法結束寬限期"
 
@@ -9065,15 +9052,15 @@ msgstr "無法開啟搜尋結果"
 #. Title of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Title of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Title of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:30
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:12
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:29
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:14
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:29
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:29
 msgid "Couldn't open the billing portal"
 msgstr "無法開啟帳務入口網站"
 
 #. Title of the error modal shown when pinning a DM or group DM fails.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:120
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:118
 msgid "Couldn't pin this conversation"
 msgstr "無法釘選此對話"
 
@@ -9085,7 +9072,7 @@ msgid "Couldn't process image"
 msgstr "無法處理圖片"
 
 #. Title of the generic fallback error modal shown when reactivating a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:48
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:50
 msgid "Couldn't reactivate your subscription"
 msgstr "無法重新啟用您的訂閱"
 
@@ -9212,7 +9199,7 @@ msgid "Couldn't start {blueskyProviderName} authorisation"
 msgstr "無法開始 {blueskyProviderName} 授權"
 
 #. Title of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:152
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:151
 msgid "Couldn't start checkout"
 msgstr "無法開始結帳"
 
@@ -9252,7 +9239,7 @@ msgid "Couldn't unblock user"
 msgstr "無法解除封鎖使用者"
 
 #. Title of the error modal shown when unpinning a DM or group DM fails.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:124
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:122
 msgid "Couldn't unpin this conversation"
 msgstr "無法取消釘選此對話"
 
@@ -9453,7 +9440,7 @@ msgid "Create DM"
 msgstr "建立私人訊息"
 
 #. Permission name: allows uploading custom emoji and stickers.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:197
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:388
 msgid "Create emoji & stickers"
 msgstr "建立表情符號和貼圖"
 
@@ -9480,7 +9467,7 @@ msgid "Create invite"
 msgstr "建立邀請"
 
 #. Permission name: allows creating invite links.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:185
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:376
 msgid "Create invite links"
 msgstr "建立邀請連結"
 
@@ -9514,7 +9501,7 @@ msgstr "建立角色"
 msgid "Create the administrator account"
 msgstr "建立管理員帳號"
 
-#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:93
+#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:94
 msgid "Create the group DM with the remaining {addableCount} recipient(s) and skip the others?"
 msgstr "要建立包含其餘 {addableCount} 位收件者的群組訊息，並略過其他人嗎？"
 
@@ -9544,7 +9531,7 @@ msgid "Create, edit, or delete roles below your highest role. Also allows editin
 msgstr "建立、編輯或刪除低於您最高權限的身份組。也可以編輯頻道權限覆寫。"
 
 #. Permission description in the channel-scoped permissions editor for the Manage Webhooks permission. Scoped to a single channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:123
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:205
 msgid "Create, edit, or delete webhooks for this channel."
 msgstr "建立、編輯或刪除此頻道的 Webhook。"
 
@@ -9966,7 +9953,7 @@ msgstr "自訂…"
 
 #. Billing button that opens the external customer portal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:608
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:748
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:39
 msgid "Customer portal"
 msgstr "客戶服務入口網站"
@@ -10196,9 +10183,19 @@ msgid "Deafen device"
 msgstr "讓裝置靜音"
 
 #. Permission name: allows moderators to deafen other voice participants.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:290
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:481
 msgid "Deafen members"
 msgstr "將成員靜音"
+
+#. Permission description in the channel-scoped permissions editor for the Deafen Members permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:310
+msgid "Deafen other members in this voice channel, so they cannot hear or speak."
+msgstr "讓該語音頻道中的其他成員無法聽到或說話。"
+
+#. Permission description in the role/permission editor for the Deafen Members permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:186
+msgid "Deafen other members in voice channels, so they cannot hear or speak."
+msgstr "讓其他成員在語音頻道中無法發聲或聽見，以達到靜音效果。"
 
 #. Settings label for the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:157
@@ -10395,7 +10392,7 @@ msgstr "為節省電力與數據用量，行動裝置預設為關閉。"
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:204
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:216
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
-#: src/features/messaging/commands/MessageCommands.tsx:77
+#: src/features/messaging/commands/MessageCommands.tsx:80
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:399
@@ -10427,7 +10424,7 @@ msgstr "要刪除「{stickerName}」嗎？此動作無法復原。"
 #. Channel details bottom sheet label or action (channel type, settings, toast, confirmation, or notification option).
 #. Confirm dialog body before deleting a channel.
 #: src/features/channel/components/bottomsheets/channel_details_bottom_sheet/ChannelDetailsBottomSheetShared.ts:107
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:104
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:102
 msgid "Delete {channelLabel}? Can't be undone."
 msgstr "刪除「{channelLabel}」？此動作無法復原。"
 
@@ -10555,6 +10552,11 @@ msgstr "刪除訊息"
 msgid "Delete my messages"
 msgstr "刪除我的訊息"
 
+#. Permission description in the channel-scoped permissions editor for the Manage Messages permission. Notes that pinning has its own permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:229
+msgid "Delete other members' messages in this channel. Pinning is controlled separately."
+msgstr "刪除此頻道的其他成員的訊息。釘選訊息有獨立的權限。"
+
 #. Permission description in the role/permission editor for the Manage Messages permission. Notes that pinning has its own permission.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:68
 msgid "Delete other members' messages. Pinning is controlled separately."
@@ -10628,7 +10630,7 @@ msgid "Delete this message"
 msgstr "刪除此訊息"
 
 #. Error message in the messaging commands. Keep the tone plain and specific.
-#: src/features/messaging/commands/MessageCommands.tsx:73
+#: src/features/messaging/commands/MessageCommands.tsx:76
 msgid "Delete this message? Can't be undone."
 msgstr "要刪除這則訊息嗎？此動作無法復原。"
 
@@ -11231,6 +11233,11 @@ msgstr "停用捷徑"
 msgid "Disable sounds"
 msgstr "關閉音效"
 
+#. Developer option label for turning off the page-translator DOM crash guard.
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:37
+msgid "Disable translation DOM guard"
+msgstr "停用翻譯 DOM 防護罩"
+
 #. Button or menu action label in the links tab. Keep it concise.
 #: src/features/user/components/modals/tabs/chat_settings_tab/ChatSettingsTabLinksTab.tsx:35
 msgid "Disable trust all"
@@ -11379,7 +11386,7 @@ msgstr "中斷連線"
 #. Overlay status in the voice call view when not connected.
 #. Overlay status text in the compact / floating voice call tile when not connected.
 #: src/features/voice/components/compact_voice_call_view/shared.ts:15
-#: src/features/voice/components/VoiceCallView.tsx:102
+#: src/features/voice/components/VoiceCallView.tsx:103
 msgid "Disconnected"
 msgstr "已中斷連線"
 
@@ -11913,10 +11920,15 @@ msgstr "拖曳檔案到這裡上傳"
 msgid "Drag and drop emoji files here"
 msgstr "將表情符號檔案拖曳到這裡"
 
-#. Permission description in the role/permission editor for the Move Members permission. The target channel must already be accessible to the member being moved.
+#. Permission description in the role/permission editor for the Move Members permission. The target channel must already be accessible to the member being moved. This permission also covers forcing a member out of voice entirely.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:108
-msgid "Drag members between channels they can access."
-msgstr "拖曳成員到他們有權限的頻道。"
+msgid "Drag members between voice channels they can access, and disconnect them from voice."
+msgstr "將成員拖曳至他們可以存取的語音頻道之間，並將他們從語音中斷線。"
+
+#. Permission description in the channel-scoped permissions editor for the Move Members permission. The target channel must already be accessible to the member being moved. This permission also covers forcing a member out of voice entirely.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:314
+msgid "Drag members out of this voice channel into channels they can access, and disconnect them from voice."
+msgstr "將成員從此語音頻道拖曳到他們可以存取的頻道，並將他們從語音中斷線。"
 
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleSidebar.tsx:140
 msgid "Drag roles to customize the order they appear in the member list."
@@ -12015,7 +12027,7 @@ msgstr "複製"
 #. Action that creates a copy of the selected channel.
 #. Short label in the channel duplicate modal. Keep it concise.
 #: src/features/channel/components/modals/ChannelDuplicateModal.tsx:28
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:136
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:134
 msgid "Duplicate channel"
 msgstr "複製頻道"
 
@@ -12122,7 +12134,7 @@ msgstr "編輯分類"
 #. Action that opens the edit-channel modal.
 #. Channel details bottom sheet label or action (channel type, settings, toast, confirmation, or notification option).
 #: src/features/channel/components/bottomsheets/channel_details_bottom_sheet/ChannelDetailsBottomSheetShared.ts:162
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:148
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:146
 #: src/features/ui/action_menu/items/ChannelMenuItems.tsx:75
 msgid "Edit channel"
 msgstr "編輯頻道"
@@ -12202,11 +12214,11 @@ msgid "Edit or delete emoji and stickers created by other members."
 msgstr "編輯或刪除其他成員建立的表情符號和貼圖。"
 
 #. Permission description in the channel-scoped permissions editor for the Manage Permissions permission. "Overwrites" are per-channel permission overrides.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:118
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:200
 msgid "Edit overwrites for roles and members in this channel."
 msgstr "編輯此頻道中身分組和成員的覆寫權限。"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:750
+#: src/features/app/components/floating/UserAreaPopout.tsx:743
 #: src/features/app/components/pages/YouPage.tsx:157
 #: src/features/user/components/modals/UserProfileMobileSheet.tsx:682
 #: src/features/user/components/modals/UserProfileModal.tsx:587
@@ -12424,7 +12436,7 @@ msgid "Embed debugger form"
 msgstr "嵌入偵錯工具表單"
 
 #. Permission name: allows links to unfurl/embed in messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:225
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:416
 msgid "Embed links"
 msgstr "嵌入連結"
 
@@ -12905,15 +12917,15 @@ msgid "End date"
 msgstr "結束日期"
 
 #. Billing button that ends premium grace period immediately.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:695
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:854
 msgid "End grace now"
 msgstr "立即結束寬限期"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:160
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:149
 msgid "End grace period"
 msgstr "結束寬限期"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:153
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:142
 msgid "End grace period now?"
 msgstr "要現在結束寬限期嗎？"
 
@@ -13059,7 +13071,7 @@ msgstr "輸入代碼"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (not in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:28
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:18
-#: src/features/voice/components/VoiceCallView.tsx:110
+#: src/features/voice/components/VoiceCallView.tsx:111
 msgid "Enter fullscreen"
 msgstr "進入全螢幕"
 
@@ -13227,7 +13239,7 @@ msgstr "整個畫面"
 msgid "Entire system"
 msgstr "整個系統"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:249
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:253
 msgid "Entire system audio"
 msgstr "整個系統音訊"
 
@@ -13339,16 +13351,6 @@ msgstr "按 Esc 鍵<0><1>取消</1></0>"
 msgid "Estonia"
 msgstr "愛沙尼亞"
 
-#. Plutonium gift checkout panel title for buyers in Portugal paying with EUR.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:79
-msgid "EUR gift checkout"
-msgstr "歐元贈禮結帳"
-
-#. Plutonium subscription checkout panel title for subscribers in Portugal paying with EUR.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:99
-msgid "EUR subscription checkout"
-msgstr "歐元訂閱結帳"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:46
 msgid "Evening time"
@@ -13428,7 +13430,7 @@ msgstr "離開"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (currently in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:24
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:14
-#: src/features/voice/components/VoiceCallView.tsx:106
+#: src/features/voice/components/VoiceCallView.tsx:107
 msgid "Exit fullscreen"
 msgstr "結束全螢幕"
 
@@ -13509,7 +13511,7 @@ msgstr "有效期限"
 #. Error message in the invite list item.
 #. Short label in the authentication account row. Keep the tone plain and specific.
 #. Subscription status badge meaning premium access has fully expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:348
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:423
 #: src/features/auth/components/accounts/AccountRow.tsx:19
 #: src/features/channel/components/modals/GroupInvitesBottomSheet.tsx:41
 #: src/features/invite/components/InviteListItem.tsx:30
@@ -13546,7 +13548,7 @@ msgstr "於 {date} 到期"
 msgid "Expired on {earliest}"
 msgstr "已於 {earliest} 到期"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:379
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:454
 msgid "Expired on <0>{expiredDate}</0>. <1/> are no longer active. You can resubscribe at any time."
 msgstr "於 <0>{expiredDate}</0> 到期。<1/> 已不再啟用。您可以隨時重新訂閱。"
 
@@ -13635,7 +13637,7 @@ msgid "Export themes"
 msgstr "匯出主題"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the profile timezone settings toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:129
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
 msgid "Expose the staff-only timezone section in profile settings."
 msgstr "在個人資料設定中顯示僅限管理員使用的時區部分。"
 
@@ -14137,7 +14139,7 @@ msgstr "功能暫時停用"
 
 #. Developer options group for feature behavior overrides.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:113
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:123
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:137
 msgid "Features"
 msgstr "功能"
@@ -14337,7 +14339,7 @@ msgstr "請先完成帳號設定"
 
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:83
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
 #: src/features/app/components/setup/SetupWizardSteps.tsx:327
 msgid "Finish setup"
 msgstr "完成設定"
@@ -14550,7 +14552,7 @@ msgid "For british eyes only..."
 msgstr "限英國地區觀看…"
 
 #. Purchase mode option for buying a subscription for the current user.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:28
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:26
 msgid "For me"
 msgstr "為我"
 
@@ -14574,17 +14576,17 @@ msgid "Force enabled"
 msgstr "強制啟用"
 
 #. Developer option label for simulating failed message loads.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:109
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:119
 msgid "Force failed message loads"
 msgstr "強制訊息載入失敗"
 
 #. Developer option label for simulating failed message sends.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:105
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:115
 msgid "Force failed message sends"
 msgstr "強制訊息傳送失敗"
 
 #. Developer option label for simulating a loading GIF picker.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:65
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:75
 msgid "Force GIF picker loading"
 msgstr "強制載入 GIF 選擇器"
 
@@ -14596,7 +14598,7 @@ msgstr "強制隱藏"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:45
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:45
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:55
 msgid "Force loading skeleton"
 msgstr "強制載入骨架"
 
@@ -14616,12 +14618,12 @@ msgid "Force no {permissionName} permission"
 msgstr "強制不授予「{permissionName}」權限"
 
 #. Developer option label for always showing profile data warnings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:101
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:111
 msgid "Force profile data warning"
 msgstr "強制顯示個人資料警告"
 
 #. Developer option label for forcing user profile loading skeletons.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:97
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:107
 msgid "Force profile skeletons"
 msgstr "強制顯示個人檔案骨架"
 
@@ -14631,12 +14633,12 @@ msgid "Force show"
 msgstr "強制顯示"
 
 #. Developer option label for always showing a community settings warning.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:69
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:79
 msgid "Force show vanity URL disclaimer"
 msgstr "強制顯示自訂網址免責聲明"
 
 #. Developer option label for always showing the voice connection status bar.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:121
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:131
 msgid "Force show voice connection"
 msgstr "強制顯示語音連線"
 
@@ -14645,12 +14647,12 @@ msgid "Force slowmode active"
 msgstr "強制慢速模式已啟用"
 
 #. Developer option label for rendering messages as unknown message types.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:117
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:127
 msgid "Force unknown message type"
 msgstr "強制顯示為未知訊息類型"
 
 #. Developer option label for simulating an available update.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:49
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:59
 msgid "Force update ready"
 msgstr "強制更新就緒"
 
@@ -15156,7 +15158,7 @@ msgstr "GIF 無法載入"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning premium access came from a gift.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:368
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:443
 #: src/features/expressions/components/modals/GiftAcceptModal.tsx:294
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:79
 msgid "Gift"
@@ -15296,7 +15298,7 @@ msgstr "贈禮：即將到期"
 msgid "Gift: grace period (still have access)"
 msgstr "贈禮：寬限期（仍可存取）"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:409
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:484
 msgid "Gifted <0/> until <1>{giftEndDate}</1>. Does not renew automatically. Redeem more gift codes to extend."
 msgstr "贈送 <0/>，直到 <1>{giftEndDate}</1>。不會自動續訂。兌換更多禮物代碼以延長。"
 
@@ -15460,7 +15462,7 @@ msgid "Got it"
 msgstr "我知道了"
 
 #. Subscription status badge meaning access remains briefly after subscription end.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:350
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:425
 msgid "Grace period"
 msgstr "寬限期"
 
@@ -16234,11 +16236,6 @@ msgstr "他們會被禁言多久。"
 msgid "How much of the member's recent message history to delete."
 msgstr "要刪除多少成員的近期訊息記錄。"
 
-#. Confirmation prompt in the channel and chat favorite gif first time prompt modal.
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:14
-msgid "How should we save your GIF favorites?"
-msgstr "要怎麼儲存您收藏的 GIF 呢？"
-
 #. Short label in the message history threshold content. Keep it concise.
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryThresholdContent.tsx:20
 msgid "How this works"
@@ -16367,20 +16364,10 @@ msgstr "閒置設定"
 msgid "Idle timeout"
 msgstr "閒置逾時"
 
-#. Plutonium subscription checkout guidance for Brazil. Offers USD as a fallback when Pix is not available or standard pricing is preferred.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:145
-msgid "If {pixPaymentMethod} is unavailable or you prefer standard pricing, you can switch to USD at any time."
-msgstr "如果 {pixPaymentMethod} 無法使用，或您偏好標準定價，您可以隨時切換為美元。"
-
 #. IAR modal: inline routing hint shown under reasons that overlap with child safety.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:88
 msgid "If a minor is involved, use \"{childSafetyReasonName}\" instead."
 msgstr "如果涉及未成年人，請改用「{childSafetyReasonName}」。"
-
-#. Plutonium subscription checkout guidance for India. Offers USD as a fallback when recurring UPI is not available.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:165
-msgid "If recurring {upiPaymentMethod} is unavailable or you prefer standard pricing, you can switch to USD at any time."
-msgstr "如果重複的 {upiPaymentMethod} 無法使用，或您偏好標準定價，您可以隨時切換為美元。"
 
 #. IAR modal: inline safety note for self-harm reports.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:369
@@ -16441,26 +16428,6 @@ msgstr "如果你關閉此通知，之後還是可以隨時到「{notificationSe
 msgid "If you don't remember this preference, we'll only hide the popout for this session. You can change this any time in {audioVideoSettingsPath}."
 msgstr "如果您不記得此偏好設定，我們只會在此工作階段中隱藏子母畫面。您可以隨時在{audioVideoSettingsPath}中變更此設定。"
 
-#. Plutonium gift checkout guidance for Brazil. Clarifies that BRL card payments require a Brazil-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:30
-msgid "If you pay with a card in BRL, it still needs to be issued in Brazil for the purchase to stay eligible."
-msgstr "如果使用巴西雷亞爾的卡片付款，該卡片仍需在巴西發行，才能符合購買資格。"
-
-#. Plutonium gift checkout guidance for India. Clarifies that INR card payments require an India-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:45
-msgid "If you pay with a card in INR, it still needs to be issued in India for the purchase to stay eligible."
-msgstr "如果您使用印度盧比的卡片付款，該卡片仍需在印度發行，才能符合購買資格。"
-
-#. Plutonium gift checkout guidance for Poland. Clarifies that PLN card payments require a Poland-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:59
-msgid "If you pay with a card in PLN, it still needs to be issued in Poland for the purchase to stay eligible."
-msgstr "如果您使用波蘭茲羅提卡付款，該卡片仍需在波蘭發行，才能符合購買資格。"
-
-#. Plutonium subscription checkout guidance. Offers USD as a fallback option.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:207
-msgid "If you prefer, you can switch to standard USD pricing instead."
-msgstr "如果您想，可以改用標準美元定價。"
-
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:354
 msgid "If you save this username, your tag will reroll randomly when your {PREMIUM_PRODUCT_NAME} expires on <0>{premiumExpiresAtLabel}</0>, unless it renews."
 msgstr "如果您儲存此使用者名稱，您的標籤將在 {PREMIUM_PRODUCT_NAME} 於 <0>{premiumExpiresAtLabel}</0> 到期時隨機重新產生，除非續訂。"
@@ -16472,11 +16439,6 @@ msgstr "如果您儲存此使用者名稱，當您的 {PREMIUM_PRODUCT_NAME} 到
 #: src/features/auth/components/modals/AccountDeleteModal.tsx:64
 msgid "If you want to export your data or delete your messages first, please visit {privacyDashboardPath} before proceeding."
 msgstr "如果您想先匯出資料或刪除訊息，請在繼續之前前往{privacyDashboardPath}。"
-
-#. Plutonium subscription checkout guidance for Poland. Suggests a PLN gift or standard EUR if the subscriber wants BLIK.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:186
-msgid "If you want to use {blikPaymentMethod}, buy a PLN gift instead, or switch to standard EUR pricing."
-msgstr "如果您想使用 {blikPaymentMethod}，請改為購買波蘭茲羅提禮物，或切換為標準歐元定價。"
 
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryThresholdContent.tsx:76
 msgid "If you'd like these members to access historical messages after a specific date, enable this feature and choose a threshold below."
@@ -16523,6 +16485,11 @@ msgstr "忽略垃圾訊息標記"
 #: src/features/channel/components/friends/MobileFriendRequestItem.tsx:33
 msgid "Ignore the friend request from {displayName}?"
 msgstr "要忽略來自 {displayName} 的交友邀請嗎？"
+
+#. Permission description in the channel-scoped permissions editor for the Bypass Slowmode permission. Slowmode is the per-channel cooldown between messages.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:274
+msgid "Ignore this channel's slowmode cooldown."
+msgstr "忽略此頻道的慢速模式延遲。"
 
 #: src/features/voice/components/StreamSettingsMenuContent.tsx:1038
 msgid "Ignore virtual"
@@ -16775,7 +16742,7 @@ msgstr "在「作業系統」模式中，上方列出的字典僅供參考。如
 msgid "In a browser, push-to-talk only works while the {PRODUCT_NAME} tab is focused. Install the desktop app for system-wide push-to-talk."
 msgstr "在瀏覽器中，只有當「{PRODUCT_NAME}」分頁為焦點時，按下通話功能才能運作。請安裝桌面版應用程式以使用全系統的按下通話功能。"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:728
+#: src/features/app/components/floating/UserAreaPopout.tsx:721
 msgid "In a call"
 msgstr "通話中"
 
@@ -17367,6 +17334,16 @@ msgstr "邀請視窗"
 msgid "Invite modal preview"
 msgstr "邀請彈出視窗預覽"
 
+#. Permission description in the channel-scoped permissions editor for the Create Invite Links permission. The invite drops the new member into this channel.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:215
+msgid "Invite new people to the community with a link to this channel."
+msgstr "用連結邀請新成員加入這個頻道。"
+
+#. Permission description in the role/permission editor for the Create Invite Links permission. Covers links that let someone outside the community join it.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:113
+msgid "Invite new people to the community with an invite link."
+msgstr "使用邀請連結邀請新成員加入社群。"
+
 #. Title for invite errors when the invite code does not exist or cannot be used.
 #: src/features/invite/utils/InviteMessageDescriptors.ts:9
 msgid "Invite not found"
@@ -17680,6 +17657,11 @@ msgstr "在此裝置上加入"
 msgid "Join the call"
 msgstr "加入通話"
 
+#. Permission description in the channel-scoped permissions editor for the Connect permission. "View channel" is another permission in this same editor, so match the wording used for its name. The placeholder renders the literal @everyone role name and must not be translated.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:279
+msgid "Join this voice channel and hear others. Denying it along with View channel for {everyoneMention} makes the channel private."
+msgstr "加入這個語音頻道並聆聽其他人。如果拒絕此權限以及為 {everyoneMention} 拒絕「檢視頻道」權限，該頻道將變為私人頻道。"
+
 #. Confirm dialog body shown before joining a voice channel from a context where confirmation is required.
 #: src/features/voice/hooks/usePendingVoiceConnection.tsx:16
 msgid "Join this voice channel?"
@@ -17710,6 +17692,11 @@ msgstr "加入語音通話"
 #: src/features/voice/hooks/usePendingVoiceConnection.tsx:12
 msgid "Join voice channel"
 msgstr "加入語音頻道"
+
+#. Permission description in the role/permission editor for the Connect permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:162
+msgid "Join voice channels and hear others."
+msgstr "加入語音頻道並聆聽他人。"
 
 #. Community members table column header for the date the account joined Fluxer.
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx:29
@@ -17757,7 +17744,7 @@ msgid "Jump to first unread message"
 msgstr "跳到第一則未讀訊息"
 
 #. Short label in the bookmarks bottom sheet. Keep it concise.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:29
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:30
 msgid "Jump to message"
 msgstr "跳到訊息"
 
@@ -17784,7 +17771,7 @@ msgid "Jump to page"
 msgstr "跳轉到頁面"
 
 #. Short label in the channel and chat messages. Keep it concise.
-#: src/features/channel/components/ChannelMessages.tsx:83
+#: src/features/channel/components/ChannelMessages.tsx:89
 msgid "Jump to present"
 msgstr "跳到最新訊息"
 
@@ -17849,7 +17836,7 @@ msgstr "在視窗失去焦點時，仍保持動畫、GIF 播放、懸停效果�
 msgid "Keep Free and Premium tiers. You can customize the tiers later."
 msgstr "保留免費和進階方案。您之後可以自訂方案。"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:162
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:151
 msgid "Keep grace period"
 msgstr "保留寬限期"
 
@@ -17863,7 +17850,7 @@ msgstr "讓 Neko 保持不動"
 msgid "Keep running"
 msgstr "繼續執行"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:140
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:129
 msgid "Keep subscription"
 msgstr "保留訂閱"
 
@@ -17957,7 +17944,7 @@ msgid "Kick member"
 msgstr "踢出成員"
 
 #. Permission name: allows removing members from a community.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:177
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:368
 msgid "Kick members"
 msgstr "踢出成員"
 
@@ -18179,8 +18166,8 @@ msgstr "左側工具提示"
 msgid "Legacy emoji slots"
 msgstr "舊版表情符號欄位"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:462
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:484
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:537
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:559
 msgid "Legacy rate"
 msgstr "舊費率"
 
@@ -18259,7 +18246,7 @@ msgstr "媒體庫：{count} / {max}"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Subscription status badge meaning permanent premium access.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:366
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:441
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:19
 msgid "Lifetime"
 msgstr "終身"
@@ -18517,7 +18504,7 @@ msgid "Loading destinations…"
 msgstr "正在載入目的地…"
 
 #. Accessible status while the setup wizard loads the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:87
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:89
 msgid "Loading instance configuration"
 msgstr "正在載入執行個體設定"
 
@@ -18566,10 +18553,6 @@ msgstr "正在載入..."
 msgid "Loading…"
 msgstr "載入中…"
 
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:454
-msgid "Local {localizedCurrencyLabel}"
-msgstr "當地 {localizedCurrencyLabel}"
-
 #. Short label in the theme studio assets section. Keep it concise.
 #: src/features/theme_studio/sections/AssetsSection.tsx:60
 msgid "Local file references"
@@ -18600,50 +18583,10 @@ msgstr "地區時間格式"
 msgid "Localization"
 msgstr "在地化"
 
-#. Plutonium gift checkout panel title for buyers in Brazil who selected localized BRL pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:20
-msgid "Localized BRL gift checkout"
-msgstr "巴西雷亞爾禮物結帳"
-
-#. Plutonium subscription checkout panel title for subscribers in Brazil with localized BRL pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:130
-msgid "Localized BRL subscription checkout"
-msgstr "巴西雷亞爾訂閱結帳"
-
 #. Error modal body shown when the localized card pre-approval session cannot be started.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:192
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:191
 msgid "Localized card verification is not available right now. Try again later."
 msgstr "目前無法使用本地化卡片驗證。請稍後再試。"
-
-#. Plutonium gift checkout panel title for buyers in India who selected localized INR pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:35
-msgid "Localized INR gift checkout"
-msgstr "印度盧比禮物結帳"
-
-#. Plutonium subscription checkout panel title for subscribers in India with localized INR pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:150
-msgid "Localized INR subscription checkout"
-msgstr "INR 訂閱結帳"
-
-#. Plutonium gift checkout panel title for buyers in Poland who selected localized PLN pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:49
-msgid "Localized PLN gift checkout"
-msgstr "PLN 禮物結帳"
-
-#. Plutonium subscription checkout panel title for subscribers in Poland with localized PLN pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:171
-msgid "Localized PLN subscription checkout"
-msgstr "PLN 訂閱結帳"
-
-#. Plutonium gift checkout panel title for buyers in Türkiye who selected localized TRY pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:64
-msgid "Localized TRY gift checkout"
-msgstr "當地 TRY 贈禮結帳"
-
-#. Plutonium subscription checkout panel title for subscribers in Türkiye with localized TRY pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:191
-msgid "Localized TRY subscription checkout"
-msgstr "當地 TRY 訂閱結帳"
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:194
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:151
@@ -18810,7 +18753,7 @@ msgstr "惡意軟體、憑證竊盜或有害檔案。"
 msgid "Manage"
 msgstr "管理"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:398
+#: src/features/app/components/floating/UserAreaPopout.tsx:396
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:78
 msgid "Manage accounts"
 msgstr "管理帳號"
@@ -18831,17 +18774,17 @@ msgid "Manage blocked users"
 msgstr "管理已封鎖的用戶"
 
 #. Channel-scoped permission name: allows editing this channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:302
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:493
 msgid "Manage channel"
 msgstr "管理頻道"
 
 #. Permission name: allows creating, editing, or deleting channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:173
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:364
 msgid "Manage channels"
 msgstr "管理頻道"
 
 #. Permission name: allows editing global community settings.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:165
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:356
 msgid "Manage community"
 msgstr "管理社群"
 
@@ -18851,7 +18794,7 @@ msgid "Manage community features"
 msgstr "管理社群功能"
 
 #. Permission name: allows editing or deleting custom emoji and stickers.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:201
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:392
 msgid "Manage emoji & stickers"
 msgstr "管理表情符號和貼圖"
 
@@ -18864,22 +18807,22 @@ msgid "Manage invite links for this channel."
 msgstr "管理此頻道的邀請連結。"
 
 #. Permission name: allows deleting other members' messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:217
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:408
 msgid "Manage messages"
 msgstr "管理訊息"
 
 #. Permission name: allows changing other members' nicknames.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:193
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:384
 msgid "Manage nicknames"
 msgstr "管理暱稱"
 
 #. Billing button that opens Stripe customer portal for payment-method management only.
-#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:46
+#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:40
 msgid "Manage payment methods"
 msgstr "管理付款方式"
 
 #. Channel-scoped permission name: allows editing permission overwrites.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:306
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:497
 msgid "Manage permissions"
 msgstr "管理權限"
 
@@ -18889,7 +18832,7 @@ msgid "Manage purchased gift codes and gift URLs"
 msgstr "管理已購買的禮物代碼和禮物網址"
 
 #. Permission name: allows role management and permission overwrite editing.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:169
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:360
 msgid "Manage roles"
 msgstr "管理身分組"
 
@@ -18899,7 +18842,7 @@ msgid "Manage subscription"
 msgstr "管理訂閱"
 
 #. Permission name: allows creating, editing, or deleting webhooks.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:205
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:396
 msgid "Manage webhooks"
 msgstr "管理網路掛鉤"
 
@@ -19519,6 +19462,11 @@ msgstr "提及控制項"
 msgid "Mention everyone or any role (even if the role isn't set to be mentionable)."
 msgstr "提及所有人或任何身分組（即使該身分組未設定為可提及）."
 
+#. Permission description in the channel-scoped permissions editor for the Mention Everyone permission. Notes that this overrides the per-role "mentionable" flag.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:254
+msgid "Mention everyone or any role in this channel (even if the role isn't set to be mentionable)."
+msgstr "提及此頻道的每個人或任何角色（即使該角色未設為可提及）。"
+
 #. Notifications settings: section heading for the default reply-mention behavior.
 #. Settings section label. Names the settings section in the settings UI.
 #. Short label in the inline. Keep it concise.
@@ -19750,12 +19698,12 @@ msgid "Message link"
 msgstr "訊息連結"
 
 #. Short label in the channel and chat messages. Keep it concise.
-#: src/features/channel/components/ChannelMessages.tsx:75
+#: src/features/channel/components/ChannelMessages.tsx:81
 msgid "Message list"
 msgstr "訊息列表"
 
 #. Label in the channel and chat messages. Preserve {channelName}; it is inserted by code.
-#: src/features/channel/components/ChannelMessages.tsx:71
+#: src/features/channel/components/ChannelMessages.tsx:77
 msgid "Message list for {channelName}"
 msgstr "{channelName} 的訊息列表"
 
@@ -19846,7 +19794,7 @@ msgid "Messages"
 msgstr "訊息"
 
 #. Permission category for chat messages, uploads, embeds, reactions, and media.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:137
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:328
 msgid "Messages & media"
 msgstr "訊息與媒體"
 
@@ -19856,7 +19804,7 @@ msgid "Messages deleted"
 msgstr "訊息已刪除"
 
 #. Error message in the channel and chat messages.
-#: src/features/channel/components/ChannelMessages.tsx:87
+#: src/features/channel/components/ChannelMessages.tsx:93
 msgid "Messages failed to load"
 msgstr "訊息載入失敗"
 
@@ -20116,7 +20064,7 @@ msgid "Mod"
 msgstr "管理員"
 
 #. Permission category for moderation actions against members or messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:141
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:332
 msgid "Moderation"
 msgstr "管理"
 
@@ -20150,20 +20098,20 @@ msgstr "月"
 
 #. Billing plan title for a monthly recurring subscription.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:36
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:34
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:51
 msgid "Monthly"
 msgstr "每月"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:93
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:68
 msgid "Monthly {monthlyPrice}"
 msgstr "每月 {monthlyPrice}"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:542
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:629
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>."
 msgstr "月費方案將於 <0>{pendingChangeDate}</0> 開始計費。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:535
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:622
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>. First monthly charge: {pendingInitialPriceLabel}. Future monthly renewals: {pendingRecurringPriceLabel}/month."
 msgstr "月費方案將於 <0>{pendingChangeDate}</0> 開始。首次月費：{pendingInitialPriceLabel}。之後每月續訂：{pendingRecurringPriceLabel}/月。"
 
@@ -20309,7 +20257,7 @@ msgid "Move item up"
 msgstr "上移項目"
 
 #. Permission name: allows moving members between voice channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:294
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:485
 msgid "Move members"
 msgstr "移動成員"
 
@@ -20493,7 +20441,7 @@ msgid "Mute favourites"
 msgstr "將最愛設為靜音"
 
 #. Permission name: allows moderators to mute other voice participants.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:286
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:477
 msgid "Mute members"
 msgstr "將成員靜音"
 
@@ -20508,6 +20456,16 @@ msgstr "麥克風靜音"
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:191
 msgid "Mute notifications"
 msgstr "關閉通知"
+
+#. Permission description in the channel-scoped permissions editor for the Mute Members permission. The mute applies for every listener, not only for the moderator.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:305
+msgid "Mute other members in this voice channel for everyone."
+msgstr "禁止此語音頻道中的其他成員發言，對所有人生效。"
+
+#. Permission description in the role/permission editor for the Mute Members permission at community scope. The mute applies for every listener, not only for the moderator.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:181
+msgid "Mute other members in voice channels for everyone."
+msgstr "封鎖其他成員的語音頻道發言，對所有人生效。"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:174
@@ -20867,7 +20825,7 @@ msgid "Network error"
 msgstr "網路錯誤"
 
 #. Developer options group for simulated slow or failed operations.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:73
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:83
 msgid "Networking and performance"
 msgstr "網路與效能"
 
@@ -20992,6 +20950,16 @@ msgstr "新的麥克風"
 msgid "New password"
 msgstr "新密碼"
 
+#. Plutonium subscription card line shown when a move to a lower price is scheduled but the new amount is unknown. {pendingChangeDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:593
+msgid "New price scheduled for <0>{pendingChangeDate}</0>."
+msgstr "新價格將於 <0>{pendingChangeDate}</0> 生效。"
+
+#. Plutonium subscription card line shown when a move to a lower price is scheduled. {pendingChangeDate} is a date and {pendingTargetPriceLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:587
+msgid "New price scheduled for <0>{pendingChangeDate}</0>. Renewals will be {pendingTargetPriceLabel} from then on."
+msgstr "新價格預計於 <0>{pendingChangeDate}</0> 生效。之後續訂將為 {pendingTargetPriceLabel}。"
+
 #. Default name for a newly created role in the community roles settings tab. Short label.
 #: src/features/guild/components/modals/guild_tabs/GuildRolesTab.tsx:48
 msgid "New role"
@@ -21033,7 +21001,7 @@ msgstr "最新優先"
 #. Button that moves to the next setup wizard step.
 #. Generic primary or pagination action label that advances to the next step, page, or item.
 #. Primary button in the required-action modal. Moves to the next carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:79
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:81
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:154
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:711
 msgid "Next"
@@ -21173,7 +21141,7 @@ msgstr "沒有封鎖的用戶"
 
 #. Empty-state text in the saved messages content popout.
 #. Empty-state text in the saved messages page.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:166
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:182
 #: src/features/messaging/components/pages/SavedMessagesPage.tsx:27
 #: src/features/messaging/components/popouts/SavedMessagesContent.tsx:30
 msgid "No bookmarks"
@@ -21480,7 +21448,7 @@ msgstr "未提供原因。"
 msgid "No recent mentions"
 msgstr "沒有提及你的訊息"
 
-#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:97
+#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:98
 msgid "No remaining recipients to create a group DM with."
 msgstr "沒有可建立群組私訊的剩餘收件人。"
 
@@ -21669,7 +21637,7 @@ msgid "No webhooks"
 msgstr "沒有網路掛鉤"
 
 #. Developer option label for short-circuiting the in-app reporting (IAR) flow. When enabled, submitting a report skips the network call.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:134
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:144
 msgid "No-op in-app reports"
 msgstr "停用應用程式內檢舉"
 
@@ -21709,7 +21677,7 @@ msgstr "非動態表情符號 ({emojiCount})"
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:143
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:219
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:93
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:257
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:261
 msgid "None"
 msgstr "無"
 
@@ -21757,7 +21725,7 @@ msgstr "不喜歡？隨時都能關閉。"
 #. Short label in the Plutonium self serve refund section. Keep the tone plain and specific.
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
 #: src/features/app/components/dialogs/components/plutonium/SelfServeRefundSection.tsx:31
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:58
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/state/NewDeviceMonitoring.tsx:31
 msgid "Not now"
@@ -21985,6 +21953,11 @@ msgctxt "audit-log-boolean-value"
 msgid "On"
 msgstr "開啟"
 
+#. Billing confirmation body for moving an active subscription down to the current price. {listPriceEffectiveDate} is a date, and {listPriceCurrentLabel} and {listPriceNewLabel} are currency amounts, all already formatted and localized by code; never write a date or an amount into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:372
+msgid "On <0>{listPriceEffectiveDate}</0> your subscription moves from {listPriceCurrentLabel} to {listPriceNewLabel}. Nothing is charged today, and the rest of your subscription stays exactly as it is."
+msgstr "自 <0>{listPriceEffectiveDate}</0> 起，您的訂閱將從 {listPriceCurrentLabel} 變更為 {listPriceNewLabel}。今日不會收取任何費用，您訂閱的其他部分將保持不變。"
+
 #. Short label in the display tab. Keep it concise.
 #: src/features/user/components/modals/tabs/chat_settings_tab/DisplayTab.tsx:22
 msgid "On click"
@@ -22203,7 +22176,7 @@ msgid "Open {settingsMenuName} settings"
 msgstr "開啟{settingsMenuName}設定"
 
 #. Button or menu action label in the channel and chat gif picker grid item. Keep it concise. Preserve {title}; it is inserted by code.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:38
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:36
 msgid "Open {title}"
 msgstr "開啟「{title}」"
 
@@ -22303,7 +22276,7 @@ msgstr "開啟「{channelName}」的頻道詳細資訊"
 #. Context-menu action that opens a voice channel's embedded chat view without connecting to voice.
 #. Tooltip and accessible label for the chat icon shown beside a voice channel in the channel list.
 #: src/features/app/components/layout/ChannelItem.tsx:128
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:152
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:150
 msgid "Open chat"
 msgstr "開啟聊天"
 
@@ -22454,7 +22427,7 @@ msgid "Open in community"
 msgstr "在社群中開啟"
 
 #. Button or menu action label in the channel and chat embed you tube. Keep it concise.
-#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:30
+#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:31
 msgid "Open in new tab"
 msgstr "在新分頁中開啟"
 
@@ -22776,7 +22749,7 @@ msgid "Other devices"
 msgstr "其他裝置"
 
 #. Plutonium checkout pre-approval prompt secondary button. Opens the alternative payment methods flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:73
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:72
 msgid "Other methods"
 msgstr "其他方式"
 
@@ -23127,12 +23100,12 @@ msgid "Paused by reduced motion. Turn on to keep GIFs playing."
 msgstr "因減少動態而暫停。開啟以繼續播放 GIF。"
 
 #. Plutonium subscription payment method picker description for Brazil. Explains Pix recurring vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:38
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:37
 msgid "Pay with {pixPaymentMethod} automático to authorize recurring charges directly from your Brazilian bank. Or choose use card to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "使用 {pixPaymentMethod} 自動付款，直接從您的巴西銀行授權定期扣款。或者選擇使用卡片，在 {paymentProviderName} 的下一個畫面輸入信用卡資訊。"
 
 #. Plutonium subscription payment method picker description for India. Explains UPI e-mandate vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:48
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:47
 msgid "Pay with {upiPaymentMethod} to set up an RBI-compliant e-mandate from your Indian bank. Or choose use card to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "使用 {upiPaymentMethod} 支付，以設定符合印度儲備銀行規範的印度銀行電子授權。或者選擇使用卡片，在 {paymentProviderName} 的下一個畫面輸入信用卡資訊。"
 
@@ -23188,7 +23161,7 @@ msgid "Per member, across all devices."
 msgstr "每個成員，跨所有裝置。"
 
 #. Billing cadence label for a monthly subscription price.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:40
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:38
 msgid "per month"
 msgstr "每月"
 
@@ -23198,7 +23171,7 @@ msgid "Per sound volume"
 msgstr "依音量"
 
 #. Billing cadence label for a yearly subscription price.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:48
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:46
 msgid "per year"
 msgstr "每年"
 
@@ -23238,7 +23211,7 @@ msgid "Perks"
 msgstr "福利"
 
 #. Subscription status badge meaning premium is paid but perks are temporarily disabled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:354
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:429
 msgid "Perks paused"
 msgstr "福利已暫停"
 
@@ -23475,7 +23448,7 @@ msgid "Pin message"
 msgstr "釘選訊息"
 
 #. Permission name: allows pinning messages in a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:221
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:412
 msgid "Pin messages"
 msgstr "釘選訊息"
 
@@ -23483,6 +23456,16 @@ msgstr "釘選訊息"
 #: src/features/app/components/shared/ChannelPinsContent.tsx:51
 msgid "Pin messages here for everyone to see."
 msgstr "將訊息釘選在這裡，讓所有人都能看到。"
+
+#. Permission description in the channel-scoped permissions editor for the Pin Messages permission. Covers messages from anyone, not only their own.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:234
+msgid "Pin or unpin any message in this channel."
+msgstr "釘選或取消釘選此頻道的任何訊息。"
+
+#. Permission description in the role/permission editor for the Pin Messages permission at community scope. Covers messages from anyone, not only their own.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:137
+msgid "Pin or unpin any message."
+msgstr "釘選或取消釘選任何訊息。"
 
 #. Body of the confirmation alert shown when pinning a message.
 #: src/features/channel/components/MessageActionUtils.tsx:60
@@ -23530,7 +23513,7 @@ msgstr "釘選的群組"
 
 #. Toast confirming a group DM was pinned in the sidebar.
 #. Toast confirming a group DM was pinned in the sidebar.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:112
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:110
 #: src/features/ui/action_menu/items/dm_menu_data/shared.ts:13
 msgid "Pinned group DM"
 msgstr "已釘選的群組私訊"
@@ -23618,7 +23601,7 @@ msgstr "播放選取範圍"
 #. Short label in the channel and chat embed video. Keep it concise.
 #. Short label in the channel and chat embed you tube. Keep it concise.
 #: src/features/channel/components/embeds/media/EmbedVideo.tsx:64
-#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:26
+#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:27
 #: src/features/voice/components/media_player/components/VideoPlayer.tsx:62
 msgid "Play video"
 msgstr "播放影片"
@@ -24030,14 +24013,9 @@ msgid "Pricing"
 msgstr "價格"
 
 #. Error modal body shown when the user clicks a plan before price IDs have loaded.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:166
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:165
 msgid "Pricing is still loading."
 msgstr "價格仍在載入中。"
-
-#. Accessible group label for the pricing toggle (localized vs standard) in Plutonium checkout. Not visible on screen.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:221
-msgid "Pricing preference"
-msgstr "價格偏好設定"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:162
 msgid "Primary"
@@ -24076,7 +24054,7 @@ msgid "Prioritize speakers"
 msgstr "優先顯示發言者"
 
 #. Permission name: allows a voice participant to be heard over others.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:282
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:473
 msgid "Priority speaker"
 msgstr "優先發言者"
 
@@ -24392,7 +24370,7 @@ msgid "Purchase history"
 msgstr "購買紀錄"
 
 #. Accessible label for switching between self purchase and gift purchase.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:24
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:22
 msgid "Purchase mode"
 msgstr "購買模式"
 
@@ -24410,12 +24388,12 @@ msgid "Purchased gifts"
 msgstr "已購買的禮物"
 
 #. Modal body shown when purchases are disabled. Provides the support email for appeals.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:140
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:139
 msgid "Purchases are disabled for this account. Contact {supportEmail} if this looks wrong."
 msgstr "此帳號已停用購買功能。如果這看起來有誤，請聯絡 {supportEmail}。"
 
 #. Modal title shown when purchases are disabled on this account (server-side enforcement).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:136
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:135
 msgid "Purchases unavailable"
 msgstr "無法購買"
 
@@ -24692,7 +24670,7 @@ msgstr "心情回應"
 
 #. Billing button that cancels a scheduled subscription cancellation.
 #. Button label on the premium-expired nagbar. Opens billing so the user can reactivate their subscription.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:604
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:744
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:25
 msgid "Reactivate"
 msgstr "重新啟用"
@@ -24713,7 +24691,7 @@ msgid "Read message aloud"
 msgstr "朗讀訊息"
 
 #. Permission name: allows seeing earlier messages in a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:233
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:424
 msgid "Read message history"
 msgstr "讀取訊息歷史記錄"
 
@@ -24723,6 +24701,16 @@ msgstr "讀取訊息歷史記錄"
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:126
 msgid "Read messages"
 msgstr "讀取訊息"
+
+#. Permission description in the role/permission editor for the Read Message History permission at community scope. Without the permission the member sees only messages that arrive while the channel is open in front of them.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:151
+msgid "Read messages sent before they opened a channel. Without it, they only see messages that arrive while it is open."
+msgstr "讀取他們開啟頻道前傳送的訊息。沒有此權限，他們只會看到頻道開啟時收到的訊息。"
+
+#. Permission description in the channel-scoped permissions editor for the Read Message History permission. Without the permission the member sees only messages that arrive while the channel is open in front of them.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:248
+msgid "Read messages sent in this channel before they opened it. Without it, they only see messages that arrive while it is open."
+msgstr "讀取他們在開啟頻道前傳送的訊息。沒有此權限，他們只會看到在頻道開啟時收到的訊息。"
 
 #. Permission description in the role/permission editor for the View Activity Log permission. Refers to the per-community audit/activity log.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:18
@@ -24739,11 +24727,11 @@ msgstr "閱讀說明文件 ({domain})"
 msgid "Reading speed"
 msgstr "閱讀速度"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:64
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
 msgid "Ready to buy a gift?"
 msgstr "準備好購買禮物了嗎？"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:64
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
 msgid "Ready to upgrade?"
 msgstr "準備好升級了嗎？"
 
@@ -24846,7 +24834,7 @@ msgid "Reconnect succeeded. Pick a screen again if you want to resume your previ
 msgstr "重新連線成功。如要繼續上次的串流，請再選取一次螢幕。"
 
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
-#: src/features/voice/components/VoiceCallView.tsx:97
+#: src/features/voice/components/VoiceCallView.tsx:98
 msgid "Reconnecting..."
 msgstr "正在重新連線..."
 
@@ -24909,7 +24897,7 @@ msgid "Redeem for yourself"
 msgstr "兌換給自己"
 
 #. Billing button for entering a premium gift code.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:577
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:717
 msgid "Redeem gift code"
 msgstr "兌換禮物代碼"
 
@@ -24987,7 +24975,7 @@ msgstr "已複製參考資料。"
 msgid "Referral parameters"
 msgstr "推薦連結參數"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:301
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:305
 msgid "Refresh audio sources"
 msgstr "重新整理音訊來源"
 
@@ -25343,6 +25331,11 @@ msgstr "移除圖示"
 msgid "Remove it from the channel for everyone."
 msgstr "從頻道中為所有人移除。"
 
+#. Permission description in the role/permission editor for the Kick Members permission. Note that a kick is not permanent, unlike a ban.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:118
+msgid "Remove members from the community. They can rejoin with a new invite."
+msgstr "將成員從社群中移除。他們可以透過新的邀請重新加入。"
+
 #. Button or menu action label in the recent mentions content popout. Keep it concise. Keep the tone plain and specific.
 #: src/features/messaging/components/popouts/RecentMentionsContent.tsx:52
 msgid "Remove mention"
@@ -25455,7 +25448,7 @@ msgid "Removed deny for {0}."
 msgstr "已移除對 {0} 的拒絕。"
 
 #. Button or menu action label in the messaging commands. Keep it concise. Keep the tone plain and specific.
-#: src/features/messaging/commands/SavedMessageCommands.tsx:23
+#: src/features/messaging/commands/SavedMessageCommands.tsx:24
 msgid "Removed from bookmarks"
 msgstr "已從書籤中移除"
 
@@ -25533,7 +25526,7 @@ msgid "Rename :{emojiName}:"
 msgstr "重新命名「:{emojiName}:」"
 
 #. Permission description in the channel-scoped permissions editor for the Manage Channel permission. "This channel" refers to the channel currently being edited.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:113
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:195
 msgid "Rename and edit this channel's settings."
 msgstr "重新命名並編輯此頻道的設定。"
 
@@ -25602,7 +25595,7 @@ msgstr "續約門檻（天）"
 msgid "Renew window (days)"
 msgstr "續約視窗（天）"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:559
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:699
 msgid "Renews on <0>{renewalDate}.</0>"
 msgstr "續訂於 <0>{renewalDate}</0>"
 
@@ -26330,8 +26323,8 @@ msgstr "還原視窗"
 
 #. Billing button for restarting a subscription during the grace period.
 #. Billing button for starting a new subscription after premium expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:596
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:600
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:736
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:740
 msgid "Resubscribe"
 msgstr "重新訂閱"
 
@@ -26773,9 +26766,9 @@ msgstr "儲存"
 #. Price badge comparing a one-year gift to monthly gifts.
 #. Price badge comparing yearly billing to monthly billing.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:30
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:52
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:64
+#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:28
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:50
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:62
 msgid "Save 17%"
 msgstr "省 17%"
 
@@ -27528,6 +27521,11 @@ msgstr "安全金鑰 PIN碼"
 msgid "Security key PIN form"
 msgstr "安全金鑰 PIN 表單"
 
+#. Permission description in the role/permission editor for the View Channel permission at community scope. Per-channel overwrites still decide access for individual channels.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:128
+msgid "See channels by default. Channels that deny it stay hidden."
+msgstr "預設會看到頻道。禁止此權限的頻道將保持隱藏。"
+
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildInviteSplashSettingsField.tsx:89
 msgid "See how your invite looks to visitors."
 msgstr "預覽訪客看到的邀請畫面."
@@ -27538,9 +27536,14 @@ msgid "See the member list for channels in this community."
 msgstr "查看此社群中頻道的成員列表。"
 
 #. Permission description in the channel-scoped permissions editor for the View Channel Members permission. Scoped to a single channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:128
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:210
 msgid "See the member list for this channel."
 msgstr "查看此頻道的成員列表。"
+
+#. Permission description in the channel-scoped permissions editor for the View Channel permission. The placeholder renders the literal @everyone role name and must not be translated.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:220
+msgid "See this channel. Denying it for {everyoneMention} makes the channel private."
+msgstr "查看此頻道。拒絕給予 {everyoneMention} 會讓頻道變成私人頻道。"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts:121
@@ -27643,7 +27646,7 @@ msgid "Select friends"
 msgstr "選擇朋友"
 
 #. Button label in the gif picker grid item when picking a GIF for an avatar, banner, or video background. Keep it concise. Preserve {title}; it is inserted by code.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:52
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:50
 msgid "Select GIF {title}"
 msgstr "選取 GIF {title}"
 
@@ -27746,7 +27749,7 @@ msgid "Self-harm or suicide"
 msgstr "自殘或自殺"
 
 #. Accessible label for the self-host setup wizard carousel.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:67
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:69
 msgid "Self-host setup"
 msgstr "自行代管設定"
 
@@ -27756,7 +27759,7 @@ msgid "Self-hosted mode"
 msgstr "自管模式"
 
 #. Developer option label for forcing self-hosted client mode.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:57
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:67
 msgid "Self-hosted mode override"
 msgstr "自託管模式覆寫"
 
@@ -27857,7 +27860,7 @@ msgid "Send friend request"
 msgstr "傳送好友邀請"
 
 #. Button or menu action label in the channel and chat gif picker grid item. Keep it concise. Preserve {title}; it is inserted by code.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:47
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:45
 msgid "Send GIF {title}"
 msgstr "傳送 GIF {title}"
 
@@ -27880,7 +27883,7 @@ msgstr "傳送訊息"
 #. Audit log operation flag label for message sending.
 #. Permission name: allows sending chat messages.
 #: src/features/guild/utils/guild_tabs/GuildAuditLogTabUtils.ts:174
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:209
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:400
 msgid "Send messages"
 msgstr "傳送訊息"
 
@@ -27888,6 +27891,16 @@ msgstr "傳送訊息"
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:51
 msgid "Send messages disabled"
 msgstr "無法傳送訊息"
+
+#. Permission description in the role/permission editor for the Send Messages permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:133
+msgid "Send messages in channels."
+msgstr "在頻道中傳送訊息。"
+
+#. Permission description in the channel-scoped permissions editor for the Send Messages permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:225
+msgid "Send messages in this channel."
+msgstr "在此頻道中傳送訊息。"
 
 #. Footer submit button in the IAR modal. Sends the report to the safety team.
 #: src/features/moderation/components/report_modal/IARModal.tsx:90
@@ -27908,10 +27921,10 @@ msgstr "傳送重設連結"
 msgid "Send saved media {memeName}"
 msgstr "傳送已儲存的媒體 {memeName}"
 
-#. Permission description in the role/permission editor for the Send TTS Messages permission. Keep "text-to-speech" spelled out for clarity.
+#. Permission description in the role/permission editor for the Send TTS Messages permission. Keep "text-to-speech" spelled out for clarity. "/tts" is a literal command prefix typed in the message box and must not be translated.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:63
-msgid "Send text-to-speech messages."
-msgstr "傳送語音訊息."
+msgid "Send text-to-speech messages with /tts. Members who turned text-to-speech on hear them read aloud."
+msgstr "使用 /tts 傳送文字轉語音訊息。開啟文字轉語音的使用者會聽到朗讀。"
 
 #. placeholder {0}: inboundChallenge.challenge_code
 #. placeholder {1}: inboundChallenge.our_number
@@ -27940,7 +27953,7 @@ msgid "Send to"
 msgstr "傳送至"
 
 #. Permission name: allows sending text-to-speech messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:213
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:404
 msgid "Send TTS messages"
 msgstr "傳送 TTS 訊息"
 
@@ -28085,7 +28098,7 @@ msgstr "已登入裝置"
 msgid "Set {fieldNode} to {0}."
 msgstr "將 {fieldNode} 設定為 {0}。"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:608
+#: src/features/app/components/floating/UserAreaPopout.tsx:601
 #: src/features/app/components/shared/custom_status_display/CustomStatusDisplay.tsx:314
 msgid "Set a custom status"
 msgstr "設定自訂狀態"
@@ -28284,7 +28297,7 @@ msgid "Set this check aside?"
 msgstr "暫停此檢查？"
 
 #. Title for the self-host setup wizard modal.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:71
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
 msgid "Set up {productName}"
 msgstr "設定 {productName}"
 
@@ -28310,7 +28323,7 @@ msgid "Set verification level to <0>none</0>."
 msgstr "驗證等級設為<0>無</0>。"
 
 #. Permission name: allows changing the voice service region.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:298
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:489
 msgid "Set voice region"
 msgstr "設定語音區域"
 
@@ -28709,6 +28722,16 @@ msgstr "顯示刪除按鈕"
 msgid "Show download button"
 msgstr "顯示下載按鈕"
 
+#. Permission description in the channel-scoped permissions editor for the Embed Links permission. The preview is the card rendered under a message that contains a link.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:239
+msgid "Show embedded previews for links they send in this channel."
+msgstr "在該頻道中顯示他們傳送的連結預覽。"
+
+#. Permission description in the role/permission editor for the Embed Links permission at community scope. The preview is the card rendered under a message that contains a link.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:142
+msgid "Show embedded previews for links they send."
+msgstr "顯示他們傳送的連結的嵌入式預覽。"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/ChatSettingsSections.ts:46
 msgid "Show embeds"
@@ -28880,7 +28903,7 @@ msgstr "顯示我的螢幕分享"
 #. Developer option label for showing the current user as typing.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:89
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:53
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:63
 msgid "Show myself typing"
 msgstr "顯示我正在輸入"
 
@@ -28934,7 +28957,7 @@ msgid "Show per-device participant volume sliders in voice menus"
 msgstr "在語音選單中顯示個別裝置的參與者音量滑桿"
 
 #. Developer option label for exposing the staff-only profile timezone section in profile settings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:125
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
 msgid "Show profile timezone settings"
 msgstr "顯示個人檔案時區設定"
 
@@ -29301,7 +29324,7 @@ msgid "Skip the external link warning for all domains"
 msgstr "略過所有網域的外部連結警告"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the no-op in-app reports toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:149
 msgid "Skip the network call when an in-app report is submitted. The flow still advances to the success screen so you can exercise the UI, but nothing is actually sent to the safety team."
 msgstr "提交應用程式內報告時，跳過網路呼叫。流程仍會進展到成功畫面，讓您可以操作使用者介面，但實際上不會傳送任何內容給安全團隊。"
 
@@ -29359,7 +29382,7 @@ msgstr "斯洛維尼亞"
 #. Developer option label for simulating slow file uploads.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:93
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:89
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:99
 msgid "Slow attachment upload"
 msgstr "附件上傳速度慢"
 
@@ -29376,28 +29399,28 @@ msgstr "慢一點 — 請稍候再試一次。"
 #. Developer option label for simulating slow message edits.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:105
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:85
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:95
 msgid "Slow message edit"
 msgstr "訊息編輯速度慢"
 
 #. Developer option label for simulating slow message loading.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:97
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:77
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:87
 msgid "Slow message load"
 msgstr "訊息載入緩慢"
 
 #. Developer option label for simulating slow message sending.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:101
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:81
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:91
 msgid "Slow message send"
 msgstr "訊息傳送速度慢"
 
 #. Developer option label for simulating slow profile loading.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:109
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:93
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:103
 msgid "Slow profile load"
 msgstr "載入個人檔案緩慢"
 
@@ -29619,26 +29642,31 @@ msgid "Something went wrong loading members. Try again later."
 msgstr "載入成員時發生錯誤。請稍後再試。"
 
 #. Body of the generic fallback error modal shown when canceling a scheduled Plutonium billing cycle change fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:89
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:91
 msgid "Something went wrong while canceling your pending billing change. Please try again in a moment."
 msgstr "取消您待處理的帳單變更時發生錯誤。請稍後再試一次。"
 
 #. Body of the generic fallback error modal shown when cancelling a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:28
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:30
 msgid "Something went wrong while cancelling your subscription. Please try again in a moment."
 msgstr "取消訂閱時發生錯誤。請稍後再試一次。"
 
 #. Body of the generic fallback error modal shown when changing the Plutonium billing cycle fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:80
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:82
 msgid "Something went wrong while changing your billing cycle. Please try again in a moment."
 msgstr "變更帳單週期時發生錯誤。請稍後再試一次。"
+
+#. Body of the generic fallback error modal shown when moving a Plutonium subscription down to the current price fails.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:116
+msgid "Something went wrong while changing your price. Please try again in a moment."
+msgstr "變更價格時發生問題。請稍後再試。"
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx:48
 msgid "Something went wrong while connecting your account. You can close this tab and try again."
 msgstr "連結帳號時發生錯誤。您可以關閉此分頁再試一次。"
 
 #. Body of the generic fallback error modal shown when ending the Plutonium grace period fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:40
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:42
 msgid "Something went wrong while ending your grace period. Please try again in a moment."
 msgstr "結束寬限期時發生錯誤。請稍後再試一次。"
 
@@ -29656,8 +29684,8 @@ msgstr "載入活動記錄時發生問題。"
 #. Body of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Body of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Body of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:34
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:16
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:33
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:18
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:34
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:34
 msgid "Something went wrong while opening the billing portal. Please try again in a moment."
@@ -29669,7 +29697,7 @@ msgid "Something went wrong while preparing this sticker. Try another file or tr
 msgstr "準備貼圖時發生錯誤。請嘗試其他檔案，或稍後再試一次。"
 
 #. Body of the generic fallback error modal shown when reactivating a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:52
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:54
 msgid "Something went wrong while reactivating your subscription. Please try again in a moment."
 msgstr "重新啟用訂閱時發生錯誤。請稍後再試一次。"
 
@@ -29691,7 +29719,7 @@ msgid "Something went wrong while sending your verification email. Please try ag
 msgstr "傳送驗證電子郵件時發生錯誤。請稍後再試一次。"
 
 #. Body of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:156
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:155
 msgid "Something went wrong while starting checkout. Please try again in a moment."
 msgstr "啟動結帳時發生錯誤。請稍後再試一次。"
 
@@ -29712,8 +29740,8 @@ msgstr "發生錯誤。"
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:129
 #: src/features/theme/components/modals/ShareThemeModal.tsx:51
 #: src/features/ui/action_menu/items/CallMenuItems.tsx:45
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:128
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:144
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:126
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:142
 msgid "Something went wrong. Please try again in a moment."
 msgstr "發生錯誤。請稍後再試一次。"
 
@@ -29889,7 +29917,7 @@ msgid "Spatial and temporal layers"
 msgstr "空間與時間層"
 
 #. Permission name: allows speaking in voice channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:269
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:460
 msgctxt "voice-permission"
 msgid "Speak"
 msgstr "發言"
@@ -30073,20 +30101,6 @@ msgstr "內部人員控制選項"
 msgid "Standard"
 msgstr "標準"
 
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:460
-msgid "Standard {baseCurrencyLabel}"
-msgstr "標準 {baseCurrencyLabel}"
-
-#. Plutonium gift checkout panel title when the buyer opted into the standard (non-localized) currency. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:89
-msgid "Standard {baseCurrencyLabel} gift checkout"
-msgstr "標準 {baseCurrencyLabel} 贈禮結帳"
-
-#. Plutonium subscription checkout panel title when the subscriber opted into the standard (non-localized) currency. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:114
-msgid "Standard {baseCurrencyLabel} pricing"
-msgstr "標準 {baseCurrencyLabel} 定價"
-
 #. Required-action modal notice for inbound phone verification.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:461
 msgid "Standard messaging rates from your carrier may apply."
@@ -30190,7 +30204,7 @@ msgstr "重新開始"
 msgid "Start recording"
 msgstr "開始錄音"
 
-#: src/features/search/components/quick_switcher/QuickSwitcherModal.tsx:585
+#: src/features/search/components/quick_switcher/QuickSwitcherModal.tsx:586
 msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> to narrow down results."
 msgstr "以 <0>{peoplePrefix}</0>、<1>{textChannelPrefix}</1>、<2>{voiceChannelPrefix}</2> 和 <3>{communityPrefix}</3> 開頭的搜尋，以縮小搜尋範圍。"
 
@@ -30451,6 +30465,11 @@ msgstr "停止接收訊息和好友邀請."
 msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
 msgstr "停止 Neko 追蹤您的游標，同時仍可拖曳和互動。"
 
+#. Developer / debug surface — keep terse and technical. Tooltip / description for the translation DOM guard kill switch.
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:41
+msgid "Stop patching Node.prototype insertBefore and removeChild. The app will crash again when a page translator re-parents text nodes React still holds."
+msgstr "停止修補 Node.prototype 的 insertBefore 和 removeChild。當頁面翻譯器重新父系化 React 仍持有的文字節點時，應用程式將再次崩潰。"
+
 #. Action that stops ringing the selected participant in a voice call.
 #: src/features/ui/action_menu/items/CallMenuItems.tsx:29
 msgid "Stop ringing"
@@ -30552,7 +30571,7 @@ msgid "Stream settings"
 msgstr "直播設定"
 
 #. Permission name: allows video streaming or screen sharing in voice.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:274
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:465
 msgid "Stream video"
 msgstr "視訊直播"
 
@@ -30622,13 +30641,13 @@ msgstr "移除網址中的追蹤參數"
 
 #. Premium checkout error shown when Stripe cannot verify a card for localized pricing. productName is the app name.
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:34
-msgid "Stripe could not verify this card for localized pricing. Use another card or return to {productName} and choose another payment method or the standard price."
-msgstr "Stripe 無法驗證此卡片是否適用於當地定價。請使用其他卡片，或返回 {productName} 並選擇其他付款方式或標準價格。"
+msgid "Stripe could not verify this card for localized pricing. Use another card, or return to {productName} and choose another payment method."
+msgstr "Stripe 無法驗證此卡片以進行本地化計價。請改用其他卡片，或返回 {productName} 並選擇其他付款方式。"
 
 #. Premium checkout error shown when card country does not match billing country. productName is the app name.
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:22
-msgid "Stripe reported a card issued in {countryName}. To pay in this localized currency, use a card issued in your billing country, choose another payment method, or return to {productName} and switch to the standard price."
-msgstr "Stripe 回報此卡片發行於 {countryName}。若要以當地貨幣付款，請使用您帳單國家/地區發行的卡片、選擇其他付款方式，或返回 {productName} 並切換為標準價格。"
+msgid "Stripe reported a card issued in {countryName}. To pay in this localized currency, use a card issued in your billing country, or return to {productName} and choose another payment method."
+msgstr "Stripe 偵測到一張發卡國家為 {countryName} 的卡片。若要以當地幣別付款，請使用您帳單地址所在國家/地區發行的卡片，或返回 {productName} 並選擇其他付款方式。"
 
 #. Codec description in the screen share codec policy menu. Technical surface; keep Chromium as a literal proper noun.
 #: src/features/voice/utils/ScreenShareCodecPolicy.ts:15
@@ -30662,7 +30681,7 @@ msgid "Subscription"
 msgstr "訂閱"
 
 #. Modal title shown when checkout is blocked because the account already has an active Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:125
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:124
 msgid "Subscription already exists"
 msgstr "您已訂閱此項目"
 
@@ -30784,14 +30803,9 @@ msgstr "瑞典文"
 msgid "Switch account"
 msgstr "切換帳號"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:684
+#: src/features/app/components/floating/UserAreaPopout.tsx:677
 msgid "Switch accounts"
 msgstr "切換帳號"
-
-#. Plutonium gift checkout guidance. Reminds the buyer they can revert to localized pricing. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:94
-msgid "Switch back to {localizedCurrencyLabel} if you prefer the localized price instead."
-msgstr "如果您偏好當地價格，請切換回{localizedCurrencyLabel}。"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:45
@@ -30813,6 +30827,16 @@ msgstr "切換您的全域個人檔案和各社群個人檔案"
 msgid "Switch device"
 msgstr "切換裝置"
 
+#. Button confirming a move of an active subscription down to the current price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:65
+msgid "Switch price"
+msgstr "切換價格"
+
+#. Billing button that opens confirmation to move the subscription down to the current price. {listPriceNewLabel} is the localized new price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:804
+msgid "Switch to {listPriceNewLabel}"
+msgstr "切換至 {listPriceNewLabel}"
+
 #. Tooltip on the density toggle when currently in dense mode.
 #. Tooltip on the layout toggle button in the role editor that switches the permission list to comfy layout.
 #: src/features/channel/components/modals/channel_tabs/channel_permissions_tab/LayoutToggleButtons.tsx:25
@@ -30833,13 +30857,13 @@ msgstr "切換為直接輸入"
 
 #. Billing button that opens confirmation to switch to monthly billing.
 #. Button confirming a change to monthly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:54
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:646
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:57
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:787
 msgid "Switch to monthly"
 msgstr "改為月繳"
 
 #. Billing confirmation title for changing an active subscription to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:46
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:49
 msgid "Switch to monthly billing?"
 msgstr "要改為按月計費嗎？"
 
@@ -30880,6 +30904,11 @@ msgstr "切換到上一個社群或訊息"
 msgid "Switch to single column"
 msgstr "切換成單欄顯示"
 
+#. Billing confirmation title for moving an active subscription down to the current price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:61
+msgid "Switch to the new price?"
+msgstr "要切換到新價格嗎？"
+
 #: src/features/auth/utils/AccountSwitcherModalUtils.tsx:290
 msgid "Switch to this account"
 msgstr "切換到此帳號"
@@ -30897,13 +30926,13 @@ msgstr "切換成兩欄顯示"
 
 #. Billing button that opens confirmation to switch to yearly billing.
 #. Button confirming a change to yearly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:50
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:642
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:53
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:783
 msgid "Switch to yearly"
 msgstr "改成年繳"
 
 #. Billing confirmation title for changing an active subscription to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:42
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:45
 msgid "Switch to yearly billing?"
 msgstr "要改成年繳嗎？"
 
@@ -31135,23 +31164,23 @@ msgstr "標籤 ({tagCount}/{tagLimit})"
 msgid "Tags must be 2 to {maxLength} characters and alphanumeric."
 msgstr "標籤長度必須介於 2 到 {maxLength} 個字元，且只能包含英數字元。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:242
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:291
 msgid "Takes effect at your next renewal. We'll apply a {creditLabel} credit from your current monthly payment, so your first yearly charge will be <0>{firstRenewalPriceLabel}</0>. Future yearly renewals will be {renewalPrice}/year."
 msgstr "將於下次續訂時生效。我們會從您目前的月付款中抵扣 {creditLabel}，因此您的首次年費為 <0>{firstRenewalPriceLabel}</0>。之後每年的續訂費用為 {renewalPrice}/年。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:251
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:300
 msgid "Takes effect at your next renewal. Your subscription stays monthly until then, and your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "將於下次續訂時生效。您的訂閱在此之前仍為月繳，下次續訂時將變為 <0>{renewalPrice}/年</0>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:260
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:309
 msgid "Takes effect at your next renewal. Your subscription stays yearly until then, and your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "將於下次續訂時生效。您的訂閱將維持年繳方案直到下次續訂，屆時您的續訂價格將會是 <0>{renewalPrice}/月</0>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:279
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:328
 msgid "Takes effect immediately. A prorated adjustment may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "立即生效。系統可能會透過 {PAYMENT_PROVIDER_NAME} 按比例調整。您的下一次續訂將為 <0>{renewalPrice}/月</0>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:270
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:319
 msgid "Takes effect immediately. A prorated charge may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "立即生效。{PAYMENT_PROVIDER_NAME}可能會收取按比例計算的費用。您的下次續訂將是<0>{renewalPrice}/年</0>。"
 
@@ -31159,6 +31188,16 @@ msgstr "立即生效。{PAYMENT_PROVIDER_NAME}可能會收取按比例計算的�
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:40
 msgid "Talk in calls and test your input."
 msgstr "在通話中發言並測試您的輸入。"
+
+#. Permission description in the channel-scoped permissions editor for the Speak permission. "Mute members" is another permission in this same editor, so match the wording used for its name.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:285
+msgid "Talk in this voice channel. Without it, members stay muted until someone with Mute members unmutes them."
+msgstr "在此語音頻道中發言。如果沒有此權限，成員將保持靜音，直到有成員擁有「靜音成員」權限並解除其靜音。"
+
+#. Permission description in the role/permission editor for the Speak permission at community scope. "Mute members" is another permission in this same editor, so match the wording used for its name.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:166
+msgid "Talk in voice channels. Without it, members stay muted until someone with Mute members unmutes them."
+msgstr "在語音頻道中發言。如果沒有此權限，成員將保持靜音，直到有擁有「管理靜音」權限的使用者為其解除靜音。"
 
 #. Label in the note edit sheet.
 #: src/features/user/components/modals/NoteEditSheet.tsx:21
@@ -31431,7 +31470,7 @@ msgid "That friend request is no longer available. Refresh and try again."
 msgstr "該好友邀請已失效。請重新整理後再試一次。"
 
 #. Error shown when a branding image fails to upload in the setup wizard.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:95
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:102
 msgid "That image could not be used. Try a different file."
 msgstr "該圖片無法使用。請嘗試其他檔案。"
 
@@ -31461,6 +31500,11 @@ msgstr "就這些了。"
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:69
 msgid "The #0000 tag is reserved for Visionary subscribers. Visionary is no longer available for purchase."
 msgstr "#0000 標籤保留給 Visionary 訂閱者。Visionary 已停止販售。"
+
+#. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:97
+msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
+msgstr "API 的網域與此頁面不同，因此設定要求將不含您的會話資訊。請檢查此執行個體設定的公開網域和埠號，然後重新載入。"
 
 #: src/features/app/components/ErrorFallback.tsx:120
 msgid "The app crashed"
@@ -31561,6 +31605,11 @@ msgstr "名稱已還原。請稍後再試一次。"
 #: src/features/channel/components/modals/ChannelDuplicateModal.tsx:63
 msgid "The new channel will reuse the permissions from <0>{channelLabel}</0>."
 msgstr "新頻道將會重複使用<0>{channelLabel}</0>的權限設定。"
+
+#. Toast success shown when a move down to the current price was already scheduled by an earlier request. {effectiveDate} is the localized date the new price starts.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:101
+msgid "The new price is already scheduled for {effectiveDate}."
+msgstr "新價格已排定於 {effectiveDate} 生效。"
 
 #: src/features/channel/components/modals/ChannelDuplicateModal.tsx:58
 msgid "The new voice channel will reuse the permissions, user limit, and bitrate from <0>{channelLabel}</0>."
@@ -31719,16 +31768,6 @@ msgstr "目前這個社群沒有可指派的身分組，但你可以在<0>{roles
 msgid "There are no webhooks configured for this channel. Create a webhook to allow external applications to post messages."
 msgstr "此頻道尚未設定任何 Webhook。請建立 Webhook，以允許外部應用程式發佈訊息。"
 
-#. Plutonium gift checkout guidance for Türkiye. Notes that no local wallet method is currently available; card is the main option.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:74
-msgid "There is no app-based local payment method surfaced here today, so card checkout is the main path."
-msgstr "目前沒有應用程式內建的在地付款方式，因此主要透過信用卡結帳。"
-
-#. Plutonium subscription checkout guidance for Türkiye. Notes that no local wallet method is available; card is the main option.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:201
-msgid "There is no app-based local subscription method surfaced here today, so local card checkout is the main path."
-msgstr "目前沒有應用程式內購的訂閱方式，因此主要透過當地信用卡結帳。"
-
 #. Destructive notice on the confirm step of the data-deletion carousel modal.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:125
 msgid "There is no recovery once this starts. We will DM you when it finishes."
@@ -31836,8 +31875,8 @@ msgstr "此動作無法復原。移除應用程式也會一併刪除其機器人
 
 #. Premium checkout error shown when card country does not match billing country and Stripe did not provide the issuing country. productName is the app name.
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:28
-msgid "This card does not match your billing country, so it cannot be used for this localized currency. Use a local card, choose another payment method, or return to {productName} and switch to the standard price."
-msgstr "此卡片與您的帳單國家/地區不符，因此無法用於此當地貨幣。請使用當地卡片、選擇其他付款方式，或返回 {productName} 並切換為標準價格。"
+msgid "This card does not match your billing country, so it cannot be used for this localized currency. Use a local card, or return to {productName} and choose another payment method."
+msgstr "此卡片與您的帳單國家/地區不符，因此無法用於此本地化貨幣。請使用當地卡片，或返回 {productName} 並選擇其他付款方式。"
 
 #. Modal body shown when a category cannot accept another channel because the per-category limit is reached. Limit is interpolated.
 #: src/features/app/components/layout/ChannelListContent.tsx:79
@@ -32344,7 +32383,7 @@ msgid "This picker is only available in the desktop app."
 msgstr "此選擇器僅適用於電腦版應用程式。"
 
 #. Error modal body shown when the selected Plutonium plan has no price ID configured.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:170
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:169
 msgid "This plan isn't available. Contact support."
 msgstr "此方案無法使用。請聯絡客服。"
 
@@ -32398,11 +32437,6 @@ msgstr "此身分組"
 #: src/features/user/components/modals/tabs/AccessibilityTab.tsx:36
 msgid "This shows how links appear: {linkPreviewExampleUrl}"
 msgstr "這會顯示連結的顯示方式：{linkPreviewExampleUrl}"
-
-#. Plutonium subscription checkout guidance. Notes that the standard path skips localized verification and offers a way back.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:124
-msgid "This skips localized card verification. Switch back to {localizedCurrencyLabel} if you prefer the local price."
-msgstr "這會跳過本地化的卡片驗證。如果您偏好當地價格，請切換回{localizedCurrencyLabel}。"
 
 #. Error message in the selections tab.
 #: src/features/user/components/modals/tabs/component_gallery_tab/SelectionsTab.tsx:85
@@ -32647,7 +32681,7 @@ msgid "Time format selection"
 msgstr "時間格式選擇"
 
 #. Permission name: allows temporarily restricting members.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:253
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:444
 msgid "Time out members"
 msgstr "讓成員暫時停用"
 
@@ -33212,11 +33246,6 @@ msgstr "試試不同的篩選條件或搜尋字詞。"
 msgid "Try editing your message again."
 msgstr "請再試一次編輯訊息。"
 
-#. Plutonium gift checkout guidance for Türkiye. Clarifies one-time-only nature and Türkiye card issuance requirement.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:68
-msgid "TRY gifts are one-time payments. Cards charged in TRY still need to be issued in Türkiye for the purchase to stay eligible."
-msgstr "TRY 贈禮為一次性付款。以 TRY 支付的卡片仍需在土耳其發行，才能符合購買資格。"
-
 #: src/features/app/components/dialogs/components/AllSettingsRenderer.tsx:252
 msgid "Try searching for something like \"theme\", \"notifications\", or \"privacy\""
 msgstr "試試看搜尋「主題」、「通知」或「隱私」等關鍵字"
@@ -33316,6 +33345,16 @@ msgstr "關閉直播"
 #: src/features/streamer_mode/components/StreamerModeGate.tsx:19
 msgid "Turn off streaming privacy before viewing login or account security details."
 msgstr "請先關閉串流隱私設定，才能查看登入或帳戶安全詳細資訊。"
+
+#. Permission description in the channel-scoped permissions editor for the Stream Video permission. Covers both the webcam and screen sharing.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:290
+msgid "Turn on a camera or share a screen in this voice channel."
+msgstr "開啟此語音頻道的攝影機或分享畫面。"
+
+#. Permission description in the role/permission editor for the Stream Video permission at community scope. Covers both the webcam and screen sharing.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:171
+msgid "Turn on a camera or share a screen in voice channels."
+msgstr "在語音頻道中開啟攝影機或分享螢幕。"
 
 #. Label for the automatic streaming privacy detection settings toggle.
 #: src/features/user/components/modals/tabs/appearance_tab/StreamerModeTab.tsx:19
@@ -33468,7 +33507,7 @@ msgid "Typing state"
 msgstr "輸入狀態"
 
 #. Developer options group for forcing UI component states.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:61
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:71
 msgid "UI components"
 msgstr "UI 元件"
 
@@ -33884,7 +33923,7 @@ msgstr "不明使用者"
 #: src/features/devtools/utils/CommandUtils.ts:27
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTab.tsx:114
 #: src/features/voice/components/VoiceParticipantAvatarList.tsx:44
-#: src/features/voice/components/VoiceParticipantTile.tsx:169
+#: src/features/voice/components/VoiceParticipantTile.tsx:172
 #: src/features/webhook/components/WebhookListItem.tsx:30
 msgid "Unknown user"
 msgstr "不明使用者"
@@ -33941,7 +33980,7 @@ msgstr "使用 {premiumProductName} 在私訊中解鎖自訂表情符號"
 msgid "Unlock HD screen share with {premiumProductName}"
 msgstr "使用 {premiumProductName} 解鎖高畫質螢幕分享"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:217
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:200
 msgid "Unlock higher limits and exclusive features while supporting an independent communication platform."
 msgstr "解鎖更高上限和獨家功能，同時支持獨立通訊平台。"
 
@@ -34122,7 +34161,7 @@ msgstr "取消釘選的群組"
 
 #. Toast confirming a group DM was unpinned in the sidebar.
 #. Toast confirming a group DM was unpinned in the sidebar.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:116
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:114
 #: src/features/ui/action_menu/items/dm_menu_data/shared.ts:25
 msgid "Unpinned group DM"
 msgstr "取消釘選群組訊息"
@@ -34408,7 +34447,7 @@ msgid "Updater state"
 msgstr "更新器狀態"
 
 #. Short label in the channel and chat gif picker grid item. Keep it concise.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:43
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:41
 msgid "Updating favorites…"
 msgstr "正在更新我的最愛…"
 
@@ -34418,7 +34457,7 @@ msgid "Upgrade"
 msgstr "升級"
 
 #. Checkout button for starting a paid subscription.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:56
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:54
 msgid "Upgrade now"
 msgstr "立即升級"
 
@@ -34507,6 +34546,16 @@ msgstr "上傳表情符號"
 #: src/features/channel/components/textarea/TextareaPlusMenu.tsx:23
 msgid "Upload file"
 msgstr "上傳檔案"
+
+#. Permission description in the role/permission editor for the Attach Files permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:147
+msgid "Upload files and media in messages."
+msgstr "在訊息中上傳檔案和媒體。"
+
+#. Permission description in the channel-scoped permissions editor for the Attach Files permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:244
+msgid "Upload files and media in this channel."
+msgstr "在此頻道上傳檔案和媒體。"
 
 #: src/features/channel/components/modals/EditGroupBottomSheet.tsx:328
 #: src/features/channel/components/modals/EditGroupModal.tsx:283
@@ -34657,7 +34706,7 @@ msgid "Use {everyoneMention}/{hereMention} and {rolesMention}"
 msgstr "使用 {everyoneMention}/{hereMention} 和 {rolesMention}"
 
 #. Plutonium subscription payment method picker button. Selects Pix as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:44
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:43
 msgid "Use {pixPaymentMethod}"
 msgstr "使用 {pixPaymentMethod}"
 
@@ -34672,7 +34721,7 @@ msgid "Use {query} where the text to translate should be inserted."
 msgstr "在需要插入翻譯文字的地方使用 {query}。"
 
 #. Plutonium subscription payment method picker button. Selects UPI as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:54
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:53
 msgid "Use {upiPaymentMethod}"
 msgstr "使用 {upiPaymentMethod}"
 
@@ -34680,11 +34729,6 @@ msgstr "使用 {upiPaymentMethod}"
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:42
 msgid "Use {url} where the image URL should be inserted."
 msgstr "在需要插入圖片網址的地方使用 {url}。"
-
-#. Plutonium subscription checkout guidance for Portugal. Suggests using a card for recurring billing or a gift for one-time EUR payments.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:109
-msgid "Use a card for the subscription, or buy a gift instead if you want a one-time EUR payment method."
-msgstr "訂閱請使用信用卡，或改用禮物卡一次性支付歐元。"
 
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryCutoffSection.tsx:24
 msgid "Use a dedicated modal to set a message history threshold date for members who don't have the {readMessageHistoryPermissionLabel} permission."
@@ -34711,7 +34755,7 @@ msgid "Use actual value"
 msgstr "使用實際值"
 
 #. Plutonium subscription payment method picker button. Selects the alternative (non-card) method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:63
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:62
 msgid "Use alternative method"
 msgstr "使用其他方式"
 
@@ -34747,7 +34791,7 @@ msgid "Use browser locale for time format"
 msgstr "使用瀏覽器地區設定顯示時間格式"
 
 #. Modal secondary button to fall back to standard card checkout instead of an alternative payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:204
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:203
 msgid "Use card"
 msgstr "使用卡片"
 
@@ -34793,6 +34837,11 @@ msgstr "使用其他電子郵件"
 msgid "Use email"
 msgstr "使用電子郵件"
 
+#. Permission description in the channel-scoped permissions editor for the Use External Emoji permission. "Other communities" means custom emoji uploaded in a different Fluxer community.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:259
+msgid "Use emoji from other communities in this channel."
+msgstr "在該頻道使用來自其他社群的表情符號。"
+
 #. Premium upsell shown when sending external emoji without a subscription.
 #: src/features/expressions/utils/ExpressionPermissionUtils.ts:24
 msgid "Use emoji from other communities with {premiumProductName}"
@@ -34804,12 +34853,12 @@ msgid "Use emoji from other communities."
 msgstr "使用其他社群的表情符號."
 
 #. Permission name: allows using emoji from other communities.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:237
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:428
 msgid "Use external emoji"
 msgstr "使用外部表情符號"
 
 #. Permission name: allows using stickers from other communities.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:241
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:432
 msgid "Use external stickers"
 msgstr "使用外部貼圖"
 
@@ -34840,32 +34889,32 @@ msgid "Use light theme"
 msgstr "使用淺色主題"
 
 #. Modal primary button to start the localized card pre-approval verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:200
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:199
 msgid "Use local card"
 msgstr "使用本國卡"
 
 #. Plutonium checkout pre-approval prompt for Brazil. Explains the card verification flow and the Pix alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:67
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:66
 msgid "Use local card to verify a card issued in Brazil before the paid BRL checkout. Choose other methods if you'd rather try {pixPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "在付費的巴西雷亞爾結帳前，請使用當地卡片驗證在巴西發行的卡片。如果您想嘗試 {pixPaymentMethod} 或 {paymentProviderName} 在下一個畫面提供的其他付款方式，請選擇其他方法。"
 
 #. Plutonium checkout pre-approval prompt for India. Explains the card verification flow and the UPI alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:77
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:76
 msgid "Use local card to verify a card issued in India before the paid INR checkout. Choose other methods if you'd rather try {upiPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "在付費的印度盧比結帳前，請使用當地卡片驗證在印度發行的卡片。如果您想嘗試 {upiPaymentMethod} 或 {paymentProviderName} 在下個畫面提供的其他付款方式，請選擇其他方法。"
 
 #. Plutonium checkout pre-approval prompt for Poland. Explains that BLIK is not supported for subscriptions; user must continue to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:83
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:82
 msgid "Use local card to verify a card issued in Poland before the paid PLN checkout. {blikPaymentMethod} does not support subscriptions in {paymentProviderName} checkout, so continue only if you want {paymentProviderName2}'s standard payment screen instead."
 msgstr "請使用當地卡片驗證在波蘭發行的卡片，然後再進行付費的波蘭茲羅提結帳。{blikPaymentMethod} 不支援 {paymentProviderName} 結帳中的訂閱，因此只有在您想要使用 {paymentProviderName2} 的標準付款畫面時才繼續。"
 
 #. Plutonium checkout pre-approval prompt for Türkiye. Explains there is no local wallet method; continuing goes to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:94
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:93
 msgid "Use local card to verify a card issued in Türkiye before the paid TRY checkout. There isn't an app-based local subscription method here, so continuing will take you to {paymentProviderName}'s standard payment screen."
 msgstr "請使用當地卡片驗證在土耳其發行的卡片，然後再進行付費的 TRY 結帳。這裡沒有應用程式內的當地訂閱方式，因此繼續操作將會帶您前往 {paymentProviderName} 的標準付款畫面。"
 
 #. Plutonium checkout pre-approval prompt default. Generic description for countries without specific localized payment guidance.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:100
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:99
 msgid "Use local card to verify a card issued in your billing country before the paid checkout. Choose other methods for any other payment method {paymentProviderName} offers on the next screen."
 msgstr "在付費結帳前，請使用當地卡片驗證您帳單國家/地區發行的卡片。在下一個畫面中，選擇 {paymentProviderName} 提供的其他付款方式。"
 
@@ -34896,19 +34945,25 @@ msgstr "使用電話號碼"
 msgid "Use reverification text"
 msgstr "使用重新驗證文字"
 
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:103
-msgid "Use saved media"
-msgstr "使用已儲存的媒體"
-
 #. Primary action button in the trimmer modal: accept the current selection and upload it.
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:35
 msgid "Use selection"
 msgstr "使用選取範圍"
 
+#. Permission description in the channel-scoped permissions editor for the Use External Stickers permission. "Other communities" means stickers uploaded in a different Fluxer community.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:264
+msgid "Use stickers from other communities in this channel."
+msgstr "在該頻道使用來自其他社群的貼圖。"
+
 #. Premium upsell shown when sending external stickers without a subscription.
 #: src/features/expressions/utils/ExpressionPermissionUtils.ts:36
 msgid "Use stickers from other communities with {premiumProductName}"
 msgstr "使用 {premiumProductName} 即可傳送來自其他社群的貼圖"
+
+#. Permission description in the role/permission editor for the Use External Stickers permission. "Other communities" means stickers uploaded in a different Fluxer community.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:157
+msgid "Use stickers from other communities."
+msgstr "使用其他社群的貼圖。"
 
 #. Label in the language tab.
 #: src/features/user/components/modals/tabs/LanguageTab.tsx:63
@@ -34966,17 +35021,13 @@ msgstr "當您在排解客戶端問題或收集日誌時使用此功能。這可
 msgid "Use TLS"
 msgstr "使用 TLS"
 
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:111
-msgid "Use URL-only (recommended)"
-msgstr "僅限網址（建議）"
-
 #. One-line camera permission explanation in the macOS permissions modal.
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:44
 msgid "Use video and camera previews."
 msgstr "使用影片和相機預覽。"
 
 #. Permission name: allows voice activation instead of requiring push-to-talk.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:278
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:469
 msgid "Use voice activity"
 msgstr "使用語音活動"
 
@@ -35231,16 +35282,6 @@ msgstr "使用實際狀態"
 msgid "Using actual verification state"
 msgstr "使用實際驗證狀態"
 
-#. Compact summary line shown in Plutonium checkout when localized pricing is active. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:211
-msgid "Using localized {localizedCurrencyLabel} pricing."
-msgstr "使用當地 {localizedCurrencyLabel} 定價。"
-
-#. Compact summary line shown in Plutonium checkout when standard pricing is active. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:216
-msgid "Using standard {baseCurrencyLabel} pricing."
-msgstr "使用標準 {baseCurrencyLabel} 定價。"
-
 #. Lowercase fallback label in the activity log for a generic changed value.
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTabUtils.tsx:53
 msgid "value"
@@ -35391,7 +35432,7 @@ msgid "Verify"
 msgstr "驗證"
 
 #. Modal title for the mobile checkout confirmation when opening the localized card verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:174
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:173
 msgid "Verify card"
 msgstr "驗證卡片"
 
@@ -35495,7 +35536,7 @@ msgid "Verify your email before sending friend requests."
 msgstr "請先驗證你的電子郵件，才能傳送交友邀請。"
 
 #. Title of the error modal shown when an unverified account tries to purchase Plutonium.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:106
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:105
 msgid "Verify your email first"
 msgstr "請先驗證您的電子郵件"
 
@@ -35720,7 +35761,7 @@ msgid "View {userName}'s profile"
 msgstr "檢視 {userName} 的個人檔案"
 
 #. Permission name: allows viewing community audit/activity logs.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:161
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:352
 msgid "View activity log"
 msgstr "檢視活動記錄"
 
@@ -35771,17 +35812,17 @@ msgid "View call"
 msgstr "檢視通話"
 
 #. Aria label for the show-controls trigger when the call toolbar is auto-hidden.
-#: src/features/voice/components/VoiceCallView.tsx:123
+#: src/features/voice/components/VoiceCallView.tsx:124
 msgid "View call controls"
 msgstr "檢視通話控制選項"
 
 #. Permission name: allows seeing a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:257
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:448
 msgid "View channel"
 msgstr "檢視頻道"
 
 #. Permission name: allows seeing the member list for a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:261
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:452
 msgid "View channel members"
 msgstr "檢視頻道成員"
 
@@ -35952,7 +35993,7 @@ msgid "Visibility"
 msgstr "誰能看見"
 
 #. Audit log community feature label for the Visionary premium feature.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:341
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:416
 #: src/features/guild/utils/guild_tabs/GuildAuditLogTabUtils.ts:158
 msgid "Visionary"
 msgstr "遠見者"
@@ -35973,7 +36014,7 @@ msgid "Visionary 2FA nagbar"
 msgstr "Visionary 雙重驗證提醒"
 
 #. Modal body shown when a Visionary user tries to subscribe. Reassures them and points out gift purchases stay available.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:119
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:118
 msgid "Visionary already includes permanent access, so a recurring subscription isn't needed. You can still buy gifts for others."
 msgstr "Visionary 已包含永久存取權，因此不需要重複訂閱。您仍然可以購買禮物送給其他人。"
 
@@ -36445,9 +36486,14 @@ msgid "We don't send verification texts to this country. Try a mobile number fro
 msgstr "我們不向此國家/地區傳送驗證簡訊。請嘗試使用其他國家的手機號碼，或聯絡客服。"
 
 #. Modal body for existing-subscription block. Directs the user to the billing portal and addresses the just-paid race case. Keep plain and reassuring.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:130
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:129
 msgid "We found an existing {premiumProductFullName} subscription for this account. Manage it in the secure billing portal to update payment details or check renewal status. If you just paid, wait a minute and reopen this page."
 msgstr "我們發現此帳號已有 {premiumProductFullName} 訂閱。請前往安全帳務入口網站管理訂閱，以更新付款詳細資料或查看續訂狀態。如果您剛完成付款，請稍候一分鐘再重新開啟此頁面。"
+
+#. Nagbar body announcing a price cut to people in Brazil who do not have a paid subscription. {premiumProductName} is the short paid product name. {monthlyPrice} and {yearlyPrice} are currency amounts already formatted and localized by code; never write an amount into the translation. Keep the tone calm and plain.
+#: src/features/premium/config/PriceAnnouncementCampaign.ts:7
+msgid "We lowered the price of {premiumProductName} in Brazil. It is now {monthlyPrice} a month or {yearlyPrice} a year."
+msgstr "我們在巴西調降了 {premiumProductName} 的價格。現在每月是 {monthlyPrice}，每年是 {yearlyPrice}。"
 
 #. Required-action modal intro text for a generic verification requirement. productName is inserted by code. Keep it calm and concise.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:210
@@ -36503,10 +36549,6 @@ msgstr "我們會建立一個包含您所有傳送訊息的可下載封存檔，
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:116
 msgid "We'll build a downloadable archive that matches the filters below and email you when it's ready. The download link in that email expires after 7 days."
 msgstr "我們會根據以下篩選條件建立可下載的封存檔，並在準備好時透過電子郵件通知您。該電子郵件中的下載連結將在 7 天後過期。"
-
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:93
-msgid "We'll only ask once."
-msgstr "我們只會問這一次。"
 
 #. Success toast shown after a bulk message deletion job is queued.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:50
@@ -37029,6 +37071,11 @@ msgstr "有錯誤"
 msgid "Withdraw"
 msgstr "收回"
 
+#. Permission description in the channel-scoped permissions editor for the Use Voice Activity permission. Explains the inverse: without it, the user must use push-to-talk in this voice channel.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:295
+msgid "Without this permission, push-to-talk is required in this channel."
+msgstr "如果沒有這項權限，在此頻道中將必須使用按鍵說話。"
+
 #. Permission description in the role/permission editor for the Use Voice Activity permission. Explains the inverse: without it, the user must use push-to-talk in voice channels.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:103
 msgid "Without this permission, push-to-talk is required."
@@ -37065,12 +37112,12 @@ msgstr "年"
 
 #. Billing plan title for a yearly recurring subscription.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:44
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:42
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:55
 msgid "Yearly"
 msgstr "年繳"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:109
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:84
 msgid "Yearly {yearlyPrice}"
 msgstr "每年 {yearlyPrice}"
 
@@ -37079,15 +37126,15 @@ msgstr "每年 {yearlyPrice}"
 msgid "Yearly gift"
 msgstr "年度贈禮"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:529
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:616
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>."
 msgstr "預計於 <0>{pendingChangeDate}</0> 升級為年繳方案。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:514
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:601
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel} after a {pendingCreditPriceLabel} credit. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "預計於 <0>{pendingChangeDate}</0> 升級為年繳方案。首次年繳費用：{pendingInitialPriceLabel}（抵用金折抵 {pendingCreditPriceLabel}）。後續每年續訂費用：{pendingRecurringPriceLabel}/年。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:521
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:608
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel}. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "排定於 <0>{pendingChangeDate}</0> 升級為年繳。首次年繳費用：{pendingInitialPriceLabel}。未來每年續訂：{pendingRecurringPriceLabel}/年。"
 
@@ -37160,7 +37207,7 @@ msgid "You are now a developer!"
 msgstr "您現在是開發人員了！"
 
 #. Modal body for the mobile checkout confirmation. Explains that the user is leaving the app to pay.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:187
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:186
 msgid "You are now navigating to {paymentProviderName} to complete the payment. Return to {productName} once you've completed it."
 msgstr "您現在將前往 {paymentProviderName} 完成付款。完成後請返回 {productName}。"
 
@@ -37173,11 +37220,6 @@ msgstr "您已登入為此伺服器的管理員。接下來的步驟將為此伺
 #: src/features/app/components/layout/app_layout/nagbars/BuildEnvironmentNagbar.tsx:12
 msgid "You are using a {releaseChannel} build of {productName}."
 msgstr "你正在使用 {productName} 的 {releaseChannel} 版本。"
-
-#. Plutonium subscription checkout guidance. States that the standard (non-localized) price applies. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:119
-msgid "You are using the full standard {baseCurrencyLabel} price instead of localized pricing."
-msgstr "您目前使用的是標準 {baseCurrencyLabel} 價格，而非當地語系化價格。"
 
 #. Placeholder shown when the user has no communities to filter.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:159
@@ -37254,10 +37296,6 @@ msgstr "您仍然可以建立帳號或登入。如果稍後重新啟用邀請，
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:326
 msgid "You can still email {supportEmail} for a human review at any time."
 msgstr "你隨時都可以寄信到 {supportEmail} 請求人工審查。"
-
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:62
-msgid "You can store starred GIFs as URL-only favorites or upload them to your saved media. Pick the one that fits how you use them. You can change it any time in {mediaSettingsPath}."
-msgstr "您可以將已加星號的 GIF 儲存為僅限網址的收藏，或上傳到您已儲存的媒體。請選擇最適合您使用方式的選項。您可以隨時在 {mediaSettingsPath} 中更改設定。"
 
 #: src/features/user/components/modals/tabs/my_profile_tab/BioEditor.tsx:288
 msgid "You can use links, emoji, and markdown."
@@ -37555,11 +37593,11 @@ msgstr "您還沒有封鎖任何人。"
 msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {productName} without a mouse."
 msgstr "您剛才按了 Tab 鍵。鍵盤模式現已開啟，您無需滑鼠即可瀏覽 {productName}。"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:133
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:122
 msgid "You keep your perks until your next renewal date, then have a 3-day grace period to resubscribe and keep your subscriber history."
 msgstr "您可以保留您的福利直到下一個續訂日期，然後有 3 天的寬限期可以重新訂閱並保留您的訂閱記錄。"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:155
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:144
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "您會立即失去所有 {PREMIUM_PRODUCT_NAME} 福利，且您的訂閱者歷史記錄將會重設。此動作無法復原。"
 
@@ -37686,7 +37724,7 @@ msgid "You need to verify your email address before you can start a direct messa
 msgstr "您需要先驗證電子郵件地址，才能開始傳送私訊。"
 
 #. Body of the error modal shown when the account email is unverified and the user tries to purchase Plutonium. Product name is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:110
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:109
 msgid "You need to verify your email before you can purchase {premiumProductFullName}."
 msgstr "您必須先驗證電子郵件，才能購買 {premiumProductFullName}。"
 
@@ -37733,12 +37771,12 @@ msgstr "帳號刪除後，您將無法刪除已傳送的訊息"
 msgid "You will still need to finish the email step."
 msgstr "你還是需要完成電子郵件驗證步驟。"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:94
+#: src/features/app/components/floating/UserAreaPopout.tsx:92
 #: src/features/user/components/modals/StatusChangeBottomSheet.tsx:40
 msgid "You won't receive notifications on desktop"
 msgstr "您將不會在電腦版收到通知"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:95
+#: src/features/app/components/floating/UserAreaPopout.tsx:93
 #: src/features/user/components/modals/StatusChangeBottomSheet.tsx:41
 msgid "You'll appear offline"
 msgstr "您會顯示為離線"
@@ -37772,7 +37810,7 @@ msgid "You're already friends with this user."
 msgstr "您已和這位用戶成為好友。"
 
 #. Modal title shown when a lifetime Visionary tier user tries to start a recurring Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:115
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:114
 msgid "You're already Visionary"
 msgstr "您已經是 Visionary 了"
 
@@ -37812,7 +37850,7 @@ msgid "You're being rate limited. Wait {duration} before trying again."
 msgstr "您已達到使用上限。請等待 {duration} 後再試一次。"
 
 #. Error modal body shown when a gift-subscription user tries to start a recurring subscription. Explains the extension/redemption path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:160
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:159
 msgid "You're currently on a gift subscription. It won't renew. You can redeem more gift codes to extend it. Recurring subscriptions can be started after your gift time ends."
 msgstr "您目前使用的是贈禮訂閱，到期後不會自動續訂。您可以兌換更多贈禮序號來延長訂閱。贈禮訂閱到期後，即可開始定期訂閱。"
 
@@ -37876,12 +37914,12 @@ msgid "You're in the voice channel"
 msgstr "您已在語音頻道中"
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price that is no longer offered.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:37
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:40
 msgid "You're on a legacy rate no longer available to new subscribers."
 msgstr "您目前使用的是舊費率，新訂閱者無法再享有此費率。"
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price; current list price is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:32
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:35
 msgid "You're on a legacy rate. The current price for this plan is {currentSubscriptionListPriceLabel}."
 msgstr "您目前享有舊版費率。此方案目前的價格為 {currentSubscriptionListPriceLabel}。"
 
@@ -37905,7 +37943,7 @@ msgid "You're timed out. Messaging, reactions, and voice are paused until the ti
 msgstr "您已逾時。在逾時結束前，訊息、表情回應和語音功能將會暫停。"
 
 #. Label in the channel and chat messages.
-#: src/features/channel/components/ChannelMessages.tsx:79
+#: src/features/channel/components/ChannelMessages.tsx:85
 msgid "You're viewing older messages"
 msgstr "您正在檢視較舊的訊息"
 
@@ -37950,7 +37988,7 @@ msgstr "您已達到社群上限"
 #. Label in the saved messages content popout.
 #. Short label in the shared app channel pins content.
 #: src/features/app/components/shared/ChannelPinsContent.tsx:63
-#: src/features/messaging/components/pages/MessageListPage.tsx:26
+#: src/features/messaging/components/pages/MessageListPage.tsx:27
 #: src/features/messaging/components/popouts/RecentMentionsContent.tsx:411
 #: src/features/messaging/components/popouts/SavedMessagesContent.tsx:38
 msgid "You've reached the end"
@@ -38162,7 +38200,7 @@ msgid "Your GPU encodes this in hardware."
 msgstr "您的 GPU 以硬體編碼此內容。"
 
 #. Body text in the Plutonium subscription actions. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:32
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:34
 msgid "Your grace period has ended."
 msgstr "您的寬限期已結束。"
 
@@ -38262,7 +38300,7 @@ msgid "Your payment was successful. You can now close this tab and return to the
 msgstr "付款成功。您現在可以關閉此分頁並返回應用程式。"
 
 #. Toast success shown after a scheduled Plutonium billing cycle change is canceled.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:72
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:74
 msgid "Your pending billing change has been canceled."
 msgstr "您待處理的帳單變更已取消。"
 
@@ -38287,10 +38325,6 @@ msgstr "您的個人資料隱私設定有限，因此即使啟用「所有人」
 msgid "Your purchased gifts"
 msgstr "您已購買的禮物"
 
-#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:32
-msgid "Your recent invoices. To change the payment method for your subscription, add or choose one in the billing portal and make it the default."
-msgstr "您最近的帳單。若要變更訂閱的付款方式，請在帳務入口網站中新增或選擇一個付款方式，並將其設為預設。"
-
 #. Short label in the region display names. Keep it concise.
 #: src/features/user/utils/UserGeo.ts:7
 msgid "your region"
@@ -38312,7 +38346,12 @@ msgstr "由於無法使用相容的視訊轉碼器發布您的螢幕畫面，因
 msgid "Your stream is still live"
 msgstr "你的直播仍在進行中"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:393
+#. Toast error shown when the server refuses to move a Plutonium subscription down to the current price, whatever the reason.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:106
+msgid "Your subscription can't move to the new price right now."
+msgstr "您的訂閱目前無法移至新價格。"
+
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:468
 msgid "Your subscription ended but <0/> stay active until <1>{graceDate}</1>. Resubscribe before then to keep your subscriber history."
 msgstr "您的訂閱已結束，但 <0/> 會保持啟用狀態直到 <1>{graceDate}</1>。請在此之前重新訂閱，以保留您的訂閱者歷史記錄。"
 
@@ -38322,26 +38361,26 @@ msgid "Your subscription failed to renew, but you still have access to {premiumP
 msgstr "您的訂閱續訂失敗，但您仍可使用 {premiumProductName} 的所有福利，直到 {formattedGraceDate} 為止。請立即採取行動，否則您將失去所有福利。"
 
 #. Body text in the Plutonium subscription actions. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:44
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:46
 msgid "Your subscription has been reactivated."
 msgstr "您的訂閱已重新啟用。"
 
 #. Toast success shown after a Plutonium subscription is set to cancel at the end of the billing period.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:20
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:22
 msgid "Your subscription has been set to cancel at the end of your billing period."
 msgstr "您的訂閱已設定為在帳單週期結束時取消。"
 
 #. Toast success shown after a Plutonium subscription is switched from yearly to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:60
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:62
 msgid "Your subscription has been switched to monthly billing."
 msgstr "您的訂閱已改為按月計費。"
 
 #. Toast success shown after a Plutonium subscription is switched from monthly to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:56
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:58
 msgid "Your subscription has been switched to yearly billing."
 msgstr "您的訂閱方案已改為按年計費。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:435
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:510
 msgid "Your subscription is active but perks are temporarily paused."
 msgstr "您的訂閱已啟用，但福利暫時停止。"
 
@@ -38355,13 +38394,23 @@ msgstr "您的訂閱已設定在帳單週期結束時取消。"
 msgid "Your subscription isn't set to cancel, so there's nothing to reactivate."
 msgstr "您的訂閱未設定為取消，因此沒有任何項目可以重新啟用。"
 
+#. Toast success shown after a Plutonium subscription is scheduled to move down to the current price. {effectiveDate} is the localized date the new price starts.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:96
+msgid "Your subscription moves to the new price on {effectiveDate}."
+msgstr "您的訂閱將於 {effectiveDate} 起調整為新價格。"
+
+#. Plutonium subscription card line shown to a subscriber on a legacy price whose subscription is already set to cancel. {cancelDate} is a date and {listPriceNewLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:664
+msgid "Your subscription still ends on <0>{cancelDate}</0>. The current price is now {listPriceNewLabel}. If you reactivate, you can switch to it from here."
+msgstr "您的訂閱將於 <0>{cancelDate}</0> 結束。目前的價格為 {listPriceNewLabel}。如果您重新啟用，可以從這裡切換。"
+
 #. Toast success shown after a Plutonium subscription is scheduled to switch to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:68
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:70
 msgid "Your subscription will switch to monthly billing at the next renewal."
 msgstr "您的訂閱將在下次續訂時切換為按月計費。"
 
 #. Toast success shown after a Plutonium subscription is scheduled to switch to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:64
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:66
 msgid "Your subscription will switch to yearly billing at the next renewal."
 msgstr "您的訂閱將在下次續訂時切換為按年計費。"
 

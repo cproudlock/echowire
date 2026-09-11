@@ -20,6 +20,7 @@ export interface MasterConfig {
 	env: RuntimeEnv;
 	domain: {
 		base_domain: string;
+		public_origin: string;
 		public_scheme: PublicScheme;
 		internal_scheme: PublicScheme;
 		public_port: number;
@@ -268,6 +269,7 @@ export interface MasterConfig {
 			secret_key: string;
 			webhook_secret: string;
 			prices?: Record<string, string | undefined>;
+			legacy_prices?: Record<string, Array<string> | undefined>;
 		};
 		ncmec: {
 			enabled: boolean;

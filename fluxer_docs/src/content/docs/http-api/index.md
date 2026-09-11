@@ -20,7 +20,7 @@ The API applies no generic byte limit to a request body. An operation that accep
 
 Every request counts against one in-flight request ceiling for the whole instance. A request that arrives while the instance is at that ceiling returns 503 `SERVICE_UNAVAILABLE` with `Retry-After: 1` before the operation runs. The `/_health`, `/_healthz`, and `/_metrics` probe paths are exempt.
 
-A request to a path that matches no route returns 404 `NOT_FOUND`. A request whose path is registered but not for the request method is answered the same way, and the response has no `Allow` header. Routing is strict, so a trailing slash is significant.
+A request to a path that matches no route returns 404 `NOT_FOUND`. A request using a method the path does not register returns the same 404, and the response has no `Allow` header. Routing is strict, so a trailing slash is significant.
 
 The `GET` registered for a path also serves `HEAD`. A path that registers no `GET` serves no `HEAD` either. A `HEAD` response has the status and headers that `GET` returns, with no body. The request still reports `HEAD` as its method, so the [same-host origin check](#cross-origin-requests) can refuse a `HEAD` that has no `Origin` where the identical `GET` succeeds.
 
@@ -45,7 +45,13 @@ Form bodies accept `application/x-www-form-urlencoded` and `multipart/form-data`
 
 The legacy names `file` and `file` followed by an index are accepted as file fields as well, and a bare `file` takes the next free legacy index.
 
-Five field-name failures are rejected with their own code. An index outside either bound returns `FILE_INDEX_EXCEEDS_MAXIMUM`. Any other name beginning with `files[` returns `INVALID_FILE_FIELD_NAME`. Two file fields resolving to the same index return `DUPLICATE_FILE_INDEX`. More than one file supplied for one index returns `MULTIPLE_FILES_FOR_INDEX_NOT_ALLOWED`. Where the resolved limit is 0, any file field at all returns `ATTACHMENTS_NOT_ALLOWED_FOR_MESSAGE`.
+Field-name failures are rejected with their own code:
+
+- An index outside either bound returns `FILE_INDEX_EXCEEDS_MAXIMUM`.
+- Any other name beginning with `files[` returns `INVALID_FILE_FIELD_NAME`.
+- Two file fields resolving to the same index return `DUPLICATE_FILE_INDEX`.
+- More than one file supplied for one index returns `MULTIPLE_FILES_FOR_INDEX_NOT_ALLOWED`.
+- Where the resolved limit is 0, any file field at all returns `ATTACHMENTS_NOT_ALLOWED_FOR_MESSAGE`.
 
 The `Content-Type` header supplies the multipart boundary. Each part's field name is in `Content-Disposition`. A body the multipart parser cannot read is rejected with `FAILED_TO_PARSE_MULTIPART_FORM_DATA`. A field name the operation does not recognise is ignored, and a `files[n]` part whose value is not a file is ignored once its index has been bounds-checked.
 
@@ -56,7 +62,7 @@ The `attachments` array inside `payload_json` maps attachment metadata to files 
 [Messages](/http-api/messages/) defines the attachment metadata and pre-uploaded attachment form, and [Attachment uploads](/topics/uploads/) defines the separate relay upload flow.
 
 :::caution[Multipart indices are attachment IDs]
-Each direct file's `files[n]` index is also the `id` in its attachment metadata entry. Fluxer reads `n` from the field name, so part order sets no identity. The indices need not begin at zero and need not be contiguous.
+Each direct file's `files[n]` index is also the `id` in its attachment metadata entry. Fluxer reads `n` from the field name, so part order sets no identity. The indices need not begin at zero and need not be consecutive.
 :::
 
 ## Input normalisation
@@ -81,7 +87,7 @@ An empty string stays an empty string and an empty nested object stays an empty 
 
 [Authentication](/authentication/) defines the accepted `Authorization` schemes, their exact token forms, and the OAuth2 scope registry. An operation that requires a credential states the scheme on its resource page. The [sudo verification object](/http-api/users/mfa/#sudo-verification-object) defines the sudo mode credential that guards sensitive account operations.
 
-An OAuth2 bearer access token is accepted only where a route opts in, and the resource page says so. Everywhere else a bearer credential is refused with 403 `ACCESS_DENIED`, and an account with a suspicious activity flag is refused with 403 `ACCOUNT_SUSPICIOUS_ACTIVITY`.
+An OAuth2 bearer access token is accepted only where a route opts in, and the resource page says so. Everywhere else a bearer credential is refused with 403 `ACCESS_DENIED`. An account with a suspicious activity flag is refused with 403 `ACCOUNT_SUSPICIOUS_ACTIVITY`.
 
 ## Standard request headers
 
@@ -105,7 +111,7 @@ These headers are accepted across resources. An operation-specific header is doc
 
 <sup>2</sup> The configured locale of the authenticated account takes precedence, so this header selects the locale only for an unauthenticated request or an account with no configured locale
 
-<sup>3</sup> The value is read verbatim with no percent-decoding, then stripped of form feed and right-to-left override characters and trimmed. A blank or over-long value is treated as absent
+<sup>3</sup> The value is read verbatim with no percent-decoding, then stripped of form feed and right-to-left override characters and trimmed. A blank or too-long value is treated as absent
 
 <sup>4</sup> Read only for a native Fluxer `User-Agent`, at most 4096 characters, and only the `os` member is used
 
@@ -146,7 +152,7 @@ An `X-Audit-Log-Reason` normalised to more than 512 characters is discarded, and
 
 <sup>2</sup> A generated UUID unless the request supplied its own, in which case that value is echoed back unchanged and unvalidated
 
-<sup>3</sup> A token newly issued where the caller proved sudo mode afresh, and otherwise the incoming proof echoed back with no extension of its lifetime
+<sup>3</sup> A token newly issued where the caller proved sudo mode again, and otherwise the incoming proof echoed back with no extension of its lifetime
 
 <sup>4</sup> Absent from a response with no body
 
@@ -162,7 +168,7 @@ An operation that sets its own `Cache-Control` keeps that value. A response whos
 
 ## Rate limits
 
-Every route consumes its own rate limit bucket and is additionally evaluated against one global bucket unless that bucket is exempt. A denial returns 429 `RATE_LIMITED`. [Rate limits](/topics/rate-limits/) defines the bucket scoping rules, the global allowance, the 429 body, the scope registry, and the complete `X-RateLimit-*` header contract.
+Every route consumes its own rate limit bucket and is also evaluated against one global bucket unless that bucket is exempt. A denial returns 429 `RATE_LIMITED`. [Rate limits](/topics/rate-limits/) defines the bucket scoping rules, the global allowance, the 429 body, the scope registry, and the complete `X-RateLimit-*` header contract.
 
 :::note[Two 429 responses have no `X-RateLimit-*` header]
 A 429 `RESOURCE_LOCKED` response has `Retry-After: 1`, and a 429 `IP_AUTHORIZATION_RESEND_COOLDOWN` response has the remaining cooldown in whole seconds. A client that reads the bucket headers branches on `code`.

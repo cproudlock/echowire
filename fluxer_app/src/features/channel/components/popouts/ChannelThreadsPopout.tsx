@@ -67,11 +67,11 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 				<div style={{display: 'flex', gap: 6}}>
 					<PillButton active={!showArchived} onClick={() => setShowArchived(false)}>
 						<ChatCircleIcon size={13} weight={!showArchived ? 'fill' : 'regular'} />
-						Active
+						<span>Active</span>
 					</PillButton>
 					<PillButton active={showArchived} onClick={() => setShowArchived(true)}>
 						<ArchiveIcon size={13} />
-						Archived
+						<span>Archived</span>
 					</PillButton>
 				</div>
 				<button
@@ -96,7 +96,7 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 					}}
 				>
 					<PlusIcon size={13} weight="bold" />
-					New
+					<span>New</span>
 				</button>
 			</div>
 			<div style={{overflowY: 'auto', padding: '4px 0'}}>
@@ -184,7 +184,7 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 								)}
 								{mentionCount === 0 && thread.messageCount != null && thread.messageCount > 0 && (
 									<span style={{fontSize: 11, color: 'var(--text-muted)', flexShrink: 0}}>
-										{thread.messageCount} {thread.messageCount === 1 ? 'reply' : 'replies'}
+										{`${thread.messageCount} ${thread.messageCount === 1 ? 'reply' : 'replies'}`}
 									</span>
 								)}
 							</button>

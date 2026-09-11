@@ -16,9 +16,6 @@ const linuxPackageName = isCanary ? 'echowire-canary' : 'echowire';
 // renamed package cleanly supersedes it (apt/dnf remove the old, install the new) instead of
 // leaving two installs side by side.
 const legacyLinuxPackageName = isCanary ? 'fluxer-canary' : 'fluxer';
-const desktopBuildVariant = process.env.FLUXER_DESKTOP_BUILD_VARIANT || process.env.DESKTOP_VARIANT || 'default';
-const windowsGameCaptureModuleEnabled =
-	desktopBuildVariant === 'windows-game-capture' || process.env.FLUXER_WINDOWS_GAME_CAPTURE_MODULE_ENABLED === 'true';
 const linuxDesktopActionIds = ['open-settings', 'new-dm'];
 const linuxDesktopActionList = `${linuxDesktopActionIds.join(';')};`;
 const linuxGlibcBaseline = Object.freeze({major: 2, minor: 35, patch: 0, name: 'GLIBC_2.35'});
@@ -1449,7 +1446,8 @@ module.exports = {
 		target: winTargets,
 	},
 	portable: {
-		artifactName: `${artifactProductName}-\${version}-portable-\${os}-\${arch}.\${ext}`,
+		// biome-ignore lint/suspicious/noTemplateCurlyInString: electron-builder placeholders, not JS template literals.
+		artifactName: '${productName}-${version}-portable-${os}-${arch}.${ext}',
 	},
 	linux: {
 		icon: `build_resources/${iconDir}/1024x1024.png`,

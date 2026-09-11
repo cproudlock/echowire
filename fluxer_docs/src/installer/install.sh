@@ -132,6 +132,36 @@ Caddyfile
 FILES
 }
 
+fluxer_compose_names() {
+	cat <<'NAMES'
+compose.yaml
+compose.yml
+docker-compose.yml
+docker-compose.yaml
+NAMES
+}
+
+fluxer_compose_name_in() {
+	for fluxer_candidate in $(fluxer_compose_names); do
+		if [ -e "$1/$fluxer_candidate" ]; then
+			printf '%s' "$fluxer_candidate"
+			return 0
+		fi
+	done
+	return 1
+}
+
+fluxer_compose_base='docker-compose.yml'
+fluxer_compose_base_from=''
+
+fluxer_placed_name() {
+	if [ "$1" = 'docker-compose.yml' ]; then
+		printf '%s' "$fluxer_compose_base"
+	else
+		printf '%s' "$1"
+	fi
+}
+
 # The file Compose bind-mounts from the working directory, with the service that
 # mounts it.
 #
@@ -373,15 +403,21 @@ done
 #
 # An install writes a new instance, so it never adopts the working directory.
 if [ -z "$opt_dir" ]; then
+	fluxer_here_compose=$(fluxer_compose_name_in "$(pwd)" || true)
 	if { [ "$opt_update" -eq 1 ] || [ "$opt_rollback" -eq 1 ]; } &&
-		[ -s "$(pwd)/docker-compose.yml" ] && [ -e "$(pwd)/.env" ] &&
-		grep -q '^FLUXER_' "$(pwd)/.env" 2>/dev/null; then
+		[ -n "$fluxer_here_compose" ] && [ -s "$(pwd)/$fluxer_here_compose" ] &&
+		[ -e "$(pwd)/.env" ] && grep -q '^FLUXER_' "$(pwd)/.env" 2>/dev/null; then
 		opt_dir="$(pwd)"
 		fluxer_say "Acting on the instance in $opt_dir, the working directory. Pass --dir to name another."
-	elif [ -n "${HOME:-}" ]; then
-		opt_dir="$HOME/fluxer"
 	else
-		opt_dir="$(pwd)/fluxer"
+		if [ -n "${HOME:-}" ]; then
+			opt_dir="$HOME/fluxer"
+		else
+			opt_dir="$(pwd)/fluxer"
+		fi
+		if [ "$opt_update" -eq 1 ] || [ "$opt_rollback" -eq 1 ]; then
+			fluxer_say "The working directory holds no instance, so this acts on $opt_dir. Pass --dir to name another."
+		fi
 	fi
 fi
 case $opt_dir in
@@ -750,7 +786,7 @@ fluxer_fetch_stack() {
 fluxer_place_stack() {
 	while read -r fluxer_file; do
 		[ -n "$fluxer_file" ] || continue
-		mv "$fluxer_scratch/$fluxer_file.part" "$opt_dir/$fluxer_file"
+		mv "$fluxer_scratch/$fluxer_file.part" "$opt_dir/$(fluxer_placed_name "$fluxer_file")"
 	done < "$fluxer_scratch/files"
 	fluxer_say "Stack files in $opt_dir are at ref $opt_ref."
 }
@@ -760,7 +796,7 @@ fluxer_compose_project() {
 		printf '%s' "$COMPOSE_PROJECT_NAME"
 		return 0
 	fi
-	sed -n 's/^name: *//p' "$opt_dir/docker-compose.yml" | head -n 1
+	sed -n 's/^name: *//p' "$opt_dir/$fluxer_compose_base" | head -n 1
 }
 
 fluxer_project=''
@@ -768,7 +804,7 @@ fluxer_project=''
 fluxer_set_project() {
 	fluxer_project=$(fluxer_compose_project)
 	if [ -z "$fluxer_project" ]; then
-		fluxer_fail 2 "docker-compose.yml in $opt_dir declares no project name, so the volume names cannot be derived."
+		fluxer_fail 2 "$fluxer_compose_base in $opt_dir declares no project name, so the volume names cannot be derived."
 	fi
 }
 
@@ -937,22 +973,77 @@ fluxer_wait_ready() {
 	return 1
 }
 
+fluxer_env_value() {
+	sed -n "s/^$1=\\(.*\\)\$/\\1/p" "$opt_dir/.env" | head -n 1
+}
+
+# The origin browsers use. .env states it outright when FLUXER_PUBLIC_ORIGIN is
+# set, and Compose otherwise builds the same string from the scheme, the domain
+# and the port, dropping a port that is the default for its scheme.
+#
+# Compose expands a ${...} reference inside an .env value and this script does
+# not, so a FLUXER_PUBLIC_ORIGIN written that way is skipped rather than printed
+# back with the braces still in it. The three names below say the same address,
+# so the derived string is the right one to fall back to.
+#
+# By hand:
+#   grep -E '^FLUXER_(PUBLIC_ORIGIN|PUBLIC_SCHEME|DOMAIN|PUBLIC_PORT)=' .env
+fluxer_public_origin() {
+	fluxer_origin=$(fluxer_env_value FLUXER_PUBLIC_ORIGIN)
+	case $fluxer_origin in
+		*'${'*)
+			printf '%s\n' 'FLUXER_PUBLIC_ORIGIN in .env holds a ${...} reference. This script does not expand those, so the address below comes from FLUXER_PUBLIC_SCHEME, FLUXER_DOMAIN and FLUXER_PUBLIC_PORT instead.' >&2
+			fluxer_origin=''
+			;;
+	esac
+	if [ -n "$fluxer_origin" ]; then
+		printf '%s' "${fluxer_origin%/}"
+		return 0
+	fi
+	fluxer_origin_host=$(fluxer_env_value FLUXER_DOMAIN)
+	if [ -z "$fluxer_origin_host" ]; then
+		return 0
+	fi
+	fluxer_origin_scheme=$(fluxer_env_value FLUXER_PUBLIC_SCHEME)
+	if [ -z "$fluxer_origin_scheme" ]; then
+		fluxer_origin_scheme='https'
+	fi
+	fluxer_origin_port=$(fluxer_env_value FLUXER_PUBLIC_PORT)
+	if [ -z "$fluxer_origin_port" ]; then
+		fluxer_origin_suffix=''
+	else
+		case $fluxer_origin_scheme:$fluxer_origin_port in
+			http:80|https:443) fluxer_origin_suffix='' ;;
+			*) fluxer_origin_suffix=":$fluxer_origin_port" ;;
+		esac
+	fi
+	printf '%s://%s%s' "$fluxer_origin_scheme" "$fluxer_origin_host" "$fluxer_origin_suffix"
+}
+
 # The public probe is informational. A host behind hairpin NAT cannot always
 # reach its own hostname, and a false failure there would be worse than no probe.
+# It asks the origin .env advertises, so an instance on a non-default port is
+# probed where it actually answers.
 fluxer_probe() {
-	fluxer_probe_code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "https://$1/_health" 2>/dev/null || true)
+	fluxer_probe_origin=$1
+	fluxer_probe_authority=${fluxer_probe_origin#*://}
+	fluxer_probe_host=${fluxer_probe_authority%%:*}
+	case $fluxer_probe_origin in
+		http://*) fluxer_probe_port='80' ;;
+		*) fluxer_probe_port='443' ;;
+	esac
+	case $fluxer_probe_authority in
+		*:*) fluxer_probe_port=${fluxer_probe_authority##*:} ;;
+	esac
+	fluxer_probe_code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 "$fluxer_probe_origin/_health" 2>/dev/null || true)
 	if [ -z "$fluxer_probe_code" ]; then
 		fluxer_probe_code='000'
 	fi
 	if [ "$fluxer_probe_code" = '200' ]; then
-		fluxer_say "https://$1/_health answers 200."
+		fluxer_say "$fluxer_probe_origin/_health answers 200."
 		return 0
 	fi
-	fluxer_say "https://$1/_health answers $fluxer_probe_code from this host. Check the DNS record for $1 and inbound ports 80 and 443."
-}
-
-fluxer_env_value() {
-	sed -n "s/^$1=\\(.*\\)\$/\\1/p" "$opt_dir/.env" | head -n 1
+	fluxer_say "$fluxer_probe_origin/_health answers $fluxer_probe_code from this host. Check the DNS record for $fluxer_probe_host and inbound port $fluxer_probe_port."
 }
 
 # The keys a refreshed stack requires that an .env written by an older installer
@@ -1050,11 +1141,18 @@ fluxer_require_instance() {
 	if [ ! -e "$opt_dir/.env" ]; then
 		fluxer_fail 2 "No .env in $opt_dir. That directory holds no instance. Run install.sh with neither --update nor --rollback to set one up."
 	fi
-	if [ ! -e "$opt_dir/docker-compose.yml" ]; then
-		fluxer_fail 2 "No docker-compose.yml in $opt_dir. That directory does not hold an instance."
+	fluxer_resolve_compose_base
+	if [ ! -e "$opt_dir/$fluxer_compose_base" ]; then
+		if [ -n "$fluxer_compose_base_from" ]; then
+			fluxer_fail 2 "$fluxer_compose_base_from names $fluxer_compose_base first, and $opt_dir/$fluxer_compose_base is not there. Put that file back, or name the file the instance runs on first in COMPOSE_FILE."
+		fi
+		fluxer_fail 2 "No compose file in $opt_dir. Compose looks for compose.yaml, compose.yml, docker-compose.yml and docker-compose.yaml there, and that directory holds none of them, so it does not hold an instance."
 	fi
-	if [ ! -s "$opt_dir/docker-compose.yml" ]; then
-		fluxer_fail 2 "$opt_dir/docker-compose.yml is empty. A redirect that captured a failed download leaves that, and Compose refuses an empty compose file. Put the file back from a backup or from the record of the last upgrade, then run this again."
+	if [ ! -s "$opt_dir/$fluxer_compose_base" ]; then
+		fluxer_fail 2 "$opt_dir/$fluxer_compose_base is empty. A redirect that captured a failed download leaves that, and Compose refuses an empty compose file. Put the file back from a backup or from the record of the last upgrade, then run this again."
+	fi
+	if [ "$fluxer_compose_base" != 'docker-compose.yml' ]; then
+		fluxer_say "Compose loads $fluxer_compose_base in $opt_dir, so the stack's docker-compose.yml is written to that name."
 	fi
 }
 
@@ -1087,14 +1185,13 @@ fluxer_env_scalar() {
 	printf '%s' "$fluxer_scalar"
 }
 
-fluxer_require_compose_files() {
+fluxer_read_compose_setting() {
 	fluxer_compose_file=${COMPOSE_FILE:-}
 	fluxer_compose_from="the environment"
 	if [ -z "$fluxer_compose_file" ]; then
 		fluxer_compose_file=$(fluxer_env_scalar COMPOSE_FILE)
 		fluxer_compose_from="$opt_dir/.env"
 	fi
-	[ -n "$fluxer_compose_file" ] || return 0
 	fluxer_path_sep=${COMPOSE_PATH_SEPARATOR:-}
 	if [ -z "$fluxer_path_sep" ]; then
 		fluxer_path_sep=$(fluxer_env_scalar COMPOSE_PATH_SEPARATOR)
@@ -1102,6 +1199,36 @@ fluxer_require_compose_files() {
 	if [ -z "$fluxer_path_sep" ]; then
 		fluxer_path_sep=':'
 	fi
+}
+
+fluxer_resolve_compose_base() {
+	fluxer_read_compose_setting
+	fluxer_compose_base_from=''
+	fluxer_rest=$fluxer_compose_file
+	while [ -n "$fluxer_rest" ]; do
+		fluxer_name=${fluxer_rest%%"$fluxer_path_sep"*}
+		case $fluxer_rest in
+			*"$fluxer_path_sep"*) fluxer_rest=${fluxer_rest#*"$fluxer_path_sep"} ;;
+			*) fluxer_rest='' ;;
+		esac
+		[ -n "$fluxer_name" ] || continue
+		fluxer_compose_base=${fluxer_name#./}
+		fluxer_compose_base=${fluxer_compose_base#"$opt_dir"/}
+		fluxer_compose_base_from="COMPOSE_FILE from $fluxer_compose_from"
+		break
+	done
+	if [ -z "$fluxer_compose_base_from" ]; then
+		fluxer_compose_base=$(fluxer_compose_name_in "$opt_dir" || printf '%s' 'docker-compose.yml')
+		return 0
+	fi
+	case $fluxer_compose_base in
+		*/*) fluxer_fail 2 "$fluxer_compose_base_from names $fluxer_name first, and that file is not directly in $opt_dir. This script refreshes only the files in the directory it acts on, so the upgrade would leave the file Compose loads on the old stack. Move it into $opt_dir and name it there, or upgrade by hand." ;;
+	esac
+}
+
+fluxer_require_compose_files() {
+	fluxer_read_compose_setting
+	[ -n "$fluxer_compose_file" ] || return 0
 	fluxer_compose_count=0
 	fluxer_rest=$fluxer_compose_file
 	while [ -n "$fluxer_rest" ]; do
@@ -1131,7 +1258,7 @@ Leave the COMPOSE_FILE line as it is. Without $fluxer_name the edge container bi
 	done
 	if [ "$fluxer_compose_count" -gt 1 ] &&
 		! fluxer_version_ge "$fluxer_compose_version" "$FLUXER_MIN_COMPOSE_OVERLAY"; then
-		fluxer_fail 2 "COMPOSE_FILE from $fluxer_compose_from loads $fluxer_compose_count files and this host runs Compose $fluxer_compose_version. Every overlay this script downloads uses the !override tag, which needs Compose $FLUXER_MIN_COMPOSE_OVERLAY or newer. Upgrade Compose, or load only docker-compose.yml."
+		fluxer_fail 2 "COMPOSE_FILE from $fluxer_compose_from loads $fluxer_compose_count files and this host runs Compose $fluxer_compose_version. Every overlay this script downloads uses the !override tag, which needs Compose $FLUXER_MIN_COMPOSE_OVERLAY or newer. Upgrade Compose, or load only $fluxer_compose_base."
 	fi
 }
 
@@ -1261,10 +1388,11 @@ fluxer_save_current_files() {
 	chmod 600 "$fluxer_record/.env"
 	while read -r fluxer_file; do
 		[ -n "$fluxer_file" ] || continue
-		if [ -s "$opt_dir/$fluxer_file" ]; then
-			cp -p "$opt_dir/$fluxer_file" "$fluxer_record/$fluxer_file"
-		elif [ -e "$opt_dir/$fluxer_file" ]; then
-			fluxer_fail 7 "$opt_dir/$fluxer_file is empty, so the record would hold a file a rollback could not use. Put the file back before upgrading."
+		fluxer_placed="$opt_dir/$(fluxer_placed_name "$fluxer_file")"
+		if [ -s "$fluxer_placed" ]; then
+			cp -p "$fluxer_placed" "$fluxer_record/$fluxer_file"
+		elif [ -e "$fluxer_placed" ]; then
+			fluxer_fail 7 "$fluxer_placed is empty, so the record would hold a file a rollback could not use. Put the file back before upgrading."
 		fi
 	done < "$fluxer_scratch/files"
 }
@@ -1297,7 +1425,28 @@ fluxer_postgres_running() {
 # step does not, because the size of a custom-format dump is not knowable before
 # pg_dump writes it. Point --backup-dir at a filesystem with room for the
 # database.
+# The bundled data stores are services in the stack file. An operator who points
+# the stack at a database or an object store outside it takes those services out,
+# and the two backup steps that reach into them then have nothing to reach. That
+# is a supported shape rather than a fault, so each step says what it skipped and
+# the upgrade goes on. Backing up a store outside the stack belongs to whoever
+# runs it.
+fluxer_stack_defines_service() {
+	if [ ! -f "$fluxer_scratch/all-services" ]; then
+		if ! fluxer_compose_services > "$fluxer_scratch/all-services"; then
+			rm -f "$fluxer_scratch/all-services"
+			fluxer_fail 6 "docker compose config --services failed in $opt_dir, so the services this stack defines cannot be read. Compose printed:
+$(fluxer_compose_error '  ')"
+		fi
+	fi
+	grep -qxF "$1" "$fluxer_scratch/all-services"
+}
+
 fluxer_dump_postgres() {
+	if ! fluxer_stack_defines_service postgres; then
+		fluxer_say 'Skipping the database dump. This stack defines no postgres service, so its database runs outside the stack and only the operator of that database can dump it.'
+		return 0
+	fi
 	if ! fluxer_postgres_running; then
 		fluxer_say 'Postgres is not running. Starting it for the dump.'
 		if ! $fluxer_engine compose up -d --wait postgres; then
@@ -1346,6 +1495,10 @@ fluxer_free_kb() {
 #   docker run --rm -v fluxer_seaweedfs-data:/data -v "$PWD/backups:/backup" alpine tar czf /backup/seaweedfs-data.tgz -C /data .
 #   docker compose up -d
 fluxer_copy_volumes() {
+	if ! fluxer_stack_defines_service seaweedfs; then
+		fluxer_say 'Skipping the uploads copy. This stack defines no seaweedfs service, so its objects live outside the stack and only the operator of that store can copy them.'
+		return 0
+	fi
 	fluxer_backup_volumes > "$fluxer_scratch/backup-volumes"
 	: > "$fluxer_scratch/copy-volumes"
 	fluxer_copy_any=0
@@ -1420,7 +1573,7 @@ fluxer_postgres_major() {
 # The refreshed file is still in the scratch directory when this runs, so a
 # refusal here leaves the instance exactly as it was.
 fluxer_guard_postgres_major() {
-	fluxer_old_major=$(fluxer_postgres_major "$opt_dir/docker-compose.yml")
+	fluxer_old_major=$(fluxer_postgres_major "$opt_dir/$fluxer_compose_base")
 	fluxer_new_major=$(fluxer_postgres_major "$fluxer_scratch/docker-compose.yml.part")
 	if [ -z "$fluxer_old_major" ] || [ -z "$fluxer_new_major" ]; then
 		return 0
@@ -1471,7 +1624,7 @@ $(fluxer_compose_error '  ')"
 	while read -r fluxer_file fluxer_service; do
 		[ -n "$fluxer_service" ] || continue
 		if ! grep -qxF "$fluxer_service" "$fluxer_scratch/services"; then
-			fluxer_say "Skipping the restart of $fluxer_service, because the docker-compose.yml in $opt_dir defines no service by that name."
+			fluxer_say "Skipping the restart of $fluxer_service, because the $fluxer_compose_base in $opt_dir defines no service by that name."
 			continue
 		fi
 		fluxer_say "Restarting $fluxer_service, because $fluxer_file is mounted into it and up -d does not reload a mounted file."
@@ -1511,9 +1664,9 @@ fluxer_verify_stack() {
 	if ! fluxer_wait_ready; then
 		fluxer_fail 6 "The stack is not ready after $FLUXER_READY_TIMEOUT seconds. Read $fluxer_engine compose logs in $opt_dir."
 	fi
-	fluxer_domain_value=$(fluxer_env_value FLUXER_DOMAIN)
-	if [ -n "$fluxer_domain_value" ]; then
-		fluxer_probe "$fluxer_domain_value"
+	fluxer_origin_value=$(fluxer_public_origin)
+	if [ -n "$fluxer_origin_value" ]; then
+		fluxer_probe "$fluxer_origin_value"
 	fi
 }
 
@@ -1577,20 +1730,21 @@ fluxer_plan_update() {
 	fluxer_changed=0
 	while read -r fluxer_file; do
 		[ -n "$fluxer_file" ] || continue
-		if [ ! -e "$opt_dir/$fluxer_file" ]; then
-			fluxer_say "    $fluxer_file is new"
+		fluxer_placed=$(fluxer_placed_name "$fluxer_file")
+		if [ ! -e "$opt_dir/$fluxer_placed" ]; then
+			fluxer_say "    $fluxer_placed is new"
 			fluxer_changed=1
-		elif cmp -s "$opt_dir/$fluxer_file" "$fluxer_scratch/$fluxer_file.part"; then
-			fluxer_say "    $fluxer_file is unchanged"
+		elif cmp -s "$opt_dir/$fluxer_placed" "$fluxer_scratch/$fluxer_file.part"; then
+			fluxer_say "    $fluxer_placed is unchanged"
 		else
-			fluxer_say "    $fluxer_file changes"
+			fluxer_say "    $fluxer_placed changes"
 			fluxer_changed=1
 		fi
 	done < "$fluxer_scratch/files"
 	if [ "$fluxer_changed" -eq 0 ]; then
 		fluxer_say "  note          ref $opt_ref moves no stack file"
 	fi
-	fluxer_old_major=$(fluxer_postgres_major "$opt_dir/docker-compose.yml")
+	fluxer_old_major=$(fluxer_postgres_major "$opt_dir/$fluxer_compose_base")
 	fluxer_new_major=$(fluxer_postgres_major "$fluxer_scratch/docker-compose.yml.part")
 	if [ -n "$fluxer_old_major" ] && [ -n "$fluxer_new_major" ] && [ "$fluxer_old_major" != "$fluxer_new_major" ]; then
 		fluxer_say "  refusal       postgres moves from $fluxer_old_major to $fluxer_new_major, which this script does not do"
@@ -1783,7 +1937,7 @@ fluxer_run_rollback() {
 	while read -r fluxer_file; do
 		[ -n "$fluxer_file" ] || continue
 		if [ -s "$fluxer_rollback_dir/$fluxer_file" ]; then
-			cp -p "$fluxer_rollback_dir/$fluxer_file" "$opt_dir/$fluxer_file"
+			cp -p "$fluxer_rollback_dir/$fluxer_file" "$opt_dir/$(fluxer_placed_name "$fluxer_file")"
 		elif [ -e "$fluxer_rollback_dir/$fluxer_file" ]; then
 			fluxer_fail 3 "$fluxer_rollback_dir/$fluxer_file is empty, so restoring it would replace a working file with nothing. Nothing was restored. Take the file from another record or from the ref the record names."
 		fi
@@ -1863,6 +2017,7 @@ if ! fluxer_generate_vapid; then
 fi
 fluxer_write_env
 fluxer_say "Wrote $opt_dir/.env, readable by you alone."
+fluxer_say 'That .env serves https on 443, which is the only layout this script writes. The .env.example beside it says what to change for any other one.'
 
 if [ "$opt_no_start" -eq 1 ]; then
 	fluxer_say "Start the instance with $fluxer_engine compose up -d in $opt_dir."
@@ -1879,8 +2034,12 @@ fluxer_say 'Waiting for every service to report ready. This takes several minute
 if ! fluxer_wait_ready; then
 	fluxer_fail 6 "The stack is not ready after $FLUXER_READY_TIMEOUT seconds. Read $fluxer_engine compose logs in $opt_dir."
 fi
-fluxer_probe "$opt_domain"
+fluxer_ready_origin=$(fluxer_public_origin)
+if [ -z "$fluxer_ready_origin" ]; then
+	fluxer_ready_origin="https://$opt_domain"
+fi
+fluxer_probe "$fluxer_ready_origin"
 
-fluxer_say "Instance ready at https://$opt_domain"
+fluxer_say "Instance ready at $fluxer_ready_origin"
 fluxer_say 'Open it and create the first admin account. Finish the setup wizard in the same sitting.'
 fluxer_say "Secrets live in $opt_dir/.env. Back that file up."

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {Logger} from '@app/features/platform/utils/AppLogger';
+import {isFirefoxBrowser} from '@app/features/ui/utils/NativeUtils';
 import {
 	computeDecodableByKnownParticipants,
 	type FluxerVideoCodecName,
@@ -24,6 +25,8 @@ import {loadGpuEncoderReport} from '@app/features/voice/utils/GpuEncoderCapabili
 import {loadNativeHardwareEncoderCapabilities} from '@app/features/voice/utils/NativeHardwareEncoderCapabilities';
 import {loadOpenH264Status} from '@app/features/voice/utils/OpenH264Status';
 import {
+	clearScreenShareDecodeFailures,
+	getScreenShareDecodeFailures,
 	getVideoDecoderExclusionsSync,
 	loadVideoDecoderExclusions,
 } from '@app/features/voice/utils/VideoDecoderCapabilities';
@@ -68,6 +71,7 @@ const CODEC_PRIORITY_MAX = 65_535;
 const CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['av1', 'h265', 'h264', 'vp9', 'vp8'];
 // Echowire: no av1 in software encoding, see comment above.
 const SOFTWARE_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['vp9', 'h264', 'vp8', 'h265'];
+const GECKO_SOFTWARE_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['vp8', 'h264'];
 const COMPATIBILITY_FALLBACK_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['h264', 'vp9', 'vp8'];
 const BASELINE_VIDEO_CODEC: VideoCodec = 'vp8';
 const VIDEO_CODEC_PROTOCOL_TABLE: Record<
@@ -184,6 +188,9 @@ function hasReceiverCapability(codec: VideoCodec): boolean | null {
 
 function getLocalDecodeCapabilities(): Record<VideoCodec, boolean> {
 	const exclusions = new Set(getVideoDecoderExclusionsSync() ?? []);
+	for (const codec of getScreenShareDecodeFailures()) {
+		exclusions.add(codec);
+	}
 	const result: Record<VideoCodec, boolean> = {
 		av1: false,
 		h265: false,
@@ -193,7 +200,7 @@ function getLocalDecodeCapabilities(): Record<VideoCodec, boolean> {
 	};
 	for (const codec of CODEC_PREFERENCE) {
 		const advertised = hasReceiverCapability(codec);
-		result[codec] = advertised === null ? result[codec] : advertised && !exclusions.has(codec);
+		result[codec] = (advertised === null ? result[codec] : advertised) && !exclusions.has(codec);
 	}
 	return result;
 }
@@ -202,8 +209,11 @@ export function getScreenShareCodecPreferenceOrder(
 	preference: CodecPreference = VoiceSettings.getPreferredScreenShareCodec(),
 ): ReadonlyArray<VideoCodec> {
 	const encoderMode = resolveEffectiveScreenShareEncoderMode(VoiceSettings.getScreenShareEncoderMode());
-	const automaticOrder =
-		encoderMode === 'software' ? SOFTWARE_CODEC_PREFERENCE : getHardwareFirstScreenShareCodecPreferenceOrder();
+	const automaticOrder = isFirefoxBrowser()
+		? GECKO_SOFTWARE_CODEC_PREFERENCE
+		: encoderMode === 'software'
+			? SOFTWARE_CODEC_PREFERENCE
+			: getHardwareFirstScreenShareCodecPreferenceOrder();
 	const order =
 		preference !== 'auto' ? [preference, ...automaticOrder.filter((codec) => codec !== preference)] : automaticOrder;
 	return order.filter((codec) => isVideoCodecAllowedForPublish(codec));
@@ -539,6 +549,7 @@ class ScreenShareCodecNegotiation {
 	}
 
 	private canUseSelectedCodecForCurrentParticipants(codec: VideoCodec): boolean {
+		if (!isVideoCodecAllowedForPublish(codec)) return false;
 		if (!this.canLocalEncode(codec)) return false;
 		const {knownRemoteCodecs, unknownParticipants} = this.getRemoteCodecInputs();
 		if (unknownParticipants > 0) return false;
@@ -633,6 +644,7 @@ class ScreenShareCodecNegotiation {
 		this.remoteCodecsByIdentity.clear();
 		this.mediaSessionId = createId('media');
 		this.negotiationSnapshot = createScreenShareCodecNegotiationSnapshot();
+		clearScreenShareDecodeFailures();
 	}
 
 	async publishLocalCapabilities(
@@ -667,7 +679,7 @@ class ScreenShareCodecNegotiation {
 				},
 				codecs: this.localCodecs,
 				rtc_connection_id: this.rtcConnectionId,
-				experiments: ['fixed_keyframe_interval', 'maintain_framerate', 'opus_red', 'transport_cc', 'loss_based_bwe_v2'],
+				experiments: [],
 			},
 		};
 		await this.publishMessage(room, message);

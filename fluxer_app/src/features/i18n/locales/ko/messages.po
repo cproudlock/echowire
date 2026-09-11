@@ -272,16 +272,6 @@ msgstr "맞춤 배경 {backgroundCount}/{maxBackgroundImages}개"
 msgid "{backgroundCount} / {maxBackgroundImages} custom backgrounds"
 msgstr "맞춤 배경화면 {backgroundCount} / {maxBackgroundImages}개"
 
-#. Plutonium gift checkout guidance for Poland. Explains that BLIK works for gifts but not for recurring subscriptions.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:53
-msgid "{blikPaymentMethod} can be used for one-time PLN gift payments, even though it does not support subscriptions in {paymentProviderName} checkout."
-msgstr "{blikPaymentMethod}은(는) {paymentProviderName} 결제에서 구독을 지원하지 않지만, 일회성 PLN 선물 결제에 사용할 수 있습니다."
-
-#. Plutonium subscription checkout guidance for Poland. Clarifies that BLIK is not available for recurring subscriptions.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:181
-msgid "{blikPaymentMethod} does not support subscriptions in {paymentProviderName} checkout."
-msgstr "{blikPaymentMethod}은(는) {paymentProviderName} 결제에서 구독을 지원하지 않습니다."
-
 #. Accessible label for a category row in the Discovery search sidebar. {categoryLabel} is the category name and {count} is how many communities match the current search in it. Both are inserted by code.
 #: src/features/discovery/discovery/DiscoverySearchFilters.tsx:37
 msgid "{categoryLabel}, {count, plural, one {# community} other {# communities}}"
@@ -355,7 +345,7 @@ msgstr "{count, plural, one {#개 북마크} other {#개 북마크}}"
 msgid "{count, plural, one {# community found} other {# communities found}}"
 msgstr "{count, plural, one {#개 커뮤니티 찾음} other {#개 커뮤니티 찾음}}"
 
-#: src/features/app/components/layout/GuildsLayout.tsx:1950
+#: src/features/app/components/layout/GuildsLayout.tsx:1953
 msgid "{count, plural, one {# community is temporarily unavailable due to a flux capacitor malfunction.} other {# communities are temporarily unavailable due to a flux capacitor malfunction.}}"
 msgstr "{count, plural, one {#개 커뮤니티가 플럭스 캐패시터 오작동으로 인해 일시적으로 이용할 수 없습니다.} other {#개 커뮤니티가 플럭스 캐패시터 오작동으로 인해 일시적으로 이용할 수 없습니다.}}"
 
@@ -404,7 +394,7 @@ msgstr "{count, plural, one {#개의 공통 커뮤니티} other {#개의 공통 
 msgid "{count, plural, one {# other} other {# others}}"
 msgstr "{count, plural, one {#명 외} other {#명 외}}"
 
-#: src/features/voice/components/VoiceCallView.tsx:506
+#: src/features/voice/components/VoiceCallView.tsx:507
 msgid "{count, plural, one {# participant in call} other {# participants in call}}"
 msgstr "{count, plural, one {#명 통화 중} other {#명 통화 중}}"
 
@@ -450,7 +440,7 @@ msgstr "{count, plural, one {펼치기 (#줄)} other {펼치기 (#줄)}}"
 msgid "{count, plural, one {Expand (# row)} other {Expand (# rows)}}"
 msgstr "{count, plural, one {# 행 확장} other {# 행 확장}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:311
+#: src/features/voice/components/VoiceParticipantTile.tsx:315
 msgid "{count, plural, one {Expand # other device} other {Expand # other devices}}"
 msgstr "{count, plural, one {#개의 다른 기기 확장} other {#개의 다른 기기 확장}}"
 
@@ -471,7 +461,7 @@ msgstr "{count, plural, one {통화 중} other {#명 통화 중}}"
 msgid "{count, plural, one {Join video call (# participant)} other {Join video call (# participants)}}"
 msgstr "{count, plural, one {영상 통화 참여 (참여자 #명)} other {영상 통화 참여 (참여자 #명)}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:637
+#: src/features/voice/components/VoiceParticipantTile.tsx:655
 msgid "{count, plural, one {Keep watching # stream and add this one} other {Keep watching # streams and add this one}}"
 msgstr "{count, plural, one {#개의 스트림을 계속 시청하고 이 스트림을 추가합니다} other {#개의 스트림을 계속 시청하고 이 스트림을 추가합니다}}"
 
@@ -850,16 +840,6 @@ msgstr "{lineCount, plural, one {#줄} other {#줄}}"
 msgid "{matchCount, plural, one {# match} other {# matches}}"
 msgstr "{matchCount, plural, one {#개 일치} other {#개 일치}}"
 
-#. Plutonium gift checkout guidance for Portugal. Explains that MB WAY can be used for one-time EUR gift purchases.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:83
-msgid "{mbWayPaymentMethod} can be used for one-time EUR gift payments when {paymentProviderName} offers it on the checkout page."
-msgstr "{paymentProviderName}에서 결제 페이지에 {mbWayPaymentMethod}를 제공하는 경우, 일회성 EUR 선물 결제에 {mbWayPaymentMethod}를 사용할 수 있습니다."
-
-#. Plutonium subscription checkout guidance for Portugal. Explains that MB WAY cannot be used for recurring subscriptions.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:103
-msgid "{mbWayPaymentMethod} is a one-time payment method in {paymentProviderName} checkout, so it is not a recurring subscription path here."
-msgstr "{mbWayPaymentMethod}은(는) {paymentProviderName} 결제 시 일회성 결제 수단이므로, 여기서는 정기 구독에 사용할 수 없습니다."
-
 #. Community tooltip stat showing the total member count. memberCount is already localized for display; rawMemberCount controls plural grammar.
 #: src/features/app/components/layout/sidebar_nav/GuildListItemTooltip.tsx:36
 msgid "{memberCount} {rawMemberCount, plural, one {member} other {members}}"
@@ -936,19 +916,9 @@ msgid "{overrideCount, plural, one {# override} other {# overrides}}"
 msgstr "{overrideCount, plural, one {#개 재정의} other {#개 재정의}}"
 
 #. Modal body for the mobile card verification confirmation. Explains the two-step flow and the return path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:182
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:181
 msgid "{paymentProviderName} will first verify that your card is eligible for localized pricing, then continue you to payment. Return to {productName} once you've completed it."
 msgstr "{paymentProviderName}에서 먼저 현지 가격 책정에 카드 사용이 가능한지 확인한 다음 결제를 진행합니다. 완료되면 {productName}으로 돌아와 주세요."
-
-#. Plutonium gift checkout guidance for Brazil. Explains that Pix is available for one-time gift purchases via the payment provider.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:24
-msgid "{pixPaymentMethod} can be used for one-time BRL payments when {paymentProviderName} offers it on the checkout page."
-msgstr "{paymentProviderName}에서 결제 시 {pixPaymentMethod}를 통해 일회성 BRL 결제를 할 수 있습니다."
-
-#. Plutonium subscription checkout guidance for Brazil. Explains that recurring Pix avoids card verification.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:140
-msgid "{pixPaymentMethod} can skip the card verification step when {paymentProviderName} offers recurring {pixPaymentMethod2} for your checkout."
-msgstr "{pixPaymentMethod}을(를) 사용하면 {paymentProviderName}에서 정기 {pixPaymentMethod2}를 제공하는 경우 카드 인증 단계를 건너뛸 수 있습니다."
 
 #. Badge label with a date in the user profile badges popout. Preserve {premiumProductFullName}, {premiumSinceFormatted}; they are inserted by code. In English, keep "subscriber since" lowercase. Other locales should use natural local capitalization.
 #: src/features/user/components/popouts/UserProfileBadges.tsx:51
@@ -959,6 +929,16 @@ msgstr "{premiumProductFullName} 구독 시작일: {premiumSinceFormatted}"
 #: src/features/user/components/modals/tabs/my_profile_tab/PremiumBadgeSettings.tsx:58
 msgid "{premiumProductName} badge privacy"
 msgstr "{premiumProductName} 배지 공개 설정"
+
+#. Nagbar body shown to monthly subscribers who are still billed the older, higher price after a price cut. {premiumProductName} is the short paid product name. {currentPrice} and {newPrice} are monthly currency amounts already formatted and localized by code, and {effectiveDate} is a date already formatted and localized by code; never write an amount or a date into the translation. Keep the tone calm and plain.
+#: src/features/premium/config/PriceAnnouncementCampaign.ts:13
+msgid "{premiumProductName} costs less now. Switch from {currentPrice} to {newPrice} a month starting {effectiveDate}, and nothing is charged today."
+msgstr "{premiumProductName}의 가격이 인하되었습니다. {effectiveDate}부터 월 {currentPrice}에서 {newPrice}(으)로 전환하세요. 오늘 요금은 청구되지 않습니다."
+
+#. Nagbar body shown to yearly subscribers who are still billed the older, higher price after a price cut. {premiumProductName} is the short paid product name. {currentPrice} and {newPrice} are yearly currency amounts already formatted and localized by code, and {effectiveDate} is a date already formatted and localized by code; never write an amount or a date into the translation. Keep the tone calm and plain.
+#: src/features/premium/config/PriceAnnouncementCampaign.ts:19
+msgid "{premiumProductName} costs less now. Switch from {currentPrice} to {newPrice} a year starting {effectiveDate}, and nothing is charged today."
+msgstr "{premiumProductName}의 연간 요금이 인하되었습니다. {effectiveDate}부터 연간 {currentPrice}에서 {newPrice}(으)로 전환하세요. 오늘 요금은 청구되지 않습니다."
 
 #. Link label that opens the premium perks list. premiumProductName is the premium plan name.
 #: src/features/app/components/dialogs/components/PerksButton.tsx:10
@@ -1337,16 +1317,6 @@ msgstr "새 메시지 {unreadCount}개 이상 (오전/오후 {compactTime})"
 msgid "{unreadCount}+ new since {shortTime}"
 msgstr "{shortTime} 이후 새로운 메시지 {unreadCount}개 이상"
 
-#. Plutonium gift checkout guidance for India. Explains that UPI is available for one-time gift purchases via the payment provider.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:39
-msgid "{upiPaymentMethod} can be used for one-time INR payments when {paymentProviderName} offers it on the checkout page."
-msgstr "{paymentProviderName}에서 결제 시 {upiPaymentMethod}를 통해 1회성 INR 결제를 할 수 있습니다."
-
-#. Plutonium subscription checkout guidance for India. Explains that recurring UPI avoids card verification.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:160
-msgid "{upiPaymentMethod} can skip the card verification step when {paymentProviderName} offers recurring {upiPaymentMethod2} for your checkout."
-msgstr "{upiPaymentMethod}는 {paymentProviderName}에서 정기 {upiPaymentMethod2}를 제공하는 경우 카드 인증 단계를 건너뛸 수 있습니다."
-
 #. System message in a group DM when a member adds another user. username is the actor, userName is the added user.
 #: src/features/messaging/utils/SystemMessageUtils.tsx:100
 msgid "{username} added {userName} to the group."
@@ -1398,7 +1368,7 @@ msgid "{username} started a call."
 msgstr "{username}님이 통화를 시작했습니다."
 
 #. Short label in the channel and chat embed you tube. Keep it concise. Preserve {youtubeProviderName}; it is inserted by code.
-#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:34
+#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:35
 msgid "{youtubeProviderName} video"
 msgstr "{youtubeProviderName} 동영상"
 
@@ -1522,10 +1492,6 @@ msgstr "<0>닉네임</0> {0} 삭제됨."
 msgid "<0>Removed</0> the vanity URL."
 msgstr "<0>허영심 URL</0>을(를) 제거했습니다."
 
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:84
-msgid "<0>Saved media</0>: uploaded, taggable, searchable, and persistent, but counts against your saved media limit."
-msgstr "<0>저장된 미디어</0>: 업로드, 태그, 검색, 영구 보관이 가능하지만, 저장된 미디어 한도에 포함됩니다."
-
 #. Activity-log sentence. A moderator removed voice deafen from a member, meaning the member can hear others again. Preserve the rich-text tags.
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTabRenderers.tsx:489
 msgid "<0>Undeafened</0> the member."
@@ -1534,10 +1500,6 @@ msgstr "<0>회원</0>의 음소거를 해제했습니다."
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTabRenderers.tsx:499
 msgid "<0>Unmuted</0> the member."
 msgstr "<0>멤버의 음소거를 해제했습니다.</0>."
-
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:72
-msgid "<0>URL-only favorites (default)</0>: synced across your devices, no upload, doesn't count against saved media. The original media may disappear if its host removes it."
-msgstr "<0>URL 전용 즐겨찾기 (기본)</0>: 기기 간 동기화되며, 업로드되지 않고, 저장된 미디어 용량에 포함되지 않습니다. 원본 미디어는 호스트에서 삭제되면 사라질 수 있습니다."
 
 #. Summary chip text in the mobile channel search sheet when exactly one channel is selected as a filter.
 #: src/features/channel/components/bottomsheets/ChannelSearchBottomSheet.tsx:167
@@ -1576,14 +1538,14 @@ msgstr "1분"
 msgid "1 month"
 msgstr "1개월"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:144
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:119
 msgid "1 month {giftMonthlyPrice}"
 msgstr "1개월 {giftMonthlyPrice}"
 
 #. Billing plan title for a one-month gift subscription.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:34
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:68
+#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:32
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:66
 msgid "1 month gift"
 msgstr "1개월 선물"
 
@@ -1629,14 +1591,14 @@ msgstr "1주"
 msgid "1 year"
 msgstr "1년"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:128
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:103
 msgid "1 year {giftYearlyPrice}"
 msgstr "1년 {giftYearlyPrice}"
 
 #. Billing plan title for a one-year gift subscription.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:26
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:60
+#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:24
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:58
 msgid "1 year gift"
 msgstr "1년 선물"
 
@@ -1883,6 +1845,11 @@ msgstr "호스트 이름(예: {exampleDomain})"
 #: src/features/updater/commands/UpdaterModalCommands.tsx:130
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
 msgstr "Linux 데스크톱 업데이트가 있습니다. 이 시스템에 대한 패키지 형식을 선택하면 {productName}이 로컬에 저장됩니다."
+
+#. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682
+msgid "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
+msgstr "더 저렴한 가격으로 이용하실 수 있습니다. 변경 사항은 <0>{listPriceEffectiveDate}</0>부터 적용되며 다른 내용은 변경되지 않습니다."
 
 #. Duration label component for an elapsed call. Shown when the call lasted about a minute.
 #: src/features/channel/components/CallMessage.tsx:35
@@ -2176,13 +2143,13 @@ msgstr "작업"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning the paid subscription is active.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:370
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:445
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:37
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:19
 msgid "Active"
 msgstr "활성"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:358
+#: src/features/app/components/floating/UserAreaPopout.tsx:356
 #: src/features/auth/components/accounts/AccountRow.tsx:136
 msgid "Active account"
 msgstr "사용 중인 계정"
@@ -2483,6 +2450,11 @@ msgstr "항목 추가"
 msgid "Add local files"
 msgstr "로컬 파일 추가"
 
+#. Permission description in the channel-scoped permissions editor for the Add Reactions permission. "New" reaction means starting a new reaction emoji on a message (not stacking onto an existing one).
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:269
+msgid "Add new reactions to messages in this channel."
+msgstr "이 채널의 메시지에 새로운 반응을 추가합니다."
+
 #. Permission description in the role/permission editor for the Add Reactions permission. "New" reaction means starting a new reaction emoji on a message (not stacking onto an existing one).
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:83
 msgid "Add new reactions to messages."
@@ -2512,7 +2484,7 @@ msgid "Add reaction"
 msgstr "이모티콘 추가"
 
 #. Permission name: allows adding reactions to messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:245
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:436
 msgid "Add reactions"
 msgstr "반응 추가"
 
@@ -2651,7 +2623,7 @@ msgid "Added roles."
 msgstr "역할 추가됨."
 
 #. Button or menu action label in the messaging commands. Keep it concise.
-#: src/features/messaging/commands/SavedMessageCommands.tsx:19
+#: src/features/messaging/commands/SavedMessageCommands.tsx:20
 msgid "Added to bookmarks"
 msgstr "북마크에 추가됨"
 
@@ -2735,7 +2707,7 @@ msgid "Adjust the overall zoom level of the app. Use {zoomIn} / {zoomOut} to adj
 msgstr "앱의 전체적인 확대/축소 수준을 조정합니다. {zoomIn} 또는 {zoomOut}을(를) 사용하여 빠르게 조정할 수 있습니다."
 
 #. Permission name: grants all permissions and bypasses restrictions.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:157
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:348
 msgid "Administrator"
 msgstr "관리자"
 
@@ -2830,19 +2802,19 @@ msgstr "정렬 컨트롤은 더 넓은 화면에서만 사용할 수 있습니�
 msgid "All"
 msgstr "전체"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:447
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:522
 msgid "All <0/> for <1>{effectiveMonthlyPrice}/month</1>."
 msgstr "모두 <0/> 월 <1>{effectiveMonthlyPrice}</1>에 이용하세요."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:469
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:544
 msgid "All <0/> for <1>{effectiveYearlyPrice}/year</1>."
 msgstr "모두 <0/> <1>연간 {effectiveYearlyPrice}</1>입니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:490
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:565
 msgid "All <0/> included with your subscription."
 msgstr "구독에 <0/> 모두 포함됩니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:437
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:512
 msgid "All <0/>, forever. No billing, no renewals."
 msgstr "모든 <0/>를 영원히. 청구도 갱신도 없습니다."
 
@@ -3160,7 +3132,7 @@ msgid "Already set to cancel"
 msgstr "이미 취소 예정"
 
 #. Toggle-switch label in the moderator delete-message confirmation dialog. When enabled, the message is reported (category: other) before being deleted. {productName} is the product name (e.g., Fluxer).
-#: src/features/messaging/commands/MessageCommands.tsx:81
+#: src/features/messaging/commands/MessageCommands.tsx:84
 msgid "Also report this message to the {productName} Safety Team"
 msgstr "{productName} 안전팀에도 이 메시지를 신고"
 
@@ -3649,7 +3621,7 @@ msgid "App settings"
 msgstr "앱 설정"
 
 #. Developer options group for overriding app/account state.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:37
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:47
 msgid "App state"
 msgstr "앱 상태"
 
@@ -3920,7 +3892,7 @@ msgid "Arrow keys review suggestions. Enter selects, Escape clears, Tab moves on
 msgstr "화살표 키로 제안을 검토합니다. Enter 키로 선택하고, Escape 키로 지우고, Tab 키로 다음으로 이동합니다."
 
 #. Purchase mode option for buying a gift subscription for another user.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:32
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:30
 msgid "As a gift"
 msgstr "선물하기"
 
@@ -3954,7 +3926,7 @@ msgid "At least one channel must have \"{viewChannelPermissionLabel}\" permissio
 msgstr "정식 URL이 작동하려면 하나 이상의 채널에서 {EVERYONE_MENTION}에 대해 \"{viewChannelPermissionLabel}\" 권한이 활성화되어 있어야 합니다. 현재 {EVERYONE_MENTION}에게 표시되는 채널이 없습니다."
 
 #. Permission name: allows uploading files to messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:229
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:420
 msgid "Attach files"
 msgstr "파일 첨부"
 
@@ -4058,7 +4030,7 @@ msgid "Audio"
 msgstr "오디오"
 
 #. Permission category for voice, video, and streaming permissions.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:149
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:340
 msgid "Audio & video"
 msgstr "오디오 및 비디오"
 
@@ -4573,9 +4545,9 @@ msgstr "지금은 부재중"
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
 #. OAuth authorization secondary button. Returns to the previous carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:75
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:77
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAuthorizeActions.tsx:14
-#: src/features/auth/flow/IpAuthorizationScreen.tsx:150
+#: src/features/auth/flow/IpAuthorizationScreen.tsx:152
 #: src/features/channel/components/channel_header/shared.ts:27
 #: src/features/connection/components/modals/AddConnectionModal.tsx:397
 #: src/features/guild/components/modals/add_guild_modal/GuildCreateForm.tsx:164
@@ -4637,7 +4609,7 @@ msgid "Back to sticker"
 msgstr "스티커로 돌아가기"
 
 #. Tooltip / aria label on the back button that returns from the call view to the voice channel view.
-#: src/features/voice/components/VoiceCallView.tsx:114
+#: src/features/voice/components/VoiceCallView.tsx:115
 msgid "Back to voice channel"
 msgstr "음성 채널로 돌아가기"
 
@@ -4773,9 +4745,14 @@ msgid "Ban member"
 msgstr "멤버 차단"
 
 #. Permission name: allows banning members from a community.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:181
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:372
 msgid "Ban members"
 msgstr "멤버 차단"
+
+#. Permission description in the role/permission editor for the Ban Members permission. A ban keeps the member out until it is lifted, and the moderator chooses how much recent message history to delete.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:123
+msgid "Ban members from the community, with the option to delete their recent messages."
+msgstr "커뮤니티에서 멤버를 차단하고, 최근 메시지를 삭제할 수 있습니다."
 
 #. IAR modal: quick-action card title for banning the reported user (moderator-only).
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:121
@@ -4860,6 +4837,16 @@ msgstr "기본 설정 및 허용된 리디렉션 URI."
 msgid "Basic text inputs"
 msgstr "기본 텍스트 입력"
 
+#. Permission description in the channel-scoped permissions editor for the Priority Speaker permission. "Push to talk (priority)" is the name of a keybind in the keybind settings, so match the wording used there.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:300
+msgid "Be heard over other members in this channel while holding the push to talk (priority) keybind."
+msgstr "푸시 투 토크(우선순위) 단축키를 누르고 있는 동안 이 채널의 다른 멤버들보다 더 잘 들리게 됩니다."
+
+#. Permission description in the role/permission editor for the Priority Speaker permission at community scope. "Push to talk (priority)" is the name of a keybind in the keybind settings, so match the wording used there.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:176
+msgid "Be heard over other members while holding the push to talk (priority) keybind."
+msgstr "푸시 투 토크(우선순위) 키바인드를 누르고 있는 동안 다른 멤버들보다 더 잘 들리도록 합니다."
+
 #. Short label in the guild members date range modal. Keep it concise.
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:19
 msgid "Before date"
@@ -4902,7 +4889,7 @@ msgstr "결제 주기"
 
 #. Accordion title in the premium billing panel.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:56
+#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:50
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:104
 msgid "Billing history"
 msgstr "결제 내역"
@@ -5099,7 +5086,7 @@ msgstr "메시지 북마크"
 
 #. Description text in the saved messages content popout.
 #. Description text in the saved messages page.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:169
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:185
 #: src/features/messaging/components/pages/SavedMessagesPage.tsx:31
 #: src/features/messaging/components/popouts/SavedMessagesContent.tsx:34
 msgid "Bookmark messages to save them for later."
@@ -5118,7 +5105,7 @@ msgstr "북마크했습니다."
 #. Short label in the bookmarks bottom sheet. Keep it concise.
 #. Short label in the saved messages page. Keep it concise.
 #. Tab label in the inbox popout listing the user bookmarks.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:33
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:34
 #: src/features/messaging/components/pages/SavedMessagesPage.tsx:23
 #: src/features/messaging/components/popouts/InboxPopout.tsx:34
 msgid "Bookmarks"
@@ -5444,7 +5431,7 @@ msgstr "{productName}을(를) 이용하면 업데이트된 정책에 동의하�
 #. Developer option label.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:41
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:41
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:51
 msgid "Bypass loading skeleton"
 msgstr "로딩 스켈레톤 건너뛰기"
 
@@ -5454,7 +5441,7 @@ msgid "Bypass mention suppression"
 msgstr "멘션 알림 끄기 무시"
 
 #. Permission name: allows ignoring per-channel message rate limits.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:249
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:440
 msgid "Bypass slowmode"
 msgstr "슬로우 모드 우회"
 
@@ -5712,6 +5699,11 @@ msgstr "다른 사용자 이름을 선택하려면 취소하세요."
 msgid "Cancel import"
 msgstr "가져오기 취소"
 
+#. Billing button that cancels a scheduled move to a lower subscription price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:819
+msgid "Cancel price change"
+msgstr "가격 변경 취소"
+
 #. Accessible label and tooltip for the cancel-reply button in the reply bar.
 #: src/features/channel/components/ChannelReplyBar.tsx:66
 msgid "Cancel reply"
@@ -5723,21 +5715,26 @@ msgid "Cancel request"
 msgstr "요청 취소"
 
 #. Billing button that cancels a scheduled billing-cycle change.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:668
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:827
 msgid "Cancel scheduled switch"
 msgstr "예약된 전환 취소"
 
 #. Billing button that starts subscription cancellation.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:683
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:138
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:842
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:127
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "구독 취소"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:131
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:120
 msgid "Cancel subscription?"
 msgstr "구독을 취소하시겠어요?"
+
+#. Plutonium subscription card hint shown to a subscriber who could move to a lower price but has another billing change already scheduled.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:645
+msgid "Cancel the scheduled change to move to the current price instead."
+msgstr "예약된 변경사항을 취소하고 현재 가격으로 변경하세요."
 
 #. Button or menu action label in the channel and chat message upload progress. Keep it concise.
 #: src/features/channel/components/MessageUploadProgress.tsx:21
@@ -5745,7 +5742,7 @@ msgid "Cancel upload"
 msgstr "업로드 취소"
 
 #. Billing button that cancels a scheduled yearly upgrade.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:664
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:823
 msgid "Cancel yearly upgrade"
 msgstr "연간 업그레이드 취소"
 
@@ -5755,7 +5752,7 @@ msgid "Cancel your friend request to {displayName}?"
 msgstr "{displayName}님에게 보낸 친구 요청을 취소하시겠어요?"
 
 #. Subscription status badge meaning cancellation is scheduled for the renewal date.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:358
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:433
 msgid "Canceling"
 msgstr "취소 중"
 
@@ -5764,7 +5761,7 @@ msgstr "취소 중"
 msgid "Cancellation"
 msgstr "취소"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:424
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:499
 msgid "Cancels on <0>{cancelDate}</0>. <1/> remain active until then."
 msgstr "<0>{cancelDate}</0>에 취소됩니다. <1/> 그때까지는 계속 활성 상태로 유지됩니다."
 
@@ -5821,26 +5818,6 @@ msgstr "사용할 수 없는 카드입니다"
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:261
 msgid "Card verification was canceled. You can close this tab and return to the app."
 msgstr "카드 인증이 취소되었습니다. 이 탭을 닫고 앱으로 돌아가세요."
-
-#. Plutonium subscription checkout guidance for Brazil. Explains that BRL card subscriptions need a verification step and a Brazil-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:134
-msgid "Cards can keep BRL pricing after a quick {paymentProviderName} verification, but the card must be issued in Brazil."
-msgstr "카드는 빠른 {paymentProviderName} 인증 후에도 BRL 가격을 유지할 수 있지만, 브라질에서 발급된 카드여야 합니다."
-
-#. Plutonium subscription checkout guidance for India. Explains that INR card subscriptions need a verification step and an India-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:154
-msgid "Cards can keep INR pricing after a quick {paymentProviderName} verification, but the card must be issued in India."
-msgstr "카드는 빠른 {paymentProviderName} 인증 후에도 INR 가격을 유지할 수 있지만, 인도에서 발급된 카드여야 합니다."
-
-#. Plutonium subscription checkout guidance for Poland. Explains that PLN card subscriptions need a verification step and a Poland-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:175
-msgid "Cards can keep PLN pricing after a quick {paymentProviderName} verification, but the card must be issued in Poland."
-msgstr "카드는 빠른 {paymentProviderName} 인증 후에도 PLN 가격을 유지할 수 있지만, 폴란드에서 발급된 카드여야 합니다."
-
-#. Plutonium subscription checkout guidance for Türkiye. Explains that TRY card subscriptions need a verification step and a Türkiye-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:195
-msgid "Cards can keep TRY pricing after a quick {paymentProviderName} verification, but the card must be issued in Türkiye."
-msgstr "카드는 {paymentProviderName} 인증을 거치면 TRY 가격을 유지할 수 있지만, 카드는 튀르키예에서 발급된 것이어야 합니다."
 
 #. Heading above the category filter list in the Discovery search sidebar.
 #. Short label in the discovery category bottom sheet. Keep it concise.
@@ -6031,7 +6008,7 @@ msgid "Change other members' nicknames."
 msgstr "다른 멤버의 닉네임 변경."
 
 #. Permission name: allows a member to edit their own nickname.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:189
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:380
 msgid "Change own nickname"
 msgstr "내 닉네임 변경"
 
@@ -6055,7 +6032,7 @@ msgid "Change password form"
 msgstr "비밀번호 변경 양식"
 
 #. Subscription status badge meaning a future billing plan change is scheduled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:362
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:437
 msgid "Change scheduled"
 msgstr "변경 예정"
 
@@ -6090,6 +6067,16 @@ msgstr "사용자 이름 변경 양식"
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryCutoffSection.tsx:22
 msgid "Change what users without \"{readMessageHistoryPermissionLabel}\" can see"
 msgstr "\"{readMessageHistoryPermissionLabel}\" 권한이 없는 사용자가 볼 수 있는 항목 변경"
+
+#. Permission description in the role/permission editor for the Set Voice Region permission at community scope. The region is the geographic location of the voice server.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:190
+msgid "Change which voice region a voice channel uses."
+msgstr "음성 채널이 사용하는 음성 리전을 변경합니다."
+
+#. Permission description in the channel-scoped permissions editor for the Set Voice Region permission. The region is the geographic location of the voice server.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:319
+msgid "Change which voice region this channel uses."
+msgstr "이 채널의 음성 리전을 변경합니다."
 
 #. IAR modal: quick-action card description.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:437
@@ -6185,7 +6172,7 @@ msgid "Channel {id}"
 msgstr "채널 {id}"
 
 #. Permission category for viewing or entering channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:145
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:336
 msgid "Channel access"
 msgstr "채널 접근"
 
@@ -6243,7 +6230,7 @@ msgstr "채널 정보 섹션"
 
 #. Toast confirming the channel ID was copied to the clipboard.
 #. Toast confirming the channel ID was copied to the clipboard.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:108
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:106
 #: src/features/ui/action_menu/items/dm_menu_data/shared.ts:37
 msgid "Channel ID copied"
 msgstr "채널 ID가 복사되었습니다"
@@ -6261,7 +6248,7 @@ msgid "channel link"
 msgstr "채널 링크"
 
 #. Toast confirming the channel link was copied to the clipboard.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:100
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:98
 msgid "Channel link copied"
 msgstr "채널 링크 복사됨"
 
@@ -6285,7 +6272,7 @@ msgid "Channel list typing indicators"
 msgstr "채널 목록 입력 표시기"
 
 #. Permission category for managing channels and channel settings.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:153
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:344
 msgid "Channel management"
 msgstr "채널 관리"
 
@@ -6509,12 +6496,12 @@ msgid "Checkout"
 msgstr "결제"
 
 #. Modal body for the generic "checkout blocked" state. Provides the support email.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:148
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:147
 msgid "Checkout is blocked for this account. Contact {supportEmail} if you need help."
 msgstr "이 계정은 결제가 차단되었습니다. 도움이 필요하시면 {supportEmail}으로 문의하세요."
 
 #. Modal title for the generic "checkout blocked" state when no more specific reason is known.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:144
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:143
 msgid "Checkout unavailable"
 msgstr "결제 이용 불가"
 
@@ -6682,7 +6669,7 @@ msgid "Choose how times are displayed throughout the app"
 msgstr "앱 전반에 걸쳐 시간이 표시되는 방식을 선택하세요"
 
 #. Plutonium subscription payment method picker description, generic fallback when no country-specific copy applies.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:58
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:57
 msgid "Choose how you'd like to pay for this subscription."
 msgstr "구독 결제 방법을 선택해주세요."
 
@@ -6701,7 +6688,7 @@ msgid "Choose one verification method. Either method can clear this check."
 msgstr "인증 방법을 하나 선택하세요. 어떤 방법이든 이 확인 절차를 완료할 수 있습니다."
 
 #. Modal title for the payment method picker (local card vs alternative method).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:196
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:195
 msgid "Choose payment method"
 msgstr "결제 수단 선택"
 
@@ -6891,7 +6878,7 @@ msgstr "음성 채널에 참여하려면 계정을 등록하세요."
 
 #. Billing tooltip shown when an unclaimed account cannot start premium checkout. premiumProductFullName is the full paid product name.
 #. Plutonium upsell CTA tooltip shown to guests/unclaimed accounts: claiming the account is required before purchase. Product name is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:15
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:13
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:17
 msgid "Claim your account to purchase {premiumProductFullName}."
 msgstr "{premiumProductFullName}을(를) 구매하려면 계정을 등록하세요."
@@ -7467,7 +7454,7 @@ msgstr "채널 주제 접기"
 #. Tooltip / aria label on a voice participant tile button that collapses expanded device tiles for one user.
 #. Voice menu action that collapses expanded device tiles back into a single tile.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:122
-#: src/features/voice/components/VoiceParticipantTile.tsx:173
+#: src/features/voice/components/VoiceParticipantTile.tsx:176
 msgid "Collapse devices"
 msgstr "기기 접기"
 
@@ -7845,7 +7832,7 @@ msgid "Community voice"
 msgstr "커뮤니티 보이스"
 
 #. Permission category for permissions that affect the whole community.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:133
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:324
 msgid "Community-wide"
 msgstr "커뮤니티 전체"
 
@@ -7880,7 +7867,7 @@ msgid "Complete one of the verification paths below to continue using {productNa
 msgstr "{productName}을(를) 계속 사용하려면 아래 인증 경로 중 하나를 완료하세요."
 
 #. Modal title for the mobile checkout confirmation when opening the payment provider in a browser.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:178
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:177
 msgid "Complete payment"
 msgstr "결제 완료하기"
 
@@ -8099,7 +8086,7 @@ msgstr "마이크를 연결하고 다시 시도하세요."
 
 #. Permission name: allows joining voice channels.
 #. Primary CTA in the mobile voice-channel lobby bottom sheet. Joins the voice channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:265
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:456
 #: src/features/voice/components/bottomsheets/VoiceLobbyBottomSheet.tsx:56
 msgid "Connect to voice"
 msgstr "음성 채널에 연결"
@@ -8127,7 +8114,7 @@ msgstr "음성 연결됨"
 #. Action label state in the DM channel header pill while the join request is in flight. Trailing ASCII ellipsis is intentional.
 #. Overlay status in the voice call view while joining. Trailing ellipsis indicates in-progress.
 #: src/features/channel/components/channel_view/dm_channel_view/shared.ts:129
-#: src/features/voice/components/VoiceCallView.tsx:93
+#: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Connecting..."
 msgstr "연결 중..."
 
@@ -8188,7 +8175,7 @@ msgid "Connection removed"
 msgstr "연결 삭제됨"
 
 #. Tooltip / aria label on the connection-stats button in the voice call header. Opens the voice connection status popout.
-#: src/features/voice/components/VoiceCallView.tsx:118
+#: src/features/voice/components/VoiceCallView.tsx:119
 msgid "Connection stats"
 msgstr "연결 상태"
 
@@ -8337,7 +8324,7 @@ msgid "Continue"
 msgstr "계속"
 
 #. Plutonium checkout pre-approval prompt secondary button. Continues straight to the standard checkout screen.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:89
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:88
 msgid "Continue to checkout"
 msgstr "결제 계속하기"
 
@@ -8436,7 +8423,7 @@ msgid "Copied"
 msgstr "복사됨"
 
 #. Toast shown after copying stats for nerds JSON to clipboard.
-#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:13
+#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:9
 msgid "Copied stats JSON to clipboard"
 msgstr "통계 JSON을 클립보드에 복사했습니다"
 
@@ -8468,11 +8455,6 @@ msgstr "URL이 클립보드에 복사되었습니다"
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx:59
 msgid "Copy"
 msgstr "복사"
-
-#. Aria label for a button that copies stats for nerds data as JSON to the clipboard.
-#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:5
-msgid "Copy as JSON"
-msgstr "JSON으로 복사"
 
 #. Developer-mode action that copies the attachment ID to the clipboard.
 #: src/features/ui/action_menu/MessageContextMenu.tsx:67
@@ -8510,7 +8492,7 @@ msgid "Copy banner URL"
 msgstr "배너 URL 복사"
 
 #. Tray menu item. Copies build / version diagnostics to the clipboard for bug reports.
-#: src/features/app/components/floating/UserAreaPopout.tsx:714
+#: src/features/app/components/floating/UserAreaPopout.tsx:707
 #: src/features/platform/utils/DesktopLocaleBridge.ts:164
 msgid "Copy build info"
 msgstr "빌드 정보 복사"
@@ -8530,7 +8512,7 @@ msgstr "채널 ID 복사"
 #. Action that copies a deep link to the selected channel.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:205
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:132
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:130
 msgid "Copy channel link"
 msgstr "채널 링크 복사"
 
@@ -8713,8 +8695,8 @@ msgstr "설정 키 복사"
 msgid "Copy stack trace"
 msgstr "스택 트레이스 복사"
 
-#. Button label in audio and video settings. Copies stats for nerds data as JSON to the clipboard.
-#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:9
+#. Menu item label in the screen share menu. Copies stats for nerds data as JSON to the clipboard.
+#: src/features/voice/components/StatsForNerdsCopyDescriptors.ts:5
 msgid "Copy stats JSON"
 msgstr "통계 JSON 복사"
 
@@ -8742,7 +8724,7 @@ msgid "Copy the setup key into your authenticator app."
 msgstr "인증 앱에 설정 키를 복사하세요."
 
 #. Developer-mode action that copies a user snowflake/ID to the clipboard.
-#: src/features/app/components/floating/UserAreaPopout.tsx:699
+#: src/features/app/components/floating/UserAreaPopout.tsx:692
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:172
 msgid "Copy user ID"
 msgstr "사용자 ID 복사"
@@ -8767,7 +8749,7 @@ msgstr "동영상 복사"
 msgid "Copy video link"
 msgstr "동영상 링크 복사"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:727
+#: src/features/app/components/floating/UserAreaPopout.tsx:720
 msgid "Copy voice diagnostics"
 msgstr "음성 진단 복사"
 
@@ -8797,7 +8779,7 @@ msgid "Could not decode this audio file."
 msgstr "이 오디오 파일을 디코딩할 수 없습니다."
 
 #. Error shown when the setup wizard fails to load the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:91
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:93
 msgid "Could not load the instance configuration. Try reloading the page."
 msgstr "인스턴스 구성을 불러올 수 없습니다. 페이지를 새로고침해 보세요."
 
@@ -8856,19 +8838,24 @@ msgid "Couldn't cancel the friend request. Try again."
 msgstr "친구 요청을 취소할 수 없습니다. 다시 시도해 주세요."
 
 #. Title of the generic fallback error modal shown when canceling a scheduled Plutonium billing cycle change fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:84
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:86
 msgid "Couldn't cancel your pending billing change"
 msgstr "예정된 요금제 변경을 취소할 수 없습니다"
 
 #. Title of the generic fallback error modal shown when cancelling a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:24
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:26
 msgid "Couldn't cancel your subscription"
 msgstr "구독을 취소할 수 없습니다"
 
 #. Title of the generic fallback error modal shown when changing the Plutonium billing cycle fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:76
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:78
 msgid "Couldn't change your billing cycle"
 msgstr "결제 주기를 변경할 수 없습니다"
+
+#. Title of the generic fallback error modal shown when moving a Plutonium subscription down to the current price fails.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:111
+msgid "Couldn't change your price"
+msgstr "가격을 변경할 수 없습니다"
 
 #. Modal title shown when a user-initiated update check fails.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:104
@@ -8983,12 +8970,12 @@ msgid "Couldn't download the desktop update"
 msgstr "데스크톱 업데이트를 다운로드할 수 없습니다"
 
 #. Title of the error modal shown when duplicating a channel fails.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:140
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:138
 msgid "Couldn't duplicate this channel"
 msgstr "채널을 복제할 수 없습니다"
 
 #. Title of the generic fallback error modal shown when ending the Plutonium grace period fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:36
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:38
 msgid "Couldn't end your grace period"
 msgstr "유예 기간을 종료할 수 없습니다"
 
@@ -9065,15 +9052,15 @@ msgstr "검색 결과를 열 수 없습니다"
 #. Title of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Title of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Title of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:30
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:12
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:29
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:14
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:29
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:29
 msgid "Couldn't open the billing portal"
 msgstr "결제 포털을 열 수 없습니다"
 
 #. Title of the error modal shown when pinning a DM or group DM fails.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:120
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:118
 msgid "Couldn't pin this conversation"
 msgstr "이 대화를 고정할 수 없습니다"
 
@@ -9085,7 +9072,7 @@ msgid "Couldn't process image"
 msgstr "이미지를 처리할 수 없습니다"
 
 #. Title of the generic fallback error modal shown when reactivating a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:48
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:50
 msgid "Couldn't reactivate your subscription"
 msgstr "구독을 다시 활성화할 수 없습니다"
 
@@ -9212,7 +9199,7 @@ msgid "Couldn't start {blueskyProviderName} authorisation"
 msgstr "{blueskyProviderName} 인증을 시작할 수 없습니다"
 
 #. Title of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:152
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:151
 msgid "Couldn't start checkout"
 msgstr "결제를 시작할 수 없습니다"
 
@@ -9252,7 +9239,7 @@ msgid "Couldn't unblock user"
 msgstr "사용자 차단 해제 실패"
 
 #. Title of the error modal shown when unpinning a DM or group DM fails.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:124
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:122
 msgid "Couldn't unpin this conversation"
 msgstr "이 대화를 고정 해제할 수 없습니다"
 
@@ -9453,7 +9440,7 @@ msgid "Create DM"
 msgstr "DM 만들기"
 
 #. Permission name: allows uploading custom emoji and stickers.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:197
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:388
 msgid "Create emoji & stickers"
 msgstr "이모티콘 및 스티커 만들기"
 
@@ -9480,7 +9467,7 @@ msgid "Create invite"
 msgstr "초대 링크 만들기"
 
 #. Permission name: allows creating invite links.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:185
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:376
 msgid "Create invite links"
 msgstr "초대 링크 만들기"
 
@@ -9514,7 +9501,7 @@ msgstr "역할 만들기"
 msgid "Create the administrator account"
 msgstr "관리자 계정 만들기"
 
-#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:93
+#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:94
 msgid "Create the group DM with the remaining {addableCount} recipient(s) and skip the others?"
 msgstr "추가 가능한 친구 {addableCount}명으로 그룹 DM을 만들고, 나머지는 건너뛸까요?"
 
@@ -9544,7 +9531,7 @@ msgid "Create, edit, or delete roles below your highest role. Also allows editin
 msgstr "본인 최고 역할보다 낮은 역할 생성, 수정 또는 삭제. 채널 권한 재정의 수정도 허용됩니다."
 
 #. Permission description in the channel-scoped permissions editor for the Manage Webhooks permission. Scoped to a single channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:123
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:205
 msgid "Create, edit, or delete webhooks for this channel."
 msgstr "이 채널의 웹훅을 생성, 수정 또는 삭제합니다."
 
@@ -9966,7 +9953,7 @@ msgstr "직접 지정…"
 
 #. Billing button that opens the external customer portal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:608
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:748
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:39
 msgid "Customer portal"
 msgstr "고객 포털"
@@ -10196,9 +10183,19 @@ msgid "Deafen device"
 msgstr "기기 소리 끄기"
 
 #. Permission name: allows moderators to deafen other voice participants.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:290
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:481
 msgid "Deafen members"
 msgstr "멤버 소리 끄기"
+
+#. Permission description in the channel-scoped permissions editor for the Deafen Members permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:310
+msgid "Deafen other members in this voice channel, so they cannot hear or speak."
+msgstr "이 음성 채널에서 다른 멤버의 소리를 차단하여 듣거나 말할 수 없도록 합니다."
+
+#. Permission description in the role/permission editor for the Deafen Members permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:186
+msgid "Deafen other members in voice channels, so they cannot hear or speak."
+msgstr "음성 채널에서 다른 멤버들의 소리를 끄고 말하는 것을 막습니다."
 
 #. Settings label for the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:157
@@ -10395,7 +10392,7 @@ msgstr "배터리 수명 및 데이터 사용량 보존을 위해 모바일에�
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:204
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:216
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
-#: src/features/messaging/commands/MessageCommands.tsx:77
+#: src/features/messaging/commands/MessageCommands.tsx:80
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:399
@@ -10427,7 +10424,7 @@ msgstr "\"{stickerName}\"을(를) 삭제하시겠어요? 이 작업은 되돌릴
 #. Channel details bottom sheet label or action (channel type, settings, toast, confirmation, or notification option).
 #. Confirm dialog body before deleting a channel.
 #: src/features/channel/components/bottomsheets/channel_details_bottom_sheet/ChannelDetailsBottomSheetShared.ts:107
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:104
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:102
 msgid "Delete {channelLabel}? Can't be undone."
 msgstr "{channelLabel}을(를) 삭제하시겠어요? 이 작업은 취소할 수 없습니다."
 
@@ -10555,6 +10552,11 @@ msgstr "메시지 삭제"
 msgid "Delete my messages"
 msgstr "내 메시지 삭제"
 
+#. Permission description in the channel-scoped permissions editor for the Manage Messages permission. Notes that pinning has its own permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:229
+msgid "Delete other members' messages in this channel. Pinning is controlled separately."
+msgstr "이 채널에서 다른 사용자의 메시지를 삭제합니다. 고정은 별도로 제어됩니다."
+
 #. Permission description in the role/permission editor for the Manage Messages permission. Notes that pinning has its own permission.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:68
 msgid "Delete other members' messages. Pinning is controlled separately."
@@ -10628,7 +10630,7 @@ msgid "Delete this message"
 msgstr "이 메시지 삭제"
 
 #. Error message in the messaging commands. Keep the tone plain and specific.
-#: src/features/messaging/commands/MessageCommands.tsx:73
+#: src/features/messaging/commands/MessageCommands.tsx:76
 msgid "Delete this message? Can't be undone."
 msgstr "이 메시지를 삭제할까요? 실행 취소할 수 없습니다."
 
@@ -11231,6 +11233,11 @@ msgstr "단축키 비활성화"
 msgid "Disable sounds"
 msgstr "소리 끄기"
 
+#. Developer option label for turning off the page-translator DOM crash guard.
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:37
+msgid "Disable translation DOM guard"
+msgstr "번역 DOM 가드 비활성화"
+
 #. Button or menu action label in the links tab. Keep it concise.
 #: src/features/user/components/modals/tabs/chat_settings_tab/ChatSettingsTabLinksTab.tsx:35
 msgid "Disable trust all"
@@ -11379,7 +11386,7 @@ msgstr "소켓 연결 해제"
 #. Overlay status in the voice call view when not connected.
 #. Overlay status text in the compact / floating voice call tile when not connected.
 #: src/features/voice/components/compact_voice_call_view/shared.ts:15
-#: src/features/voice/components/VoiceCallView.tsx:102
+#: src/features/voice/components/VoiceCallView.tsx:103
 msgid "Disconnected"
 msgstr "연결 끊김"
 
@@ -11913,10 +11920,15 @@ msgstr "파일 업로드 영역으로 끌어다 놓기"
 msgid "Drag and drop emoji files here"
 msgstr "이모티콘 파일을 여기로 드래그 앤 드롭하세요"
 
-#. Permission description in the role/permission editor for the Move Members permission. The target channel must already be accessible to the member being moved.
+#. Permission description in the role/permission editor for the Move Members permission. The target channel must already be accessible to the member being moved. This permission also covers forcing a member out of voice entirely.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:108
-msgid "Drag members between channels they can access."
-msgstr "액세스 권한이 있는 채널 간에 멤버를 드래그하세요."
+msgid "Drag members between voice channels they can access, and disconnect them from voice."
+msgstr "접근 가능한 음성 채널 간에 멤버를 드래그하여 이동시키고, 음성에서 연결을 해제할 수 있습니다."
+
+#. Permission description in the channel-scoped permissions editor for the Move Members permission. The target channel must already be accessible to the member being moved. This permission also covers forcing a member out of voice entirely.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:314
+msgid "Drag members out of this voice channel into channels they can access, and disconnect them from voice."
+msgstr "이 음성 채널에서 멤버를 드래그하여 접근 가능한 다른 채널로 옮기거나 음성 연결을 끊을 수 있습니다."
 
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleSidebar.tsx:140
 msgid "Drag roles to customize the order they appear in the member list."
@@ -12015,7 +12027,7 @@ msgstr "복제"
 #. Action that creates a copy of the selected channel.
 #. Short label in the channel duplicate modal. Keep it concise.
 #: src/features/channel/components/modals/ChannelDuplicateModal.tsx:28
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:136
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:134
 msgid "Duplicate channel"
 msgstr "채널 복제"
 
@@ -12122,7 +12134,7 @@ msgstr "카테고리 편집"
 #. Action that opens the edit-channel modal.
 #. Channel details bottom sheet label or action (channel type, settings, toast, confirmation, or notification option).
 #: src/features/channel/components/bottomsheets/channel_details_bottom_sheet/ChannelDetailsBottomSheetShared.ts:162
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:148
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:146
 #: src/features/ui/action_menu/items/ChannelMenuItems.tsx:75
 msgid "Edit channel"
 msgstr "채널 수정"
@@ -12202,11 +12214,11 @@ msgid "Edit or delete emoji and stickers created by other members."
 msgstr "다른 멤버가 만든 이모티콘 및 스티커를 수정하거나 삭제합니다."
 
 #. Permission description in the channel-scoped permissions editor for the Manage Permissions permission. "Overwrites" are per-channel permission overrides.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:118
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:200
 msgid "Edit overwrites for roles and members in this channel."
 msgstr "이 채널의 역할 및 멤버 권한을 수정합니다."
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:750
+#: src/features/app/components/floating/UserAreaPopout.tsx:743
 #: src/features/app/components/pages/YouPage.tsx:157
 #: src/features/user/components/modals/UserProfileMobileSheet.tsx:682
 #: src/features/user/components/modals/UserProfileModal.tsx:587
@@ -12424,7 +12436,7 @@ msgid "Embed debugger form"
 msgstr "임베드 디버거 양식"
 
 #. Permission name: allows links to unfurl/embed in messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:225
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:416
 msgid "Embed links"
 msgstr "링크 임베드"
 
@@ -12905,15 +12917,15 @@ msgid "End date"
 msgstr "종료일"
 
 #. Billing button that ends premium grace period immediately.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:695
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:854
 msgid "End grace now"
 msgstr "유예 기간 지금 종료"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:160
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:149
 msgid "End grace period"
 msgstr "유예 기간 종료"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:153
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:142
 msgid "End grace period now?"
 msgstr "유예 기간을 지금 종료할까요?"
 
@@ -13059,7 +13071,7 @@ msgstr "코드 입력"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (not in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:28
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:18
-#: src/features/voice/components/VoiceCallView.tsx:110
+#: src/features/voice/components/VoiceCallView.tsx:111
 msgid "Enter fullscreen"
 msgstr "전체 화면으로 보기"
 
@@ -13227,7 +13239,7 @@ msgstr "전체 화면"
 msgid "Entire system"
 msgstr "시스템 전체"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:249
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:253
 msgid "Entire system audio"
 msgstr "시스템 오디오 전체"
 
@@ -13339,16 +13351,6 @@ msgstr "취소하려면 <0><1>Esc</1></0> 키를 누르세요"
 msgid "Estonia"
 msgstr "에스토니아"
 
-#. Plutonium gift checkout panel title for buyers in Portugal paying with EUR.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:79
-msgid "EUR gift checkout"
-msgstr "EUR 선물 결제"
-
-#. Plutonium subscription checkout panel title for subscribers in Portugal paying with EUR.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:99
-msgid "EUR subscription checkout"
-msgstr "유럽 구독 결제"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:46
 msgid "Evening time"
@@ -13428,7 +13430,7 @@ msgstr "나가기"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (currently in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:24
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:14
-#: src/features/voice/components/VoiceCallView.tsx:106
+#: src/features/voice/components/VoiceCallView.tsx:107
 msgid "Exit fullscreen"
 msgstr "전체 화면 종료"
 
@@ -13509,7 +13511,7 @@ msgstr "다음 기간 후 만료"
 #. Error message in the invite list item.
 #. Short label in the authentication account row. Keep the tone plain and specific.
 #. Subscription status badge meaning premium access has fully expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:348
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:423
 #: src/features/auth/components/accounts/AccountRow.tsx:19
 #: src/features/channel/components/modals/GroupInvitesBottomSheet.tsx:41
 #: src/features/invite/components/InviteListItem.tsx:30
@@ -13546,7 +13548,7 @@ msgstr "{date}에 만료됨"
 msgid "Expired on {earliest}"
 msgstr "{earliest}에 만료됨"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:379
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:454
 msgid "Expired on <0>{expiredDate}</0>. <1/> are no longer active. You can resubscribe at any time."
 msgstr "만료일: <0>{expiredDate}</0>. <1/> 더 이상 활성화되지 않습니다. 언제든지 다시 구독할 수 있습니다."
 
@@ -13635,7 +13637,7 @@ msgid "Export themes"
 msgstr "테마 내보내기"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the profile timezone settings toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:129
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
 msgid "Expose the staff-only timezone section in profile settings."
 msgstr "프로필 설정에서 직원 전용 시간대 섹션을 표시합니다."
 
@@ -14137,7 +14139,7 @@ msgstr "일시적으로 비활성화된 기능"
 
 #. Developer options group for feature behavior overrides.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:113
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:123
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:137
 msgid "Features"
 msgstr "기능"
@@ -14337,7 +14339,7 @@ msgstr "먼저 계정 설정을 완료하세요"
 
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:83
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
 #: src/features/app/components/setup/SetupWizardSteps.tsx:327
 msgid "Finish setup"
 msgstr "설정 완료"
@@ -14550,7 +14552,7 @@ msgid "For british eyes only..."
 msgstr "영국인을 위한 콘텐츠입니다..."
 
 #. Purchase mode option for buying a subscription for the current user.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:28
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:26
 msgid "For me"
 msgstr "나를 위해"
 
@@ -14574,17 +14576,17 @@ msgid "Force enabled"
 msgstr "강제 활성화됨"
 
 #. Developer option label for simulating failed message loads.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:109
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:119
 msgid "Force failed message loads"
 msgstr "메시지 로드 실패 강제 실행"
 
 #. Developer option label for simulating failed message sends.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:105
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:115
 msgid "Force failed message sends"
 msgstr "메시지 전송 실패 강제 실행"
 
 #. Developer option label for simulating a loading GIF picker.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:65
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:75
 msgid "Force GIF picker loading"
 msgstr "GIF 선택기 로딩 강제 실행"
 
@@ -14596,7 +14598,7 @@ msgstr "강제 숨기기"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:45
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:45
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:55
 msgid "Force loading skeleton"
 msgstr "스켈레톤 강제 로드"
 
@@ -14616,12 +14618,12 @@ msgid "Force no {permissionName} permission"
 msgstr "{permissionName} 권한 없음 강제 적용"
 
 #. Developer option label for always showing profile data warnings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:101
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:111
 msgid "Force profile data warning"
 msgstr "프로필 데이터 경고 강제 표시"
 
 #. Developer option label for forcing user profile loading skeletons.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:97
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:107
 msgid "Force profile skeletons"
 msgstr "프로필 스켈레톤 강제 적용"
 
@@ -14631,12 +14633,12 @@ msgid "Force show"
 msgstr "강제로 표시"
 
 #. Developer option label for always showing a community settings warning.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:69
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:79
 msgid "Force show vanity URL disclaimer"
 msgstr "꾸밈 URL 고지 사항 강제 표시"
 
 #. Developer option label for always showing the voice connection status bar.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:121
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:131
 msgid "Force show voice connection"
 msgstr "음성 연결 강제 표시"
 
@@ -14645,12 +14647,12 @@ msgid "Force slowmode active"
 msgstr "슬로우 모드 강제 활성화"
 
 #. Developer option label for rendering messages as unknown message types.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:117
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:127
 msgid "Force unknown message type"
 msgstr "알 수 없는 메시지 유형 강제 적용"
 
 #. Developer option label for simulating an available update.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:49
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:59
 msgid "Force update ready"
 msgstr "업데이트 준비 강제 실행"
 
@@ -15156,7 +15158,7 @@ msgstr "GIF를 불러올 수 없습니다"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning premium access came from a gift.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:368
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:443
 #: src/features/expressions/components/modals/GiftAcceptModal.tsx:294
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:79
 msgid "Gift"
@@ -15296,7 +15298,7 @@ msgstr "선물: 곧 만료"
 msgid "Gift: grace period (still have access)"
 msgstr "선물: 유예 기간 (계속 이용 가능)"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:409
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:484
 msgid "Gifted <0/> until <1>{giftEndDate}</1>. Does not renew automatically. Redeem more gift codes to extend."
 msgstr "선물 <0/>이(가) <1>{giftEndDate}</1>까지 적용됩니다. 자동 갱신되지 않습니다. 더 많은 선물 코드를 사용하여 기간을 연장하세요."
 
@@ -15460,7 +15462,7 @@ msgid "Got it"
 msgstr "확인"
 
 #. Subscription status badge meaning access remains briefly after subscription end.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:350
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:425
 msgid "Grace period"
 msgstr "유예 기간"
 
@@ -16234,11 +16236,6 @@ msgstr "타임아웃 유지 기간입니다."
 msgid "How much of the member's recent message history to delete."
 msgstr "멤버의 최근 메시지 기록 중 얼마나 삭제할지 결정합니다."
 
-#. Confirmation prompt in the channel and chat favorite gif first time prompt modal.
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:14
-msgid "How should we save your GIF favorites?"
-msgstr "GIF 즐겨찾기를 어떻게 저장할까요?"
-
 #. Short label in the message history threshold content. Keep it concise.
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryThresholdContent.tsx:20
 msgid "How this works"
@@ -16367,20 +16364,10 @@ msgstr "자리 비움 설정"
 msgid "Idle timeout"
 msgstr "대화방 비활성 시간 제한"
 
-#. Plutonium subscription checkout guidance for Brazil. Offers USD as a fallback when Pix is not available or standard pricing is preferred.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:145
-msgid "If {pixPaymentMethod} is unavailable or you prefer standard pricing, you can switch to USD at any time."
-msgstr "{pixPaymentMethod}를 사용할 수 없거나 일반 요금을 선호하는 경우 언제든지 USD로 전환할 수 있습니다."
-
 #. IAR modal: inline routing hint shown under reasons that overlap with child safety.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:88
 msgid "If a minor is involved, use \"{childSafetyReasonName}\" instead."
 msgstr "미성년자가 관련된 경우, 대신 \"{childSafetyReasonName}\"을(를) 사용하세요."
-
-#. Plutonium subscription checkout guidance for India. Offers USD as a fallback when recurring UPI is not available.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:165
-msgid "If recurring {upiPaymentMethod} is unavailable or you prefer standard pricing, you can switch to USD at any time."
-msgstr "반복 {upiPaymentMethod}를 사용할 수 없거나 일반 요금을 선호하는 경우 언제든지 USD로 전환할 수 있습니다."
 
 #. IAR modal: inline safety note for self-harm reports.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:369
@@ -16441,26 +16428,6 @@ msgstr "이 알림을 닫으면 나중에 {notificationSettingsPath}에서 데�
 msgid "If you don't remember this preference, we'll only hide the popout for this session. You can change this any time in {audioVideoSettingsPath}."
 msgstr "이 환경설정을 기억하지 않으면 현재 세션에서만 팝업이 숨겨집니다. 이 설정은 {audioVideoSettingsPath}에서 언제든지 변경할 수 있습니다."
 
-#. Plutonium gift checkout guidance for Brazil. Clarifies that BRL card payments require a Brazil-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:30
-msgid "If you pay with a card in BRL, it still needs to be issued in Brazil for the purchase to stay eligible."
-msgstr "BRL로 카드 결제 시, 브라질에서 발행된 카드여야 구매 자격이 유지됩니다."
-
-#. Plutonium gift checkout guidance for India. Clarifies that INR card payments require an India-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:45
-msgid "If you pay with a card in INR, it still needs to be issued in India for the purchase to stay eligible."
-msgstr "INR로 카드 결제 시, 인도에서 발행된 카드여야 구매 자격이 유지됩니다."
-
-#. Plutonium gift checkout guidance for Poland. Clarifies that PLN card payments require a Poland-issued card.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:59
-msgid "If you pay with a card in PLN, it still needs to be issued in Poland for the purchase to stay eligible."
-msgstr "PLN으로 카드 결제 시, 구매 자격을 유지하려면 카드가 폴란드에서 발급되어야 합니다."
-
-#. Plutonium subscription checkout guidance. Offers USD as a fallback option.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:207
-msgid "If you prefer, you can switch to standard USD pricing instead."
-msgstr "원하시면 일반 USD 가격으로 전환할 수 있습니다."
-
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:354
 msgid "If you save this username, your tag will reroll randomly when your {PREMIUM_PRODUCT_NAME} expires on <0>{premiumExpiresAtLabel}</0>, unless it renews."
 msgstr "이 사용자 이름을 저장하면, {PREMIUM_PRODUCT_NAME}이(가) <0>{premiumExpiresAtLabel}</0>에 만료될 때 태그가 무작위로 다시 생성됩니다(갱신되지 않는 한)."
@@ -16472,11 +16439,6 @@ msgstr "이 사용자 이름을 저장하면 {PREMIUM_PRODUCT_NAME}이(가) 갱�
 #: src/features/auth/components/modals/AccountDeleteModal.tsx:64
 msgid "If you want to export your data or delete your messages first, please visit {privacyDashboardPath} before proceeding."
 msgstr "데이터를 내보내거나 메시지를 먼저 삭제하려면 계속하기 전에 {privacyDashboardPath}을(를) 방문하세요."
-
-#. Plutonium subscription checkout guidance for Poland. Suggests a PLN gift or standard EUR if the subscriber wants BLIK.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:186
-msgid "If you want to use {blikPaymentMethod}, buy a PLN gift instead, or switch to standard EUR pricing."
-msgstr "{blikPaymentMethod}을(를) 사용하려면 PLN 기프트를 구매하거나 일반 EUR 가격으로 전환하세요."
 
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryThresholdContent.tsx:76
 msgid "If you'd like these members to access historical messages after a specific date, enable this feature and choose a threshold below."
@@ -16523,6 +16485,11 @@ msgstr "스팸 신고 무시"
 #: src/features/channel/components/friends/MobileFriendRequestItem.tsx:33
 msgid "Ignore the friend request from {displayName}?"
 msgstr "{displayName}님의 친구 요청을 무시하시겠어요?"
+
+#. Permission description in the channel-scoped permissions editor for the Bypass Slowmode permission. Slowmode is the per-channel cooldown between messages.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:274
+msgid "Ignore this channel's slowmode cooldown."
+msgstr "이 채널의 슬로우모드 제한을 무시합니다."
 
 #: src/features/voice/components/StreamSettingsMenuContent.tsx:1038
 msgid "Ignore virtual"
@@ -16775,7 +16742,7 @@ msgstr "'운영체제' 모드에서는 위에 나열된 사전은 권장 사항�
 msgid "In a browser, push-to-talk only works while the {PRODUCT_NAME} tab is focused. Install the desktop app for system-wide push-to-talk."
 msgstr "브라우저에서는 {PRODUCT_NAME} 탭이 활성화된 경우에만 PTT(Push-to-Talk)가 작동합니다. 시스템 전체에서 PTT를 사용하려면 데스크톱 앱을 설치하세요."
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:728
+#: src/features/app/components/floating/UserAreaPopout.tsx:721
 msgid "In a call"
 msgstr "통화 중"
 
@@ -17367,6 +17334,16 @@ msgstr "초대 모달"
 msgid "Invite modal preview"
 msgstr "초대 모달 미리보기"
 
+#. Permission description in the channel-scoped permissions editor for the Create Invite Links permission. The invite drops the new member into this channel.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:215
+msgid "Invite new people to the community with a link to this channel."
+msgstr "이 채널로 초대하는 링크로 커뮤니티에 새 멤버를 초대하세요."
+
+#. Permission description in the role/permission editor for the Create Invite Links permission. Covers links that let someone outside the community join it.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:113
+msgid "Invite new people to the community with an invite link."
+msgstr "초대 링크를 사용하여 커뮤니티에 새로운 사람들을 초대하세요."
+
 #. Title for invite errors when the invite code does not exist or cannot be used.
 #: src/features/invite/utils/InviteMessageDescriptors.ts:9
 msgid "Invite not found"
@@ -17680,6 +17657,11 @@ msgstr "이 기기에서 참여"
 msgid "Join the call"
 msgstr "통화 참여하기"
 
+#. Permission description in the channel-scoped permissions editor for the Connect permission. "View channel" is another permission in this same editor, so match the wording used for its name. The placeholder renders the literal @everyone role name and must not be translated.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:279
+msgid "Join this voice channel and hear others. Denying it along with View channel for {everyoneMention} makes the channel private."
+msgstr "이 음성 채널에 참여하여 다른 사람들의 소리를 들을 수 있습니다. {everyoneMention}에 대해 채널 보기 권한과 함께 이 권한을 거부하면 채널이 비공개로 설정됩니다."
+
 #. Confirm dialog body shown before joining a voice channel from a context where confirmation is required.
 #: src/features/voice/hooks/usePendingVoiceConnection.tsx:16
 msgid "Join this voice channel?"
@@ -17710,6 +17692,11 @@ msgstr "음성 통화 참여"
 #: src/features/voice/hooks/usePendingVoiceConnection.tsx:12
 msgid "Join voice channel"
 msgstr "음성 채널 참여"
+
+#. Permission description in the role/permission editor for the Connect permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:162
+msgid "Join voice channels and hear others."
+msgstr "음성 채널에 참여하고 다른 사람들의 소리를 들을 수 있습니다."
 
 #. Community members table column header for the date the account joined Fluxer.
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx:29
@@ -17757,7 +17744,7 @@ msgid "Jump to first unread message"
 msgstr "첫 읽지 않은 메시지로 이동"
 
 #. Short label in the bookmarks bottom sheet. Keep it concise.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:29
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:30
 msgid "Jump to message"
 msgstr "메시지로 이동"
 
@@ -17784,7 +17771,7 @@ msgid "Jump to page"
 msgstr "페이지로 이동"
 
 #. Short label in the channel and chat messages. Keep it concise.
-#: src/features/channel/components/ChannelMessages.tsx:83
+#: src/features/channel/components/ChannelMessages.tsx:89
 msgid "Jump to present"
 msgstr "현재 메시지로 이동"
 
@@ -17849,7 +17836,7 @@ msgstr "창이 포커스되지 않았을 때에도 애니메이션, GIF 재생, 
 msgid "Keep Free and Premium tiers. You can customize the tiers later."
 msgstr "무료 및 프리미엄 등급을 유지하세요. 나중에 등급을 맞춤 설정할 수 있습니다."
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:162
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:151
 msgid "Keep grace period"
 msgstr "유예 기간 유지"
 
@@ -17863,7 +17850,7 @@ msgstr "네코 고정하기"
 msgid "Keep running"
 msgstr "계속 실행"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:140
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:129
 msgid "Keep subscription"
 msgstr "구독 유지"
 
@@ -17957,7 +17944,7 @@ msgid "Kick member"
 msgstr "멤버 내보내기"
 
 #. Permission name: allows removing members from a community.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:177
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:368
 msgid "Kick members"
 msgstr "멤버 내보내기"
 
@@ -18179,8 +18166,8 @@ msgstr "왼쪽 툴팁"
 msgid "Legacy emoji slots"
 msgstr "이전 이모티콘 슬롯"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:462
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:484
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:537
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:559
 msgid "Legacy rate"
 msgstr "기존 요금"
 
@@ -18259,7 +18246,7 @@ msgstr "라이브러리: {count}/{max}"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Subscription status badge meaning permanent premium access.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:366
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:441
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:19
 msgid "Lifetime"
 msgstr "평생"
@@ -18517,7 +18504,7 @@ msgid "Loading destinations…"
 msgstr "대상 불러오는 중…"
 
 #. Accessible status while the setup wizard loads the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:87
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:89
 msgid "Loading instance configuration"
 msgstr "인스턴스 구성을 불러오는 중"
 
@@ -18566,10 +18553,6 @@ msgstr "불러오는 중..."
 msgid "Loading…"
 msgstr "불러오는 중…"
 
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:454
-msgid "Local {localizedCurrencyLabel}"
-msgstr "현지 {localizedCurrencyLabel}"
-
 #. Short label in the theme studio assets section. Keep it concise.
 #: src/features/theme_studio/sections/AssetsSection.tsx:60
 msgid "Local file references"
@@ -18600,50 +18583,10 @@ msgstr "시간 형식"
 msgid "Localization"
 msgstr "언어 및 지역"
 
-#. Plutonium gift checkout panel title for buyers in Brazil who selected localized BRL pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:20
-msgid "Localized BRL gift checkout"
-msgstr "브라질 헤알 선물 결제"
-
-#. Plutonium subscription checkout panel title for subscribers in Brazil with localized BRL pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:130
-msgid "Localized BRL subscription checkout"
-msgstr "BRL 구독 결제"
-
 #. Error modal body shown when the localized card pre-approval session cannot be started.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:192
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:191
 msgid "Localized card verification is not available right now. Try again later."
 msgstr "현재 현지 카드 인증을 사용할 수 없습니다. 나중에 다시 시도해 주세요."
-
-#. Plutonium gift checkout panel title for buyers in India who selected localized INR pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:35
-msgid "Localized INR gift checkout"
-msgstr "인도 루피 선물 결제"
-
-#. Plutonium subscription checkout panel title for subscribers in India with localized INR pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:150
-msgid "Localized INR subscription checkout"
-msgstr "INR 구독 결제"
-
-#. Plutonium gift checkout panel title for buyers in Poland who selected localized PLN pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:49
-msgid "Localized PLN gift checkout"
-msgstr "PLN 선물 결제"
-
-#. Plutonium subscription checkout panel title for subscribers in Poland with localized PLN pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:171
-msgid "Localized PLN subscription checkout"
-msgstr "PLN 구독 결제"
-
-#. Plutonium gift checkout panel title for buyers in Türkiye who selected localized TRY pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:64
-msgid "Localized TRY gift checkout"
-msgstr "TRY 선물 결제"
-
-#. Plutonium subscription checkout panel title for subscribers in Türkiye with localized TRY pricing.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:191
-msgid "Localized TRY subscription checkout"
-msgstr "TRY 구독 결제"
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:194
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:151
@@ -18810,7 +18753,7 @@ msgstr "악성코드, 개인 정보 도용 또는 유해 파일."
 msgid "Manage"
 msgstr "관리"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:398
+#: src/features/app/components/floating/UserAreaPopout.tsx:396
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:78
 msgid "Manage accounts"
 msgstr "계정 관리"
@@ -18831,17 +18774,17 @@ msgid "Manage blocked users"
 msgstr "차단된 사용자 관리"
 
 #. Channel-scoped permission name: allows editing this channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:302
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:493
 msgid "Manage channel"
 msgstr "채널 관리"
 
 #. Permission name: allows creating, editing, or deleting channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:173
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:364
 msgid "Manage channels"
 msgstr "채널 관리"
 
 #. Permission name: allows editing global community settings.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:165
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:356
 msgid "Manage community"
 msgstr "커뮤니티 관리"
 
@@ -18851,7 +18794,7 @@ msgid "Manage community features"
 msgstr "커뮤니티 기능 관리"
 
 #. Permission name: allows editing or deleting custom emoji and stickers.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:201
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:392
 msgid "Manage emoji & stickers"
 msgstr "이모티콘 및 스티커 관리"
 
@@ -18864,22 +18807,22 @@ msgid "Manage invite links for this channel."
 msgstr "이 채널에 대한 초대 링크를 관리합니다."
 
 #. Permission name: allows deleting other members' messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:217
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:408
 msgid "Manage messages"
 msgstr "메시지 관리"
 
 #. Permission name: allows changing other members' nicknames.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:193
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:384
 msgid "Manage nicknames"
 msgstr "닉네임 관리"
 
 #. Billing button that opens Stripe customer portal for payment-method management only.
-#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:46
+#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:40
 msgid "Manage payment methods"
 msgstr "결제 수단 관리"
 
 #. Channel-scoped permission name: allows editing permission overwrites.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:306
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:497
 msgid "Manage permissions"
 msgstr "권한 관리"
 
@@ -18889,7 +18832,7 @@ msgid "Manage purchased gift codes and gift URLs"
 msgstr "구매한 선물 코드 및 선물 URL 관리"
 
 #. Permission name: allows role management and permission overwrite editing.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:169
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:360
 msgid "Manage roles"
 msgstr "역할 관리"
 
@@ -18899,7 +18842,7 @@ msgid "Manage subscription"
 msgstr "구독 관리"
 
 #. Permission name: allows creating, editing, or deleting webhooks.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:205
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:396
 msgid "Manage webhooks"
 msgstr "웹훅 관리"
 
@@ -19519,6 +19462,11 @@ msgstr "멘션 설정"
 msgid "Mention everyone or any role (even if the role isn't set to be mentionable)."
 msgstr "모든 사람 또는 역할을 멘션할 수 있습니다(역할 멘션이 허용되지 않은 경우에도)."
 
+#. Permission description in the channel-scoped permissions editor for the Mention Everyone permission. Notes that this overrides the per-role "mentionable" flag.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:254
+msgid "Mention everyone or any role in this channel (even if the role isn't set to be mentionable)."
+msgstr "이 채널의 모든 사람 또는 역할을 멘션하세요. (역할이 멘션 가능으로 설정되지 않았더라도 가능합니다.)"
+
 #. Notifications settings: section heading for the default reply-mention behavior.
 #. Settings section label. Names the settings section in the settings UI.
 #. Short label in the inline. Keep it concise.
@@ -19750,12 +19698,12 @@ msgid "Message link"
 msgstr "메시지 링크"
 
 #. Short label in the channel and chat messages. Keep it concise.
-#: src/features/channel/components/ChannelMessages.tsx:75
+#: src/features/channel/components/ChannelMessages.tsx:81
 msgid "Message list"
 msgstr "메시지 목록"
 
 #. Label in the channel and chat messages. Preserve {channelName}; it is inserted by code.
-#: src/features/channel/components/ChannelMessages.tsx:71
+#: src/features/channel/components/ChannelMessages.tsx:77
 msgid "Message list for {channelName}"
 msgstr "{channelName} 메시지 목록"
 
@@ -19846,7 +19794,7 @@ msgid "Messages"
 msgstr "메시지"
 
 #. Permission category for chat messages, uploads, embeds, reactions, and media.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:137
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:328
 msgid "Messages & media"
 msgstr "메시지 및 미디어"
 
@@ -19856,7 +19804,7 @@ msgid "Messages deleted"
 msgstr "메시지 삭제됨"
 
 #. Error message in the channel and chat messages.
-#: src/features/channel/components/ChannelMessages.tsx:87
+#: src/features/channel/components/ChannelMessages.tsx:93
 msgid "Messages failed to load"
 msgstr "메시지 로드 실패"
 
@@ -20116,7 +20064,7 @@ msgid "Mod"
 msgstr "관리자"
 
 #. Permission category for moderation actions against members or messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:141
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:332
 msgid "Moderation"
 msgstr "관리"
 
@@ -20150,20 +20098,20 @@ msgstr "월"
 
 #. Billing plan title for a monthly recurring subscription.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:36
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:34
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:51
 msgid "Monthly"
 msgstr "월간"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:93
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:68
 msgid "Monthly {monthlyPrice}"
 msgstr "월 {monthlyPrice}"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:542
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:629
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>."
 msgstr "월별 요금 청구는 <0>{pendingChangeDate}</0>에 시작됩니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:535
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:622
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>. First monthly charge: {pendingInitialPriceLabel}. Future monthly renewals: {pendingRecurringPriceLabel}/month."
 msgstr "<0>{pendingChangeDate}</0>부터 월별 요금이 청구됩니다. 첫 월별 요금: {pendingInitialPriceLabel}. 이후 월별 갱신 요금: 월 {pendingRecurringPriceLabel}."
 
@@ -20309,7 +20257,7 @@ msgid "Move item up"
 msgstr "항목 위로 이동"
 
 #. Permission name: allows moving members between voice channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:294
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:485
 msgid "Move members"
 msgstr "멤버 이동"
 
@@ -20493,7 +20441,7 @@ msgid "Mute favourites"
 msgstr "즐겨찾기 알림 끄기"
 
 #. Permission name: allows moderators to mute other voice participants.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:286
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:477
 msgid "Mute members"
 msgstr "멤버 음소거"
 
@@ -20508,6 +20456,16 @@ msgstr "마이크 음소거"
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:191
 msgid "Mute notifications"
 msgstr "알림 끄기"
+
+#. Permission description in the channel-scoped permissions editor for the Mute Members permission. The mute applies for every listener, not only for the moderator.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:305
+msgid "Mute other members in this voice channel for everyone."
+msgstr "이 음성 채널에서 다른 멤버들의 음소거를 모든 사람에게 적용합니다."
+
+#. Permission description in the role/permission editor for the Mute Members permission at community scope. The mute applies for every listener, not only for the moderator.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:181
+msgid "Mute other members in voice channels for everyone."
+msgstr "음성 채널에서 다른 멤버를 음소거합니다."
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:174
@@ -20867,7 +20825,7 @@ msgid "Network error"
 msgstr "네트워크 오류"
 
 #. Developer options group for simulated slow or failed operations.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:73
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:83
 msgid "Networking and performance"
 msgstr "네트워킹 및 성능"
 
@@ -20992,6 +20950,16 @@ msgstr "새 마이크"
 msgid "New password"
 msgstr "새 비밀번호"
 
+#. Plutonium subscription card line shown when a move to a lower price is scheduled but the new amount is unknown. {pendingChangeDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:593
+msgid "New price scheduled for <0>{pendingChangeDate}</0>."
+msgstr "새로운 가격이 <0>{pendingChangeDate}</0>에 예정되어 있습니다."
+
+#. Plutonium subscription card line shown when a move to a lower price is scheduled. {pendingChangeDate} is a date and {pendingTargetPriceLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:587
+msgid "New price scheduled for <0>{pendingChangeDate}</0>. Renewals will be {pendingTargetPriceLabel} from then on."
+msgstr "새 가격이 <0>{pendingChangeDate}</0>부터 적용됩니다. 그 이후 갱신 시에는 {pendingTargetPriceLabel}이 적용됩니다."
+
 #. Default name for a newly created role in the community roles settings tab. Short label.
 #: src/features/guild/components/modals/guild_tabs/GuildRolesTab.tsx:48
 msgid "New role"
@@ -21033,7 +21001,7 @@ msgstr "최신순"
 #. Button that moves to the next setup wizard step.
 #. Generic primary or pagination action label that advances to the next step, page, or item.
 #. Primary button in the required-action modal. Moves to the next carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:79
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:81
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:154
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:711
 msgid "Next"
@@ -21173,7 +21141,7 @@ msgstr "차단된 사용자 없음"
 
 #. Empty-state text in the saved messages content popout.
 #. Empty-state text in the saved messages page.
-#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:166
+#: src/features/channel/components/modals/BookmarksBottomSheet.tsx:182
 #: src/features/messaging/components/pages/SavedMessagesPage.tsx:27
 #: src/features/messaging/components/popouts/SavedMessagesContent.tsx:30
 msgid "No bookmarks"
@@ -21480,7 +21448,7 @@ msgstr "사유가 제공되지 않았습니다."
 msgid "No recent mentions"
 msgstr "최근 멘션 없음"
 
-#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:97
+#: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:98
 msgid "No remaining recipients to create a group DM with."
 msgstr "그룹 DM을 만들 수 있는 수신자가 없습니다."
 
@@ -21669,7 +21637,7 @@ msgid "No webhooks"
 msgstr "웹훅 없음"
 
 #. Developer option label for short-circuiting the in-app reporting (IAR) flow. When enabled, submitting a report skips the network call.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:134
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:144
 msgid "No-op in-app reports"
 msgstr "앱 내 신고 무효화"
 
@@ -21709,7 +21677,7 @@ msgstr "움직이지 않는 이모티콘 ({emojiCount})"
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:143
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:219
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:93
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:257
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:261
 msgid "None"
 msgstr "없음"
 
@@ -21757,7 +21725,7 @@ msgstr "마음에 들지 않으세요? 언제든지 끌 수 있습니다."
 #. Short label in the Plutonium self serve refund section. Keep the tone plain and specific.
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
 #: src/features/app/components/dialogs/components/plutonium/SelfServeRefundSection.tsx:31
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:58
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/state/NewDeviceMonitoring.tsx:31
 msgid "Not now"
@@ -21985,6 +21953,11 @@ msgctxt "audit-log-boolean-value"
 msgid "On"
 msgstr "켜짐"
 
+#. Billing confirmation body for moving an active subscription down to the current price. {listPriceEffectiveDate} is a date, and {listPriceCurrentLabel} and {listPriceNewLabel} are currency amounts, all already formatted and localized by code; never write a date or an amount into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:372
+msgid "On <0>{listPriceEffectiveDate}</0> your subscription moves from {listPriceCurrentLabel} to {listPriceNewLabel}. Nothing is charged today, and the rest of your subscription stays exactly as it is."
+msgstr "<0>{listPriceEffectiveDate}</0>에 구독이 {listPriceCurrentLabel}에서 {listPriceNewLabel}로 변경됩니다. 오늘 요금이 청구되지 않으며 구독의 나머지 부분은 그대로 유지됩니다."
+
 #. Short label in the display tab. Keep it concise.
 #: src/features/user/components/modals/tabs/chat_settings_tab/DisplayTab.tsx:22
 msgid "On click"
@@ -22203,7 +22176,7 @@ msgid "Open {settingsMenuName} settings"
 msgstr "{settingsMenuName} 설정 열기"
 
 #. Button or menu action label in the channel and chat gif picker grid item. Keep it concise. Preserve {title}; it is inserted by code.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:38
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:36
 msgid "Open {title}"
 msgstr "{title} 열기"
 
@@ -22303,7 +22276,7 @@ msgstr "{channelName} 채널 정보 열기"
 #. Context-menu action that opens a voice channel's embedded chat view without connecting to voice.
 #. Tooltip and accessible label for the chat icon shown beside a voice channel in the channel list.
 #: src/features/app/components/layout/ChannelItem.tsx:128
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:152
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:150
 msgid "Open chat"
 msgstr "채팅 열기"
 
@@ -22454,7 +22427,7 @@ msgid "Open in community"
 msgstr "커뮤니티에서 열기"
 
 #. Button or menu action label in the channel and chat embed you tube. Keep it concise.
-#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:30
+#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:31
 msgid "Open in new tab"
 msgstr "새 탭에서 열기"
 
@@ -22776,7 +22749,7 @@ msgid "Other devices"
 msgstr "다른 기기"
 
 #. Plutonium checkout pre-approval prompt secondary button. Opens the alternative payment methods flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:73
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:72
 msgid "Other methods"
 msgstr "다른 결제 수단"
 
@@ -23127,12 +23100,12 @@ msgid "Paused by reduced motion. Turn on to keep GIFs playing."
 msgstr "동작 줄이기로 일시 중지됨. GIF를 계속 재생하려면 켜세요."
 
 #. Plutonium subscription payment method picker description for Brazil. Explains Pix recurring vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:38
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:37
 msgid "Pay with {pixPaymentMethod} automático to authorize recurring charges directly from your Brazilian bank. Or choose use card to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "브라질 은행에서 직접 자동 반복 결제를 승인하려면 {pixPaymentMethod} 자동 결제를 이용하세요. 또는 {paymentProviderName} 다음 화면에서 신용 카드를 입력하려면 카드 사용을 선택하세요."
 
 #. Plutonium subscription payment method picker description for India. Explains UPI e-mandate vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:48
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:47
 msgid "Pay with {upiPaymentMethod} to set up an RBI-compliant e-mandate from your Indian bank. Or choose use card to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "인도 은행에서 RBI 규정을 준수하는 전자 자동이체를 설정하려면 {upiPaymentMethod}로 결제하세요. 또는 카드 사용을 선택하여 {paymentProviderName}의 다음 화면에서 신용 카드를 입력하세요."
 
@@ -23188,7 +23161,7 @@ msgid "Per member, across all devices."
 msgstr "모든 장치에서 사용자당입니다."
 
 #. Billing cadence label for a monthly subscription price.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:40
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:38
 msgid "per month"
 msgstr "/월"
 
@@ -23198,7 +23171,7 @@ msgid "Per sound volume"
 msgstr "소리별 볼륨"
 
 #. Billing cadence label for a yearly subscription price.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:48
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:46
 msgid "per year"
 msgstr "년"
 
@@ -23238,7 +23211,7 @@ msgid "Perks"
 msgstr "혜택"
 
 #. Subscription status badge meaning premium is paid but perks are temporarily disabled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:354
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:429
 msgid "Perks paused"
 msgstr "혜택 일시 중지됨"
 
@@ -23475,7 +23448,7 @@ msgid "Pin message"
 msgstr "메시지 고정"
 
 #. Permission name: allows pinning messages in a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:221
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:412
 msgid "Pin messages"
 msgstr "메시지 고정"
 
@@ -23483,6 +23456,16 @@ msgstr "메시지 고정"
 #: src/features/app/components/shared/ChannelPinsContent.tsx:51
 msgid "Pin messages here for everyone to see."
 msgstr "모두가 볼 수 있도록 여기에 메시지를 고정하세요."
+
+#. Permission description in the channel-scoped permissions editor for the Pin Messages permission. Covers messages from anyone, not only their own.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:234
+msgid "Pin or unpin any message in this channel."
+msgstr "이 채널의 모든 메시지를 고정하거나 고정 해제할 수 있습니다."
+
+#. Permission description in the role/permission editor for the Pin Messages permission at community scope. Covers messages from anyone, not only their own.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:137
+msgid "Pin or unpin any message."
+msgstr "모든 메시지를 고정하거나 고정 해제합니다."
 
 #. Body of the confirmation alert shown when pinning a message.
 #: src/features/channel/components/MessageActionUtils.tsx:60
@@ -23530,7 +23513,7 @@ msgstr "고정된 그룹"
 
 #. Toast confirming a group DM was pinned in the sidebar.
 #. Toast confirming a group DM was pinned in the sidebar.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:112
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:110
 #: src/features/ui/action_menu/items/dm_menu_data/shared.ts:13
 msgid "Pinned group DM"
 msgstr "고정된 그룹 DM"
@@ -23618,7 +23601,7 @@ msgstr "선택 영역 재생"
 #. Short label in the channel and chat embed video. Keep it concise.
 #. Short label in the channel and chat embed you tube. Keep it concise.
 #: src/features/channel/components/embeds/media/EmbedVideo.tsx:64
-#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:26
+#: src/features/channel/components/embeds/media/EmbedYouTube.tsx:27
 #: src/features/voice/components/media_player/components/VideoPlayer.tsx:62
 msgid "Play video"
 msgstr "동영상 재생"
@@ -24030,14 +24013,9 @@ msgid "Pricing"
 msgstr "가격 정책"
 
 #. Error modal body shown when the user clicks a plan before price IDs have loaded.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:166
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:165
 msgid "Pricing is still loading."
 msgstr "가격 정보를 불러오는 중입니다."
-
-#. Accessible group label for the pricing toggle (localized vs standard) in Plutonium checkout. Not visible on screen.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:221
-msgid "Pricing preference"
-msgstr "가격 기본 설정"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:162
 msgid "Primary"
@@ -24076,7 +24054,7 @@ msgid "Prioritize speakers"
 msgstr "발언자 우선 표시"
 
 #. Permission name: allows a voice participant to be heard over others.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:282
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:473
 msgid "Priority speaker"
 msgstr "우선 발언권"
 
@@ -24392,7 +24370,7 @@ msgid "Purchase history"
 msgstr "구매 내역"
 
 #. Accessible label for switching between self purchase and gift purchase.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:24
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:22
 msgid "Purchase mode"
 msgstr "구매 모드"
 
@@ -24410,12 +24388,12 @@ msgid "Purchased gifts"
 msgstr "구매한 선물"
 
 #. Modal body shown when purchases are disabled. Provides the support email for appeals.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:140
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:139
 msgid "Purchases are disabled for this account. Contact {supportEmail} if this looks wrong."
 msgstr "이 계정에서는 구매할 수 없습니다. 문제가 있다고 생각하시면 {supportEmail}으로 문의해 주세요."
 
 #. Modal title shown when purchases are disabled on this account (server-side enforcement).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:136
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:135
 msgid "Purchases unavailable"
 msgstr "구매 불가"
 
@@ -24692,7 +24670,7 @@ msgstr "반응"
 
 #. Billing button that cancels a scheduled subscription cancellation.
 #. Button label on the premium-expired nagbar. Opens billing so the user can reactivate their subscription.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:604
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:744
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:25
 msgid "Reactivate"
 msgstr "재활성화"
@@ -24713,7 +24691,7 @@ msgid "Read message aloud"
 msgstr "메시지 소리 내어 읽기"
 
 #. Permission name: allows seeing earlier messages in a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:233
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:424
 msgid "Read message history"
 msgstr "메시지 기록 읽기"
 
@@ -24723,6 +24701,16 @@ msgstr "메시지 기록 읽기"
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:126
 msgid "Read messages"
 msgstr "메시지 읽음"
+
+#. Permission description in the role/permission editor for the Read Message History permission at community scope. Without the permission the member sees only messages that arrive while the channel is open in front of them.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:151
+msgid "Read messages sent before they opened a channel. Without it, they only see messages that arrive while it is open."
+msgstr "채널을 열기 전에 보낸 메시지를 읽습니다. 이 권한이 없으면 채널이 열려 있는 동안 도착하는 메시지만 볼 수 있습니다."
+
+#. Permission description in the channel-scoped permissions editor for the Read Message History permission. Without the permission the member sees only messages that arrive while the channel is open in front of them.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:248
+msgid "Read messages sent in this channel before they opened it. Without it, they only see messages that arrive while it is open."
+msgstr "채널을 열기 전에 보낸 메시지를 읽습니다. 이 권한이 없으면 채널이 열려 있는 동안 도착하는 메시지만 볼 수 있습니다."
 
 #. Permission description in the role/permission editor for the View Activity Log permission. Refers to the per-community audit/activity log.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:18
@@ -24739,11 +24727,11 @@ msgstr "문서 읽기({domain})"
 msgid "Reading speed"
 msgstr "읽기 속도"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:64
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
 msgid "Ready to buy a gift?"
 msgstr "선물할 준비가 되셨나요?"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:64
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
 msgid "Ready to upgrade?"
 msgstr "업그레이드할 준비가 되셨나요?"
 
@@ -24846,7 +24834,7 @@ msgid "Reconnect succeeded. Pick a screen again if you want to resume your previ
 msgstr "재연결되었습니다. 이전 스트림을 다시 시작하려면 화면을 다시 선택하세요."
 
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
-#: src/features/voice/components/VoiceCallView.tsx:97
+#: src/features/voice/components/VoiceCallView.tsx:98
 msgid "Reconnecting..."
 msgstr "다시 연결 중..."
 
@@ -24909,7 +24897,7 @@ msgid "Redeem for yourself"
 msgstr "내 계정으로 사용"
 
 #. Billing button for entering a premium gift code.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:577
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:717
 msgid "Redeem gift code"
 msgstr "선물 코드 등록"
 
@@ -24987,7 +24975,7 @@ msgstr "참조가 복사되었습니다."
 msgid "Referral parameters"
 msgstr "추천 매개변수"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:301
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:305
 msgid "Refresh audio sources"
 msgstr "오디오 소스 새로고침"
 
@@ -25343,6 +25331,11 @@ msgstr "아이콘 삭제"
 msgid "Remove it from the channel for everyone."
 msgstr "모든 사람에게서 채널에서 제거합니다."
 
+#. Permission description in the role/permission editor for the Kick Members permission. Note that a kick is not permanent, unlike a ban.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:118
+msgid "Remove members from the community. They can rejoin with a new invite."
+msgstr "커뮤니티에서 멤버를 삭제합니다. 멤버는 새 초대장으로 다시 참여할 수 있습니다."
+
 #. Button or menu action label in the recent mentions content popout. Keep it concise. Keep the tone plain and specific.
 #: src/features/messaging/components/popouts/RecentMentionsContent.tsx:52
 msgid "Remove mention"
@@ -25455,7 +25448,7 @@ msgid "Removed deny for {0}."
 msgstr "{0}님에 대한 거부 권한을 삭제했습니다."
 
 #. Button or menu action label in the messaging commands. Keep it concise. Keep the tone plain and specific.
-#: src/features/messaging/commands/SavedMessageCommands.tsx:23
+#: src/features/messaging/commands/SavedMessageCommands.tsx:24
 msgid "Removed from bookmarks"
 msgstr "북마크에서 삭제됨"
 
@@ -25533,7 +25526,7 @@ msgid "Rename :{emojiName}:"
 msgstr "이모티콘 이름 변경: {emojiName}:"
 
 #. Permission description in the channel-scoped permissions editor for the Manage Channel permission. "This channel" refers to the channel currently being edited.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:113
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:195
 msgid "Rename and edit this channel's settings."
 msgstr "이 채널의 설정을 편집하고 이름을 변경합니다."
 
@@ -25602,7 +25595,7 @@ msgstr "갱신 임계값(일)"
 msgid "Renew window (days)"
 msgstr "갱신 기간(일)"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:559
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:699
 msgid "Renews on <0>{renewalDate}.</0>"
 msgstr "<0>{renewalDate}</0>에 갱신됩니다"
 
@@ -26330,8 +26323,8 @@ msgstr "창 복원"
 
 #. Billing button for restarting a subscription during the grace period.
 #. Billing button for starting a new subscription after premium expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:596
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:600
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:736
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:740
 msgid "Resubscribe"
 msgstr "재구독"
 
@@ -26773,9 +26766,9 @@ msgstr "저장"
 #. Price badge comparing a one-year gift to monthly gifts.
 #. Price badge comparing yearly billing to monthly billing.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:30
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:52
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:64
+#: src/features/app/components/dialogs/components/plutonium/GiftSection.tsx:28
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:50
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:62
 msgid "Save 17%"
 msgstr "17% 할인"
 
@@ -27528,6 +27521,11 @@ msgstr "보안 키 PIN"
 msgid "Security key PIN form"
 msgstr "보안 키 PIN 입력 양식"
 
+#. Permission description in the role/permission editor for the View Channel permission at community scope. Per-channel overwrites still decide access for individual channels.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:128
+msgid "See channels by default. Channels that deny it stay hidden."
+msgstr "기본적으로 채널을 볼 수 있습니다. 거부된 채널은 숨겨집니다."
+
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildInviteSplashSettingsField.tsx:89
 msgid "See how your invite looks to visitors."
 msgstr "초대장이 방문자에게 어떻게 보이는지 확인하세요."
@@ -27538,9 +27536,14 @@ msgid "See the member list for channels in this community."
 msgstr "이 커뮤니티의 채널 멤버 목록을 확인하세요."
 
 #. Permission description in the channel-scoped permissions editor for the View Channel Members permission. Scoped to a single channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:128
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:210
 msgid "See the member list for this channel."
 msgstr "이 채널의 멤버 목록을 확인하세요."
+
+#. Permission description in the channel-scoped permissions editor for the View Channel permission. The placeholder renders the literal @everyone role name and must not be translated.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:220
+msgid "See this channel. Denying it for {everyoneMention} makes the channel private."
+msgstr "이 채널을 보세요. {everyoneMention}에 대해 이 권한을 거부하면 채널이 비공개로 설정됩니다."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts:121
@@ -27643,7 +27646,7 @@ msgid "Select friends"
 msgstr "친구 선택"
 
 #. Button label in the gif picker grid item when picking a GIF for an avatar, banner, or video background. Keep it concise. Preserve {title}; it is inserted by code.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:52
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:50
 msgid "Select GIF {title}"
 msgstr "{title} GIF 선택"
 
@@ -27746,7 +27749,7 @@ msgid "Self-harm or suicide"
 msgstr "자해 또는 자살"
 
 #. Accessible label for the self-host setup wizard carousel.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:67
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:69
 msgid "Self-host setup"
 msgstr "셀프 호스팅 설정"
 
@@ -27756,7 +27759,7 @@ msgid "Self-hosted mode"
 msgstr "자체 호스팅 모드"
 
 #. Developer option label for forcing self-hosted client mode.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:57
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:67
 msgid "Self-hosted mode override"
 msgstr "자체 호스팅 모드 재정의"
 
@@ -27857,7 +27860,7 @@ msgid "Send friend request"
 msgstr "친구 요청 보내기"
 
 #. Button or menu action label in the channel and chat gif picker grid item. Keep it concise. Preserve {title}; it is inserted by code.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:47
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:45
 msgid "Send GIF {title}"
 msgstr "GIF {title} 보내기"
 
@@ -27880,7 +27883,7 @@ msgstr "메시지 보내기"
 #. Audit log operation flag label for message sending.
 #. Permission name: allows sending chat messages.
 #: src/features/guild/utils/guild_tabs/GuildAuditLogTabUtils.ts:174
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:209
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:400
 msgid "Send messages"
 msgstr "메시지 보내기"
 
@@ -27888,6 +27891,16 @@ msgstr "메시지 보내기"
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:51
 msgid "Send messages disabled"
 msgstr "메시지 전송 비활성화됨"
+
+#. Permission description in the role/permission editor for the Send Messages permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:133
+msgid "Send messages in channels."
+msgstr "채널에서 메시지를 보내세요."
+
+#. Permission description in the channel-scoped permissions editor for the Send Messages permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:225
+msgid "Send messages in this channel."
+msgstr "이 채널에서 메시지를 보내세요."
 
 #. Footer submit button in the IAR modal. Sends the report to the safety team.
 #: src/features/moderation/components/report_modal/IARModal.tsx:90
@@ -27908,10 +27921,10 @@ msgstr "재설정 링크 보내기"
 msgid "Send saved media {memeName}"
 msgstr "저장된 미디어 {memeName} 보내기"
 
-#. Permission description in the role/permission editor for the Send TTS Messages permission. Keep "text-to-speech" spelled out for clarity.
+#. Permission description in the role/permission editor for the Send TTS Messages permission. Keep "text-to-speech" spelled out for clarity. "/tts" is a literal command prefix typed in the message box and must not be translated.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:63
-msgid "Send text-to-speech messages."
-msgstr "음성 메시지 보내기."
+msgid "Send text-to-speech messages with /tts. Members who turned text-to-speech on hear them read aloud."
+msgstr "/tts로 음성 메시지를 보내세요. 음성 메시지 기능을 켠 멤버들은 소리로 들을 수 있습니다."
 
 #. placeholder {0}: inboundChallenge.challenge_code
 #. placeholder {1}: inboundChallenge.our_number
@@ -27940,7 +27953,7 @@ msgid "Send to"
 msgstr "다음으로 전송"
 
 #. Permission name: allows sending text-to-speech messages.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:213
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:404
 msgid "Send TTS messages"
 msgstr "TTS 메시지 보내기"
 
@@ -28085,7 +28098,7 @@ msgstr "세션"
 msgid "Set {fieldNode} to {0}."
 msgstr "{fieldNode}을(를) {0}(으)로 설정했습니다."
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:608
+#: src/features/app/components/floating/UserAreaPopout.tsx:601
 #: src/features/app/components/shared/custom_status_display/CustomStatusDisplay.tsx:314
 msgid "Set a custom status"
 msgstr "맞춤 상태 설정"
@@ -28284,7 +28297,7 @@ msgid "Set this check aside?"
 msgstr "이 확인을 건너뛸까요?"
 
 #. Title for the self-host setup wizard modal.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:71
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
 msgid "Set up {productName}"
 msgstr "{productName} 설정"
 
@@ -28310,7 +28323,7 @@ msgid "Set verification level to <0>none</0>."
 msgstr "인증 레벨을 <0>없음</0>으로 설정했습니다."
 
 #. Permission name: allows changing the voice service region.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:298
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:489
 msgid "Set voice region"
 msgstr "음성 지역 설정"
 
@@ -28709,6 +28722,16 @@ msgstr "삭제 버튼 표시"
 msgid "Show download button"
 msgstr "다운로드 버튼 표시"
 
+#. Permission description in the channel-scoped permissions editor for the Embed Links permission. The preview is the card rendered under a message that contains a link.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:239
+msgid "Show embedded previews for links they send in this channel."
+msgstr "이 채널에서 보내는 링크의 미리보기를 표시합니다."
+
+#. Permission description in the role/permission editor for the Embed Links permission at community scope. The preview is the card rendered under a message that contains a link.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:142
+msgid "Show embedded previews for links they send."
+msgstr "보낸 링크의 미리보기를 표시합니다."
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/ChatSettingsSections.ts:46
 msgid "Show embeds"
@@ -28880,7 +28903,7 @@ msgstr "내 화면 공유 표시"
 #. Developer option label for showing the current user as typing.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:89
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:53
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:63
 msgid "Show myself typing"
 msgstr "내가 입력 중으로 표시"
 
@@ -28934,7 +28957,7 @@ msgid "Show per-device participant volume sliders in voice menus"
 msgstr "음성 메뉴에서 기기별 참가자 볼륨 슬라이더 표시"
 
 #. Developer option label for exposing the staff-only profile timezone section in profile settings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:125
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
 msgid "Show profile timezone settings"
 msgstr "프로필 설정에서 직원 전용 프로필 시간대 섹션을 표시합니다"
 
@@ -29301,7 +29324,7 @@ msgid "Skip the external link warning for all domains"
 msgstr "모든 도메인에서 외부 링크 경고 건너뛰기"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the no-op in-app reports toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:149
 msgid "Skip the network call when an in-app report is submitted. The flow still advances to the success screen so you can exercise the UI, but nothing is actually sent to the safety team."
 msgstr "앱 내 신고 제출 시 네트워크 호출을 건너뜁니다. UI를 테스트할 수 있도록 성공 화면으로 계속 진행되지만, 안전팀에는 아무것도 전송되지 않습니다."
 
@@ -29359,7 +29382,7 @@ msgstr "슬로베니아"
 #. Developer option label for simulating slow file uploads.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:93
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:89
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:99
 msgid "Slow attachment upload"
 msgstr "첨부 파일 업로드 속도 저하"
 
@@ -29376,28 +29399,28 @@ msgstr "속도를 늦춰주세요. 잠시 후 다시 시도해 주세요."
 #. Developer option label for simulating slow message edits.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:105
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:85
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:95
 msgid "Slow message edit"
 msgstr "메시지 편집 속도 저하"
 
 #. Developer option label for simulating slow message loading.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:97
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:77
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:87
 msgid "Slow message load"
 msgstr "메시지 로드 속도 저하"
 
 #. Developer option label for simulating slow message sending.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:101
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:81
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:91
 msgid "Slow message send"
 msgstr "메시지 전송 속도 저하"
 
 #. Developer option label for simulating slow profile loading.
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:109
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:93
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:103
 msgid "Slow profile load"
 msgstr "느린 프로필 로드"
 
@@ -29619,26 +29642,31 @@ msgid "Something went wrong loading members. Try again later."
 msgstr "멤버를 불러오는 중 문제가 발생했습니다. 나중에 다시 시도해 주세요."
 
 #. Body of the generic fallback error modal shown when canceling a scheduled Plutonium billing cycle change fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:89
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:91
 msgid "Something went wrong while canceling your pending billing change. Please try again in a moment."
 msgstr "예정된 결제 변경을 취소하는 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
 #. Body of the generic fallback error modal shown when cancelling a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:28
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:30
 msgid "Something went wrong while cancelling your subscription. Please try again in a moment."
 msgstr "구독을 취소하는 중에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
 #. Body of the generic fallback error modal shown when changing the Plutonium billing cycle fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:80
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:82
 msgid "Something went wrong while changing your billing cycle. Please try again in a moment."
 msgstr "결제 주기를 변경하는 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
+
+#. Body of the generic fallback error modal shown when moving a Plutonium subscription down to the current price fails.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:116
+msgid "Something went wrong while changing your price. Please try again in a moment."
+msgstr "가격 변경 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx:48
 msgid "Something went wrong while connecting your account. You can close this tab and try again."
 msgstr "계정 연결 중 문제가 발생했습니다. 이 탭을 닫고 다시 시도해 주세요."
 
 #. Body of the generic fallback error modal shown when ending the Plutonium grace period fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:40
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:42
 msgid "Something went wrong while ending your grace period. Please try again in a moment."
 msgstr "유예 기간을 종료하는 중에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
@@ -29656,8 +29684,8 @@ msgstr "활동 로그를 로드하는 동안 문제가 발생했습니다."
 #. Body of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Body of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Body of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:34
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:16
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:33
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:18
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:34
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:34
 msgid "Something went wrong while opening the billing portal. Please try again in a moment."
@@ -29669,7 +29697,7 @@ msgid "Something went wrong while preparing this sticker. Try another file or tr
 msgstr "스티커를 준비하는 중에 문제가 발생했습니다. 다른 파일을 시도하거나 잠시 후에 다시 시도해 주세요."
 
 #. Body of the generic fallback error modal shown when reactivating a Plutonium subscription fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:52
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:54
 msgid "Something went wrong while reactivating your subscription. Please try again in a moment."
 msgstr "구독을 다시 활성화하는 중에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
@@ -29691,7 +29719,7 @@ msgid "Something went wrong while sending your verification email. Please try ag
 msgstr "인증 이메일을 보내는 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
 #. Body of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:156
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:155
 msgid "Something went wrong while starting checkout. Please try again in a moment."
 msgstr "결제를 시작하는 중에 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
@@ -29712,8 +29740,8 @@ msgstr "문제가 발생했습니다."
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:129
 #: src/features/theme/components/modals/ShareThemeModal.tsx:51
 #: src/features/ui/action_menu/items/CallMenuItems.tsx:45
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:128
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:144
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:126
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:142
 msgid "Something went wrong. Please try again in a moment."
 msgstr "문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
@@ -29889,7 +29917,7 @@ msgid "Spatial and temporal layers"
 msgstr "공간 및 시간 레이어"
 
 #. Permission name: allows speaking in voice channels.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:269
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:460
 msgctxt "voice-permission"
 msgid "Speak"
 msgstr "말하기"
@@ -30073,20 +30101,6 @@ msgstr "직원 제어"
 msgid "Standard"
 msgstr "표준"
 
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:460
-msgid "Standard {baseCurrencyLabel}"
-msgstr "스탠다드 {baseCurrencyLabel}"
-
-#. Plutonium gift checkout panel title when the buyer opted into the standard (non-localized) currency. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:89
-msgid "Standard {baseCurrencyLabel} gift checkout"
-msgstr "표준 {baseCurrencyLabel} 선물 결제"
-
-#. Plutonium subscription checkout panel title when the subscriber opted into the standard (non-localized) currency. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:114
-msgid "Standard {baseCurrencyLabel} pricing"
-msgstr "표준 {baseCurrencyLabel} 가격"
-
 #. Required-action modal notice for inbound phone verification.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:461
 msgid "Standard messaging rates from your carrier may apply."
@@ -30190,7 +30204,7 @@ msgstr "다시 시작"
 msgid "Start recording"
 msgstr "녹음 시작"
 
-#: src/features/search/components/quick_switcher/QuickSwitcherModal.tsx:585
+#: src/features/search/components/quick_switcher/QuickSwitcherModal.tsx:586
 msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> to narrow down results."
 msgstr "검색을 시작할 때 <0>{peoplePrefix}</0>, <1>{textChannelPrefix}</1>, <2>{voiceChannelPrefix}</2>, <3>{communityPrefix}</3>을 사용하여 검색 범위를 좁힐 수 있습니다."
 
@@ -30451,6 +30465,11 @@ msgstr "메시지 및 친구 요청 중단."
 msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
 msgstr "Neko가 커서를 따라다니지 않도록 하면서도 드래그 및 상호작용은 유지합니다."
 
+#. Developer / debug surface — keep terse and technical. Tooltip / description for the translation DOM guard kill switch.
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:41
+msgid "Stop patching Node.prototype insertBefore and removeChild. The app will crash again when a page translator re-parents text nodes React still holds."
+msgstr "Node.prototype insertBefore 및 removeChild 패치를 중지합니다. React가 여전히 보유하고 있는 텍스트 노드를 페이지 번역기가 다시 부모로 지정하면 앱이 다시 충돌합니다."
+
 #. Action that stops ringing the selected participant in a voice call.
 #: src/features/ui/action_menu/items/CallMenuItems.tsx:29
 msgid "Stop ringing"
@@ -30552,7 +30571,7 @@ msgid "Stream settings"
 msgstr "스트림 설정"
 
 #. Permission name: allows video streaming or screen sharing in voice.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:274
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:465
 msgid "Stream video"
 msgstr "비디오 스트리밍"
 
@@ -30622,13 +30641,13 @@ msgstr "URL에서 트래킹 매개변수 제거"
 
 #. Premium checkout error shown when Stripe cannot verify a card for localized pricing. productName is the app name.
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:34
-msgid "Stripe could not verify this card for localized pricing. Use another card or return to {productName} and choose another payment method or the standard price."
-msgstr "Stripe에서 현지화된 가격에 대해 이 카드를 확인할 수 없습니다. 다른 카드를 사용하거나 {productName}으로 돌아가 다른 결제 수단 또는 표준 가격을 선택하세요."
+msgid "Stripe could not verify this card for localized pricing. Use another card, or return to {productName} and choose another payment method."
+msgstr "Stripe에서 현지화된 가격 책정을 위해 이 카드를 인증할 수 없습니다. 다른 카드를 사용하거나 {productName}으로 돌아가 다른 결제 방법을 선택하세요."
 
 #. Premium checkout error shown when card country does not match billing country. productName is the app name.
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:22
-msgid "Stripe reported a card issued in {countryName}. To pay in this localized currency, use a card issued in your billing country, choose another payment method, or return to {productName} and switch to the standard price."
-msgstr "Stripe에서 {countryName}에서 발급된 카드를 보고했습니다. 현지 통화로 결제하려면 청구 국가에서 발급된 카드를 사용하거나 다른 결제 수단을 선택하거나 {productName}으로 돌아가 표준 가격으로 전환하세요."
+msgid "Stripe reported a card issued in {countryName}. To pay in this localized currency, use a card issued in your billing country, or return to {productName} and choose another payment method."
+msgstr "Stripe에서 {countryName}에서 발급된 카드를 보고했습니다. 이 현지 통화로 결제하려면, 거주 국가에서 발급된 카드를 사용하거나 {productName}으로 돌아가 다른 결제 방법을 선택하세요."
 
 #. Codec description in the screen share codec policy menu. Technical surface; keep Chromium as a literal proper noun.
 #: src/features/voice/utils/ScreenShareCodecPolicy.ts:15
@@ -30662,7 +30681,7 @@ msgid "Subscription"
 msgstr "구독"
 
 #. Modal title shown when checkout is blocked because the account already has an active Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:125
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:124
 msgid "Subscription already exists"
 msgstr "이미 구독 중입니다"
 
@@ -30784,14 +30803,9 @@ msgstr "스웨덴어"
 msgid "Switch account"
 msgstr "계정 전환"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:684
+#: src/features/app/components/floating/UserAreaPopout.tsx:677
 msgid "Switch accounts"
 msgstr "계정 전환"
-
-#. Plutonium gift checkout guidance. Reminds the buyer they can revert to localized pricing. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:94
-msgid "Switch back to {localizedCurrencyLabel} if you prefer the localized price instead."
-msgstr "현지 가격을 선호하시면 {localizedCurrencyLabel}으로 다시 전환하세요."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:45
@@ -30813,6 +30827,16 @@ msgstr "글로벌 프로필과 커뮤니티별 프로필 간 전환"
 msgid "Switch device"
 msgstr "기기 전환"
 
+#. Button confirming a move of an active subscription down to the current price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:65
+msgid "Switch price"
+msgstr "가격 변경"
+
+#. Billing button that opens confirmation to move the subscription down to the current price. {listPriceNewLabel} is the localized new price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:804
+msgid "Switch to {listPriceNewLabel}"
+msgstr "{listPriceNewLabel}(으)로 전환"
+
 #. Tooltip on the density toggle when currently in dense mode.
 #. Tooltip on the layout toggle button in the role editor that switches the permission list to comfy layout.
 #: src/features/channel/components/modals/channel_tabs/channel_permissions_tab/LayoutToggleButtons.tsx:25
@@ -30833,13 +30857,13 @@ msgstr "직접 입력으로 전환"
 
 #. Billing button that opens confirmation to switch to monthly billing.
 #. Button confirming a change to monthly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:54
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:646
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:57
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:787
 msgid "Switch to monthly"
 msgstr "월간으로 전환"
 
 #. Billing confirmation title for changing an active subscription to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:46
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:49
 msgid "Switch to monthly billing?"
 msgstr "월별 결제로 변경하시겠어요?"
 
@@ -30880,6 +30904,11 @@ msgstr "이전 커뮤니티 또는 DM으로 전환"
 msgid "Switch to single column"
 msgstr "한 줄로 보기"
 
+#. Billing confirmation title for moving an active subscription down to the current price.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:61
+msgid "Switch to the new price?"
+msgstr "새 가격으로 변경하시겠어요?"
+
 #: src/features/auth/utils/AccountSwitcherModalUtils.tsx:290
 msgid "Switch to this account"
 msgstr "이 계정으로 전환"
@@ -30897,13 +30926,13 @@ msgstr "2열로 전환"
 
 #. Billing button that opens confirmation to switch to yearly billing.
 #. Button confirming a change to yearly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:50
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:642
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:53
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:783
 msgid "Switch to yearly"
 msgstr "연간 플랜으로 변경"
 
 #. Billing confirmation title for changing an active subscription to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:42
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:45
 msgid "Switch to yearly billing?"
 msgstr "연간 결제로 변경하시겠어요?"
 
@@ -31135,23 +31164,23 @@ msgstr "태그({tagCount}/{tagLimit})"
 msgid "Tags must be 2 to {maxLength} characters and alphanumeric."
 msgstr "태그는 2자에서 {maxLength}자 사이의 영숫자여야 합니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:242
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:291
 msgid "Takes effect at your next renewal. We'll apply a {creditLabel} credit from your current monthly payment, so your first yearly charge will be <0>{firstRenewalPriceLabel}</0>. Future yearly renewals will be {renewalPrice}/year."
 msgstr "다음 갱신 시 적용됩니다. 현재 월별 결제 금액에서 {creditLabel} 크레딧이 적용되어 첫 연간 요금은 <0>{firstRenewalPriceLabel}</0>입니다. 이후 연간 갱신 요금은 연 {renewalPrice}입니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:251
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:300
 msgid "Takes effect at your next renewal. Your subscription stays monthly until then, and your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "다음 갱신 시 적용됩니다. 그때까지는 월간 구독이 유지되며, 다음 갱신 시에는 <0>{renewalPrice}/년</0>이 청구됩니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:260
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:309
 msgid "Takes effect at your next renewal. Your subscription stays yearly until then, and your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "다음 갱신 시 적용됩니다. 그때까지는 연간 구독이 유지되며, 다음 갱신 시에는 <0>{renewalPrice}/월</0>이 청구됩니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:279
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:328
 msgid "Takes effect immediately. A prorated adjustment may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "즉시 적용됩니다. {PAYMENT_PROVIDER_NAME}을 통해 비례 배분 조정이 적용될 수 있습니다. 다음 갱신 시 <0>월 {renewalPrice}</0>가 청구됩니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:270
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:319
 msgid "Takes effect immediately. A prorated charge may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "즉시 적용됩니다. {PAYMENT_PROVIDER_NAME}을 통해 일할 계산된 요금이 부과될 수 있습니다. 다음 갱신 시에는 <0>{renewalPrice}/년</0>이 청구됩니다."
 
@@ -31159,6 +31188,16 @@ msgstr "즉시 적용됩니다. {PAYMENT_PROVIDER_NAME}을 통해 일할 계산�
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:40
 msgid "Talk in calls and test your input."
 msgstr "통화에서 말하고 입력을 테스트하세요."
+
+#. Permission description in the channel-scoped permissions editor for the Speak permission. "Mute members" is another permission in this same editor, so match the wording used for its name.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:285
+msgid "Talk in this voice channel. Without it, members stay muted until someone with Mute members unmutes them."
+msgstr "이 음성 채널에서 말하기 권한입니다. 이 권한이 없으면 다른 사람이 음소거 해제해 줄 때까지 멤버는 음소거 상태로 유지됩니다."
+
+#. Permission description in the role/permission editor for the Speak permission at community scope. "Mute members" is another permission in this same editor, so match the wording used for its name.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:166
+msgid "Talk in voice channels. Without it, members stay muted until someone with Mute members unmutes them."
+msgstr "음성 채널에서 말하기. 이 권한이 없으면 다른 사람이 '멤버 음소거 해제' 권한을 사용하기 전까지 멤버는 음소거 상태로 유지됩니다."
 
 #. Label in the note edit sheet.
 #: src/features/user/components/modals/NoteEditSheet.tsx:21
@@ -31431,7 +31470,7 @@ msgid "That friend request is no longer available. Refresh and try again."
 msgstr "친구 요청을 더 이상 사용할 수 없습니다. 새로고침 후 다시 시도해 주세요."
 
 #. Error shown when a branding image fails to upload in the setup wizard.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:95
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:102
 msgid "That image could not be used. Try a different file."
 msgstr "해당 이미지를 사용할 수 없습니다. 다른 파일을 시도해 보세요."
 
@@ -31461,6 +31500,11 @@ msgstr "모두 불러왔습니다."
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:69
 msgid "The #0000 tag is reserved for Visionary subscribers. Visionary is no longer available for purchase."
 msgstr "#0000 태그는 Visionary 구독자 전용입니다. Visionary는 더 이상 구매할 수 없습니다."
+
+#. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:97
+msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
+msgstr "API가 이 페이지와 다른 출처에 있으므로 세션 없이 설정 요청이 전송됩니다. 구성된 공개 출처 및 포트를 확인한 후 새로고침하세요."
 
 #: src/features/app/components/ErrorFallback.tsx:120
 msgid "The app crashed"
@@ -31561,6 +31605,11 @@ msgstr "이름이 이전으로 되돌려졌습니다. 잠시 후에 다시 시�
 #: src/features/channel/components/modals/ChannelDuplicateModal.tsx:63
 msgid "The new channel will reuse the permissions from <0>{channelLabel}</0>."
 msgstr "새로운 채널은 <0>{channelLabel}</0>의 권한을 재사용합니다."
+
+#. Toast success shown when a move down to the current price was already scheduled by an earlier request. {effectiveDate} is the localized date the new price starts.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:101
+msgid "The new price is already scheduled for {effectiveDate}."
+msgstr "새 가격은 {effectiveDate}에 적용될 예정입니다."
 
 #: src/features/channel/components/modals/ChannelDuplicateModal.tsx:58
 msgid "The new voice channel will reuse the permissions, user limit, and bitrate from <0>{channelLabel}</0>."
@@ -31719,16 +31768,6 @@ msgstr "현재 이 커뮤니티에 할당할 역할이 없습니다. <0>{rolesSe
 msgid "There are no webhooks configured for this channel. Create a webhook to allow external applications to post messages."
 msgstr "이 채널에 구성된 웹훅이 없습니다. 외부 앱이 메시지를 게시하도록 웹훅을 생성하세요."
 
-#. Plutonium gift checkout guidance for Türkiye. Notes that no local wallet method is currently available; card is the main option.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:74
-msgid "There is no app-based local payment method surfaced here today, so card checkout is the main path."
-msgstr "현재 앱 기반의 현지 결제 수단이 제공되지 않아 카드 결제가 주된 방법입니다."
-
-#. Plutonium subscription checkout guidance for Türkiye. Notes that no local wallet method is available; card is the main option.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:201
-msgid "There is no app-based local subscription method surfaced here today, so local card checkout is the main path."
-msgstr "현재 앱 내 구독 방식은 지원되지 않아, 카드 결제가 유일한 방법입니다."
-
 #. Destructive notice on the confirm step of the data-deletion carousel modal.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:125
 msgid "There is no recovery once this starts. We will DM you when it finishes."
@@ -31836,8 +31875,8 @@ msgstr "이 작업은 되돌릴 수 없습니다. 앱을 삭제하면 봇도 함
 
 #. Premium checkout error shown when card country does not match billing country and Stripe did not provide the issuing country. productName is the app name.
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:28
-msgid "This card does not match your billing country, so it cannot be used for this localized currency. Use a local card, choose another payment method, or return to {productName} and switch to the standard price."
-msgstr "카드 청구지 국가가 일치하지 않아 현지 통화로 결제할 수 없습니다. 현지 카드를 사용하거나 다른 결제 수단을 선택하거나 {productName}으로 돌아가 표준 가격으로 전환하세요."
+msgid "This card does not match your billing country, so it cannot be used for this localized currency. Use a local card, or return to {productName} and choose another payment method."
+msgstr "이 카드는 청구 국가와 일치하지 않아 해당 지역 통화에 사용할 수 없습니다. 현지 카드를 사용하거나 {productName}으로 돌아가 다른 결제 방법을 선택하세요."
 
 #. Modal body shown when a category cannot accept another channel because the per-category limit is reached. Limit is interpolated.
 #: src/features/app/components/layout/ChannelListContent.tsx:79
@@ -32344,7 +32383,7 @@ msgid "This picker is only available in the desktop app."
 msgstr "이 선택 도구는 데스크톱 앱에서만 사용할 수 있습니다."
 
 #. Error modal body shown when the selected Plutonium plan has no price ID configured.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:170
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:169
 msgid "This plan isn't available. Contact support."
 msgstr "이용할 수 없는 플랜입니다. 지원팀에 문의하세요."
 
@@ -32398,11 +32437,6 @@ msgstr "이 역할"
 #: src/features/user/components/modals/tabs/AccessibilityTab.tsx:36
 msgid "This shows how links appear: {linkPreviewExampleUrl}"
 msgstr "링크 미리보기가 표시되는 방식: {linkPreviewExampleUrl}"
-
-#. Plutonium subscription checkout guidance. Notes that the standard path skips localized verification and offers a way back.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:124
-msgid "This skips localized card verification. Switch back to {localizedCurrencyLabel} if you prefer the local price."
-msgstr "현지 카드 인증을 건너뜁니다. 현지 가격을 선호하는 경우 {localizedCurrencyLabel}으로 다시 전환하세요."
 
 #. Error message in the selections tab.
 #: src/features/user/components/modals/tabs/component_gallery_tab/SelectionsTab.tsx:85
@@ -32647,7 +32681,7 @@ msgid "Time format selection"
 msgstr "시간 형식 선택"
 
 #. Permission name: allows temporarily restricting members.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:253
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:444
 msgid "Time out members"
 msgstr "멤버 타임아웃"
 
@@ -33212,11 +33246,6 @@ msgstr "다른 필터나 검색어를 사용해 보세요."
 msgid "Try editing your message again."
 msgstr "메시지 수정을 다시 시도해 주세요."
 
-#. Plutonium gift checkout guidance for Türkiye. Clarifies one-time-only nature and Türkiye card issuance requirement.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:68
-msgid "TRY gifts are one-time payments. Cards charged in TRY still need to be issued in Türkiye for the purchase to stay eligible."
-msgstr "TRY 선물은 일회성 결제입니다. 구매 자격을 유지하려면 TRY로 청구된 카드라도 터키에서 발급되어야 합니다."
-
 #: src/features/app/components/dialogs/components/AllSettingsRenderer.tsx:252
 msgid "Try searching for something like \"theme\", \"notifications\", or \"privacy\""
 msgstr "\"테마\", \"알림\", \"개인 정보 보호\" 등으로 검색해 보세요"
@@ -33316,6 +33345,16 @@ msgstr "스트림 끄기"
 #: src/features/streamer_mode/components/StreamerModeGate.tsx:19
 msgid "Turn off streaming privacy before viewing login or account security details."
 msgstr "로그인 또는 계정 보안 세부 정보를 보려면 스트리밍 개인 정보 보호를 끄세요."
+
+#. Permission description in the channel-scoped permissions editor for the Stream Video permission. Covers both the webcam and screen sharing.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:290
+msgid "Turn on a camera or share a screen in this voice channel."
+msgstr "이 음성 채널에서 카메라를 켜거나 화면을 공유하세요."
+
+#. Permission description in the role/permission editor for the Stream Video permission at community scope. Covers both the webcam and screen sharing.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:171
+msgid "Turn on a camera or share a screen in voice channels."
+msgstr "음성 채널에서 카메라를 켜거나 화면을 공유합니다."
 
 #. Label for the automatic streaming privacy detection settings toggle.
 #: src/features/user/components/modals/tabs/appearance_tab/StreamerModeTab.tsx:19
@@ -33468,7 +33507,7 @@ msgid "Typing state"
 msgstr "입력 상태"
 
 #. Developer options group for forcing UI component states.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:61
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:71
 msgid "UI components"
 msgstr "UI 구성 요소"
 
@@ -33884,7 +33923,7 @@ msgstr "알 수 없는 사용자"
 #: src/features/devtools/utils/CommandUtils.ts:27
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTab.tsx:114
 #: src/features/voice/components/VoiceParticipantAvatarList.tsx:44
-#: src/features/voice/components/VoiceParticipantTile.tsx:169
+#: src/features/voice/components/VoiceParticipantTile.tsx:172
 #: src/features/webhook/components/WebhookListItem.tsx:30
 msgid "Unknown user"
 msgstr "알 수 없는 사용자"
@@ -33941,7 +33980,7 @@ msgstr "{premiumProductName}으로 DM에서 나만의 이모티콘을 잠금 해
 msgid "Unlock HD screen share with {premiumProductName}"
 msgstr "{premiumProductName}으로 HD 화면 공유를 잠금 해제하세요"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:217
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:200
 msgid "Unlock higher limits and exclusive features while supporting an independent communication platform."
 msgstr "독립적인 커뮤니케이션 플랫폼을 지원하면서 더 높은 한도와 독점적인 기능을 이용해 보세요."
 
@@ -34122,7 +34161,7 @@ msgstr "그룹 고정 해제"
 
 #. Toast confirming a group DM was unpinned in the sidebar.
 #. Toast confirming a group DM was unpinned in the sidebar.
-#: src/features/ui/action_menu/items/ChannelMenuData.tsx:116
+#: src/features/ui/action_menu/items/ChannelMenuData.tsx:114
 #: src/features/ui/action_menu/items/dm_menu_data/shared.ts:25
 msgid "Unpinned group DM"
 msgstr "고정 해제된 그룹 DM"
@@ -34408,7 +34447,7 @@ msgid "Updater state"
 msgstr "업데이터 상태"
 
 #. Short label in the channel and chat gif picker grid item. Keep it concise.
-#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:43
+#: src/features/channel/components/pickers/gif/GifPickerGridItem.tsx:41
 msgid "Updating favorites…"
 msgstr "즐겨찾기 업데이트 중…"
 
@@ -34418,7 +34457,7 @@ msgid "Upgrade"
 msgstr "업그레이드"
 
 #. Checkout button for starting a paid subscription.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:56
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:54
 msgid "Upgrade now"
 msgstr "지금 업그레이드"
 
@@ -34507,6 +34546,16 @@ msgstr "이모티콘 업로드"
 #: src/features/channel/components/textarea/TextareaPlusMenu.tsx:23
 msgid "Upload file"
 msgstr "파일 업로드"
+
+#. Permission description in the role/permission editor for the Attach Files permission at community scope.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:147
+msgid "Upload files and media in messages."
+msgstr "메시지에 파일 및 미디어를 업로드합니다."
+
+#. Permission description in the channel-scoped permissions editor for the Attach Files permission.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:244
+msgid "Upload files and media in this channel."
+msgstr "이 채널에 파일 및 미디어를 업로드합니다."
 
 #: src/features/channel/components/modals/EditGroupBottomSheet.tsx:328
 #: src/features/channel/components/modals/EditGroupModal.tsx:283
@@ -34657,7 +34706,7 @@ msgid "Use {everyoneMention}/{hereMention} and {rolesMention}"
 msgstr "{everyoneMention}/{hereMention} 및 {rolesMention} 사용"
 
 #. Plutonium subscription payment method picker button. Selects Pix as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:44
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:43
 msgid "Use {pixPaymentMethod}"
 msgstr "{pixPaymentMethod} 사용"
 
@@ -34672,7 +34721,7 @@ msgid "Use {query} where the text to translate should be inserted."
 msgstr "번역할 텍스트를 삽입할 위치에 {query}를 사용하세요."
 
 #. Plutonium subscription payment method picker button. Selects UPI as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:54
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:53
 msgid "Use {upiPaymentMethod}"
 msgstr "{upiPaymentMethod} 사용"
 
@@ -34680,11 +34729,6 @@ msgstr "{upiPaymentMethod} 사용"
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:42
 msgid "Use {url} where the image URL should be inserted."
 msgstr "이미지 URL이 삽입될 위치에 {url}을(를) 사용하세요."
-
-#. Plutonium subscription checkout guidance for Portugal. Suggests using a card for recurring billing or a gift for one-time EUR payments.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:109
-msgid "Use a card for the subscription, or buy a gift instead if you want a one-time EUR payment method."
-msgstr "구독하려면 카드를 사용하거나, 1회성 유로 결제를 원하시면 선물을 구매하세요."
 
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/MessageHistoryCutoffSection.tsx:24
 msgid "Use a dedicated modal to set a message history threshold date for members who don't have the {readMessageHistoryPermissionLabel} permission."
@@ -34711,7 +34755,7 @@ msgid "Use actual value"
 msgstr "실제 값 사용"
 
 #. Plutonium subscription payment method picker button. Selects the alternative (non-card) method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:63
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:62
 msgid "Use alternative method"
 msgstr "다른 방법 사용"
 
@@ -34747,7 +34791,7 @@ msgid "Use browser locale for time format"
 msgstr "시간 형식에 브라우저 로캘 사용"
 
 #. Modal secondary button to fall back to standard card checkout instead of an alternative payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:204
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:203
 msgid "Use card"
 msgstr "카드 사용"
 
@@ -34793,6 +34837,11 @@ msgstr "다른 이메일 사용"
 msgid "Use email"
 msgstr "이메일 사용"
 
+#. Permission description in the channel-scoped permissions editor for the Use External Emoji permission. "Other communities" means custom emoji uploaded in a different Fluxer community.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:259
+msgid "Use emoji from other communities in this channel."
+msgstr "다른 커뮤니티의 이모지를 이 채널에서 사용하세요."
+
 #. Premium upsell shown when sending external emoji without a subscription.
 #: src/features/expressions/utils/ExpressionPermissionUtils.ts:24
 msgid "Use emoji from other communities with {premiumProductName}"
@@ -34804,12 +34853,12 @@ msgid "Use emoji from other communities."
 msgstr "다른 커뮤니티의 이모티콘 사용."
 
 #. Permission name: allows using emoji from other communities.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:237
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:428
 msgid "Use external emoji"
 msgstr "외부 이모티콘 사용"
 
 #. Permission name: allows using stickers from other communities.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:241
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:432
 msgid "Use external stickers"
 msgstr "외부 스티커 사용"
 
@@ -34840,32 +34889,32 @@ msgid "Use light theme"
 msgstr "라이트 테마 사용"
 
 #. Modal primary button to start the localized card pre-approval verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:200
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:199
 msgid "Use local card"
 msgstr "현지 카드 사용"
 
 #. Plutonium checkout pre-approval prompt for Brazil. Explains the card verification flow and the Pix alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:67
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:66
 msgid "Use local card to verify a card issued in Brazil before the paid BRL checkout. Choose other methods if you'd rather try {pixPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "브라질에서 발급된 카드를 사용하려면 유료 BRL 결제 전에 현지 카드를 인증하세요. 다음 화면에서 {pixPaymentMethod} 또는 {paymentProviderName}에서 제공하는 다른 결제 수단을 사용하려면 다른 방법을 선택하세요."
 
 #. Plutonium checkout pre-approval prompt for India. Explains the card verification flow and the UPI alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:77
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:76
 msgid "Use local card to verify a card issued in India before the paid INR checkout. Choose other methods if you'd rather try {upiPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "인도에서 발급된 카드를 사용하려면 유료 INR 결제 전에 현지 카드로 인증하세요. 다음 화면에서 {upiPaymentMethod} 또는 {paymentProviderName}에서 제공하는 다른 결제 방법을 사용하려면 다른 방법을 선택하세요."
 
 #. Plutonium checkout pre-approval prompt for Poland. Explains that BLIK is not supported for subscriptions; user must continue to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:83
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:82
 msgid "Use local card to verify a card issued in Poland before the paid PLN checkout. {blikPaymentMethod} does not support subscriptions in {paymentProviderName} checkout, so continue only if you want {paymentProviderName2}'s standard payment screen instead."
 msgstr "유료 PLN 결제를 진행하기 전에 폴란드에서 발급된 카드를 확인하려면 현지 카드를 사용하세요. {blikPaymentMethod}은(는) {paymentProviderName} 결제에서 구독을 지원하지 않으므로, 대신 {paymentProviderName2}의 표준 결제 화면을 사용하려는 경우에만 계속하세요."
 
 #. Plutonium checkout pre-approval prompt for Türkiye. Explains there is no local wallet method; continuing goes to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:94
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:93
 msgid "Use local card to verify a card issued in Türkiye before the paid TRY checkout. There isn't an app-based local subscription method here, so continuing will take you to {paymentProviderName}'s standard payment screen."
 msgstr "유료 TRY 결제를 진행하기 전에 현지 카드를 사용하여 튀르키예에서 발급된 카드를 인증하세요. 앱 기반의 현지 구독 방법은 제공되지 않으므로, 계속하면 {paymentProviderName}의 표준 결제 화면으로 이동합니다."
 
 #. Plutonium checkout pre-approval prompt default. Generic description for countries without specific localized payment guidance.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:100
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:99
 msgid "Use local card to verify a card issued in your billing country before the paid checkout. Choose other methods for any other payment method {paymentProviderName} offers on the next screen."
 msgstr "유료 결제 전에 결제 국가에서 발급된 카드를 확인하려면 현지 카드를 사용하세요. 다음 화면에서 {paymentProviderName}이(가) 제공하는 다른 결제 수단은 다른 방법을 선택하세요."
 
@@ -34896,19 +34945,25 @@ msgstr "휴대폰 사용"
 msgid "Use reverification text"
 msgstr "재인증 텍스트 사용"
 
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:103
-msgid "Use saved media"
-msgstr "저장된 미디어 사용"
-
 #. Primary action button in the trimmer modal: accept the current selection and upload it.
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:35
 msgid "Use selection"
 msgstr "선택 항목 사용"
 
+#. Permission description in the channel-scoped permissions editor for the Use External Stickers permission. "Other communities" means stickers uploaded in a different Fluxer community.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:264
+msgid "Use stickers from other communities in this channel."
+msgstr "다른 커뮤니티의 스티커를 이 채널에서 사용합니다."
+
 #. Premium upsell shown when sending external stickers without a subscription.
 #: src/features/expressions/utils/ExpressionPermissionUtils.ts:36
 msgid "Use stickers from other communities with {premiumProductName}"
 msgstr "{premiumProductName}으로 다른 커뮤니티의 스티커를 사용해 보세요"
+
+#. Permission description in the role/permission editor for the Use External Stickers permission. "Other communities" means stickers uploaded in a different Fluxer community.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:157
+msgid "Use stickers from other communities."
+msgstr "다른 커뮤니티의 스티커 사용"
 
 #. Label in the language tab.
 #: src/features/user/components/modals/tabs/LanguageTab.tsx:63
@@ -34966,17 +35021,13 @@ msgstr "클라이언트 문제 해결 또는 로그 수집 시 사용하세요. 
 msgid "Use TLS"
 msgstr "TLS 사용"
 
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:111
-msgid "Use URL-only (recommended)"
-msgstr "URL만 사용 (권장)"
-
 #. One-line camera permission explanation in the macOS permissions modal.
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:44
 msgid "Use video and camera previews."
 msgstr "동영상 및 카메라 미리보기를 사용합니다."
 
 #. Permission name: allows voice activation instead of requiring push-to-talk.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:278
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:469
 msgid "Use voice activity"
 msgstr "음성 자동 감지 사용"
 
@@ -35231,16 +35282,6 @@ msgstr "실제 상태 사용 중"
 msgid "Using actual verification state"
 msgstr "실제 인증 상태 사용 중"
 
-#. Compact summary line shown in Plutonium checkout when localized pricing is active. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:211
-msgid "Using localized {localizedCurrencyLabel} pricing."
-msgstr "현지 {localizedCurrencyLabel} 가격을 사용 중."
-
-#. Compact summary line shown in Plutonium checkout when standard pricing is active. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:216
-msgid "Using standard {baseCurrencyLabel} pricing."
-msgstr "표준 {baseCurrencyLabel} 가격이 적용됩니다."
-
 #. Lowercase fallback label in the activity log for a generic changed value.
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTabUtils.tsx:53
 msgid "value"
@@ -35391,7 +35432,7 @@ msgid "Verify"
 msgstr "인증하기"
 
 #. Modal title for the mobile checkout confirmation when opening the localized card verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:174
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:173
 msgid "Verify card"
 msgstr "카드 확인"
 
@@ -35495,7 +35536,7 @@ msgid "Verify your email before sending friend requests."
 msgstr "친구 요청을 보내려면 먼저 이메일을 인증하세요."
 
 #. Title of the error modal shown when an unverified account tries to purchase Plutonium.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:106
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:105
 msgid "Verify your email first"
 msgstr "먼저 이메일을 인증하세요"
 
@@ -35720,7 +35761,7 @@ msgid "View {userName}'s profile"
 msgstr "{userName}님의 프로필 보기"
 
 #. Permission name: allows viewing community audit/activity logs.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:161
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:352
 msgid "View activity log"
 msgstr "활동 로그 보기"
 
@@ -35771,17 +35812,17 @@ msgid "View call"
 msgstr "통화 보기"
 
 #. Aria label for the show-controls trigger when the call toolbar is auto-hidden.
-#: src/features/voice/components/VoiceCallView.tsx:123
+#: src/features/voice/components/VoiceCallView.tsx:124
 msgid "View call controls"
 msgstr "통화 제어 보기"
 
 #. Permission name: allows seeing a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:257
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:448
 msgid "View channel"
 msgstr "채널 보기"
 
 #. Permission name: allows seeing the member list for a channel.
-#: src/features/permissions/utils/PermissionLabelDescriptors.ts:261
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:452
 msgid "View channel members"
 msgstr "채널 멤버 보기"
 
@@ -35952,7 +35993,7 @@ msgid "Visibility"
 msgstr "공개 설정"
 
 #. Audit log community feature label for the Visionary premium feature.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:341
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:416
 #: src/features/guild/utils/guild_tabs/GuildAuditLogTabUtils.ts:158
 msgid "Visionary"
 msgstr "Visionary"
@@ -35973,7 +36014,7 @@ msgid "Visionary 2FA nagbar"
 msgstr "Visionary 2단계 인증 알림 바"
 
 #. Modal body shown when a Visionary user tries to subscribe. Reassures them and points out gift purchases stay available.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:119
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:118
 msgid "Visionary already includes permanent access, so a recurring subscription isn't needed. You can still buy gifts for others."
 msgstr "Visionary는 영구적인 액세스를 포함하므로 반복 구독이 필요하지 않습니다. 다른 사람을 위한 선물을 구매할 수 있습니다."
 
@@ -36445,9 +36486,14 @@ msgid "We don't send verification texts to this country. Try a mobile number fro
 msgstr "이 국가로는 인증 문자를 보내지 않습니다. 다른 국가의 휴대폰 번호를 사용하거나 고객 지원팀에 문의하세요."
 
 #. Modal body for existing-subscription block. Directs the user to the billing portal and addresses the just-paid race case. Keep plain and reassuring.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:130
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:129
 msgid "We found an existing {premiumProductFullName} subscription for this account. Manage it in the secure billing portal to update payment details or check renewal status. If you just paid, wait a minute and reopen this page."
 msgstr "이 계정에 기존 {premiumProductFullName} 구독이 있습니다. 결제 정보를 업데이트하거나 갱신 상태를 확인하려면 보안 결제 포털에서 관리하세요. 방금 결제했다면 잠시 기다렸다가 이 페이지를 다시 여세요."
+
+#. Nagbar body announcing a price cut to people in Brazil who do not have a paid subscription. {premiumProductName} is the short paid product name. {monthlyPrice} and {yearlyPrice} are currency amounts already formatted and localized by code; never write an amount into the translation. Keep the tone calm and plain.
+#: src/features/premium/config/PriceAnnouncementCampaign.ts:7
+msgid "We lowered the price of {premiumProductName} in Brazil. It is now {monthlyPrice} a month or {yearlyPrice} a year."
+msgstr "브라질에서 {premiumProductName} 가격을 인하했습니다. 이제 월 {monthlyPrice}, 연간 {yearlyPrice}입니다."
 
 #. Required-action modal intro text for a generic verification requirement. productName is inserted by code. Keep it calm and concise.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:210
@@ -36503,10 +36549,6 @@ msgstr "회원님이 보낸 모든 메시지의 다운로드 가능한 아카이
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:116
 msgid "We'll build a downloadable archive that matches the filters below and email you when it's ready. The download link in that email expires after 7 days."
 msgstr "아래 필터와 일치하는 다운로드 가능한 아카이브를 생성하여 준비되면 이메일로 보내드립니다. 이메일의 다운로드 링크는 7일 후에 만료됩니다."
-
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:93
-msgid "We'll only ask once."
-msgstr "한 번만 물어볼게요."
 
 #. Success toast shown after a bulk message deletion job is queued.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:50
@@ -37029,6 +37071,11 @@ msgstr "오류 포함"
 msgid "Withdraw"
 msgstr "탈퇴하기"
 
+#. Permission description in the channel-scoped permissions editor for the Use Voice Activity permission. Explains the inverse: without it, the user must use push-to-talk in this voice channel.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:295
+msgid "Without this permission, push-to-talk is required in this channel."
+msgstr "이 권한이 없으면 이 채널에서 말하기를 눌러야 합니다."
+
 #. Permission description in the role/permission editor for the Use Voice Activity permission. Explains the inverse: without it, the user must use push-to-talk in voice channels.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:103
 msgid "Without this permission, push-to-talk is required."
@@ -37065,12 +37112,12 @@ msgstr "년"
 
 #. Billing plan title for a yearly recurring subscription.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:44
+#: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:42
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:55
 msgid "Yearly"
 msgstr "연간"
 
-#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:109
+#: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:84
 msgid "Yearly {yearlyPrice}"
 msgstr "연간 {yearlyPrice}"
 
@@ -37079,15 +37126,15 @@ msgstr "연간 {yearlyPrice}"
 msgid "Yearly gift"
 msgstr "연간 선물"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:529
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:616
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>."
 msgstr "<0>{pendingChangeDate}</0>에 연간 업그레이드가 예정되어 있습니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:514
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:601
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel} after a {pendingCreditPriceLabel} credit. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "<0>{pendingChangeDate}</0>에 연간 업그레이드가 예정되어 있습니다. 첫 연간 요금: {pendingCreditPriceLabel} 크레딧 적용 후 {pendingInitialPriceLabel}. 향후 연간 갱신 요금: 연간 {pendingRecurringPriceLabel}."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:521
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:608
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel}. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "<0>{pendingChangeDate}</0>에 연간 업그레이드가 예정되어 있습니다. 첫 연간 요금: {pendingInitialPriceLabel}. 향후 연간 갱신: 연간 {pendingRecurringPriceLabel}."
 
@@ -37160,7 +37207,7 @@ msgid "You are now a developer!"
 msgstr "이제 개발자입니다!"
 
 #. Modal body for the mobile checkout confirmation. Explains that the user is leaving the app to pay.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:187
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:186
 msgid "You are now navigating to {paymentProviderName} to complete the payment. Return to {productName} once you've completed it."
 msgstr "결제를 완료하려면 {paymentProviderName}(으)로 이동합니다. 결제 완료 후 {productName}(으)로 돌아와 주세요."
 
@@ -37173,11 +37220,6 @@ msgstr "인스턴스 관리자로 로그인하셨습니다. 다음 단계에서�
 #: src/features/app/components/layout/app_layout/nagbars/BuildEnvironmentNagbar.tsx:12
 msgid "You are using a {releaseChannel} build of {productName}."
 msgstr "{productName}의 {releaseChannel} 빌드를 사용 중이에요."
-
-#. Plutonium subscription checkout guidance. States that the standard (non-localized) price applies. The currency code is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/PricingContextPanel.tsx:119
-msgid "You are using the full standard {baseCurrencyLabel} price instead of localized pricing."
-msgstr "현지 가격 대신 표준 {baseCurrencyLabel} 가격이 적용됩니다."
 
 #. Placeholder shown when the user has no communities to filter.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:159
@@ -37254,10 +37296,6 @@ msgstr "계정을 만들거나 로그인할 수 있습니다. 나중에 초대 �
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:326
 msgid "You can still email {supportEmail} for a human review at any time."
 msgstr "언제든지 {supportEmail}로 문의하여 직접 검토를 요청하실 수 있습니다."
-
-#: src/features/channel/components/pickers/gif/FavoriteGifFirstTimePromptModal.tsx:62
-msgid "You can store starred GIFs as URL-only favorites or upload them to your saved media. Pick the one that fits how you use them. You can change it any time in {mediaSettingsPath}."
-msgstr "별표 표시한 GIF를 URL 전용 즐겨찾기로 저장하거나 저장된 미디어에 업로드할 수 있습니다. 사용 방식에 맞는 옵션을 선택하세요. 이 설정은 {mediaSettingsPath}에서 언제든지 변경할 수 있습니다."
 
 #: src/features/user/components/modals/tabs/my_profile_tab/BioEditor.tsx:288
 msgid "You can use links, emoji, and markdown."
@@ -37555,11 +37593,11 @@ msgstr "차단한 친구가 아직 없어요."
 msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {productName} without a mouse."
 msgstr "Tab 키를 누르셨습니다. 이제 키보드 모드가 켜져 마우스 없이 {productName}을(를) 탐색할 수 있습니다."
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:133
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:122
 msgid "You keep your perks until your next renewal date, then have a 3-day grace period to resubscribe and keep your subscriber history."
 msgstr "다음 갱신일까지 혜택이 유지되며, 3일의 유예 기간 동안 재구독하여 구독 기록을 유지할 수 있습니다."
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:155
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:144
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "모든 {PREMIUM_PRODUCT_NAME} 혜택이 즉시 사라지며 구독 기록이 초기화됩니다. 이 작업은 되돌릴 수 없습니다."
 
@@ -37686,7 +37724,7 @@ msgid "You need to verify your email address before you can start a direct messa
 msgstr "쪽지를 보내려면 이메일 주소를 인증해야 합니다."
 
 #. Body of the error modal shown when the account email is unverified and the user tries to purchase Plutonium. Product name is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:110
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:109
 msgid "You need to verify your email before you can purchase {premiumProductFullName}."
 msgstr "{premiumProductFullName}을(를) 구매하려면 먼저 이메일을 인증해야 합니다."
 
@@ -37733,12 +37771,12 @@ msgstr "계정 삭제 후에는 보낸 메시지를 삭제할 수 없습니다"
 msgid "You will still need to finish the email step."
 msgstr "이메일 단계를 완료해야 합니다."
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:94
+#: src/features/app/components/floating/UserAreaPopout.tsx:92
 #: src/features/user/components/modals/StatusChangeBottomSheet.tsx:40
 msgid "You won't receive notifications on desktop"
 msgstr "데스크톱에서는 알림을 받지 않습니다"
 
-#: src/features/app/components/floating/UserAreaPopout.tsx:95
+#: src/features/app/components/floating/UserAreaPopout.tsx:93
 #: src/features/user/components/modals/StatusChangeBottomSheet.tsx:41
 msgid "You'll appear offline"
 msgstr "오프라인으로 표시됩니다"
@@ -37772,7 +37810,7 @@ msgid "You're already friends with this user."
 msgstr "이미 친구인 사용자입니다."
 
 #. Modal title shown when a lifetime Visionary tier user tries to start a recurring Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:115
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:114
 msgid "You're already Visionary"
 msgstr "이미 Visionary이시네요"
 
@@ -37812,7 +37850,7 @@ msgid "You're being rate limited. Wait {duration} before trying again."
 msgstr "속도 제한에 걸렸습니다. {duration} 후에 다시 시도해 주세요."
 
 #. Error modal body shown when a gift-subscription user tries to start a recurring subscription. Explains the extension/redemption path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:160
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:159
 msgid "You're currently on a gift subscription. It won't renew. You can redeem more gift codes to extend it. Recurring subscriptions can be started after your gift time ends."
 msgstr "현재 선물 구독 중입니다. 이 구독은 갱신되지 않습니다. 선물 코드를 추가로 사용하여 구독 기간을 연장할 수 있습니다. 선물 구독 기간이 종료된 후에는 정기 구독을 시작할 수 있습니다."
 
@@ -37876,12 +37914,12 @@ msgid "You're in the voice channel"
 msgstr "음성 채널에 참여 중입니다"
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price that is no longer offered.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:37
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:40
 msgid "You're on a legacy rate no longer available to new subscribers."
 msgstr "더 이상 신규 구독자에게 제공되지 않는 기존 요금제를 사용 중입니다."
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price; current list price is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:32
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:35
 msgid "You're on a legacy rate. The current price for this plan is {currentSubscriptionListPriceLabel}."
 msgstr "이전 요금제를 사용 중이십니다. 현재 이 플랜의 가격은 {currentSubscriptionListPriceLabel}입니다."
 
@@ -37905,7 +37943,7 @@ msgid "You're timed out. Messaging, reactions, and voice are paused until the ti
 msgstr "시간 초과되었습니다. 시간 초과가 만료될 때까지 메시지, 반응, 음성 기능이 일시 중지됩니다."
 
 #. Label in the channel and chat messages.
-#: src/features/channel/components/ChannelMessages.tsx:79
+#: src/features/channel/components/ChannelMessages.tsx:85
 msgid "You're viewing older messages"
 msgstr "이전 메시지를 보고 있습니다"
 
@@ -37950,7 +37988,7 @@ msgstr "커뮤니티 제한에 도달했습니다"
 #. Label in the saved messages content popout.
 #. Short label in the shared app channel pins content.
 #: src/features/app/components/shared/ChannelPinsContent.tsx:63
-#: src/features/messaging/components/pages/MessageListPage.tsx:26
+#: src/features/messaging/components/pages/MessageListPage.tsx:27
 #: src/features/messaging/components/popouts/RecentMentionsContent.tsx:411
 #: src/features/messaging/components/popouts/SavedMessagesContent.tsx:38
 msgid "You've reached the end"
@@ -38162,7 +38200,7 @@ msgid "Your GPU encodes this in hardware."
 msgstr "GPU 하드웨어 인코딩을 사용합니다."
 
 #. Body text in the Plutonium subscription actions. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:32
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:34
 msgid "Your grace period has ended."
 msgstr "유예 기간이 종료되었습니다."
 
@@ -38262,7 +38300,7 @@ msgid "Your payment was successful. You can now close this tab and return to the
 msgstr "결제가 완료되었습니다. 이 탭을 닫고 앱으로 돌아가세요."
 
 #. Toast success shown after a scheduled Plutonium billing cycle change is canceled.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:72
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:74
 msgid "Your pending billing change has been canceled."
 msgstr "예정된 요금제 변경이 취소되었습니다."
 
@@ -38287,10 +38325,6 @@ msgstr "프로필 개인 정보 설정에 제한이 있으므로 일부 사용�
 msgid "Your purchased gifts"
 msgstr "구매한 선물"
 
-#: src/features/app/components/dialogs/components/plutonium/PurchaseHistorySection.tsx:32
-msgid "Your recent invoices. To change the payment method for your subscription, add or choose one in the billing portal and make it the default."
-msgstr "최근 인보이스입니다. 구독 결제 수단을 변경하려면 결제 포털에서 결제 수단을 추가하거나 선택한 다음 기본값으로 설정하세요."
-
 #. Short label in the region display names. Keep it concise.
 #: src/features/user/utils/UserGeo.ts:7
 msgid "your region"
@@ -38312,7 +38346,12 @@ msgstr "호환되는 비디오 코덱으로 화면 공유를 게시할 수 없�
 msgid "Your stream is still live"
 msgstr "회원님의 스트림은 계속 라이브 상태입니다"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:393
+#. Toast error shown when the server refuses to move a Plutonium subscription down to the current price, whatever the reason.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:106
+msgid "Your subscription can't move to the new price right now."
+msgstr "지금은 구독을 새 가격으로 변경할 수 없습니다."
+
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:468
 msgid "Your subscription ended but <0/> stay active until <1>{graceDate}</1>. Resubscribe before then to keep your subscriber history."
 msgstr "구독이 종료되었지만 <0/> <1>{graceDate}</1>까지는 활성 상태가 유지됩니다. 구독 기록을 유지하려면 그 전에 다시 구독하세요."
 
@@ -38322,26 +38361,26 @@ msgid "Your subscription failed to renew, but you still have access to {premiumP
 msgstr "구독 갱신에 실패했지만, {formattedGraceDate}까지는 {premiumProductName} 혜택을 계속 이용할 수 있습니다. 지금 조치하지 않으면 모든 혜택이 사라집니다."
 
 #. Body text in the Plutonium subscription actions. Keep the tone plain and specific.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:44
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:46
 msgid "Your subscription has been reactivated."
 msgstr "구독이 다시 활성화되었습니다."
 
 #. Toast success shown after a Plutonium subscription is set to cancel at the end of the billing period.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:20
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:22
 msgid "Your subscription has been set to cancel at the end of your billing period."
 msgstr "회원님의 구독이 현재 결제 기간이 끝날 때 취소되도록 설정되었습니다."
 
 #. Toast success shown after a Plutonium subscription is switched from yearly to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:60
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:62
 msgid "Your subscription has been switched to monthly billing."
 msgstr "월간 구독으로 변경되었습니다."
 
 #. Toast success shown after a Plutonium subscription is switched from monthly to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:56
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:58
 msgid "Your subscription has been switched to yearly billing."
 msgstr "구독이 연간 결제로 전환되었습니다."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:435
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:510
 msgid "Your subscription is active but perks are temporarily paused."
 msgstr "구독은 활성화되었지만 혜택이 일시적으로 중지되었습니다."
 
@@ -38355,13 +38394,23 @@ msgstr "회원님 구독은 이미 결제 기간이 끝나면 취소되도록 �
 msgid "Your subscription isn't set to cancel, so there's nothing to reactivate."
 msgstr "구독이 취소되도록 설정되어 있지 않으므로 다시 활성화할 항목이 없습니다."
 
+#. Toast success shown after a Plutonium subscription is scheduled to move down to the current price. {effectiveDate} is the localized date the new price starts.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:96
+msgid "Your subscription moves to the new price on {effectiveDate}."
+msgstr "구독이 {effectiveDate}에 새로운 가격으로 변경됩니다."
+
+#. Plutonium subscription card line shown to a subscriber on a legacy price whose subscription is already set to cancel. {cancelDate} is a date and {listPriceNewLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:664
+msgid "Your subscription still ends on <0>{cancelDate}</0>. The current price is now {listPriceNewLabel}. If you reactivate, you can switch to it from here."
+msgstr "구독은 <0>{cancelDate}</0>에 종료됩니다. 현재 가격은 {listPriceNewLabel}입니다. 다시 활성화하면 여기서 전환할 수 있습니다."
+
 #. Toast success shown after a Plutonium subscription is scheduled to switch to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:68
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:70
 msgid "Your subscription will switch to monthly billing at the next renewal."
 msgstr "다음 갱신 시 구독이 월별 청구로 전환됩니다."
 
 #. Toast success shown after a Plutonium subscription is scheduled to switch to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:64
+#: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:66
 msgid "Your subscription will switch to yearly billing at the next renewal."
 msgstr "다음 갱신 시 구독이 연간 결제로 전환됩니다."
 

@@ -11,7 +11,7 @@ A private channel is a conversation outside any guild. It is either a direct mes
 The routes here take a user session or a bot token. An OAuth2 bearer credential receives 403 `ACCESS_DENIED`, and an account with an outstanding required action receives 403 `ACCOUNT_SUSPICIOUS_ACTIVITY`.
 
 :::note[Open state is per participant]
-A direct message channel exists once, and each participant holds its own open state. Closing one leaves the channel and its messages in place, so reopening the pair resolves the stored channel.
+A direct message channel exists once, and each participant holds its own open state. Closing one side leaves the channel and its messages in place, so reopening the pair resolves the stored channel.
 :::
 
 ## Preloaded messages object
@@ -56,11 +56,11 @@ One recipient that could not be added to a group DM, and the reason. [Create pri
 
 Returns the caller's open direct message and group DM [channel](/http-api/channels/#channel-object) objects.
 
-The route returns only the channels the caller currently has open, so a closed direct message is absent even though the channel and its history still exist. The response has no ordering guarantee and is unpaginated. The caller's personal notes channel is never returned.
+A closed direct message is absent even though the channel and its history still exist. The response has no ordering guarantee and is unpaginated. The caller's personal notes channel is never returned.
 
 Each returned channel has its recipients with the caller removed, so a direct message holds exactly one recipient and a group DM one fewer than its participant count. A group DM whose only participant is the caller omits the `recipients` key entirely.
 
-An open entry whose channel no longer lists the caller among its recipients is omitted, so leaving a group DM needs no separate cleanup call.
+Fluxer omits an open entry whose channel no longer lists the caller among its recipients, so leaving a group DM needs no separate cleanup call.
 
 ### Response
 
@@ -78,9 +78,9 @@ An open entry whose channel no longer lists the caller among its recipients is o
 
 Opens a direct message with one account, or creates a group DM. Returns a [channel](/http-api/channels/#channel-object) object on success. Emits [Channel Create](/gateway/events/#channel-create) and [Message Create](/gateway/events/#message-create) Gateway events.
 
-One body field selects the channel type. `recipient_id` opens a direct message. `recipients` always creates a group DM whatever its length, so a single-element array creates a two-participant group DM, and an empty array creates a group DM whose only participant is the caller.
+One body field selects the channel type. `recipient_id` opens a direct message. `recipients` always creates a group DM whatever its length. A single-element array creates a two-participant group DM, and an empty array creates a group DM whose only participant is the caller.
 
-A request supplying `recipients` additionally consumes the `user:group_dm:create` bucket and passes the CAPTCHA check below, whatever the resulting participant count.
+A request supplying `recipients` also consumes the `user:group_dm:create` bucket and is subject to the CAPTCHA check below, whatever the resulting participant count.
 
 Instance policy can disable private channel creation entirely, in which case every request returns 400 `DIRECT_MESSAGES_DISABLED` after the body has been validated and the group DM bucket and CAPTCHA have been applied.
 
@@ -93,7 +93,7 @@ A request naming the caller as its own target returns 400 `CANNOT_DM_YOURSELF` a
 Fluxer reads no block state, no friendship, and no shared guild on this route. A target that resolves is admitted, so the caller opens a direct message with an account that has blocked them. `CANNOT_SEND_MESSAGES_TO_USER` is reachable from [Create message](/http-api/messages/#create-message) alone, which applies the recipient's direct message policy on every send.
 
 :::caution[Blocking removes no channel from the blocked account]
-Blocking refuses no creation and closes no channel. The blocked account still opens the pair's direct message through this route and receives 200. Fluxer refuses the send alone, with 400 `CANNOT_SEND_MESSAGES_TO_USER`.
+Blocking closes no existing channel. The blocked account still opens the pair's direct message through this route and receives 200. Only the send is refused, with 400 `CANNOT_SEND_MESSAGES_TO_USER`.
 :::
 
 :::caution[A SPAMMER caller receives a channel nobody sees]
@@ -113,7 +113,7 @@ Fluxer then evaluates each other recipient independently and collects every fail
 An ordinary caller never adds a recipient across a block in either direction, because blocking deletes the friendship both ways and a friend request crosses no block.
 
 :::note[Group DM admission reads no block state]
-Fluxer holds a bot caller to no friendship, so a recipient that has blocked the bot is added when the two share a guild and the recipient's [group DM add permission flags](/http-api/users/#group-dm-add-permission-flags) admit it.
+Fluxer holds a bot caller to no friendship. A recipient that has blocked the bot is added when the two share a guild and the recipient's [group DM add permission flags](/http-api/users/#group-dm-add-permission-flags) admit it.
 :::
 
 ### Request headers
@@ -131,7 +131,7 @@ Fluxer holds a bot caller to no friendship, so a recipient that has blocked the 
 
 | Field | Type | Description |
 | --- | --- | --- |
-| recipient_id?<sup>1</sup> | snowflake | The sole recipient of a direct message |
+| recipient_id?<sup>1</sup> | snowflake | The only recipient of a direct message |
 | recipients?<sup>1</sup> | array[snowflake] | The other participants of a group DM, excluding the caller (max 49) |
 
 <sup>1</sup> Exactly one of the two is supplied. Supplying both or neither fails validation with the entry path `root`
@@ -147,7 +147,7 @@ Fluxer holds a bot caller to no friendship, so a recipient that has blocked the 
 
 ### Side effects
 
-A newly created direct message opens for the caller only and emits [Channel Create](/gateway/events/#channel-create) to the caller. The recipient's side stays closed until they open it themselves, or until the pair becomes friends through [Accept request or block user](/http-api/users/relationships/#accept-request-or-block-user), which opens both sides. Reopening an existing direct message emits `CHANNEL_CREATE` to the caller unconditionally.
+A newly created direct message opens for the caller only and emits [Channel Create](/gateway/events/#channel-create) to the caller. The recipient's side stays closed until they open it themselves, or until the pair becomes friends through [Accept request or block user](/http-api/users/relationships/#accept-request-or-block-user), which opens both sides. Reopening an existing direct message always emits `CHANNEL_CREATE` to the caller.
 
 Creating a group DM makes the caller its owner, adds the complete participant set, and emits [Channel Create](/gateway/events/#channel-create) to every participant. It creates one [RECIPIENT_ADD](/http-api/messages/#message-types) system message authored by the caller for each other recipient and emits [Message Create](/gateway/events/#message-create) for each to every participant. Initial creation emits no [Channel Recipient Add](/gateway/events/#channel-recipient-add), which is reserved for a recipient added later. A group DM created from an empty `recipients` array produces no system message.
 
@@ -155,7 +155,7 @@ Creating a group DM makes the caller its owner, adds the complete participant se
 
 40 requests per 10 seconds for each authenticated user, on the `user:channels` bucket, shared with [List private channels](#list-private-channels), [Pin private channel](#pin-private-channel), and [Unpin private channel](#unpin-private-channel).
 
-A request supplying `recipients` additionally draws on the `user:group_dm:create` bucket of 10 requests per hour for each authenticated user, which is exempt from the global HTTP limit.
+A request supplying `recipients` also draws on the `user:group_dm:create` bucket of 10 requests per hour for each authenticated user, which is exempt from the global HTTP limit.
 
 ## Preload private channel messages
 
@@ -215,9 +215,9 @@ Adds a direct message or group DM to the caller's pinned order. Returns 204 with
 
 Fluxer resolves the channel with the caller's ordinary channel authorisation first. A private channel the caller is not a recipient of returns 404 `UNKNOWN_CHANNEL`, and a channel that does not exist returns the same. The channel then has to be a direct message or a group DM, so the caller's personal notes channel and a visible guild channel are rejected with 400 `CHANNEL_MUST_BE_DM_OR_GROUP_DM`, a field code on `channel_id` under `INVALID_FORM_BODY`.
 
-A guild channel the caller cannot see fails resolution first and returns 403 `MISSING_PERMISSIONS`. A channel row that outlived its guild returns 404 `UNKNOWN_GUILD`. A guild record that still exists while the caller's membership state cannot be resolved returns 403 `ACCESS_DENIED`.
+A guild channel the caller cannot see fails resolution first and returns 403 `MISSING_PERMISSIONS`. Fluxer returns 404 `UNKNOWN_GUILD` for a channel row that outlived its guild. Where the guild record still exists and the caller's membership state cannot be resolved, the request returns 403 `ACCESS_DENIED`.
 
-A newly pinned channel is appended after every channel already pinned. A channel later closed, left, or deleted stays in the pinned set, and only [Unpin private channel](#unpin-private-channel) or deletion of the caller's account removes an entry.
+Fluxer appends a newly pinned channel after every channel already pinned. A channel later closed, left, or deleted stays in the pinned set, and only [Unpin private channel](#unpin-private-channel) or deletion of the caller's account removes an entry.
 
 :::caution[Unpinning needs the channel to resolve]
 Unpinning resolves the channel first, so an entry whose channel the caller can no longer resolve stays in the pinned set.

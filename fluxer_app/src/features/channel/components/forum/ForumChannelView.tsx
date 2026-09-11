@@ -138,7 +138,7 @@ const ForumPostCard = observer(
 					{unread && (
 						<span style={{width: 8, height: 8, borderRadius: '50%', background: 'var(--text-normal)', flexShrink: 0}} />
 					)}
-					{thread.name ?? 'post'}
+					<span>{thread.name ?? 'post'}</span>
 				</div>
 				{preview && (
 					<div
@@ -160,7 +160,7 @@ const ForumPostCard = observer(
 					{author && <span style={{fontWeight: 600}}>{author.displayName}</span>}
 					<span style={{display: 'flex', alignItems: 'center', gap: 4}}>
 						<ChatCircleIcon size={14} />
-						{replyCount} {replyCount === 1 ? 'reply' : 'replies'}
+						<span>{`${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`}</span>
 					</span>
 					<span style={{display: 'flex', alignItems: 'center', gap: 4}}>
 						<ClockIcon size={14} />
@@ -249,11 +249,11 @@ export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
 					style={pillStyle(false)}
 				>
 					<SortAscendingIcon size={16} />
-					{sortMode === 'recent_activity' ? 'Recent' : 'Newest'}
+					<span>{sortMode === 'recent_activity' ? 'Recent' : 'Newest'}</span>
 				</button>
 				<button type="button" onClick={() => setShowArchived(!showArchived)} style={pillStyle(showArchived)}>
 					<ArchiveIcon size={16} />
-					{showArchived ? 'Archived' : 'Active'}
+					<span>{showArchived ? 'Archived' : 'Active'}</span>
 				</button>
 				{!showArchived && (
 					<button
@@ -274,7 +274,7 @@ export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
 						}}
 					>
 						<PlusIcon size={14} weight="bold" />
-						New Post
+						<span>New Post</span>
 					</button>
 				)}
 			</div>

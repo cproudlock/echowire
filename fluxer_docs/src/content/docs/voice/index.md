@@ -4,7 +4,7 @@ title: Voice
 description: Voice placement, guild voice channels, calls, Go Live, and entrance sounds.
 ---
 
-Fluxer runs voice over LiveKit. The [main Gateway](/gateway/overview/) places a session into a voice channel and hands it one credential, the client presents that credential to a media server, and every track goes over the connection it opens there. Microphone, camera, and screen share are track sources on that one connection, so going live opens nothing new.
+Fluxer runs voice over LiveKit. The [main Gateway](/gateway/overview/) places a session into a voice channel and hands it one credential. The client presents that credential to a media server, and every track goes over the connection it opens there. Microphone, camera, and screen share are track sources on that one connection, so going live opens nothing new.
 
 [Client commands](/gateway/commands/) and [Gateway events](/gateway/events/) define the placement protocol.
 
@@ -22,7 +22,7 @@ Every statement on this page is what an instance serves today, and a later relea
 | Entrance sound<sup>2</sup> | A short clip announced to everyone already connected to a voice channel | [Entrance sounds](/http-api/entrance-sounds/) |
 | Voice activity sharing | Whether a friend is told which voice channel the account is in | [User settings](/http-api/users/settings/#modify-voice-activity-sharing) |
 
-<sup>1</sup> Going live opens no second connection and mints no second credential
+<sup>1</sup> Going live opens no second connection and issues no second credential
 
 <sup>2</sup> The one surface that publishes no media track
 
@@ -42,13 +42,13 @@ The grant lives for 600 seconds.
 
 One room is one voice channel, and one participant is one voice connection. A member holding several connections in the same channel is several participants in the same room, which is how one account is present from more than one device.
 
-The grant also names the track sources the connection may publish. SPEAK admits the microphone source, and STREAM admits the camera source together with the two screen share sources. A server-deafened connection may neither publish nor subscribe.
+The grant also names the track sources the connection may publish. SPEAK allows the microphone source, and STREAM allows the camera source together with the two screen share sources. A server-deafened connection may neither publish nor subscribe.
 
 ## Deployment feature state
 
 A deployment can be configured without voice. The [instance discovery document](/http-api/instance/#instance-features-object) reports that state as `features.voice_enabled`. No other surface warns a client in advance.
 
-A deployment that reports false mints no media credential, so a placement request is refused with `VOICE_TOKEN_FAILED`. [List RTC regions](/http-api/channels/#list-rtc-regions) answers 200 with an empty array before it resolves the channel, and [Modify call region](/http-api/calls/#modify-call-region) accepts any region string.
+Where `features.voice_enabled` is false, Fluxer issues no media credential, so a placement request is refused with `VOICE_TOKEN_FAILED`. [List RTC regions](/http-api/channels/#list-rtc-regions) answers 200 with an empty array before it resolves the channel, and [Modify call region](/http-api/calls/#modify-call-region) accepts any region string.
 
 ## Placement
 
@@ -69,11 +69,11 @@ The server answers with [Voice State Update](/gateway/events/#voice-state-update
 
 A grant is issued when a connection opens, when it moves to another channel, and when the region changes. An update that stays in the same channel reissues nothing, so toggling `self_mute`, `self_video`, or `self_stream` produces one [Voice State Update](/gateway/events/#voice-state-update) and no new grant.
 
-The grant `token` is minted for the media server and consumed by the media connection alone. No route on this API accepts it.
+The grant `token` is issued for the media server and consumed by the media connection alone. No route on this API accepts it.
 
-Fluxer reports a guild refusal as [Voice State Ack](/gateway/events/#voice-state-ack) with a `status` of `rejected` and an `error_code` naming the exact reason, and only a command with a `mutation_id` receives one. A refused placement without it produces no Dispatch, so a client that needs to observe a guild failure MUST send `mutation_id`.
+Fluxer reports a guild refusal as [Voice State Ack](/gateway/events/#voice-state-ack) with a `status` of `rejected` and an `error_code` naming the exact reason, and only a command with a `mutation_id` receives one. A refused placement without it produces no Dispatch, so a client that needs to observe a guild refusal MUST send `mutation_id`.
 
-A call never acks. A refused placement into a direct message or group direct message call produces no Dispatch whether or not the command had `mutation_id`, so a client observes that refusal only as the absence of a grant.
+A call never acks. A refused placement into a direct message or group direct message call produces no Dispatch whether or not the command had `mutation_id`. A client observes that refusal only as the absence of a grant.
 
 ## Guild voice channels
 
@@ -99,13 +99,13 @@ A guild voice channel stores its `bitrate`, `user_limit`, `voice_connection_limi
 
 <sup>4</sup> MUTE_MEMBERS covers the `mute` field and DEAFEN_MEMBERS the `deaf` field of the [guild member update object](/http-api/guild-members/#guild-member-update-object). `PRIORITY_SPEAKER` and `USE_VAD` are defined and assignable [permission bits](/http-api/permissions/#permissions) that no HTTP route and no Gateway command evaluates
 
-[ADMINISTRATOR](/http-api/permissions/) resolves to the complete mask before any channel overwrite is applied, so it satisfies every row of that table. Two states skip the VIEW_CHANNEL and CONNECT check. A member the guild is already moving is admitted. So is a member holding virtual access to the channel, which the guild grants to a connected member that loses VIEW_CHANNEL or that a moderator moves into a channel it cannot see. Virtual access also grants SPEAK and STREAM in that channel on its own.
+[ADMINISTRATOR](/http-api/permissions/) resolves to the complete mask before any channel overwrite is applied, so it satisfies every row of that table. Two states skip the VIEW_CHANNEL and CONNECT check. A member the guild is already moving is admitted. So is a member holding virtual access to the channel. The guild grants virtual access to a connected member that loses VIEW_CHANNEL or that a moderator moves into a channel it cannot see. Virtual access also grants SPEAK and STREAM in that channel on its own.
 
-A grant is evaluated when it is minted, and the guild re-evaluates a connection that is already open. Joining, moving, a region change, a role edit, an overwrite edit, and a member role change each recompute SPEAK and STREAM.
+A grant is evaluated when it is issued, and the guild re-evaluates a connection that is already open. Joining, moving, a region change, a role edit, an overwrite edit, and a member role change each recompute SPEAK and STREAM.
 
 The guild applies the new result to a live connection and issues no new [Voice Server Update](/gateway/events/#voice-server-update). The media server mutes a published microphone, camera, or screen share track the member may no longer publish, and drops a connection that fails the VIEW_CHANNEL and CONNECT check.
 
-Moderation is an HTTP operation on the guild membership. [Modify guild member](/http-api/guild-members/#modify-guild-member) and [Modify current guild member](/http-api/guild-members/#modify-current-guild-member) share one request body. Each applies a moderator mute, applies a moderator deafen, moves a member between guild voice channels, and forces a disconnect. Both hold the caller to MUTE_MEMBERS, DEAFEN_MEMBERS, and MOVE_MEMBERS, including when the target is the caller itself. No other HTTP route and no Gateway command does any of it.
+Moderation is an HTTP operation on the guild membership. [Modify guild member](/http-api/guild-members/#modify-guild-member) and [Modify current guild member](/http-api/guild-members/#modify-current-guild-member) share one request body. Each applies a moderator mute and a moderator deafen, moves a member between guild voice channels, and forces a disconnect. Both hold the caller to MUTE_MEMBERS, DEAFEN_MEMBERS, and MOVE_MEMBERS, including when the target is the caller itself. No other HTTP route and no Gateway command does any of it.
 
 That mute and that deafen reach the media server without a new credential. The change applies to every connection the account holds in that channel, and no [Voice Server Update](/gateway/events/#voice-server-update) follows.
 
@@ -125,15 +125,15 @@ That mute and that deafen reach the media server without a new credential. The c
 
 A private call reads no `voice_connection_limit` and applies a fixed ceiling of 5 connections for each member.
 
-A member whose `communication_disabled_until` is still in the future is refused with `VOICE_MEMBER_TIMED_OUT` before any permission or capacity check runs. An account that has never claimed its credentials is refused with `VOICE_UNCLAIMED_ACCOUNT` for a one-on-one direct message call and for any guild voice channel whose guild it does not own. A group direct message call is not refused. A session that did not identify with `e2ee_capable` is refused with `VOICE_E2EE_REQUIRED` while the guild has voice encryption enabled and every connection already in the channel is capable, and a bot is exempt from that one.
+A member whose `communication_disabled_until` is still in the future is refused with `VOICE_MEMBER_TIMED_OUT` before any permission or capacity check runs. An account that has never claimed its credentials is refused with `VOICE_UNCLAIMED_ACCOUNT` for a one-on-one direct message call and for any guild voice channel whose guild it does not own. A group direct message call is not refused. A session that did not identify with `e2ee_capable` is refused with `VOICE_E2EE_REQUIRED` while the guild has voice encryption enabled and every connection already in the channel is capable. A bot is exempt from that one.
 
 ### Regions
 
-[List RTC regions](/http-api/channels/#list-rtc-regions) returns the [RTC region objects](/http-api/channels/#rtc-region-object) the caller MAY select for one guild voice channel. A region is returned only when the caller passes every restriction configured for it and at least one voice server accessible to the caller is active in it, so the array can be empty.
+[List RTC regions](/http-api/channels/#list-rtc-regions) returns the [RTC region objects](/http-api/channels/#rtc-region-object) the caller MAY select for one guild voice channel. A region is returned only when the caller passes every restriction configured for it and at least one voice server accessible to the caller is active in it. The array can be empty.
 
 `rtc_region` is written by [Modify channel](/http-api/channels/#modify-channel) and requires UPDATE_RTC_REGION. A null value selects automatic routing, and so does a stored value the placing account cannot reach.
 
-The first placement in the channel pins one voice server for it, and every later placement inherits that pinned server whatever its own coordinates are. A placement that finds no usable pin takes the accessible server nearest to the `latitude` and `longitude` the placement command supplied. A command that supplied no usable coordinates falls back to the deployment's default region, and then to the first accessible region.
+The first placement in the channel pins one voice server for it, and every later placement inherits that pinned server whatever its own coordinates are. A placement that finds no usable pin takes the accessible server nearest to the `latitude` and `longitude` the placement command supplied. Where the command supplied no usable coordinates, the placement falls back to the deployment's default region, and then to the first accessible region.
 
 The pin drops when the channel's `rtc_region` changes, when a call changes region, when the pinned server stops being accessible, or when the media server reports the room finished. That last case also disconnects every connection in a guild voice channel.
 
@@ -143,7 +143,7 @@ An operator manages the regions and the voice servers registered inside them thr
 
 ## Private calls
 
-A private call is the direct message and group direct message counterpart of a voice channel. It has no moderator, no permission overwrites, and no moderator mute, deafen, or disconnect.
+A private call has no moderator, no permission overwrites, and no moderator mute, deafen, or disconnect.
 
 The [Calls resource](/http-api/calls/) owns its HTTP surface, which reads whether the caller may ring, changes the region of an active call, rings recipients, and stops ringing them. [End call session](/http-api/calls/#end-call-session) ends no call. [Call Create](/gateway/events/#call-create), [Call Update](/gateway/events/#call-update), and [Call Delete](/gateway/events/#call-delete) publish the call state, and both joining and leaving are the same [Voice State Update](/gateway/commands/#voice-state-update) a guild voice channel uses.
 
@@ -155,17 +155,17 @@ A recipient's [incoming call flags](/http-api/users/#incoming-call-flags) decide
 
 ## Go Live streams
 
-Going live publishes a screen share track, and its screen share audio track, on the LiveKit participant the member already holds in the channel. There is no second connection, no second participant, and no second `connection_id`. A member that held STREAM at placement already has both screen share sources in its grant, so no new credential is minted and no [Voice Server Update](/gateway/events/#voice-server-update) follows.
+Going live publishes a screen share track, and its screen share audio track, on the LiveKit participant the member already holds in the channel. There is no second connection, no second participant, and no second `connection_id`. A member that held STREAM at placement already has both screen share sources in its grant, so no new credential is issued and no [Voice Server Update](/gateway/events/#voice-server-update) follows.
 
-The publisher advertises the stream by setting `self_stream` on that connection with [Voice State Update](/gateway/commands/#voice-state-update), naming the connection's own `connection_id`. The server bumps the voice state `version` and rebroadcasts the state as one [Voice State Update](/gateway/events/#voice-state-update).
+The publisher advertises the stream by setting `self_stream` on that connection with [Voice State Update](/gateway/commands/#voice-state-update), naming the connection's own `connection_id`. The server increments the voice state `version` and rebroadcasts the state as one [Voice State Update](/gateway/events/#voice-state-update).
 
 The voice state of a connection without STREAM in its channel has `self_stream` and `self_video` false, whatever the client sent. The guild clears both when a live connection loses STREAM, and rebroadcasts the state.
 
-A viewer declares which streams it is watching with `viewer_stream_keys` on its own voice state, and a channel move resets that list to empty.
+A viewer declares which streams it watches with `viewer_stream_keys` on its own voice state, and a channel move resets that list to empty.
 
 That connection's `connection_id` is the last segment of the [stream key](/http-api/streams/#stream-key), which is `{guild_id}:{channel_id}:{connection_id}` for a guild voice channel and `dm:{channel_id}:{connection_id}` for a private call.
 
-The [Streams resource](/http-api/streams/) owns the operations addressed by that key, which record a region preference and read, upload, and delete a JPEG preview image. Reading a preview takes the same access that lets a member join the channel, so any member holding CONNECT there MAY read it without owning the connection. Mutating one additionally requires STREAM on a guild channel and a voice state matching exactly the channel and the connection the key names.
+The [Streams resource](/http-api/streams/) owns the operations addressed by that key, which record a region preference and read, upload, and delete a JPEG preview image. Reading a preview takes the same access that lets a member join the channel, so any member holding CONNECT there MAY read it without owning the connection. Mutating one also requires STREAM on a guild channel and a voice state matching exactly the channel and the connection the key names.
 
 :::caution[An oversized track loses only its own source]
 On an instance that is not self-hosted, Fluxer mutes a camera or screen share track above 1280x720 from a member without the higher video quality entitlement, and removes that source from the connection's grant. The voice connection stays up.
@@ -175,11 +175,11 @@ Fluxer removes screen share audio from the grant together with screen share, and
 
 ## Entrance sounds
 
-An entrance sound is a short clip an account plays for everyone already connected to a voice channel. An account keeps a personal library of at most eight clips, each 100 through 5200 milliseconds and at most 1048576 decoded bytes, stored as `mp3`, `ogg`, `m4a`, or `wav`. It then assigns one clip per [scope](/http-api/entrance-sounds/#entrance-sound-scopes), and the four scopes are `global`, `guilds`, `dms`, and `guild:{guild_id}`.
+An entrance sound is a short clip an account plays for everyone already connected to a voice channel. An account keeps a personal library of at most eight clips, each 100 through 5200 milliseconds and at most 1048576 decoded bytes, stored as `mp3`, `ogg`, `m4a`, or `wav`. It then assigns one clip per [scope](/http-api/entrance-sounds/#entrance-sound-scopes): `global`, `guilds`, `dms`, and `guild:{guild_id}`.
 
 Fluxer records which clip belongs to which scope and nothing more. [Play entrance sound](/http-api/entrance-sounds/#play-entrance-sound) names the clip explicitly, so the client decides which selection applies to a given channel.
 
-Playback requires a voice state in the target channel and no channel permission. A caller that holds none is refused at the `channel_id` path with the validation code `ENTRANCE_SOUND_INVALID_SCOPE`, and a channel ID naming no channel is refused the same way. A successful call fans one [ENTRANCE_SOUND_PLAY](/gateway/events/#entrance-sound-play) Dispatch out to every other account with a voice state in the channel, at most once per account and never back to the caller. That Dispatch has the clip's CDN URL, and each recipient fetches and plays it locally, so no audio track is published for it.
+Playback requires a voice state in the target channel and no channel permission. A caller that holds none is refused at the `channel_id` path with the validation code `ENTRANCE_SOUND_INVALID_SCOPE`, and a channel ID naming no channel is refused the same way. A successful call sends one [ENTRANCE_SOUND_PLAY](/gateway/events/#entrance-sound-play) Dispatch to every other account with a voice state in the channel, at most once per account and never back to the caller. That Dispatch has the clip's CDN URL, and each recipient fetches and plays it locally, so no audio track is published for it.
 
 Every session the account holds receives the Dispatch, including sessions that are not in the channel. A client filters on `channel_id`.
 

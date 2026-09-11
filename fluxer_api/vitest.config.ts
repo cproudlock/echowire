@@ -26,6 +26,13 @@ const configuredMaxConcurrency = parseParallelInteger(process.env.API_TEST_MAX_C
 const MODULE_REGISTRY_TEST_FILES = [
 	'src/api/gif/GifRequestCountry.test.ts',
 	'src/api/risk/__tests__/AccountPolicyService.test.ts',
+	'src/api/stripe/tests/StripeCheckoutCountryEnforcement.test.ts',
+];
+
+const INSTANCE_POLICY_TEST_FILES = [
+	'src/api/admin/tests/InstanceConfigPendingRegistrationApproval.test.ts',
+	'src/api/auth/tests/DeferredPhoneGate.test.ts',
+	'src/api/instance/tests/SingleCommunityService.test.ts',
 ];
 
 const sharedExclude = [
@@ -76,7 +83,7 @@ export default defineConfig({
 					...sharedTestConfig,
 					name: 'api',
 					include: ['src/**/*.{test,spec}.{ts,tsx}'],
-					exclude: [...sharedExclude, ...MODULE_REGISTRY_TEST_FILES],
+					exclude: [...sharedExclude, ...MODULE_REGISTRY_TEST_FILES, ...INSTANCE_POLICY_TEST_FILES],
 					isolate: false,
 				},
 			},
@@ -86,6 +93,16 @@ export default defineConfig({
 					...sharedTestConfig,
 					name: 'api-module-registry',
 					include: MODULE_REGISTRY_TEST_FILES,
+					exclude: sharedExclude,
+					isolate: true,
+				},
+			},
+			{
+				plugins: [tsconfigPaths()],
+				test: {
+					...sharedTestConfig,
+					name: 'api-instance-policy',
+					include: INSTANCE_POLICY_TEST_FILES,
 					exclude: sharedExclude,
 					isolate: true,
 				},

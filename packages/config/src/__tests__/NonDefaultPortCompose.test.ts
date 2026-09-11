@@ -35,6 +35,9 @@ const SECRETS: Record<string, string> = {
 	FLUXER_ADMIN_OAUTH_CLIENT_SECRET: 'admin-oauth-client-secret',
 	FLUXER_VAPID_PUBLIC_KEY: 'BB76bTFIuoqmxJtTfZX0yGTn1f_qu9H03B_nkj8OyExJFkN7Y-HBZZzShnHZoEhXKc5ZRy3jFu7OkBbnaQG-4aw',
 	FLUXER_VAPID_PRIVATE_KEY: 'Xgi-3P8J-I3Q6U1HlCcXMuc_tKLGAM9nIfznX3Hz68o',
+	// Echowire: the marketing service is a fork addition and the shared
+	// anchor does not supply its key base, so the compose requires it here.
+	FLUXER_MARKETING_SECRET_KEY_BASE: 'marketing-secret-key-base',
 };
 
 const PORT_ONLY_ENV: Record<string, string> = {

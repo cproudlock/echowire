@@ -78,6 +78,19 @@ jobs:
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
+      # fluxer-app-proxy-self-hosted builds the whole web frontend and was killed
+      # mid-build at 24m on 2026-09-11, having succeeded at 26m before the
+      # upstream merge grew the bundle. Nothing in the log fails: the runner
+      # simply dies, which is what running out of disk looks like here. A stock
+      # ubuntu-latest has about 14 GB free, and none of these preinstalled
+      # toolchains matter to a docker build.
+      - name: Reclaim runner disk
+        run: |
+          echo "before: $(df -h / | awk 'NR==2 {print $4}') free"
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android \
+            /opt/hostedtoolcache/CodeQL /usr/local/share/boost || true
+          sudo docker image prune --all --force >/dev/null 2>&1 || true
+          echo "after:  $(df -h / | awk 'NR==2 {print $4}') free"
       # network=host so buildkit resolves through the runner's own resolver.
       # Docker otherwise copies the host's upstream nameservers (NC LAN, reachable
       # only over NetBird) into the build container, where they are unroutable and

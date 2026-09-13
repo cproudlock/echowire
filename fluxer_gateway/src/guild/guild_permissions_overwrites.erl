@@ -28,6 +28,10 @@
 -type guild_state() :: map().
 -type maybe_channel_id() :: integer() | undefined.
 
+%% Echowire: thread channel types. Threads and forum posts carry no overwrites of their own.
+-define(CHANNEL_TYPE_PUBLIC_THREAD, 11).
+-define(CHANNEL_TYPE_PRIVATE_THREAD, 12).
+
 -spec apply_channel_overwrites(
     permission(), user_id() | undefined, member_roles(), channel(), role_id()
 ) -> permission().
@@ -59,6 +63,72 @@ maybe_apply_channel_overwrites(Permissions, _UserId, _MemberRoles, undefined, _G
 maybe_apply_channel_overwrites(Permissions, UserId, MemberRoles, ChannelId, GuildId, State) when
     is_integer(ChannelId)
 ->
+    %% Echowire: a thread resolves against its parent channel's overwrites, and a private thread
+    %% loses VIEW_CHANNEL for anyone without MANAGE_CHANNELS on the parent. The API applies the
+    %% same rules (ThreadAccess.ts) and additionally admits private thread members, which the
+    %% gateway cannot see.
+    case thread_parent(ChannelId, State) of
+        {thread, ThreadType, ParentId} ->
+            ParentPerms = apply_non_thread_overwrites(
+                Permissions, UserId, MemberRoles, ParentId, GuildId, State
+            ),
+            restrict_thread_permissions(ThreadType, ParentPerms);
+        orphan_thread ->
+            permission_bits:remove(Permissions, constants:view_channel_permission());
+        not_thread ->
+            apply_non_thread_overwrites(Permissions, UserId, MemberRoles, ChannelId, GuildId, State)
+    end;
+maybe_apply_channel_overwrites(
+    Permissions, _UserId, _MemberRoles, _ChannelId, _GuildId, _State
+) ->
+    Permissions.
+
+-spec thread_parent(integer(), guild_state()) ->
+    {thread, integer(), integer()} | orphan_thread | not_thread.
+thread_parent(ChannelId, State) ->
+    case guild_permissions_check:find_channel_by_id(ChannelId, State) of
+        Channel when is_map(Channel) -> classify_thread(Channel);
+        _ -> not_thread
+    end.
+
+-spec classify_thread(channel()) -> {thread, integer(), integer()} | orphan_thread | not_thread.
+classify_thread(Channel) ->
+    case channel_type(Channel) of
+        Type when Type =:= ?CHANNEL_TYPE_PUBLIC_THREAD; Type =:= ?CHANNEL_TYPE_PRIVATE_THREAD ->
+            case snowflake_id:parse_maybe(maps:get(<<"parent_id">>, Channel, undefined)) of
+                ParentId when is_integer(ParentId) -> {thread, Type, ParentId};
+                _ -> orphan_thread
+            end;
+        _ ->
+            not_thread
+    end.
+
+-spec channel_type(channel()) -> integer() | undefined.
+channel_type(Channel) ->
+    case maps:get(<<"type">>, Channel, undefined) of
+        Type when is_integer(Type) -> Type;
+        Type when is_binary(Type) ->
+            try binary_to_integer(Type) of
+                Int -> Int
+            catch
+                error:badarg -> undefined
+            end;
+        _ -> undefined
+    end.
+
+-spec restrict_thread_permissions(integer(), permission()) -> permission().
+restrict_thread_permissions(?CHANNEL_TYPE_PRIVATE_THREAD, Perms) ->
+    case permission_bits:has(Perms, constants:manage_channels_permission()) of
+        true -> Perms;
+        false -> permission_bits:remove(Perms, constants:view_channel_permission())
+    end;
+restrict_thread_permissions(_Type, Perms) ->
+    Perms.
+
+-spec apply_non_thread_overwrites(
+    permission(), user_id(), member_roles(), integer(), role_id(), guild_state()
+) -> permission().
+apply_non_thread_overwrites(Permissions, UserId, MemberRoles, ChannelId, GuildId, State) ->
     Data = guild_permissions_common:resolve_data_map(State),
     OverwriteCache = overwrite_cache_from_data(Data),
     case maps:get(ChannelId, OverwriteCache, undefined) of
@@ -68,11 +138,7 @@ maybe_apply_channel_overwrites(Permissions, UserId, MemberRoles, ChannelId, Guil
             apply_from_channel_lookup(
                 Permissions, UserId, MemberRoles, ChannelId, GuildId, State
             )
-    end;
-maybe_apply_channel_overwrites(
-    Permissions, _UserId, _MemberRoles, _ChannelId, _GuildId, _State
-) ->
-    Permissions.
+    end.
 
 -spec apply_from_channel_lookup(
     permission(), user_id(), member_roles(), integer(), role_id(), guild_state()
@@ -341,5 +407,76 @@ cached_overwrites_matches_uncached_test() ->
     CachedOWs = maps:get(10, OverwriteCache),
     Cached = apply_cached_overwrites(BasePerms, UserId, MemberRoles, CachedOWs, GuildId),
     ?assertEqual(Uncached, Cached).
+
+%% Echowire: thread permission resolution.
+
+thread_test_state() ->
+    View = constants:view_channel_permission(),
+    Parent = #{
+        <<"id">> => <<"10">>,
+        <<"type">> => 0,
+        <<"permission_overwrites">> => [
+            #{
+                <<"id">> => <<"5">>,
+                <<"type">> => 0,
+                <<"allow">> => <<"0">>,
+                <<"deny">> => integer_to_binary(View)
+            },
+            #{
+                <<"id">> => <<"9">>,
+                <<"type">> => 0,
+                <<"allow">> => integer_to_binary(View),
+                <<"deny">> => <<"0">>
+            }
+        ]
+    },
+    PublicThread = #{
+        <<"id">> => <<"20">>,
+        <<"type">> => 11,
+        <<"parent_id">> => <<"10">>,
+        <<"permission_overwrites">> => []
+    },
+    PrivateThread = #{
+        <<"id">> => <<"21">>,
+        <<"type">> => 12,
+        <<"parent_id">> => <<"30">>,
+        <<"permission_overwrites">> => []
+    },
+    OpenParent = #{<<"id">> => <<"30">>, <<"type">> => 0, <<"permission_overwrites">> => []},
+    OrphanThread = #{<<"id">> => <<"22">>, <<"type">> => 11, <<"permission_overwrites">> => []},
+    Channels = [Parent, PublicThread, PrivateThread, OpenParent, OrphanThread],
+    #{data => guild_data_index:put_channels(Channels, #{})}.
+
+thread_inherits_parent_deny_test() ->
+    View = constants:view_channel_permission(),
+    State = thread_test_state(),
+    Hidden = maybe_apply_channel_overwrites(View, 11, [], 20, 5, State),
+    ?assertEqual(false, permission_bits:has(Hidden, View)),
+    Allowed = maybe_apply_channel_overwrites(View, 11, [9], 20, 5, State),
+    ?assertEqual(true, permission_bits:has(Allowed, View)).
+
+thread_matches_parent_permissions_test() ->
+    View = constants:view_channel_permission(),
+    State = thread_test_state(),
+    ?assertEqual(
+        maybe_apply_channel_overwrites(View, 11, [9], 10, 5, State),
+        maybe_apply_channel_overwrites(View, 11, [9], 20, 5, State)
+    ).
+
+private_thread_requires_manage_channels_test() ->
+    View = constants:view_channel_permission(),
+    Manage = constants:manage_channels_permission(),
+    State = thread_test_state(),
+    Member = maybe_apply_channel_overwrites(View, 11, [], 21, 5, State),
+    ?assertEqual(false, permission_bits:has(Member, View)),
+    ManagerBase = permission_bits:add(View, Manage),
+    Manager = maybe_apply_channel_overwrites(ManagerBase, 11, [], 21, 5, State),
+    ?assertEqual(true, permission_bits:has(Manager, View)).
+
+orphan_thread_is_not_viewable_test() ->
+    View = constants:view_channel_permission(),
+    State = thread_test_state(),
+    Perms = maybe_apply_channel_overwrites(View, 11, [], 22, 5, State),
+    ?assertEqual(false, permission_bits:has(Perms, View)).
 
 -endif.

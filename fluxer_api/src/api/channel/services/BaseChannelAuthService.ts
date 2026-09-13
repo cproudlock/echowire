@@ -2,12 +2,14 @@
 
 import type {ChannelID, GuildID, UserID} from '@app/api/BrandedTypes';
 import type {IChannelRepositoryAggregate} from '@app/api/channel/repositories/IChannelRepositoryAggregate';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {AuthenticatedChannel} from '@app/api/channel/services/AuthenticatedChannel';
 import {DMPermissionValidator} from '@app/api/channel/services/DMPermissionValidator';
 import {
 	ensurePersonalNotesChannelExists,
 	isPersonalNotesChannelId,
 } from '@app/api/channel/services/PersonalNotesChannelRepair';
+import {canAccessPrivateThread, isThreadChannel, permissionChannelId} from '@app/api/channel/services/ThreadAccess';
 import {
 	type ContentWarningChannelLike,
 	channelResponseToContentWarningView,
@@ -54,6 +56,7 @@ type DMSendPermissionsParams = DMSendPermissionsByChannelParams | DMSendPermissi
 export abstract class BaseChannelAuthService {
 	protected abstract readonly options: ChannelAuthOptions;
 	protected dmPermissionValidator: DMPermissionValidator;
+	protected readonly threadMemberRepository = new ThreadMemberRepository();
 
 	constructor(
 		protected channelRepository: IChannelRepositoryAggregate,
@@ -175,6 +178,11 @@ export abstract class BaseChannelAuthService {
 		skipNsfwValidation?: boolean;
 	}): Promise<AuthenticatedChannel> {
 		const guildId = channel.guildId!;
+		// Echowire: a thread has no overwrites of its own, so its permissions are the parent's.
+		const permissionTargetId = permissionChannelId(channel);
+		if (!permissionTargetId) {
+			throw new UnknownChannelError();
+		}
 		const [authContextResult, guildMemberResult] = await Promise.all([
 			this.fetchGuildAuthContextOrThrow({guildId, userId, channelId: this.parentLookupChannelId(channel)}),
 			this.fetchGuildMemberOrThrow({guildId, userId}),
@@ -199,7 +207,7 @@ export abstract class BaseChannelAuthService {
 		const channelPermissions = await this.gatewayService.getUserPermissions({
 			guildId,
 			userId,
-			channelId: channel.id,
+			channelId: permissionTargetId,
 		});
 		const hasPermission = async (permission: bigint): Promise<boolean> => {
 			const allowed = (channelPermissions & permission) === permission;
@@ -211,6 +219,16 @@ export abstract class BaseChannelAuthService {
 			if (!allowed) throw new MissingPermissionsError();
 		};
 		await checkPermission(Permissions.VIEW_CHANNEL);
+		// Echowire: a private thread is visible only to its members and to parent-channel managers.
+		const canAccessThread = await canAccessPrivateThread({
+			channel,
+			userId,
+			parentPermissions: channelPermissions,
+			threadMemberRepository: this.threadMemberRepository,
+		});
+		if (!canAccessThread) {
+			throw new MissingPermissionsError();
+		}
 		const parentCategory = await this.getParentCategoryContentWarningView({
 			channel,
 			parentChannel: authContextResult.parentChannel,
@@ -225,7 +243,8 @@ export abstract class BaseChannelAuthService {
 			!skipNsfwValidation &&
 			(channel.type === ChannelTypes.GUILD_TEXT ||
 				channel.type === ChannelTypes.GUILD_VOICE ||
-				channel.type === ChannelTypes.GUILD_LINK) &&
+				channel.type === ChannelTypes.GUILD_LINK ||
+				isThreadChannel(channel)) &&
 			requiresAgeVerification
 		) {
 			const user = await this.userRepository.findUnique(userId);

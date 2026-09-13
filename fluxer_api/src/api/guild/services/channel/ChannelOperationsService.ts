@@ -16,6 +16,12 @@ import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
+import {
+	canAccessPrivateThread,
+	canViewThread,
+	getThreadParentPermissions,
+	hasPermissionBits,
+} from '@app/api/channel/services/ThreadAccess';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@app/api/guild/GuildAuditLogTypes';
@@ -274,12 +280,14 @@ export class ChannelOperationsService {
 			throw new UnknownChannelError();
 		}
 		const guildId = parent.guildId;
-		const canSend = await this.gatewayService.checkPermission({
+		// Echowire: creating a thread needs VIEW_CHANNEL and SEND_MESSAGES on the parent channel itself,
+		// honouring its overwrites, not just the guild-level grant.
+		const parentPermissions = await this.gatewayService.getUserPermissions({
 			guildId,
 			userId: params.userId,
-			permission: Permissions.SEND_MESSAGES,
+			channelId: parent.id,
 		});
-		if (!canSend) {
+		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL | Permissions.SEND_MESSAGES)) {
 			throw new MissingPermissionsError();
 		}
 		// Echowire: forum posts may carry applied_tags, but only IDs defined in the forum's
@@ -320,6 +328,16 @@ export class ChannelOperationsService {
 			if (existing && !existing.isSoftDeleted) {
 				if (existing.parentId !== params.parentChannelId || !THREAD_CHANNEL_TYPES.has(existing.type)) {
 					throw new UnknownChannelError();
+				}
+				// Echowire: the idempotent path must not hand back a private thread the caller cannot see.
+				const canAccessExisting = await canAccessPrivateThread({
+					channel: existing,
+					userId: params.userId,
+					parentPermissions,
+					threadMemberRepository: this.threadMemberRepository,
+				});
+				if (!canAccessExisting) {
+					throw new MissingPermissionsError();
 				}
 				return mapChannelToResponse({
 					channel: existing,
@@ -413,12 +431,12 @@ export class ChannelOperationsService {
 		if (!parent || parent.isSoftDeleted || !parent.guildId) {
 			throw new UnknownChannelError();
 		}
-		const canView = await this.gatewayService.checkPermission({
+		const parentPermissions = await this.gatewayService.getUserPermissions({
 			guildId: parent.guildId,
 			userId: params.userId,
-			permission: Permissions.VIEW_CHANNEL,
+			channelId: parent.id,
 		});
-		if (!canView) {
+		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
 			throw new MissingPermissionsError();
 		}
 		const channels = await this.channelRepository.listGuildChannels(parent.guildId);
@@ -428,8 +446,9 @@ export class ChannelOperationsService {
 				THREAD_CHANNEL_TYPES.has(channel.type) &&
 				!channel.threadMetadata?.archived,
 		);
+		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
 		return Promise.all(
-			threads.map((channel) =>
+			visibleThreads.map((channel) =>
 				mapChannelToResponse({
 					channel,
 					currentUserId: null,
@@ -450,12 +469,12 @@ export class ChannelOperationsService {
 		if (!parent || parent.isSoftDeleted || !parent.guildId) {
 			throw new UnknownChannelError();
 		}
-		const canView = await this.gatewayService.checkPermission({
+		const parentPermissions = await this.gatewayService.getUserPermissions({
 			guildId: parent.guildId,
 			userId: params.userId,
-			permission: Permissions.VIEW_CHANNEL,
+			channelId: parent.id,
 		});
-		if (!canView) {
+		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
 			throw new MissingPermissionsError();
 		}
 		const channels = await this.channelRepository.listGuildChannels(parent.guildId);
@@ -465,8 +484,9 @@ export class ChannelOperationsService {
 				THREAD_CHANNEL_TYPES.has(channel.type) &&
 				channel.threadMetadata?.archived === true,
 		);
+		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
 		return Promise.all(
-			threads.map((channel) =>
+			visibleThreads.map((channel) =>
 				mapChannelToResponse({
 					channel,
 					currentUserId: null,
@@ -488,17 +508,9 @@ export class ChannelOperationsService {
 		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
 			throw new UnknownChannelError();
 		}
-		// Owner can edit; otherwise MANAGE_CHANNELS is required.
-		if (thread.ownerId !== params.userId) {
-			const canManage = await this.gatewayService.checkPermission({
-				guildId: thread.guildId,
-				userId: params.userId,
-				permission: Permissions.MANAGE_CHANNELS,
-			});
-			if (!canManage) {
-				throw new MissingPermissionsError();
-			}
-		}
+		// Echowire: the caller must be able to see the thread, and then be its owner or hold
+		// MANAGE_CHANNELS on the parent channel.
+		await this.assertCanManageThread(thread, params.userId);
 		const row = thread.toRow();
 		const {data} = params;
 		// Echowire: editing a forum post's tags — validate against the parent forum's available_tags.
@@ -545,16 +557,7 @@ export class ChannelOperationsService {
 		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
 			throw new UnknownChannelError();
 		}
-		if (thread.ownerId !== params.userId) {
-			const canManage = await this.gatewayService.checkPermission({
-				guildId: thread.guildId,
-				userId: params.userId,
-				permission: Permissions.MANAGE_CHANNELS,
-			});
-			if (!canManage) {
-				throw new MissingPermissionsError();
-			}
-		}
+		await this.assertCanManageThread(thread, params.userId);
 		await this.channelRepository.delete(thread.id, thread.guildId);
 		await this.gatewayService.dispatchGuild({
 			guildId: thread.guildId,
@@ -586,16 +589,25 @@ export class ChannelOperationsService {
 		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
 			throw new UnknownChannelError();
 		}
+		const parentPermissions = await getThreadParentPermissions({
+			gatewayService: this.gatewayService,
+			guildId: thread.guildId,
+			channel: thread,
+			userId: params.userId,
+		});
+		// Echowire: joining needs VIEW_CHANNEL on the parent channel, even for an existing member.
+		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
+			throw new MissingPermissionsError();
+		}
 		const existing = await this.threadMemberRepository.getMember(params.threadChannelId, params.userId);
 		if (existing) {
 			return;
 		}
-		const canView = await this.gatewayService.checkPermission({
-			guildId: thread.guildId,
-			userId: params.userId,
-			permission: Permissions.VIEW_CHANNEL,
-		});
-		if (!canView) {
+		// Echowire: nobody can add themselves to a private thread unless they manage the parent channel.
+		if (
+			thread.type === ChannelTypes.PRIVATE_THREAD &&
+			!hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS)
+		) {
 			throw new MissingPermissionsError();
 		}
 		await this.threadMemberRepository.addMember(params.threadChannelId, params.userId);
@@ -645,10 +657,12 @@ export class ChannelOperationsService {
 		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
 			throw new UnknownChannelError();
 		}
-		const canView = await this.gatewayService.checkPermission({
+		const canView = await canViewThread({
+			gatewayService: this.gatewayService,
+			threadMemberRepository: this.threadMemberRepository,
 			guildId: thread.guildId,
+			channel: thread,
 			userId: params.userId,
-			permission: Permissions.VIEW_CHANNEL,
 		});
 		if (!canView) {
 			throw new MissingPermissionsError();
@@ -659,6 +673,54 @@ export class ChannelOperationsService {
 			join_timestamp: member.joinTimestamp.toISOString(),
 			flags: member.flags,
 		}));
+	}
+
+	// Echowire: drop private threads the caller is neither a member of nor a manager of.
+	private async filterVisibleThreads(
+		threads: Array<Channel>,
+		userId: UserID,
+		parentPermissions: bigint,
+	): Promise<Array<Channel>> {
+		const visible = await Promise.all(
+			threads.map((channel) =>
+				canAccessPrivateThread({
+					channel,
+					userId,
+					parentPermissions,
+					threadMemberRepository: this.threadMemberRepository,
+				}),
+			),
+		);
+		return threads.filter((_, index) => visible[index]);
+	}
+
+	// Echowire: thread moderation. The caller must see the thread, then own it or hold
+	// MANAGE_CHANNELS on the parent channel.
+	private async assertCanManageThread(thread: Channel, userId: UserID): Promise<void> {
+		const guildId = thread.guildId!;
+		const parentPermissions = await getThreadParentPermissions({
+			gatewayService: this.gatewayService,
+			guildId,
+			channel: thread,
+			userId,
+		});
+		const canView = await canViewThread({
+			gatewayService: this.gatewayService,
+			threadMemberRepository: this.threadMemberRepository,
+			guildId,
+			channel: thread,
+			userId,
+			parentPermissions,
+		});
+		if (!canView) {
+			throw new MissingPermissionsError();
+		}
+		if (thread.ownerId === userId) {
+			return;
+		}
+		if (!hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS)) {
+			throw new MissingPermissionsError();
+		}
 	}
 
 	async updateChannelPositionsLocked(params: {

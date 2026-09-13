@@ -106,6 +106,11 @@ is_channel_scoped_event(message_reaction_remove_emoji) -> true;
 is_channel_scoped_event(typing_start) -> true;
 is_channel_scoped_event(channel_pins_update) -> true;
 is_channel_scoped_event(webhooks_update) -> true;
+%% Echowire: thread events reach only sessions that can view the thread.
+is_channel_scoped_event(thread_create) -> true;
+is_channel_scoped_event(thread_update) -> true;
+is_channel_scoped_event(thread_delete) -> true;
+is_channel_scoped_event(thread_members_update) -> true;
 is_channel_scoped_event(_) -> false.
 
 -spec is_invite_event(event()) -> boolean().
@@ -204,6 +209,22 @@ extract_channel_id(Event, FinalData) when
 ->
     ChannelIdBin = maps:get(<<"id">>, FinalData, undefined),
     guild_dispatch_decorate:require_snowflake(<<"id">>, ChannelIdBin);
+extract_channel_id(Event, FinalData) when
+    Event =:= thread_create; Event =:= thread_update; Event =:= thread_members_update
+->
+    ThreadIdBin = maps:get(<<"id">>, FinalData, undefined),
+    guild_dispatch_decorate:require_snowflake(<<"id">>, ThreadIdBin);
+%% Echowire: the thread is already gone from state when its delete is filtered, so scope the
+%% event to the parent channel.
+extract_channel_id(thread_delete, FinalData) ->
+    case maps:get(<<"parent_id">>, FinalData, null) of
+        ParentIdBin when ParentIdBin =/= null, ParentIdBin =/= undefined ->
+            guild_dispatch_decorate:require_snowflake(<<"parent_id">>, ParentIdBin);
+        _ ->
+            guild_dispatch_decorate:require_snowflake(
+                <<"id">>, maps:get(<<"id">>, FinalData, undefined)
+            )
+    end;
 extract_channel_id(_, FinalData) ->
     ChannelIdBin = maps:get(<<"channel_id">>, FinalData, undefined),
     guild_dispatch_decorate:require_snowflake(<<"channel_id">>, ChannelIdBin).
@@ -216,7 +237,22 @@ is_channel_scoped_event_test() ->
     ?assertEqual(true, is_channel_scoped_event(channel_update)),
     ?assertEqual(true, is_channel_scoped_event(typing_start)),
     ?assertEqual(false, is_channel_scoped_event(guild_update)),
-    ?assertEqual(false, is_channel_scoped_event(guild_member_add)).
+    ?assertEqual(false, is_channel_scoped_event(guild_member_add)),
+    ?assertEqual(true, is_channel_scoped_event(thread_create)),
+    ?assertEqual(true, is_channel_scoped_event(thread_update)),
+    ?assertEqual(true, is_channel_scoped_event(thread_delete)),
+    ?assertEqual(true, is_channel_scoped_event(thread_members_update)).
+
+thread_event_channel_id_test() ->
+    ?assertEqual(20, extract_channel_id(thread_create, #{<<"id">> => <<"20">>})),
+    ?assertEqual(20, extract_channel_id(thread_update, #{<<"id">> => <<"20">>})),
+    ?assertEqual(20, extract_channel_id(thread_members_update, #{<<"id">> => <<"20">>})),
+    ?assertEqual(
+        10, extract_channel_id(thread_delete, #{<<"id">> => <<"20">>, <<"parent_id">> => <<"10">>})
+    ),
+    ?assertEqual(
+        20, extract_channel_id(thread_delete, #{<<"id">> => <<"20">>, <<"parent_id">> => null})
+    ).
 
 is_invite_event_test() ->
     ?assertEqual(true, is_invite_event(invite_create)),

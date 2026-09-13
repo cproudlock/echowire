@@ -46,13 +46,16 @@ export const KEYBOARD_HINTS_DESCRIPTOR = msg({
 	message: 'Keyboard hints',
 	comment: 'Toggle label and settings search entry for controlling tooltip keyboard shortcut hints.',
 });
+// Echowire: the Neko sprite is displayed as Pickles, an orange cat. Identifiers keep upstream's Neko names.
 export const SHOW_NEKO_DESCRIPTOR = msg({
-	message: 'Show Neko',
-	comment: 'Toggle label and settings search entry for showing the Neko sprite that chases the cursor.',
+	message: 'Show Pickles',
+	comment:
+		'Toggle label and settings search entry for showing Pickles, the cat sprite that chases the cursor. Pickles is a proper name; do not translate it.',
 });
 export const KEEP_NEKO_STILL_DESCRIPTOR = msg({
-	message: 'Keep Neko still',
-	comment: 'Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.',
+	message: 'Keep Pickles still',
+	comment:
+		'Toggle label and settings search entry for stopping Pickles, the cat sprite, from chasing the cursor. Pickles is a proper name; do not translate it.',
 });
 export const ENABLE_FAVORITES_DESCRIPTOR = msg({
 	message: 'Enable favorites',
@@ -60,7 +63,18 @@ export const ENABLE_FAVORITES_DESCRIPTOR = msg({
 });
 export const NEKO_DESCRIPTOR = msg({
 	message: 'Neko',
-	comment: 'Settings search synonym. Proper name of the optional cat sprite that chases the cursor.',
+	comment:
+		'Settings search synonym. Former name of the optional cat sprite that chases the cursor, kept so the old name still finds the setting.',
+});
+// Echowire: search terms for the renamed sprite.
+export const PICKLES_DESCRIPTOR = msg({
+	message: 'Pickles',
+	comment:
+		'Settings search synonym. Proper name of the optional cat sprite that chases the cursor; do not translate it.',
+});
+export const CAT_DESCRIPTOR = msg({
+	message: 'Cat',
+	comment: 'Settings search synonym for the optional cat sprite that chases the cursor.',
 });
 export const CHAT_INPUT_DESCRIPTOR = msg({
 	message: 'chat input',

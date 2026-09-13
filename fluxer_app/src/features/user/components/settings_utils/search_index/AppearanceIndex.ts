@@ -3,11 +3,13 @@
 import {VOICE_CHANNEL_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import type {SearchableSettingDescriptor} from '@app/features/user/components/settings_utils/search_index/SearchIndexTypes';
 import {
+	CAT_DESCRIPTOR,
 	CHAT_INPUT_DESCRIPTOR,
 	ENABLE_FAVORITES_DESCRIPTOR,
 	KEEP_NEKO_STILL_DESCRIPTOR,
 	KEYBOARD_HINTS_DESCRIPTOR,
 	NEKO_DESCRIPTOR,
+	PICKLES_DESCRIPTOR,
 	SHOW_NEKO_DESCRIPTOR,
 } from '@app/features/user/components/settings_utils/section_registry/SharedDescriptors';
 import {msg} from '@lingui/core/macro';
@@ -61,19 +63,19 @@ const CHOOSE_WHETHER_TOOLTIPS_SHOW_KEYBOARD_SHORTCUT_HINTS_DESCRIPTOR = msg({
 	comment: 'Settings search entry description. One-line summary of what the setting controls.',
 });
 const SHOW_OR_HIDE_NEKO_THAT_CHASES_THE_CURSOR_DESCRIPTOR = msg({
-	message: 'Neko cat that chases your cursor',
+	message: 'Pickles, the cat that chases your cursor',
 	comment: 'Settings search entry description. One-line summary of what the setting controls.',
 });
 const KEEP_NEKO_FROM_CHASING_THE_CURSOR_DESCRIPTOR = msg({
-	message: 'Stop Neko from chasing your cursor while keeping it draggable and interactive.',
+	message: 'Stop Pickles from chasing your cursor while keeping it draggable and interactive.',
 	comment: 'Settings search entry description. One-line summary of what the setting controls.',
 });
 const STILL_NEKO_DESCRIPTOR = msg({
-	message: 'Still Neko',
+	message: 'Still Pickles',
 	comment: 'Settings search synonym. Used to match this term when the user types it in the settings search bar.',
 });
 const STATIC_NEKO_DESCRIPTOR = msg({
-	message: 'Static Neko',
+	message: 'Static Pickles',
 	comment: 'Settings search synonym. Used to match this term when the user types it in the settings search bar.',
 });
 const FAVORITE_CHANNELS_DESCRIPTOR = msg({
@@ -94,7 +96,7 @@ export const appearanceIndex: Array<SearchableSettingDescriptor> = [
 		tabType: 'appearance',
 		sectionId: 'interface',
 		label: SHOW_NEKO_DESCRIPTOR,
-		keywords: [NEKO_DESCRIPTOR, CHAT_INPUT_DESCRIPTOR],
+		keywords: [PICKLES_DESCRIPTOR, CAT_DESCRIPTOR, NEKO_DESCRIPTOR, CHAT_INPUT_DESCRIPTOR],
 		description: SHOW_OR_HIDE_NEKO_THAT_CHASES_THE_CURSOR_DESCRIPTOR,
 		audience: 'advanced',
 		tags: ['appearance', 'chat'],
@@ -104,7 +106,7 @@ export const appearanceIndex: Array<SearchableSettingDescriptor> = [
 		tabType: 'appearance',
 		sectionId: 'interface',
 		label: KEEP_NEKO_STILL_DESCRIPTOR,
-		keywords: [NEKO_DESCRIPTOR, STILL_NEKO_DESCRIPTOR, STATIC_NEKO_DESCRIPTOR],
+		keywords: [PICKLES_DESCRIPTOR, CAT_DESCRIPTOR, NEKO_DESCRIPTOR, STILL_NEKO_DESCRIPTOR, STATIC_NEKO_DESCRIPTOR],
 		description: KEEP_NEKO_FROM_CHASING_THE_CURSOR_DESCRIPTOR,
 		audience: 'advanced',
 		tags: ['appearance', 'chat'],

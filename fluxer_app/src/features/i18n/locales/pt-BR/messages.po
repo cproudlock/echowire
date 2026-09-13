@@ -17920,10 +17920,10 @@ msgstr "Mantenha os níveis Gratuito e Premium. Você pode personalizar os níve
 msgid "Keep grace period"
 msgstr "Manter período de carência"
 
-#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:53
-msgid "Keep Neko still"
-msgstr "Manter Neko parado"
+#. Toggle label and settings search entry for stopping Pickles, the cat sprite, from chasing the cursor. Pickles is a proper name; do not translate it.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:55
+msgid "Keep Pickles still"
+msgstr "Manter Pickles parado"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
@@ -20892,15 +20892,25 @@ msgstr "Atalhos de navegação"
 msgid "Need an account?"
 msgstr "Precisa de uma conta?"
 
-#. Settings search synonym. Proper name of the optional cat sprite that chases the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:61
+#. Settings search synonym. Former name of the optional cat sprite that chases the cursor, kept so the old name still finds the setting.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:64
 msgid "Neko"
 msgstr "Neko"
 
+#. Settings search synonym. Proper name of the optional cat sprite that chases the cursor; do not translate it.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:70
+msgid "Pickles"
+msgstr "Pickles"
+
+#. Settings search synonym for the optional cat sprite that chases the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:75
+msgid "Cat"
+msgstr "Gato"
+
 #. Settings search entry description. One-line summary of what the setting controls.
 #: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:63
-msgid "Neko cat that chases your cursor"
-msgstr "Gato Neko que persegue seu cursor"
+msgid "Pickles, the cat that chases your cursor"
+msgstr "Gato Pickles que persegue seu cursor"
 
 #. Short label in the markdown tab. Keep it concise.
 #: src/features/user/components/modals/tabs/component_gallery_tab/MarkdownTab.tsx:45
@@ -29034,10 +29044,10 @@ msgstr "Mostrar minha tela"
 msgid "Show myself typing"
 msgstr "Mostrar que estou digitando"
 
-#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:49
-msgid "Show Neko"
-msgstr "Mostrar Neko"
+#. Toggle label and settings search entry for showing Pickles, the cat sprite that chases the cursor. Pickles is a proper name; do not translate it.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:50
+msgid "Show Pickles"
+msgstr "Mostrar Pickles"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Short label for an advanced voice device preference.
@@ -30355,8 +30365,8 @@ msgstr "Inicialização"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:75
-msgid "Static Neko"
-msgstr "Estático Neko"
+msgid "Static Pickles"
+msgstr "Estático Pickles"
 
 #. Column header for billing invoice status.
 #. Column header for whether a saved payment method is default.
@@ -30572,8 +30582,8 @@ msgstr "Ainda indexando — volte em um instante"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:71
-msgid "Still Neko"
-msgstr "Ainda Neko"
+msgid "Still Pickles"
+msgstr "Ainda Pickles"
 
 #. Stop-recording button label in the desktop voice message composer.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:64
@@ -30592,8 +30602,8 @@ msgstr "Parar mensagens e pedidos de amizade."
 
 #. Settings search entry description. One-line summary of what the setting controls.
 #: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:67
-msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
-msgstr "Impede que o Neko persiga seu cursor, mantendo-o arrastável e interativo."
+msgid "Stop Pickles from chasing your cursor while keeping it draggable and interactive."
+msgstr "Impede que o Pickles persiga seu cursor, mantendo-o arrastável e interativo."
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the translation DOM guard kill switch.
 #: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:41

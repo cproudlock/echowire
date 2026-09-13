@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {
+	type CodecCapabilityAdvertisement,
+	computeDecodableByKnownParticipants,
+} from '@app/features/voice/engine/ScreenShareCodecDecodeSupport';
 import {describe, expect, it} from 'vitest';
-import {type CodecCapabilityAdvertisement, computeDecodableByKnownParticipants} from './ScreenShareCodecDecodeSupport';
 
 function video(name: 'AV1' | 'H265' | 'H264' | 'VP9' | 'VP8', decode: boolean): CodecCapabilityAdvertisement {
 	return {name, type: 'video', decode};

@@ -88,7 +88,7 @@ const FLUXER_TAG_TYPE = z
 	.min(3)
 	.max(37)
 	.refine((value) => FLUXER_TAG_REGEX.test(value), 'Fluxer tag must be in the format username#1234')
-	.describe('An Echowire username tag in the format username#1234');
+	.describe('An echowire username tag in the format username#1234');
 const EU_COUNTRY_CODE_ENUM = createNamedStringLiteralUnion(
 	[
 		['AT', 'AT', 'Austria'],

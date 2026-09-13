@@ -37,7 +37,7 @@ pub fn system_dm_page(
                     "Send a system DM"
                 }
                 p class="text-sm text-neutral-500" {
-                    "Sent from the official Echowire system account. Each recipient \
+                    "Sent from the official echowire system account. Each recipient \
                      will receive the same content as a DM. Progress is observable \
                      on the "
                     a href=(jobs_url) class="font-medium text-neutral-900 hover:underline" {

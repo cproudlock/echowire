@@ -1859,7 +1859,7 @@ msgstr "اسم مضيف، مثل {exampleDomain}"
 #. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:130
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "يتوفر تحديث لـ Echowire على نظام التشغيل Linux. اختر تنسيق الحزمة لهذا النظام وسيحفظه {productName} محليًا."
+msgstr "يتوفر تحديث لـ echowire على نظام التشغيل Linux. اختر تنسيق الحزمة لهذا النظام وسيحفظه {productName} محليًا."
 
 #. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682

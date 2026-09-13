@@ -1,4 +1,4 @@
-Echowire automatically expires older attachments. Smaller files stay available for longer, while larger files expire sooner. If someone opens a message with a file that is close to expiry, we extend its availability so it remains accessible.
+echowire automatically expires older attachments. Smaller files stay available for longer, while larger files expire sooner. If someone opens a message with a file that is close to expiry, we extend its availability so it remains accessible.
 
 ## How expiry is decided
 

@@ -14466,7 +14466,7 @@ msgstr "Sklandus judesys 720p 30 FPS"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Echowire"
+msgstr "echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179
@@ -37219,7 +37219,7 @@ msgstr "Be šio leidimo reikalingas \"paspausk ir kalbėk\"."
 #. Label for the wordmark branding asset.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:133
 msgid "Wordmark"
-msgstr "„Echowire“"
+msgstr "„echowire“"
 
 #. Short label in the channel and chat textual attachment preview bottom sheet. Keep it concise.
 #. Short label in the channel and chat textual preview context menu. Keep it concise.

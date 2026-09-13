@@ -281,7 +281,7 @@ function defaultConfig(): MasterConfig {
 		instance: {
 			self_hosted: false,
 			branding: {
-				product_name: 'Echowire',
+				product_name: 'echowire',
 			},
 			setup: {
 				configured: false,

@@ -1,6 +1,6 @@
-Echowire respects the intellectual property rights of others, and expects everyone using the service to do the same.
+echowire respects the intellectual property rights of others, and expects everyone using the service to do the same.
 
-If you believe that content on Echowire infringes your copyright or other intellectual property rights, you can notify us through the report form at [web.echowire.org/report](https://web.echowire.org/report) (choose the copyright or intellectual property option) or by emailing [copyright@echowire.org](mailto:copyright@echowire.org).
+If you believe that content on echowire infringes your copyright or other intellectual property rights, you can notify us through the report form at [web.echowire.org/report](https://web.echowire.org/report) (choose the copyright or intellectual property option) or by emailing [copyright@echowire.org](mailto:copyright@echowire.org).
 
 We review complaints in accordance with applicable law, including, where relevant, European Union law.
 
@@ -9,7 +9,7 @@ We review complaints in accordance with applicable law, including, where relevan
 Include the following:
 
 - a description of the copyrighted work or other intellectual property right you believe has been infringed
-- the exact location of the material on Echowire, including any relevant message links, channel IDs, user IDs, or other information that lets us identify the content
+- the exact location of the material on echowire, including any relevant message links, channel IDs, user IDs, or other information that lets us identify the content
 - an explanation of why you believe the material infringes your rights or is otherwise unlawful
 - your full name, your email address, and any additional contact details you wish to provide
 - a statement confirming that you have a good-faith belief that the use of the material is not authorised by the rights holder, its agent, or the law
@@ -40,7 +40,7 @@ Depending on the law that applies, you may also have further rights, including t
 
 You must not knowingly submit false, misleading, malicious, abusive, or duplicative complaints. You must not ask others to submit duplicate reports about the same content where a complaint has already been made on your behalf.
 
-Misuse of Echowire's reporting or complaints procedures may result in rejection of the report, and may lead to action against the relevant account, including suspension where appropriate.
+Misuse of echowire's reporting or complaints procedures may result in rejection of the report, and may lead to action against the relevant account, including suspension where appropriate.
 
 ## Repeat infringement
 

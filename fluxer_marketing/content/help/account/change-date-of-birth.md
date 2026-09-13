@@ -1,6 +1,6 @@
 You cannot change your date of birth from within the app. If yours needs correcting, our support team can update it for you.
 
-This is one of the few times we ask for a government-issued ID. Echowire does not require ID uploads or biometric scans for general access; see [minimum age requirements](/help/minimum-age) for the other case, which is age-related account appeals.
+This is one of the few times we ask for a government-issued ID. echowire does not require ID uploads or biometric scans for general access; see [minimum age requirements](/help/minimum-age) for the other case, which is age-related account appeals.
 
 ## What you will need
 
@@ -14,7 +14,7 @@ A note on image metadata: photos taken with a phone often carry hidden EXIF data
 
 ## How to request a change
 
-Email [support@echowire.org](mailto:support@echowire.org) from the address linked to your Echowire account. Include the correct date of birth, a brief reason for the correction, and the redacted ID image.
+Email [support@echowire.org](mailto:support@echowire.org) from the address linked to your echowire account. Include the correct date of birth, a brief reason for the correction, and the redacted ID image.
 
 ## How we handle the ID
 

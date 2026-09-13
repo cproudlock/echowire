@@ -3,7 +3,7 @@
 
 ## What these guidelines are for
 
-Echowire exists to help people communicate, connect, and build communities. These guidelines set the standards every user is held to. They form part of our [Terms of Service](/terms), and violations may lead to the enforcement actions described below.
+echowire exists to help people communicate, connect, and build communities. These guidelines set the standards every user is held to. They form part of our [Terms of Service](/terms), and violations may lead to the enforcement actions described below.
 
 These guidelines are deliberately specific: where a rule could be read more than one way, the resolution is written here.
 
@@ -19,7 +19,7 @@ If you would not want something said or done to you, do not say or do it to some
 
 ## Building a good community
 
-Echowire is for everyone, including people from marginalised and underrepresented communities who are often made to feel unwelcome elsewhere. Help keep it that way:
+echowire is for everyone, including people from marginalised and underrepresented communities who are often made to feel unwelcome elsewhere. Help keep it that way:
 
 **Assume good intent.** When something is unclear, ask before reacting. Misunderstandings happen, especially across languages and cultures.
 
@@ -55,11 +55,11 @@ Do not harass, bully, or threaten any person or group.
 
 **1.5 Sexual harassment.** Unwanted sexual comments, advances, innuendo, requests for sexual content, or sexually explicit messages sent to someone who has not consented to receive them.
 
-**1.6 Pile-ons and coordinated attacks.** Organising, encouraging, or participating in coordinated attacks or mass harassment against a person or group, whether on Echowire or by directing others to harass someone on another platform.
+**1.6 Pile-ons and coordinated attacks.** Organising, encouraging, or participating in coordinated attacks or mass harassment against a person or group, whether on echowire or by directing others to harass someone on another platform.
 
 **1.7 Encouraging harm.** Encouraging, inciting, or instructing others to harass or harm a specific person or group.
 
-**How cases are assessed.** We consider frequency, duration, severity, power dynamics, whether the target asked the person to stop, whether the behaviour is part of a pattern, and the impact on the target's ability to use Echowire safely.
+**How cases are assessed.** We consider frequency, duration, severity, power dynamics, whether the target asked the person to stop, whether the behaviour is part of a pattern, and the impact on the target's ability to use echowire safely.
 
 ### 2. Hate speech and discrimination
 
@@ -77,7 +77,7 @@ This list is intentionally broad. Other characteristics may also be protected wh
 
 **Tier 3: slurs, exclusion, and demeaning language.** Content that uses slurs or derogatory terms targeting protected groups; calls for exclusion from Communities based on protected characteristics (unless the Community's purpose requires it; for example, a women's support group may limit membership); or mocks, ridicules, or demeans someone specifically because of a protected characteristic. Assessed contextually. Self-referential use of reclaimed language by members of the relevant group is generally permitted (see Exceptions below).
 
-**2.1 LGBTQ+ specific protections.** Echowire is and will remain a safe and affirming place for lesbian, gay, bisexual, transgender, queer, intersex, asexual, and all other gender and sexual minority (LGBTQ+) users. The following are prohibited as forms of hate speech.
+**2.1 LGBTQ+ specific protections.** echowire is and will remain a safe and affirming place for lesbian, gay, bisexual, transgender, queer, intersex, asexual, and all other gender and sexual minority (LGBTQ+) users. The following are prohibited as forms of hate speech.
 
 **Targeted misgendering and deadnaming.** Deliberately and repeatedly referring to a person by a gender, name, or pronouns that do not align with their gender identity, after being informed of, or having reasonable access to, their correct name or pronouns. This includes using someone's birth name ("deadname") against their wishes to harass, demean, or invalidate their identity. This rule targets deliberate, repeated behaviour; honest mistakes corrected when informed are not violations.
 
@@ -117,7 +117,7 @@ Do not share or promote: real-world graphic depictions of violence, gore, mutila
 
 ### 3a. Terrorism and violent extremism
 
-Echowire must not be used to promote, support, recruit for, or coordinate terrorism or violent extremism. This covers recruitment, incitement, material support, propaganda, manifestos, instructional materials, glorification of terrorist attacks or mass violence, and coordination, planning, or operational activity.
+echowire must not be used to promote, support, recruit for, or coordinate terrorism or violent extremism. This covers recruitment, incitement, material support, propaganda, manifestos, instructional materials, glorification of terrorist attacks or mass violence, and coordination, planning, or operational activity.
 
 **EU Terrorism Content Online Regulation.** Where we receive a removal order from a competent authority under Regulation (EU) 2021/784, we will remove or disable access to the identified content within one hour, as required. Content under this section may also be reported to law enforcement where required or permitted by law. Removed content is preserved for six months for law enforcement purposes, as the regulation requires.
 
@@ -125,7 +125,7 @@ Echowire must not be used to promote, support, recruit for, or coordinate terror
 
 ### 4. Sexual content and protection of minors
 
-**Zero tolerance.** Child sexual exploitation is prohibited in any form. The rules in this section are among the most strictly enforced on Echowire.
+**Zero tolerance.** Child sexual exploitation is prohibited in any form. The rules in this section are among the most strictly enforced on echowire.
 
 **4.1 Child sexual abuse material (CSAM).** CSAM, meaning sexual or sexually suggestive imagery depicting real children, is strictly prohibited and will be reported to law enforcement as required by law. This includes realistic AI-generated or digitally manipulated imagery indistinguishable from photographs of real children. Violations result in immediate and permanent account termination and reporting to law enforcement or relevant authorities.
 
@@ -133,9 +133,9 @@ Echowire must not be used to promote, support, recruit for, or coordinate terror
 
 **4.3 Fictional depictions of minors.** Sexual or sexually suggestive content featuring fictional characters who are explicitly described as minors, or who are unambiguously depicted as prepubescent, is prohibited in all spaces, without exception. This includes drawn, animated, AI-generated, and written content where the character is clearly a child. Fictional content is assessed on the totality of context: stated age, narrative framing, visual presentation, and setting. This rule does not apply to non-sexual coming-of-age narratives, survivor stories, educational content, or literary works that depict difficult subject matter without sexualising it.
 
-**4.4 Grooming.** Using Echowire to build a relationship with a minor for the purpose of sexual exploitation is strictly prohibited, whether or not explicit content is involved. Grooming behaviours include building inappropriate emotional intimacy with a minor, attempting to isolate a minor from trusted adults or support systems, gradually introducing sexual topics or content, requesting personal information, photos, or private communication in a sexualised context, and offering gifts, money, or special treatment in exchange for personal information or intimate interaction.
+**4.4 Grooming.** Using echowire to build a relationship with a minor for the purpose of sexual exploitation is strictly prohibited, whether or not explicit content is involved. Grooming behaviours include building inappropriate emotional intimacy with a minor, attempting to isolate a minor from trusted adults or support systems, gradually introducing sexual topics or content, requesting personal information, photos, or private communication in a sexualised context, and offering gifts, money, or special treatment in exchange for personal information or intimate interaction.
 
-**4.5 Users under 18.** If you are under 18, you must not engage with, share, or distribute any sexual or sexually suggestive content on Echowire, including in age-gated spaces.
+**4.5 Users under 18.** If you are under 18, you must not engage with, share, or distribute any sexual or sexually suggestive content on echowire, including in age-gated spaces.
 
 **4.6 Adult content.** Sexual and explicit content involving adults is permitted only in clearly marked 18+ spaces. Communities must apply an age restriction to the Community as a whole, to individual channels, or both. Communities that fail to enforce these requirements may be restricted or removed. Community Owners are responsible for proper age gating.
 
@@ -143,19 +143,19 @@ Echowire must not be used to promote, support, recruit for, or coordinate terror
 
 **4.7 Non-consensual intimate media.** Sharing intimate images, videos, or recordings of any person without their explicit consent is strictly prohibited. This includes "deepfakes" and AI-generated or digitally manipulated content depicting someone in an intimate context without their permission, "revenge porn" and sexually explicit content shared to shame, coerce, or harm someone, voyeuristic content captured without the subject's knowledge or consent, and threatening to share intimate content to coerce, blackmail, or intimidate.
 
-**4.8 Sexual exploitation.** Using Echowire to facilitate sexual exploitation of any person, including sex trafficking, coerced sexual labour, or commercial sexual exploitation of minors, is strictly prohibited and will be reported to law enforcement.
+**4.8 Sexual exploitation.** Using echowire to facilitate sexual exploitation of any person, including sex trafficking, coerced sexual labour, or commercial sexual exploitation of minors, is strictly prohibited and will be reported to law enforcement.
 
 ### 5. Illegal activities
 
-Do not use Echowire to facilitate, promote, or engage in illegal activity. This includes malware or harmful software; fraud, scams, or deceptive practices, including phishing, impersonation, and financial scams; illegal goods, services, or controlled substances; copyright infringement or other intellectual property violations at scale or in a clearly abusive manner; hacking, unauthorised access, or cyberattacks; money laundering, terrorist financing, or similar financial crimes; evasion of lawful restrictions or sanctions; and any other activity that violates applicable law.
+Do not use echowire to facilitate, promote, or engage in illegal activity. This includes malware or harmful software; fraud, scams, or deceptive practices, including phishing, impersonation, and financial scams; illegal goods, services, or controlled substances; copyright infringement or other intellectual property violations at scale or in a clearly abusive manner; hacking, unauthorised access, or cyberattacks; money laundering, terrorist financing, or similar financial crimes; evasion of lawful restrictions or sanctions; and any other activity that violates applicable law.
 
 We may cooperate with law enforcement where required by law, or where necessary to protect individuals from serious harm.
 
 ### 6. Spam and abuse
 
-Do not abuse or misuse Echowire. This includes spam, bulk messages, unsolicited commercial content, fake accounts, impersonation, artificial Community member counts or reactions, buying or selling Echowire accounts or Communities, abusing the free tier as unlimited cloud storage, fraudulent chargebacks or payment disputes, and automation used to evade limits, scrape or harvest data, mass-create accounts, or disrupt normal use.
+Do not abuse or misuse echowire. This includes spam, bulk messages, unsolicited commercial content, fake accounts, impersonation, artificial Community member counts or reactions, buying or selling echowire accounts or Communities, abusing the free tier as unlimited cloud storage, fraudulent chargebacks or payment disputes, and automation used to evade limits, scrape or harvest data, mass-create accounts, or disrupt normal use.
 
-Limited automation that complies with our policies and applicable law may be allowed where explicitly permitted by Echowire. All other automated abuse is prohibited.
+Limited automation that complies with our policies and applicable law may be allowed where explicitly permitted by echowire. All other automated abuse is prohibited.
 
 ### 7. Harmful misinformation
 
@@ -169,7 +169,7 @@ Do not deliberately spread misinformation that is demonstrably false and likely 
 
 ### 8. Privacy violations
 
-Do not violate the privacy rights of other users. This includes doxxing (Section 1.3), recording voice or video communications without consent, where consent is legally required, trying to defeat privacy settings, user blocks, or safety features, stalking or invasive monitoring connected to someone's use of Echowire, and sharing screenshots or recordings of private conversations without consent where doing so could cause harm or was done to harass.
+Do not violate the privacy rights of other users. This includes doxxing (Section 1.3), recording voice or video communications without consent, where consent is legally required, trying to defeat privacy settings, user blocks, or safety features, stalking or invasive monitoring connected to someone's use of echowire, and sharing screenshots or recordings of private conversations without consent where doing so could cause harm or was done to harass.
 
 When in doubt about whether something violates someone's privacy, err on the side of caution and do not share it.
 
@@ -219,7 +219,7 @@ This applies to all enforcement actions except where providing it would compromi
 
 If you believe an enforcement decision was incorrect, you can appeal.
 
-**How to appeal.** Email <appeals@echowire.org> from the email address associated with your Echowire account. State which enforcement action you are appealing, explain why you believe the decision was incorrect, incomplete, or disproportionate, and include any relevant context or evidence.
+**How to appeal.** Email <appeals@echowire.org> from the email address associated with your echowire account. State which enforcement action you are appealing, explain why you believe the decision was incorrect, incomplete, or disproportionate, and include any relevant context or evidence.
 
 **Process.** Appeals can only be processed from the email associated with the affected account. Submit within 60 days of receiving the enforcement notice. Each enforcement action can be appealed once; duplicate submissions do not speed up review. Temporary enforcement actions generally remain in place during review. Responses come as promptly as volume and complexity allow.
 
@@ -233,11 +233,11 @@ If you are in the European Union and not satisfied with the outcome of our appea
 
 ### For younger users
 
-Users must meet the Minimum Age to use Echowire, as described in our [Terms of Service](/terms) and [Privacy Policy](/privacy). The general figure is 13, though some countries set it higher.
+Users must meet the Minimum Age to use echowire, as described in our [Terms of Service](/terms) and [Privacy Policy](/privacy). The general figure is 13, though some countries set it higher.
 
 Stricter safety features may be enabled by default for users under 18, including tighter privacy defaults and restricted access to certain features. Some content or Communities may be restricted based on age. Communities focused on dating or romantic relationships between minors, or that sexualise minors in any way, are strictly prohibited.
 
-If you are under 18, be particularly careful about sharing personal information, and do not meet people from Echowire in person without involving a trusted adult.
+If you are under 18, be particularly careful about sharing personal information, and do not meet people from echowire in person without involving a trusted adult.
 
 ### For Community Owners
 
@@ -247,7 +247,7 @@ Failure to address serious or repeated violations can result in restrictions on 
 
 ### For parents and guardians
 
-Safety resources on our website help parents and guardians understand Echowire and support young users. If you have concerns about your teenager's account, contact our support team; we may need to verify your relationship before discussing a specific account. If you believe a child is in immediate danger, contact local emergency services first, then let us know.
+Safety resources on our website help parents and guardians understand echowire and support young users. If you have concerns about your teenager's account, contact our support team; we may need to verify your relationship before discussing a specific account. If you believe a child is in immediate danger, contact local emergency services first, then let us know.
 
 ### Self-harm and crisis content
 
@@ -261,7 +261,7 @@ Our approach to self-harm content is built around compassion and support rather 
 
 **If you see someone in crisis,** report the content via in-app tools or email <safety@echowire.org> with as much detail as possible. If you know the person and can safely do so, encourage them to seek professional support or contact emergency services. We respond to safety reports as promptly as possible and, where appropriate, work with relevant services or authorities in line with applicable law.
 
-**Crisis resources.** If you or someone else is in immediate danger, contact your local emergency services first. Echowire is not a substitute for professional mental health care or emergency services, and cannot provide medical, psychological, or legal advice. If you or someone you know is struggling: internationally, Befrienders Worldwide ([befrienders.org](https://befrienders.org)) operates crisis centres in over 40 countries. In Sweden, Mind (mind.se) can be reached on 90101, and BRIS (for children and young people) on 116 111. In the United States, the 988 Suicide & Crisis Lifeline is available by calling or texting 988. In the United Kingdom, Samaritans can be reached on 116 123 (free, 24/7) or at [samaritans.org](https://www.samaritans.org). In the EU, many countries offer emotional support at 116 123. Crisis Text Line is available by texting HOME to 741741 (US), 85258 (UK), 686868 (Canada), or 50808 (Ireland).
+**Crisis resources.** If you or someone else is in immediate danger, contact your local emergency services first. echowire is not a substitute for professional mental health care or emergency services, and cannot provide medical, psychological, or legal advice. If you or someone you know is struggling: internationally, Befrienders Worldwide ([befrienders.org](https://befrienders.org)) operates crisis centres in over 40 countries. In Sweden, Mind (mind.se) can be reached on 90101, and BRIS (for children and young people) on 116 111. In the United States, the 988 Suicide & Crisis Lifeline is available by calling or texting 988. In the United Kingdom, Samaritans can be reached on 116 123 (free, 24/7) or at [samaritans.org](https://www.samaritans.org). In the EU, many countries offer emotional support at 116 123. Crisis Text Line is available by texting HOME to 741741 (US), 85258 (UK), 686868 (Canada), or 50808 (Ireland).
 
 ## Transparency reporting
 
@@ -269,7 +269,7 @@ We plan to publish voluntary transparency reports covering content moderation, a
 
 ## Changes to these guidelines
 
-These guidelines may be updated as new features are introduced, community norms evolve, or laws change. Material changes come with at least 30 days' notice where reasonably practicable, and a [changelog](/changelog) is maintained. When updated alongside changes to our [Terms of Service](/terms) or [Privacy Policy](/privacy), you will be asked to confirm that you have reviewed and agreed. If you do not agree to updated guidelines, you can stop using Echowire and delete your account at any time.
+These guidelines may be updated as new features are introduced, community norms evolve, or laws change. Material changes come with at least 30 days' notice where reasonably practicable, and a [changelog](/changelog) is maintained. When updated alongside changes to our [Terms of Service](/terms) or [Privacy Policy](/privacy), you will be asked to confirm that you have reviewed and agreed. If you do not agree to updated guidelines, you can stop using echowire and delete your account at any time.
 
 ## Contact
 
@@ -289,6 +289,6 @@ Removal orders under the EU Terrorism Content Online Regulation are handled as d
 
 ## A final note
 
-Most people on Echowire never run into these guidelines. Treat others with respect, use good judgement, and remember there is a real person on the other side of every interaction.
+Most people on echowire never run into these guidelines. Treat others with respect, use good judgement, and remember there is a real person on the other side of every interaction.
 
-Echowire is for everyone, regardless of who you are, who you love, how you identify, where you come from, or what you believe. Thank you for helping keep it safe and welcoming.
+echowire is for everyone, regardless of who you are, who you love, how you identify, where you come from, or what you believe. Thank you for helping keep it safe and welcoming.

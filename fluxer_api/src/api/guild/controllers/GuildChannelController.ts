@@ -11,10 +11,37 @@ import {
 	ChannelCreateRequest,
 	ChannelPositionUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
-import {ChannelListResponse, ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import {
+	ChannelListResponse,
+	ChannelResponse,
+	GuildActiveThreadsResponse,
+} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {GuildIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 
 export function GuildChannelController(app: HonoApp) {
+	// Echowire: every active thread the caller can view in the guild, with the caller's memberships.
+	app.get(
+		'/guilds/:guild_id/threads/active',
+		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNELS_LIST),
+		LoginRequired,
+		Validator('param', GuildIdParam),
+		OpenAPI({
+			operationId: 'list_guild_active_threads',
+			summary: 'List active guild threads',
+			responseSchema: GuildActiveThreadsResponse,
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: ['Guilds'],
+			description:
+				"Lists the active (non-archived) threads and forum posts in the guild that the caller can view, with starter message previews and the caller's own thread memberships.",
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const guildId = createGuildID(ctx.req.valid('param').guild_id);
+			const requestCache = ctx.get('requestCache');
+			return ctx.json(await ctx.get('guildService').channels.listGuildActiveThreads({userId, guildId, requestCache}));
+		},
+	);
 	app.get(
 		'/guilds/:guild_id/channels',
 		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNELS_LIST),

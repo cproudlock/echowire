@@ -22,7 +22,7 @@ import type {
 	ThreadCreateRequest,
 	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
-import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {ChannelResponse, GuildActiveThreadsResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 
 export class GuildChannelService {
@@ -122,6 +122,15 @@ export class GuildChannelService {
 		requestCache: RequestCache;
 	}): Promise<Array<ChannelResponse>> {
 		return this.channelOps.listActiveThreads(params);
+	}
+
+	// Echowire: active threads across the guild, for sidebar nesting.
+	async listGuildActiveThreads(params: {
+		userId: UserID;
+		guildId: GuildID;
+		requestCache: RequestCache;
+	}): Promise<GuildActiveThreadsResponse> {
+		return this.channelOps.listGuildActiveThreads(params);
 	}
 
 	// Echowire: list archived threads under a text/forum channel.

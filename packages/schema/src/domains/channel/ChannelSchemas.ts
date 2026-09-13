@@ -97,6 +97,36 @@ export const ForumTagResponse = z.object({
 
 export type ForumTagResponse = z.infer<typeof ForumTagResponse>;
 
+// Echowire: a compact view of a thread's starter message, returned on thread list endpoints so a
+// forum can render post cards without fetching each post's first message.
+export const ThreadStarterMessagePreviewResponse = z.object({
+	message_id: SnowflakeStringType.describe('The ID of the starter message'),
+	author: z
+		.object({
+			id: SnowflakeStringType.describe('The ID of the author'),
+			username: z.string().describe('The username of the author'),
+			global_name: z.string().nullable().describe('The display name of the author, if set'),
+			avatar: z.string().nullable().describe('The avatar hash of the author'),
+		})
+		.nullable()
+		.describe('The author of the starter message, or null for a system or deleted author'),
+	content: z.string().describe('The starter message content, truncated to 200 characters'),
+	first_attachment: z
+		.object({
+			id: SnowflakeStringType.describe('The ID of the attachment'),
+			filename: z.string().describe('The file name of the attachment'),
+			url: z.string().describe('The URL of the attachment'),
+			proxy_url: z.string().nullable().describe('The proxied URL of the attachment, if any'),
+			content_type: z.string().nullable().describe('The MIME type of the attachment'),
+			width: Int32Type.nullable().describe('The width in pixels, for images and videos'),
+			height: Int32Type.nullable().describe('The height in pixels, for images and videos'),
+		})
+		.nullable()
+		.describe('The first attachment of the starter message, usable as a post thumbnail'),
+});
+
+export type ThreadStarterMessagePreviewResponse = z.infer<typeof ThreadStarterMessagePreviewResponse>;
+
 export const ChannelResponse = z.object({
 	id: SnowflakeStringType.describe('The unique identifier (snowflake) for this channel'),
 	guild_id: SnowflakeStringType.optional().describe('The ID of the guild this channel belongs to'),
@@ -168,6 +198,9 @@ export const ChannelResponse = z.object({
 	member_count: Int32Type.optional().describe('Approximate count of members in the thread (threads only)'),
 	message_count: Int32Type.optional().describe('Approximate count of messages in the thread (threads only)'),
 	pinned: z.boolean().optional().describe('Whether this forum post / thread is pinned to the top'),
+	starter_message_preview: ThreadStarterMessagePreviewResponse.nullish().describe(
+		'Preview of the starter message; present on thread list endpoints only',
+	),
 	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order: forum channels.
 	// applied_tags: forum posts (threads).
 	available_tags: z
@@ -266,6 +299,7 @@ export interface Channel {
 	readonly member_count?: number;
 	readonly message_count?: number;
 	readonly pinned?: boolean;
+	readonly starter_message_preview?: ThreadStarterMessagePreviewResponse | null;
 	// Echowire forum fields.
 	readonly available_tags?: ReadonlyArray<{
 		readonly id: string;
@@ -298,4 +332,19 @@ export type ThreadMemberResponse = z.infer<typeof ThreadMemberResponse>;
 
 export const ThreadMemberListResponse = z.array(ThreadMemberResponse);
 export type ThreadMemberListResponse = z.infer<typeof ThreadMemberListResponse>;
+
+// Echowire: the caller's own membership in a thread, keyed by thread id.
+export const ThreadMemberSelfResponse = z.object({
+	id: SnowflakeStringType.describe('The ID of the thread'),
+	user_id: SnowflakeStringType.describe('The ID of the member (the caller)'),
+	join_timestamp: z.string().describe('When the caller joined the thread'),
+	flags: z.number().describe('Thread member flags'),
+});
+export type ThreadMemberSelfResponse = z.infer<typeof ThreadMemberSelfResponse>;
+
+export const GuildActiveThreadsResponse = z.object({
+	threads: z.array(ChannelResponse).describe('Active threads in the guild that the caller can view'),
+	members: z.array(ThreadMemberSelfResponse).describe("The caller's memberships among the returned threads"),
+});
+export type GuildActiveThreadsResponse = z.infer<typeof GuildActiveThreadsResponse>;
 export const RtcRegionListResponse = z.array(RtcRegionResponse);

@@ -15,6 +15,7 @@ import {
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
+import {makeAttachmentCdnUrl} from '@app/api/channel/services/message/MessageHelpers';
 import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
 import {
 	canAccessPrivateThread,
@@ -37,6 +38,7 @@ import {createLimitMatchContext} from '@app/api/limits/LimitMatchContextBuilder'
 import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
 import type {Channel} from '@app/api/models/Channel';
 import {ChannelPermissionOverwrite} from '@app/api/models/ChannelPermissionOverwrite';
+import type {Message} from '@app/api/models/Message';
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 import {ALL_PERMISSIONS, ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {ContentWarningLevel, GuildFeatures, resolveVoiceChannelBitrate} from '@fluxer/constants/src/GuildConstants';
@@ -54,12 +56,17 @@ import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPe
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
 import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
+import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
 import type {
 	ChannelCreateRequest,
 	ThreadCreateRequest,
 	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
-import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {
+	ChannelResponse,
+	GuildActiveThreadsResponse,
+	ThreadStarterMessagePreviewResponse,
+} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {
 	computeChannelMoveBlockIds,
 	computeGuildChannelReorderPlan,
@@ -68,6 +75,8 @@ import {
 } from '@fluxer/schema/src/domains/channel/GuildChannelOrdering';
 import {ChannelNameType} from '@fluxer/schema/src/primitives/ChannelValidators';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
+
+const STARTER_PREVIEW_MAX_LENGTH = 200;
 
 export class ChannelOperationsService {
 	constructor(
@@ -481,16 +490,135 @@ export class ChannelOperationsService {
 				!channel.threadMetadata?.archived,
 		);
 		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
+		return this.mapThreadsWithPreview(visibleThreads, params.requestCache);
+	}
+
+	// Echowire: every active thread in the guild the caller can view, plus the caller's memberships,
+	// for sidebar nesting. Access follows the same parent-channel and private-thread rules.
+	async listGuildActiveThreads(params: {
+		userId: UserID;
+		guildId: GuildID;
+		requestCache: RequestCache;
+	}): Promise<GuildActiveThreadsResponse> {
+		const isMember = await this.gatewayService.hasGuildMember({guildId: params.guildId, userId: params.userId});
+		if (!isMember) {
+			throw new UnknownGuildError();
+		}
+		const channels = await this.channelRepository.listGuildChannels(params.guildId);
+		const activeThreads = channels.filter(
+			(channel) =>
+				THREAD_CHANNEL_TYPES.has(channel.type) && !channel.isSoftDeleted && !channel.threadMetadata?.archived,
+		);
+		const parentPermissions = new Map<ChannelID, bigint>();
+		const visible: Array<Channel> = [];
+		for (const thread of activeThreads) {
+			if (!thread.parentId) {
+				continue;
+			}
+			let permissions = parentPermissions.get(thread.parentId);
+			if (permissions === undefined) {
+				permissions = await this.gatewayService.getUserPermissions({
+					guildId: params.guildId,
+					userId: params.userId,
+					channelId: thread.parentId,
+				});
+				parentPermissions.set(thread.parentId, permissions);
+			}
+			if (!hasPermissionBits(permissions, Permissions.VIEW_CHANNEL)) {
+				continue;
+			}
+			const canAccess = await canAccessPrivateThread({
+				channel: thread,
+				userId: params.userId,
+				parentPermissions: permissions,
+				threadMemberRepository: this.threadMemberRepository,
+			});
+			if (canAccess) {
+				visible.push(thread);
+			}
+		}
+		const memberships = await Promise.all(
+			visible.map((thread) => this.threadMemberRepository.getMember(thread.id, params.userId)),
+		);
+		return {
+			threads: await this.mapThreadsWithPreview(visible, params.requestCache),
+			members: memberships.flatMap((member) =>
+				member
+					? [
+							{
+								id: member.threadId.toString(),
+								user_id: member.userId.toString(),
+								join_timestamp: member.joinTimestamp.toISOString(),
+								flags: member.flags,
+							},
+						]
+					: [],
+			),
+		};
+	}
+
+	private async mapThreadsWithPreview(
+		threads: Array<Channel>,
+		requestCache: RequestCache,
+	): Promise<Array<ChannelResponse>> {
 		return Promise.all(
-			visibleThreads.map((channel) =>
-				mapChannelToResponse({
+			threads.map(async (channel) => {
+				const response = await mapChannelToResponse({
 					channel,
 					currentUserId: null,
 					userCacheService: this.userCacheService,
-					requestCache: params.requestCache,
-				}),
-			),
+					requestCache,
+				});
+				response.starter_message_preview = await this.buildStarterMessagePreview(channel, requestCache);
+				return response;
+			}),
 		);
+	}
+
+	// Echowire: a thread started from a message shares that message's id and its starter lives in the
+	// parent; any other thread (every forum post) uses its own first message.
+	private async buildStarterMessagePreview(
+		thread: Channel,
+		requestCache: RequestCache,
+	): Promise<ThreadStarterMessagePreviewResponse | null> {
+		try {
+			const threadIdAsMessage = createMessageID(BigInt(thread.id));
+			let message: Message | null = thread.parentId
+				? await this.channelRepository.getMessage(thread.parentId, threadIdAsMessage)
+				: null;
+			if (!message) {
+				const [first] = await this.channelRepository.listMessages(thread.id, undefined, 1, threadIdAsMessage);
+				message = first ?? null;
+			}
+			if (!message) {
+				return null;
+			}
+			const author = message.authorId
+				? await this.userCacheService.getUserPartialResponse(message.authorId, requestCache)
+				: null;
+			const attachment = message.attachments[0];
+			return {
+				message_id: message.id.toString(),
+				author: author
+					? {id: author.id, username: author.username, global_name: author.global_name, avatar: author.avatar}
+					: null,
+				content: (message.content ?? '').slice(0, STARTER_PREVIEW_MAX_LENGTH),
+				first_attachment: attachment
+					? {
+							id: attachment.id.toString(),
+							filename: attachment.filename,
+							url: makeAttachmentCdnUrl(message.channelId, attachment.id, attachment.filename),
+							proxy_url: null,
+							content_type: attachment.contentType ?? null,
+							width: attachment.width,
+							height: attachment.height,
+						}
+					: null,
+			};
+		} catch (error) {
+			Logger.warn({error, threadId: thread.id.toString()}, 'Failed to build starter message preview');
+			return null;
+		}
 	}
 
 	// Echowire: list archived threads under a text/forum channel.
@@ -519,16 +647,7 @@ export class ChannelOperationsService {
 				channel.threadMetadata?.archived === true,
 		);
 		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
-		return Promise.all(
-			visibleThreads.map((channel) =>
-				mapChannelToResponse({
-					channel,
-					currentUserId: null,
-					userCacheService: this.userCacheService,
-					requestCache: params.requestCache,
-				}),
-			),
-		);
+		return this.mapThreadsWithPreview(visibleThreads, params.requestCache);
 	}
 
 	// Echowire: update a thread (name / archived / locked / auto-archive / invitable).

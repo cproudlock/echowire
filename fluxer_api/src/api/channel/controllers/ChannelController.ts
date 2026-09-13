@@ -34,7 +34,6 @@ import {
 	ChannelIdUserIdParam,
 } from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import type {Context} from 'hono';
-import {z} from 'zod';
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
 	return typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -129,7 +128,7 @@ export function ChannelController(app: HonoApp) {
 			operationId: 'delete_thread',
 			summary: 'Delete a thread',
 			description: 'Deletes a thread. Requires being the thread owner or having Manage Channels.',
-			responseSchema: z.object({}),
+			responseSchema: null,
 			statusCode: 204,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
 			tags: 'Channels',
@@ -175,7 +174,7 @@ export function ChannelController(app: HonoApp) {
 			operationId: 'join_thread',
 			summary: 'Join a thread',
 			description: 'Adds the current user to a thread.',
-			responseSchema: z.object({}),
+			responseSchema: null,
 			statusCode: 204,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
 			tags: 'Channels',
@@ -196,7 +195,7 @@ export function ChannelController(app: HonoApp) {
 			operationId: 'leave_thread',
 			summary: 'Leave a thread',
 			description: 'Removes the current user from a thread.',
-			responseSchema: z.object({}),
+			responseSchema: null,
 			statusCode: 204,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
 			tags: 'Channels',

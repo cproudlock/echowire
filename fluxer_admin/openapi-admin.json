@@ -2,9 +2,9 @@
 	"openapi": "3.0.3",
 	"security": [],
 	"info": {
-		"title": "Echowire API",
+		"title": "echowire API",
 		"version": "1.0.0",
-		"description": "API for Echowire, a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.",
+		"description": "API for echowire, a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.",
 		"contact": {"name": "Proudlock Technology LLC", "email": "support@fluxer.app"},
 		"license": {"name": "AGPL-3.0", "url": "https://www.gnu.org/licenses/agpl-3.0.html"}
 	},

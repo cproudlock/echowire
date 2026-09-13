@@ -1,0 +1,88 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
+.threadRows {
+	display: flex;
+	flex-direction: column;
+	margin-left: 1.25rem;
+}
+
+.threadRowContainer {
+	position: relative;
+	display: flex;
+	align-items: stretch;
+	min-width: 0;
+}
+
+.connector {
+	flex: none;
+	width: 0.75rem;
+	height: auto;
+	margin-top: -0.25rem;
+	fill: none;
+	stroke: var(--background-modifier-accent, var(--text-tertiary-muted));
+	stroke-width: 1.5;
+	overflow: visible;
+}
+
+.threadRow {
+	--background-modifier-hover: var(--surface-interactive-hover-bg);
+	--background-modifier-selected: var(--surface-interactive-selected-bg);
+	position: relative;
+	display: flex;
+	flex: 1;
+	min-width: 0;
+	align-items: center;
+	gap: 0.375rem;
+	margin-left: 0.25rem;
+	padding: 0.25rem 0.5rem;
+	border-radius: 0.375rem;
+	color: var(--text-tertiary-muted);
+	cursor: pointer;
+	font-size: 0.9375rem;
+	line-height: 1.25rem;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.threadRow:hover {
+		background-color: var(--background-modifier-hover);
+		color: var(--text-secondary);
+	}
+}
+
+.threadRow:focus-visible {
+	outline: 2px solid var(--focus-primary, var(--brand-primary));
+	outline-offset: -2px;
+}
+
+.threadRowSelected {
+	background-color: var(--background-modifier-selected);
+	color: var(--surface-interactive-selected-color, var(--text-primary));
+}
+
+.threadRowUnread {
+	color: var(--text-primary);
+	font-weight: 600;
+}
+
+.threadRowMuted {
+	opacity: 0.6;
+}
+
+.threadName {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.unreadIndicator {
+	position: absolute;
+	top: 50%;
+	left: -1.25rem;
+	transform: translateY(-50%);
+	height: 0.5rem;
+	width: 0.25rem;
+	border-radius: 0 624.9375rem 624.9375rem 0;
+	background-color: var(--text-primary);
+}

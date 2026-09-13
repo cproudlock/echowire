@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {
-	type ForumPostLike,
-	ForumLayout,
-	ForumSortOrder,
 	countNewForumPosts,
+	ForumLayout,
+	type ForumPostLike,
+	ForumSortOrder,
 	filterForumPosts,
+	getForumNewestActivityId,
 	resolveForumLayout,
 	resolveForumSortOrder,
 	selectSidebarThreads,
@@ -78,28 +79,32 @@ describe('filterForumPosts', () => {
 	});
 
 	it('matches the title case-insensitively and separates archived posts', () => {
-		expect(filterForumPosts([both, helpOnly, archived], {archived: false, query: 'TENANT'}).map((p) => p.name)).toEqual([
-			'Moving tenants',
-		]);
+		expect(filterForumPosts([both, helpOnly, archived], {archived: false, query: 'TENANT'}).map((p) => p.name)).toEqual(
+			['Moving tenants'],
+		);
 		expect(filterForumPosts([both, helpOnly, archived], {archived: true}).map((p) => p.name)).toEqual(['Old help']);
 	});
 });
 
 describe('countNewForumPosts', () => {
 	const seenAt = T0 + 5 * MINUTE;
-	const before = post({createdAt: T0, ownerId: 'u2'});
-	const after = post({createdAt: T0 + 10 * MINUTE, ownerId: 'u2'});
-	const mine = post({createdAt: T0 + 11 * MINUTE, ownerId: 'me'});
-	const archivedAfter = post({createdAt: T0 + 12 * MINUTE, ownerId: 'u2', threadMetadata: {archived: true, locked: false}});
+	const quietBefore = post({createdAt: T0});
+	const newPost = post({createdAt: T0 + 10 * MINUTE});
+	const oldWithReply = post({createdAt: T0 - MINUTE, lastActivityAt: T0 + 6 * MINUTE});
+	const archivedAfter = post({createdAt: T0 + 12 * MINUTE, threadMetadata: {archived: true, locked: false}});
 
-	it('counts other people\'s active posts created after the last view', () => {
-		expect(countNewForumPosts([before, after, mine, archivedAfter], {lastViewedAt: seenAt, currentUserId: 'me'})).toBe(
-			1,
-		);
+	it('counts active posts with activity after the last visit', () => {
+		expect(countNewForumPosts([quietBefore, newPost, oldWithReply, archivedAfter], {lastViewedAt: seenAt})).toBe(2);
 	});
 
 	it('reports nothing for a forum never viewed', () => {
-		expect(countNewForumPosts([after], {lastViewedAt: null, currentUserId: 'me'})).toBe(0);
+		expect(countNewForumPosts([newPost], {lastViewedAt: null})).toBe(0);
+	});
+
+	it('finds the newest activity id across posts', () => {
+		expect(getForumNewestActivityId([quietBefore, oldWithReply, newPost])).toBe(newPost.id);
+		expect(getForumNewestActivityId([quietBefore, oldWithReply])).toBe(oldWithReply.lastMessageId);
+		expect(getForumNewestActivityId([])).toBeNull();
 	});
 });
 

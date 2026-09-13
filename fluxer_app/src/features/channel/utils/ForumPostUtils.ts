@@ -86,21 +86,39 @@ export function filterForumPosts<T extends ForumPostLike>(posts: ReadonlyArray<T
 	});
 }
 
-// Posts created since the user last viewed the forum, excluding their own and archived posts.
-// A forum that has never been viewed on this device reports 0 rather than every post.
+// Non-archived posts with activity (creation or a newer message) after the forum's last-visit
+// marker, per the server contract. A forum with no marker reports 0 rather than every post.
 export function countNewForumPosts(
 	posts: ReadonlyArray<ForumPostLike>,
-	options: {lastViewedAt: number | null | undefined; currentUserId: string | null},
+	options: {lastViewedAt: number | null | undefined},
 ): number {
-	const {lastViewedAt, currentUserId} = options;
+	const {lastViewedAt} = options;
 	if (lastViewedAt == null) return 0;
 	let count = 0;
 	for (const post of posts) {
 		if (post.threadMetadata?.archived) continue;
-		if (currentUserId != null && post.ownerId === currentUserId) continue;
-		if (getForumPostCreatedAt(post) > lastViewedAt) count++;
+		if (getForumPostLastActivityAt(post) > lastViewedAt) count++;
 	}
 	return count;
+}
+
+// The newest activity snowflake among posts, used to ack the forum channel as "viewed".
+export function getForumNewestActivityId(
+	posts: ReadonlyArray<Pick<ForumPostLike, 'id' | 'lastMessageId'>>,
+): string | null {
+	let newest: string | null = null;
+	let newestAt = -1;
+	for (const post of posts) {
+		for (const id of [post.id, post.lastMessageId]) {
+			if (!id) continue;
+			const at = SnowflakeUtils.extractTimestamp(id);
+			if (at > newestAt) {
+				newestAt = at;
+				newest = id;
+			}
+		}
+	}
+	return newest;
 }
 
 export interface SidebarThreadOptions {

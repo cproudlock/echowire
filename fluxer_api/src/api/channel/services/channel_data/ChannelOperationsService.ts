@@ -76,6 +76,8 @@ export interface ChannelUpdateData {
 	default_sort_order?: number | null;
 	default_auto_archive_duration?: number | null;
 	require_tag?: boolean;
+	default_forum_layout?: number | null;
+	default_thread_rate_limit_per_user?: number | null;
 }
 
 export class ChannelOperationsService {
@@ -286,7 +288,8 @@ export class ChannelOperationsService {
 					? data.voice_connection_limit
 					: channel.voiceConnectionLimit,
 			rate_limit_per_user:
-				data.rate_limit_per_user !== undefined && GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type)
+				data.rate_limit_per_user !== undefined &&
+				(GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) || channel.type === ChannelTypes.GUILD_FORUM)
 					? data.rate_limit_per_user
 					: channel.rateLimitPerUser,
 			nsfw: resolveNsfwOverrideWrite(channel, data),
@@ -324,11 +327,19 @@ export class ChannelOperationsService {
 					: channel.type === ChannelTypes.GUILD_FORUM
 						? channel.forumRequireTag
 						: null,
+			default_forum_layout:
+				data.default_forum_layout !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.default_forum_layout
+					: channel.defaultForumLayout,
+			default_thread_rate_limit_per_user:
+				data.default_thread_rate_limit_per_user !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.default_thread_rate_limit_per_user
+					: channel.defaultThreadRateLimitPerUser,
 		};
 		const updatedChannel = await this.channelRepository.channelData.upsert(updatedChannelData);
 		if (
 			data.rate_limit_per_user !== undefined &&
-			GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) &&
+			(GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) || channel.type === ChannelTypes.GUILD_FORUM) &&
 			data.rate_limit_per_user !== channel.rateLimitPerUser
 		) {
 			try {

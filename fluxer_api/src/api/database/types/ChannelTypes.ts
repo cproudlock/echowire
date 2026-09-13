@@ -50,6 +50,8 @@ export const NULL_THREAD_FIELDS = {
 	default_sort_order: null,
 	forum_default_auto_archive_duration: null,
 	forum_require_tag: null,
+	default_forum_layout: null,
+	default_thread_rate_limit_per_user: null,
 } satisfies Pick<
 	ChannelRow,
 	| 'thread_archived'
@@ -67,6 +69,8 @@ export const NULL_THREAD_FIELDS = {
 	| 'default_sort_order'
 	| 'forum_default_auto_archive_duration'
 	| 'forum_require_tag'
+	| 'default_forum_layout'
+	| 'default_thread_rate_limit_per_user'
 >;
 
 export interface ChannelRow {
@@ -114,6 +118,9 @@ export interface ChannelRow {
 	default_sort_order: Nullish<number>;
 	forum_default_auto_archive_duration: Nullish<number>;
 	forum_require_tag: Nullish<boolean>;
+	// Echowire: forum list layout (0 not set, 1 list, 2 gallery) and the slowmode new posts inherit.
+	default_forum_layout: Nullish<number>;
+	default_thread_rate_limit_per_user: Nullish<number>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;
@@ -216,6 +223,8 @@ export const CHANNEL_COLUMNS = [
 	'default_sort_order',
 	'forum_default_auto_archive_duration',
 	'forum_require_tag',
+	'default_forum_layout',
+	'default_thread_rate_limit_per_user',
 	'soft_deleted',
 	'indexed_at',
 	'version',

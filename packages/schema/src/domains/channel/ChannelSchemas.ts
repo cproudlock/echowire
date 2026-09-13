@@ -190,6 +190,8 @@ export const ChannelResponse = z.object({
 	default_sort_order: Int32Type.nullish().describe('Default sort for forum posts (0 = latest activity, 1 = creation)'),
 	default_auto_archive_duration: Int32Type.nullish().describe('Default inactivity (minutes) new forum posts inherit'),
 	require_tag: z.boolean().optional().describe('Whether a forum post must have at least one tag'),
+	default_forum_layout: Int32Type.nullish().describe('Default forum layout (0 = not set, 1 = list, 2 = gallery)'),
+	default_thread_rate_limit_per_user: Int32Type.nullish().describe('Slowmode in seconds that new forum posts inherit'),
 });
 
 export type ChannelResponse = z.infer<typeof ChannelResponse>;
@@ -278,6 +280,8 @@ export interface Channel {
 	readonly default_sort_order?: number | null;
 	readonly default_auto_archive_duration?: number | null;
 	readonly require_tag?: boolean;
+	readonly default_forum_layout?: number | null;
+	readonly default_thread_rate_limit_per_user?: number | null;
 }
 
 export const ChannelListResponse = z.array(ChannelResponse);

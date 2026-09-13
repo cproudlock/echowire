@@ -56,6 +56,8 @@ export class Channel {
 	readonly defaultSortOrder: number | null;
 	readonly forumDefaultAutoArchiveDuration: number | null;
 	readonly forumRequireTag: boolean;
+	readonly defaultForumLayout: number | null;
+	readonly defaultThreadRateLimitPerUser: number | null;
 	readonly pinned: boolean;
 	readonly isSoftDeleted: boolean;
 	readonly indexedAt: Date | null;
@@ -112,6 +114,9 @@ export class Channel {
 		this.forumDefaultAutoArchiveDuration =
 			this.type === ChannelTypes.GUILD_FORUM ? (row.forum_default_auto_archive_duration ?? null) : null;
 		this.forumRequireTag = this.type === ChannelTypes.GUILD_FORUM ? (row.forum_require_tag ?? false) : false;
+		this.defaultForumLayout = this.type === ChannelTypes.GUILD_FORUM ? (row.default_forum_layout ?? null) : null;
+		this.defaultThreadRateLimitPerUser =
+			this.type === ChannelTypes.GUILD_FORUM ? (row.default_thread_rate_limit_per_user ?? null) : null;
 		this.pinned = this.threadMetadata ? (row.thread_pinned ?? false) : false;
 		this.isSoftDeleted = row.soft_deleted;
 		this.indexedAt = row.indexed_at ?? null;
@@ -167,6 +172,8 @@ export class Channel {
 			default_sort_order: this.defaultSortOrder ?? null,
 			forum_default_auto_archive_duration: this.forumDefaultAutoArchiveDuration ?? null,
 			forum_require_tag: this.type === ChannelTypes.GUILD_FORUM ? this.forumRequireTag : null,
+			default_forum_layout: this.defaultForumLayout ?? null,
+			default_thread_rate_limit_per_user: this.defaultThreadRateLimitPerUser ?? null,
 			soft_deleted: this.isSoftDeleted,
 			indexed_at: this.indexedAt,
 			version: this.version,

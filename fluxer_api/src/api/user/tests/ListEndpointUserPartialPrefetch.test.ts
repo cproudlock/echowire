@@ -108,6 +108,8 @@ function createPrivateChannel(channelId: ChannelID, type: number, recipientIds: 
 		default_sort_order: null,
 		forum_default_auto_archive_duration: null,
 		forum_require_tag: null,
+		default_forum_layout: null,
+		default_thread_rate_limit_per_user: null,
 	} satisfies ChannelRow);
 }
 

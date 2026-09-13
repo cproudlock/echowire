@@ -180,6 +180,17 @@ const ChannelCreateForumRequest = ChannelCreateCommon.extend({
 		.nullish()
 		.describe('Default inactivity (minutes) new posts inherit'),
 	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
+	default_forum_layout: z
+		.union([z.literal(0), z.literal(1), z.literal(2)])
+		.nullish()
+		.describe('Default forum layout (0 = not set, 1 = list, 2 = gallery)'),
+	default_thread_rate_limit_per_user: z
+		.number()
+		.int()
+		.min(0)
+		.max(21600)
+		.nullish()
+		.describe('Slowmode in seconds that new forum posts inherit (0-21600)'),
 });
 
 export const ChannelCreateRequest = z.discriminatedUnion('type', [
@@ -233,6 +244,17 @@ const ChannelUpdateForumRequest = ChannelUpdateCommon.extend({
 		.nullish()
 		.describe('Default inactivity (minutes) new posts inherit'),
 	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
+	default_forum_layout: z
+		.union([z.literal(0), z.literal(1), z.literal(2)])
+		.nullish()
+		.describe('Default forum layout (0 = not set, 1 = list, 2 = gallery)'),
+	default_thread_rate_limit_per_user: z
+		.number()
+		.int()
+		.min(0)
+		.max(21600)
+		.nullish()
+		.describe('Slowmode in seconds that new forum posts inherit (0-21600)'),
 });
 
 const ChannelUpdateGroupDmRequest = z.object({

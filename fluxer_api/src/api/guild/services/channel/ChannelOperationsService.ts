@@ -52,6 +52,7 @@ import {UnknownMessageError} from '@fluxer/errors/src/domains/channel/UnknownMes
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
+import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
 import type {
 	ChannelCreateRequest,
@@ -178,6 +179,8 @@ export class ChannelOperationsService {
 		let forumDefaultSortOrder: number | null = null;
 		let forumDefaultAutoArchive: number | null = null;
 		let forumRequireTag: boolean | null = null;
+		let forumDefaultLayout: number | null = null;
+		let forumDefaultThreadRateLimit: number | null = null;
 		if (params.data.type === ChannelTypes.GUILD_FORUM) {
 			const tags = params.data.available_tags ?? [];
 			forumAvailableTags = await Promise.all(
@@ -196,6 +199,8 @@ export class ChannelOperationsService {
 			forumDefaultSortOrder = params.data.default_sort_order ?? null;
 			forumDefaultAutoArchive = params.data.default_auto_archive_duration ?? null;
 			forumRequireTag = params.data.require_tag ?? false;
+			forumDefaultLayout = params.data.default_forum_layout ?? null;
+			forumDefaultThreadRateLimit = params.data.default_thread_rate_limit_per_user ?? null;
 		}
 		const channel = await this.channelRepository.upsert({
 			channel_id: channelId,
@@ -233,6 +238,8 @@ export class ChannelOperationsService {
 			default_sort_order: forumDefaultSortOrder,
 			forum_default_auto_archive_duration: forumDefaultAutoArchive,
 			forum_require_tag: forumRequireTag,
+			default_forum_layout: forumDefaultLayout,
+			default_thread_rate_limit_per_user: forumDefaultThreadRateLimit,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,
@@ -309,6 +316,8 @@ export class ChannelOperationsService {
 		) {
 			throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
 		}
+		// Echowire: a forum's own slowmode limits how often a member may open new posts.
+		await this.enforceForumPostSlowmode(parent, params.userId, parentPermissions);
 		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
 		const now = new Date();
 		// Echowire: when starting a thread from a message, the thread adopts the source
@@ -368,7 +377,12 @@ export class ChannelOperationsService {
 			nsfw: parent.nsfwOverride,
 			content_warning_level: parent.contentWarningLevel,
 			content_warning_text: parent.contentWarningText,
-			rate_limit_per_user: parent.rateLimitPerUser,
+			// Echowire: forum posts take the forum's per-post default; threads in a text channel keep
+			// copying the parent's slowmode.
+			rate_limit_per_user:
+				parent.type === ChannelTypes.GUILD_FORUM
+					? (parent.defaultThreadRateLimitPerUser ?? 0)
+					: parent.rateLimitPerUser,
 			bitrate: null,
 			user_limit: null,
 			voice_connection_limit: null,
@@ -392,6 +406,8 @@ export class ChannelOperationsService {
 			default_sort_order: null,
 			forum_default_auto_archive_duration: null,
 			forum_require_tag: null,
+			default_forum_layout: null,
+			default_thread_rate_limit_per_user: null,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,
@@ -673,6 +689,21 @@ export class ChannelOperationsService {
 			join_timestamp: member.joinTimestamp.toISOString(),
 			flags: member.flags,
 		}));
+	}
+
+	private async enforceForumPostSlowmode(parent: Channel, userId: UserID, parentPermissions: bigint): Promise<void> {
+		if (parent.type !== ChannelTypes.GUILD_FORUM || parent.rateLimitPerUser <= 0) {
+			return;
+		}
+		if (hasPermissionBits(parentPermissions, Permissions.BYPASS_SLOWMODE)) {
+			return;
+		}
+		const key = `forum-post-slowmode:${parent.id}:${userId}`;
+		if (await this.cacheService.exists(key)) {
+			const remaining = await this.cacheService.ttl(key);
+			throw new SlowmodeRateLimitError({retryAfter: remaining > 0 ? remaining : parent.rateLimitPerUser});
+		}
+		await this.cacheService.set(key, 1, parent.rateLimitPerUser);
 	}
 
 	// Echowire: drop private threads the caller is neither a member of nor a manager of.

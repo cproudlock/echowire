@@ -19,11 +19,11 @@ type StoredObject = {body?: string; lastModified?: Date};
 type StoredObjects = Map<string, StoredObject>;
 
 function appImageFilename(version: string): string {
-	return `Fluxer-Canary-${version}-linux-x86_64.AppImage`;
+	return `Echowire-Canary-${version}-linux-x86_64.AppImage`;
 }
 
 function debFilename(version: string): string {
-	return `Fluxer-Canary-${version}-linux-amd64.deb`;
+	return `Echowire-Canary-${version}-linux-amd64.deb`;
 }
 
 function addArtifact(objects: StoredObjects, filename: string, options: {sha256?: string; lastModified?: Date} = {}) {
@@ -84,8 +84,8 @@ describe('desktop version listing', () => {
 		objects.set(`${PREFIX}/releases.json`, {body: '{}'});
 		objects.set(`${PREFIX}/latest-linux.yml`, {body: 'version: 1'});
 		objects.set(`${PREFIX}/${appImageFilename(V4)}.blockmap`, {});
-		objects.set(`${PREFIX}/Fluxer-Canary-${V4}-linux-aarch64.AppImage`, {});
-		objects.set(`${PREFIX}/Fluxer-Canary-${V4}-mac-universal.dmg`, {});
+		objects.set(`${PREFIX}/Echowire-Canary-${V4}-linux-aarch64.AppImage`, {});
+		objects.set(`${PREFIX}/Echowire-Canary-${V4}-mac-universal.dmg`, {});
 		const {service} = createService(objects);
 		const listed = await service.listDesktopVersions({...LIST_PARAMS, limit: 10});
 		expect(versionNumbers(listed.versions)).toEqual([V3]);

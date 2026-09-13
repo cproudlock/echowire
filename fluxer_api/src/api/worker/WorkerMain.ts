@@ -22,7 +22,7 @@ import {initializeSearch, shutdownSearch} from '../SearchFactory';
 import {CronScheduler} from './CronScheduler';
 import {JetStreamWorkerQueue} from './JetStreamWorkerQueue';
 import {clearWorkerDependencies, setWorkerDependencies} from './WorkerContext';
-import {initializeWorkerDependencies, shutdownWorkerDependencies, type WorkerDependencies} from './WorkerDependencies';
+import {initializeWorkerDependencies, type WorkerDependencies} from './WorkerDependencies';
 import {WorkerHeartbeat} from './WorkerHeartbeat';
 import {
 	resolveCronSchedulerEnabled,
@@ -121,11 +121,8 @@ export async function startWorkerMain(): Promise<void> {
 			await jsConnectionManager?.drain();
 			jsConnectionManager = null;
 		});
-		await cleanupStep('worker dependencies', async () => {
-			if (dependencies) {
-				await shutdownWorkerDependencies(dependencies);
-				dependencies = null;
-			}
+		await cleanupStep('worker dependencies', () => {
+			dependencies = null;
 			clearWorkerDependencies();
 			setInjectedWorkerService(undefined);
 		});
@@ -270,10 +267,6 @@ export async function startWorkerMain(): Promise<void> {
 			}
 		} else {
 			Logger.info('Search initialisation skipped for worker lanes without search tasks');
-		}
-		if (dependencies.voiceReconciliationWorker !== null) {
-			dependencies.voiceReconciliationWorker.start();
-			Logger.info('VoiceReconciliationWorker started');
 		}
 		if (cronSchedulerEnabled) {
 			cron.start();

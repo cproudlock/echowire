@@ -22,6 +22,7 @@ members = [
 	"fluxer_users",
 	"fluxer_unfurl",
 	"packages/markdown_parser/rust",
+	"fluxer_recon",
 ]
 exclude = [
 	"packages/markdown_parser/rust/fuzz",

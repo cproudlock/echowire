@@ -1859,7 +1859,7 @@ msgstr "nazwa hosta, np. {exampleDomain}"
 #. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:130
 msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "Dostępna jest aktualizacja Echowire dla systemu Linux. Wybierz format pakietu dla tego systemu, a {productName} zapisze go lokalnie."
+msgstr "Dostępna jest aktualizacja echowire dla systemu Linux. Wybierz format pakietu dla tego systemu, a {productName} zapisze go lokalnie."
 
 #. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682
@@ -14466,7 +14466,7 @@ msgstr "Płynny ruch w 720p 30 kl./s"
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
-msgstr "Echowire"
+msgstr "echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:179

@@ -35,7 +35,7 @@ function sha256Hex(value: string): string {
 }
 
 function appImageFilename(version: string): string {
-	return `Fluxer-Canary-${version}-linux-x86_64.AppImage`;
+	return `Echowire-Canary-${version}-linux-x86_64.AppImage`;
 }
 
 function uploadBuild(objects: StoredObjects, version: string, options: {prefix?: string; checksum?: boolean} = {}) {
@@ -64,7 +64,7 @@ function publishDescriptor(objects: StoredObjects, version: string, routes = REL
 			const filename =
 				plat === 'linux' && arch === 'x64' && index === 0
 					? appImageFilename(version)
-					: `Fluxer-Canary-${version}-${plat}-${arch}-${index}.bin`;
+					: `Echowire-Canary-${version}-${plat}-${arch}-${index}.bin`;
 			return {
 				storage_key: `desktop/canary/${plat}/${arch}/${filename}`,
 				release_asset: filename,

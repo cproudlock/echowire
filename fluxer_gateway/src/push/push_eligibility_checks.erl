@@ -75,7 +75,9 @@ check_muted_and_notifications(
     Muted = boolean_setting(muted, Settings, false),
     ChannelOverrides = map_setting(channel_overrides, Settings),
     ChannelOverride = channel_override(ChannelId, ChannelOverrides, #{}),
-    ChannelMuted = optional_boolean_setting(muted, ChannelOverride),
+    ChannelMuted = inherit_parent_mute(
+        optional_boolean_setting(muted, ChannelOverride), MessageData, ChannelOverrides
+    ),
     ActualMuted = resolve_actual_muted(ChannelMuted, Muted),
     MuteConfig = push_eligibility:get_setting(mute_config, Settings, undefined),
     IsTempMuted = check_temp_muted(MuteConfig),
@@ -91,6 +93,20 @@ check_muted_and_notifications(
                 EffectiveLevel, MessageData, UserId, Settings, UserRolesMap, ConnectedUsers
             )
     end.
+
+%% Echowire: a thread or forum post without its own mute setting follows its parent channel, so
+%% muting a forum mutes pushes for its posts. The API puts thread_parent_id on thread messages.
+-spec inherit_parent_mute(boolean() | undefined, map(), map()) -> boolean() | undefined.
+inherit_parent_mute(undefined, MessageData, ChannelOverrides) ->
+    case snowflake_id:parse_optional(maps:get(<<"thread_parent_id">>, MessageData, undefined)) of
+        ParentId when is_integer(ParentId) ->
+            ParentOverride = channel_override(ParentId, ChannelOverrides, #{}),
+            optional_boolean_setting(muted, ParentOverride);
+        _ ->
+            undefined
+    end;
+inherit_parent_mute(ThreadMuted, _MessageData, _ChannelOverrides) ->
+    ThreadMuted.
 
 -spec resolve_actual_muted(boolean() | undefined, boolean()) -> boolean().
 resolve_actual_muted(undefined, Muted) -> Muted;
@@ -330,6 +346,27 @@ muted_channel_suppresses_push_test() ->
             GuildId,
             ConnectedUsers
         )
+    ).
+
+muted_forum_suppresses_push_for_its_posts_test() ->
+    Settings = #{channel_overrides => #{<<"200">> => #{muted => true}}},
+    PostMessage = #{<<"channel_type">> => 11, <<"thread_parent_id">> => <<"200">>},
+    ?assertEqual(
+        false,
+        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{})
+    ).
+
+post_override_beats_muted_forum_test() ->
+    Settings = #{
+        channel_overrides => #{
+            <<"200">> => #{muted => true},
+            <<"300">> => #{muted => false}
+        }
+    },
+    PostMessage = #{<<"channel_type">> => 11, <<"thread_parent_id">> => <<"200">>},
+    ?assertEqual(
+        true,
+        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{})
     ).
 
 guild_muted_suppresses_push_test() ->

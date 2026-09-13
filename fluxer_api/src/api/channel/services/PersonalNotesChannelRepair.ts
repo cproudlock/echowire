@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {type ChannelID, type UserID, userIdToChannelId} from '@app/api/BrandedTypes';
+import {type ChannelRow, NULL_THREAD_FIELDS} from '@app/api/database/types/ChannelTypes';
+import type {Channel} from '@app/api/models/Channel';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
-import type {ChannelID, UserID} from '../../BrandedTypes';
-import {userIdToChannelId} from '../../BrandedTypes';
-import {type ChannelRow, NULL_THREAD_FIELDS} from '../../database/types/ChannelTypes';
-import type {Channel} from '../../models/Channel';
 
 interface PersonalNotesChannelRepository {
 	findUnique(channelId: ChannelID): Promise<Channel | null>;

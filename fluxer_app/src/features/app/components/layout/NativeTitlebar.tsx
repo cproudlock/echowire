@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import styles from '@app/features/app/components/layout/NativeTitlebar.module.css';
+import {NativeWindowControls} from '@app/features/app/components/layout/NativeWindowControls';
 import {getElectronAPI, type NativePlatform} from '@app/features/ui/utils/NativeUtils';
 // Echowire: white "echowire" wordmark for the dark native titlebar (replaces the text).
 import EchowireWordmark from '@app/media/images/echowire-text-dark.svg?react';
 import type React from 'react';
 import {useLayoutEffect} from 'react';
-import {NativeWindowControls} from './NativeWindowControls';
 
 const STARTUP_NATIVE_TITLEBAR_ID = 'fluxer-startup-native-titlebar';
 

@@ -27,25 +27,25 @@ pub fn user_profile_badges(
     if flags & user_flag_bits::STAFF != 0 {
         badges.push(BadgeDef {
             icon_url: format!("{cdn}/badges/staff.svg?v=2"),
-            tooltip: "Echowire Staff".into(),
+            tooltip: "echowire Staff".into(),
         });
     }
     if !is_self_hosted && flags & user_flag_bits::CTP_MEMBER != 0 {
         badges.push(BadgeDef {
             icon_url: format!("{cdn}/badges/ctp.svg"),
-            tooltip: "Echowire Community Team".into(),
+            tooltip: "echowire Community Team".into(),
         });
     }
     if !is_self_hosted && flags & user_flag_bits::PARTNER != 0 {
         badges.push(BadgeDef {
             icon_url: format!("{cdn}/badges/partner.svg"),
-            tooltip: "Echowire Partner".into(),
+            tooltip: "echowire Partner".into(),
         });
     }
     if !is_self_hosted && flags & user_flag_bits::BUG_HUNTER != 0 {
         badges.push(BadgeDef {
             icon_url: format!("{cdn}/badges/bug-hunter.svg"),
-            tooltip: "Echowire Bug Hunter".into(),
+            tooltip: "echowire Bug Hunter".into(),
         });
     }
     if !is_self_hosted
@@ -54,15 +54,15 @@ pub fn user_profile_badges(
     {
         let tooltip = if pt == premium_types::LIFETIME {
             match premium_since {
-                Some(since) => format!("Echowire Visionary since {since}"),
-                None => "Echowire Visionary".into(),
+                Some(since) => format!("echowire Visionary since {since}"),
+                None => "echowire Visionary".into(),
             }
         } else {
             match premium_since {
                 Some(since) => {
-                    format!("Echowire Reverb subscriber since {since}")
+                    format!("echowire Reverb subscriber since {since}")
                 }
-                None => "Echowire Reverb".into(),
+                None => "echowire Reverb".into(),
             }
         };
         badges.push(BadgeDef {

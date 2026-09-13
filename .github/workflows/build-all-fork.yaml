@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: "Comma-separated image names to build (blank = all 11). e.g. fluxer-api"
+        description: "Comma-separated image names to build (blank = all 13). e.g. fluxer-api"
         required: false
         default: ""
       image_tag:
@@ -56,6 +56,7 @@ jobs:
             {"image":"fluxer-unfurl","dockerfile":"fluxer_unfurl/Dockerfile","build_args":""},
             {"image":"fluxer-users","dockerfile":"fluxer_users/Dockerfile","build_args":""},
             {"image":"fluxer-marketing","dockerfile":"fluxer_marketing/Dockerfile","build_args":""},
+            {"image":"fluxer-recon","dockerfile":"fluxer_recon/Dockerfile","build_args":""},
             {"image":"fluxer-app-proxy-self-hosted","dockerfile":"fluxer_app_proxy/Dockerfile","build_args":"FLUXER_APP_PROXY_TIME_FREEZE_ENABLED=false"}
           ]
           JSON

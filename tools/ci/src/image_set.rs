@@ -76,7 +76,10 @@ const COMPONENTS: &[Component] = &[
     },
     Component {
         image: "fluxer-recon",
-        services: &[],
+        // Echowire: upstream ships this component with no services because it
+        // deploys recon nowhere yet. The fork runs it in deploy/self-hosting,
+        // so it has to be pinned like any other service image.
+        services: &["recon"],
     },
     Component {
         image: "fluxer-snowflakes",
@@ -922,7 +925,7 @@ mod tests {
             .collect();
         let unique: BTreeSet<&str> = services.iter().copied().collect();
         assert_eq!(services.len(), unique.len());
-        assert_eq!(services.len(), 18);
+        assert_eq!(services.len(), 19);
     }
 
     #[test]
@@ -1026,7 +1029,7 @@ mod tests {
                 .lines()
                 .filter(|line| line.starts_with("    image: "))
                 .count(),
-            18
+            19
         );
 
         let api = manifest
@@ -1078,7 +1081,7 @@ mod tests {
         let mut sorted = services.clone();
         sorted.sort_unstable();
         assert_eq!(services, sorted);
-        assert_eq!(services.len(), 18);
+        assert_eq!(services.len(), 19);
     }
 
     #[test]

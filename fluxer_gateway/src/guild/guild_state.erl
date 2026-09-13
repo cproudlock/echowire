@@ -73,6 +73,15 @@ update_channel_event(channel_update_bulk, ED, D) ->
     guild_state_channels:handle_channel_update_bulk(ED, D);
 update_channel_event(channel_delete, ED, D) ->
     guild_state_channels:handle_channel_delete(ED, D);
+%% Echowire: threads live in the channel index too, so permission checks and event filtering
+%% can resolve a thread to its parent. Without this, a thread created after the guild loaded
+%% was unknown and fell back to guild-level permissions.
+update_channel_event(thread_create, ED, D) ->
+    guild_state_channels:handle_channel_create(ED, D);
+update_channel_event(thread_update, ED, D) ->
+    guild_state_channels:handle_channel_update(ED, D);
+update_channel_event(thread_delete, ED, D) ->
+    guild_state_channels:handle_channel_delete(ED, D);
 update_channel_event(message_create, ED, D) ->
     guild_state_channels:handle_message_create(ED, D);
 update_channel_event(channel_pins_update, ED, D) ->

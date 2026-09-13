@@ -436,7 +436,7 @@ const PhoneSendVerificationDeliveredResponse = z.object({
 });
 
 const PhoneSendVerificationInboundChallengeResponse = z.object({
-	channel: z.literal('inbound_challenge').describe('The user must send Echowire an SMS instead of receiving one'),
+	channel: z.literal('inbound_challenge').describe('The user must send echowire an SMS instead of receiving one'),
 	challenge_code: createStringType(4, 12).describe('The numeric code the user must text to our number'),
 	our_number: createStringType(4, 32).describe('The Twilio number the user must text the code to (E.164)'),
 	expires_at: z.iso.datetime().describe('ISO 8601 timestamp when this inbound challenge expires'),

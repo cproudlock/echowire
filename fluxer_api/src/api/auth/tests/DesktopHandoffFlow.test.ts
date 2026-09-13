@@ -84,7 +84,7 @@ describe('Auth desktop handoff flow', () => {
 			.get(`/auth/handoff/${initResp.code}/info`)
 			.header('User-Agent', browserUserAgent)
 			.execute();
-		expect(info.client_info?.platform).toBe('Echowire macOS');
+		expect(info.client_info?.platform).toBe('echowire macOS');
 		expect(info.client_info?.device).toBe('desktop');
 		await createBuilderWithoutAuth(harness)
 			.post('/auth/handoff/complete')
@@ -99,7 +99,7 @@ describe('Auth desktop handoff flow', () => {
 		const sessions = await createBuilder<Array<AuthSessionsResponseItem>>(harness, completed.token!)
 			.get('/auth/sessions')
 			.execute();
-		const handedOff = sessions.filter((session) => session.client_info?.platform === 'Echowire macOS');
+		const handedOff = sessions.filter((session) => session.client_info?.platform === 'echowire macOS');
 		expect(handedOff).toHaveLength(1);
 		expect(handedOff[0]?.client_info?.os).toBe('macOS');
 		expect(handedOff[0]?.client_info?.browser).toBeNull();

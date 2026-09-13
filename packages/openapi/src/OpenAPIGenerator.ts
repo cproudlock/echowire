@@ -38,9 +38,9 @@ interface GeneratorSettings {
 function createGeneratorSettings(options: OpenAPIGeneratorOptions): GeneratorSettings {
 	return {
 		basePath: options.basePath,
-		title: options.title ?? 'Echowire API',
+		title: options.title ?? 'echowire API',
 		version: options.version ?? '1.0.0',
-		description: options.description ?? 'The Echowire API',
+		description: options.description ?? 'The echowire API',
 		serverUrl: options.serverUrl ?? 'https://api.fluxer.app',
 		routeScope: options.routeScope ?? 'public',
 		schemaTarget: options.schemaTarget ?? 'draft-2020-12',

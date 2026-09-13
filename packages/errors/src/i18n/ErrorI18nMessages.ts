@@ -423,9 +423,9 @@ export const ERROR_I18N_MESSAGES = {
 	'moderation_and_reports.user_is_not_banned': "This user isn't banned.",
 	'names_and_normalization.name_empty_after_normalization': "Name can't be empty after normalization.",
 	'permissions.global_ip_banned':
-		'Your IP address {ipAddress} has been permanently blocked from the Echowire API by platform administrators. If you believe this is a mistake, contact support@echowire.org to appeal. Include this IP address in your appeal.',
+		'Your IP address {ipAddress} has been permanently blocked from the echowire API by platform administrators. If you believe this is a mistake, contact support@echowire.org to appeal. Include this IP address in your appeal.',
 	'permissions.global_ip_temporarily_banned':
-		'Your IP address {ipAddress} has been temporarily blocked from the Echowire API for 24 hours because of abusive or unusual access patterns. We usually do not provide appeals for temporary API bans. Change IP addresses or wait for the ban to expire, and review the Echowire API access patterns coming from your client.',
+		'Your IP address {ipAddress} has been temporarily blocked from the echowire API for 24 hours because of abusive or unusual access patterns. We usually do not provide appeals for temporary API bans. Change IP addresses or wait for the ban to expire, and review the echowire API access patterns coming from your client.',
 	'permissions.missing_access': "You don't have access to this resource or feature.",
 	'permissions.missing_permissions': "You don't have the permissions required to perform this action.",
 	'permissions.user_banned_from_guild': 'This user is banned from this community.',

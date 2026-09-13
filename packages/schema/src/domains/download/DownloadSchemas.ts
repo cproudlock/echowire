@@ -149,9 +149,9 @@ export const DesktopSourceChecksumResponse = z.object({
 	sha256: z
 		.string()
 		.regex(/^[a-f0-9]{64}$/u)
-		.describe('SHA-256 hash of the latest Echowire desktop source tarball'),
-	filename: z.string().describe('Filename for the latest Echowire desktop source tarball'),
-	url: z.string().describe('Download URL for the latest Echowire desktop source tarball'),
+		.describe('SHA-256 hash of the latest echowire desktop source tarball'),
+	filename: z.string().describe('Filename for the latest echowire desktop source tarball'),
+	url: z.string().describe('Download URL for the latest echowire desktop source tarball'),
 	commit: z.string().optional().describe('Git commit used to produce the source tarball'),
 	desktop_version: VersionString.optional().describe('Desktop app version stamped into the source tarball'),
 	desktop_version_source: z

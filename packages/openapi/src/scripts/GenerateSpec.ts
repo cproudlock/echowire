@@ -25,7 +25,7 @@ interface GeneratedTargetSpec {
 	spec: WritableOpenAPISpec;
 }
 const API_DESCRIPTION =
-	'API for Echowire, a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.';
+	'API for echowire, a free and open source instant messaging and VoIP chat app built for friends, groups, and communities.';
 function parseArgs(): GenerateOptions {
 	const args = process.argv.slice(2);
 	let validateOnly = false;
@@ -92,7 +92,7 @@ function reportRoutesLeftOut(target: GenerateTarget, stats: OpenAPIGenerationSta
 async function buildTargetSpec(basePath: string, target: GenerateTarget): Promise<WritableOpenAPISpec> {
 	const generator = new OpenAPIGenerator({
 		basePath,
-		title: 'Echowire API',
+		title: 'echowire API',
 		version: '1.0.0',
 		description: API_DESCRIPTION,
 		serverUrl: 'https://echowire.org/api/v1',
@@ -131,7 +131,7 @@ async function main(): Promise<void> {
 		throw new Error('--output requires --target when generating or validating multiple specs.');
 	}
 	const targets: Array<GenerateTarget> = requestedTarget ? [requestedTarget] : ['public', 'admin'];
-	console.log('Echowire OpenAPI Specification Generator');
+	console.log('echowire OpenAPI Specification Generator');
 	console.log('======================================');
 	console.log(`Base path: ${basePath}`);
 	console.log(`Targets: ${targets.join(', ')}`);

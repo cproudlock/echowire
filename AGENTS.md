@@ -54,7 +54,7 @@ The devcontainer `workspace` container runs the whole stack via `pnpm dev` (tsx-
 
 ## Echowire customizations to maintain
 
-- **Branding:** Fluxer→Echowire, Plutonium→**Reverb** (premium), FluxerTag→**EchoTag**, echowire.org domains, logos/icons, locale catalogs, marketing/legal pages. Brand source-of-truth: `fluxer_app/.../config/ProductConstants.ts` (PRODUCT_NAME config-driven, fallback Echowire; PREMIUM_PRODUCT_NAME=Reverb) + `packages/config/.../ConfigLoader.ts` defaults. Tag label in `I18nDisplayConstants.ts`.
+- **Branding:** Fluxer→echowire (the brand is spelled all lowercase in every user-visible string, default and artifact name; `Echowire` survives only in comment markers and code identifiers), Plutonium→**Reverb** (premium), FluxerTag→**EchoTag**, echowire.org domains, logos/icons, locale catalogs, marketing/legal pages. Brand source-of-truth: `fluxer_app/.../config/ProductConstants.ts` (PRODUCT_NAME config-driven, fallback Echowire; PREMIUM_PRODUCT_NAME=Reverb) + `packages/config/.../ConfigLoader.ts` defaults. Tag label in `I18nDisplayConstants.ts`.
 - **Features re-ported (absent upstream):** Threads, Forum channels, thread moderation (lock/delete/pin/tags/policies), thread membership. (Soundboard still deprecated.) See memory `threads-forums-port.md`.
 - **Native config now (no code):** SMTP, Stripe toggle, captcha, discovery, self-hosted mode — set via `.env`, not patched.
 - **Code patches to re-port:** (1) voice-region latency display + `ping_endpoint`; (2) Electron screen-capture bridge; (3) voice auto-rejoin after gateway failover.

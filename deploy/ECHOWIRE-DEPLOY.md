@@ -33,7 +33,7 @@ In the node's `.env` (copied from `.env.example`):
 ```ini
 FLUXER_REGISTRY_OWNER=cproudlock        # was fluxerapp
 FLUXER_IMAGE_TAG=v1
-FLUXER_EMAIL_FROM_NAME=Echowire         # branding (was Fluxer)
+FLUXER_EMAIL_FROM_NAME=echowire         # branding (was Fluxer)
 ```
 
 `FLUXER_REGISTRY` derives from `FLUXER_REGISTRY_OWNER`, so that one line repoints

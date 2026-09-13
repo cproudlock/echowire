@@ -124,6 +124,12 @@ import {observer} from 'mobx-react-lite';
 import type React from 'react';
 import {useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState} from 'react';
 
+// Echowire: threads and forum posts name themselves in the composer, like Discord.
+const THREAD_MESSAGE_PLACEHOLDER_DESCRIPTOR = msg({
+	message: 'Send a message in "{name}"',
+	comment: 'Composer placeholder inside a thread or forum post. {name} is the thread or post title.',
+});
+
 const PLUS_MENU_DOUBLE_CLICK_MS = 500;
 const MESSAGE_SCROLLER_SELECTOR = '[data-flx="channel.messages.scroller"][data-fluxer-scroll-container="true"]';
 const MESSAGE_SCROLLER_BOTTOM_THRESHOLD = 16;
@@ -920,17 +926,19 @@ export const LexicalChannelTextareaContent = observer(
 		const messagePrefix = `${messageLabel} `;
 		const placeholderText = disabled
 			? i18n._(YOU_DO_NOT_HAVE_PERMISSION_TO_SEND_MESSAGES_DESCRIPTOR)
-			: channel.guildId != null
-				? PlaceholderUtils.getChannelPlaceholder(
-						`#${channel.name || i18n._(CHANNEL_DESCRIPTOR)}`,
-						messagePrefix,
-						Number.MAX_SAFE_INTEGER,
-					)
-				: PlaceholderUtils.getDMPlaceholder(
-						ChannelDisplayUtils.getDMDisplayName(channel),
-						channel.isDM() ? i18n._(MESSAGE_2_DESCRIPTOR) : messagePrefix,
-						Number.MAX_SAFE_INTEGER,
-					);
+			: channel.isThread() && channel.name
+				? i18n._(THREAD_MESSAGE_PLACEHOLDER_DESCRIPTOR, {name: channel.name})
+				: channel.guildId != null
+					? PlaceholderUtils.getChannelPlaceholder(
+							`#${channel.name || i18n._(CHANNEL_DESCRIPTOR)}`,
+							messagePrefix,
+							Number.MAX_SAFE_INTEGER,
+						)
+					: PlaceholderUtils.getDMPlaceholder(
+							ChannelDisplayUtils.getDMDisplayName(channel),
+							channel.isDM() ? i18n._(MESSAGE_2_DESCRIPTOR) : messagePrefix,
+							Number.MAX_SAFE_INTEGER,
+						);
 		useEffect(() => {
 			const unsubscribe = ComponentBus.subscribe('FOCUS_TEXTAREA', (payload?: unknown) => {
 				const payloadValue = payload === null || payload === undefined ? {} : payload;

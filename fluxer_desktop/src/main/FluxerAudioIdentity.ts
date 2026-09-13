@@ -5,7 +5,9 @@ import type {VirtmicNode} from '@electron/common/Types';
 import {app, webContents} from 'electron';
 
 const FLUXER_AUDIO_DISPLAY_IDENTITY_KEYS = ['application.name', 'node.name', 'node.nick', 'node.description'] as const;
-const FALLBACK_PRODUCT_NAMES = ['Echowire', 'Echowire Canary'];
+// Echowire: keep the pre-lowercase names so self-exclusion still recognises a process started from
+// an install that has not been renamed yet.
+const FALLBACK_PRODUCT_NAMES = ['echowire', 'echowire canary', 'Echowire', 'Echowire Canary'];
 const FLUXER_AUDIO_PREFIXES = [
 	'echowire ',
 	'echowire-',

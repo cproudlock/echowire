@@ -62,7 +62,9 @@ const MAX_DESKTOP_RELEASE_CANDIDATES = 10;
 const DESKTOP_BUCKET_PREFIX = 'desktop';
 const DESKTOP_TEST_BUCKET_PREFIX = 'desktop-test';
 const DOWNLOAD_KEY_ALLOWED_PREFIXES = [`${DESKTOP_BUCKET_PREFIX}/`, `${DESKTOP_TEST_BUCKET_PREFIX}/`];
-const GITHUB_RELEASE_DOWNLOAD_BASE_URL = 'https://github.com/fluxerapp/fluxer/releases/download';
+// Echowire: desktop releases are published to the fork (RELEASE_REPOSITORY in
+// tools/ci/src/release.rs), so the redirect must point there, not at upstream.
+const GITHUB_RELEASE_DOWNLOAD_BASE_URL = 'https://github.com/cproudlock/echowire/releases/download';
 const GITHUB_RELEASE_MARKER_DIRECTORY = 'github-releases';
 
 function desktopBucketPrefix(test?: boolean): string {
@@ -1003,12 +1005,17 @@ export class DownloadService {
 	}
 
 	private getModernProductNames(channel: DesktopChannel): Array<string> {
-		// Echowire: desktop artifacts are named from electron-builder `productName`
-		// (`Echowire` / `Echowire Canary`, see fluxer_desktop/electron-builder.config.cjs).
+		// Echowire: desktop artifacts are named from electron-builder `artifactProductName`
+		// (`echowire` / `echowire-canary`, see fluxer_desktop/electron-builder.config.cjs).
+		// Earlier builds published `Echowire-*` and `Echowire Canary-*`, which are still in the
+		// bucket and still requested by installed updaters, so those spellings stay after the
+		// canonical ones. Order matters: the first match wins for exact-key lookups.
 		// Upstream hardcoded `Fluxer` here, so the version regex never matched our
 		// rebranded filenames and `/latest` fell back to ancient `Fluxer-*` artifacts.
 		// Upstream's array form is kept: it matches both the hyphen and space variants.
-		return channel === 'canary' ? ['Echowire-Canary', 'Echowire Canary'] : ['Echowire'];
+		return channel === 'canary'
+			? ['echowire-canary', 'echowire canary', 'Echowire-Canary', 'Echowire Canary']
+			: ['echowire', 'Echowire'];
 	}
 
 	private getArchTokens(archToken: string | Array<string>): Array<string> {

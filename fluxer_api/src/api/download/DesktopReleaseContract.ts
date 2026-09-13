@@ -100,7 +100,11 @@ export function parseDesktopReleaseDescriptor(value: unknown): DesktopReleaseDes
 	}
 	const expectedTag = `fluxer-desktop-${value.channel}@${value.version}`;
 	const expectedStoragePrefix = `desktop/${value.channel}/`;
-	const expectedReleasePrefix = `${value.channel === 'canary' ? 'Fluxer-Canary' : 'Fluxer'}-${value.version}-`;
+	// Echowire: release assets carry the fork's lowercase artifact product name, matching
+	// desktop_release_product in tools/ci/src/release.rs. No descriptor was ever published under an
+	// earlier spelling (every fork GitHub release carries zero per-asset uploads), so only the
+	// canonical name is accepted here; download matching stays tolerant in DownloadService.
+	const expectedReleasePrefix = `${value.channel === 'canary' ? 'echowire-canary' : 'echowire'}-${value.version}-`;
 	const descriptorName = `${expectedReleasePrefix}release-manifest.json`;
 	if (value.release_tag !== expectedTag) {
 		return null;

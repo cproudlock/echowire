@@ -107,7 +107,7 @@ function collectOwnWindowMediaSourceIds(): Set<string> {
 			}
 		}
 	} catch (error) {
-		log.debug('[DisplayMedia] Failed to enumerate Echowire windows for own-source detection', {error});
+		log.debug('[DisplayMedia] Failed to enumerate echowire windows for own-source detection', {error});
 	}
 	return ids;
 }

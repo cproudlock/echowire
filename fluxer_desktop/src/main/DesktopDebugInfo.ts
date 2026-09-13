@@ -327,7 +327,7 @@ function formatWindowBehavior(settings: DesktopWindowBehaviorSettings): string {
 
 export function formatDesktopDebugInfo(info: DesktopDebugInfo): string {
 	return [
-		'Echowire desktop debug info',
+		'echowire desktop debug info',
 		info.clientInfo,
 		`App URL: ${info.appUrl}`,
 		`Custom app URL: ${info.customAppUrl ?? '(none)'}`,

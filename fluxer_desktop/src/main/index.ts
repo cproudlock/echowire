@@ -153,7 +153,7 @@ try {
 }
 
 if (launchConfigurationError) {
-	console.error(`Echowire desktop launch configuration error: ${launchConfigurationError.message}`);
+	console.error(`echowire desktop launch configuration error: ${launchConfigurationError.message}`);
 	log.error('Launch configuration error:', launchConfigurationError);
 	app.exit(1);
 } else if (hasDesktopDebugInfoArg(process.argv)) {
@@ -167,7 +167,7 @@ if (launchConfigurationError) {
 		.catch((error: unknown) => {
 			const message = error instanceof Error ? error.message : String(error);
 			log.error('Failed to collect desktop debug info:', error);
-			writeCliAndExit(process.stderr, `Failed to collect Echowire desktop debug info: ${message}`, 1);
+			writeCliAndExit(process.stderr, `Failed to collect echowire desktop debug info: ${message}`, 1);
 		});
 } else {
 	if (shouldResetWindowStateOnLaunch(process.argv)) {
@@ -244,7 +244,7 @@ if (launchConfigurationError) {
 		log.error('[NativeModulePreflight] Fatal native module preflight failure:', error);
 		console.error(message);
 		try {
-			dialog.showErrorBox('Echowire failed to start', message);
+			dialog.showErrorBox('echowire failed to start', message);
 		} catch {}
 		app.exit(1);
 		process.exit(1);

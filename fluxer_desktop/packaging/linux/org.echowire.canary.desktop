@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 [Desktop Entry]
-Name=Echowire Canary
+Name=echowire canary
 GenericName=Instant Messenger
-Comment=Canary build of Echowire
+Comment=Canary build of echowire
 Exec=org.echowire.canary %U
 TryExec=org.echowire.canary
 Icon=org.echowire.canary

@@ -695,7 +695,7 @@ async function startNativeAudioCapture(
 		isValidTargetPid(targetPid) &&
 		isKnownFluxerAudioProcessPid(targetPid)
 	) {
-		throw new Error('Refusing to capture native audio from Echowire process');
+		throw new Error('Refusing to capture native audio from echowire process');
 	}
 	const availability = await getNativeAudioAvailability();
 	if (!availability.available) {
@@ -716,7 +716,7 @@ async function startNativeAudioCapture(
 		);
 	}
 	if (requestedScope === 'system' && availability.capabilities?.systemExcludesSelf !== true) {
-		throw new Error(`Native ${loadResult.platform} system audio capture does not guarantee Echowire self-exclusion`);
+		throw new Error(`Native ${loadResult.platform} system audio capture does not guarantee echowire self-exclusion`);
 	}
 	const effectiveWinCaptureScope =
 		loadResult.platform === 'win32' &&

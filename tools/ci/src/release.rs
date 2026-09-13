@@ -40,10 +40,12 @@ pub(crate) struct DesktopReleaseDescriptor {
     pub(crate) assets: Vec<DesktopReleaseAsset>,
 }
 
+// Echowire: the fork's lowercase artifact product name, as set by artifactProductName in
+// fluxer_desktop/electron-builder.config.cjs and checked by the API DesktopReleaseContract.
 pub(crate) fn desktop_release_product(channel: &str) -> Result<&'static str> {
     match channel {
-        "stable" => Ok("Fluxer"),
-        "canary" => Ok("Fluxer-Canary"),
+        "stable" => Ok("echowire"),
+        "canary" => Ok("echowire-canary"),
         other => bail!("Unsupported desktop release channel {other:?}"),
     }
 }

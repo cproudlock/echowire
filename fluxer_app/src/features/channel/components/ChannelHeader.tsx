@@ -44,7 +44,10 @@ import {ChannelHeaderIcon} from '@app/features/channel/components/channel_header
 import {ChannelNotificationSettingsButton} from '@app/features/channel/components/channel_header_components/ChannelNotificationSettingsButton';
 import {ChannelPinsButton} from '@app/features/channel/components/channel_header_components/ChannelPinsButton';
 import {ChannelThreadsButton} from '@app/features/channel/components/channel_header_components/ChannelThreadsButton';
-import {ThreadManageButton} from '@app/features/channel/components/channel_header_components/ThreadManageButton';
+import {
+	ThreadFollowButton,
+	ThreadManageButton,
+} from '@app/features/channel/components/channel_header_components/ThreadManageButton';
 import {ThreadMembersButton} from '@app/features/channel/components/channel_header_components/ThreadMembersButton';
 import {
 	isUpdaterIconVisible,
@@ -63,6 +66,7 @@ import {EditGroupModal} from '@app/features/channel/components/modals/EditGroupM
 import type {Channel} from '@app/features/channel/models/Channel';
 import * as ChannelUtils from '@app/features/channel/utils/ChannelUtils';
 import {isGroupDmFull} from '@app/features/channel/utils/GroupDmUtils';
+import {canToggleThreadArchive} from '@app/features/channel/utils/ThreadActions';
 import {
 	ADD_TO_FAVORITES_DESCRIPTOR,
 	CHANNEL_ADDED_TO_FAVORITES_DESCRIPTOR,
@@ -1021,7 +1025,8 @@ export const ChannelHeader = observer(
 							{channel && !isMobile && channel.type === ChannelTypes.GUILD_TEXT && (
 								<ChannelThreadsButton channel={channel} />
 							)}
-							{channel && !isMobile && channel.isThread() && (
+							{channel && !isMobile && channel.isThread() && <ThreadFollowButton channel={channel} />}
+							{channel && !isMobile && channel.isThread() && canToggleThreadArchive(channel) && (
 								<ChannelHeaderIcon
 									icon={ArchiveIcon}
 									label={i18n._(

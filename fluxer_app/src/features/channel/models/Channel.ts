@@ -15,6 +15,12 @@ import type {ChannelOverwrite, Channel as WireChannel} from '@fluxer/schema/src/
 import type {UserPartial} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
 import * as SnowflakeUtils from '@fluxer/snowflake/src/SnowflakeUtils';
 
+// Echowire: forum fields added by the forums server contract that the shared schema does not declare yet.
+type ForumWireExtras = {
+	default_forum_layout?: number | null;
+	default_thread_rate_limit_per_user?: number | null;
+};
+
 export class ChannelOverwriteRecord {
 	readonly id: string;
 	readonly type: number;
@@ -107,6 +113,8 @@ export class Channel {
 	readonly appliedTags: ReadonlyArray<string>;
 	readonly defaultReactionEmoji: {readonly emojiId: string | null; readonly emojiName: string | null} | null;
 	readonly defaultSortOrder: number | null;
+	readonly defaultForumLayout: number | null;
+	readonly defaultThreadRateLimitPerUser: number | null;
 	readonly forumDefaultAutoArchiveDuration: number | null;
 	readonly forumRequireTag: boolean;
 	readonly pinned: boolean;
@@ -161,6 +169,9 @@ export class Channel {
 			? {emojiId: channel.default_reaction_emoji.emoji_id, emojiName: channel.default_reaction_emoji.emoji_name}
 			: null;
 		this.defaultSortOrder = channel.default_sort_order ?? null;
+		const forumExtras = channel as WireChannel & ForumWireExtras;
+		this.defaultForumLayout = forumExtras.default_forum_layout ?? null;
+		this.defaultThreadRateLimitPerUser = forumExtras.default_thread_rate_limit_per_user ?? null;
 		this.forumDefaultAutoArchiveDuration = channel.default_auto_archive_duration ?? null;
 		this.forumRequireTag = channel.require_tag ?? false;
 		this.pinned = channel.pinned ?? false;
@@ -354,7 +365,15 @@ export class Channel {
 						? updates.default_auto_archive_duration
 						: (this.forumDefaultAutoArchiveDuration ?? null),
 				require_tag: updates.require_tag !== undefined ? updates.require_tag : this.forumRequireTag,
-			},
+				default_forum_layout:
+					(updates as ForumWireExtras).default_forum_layout !== undefined
+						? (updates as ForumWireExtras).default_forum_layout
+						: this.defaultForumLayout,
+				default_thread_rate_limit_per_user:
+					(updates as ForumWireExtras).default_thread_rate_limit_per_user !== undefined
+						? (updates as ForumWireExtras).default_thread_rate_limit_per_user
+						: this.defaultThreadRateLimitPerUser,
+			} as WireChannel,
 			{instanceId: this.instanceId},
 		);
 	}
@@ -428,6 +447,8 @@ export class Channel {
 		if (this.forumRequireTag !== other.forumRequireTag) return false;
 		// Echowire: forum tag/sort/reaction state — same live-update reasoning as thread state above.
 		if (this.defaultSortOrder !== other.defaultSortOrder) return false;
+		if (this.defaultForumLayout !== other.defaultForumLayout) return false;
+		if (this.defaultThreadRateLimitPerUser !== other.defaultThreadRateLimitPerUser) return false;
 		if (this.defaultReactionEmoji?.emojiId !== other.defaultReactionEmoji?.emojiId) return false;
 		if (this.defaultReactionEmoji?.emojiName !== other.defaultReactionEmoji?.emojiName) return false;
 		if (this.appliedTags.length !== other.appliedTags.length) return false;

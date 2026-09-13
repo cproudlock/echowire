@@ -6,7 +6,7 @@ description: Account-wide settings, guild folders, notification settings, and vo
 
 import RouteHeader from '@/components/RouteHeader.astro';
 
-User settings are the stored preferences of one account. Fluxer keeps them in these records: the account-wide [user settings object](/http-api/users/#user-settings-object), and a [user guild settings object](#user-guild-settings-object) for each guild and for private channels.
+User settings include account-wide [preferences](/http-api/users/#user-settings-object) and [notification settings](#user-guild-settings-object) for each guild and for private channels.
 
 Every route here is user-only and rejects a bot or OAuth2 bearer credential with 403 `ACCESS_DENIED`. Every route except [Get current user settings](#get-current-user-settings) also rejects an account with an outstanding required action, with 403 `ACCOUNT_SUSPICIOUS_ACTIVITY`.
 
@@ -254,7 +254,7 @@ Further members are accepted and ignored. `guild_positions` is an array of at mo
 
 <sup>12</sup> The field is staff-only
 
-<sup>13</sup> The value runs to at most 349528 characters of base64 and decodes to at most 262144 bytes, the 256 KiB ceiling. A longer string fails at the boundary, an oversized decode fails with `TOO_LARGE`, and an undecodable value fails with `INVALID_FORMAT`
+<sup>13</sup> The value runs to at most 699052 characters of base64 and decodes to at most 524288 bytes, the 512 KiB ceiling. A longer string fails at the boundary, an oversized decode fails with `TOO_LARGE`, and an undecodable value fails with `INVALID_FORMAT`
 
 Fluxer decodes an accepted `synced_preferences` value, re-encodes it canonically, and stores the result, so a snapshot with only zero values is stored as cleared and read back as the empty string.
 
@@ -310,8 +310,8 @@ A custom status as submitted with a settings update.
 
 A custom emoji ID that does not resolve fails with `CUSTOM_EMOJI_NOT_FOUND` against `custom_status.emoji_id`. Fluxer drops the resolved emoji for an account without the global expression entitlement, so the request succeeds with text alone.
 
-:::caution[The stored expiry is not swept]
-An `expires_at` in the past does not clear the stored custom status and emits no Dispatch. The next Gateway session omits the expired status, and only an update naming `custom_status` replaces the stored record. Compare `expires_at` against the current time before rendering.
+:::caution[Hide expired custom statuses]
+An expired status can remain in settings without an expiry Dispatch. Compare `expires_at` with the current time before rendering. A new Gateway session omits the expired status.
 :::
 
 ## Initial settings

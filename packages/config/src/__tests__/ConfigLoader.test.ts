@@ -22,7 +22,6 @@ const MINIMAL_ENV: Record<string, string> = {
 	FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64: 'AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=',
 	FLUXER_ADMIN_SECRET_KEY_BASE: 'test-admin-secret',
 	FLUXER_ADMIN_OAUTH_CLIENT_SECRET: 'test-admin-oauth-secret',
-	FLUXER_MARKETING_SECRET_KEY_BASE: 'test-marketing-secret',
 	FLUXER_APP_PROXY_PORT: '8773',
 	FLUXER_GATEWAY_MEDIA_PROXY_ENDPOINT: 'http://127.0.0.1:8088/media',
 	FLUXER_GATEWAY_RPC_AUTH_TOKEN: 'test-gateway-token',
@@ -190,7 +189,7 @@ describe('ConfigLoader', () => {
 	test('normalizes each passkey origin independently', async () => {
 		stubMinimalEnv({
 			FLUXER_PASSKEY_ADDITIONAL_ALLOWED_ORIGINS:
-				'http://localhost,http://localhost:3000,https://desktop.example.net,android:apk-key-hash:abc',
+				'http://localhost,http://localhost:3000,https://desktop.example.net,android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 		});
 
 		const config = await loadConfig();
@@ -199,11 +198,11 @@ describe('ConfigLoader', () => {
 			'http://localhost:8088',
 			'http://localhost:3000',
 			'https://desktop.example.net',
-			'android:apk-key-hash:abc',
+			'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 		]);
 	});
 
-	test('leaves the default passkey origins untouched', async () => {
+	test('includes the app origin alongside the default passkey origins', async () => {
 		stubMinimalEnv();
 		const config = await loadConfig();
 		expect(config.auth.passkeys.additional_allowed_origins).toEqual([
@@ -213,6 +212,7 @@ describe('ConfigLoader', () => {
 			'https://web.canary.echowire.org',
 			'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 			'android:apk-key-hash:zRmCKDKo3uCX2GDZISjJx8Rzo3J-Y3Gbp7s7mAaUH28',
+			'http://localhost:8088',
 		]);
 	});
 
@@ -233,7 +233,7 @@ describe('ConfigLoader', () => {
 		expect(config.auth.passkeys.rp_id).toBe('chat.example.com');
 	});
 
-	test('derives the passkey origin only when the operator clears the default list', async () => {
+	test('uses only the app origin when the operator clears the default list', async () => {
 		stubMinimalEnv({
 			FLUXER_BASE_DOMAIN: 'chat.example.com',
 			FLUXER_PUBLIC_SCHEME: 'https',
@@ -407,23 +407,6 @@ describe('ConfigLoader', () => {
 		expect(config.database.postgres.ssl).toBe(false);
 	});
 
-	test('does not require a marketing secret for self-hosted instances', async () => {
-		stubMinimalEnv({FLUXER_SELF_HOSTED: 'true'});
-		vi.stubEnv('FLUXER_MARKETING_SECRET_KEY_BASE', undefined);
-
-		const config = await loadConfig();
-
-		expect(config.instance.self_hosted).toBe(true);
-		expect(config.services.marketing.secret_key_base).toBe('');
-	});
-
-	test('requires a marketing secret for hosted instances', async () => {
-		stubMinimalEnv();
-		vi.stubEnv('FLUXER_MARKETING_SECRET_KEY_BASE', undefined);
-
-		await expect(loadConfig()).rejects.toThrow('FLUXER_MARKETING_SECRET_KEY_BASE');
-	});
-
 	test('still requires TLS for non-self-hosted production Postgres', async () => {
 		stubMinimalEnv({
 			FLUXER_ENV: 'production',
@@ -529,6 +512,90 @@ describe('ConfigLoader', () => {
 	test('leaves a disabled captcha unvalidated', async () => {
 		stubMinimalEnv({FLUXER_CAPTCHA_PROVIDER: 'hcaptcha'});
 		expect((await loadConfig()).integrations.captcha.enabled).toBe(false);
+	});
+
+	test('defaults the cache purge adapter to none', async () => {
+		stubMinimalEnv();
+		expect((await loadConfig()).integrations.cache_purge).toEqual({
+			adapter: 'none',
+			http: {endpoint: '', token: '', timeout_ms: 10_000},
+		});
+	});
+
+	test('reads the http cache purge settings from the environment', async () => {
+		stubMinimalEnv({
+			FLUXER_CACHE_PURGE_ADAPTER: 'http',
+			FLUXER_CACHE_PURGE_HTTP_ENDPOINT: 'https://purge.internal/purge',
+			FLUXER_CACHE_PURGE_HTTP_TOKEN: 'purge-token',
+			FLUXER_CACHE_PURGE_HTTP_TIMEOUT_MS: '5000',
+		});
+		expect((await loadConfig()).integrations.cache_purge).toEqual({
+			adapter: 'http',
+			http: {endpoint: 'https://purge.internal/purge', token: 'purge-token', timeout_ms: 5000},
+		});
+	});
+
+	test('rejects an unknown cache purge adapter', async () => {
+		stubMinimalEnv({FLUXER_CACHE_PURGE_ADAPTER: 'varnish'});
+		await expect(loadConfig()).rejects.toThrow('Invalid FLUXER_CACHE_PURGE_ADAPTER: varnish');
+	});
+
+	test('rejects the http cache purge adapter without an endpoint', async () => {
+		stubMinimalEnv({FLUXER_CACHE_PURGE_ADAPTER: 'http'});
+		await expect(loadConfig()).rejects.toThrow('FLUXER_CACHE_PURGE_HTTP_ENDPOINT is required');
+	});
+
+	test('rejects a cache purge endpoint that is not an absolute http URL', async () => {
+		for (const endpoint of ['/purge', 'purge.internal/purge', 'ftp://purge.internal/purge']) {
+			stubMinimalEnv({FLUXER_CACHE_PURGE_ADAPTER: 'http', FLUXER_CACHE_PURGE_HTTP_ENDPOINT: endpoint});
+			await expect(loadConfig()).rejects.toThrow(
+				'FLUXER_CACHE_PURGE_HTTP_ENDPOINT must be an absolute http or https URL without credentials',
+			);
+		}
+	});
+
+	test('rejects a cache purge endpoint that carries credentials', async () => {
+		stubMinimalEnv({
+			FLUXER_CACHE_PURGE_ADAPTER: 'http',
+			FLUXER_CACHE_PURGE_HTTP_ENDPOINT: 'https://purger:secret@purge.internal/purge',
+		});
+		await expect(loadConfig()).rejects.toThrow(
+			'FLUXER_CACHE_PURGE_HTTP_ENDPOINT must be an absolute http or https URL without credentials',
+		);
+	});
+
+	test('rejects a cache purge timeout outside 1000 to 10000', async () => {
+		for (const timeout of ['999', '10001']) {
+			stubMinimalEnv({
+				FLUXER_CACHE_PURGE_ADAPTER: 'http',
+				FLUXER_CACHE_PURGE_HTTP_ENDPOINT: 'https://purge.internal/purge',
+				FLUXER_CACHE_PURGE_HTTP_TIMEOUT_MS: timeout,
+			});
+			await expect(loadConfig()).rejects.toThrow(
+				'FLUXER_CACHE_PURGE_HTTP_TIMEOUT_MS must be an integer between 1000 and 10000',
+			);
+		}
+	});
+
+	test('rejects a cache purge token with spaces or control characters without echoing it', async () => {
+		for (const token of ['secret\nvalue', 'secret\rvalue', 'secret value', 'secret-value\n']) {
+			stubMinimalEnv({
+				FLUXER_CACHE_PURGE_ADAPTER: 'http',
+				FLUXER_CACHE_PURGE_HTTP_ENDPOINT: 'https://purge.internal/purge',
+				FLUXER_CACHE_PURGE_HTTP_TOKEN: token,
+			});
+			await expect(loadConfig()).rejects.toThrow(
+				/^FLUXER_CACHE_PURGE_HTTP_TOKEN must contain only visible ASCII characters$/,
+			);
+		}
+	});
+
+	test('leaves the cache purge settings unvalidated when the adapter is none', async () => {
+		stubMinimalEnv({
+			FLUXER_CACHE_PURGE_HTTP_ENDPOINT: 'ftp://purge.internal/purge',
+			FLUXER_CACHE_PURGE_HTTP_TIMEOUT_MS: '1',
+		});
+		expect((await loadConfig()).integrations.cache_purge.adapter).toBe('none');
 	});
 
 	// Echowire: the fork ships Bluesky login on, pointing at its own legal pages,
@@ -820,7 +887,7 @@ describe('FLUXER_PUBLIC_ORIGIN', () => {
 	test('refuses to boot on an origin that is not a bare origin', async () => {
 		stubMinimalEnv({FLUXER_PUBLIC_ORIGIN: 'https://chat.example.com/app'});
 		await expect(loadConfig()).rejects.toThrow(
-			'FLUXER_PUBLIC_ORIGIN must be a scheme, host and optional port such as https://chat.example.com:8443, got https://chat.example.com/app',
+			'FLUXER_PUBLIC_ORIGIN must be a scheme, host and optional port such as https://chat.example.com:8443',
 		);
 	});
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {defineErrorI18nLocaleMessages} from '../ErrorI18nMessages';
+import {defineErrorI18nLocaleMessages} from '@fluxer/errors/src/i18n/ErrorI18nMessages';
 
 const ERROR_I18N_ID_MESSAGES = defineErrorI18nLocaleMessages({
 	"account.communication_disabled": "Komunikasi dinonaktifkan.",
@@ -193,9 +193,7 @@ const ERROR_I18N_ID_MESSAGES = defineErrorI18nLocaleMessages({
 	"colors.color_value_too_low": "Nilai warna minimal 0x000000.",
 	"connections.already_exists": "Koneksi jenis ini dengan pengidentifikasi ini sudah ada.",
 	"connections.bluesky_oauth_authorization_failed": "Tidak bisa menyelesaikan handle Bluesky tersebut. Silakan periksa dan coba lagi.",
-	"connections.bluesky_oauth_callback_failed": "Tidak bisa menyelesaikan koneksi Bluesky. Silakan coba lagi.",
 	"connections.bluesky_oauth_not_enabled": "Koneksi Bluesky tidak diaktifkan pada instans ini.",
-	"connections.bluesky_oauth_state_invalid": "Permintaan otorisasi sudah kedaluwarsa atau tidak valid. Silakan coba lagi.",
 	"connections.initiation_token_invalid": "Token inisiasi koneksi tidak valid atau sudah kedaluwarsa.",
 	"connections.invalid_type": "Jenis koneksi tidak didukung.",
 	"connections.limit_reached": "Kamu telah mencapai jumlah koneksi maksimum ({limit}).",

@@ -1,5 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {createTestAccount, setUserACLs} from '@app/api/auth/tests/AuthTestUtils';
+import {getInstanceConfigRepository} from '@app/api/middleware/ServiceSingletons';
+import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
+import {HTTP_STATUS} from '@app/api/test/TestConstants';
+import {createBuilder, createBuilderWithoutAuth} from '@app/api/test/TestRequestBuilder';
 import {AdminACLs} from '@fluxer/constants/src/AdminACLs';
 import {
 	DEFAULT_VOICE_NOISE_SUPPRESSION_CONFIG,
@@ -13,11 +18,6 @@ import {
 	readVoiceNoiseSuppressionAssignment,
 } from '@fluxer/schema/src/domains/experiment/ExperimentSchemas';
 import {afterAll, beforeAll, beforeEach, describe, expect, it} from 'vitest';
-import {createTestAccount, setUserACLs} from '../../auth/tests/AuthTestUtils';
-import {getInstanceConfigRepository} from '../../middleware/ServiceSingletons';
-import {type ApiTestHarness, createApiTestHarness} from '../../test/ApiTestHarness';
-import {HTTP_STATUS} from '../../test/TestConstants';
-import {createBuilder, createBuilderWithoutAuth} from '../../test/TestRequestBuilder';
 
 const NOT_MODIFIED = 304;
 const ENDPOINT = '/experiments';
@@ -146,7 +146,7 @@ describe('GET /experiments', () => {
 		const etag = first.response.headers.get('etag');
 		expect(etag).toMatch(/^"[0-9a-f]{64}"$/);
 		expect(first.response.headers.get('cache-control')).toBe('private, no-cache');
-		expect(first.response.headers.get('vary')).toBe('Authorization');
+		expect(first.response.headers.get('vary')).toBe('Authorization, Origin');
 
 		const revalidated = await createBuilder<ExperimentAssignmentsResponse>(harness, account.token)
 			.get(ENDPOINT)
@@ -156,6 +156,7 @@ describe('GET /experiments', () => {
 		expect(revalidated.response.status).toBe(NOT_MODIFIED);
 		expect(revalidated.json).toBeUndefined();
 		expect(revalidated.response.headers.get('etag')).toBe(etag);
+		expect(revalidated.response.headers.get('vary')).toBe('Authorization, Origin');
 	});
 
 	it('lets a cross-origin client send If-None-Match and read the etag back', async () => {

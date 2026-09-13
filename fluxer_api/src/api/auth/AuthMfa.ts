@@ -1,6 +1,14 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {timingSafeEqual} from 'node:crypto';
+import type {ApiContext} from '@app/api/ApiContext';
+import {deriveSudoMethods, userHasMfa} from '@app/api/auth/services/SudoMethods';
+import {createUserID, type UserID} from '@app/api/BrandedTypes';
+import {Logger} from '@app/api/Logger';
+import type {User} from '@app/api/models/User';
+import type {WebAuthnCredential} from '@app/api/models/WebAuthnCredential';
+import {mapUserToPrivateResponse} from '@app/api/user/UserMappers';
+import {TotpGenerator} from '@app/api/utils/TotpGenerator';
 import {UserAuthenticatorTypes} from '@fluxer/constants/src/UserConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {InvalidWebAuthnAuthenticationCounterError} from '@fluxer/errors/src/domains/auth/InvalidWebAuthnAuthenticationCounterError';
@@ -22,15 +30,6 @@ import {
 	verifyRegistrationResponse,
 } from '@simplewebauthn/server';
 import {ms, seconds} from 'itty-time';
-import type {ApiContext} from '../ApiContext';
-import {createUserID, type UserID} from '../BrandedTypes';
-import {Logger} from '../Logger';
-import type {User} from '../models/User';
-import type {WebAuthnCredential} from '../models/WebAuthnCredential';
-import {getUserSearchService} from '../SearchFactory';
-import {mapUserToPrivateResponse} from '../user/UserMappers';
-import {TotpGenerator} from '../utils/TotpGenerator';
-import {deriveSudoMethods, userHasMfa} from './services/SudoMethods';
 
 type WebAuthnChallengeContext = 'registration' | 'discoverable' | 'mfa' | 'sudo';
 
@@ -217,12 +216,6 @@ export async function verifyWebAuthnRegistration(
 	if (!authenticatorTypes.has(UserAuthenticatorTypes.WEBAUTHN)) {
 		authenticatorTypes.add(UserAuthenticatorTypes.WEBAUTHN);
 		const updatedUser = await users.patchUpsert(userId, {authenticator_types: authenticatorTypes}, user.toRow());
-		const userSearchService = getUserSearchService();
-		if (userSearchService && 'updateUser' in userSearchService) {
-			await userSearchService.updateUser(updatedUser).catch((error) => {
-				Logger.error({userId, error}, 'Failed to update user in search');
-			});
-		}
 		await gateway.dispatchPresence({userId, event: 'USER_UPDATE', data: mapUserToPrivateResponse(updatedUser)});
 		await botMfaMirror.syncAuthenticatorTypesForOwner(updatedUser);
 	}
@@ -242,12 +235,6 @@ export async function deleteWebAuthnCredential(ctx: ApiContext, userId: UserID, 
 		const authenticatorTypes = user.authenticatorTypes || new Set<number>();
 		authenticatorTypes.delete(UserAuthenticatorTypes.WEBAUTHN);
 		const updatedUser = await users.patchUpsert(userId, {authenticator_types: authenticatorTypes}, user.toRow());
-		const userSearchService = getUserSearchService();
-		if (userSearchService && 'updateUser' in userSearchService) {
-			await userSearchService.updateUser(updatedUser).catch((error) => {
-				Logger.error({userId, error}, 'Failed to update user in search');
-			});
-		}
 		await gateway.dispatchPresence({userId, event: 'USER_UPDATE', data: mapUserToPrivateResponse(updatedUser)});
 		await botMfaMirror.syncAuthenticatorTypesForOwner(updatedUser);
 	}

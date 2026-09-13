@@ -2,9 +2,9 @@
 
 // Echowire: storage for thread membership (who has joined a thread / forum post).
 
-import type {ChannelID, UserID} from '../../BrandedTypes';
-import {deleteOneOrMany, fetchMany, fetchOne, upsertOne} from '../../database/CassandraQueryExecution';
-import {type ThreadMemberRow, ThreadMembers} from '../../Tables';
+import type {ChannelID, UserID} from '@app/api/BrandedTypes';
+import {deleteOneOrMany, fetchMany, fetchOne, upsertOne} from '@app/api/database/CassandraQueryExecution';
+import {type ThreadMemberRow, ThreadMembers} from '@app/api/Tables';
 
 const GET_MEMBER_QUERY = ThreadMembers.select({
 	where: [ThreadMembers.where.eq('thread_id'), ThreadMembers.where.eq('user_id')],

@@ -17,7 +17,9 @@
 		"fluxer_admin/static/htmx.min.js",
 		"fluxer_api/scripts/MigrateScyllaToPostgres.ts",
 		"fluxer_marketing/src/styles/app.css",
-		"fluxer_marketing/static/htmx.min.js"
+		"fluxer_marketing/static/htmx.min.js",
+		"tools/ci/templates/libfluxcore_wrapper.d.ts",
+		"tools/ci/templates/libfluxcore_wrapper.js"
 	],
 	"ignoreIssues": {
 		"fluxer_api/src/api/channel/repositories/ThreadMemberRepository.ts": ["types"],
@@ -41,8 +43,7 @@
 	},
 	"workspaces": {
 		".": {
-			"ignoreDependencies": ["vite"],
-			"project": ["scripts/**/*.mjs"]
+			"ignoreDependencies": ["vite"]
 		},
 		"fluxer_api": {
 			"ignoreDependencies": [

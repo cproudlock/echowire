@@ -3,6 +3,19 @@
 import {createHash} from 'node:crypto';
 import {posix} from 'node:path';
 import {Readable} from 'node:stream';
+import {Config} from '@app/api/Config';
+import {
+	parseDesktopArtifactScope,
+	parseDesktopReleaseDescriptor,
+	parseDesktopReleaseReadiness,
+} from '@app/api/download/DesktopReleaseContract';
+import {
+	type IStorageService,
+	StorageObjectListingOverflowError,
+	StorageObjectRangeNotSatisfiableError,
+} from '@app/api/infrastructure/IStorageService';
+import {Logger} from '@app/api/Logger';
+import {isJsonRecord, parseJsonRecord} from '@app/api/utils/JsonBoundaryUtils';
 import {S3ServiceException} from '@aws-sdk/client-s3';
 import type {
 	DesktopArch,
@@ -10,19 +23,6 @@ import type {
 	DesktopFormat,
 	DesktopPlatform,
 } from '@fluxer/schema/src/domains/download/DownloadSchemas';
-import {Config} from '../Config';
-import {
-	type IStorageService,
-	StorageObjectListingOverflowError,
-	StorageObjectRangeNotSatisfiableError,
-} from '../infrastructure/IStorageService';
-import {Logger} from '../Logger';
-import {isJsonRecord, parseJsonRecord} from '../utils/JsonBoundaryUtils';
-import {
-	parseDesktopArtifactScope,
-	parseDesktopReleaseDescriptor,
-	parseDesktopReleaseReadiness,
-} from './DesktopReleaseContract';
 
 export const DOWNLOAD_PREFIX = '/dl';
 export const DESKTOP_REDIRECT_PREFIX = `${DOWNLOAD_PREFIX}/desktop`;
@@ -103,7 +103,7 @@ function desktopArtifactPrefix(params: {
 	plat: DesktopPlatform;
 	arch: DesktopArch;
 	test?: boolean;
-}): string | null {
+}): string {
 	return `${desktopBucketPrefix(params.test)}/${params.channel}/${params.plat}/${params.arch}`;
 }
 
@@ -261,9 +261,6 @@ export class DownloadService {
 		test?: boolean;
 	}): Promise<string | null> {
 		const prefix = desktopArtifactPrefix(params);
-		if (!prefix) {
-			return null;
-		}
 		const manifestKey = `${prefix}/manifest.json`;
 		const releasability = new Map<string, boolean>();
 		try {
@@ -305,7 +302,7 @@ export class DownloadService {
 				test: params.test,
 			});
 		} catch (error) {
-			if (error instanceof S3ServiceException && (error.name === 'NoSuchKey' || error.name === 'NotFound')) {
+			if (isStorageNotFoundError(error)) {
 				return this.resolveLatestDesktopKeyFromObjects(params, releasability);
 			}
 			throw error;
@@ -320,9 +317,6 @@ export class DownloadService {
 		test?: boolean;
 	}): Promise<VersionInfo | null> {
 		const prefix = desktopArtifactPrefix(params);
-		if (!prefix) {
-			return null;
-		}
 		const manifestKey = `${prefix}/manifest.json`;
 		const releasability = new Map<string, boolean>();
 		try {
@@ -338,7 +332,7 @@ export class DownloadService {
 				return result;
 			}
 		} catch (error) {
-			if (error instanceof S3ServiceException && (error.name === 'NoSuchKey' || error.name === 'NotFound')) {
+			if (isStorageNotFoundError(error)) {
 				return this.getLatestDesktopVersionFromObjects(params, releasability);
 			}
 			throw error;
@@ -395,9 +389,6 @@ export class DownloadService {
 			return null;
 		}
 		const prefix = desktopArtifactPrefix(params);
-		if (!prefix) {
-			return null;
-		}
 		const s3Prefix = `${prefix}/`;
 		for (const filename of filenames) {
 			const key = `${s3Prefix}${filename}`;
@@ -407,7 +398,7 @@ export class DownloadService {
 					return key;
 				}
 			} catch (error) {
-				if (error instanceof S3ServiceException && (error.name === 'NoSuchKey' || error.name === 'NotFound')) {
+				if (isStorageNotFoundError(error)) {
 					continue;
 				}
 				throw error;
@@ -454,9 +445,6 @@ export class DownloadService {
 			return this.buildDesktopChecksumFile(key, filename, objectSha256);
 		}
 		const prefix = desktopArtifactPrefix(params);
-		if (!prefix) {
-			return null;
-		}
 		const manifest = await this.readOptionalJsonObjectFromStorage(`${prefix}/manifest.json`);
 		const versionInfo =
 			isDesktopManifest(manifest) && manifest.version === params.version
@@ -485,7 +473,7 @@ export class DownloadService {
 					return candidateKey;
 				}
 			} catch (error) {
-				if (error instanceof S3ServiceException && (error.name === 'NoSuchKey' || error.name === 'NotFound')) {
+				if (isStorageNotFoundError(error)) {
 					continue;
 				}
 				throw error;
@@ -784,11 +772,7 @@ export class DownloadService {
 		arch: DesktopArch;
 		test?: boolean;
 	}): Promise<Array<ListedDesktopVersion>> {
-		const basePrefix = desktopArtifactPrefix(params);
-		if (!basePrefix) {
-			return [];
-		}
-		const prefix = `${basePrefix}/`;
+		const prefix = `${desktopArtifactPrefix(params)}/`;
 		try {
 			const objects = await this.listDesktopArtifacts(prefix);
 			const versionMap = new Map<string, ListedDesktopVersion>();
@@ -828,7 +812,7 @@ export class DownloadService {
 			}
 			return Array.from(versionMap.values()).sort((left, right) => this.compareVersions(left.version, right.version));
 		} catch (error) {
-			if (error instanceof S3ServiceException && (error.name === 'NoSuchKey' || error.name === 'NotFound')) {
+			if (isStorageNotFoundError(error)) {
 				return [];
 			}
 			throw error;
@@ -1120,9 +1104,6 @@ export class DownloadService {
 		test?: boolean;
 	}): Promise<string | null> {
 		const prefix = desktopArtifactPrefix(params);
-		if (!prefix) {
-			return null;
-		}
 		const manifestKey = `${prefix}/manifest.json`;
 		try {
 			const manifest = await this.readJsonObjectFromStorage(manifestKey);
@@ -1159,7 +1140,7 @@ export class DownloadService {
 				test: params.test,
 			});
 		} catch (error) {
-			if (error instanceof S3ServiceException && (error.name === 'NoSuchKey' || error.name === 'NotFound')) {
+			if (isStorageNotFoundError(error)) {
 				return null;
 			}
 			throw error;
@@ -1297,9 +1278,6 @@ export class DownloadService {
 			filename: params.resolvedFilename,
 			test: params.test,
 		});
-		if (!key) {
-			return null;
-		}
 		return this.readDesktopSha256ForArtifactKey(key);
 	}
 
@@ -1329,14 +1307,11 @@ export class DownloadService {
 		test?: boolean;
 	}): Promise<boolean> {
 		const key = this.buildDesktopArtifactKey(params);
-		if (!key) {
-			return false;
-		}
 		try {
 			const metadata = await this.storageService.getObjectMetadata(Config.s3.buckets.downloads, key);
 			return metadata != null;
 		} catch (error) {
-			if (error instanceof S3ServiceException && (error.name === 'NoSuchKey' || error.name === 'NotFound')) {
+			if (isStorageNotFoundError(error)) {
 				return false;
 			}
 			throw error;
@@ -1349,9 +1324,8 @@ export class DownloadService {
 		arch: DesktopArch;
 		filename: string;
 		test?: boolean;
-	}): string | null {
-		const prefix = desktopArtifactPrefix(params);
-		return prefix ? `${prefix}/${params.filename}` : null;
+	}): string {
+		return `${desktopArtifactPrefix(params)}/${params.filename}`;
 	}
 
 	private filenameFromKey(key: string): string {

@@ -5,13 +5,13 @@
 // generic KV table for active thread channels; reuses the channel repository to
 // persist so versioning/serialisation stay correct).
 
+import {createChannelID} from '@app/api/BrandedTypes';
+import {Config} from '@app/api/Config';
+import {getWorkerDependencies} from '@app/api/worker/WorkerContext';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {snowflakeToDate} from '@fluxer/snowflake/src/Snowflake';
 import {getDefaultPostgresClient} from '@pkgs/postgres/src/Client';
 import type {WorkerTaskHandler} from '@pkgs/worker/src/contracts/WorkerTask';
-import {createChannelID} from '../../BrandedTypes';
-import {Config} from '../../Config';
-import {getWorkerDependencies} from '../WorkerContext';
 
 interface ActiveThreadRow {
 	channel_id: string | null;

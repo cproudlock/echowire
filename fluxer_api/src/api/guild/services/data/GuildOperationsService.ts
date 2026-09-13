@@ -1,5 +1,44 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {
+	type ChannelID,
+	createChannelID,
+	createGuildID,
+	createRoleID,
+	type GuildID,
+	guildIdToRoleId,
+	type RoleID,
+	type UserID,
+} from '@app/api/BrandedTypes';
+import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
+import type {ChannelService} from '@app/api/channel/services/ChannelService';
+import {BatchBuilder} from '@app/api/database/CassandraQueryExecution';
+import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
+import type {GuildRow} from '@app/api/database/types/GuildTypes';
+import {mapGuildToGuildResponse, mapGuildToPartialResponse} from '@app/api/guild/GuildModel';
+import type {IGuildDiscoveryRepository} from '@app/api/guild/repositories/GuildDiscoveryRepository';
+import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
+import type {GuildDataHelpers} from '@app/api/guild/services/data/GuildDataHelpers';
+import {contentModerationService} from '@app/api/infrastructure/ContentModerationService';
+import type {EntityAssetService, PreparedAssetUpload} from '@app/api/infrastructure/EntityAssetService';
+import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
+import type {ISnowflakeService} from '@app/api/infrastructure/ISnowflakeService';
+import type {InviteRepository} from '@app/api/invite/InviteRepository';
+import {Logger} from '@app/api/Logger';
+import type {LimitConfigService} from '@app/api/limits/LimitConfigService';
+import {resolveLimitSafe} from '@app/api/limits/LimitConfigUtils';
+import {createLimitMatchContext} from '@app/api/limits/LimitMatchContextBuilder';
+import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
+import {Guild} from '@app/api/models/Guild';
+import type {User} from '@app/api/models/User';
+import {getGuildSearchService} from '@app/api/SearchFactory';
+import type {GuildDiscoveryContext} from '@app/api/search/guild/GuildSearchSerializer';
+import {deleteChannelMessageSearchDocuments} from '@app/api/search/MessageSearchIndexCleanup';
+import {Channels, ChannelsByGuild, GuildMembers, GuildMembersByUserId, GuildRoles, Guilds} from '@app/api/Tables';
+import type {IUserRepository} from '@app/api/user/IUserRepository';
+import {mapUserSettingsToResponse} from '@app/api/user/UserMappers';
+import {addGuildToUncategorizedFolder, removeGuildFromUserFolders} from '@app/api/user/utils/GuildFolderUtils';
+import type {IWebhookRepository} from '@app/api/webhook/IWebhookRepository';
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 import {ALL_PERMISSIONS, ChannelTypes, DEFAULT_PERMISSIONS, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {DiscoveryApplicationStatus} from '@fluxer/constants/src/DiscoveryConstants';
@@ -38,49 +77,33 @@ import type {
 	TemplateSerializedGuild,
 } from '@fluxer/schema/src/domains/guild/GuildTemplateSchemas';
 import {extractTimestamp} from '@fluxer/snowflake/src/SnowflakeUtils';
-import type {ChannelID, GuildID, RoleID, UserID} from '../../../BrandedTypes';
-import {createChannelID, createGuildID, createRoleID, guildIdToRoleId} from '../../../BrandedTypes';
-import type {IChannelRepository} from '../../../channel/IChannelRepository';
-import type {ChannelService} from '../../../channel/services/ChannelService';
-import {BatchBuilder} from '../../../database/CassandraQueryExecution';
-import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '../../../database/types/ChannelTypes';
-import type {GuildRow} from '../../../database/types/GuildTypes';
-import {contentModerationService} from '../../../infrastructure/ContentModerationService';
-import type {EntityAssetService, PreparedAssetUpload} from '../../../infrastructure/EntityAssetService';
-import type {IGatewayService} from '../../../infrastructure/IGatewayService';
-import type {ISnowflakeService} from '../../../infrastructure/ISnowflakeService';
-import type {InviteRepository} from '../../../invite/InviteRepository';
-import {Logger} from '../../../Logger';
-import type {LimitConfigService} from '../../../limits/LimitConfigService';
-import {resolveLimitSafe} from '../../../limits/LimitConfigUtils';
-import {createLimitMatchContext} from '../../../limits/LimitMatchContextBuilder';
-import type {RequestCache} from '../../../middleware/RequestCacheMiddleware';
-import {Guild} from '../../../models/Guild';
-import type {User} from '../../../models/User';
-import {getGuildSearchService} from '../../../SearchFactory';
-import type {GuildDiscoveryContext} from '../../../search/guild/GuildSearchSerializer';
-import {deleteChannelMessageSearchDocuments} from '../../../search/MessageSearchIndexCleanup';
-import {Channels, ChannelsByGuild, GuildMembers, GuildMembersByUserId, GuildRoles, Guilds} from '../../../Tables';
-import type {IUserRepository} from '../../../user/IUserRepository';
-import {mapUserSettingsToResponse} from '../../../user/UserMappers';
-import {addGuildToUncategorizedFolder, removeGuildFromUserFolders} from '../../../user/utils/GuildFolderUtils';
-import type {IWebhookRepository} from '../../../webhook/IWebhookRepository';
-import {mapGuildToGuildResponse, mapGuildToPartialResponse} from '../../GuildModel';
-import type {IGuildDiscoveryRepository} from '../../repositories/GuildDiscoveryRepository';
-import type {IGuildRepositoryAggregate} from '../../repositories/IGuildRepositoryAggregate';
-import type {GuildDataHelpers} from './GuildDataHelpers';
 
 const DEFAULT_TEXT_CATEGORY_NAME = 'Text Channels';
 const DEFAULT_VOICE_CATEGORY_NAME = 'Voice Channels';
 const DEFAULT_TEXT_CHANNEL_NAME = 'general';
 const DEFAULT_VOICE_CHANNEL_NAME = 'General';
 
-interface PreparedGuildAssets {
-	icon: PreparedAssetUpload | null;
-	banner: PreparedAssetUpload | null;
-	splash: PreparedAssetUpload | null;
-	embed_splash: PreparedAssetUpload | null;
-}
+const GUILD_IMAGE_FIELDS = [
+	{field: 'icon', hash: 'icon_hash', dimensions: null, gate: null},
+	{
+		field: 'banner',
+		hash: 'banner_hash',
+		dimensions: {width: 'banner_width', height: 'banner_height'},
+		gate: {feature: GuildFeatures.BANNER, error: ValidationErrorCodes.GUILD_BANNER_REQUIRES_FEATURE},
+	},
+	{
+		field: 'splash',
+		hash: 'splash_hash',
+		dimensions: {width: 'splash_width', height: 'splash_height'},
+		gate: {feature: GuildFeatures.INVITE_SPLASH, error: ValidationErrorCodes.INVITE_SPLASH_REQUIRES_FEATURE},
+	},
+	{
+		field: 'embed_splash',
+		hash: 'embed_splash_hash',
+		dimensions: {width: 'embed_splash_width', height: 'embed_splash_height'},
+		gate: {feature: GuildFeatures.INVITE_SPLASH, error: ValidationErrorCodes.EMBED_SPLASH_REQUIRES_FEATURE},
+	},
+] as const;
 
 interface TemplateGuildSettings {
 	verificationLevel: number;
@@ -451,129 +474,9 @@ export class GuildOperationsService {
 		}
 		const updatedFeatures = this.computeUpdatedFeatures(previousFeatures, data.features);
 		const featuresChanged = !setsEqual(previousFeatures, updatedFeatures);
-		const preparedAssets: PreparedGuildAssets = {icon: null, banner: null, splash: null, embed_splash: null};
 		const patch: Partial<GuildRow> = {};
 		if (data.name !== undefined) {
 			patch.name = data.name;
-		}
-		if (data.icon !== undefined) {
-			preparedAssets.icon = await this.entityAssetService.prepareAssetUpload({
-				assetType: 'icon',
-				entityType: 'guild',
-				entityId: guildId,
-				previousHash: currentGuild.iconHash,
-				base64Image: data.icon,
-				errorPath: 'icon',
-			});
-			patch.icon_hash = preparedAssets.icon.newHash;
-		}
-		if (data.banner !== undefined) {
-			if (data.banner && !currentGuild.features.has(GuildFeatures.BANNER)) {
-				await this.rollbackPreparedAssets(preparedAssets);
-				throw InputValidationError.fromCode('banner', ValidationErrorCodes.GUILD_BANNER_REQUIRES_FEATURE);
-			}
-			if (data.banner === null) {
-				patch.banner_hash = null;
-				patch.banner_width = null;
-				patch.banner_height = null;
-			} else {
-				try {
-					preparedAssets.banner = await this.entityAssetService.prepareAssetUpload({
-						assetType: 'banner',
-						entityType: 'guild',
-						entityId: guildId,
-						previousHash: currentGuild.bannerHash,
-						base64Image: data.banner,
-						errorPath: 'banner',
-					});
-					if (preparedAssets.banner.isAnimated && !currentGuild.features.has(GuildFeatures.ANIMATED_BANNER)) {
-						await this.rollbackPreparedAssets(preparedAssets);
-						throw InputValidationError.fromCode('banner', ValidationErrorCodes.ANIMATED_GUILD_BANNER_REQUIRES_FEATURE);
-					}
-					patch.banner_hash = preparedAssets.banner.newHash;
-					patch.banner_height =
-						preparedAssets.banner.newHash === currentGuild.bannerHash && currentGuild.bannerHeight != null
-							? currentGuild.bannerHeight
-							: (preparedAssets.banner.height ?? null);
-					patch.banner_width =
-						preparedAssets.banner.newHash === currentGuild.bannerHash && currentGuild.bannerWidth != null
-							? currentGuild.bannerWidth
-							: (preparedAssets.banner.width ?? null);
-				} catch (error) {
-					await this.rollbackPreparedAssets(preparedAssets);
-					throw error;
-				}
-			}
-		}
-		if (data.splash !== undefined) {
-			if (data.splash && !currentGuild.features.has(GuildFeatures.INVITE_SPLASH)) {
-				await this.rollbackPreparedAssets(preparedAssets);
-				throw InputValidationError.fromCode('splash', ValidationErrorCodes.INVITE_SPLASH_REQUIRES_FEATURE);
-			}
-			if (data.splash === null) {
-				patch.splash_hash = null;
-				patch.splash_width = null;
-				patch.splash_height = null;
-			} else {
-				try {
-					preparedAssets.splash = await this.entityAssetService.prepareAssetUpload({
-						assetType: 'splash',
-						entityType: 'guild',
-						entityId: guildId,
-						previousHash: currentGuild.splashHash,
-						base64Image: data.splash,
-						errorPath: 'splash',
-					});
-					patch.splash_hash = preparedAssets.splash.newHash;
-					patch.splash_height =
-						preparedAssets.splash.newHash === currentGuild.splashHash && currentGuild.splashHeight != null
-							? currentGuild.splashHeight
-							: (preparedAssets.splash.height ?? null);
-					patch.splash_width =
-						preparedAssets.splash.newHash === currentGuild.splashHash && currentGuild.splashWidth != null
-							? currentGuild.splashWidth
-							: (preparedAssets.splash.width ?? null);
-				} catch (error) {
-					await this.rollbackPreparedAssets(preparedAssets);
-					throw error;
-				}
-			}
-		}
-		if (data.embed_splash !== undefined) {
-			if (data.embed_splash && !currentGuild.features.has(GuildFeatures.INVITE_SPLASH)) {
-				await this.rollbackPreparedAssets(preparedAssets);
-				throw InputValidationError.fromCode('embed_splash', ValidationErrorCodes.EMBED_SPLASH_REQUIRES_FEATURE);
-			}
-			if (data.embed_splash === null) {
-				patch.embed_splash_hash = null;
-				patch.embed_splash_width = null;
-				patch.embed_splash_height = null;
-			} else {
-				try {
-					preparedAssets.embed_splash = await this.entityAssetService.prepareAssetUpload({
-						assetType: 'embed_splash',
-						entityType: 'guild',
-						entityId: guildId,
-						previousHash: currentGuild.embedSplashHash,
-						base64Image: data.embed_splash,
-						errorPath: 'embed_splash',
-					});
-					patch.embed_splash_hash = preparedAssets.embed_splash.newHash;
-					patch.embed_splash_height =
-						preparedAssets.embed_splash.newHash === currentGuild.embedSplashHash &&
-						currentGuild.embedSplashHeight != null
-							? currentGuild.embedSplashHeight
-							: (preparedAssets.embed_splash.height ?? null);
-					patch.embed_splash_width =
-						preparedAssets.embed_splash.newHash === currentGuild.embedSplashHash &&
-						currentGuild.embedSplashWidth != null
-							? currentGuild.embedSplashWidth
-							: (preparedAssets.embed_splash.width ?? null);
-				} catch (error) {
-					await this.rollbackPreparedAssets(preparedAssets);
-					throw error;
-				}
-			}
 		}
 		if (data.splash_card_alignment !== undefined) {
 			patch.splash_card_alignment = data.splash_card_alignment;
@@ -663,14 +566,12 @@ export class GuildOperationsService {
 				const cutoffDate = new Date(data.message_history_cutoff);
 				const guildCreationTimestamp = extractTimestamp(guildId.toString());
 				if (cutoffDate.getTime() < guildCreationTimestamp) {
-					await this.rollbackPreparedAssets(preparedAssets);
 					throw InputValidationError.fromCode(
 						'message_history_cutoff',
 						ValidationErrorCodes.MESSAGE_HISTORY_CUTOFF_BEFORE_GUILD_CREATION,
 					);
 				}
 				if (cutoffDate.getTime() > Date.now()) {
-					await this.rollbackPreparedAssets(preparedAssets);
 					throw InputValidationError.fromCode(
 						'message_history_cutoff',
 						ValidationErrorCodes.MESSAGE_HISTORY_CUTOFF_IN_FUTURE,
@@ -682,6 +583,7 @@ export class GuildOperationsService {
 		if (featuresChanged) {
 			patch.features = updatedFeatures;
 		}
+		const preparedAssets = await this.prepareGuildAssetUpdates(currentGuild, data, patch);
 		let updatedGuild: Guild;
 		if (Object.keys(patch).length === 0) {
 			updatedGuild = currentGuild;
@@ -689,13 +591,12 @@ export class GuildOperationsService {
 			try {
 				updatedGuild = await this.guildRepository.upsertPartial(guildId, patch, currentGuild.toRow());
 			} catch (error) {
-				await this.rollbackPreparedAssets(preparedAssets);
-				Logger.error({error, guildId}, 'Guild update failed, rolled back asset uploads');
+				Logger.error({error, guildId}, 'Guild update failed with unknown commit status; retaining uploaded assets');
 				throw error;
 			}
 		}
 		try {
-			await this.commitPreparedAssets(preparedAssets);
+			await this.entityAssetService.commitAssetChanges(preparedAssets);
 		} catch (error) {
 			Logger.error({error, guildId}, 'Failed to commit asset changes after successful guild update');
 		}
@@ -730,12 +631,6 @@ export class GuildOperationsService {
 				changes: auditLogChanges,
 			});
 		}
-		if (data.name !== undefined && currentGuild.name !== updatedGuild.name) {
-		}
-		if (data.icon !== undefined && currentGuild.iconHash !== updatedGuild.iconHash) {
-		}
-		if (data.banner !== undefined && currentGuild.bannerHash !== updatedGuild.bannerHash) {
-		}
 		return {
 			guild: mapGuildToGuildResponse(updatedGuild),
 			previousFeatures,
@@ -769,40 +664,48 @@ export class GuildOperationsService {
 		return next;
 	}
 
-	private async rollbackPreparedAssets(assets: PreparedGuildAssets): Promise<void> {
-		const rollbackPromises: Array<Promise<void>> = [];
-		if (assets.icon) {
-			rollbackPromises.push(this.entityAssetService.rollbackAssetUpload(assets.icon));
+	private async prepareGuildAssetUpdates(
+		guild: Guild,
+		data: GuildUpdateRequest,
+		patch: Partial<GuildRow>,
+	): Promise<Array<PreparedAssetUpload>> {
+		const previous = guild.toRow();
+		const preparedAssets: Array<PreparedAssetUpload> = [];
+		try {
+			for (const {field, hash, dimensions, gate} of GUILD_IMAGE_FIELDS) {
+				const image = data[field];
+				if (image === undefined) continue;
+				if (image && gate && !guild.features.has(gate.feature)) {
+					throw InputValidationError.fromCode(field, gate.error);
+				}
+				const prepared = await this.entityAssetService.prepareAssetUpload({
+					assetType: field,
+					entityType: 'guild',
+					entityId: guild.id,
+					previousHash: previous[hash],
+					base64Image: image,
+					errorPath: field,
+				});
+				preparedAssets.push(prepared);
+				if (field === 'banner' && prepared.isAnimated && !guild.features.has(GuildFeatures.ANIMATED_BANNER)) {
+					throw InputValidationError.fromCode(field, ValidationErrorCodes.ANIMATED_GUILD_BANNER_REQUIRES_FEATURE);
+				}
+				patch[hash] = prepared.newHash;
+				if (!dimensions) continue;
+				if (image === null) {
+					patch[dimensions.width] = null;
+					patch[dimensions.height] = null;
+					continue;
+				}
+				const sameHash = prepared.newHash === previous[hash];
+				patch[dimensions.width] = (sameHash ? previous[dimensions.width] : null) ?? prepared.width ?? null;
+				patch[dimensions.height] = (sameHash ? previous[dimensions.height] : null) ?? prepared.height ?? null;
+			}
+			return preparedAssets;
+		} catch (error) {
+			await Promise.all(preparedAssets.map((prepared) => this.entityAssetService.rollbackAssetUpload(prepared)));
+			throw error;
 		}
-		if (assets.banner) {
-			rollbackPromises.push(this.entityAssetService.rollbackAssetUpload(assets.banner));
-		}
-		if (assets.splash) {
-			rollbackPromises.push(this.entityAssetService.rollbackAssetUpload(assets.splash));
-		}
-		if (assets.embed_splash) {
-			rollbackPromises.push(this.entityAssetService.rollbackAssetUpload(assets.embed_splash));
-		}
-		await Promise.all(rollbackPromises);
-	}
-
-	private async commitPreparedAssets(assets: PreparedGuildAssets): Promise<void> {
-		const commitPromises: Array<Promise<void>> = [];
-		if (assets.icon) {
-			commitPromises.push(this.entityAssetService.commitAssetChange({prepared: assets.icon, deferDeletion: true}));
-		}
-		if (assets.banner) {
-			commitPromises.push(this.entityAssetService.commitAssetChange({prepared: assets.banner, deferDeletion: true}));
-		}
-		if (assets.splash) {
-			commitPromises.push(this.entityAssetService.commitAssetChange({prepared: assets.splash, deferDeletion: true}));
-		}
-		if (assets.embed_splash) {
-			commitPromises.push(
-				this.entityAssetService.commitAssetChange({prepared: assets.embed_splash, deferDeletion: true}),
-			);
-		}
-		await Promise.all(commitPromises);
 	}
 
 	async deleteGuild(

@@ -31,9 +31,10 @@ import {
 	type GuildChannelAuthContext,
 	IGatewayService,
 } from '@app/api/infrastructure/IGatewayService';
+import type {Channel} from '@app/api/models/Channel';
 import {UserRepository} from '@app/api/user/repositories/UserRepository';
 import {mapUserToPartialResponse} from '@app/api/user/UserMappers';
-import {ALL_PERMISSIONS, Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {ALL_PERMISSIONS, ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
 import type {GuildMemberResponse} from '@fluxer/schema/src/domains/guild/GuildMemberSchemas';
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
@@ -314,7 +315,9 @@ export class NoopGatewayService extends IGatewayService {
 		if (!channel) {
 			return guildPermissions;
 		}
-		return this.applyChannelOverwrites(guildPermissions, member.roleIds, channel, userId, guildId);
+		return this.applyThreadAwareOverwrites(guildPermissions, member.roleIds, channel, userId, guildId, (id) =>
+			channelRepo.findUnique(id),
+		);
 	}
 
 	async getUserPermissionsBatch(_params: {
@@ -493,13 +496,15 @@ export class NoopGatewayService extends IGatewayService {
 			return channels.map((ch) => ch.id);
 		}
 		const viewable: Array<ChannelID> = [];
+		const channelsById = new Map(channels.map((ch) => [ch.id, ch]));
 		for (const channel of channels) {
-			const channelPermissions = this.applyChannelOverwrites(
+			const channelPermissions = await this.applyThreadAwareOverwrites(
 				guildPermissions,
 				member.roleIds,
 				channel,
 				userId,
 				guildId,
+				async (id) => channelsById.get(id) ?? null,
 			);
 			if ((channelPermissions & Permissions.VIEW_CHANNEL) !== 0n) {
 				viewable.push(channel.id);
@@ -692,7 +697,14 @@ export class NoopGatewayService extends IGatewayService {
 			const channelRepo = new ChannelDataRepository();
 			const channel = await channelRepo.findUnique(channelId);
 			if (channel) {
-				userPermissions = this.applyChannelOverwrites(guildPermissions, member.roleIds, channel, userId, guildId);
+				userPermissions = await this.applyThreadAwareOverwrites(
+					guildPermissions,
+					member.roleIds,
+					channel,
+					userId,
+					guildId,
+					(id) => channelRepo.findUnique(id),
+				);
 			}
 		}
 		return (userPermissions & permission) === permission;
@@ -720,6 +732,30 @@ export class NoopGatewayService extends IGatewayService {
 					return ALL_PERMISSIONS;
 				}
 			}
+		}
+		return permissions;
+	}
+
+	// Echowire: mirror the gateway. A thread resolves against its parent's overwrites, and a private
+	// thread loses VIEW_CHANNEL for anyone without MANAGE_CHANNELS on the parent.
+	private async applyThreadAwareOverwrites(
+		basePermissions: bigint,
+		memberRoleIds: Set<RoleID>,
+		channel: Channel,
+		userId: UserID,
+		guildId: GuildID,
+		findChannel: (channelId: ChannelID) => Promise<Channel | null>,
+	): Promise<bigint> {
+		if (!THREAD_CHANNEL_TYPES.has(channel.type)) {
+			return this.applyChannelOverwrites(basePermissions, memberRoleIds, channel, userId, guildId);
+		}
+		const parent = channel.parentId ? await findChannel(channel.parentId) : null;
+		if (!parent) {
+			return basePermissions & ~Permissions.VIEW_CHANNEL;
+		}
+		const permissions = this.applyChannelOverwrites(basePermissions, memberRoleIds, parent, userId, guildId);
+		if (channel.type === ChannelTypes.PRIVATE_THREAD && (permissions & Permissions.MANAGE_CHANNELS) === 0n) {
+			return permissions & ~Permissions.VIEW_CHANNEL;
 		}
 		return permissions;
 	}

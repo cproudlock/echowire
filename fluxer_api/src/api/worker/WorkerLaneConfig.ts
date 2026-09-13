@@ -71,7 +71,7 @@ const LANE_CONFIG = {
 			'indexChannelMessages',
 			'indexGuildMembers',
 			'processAssetDeletionQueue',
-			'processBunnyPurgeQueue',
+			'processCachePurgeQueue',
 			'processExpiredPremiumSweep',
 			'processInactivityDeletions',
 			'processPendingBulkMessageDeletions',

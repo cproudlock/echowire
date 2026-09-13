@@ -64,28 +64,28 @@ describe('UpdaterDownloads Linux manual update options', () => {
 				format: 'appimage',
 				label: 'AppImage',
 				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/appimage',
-				suggestedName: 'Fluxer-2026.910.101500-linux-x86_64.AppImage',
+				suggestedName: 'echowire-2026.910.101500-linux-x86_64.AppImage',
 				sha256: APPIMAGE_SHA256,
 			},
 			{
 				format: 'deb',
 				label: 'DEB package',
 				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/deb',
-				suggestedName: 'Fluxer-2026.910.101500-linux-amd64.deb',
+				suggestedName: 'echowire-2026.910.101500-linux-amd64.deb',
 				sha256: DEB_SHA256,
 			},
 			{
 				format: 'rpm',
 				label: 'RPM package',
 				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/rpm',
-				suggestedName: 'Fluxer-2026.910.101500-linux-x86_64.rpm',
+				suggestedName: 'echowire-2026.910.101500-linux-x86_64.rpm',
 				sha256: null,
 			},
 			{
 				format: 'tar_gz',
 				label: 'tar.gz archive',
 				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/tar_gz',
-				suggestedName: 'Fluxer-2026.910.101500-linux-x64.tar.gz',
+				suggestedName: 'echowire-2026.910.101500-linux-x64.tar.gz',
 				sha256: TAR_GZ_SHA256,
 			},
 		]);
@@ -128,9 +128,9 @@ describe('UpdaterDownloads Linux manual update options', () => {
 		);
 
 		assert.equal(stableDeb.url, 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/deb');
-		assert.equal(stableDeb.suggestedName, 'Fluxer-2026.910.101500-linux-amd64.deb');
+		assert.equal(stableDeb.suggestedName, 'echowire-2026.910.101500-linux-amd64.deb');
 		assert.equal(canaryDeb.url, 'https://api.canary.fluxer.app/dl/desktop/canary/linux/x64/2026.910.101500/deb');
-		assert.equal(canaryDeb.suggestedName, 'Fluxer-Canary-2026.910.101500-linux-amd64.deb');
+		assert.equal(canaryDeb.suggestedName, 'echowire-canary-2026.910.101500-linux-amd64.deb');
 	});
 
 	test('only ever fetches 2026.908.173325 for a prompt built from that release', () => {
@@ -144,7 +144,7 @@ describe('UpdaterDownloads Linux manual update options', () => {
 		const options = structuredClone(getManualDownloadOptions(info));
 		const deb = options.find((option) => option.format === 'deb');
 
-		assert.equal(deb.suggestedName, 'Fluxer-Canary-2026.908.173325-linux-amd64.deb');
+		assert.equal(deb.suggestedName, 'echowire-canary-2026.908.173325-linux-amd64.deb');
 		assert.equal(deb.url, 'https://api.canary.fluxer.app/dl/desktop/canary/linux/x64/2026.908.173325/deb');
 		assert.equal(deb.sha256, DEB_SHA256);
 		assert.equal(options.length, 4);
@@ -152,7 +152,7 @@ describe('UpdaterDownloads Linux manual update options', () => {
 			const [format, version] = new URL(option.url).pathname.split('/').reverse();
 			assert.equal(format, option.format);
 			assert.equal(version, '2026.908.173325');
-			assert.match(option.suggestedName, /^Fluxer-Canary-2026\.908\.173325-linux-/);
+			assert.match(option.suggestedName, /^echowire-canary-2026\.908\.173325-linux-/);
 		}
 		assert.equal(
 			getManualDownloadUrl(info),

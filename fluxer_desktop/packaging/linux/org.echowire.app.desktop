@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 [Desktop Entry]
-Name=Echowire
+Name=echowire
 GenericName=Instant Messenger
 Comment=Instant messaging and VoIP
 Exec=org.echowire.app %U

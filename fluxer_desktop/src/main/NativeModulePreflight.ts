@@ -383,5 +383,5 @@ export function runNativeModulePreflight(): void {
 	}
 	clearPreflightMarker();
 	const details = failures.map(formatNativeModulePreflightFailure).join('\n');
-	throw new Error(`Echowire native module preflight failed on ${process.platform}/${process.arch}.\n${details}`);
+	throw new Error(`echowire native module preflight failed on ${process.platform}/${process.arch}.\n${details}`);
 }

@@ -393,7 +393,7 @@ function buildLinuxDesktopFileContents(): string {
 		'[Desktop Entry]',
 		'Type=Application',
 		`Name=${escapeDesktopEntry(APP_NAME)}`,
-		'Comment=Echowire',
+		'Comment=echowire',
 		`Exec=${escapeDesktopEntry(execLine)}`,
 		`TryExec=${escapeDesktopEntry(execPath)}`,
 		'Terminal=false',

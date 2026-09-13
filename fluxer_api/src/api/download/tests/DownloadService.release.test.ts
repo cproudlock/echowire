@@ -35,7 +35,7 @@ function sha256Hex(value: string): string {
 }
 
 function appImageFilename(version: string): string {
-	return `Echowire-Canary-${version}-linux-x86_64.AppImage`;
+	return `echowire-canary-${version}-linux-x86_64.AppImage`;
 }
 
 function uploadBuild(objects: StoredObjects, version: string, options: {prefix?: string; checksum?: boolean} = {}) {
@@ -64,7 +64,7 @@ function publishDescriptor(objects: StoredObjects, version: string, routes = REL
 			const filename =
 				plat === 'linux' && arch === 'x64' && index === 0
 					? appImageFilename(version)
-					: `Echowire-Canary-${version}-${plat}-${arch}-${index}.bin`;
+					: `echowire-canary-${version}-${plat}-${arch}-${index}.bin`;
 			return {
 				storage_key: `desktop/canary/${plat}/${arch}/${filename}`,
 				release_asset: filename,
@@ -292,7 +292,7 @@ describe('desktop release readiness', () => {
 		await expect(resolveLatest(service)).resolves.toEqual(latestOf(V909));
 		await expect(service.resolveGitHubDesktopRelease(`${PREFIX}/${appImageFilename(V909)}`)).resolves.toEqual({
 			kind: 'ready',
-			location: `https://github.com/fluxerapp/fluxer/releases/download/${encodeURIComponent(`fluxer-desktop-canary@${V909}`)}/${appImageFilename(V909)}`,
+			location: `https://github.com/cproudlock/echowire/releases/download/${encodeURIComponent(`fluxer-desktop-canary@${V909}`)}/${appImageFilename(V909)}`,
 		});
 	});
 

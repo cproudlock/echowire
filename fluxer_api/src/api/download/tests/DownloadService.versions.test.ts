@@ -60,6 +60,22 @@ function versionNumbers(versions: Array<{version: string}>): Array<string> {
 }
 
 describe('desktop version listing', () => {
+	// Echowire: new builds publish lowercase artifact names, while earlier builds in the bucket
+	// use `Echowire-Canary-*` and `Echowire Canary-*`. All three must list side by side.
+	it('lists lowercase, hyphenated legacy and spaced legacy artifact names together', async () => {
+		const objects: StoredObjects = new Map();
+		addArtifact(objects, `Echowire Canary-${V1}-linux-x86_64.AppImage`, {
+			lastModified: new Date('2026-09-01T10:00:00Z'),
+		});
+		addArtifact(objects, appImageFilename(V2), {lastModified: new Date('2026-09-02T10:00:00Z')});
+		addArtifact(objects, `echowire-canary-${V3}-linux-x86_64.AppImage`, {
+			lastModified: new Date('2026-09-03T10:00:00Z'),
+		});
+		const {service} = createService(objects);
+		const listed = await service.listDesktopVersions({...LIST_PARAMS, limit: 10});
+		expect(versionNumbers(listed.versions)).toEqual([V3, V2, V1]);
+	});
+
 	it('lists versions newest first with the files of each version', async () => {
 		const objects: StoredObjects = new Map();
 		addArtifact(objects, appImageFilename(V1), {lastModified: new Date('2026-09-01T10:00:00Z')});

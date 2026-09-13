@@ -85,7 +85,7 @@ function buildManualVersionDownloadUrl(version: string, format: ManualDesktopFor
 }
 
 function getArtifactProductName(): string {
-	return BUILD_CHANNEL === 'canary' ? 'Echowire-Canary' : 'Echowire';
+	return BUILD_CHANNEL === 'canary' ? 'echowire-canary' : 'echowire';
 }
 
 function getManualUpdateSuggestedName(format: LinuxManualDesktopFormat, version: string): string {

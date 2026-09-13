@@ -3,16 +3,16 @@
 <component type="desktop-application">
     <id>org.echowire.app</id>
     <launchable type="desktop-id">org.echowire.app.desktop</launchable>
-    <name>Echowire</name>
+    <name>echowire</name>
     <developer id="org.echowire">
-        <name>Echowire</name>
+        <name>echowire</name>
     </developer>
     <summary>Instant messaging and VoIP</summary>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>AGPL-3.0-or-later</project_license>
     <icon type="stock">org.echowire.app</icon>
     <description>
-        <p>Echowire is a free and open-source instant messaging and voice-over-IP application. It provides text chat, voice calls, video calls, and screen sharing in a modern interface.</p>
+        <p>echowire is a free and open-source instant messaging and voice-over-IP application. It provides text chat, voice calls, video calls, and screen sharing in a modern interface.</p>
         <p>Features include:</p>
         <ul>
             <li>Text messaging with rich formatting and media support</li>
@@ -43,7 +43,7 @@
     </branding>
     <screenshots>
         <screenshot type="default">
-            <caption>The main Echowire window.</caption>
+            <caption>The main echowire window.</caption>
             <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.avif</image>
         </screenshot>
     </screenshots>

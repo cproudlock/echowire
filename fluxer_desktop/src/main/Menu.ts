@@ -11,7 +11,7 @@ const MACOS_HELP_MENU_TITLE_AUTODETECT_OPT_OUT = '\u200C';
 
 function buildTemplate(): Array<MenuItemConstructorOptions> {
 	const isCanary = BUILD_CHANNEL === 'canary';
-	const appName = isCanary ? 'Echowire Canary' : 'Echowire';
+	const appName = isCanary ? 'echowire canary' : 'echowire';
 	const isMac = process.platform === 'darwin';
 	const template: Array<MenuItemConstructorOptions> = [];
 	if (isMac) {

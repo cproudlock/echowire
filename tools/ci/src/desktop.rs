@@ -1931,7 +1931,13 @@ struct VelopackAssetIndexEntry {
 
 fn windows_package_config(build_channel: &str, arch: &str) -> WindowsPackageConfig {
     let canary = build_channel == "canary";
-    let pack_title = if canary { "Fluxer Canary" } else { "Fluxer" };
+    // Echowire: pack_title must equal electron-builder productName, because main_exe is
+    // derived from it, and artifact_prefix must match desktop_release_product in release.rs.
+    let pack_title = if canary {
+        "echowire canary"
+    } else {
+        "echowire"
+    };
     WindowsPackageConfig {
         pack_id: if canary {
             "fluxer_desktop_canary"
@@ -1939,7 +1945,11 @@ fn windows_package_config(build_channel: &str, arch: &str) -> WindowsPackageConf
             "fluxer_desktop"
         },
         pack_title,
-        artifact_prefix: if canary { "Fluxer-Canary" } else { "Fluxer" },
+        artifact_prefix: if canary {
+            "echowire-canary"
+        } else {
+            "echowire"
+        },
         icon_dir: if canary {
             "icons-canary"
         } else {
@@ -5703,12 +5713,14 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
         let stable = windows_package_config("stable", "x64");
         assert_eq!(stable.pack_id, "fluxer_desktop");
         assert_eq!(stable.runtime, "win-x64");
-        assert_eq!(stable.main_exe, "Fluxer.exe");
+        assert_eq!(stable.main_exe, "echowire.exe");
+        assert_eq!(stable.artifact_prefix, "echowire");
 
         let canary = windows_package_config("canary", "arm64");
         assert_eq!(canary.pack_id, "fluxer_desktop_canary");
         assert_eq!(canary.runtime, "win-arm64");
-        assert_eq!(canary.main_exe, "Fluxer Canary.exe");
+        assert_eq!(canary.main_exe, "echowire canary.exe");
+        assert_eq!(canary.artifact_prefix, "echowire-canary");
     }
 
     #[test]

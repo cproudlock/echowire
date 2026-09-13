@@ -9,6 +9,7 @@ import {shouldShowHdrSettings} from '@app/features/user/components/modals/tabs/a
 import {shouldShowAppZoomLevel} from '@app/features/user/components/settings_utils/AppZoomLevelUtils';
 import type {SectionDefinition} from '@app/features/user/components/settings_utils/section_registry/SectionRegistryTypes';
 import {
+	CAT_DESCRIPTOR,
 	CHANNEL_LIST_DESCRIPTOR,
 	CHAT_INPUT_DESCRIPTOR,
 	COLOR_DESCRIPTOR,
@@ -23,6 +24,7 @@ import {
 	MUTED_DESCRIPTOR,
 	NAVIGATION_DESCRIPTOR,
 	NEKO_DESCRIPTOR,
+	PICKLES_DESCRIPTOR,
 	SHOW_NEKO_DESCRIPTOR,
 	SIDEBAR_2_DESCRIPTOR,
 	TYPING_DESCRIPTOR,
@@ -615,6 +617,8 @@ export const appearanceSections = [
 			SHORTCUT_BADGES_DESCRIPTOR,
 			KEYBOARD_SHORTCUTS_DESCRIPTOR,
 			SHOW_NEKO_DESCRIPTOR,
+			PICKLES_DESCRIPTOR,
+			CAT_DESCRIPTOR,
 			NEKO_DESCRIPTOR,
 			CHAT_INPUT_DESCRIPTOR,
 			VOICE_CHANNEL_DESCRIPTOR,

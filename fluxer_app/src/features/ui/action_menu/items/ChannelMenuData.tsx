@@ -27,6 +27,7 @@ import {
 	UNPIN_DM_DESCRIPTOR,
 	UNPIN_GROUP_DM_DESCRIPTOR,
 } from '@app/features/channel/utils/ChannelMessageDescriptors';
+import {forumHasUnreadPosts, markForumRead} from '@app/features/channel/utils/ForumReadState';
 import {ChannelDebugModal} from '@app/features/devtools/components/debug/ChannelDebugModal';
 import {GuildNotificationSettingsModal} from '@app/features/guild/components/modals/GuildNotificationSettingsModal';
 import {useLeaveGroup} from '@app/features/guild/hooks/useLeaveGroup';
@@ -195,6 +196,9 @@ export interface ChannelMenuState {
 	isTextChannel: boolean;
 	isVoiceChannel: boolean;
 	isLinkChannel: boolean;
+	// Echowire: forum channels and threads/posts get the text channel menu.
+	isForumChannel: boolean;
+	isThreadChannel: boolean;
 	isOwner: boolean;
 	isMuted: boolean;
 	isFavorited: boolean;
@@ -211,7 +215,9 @@ function getChannelMenuState(channel: Channel, guild: Guild | undefined): Channe
 	const currentUserId = Authentication.currentUserId;
 	const isGroupDM = channel.type === ChannelTypes.GROUP_DM;
 	const isDM = channel.type === ChannelTypes.DM;
-	const isTextChannel = channel.type === ChannelTypes.GUILD_TEXT;
+	const isForumChannel = channel.isForum();
+	const isThreadChannel = channel.isThread();
+	const isTextChannel = channel.type === ChannelTypes.GUILD_TEXT || isForumChannel || isThreadChannel;
 	const isVoiceChannel = channel.type === ChannelTypes.GUILD_VOICE;
 	const isLinkChannel = channel.type === ChannelTypes.GUILD_LINK;
 	const isOwner = isGroupDM && channel.ownerId === currentUserId;
@@ -222,9 +228,9 @@ function getChannelMenuState(channel: Channel, guild: Guild | undefined): Channe
 	const mutedText = getMutedText(isMuted, muteConfig);
 	const isFavorited = !!Favorites.getChannel(channel.id);
 	const readState = ReadStates.get(channel.id);
-	const hasUnread = readState.hasUnread();
+	const hasUnread = isForumChannel ? forumHasUnreadPosts(channel) : readState.hasUnread();
 	const canManageChannels = Permission.can(Permissions.MANAGE_CHANNELS, {
-		channelId: channel.id,
+		channelId: isThreadChannel ? (channel.parentId ?? channel.id) : channel.id,
 		guildId: channel.guildId,
 	});
 	const canUpdateRtcRegion =
@@ -243,6 +249,8 @@ function getChannelMenuState(channel: Channel, guild: Guild | undefined): Channe
 		isTextChannel,
 		isVoiceChannel,
 		isLinkChannel,
+		isForumChannel,
+		isThreadChannel,
 		isOwner,
 		isMuted,
 		isFavorited,
@@ -266,11 +274,19 @@ export function useChannelMenuData(
 	const leaveGroup = useLeaveGroup();
 	const deleteMyMessagesInChannel = useDeleteMyMessagesInChannel();
 	const state = getChannelMenuState(channel, guild);
-	const initialHasUnread = useMemo(() => ReadStates.hasUnread(channel.id), [channel.id]);
+	const initialHasUnread = useMemo(
+		() => (channel.isForum() ? forumHasUnreadPosts(channel) : ReadStates.hasUnread(channel.id)),
+		[channel],
+	);
 	const showMarkAsReadItem = preserveInitialMarkAsReadVisibility ? initialHasUnread : state.hasUnread;
 	const handlers = useMemo(
 		() => ({
 			handleMarkAsRead: () => {
+				if (channel.isForum()) {
+					markForumRead(channel);
+					onClose();
+					return;
+				}
 				ReadStateCommands.ack(channel.id, true, true);
 				onClose();
 			},
@@ -702,7 +718,7 @@ export function useChannelMenuData(
 				onClick: handlers.handleNotificationSettings,
 			});
 			menuGroups.push({items: notificationItems});
-			if (state.canEditChannel) {
+			if (state.canEditChannel && !state.isThreadChannel) {
 				const manageItems: Array<MenuItemType> = [
 					{
 						icon: <SettingsIcon size={20} data-flx="ui.action-menu.items.channel-menu-data.groups.settings-icon" />,
@@ -751,7 +767,7 @@ export function useChannelMenuData(
 			});
 			menuGroups.push({items: debugItems});
 			const destructiveItems: Array<MenuItemType> = [];
-			if (state.canManageChannels) {
+			if (state.canManageChannels && !state.isThreadChannel) {
 				destructiveItems.push({
 					icon: <DeleteIcon size={20} data-flx="ui.action-menu.items.channel-menu-data.groups.delete-icon--4" />,
 					label: i18n._(DELETE_CHANNEL_DESCRIPTOR),

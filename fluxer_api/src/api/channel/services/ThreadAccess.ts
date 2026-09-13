@@ -11,6 +11,7 @@ import type {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadM
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {Channel} from '@app/api/models/Channel';
 import {ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 
 type ThreadLike = Pick<Channel, 'id' | 'type' | 'parentId'>;
 
@@ -29,6 +30,22 @@ export function permissionChannelId(channel: ThreadLike): ChannelID | null {
 
 export function hasPermissionBits(permissions: bigint, required: bigint): boolean {
 	return (permissions & required) === required;
+}
+
+// The gateway cannot look up thread membership, so a private thread's payload to it (THREAD_CREATE,
+// THREAD_UPDATE, the guild channel collection) carries the member ids. Members are the only
+// non-moderators who can view a private thread, and they can already list its members.
+export async function withPrivateThreadMemberIds(params: {
+	channel: Pick<Channel, 'id' | 'type'>;
+	response: ChannelResponse;
+	threadMemberRepository: ThreadMemberRepository;
+}): Promise<ChannelResponse> {
+	const {channel, response, threadMemberRepository} = params;
+	if (channel.type !== ChannelTypes.PRIVATE_THREAD) {
+		return response;
+	}
+	const members = await threadMemberRepository.listMembers(channel.id);
+	return {...response, thread_member_ids: members.map((member) => member.userId.toString())};
 }
 
 // Private-thread gate, given the caller's permissions on the parent channel.

@@ -15,8 +15,10 @@ import {
 import {Config} from '@app/api/Config';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {buildBroadcastMessageData} from '@app/api/channel/services/message/MessageGatewayDispatch';
 import {ensurePersonalNotesChannelExists} from '@app/api/channel/services/PersonalNotesChannelRepair';
+import {withPrivateThreadMemberIds} from '@app/api/channel/services/ThreadAccess';
 import {mapFavoriteMemeToResponse} from '@app/api/favorite_meme/FavoriteMemeModel';
 import type {IFavoriteMemeRepository} from '@app/api/favorite_meme/IFavoriteMemeRepository';
 import {
@@ -1303,13 +1305,19 @@ export class RpcService {
 		this.repairOrphanedInvitesAndWebhooks({guild: repairedGuild, channels}).catch((error) => {
 			Logger.warn({guildId: guildId.toString(), error}, 'Failed to repair orphaned invites/webhooks');
 		});
+		// Echowire: private threads carry their member ids so the gateway can admit members.
+		const threadMemberRepository = new ThreadMemberRepository();
 		const mappedChannels = await Promise.all(
-			channels.map((channel) =>
-				mapChannelToResponse({
+			channels.map(async (channel) =>
+				withPrivateThreadMemberIds({
 					channel,
-					currentUserId: null,
-					userCacheService: this.userCacheService,
-					requestCache,
+					response: await mapChannelToResponse({
+						channel,
+						currentUserId: null,
+						userCacheService: this.userCacheService,
+						requestCache,
+					}),
+					threadMemberRepository,
 				}),
 			),
 		);

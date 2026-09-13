@@ -196,6 +196,10 @@ export const ChannelResponse = z.object({
 		.nullish()
 		.describe('Thread metadata; present only for thread channels'),
 	member_count: Int32Type.optional().describe('Approximate count of members in the thread (threads only)'),
+	thread_member_ids: z
+		.array(SnowflakeStringType)
+		.optional()
+		.describe('Member IDs of a private thread, so the gateway can deliver its events to members'),
 	message_count: Int32Type.optional().describe('Approximate count of messages in the thread (threads only)'),
 	pinned: z.boolean().optional().describe('Whether this forum post / thread is pinned to the top'),
 	starter_message_preview: ThreadStarterMessagePreviewResponse.nullish().describe(
@@ -297,6 +301,7 @@ export interface Channel {
 		readonly create_timestamp?: string | null;
 	} | null;
 	readonly member_count?: number;
+	readonly thread_member_ids?: ReadonlyArray<string>;
 	readonly message_count?: number;
 	readonly pinned?: boolean;
 	readonly starter_message_preview?: ThreadStarterMessagePreviewResponse | null;

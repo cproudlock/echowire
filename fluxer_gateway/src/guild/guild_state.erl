@@ -82,6 +82,8 @@ update_channel_event(thread_update, ED, D) ->
     guild_state_channels:handle_channel_update(ED, D);
 update_channel_event(thread_delete, ED, D) ->
     guild_state_channels:handle_channel_delete(ED, D);
+update_channel_event(thread_members_update, ED, D) ->
+    guild_state_channels:handle_thread_members_update(ED, D);
 update_channel_event(message_create, ED, D) ->
     guild_state_channels:handle_message_create(ED, D);
 update_channel_event(channel_pins_update, ED, D) ->

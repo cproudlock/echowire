@@ -8,6 +8,8 @@
 import {createChannelID} from '@app/api/BrandedTypes';
 import {Config} from '@app/api/Config';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
+import {withPrivateThreadMemberIds} from '@app/api/channel/services/ThreadAccess';
 import {createRequestCache} from '@app/api/middleware/RequestCacheMiddleware';
 import {getWorkerDependencies} from '@app/api/worker/WorkerContext';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
@@ -47,6 +49,7 @@ const archiveInactiveThreads: WorkerTaskHandler = async (_payload, helpers) => {
 	}
 	const {channelRepository, gatewayService, userCacheService} = getWorkerDependencies();
 	const client = getDefaultPostgresClient();
+	const threadMemberRepository = new ThreadMemberRepository();
 	const now = Date.now();
 	let archivedCount = 0;
 	let cursor = '';
@@ -86,11 +89,16 @@ const archiveInactiveThreads: WorkerTaskHandler = async (_payload, helpers) => {
 			try {
 				const archived = await channelRepository.findUnique(channelId);
 				if (archived) {
-					const data = await mapChannelToResponse({
+					const response = await mapChannelToResponse({
 						channel: archived,
 						currentUserId: null,
 						userCacheService,
 						requestCache: createRequestCache(),
+					});
+					const data = await withPrivateThreadMemberIds({
+						channel: archived,
+						response,
+						threadMemberRepository,
 					});
 					await gatewayService.dispatchGuild({guildId: channel.guildId, event: 'THREAD_UPDATE', data});
 				}

@@ -22,6 +22,7 @@ import {
 	canViewThread,
 	getThreadParentPermissions,
 	hasPermissionBits,
+	withPrivateThreadMemberIds,
 } from '@app/api/channel/services/ThreadAccess';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
@@ -427,10 +428,19 @@ export class ChannelOperationsService {
 			userCacheService: this.userCacheService,
 			requestCache: params.requestCache,
 		});
-		await this.gatewayService.dispatchGuild({guildId, event: 'THREAD_CREATE', data: response});
-		// Echowire: the creator auto-joins the thread (member_count was seeded to 1 on the row above),
-		// and clients learn about it the same way as any other join.
+		// Echowire: the creator auto-joins the thread (member_count was seeded to 1 on the row above)
+		// before THREAD_CREATE, so a private thread's creator is already a member when the gateway
+		// filters the event. Clients learn about the join the same way as any other.
 		const creatorMember = await this.threadMemberRepository.addMember(channelId, params.userId);
+		await this.gatewayService.dispatchGuild({
+			guildId,
+			event: 'THREAD_CREATE',
+			data: await withPrivateThreadMemberIds({
+				channel,
+				response,
+				threadMemberRepository: this.threadMemberRepository,
+			}),
+		});
 		await this.gatewayService.dispatchGuild({
 			guildId,
 			event: 'THREAD_MEMBERS_UPDATE',
@@ -713,7 +723,15 @@ export class ChannelOperationsService {
 			userCacheService: this.userCacheService,
 			requestCache: params.requestCache,
 		});
-		await this.gatewayService.dispatchGuild({guildId: thread.guildId, event: 'THREAD_UPDATE', data: response});
+		await this.gatewayService.dispatchGuild({
+			guildId: thread.guildId,
+			event: 'THREAD_UPDATE',
+			data: await withPrivateThreadMemberIds({
+				channel,
+				response,
+				threadMemberRepository: this.threadMemberRepository,
+			}),
+		});
 		if (data.pinned === true && !row.thread_pinned) {
 			await this.unpinOtherForumPosts(channel, params.requestCache);
 		}
@@ -749,7 +767,15 @@ export class ChannelOperationsService {
 				userCacheService: this.userCacheService,
 				requestCache,
 			});
-			await this.gatewayService.dispatchGuild({guildId: pinned.guildId, event: 'THREAD_UPDATE', data});
+			await this.gatewayService.dispatchGuild({
+				guildId: pinned.guildId,
+				event: 'THREAD_UPDATE',
+				data: await withPrivateThreadMemberIds({
+					channel: unpinned,
+					response: data,
+					threadMemberRepository: this.threadMemberRepository,
+				}),
+			});
 		}
 	}
 

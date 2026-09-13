@@ -10,6 +10,7 @@ import {isPersonalNotesChannel} from '@app/api/channel/services/message/MessageH
 import type {MessageMentionService} from '@app/api/channel/services/message/MessageMentionService';
 import type {MessagePersistenceService} from '@app/api/channel/services/message/MessagePersistenceService';
 import {incrementDmMentionCounts} from '@app/api/channel/services/message/ReadStateHelpers';
+import {withPrivateThreadMemberIds} from '@app/api/channel/services/ThreadAccess';
 import type {GatewayChannelMention, IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {UserCacheService} from '@app/api/infrastructure/UserCacheService';
 import {Logger} from '@app/api/Logger';
@@ -89,11 +90,16 @@ export class MessageProcessingService {
 			if (!reopened) {
 				return;
 			}
-			const data = await mapChannelToResponse({
+			const response = await mapChannelToResponse({
 				channel: reopened,
 				currentUserId: null,
 				userCacheService: this.userCacheService,
 				requestCache: createRequestCache(),
+			});
+			const data = await withPrivateThreadMemberIds({
+				channel: reopened,
+				response,
+				threadMemberRepository: new ThreadMemberRepository(),
 			});
 			await this.gatewayService.dispatchGuild({guildId: channel.guildId, event: 'THREAD_UPDATE', data});
 		} catch (error) {

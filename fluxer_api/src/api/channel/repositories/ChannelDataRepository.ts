@@ -14,7 +14,7 @@ import {
 	fetchOne,
 	upsertOne,
 } from '@app/api/database/CassandraQueryExecution';
-import {Db} from '@app/api/database/CassandraTypes';
+import {Db, type DbOp} from '@app/api/database/CassandraTypes';
 import {buildPatchFromData, executeVersionedUpdate} from '@app/api/database/CassandraVersionedUpdate';
 import type {ChannelRow} from '@app/api/database/types/ChannelTypes';
 import {CHANNEL_COLUMNS} from '@app/api/database/types/ChannelTypes';
@@ -22,6 +22,18 @@ import {Logger} from '@app/api/Logger';
 import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
 import {Channel} from '@app/api/models/Channel';
 import {Channels, ChannelsByGuild, PrivateChannels} from '@app/api/Tables';
+import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+
+// Echowire: thread columns that change independently of the rest of the row. They are written
+// with a targeted patch, never a full-row upsert from a possibly stale snapshot, so a concurrent
+// message send cannot roll back last_message_id or the message count.
+export type ThreadPatchableColumn =
+	| 'thread_archived'
+	| 'thread_archive_timestamp'
+	| 'thread_locked'
+	| 'thread_pinned'
+	| 'thread_member_count'
+	| 'thread_message_count';
 
 const FETCH_CHANNEL_BY_ID = Channels.select({
 	where: [Channels.where.eq('channel_id'), Channels.where.eq('soft_deleted')],
@@ -94,10 +106,51 @@ export class ChannelDataRepository extends IChannelDataRepository {
 		if (!existing) return;
 		const prev = existing.last_message_id ?? null;
 		if (prev !== null && messageId <= prev) return;
-		await upsertOne(
-			Channels.patchByPk({channel_id: channelId, soft_deleted: false}, {last_message_id: Db.set(messageId)}),
-		);
+		const patch: Partial<Record<'last_message_id' | 'thread_message_count', DbOp<unknown>>> = {
+			last_message_id: Db.set(messageId),
+		};
+		// Echowire: a new message in a thread bumps its message count in the same write. The first
+		// message of a forum post is the starter message, which Discord does not count.
+		if (THREAD_CHANNEL_TYPES.has(existing.type) && !(await this.isForumPostStarter(existing, prev))) {
+			patch.thread_message_count = Db.set((existing.thread_message_count ?? 0) + 1);
+		}
+		await upsertOne(Channels.patchByPk({channel_id: channelId, soft_deleted: false}, patch as never));
 		void this.fanOutPrivateChannelLastMessageId(existing, messageId);
+	}
+
+	private async isForumPostStarter(thread: ChannelRow, previousLastMessageId: MessageID | null): Promise<boolean> {
+		if (previousLastMessageId !== null || !thread.parent_id) return false;
+		const parent = await fetchOne<ChannelRow>(
+			FETCH_CHANNEL_BY_ID.bind({channel_id: thread.parent_id, soft_deleted: false}),
+		);
+		return parent?.type === ChannelTypes.GUILD_FORUM;
+	}
+
+	async patchThreadFields(
+		channelId: ChannelID,
+		fields: Partial<Pick<ChannelRow, ThreadPatchableColumn>>,
+	): Promise<void> {
+		const patch: Record<string, DbOp<unknown>> = {};
+		for (const [column, value] of Object.entries(fields)) {
+			if (value === undefined) continue;
+			patch[column] = value === null ? Db.clear() : Db.set(value);
+		}
+		if (Object.keys(patch).length === 0) return;
+		this.requestCache?.channels.delete(channelId);
+		await upsertOne(Channels.patchByPk({channel_id: channelId, soft_deleted: false}, patch as never));
+	}
+
+	async adjustThreadMessageCount(channelId: ChannelID, delta: number): Promise<void> {
+		if (delta === 0) return;
+		const existing = await fetchOne<ChannelRow>(FETCH_CHANNEL_BY_ID.bind({channel_id: channelId, soft_deleted: false}));
+		if (!existing || !THREAD_CHANNEL_TYPES.has(existing.type)) return;
+		const current = existing.thread_message_count ?? 0;
+		const next = Math.max(0, current + delta);
+		if (next === current) return;
+		this.requestCache?.channels.delete(channelId);
+		await upsertOne(
+			Channels.patchByPk({channel_id: channelId, soft_deleted: false}, {thread_message_count: Db.set(next)}),
+		);
 	}
 
 	private async writeThroughPrivateChannelMetadata(row: ChannelRow): Promise<void> {

@@ -176,7 +176,10 @@ export class MessageDeleteService {
 				purgeMessageAttachments(message, this.deps.storageService, this.deps.purgeQueue),
 			),
 		);
-		await this.deps.channelRepository.messages.bulkDeleteMessages(channelId, messageIds);
+		await this.deps.channelRepository.messages.bulkDeleteMessages(
+			channelId,
+			existingMessages.map((message) => message.id),
+		);
 		await this.deps.dispatchService.dispatchMessageDeleteBulk({channel, messageIds});
 		if (channel.guildId && existingMessages.length > 0) {
 			await this.guildAuditLogService

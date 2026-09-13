@@ -419,8 +419,26 @@ export class ChannelOperationsService {
 			requestCache: params.requestCache,
 		});
 		await this.gatewayService.dispatchGuild({guildId, event: 'THREAD_CREATE', data: response});
-		// Echowire: the creator auto-joins the thread (member_count was seeded to 1 on the row above).
-		await this.threadMemberRepository.addMember(channelId, params.userId);
+		// Echowire: the creator auto-joins the thread (member_count was seeded to 1 on the row above),
+		// and clients learn about it the same way as any other join.
+		const creatorMember = await this.threadMemberRepository.addMember(channelId, params.userId);
+		await this.gatewayService.dispatchGuild({
+			guildId,
+			event: 'THREAD_MEMBERS_UPDATE',
+			data: {
+				id: channelId.toString(),
+				guild_id: guildId.toString(),
+				member_count: 1,
+				added_members: [
+					{
+						id: channelId.toString(),
+						user_id: params.userId.toString(),
+						join_timestamp: creatorMember.joinTimestamp.toISOString(),
+						flags: creatorMember.flags,
+					},
+				],
+			},
+		});
 		// Echowire: drop a "started a thread" system message in the parent channel (Discord
 		// parity). Best-effort — a failure here must not fail thread creation.
 		try {
@@ -526,9 +544,22 @@ export class ChannelOperationsService {
 		}
 		// Echowire: the caller must be able to see the thread, and then be its owner or hold
 		// MANAGE_CHANNELS on the parent channel.
-		await this.assertCanManageThread(thread, params.userId);
+		const {isModerator} = await this.assertCanManageThread(thread, params.userId);
 		const row = thread.toRow();
 		const {data} = params;
+		// Echowire: owners may rename, retag, change auto-archive, and close or reopen their own
+		// unlocked thread. Locking, pinning, invitability, and anything on a locked thread's archive
+		// state are for moderators only.
+		if (!isModerator) {
+			const moderatorOnlyChange =
+				data.locked !== undefined ||
+				data.pinned !== undefined ||
+				data.invitable !== undefined ||
+				(data.archived !== undefined && row.thread_locked === true);
+			if (moderatorOnlyChange) {
+				throw new MissingPermissionsError();
+			}
+		}
 		// Echowire: editing a forum post's tags — validate against the parent forum's available_tags.
 		let appliedTags = row.applied_tags;
 		if (data.applied_tags !== undefined) {
@@ -564,7 +595,43 @@ export class ChannelOperationsService {
 			requestCache: params.requestCache,
 		});
 		await this.gatewayService.dispatchGuild({guildId: thread.guildId, event: 'THREAD_UPDATE', data: response});
+		if (data.pinned === true && !row.thread_pinned) {
+			await this.unpinOtherForumPosts(channel, params.requestCache);
+		}
 		return response;
+	}
+
+	// Echowire: a forum shows a single pinned post, so pinning one unpins the rest.
+	private async unpinOtherForumPosts(pinned: Channel, requestCache: RequestCache): Promise<void> {
+		if (!pinned.guildId || !pinned.parentId) {
+			return;
+		}
+		const parent = await this.channelRepository.findUnique(pinned.parentId);
+		if (!parent || parent.type !== ChannelTypes.GUILD_FORUM) {
+			return;
+		}
+		const channels = await this.channelRepository.listGuildChannels(pinned.guildId);
+		const others = channels.filter(
+			(channel) =>
+				channel.id !== pinned.id &&
+				channel.parentId === pinned.parentId &&
+				THREAD_CHANNEL_TYPES.has(channel.type) &&
+				channel.pinned,
+		);
+		for (const other of others) {
+			await this.channelRepository.channelData.patchThreadFields(other.id, {thread_pinned: false});
+			const unpinned = await this.channelRepository.findUnique(other.id);
+			if (!unpinned) {
+				continue;
+			}
+			const data = await mapChannelToResponse({
+				channel: unpinned,
+				currentUserId: null,
+				userCacheService: this.userCacheService,
+				requestCache,
+			});
+			await this.gatewayService.dispatchGuild({guildId: pinned.guildId, event: 'THREAD_UPDATE', data});
+		}
 	}
 
 	// Echowire: delete a thread.
@@ -575,6 +642,8 @@ export class ChannelOperationsService {
 		}
 		await this.assertCanManageThread(thread, params.userId);
 		await this.channelRepository.delete(thread.id, thread.guildId);
+		// Echowire: a deleted thread keeps no membership rows behind.
+		await this.threadMemberRepository.removeAllMembers(thread.id);
 		await this.gatewayService.dispatchGuild({
 			guildId: thread.guildId,
 			event: 'THREAD_DELETE',
@@ -595,7 +664,7 @@ export class ChannelOperationsService {
 		}
 		const members = await this.threadMemberRepository.listMembers(threadChannelId);
 		const count = members.length;
-		await this.channelRepository.upsert({...thread.toRow(), thread_member_count: count});
+		await this.channelRepository.channelData.patchThreadFields(threadChannelId, {thread_member_count: count});
 		return count;
 	}
 
@@ -626,7 +695,7 @@ export class ChannelOperationsService {
 		) {
 			throw new MissingPermissionsError();
 		}
-		await this.threadMemberRepository.addMember(params.threadChannelId, params.userId);
+		const member = await this.threadMemberRepository.addMember(params.threadChannelId, params.userId);
 		const count = await this.syncThreadMemberCount(params.threadChannelId);
 		await this.gatewayService.dispatchGuild({
 			guildId: thread.guildId,
@@ -635,7 +704,14 @@ export class ChannelOperationsService {
 				id: thread.id.toString(),
 				guild_id: thread.guildId.toString(),
 				member_count: count,
-				added_members: [{user_id: params.userId.toString()}],
+				added_members: [
+					{
+						id: thread.id.toString(),
+						user_id: params.userId.toString(),
+						join_timestamp: member.joinTimestamp.toISOString(),
+						flags: member.flags,
+					},
+				],
 			},
 		});
 	}
@@ -727,7 +803,7 @@ export class ChannelOperationsService {
 
 	// Echowire: thread moderation. The caller must see the thread, then own it or hold
 	// MANAGE_CHANNELS on the parent channel.
-	private async assertCanManageThread(thread: Channel, userId: UserID): Promise<void> {
+	private async assertCanManageThread(thread: Channel, userId: UserID): Promise<{isModerator: boolean}> {
 		const guildId = thread.guildId!;
 		const parentPermissions = await getThreadParentPermissions({
 			gatewayService: this.gatewayService,
@@ -746,12 +822,11 @@ export class ChannelOperationsService {
 		if (!canView) {
 			throw new MissingPermissionsError();
 		}
-		if (thread.ownerId === userId) {
-			return;
-		}
-		if (!hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS)) {
+		const isModerator = hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS);
+		if (!isModerator && thread.ownerId !== userId) {
 			throw new MissingPermissionsError();
 		}
+		return {isModerator};
 	}
 
 	async updateChannelPositionsLocked(params: {

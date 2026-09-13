@@ -54,11 +54,14 @@ export class MessageRepository extends IMessageRepository {
 		authorId: UserID,
 		pinnedTimestamp?: Date,
 	): Promise<void> {
-		return this.deletionRepo.deleteMessage(channelId, messageId, authorId, pinnedTimestamp);
+		await this.deletionRepo.deleteMessage(channelId, messageId, authorId, pinnedTimestamp);
+		// Echowire: keep a thread's message_count in step with deletions.
+		await this.channelDataRepo.adjustThreadMessageCount(channelId, -1);
 	}
 
 	async bulkDeleteMessages(channelId: ChannelID, messageIds: Array<MessageID>): Promise<void> {
-		return this.deletionRepo.bulkDeleteMessages(channelId, messageIds);
+		await this.deletionRepo.bulkDeleteMessages(channelId, messageIds);
+		await this.channelDataRepo.adjustThreadMessageCount(channelId, -messageIds.length);
 	}
 
 	async deleteAllChannelMessages(channelId: ChannelID): Promise<void> {

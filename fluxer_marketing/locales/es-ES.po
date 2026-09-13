@@ -2977,7 +2977,7 @@ msgstr "Una aplicación de chat que piensa en ti"
 #: fluxer_marketing/generated:misc_labels.donating_with_perks
 msgctxt "misc_labels.donating_with_perks"
 msgid "Donating with perks"
-msgstr "Apoyando a Echowire con ventajas"
+msgstr "Apoyando an echowire con ventajas"
 
 #. Short UI label or heading reused across marketing cards, buttons, and section headings. Translate as a standalone UI phrase that can fit multiple surfaces.
 #: fluxer_marketing/generated:misc_labels.exclusive_features

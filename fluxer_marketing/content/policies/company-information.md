@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
 ## Who we are
 
-Proudlock Technology LLC is a limited liability company organized in the State of North Carolina, USA, that operates Echowire, a community chat app.
+Proudlock Technology LLC is a limited liability company organized in the State of North Carolina, USA, that operates echowire, a community chat app.
 
 ## Company registration
 
@@ -16,9 +16,9 @@ Proudlock Technology LLC
 West Jefferson, NC 28694
 USA
 
-## How we sustain Echowire
+## How we sustain echowire
 
-Echowire is funded by an optional premium subscription, Echowire Reverb. As binding commitments in our [Privacy Policy](/privacy) and [Terms of Service](/terms), we do not:
+echowire is funded by an optional premium subscription, echowire Reverb. As binding commitments in our [Privacy Policy](/privacy) and [Terms of Service](/terms), we do not:
 
 - sell advertising or maintain advertising partnerships
 - sell, rent, license, monetise, or broker user data
@@ -33,7 +33,7 @@ Echowire is funded by an optional premium subscription, Echowire Reverb. As bind
 - **Account appeals:** <appeals@echowire.org>
 - **Legal and administrative requests:** <admin@echowire.org>
 
-For account-related support, contact us from the email address on your Echowire account when possible.
+For account-related support, contact us from the email address on your echowire account when possible.
 
 ## Official accounts
 
@@ -51,4 +51,4 @@ Only accounts listed on this page or linked from `echowire.org` are official. Co
 
 ## Communication security
 
-Echowire will never ask for your password, payment details, or other credentials by email. All official Echowire emails come from addresses ending in `@echowire.org` (or a subdomain of it). If you receive a suspicious message claiming to be from Echowire, do not click links or provide information. Contact <support@echowire.org> instead.
+echowire will never ask for your password, payment details, or other credentials by email. All official echowire emails come from addresses ending in `@echowire.org` (or a subdomain of it). If you receive a suspicious message claiming to be from echowire, do not click links or provide information. Contact <support@echowire.org> instead.

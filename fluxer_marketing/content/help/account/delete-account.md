@@ -13,7 +13,7 @@ Choosing delete schedules your account for permanent removal in 14 days. Signing
 
 ### Messages
 
-Your messages stay on Echowire unless you remove them first or choose the message-deletion option during account deletion. Other people you talked to can still see past messages to them, though they are no longer linked to your account.
+Your messages stay on echowire unless you remove them first or choose the message-deletion option during account deletion. Other people you talked to can still see past messages to them, though they are no longer linked to your account.
 
 If you want to clear them out before deleting:
 

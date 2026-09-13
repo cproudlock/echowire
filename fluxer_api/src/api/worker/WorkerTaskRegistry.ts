@@ -36,7 +36,6 @@ import processStripeWebhook from './tasks/ProcessStripeWebhook';
 import prunePostgresKvTtl from './tasks/PrunePostgresKvTtl';
 import reconcileUserPayments from './tasks/ReconcileUserPayments';
 import refreshSearchIndex from './tasks/RefreshSearchIndex';
-import revalidateUserConnections from './tasks/RevalidateUserConnections';
 import {sendSystemDm} from './tasks/SendSystemDm';
 import syncDiscoveryIndex from './tasks/SyncDiscoveryIndex';
 import syncDisposableEmailDomains from './tasks/SyncDisposableEmailDomains';
@@ -81,7 +80,6 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	reconcileUserPayments,
 	prunePostgresKvTtl,
 	refreshSearchIndex,
-	revalidateUserConnections,
 	sendSystemDm,
 	syncFileShaBlocklists,
 	syncUrlBlocklists,

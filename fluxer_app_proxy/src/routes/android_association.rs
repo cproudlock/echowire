@@ -2,35 +2,36 @@
 
 use axum::{
     Json,
-    http::{HeaderValue, header},
+    http::header,
     response::{IntoResponse, Response},
 };
 use serde_json::json;
 
+// Echowire: the fork publishes one Android package, signed by both the Play
+// app-signing key and the upload key, instead of upstream's com.fluxer pair.
 pub async fn assetlinks() -> Response {
-    let body = json!([
-        {
+    let body = ["org.echowire.twa"].map(|package_name| {
+        json!({
             "relation": [
                 "delegate_permission/common.handle_all_urls",
                 "delegate_permission/common.get_login_creds"
             ],
             "target": {
                 "namespace": "android_app",
-                "package_name": "org.echowire.twa",
+                "package_name": package_name,
                 "sha256_cert_fingerprints": [
                     "02:9C:A2:1A:C9:A6:96:C3:F9:8B:FC:84:3F:9D:3D:63:89:29:5F:5B:4F:91:B3:D5:67:AC:AA:4D:B9:41:7E:7E",
                     "2F:7A:6D:CA:0D:B4:B7:4D:6F:66:BA:AB:4A:D9:5C:8E:1D:05:C3:C2:BD:DF:BC:17:A6:38:CF:0B:49:BE:04:B1"
                 ]
             }
-        }
-    ]);
+        })
+    });
 
-    let mut response = Json(body).into_response();
-    response.headers_mut().insert(
-        header::CACHE_CONTROL,
-        HeaderValue::from_static("public, max-age=1800"),
-    );
-    response
+    (
+        [(header::CACHE_CONTROL, "public, max-age=1800")],
+        Json(body),
+    )
+        .into_response()
 }
 
 #[cfg(test)]

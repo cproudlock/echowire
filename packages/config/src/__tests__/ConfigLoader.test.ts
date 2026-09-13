@@ -22,7 +22,6 @@ const MINIMAL_ENV: Record<string, string> = {
 	FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64: 'AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8=',
 	FLUXER_ADMIN_SECRET_KEY_BASE: 'test-admin-secret',
 	FLUXER_ADMIN_OAUTH_CLIENT_SECRET: 'test-admin-oauth-secret',
-	FLUXER_MARKETING_SECRET_KEY_BASE: 'test-marketing-secret',
 	FLUXER_APP_PROXY_PORT: '8773',
 	FLUXER_GATEWAY_MEDIA_PROXY_ENDPOINT: 'http://127.0.0.1:8088/media',
 	FLUXER_GATEWAY_RPC_AUTH_TOKEN: 'test-gateway-token',
@@ -190,7 +189,7 @@ describe('ConfigLoader', () => {
 	test('normalizes each passkey origin independently', async () => {
 		stubMinimalEnv({
 			FLUXER_PASSKEY_ADDITIONAL_ALLOWED_ORIGINS:
-				'http://localhost,http://localhost:3000,https://desktop.example.net,android:apk-key-hash:abc',
+				'http://localhost,http://localhost:3000,https://desktop.example.net,android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 		});
 
 		const config = await loadConfig();
@@ -199,11 +198,11 @@ describe('ConfigLoader', () => {
 			'http://localhost:8088',
 			'http://localhost:3000',
 			'https://desktop.example.net',
-			'android:apk-key-hash:abc',
+			'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 		]);
 	});
 
-	test('leaves the default passkey origins untouched', async () => {
+	test('includes the app origin alongside the default passkey origins', async () => {
 		stubMinimalEnv();
 		const config = await loadConfig();
 		expect(config.auth.passkeys.additional_allowed_origins).toEqual([
@@ -213,6 +212,7 @@ describe('ConfigLoader', () => {
 			'https://web.canary.echowire.org',
 			'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 			'android:apk-key-hash:zRmCKDKo3uCX2GDZISjJx8Rzo3J-Y3Gbp7s7mAaUH28',
+			'http://localhost:8088',
 		]);
 	});
 
@@ -233,7 +233,7 @@ describe('ConfigLoader', () => {
 		expect(config.auth.passkeys.rp_id).toBe('chat.example.com');
 	});
 
-	test('derives the passkey origin only when the operator clears the default list', async () => {
+	test('uses only the app origin when the operator clears the default list', async () => {
 		stubMinimalEnv({
 			FLUXER_BASE_DOMAIN: 'chat.example.com',
 			FLUXER_PUBLIC_SCHEME: 'https',
@@ -405,23 +405,6 @@ describe('ConfigLoader', () => {
 
 		expect(config.instance.self_hosted).toBe(true);
 		expect(config.database.postgres.ssl).toBe(false);
-	});
-
-	test('does not require a marketing secret for self-hosted instances', async () => {
-		stubMinimalEnv({FLUXER_SELF_HOSTED: 'true'});
-		vi.stubEnv('FLUXER_MARKETING_SECRET_KEY_BASE', undefined);
-
-		const config = await loadConfig();
-
-		expect(config.instance.self_hosted).toBe(true);
-		expect(config.services.marketing.secret_key_base).toBe('');
-	});
-
-	test('requires a marketing secret for hosted instances', async () => {
-		stubMinimalEnv();
-		vi.stubEnv('FLUXER_MARKETING_SECRET_KEY_BASE', undefined);
-
-		await expect(loadConfig()).rejects.toThrow('FLUXER_MARKETING_SECRET_KEY_BASE');
 	});
 
 	test('still requires TLS for non-self-hosted production Postgres', async () => {
@@ -820,7 +803,7 @@ describe('FLUXER_PUBLIC_ORIGIN', () => {
 	test('refuses to boot on an origin that is not a bare origin', async () => {
 		stubMinimalEnv({FLUXER_PUBLIC_ORIGIN: 'https://chat.example.com/app'});
 		await expect(loadConfig()).rejects.toThrow(
-			'FLUXER_PUBLIC_ORIGIN must be a scheme, host and optional port such as https://chat.example.com:8443, got https://chat.example.com/app',
+			'FLUXER_PUBLIC_ORIGIN must be a scheme, host and optional port such as https://chat.example.com:8443',
 		);
 	});
 

@@ -40,6 +40,13 @@ import type {GuildMemberResponse} from '@fluxer/schema/src/domains/guild/GuildMe
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
 
 const guildOwners = new Map<string, UserID>();
+// Echowire: guild dispatches captured for assertions in tests.
+export const recordedGuildDispatches: Array<{guildId: GuildID; event: GatewayDispatchEvent; data: unknown}> = [];
+
+export function clearRecordedGuildDispatches(): void {
+	recordedGuildDispatches.length = 0;
+}
+
 const guildMembers = new Map<string, Set<UserID>>();
 const guildRepository = new GuildRepository();
 const guildMemberRepository = new GuildMemberRepository();
@@ -124,7 +131,9 @@ export class NoopGatewayService extends IGatewayService {
 		this.voiceStatesByChannel.set(this.getVoiceStateKey(params), [...params.voiceStates]);
 	}
 
-	async dispatchGuild(_params: {guildId: GuildID; event: GatewayDispatchEvent; data: unknown}): Promise<void> {}
+	async dispatchGuild(params: {guildId: GuildID; event: GatewayDispatchEvent; data: unknown}): Promise<void> {
+		recordedGuildDispatches.push(params);
+	}
 
 	async getGuildCounts(guildId: GuildID): Promise<{
 		memberCount: number;

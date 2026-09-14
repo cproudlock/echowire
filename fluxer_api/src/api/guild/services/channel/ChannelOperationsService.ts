@@ -504,7 +504,9 @@ export class ChannelOperationsService {
 				!channel.threadMetadata?.archived,
 		);
 		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
-		return this.mapThreadsWithPreview(visibleThreads, params.requestCache);
+		return this.mapThreadsWithPreview(visibleThreads, params.requestCache, () =>
+			hasPermissionBits(parentPermissions, Permissions.READ_MESSAGE_HISTORY),
+		);
 	}
 
 	// Echowire: every active thread in the guild the caller can view, plus the caller's memberships,
@@ -557,7 +559,9 @@ export class ChannelOperationsService {
 			visible.map((thread) => this.threadMemberRepository.getMember(thread.id, params.userId)),
 		);
 		return {
-			threads: await this.mapThreadsWithPreview(visible, params.requestCache),
+			threads: await this.mapThreadsWithPreview(visible, params.requestCache, (thread) =>
+				hasPermissionBits(parentPermissions.get(thread.parentId!) ?? 0n, Permissions.READ_MESSAGE_HISTORY),
+			),
 			members: memberships.flatMap((member) =>
 				member
 					? [
@@ -573,9 +577,12 @@ export class ChannelOperationsService {
 		};
 	}
 
+	// Echowire: the starter preview carries message content, so it is included only when the caller
+	// may read message history in the thread's parent channel. canReadHistory answers per parent.
 	private async mapThreadsWithPreview(
 		threads: Array<Channel>,
 		requestCache: RequestCache,
+		canReadHistory: (thread: Channel) => boolean,
 	): Promise<Array<ChannelResponse>> {
 		return Promise.all(
 			threads.map(async (channel) => {
@@ -585,7 +592,9 @@ export class ChannelOperationsService {
 					userCacheService: this.userCacheService,
 					requestCache,
 				});
-				response.starter_message_preview = await this.buildStarterMessagePreview(channel, requestCache);
+				if (canReadHistory(channel)) {
+					response.starter_message_preview = await this.buildStarterMessagePreview(channel, requestCache);
+				}
 				return response;
 			}),
 		);
@@ -663,7 +672,9 @@ export class ChannelOperationsService {
 				channel.threadMetadata?.archived === true,
 		);
 		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
-		return this.mapThreadsWithPreview(visibleThreads, params.requestCache);
+		return this.mapThreadsWithPreview(visibleThreads, params.requestCache, () =>
+			hasPermissionBits(parentPermissions, Permissions.READ_MESSAGE_HISTORY),
+		);
 	}
 
 	// Echowire: update a thread (name / archived / locked / auto-archive / invitable).

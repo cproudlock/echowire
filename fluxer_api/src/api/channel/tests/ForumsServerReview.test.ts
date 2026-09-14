@@ -5,13 +5,13 @@
 
 import {type ChannelID, createChannelID, createMessageID} from '@app/api/BrandedTypes';
 import {ChannelDataRepository} from '@app/api/channel/repositories/ChannelDataRepository';
-import {setupTestGuildWithMembers} from '@app/api/channel/tests/ChannelTestUtils';
+import {createPermissionOverwrite, setupTestGuildWithMembers} from '@app/api/channel/tests/ChannelTestUtils';
 import {ensureSessionStarted, sendMessage} from '@app/api/message/tests/MessageTestUtils';
 import type {Channel} from '@app/api/models/Channel';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
-import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {MessageResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import {afterEach, beforeEach, describe, expect, test, vi} from 'vitest';
@@ -157,5 +157,38 @@ describe('Forums server review fixes', () => {
 			.expect(HTTP_STATUS.NO_CONTENT)
 			.execute();
 		expect((await getThread(harness, owner.token, bulk.id)).message_count).toBe(1);
+	});
+
+	test('starter previews are omitted without READ_MESSAGE_HISTORY on the parent', async () => {
+		const {owner, members, guild} = await setupTestGuildWithMembers(harness, 1);
+		const [reader] = members;
+		const forum = await createBuilder<ChannelResponse>(harness, owner.token)
+			.post(`/guilds/${guild.id}/channels`)
+			.body({name: 'forum', type: ChannelTypes.GUILD_FORUM})
+			.execute();
+		const post = await createThread(harness, owner.token, forum.id, {name: 'secret body'});
+		await sendMessage(harness, owner.token, post.id, 'only for readers of history');
+
+		const previewFor = async (token: string, path: string) => {
+			const body = await createBuilder<Array<ChannelResponse> | {threads: Array<ChannelResponse>}>(harness, token)
+				.get(path)
+				.execute();
+			const threads = Array.isArray(body) ? body : body.threads;
+			return threads.find((thread) => thread.id === post.id)?.starter_message_preview;
+		};
+		expect((await previewFor(reader.token, `/channels/${forum.id}/threads`))?.content).toBe(
+			'only for readers of history',
+		);
+
+		await createPermissionOverwrite(harness, owner.token, forum.id, guild.id, {
+			type: 0,
+			allow: '0',
+			deny: Permissions.READ_MESSAGE_HISTORY.toString(),
+		});
+		expect(await previewFor(reader.token, `/channels/${forum.id}/threads`)).toBeUndefined();
+		expect(await previewFor(reader.token, `/guilds/${guild.id}/threads/active`)).toBeUndefined();
+		expect((await previewFor(owner.token, `/channels/${forum.id}/threads`))?.content).toBe(
+			'only for readers of history',
+		);
 	});
 });

@@ -4,13 +4,16 @@
 // outlive their parent channel, private threads must not announce themselves in the parent, and
 // the create-from-message path must not reveal which messages carry a private thread.
 
+import {createTestAccount} from '@app/api/auth/tests/AuthTestUtils';
 import {createChannelID, createGuildID} from '@app/api/BrandedTypes';
 import {ChannelDataRepository} from '@app/api/channel/repositories/ChannelDataRepository';
 import {
 	createChannel,
+	createGuild,
 	createPermissionOverwrite,
 	deleteChannel,
 	setupTestGuildWithMembers,
+	updateChannel,
 } from '@app/api/channel/tests/ChannelTestUtils';
 import {markChannelAsIndexed, markGuildChannelsAsIndexed, sendMessage} from '@app/api/message/tests/MessageTestUtils';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
@@ -129,6 +132,32 @@ describe('Thread access review fixes', () => {
 			.body({name: 'probe', message_id: message.id})
 			.expect(HTTP_STATUS.NOT_FOUND)
 			.execute();
+	});
+
+	test('a thread takes its age gate from the parent and the parent category at check time', async () => {
+		const minor = await createTestAccount(harness, {dateOfBirth: '2010-01-01'});
+		const guild = await createGuild(harness, minor.token, 'Age Gate Guild');
+		const category = await createChannel(harness, minor.token, guild.id, 'after dark', ChannelTypes.GUILD_CATEGORY);
+		const text = await createBuilder<ChannelResponse>(harness, minor.token)
+			.post(`/guilds/${guild.id}/channels`)
+			.body({name: 'lounge', type: ChannelTypes.GUILD_TEXT, parent_id: category.id})
+			.execute();
+		const inCategory = await createThread(harness, minor.token, text.id, {name: 'under the category'});
+		const plain = await createChannel(harness, minor.token, guild.id, 'plain');
+		const underPlain = await createThread(harness, minor.token, plain.id, {name: 'under a later nsfw parent'});
+		await createBuilder(harness, minor.token).get(`/channels/${inCategory.id}/messages`).execute();
+		await createBuilder(harness, minor.token).get(`/channels/${underPlain.id}/messages`).execute();
+
+		await updateChannel(harness, minor.token, category.id, {nsfw: true});
+		await updateChannel(harness, minor.token, plain.id, {nsfw: true});
+
+		const status = async (channelId: string) =>
+			(await createBuilder(harness, minor.token).get(`/channels/${channelId}/messages`).executeRaw()).response.status;
+		// The parent that was switched to nsfw is gated, and so is its thread despite the stale copy.
+		expect(await status(plain.id)).toBe(HTTP_STATUS.FORBIDDEN);
+		expect(await status(underPlain.id)).toBe(HTTP_STATUS.FORBIDDEN);
+		// A thread always matches its parent, which inherits (or not) from the category.
+		expect(await status(inCategory.id)).toBe(await status(text.id));
 	});
 });
 

@@ -6,11 +6,12 @@
 import {type ChannelID, createChannelID, createMessageID} from '@app/api/BrandedTypes';
 import {ChannelDataRepository} from '@app/api/channel/repositories/ChannelDataRepository';
 import {setupTestGuildWithMembers} from '@app/api/channel/tests/ChannelTestUtils';
-import {sendMessage} from '@app/api/message/tests/MessageTestUtils';
+import {ensureSessionStarted, sendMessage} from '@app/api/message/tests/MessageTestUtils';
 import type {Channel} from '@app/api/models/Channel';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
+import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {afterEach, beforeEach, describe, expect, test, vi} from 'vitest';
 
@@ -74,5 +75,36 @@ describe('Forums server review fixes', () => {
 		expect(after.name).toBe('renamed while busy');
 		expect(after.message_count).toBe(2);
 		expect(after.last_message_id).toBe(laterMessageId.toString());
+	});
+
+	test('concurrent sends keep message_count exact, including a forum post starter race', async () => {
+		const {owner, systemChannel, guild} = await setupTestGuildWithMembers(harness, 0);
+		const thread = await createThread(harness, owner.token, systemChannel.id, {name: 'crowded'});
+		await ensureSessionStarted(harness, owner.token);
+		await Promise.all(
+			Array.from({length: 12}, (_, index) =>
+				createBuilder(harness, owner.token)
+					.post(`/channels/${thread.id}/messages`)
+					.body({content: `burst ${index}`})
+					.execute(),
+			),
+		);
+		expect((await getThread(harness, owner.token, thread.id)).message_count).toBe(12);
+
+		const forum = await createBuilder<ChannelResponse>(harness, owner.token)
+			.post(`/guilds/${guild.id}/channels`)
+			.body({name: 'forum', type: ChannelTypes.GUILD_FORUM})
+			.execute();
+		const post = await createThread(harness, owner.token, forum.id, {name: 'racy post'});
+		await Promise.all(
+			Array.from({length: 6}, (_, index) =>
+				createBuilder(harness, owner.token)
+					.post(`/channels/${post.id}/messages`)
+					.body({content: `opening ${index}`})
+					.execute(),
+			),
+		);
+		// Exactly one of the six is the starter; the other five count.
+		expect((await getThread(harness, owner.token, post.id)).message_count).toBe(5);
 	});
 });

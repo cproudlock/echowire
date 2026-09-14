@@ -803,4 +803,14 @@ thread_hidden_after_parent_denied_test() ->
     ?assertEqual([], filter_sessions_for_channel(Sessions, 201, undefined, State)),
     ?assertEqual([], filter_sessions_for_channel(Sessions, 200, undefined, State)).
 
+%% Echowire (MEDIUM-2): mention resolution and push eligibility both ask
+%% guild_permissions:can_view_channel, which must admit a private thread's members.
+private_thread_member_passes_mention_and_push_view_checks_test() ->
+    State = thread_visibility_state([<<"10">>]),
+    MemberOf = fun(UserId) -> guild_permissions:find_member_by_user_id(UserId, State) end,
+    ?assert(guild_members_common:member_can_view_channel(10, 200, MemberOf(10), State)),
+    ?assertNot(guild_members_common:member_can_view_channel(11, 200, MemberOf(11), State)),
+    ?assert(guild_permissions:can_view_channel(10, 200, MemberOf(10), State)),
+    ?assertNot(guild_permissions:can_view_channel(11, 200, MemberOf(11), State)).
+
 -endif.

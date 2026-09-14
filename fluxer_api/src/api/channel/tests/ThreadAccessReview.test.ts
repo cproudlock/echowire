@@ -12,7 +12,7 @@ import {
 	deleteChannel,
 	setupTestGuildWithMembers,
 } from '@app/api/channel/tests/ChannelTestUtils';
-import {sendMessage} from '@app/api/message/tests/MessageTestUtils';
+import {markChannelAsIndexed, markGuildChannelsAsIndexed, sendMessage} from '@app/api/message/tests/MessageTestUtils';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
@@ -142,5 +142,37 @@ describe('orphaned thread detection', () => {
 		expect(await isOrphanedThread({type: ChannelTypes.PRIVATE_THREAD, parentId}, async () => gone)).toBe(true);
 		expect(await isOrphanedThread({type: ChannelTypes.PUBLIC_THREAD, parentId: null}, async () => live)).toBe(true);
 		expect(await isOrphanedThread({type: ChannelTypes.GUILD_TEXT, parentId: null}, async () => null)).toBe(false);
+	});
+});
+
+describe('private thread members in gateway-derived paths', () => {
+	let harness: ApiTestHarness;
+	beforeEach(async () => {
+		harness = await createApiTestHarness({search: 'enabled'});
+	});
+	afterEach(async () => {
+		await harness?.shutdown();
+	});
+
+	test('a private thread member finds its messages in guild search; an outsider does not', async () => {
+		const {owner, guild, members, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		const [creator, outsider] = members;
+		const thread = await createThread(harness, creator.token, systemChannel.id, {
+			name: 'hideout',
+			type: ChannelTypes.PRIVATE_THREAD,
+		});
+		await sendMessage(harness, creator.token, thread.id, 'tangerine hideout plans');
+		await markGuildChannelsAsIndexed(harness, owner.token, guild.id);
+		await markChannelAsIndexed(harness, thread.id);
+		const search = async (token: string) =>
+			createBuilder<{messages?: Array<{channel_id: string}>}>(harness, token)
+				.post('/search/messages')
+				.body({content: 'tangerine', context_guild_id: guild.id})
+				.execute();
+		const mine = await search(creator.token);
+		expect(mine).toHaveProperty('messages');
+		expect(mine.messages?.map((m) => m.channel_id)).toContain(thread.id);
+		const theirs = await search(outsider.token);
+		expect(theirs.messages?.map((m) => m.channel_id) ?? []).not.toContain(thread.id);
 	});
 });

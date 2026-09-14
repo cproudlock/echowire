@@ -33,6 +33,7 @@ import processPendingBulkMessageDeletions from '@app/api/worker/tasks/ProcessPen
 import processPremiumStateReconciliationQueue from '@app/api/worker/tasks/ProcessPremiumStateReconciliationQueue';
 import processStripeWebhook from '@app/api/worker/tasks/ProcessStripeWebhook';
 import prunePostgresKvTtl from '@app/api/worker/tasks/PrunePostgresKvTtl';
+import purgeOrphanedThreads from '@app/api/worker/tasks/PurgeOrphanedThreads';
 import reconcileUserPayments from '@app/api/worker/tasks/ReconcileUserPayments';
 import refreshSearchIndex from '@app/api/worker/tasks/RefreshSearchIndex';
 import {sendSystemDm} from '@app/api/worker/tasks/SendSystemDm';
@@ -48,6 +49,7 @@ import type {WorkerTaskHandler} from '@pkgs/worker/src/contracts/WorkerTask';
 export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	applicationProcessDeletion,
 	archiveInactiveThreads,
+	purgeOrphanedThreads,
 	batchGuildAuditLogMessageDeletes,
 	bulkAddGuildMembers: bulkAddGuildMembers,
 	bulkBanFileShas: bulkBanFileShas,

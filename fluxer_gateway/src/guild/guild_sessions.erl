@@ -726,9 +726,12 @@ handle_pending_session_down_last_session_test() ->
 %% Echowire: private-thread visibility is per user and must never come from a viewable map.
 
 thread_visibility_state(ThreadMemberIds) ->
+    thread_visibility_state(ThreadMemberIds, []).
+
+thread_visibility_state(ThreadMemberIds, ParentOverwrites) ->
     View = constants:view_channel_permission(),
     Everyone = #{<<"id">> => <<"42">>, <<"name">> => <<"@everyone">>, <<"permissions">> => integer_to_binary(View)},
-    Parent = #{<<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => []},
+    Parent = #{<<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => ParentOverwrites},
     Private = #{
         <<"id">> => <<"200">>,
         <<"type">> => 12,
@@ -784,5 +787,20 @@ public_thread_visible_without_map_entry_test() ->
 without_thread_channels_strips_threads_test() ->
     State = thread_visibility_state([<<"10">>]),
     ?assertEqual([100], without_thread_channels([100, 200, 201], State)).
+
+%% Echowire (HIGH-2): a session whose viewable map still lists a thread from before its parent was
+%% denied must stop receiving the thread's events straight away, without a reconnect.
+thread_hidden_after_parent_denied_test() ->
+    View = constants:view_channel_permission(),
+    Deny = #{
+        <<"id">> => <<"42">>,
+        <<"type">> => 0,
+        <<"allow">> => <<"0">>,
+        <<"deny">> => integer_to_binary(View)
+    },
+    State = thread_visibility_state([<<"10">>], [Deny]),
+    Sessions = thread_visibility_sessions(),
+    ?assertEqual([], filter_sessions_for_channel(Sessions, 201, undefined, State)),
+    ?assertEqual([], filter_sessions_for_channel(Sessions, 200, undefined, State)).
 
 -endif.

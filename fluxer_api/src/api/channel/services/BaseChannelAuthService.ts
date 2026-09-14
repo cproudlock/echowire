@@ -9,7 +9,12 @@ import {
 	ensurePersonalNotesChannelExists,
 	isPersonalNotesChannelId,
 } from '@app/api/channel/services/PersonalNotesChannelRepair';
-import {canAccessPrivateThread, isThreadChannel, permissionChannelId} from '@app/api/channel/services/ThreadAccess';
+import {
+	canAccessPrivateThread,
+	isThreadChannel,
+	permissionChannelId,
+	threadParentExists,
+} from '@app/api/channel/services/ThreadAccess';
 import {
 	type ContentWarningChannelLike,
 	channelResponseToContentWarningView,
@@ -181,6 +186,11 @@ export abstract class BaseChannelAuthService {
 		// Echowire: a thread has no overwrites of its own, so its permissions are the parent's.
 		const permissionTargetId = permissionChannelId(channel);
 		if (!permissionTargetId) {
+			throw new UnknownChannelError();
+		}
+		// Echowire: a thread whose parent channel no longer exists resolves against nothing, so it is
+		// inaccessible to everyone rather than falling back to guild-level permissions.
+		if (!(await threadParentExists(this.channelRepository.channelData, channel))) {
 			throw new UnknownChannelError();
 		}
 		const [authContextResult, guildMemberResult] = await Promise.all([

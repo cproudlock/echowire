@@ -3,8 +3,10 @@
 import type {ChannelID, GuildID, RoleID, UserID} from '@app/api/BrandedTypes';
 import {createChannelID, createGuildID, createRoleID, createUserID} from '@app/api/BrandedTypes';
 import type {IChannelRepositoryAggregate} from '@app/api/channel/repositories/IChannelRepositoryAggregate';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {ChannelAuthService} from '@app/api/channel/services/channel_data/ChannelAuthService';
 import type {ChannelUtilsService} from '@app/api/channel/services/channel_data/ChannelUtilsService';
+import {canParentThreads, purgeThread, threadsOfParent} from '@app/api/channel/services/ThreadPurge';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import {mapGuildToGuildResponse} from '@app/api/guild/GuildModel';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
@@ -81,6 +83,8 @@ export interface ChannelUpdateData {
 }
 
 export class ChannelOperationsService {
+	private readonly threadMemberRepository = new ThreadMemberRepository();
+
 	constructor(
 		private channelRepository: IChannelRepositoryAggregate,
 		private userRepository: IUserRepository,
@@ -451,6 +455,23 @@ export class ChannelOperationsService {
 				...channelInvites.map((invite) => this.inviteRepository.delete(invite.code)),
 				...channelWebhooks.map((webhook) => this.webhookRepository.delete(webhook.id)),
 			]);
+			// Echowire: threads and forum posts go with their parent. Left behind, they would have no
+			// channel to resolve permissions against.
+			if (canParentThreads(channel)) {
+				const guildChannels = await this.channelRepository.channelData.listGuildChannels(guildId);
+				for (const thread of threadsOfParent(guildChannels, channelId)) {
+					await purgeThread({
+						thread,
+						guildId,
+						deleteMessages: (id) => this.channelRepository.messages.deleteAllChannelMessages(id),
+						deleteChannelRow: (id, gid) => this.channelRepository.channelData.delete(id, gid),
+						purgeAttachments: (t) => this.channelUtilsService.purgeChannelAttachments(t),
+						threadMemberRepository: this.threadMemberRepository,
+						gatewayService: this.gatewayService,
+						source: 'parent_channel_delete',
+					});
+				}
+			}
 			await this.channelUtilsService.purgeChannelAttachments(channel);
 			await this.channelRepository.messages.deleteAllChannelMessages(channelId);
 			await deleteChannelMessageSearchDocuments(channelId, {context: {source: 'channel_delete'}});

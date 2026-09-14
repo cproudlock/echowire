@@ -520,9 +520,11 @@ export class ChannelOperationsService {
 				THREAD_CHANNEL_TYPES.has(channel.type) && !channel.isSoftDeleted && !channel.threadMetadata?.archived,
 		);
 		const parentPermissions = new Map<ChannelID, bigint>();
+		const liveChannelIds = new Set(channels.filter((channel) => !channel.isSoftDeleted).map((channel) => channel.id));
 		const visible: Array<Channel> = [];
 		for (const thread of activeThreads) {
-			if (!thread.parentId) {
+			// Echowire: a thread whose parent is gone is inaccessible.
+			if (!thread.parentId || !liveChannelIds.has(thread.parentId)) {
 				continue;
 			}
 			let permissions = parentPermissions.get(thread.parentId);
@@ -821,6 +823,7 @@ export class ChannelOperationsService {
 		}
 		const parentPermissions = await getThreadParentPermissions({
 			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
 			guildId: thread.guildId,
 			channel: thread,
 			userId: params.userId,
@@ -896,6 +899,7 @@ export class ChannelOperationsService {
 		}
 		const canView = await canViewThread({
 			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
 			threadMemberRepository: this.threadMemberRepository,
 			guildId: thread.guildId,
 			channel: thread,
@@ -952,12 +956,14 @@ export class ChannelOperationsService {
 		const guildId = thread.guildId!;
 		const parentPermissions = await getThreadParentPermissions({
 			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
 			guildId,
 			channel: thread,
 			userId,
 		});
 		const canView = await canViewThread({
 			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
 			threadMemberRepository: this.threadMemberRepository,
 			guildId,
 			channel: thread,

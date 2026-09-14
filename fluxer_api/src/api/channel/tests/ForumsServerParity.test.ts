@@ -4,6 +4,7 @@
 // documented in docs/forums-contract.md.
 
 import {createChannelID} from '@app/api/BrandedTypes';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {
 	addMemberRole,
 	createChannel,
@@ -11,7 +12,6 @@ import {
 	createRole,
 	setupTestGuildWithMembers,
 } from '@app/api/channel/tests/ChannelTestUtils';
-import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {ensureSessionStarted, sendMessage} from '@app/api/message/tests/MessageTestUtils';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {clearRecordedGuildDispatches, recordedGuildDispatches} from '@app/api/test/NoopGatewayService';
@@ -20,10 +20,7 @@ import {createBuilder} from '@app/api/test/TestRequestBuilder';
 import {isThreadInactive} from '@app/api/worker/tasks/ArchiveInactiveThreads';
 import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
 import {ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
-import type {
-	ChannelResponse,
-	GuildActiveThreadsResponse,
-} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {ChannelResponse, GuildActiveThreadsResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {MessageResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import {afterEach, beforeEach, describe, expect, test} from 'vitest';
 

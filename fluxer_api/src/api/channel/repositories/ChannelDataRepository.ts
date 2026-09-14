@@ -27,7 +27,7 @@ import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelC
 // Echowire: thread columns that change independently of the rest of the row. They are written
 // with a targeted patch, never a full-row upsert from a possibly stale snapshot, so a concurrent
 // message send cannot roll back last_message_id or the message count.
-export type ThreadPatchableColumn =
+type ThreadPatchableColumn =
 	| 'thread_archived'
 	| 'thread_archive_timestamp'
 	| 'thread_locked'

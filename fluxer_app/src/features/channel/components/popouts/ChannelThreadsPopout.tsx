@@ -12,12 +12,34 @@ import ReadStates from '@app/features/read_state/state/ReadStates';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
 import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {msg} from '@lingui/core/macro';
+import {useLingui} from '@lingui/react/macro';
 import {ArchiveIcon, ChatCircleIcon, LockIcon, PlusIcon, PushPinIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 import {useEffect, useState} from 'react';
 
+const ACTIVE_DESCRIPTOR = msg({message: 'Active', comment: 'Threads popout tab: threads still open.'});
+const ARCHIVED_DESCRIPTOR = msg({message: 'Archived', comment: 'Threads popout tab: closed threads.'});
+const NEW_THREAD_DESCRIPTOR = msg({
+	message: 'New thread',
+	comment: 'Accessible label of the threads popout button that starts a thread.',
+});
+const NEW_DESCRIPTOR = msg({message: 'New', comment: 'Short label of the threads popout button that starts a thread.'});
+const NO_ARCHIVED_DESCRIPTOR = msg({message: 'No archived threads', comment: 'Threads popout empty state.'});
+const NO_ACTIVE_DESCRIPTOR = msg({message: 'No active threads', comment: 'Threads popout empty state.'});
+const THREAD_ARIA_DESCRIPTOR = msg({
+	message: 'Thread: {name}',
+	comment: 'Accessible label of a row in the threads popout.',
+});
+const THREAD_UNREAD_ARIA_DESCRIPTOR = msg({
+	message: 'Thread: {name}, unread',
+	comment: 'Accessible label of an unread row in the threads popout.',
+});
+const REPLIES_DESCRIPTOR = msg({message: '{count} replies', comment: 'Reply count on a row in the threads popout.'});
+
 export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Channel; onClose: () => void}) => {
+	const {i18n} = useLingui();
 	const [showArchived, setShowArchived] = useState(false);
 	const guildId = channel.guildId;
 
@@ -67,11 +89,11 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 				<div style={{display: 'flex', gap: 6}}>
 					<PillButton active={!showArchived} onClick={() => setShowArchived(false)}>
 						<ChatCircleIcon size={13} weight={!showArchived ? 'fill' : 'regular'} />
-						<span>Active</span>
+						<span>{i18n._(ACTIVE_DESCRIPTOR)}</span>
 					</PillButton>
 					<PillButton active={showArchived} onClick={() => setShowArchived(true)}>
 						<ArchiveIcon size={13} />
-						<span>Archived</span>
+						<span>{i18n._(ARCHIVED_DESCRIPTOR)}</span>
 					</PillButton>
 				</div>
 				<button
@@ -80,7 +102,7 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 						ModalCommands.push(modal(() => <ThreadCreateModal guildId={guildId} parentChannelId={channel.id} />));
 						onClose();
 					}}
-					aria-label="New thread"
+					aria-label={i18n._(NEW_THREAD_DESCRIPTOR)}
 					style={{
 						display: 'flex',
 						alignItems: 'center',
@@ -96,13 +118,13 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 					}}
 				>
 					<PlusIcon size={13} weight="bold" />
-					<span>New</span>
+					<span>{i18n._(NEW_DESCRIPTOR)}</span>
 				</button>
 			</div>
 			<div style={{overflowY: 'auto', padding: '4px 0'}}>
 				{threads.length === 0 ? (
 					<div style={{padding: '20px 16px', textAlign: 'center', color: 'var(--text-muted)', fontSize: 13}}>
-						{showArchived ? 'No archived threads' : 'No active threads'}
+						{i18n._(showArchived ? NO_ARCHIVED_DESCRIPTOR : NO_ACTIVE_DESCRIPTOR)}
 					</div>
 				) : (
 					threads.map((thread) => {
@@ -116,7 +138,9 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 									selectChannel(guildId, thread.id);
 									onClose();
 								}}
-								aria-label={`Thread: ${thread.name ?? 'thread'}${unread ? ' (unread)' : ''}`}
+								aria-label={i18n._(unread ? THREAD_UNREAD_ARIA_DESCRIPTOR : THREAD_ARIA_DESCRIPTOR, {
+									name: thread.name ?? '',
+								})}
 								style={{
 									display: 'flex',
 									alignItems: 'center',
@@ -160,7 +184,7 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 									<LockIcon size={13} weight="fill" style={{flexShrink: 0, color: 'var(--text-muted)'}} />
 								)}
 								<span style={{overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1}}>
-									{thread.name ?? 'thread'}
+									{thread.name}
 								</span>
 								{mentionCount > 0 && (
 									<span
@@ -184,7 +208,7 @@ export const ChannelThreadsPopout = observer(({channel, onClose}: {channel: Chan
 								)}
 								{mentionCount === 0 && thread.messageCount != null && thread.messageCount > 0 && (
 									<span style={{fontSize: 11, color: 'var(--text-muted)', flexShrink: 0}}>
-										{`${thread.messageCount} ${thread.messageCount === 1 ? 'reply' : 'replies'}`}
+										{i18n._(REPLIES_DESCRIPTOR, {count: thread.messageCount})}
 									</span>
 								)}
 							</button>

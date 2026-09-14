@@ -4,8 +4,8 @@
 // for each forum (unset means "use the channel default") and when each forum was last viewed,
 // which drives the sidebar "N New" pill.
 
-import {makePersistent} from '@app/features/platform/utils/MobXPersistence';
 import type {ForumLayout, ForumSortOrder} from '@app/features/channel/utils/ForumPostUtils';
+import {makePersistent} from '@app/features/platform/utils/MobXPersistence';
 import {makeAutoObservable} from 'mobx';
 
 export interface ForumViewOverride {

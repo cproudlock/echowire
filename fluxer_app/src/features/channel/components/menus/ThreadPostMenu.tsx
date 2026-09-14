@@ -145,10 +145,7 @@ export const ThreadPostMenu = observer(({thread, onClose}: {thread: Channel; onC
 					icon={<CopyLinkIcon size={20} />}
 					onClick={() => {
 						onClose();
-						void TextCopyCommands.copy(
-							i18n,
-							buildChannelLink({guildId: thread.guildId ?? null, channelId: thread.id}),
-						);
+						void TextCopyCommands.copy(i18n, buildChannelLink({guildId: thread.guildId ?? null, channelId: thread.id}));
 					}}
 				>
 					{i18n._(COPY_LINK_DESCRIPTOR)}

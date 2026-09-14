@@ -459,17 +459,20 @@ export class ChannelOperationsService {
 			},
 		});
 		// Echowire: drop a "started a thread" system message in the parent channel (Discord
-		// parity). Best-effort — a failure here must not fail thread creation.
-		try {
-			await this.messageSystemService.sendThreadCreatedSystemMessage({
-				parentChannelId: params.parentChannelId,
-				threadChannelId: channelId,
-				userId: params.userId,
-				guildId,
-				requestCache: params.requestCache,
-			});
-		} catch {
-			// ignore — the thread is already created and dispatched.
+		// parity). Best-effort — a failure here must not fail thread creation. Private threads are
+		// not announced: the message would reveal the thread's id and creator to every parent viewer.
+		if (threadType !== ChannelTypes.PRIVATE_THREAD) {
+			try {
+				await this.messageSystemService.sendThreadCreatedSystemMessage({
+					parentChannelId: params.parentChannelId,
+					threadChannelId: channelId,
+					userId: params.userId,
+					guildId,
+					requestCache: params.requestCache,
+				});
+			} catch {
+				// ignore — the thread is already created and dispatched.
+			}
 		}
 		return response;
 	}

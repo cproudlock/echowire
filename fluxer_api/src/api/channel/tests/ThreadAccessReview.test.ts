@@ -17,8 +17,9 @@ import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHa
 import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
 import {isOrphanedThread} from '@app/api/worker/tasks/PurgeOrphanedThreads';
-import {ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, MessageTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {MessageResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import {afterEach, beforeEach, describe, expect, test} from 'vitest';
 
 async function createThread(
@@ -96,6 +97,22 @@ describe('Thread access review fixes', () => {
 			.get(`/guilds/${guild.id}/threads/active`)
 			.execute();
 		expect(active.threads.map((t) => t.id)).not.toContain(thread.id);
+	});
+
+	test('creating a private thread posts no THREAD_CREATED message in the parent', async () => {
+		const {owner, members, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		const [creator] = members;
+		const privateThread = await createThread(harness, creator.token, systemChannel.id, {
+			name: 'hush',
+			type: ChannelTypes.PRIVATE_THREAD,
+		});
+		const publicThread = await createThread(harness, creator.token, systemChannel.id, {name: 'open'});
+		const messages = await createBuilder<Array<MessageResponse>>(harness, owner.token)
+			.get(`/channels/${systemChannel.id}/messages`)
+			.execute();
+		const announced = messages.filter((m) => m.type === MessageTypes.THREAD_CREATED).map((m) => m.content);
+		expect(announced).toContain(publicThread.id);
+		expect(announced).not.toContain(privateThread.id);
 	});
 });
 

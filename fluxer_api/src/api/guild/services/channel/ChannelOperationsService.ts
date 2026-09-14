@@ -40,6 +40,7 @@ import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
 import type {Channel} from '@app/api/models/Channel';
 import {ChannelPermissionOverwrite} from '@app/api/models/ChannelPermissionOverwrite';
 import type {Message} from '@app/api/models/Message';
+import type {IUserRepository} from '@app/api/user/IUserRepository';
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 import {ALL_PERMISSIONS, ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {ContentWarningLevel, GuildFeatures, resolveVoiceChannelBitrate} from '@fluxer/constants/src/GuildConstants';
@@ -76,6 +77,7 @@ import {
 } from '@fluxer/schema/src/domains/channel/GuildChannelOrdering';
 import {ChannelNameType} from '@fluxer/schema/src/primitives/ChannelValidators';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
+import type {IRateLimitService} from '@pkgs/rate_limit/src/IRateLimitService';
 
 const STARTER_PREVIEW_MAX_LENGTH = 200;
 
@@ -90,6 +92,8 @@ export class ChannelOperationsService {
 		private readonly guildAuditLogService: GuildAuditLogService,
 		private readonly limitConfigService: LimitConfigService,
 		private readonly messageSystemService: MessageSystemService,
+		private readonly rateLimitService: IRateLimitService,
+		private readonly userRepository: IUserRepository,
 	) {}
 
 	private readonly threadMemberRepository = new ThreadMemberRepository();
@@ -326,8 +330,6 @@ export class ChannelOperationsService {
 		) {
 			throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
 		}
-		// Echowire: a forum's own slowmode limits how often a member may open new posts.
-		await this.enforceForumPostSlowmode(parent, params.userId, parentPermissions);
 		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
 		const now = new Date();
 		// Echowire: when starting a thread from a message, the thread adopts the source
@@ -373,6 +375,9 @@ export class ChannelOperationsService {
 		} else {
 			channelId = createChannelID(await this.snowflakeService.generate());
 		}
+		// Echowire: a forum's own slowmode limits how often a member may open new posts. Checked after
+		// every validation, so a rejected request does not use up the member's slowmode window.
+		await this.enforceForumPostSlowmode(parent, params.userId, parentPermissions);
 		const channel = await this.channelRepository.upsert({
 			channel_id: channelId,
 			guild_id: guildId,
@@ -936,6 +941,8 @@ export class ChannelOperationsService {
 		}));
 	}
 
+	// Echowire: forum post-creation slowmode, applied the way message slowmode is: the shared rate
+	// limiter, bots exempt, BYPASS_SLOWMODE exempt.
 	private async enforceForumPostSlowmode(parent: Channel, userId: UserID, parentPermissions: bigint): Promise<void> {
 		if (parent.type !== ChannelTypes.GUILD_FORUM || parent.rateLimitPerUser <= 0) {
 			return;
@@ -943,12 +950,22 @@ export class ChannelOperationsService {
 		if (hasPermissionBits(parentPermissions, Permissions.BYPASS_SLOWMODE)) {
 			return;
 		}
-		const key = `forum-post-slowmode:${parent.id}:${userId}`;
-		if (await this.cacheService.exists(key)) {
-			const remaining = await this.cacheService.ttl(key);
-			throw new SlowmodeRateLimitError({retryAfter: remaining > 0 ? remaining : parent.rateLimitPerUser});
+		const user = await this.userRepository.findUnique(userId);
+		if (user?.isBot) {
+			return;
 		}
-		await this.cacheService.set(key, 1, parent.rateLimitPerUser);
+		const result = await this.rateLimitService.checkLimit({
+			identifier: `forum-post-slowmode:${parent.id}:${userId}`,
+			maxAttempts: 1,
+			windowMs: parent.rateLimitPerUser * 1000,
+			algorithm: 'leaky_bucket',
+		});
+		if (!result.allowed) {
+			throw new SlowmodeRateLimitError({
+				retryAfter: result.retryAfter,
+				retryAfterDecimal: result.retryAfterDecimal,
+			});
+		}
 	}
 
 	// Echowire: drop private threads the caller is neither a member of nor a manager of.

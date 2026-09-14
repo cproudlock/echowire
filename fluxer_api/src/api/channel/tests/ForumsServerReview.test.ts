@@ -11,6 +11,7 @@ import type {Channel} from '@app/api/models/Channel';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
+import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
 import {ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {MessageResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
@@ -190,5 +191,42 @@ describe('Forums server review fixes', () => {
 		expect((await previewFor(owner.token, `/channels/${forum.id}/threads`))?.content).toBe(
 			'only for readers of history',
 		);
+	});
+
+	test('a rejected forum post does not use up the post-creation slowmode window', async () => {
+		const {owner, members, guild} = await setupTestGuildWithMembers(harness, 1);
+		const [member] = members;
+		const forum = await createBuilder<ChannelResponse>(harness, owner.token)
+			.post(`/guilds/${guild.id}/channels`)
+			.body({name: 'forum', type: ChannelTypes.GUILD_FORUM})
+			.execute();
+		const configured = await createBuilder<ChannelResponse>(harness, owner.token)
+			.patch(`/channels/${forum.id}`)
+			.body({
+				type: ChannelTypes.GUILD_FORUM,
+				available_tags: [{name: 'Help'}],
+				require_tag: true,
+				rate_limit_per_user: 60,
+			})
+			.execute();
+		const helpTag = configured.available_tags?.[0]?.id;
+		expect(helpTag).toBeTruthy();
+
+		await createBuilder(harness, member.token)
+			.post(`/channels/${forum.id}/threads`)
+			.body({name: 'forgot the tag'})
+			.expect(HTTP_STATUS.BAD_REQUEST, APIErrorCodes.INVALID_FORM_BODY)
+			.execute();
+		await createBuilder(harness, member.token)
+			.post(`/channels/${forum.id}/threads`)
+			.body({name: 'names a missing message', applied_tags: [helpTag], message_id: '1234567890123456789'})
+			.expect(HTTP_STATUS.NOT_FOUND)
+			.execute();
+		await createThread(harness, member.token, forum.id, {name: 'tagged this time', applied_tags: [helpTag]});
+		await createBuilder(harness, member.token)
+			.post(`/channels/${forum.id}/threads`)
+			.body({name: 'too soon', applied_tags: [helpTag]})
+			.expect(HTTP_STATUS.BAD_REQUEST, APIErrorCodes.SLOWMODE_RATE_LIMITED)
+			.execute();
 	});
 });

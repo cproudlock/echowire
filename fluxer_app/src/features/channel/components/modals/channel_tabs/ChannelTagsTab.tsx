@@ -1,12 +1,22 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Echowire: forum channel settings tab — manage the channel's available tags (add / rename /
-// set emoji / delete). Saves the full tag set via PATCH; existing tags keep their id.
+// Echowire: forum channel settings. Post guidelines (the topic), default reaction, default sort and
+// layout, slowmode for new posts, how long posts stay open, the require-tag rule, and the forum's
+// tags (add / rename / set emoji / delete). Everything saves in one PATCH; existing tags keep their id.
 
 import * as ChannelCommands from '@app/features/channel/commands/ChannelCommands';
+import styles from '@app/features/channel/components/modals/channel_tabs/ChannelTagsTab.module.css';
 import Channels from '@app/features/channel/state/Channels';
+import {
+	ForumLayout,
+	ForumSortOrder,
+	resolveForumLayout,
+	resolveForumSortOrder,
+} from '@app/features/channel/utils/ForumPostUtils';
 import {Button} from '@app/features/ui/button/Button';
 import * as ToastCommands from '@app/features/ui/commands/ToastCommands';
+import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
+import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
 import {PlusIcon, TrashIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
@@ -18,14 +28,38 @@ interface EditableTag {
 	emojiName: string | null;
 }
 
+const MAX_TAGS = 20;
+const AUTO_ARCHIVE_OPTIONS = [
+	{value: 60, label: msg({message: '1 hour', comment: 'Auto-archive duration option.'})},
+	{value: 1440, label: msg({message: '24 hours', comment: 'Auto-archive duration option.'})},
+	{value: 4320, label: msg({message: '3 days', comment: 'Auto-archive duration option.'})},
+	{value: 10080, label: msg({message: '1 week', comment: 'Auto-archive duration option.'})},
+] as const;
+const POST_SLOWMODE_OPTIONS = [
+	{value: 0, label: msg({message: 'Off', comment: 'Slowmode option: no limit.'})},
+	{value: 5, label: msg({message: '5 seconds', comment: 'Slowmode option.'})},
+	{value: 10, label: msg({message: '10 seconds', comment: 'Slowmode option.'})},
+	{value: 30, label: msg({message: '30 seconds', comment: 'Slowmode option.'})},
+	{value: 60, label: msg({message: '1 minute', comment: 'Slowmode option.'})},
+	{value: 300, label: msg({message: '5 minutes', comment: 'Slowmode option.'})},
+	{value: 900, label: msg({message: '15 minutes', comment: 'Slowmode option.'})},
+	{value: 3600, label: msg({message: '1 hour', comment: 'Slowmode option.'})},
+	{value: 21600, label: msg({message: '6 hours', comment: 'Slowmode option.'})},
+] as const;
+
 const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
-	const {t} = useLingui();
+	const {t, i18n} = useLingui();
 	const channel = Channels.getChannel(channelId);
+	const [guidelines, setGuidelines] = useState(channel?.topic ?? '');
+	const [defaultReaction, setDefaultReaction] = useState(channel?.defaultReactionEmoji?.emojiName ?? '');
+	const [sortOrder, setSortOrder] = useState<number>(resolveForumSortOrder(channel?.defaultSortOrder));
+	const [layout, setLayout] = useState<number>(resolveForumLayout(channel?.defaultForumLayout));
+	const [postSlowmode, setPostSlowmode] = useState<number>(channel?.defaultThreadRateLimitPerUser ?? 0);
 	const [tags, setTags] = useState<Array<EditableTag>>(() =>
 		(channel?.availableTags ?? []).map((tag) => ({id: tag.id, name: tag.name, emojiName: tag.emojiName})),
 	);
 	const [requireTag, setRequireTag] = useState(channel?.forumRequireTag ?? false);
-	const [defaultDuration, setDefaultDuration] = useState<number>(channel?.forumDefaultAutoArchiveDuration ?? 1440);
+	const [defaultDuration, setDefaultDuration] = useState<number>(channel?.forumDefaultAutoArchiveDuration ?? 4320);
 	const [saving, setSaving] = useState(false);
 
 	if (!channel) {
@@ -36,7 +70,7 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 		setTags((prev) => prev.map((tag, i) => (i === index ? {...tag, ...patch} : tag)));
 	};
 	const addTag = () => {
-		if (tags.length >= 20) return;
+		if (tags.length >= MAX_TAGS) return;
 		setTags((prev) => [...prev, {name: '', emojiName: null}]);
 	};
 	const removeTag = (index: number) => {
@@ -45,9 +79,16 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 
 	const save = async () => {
 		const cleaned = tags.map((tag) => ({...tag, name: tag.name.trim()})).filter((tag) => tag.name.length > 0);
+		const reaction = defaultReaction.trim();
 		setSaving(true);
 		try {
 			await ChannelCommands.update(channelId, {
+				type: ChannelTypes.GUILD_FORUM,
+				topic: guidelines.trim().length > 0 ? guidelines : null,
+				default_reaction_emoji: reaction.length > 0 ? {emoji_id: null, emoji_name: reaction} : null,
+				default_sort_order: sortOrder,
+				default_forum_layout: layout,
+				default_thread_rate_limit_per_user: postSlowmode,
 				available_tags: cleaned.map((tag) => ({
 					id: tag.id,
 					name: tag.name,
@@ -56,104 +97,166 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 				require_tag: requireTag,
 				default_auto_archive_duration: defaultDuration,
 			});
-			ToastCommands.createToast({type: 'success', children: <Trans>Tags updated</Trans>});
+			ToastCommands.createToast({type: 'success', children: <Trans>Forum settings saved</Trans>});
 		} catch {
-			ToastCommands.createToast({type: 'error', children: <Trans>Failed to update tags</Trans>});
+			ToastCommands.createToast({type: 'error', children: <Trans>Couldn't save the forum settings</Trans>});
 		} finally {
 			setSaving(false);
 		}
 	};
 
 	return (
-		<div style={{display: 'flex', flexDirection: 'column', gap: 12, padding: 4}}>
-			<label style={{display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--text-normal)'}}>
-				<input type="checkbox" checked={requireTag} onChange={(e) => setRequireTag(e.target.checked)} />
-				<Trans>Require members to select a tag when posting</Trans>
-			</label>
-			<label style={{display: 'flex', alignItems: 'center', gap: 8, fontSize: 14, color: 'var(--text-normal)'}}>
-				<Trans>Hide posts after inactivity</Trans>
-				<select
-					value={defaultDuration}
-					onChange={(e) => setDefaultDuration(Number(e.target.value))}
-					style={{
-						padding: '6px 8px',
-						borderRadius: 6,
-						border: '1px solid var(--background-modifier-accent)',
-						background: 'var(--input-background, var(--background-secondary))',
-						color: 'var(--text-normal)',
-					}}
-				>
-					<option value={60}>{t`1 hour`}</option>
-					<option value={1440}>{t`1 day`}</option>
-					<option value={4320}>{t`3 days`}</option>
-					<option value={10080}>{t`1 week`}</option>
-				</select>
-			</label>
-			<div style={{height: 1, background: 'var(--background-modifier-accent)', margin: '4px 0'}} />
-			<div style={{fontSize: 13, color: 'var(--text-muted)'}}>
-				<Trans>Tags help members organize and filter posts in this forum (up to 20).</Trans>
-			</div>
-			{tags.map((tag, index) => (
-				// biome-ignore lint/suspicious/noArrayIndexKey: tags have no stable id until saved
-				<div key={index} style={{display: 'flex', alignItems: 'center', gap: 8}}>
-					<input
-						type="text"
-						value={tag.emojiName ?? ''}
-						onChange={(e) => updateTag(index, {emojiName: e.target.value || null})}
-						placeholder="🙂"
-						maxLength={8}
-						aria-label={t`Tag emoji`}
-						style={{
-							width: 44,
-							textAlign: 'center',
-							padding: '8px 6px',
-							borderRadius: 6,
-							border: '1px solid var(--background-modifier-accent)',
-							background: 'var(--input-background, var(--background-secondary))',
-							color: 'var(--text-normal)',
-						}}
-					/>
-					<input
-						type="text"
-						value={tag.name}
-						onChange={(e) => updateTag(index, {name: e.target.value})}
-						placeholder={t`Tag name`}
-						maxLength={20}
-						aria-label={t`Tag name`}
-						style={{
-							flex: 1,
-							padding: '8px 10px',
-							borderRadius: 6,
-							border: '1px solid var(--background-modifier-accent)',
-							background: 'var(--input-background, var(--background-secondary))',
-							color: 'var(--text-normal)',
-						}}
-					/>
-					<button
-						type="button"
-						onClick={() => removeTag(index)}
-						aria-label={t`Delete tag`}
-						style={{
-							display: 'flex',
-							padding: 8,
-							borderRadius: 6,
-							border: 'none',
-							background: 'transparent',
-							color: 'var(--text-danger, #f23f43)',
-							cursor: 'pointer',
-						}}
-					>
-						<TrashIcon size={18} />
-					</button>
+		<div className={styles.root}>
+			<section className={styles.section}>
+				<label className={styles.label} htmlFor="forum-guidelines">
+					<Trans>Post guidelines</Trans>
+				</label>
+				<div className={styles.hint}>
+					<Trans>Shown to members when they start a post.</Trans>
 				</div>
-			))}
-			<div style={{display: 'flex', justifyContent: 'space-between', gap: 8}}>
-				<Button variant="secondary" onClick={addTag} disabled={tags.length >= 20}>
-					<PlusIcon size={16} weight="bold" />
-					<Trans>Add tag</Trans>
-				</Button>
+				<textarea
+					id="forum-guidelines"
+					className={styles.textarea}
+					value={guidelines}
+					onChange={(e) => setGuidelines(e.target.value)}
+					rows={4}
+					maxLength={1024}
+				/>
+			</section>
+
+			<section className={styles.grid}>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="forum-default-reaction">
+						<Trans>Default reaction</Trans>
+					</label>
+					<input
+						id="forum-default-reaction"
+						type="text"
+						className={styles.input}
+						value={defaultReaction}
+						onChange={(e) => setDefaultReaction(e.target.value)}
+						placeholder="👍"
+						maxLength={8}
+					/>
+				</div>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="forum-default-sort">
+						<Trans>Default sort order</Trans>
+					</label>
+					<select
+						id="forum-default-sort"
+						className={styles.input}
+						value={sortOrder}
+						onChange={(e) => setSortOrder(Number(e.target.value))}
+					>
+						<option value={ForumSortOrder.LATEST_ACTIVITY}>{t`Recently Active`}</option>
+						<option value={ForumSortOrder.CREATION_DATE}>{t`Date Posted`}</option>
+					</select>
+				</div>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="forum-default-layout">
+						<Trans>Default layout</Trans>
+					</label>
+					<select
+						id="forum-default-layout"
+						className={styles.input}
+						value={layout}
+						onChange={(e) => setLayout(Number(e.target.value))}
+					>
+						<option value={ForumLayout.LIST}>{t`List`}</option>
+						<option value={ForumLayout.GALLERY}>{t`Gallery`}</option>
+					</select>
+				</div>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="forum-post-slowmode">
+						<Trans>Slowmode in new posts</Trans>
+					</label>
+					<select
+						id="forum-post-slowmode"
+						className={styles.input}
+						value={postSlowmode}
+						onChange={(e) => setPostSlowmode(Number(e.target.value))}
+					>
+						{POST_SLOWMODE_OPTIONS.map((option) => (
+							<option key={option.value} value={option.value}>
+								{i18n._(option.label)}
+							</option>
+						))}
+					</select>
+				</div>
+				<div className={styles.field}>
+					<label className={styles.label} htmlFor="forum-auto-archive">
+						<Trans>Hide posts after inactivity</Trans>
+					</label>
+					<select
+						id="forum-auto-archive"
+						className={styles.input}
+						value={defaultDuration}
+						onChange={(e) => setDefaultDuration(Number(e.target.value))}
+					>
+						{AUTO_ARCHIVE_OPTIONS.map((option) => (
+							<option key={option.value} value={option.value}>
+								{i18n._(option.label)}
+							</option>
+						))}
+					</select>
+				</div>
+			</section>
+
+			<div className={styles.separator} />
+
+			<section className={styles.section}>
+				<div className={styles.label}>
+					<Trans>Tags</Trans>
+				</div>
+				<div className={styles.hint}>
+					<Trans>Tags help members organize and filter posts in this forum (up to 20).</Trans>
+				</div>
+				<label className={styles.checkboxRow}>
+					<input type="checkbox" checked={requireTag} onChange={(e) => setRequireTag(e.target.checked)} />
+					<Trans>Require members to select a tag when posting</Trans>
+				</label>
+				{tags.map((tag, index) => (
+					<div key={index} className={styles.tagRow}>
+						<input
+							type="text"
+							className={`${styles.input} ${styles.emojiInput}`}
+							value={tag.emojiName ?? ''}
+							onChange={(e) => updateTag(index, {emojiName: e.target.value || null})}
+							placeholder="🙂"
+							maxLength={8}
+							aria-label={t`Tag emoji`}
+						/>
+						<input
+							type="text"
+							className={`${styles.input} ${styles.tagNameInput}`}
+							value={tag.name}
+							onChange={(e) => updateTag(index, {name: e.target.value})}
+							placeholder={t`Tag name`}
+							maxLength={20}
+							aria-label={t`Tag name`}
+						/>
+						<button
+							type="button"
+							className={styles.deleteButton}
+							onClick={() => removeTag(index)}
+							aria-label={t`Delete tag`}
+						>
+							<TrashIcon size={18} />
+						</button>
+					</div>
+				))}
+				<div className={styles.actions}>
+					<Button variant="secondary" onClick={addTag} disabled={tags.length >= MAX_TAGS}>
+						<PlusIcon size={16} weight="bold" />
+						<Trans>Add tag</Trans>
+					</Button>
+				</div>
+			</section>
+
+			<div className={styles.footer}>
 				<Button onClick={() => void save()} submitting={saving}>
-					<Trans>Save tags</Trans>
+					<Trans>Save forum settings</Trans>
 				</Button>
 			</div>
 		</div>

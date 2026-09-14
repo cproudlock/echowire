@@ -148,11 +148,24 @@ dispatch_session_changes(
 ) ->
     {guild_state(), sets:set(channel_id()), sets:set(channel_id())}.
 compute_channel_diffs(SessionId, SessionData, UserId, OldState, AccState, ConnectedSet) ->
-    OldSet = guild_visibility_channels:cached_viewable_channel_set(
-        SessionData, UserId, OldState
+    %% Echowire: thread visibility is resolved live for every event and never comes from the
+    %% cached map, so threads take no part in the diff. Comparing a thread-less cached set with a
+    %% live set that includes threads sent a spurious CHANNEL_CREATE per thread.
+    OldSet = sets:from_list(
+        guild_sessions:without_thread_channels(
+            sets:to_list(
+                guild_visibility_channels:cached_viewable_channel_set(
+                    SessionData, UserId, OldState
+                )
+            ),
+            OldState
+        )
     ),
     NewSet = sets:from_list(
-        guild_visibility_channels:get_user_viewable_channels(UserId, AccState)
+        guild_sessions:without_thread_channels(
+            guild_visibility_channels:get_user_viewable_channels(UserId, AccState),
+            AccState
+        )
     ),
     Removed0 = sets:subtract(OldSet, NewSet),
     {StateWithAccess, PreservedSet} =

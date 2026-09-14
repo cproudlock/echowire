@@ -683,14 +683,14 @@ export class ChannelOperationsService {
 		const row = thread.toRow();
 		const {data} = params;
 		// Echowire: owners may rename, retag, change auto-archive, and close or reopen their own
-		// unlocked thread. Locking, pinning, invitability, and anything on a locked thread's archive
-		// state are for moderators only.
+		// unlocked thread. Locking, pinning, invitability, and any edit at all to a locked thread are
+		// for moderators only.
 		if (!isModerator) {
 			const moderatorOnlyChange =
+				row.thread_locked === true ||
 				data.locked !== undefined ||
 				data.pinned !== undefined ||
-				data.invitable !== undefined ||
-				(data.archived !== undefined && row.thread_locked === true);
+				data.invitable !== undefined;
 			if (moderatorOnlyChange) {
 				throw new MissingPermissionsError();
 			}

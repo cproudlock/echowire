@@ -216,6 +216,10 @@ describe('Forum and thread server parity', () => {
 
 		await patchThread(harness, moderator.token, thread.id, {locked: true, archived: true});
 		await patchThread(harness, creator.token, thread.id, {archived: false}, HTTP_STATUS.FORBIDDEN);
+		// A locked thread is frozen for its owner: no rename, retag or auto-archive change either.
+		await patchThread(harness, creator.token, thread.id, {name: 'sneaky rename'}, HTTP_STATUS.FORBIDDEN);
+		await patchThread(harness, creator.token, thread.id, {auto_archive_duration: 60}, HTTP_STATUS.FORBIDDEN);
+		expect((await getThread(harness, moderator.token, thread.id)).name).toBe('final title');
 		const reopened = await patchThread(harness, moderator.token, thread.id, {archived: false});
 		expect(reopened.thread_metadata?.archived).toBe(false);
 	});

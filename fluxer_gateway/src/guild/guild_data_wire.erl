@@ -155,6 +155,9 @@ named_key_kind(<<"recipients">>) -> maybe_scalar_list;
 named_key_kind(<<"guild_folders">>) -> restrict;
 named_key_kind(<<"rtc_regions">>) -> restrict;
 named_key_kind(<<"recipient_ids">>) -> drop;
+%% Echowire: a private thread's member ids are internal to the gateway's permission checks and
+%% must never reach a client session, whatever the thread type.
+named_key_kind(<<"thread_member_ids">>) -> drop;
 named_key_kind(<<"role_index">>) -> drop;
 named_key_kind(<<"channel_index">>) -> drop;
 named_key_kind(<<"member_role_index">>) -> drop;
@@ -205,6 +208,14 @@ fast_payload_keeps_restricted_ids_opaque_test() ->
 fast_payload_drops_internal_keys_test() ->
     Data = #{<<"id">> => 1, <<"role_index">> => #{}, role_perms_cache => #{}},
     ?assertEqual(#{<<"id">> => <<"1">>}, fast_payload(Data, false)).
+
+fast_payload_drops_thread_member_ids_test() ->
+    Private = #{<<"id">> => 21, <<"type">> => 12, <<"thread_member_ids">> => [<<"77">>]},
+    Public = #{<<"id">> => 22, <<"type">> => 11, thread_member_ids => [78]},
+    ?assertEqual(
+        #{<<"channels">> => [#{<<"id">> => <<"21">>, <<"type">> => 12}, #{<<"id">> => <<"22">>, <<"type">> => 11}]},
+        payload(#{<<"channels">> => [Private, Public]})
+    ).
 
 pre_encoded_payload_passes_through_unchanged_test() ->
     Data = {pre_encoded, <<"{}">>},
@@ -344,6 +355,7 @@ reference_payload_map_field(Path, Key, FieldValue, Acc) ->
 reference_keep_payload_field(Key) ->
     not lists:member(reference_key_binary(Key), [
         <<"recipient_ids">>,
+        <<"thread_member_ids">>,
         <<"role_index">>,
         <<"channel_index">>,
         <<"member_role_index">>,

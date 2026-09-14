@@ -31,11 +31,11 @@ describe('resolveThreadActions', () => {
 		});
 	});
 
-	it('stops the owner reopening a post a moderator locked', () => {
+	it('stops the owner reopening or editing a post a moderator locked', () => {
 		const actions = resolveThreadActions({isOwner: true, canManage: false, locked: true});
 		expect(actions.canReopen).toBe(false);
 		expect(actions.canClose).toBe(false);
-		expect(actions.canEdit).toBe(true);
+		expect(actions.canEdit).toBe(false);
 	});
 
 	it('gives other members nothing', () => {

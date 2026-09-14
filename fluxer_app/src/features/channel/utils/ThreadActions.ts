@@ -4,7 +4,7 @@
 // MANAGE_CHANNELS is checked on the parent channel.
 //   Lock, unlock, pin, unpin: managers only.
 //   Close or reopen: managers, or the owner while the thread is unlocked.
-//   Rename, edit tags, change auto-archive: managers or the owner.
+//   Rename, edit tags, change auto-archive: managers, or the owner while the thread is unlocked.
 //   Delete: managers or the owner.
 
 import Authentication from '@app/features/auth/state/Authentication';
@@ -36,7 +36,7 @@ export function resolveThreadActions({isOwner, canManage, locked}: ThreadActionI
 		canPin: canManage,
 		canClose: canManage || ownerOfUnlocked,
 		canReopen: canManage || ownerOfUnlocked,
-		canEdit: canManage || isOwner,
+		canEdit: canManage || ownerOfUnlocked,
 		canDelete: canManage || isOwner,
 	};
 }

@@ -13,6 +13,7 @@ import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {MessageResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import {afterEach, beforeEach, describe, expect, test, vi} from 'vitest';
 
 async function createThread(
@@ -30,6 +31,14 @@ async function createThread(
 
 async function getThread(harness: ApiTestHarness, token: string, threadId: string): Promise<ChannelResponse> {
 	return createBuilder<ChannelResponse>(harness, token).get(`/channels/${threadId}`).execute();
+}
+
+async function getMessagesIn(
+	harness: ApiTestHarness,
+	token: string,
+	channelId: string,
+): Promise<Array<MessageResponse>> {
+	return createBuilder<Array<MessageResponse>>(harness, token).get(`/channels/${channelId}/messages`).execute();
 }
 
 describe('Forums server review fixes', () => {
@@ -106,5 +115,47 @@ describe('Forums server review fixes', () => {
 		);
 		// Exactly one of the six is the starter; the other five count.
 		expect((await getThread(harness, owner.token, post.id)).message_count).toBe(5);
+	});
+
+	test('deleting a forum post starter leaves message_count alone, singly and in bulk', async () => {
+		const {owner, guild} = await setupTestGuildWithMembers(harness, 0);
+		const forum = await createBuilder<ChannelResponse>(harness, owner.token)
+			.post(`/guilds/${guild.id}/channels`)
+			.body({name: 'forum', type: ChannelTypes.GUILD_FORUM})
+			.execute();
+
+		const single = await createThread(harness, owner.token, forum.id, {name: 'single'});
+		const starter = await sendMessage(harness, owner.token, single.id, 'starter');
+		await sendMessage(harness, owner.token, single.id, 'reply one');
+		const replyTwo = await sendMessage(harness, owner.token, single.id, 'reply two');
+		expect((await getThread(harness, owner.token, single.id)).message_count).toBe(2);
+		await createBuilder(harness, owner.token)
+			.delete(`/channels/${single.id}/messages/${starter.id}`)
+			.expect(HTTP_STATUS.NO_CONTENT)
+			.execute();
+		expect((await getThread(harness, owner.token, single.id)).message_count).toBe(2);
+		// With the starter gone, the earliest remaining message is a counted reply.
+		const replyOne = (await getMessagesIn(harness, owner.token, single.id)).find((m) => m.content === 'reply one');
+		await createBuilder(harness, owner.token)
+			.delete(`/channels/${single.id}/messages/${replyOne?.id}`)
+			.expect(HTTP_STATUS.NO_CONTENT)
+			.execute();
+		expect((await getThread(harness, owner.token, single.id)).message_count).toBe(1);
+		expect(replyTwo.id).toBeTruthy();
+
+		const bulk = await createThread(harness, owner.token, forum.id, {name: 'bulk'});
+		const ids = [
+			(await sendMessage(harness, owner.token, bulk.id, 'starter')).id,
+			(await sendMessage(harness, owner.token, bulk.id, 'reply a')).id,
+			(await sendMessage(harness, owner.token, bulk.id, 'reply b')).id,
+		];
+		await sendMessage(harness, owner.token, bulk.id, 'reply c');
+		expect((await getThread(harness, owner.token, bulk.id)).message_count).toBe(3);
+		await createBuilder(harness, owner.token)
+			.post(`/channels/${bulk.id}/messages/bulk-delete`)
+			.body({messages: ids})
+			.expect(HTTP_STATUS.NO_CONTENT)
+			.execute();
+		expect((await getThread(harness, owner.token, bulk.id)).message_count).toBe(1);
 	});
 });

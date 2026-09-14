@@ -87,9 +87,23 @@ maybe_apply_channel_overwrites(
     {thread, integer(), integer(), [term()]} | orphan_thread | not_thread.
 thread_parent(ChannelId, State) ->
     case guild_permissions_check:find_channel_by_id(ChannelId, State) of
-        Channel when is_map(Channel) -> classify_thread(Channel);
+        Channel when is_map(Channel) -> require_indexed_parent(classify_thread(Channel), State);
         _ -> not_thread
     end.
+
+%% Echowire: a thread whose parent channel is no longer indexed (deleted) has nothing to resolve
+%% its permissions against. Treat it as an orphan, which is not viewable, rather than letting the
+%% unknown parent fall back to guild-level permissions.
+-spec require_indexed_parent(
+    {thread, integer(), integer(), [term()]} | orphan_thread | not_thread, guild_state()
+) -> {thread, integer(), integer(), [term()]} | orphan_thread | not_thread.
+require_indexed_parent({thread, _Type, ParentId, _MemberIds} = Thread, State) ->
+    case guild_permissions_check:find_channel_by_id(ParentId, State) of
+        Parent when is_map(Parent) -> Thread;
+        _ -> orphan_thread
+    end;
+require_indexed_parent(Other, _State) ->
+    Other.
 
 -spec classify_thread(channel()) ->
     {thread, integer(), integer(), [term()]} | orphan_thread | not_thread.
@@ -525,5 +539,20 @@ orphan_thread_is_not_viewable_test() ->
     State = thread_test_state(),
     Perms = maybe_apply_channel_overwrites(View, 11, [], 22, 5, State),
     ?assertEqual(false, permission_bits:has(Perms, View)).
+
+thread_with_deleted_parent_is_not_viewable_test() ->
+    View = constants:view_channel_permission(),
+    %% The parent (50) is not in the index: it was deleted while the thread row survived.
+    Stranded = #{
+        <<"id">> => <<"51">>,
+        <<"type">> => 11,
+        <<"parent_id">> => <<"50">>,
+        <<"permission_overwrites">> => []
+    },
+    State = #{data => guild_data_index:put_channels([Stranded], #{})},
+    Perms = maybe_apply_channel_overwrites(View, 11, [], 51, 5, State),
+    ?assertEqual(false, permission_bits:has(Perms, View)),
+    Admin = maybe_apply_channel_overwrites(View, 11, [9], 51, 5, State),
+    ?assertEqual(false, permission_bits:has(Admin, View)).
 
 -endif.

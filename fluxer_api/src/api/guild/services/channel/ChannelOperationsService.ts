@@ -348,7 +348,8 @@ export class ChannelOperationsService {
 				if (existing.parentId !== params.parentChannelId || !THREAD_CHANNEL_TYPES.has(existing.type)) {
 					throw new UnknownChannelError();
 				}
-				// Echowire: the idempotent path must not hand back a private thread the caller cannot see.
+				// Echowire: the idempotent path must not hand back a private thread the caller cannot see,
+				// nor confirm it exists: answer as if no thread were there.
 				const canAccessExisting = await canAccessPrivateThread({
 					channel: existing,
 					userId: params.userId,
@@ -356,7 +357,7 @@ export class ChannelOperationsService {
 					threadMemberRepository: this.threadMemberRepository,
 				});
 				if (!canAccessExisting) {
-					throw new MissingPermissionsError();
+					throw new UnknownChannelError();
 				}
 				return mapChannelToResponse({
 					channel: existing,

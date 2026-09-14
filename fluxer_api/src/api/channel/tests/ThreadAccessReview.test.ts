@@ -114,6 +114,22 @@ describe('Thread access review fixes', () => {
 		expect(announced).toContain(publicThread.id);
 		expect(announced).not.toContain(privateThread.id);
 	});
+
+	test('the create-from-message path does not reveal a private thread to a non-member', async () => {
+		const {members, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		const [creator, outsider] = members;
+		const message = await sendMessage(harness, creator.token, systemChannel.id, 'start here');
+		await createThread(harness, creator.token, systemChannel.id, {
+			name: 'private branch',
+			type: ChannelTypes.PRIVATE_THREAD,
+			message_id: message.id,
+		});
+		await createBuilder(harness, outsider.token)
+			.post(`/channels/${systemChannel.id}/threads`)
+			.body({name: 'probe', message_id: message.id})
+			.expect(HTTP_STATUS.NOT_FOUND)
+			.execute();
+	});
 });
 
 describe('orphaned thread detection', () => {

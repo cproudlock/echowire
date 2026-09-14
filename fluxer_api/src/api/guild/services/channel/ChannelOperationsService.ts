@@ -24,6 +24,7 @@ import {
 	hasPermissionBits,
 	withPrivateThreadMemberIds,
 } from '@app/api/channel/services/ThreadAccess';
+import {buildThreadDeletePayload} from '@app/api/channel/services/ThreadPurge';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@app/api/guild/GuildAuditLogTypes';
@@ -813,19 +814,11 @@ export class ChannelOperationsService {
 			throw new UnknownChannelError();
 		}
 		await this.assertCanManageThread(thread, params.userId);
+		const deletePayload = await buildThreadDeletePayload(thread, thread.guildId, this.threadMemberRepository);
 		await this.channelRepository.delete(thread.id, thread.guildId);
 		// Echowire: a deleted thread keeps no membership rows behind.
 		await this.threadMemberRepository.removeAllMembers(thread.id);
-		await this.gatewayService.dispatchGuild({
-			guildId: thread.guildId,
-			event: 'THREAD_DELETE',
-			data: {
-				id: thread.id.toString(),
-				guild_id: thread.guildId.toString(),
-				parent_id: thread.parentId ? thread.parentId.toString() : null,
-				type: thread.type,
-			},
-		});
+		await this.gatewayService.dispatchGuild({guildId: thread.guildId, event: 'THREAD_DELETE', data: deletePayload});
 	}
 
 	// Echowire: recompute member_count from the membership table and persist it on the thread.

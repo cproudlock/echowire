@@ -20,6 +20,27 @@ export function threadsOfParent(channels: ReadonlyArray<Channel>, parentId: Chan
 	return channels.filter((channel) => THREAD_CHANNEL_TYPES.has(channel.type) && channel.parentId === parentId);
 }
 
+// THREAD_DELETE payload. A private thread carries its member ids (captured before membership is
+// removed) so the gateway can limit the event to members and parent managers; the field is
+// stripped before any client sees it.
+export async function buildThreadDeletePayload(
+	thread: Channel,
+	guildId: GuildID,
+	threadMemberRepository: ThreadMemberRepository,
+): Promise<Record<string, unknown>> {
+	const data: Record<string, unknown> = {
+		id: thread.id.toString(),
+		guild_id: guildId.toString(),
+		parent_id: thread.parentId ? thread.parentId.toString() : null,
+		type: thread.type,
+	};
+	if (thread.type === ChannelTypes.PRIVATE_THREAD) {
+		const members = await threadMemberRepository.listMembers(thread.id);
+		data.thread_member_ids = members.map((member) => member.userId.toString());
+	}
+	return data;
+}
+
 export async function purgeThread(params: {
 	thread: Channel;
 	guildId: GuildID;
@@ -36,18 +57,8 @@ export async function purgeThread(params: {
 	}
 	await params.deleteMessages(thread.id);
 	await deleteChannelMessageSearchDocuments(thread.id, {context: {source: params.source}});
+	const deletePayload = await buildThreadDeletePayload(thread, guildId, params.threadMemberRepository);
 	await params.threadMemberRepository.removeAllMembers(thread.id);
-	// THREAD_DELETE goes out while the thread is still indexed, so the gateway can scope it to the
-	// sessions that could see the thread.
-	await params.gatewayService.dispatchGuild({
-		guildId,
-		event: 'THREAD_DELETE',
-		data: {
-			id: thread.id.toString(),
-			guild_id: guildId.toString(),
-			parent_id: thread.parentId ? thread.parentId.toString() : null,
-			type: thread.type,
-		},
-	});
+	await params.gatewayService.dispatchGuild({guildId, event: 'THREAD_DELETE', data: deletePayload});
 	await params.deleteChannelRow(thread.id, guildId);
 }

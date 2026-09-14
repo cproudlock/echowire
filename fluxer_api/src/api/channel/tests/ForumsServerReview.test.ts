@@ -9,6 +9,7 @@ import {createPermissionOverwrite, setupTestGuildWithMembers} from '@app/api/cha
 import {ensureSessionStarted, sendMessage} from '@app/api/message/tests/MessageTestUtils';
 import type {Channel} from '@app/api/models/Channel';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
+import {clearRecordedGuildDispatches, recordedGuildDispatches} from '@app/api/test/NoopGatewayService';
 import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
 import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
@@ -228,5 +229,24 @@ describe('Forums server review fixes', () => {
 			.body({name: 'too soon', applied_tags: [helpTag]})
 			.expect(HTTP_STATUS.BAD_REQUEST, APIErrorCodes.SLOWMODE_RATE_LIMITED)
 			.execute();
+	});
+
+	test('THREAD_DELETE for a private thread tells the gateway who its members were', async () => {
+		const {members, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		const [creator] = members;
+		const thread = await createThread(harness, creator.token, systemChannel.id, {
+			name: 'short lived',
+			type: ChannelTypes.PRIVATE_THREAD,
+		});
+		clearRecordedGuildDispatches();
+		await createBuilder(harness, creator.token)
+			.delete(`/channels/${thread.id}/thread`)
+			.expect(HTTP_STATUS.NO_CONTENT)
+			.execute();
+		const deletes = recordedGuildDispatches.filter(
+			(dispatch) => dispatch.event === 'THREAD_DELETE' && (dispatch.data as {id?: string}).id === thread.id,
+		);
+		expect(deletes).toHaveLength(1);
+		expect((deletes[0]!.data as {thread_member_ids?: Array<string>}).thread_member_ids).toEqual([creator.userId]);
 	});
 });

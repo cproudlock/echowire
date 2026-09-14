@@ -127,9 +127,13 @@ dispatch_bulk_groups(Groups, Event, FinalData, GuildId, Dispatched) ->
 filter_indexed_for_session(SessionData, IndexedChannels, UpdatedState) ->
     case maps:get(viewable_channels, SessionData, undefined) of
         ViewableMap when is_map(ViewableMap) ->
+            %% Echowire: thread ids are never trusted from the viewable map (see guild_sessions).
+            UserId = maps:get(user_id, SessionData),
             [
                 Ch
-             || {ChId, Ch} <- IndexedChannels, is_integer(ChId), maps:is_key(ChId, ViewableMap)
+             || {ChId, Ch} <- IndexedChannels,
+                is_integer(ChId),
+                viewable_by_map_or_live(ChId, ViewableMap, UserId, UpdatedState)
             ];
         _ ->
             UserId = maps:get(user_id, SessionData),
@@ -140,6 +144,16 @@ filter_indexed_for_session(SessionData, IndexedChannels, UpdatedState) ->
                 is_integer(ChId),
                 guild_permissions:can_view_channel(UserId, ChId, Member, UpdatedState)
             ]
+    end.
+
+-spec viewable_by_map_or_live(integer(), map(), user_id(), guild_state()) -> boolean().
+viewable_by_map_or_live(ChId, ViewableMap, UserId, State) ->
+    case guild_sessions:is_thread_channel(ChId, State) of
+        true ->
+            Member = guild_permissions:find_member_by_user_id(UserId, State),
+            Member =/= undefined andalso guild_permissions:can_view_channel(UserId, ChId, Member, State);
+        false ->
+            maps:is_key(ChId, ViewableMap)
     end.
 
 -spec filter_visible_channels([map()], user_id(), map() | undefined, guild_state()) -> [map()].

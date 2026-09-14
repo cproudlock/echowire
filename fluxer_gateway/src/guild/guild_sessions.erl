@@ -25,7 +25,9 @@
     handle_set_typing_override/3,
     handle_send_guild_sync/2,
     handle_send_members_chunk/3,
-    build_viewable_channel_map/1
+    build_viewable_channel_map/1,
+    is_thread_channel/2,
+    without_thread_channels/2
 ]).
 
 -define(MAX_PERM_MEMO_ENTRIES, 8192).
@@ -431,6 +433,19 @@ refresh_session_viewable(SessionId, SessionData, AccState) ->
 -spec session_can_view_channel(session_data(), channel_id(), guild_state()) -> boolean().
 session_can_view_channel(SessionData, ChannelId, State) ->
     UserId = maps:get(user_id, SessionData, undefined),
+    %% Echowire: thread visibility depends on the user (private-thread membership), so a thread id
+    %% is never answered from the session's viewable map, which can be shared across users with the
+    %% same roles and goes stale when membership changes. Always resolve it live.
+    case is_thread_channel(ChannelId, State) of
+        true when is_integer(UserId) -> check_member_channel_access(UserId, ChannelId, State);
+        true -> false;
+        false -> session_can_view_non_thread_channel(UserId, SessionData, ChannelId, State)
+    end.
+
+-spec session_can_view_non_thread_channel(
+    user_id() | undefined, session_data(), channel_id(), guild_state()
+) -> boolean().
+session_can_view_non_thread_channel(UserId, SessionData, ChannelId, State) ->
     case {UserId, maps:get(viewable_channels, SessionData, undefined)} of
         {Uid, ViewableChannels} when is_integer(Uid), is_map(ViewableChannels) ->
             maps:is_key(ChannelId, ViewableChannels) orelse
@@ -448,6 +463,35 @@ check_member_channel_access(UserId, ChannelId, State) ->
         undefined -> false;
         _ -> guild_permissions:can_view_channel(UserId, ChannelId, Member, State)
     end.
+
+-define(THREAD_CHANNEL_TYPES, [11, 12]).
+
+-spec is_thread_channel(channel_id(), guild_state()) -> boolean().
+is_thread_channel(ChannelId, State) when is_integer(ChannelId) ->
+    case guild_permissions:find_channel_by_id(ChannelId, State) of
+        Channel when is_map(Channel) -> lists:member(channel_type(Channel), ?THREAD_CHANNEL_TYPES);
+        _ -> false
+    end;
+is_thread_channel(_ChannelId, _State) ->
+    false.
+
+-spec channel_type(map()) -> integer() | undefined.
+channel_type(Channel) ->
+    case maps:get(<<"type">>, Channel, undefined) of
+        Type when is_integer(Type) -> Type;
+        Type when is_binary(Type) ->
+            try binary_to_integer(Type) of
+                Int -> Int
+            catch
+                error:badarg -> undefined
+            end;
+        _ -> undefined
+    end.
+
+%% Echowire: drop thread ids from a channel id list before it is cached or shared.
+-spec without_thread_channels([channel_id()], guild_state()) -> [channel_id()].
+without_thread_channels(ChannelIds, State) ->
+    [Id || Id <- ChannelIds, not is_thread_channel(Id, State)].
 
 -spec build_viewable_channel_map([channel_id()]) -> #{channel_id() => true}.
 build_viewable_channel_map(ChannelIds) ->
@@ -678,5 +722,67 @@ handle_pending_session_down_last_session_test() ->
     ?assertEqual(#{}, maps:get(sessions, NewState)),
     ?assertEqual(#{}, maps:get(guild_session_refs, NewState)),
     ?assertEqual(false, maps:is_key(auto_stop_pending, NewState)).
+
+%% Echowire: private-thread visibility is per user and must never come from a viewable map.
+
+thread_visibility_state(ThreadMemberIds) ->
+    View = constants:view_channel_permission(),
+    Everyone = #{<<"id">> => <<"42">>, <<"name">> => <<"@everyone">>, <<"permissions">> => integer_to_binary(View)},
+    Parent = #{<<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => []},
+    Private = #{
+        <<"id">> => <<"200">>,
+        <<"type">> => 12,
+        <<"parent_id">> => <<"100">>,
+        <<"thread_member_ids">> => ThreadMemberIds,
+        <<"permission_overwrites">> => []
+    },
+    Public = #{
+        <<"id">> => <<"201">>,
+        <<"type">> => 11,
+        <<"parent_id">> => <<"100">>,
+        <<"permission_overwrites">> => []
+    },
+    Member = fun(Id) ->
+        #{<<"user">> => #{<<"id">> => Id, <<"username">> => Id}, <<"roles">> => []}
+    end,
+    #{
+        id => 42,
+        data => guild_data_index:normalize_data(#{
+            <<"id">> => <<"42">>,
+            <<"guild">> => #{<<"id">> => <<"42">>, <<"owner_id">> => <<"9999">>},
+            <<"roles">> => [Everyone],
+            <<"channels">> => [Parent, Private, Public],
+            <<"members">> => [Member(<<"10">>), Member(<<"11">>)]
+        })
+    }.
+
+%% Both sessions carry the same role-keyed map, which (as the old cache did) lists the private
+%% thread because it was computed for its member.
+thread_visibility_sessions() ->
+    Shared = #{100 => true, 200 => true, 201 => true},
+    #{
+        <<"member">> => #{user_id => 10, pid => self(), viewable_channels => Shared},
+        <<"same-roles">> => #{user_id => 11, pid => self(), viewable_channels => Shared}
+    }.
+
+private_thread_filters_out_same_role_non_member_test() ->
+    State = thread_visibility_state([<<"10">>]),
+    Pairs = filter_sessions_for_channel(thread_visibility_sessions(), 200, undefined, State),
+    ?assertEqual([<<"member">>], lists:sort([Sid || {Sid, _} <- Pairs])).
+
+private_thread_filters_out_member_who_left_test() ->
+    State = thread_visibility_state([]),
+    Pairs = filter_sessions_for_channel(thread_visibility_sessions(), 200, undefined, State),
+    ?assertEqual([], Pairs).
+
+public_thread_visible_without_map_entry_test() ->
+    State = thread_visibility_state([]),
+    Sessions = #{<<"s">> => #{user_id => 11, pid => self(), viewable_channels => #{100 => true}}},
+    Pairs = filter_sessions_for_channel(Sessions, 201, undefined, State),
+    ?assertEqual([<<"s">>], [Sid || {Sid, _} <- Pairs]).
+
+without_thread_channels_strips_threads_test() ->
+    State = thread_visibility_state([<<"10">>]),
+    ?assertEqual([100], without_thread_channels([100, 200, 201], State)).
 
 -endif.

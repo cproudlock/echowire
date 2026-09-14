@@ -123,6 +123,18 @@ handle_post_update(Event, EventData, OldState, NewState) when
     Event =:= channel_delete
 ->
     post_update_channel(Event, EventData, OldState, NewState);
+handle_post_update(Event, EventData, OldState, NewState) when
+    Event =:= thread_members_update;
+    Event =:= thread_update
+->
+    %% Echowire: refresh the cached session data of users whose private-thread access may have
+    %% changed. Thread ids are always checked live when filtering, so this keeps the cached maps
+    %% honest rather than being what enforces access.
+    OldData = guild_permissions_common:resolve_data_map(OldState),
+    UserIds = guild_state_channels:thread_membership_user_ids(
+        EventData, case OldData of undefined -> #{}; _ -> OldData end
+    ),
+    lists:foldl(fun refresh_member_session_cache/2, NewState, UserIds);
 handle_post_update(guild_member_remove, EventData, _OldState, NewState) ->
     post_update_member_remove(EventData, NewState);
 handle_post_update(Event, _EventData, OldState, NewState) ->

@@ -10,6 +10,7 @@
     handle_channel_delete/2,
     handle_message_create/2,
     handle_thread_members_update/2,
+    thread_membership_user_ids/2,
     handle_channel_pins_update/2,
     handle_emojis_update/2,
     handle_stickers_update/2,
@@ -98,6 +99,30 @@ maybe_update_private_members(Data, ThreadId, Channel, EventData) ->
                 Data, ThreadId, <<"thread_member_ids">>, [integer_to_binary(Id) || Id <- Next]
             )
     end.
+
+%% Echowire: users whose private-thread access may have changed with this event: everyone added
+%% or removed by THREAD_MEMBERS_UPDATE, and the old and new members of a private THREAD_UPDATE.
+-spec thread_membership_user_ids(event_data(), guild_data()) -> [integer()].
+thread_membership_user_ids(EventData, Data) ->
+    AddedMembers = list_or_empty(maps:get(<<"added_members">>, EventData, [])),
+    Added = normalize_member_ids(
+        [maps:get(<<"user_id">>, M, undefined) || M <- AddedMembers, is_map(M)]
+    ),
+    Removed = normalize_member_ids(maps:get(<<"removed_member_ids">>, EventData, [])),
+    Payload = normalize_member_ids(maps:get(<<"thread_member_ids">>, EventData, [])),
+    Previous =
+        case snowflake_id:parse_optional(maps:get(<<"id">>, EventData, undefined)) of
+            undefined ->
+                [];
+            ThreadId ->
+                case maps:find(ThreadId, guild_data_index:channel_index(Data)) of
+                    {ok, Channel} when is_map(Channel) ->
+                        normalize_member_ids(maps:get(<<"thread_member_ids">>, Channel, []));
+                    _ ->
+                        []
+                end
+        end,
+    lists:usort(Added ++ Removed ++ Payload ++ Previous).
 
 -spec is_private_thread(map()) -> boolean().
 is_private_thread(Channel) ->

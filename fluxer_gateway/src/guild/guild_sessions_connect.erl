@@ -542,8 +542,12 @@ lookup_or_compute_viewable(UserId, RoleKey, CacheTab, State) ->
 
 -spec compute_viewable_channel_map(user_id(), guild_state()) -> map().
 compute_viewable_channel_map(UserId, State) ->
+    %% Echowire: this map is cached per role set and handed to every user with those roles, so it
+    %% must not contain threads, whose visibility is per user (see guild_sessions).
     guild_sessions:build_viewable_channel_map(
-        guild_visibility:get_user_viewable_channels(UserId, State)
+        guild_sessions:without_thread_channels(
+            guild_visibility:get_user_viewable_channels(UserId, State), State
+        )
     ).
 
 -spec invalidate_viewable_channels_cache(guild_state()) -> ok.

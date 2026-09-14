@@ -28,6 +28,10 @@ import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelC
 // with a targeted patch, never a full-row upsert from a possibly stale snapshot, so a concurrent
 // message send cannot roll back last_message_id or the message count.
 type ThreadPatchableColumn =
+	| 'name'
+	| 'applied_tags'
+	| 'thread_auto_archive_duration'
+	| 'thread_invitable'
 	| 'thread_archived'
 	| 'thread_archive_timestamp'
 	| 'thread_locked'

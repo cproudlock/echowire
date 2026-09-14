@@ -17,6 +17,10 @@ export abstract class IChannelDataRepository {
 		fields: Partial<
 			Pick<
 				ChannelRow,
+				| 'name'
+				| 'applied_tags'
+				| 'thread_auto_archive_duration'
+				| 'thread_invitable'
 				| 'thread_archived'
 				| 'thread_archive_timestamp'
 				| 'thread_locked'

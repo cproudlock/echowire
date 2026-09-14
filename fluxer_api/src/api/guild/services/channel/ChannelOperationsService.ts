@@ -711,18 +711,23 @@ export class ChannelOperationsService {
 			appliedTags = data.applied_tags.length > 0 ? data.applied_tags : null;
 		}
 		const archivedChanged = data.archived !== undefined && data.archived !== row.thread_archived;
-		const updatedRow = {
-			...row,
-			name: data.name ?? row.name,
-			thread_archived: data.archived ?? row.thread_archived,
-			thread_locked: data.locked ?? row.thread_locked,
-			thread_auto_archive_duration: data.auto_archive_duration ?? row.thread_auto_archive_duration,
-			thread_invitable: data.invitable ?? row.thread_invitable,
-			thread_archive_timestamp: archivedChanged ? new Date() : row.thread_archive_timestamp,
-			thread_pinned: data.pinned ?? row.thread_pinned,
-			applied_tags: appliedTags,
-		};
-		const channel = await this.channelRepository.upsert(updatedRow);
+		// Echowire: write only the fields this request changes. Upserting the whole row read above
+		// would roll back anything written since, such as last_message_id, the message and member
+		// counts, or an unarchive triggered by a concurrent send.
+		await this.channelRepository.channelData.patchThreadFields(thread.id, {
+			name: data.name,
+			thread_archived: data.archived,
+			thread_locked: data.locked,
+			thread_auto_archive_duration: data.auto_archive_duration,
+			thread_invitable: data.invitable,
+			thread_archive_timestamp: archivedChanged ? new Date() : undefined,
+			thread_pinned: data.pinned,
+			applied_tags: data.applied_tags !== undefined ? appliedTags : undefined,
+		});
+		const channel = await this.channelRepository.findUnique(thread.id);
+		if (!channel) {
+			throw new UnknownChannelError();
+		}
 		const response = await mapChannelToResponse({
 			channel,
 			currentUserId: null,

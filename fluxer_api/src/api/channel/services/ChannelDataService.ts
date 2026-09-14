@@ -184,6 +184,8 @@ export class ChannelDataService {
 			default_sort_order?: number | null;
 			default_auto_archive_duration?: number | null;
 			require_tag?: boolean;
+			default_forum_layout?: number | null;
+			default_thread_rate_limit_per_user?: number | null;
 		};
 		if (forumData.available_tags !== undefined) {
 			const tags = forumData.available_tags ?? [];
@@ -211,6 +213,12 @@ export class ChannelDataService {
 		}
 		if (forumData.require_tag !== undefined) {
 			channelUpdateData.require_tag = forumData.require_tag;
+		}
+		if (forumData.default_forum_layout !== undefined) {
+			channelUpdateData.default_forum_layout = forumData.default_forum_layout ?? null;
+		}
+		if (forumData.default_thread_rate_limit_per_user !== undefined) {
+			channelUpdateData.default_thread_rate_limit_per_user = forumData.default_thread_rate_limit_per_user ?? null;
 		}
 		return this.operations.editChannel({
 			userId,

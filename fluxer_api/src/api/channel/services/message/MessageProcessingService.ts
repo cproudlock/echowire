@@ -10,10 +10,11 @@ import {isPersonalNotesChannel} from '@app/api/channel/services/message/MessageH
 import type {MessageMentionService} from '@app/api/channel/services/message/MessageMentionService';
 import type {MessagePersistenceService} from '@app/api/channel/services/message/MessagePersistenceService';
 import {incrementDmMentionCounts} from '@app/api/channel/services/message/ReadStateHelpers';
+import {withPrivateThreadMemberIds} from '@app/api/channel/services/ThreadAccess';
 import type {GatewayChannelMention, IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {UserCacheService} from '@app/api/infrastructure/UserCacheService';
 import {Logger} from '@app/api/Logger';
-import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
+import {createRequestCache, type RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
 import {Channel} from '@app/api/models/Channel';
 import type {Message} from '@app/api/models/Message';
 import type {User} from '@app/api/models/User';
@@ -67,10 +68,43 @@ export class MessageProcessingService {
 			authorId: user.id,
 			mentionHere,
 		});
+		// Echowire: a message into an archived thread reopens it. Sends into a locked thread are
+		// already limited to Manage Channels, so a locked thread reopens but stays locked.
+		await this.unarchiveThreadOnSend(channel);
 		// Echowire: posting in a thread auto-joins you as a member (Discord parity) so you
 		// receive follower push notifications for later replies. Runs before the message is
 		// broadcast, so this author lands in the thread_member_ids snapshot.
 		await this.autoJoinAuthorToThread(channel, user.id);
+	}
+
+	private async unarchiveThreadOnSend(channel: Channel): Promise<void> {
+		if (!channel.guildId || !channel.threadMetadata?.archived) {
+			return;
+		}
+		try {
+			await this.channelRepository.channelData.patchThreadFields(channel.id, {
+				thread_archived: false,
+				thread_archive_timestamp: new Date(),
+			});
+			const reopened = await this.channelRepository.channelData.findUnique(channel.id);
+			if (!reopened) {
+				return;
+			}
+			const response = await mapChannelToResponse({
+				channel: reopened,
+				currentUserId: null,
+				userCacheService: this.userCacheService,
+				requestCache: createRequestCache(),
+			});
+			const data = await withPrivateThreadMemberIds({
+				channel: reopened,
+				response,
+				threadMemberRepository: new ThreadMemberRepository(),
+			});
+			await this.gatewayService.dispatchGuild({guildId: channel.guildId, event: 'THREAD_UPDATE', data});
+		} catch (error) {
+			Logger.warn({error, channelId: channel.id.toString()}, 'Failed to unarchive thread on send');
+		}
 	}
 
 	// Echowire: idempotent, best-effort thread auto-join. A membership failure must never
@@ -85,9 +119,9 @@ export class MessageProcessingService {
 			if (existing) {
 				return;
 			}
-			await threadMemberRepository.addMember(channel.id, userId);
+			const member = await threadMemberRepository.addMember(channel.id, userId);
 			const members = await threadMemberRepository.listMembers(channel.id);
-			await this.channelRepository.channelData.upsert({...channel.toRow(), thread_member_count: members.length});
+			await this.channelRepository.channelData.patchThreadFields(channel.id, {thread_member_count: members.length});
 			await this.gatewayService.dispatchGuild({
 				guildId: channel.guildId,
 				event: 'THREAD_MEMBERS_UPDATE',
@@ -95,7 +129,14 @@ export class MessageProcessingService {
 					id: channel.id.toString(),
 					guild_id: channel.guildId.toString(),
 					member_count: members.length,
-					added_members: [{user_id: userId.toString()}],
+					added_members: [
+						{
+							id: channel.id.toString(),
+							user_id: userId.toString(),
+							join_timestamp: member.joinTimestamp.toISOString(),
+							flags: member.flags,
+						},
+					],
 				},
 			});
 		} catch (error) {

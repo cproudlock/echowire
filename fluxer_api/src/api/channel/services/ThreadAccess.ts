@@ -11,8 +11,26 @@ import type {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadM
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {Channel} from '@app/api/models/Channel';
 import {ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 
 type ThreadLike = Pick<Channel, 'id' | 'type' | 'parentId'>;
+
+interface ChannelLookup {
+	findUnique(channelId: ChannelID): Promise<Channel | null>;
+}
+
+// A thread whose parent row is gone (or soft-deleted) has nothing to resolve permissions against.
+// It is inaccessible to everyone; the orphan sweep deletes it.
+export async function threadParentExists(channelRepository: ChannelLookup, channel: ThreadLike): Promise<boolean> {
+	if (!isThreadChannel(channel)) {
+		return true;
+	}
+	if (!channel.parentId) {
+		return false;
+	}
+	const parent = await channelRepository.findUnique(channel.parentId);
+	return parent !== null && !parent.isSoftDeleted;
+}
 
 export function isThreadChannel(channel: Pick<Channel, 'type'>): boolean {
 	return THREAD_CHANNEL_TYPES.has(channel.type);
@@ -29,6 +47,22 @@ export function permissionChannelId(channel: ThreadLike): ChannelID | null {
 
 export function hasPermissionBits(permissions: bigint, required: bigint): boolean {
 	return (permissions & required) === required;
+}
+
+// The gateway cannot look up thread membership, so a private thread's payload to it (THREAD_CREATE,
+// THREAD_UPDATE, the guild channel collection) carries the member ids. Members are the only
+// non-moderators who can view a private thread, and they can already list its members.
+export async function withPrivateThreadMemberIds(params: {
+	channel: Pick<Channel, 'id' | 'type'>;
+	response: ChannelResponse;
+	threadMemberRepository: ThreadMemberRepository;
+}): Promise<ChannelResponse> {
+	const {channel, response, threadMemberRepository} = params;
+	if (channel.type !== ChannelTypes.PRIVATE_THREAD) {
+		return response;
+	}
+	const members = await threadMemberRepository.listMembers(channel.id);
+	return {...response, thread_member_ids: members.map((member) => member.userId.toString())};
 }
 
 // Private-thread gate, given the caller's permissions on the parent channel.
@@ -48,16 +82,17 @@ export async function canAccessPrivateThread(params: {
 	return (await threadMemberRepository.getMember(channel.id, userId)) !== null;
 }
 
-// The caller's permissions on the parent channel of a thread, or 0n when it has no parent.
+// The caller's permissions on the parent channel of a thread, or 0n when the parent is missing.
 export async function getThreadParentPermissions(params: {
 	gatewayService: IGatewayService;
+	channelRepository: ChannelLookup;
 	guildId: GuildID;
 	channel: ThreadLike;
 	userId: UserID;
 }): Promise<bigint> {
 	const {gatewayService, guildId, channel, userId} = params;
 	const channelId = permissionChannelId(channel);
-	if (!channelId) {
+	if (!channelId || !(await threadParentExists(params.channelRepository, channel))) {
 		return 0n;
 	}
 	return gatewayService.getUserPermissions({guildId, userId, channelId});
@@ -66,6 +101,7 @@ export async function getThreadParentPermissions(params: {
 // Whether the caller may see this thread at all: VIEW_CHANNEL on the parent, plus the private gate.
 export async function canViewThread(params: {
 	gatewayService: IGatewayService;
+	channelRepository: ChannelLookup;
 	threadMemberRepository: ThreadMemberRepository;
 	guildId: GuildID;
 	channel: ThreadLike;

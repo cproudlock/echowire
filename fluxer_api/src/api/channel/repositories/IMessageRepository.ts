@@ -9,6 +9,10 @@ export interface ListMessagesOptions {
 	immediateAfter?: boolean;
 }
 
+export interface MessageDeleteOptions {
+	channelType?: number;
+}
+
 export abstract class IMessageRepository {
 	abstract listMessages(
 		channelId: ChannelID,
@@ -24,14 +28,21 @@ export abstract class IMessageRepository {
 
 	abstract updateEmbeds(message: Message): Promise<void>;
 
+	// Echowire: channelType, when the caller already knows it, lets non-thread deletes skip the
+	// thread message_count bookkeeping lookup.
 	abstract deleteMessage(
 		channelId: ChannelID,
 		messageId: MessageID,
 		authorId: UserID,
 		pinnedTimestamp?: Date,
+		options?: MessageDeleteOptions,
 	): Promise<void>;
 
-	abstract bulkDeleteMessages(channelId: ChannelID, messageIds: Array<MessageID>): Promise<void>;
+	abstract bulkDeleteMessages(
+		channelId: ChannelID,
+		messageIds: Array<MessageID>,
+		options?: MessageDeleteOptions,
+	): Promise<void>;
 
 	abstract deleteAllChannelMessages(channelId: ChannelID): Promise<void>;
 

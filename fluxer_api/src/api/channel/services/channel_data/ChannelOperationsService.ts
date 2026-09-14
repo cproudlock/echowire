@@ -3,8 +3,10 @@
 import type {ChannelID, GuildID, RoleID, UserID} from '@app/api/BrandedTypes';
 import {createChannelID, createGuildID, createRoleID, createUserID} from '@app/api/BrandedTypes';
 import type {IChannelRepositoryAggregate} from '@app/api/channel/repositories/IChannelRepositoryAggregate';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {ChannelAuthService} from '@app/api/channel/services/channel_data/ChannelAuthService';
 import type {ChannelUtilsService} from '@app/api/channel/services/channel_data/ChannelUtilsService';
+import {canParentThreads, purgeThread, threadsOfParent} from '@app/api/channel/services/ThreadPurge';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import {mapGuildToGuildResponse} from '@app/api/guild/GuildModel';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
@@ -76,9 +78,13 @@ export interface ChannelUpdateData {
 	default_sort_order?: number | null;
 	default_auto_archive_duration?: number | null;
 	require_tag?: boolean;
+	default_forum_layout?: number | null;
+	default_thread_rate_limit_per_user?: number | null;
 }
 
 export class ChannelOperationsService {
+	private readonly threadMemberRepository = new ThreadMemberRepository();
+
 	constructor(
 		private channelRepository: IChannelRepositoryAggregate,
 		private userRepository: IUserRepository,
@@ -286,7 +292,8 @@ export class ChannelOperationsService {
 					? data.voice_connection_limit
 					: channel.voiceConnectionLimit,
 			rate_limit_per_user:
-				data.rate_limit_per_user !== undefined && GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type)
+				data.rate_limit_per_user !== undefined &&
+				(GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) || channel.type === ChannelTypes.GUILD_FORUM)
 					? data.rate_limit_per_user
 					: channel.rateLimitPerUser,
 			nsfw: resolveNsfwOverrideWrite(channel, data),
@@ -324,11 +331,19 @@ export class ChannelOperationsService {
 					: channel.type === ChannelTypes.GUILD_FORUM
 						? channel.forumRequireTag
 						: null,
+			default_forum_layout:
+				data.default_forum_layout !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.default_forum_layout
+					: channel.defaultForumLayout,
+			default_thread_rate_limit_per_user:
+				data.default_thread_rate_limit_per_user !== undefined && channel.type === ChannelTypes.GUILD_FORUM
+					? data.default_thread_rate_limit_per_user
+					: channel.defaultThreadRateLimitPerUser,
 		};
 		const updatedChannel = await this.channelRepository.channelData.upsert(updatedChannelData);
 		if (
 			data.rate_limit_per_user !== undefined &&
-			GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) &&
+			(GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) || channel.type === ChannelTypes.GUILD_FORUM) &&
 			data.rate_limit_per_user !== channel.rateLimitPerUser
 		) {
 			try {
@@ -440,6 +455,23 @@ export class ChannelOperationsService {
 				...channelInvites.map((invite) => this.inviteRepository.delete(invite.code)),
 				...channelWebhooks.map((webhook) => this.webhookRepository.delete(webhook.id)),
 			]);
+			// Echowire: threads and forum posts go with their parent. Left behind, they would have no
+			// channel to resolve permissions against.
+			if (canParentThreads(channel)) {
+				const guildChannels = await this.channelRepository.channelData.listGuildChannels(guildId);
+				for (const thread of threadsOfParent(guildChannels, channelId)) {
+					await purgeThread({
+						thread,
+						guildId,
+						deleteMessages: (id) => this.channelRepository.messages.deleteAllChannelMessages(id),
+						deleteChannelRow: (id, gid) => this.channelRepository.channelData.delete(id, gid),
+						purgeAttachments: (t) => this.channelUtilsService.purgeChannelAttachments(t),
+						threadMemberRepository: this.threadMemberRepository,
+						gatewayService: this.gatewayService,
+						source: 'parent_channel_delete',
+					});
+				}
+			}
 			await this.channelUtilsService.purgeChannelAttachments(channel);
 			await this.channelRepository.messages.deleteAllChannelMessages(channelId);
 			await deleteChannelMessageSearchDocuments(channelId, {context: {source: 'channel_delete'}});

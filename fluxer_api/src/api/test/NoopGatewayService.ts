@@ -8,6 +8,7 @@ import {
 	type RoleID,
 	type UserID,
 } from '@app/api/BrandedTypes';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {GatewayDispatchEvent} from '@app/api/constants/Gateway';
 import {
 	mapGuildEmojiToResponse,
@@ -40,6 +41,13 @@ import type {GuildMemberResponse} from '@fluxer/schema/src/domains/guild/GuildMe
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
 
 const guildOwners = new Map<string, UserID>();
+// Echowire: guild dispatches captured for assertions in tests.
+export const recordedGuildDispatches: Array<{guildId: GuildID; event: GatewayDispatchEvent; data: unknown}> = [];
+
+export function clearRecordedGuildDispatches(): void {
+	recordedGuildDispatches.length = 0;
+}
+
 const guildMembers = new Map<string, Set<UserID>>();
 const guildRepository = new GuildRepository();
 const guildMemberRepository = new GuildMemberRepository();
@@ -124,7 +132,9 @@ export class NoopGatewayService extends IGatewayService {
 		this.voiceStatesByChannel.set(this.getVoiceStateKey(params), [...params.voiceStates]);
 	}
 
-	async dispatchGuild(_params: {guildId: GuildID; event: GatewayDispatchEvent; data: unknown}): Promise<void> {}
+	async dispatchGuild(params: {guildId: GuildID; event: GatewayDispatchEvent; data: unknown}): Promise<void> {
+		recordedGuildDispatches.push(params);
+	}
 
 	async getGuildCounts(guildId: GuildID): Promise<{
 		memberCount: number;
@@ -737,7 +747,7 @@ export class NoopGatewayService extends IGatewayService {
 	}
 
 	// Echowire: mirror the gateway. A thread resolves against its parent's overwrites, and a private
-	// thread loses VIEW_CHANNEL for anyone without MANAGE_CHANNELS on the parent.
+	// thread loses VIEW_CHANNEL for anyone who is neither a member nor holds MANAGE_CHANNELS on the parent.
 	private async applyThreadAwareOverwrites(
 		basePermissions: bigint,
 		memberRoleIds: Set<RoleID>,
@@ -755,7 +765,9 @@ export class NoopGatewayService extends IGatewayService {
 		}
 		const permissions = this.applyChannelOverwrites(basePermissions, memberRoleIds, parent, userId, guildId);
 		if (channel.type === ChannelTypes.PRIVATE_THREAD && (permissions & Permissions.MANAGE_CHANNELS) === 0n) {
-			return permissions & ~Permissions.VIEW_CHANNEL;
+			// The gateway admits the thread's members through thread_member_ids.
+			const member = await new ThreadMemberRepository().getMember(channel.id, userId);
+			return member ? permissions : permissions & ~Permissions.VIEW_CHANNEL;
 		}
 		return permissions;
 	}

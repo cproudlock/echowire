@@ -154,6 +154,8 @@ function serializeGuildForumChannel(channel: Channel, ctx: ContentWarningCtx): C
 		default_sort_order: channel.defaultSortOrder ?? undefined,
 		default_auto_archive_duration: channel.forumDefaultAutoArchiveDuration ?? undefined,
 		require_tag: channel.forumRequireTag ? true : undefined,
+		default_forum_layout: channel.defaultForumLayout ?? undefined,
+		default_thread_rate_limit_per_user: channel.defaultThreadRateLimitPerUser ?? undefined,
 	};
 }
 

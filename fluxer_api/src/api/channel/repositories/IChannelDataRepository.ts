@@ -11,6 +11,28 @@ export abstract class IChannelDataRepository {
 
 	abstract updateLastMessageId(channelId: ChannelID, messageId: MessageID): Promise<void>;
 
+	// Echowire: targeted writes for thread state; see ThreadPatchableColumn in ChannelDataRepository.
+	abstract patchThreadFields(
+		channelId: ChannelID,
+		fields: Partial<
+			Pick<
+				ChannelRow,
+				| 'name'
+				| 'applied_tags'
+				| 'thread_auto_archive_duration'
+				| 'thread_invitable'
+				| 'thread_archived'
+				| 'thread_archive_timestamp'
+				| 'thread_locked'
+				| 'thread_pinned'
+				| 'thread_member_count'
+				| 'thread_message_count'
+			>
+		>,
+	): Promise<void>;
+
+	abstract adjustThreadMessageCount(channelId: ChannelID, delta: number): Promise<void>;
+
 	abstract delete(channelId: ChannelID, guildId?: GuildID): Promise<void>;
 
 	abstract listGuildChannels(guildId: GuildID): Promise<Array<Channel>>;

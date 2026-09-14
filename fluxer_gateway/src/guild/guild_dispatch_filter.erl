@@ -38,6 +38,11 @@ filter_sessions_for_event(Event, FinalData, SessionIdOpt, Sessions, UpdatedState
 -spec filter_channel_scoped(
     event(), event_data(), session_id() | undefined, map(), guild_state()
 ) -> [session_pair()].
+filter_channel_scoped(thread_delete, FinalData, SessionIdOpt, Sessions, UpdatedState) ->
+    ParentViewers = guild_sessions:filter_sessions_for_channel(
+        Sessions, extract_channel_id(thread_delete, FinalData), SessionIdOpt, UpdatedState
+    ),
+    restrict_private_thread_delete(FinalData, ParentViewers, UpdatedState);
 filter_channel_scoped(Event, FinalData, SessionIdOpt, Sessions, UpdatedState) ->
     ChannelId = extract_channel_id(Event, FinalData),
     case is_message_access_filtered_event(Event) of
@@ -50,6 +55,40 @@ filter_channel_scoped(Event, FinalData, SessionIdOpt, Sessions, UpdatedState) ->
             guild_sessions:filter_sessions_for_channel(
                 Sessions, ChannelId, SessionIdOpt, UpdatedState
             )
+    end.
+
+%% Echowire: a deleted private thread is announced only to its members and to sessions that can
+%% manage its parent. The API sends the member ids with the event, since the thread (and its
+%% membership) is already gone from state; the wire layer strips them before delivery.
+-spec restrict_private_thread_delete(event_data(), [session_pair()], guild_state()) ->
+    [session_pair()].
+restrict_private_thread_delete(FinalData, ParentViewers, State) ->
+    case is_private_thread_type(maps:get(<<"type">>, FinalData, undefined)) of
+        false ->
+            ParentViewers;
+        true ->
+            MemberIds = maps:get(<<"thread_member_ids">>, FinalData, []),
+            ParentId = extract_channel_id(thread_delete, FinalData),
+            [
+                Pair
+             || {_Sid, Session} = Pair <- ParentViewers,
+                private_thread_delete_recipient(Session, MemberIds, ParentId, State)
+            ]
+    end.
+
+-spec is_private_thread_type(term()) -> boolean().
+is_private_thread_type(12) -> true;
+is_private_thread_type(<<"12">>) -> true;
+is_private_thread_type(_) -> false.
+
+-spec private_thread_delete_recipient(map(), term(), channel_id(), guild_state()) -> boolean().
+private_thread_delete_recipient(Session, MemberIds, ParentId, State) ->
+    case maps:get(user_id, Session, undefined) of
+        UserId when is_integer(UserId) ->
+            (is_list(MemberIds) andalso snowflake_id:member(UserId, MemberIds)) orelse
+                guild_permissions:can_manage_channel(UserId, ParentId, State);
+        _ ->
+            false
     end.
 
 -spec filter_non_channel_scoped(
@@ -342,5 +381,48 @@ audit_log_test_fixture() ->
         }
     },
     {Sessions, State, Allowed}.
+
+%% Echowire: THREAD_DELETE for a private thread reaches only its members and parent managers.
+thread_delete_state() ->
+    View = constants:view_channel_permission(),
+    Manage = constants:manage_channels_permission(),
+    Everyone = #{<<"id">> => <<"42">>, <<"name">> => <<"@everyone">>, <<"permissions">> => integer_to_binary(View)},
+    Mods = #{<<"id">> => <<"77">>, <<"name">> => <<"mods">>, <<"permissions">> => integer_to_binary(View bor Manage)},
+    Parent = #{<<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => []},
+    Member = fun(Id, Roles) ->
+        #{<<"user">> => #{<<"id">> => Id, <<"username">> => Id}, <<"roles">> => Roles}
+    end,
+    #{
+        id => 42,
+        data => guild_data_index:normalize_data(#{
+            <<"id">> => <<"42">>,
+            <<"guild">> => #{<<"id">> => <<"42">>, <<"owner_id">> => <<"9999">>},
+            <<"roles">> => [Everyone, Mods],
+            <<"channels">> => [Parent],
+            <<"members">> => [Member(<<"10">>, []), Member(<<"11">>, []), Member(<<"12">>, [<<"77">>])]
+        })
+    }.
+
+thread_delete_sessions() ->
+    #{
+        <<"member">> => #{user_id => 10, pid => self(), viewable_channels => #{100 => true}},
+        <<"outsider">> => #{user_id => 11, pid => self(), viewable_channels => #{100 => true}},
+        <<"manager">> => #{user_id => 12, pid => self(), viewable_channels => #{100 => true}}
+    }.
+
+private_thread_delete_reaches_members_and_managers_only_test() ->
+    Data = #{
+        <<"id">> => <<"200">>,
+        <<"parent_id">> => <<"100">>,
+        <<"type">> => 12,
+        <<"thread_member_ids">> => [<<"10">>]
+    },
+    Result = filter_sessions_for_event(thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()),
+    ?assertEqual([<<"manager">>, <<"member">>], lists:sort([Sid || {Sid, _} <- Result])).
+
+public_thread_delete_reaches_parent_viewers_test() ->
+    Data = #{<<"id">> => <<"201">>, <<"parent_id">> => <<"100">>, <<"type">> => 11},
+    Result = filter_sessions_for_event(thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()),
+    ?assertEqual([<<"manager">>, <<"member">>, <<"outsider">>], lists:sort([Sid || {Sid, _} <- Result])).
 
 -endif.

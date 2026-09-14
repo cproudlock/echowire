@@ -193,6 +193,7 @@ export class GuildService {
 			limitConfigService,
 			channelService.messages.system,
 			userRepository,
+			rateLimitService,
 		);
 		this.search = new GuildSearchService(
 			channelRepository,

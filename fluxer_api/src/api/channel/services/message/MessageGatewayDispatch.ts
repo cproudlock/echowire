@@ -30,6 +30,9 @@ type MessageCreateBroadcastData = MessageResponse & {
 	// Echowire: membership snapshot for thread messages, so the gateway push path can
 	// notify thread members (all messages) while limiting non-members to @mentions.
 	thread_member_ids?: Array<string>;
+	// Echowire: the parent channel of a thread message, so a muted forum or channel also mutes
+	// pushes for its threads unless the thread has its own override.
+	thread_parent_id?: string;
 };
 
 export async function buildBroadcastMessageData({
@@ -62,6 +65,9 @@ async function buildBroadcastMessageCreateData(
 		...(groupDmNicks ? {nicks: groupDmNicks} : {}),
 		...(params.mentionHere ? {mention_here: true} : {}),
 		...(threadMemberIds ? {thread_member_ids: threadMemberIds} : {}),
+		...(THREAD_CHANNEL_TYPES.has(params.channel.type) && params.channel.parentId
+			? {thread_parent_id: params.channel.parentId.toString()}
+			: {}),
 	};
 }
 

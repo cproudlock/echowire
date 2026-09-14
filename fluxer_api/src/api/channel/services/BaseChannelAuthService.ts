@@ -9,7 +9,12 @@ import {
 	ensurePersonalNotesChannelExists,
 	isPersonalNotesChannelId,
 } from '@app/api/channel/services/PersonalNotesChannelRepair';
-import {canAccessPrivateThread, isThreadChannel, permissionChannelId} from '@app/api/channel/services/ThreadAccess';
+import {
+	canAccessPrivateThread,
+	isThreadChannel,
+	permissionChannelId,
+	threadParentExists,
+} from '@app/api/channel/services/ThreadAccess';
 import {
 	type ContentWarningChannelLike,
 	channelResponseToContentWarningView,
@@ -183,6 +188,11 @@ export abstract class BaseChannelAuthService {
 		if (!permissionTargetId) {
 			throw new UnknownChannelError();
 		}
+		// Echowire: a thread whose parent channel no longer exists resolves against nothing, so it is
+		// inaccessible to everyone rather than falling back to guild-level permissions.
+		if (!(await threadParentExists(this.channelRepository.channelData, channel))) {
+			throw new UnknownChannelError();
+		}
 		const [authContextResult, guildMemberResult] = await Promise.all([
 			this.fetchGuildAuthContextOrThrow({guildId, userId, channelId: this.parentLookupChannelId(channel)}),
 			this.fetchGuildMemberOrThrow({guildId, userId}),
@@ -229,21 +239,18 @@ export abstract class BaseChannelAuthService {
 		if (!canAccessThread) {
 			throw new MissingPermissionsError();
 		}
-		const parentCategory = await this.getParentCategoryContentWarningView({
+		const requiresAgeVerification = await this.computeRequiresAgeVerification({
 			channel,
 			parentChannel: authContextResult.parentChannel,
+			guild: guildDataResult,
 		});
-		const requiresAgeVerification = computeEffectiveChannelNsfw(
-			channelToContentWarningView(channel),
-			parentCategory,
-			guildResponseToContentWarningView(guildDataResult),
-		);
 		if (
 			this.options.validateNsfw &&
 			!skipNsfwValidation &&
 			(channel.type === ChannelTypes.GUILD_TEXT ||
 				channel.type === ChannelTypes.GUILD_VOICE ||
 				channel.type === ChannelTypes.GUILD_LINK ||
+				channel.type === ChannelTypes.GUILD_FORUM ||
 				isThreadChannel(channel)) &&
 			requiresAgeVerification
 		) {
@@ -267,6 +274,31 @@ export abstract class BaseChannelAuthService {
 			return undefined;
 		}
 		return channel.parentId;
+	}
+
+	// Echowire: a thread's age gate is its parent channel's, resolved at check time from the parent
+	// and the parent's category. The nsfw value copied onto the thread at creation goes stale and
+	// never saw the category, so it is not consulted.
+	private async computeRequiresAgeVerification({
+		channel,
+		parentChannel,
+		guild,
+	}: {
+		channel: Channel;
+		parentChannel: GuildChannelAuthContext['parentChannel'];
+		guild: Parameters<typeof guildResponseToContentWarningView>[0];
+	}): Promise<boolean> {
+		const guildView = guildResponseToContentWarningView(guild);
+		if (!isThreadChannel(channel) || !channel.parentId) {
+			const parentCategory = await this.getParentCategoryContentWarningView({channel, parentChannel});
+			return computeEffectiveChannelNsfw(channelToContentWarningView(channel), parentCategory, guildView);
+		}
+		const parent = await this.channelRepository.channelData.findUnique(channel.parentId);
+		if (!parent) {
+			return true;
+		}
+		const category = await this.getParentCategoryContentWarningView({channel: parent, parentChannel: null});
+		return computeEffectiveChannelNsfw(channelToContentWarningView(parent), category, guildView);
 	}
 
 	private async getParentCategoryContentWarningView({

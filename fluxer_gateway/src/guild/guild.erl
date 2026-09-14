@@ -579,6 +579,7 @@ event_mutates_guild_data(E) ->
         thread_create,
         thread_update,
         thread_delete,
+        thread_members_update,
         guild_update
     ]).
 

@@ -52,4 +52,9 @@ export class ThreadMemberRepository {
 	async removeMember(threadId: ChannelID, userId: UserID): Promise<void> {
 		await deleteOneOrMany(ThreadMembers.deleteByPk({thread_id: threadId, user_id: userId}));
 	}
+
+	async removeAllMembers(threadId: ChannelID): Promise<void> {
+		const members = await this.listMembers(threadId);
+		await Promise.all(members.map((member) => this.removeMember(threadId, member.userId)));
+	}
 }

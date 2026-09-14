@@ -9418,6 +9418,68 @@
 				]
 			}
 		},
+		"/guilds/{guild_id}/threads/active": {
+			"get": {
+				"operationId": "list_guild_active_threads",
+				"summary": "List active guild threads",
+				"tags": ["Guilds"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/GuildActiveThreadsResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Lists the active (non-archived) threads and forum posts in the guild that the caller can view, with starter message previews and the caller's own thread memberships.",
+				"security": [{"botToken": []}, {"sessionToken": []}],
+				"parameters": [
+					{
+						"name": "guild_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the guild", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the guild"
+					}
+				]
+			}
+		},
 		"/guilds/{guild_id}/transfer-ownership": {
 			"post": {
 				"operationId": "transfer_guild_ownership",
@@ -24955,11 +25017,20 @@
 						"description": "Approximate count of members in the thread (threads only)",
 						"$ref": "#/components/schemas/Int32Type"
 					},
+					"thread_member_ids": {
+						"description": "Member IDs of a private thread, so the gateway can deliver its events to members",
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/SnowflakeStringType"}
+					},
 					"message_count": {
 						"description": "Approximate count of messages in the thread (threads only)",
 						"$ref": "#/components/schemas/Int32Type"
 					},
 					"pinned": {"description": "Whether this forum post / thread is pinned to the top", "type": "boolean"},
+					"starter_message_preview": {
+						"description": "Preview of the starter message; present on thread list endpoints only",
+						"anyOf": [{"$ref": "#/components/schemas/ThreadStarterMessagePreviewResponse"}, {"type": "null"}]
+					},
 					"available_tags": {
 						"description": "Tags that can be applied to posts in a forum channel (max 20)",
 						"maxItems": 20,
@@ -25001,7 +25072,15 @@
 						"description": "Default inactivity (minutes) new forum posts inherit",
 						"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}]
 					},
-					"require_tag": {"description": "Whether a forum post must have at least one tag", "type": "boolean"}
+					"require_tag": {"description": "Whether a forum post must have at least one tag", "type": "boolean"},
+					"default_forum_layout": {
+						"description": "Default forum layout (0 = not set, 1 = list, 2 = gallery)",
+						"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}]
+					},
+					"default_thread_rate_limit_per_user": {
+						"description": "Slowmode in seconds that new forum posts inherit",
+						"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}]
+					}
 				},
 				"required": ["id", "type"],
 				"additionalProperties": false
@@ -27417,6 +27496,23 @@
 				],
 				"additionalProperties": false
 			},
+			"GuildActiveThreadsResponse": {
+				"type": "object",
+				"properties": {
+					"threads": {
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/ChannelResponse"},
+						"description": "Active threads in the guild that the caller can view"
+					},
+					"members": {
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/ThreadMemberSelfResponse"},
+						"description": "The caller's memberships among the returned threads"
+					}
+				},
+				"required": ["threads", "members"],
+				"additionalProperties": false
+			},
 			"GuildStickerUpdateRequest": {
 				"type": "object",
 				"properties": {
@@ -28622,7 +28718,24 @@
 									{"type": "null"}
 								]
 							},
-							"require_tag": {"description": "Require at least one tag on each post", "type": "boolean"}
+							"require_tag": {"description": "Require at least one tag on each post", "type": "boolean"},
+							"default_forum_layout": {
+								"description": "Default forum layout (0 = not set, 1 = list, 2 = gallery)",
+								"anyOf": [
+									{
+										"anyOf": [
+											{"type": "number", "const": 0},
+											{"type": "number", "const": 1},
+											{"type": "number", "const": 2}
+										]
+									},
+									{"type": "null"}
+								]
+							},
+							"default_thread_rate_limit_per_user": {
+								"description": "Slowmode in seconds that new forum posts inherit (0-21600)",
+								"anyOf": [{"type": "integer", "minimum": 0, "maximum": 21600}, {"type": "null"}]
+							}
 						},
 						"required": ["type", "name"]
 					}
@@ -30121,7 +30234,24 @@
 									{"type": "null"}
 								]
 							},
-							"require_tag": {"description": "Require at least one tag on each post", "type": "boolean"}
+							"require_tag": {"description": "Require at least one tag on each post", "type": "boolean"},
+							"default_forum_layout": {
+								"description": "Default forum layout (0 = not set, 1 = list, 2 = gallery)",
+								"anyOf": [
+									{
+										"anyOf": [
+											{"type": "number", "const": 0},
+											{"type": "number", "const": 1},
+											{"type": "number", "const": 2}
+										]
+									},
+									{"type": "null"}
+								]
+							},
+							"default_thread_rate_limit_per_user": {
+								"description": "Slowmode in seconds that new forum posts inherit (0-21600)",
+								"anyOf": [{"type": "integer", "minimum": 0, "maximum": 21600}, {"type": "null"}]
+							}
 						}
 					},
 					{
@@ -33658,6 +33788,20 @@
 				"required": ["id", "name", "description", "tags", "animated", "nsfw", "user"],
 				"additionalProperties": false
 			},
+			"ThreadMemberSelfResponse": {
+				"type": "object",
+				"properties": {
+					"id": {"description": "The ID of the thread", "$ref": "#/components/schemas/SnowflakeStringType"},
+					"user_id": {
+						"description": "The ID of the member (the caller)",
+						"$ref": "#/components/schemas/SnowflakeStringType"
+					},
+					"join_timestamp": {"type": "string", "description": "When the caller joined the thread"},
+					"flags": {"type": "number", "description": "Thread member flags"}
+				},
+				"required": ["id", "user_id", "join_timestamp", "flags"],
+				"additionalProperties": false
+			},
 			"GuildOperations": {
 				"type": "integer",
 				"minimum": 0,
@@ -34704,6 +34848,73 @@
 					}
 				},
 				"required": ["id", "name", "emoji_name"],
+				"additionalProperties": false
+			},
+			"ThreadStarterMessagePreviewResponse": {
+				"type": "object",
+				"properties": {
+					"message_id": {
+						"description": "The ID of the starter message",
+						"$ref": "#/components/schemas/SnowflakeStringType"
+					},
+					"author": {
+						"anyOf": [
+							{
+								"type": "object",
+								"properties": {
+									"id": {"description": "The ID of the author", "$ref": "#/components/schemas/SnowflakeStringType"},
+									"username": {"type": "string", "description": "The username of the author"},
+									"global_name": {
+										"anyOf": [{"type": "string"}, {"type": "null"}],
+										"description": "The display name of the author, if set"
+									},
+									"avatar": {
+										"anyOf": [{"type": "string"}, {"type": "null"}],
+										"description": "The avatar hash of the author"
+									}
+								},
+								"required": ["id", "username", "global_name", "avatar"],
+								"additionalProperties": false
+							},
+							{"type": "null"}
+						],
+						"description": "The author of the starter message, or null for a system or deleted author"
+					},
+					"content": {"type": "string", "description": "The starter message content, truncated to 200 characters"},
+					"first_attachment": {
+						"anyOf": [
+							{
+								"type": "object",
+								"properties": {
+									"id": {"description": "The ID of the attachment", "$ref": "#/components/schemas/SnowflakeStringType"},
+									"filename": {"type": "string", "description": "The file name of the attachment"},
+									"url": {"type": "string", "description": "The URL of the attachment"},
+									"proxy_url": {
+										"anyOf": [{"type": "string"}, {"type": "null"}],
+										"description": "The proxied URL of the attachment, if any"
+									},
+									"content_type": {
+										"anyOf": [{"type": "string"}, {"type": "null"}],
+										"description": "The MIME type of the attachment"
+									},
+									"width": {
+										"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}],
+										"description": "The width in pixels, for images and videos"
+									},
+									"height": {
+										"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}],
+										"description": "The height in pixels, for images and videos"
+									}
+								},
+								"required": ["id", "filename", "url", "proxy_url", "content_type", "width", "height"],
+								"additionalProperties": false
+							},
+							{"type": "null"}
+						],
+						"description": "The first attachment of the starter message, usable as a post thumbnail"
+					}
+				},
+				"required": ["message_id", "author", "content", "first_attachment"],
 				"additionalProperties": false
 			},
 			"ChannelOverwriteResponse": {

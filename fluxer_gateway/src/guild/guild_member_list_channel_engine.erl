@@ -356,10 +356,15 @@ memoised_can_view(UserId, ChannelId, Member, SortedRoleIds, State, Memo) ->
 %% Category visibility recurses into child channels, each with its own
 %% overwrites, so the exception set is not local to this channel. Do not memoise.
 -spec memoisable_channel(pos_integer(), map()) -> boolean().
+%% Echowire: threads are never memoised. Their visibility comes from the parent channel's
+%% overwrites (so the thread's own, empty, overwrite list would miss member-specific exceptions)
+%% and, for private threads, from per-user membership, neither of which a role-set key captures.
 memoisable_channel(ChannelId, Data) ->
     case maps:get(ChannelId, guild_data_index:channel_index(Data), undefined) of
-        Channel when is_map(Channel) -> maps:get(<<"type">>, Channel, undefined) =/= 4;
-        _ -> false
+        Channel when is_map(Channel) ->
+            not lists:member(maps:get(<<"type">>, Channel, undefined), [4, 11, 12, <<"11">>, <<"12">>]);
+        _ ->
+            false
     end.
 
 -spec visibility_exceptions(pos_integer(), map(), guild_state()) -> sets:set(integer()).
@@ -501,7 +506,9 @@ memo_channel_state() ->
                     <<"type">> => 0,
                     <<"permission_overwrites">> => [#{<<"id">> => <<"42">>, <<"type">> => 1}]
                 },
-                600 => #{<<"id">> => <<"600">>, <<"type">> => 4}
+                600 => #{<<"id">> => <<"600">>, <<"type">> => 4},
+                700 => #{<<"id">> => <<"700">>, <<"type">> => 11, <<"parent_id">> => <<"500">>},
+                701 => #{<<"id">> => <<"701">>, <<"type">> => 12, <<"parent_id">> => <<"500">>}
             }
         },
         virtual_channel_access => #{99 => sets:from_list([500])}
@@ -511,7 +518,9 @@ memoisable_channel_skips_categories_test() ->
     Data = maps:get(data, memo_channel_state()),
     ?assert(memoisable_channel(500, Data)),
     ?assertNot(memoisable_channel(600, Data)),
-    ?assertNot(memoisable_channel(777, Data)).
+    ?assertNot(memoisable_channel(777, Data)),
+    ?assertNot(memoisable_channel(700, Data)),
+    ?assertNot(memoisable_channel(701, Data)).
 
 visibility_exceptions_cover_owner_virtual_and_overwrites_test() ->
     State = memo_channel_state(),

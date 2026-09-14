@@ -249,16 +249,21 @@ export class GuildSearchService {
 		};
 	}
 
+	// Echowire: resolve parents two levels deep, so a thread reaches its parent channel and that
+	// channel's category (see channelRequiresAgeVerification).
 	private async buildParentCategoryLookup(channelMap: Map<string, Channel>): Promise<Map<string, Channel>> {
 		const lookup = new Map<string, Channel>(channelMap);
-		const missingParentIds: Array<ChannelID> = [];
-		for (const channel of channelMap.values()) {
-			const parentId = channel.parentId;
-			if (parentId != null && !lookup.has(parentId.toString())) {
-				missingParentIds.push(parentId);
+		for (let depth = 0; depth < 2; depth++) {
+			const missingParentIds: Array<ChannelID> = [];
+			for (const channel of lookup.values()) {
+				const parentId = channel.parentId;
+				if (parentId != null && !lookup.has(parentId.toString())) {
+					missingParentIds.push(parentId);
+				}
 			}
-		}
-		if (missingParentIds.length > 0) {
+			if (missingParentIds.length === 0) {
+				break;
+			}
 			const parents = await this.channelRepository.listChannels(missingParentIds);
 			for (const parent of parents) {
 				lookup.set(parent.id.toString(), parent);

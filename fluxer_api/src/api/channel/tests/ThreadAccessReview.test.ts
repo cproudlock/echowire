@@ -121,17 +121,27 @@ describe('Thread access review fixes', () => {
 	test('the create-from-message path does not reveal a private thread to a non-member', async () => {
 		const {members, systemChannel} = await setupTestGuildWithMembers(harness, 2);
 		const [creator, outsider] = members;
-		const message = await sendMessage(harness, creator.token, systemChannel.id, 'start here');
-		await createThread(harness, creator.token, systemChannel.id, {
+		const withPrivate = await sendMessage(harness, creator.token, systemChannel.id, 'start here');
+		const withoutPrivate = await sendMessage(harness, creator.token, systemChannel.id, 'nothing here');
+		const privateThread = await createThread(harness, creator.token, systemChannel.id, {
 			name: 'private branch',
 			type: ChannelTypes.PRIVATE_THREAD,
-			message_id: message.id,
+			message_id: withPrivate.id,
 		});
-		await createBuilder(harness, outsider.token)
-			.post(`/channels/${systemChannel.id}/threads`)
-			.body({name: 'probe', message_id: message.id})
-			.expect(HTTP_STATUS.NOT_FOUND)
-			.execute();
+		// A private thread never adopts the message ID, so the message cannot point at it.
+		expect(privateThread.id).not.toBe(withPrivate.id);
+		// The probe gets the same answer whether or not a private thread was started there.
+		const probed = await createThread(harness, outsider.token, systemChannel.id, {
+			name: 'probe',
+			message_id: withPrivate.id,
+		});
+		const control = await createThread(harness, outsider.token, systemChannel.id, {
+			name: 'control',
+			message_id: withoutPrivate.id,
+		});
+		expect(probed.id).toBe(withPrivate.id);
+		expect(probed.type).toBe(ChannelTypes.PUBLIC_THREAD);
+		expect(control.id).toBe(withoutPrivate.id);
 	});
 
 	test('a thread takes its age gate from the parent and the parent category at check time', async () => {

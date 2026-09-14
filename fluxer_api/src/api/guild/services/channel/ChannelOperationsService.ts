@@ -336,8 +336,10 @@ export class ChannelOperationsService {
 		// Echowire: when starting a thread from a message, the thread adopts the source
 		// message's ID (Discord semantics) so the message can render an inline link to it.
 		// If a thread already exists for that message, return it idempotently.
+		// Private threads never adopt a message ID: otherwise the adopted ID would let anyone who can
+		// start a thread on that message learn that a hidden private thread exists there.
 		let channelId: ChannelID;
-		if (params.data.message_id != null) {
+		if (params.data.message_id != null && threadType !== ChannelTypes.PRIVATE_THREAD) {
 			// SECURITY: the client supplies message_id and we adopt it as the new channel's
 			// ID, so we must verify it actually names a real message in THIS parent channel.
 			// Otherwise a caller could squat an arbitrary snowflake (e.g. collide a thread's

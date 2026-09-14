@@ -10,15 +10,15 @@ import ReadStates from '@app/features/read_state/state/ReadStates';
 import {usePopout} from '@app/features/ui/hooks/usePopout';
 import {Popout} from '@app/features/ui/popover/PopoverPopout';
 import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {msg} from '@lingui/core/macro';
+import {useLingui} from '@lingui/react/macro';
 import {ChatCircleIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 
-// Echowire: plain string — this is a fork-added feature label and isn't in the
-// lingui message catalog, so i18n._(msg(...)) logged an "uncompiled message"
-// warning on every render. English-only label; use it directly.
-const THREADS_LABEL = 'Threads';
+const THREADS_DESCRIPTOR = msg({message: 'Threads', comment: 'Channel header button that lists the channel threads.'});
 
 export const ChannelThreadsButton = observer(({channel}: {channel: Channel}) => {
+	const {i18n} = useLingui();
 	const {isOpen, openProps} = usePopout('channel-threads');
 	// Aggregate unread: any active thread under this channel with unread/mentions.
 	const hasUnreadThread =
@@ -46,7 +46,7 @@ export const ChannelThreadsButton = observer(({channel}: {channel: Channel}) => 
 			<span style={{position: 'relative', display: 'inline-flex'}}>
 				<ChannelHeaderIcon
 					icon={ChatCircleIcon}
-					label={THREADS_LABEL}
+					label={i18n._(THREADS_DESCRIPTOR)}
 					isSelected={isOpen}
 					aria-haspopup={true}
 					aria-expanded={isOpen}

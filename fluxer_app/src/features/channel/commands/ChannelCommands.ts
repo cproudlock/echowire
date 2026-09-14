@@ -54,6 +54,10 @@ type ChannelUpdateParams = Partial<
 	default_sort_order?: number | null;
 	default_auto_archive_duration?: number | null;
 	require_tag?: boolean;
+	rate_limit_per_user?: number;
+	default_forum_layout?: number | null;
+	default_thread_rate_limit_per_user?: number | null;
+	type?: number;
 };
 
 interface PermissionOverwritePatch {

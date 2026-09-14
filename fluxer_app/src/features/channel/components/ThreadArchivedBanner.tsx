@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Echowire: banner shown above the composer in an archived thread. Mirrors Discord —
-// the thread stays readable, and sending a message (or hitting Unarchive) reopens it.
+// Echowire: banner shown above the composer in an archived thread. Mirrors Discord: the thread
+// stays readable, and the server reopens it when someone sends a message (unless it is locked).
+// Unarchive is offered to the owner of an unlocked thread and to moderators.
 
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import type {Channel} from '@app/features/channel/models/Channel';
+import {getThreadActions} from '@app/features/channel/utils/ThreadActions';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {ArchiveIcon, LockIcon} from '@phosphor-icons/react';
@@ -68,23 +70,25 @@ export const ThreadArchivedBanner = observer(({channel}: {channel: Channel}) => 
 		>
 			<ArchiveIcon size={16} weight="fill" style={{flexShrink: 0}} />
 			<span style={{flex: 1}}>{i18n._(ARCHIVED_DESCRIPTOR)}</span>
-			<button
-				type="button"
-				onClick={() => void ThreadCommands.updateThread(channel.id, {archived: false})}
-				style={{
-					padding: '4px 12px',
-					borderRadius: 4,
-					border: 'none',
-					background: 'var(--brand-experiment, #5865f2)',
-					color: 'white',
-					fontSize: 12,
-					fontWeight: 600,
-					cursor: 'pointer',
-					flexShrink: 0,
-				}}
-			>
-				{i18n._(UNARCHIVE_DESCRIPTOR)}
-			</button>
+			{getThreadActions(channel).canReopen && (
+				<button
+					type="button"
+					onClick={() => void ThreadCommands.updateThread(channel.id, {archived: false})}
+					style={{
+						padding: '4px 12px',
+						borderRadius: 4,
+						border: 'none',
+						background: 'var(--brand-experiment, #5865f2)',
+						color: 'white',
+						fontSize: 12,
+						fontWeight: 600,
+						cursor: 'pointer',
+						flexShrink: 0,
+					}}
+				>
+					{i18n._(UNARCHIVE_DESCRIPTOR)}
+				</button>
+			)}
 		</div>
 	);
 });

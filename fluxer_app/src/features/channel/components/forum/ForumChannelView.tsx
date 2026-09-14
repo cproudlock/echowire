@@ -1,347 +1,326 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Echowire: forum channel body (re-ported from the old fork). Renders a post grid (each post is a
-// thread under the GUILD_FORUM channel) with search, tag filter, sort, an Active/Archived toggle,
-// and a New Post button — instead of a message stream.
+// Echowire: forum channel body. A search box that also starts a post, a filter row (Sort & View,
+// tag chips that narrow the list, an "All" overflow picker, closed posts), and the posts as list
+// cards or a gallery grid. Visiting the forum clears its sidebar "N New" count.
 
-import {Endpoints} from '@app/features/app/constants/Endpoints';
 import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
+import styles from '@app/features/channel/components/forum/ForumChannelView.module.css';
+import {ForumPostCard} from '@app/features/channel/components/forum/ForumPostCard';
+import {ForumTagChip} from '@app/features/channel/components/forum/ForumTagChip';
 import {CreateForumPostModal} from '@app/features/channel/components/modals/CreateForumPostModal';
 import type {Channel} from '@app/features/channel/models/Channel';
-import Channels from '@app/features/channel/state/Channels';
+import ForumViewPreferences from '@app/features/channel/state/ForumViewPreferences';
+import {
+	ForumLayout,
+	ForumSortOrder,
+	filterForumPosts,
+	resolveForumLayout,
+	resolveForumSortOrder,
+	sortForumPosts,
+} from '@app/features/channel/utils/ForumPostUtils';
+import {getForumPosts, markForumViewed} from '@app/features/channel/utils/ForumReadState';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
-import {http} from '@app/features/platform/transport/RestTransport';
-import ReadStates from '@app/features/read_state/state/ReadStates';
+import {CheckboxItem, MenuGroupLabel} from '@app/features/ui/action_menu/ContextMenu';
+import {MenuGroup} from '@app/features/ui/action_menu/MenuGroup';
+import {MenuItem} from '@app/features/ui/action_menu/MenuItem';
+import {MenuItemRadio} from '@app/features/ui/action_menu/MenuItemRadio';
+import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuCommands';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
-import Users from '@app/features/user/state/Users';
-import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
-import * as SnowflakeUtils from '@fluxer/snowflake/src/SnowflakeUtils';
+import {msg} from '@lingui/core/macro';
+import {useLingui} from '@lingui/react/macro';
 import {
 	ArchiveIcon,
-	ChatCircleIcon,
-	ClockIcon,
-	FunnelIcon,
-	LockIcon,
+	ArrowsDownUpIcon,
+	CaretDownIcon,
+	ChatsCircleIcon,
+	MagnifyingGlassIcon,
 	PlusIcon,
-	PushPinIcon,
-	SortAscendingIcon,
 } from '@phosphor-icons/react';
+import {clsx} from 'clsx';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 import {useEffect, useMemo, useState} from 'react';
 
-type SortMode = 'recent_activity' | 'date_posted';
+// Tags beyond this many live in the "All" overflow picker.
+const MAX_INLINE_TAGS = 8;
 
-function formatRelativeTime(ms: number): string {
-	const diff = Date.now() - ms;
-	const minutes = Math.floor(diff / 60000);
-	if (minutes < 1) return 'just now';
-	if (minutes < 60) return `${minutes}m ago`;
-	const hours = Math.floor(minutes / 60);
-	if (hours < 24) return `${hours}h ago`;
-	const days = Math.floor(hours / 24);
-	if (days < 30) return `${days}d ago`;
-	return new Date(ms).toLocaleDateString();
+const SEARCH_PLACEHOLDER_DESCRIPTOR = msg({
+	message: 'Search or create a post...',
+	comment: 'Placeholder of the forum search box. Typing filters post titles; New Post uses the text as the title.',
+});
+const NEW_POST_DESCRIPTOR = msg({message: 'New Post', comment: 'Button that starts a new forum post.'});
+const SORT_AND_VIEW_DESCRIPTOR = msg({
+	message: 'Sort & View',
+	comment: 'Forum button that opens sort order and layout choices.',
+});
+const SORT_BY_DESCRIPTOR = msg({message: 'Sort by', comment: 'Group label in the forum Sort & View menu.'});
+const RECENTLY_ACTIVE_DESCRIPTOR = msg({
+	message: 'Recently Active',
+	comment: 'Forum sort option: posts with the newest messages first.',
+});
+const DATE_POSTED_DESCRIPTOR = msg({message: 'Date Posted', comment: 'Forum sort option: newest posts first.'});
+const VIEW_AS_DESCRIPTOR = msg({message: 'View as', comment: 'Group label in the forum Sort & View menu.'});
+const LIST_DESCRIPTOR = msg({message: 'List', comment: 'Forum layout option: one post per row.'});
+const GALLERY_DESCRIPTOR = msg({message: 'Gallery', comment: 'Forum layout option: a grid of post cards with images.'});
+const RESET_TO_DEFAULT_DESCRIPTOR = msg({
+	message: 'Reset to default',
+	comment: "Forum Sort & View item that returns to the forum's own default sort and layout.",
+});
+const ALL_TAGS_DESCRIPTOR = msg({message: 'All', comment: 'Forum button that lists every tag to filter by.'});
+const CLEAR_TAGS_DESCRIPTOR = msg({
+	message: 'Clear tags',
+	comment: 'Forum tag picker item that removes every tag filter.',
+});
+const CLOSED_POSTS_DESCRIPTOR = msg({
+	message: 'Closed posts',
+	comment: 'Forum toggle that shows posts closed by a moderator or hidden after inactivity.',
+});
+const EMPTY_TITLE_DESCRIPTOR = msg({
+	message: 'Be the first to start the conversation!',
+	comment: 'Empty forum heading.',
+});
+const EMPTY_BODY_DESCRIPTOR = msg({
+	message: 'What do you want to post about in #{name}?',
+	comment: 'Empty forum prompt. {name} is the forum channel name.',
+});
+const NO_MATCHES_DESCRIPTOR = msg({
+	message: 'No posts match your search or tags.',
+	comment: 'Forum list message when filters hide every post.',
+});
+const NO_CLOSED_POSTS_DESCRIPTOR = msg({
+	message: 'No closed posts.',
+	comment: 'Forum list message when showing closed posts and there are none.',
+});
+
+function openMenuBelow(event: React.MouseEvent, render: (props: {onClose: () => void}) => React.ReactNode): void {
+	event.preventDefault();
+	const rect = event.currentTarget.getBoundingClientRect();
+	ContextMenuCommands.openAtPoint(
+		{x: rect.left, y: rect.bottom + 4},
+		render,
+		{align: 'top-left', trackDynamicPosition: true},
+		event.currentTarget as HTMLElement,
+	);
 }
 
-const ForumPostCard = observer(
-	({channel, thread, onClick}: {channel: Channel; thread: Channel; onClick: () => void}) => {
-		const author = thread.ownerId ? Users.getUser(thread.ownerId) : null;
-		const replyCount = thread.messageCount ?? 0;
-		const lastActivityMs = thread.lastMessageId
-			? SnowflakeUtils.extractTimestamp(thread.lastMessageId)
-			: SnowflakeUtils.extractTimestamp(thread.id);
-		const tagsById = new Map(channel.availableTags.map((tag) => [tag.id, tag]));
-		const resolvedTags = thread.appliedTags.map((id) => tagsById.get(id)).filter((t) => t != null);
-		const unread = ReadStates.isUnreadOrMentioned(thread.id);
-		const [preview, setPreview] = useState<string | null>(null);
-		useEffect(() => {
-			let cancelled = false;
-			// Fetch the post's first message for a snippet (the message just after the thread's id).
-			void http
-				.get<Array<{content?: string}>>(Endpoints.CHANNEL_MESSAGES(thread.id), {
-					query: {after: thread.id, limit: 1},
-				})
-				.then((response) => {
-					if (cancelled) return;
-					const content = response.body?.[0]?.content;
-					setPreview(content ? content.slice(0, 160) : null);
-				})
-				.catch(() => {});
-			return () => {
-				cancelled = true;
-			};
-		}, [thread.id]);
-		return (
-			<button
-				type="button"
-				onClick={onClick}
-				aria-label={`Post: ${thread.name ?? 'post'}`}
-				data-flx="channel.forum-post-card"
-				style={{
-					display: 'flex',
-					flexDirection: 'column',
-					gap: 8,
-					width: '100%',
-					textAlign: 'left',
-					padding: 16,
-					borderRadius: 8,
-					border: 'none',
-					background: 'var(--background-secondary)',
-					cursor: 'pointer',
-				}}
-				onMouseEnter={(e) => {
-					e.currentTarget.style.background = 'var(--background-secondary-alt, var(--background-modifier-hover))';
-				}}
-				onMouseLeave={(e) => {
-					e.currentTarget.style.background = 'var(--background-secondary)';
-				}}
-			>
-				{resolvedTags.length > 0 && (
-					<div style={{display: 'flex', flexWrap: 'wrap', gap: 4}}>
-						{resolvedTags.map((tag) => (
-							<span
-								key={tag!.id}
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									gap: 4,
-									padding: '2px 8px',
-									borderRadius: 999,
-									background: 'var(--background-tertiary, var(--background-floating))',
-									color: 'var(--text-muted)',
-									fontSize: 11,
-									fontWeight: 600,
-								}}
-							>
-								{tag!.emojiName && <span>{tag!.emojiName}</span>}
-								{tag!.name}
-							</span>
-						))}
-					</div>
-				)}
-				<div
-					style={{
-						display: 'flex',
-						alignItems: 'center',
-						gap: 6,
-						fontSize: 16,
-						fontWeight: 600,
-						color: 'var(--text-normal)',
-					}}
-				>
-					{thread.pinned && <PushPinIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />}
-					{thread.threadMetadata?.locked && (
-						<LockIcon size={14} weight="fill" style={{color: 'var(--text-muted)', flexShrink: 0}} />
-					)}
-					{unread && (
-						<span style={{width: 8, height: 8, borderRadius: '50%', background: 'var(--text-normal)', flexShrink: 0}} />
-					)}
-					<span>{thread.name ?? 'post'}</span>
-				</div>
-				{preview && (
-					<div
-						style={{
-							color: 'var(--text-muted)',
-							fontSize: 13,
-							overflow: 'hidden',
-							textOverflow: 'ellipsis',
-							display: '-webkit-box',
-							WebkitLineClamp: 2,
-							WebkitBoxOrient: 'vertical',
-							wordBreak: 'break-word',
-						}}
-					>
-						{preview}
-					</div>
-				)}
-				<div style={{display: 'flex', alignItems: 'center', gap: 12, color: 'var(--text-muted)', fontSize: 12}}>
-					{author && <span style={{fontWeight: 600}}>{author.displayName}</span>}
-					<span style={{display: 'flex', alignItems: 'center', gap: 4}}>
-						<ChatCircleIcon size={14} />
-						<span>{`${replyCount} ${replyCount === 1 ? 'reply' : 'replies'}`}</span>
-					</span>
-					<span style={{display: 'flex', alignItems: 'center', gap: 4}}>
-						<ClockIcon size={14} />
-						{formatRelativeTime(lastActivityMs)}
-					</span>
-				</div>
-			</button>
-		);
-	},
-);
-
 export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
+	const {i18n} = useLingui();
 	const [searchQuery, setSearchQuery] = useState('');
-	const [selectedTagIds, setSelectedTagIds] = useState<Set<string>>(new Set());
-	const [sortMode, setSortMode] = useState<SortMode>('recent_activity');
-	const [showArchived, setShowArchived] = useState(false);
+	const [selectedTagIds, setSelectedTagIds] = useState<ReadonlySet<string>>(new Set());
+	const [showClosed, setShowClosed] = useState(false);
 	const guildId = channel.guildId;
 
 	useEffect(() => {
 		void ThreadCommands.listActiveThreads(channel.id).catch(() => {});
+		markForumViewed(channel);
+		return () => markForumViewed(channel);
 	}, [channel.id]);
 	useEffect(() => {
-		if (showArchived) {
+		if (showClosed) {
 			void ThreadCommands.listArchivedThreads(channel.id).catch(() => {});
 		}
-	}, [showArchived, channel.id]);
+	}, [showClosed, channel.id]);
 
-	const threads = guildId
-		? Channels.getGuildChannels(guildId).filter((c) => c.parentId === channel.id && THREAD_CHANNEL_TYPES.has(c.type))
-		: [];
-
-	const filtered = useMemo(() => {
-		let result = threads.filter((t) =>
-			showArchived ? t.threadMetadata?.archived === true : !t.threadMetadata?.archived,
-		);
-		const query = searchQuery.trim().toLowerCase();
-		if (query) {
-			result = result.filter((t) => t.name?.toLowerCase().includes(query));
-		}
-		if (selectedTagIds.size > 0) {
-			result = result.filter((t) => t.appliedTags.some((id) => selectedTagIds.has(id)));
-		}
-		return [...result].sort((a, b) => {
-			// Pinned posts always sort to the top.
-			if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
-			const at =
-				sortMode === 'recent_activity' && a.lastMessageId
-					? SnowflakeUtils.extractTimestamp(a.lastMessageId)
-					: SnowflakeUtils.extractTimestamp(a.id);
-			const bt =
-				sortMode === 'recent_activity' && b.lastMessageId
-					? SnowflakeUtils.extractTimestamp(b.lastMessageId)
-					: SnowflakeUtils.extractTimestamp(b.id);
-			return bt - at;
-		});
-	}, [threads, showArchived, searchQuery, selectedTagIds, sortMode]);
+	const override = ForumViewPreferences.getOverride(channel.id);
+	const sortOrder = override.sortOrder ?? resolveForumSortOrder(channel.defaultSortOrder);
+	const layout = override.layout ?? resolveForumLayout(channel.defaultForumLayout);
+	const posts = getForumPosts(channel);
+	const visiblePosts = useMemo(
+		() =>
+			sortForumPosts(
+				filterForumPosts(posts, {archived: showClosed, query: searchQuery, tagIds: selectedTagIds}),
+				sortOrder,
+			),
+		[posts, showClosed, searchQuery, selectedTagIds, sortOrder],
+	);
 
 	if (!guildId) {
 		return null;
 	}
+
+	const openCreatePost = () =>
+		ModalCommands.push(modal(() => <CreateForumPostModal channel={channel} initialTitle={searchQuery.trim()} />));
+	const toggleTag = (tagId: string) =>
+		setSelectedTagIds((prev) => {
+			const next = new Set(prev);
+			if (next.has(tagId)) next.delete(tagId);
+			else next.add(tagId);
+			return next;
+		});
+	const inlineTags = channel.availableTags.slice(0, MAX_INLINE_TAGS);
+	const hasOverflowTags = channel.availableTags.length > MAX_INLINE_TAGS;
+	const overflowSelectedCount = channel.availableTags
+		.slice(MAX_INLINE_TAGS)
+		.filter((tag) => selectedTagIds.has(tag.id)).length;
+
+	const openSortMenu = (event: React.MouseEvent) =>
+		openMenuBelow(event, () => (
+			<>
+				<MenuGroup>
+					<MenuGroupLabel>{i18n._(SORT_BY_DESCRIPTOR)}</MenuGroupLabel>
+					<MenuItemRadio
+						selected={sortOrder === ForumSortOrder.LATEST_ACTIVITY}
+						onSelect={() => ForumViewPreferences.setSortOrder(channel.id, ForumSortOrder.LATEST_ACTIVITY)}
+					>
+						{i18n._(RECENTLY_ACTIVE_DESCRIPTOR)}
+					</MenuItemRadio>
+					<MenuItemRadio
+						selected={sortOrder === ForumSortOrder.CREATION_DATE}
+						onSelect={() => ForumViewPreferences.setSortOrder(channel.id, ForumSortOrder.CREATION_DATE)}
+					>
+						{i18n._(DATE_POSTED_DESCRIPTOR)}
+					</MenuItemRadio>
+				</MenuGroup>
+				<MenuGroup>
+					<MenuGroupLabel>{i18n._(VIEW_AS_DESCRIPTOR)}</MenuGroupLabel>
+					<MenuItemRadio
+						selected={layout === ForumLayout.LIST}
+						onSelect={() => ForumViewPreferences.setLayout(channel.id, ForumLayout.LIST)}
+					>
+						{i18n._(LIST_DESCRIPTOR)}
+					</MenuItemRadio>
+					<MenuItemRadio
+						selected={layout === ForumLayout.GALLERY}
+						onSelect={() => ForumViewPreferences.setLayout(channel.id, ForumLayout.GALLERY)}
+					>
+						{i18n._(GALLERY_DESCRIPTOR)}
+					</MenuItemRadio>
+				</MenuGroup>
+				<MenuGroup>
+					<MenuItem onClick={() => ForumViewPreferences.resetOverride(channel.id)}>
+						{i18n._(RESET_TO_DEFAULT_DESCRIPTOR)}
+					</MenuItem>
+				</MenuGroup>
+			</>
+		));
+
+	const openAllTagsMenu = (event: React.MouseEvent) =>
+		openMenuBelow(event, () => (
+			<>
+				<MenuGroup>
+					{channel.availableTags.map((tag) => (
+						<CheckboxItem key={tag.id} checked={selectedTagIds.has(tag.id)} onCheckedChange={() => toggleTag(tag.id)}>
+							{tag.emojiName ? `${tag.emojiName} ${tag.name}` : tag.name}
+						</CheckboxItem>
+					))}
+				</MenuGroup>
+				{selectedTagIds.size > 0 && (
+					<MenuGroup>
+						<MenuItem onClick={() => setSelectedTagIds(new Set())}>{i18n._(CLEAR_TAGS_DESCRIPTOR)}</MenuItem>
+					</MenuGroup>
+				)}
+			</>
+		));
+
+	const filtersActive = searchQuery.trim().length > 0 || selectedTagIds.size > 0;
+	const forumIsEmpty = posts.length === 0 && !showClosed;
+
 	return (
-		<div
-			data-flx="channel.forum-channel-view"
-			style={{display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden'}}
-		>
-			<div style={{display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px'}}>
-				<input
-					type="text"
-					value={searchQuery}
-					onChange={(e) => setSearchQuery(e.target.value)}
-					placeholder="Search or create a post..."
-					style={{
-						flex: 1,
-						padding: '8px 12px',
-						borderRadius: 6,
-						border: 'none',
-						background: 'var(--background-tertiary, var(--background-secondary))',
-						color: 'var(--text-normal)',
-						fontSize: 14,
-					}}
-				/>
-				<button
-					type="button"
-					onClick={() => setSortMode(sortMode === 'recent_activity' ? 'date_posted' : 'recent_activity')}
-					title={sortMode === 'recent_activity' ? 'Recent Activity' : 'Date Posted'}
-					style={pillStyle(false)}
-				>
-					<SortAscendingIcon size={16} />
-					<span>{sortMode === 'recent_activity' ? 'Recent' : 'Newest'}</span>
-				</button>
-				<button type="button" onClick={() => setShowArchived(!showArchived)} style={pillStyle(showArchived)}>
-					<ArchiveIcon size={16} />
-					<span>{showArchived ? 'Archived' : 'Active'}</span>
-				</button>
-				{!showArchived && (
+		<div className={styles.root} data-flx="channel.forum-channel-view">
+			<div className={styles.toolbar}>
+				<div className={styles.searchBox}>
+					<MagnifyingGlassIcon size={18} className={styles.searchIcon} />
+					<input
+						type="text"
+						value={searchQuery}
+						onChange={(event) => setSearchQuery(event.target.value)}
+						onKeyDown={(event) => {
+							if (event.key === 'Enter' && searchQuery.trim().length > 0) {
+								event.preventDefault();
+								openCreatePost();
+							}
+						}}
+						placeholder={i18n._(SEARCH_PLACEHOLDER_DESCRIPTOR)}
+						aria-label={i18n._(SEARCH_PLACEHOLDER_DESCRIPTOR)}
+						className={styles.searchInput}
+						data-flx="channel.forum-channel-view.search"
+					/>
 					<button
 						type="button"
-						onClick={() => ModalCommands.push(modal(() => <CreateForumPostModal channel={channel} />))}
-						style={{
-							display: 'flex',
-							alignItems: 'center',
-							gap: 4,
-							padding: '8px 12px',
-							borderRadius: 6,
-							border: 'none',
-							background: 'var(--brand-experiment, #5865f2)',
-							color: 'white',
-							fontSize: 13,
-							fontWeight: 600,
-							cursor: 'pointer',
-						}}
+						onClick={openCreatePost}
+						className={styles.newPostButton}
+						data-flx="channel.forum-channel-view.new-post"
 					>
 						<PlusIcon size={14} weight="bold" />
-						<span>New Post</span>
+						<span>{i18n._(NEW_POST_DESCRIPTOR)}</span>
 					</button>
-				)}
-			</div>
-			{channel.availableTags.length > 0 && (
-				<div style={{display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6, padding: '0 16px 12px'}}>
-					<FunnelIcon size={16} style={{color: 'var(--text-muted)', flexShrink: 0}} />
-					{channel.availableTags.map((tag) => {
-						const active = selectedTagIds.has(tag.id);
-						return (
-							<button
-								key={tag.id}
-								type="button"
-								onClick={() =>
-									setSelectedTagIds((prev) => {
-										const next = new Set(prev);
-										if (next.has(tag.id)) next.delete(tag.id);
-										else next.add(tag.id);
-										return next;
-									})
-								}
-								style={pillStyle(active)}
-							>
-								{tag.emojiName && <span>{tag.emojiName}</span>}
-								{tag.name}
-							</button>
-						);
-					})}
 				</div>
-			)}
-			<div style={{display: 'flex', flexDirection: 'column', gap: 8, padding: '0 16px 16px', overflowY: 'auto'}}>
-				{filtered.length === 0 ? (
-					<div style={{padding: '48px 16px', textAlign: 'center', color: 'var(--text-muted)'}}>
-						<div style={{fontSize: 16, fontWeight: 600, marginBottom: 4}}>
-							{showArchived ? 'No archived posts' : 'No posts yet'}
-						</div>
-						<div style={{fontSize: 13}}>
-							{showArchived ? 'Inactive posts will appear here.' : 'Be the first to start a discussion in this forum.'}
-						</div>
+				<div className={styles.filterRow}>
+					<button
+						type="button"
+						onClick={openSortMenu}
+						className={styles.filterButton}
+						aria-haspopup={true}
+						data-flx="channel.forum-channel-view.sort-and-view"
+					>
+						<ArrowsDownUpIcon size={16} />
+						<span>{i18n._(SORT_AND_VIEW_DESCRIPTOR)}</span>
+						<CaretDownIcon size={12} weight="bold" />
+					</button>
+					{channel.availableTags.length > 0 && <span className={styles.divider} aria-hidden={true} />}
+					{inlineTags.map((tag) => (
+						<ForumTagChip
+							key={tag.id}
+							tag={tag}
+							selected={selectedTagIds.has(tag.id)}
+							onToggle={() => toggleTag(tag.id)}
+						/>
+					))}
+					{channel.availableTags.length > 0 && (hasOverflowTags || selectedTagIds.size > 0) && (
+						<button
+							type="button"
+							onClick={openAllTagsMenu}
+							className={clsx(styles.filterButton, overflowSelectedCount > 0 && styles.filterButtonActive)}
+							aria-haspopup={true}
+							data-flx="channel.forum-channel-view.all-tags"
+						>
+							<span>{i18n._(ALL_TAGS_DESCRIPTOR)}</span>
+							<CaretDownIcon size={12} weight="bold" />
+						</button>
+					)}
+					<button
+						type="button"
+						onClick={() => setShowClosed((value) => !value)}
+						aria-pressed={showClosed}
+						className={clsx(styles.filterButton, styles.closedToggle, showClosed && styles.filterButtonActive)}
+						data-flx="channel.forum-channel-view.closed-posts"
+					>
+						<ArchiveIcon size={16} />
+						<span>{i18n._(CLOSED_POSTS_DESCRIPTOR)}</span>
+					</button>
+				</div>
+			</div>
+			<div className={styles.scroller}>
+				{visiblePosts.length === 0 ? (
+					<div className={styles.emptyState} data-flx="channel.forum-channel-view.empty">
+						{forumIsEmpty ? (
+							<>
+								<ChatsCircleIcon size={40} weight="fill" className={styles.emptyIcon} />
+								<div className={styles.emptyTitle}>{i18n._(EMPTY_TITLE_DESCRIPTOR)}</div>
+								<div className={styles.emptyBody}>{i18n._(EMPTY_BODY_DESCRIPTOR, {name: channel.name ?? ''})}</div>
+							</>
+						) : (
+							<div className={styles.emptyBody}>
+								{showClosed && !filtersActive ? i18n._(NO_CLOSED_POSTS_DESCRIPTOR) : i18n._(NO_MATCHES_DESCRIPTOR)}
+							</div>
+						)}
 					</div>
 				) : (
-					filtered.map((thread) => (
-						<ForumPostCard
-							key={thread.id}
-							channel={channel}
-							thread={thread}
-							onClick={() => selectChannel(guildId, thread.id)}
-						/>
-					))
+					<div className={layout === ForumLayout.GALLERY ? styles.gallery : styles.list}>
+						{visiblePosts.map((post) => (
+							<ForumPostCard
+								key={post.id}
+								forum={channel}
+								post={post}
+								layout={layout}
+								onOpen={() => selectChannel(guildId, post.id)}
+							/>
+						))}
+					</div>
 				)}
 			</div>
 		</div>
 	);
 });
-
-function pillStyle(active: boolean): React.CSSProperties {
-	return {
-		display: 'flex',
-		alignItems: 'center',
-		gap: 4,
-		padding: '8px 12px',
-		borderRadius: 6,
-		border: 'none',
-		background: active ? 'var(--brand-experiment, #5865f2)' : 'var(--background-tertiary, var(--background-secondary))',
-		color: active ? 'white' : 'var(--text-muted)',
-		fontSize: 13,
-		fontWeight: 600,
-		cursor: 'pointer',
-		whiteSpace: 'nowrap',
-	};
-}

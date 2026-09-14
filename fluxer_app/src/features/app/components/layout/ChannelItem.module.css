@@ -432,3 +432,14 @@
 		color: var(--text-primary);
 	}
 }
+
+/* Echowire: "N New" pill on forum channels. */
+.forumNewPill {
+	flex: none;
+	padding: 0 0.25rem;
+	color: var(--brand-primary-light, var(--text-link));
+	font-size: 0.75rem;
+	font-weight: 600;
+	line-height: 1rem;
+	white-space: nowrap;
+}

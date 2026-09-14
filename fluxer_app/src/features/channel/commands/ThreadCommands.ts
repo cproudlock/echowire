@@ -6,6 +6,7 @@
 import {Endpoints} from '@app/features/app/constants/Endpoints';
 import Authentication from '@app/features/auth/state/Authentication';
 import Channels from '@app/features/channel/state/Channels';
+import ForumPostPreviews, {type WireStarterMessagePreview} from '@app/features/channel/state/ForumPostPreviews';
 import ThreadMembers from '@app/features/channel/state/ThreadMembers';
 import {http} from '@app/features/platform/transport/RestTransport';
 import {Logger} from '@app/features/platform/utils/AppLogger';
@@ -13,6 +14,13 @@ import type {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import type {Channel} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 
 const logger = new Logger('Threads');
+
+type ThreadListChannel = Channel & {starter_message_preview?: WireStarterMessagePreview | null};
+
+interface GuildActiveThreadsResponse {
+	threads: Array<ThreadListChannel>;
+	members: Array<{id: string; user_id: string; join_timestamp: string; flags: number}>;
+}
 
 export interface CreateThreadParams {
 	name: string;
@@ -43,6 +51,10 @@ export async function createThread(parentChannelId: string, params: CreateThread
 		const response = await http.post<Channel>(Endpoints.CHANNEL_THREADS(parentChannelId), {body: params});
 		const thread = response.body;
 		Channels.handleChannelCreate({channel: thread});
+		const userId = Authentication.currentUserId;
+		if (userId) {
+			ThreadMembers.addMember(thread.id, {userId, joinTimestamp: new Date().toISOString()});
+		}
 		return thread;
 	} catch (error) {
 		logger.error(`Failed to create thread under ${parentChannelId}:`, error);
@@ -53,8 +65,9 @@ export async function createThread(parentChannelId: string, params: CreateThread
 // List the active (non-archived) threads under a text/forum parent channel.
 export async function listActiveThreads(parentChannelId: string): Promise<Array<Channel>> {
 	try {
-		const response = await http.get<Array<Channel>>(Endpoints.CHANNEL_THREADS(parentChannelId));
+		const response = await http.get<Array<ThreadListChannel>>(Endpoints.CHANNEL_THREADS(parentChannelId));
 		const threads = response.body ?? [];
+		ForumPostPreviews.ingest(threads);
 		for (const thread of threads) {
 			Channels.handleChannelCreate({channel: thread});
 		}
@@ -68,8 +81,9 @@ export async function listActiveThreads(parentChannelId: string): Promise<Array<
 // List the archived threads under a text/forum parent channel.
 export async function listArchivedThreads(parentChannelId: string): Promise<Array<Channel>> {
 	try {
-		const response = await http.get<Array<Channel>>(Endpoints.CHANNEL_THREADS_ARCHIVED(parentChannelId));
+		const response = await http.get<Array<ThreadListChannel>>(Endpoints.CHANNEL_THREADS_ARCHIVED(parentChannelId));
 		const threads = response.body ?? [];
+		ForumPostPreviews.ingest(threads);
 		for (const thread of threads) {
 			Channels.handleChannelCreate({channel: thread});
 		}
@@ -77,6 +91,24 @@ export async function listArchivedThreads(parentChannelId: string): Promise<Arra
 	} catch (error) {
 		logger.error(`Failed to list archived threads under ${parentChannelId}:`, error);
 		throw error;
+	}
+}
+
+// Load every active thread the user can see in a guild, with the user's own memberships, so the
+// sidebar can nest joined threads under their parents. Older servers without the route are ignored.
+export async function listGuildActiveThreads(guildId: string): Promise<void> {
+	try {
+		const response = await http.get<GuildActiveThreadsResponse>(Endpoints.GUILD_THREADS_ACTIVE(guildId));
+		const {threads = [], members = []} = response.body ?? {threads: [], members: []};
+		ForumPostPreviews.ingest(threads);
+		for (const thread of threads) {
+			Channels.handleChannelCreate({channel: thread});
+		}
+		for (const member of members) {
+			ThreadMembers.addMember(member.id, {userId: member.user_id, joinTimestamp: member.join_timestamp});
+		}
+	} catch (error) {
+		logger.warn(`Failed to list active threads for guild ${guildId}:`, error);
 	}
 }
 

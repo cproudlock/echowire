@@ -1,0 +1,57 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.25rem;
+	max-width: 100%;
+	padding: 0.25rem 0.625rem;
+	border-radius: 624.9375rem;
+	border: 1px solid var(--background-modifier-accent);
+	background: transparent;
+	color: var(--text-secondary);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	line-height: 1rem;
+	white-space: nowrap;
+}
+
+.small {
+	padding: 0.125rem 0.5rem;
+	font-size: 0.6875rem;
+}
+
+.static {
+	background: var(--background-secondary);
+}
+
+.toggle {
+	cursor: pointer;
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.toggle:hover {
+		background: var(--background-modifier-hover);
+		color: var(--text-primary);
+	}
+}
+
+.toggle:focus-visible {
+	outline: 2px solid var(--focus-primary, var(--brand-primary));
+	outline-offset: 1px;
+}
+
+.selected {
+	border-color: var(--brand-primary);
+	background: color-mix(in srgb, var(--brand-primary) 18%, transparent);
+	color: var(--text-primary);
+}
+
+.emoji {
+	flex: none;
+}
+
+.name {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import type {Channel} from '@app/features/channel/models/Channel';
 import * as DraftCommands from '@app/features/messaging/commands/DraftCommands';
 import * as MessageCommands from '@app/features/messaging/commands/MessageCommands';
@@ -154,10 +153,6 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 				.then((sentMessage) => {
 					if (sentMessage) {
 						SlowmodeCommands.confirmMessageSend(channel.id, sentMessage.timestamp, pendingSend);
-						// Echowire: sending into an archived thread reopens it, like Discord.
-						if (channel.isThread() && channel.threadMetadata?.archived) {
-							void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
-						}
 						return;
 					}
 					SlowmodeCommands.discardPendingMessageSend(channel.id, pendingSend);
@@ -231,10 +226,6 @@ export const useMessageSubmission = ({channel, referencedMessage, replyingMessag
 				.then((sentMessage) => {
 					if (sentMessage) {
 						SlowmodeCommands.confirmMessageSend(channel.id, sentMessage.timestamp, pendingSend);
-						// Echowire: sending into an archived thread reopens it, like Discord.
-						if (channel.isThread() && channel.threadMetadata?.archived) {
-							void ThreadCommands.updateThread(channel.id, {archived: false}).catch(() => {});
-						}
 						return;
 					}
 					SlowmodeCommands.discardPendingMessageSend(channel.id, pendingSend);

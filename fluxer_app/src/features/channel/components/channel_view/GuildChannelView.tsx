@@ -538,12 +538,22 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 				header={
 					<ChannelHeader
 						channel={channel}
-						showMembersToggle={false}
+						showMembersToggle={true}
 						showPins={false}
 						data-flx="channel.channel-view.guild-channel-view.channel-header--forum"
 					/>
 				}
 				chatArea={<ForumChannelView channel={channel} />}
+				sidePanel={
+					shouldRenderMemberList ? (
+						<ChannelMembers
+							channel={channel}
+							guild={guild}
+							data-flx="channel.channel-view.guild-channel-view.channel-members--forum"
+						/>
+					) : null
+				}
+				showMemberListDivider={shouldRenderMemberList}
 				data-flx="channel.channel-view.guild-channel-view.channel-view-scaffold--forum"
 			/>
 		);

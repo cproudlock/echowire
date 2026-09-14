@@ -94,7 +94,12 @@ export async function duplicateChannel(
 			deny: overwrite.deny.toString(),
 		})),
 	});
-	if (GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type)) {
+	// Echowire: a forum copy keeps its tags and settings. Tags are sent without ids so the new
+	// forum gets fresh ones.
+	if (sourceChannel.type === ChannelTypes.GUILD_FORUM) {
+		await ChannelCommands.update(channel.id, getDuplicateForumSettings(sourceChannel));
+	}
+	if (GUILD_TEXT_BASED_CHANNEL_TYPES.has(channel.type) || channel.type === ChannelTypes.GUILD_FORUM) {
 		setTimeout(() => {
 			selectChannel(guildId, channel.id);
 		}, 50);
@@ -102,6 +107,26 @@ export async function duplicateChannel(
 	if (closeModal) {
 		ModalCommands.pop();
 	}
+}
+
+export function getDuplicateForumSettings(sourceChannel: Channel) {
+	return {
+		type: ChannelTypes.GUILD_FORUM,
+		topic: sourceChannel.topic,
+		rate_limit_per_user: sourceChannel.rateLimitPerUser,
+		available_tags: sourceChannel.availableTags.map((tag) => ({name: tag.name, emoji_name: tag.emojiName})),
+		default_reaction_emoji: sourceChannel.defaultReactionEmoji
+			? {
+					emoji_id: sourceChannel.defaultReactionEmoji.emojiId,
+					emoji_name: sourceChannel.defaultReactionEmoji.emojiName,
+				}
+			: null,
+		default_sort_order: sourceChannel.defaultSortOrder,
+		default_forum_layout: sourceChannel.defaultForumLayout,
+		default_thread_rate_limit_per_user: sourceChannel.defaultThreadRateLimitPerUser,
+		default_auto_archive_duration: sourceChannel.forumDefaultAutoArchiveDuration,
+		require_tag: sourceChannel.forumRequireTag,
+	};
 }
 
 export function getDuplicateChannelDefaultValues(sourceChannel: Channel): DuplicateChannelFormInputs {

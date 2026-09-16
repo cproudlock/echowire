@@ -481,7 +481,7 @@ export class ChannelOperationsService {
 		// Echowire: the creator auto-joins the thread (member_count was seeded to 1 on the row above)
 		// before THREAD_CREATE, so a private thread's creator is already a member when the gateway
 		// filters the event. Clients learn about the join the same way as any other.
-		const creatorMember = await this.threadMemberRepository.addMember(channelId, params.userId);
+		const creatorMember = await this.threadMemberRepository.addMember(channelId, params.userId, 0, guildId);
 		await this.gatewayService.dispatchGuild({
 			guildId,
 			event: 'THREAD_CREATE',
@@ -575,6 +575,10 @@ export class ChannelOperationsService {
 			(channel) =>
 				THREAD_CHANNEL_TYPES.has(channel.type) && !channel.isSoftDeleted && !channel.threadMetadata?.archived,
 		);
+		// Echowire: one read of the by-user membership index, instead of one getMember per visible
+		// thread. It answers both the private-thread gate and the members array below.
+		const memberships = await this.threadMemberRepository.listMembershipsForUser(params.userId);
+		const membershipByThread = new Map(memberships.map((membership) => [membership.threadId, membership]));
 		const parentPermissions = new Map<ChannelID, bigint>();
 		const liveChannelIds = new Set(channels.filter((channel) => !channel.isSoftDeleted).map((channel) => channel.id));
 		const visible: Array<Channel> = [];
@@ -595,25 +599,21 @@ export class ChannelOperationsService {
 			if (!hasPermissionBits(permissions, Permissions.VIEW_CHANNEL)) {
 				continue;
 			}
-			const canAccess = await canAccessPrivateThread({
-				channel: thread,
-				userId: params.userId,
-				parentPermissions: permissions,
-				threadMemberRepository: this.threadMemberRepository,
-			});
+			const canAccess =
+				thread.type !== ChannelTypes.PRIVATE_THREAD ||
+				hasPermissionBits(permissions, Permissions.MANAGE_CHANNELS) ||
+				membershipByThread.has(thread.id);
 			if (canAccess) {
 				visible.push(thread);
 			}
 		}
-		const memberships = await Promise.all(
-			visible.map((thread) => this.threadMemberRepository.getMember(thread.id, params.userId)),
-		);
 		return {
 			threads: await this.mapThreadsWithPreview(visible, params.requestCache, (thread) =>
 				hasPermissionBits(parentPermissions.get(thread.parentId!) ?? 0n, Permissions.READ_MESSAGE_HISTORY),
 			),
-			members: memberships.flatMap((member) =>
-				member
+			members: visible.flatMap((thread) => {
+				const member = membershipByThread.get(thread.id);
+				return member
 					? [
 							{
 								id: member.threadId.toString(),
@@ -622,8 +622,8 @@ export class ChannelOperationsService {
 								flags: member.flags,
 							},
 						]
-					: [],
-			),
+					: [];
+			}),
 		};
 	}
 
@@ -931,7 +931,12 @@ export class ChannelOperationsService {
 		if (thread.type === ChannelTypes.PRIVATE_THREAD && !canModerateThreads(parentPermissions)) {
 			throw new MissingPermissionsError();
 		}
-		const member = await this.threadMemberRepository.addMember(params.threadChannelId, params.userId);
+		const member = await this.threadMemberRepository.addMember(
+			params.threadChannelId,
+			params.userId,
+			0,
+			thread.guildId,
+		);
 		const count = await this.syncThreadMemberCount(params.threadChannelId);
 		await this.gatewayService.dispatchGuild({
 			guildId: thread.guildId,

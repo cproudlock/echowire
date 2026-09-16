@@ -185,7 +185,7 @@ export class MessageProcessingService {
 			if (existing) {
 				return;
 			}
-			const member = await threadMemberRepository.addMember(channel.id, userId);
+			const member = await threadMemberRepository.addMember(channel.id, userId, 0, channel.guildId);
 			const members = await threadMemberRepository.listMembers(channel.id);
 			await this.channelRepository.channelData.patchThreadFields(channel.id, {thread_member_count: members.length});
 			await this.gatewayService.dispatchGuild({

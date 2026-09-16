@@ -261,6 +261,16 @@ const RpcTimingTraceSpan: z.ZodType<RpcTimingTraceSpan> = z.lazy(() =>
 	}),
 );
 
+// Echowire: one thread membership as the gateway receives it. The guild is carried so the gateway
+// can group memberships per guild for THREAD_LIST_SYNC without loading channels.
+const RpcThreadMembership = z.object({
+	id: SnowflakeStringType.describe('The thread ID'),
+	guild_id: SnowflakeStringType.nullable().describe('The guild the thread belongs to, when known'),
+	user_id: SnowflakeStringType.describe('The member, always the authenticated user'),
+	join_timestamp: z.string().describe('ISO 8601 timestamp of when the user joined'),
+	flags: z.number().int().describe('Membership flags'),
+});
+
 export const RpcSessionTimings = z.object({
 	unit: z.literal('microseconds').describe('Timing unit for every duration in this object'),
 	total_us: z.number().int().min(0).describe('Total session initialization duration in microseconds'),
@@ -288,6 +298,9 @@ export const RpcResponseSessionData = z.object({
 	user_guild_settings: z.array(UserGuildSettingsResponse).describe('Per-guild settings for the user'),
 	notes: z.record(SnowflakeStringType, z.string()).describe('User notes keyed by user ID'),
 	read_states: z.array(ReadStateResponse).describe('Read state for each channel'),
+	// Echowire: every thread the user has joined, from the by-user membership index, so the gateway
+	// can tell each session which threads it belongs to without asking per thread.
+	thread_members: z.array(RpcThreadMembership).describe('Thread memberships for the authenticated user, across guilds'),
 	private_channels: z.array(ChannelResponse).describe('List of DM and group DM channels'),
 	relationships: z.array(RelationshipResponse).describe('User relationships (friends, blocked, etc.)'),
 	favorite_memes: z.array(FavoriteMemeResponse).describe('List of user favorite memes'),

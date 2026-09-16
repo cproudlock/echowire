@@ -1,0 +1,73 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
+.root {
+	display: flex;
+	height: 100%;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.listPane {
+	display: flex;
+	width: 26rem;
+	max-width: 42%;
+	flex: none;
+	flex-direction: column;
+	min-height: 0;
+	border-right: 1px solid var(--background-modifier-accent);
+}
+
+.postPane {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+}
+
+.postHeader {
+	display: flex;
+	align-items: center;
+	gap: 0.25rem;
+	height: 3rem;
+	flex: none;
+	padding: 0 0.5rem 0 1rem;
+	border-bottom: 1px solid var(--background-modifier-accent);
+}
+
+.postTitle {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
+	color: var(--text-primary);
+	font-size: 0.9375rem;
+	font-weight: 600;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.headerButton {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	flex: none;
+	border: none;
+	border-radius: 0.25rem;
+	background: transparent;
+	color: var(--text-tertiary);
+	cursor: pointer;
+}
+
+.headerButton:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-primary);
+}
+
+.postBody {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-height: 0;
+}

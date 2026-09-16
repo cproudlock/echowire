@@ -1,0 +1,113 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
+.root {
+	display: flex;
+	flex-direction: column;
+	padding: 1.5rem 1rem 0;
+}
+
+.header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+	padding: 0 0.25rem;
+}
+
+.icon {
+	color: var(--text-tertiary);
+}
+
+.title {
+	margin: 0;
+	color: var(--text-primary);
+	font-size: 2rem;
+	font-weight: 700;
+	line-height: 1.2;
+	overflow-wrap: anywhere;
+}
+
+.tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.25rem;
+}
+
+.dateDivider {
+	display: flex;
+	align-items: center;
+	margin: 1.25rem 0 0.5rem;
+	border-top: 1px solid var(--background-modifier-accent);
+}
+
+.dateLabel {
+	margin: -0.6rem auto 0;
+	padding: 0 0.5rem;
+	background: var(--background-primary);
+	color: var(--text-tertiary);
+	font-size: 0.75rem;
+	font-weight: 600;
+}
+
+.actionBar {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem 0.25rem;
+}
+
+.avatar {
+	width: 1.5rem;
+	height: 1.5rem;
+	flex: none;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+.spacer {
+	flex: 1;
+}
+
+.reactButton,
+.followButton,
+.iconButton {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding: 0.375rem 0.625rem;
+	border: 1px solid var(--background-modifier-accent);
+	border-radius: 0.375rem;
+	background: var(--background-secondary);
+	color: var(--text-secondary);
+	font-size: 0.8125rem;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.reactButton:hover,
+.followButton:hover,
+.iconButton:hover {
+	background: var(--background-modifier-hover);
+	color: var(--text-primary);
+}
+
+.followButtonActive {
+	border-color: transparent;
+	background: var(--brand-primary);
+	color: var(--brand-primary-fill, #fff);
+}
+
+.followButtonActive:hover {
+	background: var(--brand-primary);
+	color: var(--brand-primary-fill, #fff);
+	filter: brightness(1.05);
+}
+
+.iconButton {
+	padding: 0.375rem;
+}
+
+.separator {
+	height: 0.25rem;
+	margin: 0 -1rem;
+	background: var(--background-modifier-accent);
+}

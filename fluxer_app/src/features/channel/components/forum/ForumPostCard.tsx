@@ -24,6 +24,8 @@ import {clsx} from 'clsx';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 
+const MAX_PARTICIPANT_AVATARS = 3;
+
 const LAST_ACTIVITY_DESCRIPTOR = msg({
 	message: '{time} ago',
 	comment: 'Forum post card: time since the last message, for example "5m ago". {time} is a short duration.',
@@ -37,10 +39,12 @@ interface ForumPostCardProps {
 	forum: Channel;
 	post: Channel;
 	layout: ForumLayout;
+	// True while this post is the one open beside the list.
+	selected?: boolean;
 	onOpen: () => void;
 }
 
-export const ForumPostCard = observer(({forum, post, layout, onOpen}: ForumPostCardProps) => {
+export const ForumPostCard = observer(({forum, post, layout, selected = false, onOpen}: ForumPostCardProps) => {
 	const {i18n} = useLingui();
 	const guildId = forum.guildId ?? '';
 	const preview = ForumPostPreviews.get(post.id);
@@ -63,6 +67,11 @@ export const ForumPostCard = observer(({forum, post, layout, onOpen}: ForumPostC
 		preview?.firstAttachment && isImageAttachment(preview.firstAttachment)
 			? (preview.firstAttachment.proxyUrl ?? preview.firstAttachment.url)
 			: null;
+	// The server reports recent authors on the post; without them the card shows the author alone.
+	const participantAvatars = post.recentParticipantIds
+		.slice(0, MAX_PARTICIPANT_AVATARS)
+		.map((id) => ({id, url: getUserAvatarURL({id, avatar: Users.getUser(id)?.avatar ?? null})}))
+		.filter((participant): participant is {id: string; url: string} => participant.url != null);
 	const unread = ReadStates.hasUnread(post.id);
 	const replyCount = post.messageCount ?? 0;
 	const lastActivity = i18n._(LAST_ACTIVITY_DESCRIPTOR, {
@@ -80,7 +89,13 @@ export const ForumPostCard = observer(({forum, post, layout, onOpen}: ForumPostC
 			type="button"
 			onClick={onOpen}
 			onContextMenu={handleContextMenu}
-			className={clsx(styles.card, isGallery ? styles.galleryCard : styles.listCard, unread && styles.unread)}
+			aria-current={selected ? 'true' : undefined}
+			className={clsx(
+				styles.card,
+				isGallery ? styles.galleryCard : styles.listCard,
+				unread && styles.unread,
+				selected && styles.selected,
+			)}
 			data-flx="channel.forum-post-card"
 		>
 			{isGallery && (
@@ -116,7 +131,15 @@ export const ForumPostCard = observer(({forum, post, layout, onOpen}: ForumPostC
 					</div>
 				)}
 				<div className={styles.footer}>
-					{avatarUrl && <img src={avatarUrl} alt="" className={styles.avatar} />}
+					{participantAvatars.length > 0 ? (
+						<span className={styles.avatarRow} data-flx="channel.forum-post-card.participants">
+							{participantAvatars.map((participant) => (
+								<img key={participant.id} src={participant.url} alt="" className={styles.avatar} />
+							))}
+						</span>
+					) : (
+						avatarUrl && <img src={avatarUrl} alt="" className={styles.avatar} />
+					)}
 					<span className={styles.replies} title={i18n._(REPLY_COUNT_ARIA_DESCRIPTOR, {count: replyCount})}>
 						<ChatCircleIcon size={14} weight="fill" />
 						<span>{replyCount}</span>

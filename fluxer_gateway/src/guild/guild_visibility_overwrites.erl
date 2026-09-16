@@ -191,6 +191,11 @@ dispatch_removed_channels(Removed, Pid, OldState, GuildId) ->
     sets:set(channel_id()), pid(), binary(), map(), guild_state(), integer()
 ) -> ok.
 dispatch_added_channels(Added, Pid, SessionId, SessionData, StateWithCache, GuildId) ->
+    %% Echowire: a channel that just became visible brings its threads with it, which nothing
+    %% announced before, so a client had to refetch the guild thread list to find them.
+    guild_thread_sync:dispatch_for_parents(
+        sets:to_list(Added), Pid, StateWithCache, GuildId
+    ),
     lists:foreach(
         fun(ChannelId) ->
             guild_visibility_roles:dispatch_channel_create(

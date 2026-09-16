@@ -15,7 +15,10 @@ import {
 import {Config} from '@app/api/Config';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
-import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
+import {
+	ThreadMemberRepository,
+	type ThreadMembershipForUser,
+} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {buildBroadcastMessageData} from '@app/api/channel/services/message/MessageGatewayDispatch';
 import {ensurePersonalNotesChannelExists} from '@app/api/channel/services/PersonalNotesChannelRepair';
 import {withPrivateThreadMemberIds} from '@app/api/channel/services/ThreadAccess';
@@ -157,6 +160,8 @@ interface UserData {
 	favoriteMemes: Array<FavoriteMeme>;
 	pinnedDMs: Array<ChannelID>;
 	webAuthnCredentials: Array<WebAuthnCredential>;
+	// Echowire: every thread this user has joined, from the by-user membership index.
+	threadMemberships: Array<ThreadMembershipForUser>;
 }
 
 interface RpcVoiceParticipantSnapshot {
@@ -1171,6 +1176,15 @@ export class RpcService {
 			read_states: timeRpcStepSync(responseBuildSteps, 'map_read_states', () =>
 				userData.readStates.map(mapReadStateResponse),
 			),
+			thread_members: timeRpcStepSync(responseBuildSteps, 'map_thread_members', () =>
+				userData.threadMemberships.map((membership) => ({
+					id: membership.threadId.toString(),
+					guild_id: membership.guildId === null ? null : membership.guildId.toString(),
+					user_id: membership.userId.toString(),
+					join_timestamp: membership.joinTimestamp.toISOString(),
+					flags: membership.flags,
+				})),
+			),
 			guilds,
 			private_channels: privateChannels,
 			relationships,
@@ -1518,6 +1532,7 @@ export class RpcService {
 				favoriteMemes: [],
 				pinnedDMs: [],
 				webAuthnCredentials: [],
+				threadMemberships: [],
 			};
 		}
 		const [
@@ -1531,6 +1546,7 @@ export class RpcService {
 			webAuthnCredentials,
 			guildSettings,
 			privateChannels,
+			threadMemberships,
 		] = await Promise.all([
 			timeUserDataStep('find_settings', async () => this.userRepository.findSettings(userId)),
 			timeUserDataStep('get_user_notes', async () => this.userRepository.getUserNotes(userId)),
@@ -1544,6 +1560,11 @@ export class RpcService {
 			includePrivateChannels
 				? timeUserDataStep('list_private_channels', async () => this.userRepository.listPrivateChannels(userId))
 				: Promise.resolve<Array<Channel>>([]),
+			// Echowire: one read of the by-user membership index tells the session which threads it
+			// belongs to, which is what the gateway needs to send THREAD_LIST_SYNC.
+			timeUserDataStep('list_thread_memberships', async () =>
+				new ThreadMemberRepository().listMembershipsForUser(userId),
+			),
 		]);
 		let settings = settingsResult;
 		if (settings) {
@@ -1576,6 +1597,7 @@ export class RpcService {
 			favoriteMemes,
 			pinnedDMs,
 			webAuthnCredentials,
+			threadMemberships,
 		};
 	}
 

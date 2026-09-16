@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import type {ChannelID, GuildID, UserID} from '@app/api/BrandedTypes';
+import type {ThreadMembershipForUser} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {Channel} from '@app/api/models/Channel';
 import type {FavoriteMeme} from '@app/api/models/FavoriteMeme';
 import type {ReadState} from '@app/api/models/ReadState';
@@ -22,4 +23,6 @@ export interface UserData {
 	favoriteMemes: Array<FavoriteMeme>;
 	pinnedDMs: Array<ChannelID>;
 	webAuthnCredentials: Array<WebAuthnCredential>;
+	// Echowire: every thread this user has joined, from the by-user membership index.
+	threadMemberships: Array<ThreadMembershipForUser>;
 }

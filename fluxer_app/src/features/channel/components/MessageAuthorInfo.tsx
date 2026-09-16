@@ -2,9 +2,12 @@
 
 import {UserTag} from '@app/features/channel/components/ChannelUserTag';
 import {MessageAvatar} from '@app/features/channel/components/MessageAvatar';
+import {OriginalPosterTag} from '@app/features/channel/components/MessageOriginalPosterTag';
 import {MessageTimeoutIndicator} from '@app/features/channel/components/MessageTimeoutIndicator';
 import {MessageUsername} from '@app/features/channel/components/MessageUsername';
 import {TimestampWithTooltip} from '@app/features/channel/components/TimestampWithTooltip';
+import Channels from '@app/features/channel/state/Channels';
+import {isOriginalPoster} from '@app/features/channel/utils/ForumPaneUtils';
 import type {Guild} from '@app/features/guild/models/Guild';
 import type {GuildMember} from '@app/features/member/models/GuildMember';
 import type {Message} from '@app/features/messaging/models/MessagingMessage';
@@ -48,6 +51,13 @@ export const MessageAuthorInfo = observer((props: MessageAuthorInfoProps) => {
 		previewOverrides,
 	} = props;
 	const isPreview = useMemo(() => Boolean(previewContext), [previewContext]);
+	// Echowire: in a thread or forum post, mark the member who started it.
+	const showOriginalPosterTag = isOriginalPoster({
+		thread: Channels.getChannel(message.channelId),
+		authorId: author.id,
+		system: message.isSystemMessage(),
+		webhook: message.webhookId != null,
+	});
 	const timeoutIndicator = (
 		<MessageTimeoutIndicator
 			guildId={message.guildId}
@@ -108,6 +118,12 @@ export const MessageAuthorInfo = observer((props: MessageAuthorInfoProps) => {
 									className={styles.userTagOffset}
 									system={author.system}
 									data-flx="channel.message-author-info.user-tag-offset"
+								/>
+							)}
+							{showOriginalPosterTag && (
+								<OriginalPosterTag
+									className={styles.userTagOffset}
+									data-flx="channel.message-author-info.original-poster-tag"
 								/>
 							)}
 						</span>

@@ -14,6 +14,7 @@ import {renderChannelStream} from '@app/features/channel/components/ChannelMessa
 import styles from '@app/features/channel/components/ChannelMessages.module.css';
 import {ChannelWelcomeSection} from '@app/features/channel/components/ChannelWelcomeSection';
 import {CollapsedMessageVisibilityProvider} from '@app/features/channel/components/CollapsedMessageVisibilityContext';
+import {ForumPostIntro} from '@app/features/channel/components/forum/ForumPostIntro';
 import {NewMessagesBar} from '@app/features/channel/components/NewMessagesBar';
 import {ThreadStarterMessage} from '@app/features/channel/components/ThreadStarterMessage';
 import {UploadManager} from '@app/features/channel/components/UploadManager';
@@ -661,6 +662,9 @@ export const Messages = observer(function Messages({
 			)}
 			{!windowStatus.olderPageAvailable && (
 				<ChannelWelcomeSection channel={channel} data-flx="channel.messages.channel-welcome-section" />
+			)}
+			{!windowStatus.olderPageAvailable && channel.isThread() && (
+				<ForumPostIntro channel={channel} data-flx="channel.messages.forum-post-intro" />
 			)}
 			{!windowStatus.olderPageAvailable && channel.isThread() && <ThreadStarterMessage channel={channel} />}
 			{streamMarkup}

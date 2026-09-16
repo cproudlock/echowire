@@ -39080,3 +39080,129 @@ msgstr "What do you want to post about in #{name}?"
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:31
 msgid "Write something…"
 msgstr "Write something…"
+
+#: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:232
+msgid "A moderated tag can only be applied by members who can manage threads."
+msgstr "A moderated tag can only be applied by members who can manage threads."
+
+#. Action on your own reply that appends its image to the forum post you started.
+#: src/features/ui/action_menu/MessageContextMenu.tsx:110
+msgid "Add to Post"
+msgstr "Add to Post"
+
+#. Permission description: manage threads.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:484
+msgid "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
+msgstr "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
+
+#. Permission description: send messages in threads.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:480
+msgid "Allows members to reply inside threads and forum posts, separately from the parent channel."
+msgstr "Allows members to reply inside threads and forum posts, separately from the parent channel."
+
+#. Permission description: create posts and threads.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:472
+msgid "Allows members to start threads in text channels and posts in forum channels."
+msgstr "Allows members to start threads in text channels and posts in forum channels."
+
+#. Permission description: create private threads.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:476
+msgid "Allows members to start threads that only invited members can see."
+msgstr "Allows members to start threads that only invited members can see."
+
+#. Example forum post idea.
+#: src/features/channel/components/modals/ForumExamplesModal.tsx:28
+msgid "Ask for help with something"
+msgstr "Ask for help with something"
+
+#. Permission name: allows starting threads and forum posts.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:456
+msgid "Create posts and threads"
+msgstr "Create posts and threads"
+
+#. Permission name: allows starting invite-only threads.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:460
+msgid "Create private threads"
+msgstr "Create private threads"
+
+#: src/features/channel/components/menus/ThreadPostMenu.tsx:110
+msgid "Exit Full View"
+msgstr "Exit Full View"
+
+#. Example forum post idea.
+#: src/features/channel/components/modals/ForumExamplesModal.tsx:27
+msgid "Introduce yourself"
+msgstr "Introduce yourself"
+
+#. Permission name: allows moderating threads and forum posts started by other members.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:468
+msgid "Manage threads and posts"
+msgstr "Manage threads and posts"
+
+#: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:262
+msgid "Moderators only"
+msgstr "Moderators only"
+
+#. Short pill marking messages by the member who started a thread or forum post.
+#: src/features/channel/components/MessageOriginalPosterTag.tsx:12
+msgid "OP"
+msgstr "OP"
+
+#: src/features/channel/components/menus/ThreadPostMenu.tsx:110
+msgid "Open in Full View"
+msgstr "Open in Full View"
+
+#. Tooltip of the OP pill.
+#: src/features/channel/components/MessageOriginalPosterTag.tsx:16
+msgid "Original poster"
+msgstr "Original poster"
+
+#. Introduction above the example post ideas.
+#: src/features/channel/components/modals/ForumExamplesModal.tsx:22
+msgid "Pick one to start a post, or write your own."
+msgstr "Pick one to start a post, or write your own."
+
+#. Accessible label of the "..." button in the header of an open forum post.
+#: src/features/channel/components/forum/ForumSplitView.tsx:21
+msgid "Post actions"
+msgstr "Post actions"
+
+#. Title of the sheet listing example first posts for an empty forum.
+#: src/features/channel/components/modals/ForumExamplesModal.tsx:18
+msgid "Post ideas"
+msgstr "Post ideas"
+
+#. Button under the first message of a forum post that reacts to it.
+#: src/features/channel/components/forum/ForumPostIntro.tsx:33
+msgid "React to Post"
+msgstr "React to Post"
+
+#. Button on an empty forum that lists example first posts.
+#: src/features/channel/components/forum/ForumChannelView.tsx:89
+msgid "See Examples"
+msgstr "See Examples"
+
+#. Permission name: allows replying inside threads and forum posts.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:464
+msgid "Send messages in threads and posts"
+msgstr "Send messages in threads and posts"
+
+#. Example forum post idea.
+#: src/features/channel/components/modals/ForumExamplesModal.tsx:29
+msgid "Share something you made"
+msgstr "Share something you made"
+
+#. Example forum post idea.
+#: src/features/channel/components/modals/ForumExamplesModal.tsx:30
+msgid "Start a discussion"
+msgstr "Start a discussion"
+
+#. Example forum post idea.
+#: src/features/channel/components/modals/ForumExamplesModal.tsx:31
+msgid "Suggest an improvement"
+msgstr "Suggest an improvement"
+
+#. Permission category: threads and forum posts.
+#: src/features/permissions/utils/PermissionLabelDescriptors.ts:344
+msgid "Threads and posts"
+msgstr "Threads and posts"

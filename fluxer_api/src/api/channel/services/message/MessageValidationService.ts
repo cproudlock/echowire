@@ -16,6 +16,7 @@ import type {User} from '@app/api/models/User';
 import {hasVisibleContent} from '@app/api/utils/StringUtils';
 import {
 	isMessageTypeDeletable,
+	isMessageTypeDeletableByModerator,
 	MessageFlags,
 	MessageTypes,
 	Permissions,
@@ -246,10 +247,14 @@ export class MessageValidationService {
 		guild: GuildResponse | null;
 		hasPermission: (permission: bigint) => Promise<boolean>;
 	}): Promise<boolean> {
-		if (!isMessageTypeDeletable(message.type)) {
-			return false;
-		}
 		const isAuthor = message.authorId === userId;
+		if (!isMessageTypeDeletable(message.type)) {
+			// Echowire: a moderator may clear the thread-created notice; its subject may not.
+			if (!guild || !isMessageTypeDeletableByModerator(message.type)) {
+				return false;
+			}
+			return (await hasPermission(Permissions.SEND_MESSAGES)) && (await hasPermission(Permissions.MANAGE_MESSAGES));
+		}
 		if (!guild) return isAuthor;
 		if (isAuthor) return true;
 		const canManageMessages =

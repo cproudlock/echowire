@@ -76,6 +76,15 @@ export function isMessageTypeDeletable(type: number): boolean {
 	return type in MESSAGE_TYPE_DELETABLE ? MESSAGE_TYPE_DELETABLE[type as MessageTypeValue] : false;
 }
 
+// Echowire: system messages are not deletable by their subject, but a moderator has to be able to
+// clear the "started a thread" notice: it is the only system message that outlives what it
+// announces, since the thread it points at can be deleted while the notice stays in the parent.
+const MODERATOR_DELETABLE_MESSAGE_TYPES: ReadonlySet<number> = new Set([MessageTypes.THREAD_CREATED]);
+
+export function isMessageTypeDeletableByModerator(type: number): boolean {
+	return MODERATOR_DELETABLE_MESSAGE_TYPES.has(type);
+}
+
 export const MessageReferenceTypes = {
 	DEFAULT: 0,
 	FORWARD: 1,

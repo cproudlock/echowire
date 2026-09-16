@@ -11,7 +11,7 @@ import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHa
 import {HTTP_STATUS} from '@app/api/test/TestConstants';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
 import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
-import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import type {LimitKey} from '@fluxer/constants/src/LimitConfigMetadata';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {afterEach, beforeEach, describe, expect, test} from 'vitest';

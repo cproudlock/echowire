@@ -8,6 +8,7 @@ import {
 	createUserID,
 	type EmojiID,
 	type GuildID,
+	type MessageID,
 	type RoleID,
 	type StickerID,
 	type UserID,
@@ -15,7 +16,7 @@ import {
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
-import {makeAttachmentCdnUrl} from '@app/api/channel/services/message/MessageHelpers';
+import {makeAttachmentCdnUrl, purgeMessageAttachments} from '@app/api/channel/services/message/MessageHelpers';
 import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
 import {
 	canAccessPrivateThread,
@@ -24,7 +25,6 @@ import {
 	hasPermissionBits,
 	withPrivateThreadMemberIds,
 } from '@app/api/channel/services/ThreadAccess';
-import {buildThreadDeletePayload} from '@app/api/channel/services/ThreadPurge';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@app/api/guild/GuildAuditLogTypes';
@@ -61,6 +61,8 @@ import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPe
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
 import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
 import {countCapacityChannels} from '@app/api/channel/services/ChannelCapacity';
+import {purgeThread} from '@app/api/channel/services/ThreadPurge';
+import {getPurgeQueue, getStorageService} from '@app/api/middleware/ServiceSingletons';
 import {MaxActiveThreadsError} from '@fluxer/errors/src/domains/channel/MaxActiveThreadsError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
@@ -85,6 +87,7 @@ import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import type {IRateLimitService} from '@pkgs/rate_limit/src/IRateLimitService';
 
 const STARTER_PREVIEW_MAX_LENGTH = 200;
+const THREAD_PURGE_ATTACHMENT_BATCH = 100;
 
 export class ChannelOperationsService {
 	constructor(
@@ -827,11 +830,34 @@ export class ChannelOperationsService {
 			throw new UnknownChannelError();
 		}
 		await this.assertCanManageThread(thread, params.userId);
-		const deletePayload = await buildThreadDeletePayload(thread, thread.guildId, this.threadMemberRepository);
-		await this.channelRepository.delete(thread.id, thread.guildId);
-		// Echowire: a deleted thread keeps no membership rows behind.
-		await this.threadMemberRepository.removeAllMembers(thread.id);
-		await this.gatewayService.dispatchGuild({guildId: thread.guildId, event: 'THREAD_DELETE', data: deletePayload});
+		// Echowire: the same purge the parent-channel delete and the orphan sweep use. Deleting the
+		// channel row alone left the thread's messages, attachments and search documents behind.
+		const storageService = getStorageService();
+		const purgeQueue = getPurgeQueue();
+		await purgeThread({
+			thread,
+			guildId: thread.guildId,
+			deleteMessages: (id) => this.channelRepository.messages.deleteAllChannelMessages(id),
+			deleteChannelRow: (id, guildId) => this.channelRepository.channelData.delete(id, guildId),
+			purgeAttachments: async (target) => {
+				let before: MessageID | undefined;
+				for (;;) {
+					const messages = await this.channelRepository.messages.listMessages(
+						target.id,
+						before,
+						THREAD_PURGE_ATTACHMENT_BATCH,
+					);
+					await Promise.all(messages.map((message) => purgeMessageAttachments(message, storageService, purgeQueue)));
+					if (messages.length < THREAD_PURGE_ATTACHMENT_BATCH) {
+						break;
+					}
+					before = messages[messages.length - 1].id;
+				}
+			},
+			threadMemberRepository: this.threadMemberRepository,
+			gatewayService: this.gatewayService,
+			source: 'thread_delete',
+		});
 	}
 
 	// Echowire: recompute member_count from the membership table and persist it on the thread.

@@ -20,6 +20,7 @@ import {MessageAdminAuditCases} from '@app/api/admin/tests/audit_coverage/Messag
 import {ReportAdminAuditCases} from '@app/api/admin/tests/audit_coverage/ReportAdminAuditCases';
 import {SearchAdminAuditCases} from '@app/api/admin/tests/audit_coverage/SearchAdminAuditCases';
 import {SystemDmAdminAuditCases} from '@app/api/admin/tests/audit_coverage/SystemDmAdminAuditCases';
+import {ThreadAdminAuditCases} from '@app/api/admin/tests/audit_coverage/ThreadAdminAuditCases';
 import {UserAdminAuditCases} from '@app/api/admin/tests/audit_coverage/UserAdminAuditCases';
 import {UserWriteAdminAuditCases} from '@app/api/admin/tests/audit_coverage/UserWriteAdminAuditCases';
 import {VoiceAdminAuditCases} from '@app/api/admin/tests/audit_coverage/VoiceAdminAuditCases';
@@ -46,6 +47,7 @@ const ALL_CASES = [
 	...ReportAdminAuditCases,
 	...SearchAdminAuditCases,
 	...SystemDmAdminAuditCases,
+	...ThreadAdminAuditCases,
 	...UserAdminAuditCases,
 	...UserWriteAdminAuditCases,
 	...VoiceAdminAuditCases,

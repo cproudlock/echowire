@@ -38,6 +38,8 @@ export function ThreadAdminController(app: HonoApp) {
 			return ctx.json(
 				await adminService.threadService.listChannelThreads({
 					channel_id: ctx.req.valid('param').channel_id,
+					adminUserId: ctx.get('adminUserId'),
+					auditLogReason: ctx.get('auditLogReason'),
 				}),
 			);
 		},

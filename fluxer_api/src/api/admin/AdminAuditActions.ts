@@ -28,6 +28,7 @@ export const AdminAuditReadActions = {
 	LIST_BLOCKLIST_ENTRIES: 'list_blocklist_entries',
 	LIST_BLOCKLISTS: 'list_blocklists',
 	LIST_CHANNEL_MESSAGES: 'list_channel_messages',
+	LIST_CHANNEL_THREADS: 'list_channel_threads',
 	LIST_DISCOVERY_APPLICATIONS: 'list_discovery_applications',
 	LIST_DISCOVERY_CATEGORIES: 'list_discovery_categories',
 	LIST_DISCOVERY_CATEGORY_LISTINGS: 'list_discovery_category_listings',

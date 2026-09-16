@@ -19,6 +19,7 @@ import {ReportAdminController} from '@app/api/admin/controllers/ReportAdminContr
 import {SearchAdminController} from '@app/api/admin/controllers/SearchAdminController';
 import {SystemAdminController} from '@app/api/admin/controllers/SystemAdminController';
 import {SystemDmAdminController} from '@app/api/admin/controllers/SystemDmAdminController';
+import {ThreadAdminController} from '@app/api/admin/controllers/ThreadAdminController';
 import {UserAdminController} from '@app/api/admin/controllers/UserAdminController';
 import {VoiceAdminController} from '@app/api/admin/controllers/VoiceAdminController';
 import type {HonoApp} from '@app/api/types/HonoEnv';
@@ -29,6 +30,7 @@ export function registerAdminControllers(app: HonoApp) {
 	UserAdminController(app);
 	CodesAdminController(app);
 	GuildAdminController(app);
+	ThreadAdminController(app);
 	AssetAdminController(app);
 	BanAdminController(app);
 	InstanceConfigAdminController(app);

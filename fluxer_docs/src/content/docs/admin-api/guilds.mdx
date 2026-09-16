@@ -398,6 +398,140 @@ Each applied group records one Admin audit entry with the target type `guild` an
 
 100 requests per minute for each authenticated user, on the `admin:guild:modify` bucket.
 
+## List channel threads
+
+<RouteHeader method="GET" path="/v1/admin/channels/{channel_id}/threads" />
+
+Lists the threads or forum posts under a text or forum channel, newest first. Requires
+`channel:list:threads`.
+
+A channel type that cannot parent threads returns an empty array rather than an error.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the parent text or forum channel |
+
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| threads | array[[admin thread](#admin-thread-object) object] | The threads under the channel |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | response body | Threads were returned |
+| 404 | [error response](/admin-api/#error-response) | `UNKNOWN_CHANNEL`, because the channel does not exist or is not a guild channel |
+
+### Admin thread object
+
+| Field | Type | Description |
+| --- | --- | --- |
+| id | snowflake | The thread ID |
+| guild_id | snowflake | The guild the thread belongs to |
+| parent_id | ?snowflake | The parent channel ID, or null when the parent is gone |
+| parent_name | ?string | The parent channel name, when it still exists |
+| name | ?string | The thread or post title |
+| type | integer | 11 for a public thread, 12 for a private thread |
+| owner_id | ?snowflake | The creator of the thread |
+| archived | boolean | Whether the thread is archived |
+| locked | boolean | Whether the thread is locked |
+| pinned | boolean | Whether the forum post is pinned in its forum |
+| message_count | ?integer | Replies, excluding a forum post's opening message |
+| member_count | ?integer | Members who have joined the thread |
+| auto_archive_duration | ?integer | Inactivity minutes before the thread auto-archives |
+| archive_timestamp | ?ISO8601 timestamp | When the archive state last changed |
+| create_timestamp | ?ISO8601 timestamp | When the thread was created |
+| applied_tags | ?array[snowflake] | Forum tag IDs applied to the post |
+
+### Rate limit
+
+100 requests per minute for each authenticated user, on the `admin:lookup` bucket.
+
+## Update thread state
+
+<RouteHeader method="PATCH" path="/v1/admin/channels/{channel_id}/thread" auditReason />
+
+Archives, unarchives, locks or unlocks a thread or forum post. Requires
+`channel:thread:update`.
+
+Dispatches [Thread Update](/gateway/events/#thread-update) to the sessions that can view the
+thread. At least one field must be supplied.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread, not its parent |
+
+### JSON parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| archived? | boolean | Archive or unarchive the thread |
+| locked? | boolean | Lock or unlock the thread |
+
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| thread | [admin thread](#admin-thread-object) object | The thread after the update |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | response body | Thread was updated |
+| 400 | [error response](/admin-api/#error-response) | Neither `archived` nor `locked` was supplied |
+| 404 | [error response](/admin-api/#error-response) | `UNKNOWN_CHANNEL`, because the channel does not exist or is not a thread |
+
+### Audit trail
+
+One Admin audit entry is recorded with the action `thread_update`, the target type `thread`, the
+thread as the target, and the changed fields in the metadata.
+
+### Rate limit
+
+100 requests per minute for each authenticated user, on the `admin:guild:modify` bucket.
+
+## Delete thread
+
+<RouteHeader method="DELETE" path="/v1/admin/channels/{channel_id}/thread" auditReason />
+
+Permanently deletes a thread or forum post and purges its messages, attachments and search
+documents. Requires `channel:thread:delete`.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread, not its parent |
+
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| success | boolean | Always true |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | response body | Thread was deleted |
+| 404 | [error response](/admin-api/#error-response) | `UNKNOWN_CHANNEL`, because the channel does not exist or is not a thread |
+
+### Audit trail
+
+One Admin audit entry is recorded with the action `thread_delete`, the target type `thread`, the
+thread as the target, and the thread name, guild ID and parent ID in the metadata.
+
+### Rate limit
+
+100 requests per minute for each authenticated user, on the `admin:guild:modify` bucket.
+
 ## Delete guild
 
 <RouteHeader method="DELETE" path="/v1/admin/guilds/{guild_id}" auditReason />

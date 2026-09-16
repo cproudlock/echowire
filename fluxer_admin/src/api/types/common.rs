@@ -224,6 +224,17 @@ pub struct GuildChannelSummary {
     pub content_warning_level: Option<i32>,
     pub content_warning_text: Option<String>,
     pub url: Option<String>,
+    // Echowire: thread and forum post state. Null on channels that are not threads.
+    #[serde(default)]
+    pub archived: Option<bool>,
+    #[serde(default)]
+    pub locked: Option<bool>,
+    #[serde(default)]
+    pub pinned: Option<bool>,
+    #[serde(default)]
+    pub message_count: Option<i64>,
+    #[serde(default)]
+    pub member_count: Option<i64>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

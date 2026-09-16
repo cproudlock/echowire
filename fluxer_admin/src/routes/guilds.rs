@@ -257,6 +257,51 @@ async fn dispatch_guild_action(
                 "Failed to update guild features",
             )
         }
+        // Echowire: thread and forum post moderation. The channel id comes from the row in the
+        // overview tab, so one dispatch arm covers every thread in the guild.
+        "thread_archive" | "thread_unarchive" | "thread_lock" | "thread_unlock" => {
+            let Some(channel_id) = get("channel_id") else {
+                return FlashData::error("Thread ID is required");
+            };
+            let (archived, locked, success, failure) = match action {
+                "thread_archive" => (
+                    Some(true),
+                    None,
+                    "Thread archived",
+                    "Failed to archive thread",
+                ),
+                "thread_unarchive" => (
+                    Some(false),
+                    None,
+                    "Thread unarchived",
+                    "Failed to unarchive thread",
+                ),
+                "thread_lock" => (None, Some(true), "Thread locked", "Failed to lock thread"),
+                _ => (
+                    None,
+                    Some(false),
+                    "Thread unlocked",
+                    "Failed to unlock thread",
+                ),
+            };
+            action_result(
+                client
+                    .update_thread_state(&channel_id, archived, locked)
+                    .await,
+                success,
+                failure,
+            )
+        }
+        "thread_delete" => {
+            let Some(channel_id) = get("channel_id") else {
+                return FlashData::error("Thread ID is required");
+            };
+            action_result(
+                client.delete_thread(&channel_id).await,
+                "Thread deleted",
+                "Failed to delete thread",
+            )
+        }
         "clear_fields" => {
             let fields = form.list_values_any(&["fields[]", "fields"]);
             action_result(

@@ -3,11 +3,12 @@
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use crate::{
+    acl,
     api::types::GuildDetailInfo,
     config::AdminConfig,
     templates::components::{
         badge::{BadgeVariant, badge},
-        form::{csrf_input, form_actions, submit_button},
+        form::{csrf_input, danger_button, form_actions, submit_button},
         media::{guild_asset_url, guild_icon_url},
         nsfw_indicators::{adult_content_badge, channel_nsfw_state_badge, content_warning_badge},
         page_container::{card_with_header, detail_row},
@@ -32,16 +33,49 @@ fn channel_type_label(channel_type: i32) -> &'static str {
         0 => "Text",
         2 => "Voice",
         4 => "Category",
+        11 => "Public thread",
+        12 => "Private thread",
         13 => "Link",
+        15 => "Forum",
         _ => "Unknown",
     }
 }
 
-pub fn overview_tab(config: &AdminConfig, guild: &GuildDetailInfo, csrf_token: &str) -> Markup {
+// Echowire: threads and forum posts are channels and arrive in the same list, but they carry no
+// position and belong under their parent, so they are listed separately from the channel tree.
+fn is_thread_type(channel_type: i32) -> bool {
+    channel_type == 11 || channel_type == 12
+}
+
+pub fn overview_tab(
+    config: &AdminConfig,
+    guild: &GuildDetailInfo,
+    csrf_token: &str,
+    admin_acls: &[String],
+) -> Markup {
     let base = &config.base_path;
 
-    let mut sorted_channels: Vec<_> = guild.channels.iter().collect();
+    let mut sorted_channels: Vec<_> = guild
+        .channels
+        .iter()
+        .filter(|c| !is_thread_type(c.channel_type))
+        .collect();
     sorted_channels.sort_by_key(|c| c.position);
+
+    let mut threads: Vec<_> = guild
+        .channels
+        .iter()
+        .filter(|c| is_thread_type(c.channel_type))
+        .collect();
+    threads.sort_by(|left, right| {
+        let left_parent = left.parent_id.as_deref().unwrap_or("");
+        let right_parent = right.parent_id.as_deref().unwrap_or("");
+        left_parent
+            .cmp(right_parent)
+            .then_with(|| right.id.cmp(&left.id))
+    });
+    let can_update_thread = acl::has_permission(admin_acls, acl::CHANNEL_THREAD_UPDATE);
+    let can_delete_thread = acl::has_permission(admin_acls, acl::CHANNEL_THREAD_DELETE);
 
     let channels_by_id: std::collections::HashMap<&str, &crate::api::types::GuildChannelSummary> =
         guild.channels.iter().map(|c| (c.id.as_str(), c)).collect();
@@ -248,6 +282,127 @@ pub fn overview_tab(config: &AdminConfig, guild: &GuildDetailInfo, csrf_token: &
                                             channel.content_warning_text.as_deref(),
                                             false,
                                         ))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }))
+
+            (card_with_header(&format!("Threads and forum posts ({})", threads.len()), html! {
+                @if threads.is_empty() {
+                    p class="text-sm text-neutral-500" { "No threads or forum posts" }
+                } @else {
+                    div class="flex flex-col gap-2" {
+                        @for thread in &threads {
+                            @let parent = thread.parent_id.as_deref()
+                                .and_then(|pid| channels_by_id.get(pid));
+                            @let parent_name = parent
+                                .and_then(|p| p.name.as_deref())
+                                .unwrap_or("orphaned");
+                            div class="flex flex-col gap-2 rounded border \
+                                       border-neutral-200 bg-neutral-50 p-3" {
+                                div class="flex items-center gap-3" {
+                                    div class="flex min-w-0 flex-1 flex-col gap-0" {
+                                        span class="text-sm font-semibold" {
+                                            (thread.name.as_deref().unwrap_or(""))
+                                        }
+                                        span class="text-sm text-neutral-500" {
+                                            (thread.id)
+                                        }
+                                        span class="text-neutral-500 text-xs" {
+                                            "in #" (parent_name)
+                                        }
+                                    }
+                                    div class="flex flex-col items-end gap-1" {
+                                        span class="text-sm text-neutral-500 text-right" {
+                                            (channel_type_label(thread.channel_type))
+                                        }
+                                        div class="flex flex-wrap justify-end gap-1" {
+                                            @if thread.archived == Some(true) {
+                                                (badge("Archived", BadgeVariant::Warning))
+                                            }
+                                            @if thread.locked == Some(true) {
+                                                (badge("Locked", BadgeVariant::Danger))
+                                            }
+                                            @if thread.pinned == Some(true) {
+                                                (badge("Pinned", BadgeVariant::Default))
+                                            }
+                                        }
+                                        span class="text-neutral-500 text-xs" {
+                                            (thread.message_count.unwrap_or(0)) " replies, "
+                                            (thread.member_count.unwrap_or(0)) " members"
+                                        }
+                                    }
+                                }
+                                @if can_update_thread || can_delete_thread {
+                                    div class="flex flex-wrap items-center gap-2" {
+                                        a href={
+                                            (base) "/messages?channel_id=" (thread.id)
+                                            "&message_id=" (snowflake)
+                                            "&context_limit=50"
+                                        }
+                                        class="text-blue-600 text-xs hover:underline" {
+                                            "View messages"
+                                        }
+                                        @if can_update_thread {
+                                            @let archive_action = if thread.archived == Some(true) {
+                                                "thread_unarchive"
+                                            } else {
+                                                "thread_archive"
+                                            };
+                                            @let archive_label = if thread.archived == Some(true) {
+                                                "Unarchive"
+                                            } else {
+                                                "Archive"
+                                            };
+                                            form method="post" class="inline"
+                                                action={
+                                                    (base) "/guilds/" (guild.id)
+                                                    "?action=" (archive_action) "&tab=overview"
+                                                } {
+                                                (csrf_input(csrf_token))
+                                                input type="hidden" name="channel_id"
+                                                    value=(thread.id);
+                                                (submit_button(archive_label))
+                                            }
+                                            @let lock_action = if thread.locked == Some(true) {
+                                                "thread_unlock"
+                                            } else {
+                                                "thread_lock"
+                                            };
+                                            @let lock_label = if thread.locked == Some(true) {
+                                                "Unlock"
+                                            } else {
+                                                "Lock"
+                                            };
+                                            form method="post" class="inline"
+                                                action={
+                                                    (base) "/guilds/" (guild.id)
+                                                    "?action=" (lock_action) "&tab=overview"
+                                                } {
+                                                (csrf_input(csrf_token))
+                                                input type="hidden" name="channel_id"
+                                                    value=(thread.id);
+                                                (submit_button(lock_label))
+                                            }
+                                        }
+                                        @if can_delete_thread {
+                                            form method="post" class="inline"
+                                                action={
+                                                    (base) "/guilds/" (guild.id)
+                                                    "?action=thread_delete&tab=overview"
+                                                }
+                                                onsubmit="return confirm('Delete this thread and \
+                                                          purge its messages and attachments? \
+                                                          This cannot be undone.')" {
+                                                (csrf_input(csrf_token))
+                                                input type="hidden" name="channel_id"
+                                                    value=(thread.id);
+                                                (danger_button("Delete"))
+                                            }
+                                        }
                                     }
                                 }
                             }

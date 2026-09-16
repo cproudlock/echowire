@@ -51,7 +51,10 @@ A channel object always has its identity and type. Every other field is present 
 | default_reaction_emoji? | ?object | The reaction shown by default on posts in this forum, carrying `emoji_id` and `emoji_name`, exactly one of which is null |
 | default_sort_order? | ?integer | The default post ordering for a forum channel, where `0` is latest activity and `1` is creation |
 | default_auto_archive_duration? | ?integer | The auto-archive duration in minutes that new posts in this forum inherit |
+| default_forum_layout? | ?integer | The default post layout, where `0` is not set, `1` is list, `2` is gallery |
+| default_thread_rate_limit_per_user? | ?integer | The slowmode in seconds a new post inherits |
 | require_tag? | boolean | Whether a post in this forum must apply at least one tag |
+| starter_message_preview? | ?[starter message preview](#starter-message-preview-object) object | A preview of the opening message, on thread list responses only |
 
 <sup>1</sup> Omitted when a group direct message stores no name, and never present on a direct message or on the personal notes channel
 
@@ -269,6 +272,19 @@ A forum tag is one selectable label a forum channel defines in `available_tags`.
   "emoji_name": "🐛"
 }
 ```
+
+## Starter message preview object
+
+A starter message preview summarises the opening message of a thread so a client can render a post
+list without fetching each post's first message. It is present only on the thread list responses,
+and only when the caller holds `READ_MESSAGE_HISTORY` on the parent channel.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| message_id | snowflake | The ID of the starter message |
+| author | ?object | The author, carrying `id`, `username`, `global_name`, and `avatar`, or null when unresolved |
+| content | string | The opening message, truncated to 200 characters, markdown untouched |
+| first_attachment | ?object | The first attachment, carrying `id`, `filename`, `url`, `proxy_url`, `content_type`, `width`, and `height` |
 
 ## Thread member object
 
@@ -909,7 +925,7 @@ When `message_id` already has a thread under the same parent, that thread is ret
 
 ### Side effects
 
-Fluxer emits [Thread Create](/gateway/events/#thread-create) to every session subscribed to the guild. The creator joins the thread, so `member_count` starts at 1. Fluxer also posts a thread-created system message in the parent channel on a best-effort basis, and a failure to post it does not fail the request.
+Fluxer emits [Thread Create](/gateway/events/#thread-create) to the sessions that can view the thread, which for a private thread means its members and anyone holding `MANAGE_CHANNELS` on the parent. The creator joins the thread before the event is emitted, so `member_count` starts at 1. For a public thread Fluxer also posts a thread-created system message in the parent channel on a best-effort basis, and a failure to post it does not fail the request; a private thread announces nothing in the parent.
 
 ### Rate limit
 

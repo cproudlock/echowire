@@ -1,0 +1,97 @@
+{
+	"comment": [
+		"Echowire: the one description of who may see a thread, read by two implementations.",
+		"fluxer_api/src/api/channel/services/ThreadAccess.ts decides it for the HTTP api, and",
+		"fluxer_gateway/src/guild/guild_permissions_overwrites.erl decides it for the gateway.",
+		"Both are exercised against this file, so the two cannot drift apart silently:",
+		"  fluxer_api/src/api/channel/tests/ThreadVisibilityContract.test.ts",
+		"  the thread_visibility_contract_test in guild_permissions_overwrites.erl",
+		"parent_permissions lists the caller's permissions on the PARENT channel, already resolved.",
+		"Only two bits matter to the thread rules, so only two names are used.",
+		"A case with parent_missing means the parent channel row is gone, which is the orphan rule.",
+		"expect_can_view is the single outcome both implementations must agree on."
+	],
+	"cases": [
+		{
+			"name": "public thread inherits a parent that allows viewing",
+			"thread_type": 11,
+			"parent_permissions": ["VIEW_CHANNEL"],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": [],
+			"expect_can_view": true
+		},
+		{
+			"name": "public thread inherits a parent that denies viewing",
+			"thread_type": 11,
+			"parent_permissions": [],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": [],
+			"expect_can_view": false
+		},
+		{
+			"name": "private thread hides from a non member without manage channels",
+			"thread_type": 12,
+			"parent_permissions": ["VIEW_CHANNEL"],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": ["200", "300"],
+			"expect_can_view": false
+		},
+		{
+			"name": "private thread admits its member",
+			"thread_type": 12,
+			"parent_permissions": ["VIEW_CHANNEL"],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": ["200", "100"],
+			"expect_can_view": true
+		},
+		{
+			"name": "private thread admits a manager who is not a member",
+			"thread_type": 12,
+			"parent_permissions": ["VIEW_CHANNEL", "MANAGE_CHANNELS"],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": ["200"],
+			"expect_can_view": true
+		},
+		{
+			"name": "private thread member still needs view on the parent",
+			"thread_type": 12,
+			"parent_permissions": [],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": ["100"],
+			"expect_can_view": false
+		},
+		{
+			"name": "private thread manager still needs view on the parent",
+			"thread_type": 12,
+			"parent_permissions": ["MANAGE_CHANNELS"],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": [],
+			"expect_can_view": false
+		},
+		{
+			"name": "public thread with a deleted parent is viewable by nobody",
+			"thread_type": 11,
+			"parent_permissions": ["VIEW_CHANNEL", "MANAGE_CHANNELS"],
+			"parent_missing": true,
+			"user_id": "100",
+			"member_ids": [],
+			"expect_can_view": false
+		},
+		{
+			"name": "private thread with a deleted parent is viewable by nobody, member or not",
+			"thread_type": 12,
+			"parent_permissions": ["VIEW_CHANNEL", "MANAGE_CHANNELS"],
+			"parent_missing": true,
+			"user_id": "100",
+			"member_ids": ["100"],
+			"expect_can_view": false
+		}
+	]
+}

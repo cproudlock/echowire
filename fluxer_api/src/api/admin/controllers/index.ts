@@ -11,7 +11,6 @@ import {CodesAdminController} from '@app/api/admin/controllers/CodesAdminControl
 import {DiscoveryAdminController} from '@app/api/admin/controllers/DiscoveryAdminController';
 import {GatewayAdminController} from '@app/api/admin/controllers/GatewayAdminController';
 import {GuildAdminController} from '@app/api/admin/controllers/GuildAdminController';
-import {ThreadAdminController} from '@app/api/admin/controllers/ThreadAdminController';
 import {InstanceConfigAdminController} from '@app/api/admin/controllers/InstanceConfigAdminController';
 import {JobsAdminController} from '@app/api/admin/controllers/JobsAdminController';
 import {LimitConfigAdminController} from '@app/api/admin/controllers/LimitConfigAdminController';
@@ -20,6 +19,7 @@ import {ReportAdminController} from '@app/api/admin/controllers/ReportAdminContr
 import {SearchAdminController} from '@app/api/admin/controllers/SearchAdminController';
 import {SystemAdminController} from '@app/api/admin/controllers/SystemAdminController';
 import {SystemDmAdminController} from '@app/api/admin/controllers/SystemDmAdminController';
+import {ThreadAdminController} from '@app/api/admin/controllers/ThreadAdminController';
 import {UserAdminController} from '@app/api/admin/controllers/UserAdminController';
 import {VoiceAdminController} from '@app/api/admin/controllers/VoiceAdminController';
 import type {HonoApp} from '@app/api/types/HonoEnv';

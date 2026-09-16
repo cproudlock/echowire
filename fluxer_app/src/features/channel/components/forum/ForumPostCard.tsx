@@ -14,9 +14,9 @@ import {ForumLayout, getForumPostLastActivityAt} from '@app/features/channel/uti
 import GuildMembers from '@app/features/member/state/GuildMembers';
 import ReadStates from '@app/features/read_state/state/ReadStates';
 import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuCommands';
+import {formatShortRelativeTime} from '@app/features/ui/utils/ShortRelativeTimeLabels';
 import Users from '@app/features/user/state/Users';
 import {getUserAvatarURL} from '@app/features/user/utils/AvatarUtils';
-import {formatShortRelativeTime} from '@fluxer/date_utils/src/DateDuration';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {ChatCircleIcon, LockIcon, PushPinIcon} from '@phosphor-icons/react';
@@ -75,7 +75,7 @@ export const ForumPostCard = observer(({forum, post, layout, selected = false, o
 	const unread = ReadStates.hasUnread(post.id);
 	const replyCount = post.messageCount ?? 0;
 	const lastActivity = i18n._(LAST_ACTIVITY_DESCRIPTOR, {
-		time: formatShortRelativeTime(getForumPostLastActivityAt(post), '1m'),
+		time: formatShortRelativeTime(i18n, getForumPostLastActivityAt(post), '1m'),
 	});
 	const isGallery = layout === ForumLayout.GALLERY;
 

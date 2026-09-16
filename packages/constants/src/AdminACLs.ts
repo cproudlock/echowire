@@ -57,6 +57,10 @@ export const AdminACLs = {
 	GUILD_AUDIT_LOG_VIEW: 'guild:audit_log:view',
 	GUILD_BAN_MEMBER: 'guild:ban_member',
 	GUILD_DELETE: 'guild:delete',
+	// Echowire: threads and forum posts are channel-scoped, so their admin ACLs are too.
+	CHANNEL_LIST_THREADS: 'channel:list:threads',
+	CHANNEL_THREAD_UPDATE: 'channel:thread:update',
+	CHANNEL_THREAD_DELETE: 'channel:thread:delete',
 	GUILD_FORCE_ADD_MEMBER: 'guild:force_add_member',
 	GUILD_KICK_MEMBER: 'guild:kick_member',
 	GUILD_LIST_MEMBERS: 'guild:list:members',

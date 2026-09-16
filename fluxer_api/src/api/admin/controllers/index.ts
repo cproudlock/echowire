@@ -11,6 +11,7 @@ import {CodesAdminController} from '@app/api/admin/controllers/CodesAdminControl
 import {DiscoveryAdminController} from '@app/api/admin/controllers/DiscoveryAdminController';
 import {GatewayAdminController} from '@app/api/admin/controllers/GatewayAdminController';
 import {GuildAdminController} from '@app/api/admin/controllers/GuildAdminController';
+import {ThreadAdminController} from '@app/api/admin/controllers/ThreadAdminController';
 import {InstanceConfigAdminController} from '@app/api/admin/controllers/InstanceConfigAdminController';
 import {JobsAdminController} from '@app/api/admin/controllers/JobsAdminController';
 import {LimitConfigAdminController} from '@app/api/admin/controllers/LimitConfigAdminController';
@@ -29,6 +30,7 @@ export function registerAdminControllers(app: HonoApp) {
 	UserAdminController(app);
 	CodesAdminController(app);
 	GuildAdminController(app);
+	ThreadAdminController(app);
 	AssetAdminController(app);
 	BanAdminController(app);
 	InstanceConfigAdminController(app);

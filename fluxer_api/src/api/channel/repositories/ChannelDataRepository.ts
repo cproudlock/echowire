@@ -7,6 +7,7 @@ import {
 	privateChannelMetadataPatch,
 } from '@app/api/channel/PrivateChannelSnapshot';
 import {IChannelDataRepository} from '@app/api/channel/repositories/IChannelDataRepository';
+import {nextRecentParticipants} from '@app/api/channel/services/ThreadParticipants';
 import {
 	BatchBuilder,
 	fetchMany,
@@ -31,6 +32,7 @@ import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 type ThreadPatchableColumn =
 	| 'name'
 	| 'applied_tags'
+	| 'rate_limit_per_user'
 	| 'thread_auto_archive_duration'
 	| 'thread_invitable'
 	| 'thread_archived'
@@ -137,7 +139,7 @@ export class ChannelDataRepository extends IChannelDataRepository {
 		return new Channel(finalRow);
 	}
 
-	async updateLastMessageId(channelId: ChannelID, messageId: MessageID): Promise<void> {
+	async updateLastMessageId(channelId: ChannelID, messageId: MessageID, authorId?: UserID | null): Promise<void> {
 		this.requestCache?.channels.delete(channelId);
 		const existing = await fetchOne<ChannelRow>(
 			FETCH_CHANNEL_BY_ID.bind({
@@ -147,7 +149,7 @@ export class ChannelDataRepository extends IChannelDataRepository {
 		);
 		if (!existing) return;
 		if (!THREAD_CHANNEL_TYPES.has(existing.type)) {
-			await this.advanceLastMessageId(existing, messageId);
+			await this.advanceLastMessageId(existing, messageId, authorId ?? null);
 			return;
 		}
 		// Echowire: a thread's message count is read, bumped and written back. Serialise that per
@@ -156,18 +158,33 @@ export class ChannelDataRepository extends IChannelDataRepository {
 		await withThreadCounterLock(channelId, async () => {
 			const fresh = await fetchOne<ChannelRow>(FETCH_CHANNEL_BY_ID.bind({channel_id: channelId, soft_deleted: false}));
 			if (fresh) {
-				await this.advanceLastMessageId(fresh, messageId);
+				await this.advanceLastMessageId(fresh, messageId, authorId ?? null);
 			}
 		});
 	}
 
-	private async advanceLastMessageId(existing: ChannelRow, messageId: MessageID): Promise<void> {
+	private async advanceLastMessageId(
+		existing: ChannelRow,
+		messageId: MessageID,
+		authorId: UserID | null,
+	): Promise<void> {
 		const channelId = existing.channel_id;
 		const prev = existing.last_message_id ?? null;
 		if (prev !== null && messageId <= prev) return;
-		const patch: Partial<Record<'last_message_id' | 'thread_message_count', DbOp<unknown>>> = {
+		const patch: Partial<
+			Record<'last_message_id' | 'thread_message_count' | 'thread_recent_participant_ids', DbOp<unknown>>
+		> = {
 			last_message_id: Db.set(messageId),
 		};
+		// Echowire: a thread keeps a rolling window of its most recent distinct authors, written here
+		// so a forum card can render participant avatars without a lookup per post. Inside the same
+		// counter lock as the message count, so concurrent sends do not lose an entry.
+		if (THREAD_CHANNEL_TYPES.has(existing.type) && authorId) {
+			const participants = nextRecentParticipants(existing.thread_recent_participant_ids, authorId);
+			if (participants !== null) {
+				patch.thread_recent_participant_ids = Db.set(participants);
+			}
+		}
 		// Echowire: a new message in a thread bumps its message count in the same write. The first
 		// message of a forum post is the starter message, which Discord does not count.
 		if (THREAD_CHANNEL_TYPES.has(existing.type) && !(await this.isForumPostStarter(existing, prev))) {

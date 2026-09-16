@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type {ChannelID, GuildID, MessageID} from '@app/api/BrandedTypes';
+import type {ChannelID, GuildID, MessageID, UserID} from '@app/api/BrandedTypes';
 import type {ChannelRow} from '@app/api/database/types/ChannelTypes';
 import type {Channel} from '@app/api/models/Channel';
 
@@ -9,7 +9,7 @@ export abstract class IChannelDataRepository {
 
 	abstract upsert(data: ChannelRow): Promise<Channel>;
 
-	abstract updateLastMessageId(channelId: ChannelID, messageId: MessageID): Promise<void>;
+	abstract updateLastMessageId(channelId: ChannelID, messageId: MessageID, authorId?: UserID | null): Promise<void>;
 
 	// Echowire: targeted writes for thread state; see ThreadPatchableColumn in ChannelDataRepository.
 	abstract patchThreadFields(
@@ -19,6 +19,7 @@ export abstract class IChannelDataRepository {
 				ChannelRow,
 				| 'name'
 				| 'applied_tags'
+				| 'rate_limit_per_user'
 				| 'thread_auto_archive_duration'
 				| 'thread_invitable'
 				| 'thread_archived'

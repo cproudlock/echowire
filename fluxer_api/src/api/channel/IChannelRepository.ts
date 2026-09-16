@@ -13,7 +13,7 @@ export abstract class IChannelRepository extends IChannelRepositoryAggregate {
 
 	abstract upsert(data: ChannelRow): Promise<Channel>;
 
-	abstract updateLastMessageId(channelId: ChannelID, messageId: MessageID): Promise<void>;
+	abstract updateLastMessageId(channelId: ChannelID, messageId: MessageID, authorId?: UserID | null): Promise<void>;
 
 	abstract delete(channelId: ChannelID, guildId?: GuildID): Promise<void>;
 

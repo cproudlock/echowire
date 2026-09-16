@@ -442,6 +442,12 @@ export const ThreadCreateRequest = z.object({
 		])
 		.optional()
 		.describe('The thread type (11 = public, 12 = private); defaults to public'),
+	invitable: z
+		.boolean()
+		.optional()
+		.describe(
+			'Whether members of a private thread may add other members. Only meaningful for private threads; defaults to false.',
+		),
 });
 
 export type ThreadCreateRequest = z.infer<typeof ThreadCreateRequest>;

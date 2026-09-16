@@ -28,6 +28,7 @@ import {
 	ChannelSlowmodeStateResponse,
 	RtcRegionListResponse,
 	ThreadMemberListResponse,
+	ThreadMemberResponse,
 } from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {
 	ChannelIdOverwriteIdParam,
@@ -240,6 +241,87 @@ export function ChannelController(app: HonoApp) {
 			const userId = ctx.get('user').id;
 			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
 			return ctx.json(await ctx.get('guildService').channels.listThreadMembers({userId, threadChannelId}));
+		},
+	);
+	// Echowire: thread membership for someone other than the caller. Adding needs the thread's owner
+	// or a thread moderator, or any member when a private thread is invitable; removing needs the
+	// owner or a moderator, and removing yourself is the same as leaving.
+	app.put(
+		'/channels/:channel_id/thread-members/:user_id',
+		RateLimitMiddleware(RateLimitConfigs.THREAD_MEMBER_ADD),
+		LoginRequired,
+		Validator('param', ChannelIdUserIdParam),
+		OpenAPI({
+			operationId: 'add_thread_member',
+			summary: 'Add a thread member',
+			description:
+				'Adds another user to a thread. The target must be able to view the parent channel. Requires being the thread owner or having Manage Threads, or membership of an invitable private thread.',
+			responseSchema: null,
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const actorId = ctx.get('user').id;
+			const params = ctx.req.valid('param');
+			await ctx.get('guildService').channels.addThreadMember({
+				threadChannelId: createChannelID(params.channel_id),
+				actorId,
+				targetUserId: createUserID(params.user_id),
+			});
+			return ctx.body(null, 204);
+		},
+	);
+	app.delete(
+		'/channels/:channel_id/thread-members/:user_id',
+		RateLimitMiddleware(RateLimitConfigs.THREAD_MEMBER_REMOVE),
+		LoginRequired,
+		Validator('param', ChannelIdUserIdParam),
+		OpenAPI({
+			operationId: 'remove_thread_member',
+			summary: 'Remove a thread member',
+			description:
+				'Removes a user from a thread. Requires being the thread owner or having Manage Threads, unless the caller is removing themselves.',
+			responseSchema: null,
+			statusCode: 204,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const actorId = ctx.get('user').id;
+			const params = ctx.req.valid('param');
+			await ctx.get('guildService').channels.removeThreadMember({
+				threadChannelId: createChannelID(params.channel_id),
+				actorId,
+				targetUserId: createUserID(params.user_id),
+			});
+			return ctx.body(null, 204);
+		},
+	);
+	app.get(
+		'/channels/:channel_id/thread-members/:user_id',
+		RateLimitMiddleware(RateLimitConfigs.THREAD_MEMBER_GET),
+		LoginRequired,
+		Validator('param', ChannelIdUserIdParam),
+		OpenAPI({
+			operationId: 'get_thread_member',
+			summary: 'Get a thread member',
+			description: 'Fetches one member of a thread. Requires being able to view the thread.',
+			responseSchema: ThreadMemberResponse,
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const params = ctx.req.valid('param');
+			return ctx.json(
+				await ctx.get('guildService').channels.getThreadMember({
+					threadChannelId: createChannelID(params.channel_id),
+					userId,
+					targetUserId: createUserID(params.user_id),
+				}),
+			);
 		},
 	);
 	app.get(

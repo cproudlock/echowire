@@ -107,6 +107,18 @@ export const ChannelRateLimitConfigs = {
 		bucket: 'channel:thread:members::channel_id',
 		config: {limit: 40, windowMs: ms('10 seconds')},
 	} as RouteRateLimitConfig,
+	THREAD_MEMBER_ADD: {
+		bucket: 'channel:thread:member:add::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_MEMBER_REMOVE: {
+		bucket: 'channel:thread:member:remove::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_MEMBER_GET: {
+		bucket: 'channel:thread:member:get::channel_id',
+		config: {limit: 40, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
 	CHANNEL_PINS: {
 		bucket: 'channel:pins::channel_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},

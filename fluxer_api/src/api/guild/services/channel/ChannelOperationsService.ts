@@ -21,9 +21,14 @@ import {makeAttachmentCdnUrl, purgeMessageAttachments} from '@app/api/channel/se
 import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
 import {
 	canAccessPrivateThread,
+	canCreatePrivateThread,
+	canCreatePublicThread,
+	canModerateThreads,
+	canSendInThread,
 	canViewThread,
 	getThreadParentPermissions,
 	hasPermissionBits,
+	permissionChannelId,
 	withPrivateThreadMemberIds,
 } from '@app/api/channel/services/ThreadAccess';
 import {purgeThread} from '@app/api/channel/services/ThreadPurge';
@@ -66,6 +71,7 @@ import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLocke
 import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
+import {UnknownGuildMemberError} from '@fluxer/errors/src/domains/guild/UnknownGuildMemberError';
 import type {
 	ChannelCreateRequest,
 	ThreadCreateRequest,
@@ -320,14 +326,23 @@ export class ChannelOperationsService {
 			throw new UnknownChannelError();
 		}
 		const guildId = parent.guildId;
-		// Echowire: creating a thread needs VIEW_CHANNEL and SEND_MESSAGES on the parent channel itself,
-		// honouring its overwrites, not just the guild-level grant.
+		// Echowire: creating a thread needs VIEW_CHANNEL on the parent channel itself, honouring its
+		// overwrites, plus the thread permission for the kind being created. A role set written before
+		// the thread bits existed falls back to SEND_MESSAGES (see ThreadAccess.canCreatePublicThread).
 		const parentPermissions = await this.gatewayService.getUserPermissions({
 			guildId,
 			userId: params.userId,
 			channelId: parent.id,
 		});
-		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL | Permissions.SEND_MESSAGES)) {
+		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
+			throw new MissingPermissionsError();
+		}
+		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
+		const mayCreate =
+			threadType === ChannelTypes.PRIVATE_THREAD
+				? canCreatePrivateThread(parentPermissions)
+				: canCreatePublicThread(parentPermissions);
+		if (!mayCreate) {
 			throw new MissingPermissionsError();
 		}
 		// Echowire: forum posts may carry applied_tags, but only IDs defined in the forum's
@@ -349,7 +364,6 @@ export class ChannelOperationsService {
 		) {
 			throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
 		}
-		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
 		const now = new Date();
 		// Echowire: when starting a thread from a message, the thread adopts the source
 		// message's ID (Discord semantics) so the message can render an inline link to it.
@@ -439,7 +453,9 @@ export class ChannelOperationsService {
 			thread_auto_archive_duration: params.data.auto_archive_duration ?? parent.forumDefaultAutoArchiveDuration ?? 1440,
 			thread_archive_timestamp: now,
 			thread_locked: false,
-			thread_invitable: threadType === ChannelTypes.PRIVATE_THREAD,
+			// Echowire: only a private thread has anything to invite into, and members may only invite
+			// others when the creator asked for it.
+			thread_invitable: threadType === ChannelTypes.PRIVATE_THREAD ? (params.data.invitable ?? false) : false,
 			thread_create_timestamp: now,
 			thread_member_count: 1,
 			thread_message_count: 0,
@@ -910,11 +926,9 @@ export class ChannelOperationsService {
 		if (existing) {
 			return;
 		}
-		// Echowire: nobody can add themselves to a private thread unless they manage the parent channel.
-		if (
-			thread.type === ChannelTypes.PRIVATE_THREAD &&
-			!hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS)
-		) {
+		// Echowire: nobody adds themselves to a private thread. Its owner, a thread moderator, or any
+		// member when the thread is invitable, adds them through PUT .../thread-members/{user_id}.
+		if (thread.type === ChannelTypes.PRIVATE_THREAD && !canModerateThreads(parentPermissions)) {
 			throw new MissingPermissionsError();
 		}
 		const member = await this.threadMemberRepository.addMember(params.threadChannelId, params.userId);
@@ -991,6 +1005,168 @@ export class ChannelOperationsService {
 		}));
 	}
 
+	// Echowire: add another member to a thread. A public thread takes anyone who may post in it; a
+	// private thread takes its owner's and its moderators' invitations, and any member's invitation
+	// when the thread is invitable. The target must be able to see the parent channel, so a private
+	// thread cannot be used to smuggle someone into a channel they cannot read.
+	async addThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
+		const thread = await this.loadThreadOrThrow(params.threadChannelId);
+		const guildId = thread.guildId!;
+		const actorPermissions = await getThreadParentPermissions({
+			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
+			guildId,
+			channel: thread,
+			userId: params.actorId,
+		});
+		const actorCanView = await canViewThread({
+			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
+			threadMemberRepository: this.threadMemberRepository,
+			guildId,
+			channel: thread,
+			userId: params.actorId,
+			parentPermissions: actorPermissions,
+		});
+		if (!actorCanView) {
+			throw new MissingPermissionsError();
+		}
+		const isModerator = canModerateThreads(actorPermissions);
+		const isOwner = thread.ownerId === params.actorId;
+		let mayInvite = isModerator || isOwner;
+		if (!mayInvite) {
+			const actorIsMember = (await this.threadMemberRepository.getMember(thread.id, params.actorId)) !== null;
+			mayInvite =
+				thread.type === ChannelTypes.PRIVATE_THREAD
+					? (thread.threadMetadata?.invitable ?? false) && actorIsMember
+					: canSendInThread(actorPermissions);
+		}
+		if (!mayInvite) {
+			throw new MissingPermissionsError();
+		}
+		const parentChannelId = permissionChannelId(thread);
+		if (!parentChannelId) {
+			throw new UnknownChannelError();
+		}
+		const targetPermissions = await this.gatewayService.getUserPermissions({
+			guildId,
+			userId: params.targetUserId,
+			channelId: parentChannelId,
+		});
+		if (!hasPermissionBits(targetPermissions, Permissions.VIEW_CHANNEL)) {
+			throw new UnknownGuildMemberError();
+		}
+		if (await this.threadMemberRepository.getMember(thread.id, params.targetUserId)) {
+			return;
+		}
+		const member = await this.threadMemberRepository.addMember(thread.id, params.targetUserId);
+		const count = await this.syncThreadMemberCount(thread.id);
+		await this.gatewayService.dispatchGuild({
+			guildId,
+			event: 'THREAD_MEMBERS_UPDATE',
+			data: {
+				id: thread.id.toString(),
+				guild_id: guildId.toString(),
+				member_count: count,
+				added_members: [
+					{
+						id: thread.id.toString(),
+						user_id: params.targetUserId.toString(),
+						join_timestamp: member.joinTimestamp.toISOString(),
+						flags: member.flags,
+					},
+				],
+			},
+		});
+	}
+
+	// Echowire: remove a member from a thread. Removing yourself is leaving; removing anyone else
+	// needs MANAGE_THREADS (or MANAGE_CHANNELS) on the parent, or ownership of the thread.
+	async removeThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
+		if (params.actorId === params.targetUserId) {
+			await this.leaveThread({threadChannelId: params.threadChannelId, userId: params.actorId});
+			return;
+		}
+		const thread = await this.loadThreadOrThrow(params.threadChannelId);
+		const guildId = thread.guildId!;
+		const actorPermissions = await getThreadParentPermissions({
+			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
+			guildId,
+			channel: thread,
+			userId: params.actorId,
+		});
+		const actorCanView = await canViewThread({
+			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
+			threadMemberRepository: this.threadMemberRepository,
+			guildId,
+			channel: thread,
+			userId: params.actorId,
+			parentPermissions: actorPermissions,
+		});
+		if (!actorCanView) {
+			throw new MissingPermissionsError();
+		}
+		if (!canModerateThreads(actorPermissions) && thread.ownerId !== params.actorId) {
+			throw new MissingPermissionsError();
+		}
+		if (!(await this.threadMemberRepository.getMember(thread.id, params.targetUserId))) {
+			return;
+		}
+		await this.threadMemberRepository.removeMember(thread.id, params.targetUserId);
+		const count = await this.syncThreadMemberCount(thread.id);
+		await this.gatewayService.dispatchGuild({
+			guildId,
+			event: 'THREAD_MEMBERS_UPDATE',
+			data: {
+				id: thread.id.toString(),
+				guild_id: guildId.toString(),
+				member_count: count,
+				removed_member_ids: [params.targetUserId.toString()],
+			},
+		});
+	}
+
+	// Echowire: fetch one thread member. Anyone who can see the thread can see its membership, which
+	// is what the member list already exposes.
+	async getThreadMember(params: {
+		threadChannelId: ChannelID;
+		userId: UserID;
+		targetUserId: UserID;
+	}): Promise<{id: string; user_id: string; join_timestamp: string; flags: number}> {
+		const thread = await this.loadThreadOrThrow(params.threadChannelId);
+		const canView = await canViewThread({
+			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
+			threadMemberRepository: this.threadMemberRepository,
+			guildId: thread.guildId!,
+			channel: thread,
+			userId: params.userId,
+		});
+		if (!canView) {
+			throw new MissingPermissionsError();
+		}
+		const member = await this.threadMemberRepository.getMember(thread.id, params.targetUserId);
+		if (!member) {
+			throw new UnknownGuildMemberError();
+		}
+		return {
+			id: thread.id.toString(),
+			user_id: member.userId.toString(),
+			join_timestamp: member.joinTimestamp.toISOString(),
+			flags: member.flags,
+		};
+	}
+
+	private async loadThreadOrThrow(threadChannelId: ChannelID): Promise<Channel> {
+		const thread = await this.channelRepository.findUnique(threadChannelId);
+		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			throw new UnknownChannelError();
+		}
+		return thread;
+	}
+
 	// Echowire: forum post-creation slowmode, applied the way message slowmode is: the shared rate
 	// limiter, bots exempt, BYPASS_SLOWMODE exempt.
 	private async enforceForumPostSlowmode(parent: Channel, userId: UserID, parentPermissions: bigint): Promise<void> {
@@ -1060,7 +1236,7 @@ export class ChannelOperationsService {
 		if (!canView) {
 			throw new MissingPermissionsError();
 		}
-		const isModerator = hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS);
+		const isModerator = canModerateThreads(parentPermissions);
 		if (!isModerator && thread.ownerId !== userId) {
 			throw new MissingPermissionsError();
 		}

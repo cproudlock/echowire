@@ -179,6 +179,22 @@ export class GuildChannelService {
 		return this.channelOps.listThreadMembers(params);
 	}
 
+	async addThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
+		return this.channelOps.addThreadMember(params);
+	}
+
+	async removeThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
+		return this.channelOps.removeThreadMember(params);
+	}
+
+	async getThreadMember(params: {
+		threadChannelId: ChannelID;
+		userId: UserID;
+		targetUserId: UserID;
+	}): Promise<{id: string; user_id: string; join_timestamp: string; flags: number}> {
+		return this.channelOps.getThreadMember(params);
+	}
+
 	async updateChannelPositions(
 		params: {
 			userId: UserID;

@@ -753,38 +753,6 @@ services:
     depends_on:
       nats: {condition: service_healthy}
 
-  # Echowire: upstream added fluxer_recon in #2719 and removed the in-API voice
-  # reconciliation worker with it, but wired the new service into no deployment -
-  # not helm, not this compose, not the dev stack. Without this block a self-host
-  # instance silently loses voice reconciliation entirely, so a client that is
-  # publishing media while the gateway holds no connection record for it stays
-  # invisible to everyone until it happens to resync itself.
-  #
-  # NOTE ON MODE: only `enforcing` removes such a participant (ReconMode::
-  # allows_destructive matches Enforcing alone). `observing` watches and reports,
-  # `constructive` repairs without evicting. Upstream defaults to observing and
-  # that default is kept here deliberately: run it observing, confirm the metrics
-  # on :8090 look sane for this instance, then set FLUXER_RECON_MODE=enforcing to
-  # restore the behaviour the old worker had.
-  recon:
-    <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-recon:${FLUXER_IMAGE_TAG:-v1}
-    deploy:
-      resources:
-        limits:
-          memory: ${FLUXER_RECON_MEMORY_LIMIT:-256mb}
-    environment:
-      <<: *fluxer-env
-      FLUXER_SVC_NAME: recon
-      FLUXER_RECON_MODE: ${FLUXER_RECON_MODE:-observing}
-      FLUXER_RECON_EXPECTED_ROOMS: ${FLUXER_RECON_EXPECTED_ROOMS:-64}
-      FLUXER_RECON_MAX_HOT_ROOMS: ${FLUXER_RECON_MAX_HOT_ROOMS:-8}
-      FLUXER_RECON_WARMUP_SECONDS: ${FLUXER_RECON_WARMUP_SECONDS:-120}
-    healthcheck: *fluxer-svc-healthcheck
-    depends_on:
-      nats: {condition: service_healthy}
-      livekit: {condition: service_started}
-
   admin:
     <<: *fluxer-service
     image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-admin:${FLUXER_IMAGE_TAG:-v1}

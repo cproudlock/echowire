@@ -359,6 +359,21 @@ export function generateChannelTextPermissionSpec(i18n: I18n): PermissionSpec {
 	};
 }
 
+// Echowire: threads and forum posts have their own permissions, so they get their own section
+// rather than hiding among the message permissions.
+export function generateThreadPermissionSpec(i18n: I18n, scope: PermissionScope): PermissionSpec {
+	const options = scope === 'channel' ? {scope: 'channel' as const} : undefined;
+	return {
+		title: formatPermissionCategoryLabel(i18n, 'threadsAndPosts'),
+		permissions: [
+			makePermissionEntry(i18n, Permissions.CREATE_PUBLIC_THREADS, options),
+			makePermissionEntry(i18n, Permissions.CREATE_PRIVATE_THREADS, options),
+			makePermissionEntry(i18n, Permissions.SEND_MESSAGES_IN_THREADS, options),
+			makePermissionEntry(i18n, Permissions.MANAGE_THREADS, options),
+		],
+	};
+}
+
 export function generateChannelVoicePermissionSpec(i18n: I18n): PermissionSpec {
 	return {
 		title: formatPermissionCategoryLabel(i18n, 'audioVideo'),
@@ -381,6 +396,9 @@ export function generateChannelPermissionSpecs(i18n: I18n, channelType: number):
 	const isCategoryChannel = channelType === ChannelTypes.GUILD_CATEGORY;
 	const isVoiceChannel = channelType === ChannelTypes.GUILD_VOICE;
 	specs.push(generateChannelTextPermissionSpec(i18n));
+	if (!isVoiceChannel) {
+		specs.push(generateThreadPermissionSpec(i18n, 'channel'));
+	}
 	if (isVoiceChannel || isCategoryChannel) {
 		specs.push(generateChannelVoicePermissionSpec(i18n));
 	}
@@ -392,6 +410,7 @@ export function generatePermissionSpec(i18n: I18n): Array<PermissionSpec> {
 		generateGuildGeneralPermissionSpec(i18n),
 		generateGuildAccessPermissionSpec(i18n),
 		generateGuildTextPermissionSpec(i18n),
+		generateThreadPermissionSpec(i18n, 'guild'),
 		generateGuildModerationPermissionSpec(i18n),
 		generateGuildVoicePermissionSpec(i18n),
 	];

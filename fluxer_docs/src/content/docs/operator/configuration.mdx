@@ -712,7 +712,7 @@ The same conditions turn on a DNS check at registration. The check runs when ema
 
 #### `FLUXER_EMAIL_FROM_NAME`
 
-`.env.example` `Fluxer`. The sender name. An empty value sets an empty sender name.
+`.env.example` `echowire`. The sender name. An empty value sets an empty sender name.
 
 #### `FLUXER_EMAIL_APP_BASE_URL`
 
@@ -1708,6 +1708,15 @@ Changes propagate without a restart. A process that cannot apply an update logs 
 These settings exist only in the dashboard: attachment decay, which defaults to on, and the inactivity deletion threshold, which defaults to 365 days.
 
 ## Services
+
+:::caution[Thread maintenance requires the Postgres backend]
+Two background jobs keep threads tidy: one archives threads that have gone quiet past their
+auto-archive duration, and one sweeps up threads whose parent channel was deleted before that
+cascade existed. Both scan the key-value table directly and run only when
+`FLUXER_DATABASE_BACKEND` is `postgres`. On a Cassandra deployment they exit immediately, so
+threads never auto-archive there and must be archived by hand. Access control is unaffected: a
+thread whose parent is gone is denied on every path regardless of backend.
+:::
 
 The stack runs its containers on one Docker bridge network, which is private to the stack.
 

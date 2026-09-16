@@ -171,6 +171,7 @@ export default defineConfig({
 						'http-api/permissions',
 						'topics/captcha',
 						'topics/uploads',
+						'topics/threads-and-forums',
 						'topics/locales',
 						'http-api/deployment-availability',
 					],

@@ -514,7 +514,9 @@ A user left a group direct message the session belongs to.
 
 A thread was created under a text or forum channel. The payload is the complete [channel object](/http-api/channels/#channel-object) for the thread, with `guild_id` present.
 
-Recipients are every session subscribed to the guild. The creator is already a member when the Dispatch arrives, so `member_count` is 1.
+Recipients are the sessions that can view the thread, resolved from the parent channel's permission overwrites. A private thread reaches only its members and the sessions holding `MANAGE_CHANNELS` on the parent. The creator is already a member when the Dispatch arrives, so `member_count` is 1.
+
+The payload never carries `thread_member_ids`. That field exists only between the api and the gateway, so the gateway can scope a private thread's events, and it is stripped before any session sees it. No HTTP response returns it either.
 
 ### <span id="thread-update"></span>THREAD_UPDATE
 

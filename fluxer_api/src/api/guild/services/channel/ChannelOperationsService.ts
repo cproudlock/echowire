@@ -46,6 +46,8 @@ import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 import {ALL_PERMISSIONS, ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {ContentWarningLevel, GuildFeatures, resolveVoiceChannelBitrate} from '@fluxer/constants/src/GuildConstants';
 import {
+	MAX_ACTIVE_THREADS_PER_CHANNEL,
+	MAX_ACTIVE_THREADS_PER_GUILD,
 	MAX_CHANNELS_PER_CATEGORY,
 	MAX_GUILD_CHANNELS,
 	VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT,
@@ -58,6 +60,8 @@ import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidat
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
 import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
+import {countCapacityChannels} from '@app/api/channel/services/ChannelCapacity';
+import {MaxActiveThreadsError} from '@fluxer/errors/src/domains/channel/MaxActiveThreadsError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
 import type {
@@ -378,6 +382,13 @@ export class ChannelOperationsService {
 		} else {
 			channelId = createChannelID(await this.snowflakeService.generate());
 		}
+		// Echowire: active thread caps are checked after validation and before slowmode, so a request
+		// that cannot succeed does not burn the member's slowmode window.
+		await this.ensureThreadCapacity({
+			guildId,
+			parentChannelId: params.parentChannelId,
+			channels: await this.channelRepository.listGuildChannels(guildId),
+		});
 		// Echowire: a forum's own slowmode limits how often a member may open new posts. Checked after
 		// every validation, so a rejected request does not use up the member's slowmode window.
 		await this.enforceForumPostSlowmode(parent, params.userId, parentPermissions);
@@ -1431,8 +1442,52 @@ export class ChannelOperationsService {
 		}
 	}
 
+	// Echowire: active (non-archived) threads are capped per parent channel and per guild. Archived
+	// threads do not count, so a busy forum keeps accepting posts as older ones archive, while the
+	// working set the gateway and READY carry stays bounded.
+	private async ensureThreadCapacity(params: {
+		guildId: GuildID;
+		parentChannelId: ChannelID;
+		channels: ReadonlyArray<Channel>;
+	}): Promise<void> {
+		const guild = await this.guildRepository.findUnique(params.guildId);
+		const ctx = createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null});
+		const snapshot = this.limitConfigService.getConfigSnapshot();
+		// Both keys are guild-scoped, so they are resolved with the guild evaluation context: the
+		// default 'user' context drops guild-scoped keys and an instance override would never apply.
+		const maxPerChannel = resolveLimitSafe(
+			snapshot,
+			ctx,
+			'max_active_threads_per_channel',
+			MAX_ACTIVE_THREADS_PER_CHANNEL,
+			'guild',
+		);
+		const maxPerGuild = resolveLimitSafe(
+			snapshot,
+			ctx,
+			'max_active_threads_per_guild',
+			MAX_ACTIVE_THREADS_PER_GUILD,
+			'guild',
+		);
+		const activeThreads = params.channels.filter(
+			(channel) => THREAD_CHANNEL_TYPES.has(channel.type) && !channel.threadMetadata?.archived,
+		);
+		if (activeThreads.length >= maxPerGuild) {
+			throw new MaxActiveThreadsError(maxPerGuild);
+		}
+		const activeUnderParent = activeThreads.filter((channel) => channel.parentId === params.parentChannelId);
+		if (activeUnderParent.length >= maxPerChannel) {
+			throw new MaxActiveThreadsError(maxPerChannel);
+		}
+	}
+
 	private async ensureGuildHasCapacity(guildId: GuildID): Promise<void> {
-		const count = await this.gatewayService.getChannelCount({guildId});
+		// Echowire: threads and forum posts are channel rows and they sit in the gateway's channel
+		// index, so the gateway's count includes them. Counting them here let a forum with enough
+		// posts exhaust max_guild_channels and block channel creation for good, so the cap is
+		// measured against real channels only. Threads have their own caps, see ensureThreadCapacity.
+		const channels = await this.channelRepository.listGuildChannels(guildId);
+		const count = countCapacityChannels(channels);
 		let maxChannels = MAX_GUILD_CHANNELS;
 		const guild = await this.guildRepository.findUnique(guildId);
 		const ctx = createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null});

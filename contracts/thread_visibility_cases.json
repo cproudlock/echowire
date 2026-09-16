@@ -92,6 +92,24 @@
 			"user_id": "100",
 			"member_ids": ["100"],
 			"expect_can_view": false
+		},
+		{
+			"name": "private thread opens to manage threads without membership",
+			"thread_type": 12,
+			"parent_permissions": ["VIEW_CHANNEL", "MANAGE_THREADS"],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": [],
+			"expect_can_view": true
+		},
+		{
+			"name": "private thread stays hidden without manage threads or membership",
+			"thread_type": 12,
+			"parent_permissions": ["VIEW_CHANNEL"],
+			"parent_missing": false,
+			"user_id": "100",
+			"member_ids": [],
+			"expect_can_view": false
 		}
 	]
 }

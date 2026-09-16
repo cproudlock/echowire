@@ -23,7 +23,7 @@ import type {OAuth2TokenRepository} from '@app/api/oauth/repositories/OAuth2Toke
 import type {UserRepository} from '@app/api/user/repositories/UserRepository';
 import {isPendingDeletionBlocked} from '@app/api/user/services/PendingDeletionCoordinator';
 import type {WorkerTaskName} from '@app/api/worker/WorkerLaneConfig';
-import {ChannelTypes, MessageTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, MessageTypes} from '@fluxer/constants/src/ChannelConstants';
 import {
 	DELETED_USER_DISCRIMINATOR,
 	DELETED_USER_GLOBAL_NAME,
@@ -250,10 +250,9 @@ export async function processUserDeletion(
 						);
 					}
 				}
-				// Echowire: thread membership is partitioned by thread, so there is no index from a
-				// user to their threads. The guild loop is the only place the set is known: leave every
-				// thread of this guild before the membership row goes, or the deleted account keeps
-				// inflating member_count and stays in the member ids a private thread carries.
+				// Echowire: leave every thread of this guild before the membership row goes, or the
+				// deleted account keeps inflating member_count and stays in the member ids a private
+				// thread carries. The by-user membership index names those threads directly.
 				await removeThreadMembershipsInGuild({guildId, userId, channelRepository});
 				await guildRepository.deleteMember(guildId, userId);
 				const guild = await guildRepository.findUnique(guildId);
@@ -495,21 +494,18 @@ export async function removeThreadMembershipsInGuild(params: {
 }): Promise<void> {
 	const {guildId, userId, channelRepository} = params;
 	const threadMemberRepository = new ThreadMemberRepository();
-	const channels = await channelRepository.listGuildChannels(guildId);
-	for (const channel of channels) {
-		if (!THREAD_CHANNEL_TYPES.has(channel.type)) {
+	const memberships = await threadMemberRepository.listMembershipsForUser(userId);
+	for (const membership of memberships) {
+		if (membership.guildId !== guildId) {
 			continue;
 		}
+		const threadId = membership.threadId;
 		try {
-			const membership = await threadMemberRepository.getMember(channel.id, userId);
-			if (!membership) {
-				continue;
-			}
-			await threadMemberRepository.removeMember(channel.id, userId);
-			const members = await threadMemberRepository.listMembers(channel.id);
-			await channelRepository.channelData.patchThreadFields(channel.id, {thread_member_count: members.length});
+			await threadMemberRepository.removeMember(threadId, userId);
+			const members = await threadMemberRepository.listMembers(threadId);
+			await channelRepository.channelData.patchThreadFields(threadId, {thread_member_count: members.length});
 		} catch (error) {
-			Logger.error({error, userId, guildId, channelId: channel.id.toString()}, 'Failed to leave thread on deletion');
+			Logger.error({error, userId, guildId, channelId: threadId.toString()}, 'Failed to leave thread on deletion');
 		}
 	}
 }

@@ -316,22 +316,26 @@ interface HarvestMessageRepository {
 	): Promise<{content: string | null; attachments?: Array<Attachment>} | null>;
 }
 
-// Echowire: every thread of one guild the user is a member of, for the data export.
+// Echowire: every thread of one guild the user is a member of, for the data export. The by-user
+// membership index names the threads, so only those channels are read rather than every channel of
+// the guild.
 export async function collectThreadMemberships(params: {
 	guildId: GuildID;
 	userId: UserID;
-	channelRepository: {listGuildChannels: (guildId: GuildID) => Promise<Array<Channel>>};
+	channelRepository: {listChannels: (channelIds: Array<ChannelID>) => Promise<Array<Channel>>};
 }): Promise<Array<ThreadMembershipEntry>> {
 	const {guildId, userId, channelRepository} = params;
 	const threadMemberRepository = new ThreadMemberRepository();
+	const memberships = (await threadMemberRepository.listMembershipsForUser(userId)).filter(
+		(membership) => membership.guildId === guildId,
+	);
+	if (memberships.length === 0) return [];
+	const channels = await channelRepository.listChannels(memberships.map((membership) => membership.threadId));
+	const channelsById = new Map(channels.map((channel) => [channel.id.toString(), channel]));
 	const entries: Array<ThreadMembershipEntry> = [];
-	const channels = await channelRepository.listGuildChannels(guildId);
-	for (const channel of channels) {
-		if (!THREAD_CHANNEL_TYPES.has(channel.type)) {
-			continue;
-		}
-		const membership = await threadMemberRepository.getMember(channel.id, userId);
-		if (!membership) {
+	for (const membership of memberships) {
+		const channel = channelsById.get(membership.threadId.toString());
+		if (!channel || !THREAD_CHANNEL_TYPES.has(channel.type)) {
 			continue;
 		}
 		entries.push({

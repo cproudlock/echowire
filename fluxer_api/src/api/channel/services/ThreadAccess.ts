@@ -10,7 +10,12 @@ import type {ChannelID, GuildID, UserID} from '@app/api/BrandedTypes';
 import type {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {Channel} from '@app/api/models/Channel';
-import {ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {
+	ChannelTypes,
+	Permissions,
+	THREAD_CHANNEL_TYPES,
+	THREAD_PERMISSION_BITS,
+} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 
 type ThreadLike = Pick<Channel, 'id' | 'type' | 'parentId'>;
@@ -49,6 +54,70 @@ export function hasPermissionBits(permissions: bigint, required: bigint): boolea
 	return (permissions & required) === required;
 }
 
+// Echowire: threads have their own permissions (MANAGE_THREADS, CREATE_PUBLIC_THREADS,
+// CREATE_PRIVATE_THREADS, SEND_MESSAGES_IN_THREADS), added after this instance was already live.
+// Roles and overwrites written before then carry none of those bits, so a resolved mask with none
+// of them means "this guild predates the bits" and the old rules still apply: SEND_MESSAGES on the
+// parent allowed creating a thread and posting in one, MANAGE_CHANNELS allowed moderating one.
+//
+// The moment any thread bit appears anywhere in the resolution chain, the bits are authoritative
+// and an explicit deny is honoured. Every guild created after this change starts that way, because
+// DEFAULT_PERMISSIONS grants CREATE_PUBLIC_THREADS and SEND_MESSAGES_IN_THREADS, and an older guild
+// joins them as soon as an admin touches any thread permission in its roles or overwrites.
+function isLegacyThreadPermissionMask(permissions: bigint): boolean {
+	return (permissions & THREAD_PERMISSION_BITS) === 0n;
+}
+
+// Moderating someone else's thread. MANAGE_CHANNELS is accepted for good, not only as a fallback:
+// it is the permission every existing moderator setup uses, and it already implies control of the
+// parent channel.
+export function canModerateThreads(parentPermissions: bigint): boolean {
+	return (
+		hasPermissionBits(parentPermissions, Permissions.MANAGE_THREADS) ||
+		hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS)
+	);
+}
+
+export function canCreatePublicThread(parentPermissions: bigint): boolean {
+	if (hasPermissionBits(parentPermissions, Permissions.CREATE_PUBLIC_THREADS)) {
+		return true;
+	}
+	return (
+		isLegacyThreadPermissionMask(parentPermissions) && hasPermissionBits(parentPermissions, Permissions.SEND_MESSAGES)
+	);
+}
+
+// Private threads hide their contents, so there is no legacy grant: before the bits existed no
+// client offered them. A moderator of the parent may always create one.
+export function canCreatePrivateThread(parentPermissions: bigint): boolean {
+	return (
+		hasPermissionBits(parentPermissions, Permissions.CREATE_PRIVATE_THREADS) || canModerateThreads(parentPermissions)
+	);
+}
+
+export function canSendInThread(parentPermissions: bigint): boolean {
+	if (hasPermissionBits(parentPermissions, Permissions.SEND_MESSAGES_IN_THREADS)) {
+		return true;
+	}
+	return (
+		isLegacyThreadPermissionMask(parentPermissions) && hasPermissionBits(parentPermissions, Permissions.SEND_MESSAGES)
+	);
+}
+
+// Inside a thread, a request for SEND_MESSAGES means SEND_MESSAGES_IN_THREADS: Discord's model lets
+// a member talk in threads without talking in the parent channel, and the other way round. Every
+// other bit resolves against the parent unchanged.
+export function threadRequirementSatisfied(parentPermissions: bigint, required: bigint): boolean {
+	const withoutSend = required & ~Permissions.SEND_MESSAGES;
+	if (withoutSend !== 0n && !hasPermissionBits(parentPermissions, withoutSend)) {
+		return false;
+	}
+	if ((required & Permissions.SEND_MESSAGES) === 0n) {
+		return true;
+	}
+	return canSendInThread(parentPermissions);
+}
+
 // The gateway cannot look up thread membership, so a private thread's payload to it (THREAD_CREATE,
 // THREAD_UPDATE, the guild channel collection) carries the member ids. Members are the only
 // non-moderators who can view a private thread, and they can already list its members.
@@ -81,7 +150,7 @@ export async function canAccessPrivateThread(params: {
 	if (channel.type !== ChannelTypes.PRIVATE_THREAD) {
 		return true;
 	}
-	if (hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS)) {
+	if (canModerateThreads(parentPermissions)) {
 		return true;
 	}
 	return (await threadMemberRepository.getMember(channel.id, userId)) !== null;

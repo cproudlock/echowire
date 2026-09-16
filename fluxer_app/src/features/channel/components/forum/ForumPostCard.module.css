@@ -148,3 +148,19 @@
 	border-radius: 0.375rem;
 	object-fit: cover;
 }
+
+.selected {
+	border-color: var(--background-modifier-selected, var(--background-modifier-accent));
+	background: var(--background-modifier-selected, var(--background-secondary-alt));
+}
+
+.avatarRow {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+}
+
+.avatarRow .avatar:not(:first-child) {
+	margin-left: -0.375rem;
+	box-shadow: 0 0 0 2px var(--background-primary);
+}

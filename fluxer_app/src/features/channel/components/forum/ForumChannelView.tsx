@@ -9,6 +9,7 @@ import styles from '@app/features/channel/components/forum/ForumChannelView.modu
 import {ForumPostCard} from '@app/features/channel/components/forum/ForumPostCard';
 import {ForumTagChip} from '@app/features/channel/components/forum/ForumTagChip';
 import {CreateForumPostModal} from '@app/features/channel/components/modals/CreateForumPostModal';
+import {ForumExamplesModal} from '@app/features/channel/components/modals/ForumExamplesModal';
 import type {Channel} from '@app/features/channel/models/Channel';
 import ForumViewPreferences from '@app/features/channel/state/ForumViewPreferences';
 import {
@@ -85,6 +86,10 @@ const EMPTY_BODY_DESCRIPTOR = msg({
 	message: 'What do you want to post about in #{name}?',
 	comment: 'Empty forum prompt. {name} is the forum channel name.',
 });
+const SEE_EXAMPLES_DESCRIPTOR = msg({
+	message: 'See Examples',
+	comment: 'Button on an empty forum that lists example first posts.',
+});
 const NO_MATCHES_DESCRIPTOR = msg({
 	message: 'No posts match your search or tags.',
 	comment: 'Forum list message when filters hide every post.',
@@ -105,7 +110,7 @@ function openMenuBelow(event: React.MouseEvent, render: (props: {onClose: () => 
 	);
 }
 
-export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
+export const ForumChannelView = observer(({channel, selectedPostId}: {channel: Channel; selectedPostId?: string}) => {
 	const {i18n} = useLingui();
 	const [searchQuery, setSearchQuery] = useState('');
 	const [selectedTagIds, setSelectedTagIds] = useState<ReadonlySet<string>>(new Set());
@@ -300,6 +305,14 @@ export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
 								<ChatsCircleIcon size={40} weight="fill" className={styles.emptyIcon} />
 								<div className={styles.emptyTitle}>{i18n._(EMPTY_TITLE_DESCRIPTOR)}</div>
 								<div className={styles.emptyBody}>{i18n._(EMPTY_BODY_DESCRIPTOR, {name: channel.name ?? ''})}</div>
+								<button
+									type="button"
+									onClick={() => ModalCommands.push(modal(() => <ForumExamplesModal channel={channel} />))}
+									className={styles.emptyExamplesButton}
+									data-flx="channel.forum-channel-view.see-examples"
+								>
+									{i18n._(SEE_EXAMPLES_DESCRIPTOR)}
+								</button>
 							</>
 						) : (
 							<div className={styles.emptyBody}>
@@ -315,6 +328,7 @@ export const ForumChannelView = observer(({channel}: {channel: Channel}) => {
 								forum={channel}
 								post={post}
 								layout={layout}
+								selected={post.id === selectedPostId}
 								onOpen={() => selectChannel(guildId, post.id)}
 							/>
 						))}

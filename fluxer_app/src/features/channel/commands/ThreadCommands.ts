@@ -183,3 +183,18 @@ export async function leaveThread(threadChannelId: string): Promise<void> {
 		throw error;
 	}
 }
+
+// Echowire: append an attachment already on a reply to the post's starter message, where it becomes
+// the card thumbnail (forums phase 2 contract, section 2). The route answers with the post, whose
+// starter_message_preview already carries the new thumbnail, so the card updates from the response.
+export async function addAttachmentToStarterMessage(
+	postChannelId: string,
+	messageId: string,
+	attachmentId: string,
+): Promise<void> {
+	const response = await http.post<Channel>(Endpoints.CHANNEL_STARTER_MESSAGE_ATTACHMENTS(postChannelId), {
+		body: {message_id: messageId, attachment_id: attachmentId},
+	});
+	Channels.handleChannelUpdateBulk({channels: [response.body]});
+	ForumPostPreviews.ingest([response.body as {id: string; starter_message_preview?: WireStarterMessagePreview | null}]);
+}

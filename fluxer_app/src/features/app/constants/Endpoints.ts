@@ -56,6 +56,7 @@ export const Endpoints = {
 	CHANNEL_THREADS_ARCHIVED: (channelId: string) => `/channels/${channelId}/threads/archived`,
 	CHANNEL_THREAD: (channelId: string) => `/channels/${channelId}/thread`,
 	CHANNEL_THREAD_MEMBERS: (channelId: string) => `/channels/${channelId}/thread-members`,
+	CHANNEL_STARTER_MESSAGE_ATTACHMENTS: (channelId: string) => `/channels/${channelId}/starter-message/attachments`,
 	CHANNEL_THREAD_MEMBER_ME: (channelId: string) => `/channels/${channelId}/thread-members/@me`,
 	CHANNEL_ATTACHMENTS: (channelId: string) => `/channels/${channelId}/attachments`,
 	CHANNEL_ATTACHMENTS_COMPLETE: (channelId: string) => `/channels/${channelId}/attachments/complete`,

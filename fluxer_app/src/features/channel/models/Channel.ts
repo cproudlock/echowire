@@ -19,6 +19,12 @@ import * as SnowflakeUtils from '@fluxer/snowflake/src/SnowflakeUtils';
 type ForumWireExtras = {
 	default_forum_layout?: number | null;
 	default_thread_rate_limit_per_user?: number | null;
+	// Echowire: moderated tags. A server that supports them reports the field on every tag, false
+	// included, which is how the client tells support apart from "no moderated tags here".
+	available_tags?: ReadonlyArray<{id: string; name: string; emoji_name: string | null; moderated?: boolean}>;
+	// Echowire: the last few distinct message authors in a thread, most recent first, for the
+	// participant avatar row on a forum post card (forums phase 2 contract, section 3).
+	recent_participant_ids?: ReadonlyArray<string> | null;
 };
 
 export class ChannelOverwriteRecord {
@@ -109,6 +115,8 @@ export class Channel {
 		readonly id: string;
 		readonly name: string;
 		readonly emojiName: string | null;
+		// null when the server did not report it, meaning moderated tags are unsupported.
+		readonly moderated: boolean | null;
 	}>;
 	readonly appliedTags: ReadonlyArray<string>;
 	readonly defaultReactionEmoji: {readonly emojiId: string | null; readonly emojiName: string | null} | null;
@@ -117,6 +125,8 @@ export class Channel {
 	readonly defaultThreadRateLimitPerUser: number | null;
 	readonly forumDefaultAutoArchiveDuration: number | null;
 	readonly forumRequireTag: boolean;
+	// Up to five recent authors, most recent first. Empty when the server does not report them.
+	readonly recentParticipantIds: ReadonlyArray<string>;
 	readonly pinned: boolean;
 
 	constructor(channel: WireChannel, options?: ChannelRecordOptions) {
@@ -159,10 +169,11 @@ export class Channel {
 			: null;
 		this.memberCount = channel.member_count ?? null;
 		this.messageCount = channel.message_count ?? null;
-		this.availableTags = (channel.available_tags ?? []).map((tag) => ({
+		this.availableTags = ((channel as WireChannel & ForumWireExtras).available_tags ?? []).map((tag) => ({
 			id: tag.id,
 			name: tag.name,
 			emojiName: tag.emoji_name,
+			moderated: 'moderated' in tag ? ((tag.moderated as boolean | undefined) ?? false) : null,
 		}));
 		this.appliedTags = channel.applied_tags ?? [];
 		this.defaultReactionEmoji = channel.default_reaction_emoji
@@ -174,6 +185,7 @@ export class Channel {
 		this.defaultThreadRateLimitPerUser = forumExtras.default_thread_rate_limit_per_user ?? null;
 		this.forumDefaultAutoArchiveDuration = channel.default_auto_archive_duration ?? null;
 		this.forumRequireTag = channel.require_tag ?? false;
+		this.recentParticipantIds = forumExtras.recent_participant_ids ?? [];
 		this.pinned = channel.pinned ?? false;
 		if ((this.type === ChannelTypes.DM || this.type === ChannelTypes.GROUP_DM) && channel.recipients) {
 			Users?.cacheUsers(Array.from(channel.recipients));
@@ -344,7 +356,12 @@ export class Channel {
 					updates.available_tags !== undefined
 						? updates.available_tags
 						: this.availableTags.length > 0
-							? this.availableTags.map((tag) => ({id: tag.id, name: tag.name, emoji_name: tag.emojiName}))
+							? this.availableTags.map((tag) => ({
+									id: tag.id,
+									name: tag.name,
+									emoji_name: tag.emojiName,
+									...(tag.moderated == null ? {} : {moderated: tag.moderated}),
+								}))
 							: undefined,
 				applied_tags:
 					updates.applied_tags !== undefined
@@ -460,6 +477,7 @@ export class Channel {
 			if (this.availableTags[i].id !== other.availableTags[i].id) return false;
 			if (this.availableTags[i].name !== other.availableTags[i].name) return false;
 			if (this.availableTags[i].emojiName !== other.availableTags[i].emojiName) return false;
+			if (this.availableTags[i].moderated !== other.availableTags[i].moderated) return false;
 		}
 		return true;
 	}
@@ -495,7 +513,12 @@ export class Channel {
 			nicks: this.nicks,
 			available_tags:
 				this.availableTags.length > 0
-					? this.availableTags.map((tag) => ({id: tag.id, name: tag.name, emoji_name: tag.emojiName}))
+					? this.availableTags.map((tag) => ({
+							id: tag.id,
+							name: tag.name,
+							emoji_name: tag.emojiName,
+							...(tag.moderated == null ? {} : {moderated: tag.moderated}),
+						}))
 					: undefined,
 			applied_tags: this.appliedTags.length > 0 ? [...this.appliedTags] : undefined,
 			default_reaction_emoji: this.defaultReactionEmoji

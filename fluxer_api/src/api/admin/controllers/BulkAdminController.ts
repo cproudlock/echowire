@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {recordAdminWrite} from '@app/api/admin/AdminAuditRecorder';
 import type {UserID} from '@app/api/BrandedTypes';
 import {requireAnyAdminACL} from '@app/api/middleware/AdminMiddleware';
 import {RateLimitMiddleware} from '@app/api/middleware/RateLimitMiddleware';
@@ -120,7 +121,7 @@ export function BulkAdminController(app: HonoApp) {
 			operationId: 'create_admin_bulk_job',
 			summary: 'Queue a bulk job',
 			description:
-				'Enqueue one background administrative job. The `task` discriminator selects both the body variant and the ACL evaluated for the request: `update_user_flags` needs bulk:update:user_flags, `update_suspicious_activity_flags` needs bulk:update:suspicious_activity, `update_guild_features` needs bulk:update:guild_features, `add_guild_members` needs bulk:add:guild_members, `schedule_user_deletion` needs bulk:delete:users, and `delete_user_messages` needs bulk:delete:user_messages. Returns a job_id immediately; observe progress at /admin/jobs/:job_id. Note: the schedule_user_deletion worker skips Stripe refunds, session termination, and identifier banning — apply those separately for high-risk accounts.',
+				'Enqueue one background administrative job. The `task` discriminator selects both the body variant and the ACL evaluated for the request: `update_user_flags` needs bulk:update:user_flags, `update_suspicious_activity_flags` needs bulk:update:suspicious_activity, `update_guild_features` needs bulk:update:guild_features, `add_guild_members` needs bulk:add:guild_members, `schedule_user_deletion` needs bulk:delete:users, and `delete_user_messages` needs bulk:delete:user_messages. Returns a job_id immediately; observe progress at /admin/jobs/:job_id.',
 			responseSchema: BulkJobResponse,
 			statusCode: 200,
 			security: 'adminApiKey',
@@ -136,6 +137,16 @@ export function BulkAdminController(app: HonoApp) {
 				throw new MissingACLError(requiredAcl);
 			}
 			const jobId = await queueBulkJob(body, adminUserId, auditLogReason);
+			await recordAdminWrite(ctx, {
+				targetType: 'bulk_job',
+				targetId: jobId,
+				action: 'queue_bulk_job',
+				metadata: {
+					task: body.task,
+					entity_count: 'guild_ids' in body ? body.guild_ids.length : body.user_ids.length,
+					guild_id: body.task === AdminBulkTaskType.ADD_GUILD_MEMBERS ? body.guild_id : undefined,
+				},
+			});
 			return ctx.json({job_id: jobId.toString()});
 		},
 	);

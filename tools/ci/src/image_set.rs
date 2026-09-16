@@ -1126,13 +1126,13 @@ mod tests {
 
         let bootstrapping =
             unpublished_moving_tags("ghcr.io/fluxerapp", "fluxer-docs", &tags, |reference| {
-                !reference.starts_with("ghcr.io/fluxerapp/fluxer-recon:")
+                !reference.starts_with("ghcr.io/fluxerapp/fluxer-gifs:")
             });
         assert_eq!(
             bootstrapping,
             [
-                "fluxer-recon has no published v1 image, so v1 stays an incomplete set until the build-recon workflow runs",
-                "fluxer-recon has no published latest image, so latest stays an incomplete set until the build-recon workflow runs",
+                "fluxer-gifs has no published v1 image, so v1 stays an incomplete set until the build-gifs workflow runs",
+                "fluxer-gifs has no published latest image, so latest stays an incomplete set until the build-gifs workflow runs",
             ]
         );
     }
@@ -1141,8 +1141,8 @@ mod tests {
     fn unpublished_moving_tags_never_reports_the_component_being_promoted() {
         let tags = ["v1".to_string()];
         let warnings =
-            unpublished_moving_tags("ghcr.io/fluxerapp", "fluxer-recon", &tags, |reference| {
-                !reference.starts_with("ghcr.io/fluxerapp/fluxer-recon:")
+            unpublished_moving_tags("ghcr.io/fluxerapp", "fluxer-gifs", &tags, |reference| {
+                !reference.starts_with("ghcr.io/fluxerapp/fluxer-gifs:")
             });
         assert!(warnings.is_empty());
     }

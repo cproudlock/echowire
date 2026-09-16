@@ -76,19 +76,39 @@ export class AdminThreadService {
 		return {thread, parent};
 	}
 
-	async listChannelThreads(data: {channel_id: bigint}): Promise<ListChannelThreadsResponse> {
-		const {channelRepository} = this.deps;
+	async listChannelThreads(data: {
+		channel_id: bigint;
+		adminUserId: UserID;
+		auditLogReason: string | null;
+	}): Promise<ListChannelThreadsResponse> {
+		const {channelRepository, auditService} = this.deps;
 		const parent = await channelRepository.findUnique(createChannelID(data.channel_id));
 		if (!parent || !parent.guildId) {
 			throw new UnknownChannelError();
 		}
 		if (!canParentThreads(parent)) {
+			await auditService.createAuditLog({
+				adminUserId: data.adminUserId,
+				targetType: 'channel',
+				targetId: parent.id,
+				action: 'list_channel_threads',
+				auditLogReason: data.auditLogReason,
+				metadata: new Map<string, string>([['result_count', '0']]),
+			});
 			return {threads: []};
 		}
 		const guildChannels = await channelRepository.listGuildChannels(parent.guildId);
 		const threads = threadsOfParent(guildChannels, parent.id).sort((left, right) =>
 			left.id === right.id ? 0 : left.id > right.id ? -1 : 1,
 		);
+		await auditService.createAuditLog({
+			adminUserId: data.adminUserId,
+			targetType: 'channel',
+			targetId: parent.id,
+			action: 'list_channel_threads',
+			auditLogReason: data.auditLogReason,
+			metadata: new Map<string, string>([['result_count', threads.length.toString()]]),
+		});
 		return {threads: threads.map((thread) => this.summarize(thread, parent))};
 	}
 

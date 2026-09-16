@@ -6,6 +6,8 @@ use std::sync::Arc;
 use std::sync::atomic::{AtomicI64, AtomicU64, Ordering};
 
 const ORDERING: Ordering = Ordering::Relaxed;
+// Echowire: upstream narrowed this to pub(crate) in #2810 because deleting fluxer_recon
+// removed its only out-of-crate consumer. The fork still ships recon, so it stays public.
 pub type AdditionalMetricsRenderer = Arc<dyn Fn(&mut String) + Send + Sync>;
 
 const HISTOGRAM_BUCKETS_MS: &[u64] = &[
@@ -92,6 +94,7 @@ impl Default for ServiceMetrics {
 }
 
 impl ServiceMetrics {
+    // Echowire: public for fluxer_recon, see the note on AdditionalMetricsRenderer.
     pub fn with_additional_renderer(renderer: AdditionalMetricsRenderer) -> Self {
         Self {
             additional_renderer: Some(renderer),

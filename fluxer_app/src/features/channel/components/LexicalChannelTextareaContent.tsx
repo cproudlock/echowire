@@ -18,8 +18,9 @@ import {ReplyBar} from '@app/features/channel/components/ChannelReplyBar';
 import {ChannelStickersArea} from '@app/features/channel/components/ChannelStickersArea';
 import {
 	CHANNEL_DESCRIPTOR,
-	MESSAGE_2_DESCRIPTOR,
-	MESSAGE_DESCRIPTOR,
+	MESSAGE_CHANNEL_DESCRIPTOR,
+	MESSAGE_GROUP_DESCRIPTOR,
+	MESSAGE_USER_DESCRIPTOR,
 	OPEN_MENU_DESCRIPTOR,
 	YOU_DO_NOT_HAVE_PERMISSION_TO_SEND_MESSAGES_DESCRIPTOR,
 } from '@app/features/channel/components/channel_textarea/shared';
@@ -32,7 +33,7 @@ import {
 import {MessageCharacterCounter} from '@app/features/channel/components/MessageCharacterCounter';
 import {SlashCommandParamBar} from '@app/features/channel/components/SlashCommandParamBar';
 import {SlowmodeIndicator} from '@app/features/channel/components/SlowmodeIndicator';
-import {TypingUsers, usePresentableTypingUsers} from '@app/features/channel/components/TypingUsers';
+import {TypingAnnouncer, TypingUsers, usePresentableTypingUsers} from '@app/features/channel/components/TypingUsers';
 import wrapperStyles from '@app/features/channel/components/textarea/InputWrapper.module.css';
 import {MobileTextareaPlusBottomSheet} from '@app/features/channel/components/textarea/MobileTextareaPlusBottomSheet';
 import {TextareaButton} from '@app/features/channel/components/textarea/TextareaButton';
@@ -113,7 +114,6 @@ import {openPopout} from '@app/features/ui/popover/PopoverPopout';
 import ContextMenuState from '@app/features/ui/state/ContextMenu';
 import KeyboardMode from '@app/features/ui/state/KeyboardMode';
 import MobileLayout from '@app/features/ui/state/MobileLayout';
-import * as PlaceholderUtils from '@app/features/ui/utils/PlaceholderUtils';
 import Users from '@app/features/user/state/Users';
 import {openVoiceMessageComposerModal} from '@app/features/voice/components/VoiceMessageComposerModal';
 import {flxElementClassName} from '@app/lib/react';
@@ -195,6 +195,7 @@ export const LexicalChannelTextareaContent = observer(
 		const expressionPickerTriggerRef = useRef<HTMLButtonElement>(null);
 		const invisibleExpressionPickerTriggerRef = useRef<HTMLDivElement>(null);
 		const containerRef = useRef<HTMLDivElement>(null);
+		const typingStatusRailLeftRef = useRef<HTMLElement>(null);
 		const contentAreaRef = useRef<HTMLElement | null>(null);
 		const plusButtonRef = useRef<HTMLButtonElement | null>(null);
 		const plusMenuOpenedAtRef = useRef(0);
@@ -425,7 +426,7 @@ export const LexicalChannelTextareaContent = observer(
 			}
 			if (mobileLayout.enabled) {
 				const index = pendingMentionConfirmation.mentionType;
-				const title = getMentionTitle(index, pendingMentionConfirmation.roleName);
+				const title = getMentionTitle(i18n, index, pendingMentionConfirmation.roleName);
 				const description = getMentionDescription(
 					index,
 					pendingMentionConfirmation.memberCount,
@@ -893,13 +894,14 @@ export const LexicalChannelTextareaContent = observer(
 		const handleArrowUpEmpty = useCallback(() => {
 			if (KeyboardMode.keyboardModeEnabled) {
 				ComponentBus.dispatch('FOCUS_BOTTOMMOST_MESSAGE', {channelId: channel.id});
-				return;
+				return true;
 			}
 			const message = Messages.getLastEditableMessage(channel.id);
 			if (!message) {
-				return;
+				return false;
 			}
 			MessageCommands.startEdit(channel.id, message.id, message.content);
+			return true;
 		}, [channel.id]);
 		useTextareaDraftAndTyping({
 			channelId: channel.id,
@@ -909,7 +911,6 @@ export const LexicalChannelTextareaContent = observer(
 			draftSegments,
 			previousValueRef,
 			segmentManagerRef,
-			isAutocompleteAttached,
 			enabled: !disabled,
 			typingEnabled: !textareaInputDisabled,
 			isEditingMessageInComposer,
@@ -922,23 +923,15 @@ export const LexicalChannelTextareaContent = observer(
 			isFocused,
 			handleArrowUpEmpty,
 		});
-		const messageLabel = i18n._(MESSAGE_DESCRIPTOR);
-		const messagePrefix = `${messageLabel} `;
 		const placeholderText = disabled
 			? i18n._(YOU_DO_NOT_HAVE_PERMISSION_TO_SEND_MESSAGES_DESCRIPTOR)
 			: channel.isThread() && channel.name
 				? i18n._(THREAD_MESSAGE_PLACEHOLDER_DESCRIPTOR, {name: channel.name})
 				: channel.guildId != null
-					? PlaceholderUtils.getChannelPlaceholder(
-							`#${channel.name || i18n._(CHANNEL_DESCRIPTOR)}`,
-							messagePrefix,
-							Number.MAX_SAFE_INTEGER,
-						)
-					: PlaceholderUtils.getDMPlaceholder(
-							ChannelDisplayUtils.getDMDisplayName(channel),
-							channel.isDM() ? i18n._(MESSAGE_2_DESCRIPTOR) : messagePrefix,
-							Number.MAX_SAFE_INTEGER,
-						);
+					? i18n._(MESSAGE_CHANNEL_DESCRIPTOR, {channelName: channel.name || i18n._(CHANNEL_DESCRIPTOR)})
+					: channel.isDM()
+						? i18n._(MESSAGE_USER_DESCRIPTOR, {userName: ChannelDisplayUtils.getDMDisplayName(channel)})
+						: i18n._(MESSAGE_GROUP_DESCRIPTOR, {groupName: ChannelDisplayUtils.getDMDisplayName(channel)});
 		useEffect(() => {
 			const unsubscribe = ComponentBus.subscribe('FOCUS_TEXTAREA', (payload?: unknown) => {
 				const payloadValue = payload === null || payload === undefined ? {} : payload;
@@ -1259,6 +1252,7 @@ export const LexicalChannelTextareaContent = observer(
 						data-flx="channel.lexical-channel-textarea-content.flx-channel-textarea-status-rail"
 					>
 						<flx-channel-textarea-status-rail-left
+							ref={typingStatusRailLeftRef}
 							className={flxElementClassName(wrapperStyles.statusRailLeft)}
 							data-flx="channel.lexical-channel-textarea-content.flx-channel-textarea-status-rail-left"
 						>
@@ -1271,10 +1265,12 @@ export const LexicalChannelTextareaContent = observer(
 										channel={channel}
 										withText={true}
 										showAvatars={true}
+										overflowContainerRef={typingStatusRailLeftRef}
 										data-flx="channel.lexical-channel-textarea-content.typing-users"
 									/>
 								</flx-channel-textarea-typing-slot>
 							)}
+							<TypingAnnouncer channel={channel} data-flx="channel.lexical-channel-textarea-content.typing-announcer" />
 						</flx-channel-textarea-status-rail-left>
 						{isSlowmodeIndicatorVisible && (
 							<flx-channel-textarea-slowmode-slot
@@ -1369,6 +1365,7 @@ export const LexicalChannelTextareaContent = observer(
 										channelId={channel.id}
 										guildId={channel.guildId}
 										submitOnEnter={!mobileLayout.enabled}
+										maxWireLength={maxMessageLength}
 										silentMessagePrefix={!isEditingMessageOnMobile}
 										focusRingTarget={containerRef}
 										focusRingEnabled={!textareaInputDisabled && Accessibility.showTextareaFocusRing}

@@ -51,7 +51,6 @@ Valkey, search Meilisearch, voice LiveKit.
 | Desktop | Electron, plus Rust native capture modules | `fluxer_desktop` |
 | Shared service runtime | Rust library | `fluxer_svc`, `fluxer_common` |
 | Users, messages, unfurl, gifs, snowflakes | Rust, coordinator plus `-shard` | `fluxer_users`, `fluxer_messages`, `fluxer_unfurl`, `fluxer_gifs`, `fluxer_snowflakes` |
-| Voice fleet reconciler (LiveKit census and control) | Rust | `fluxer_recon` |
 | Media proxy (R2 reads, image transforms) | Rust | `fluxer_media_proxy` |
 | Admin panel | Rust, tailwind via `build.rs` | `fluxer_admin` |
 | Marketing site (`/help`, `/blog`, `/terms`, `/reverb`) | Rust, vendored in-tree | `fluxer_marketing` |

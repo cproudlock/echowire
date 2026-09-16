@@ -14,6 +14,7 @@ import {
 	isThreadChannel,
 	permissionChannelId,
 	threadParentExists,
+	threadRequirementSatisfied,
 } from '@app/api/channel/services/ThreadAccess';
 import {
 	type ContentWarningChannelLike,
@@ -219,8 +220,14 @@ export abstract class BaseChannelAuthService {
 			userId,
 			channelId: permissionTargetId,
 		});
+		// Echowire: a thread resolves against its parent, and a request for SEND_MESSAGES there means
+		// SEND_MESSAGES_IN_THREADS. Doing the swap here covers every caller that asks this channel for
+		// a permission: sending, attachments, reactions, interactions and the rest.
+		const channelIsThread = isThreadChannel(channel);
 		const hasPermission = async (permission: bigint): Promise<boolean> => {
-			const allowed = (channelPermissions & permission) === permission;
+			const allowed = channelIsThread
+				? threadRequirementSatisfied(channelPermissions, permission)
+				: (channelPermissions & permission) === permission;
 			if (allowed) enforceGuildMfa(permission);
 			return allowed;
 		};

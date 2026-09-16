@@ -64,6 +64,11 @@ export const GuildRateLimitConfigs = {
 		bucket: 'guild:channel:create::guild_id',
 		config: {limit: 10, windowMs: ms('1 minute')},
 	} as RouteRateLimitConfig,
+	// Echowire: the guild-wide active thread list is read on every guild select.
+	GUILD_THREADS_ACTIVE_LIST: {
+		bucket: 'guild:threads:active::guild_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
 	GUILD_CHANNEL_POSITIONS: {
 		bucket: 'guild:channel:positions::guild_id',
 		config: {limit: 30, windowMs: ms('10 seconds')},

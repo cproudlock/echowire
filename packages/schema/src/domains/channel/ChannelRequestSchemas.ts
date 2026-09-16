@@ -23,7 +23,7 @@ import {ReadStateResponse} from '@fluxer/schema/src/domains/gateway/GatewaySchem
 import {ChannelOverwriteTypeSchema, GeneralChannelNameType} from '@fluxer/schema/src/primitives/ChannelValidators';
 import {base64LengthForBytes, createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
 import {ContentWarningLevelSchema} from '@fluxer/schema/src/primitives/GuildValidators';
-import {QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
+import {createQueryIntegerType, QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
 import {
 	createNamedLiteral,
 	createNamedLiteralUnion,
@@ -411,6 +411,16 @@ export const StreamPreviewUploadUrlResponseSchema = z.object({
 export type StreamPreviewUploadUrlResponseSchema = z.infer<typeof StreamPreviewUploadUrlResponseSchema>;
 
 // Echowire: create a thread under a text/forum channel (POST /channels/:channel_id/threads).
+// Echowire: paging for the thread list endpoints. Both parameters are optional and the endpoints
+// keep returning every visible thread when neither is given, so existing clients are unaffected.
+export const ThreadsQuery = z.object({
+	limit: createQueryIntegerType({defaultValue: 0, minValue: 1, maxValue: 100})
+		.optional()
+		.describe('Maximum threads to return (1-100); omit for every visible thread'),
+	before: SnowflakeType.optional().describe('Return threads with an ID lower than this one'),
+});
+export type ThreadsQuery = z.infer<typeof ThreadsQuery>;
+
 export const ThreadCreateRequest = z.object({
 	name: GeneralChannelNameType.describe('The name of the thread (1-100 characters)'),
 	message_id: SnowflakeStringType.optional().describe(
@@ -432,6 +442,12 @@ export const ThreadCreateRequest = z.object({
 		])
 		.optional()
 		.describe('The thread type (11 = public, 12 = private); defaults to public'),
+	invitable: z
+		.boolean()
+		.optional()
+		.describe(
+			'Whether members of a private thread may add other members. Only meaningful for private threads; defaults to false.',
+		),
 });
 
 export type ThreadCreateRequest = z.infer<typeof ThreadCreateRequest>;

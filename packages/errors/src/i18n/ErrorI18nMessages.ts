@@ -194,6 +194,8 @@ export const ERROR_I18N_MESSAGES = {
 	'channels_and_guilds.invalid_parent_channel': 'Invalid parent channel.',
 	'channels_and_guilds.invite_splash_requires_feature': 'Invite splash requires INVITE_SPLASH feature.',
 	'channels_and_guilds.invites_disabled': 'Invites are disabled.',
+	'channels_and_guilds.max_active_threads_reached':
+		"You've reached the maximum of {count, plural, one {# active thread} other {# active threads}}. Archive a thread or post to make room.",
 	'channels_and_guilds.max_group_dm_recipients_reached':
 		"You've reached the maximum of {count, plural, one {# group DM recipient} other {# group DM recipients}}.",
 	'channels_and_guilds.max_group_dms_reached':

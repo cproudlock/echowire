@@ -10425,6 +10425,8 @@
 							"max_attachments_per_message",
 							"max_bio_length",
 							"max_bookmarks",
+							"max_active_threads_per_channel",
+							"max_active_threads_per_guild",
 							"max_channels_per_category",
 							"max_custom_backgrounds",
 							"max_embeds_per_message",
@@ -14684,9 +14686,25 @@
 						"description": "Allows management of guild expressions"
 					},
 					{
+						"name": "MANAGE_THREADS",
+						"value": "17179869184",
+						"description": "Allows managing threads and forum posts others started"
+					},
+					{
+						"name": "CREATE_PUBLIC_THREADS",
+						"value": "34359738368",
+						"description": "Allows creating threads and forum posts"
+					},
+					{"name": "CREATE_PRIVATE_THREADS", "value": "68719476736", "description": "Allows creating private threads"},
+					{
 						"name": "USE_EXTERNAL_STICKERS",
 						"value": "137438953472",
 						"description": "Allows using stickers from other guilds"
+					},
+					{
+						"name": "SEND_MESSAGES_IN_THREADS",
+						"value": "274877906944",
+						"description": "Allows sending messages in threads and forum posts"
 					},
 					{"name": "MODERATE_MEMBERS", "value": "1099511627776", "description": "Allows timing out users"},
 					{"name": "CREATE_EXPRESSIONS", "value": "8796093022208", "description": "Allows creating guild expressions"},

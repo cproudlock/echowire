@@ -10,7 +10,7 @@ import {isPersonalNotesChannel} from '@app/api/channel/services/message/MessageH
 import type {MessageMentionService} from '@app/api/channel/services/message/MessageMentionService';
 import type {MessagePersistenceService} from '@app/api/channel/services/message/MessagePersistenceService';
 import {incrementDmMentionCounts} from '@app/api/channel/services/message/ReadStateHelpers';
-import {withPrivateThreadMemberIds} from '@app/api/channel/services/ThreadAccess';
+import {permissionChannelId, withPrivateThreadMemberIds} from '@app/api/channel/services/ThreadAccess';
 import type {GatewayChannelMention, IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {UserCacheService} from '@app/api/infrastructure/UserCacheService';
 import {Logger} from '@app/api/Logger';
@@ -20,7 +20,7 @@ import type {Message} from '@app/api/models/Message';
 import type {User} from '@app/api/models/User';
 import type {ReadStateService} from '@app/api/read_state/ReadStateService';
 import type {IUserRepository} from '@app/api/user/IUserRepository';
-import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {CannotEditOtherUserMessageError} from '@fluxer/errors/src/domains/channel/CannotEditOtherUserMessageError';
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
 import type {AllowedMentionsRequest} from '@fluxer/schema/src/domains/message/SharedMessageSchemas';
@@ -75,6 +75,10 @@ export class MessageProcessingService {
 		// receive follower push notifications for later replies. Runs before the message is
 		// broadcast, so this author lands in the thread_member_ids snapshot.
 		await this.autoJoinAuthorToThread(channel, user.id);
+		// Echowire: mentioning someone in a PUBLIC thread adds them to it, as on Discord, so later
+		// replies reach them. Private threads never auto-add: membership there is the access control,
+		// so it only changes through an explicit invitation.
+		await this.autoJoinMentionedUsersToThread(channel, message, user.id);
 	}
 
 	private async unarchiveThreadOnSend(channel: Channel): Promise<void> {
@@ -104,6 +108,68 @@ export class MessageProcessingService {
 			await this.gatewayService.dispatchGuild({guildId: channel.guildId, event: 'THREAD_UPDATE', data});
 		} catch (error) {
 			Logger.warn({error, channelId: channel.id.toString()}, 'Failed to unarchive thread on send');
+		}
+	}
+
+	// Echowire: Discord adds a mentioned member to a public thread. The mask is capped so a message
+	// full of mentions cannot turn into an unbounded number of permission lookups, and every target
+	// still has to be able to see the parent channel.
+	private static readonly MENTION_AUTO_JOIN_LIMIT = 10;
+
+	private async autoJoinMentionedUsersToThread(channel: Channel, message: Message, authorId: UserID): Promise<void> {
+		if (!channel.guildId || channel.type !== ChannelTypes.PUBLIC_THREAD) {
+			return;
+		}
+		const parentChannelId = permissionChannelId(channel);
+		if (!parentChannelId) {
+			return;
+		}
+		const candidates = [...message.mentionedUserIds]
+			.filter((userId) => userId !== authorId)
+			.slice(0, MessageProcessingService.MENTION_AUTO_JOIN_LIMIT);
+		if (candidates.length === 0) {
+			return;
+		}
+		try {
+			const threadMemberRepository = new ThreadMemberRepository();
+			const added: Array<{id: string; user_id: string; join_timestamp: string; flags: number}> = [];
+			for (const userId of candidates) {
+				if (await threadMemberRepository.getMember(channel.id, userId)) {
+					continue;
+				}
+				const permissions = await this.gatewayService.getUserPermissions({
+					guildId: channel.guildId,
+					userId,
+					channelId: parentChannelId,
+				});
+				if ((permissions & Permissions.VIEW_CHANNEL) !== Permissions.VIEW_CHANNEL) {
+					continue;
+				}
+				const member = await threadMemberRepository.addMember(channel.id, userId);
+				added.push({
+					id: channel.id.toString(),
+					user_id: userId.toString(),
+					join_timestamp: member.joinTimestamp.toISOString(),
+					flags: member.flags,
+				});
+			}
+			if (added.length === 0) {
+				return;
+			}
+			const members = await threadMemberRepository.listMembers(channel.id);
+			await this.channelRepository.channelData.patchThreadFields(channel.id, {thread_member_count: members.length});
+			await this.gatewayService.dispatchGuild({
+				guildId: channel.guildId,
+				event: 'THREAD_MEMBERS_UPDATE',
+				data: {
+					id: channel.id.toString(),
+					guild_id: channel.guildId.toString(),
+					member_count: members.length,
+					added_members: added,
+				},
+			});
+		} catch (error) {
+			Logger.warn({error, channelId: channel.id.toString()}, 'Failed to add mentioned members to thread');
 		}
 	}
 

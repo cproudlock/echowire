@@ -142,7 +142,9 @@ thread_member_ids(Channel) ->
 -spec restrict_thread_permissions(integer(), permission(), user_id() | undefined, [term()]) ->
     permission().
 restrict_thread_permissions(?CHANNEL_TYPE_PRIVATE_THREAD, Perms, UserId, MemberIds) ->
-    IsManager = permission_bits:has(Perms, constants:manage_channels_permission()),
+    IsManager =
+        permission_bits:has(Perms, constants:manage_threads_permission()) orelse
+            permission_bits:has(Perms, constants:manage_channels_permission()),
     IsMember =
         is_integer(UserId) andalso UserId > 0 andalso snowflake_id:member(UserId, MemberIds),
     case IsManager orelse IsMember of
@@ -500,6 +502,16 @@ private_thread_requires_manage_channels_test() ->
     ManagerBase = permission_bits:add(View, Manage),
     Manager = maybe_apply_channel_overwrites(ManagerBase, 11, [], 21, 5, State),
     ?assertEqual(true, permission_bits:has(Manager, View)).
+
+%% Echowire: MANAGE_THREADS is the thread-specific moderator bit, and it opens a private thread
+%% on its own. MANAGE_CHANNELS keeps working, which is what every existing moderator role holds.
+private_thread_admits_a_thread_moderator_test() ->
+    View = constants:view_channel_permission(),
+    ManageThreads = constants:manage_threads_permission(),
+    State = thread_test_state(),
+    Base = permission_bits:add(View, ManageThreads),
+    Moderator = maybe_apply_channel_overwrites(Base, 11, [], 21, 5, State),
+    ?assertEqual(true, permission_bits:has(Moderator, View)).
 
 private_thread_admits_its_members_test() ->
     View = constants:view_channel_permission(),

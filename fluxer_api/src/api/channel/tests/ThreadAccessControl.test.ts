@@ -6,6 +6,7 @@
 import type {TestAccount} from '@app/api/auth/tests/AuthTestUtils';
 import {
 	addMemberRole,
+	allowPrivateThreads,
 	createChannel,
 	createPermissionOverwrite,
 	createRole,
@@ -121,6 +122,7 @@ describe('Thread access control', () => {
 
 	test('a private thread is hidden from non-members and visible to members and managers', async () => {
 		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 3);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator, outsider, manager] = members;
 		const managerRole = await createRole(harness, owner.token, guild.id, {
 			name: 'Channel Manager',
@@ -153,7 +155,8 @@ describe('Thread access control', () => {
 	});
 
 	test('archived thread listings exclude private threads the caller cannot see', async () => {
-		const {members, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator, outsider] = members;
 		const privateThread = await createThread(harness, creator.token, systemChannel.id, {
 			name: 'private archived',
@@ -173,7 +176,7 @@ describe('Thread access control', () => {
 		expect(outsiderView).not.toContain(privateThread.id);
 	});
 
-	test('sending in a thread honours SEND_MESSAGES overwrites on the parent', async () => {
+	test('sending in a thread honours SEND_MESSAGES_IN_THREADS overwrites on the parent', async () => {
 		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 2);
 		const [muted, speaker] = members;
 		const speakers = await createRole(harness, owner.token, guild.id, {name: 'Speakers'});
@@ -182,11 +185,11 @@ describe('Thread access control', () => {
 		await createPermissionOverwrite(harness, owner.token, systemChannel.id, guild.id, {
 			type: 0,
 			allow: '0',
-			deny: Permissions.SEND_MESSAGES.toString(),
+			deny: Permissions.SEND_MESSAGES_IN_THREADS.toString(),
 		});
 		await createPermissionOverwrite(harness, owner.token, systemChannel.id, speakers.id, {
 			type: 0,
-			allow: Permissions.SEND_MESSAGES.toString(),
+			allow: Permissions.SEND_MESSAGES_IN_THREADS.toString(),
 			deny: '0',
 		});
 

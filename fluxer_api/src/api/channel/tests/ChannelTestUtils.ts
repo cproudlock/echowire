@@ -4,6 +4,7 @@ import {createTestAccount, type TestAccount} from '@app/api/auth/tests/AuthTestU
 import {ensureSessionStarted} from '@app/api/message/tests/MessageTestUtils';
 import type {ApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {createBuilder} from '@app/api/test/TestRequestBuilder';
+import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import type {ChannelOverwriteResponse, ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {GuildMemberResponse} from '@fluxer/schema/src/domains/guild/GuildMemberSchemas';
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
@@ -159,6 +160,19 @@ export async function createPermissionOverwrite(
 		allow: overwrite.allow,
 		deny: overwrite.deny,
 	};
+}
+
+// Echowire: creating a private thread needs CREATE_PRIVATE_THREADS, which is not a default. Tests
+// that have an ordinary member create one grant it to @everyone first.
+export async function allowPrivateThreads(harness: ApiTestHarness, ownerToken: string, guildId: string): Promise<void> {
+	const everyone = await createBuilder<GuildRoleResponse>(harness, ownerToken)
+		.get(`/guilds/${guildId}/roles`)
+		.execute()
+		.then((roles) => (Array.isArray(roles) ? roles.find((role) => role.id === guildId) : undefined));
+	const current = everyone ? BigInt(everyone.permissions) : 0n;
+	await updateRole(harness, ownerToken, guildId, guildId, {
+		permissions: (current | Permissions.CREATE_PRIVATE_THREADS).toString(),
+	});
 }
 
 export async function setupTestGuildWithMembers(

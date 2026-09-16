@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {randomInt} from 'node:crypto';
-import {createMessageID, createUserID, type MessageID, type UserID} from '@app/api/BrandedTypes';
+import {createMessageID, createUserID, type GuildID, type MessageID, type UserID} from '@app/api/BrandedTypes';
 import {Config} from '@app/api/Config';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {ChannelRepository} from '@app/api/channel/ChannelRepository';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {IConnectionRepository} from '@app/api/connection/IConnectionRepository';
 import type {FavoriteMemeRepository} from '@app/api/favorite_meme/FavoriteMemeRepository';
 import type {GuildRepository} from '@app/api/guild/repositories/GuildRepository';
@@ -22,7 +23,7 @@ import type {OAuth2TokenRepository} from '@app/api/oauth/repositories/OAuth2Toke
 import type {UserRepository} from '@app/api/user/repositories/UserRepository';
 import {isPendingDeletionBlocked} from '@app/api/user/services/PendingDeletionCoordinator';
 import type {WorkerTaskName} from '@app/api/worker/WorkerLaneConfig';
-import {ChannelTypes, MessageTypes} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, MessageTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import {
 	DELETED_USER_DISCRIMINATOR,
 	DELETED_USER_GLOBAL_NAME,
@@ -249,6 +250,11 @@ export async function processUserDeletion(
 						);
 					}
 				}
+				// Echowire: thread membership is partitioned by thread, so there is no index from a
+				// user to their threads. The guild loop is the only place the set is known: leave every
+				// thread of this guild before the membership row goes, or the deleted account keeps
+				// inflating member_count and stays in the member ids a private thread carries.
+				await removeThreadMembershipsInGuild({guildId, userId, channelRepository});
 				await guildRepository.deleteMember(guildId, userId);
 				const guild = await guildRepository.findUnique(guildId);
 				if (guild) {
@@ -479,4 +485,31 @@ export async function processUserDeletion(
 	await userCacheService.setUserPartialResponseFromUser(anonymisedUser);
 	await userRepository.completeDeletion(anonymisedUser);
 	Logger.debug({userId, deletionReasonCode}, 'User account anonymization completed successfully');
+}
+
+// Echowire: drop the user from every thread of one guild and correct each thread's member_count.
+export async function removeThreadMembershipsInGuild(params: {
+	guildId: GuildID;
+	userId: UserID;
+	channelRepository: ChannelRepository;
+}): Promise<void> {
+	const {guildId, userId, channelRepository} = params;
+	const threadMemberRepository = new ThreadMemberRepository();
+	const channels = await channelRepository.listGuildChannels(guildId);
+	for (const channel of channels) {
+		if (!THREAD_CHANNEL_TYPES.has(channel.type)) {
+			continue;
+		}
+		try {
+			const membership = await threadMemberRepository.getMember(channel.id, userId);
+			if (!membership) {
+				continue;
+			}
+			await threadMemberRepository.removeMember(channel.id, userId);
+			const members = await threadMemberRepository.listMembers(channel.id);
+			await channelRepository.channelData.patchThreadFields(channel.id, {thread_member_count: members.length});
+		} catch (error) {
+			Logger.error({error, userId, guildId, channelId: channel.id.toString()}, 'Failed to leave thread on deletion');
+		}
+	}
 }

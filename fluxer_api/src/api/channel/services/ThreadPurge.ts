@@ -23,7 +23,7 @@ export function threadsOfParent(channels: ReadonlyArray<Channel>, parentId: Chan
 // THREAD_DELETE payload. A private thread carries its member ids (captured before membership is
 // removed) so the gateway can limit the event to members and parent managers; the field is
 // stripped before any client sees it.
-export async function buildThreadDeletePayload(
+async function buildThreadDeletePayload(
 	thread: Channel,
 	guildId: GuildID,
 	threadMemberRepository: ThreadMemberRepository,
@@ -39,6 +39,19 @@ export async function buildThreadDeletePayload(
 		data.thread_member_ids = members.map((member) => member.userId.toString());
 	}
 	return data;
+}
+
+// Echowire: membership rows are partitioned by thread, so they have to be removed alongside the
+// threads they belong to. Used when a whole guild goes.
+export async function removeThreadMembershipsForChannels(
+	channels: ReadonlyArray<Pick<Channel, 'id' | 'type'>>,
+	threadMemberRepository: ThreadMemberRepository,
+): Promise<void> {
+	await Promise.all(
+		channels
+			.filter((channel) => THREAD_CHANNEL_TYPES.has(channel.type))
+			.map((channel) => threadMemberRepository.removeAllMembers(channel.id)),
+	);
 }
 
 export async function purgeThread(params: {

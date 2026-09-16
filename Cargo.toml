@@ -8,7 +8,6 @@ members = [
 	# stays a workspace member and must NOT be re-added to `exclude` on future merges.
 	"fluxer_marketing",
 	"fluxer_media_proxy",
-	"fluxer_recon",
 	"fluxer_gifs",
 	"fluxer_svc",
 	"fluxer_messages",

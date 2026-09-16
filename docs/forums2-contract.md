@@ -112,4 +112,15 @@ which matches how the other thread fields already behave.
 
 ## Changes made while implementing
 
-None yet.
+- **Add to post returns the post, not the message.** The route returns `ChannelResponse` for the
+  forum post, with `starter_message_preview` already reflecting the new thumbnail, so a client
+  updates the card from the response it already understands. The starter message itself still
+  arrives as a `MESSAGE_UPDATE` event, which is what a client renders in the open post.
+- **Error codes.** Three validation codes were added rather than reusing a generic one:
+  `STARTER_ATTACHMENT_SOURCE_INVALID` (the source message is the starter itself),
+  `STARTER_ATTACHMENT_ALREADY_PRESENT` and `STARTER_ATTACHMENT_LIMIT_REACHED`. A missing
+  attachment reuses the existing `ATTACHMENT_ID_NOT_FOUND_IN_MESSAGE`. All are 400 except the
+  permission failures, which are 403, and an unknown post or source message, which is 404.
+- **Recent participants are capped by a constant**, `MAX_RECENT_THREAD_PARTICIPANTS`, currently 5.
+  The field is omitted rather than sent empty when a thread has no authors yet.
+- **Forum examples confirmed client-side.** No server field was added, as anticipated.

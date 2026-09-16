@@ -8,6 +8,12 @@ export const MAX_CHANNELS_PER_CATEGORY = 50;
 // Echowire: threads and forum posts are channel rows, so they need their own ceiling. Both counts
 // are of ACTIVE (non-archived) threads only, so a busy forum keeps working as its posts archive.
 export const MAX_ACTIVE_THREADS_PER_CHANNEL = 1000;
+// Echowire: how many forum tags one post may carry, mirroring the request schema's max.
+export const MAX_APPLIED_TAGS_PER_POST = 5;
+// Echowire: how many members one thread or forum post may hold, matching Discord's cap.
+export const MAX_THREAD_MEMBERS = 1000;
+// Echowire: how many recent distinct thread authors are kept for participant avatars.
+export const MAX_RECENT_THREAD_PARTICIPANTS = 5;
 export const MAX_ACTIVE_THREADS_PER_GUILD = 5000;
 export const VOICE_CHANNEL_BITRATE_MIN = 8000;
 export const VOICE_CHANNEL_BITRATE_DEFAULT = 64000;

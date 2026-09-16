@@ -38,8 +38,8 @@ export class ChannelRepository extends IChannelRepository {
 		return this.repository.channelData.upsert(data);
 	}
 
-	async updateLastMessageId(channelId: ChannelID, messageId: MessageID): Promise<void> {
-		return this.repository.channelData.updateLastMessageId(channelId, messageId);
+	async updateLastMessageId(channelId: ChannelID, messageId: MessageID, authorId?: UserID | null): Promise<void> {
+		return this.repository.channelData.updateLastMessageId(channelId, messageId, authorId);
 	}
 
 	async delete(channelId: ChannelID, guildId?: GuildID): Promise<void> {

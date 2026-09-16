@@ -16,6 +16,8 @@ import {
 	THREAD_CHANNEL_TYPES,
 	THREAD_PERMISSION_BITS,
 } from '@fluxer/constants/src/ChannelConstants';
+import {MAX_APPLIED_TAGS_PER_POST} from '@fluxer/constants/src/LimitConstants';
+import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 
 type ThreadLike = Pick<Channel, 'id' | 'type' | 'parentId'>;
@@ -76,6 +78,35 @@ export function canModerateThreads(parentPermissions: bigint): boolean {
 		hasPermissionBits(parentPermissions, Permissions.MANAGE_THREADS) ||
 		hasPermissionBits(parentPermissions, Permissions.MANAGE_CHANNELS)
 	);
+}
+
+// Echowire: a moderated forum tag may only be applied or removed by a member who can moderate
+// threads. A caller without that permission neither adds one nor drops one: the moderated tags
+// already on the post are preserved even when their replacement set omits them, so an owner
+// retagging their own post cannot quietly strip a moderator's tag. Moderated tags take precedence
+// when the merged set would exceed the per-post cap.
+export function resolveAppliedTags(params: {
+	requested: ReadonlyArray<string>;
+	current: ReadonlyArray<string>;
+	availableTags: ReadonlyArray<{id: string; moderated?: boolean | null}> | null;
+	canModerate: boolean;
+}): Array<string> {
+	const requested = [...params.requested];
+	if (params.canModerate) {
+		return requested;
+	}
+	const moderatedIds = new Set(
+		(params.availableTags ?? []).filter((tag) => tag.moderated === true).map((tag) => tag.id),
+	);
+	if (moderatedIds.size === 0) {
+		return requested;
+	}
+	const alreadyApplied = new Set(params.current);
+	if (requested.some((id) => moderatedIds.has(id) && !alreadyApplied.has(id))) {
+		throw new MissingPermissionsError();
+	}
+	const preserved = params.current.filter((id) => moderatedIds.has(id) && !requested.includes(id));
+	return [...preserved, ...requested].slice(0, MAX_APPLIED_TAGS_PER_POST);
 }
 
 export function canCreatePublicThread(parentPermissions: bigint): boolean {

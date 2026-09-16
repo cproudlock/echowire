@@ -179,7 +179,7 @@ export class ChannelDataService {
 		// Echowire: forum tag/sort/reaction edits. New tags (no id) get a server-assigned snowflake;
 		// existing tags keep theirs. The discriminated-union `type` is Omit'd here, so narrow via a cast.
 		const forumData = guildChannelData as {
-			available_tags?: Array<{id?: string; name: string; emoji_name?: string | null}> | null;
+			available_tags?: Array<{id?: string; name: string; emoji_name?: string | null; moderated?: boolean}> | null;
 			default_reaction_emoji?: {emoji_id?: string | null; emoji_name?: string | null} | null;
 			default_sort_order?: number | null;
 			default_auto_archive_duration?: number | null;
@@ -194,6 +194,7 @@ export class ChannelDataService {
 					id: tag.id ?? (await this.snowflakeService.generate()).toString(),
 					name: tag.name,
 					emoji_name: tag.emoji_name ?? null,
+					moderated: tag.moderated ?? false,
 				})),
 			);
 		}

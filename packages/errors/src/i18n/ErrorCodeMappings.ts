@@ -157,6 +157,9 @@ export const ErrorCodeToI18nKey = {
 	[ValidationErrorCodes.INVALID_MESSAGE_DATA]: 'messages.invalid_message_data',
 	[ValidationErrorCodes.FORUM_TAG_INVALID]: 'admin_and_system.invalid_form_body',
 	[ValidationErrorCodes.FORUM_TAG_REQUIRED]: 'admin_and_system.invalid_form_body',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_ALREADY_PRESENT]: 'admin_and_system.invalid_form_body',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_LIMIT_REACHED]: 'admin_and_system.invalid_form_body',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_SOURCE_INVALID]: 'admin_and_system.invalid_form_body',
 	[ValidationErrorCodes.FORWARD_MESSAGES_CANNOT_CONTAIN_CONTENT]:
 		'messages.forward_messages_cannot_include_extra_content',
 	[ValidationErrorCodes.FORWARD_REFERENCE_REQUIRES_CHANNEL_AND_MESSAGE]:
@@ -188,6 +191,7 @@ export const ErrorCodeToI18nKey = {
 	[APIErrorCodes.MAX_GROUP_DM_RECIPIENTS]: 'channels_and_guilds.max_group_dm_recipients_reached',
 	[APIErrorCodes.MAX_GROUP_DMS]: 'channels_and_guilds.max_group_dms_reached',
 	[APIErrorCodes.MAX_ACTIVE_THREADS]: 'channels_and_guilds.max_active_threads_reached',
+	[APIErrorCodes.MAX_THREAD_MEMBERS]: 'channels_and_guilds.max_thread_members_reached',
 	[APIErrorCodes.MAX_GUILD_CHANNELS]: 'channels_and_guilds.max_guild_channels_reached',
 	[APIErrorCodes.MAX_GUILD_MEMBERS]: 'channels_and_guilds.max_guild_members_reached',
 	[APIErrorCodes.MAX_GUILD_ROLES]: 'channels_and_guilds.max_guild_roles_reached',

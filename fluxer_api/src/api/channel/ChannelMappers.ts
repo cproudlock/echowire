@@ -126,6 +126,10 @@ function serializeThreadChannel(channel: Channel, ctx: ContentWarningCtx): Chann
 		rate_limit_per_user: channel.rateLimitPerUser,
 		member_count: channel.memberCount ?? undefined,
 		message_count: channel.messageCount ?? undefined,
+		recent_participant_ids:
+			channel.recentParticipantIds && channel.recentParticipantIds.length > 0
+				? channel.recentParticipantIds
+				: undefined,
 		pinned: channel.pinned ? true : undefined,
 		applied_tags: channel.appliedTags && channel.appliedTags.length > 0 ? channel.appliedTags : undefined,
 		thread_metadata: meta
@@ -149,7 +153,10 @@ function serializeGuildForumChannel(channel: Channel, ctx: ContentWarningCtx): C
 		topic: channel.topic,
 		...serializeContentWarningFields(channel, ctx),
 		rate_limit_per_user: channel.rateLimitPerUser,
-		available_tags: channel.availableTags && channel.availableTags.length > 0 ? channel.availableTags : undefined,
+		available_tags:
+			channel.availableTags && channel.availableTags.length > 0
+				? channel.availableTags.map((tag) => ({...tag, moderated: tag.moderated ?? false}))
+				: undefined,
 		default_reaction_emoji: channel.defaultReactionEmoji ?? undefined,
 		default_sort_order: channel.defaultSortOrder ?? undefined,
 		default_auto_archive_duration: channel.forumDefaultAutoArchiveDuration ?? undefined,

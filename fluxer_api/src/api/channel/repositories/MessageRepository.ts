@@ -53,7 +53,7 @@ export class MessageRepository extends IMessageRepository {
 	async upsertMessage(data: MessageRow, oldData?: MessageRow | null): Promise<Message> {
 		const message = await this.dataRepo.upsertMessage(data, oldData);
 		if (!oldData) {
-			await this.channelDataRepo.updateLastMessageId(data.channel_id, data.message_id);
+			await this.channelDataRepo.updateLastMessageId(data.channel_id, data.message_id, data.author_id ?? null);
 		}
 		return message;
 	}

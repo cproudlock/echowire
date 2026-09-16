@@ -170,6 +170,7 @@
 	"channels_and_guilds.max_guild_members_reached": "You've reached the maximum of {count, plural, one {# community member} other {# community members}}.",
 	"channels_and_guilds.max_guild_roles_reached": "You've reached the maximum of {count, plural, one {# community role} other {# community roles}}.",
 	"channels_and_guilds.max_guilds_reached": "You've reached the maximum of {count, plural, one {# community} other {# communities}}.",
+	"channels_and_guilds.max_thread_members_reached": "This thread has reached the maximum of {count, plural, one {# member} other {# members}}.",
 	"channels_and_guilds.message_history_cutoff_before_guild_creation": "Message history cutoff can't be before the community was created.",
 	"channels_and_guilds.message_history_cutoff_in_future": "Message history cutoff can't be in the future.",
 	"channels_and_guilds.parent_channel_not_in_guild": "Parent channel isn't present in the community.",

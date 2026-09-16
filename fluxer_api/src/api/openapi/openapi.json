@@ -4468,6 +4468,72 @@
 				]
 			}
 		},
+		"/channels/{channel_id}/starter-message/attachments": {
+			"post": {
+				"operationId": "add_attachment_to_starter_message",
+				"summary": "Add an attachment to a forum post",
+				"tags": ["Channels"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ChannelResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Appends an attachment that already exists on a message in this forum post to the post's starter message, where it becomes the post thumbnail. Requires being the post owner or having Manage Threads.",
+				"security": [{"botToken": []}, {"sessionToken": []}],
+				"parameters": [
+					{
+						"name": "channel_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the channel"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {"application/json": {"schema": {"$ref": "#/components/schemas/StarterMessageAttachmentRequest"}}}
+				}
+			}
+		},
 		"/channels/{channel_id}/thread": {
 			"patch": {
 				"operationId": "update_thread",
@@ -25261,6 +25327,13 @@
 						"$ref": "#/components/schemas/Int32Type"
 					},
 					"pinned": {"description": "Whether this forum post / thread is pinned to the top", "type": "boolean"},
+					"recent_participant_ids": {
+						"description": "The most recent distinct message authors in a thread, newest first (up to 5)",
+						"anyOf": [
+							{"type": "array", "items": {"$ref": "#/components/schemas/SnowflakeStringType"}},
+							{"type": "null"}
+						]
+					},
 					"starter_message_preview": {
 						"description": "Preview of the starter message; present on thread list endpoints only",
 						"anyOf": [{"$ref": "#/components/schemas/ThreadStarterMessagePreviewResponse"}, {"type": "null"}]
@@ -29636,8 +29709,28 @@
 						"type": "array",
 						"items": {"$ref": "#/components/schemas/SnowflakeStringType"}
 					},
-					"pinned": {"description": "Whether to pin this forum post to the top (moderators only)", "type": "boolean"}
+					"pinned": {"description": "Whether to pin this forum post to the top (moderators only)", "type": "boolean"},
+					"rate_limit_per_user": {
+						"description": "Slowmode for this thread or forum post in seconds (0-21600)",
+						"type": "integer",
+						"minimum": 0,
+						"maximum": 21600
+					}
 				}
+			},
+			"StarterMessageAttachmentRequest": {
+				"type": "object",
+				"properties": {
+					"message_id": {
+						"description": "A message in this post that carries the attachment",
+						"$ref": "#/components/schemas/SnowflakeStringType"
+					},
+					"attachment_id": {
+						"description": "The attachment to append to the starter message",
+						"$ref": "#/components/schemas/SnowflakeStringType"
+					}
+				},
+				"required": ["message_id", "attachment_id"]
 			},
 			"ChannelSlowmodeStateResponse": {
 				"type": "object",
@@ -31717,7 +31810,11 @@
 						"$ref": "#/components/schemas/SnowflakeStringType"
 					},
 					"name": {"description": "Tag name (1-20 characters)", "type": "string"},
-					"emoji_name": {"description": "Optional emoji for the tag", "anyOf": [{"type": "string"}, {"type": "null"}]}
+					"emoji_name": {"description": "Optional emoji for the tag", "anyOf": [{"type": "string"}, {"type": "null"}]},
+					"moderated": {
+						"description": "Restrict applying and removing this tag to members who can moderate threads",
+						"type": "boolean"
+					}
 				},
 				"required": ["name"]
 			},
@@ -35100,9 +35197,13 @@
 					"emoji_name": {
 						"anyOf": [{"type": "string"}, {"type": "null"}],
 						"description": "The emoji associated with this tag, or null"
+					},
+					"moderated": {
+						"type": "boolean",
+						"description": "Whether only members who can moderate threads may apply or remove this tag"
 					}
 				},
-				"required": ["id", "name", "emoji_name"],
+				"required": ["id", "name", "emoji_name", "moderated"],
 				"additionalProperties": false
 			},
 			"ThreadStarterMessagePreviewResponse": {

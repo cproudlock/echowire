@@ -263,15 +263,13 @@ const RpcTimingTraceSpan: z.ZodType<RpcTimingTraceSpan> = z.lazy(() =>
 
 // Echowire: one thread membership as the gateway receives it. The guild is carried so the gateway
 // can group memberships per guild for THREAD_LIST_SYNC without loading channels.
-export const RpcThreadMembership = z.object({
+const RpcThreadMembership = z.object({
 	id: SnowflakeStringType.describe('The thread ID'),
 	guild_id: SnowflakeStringType.nullable().describe('The guild the thread belongs to, when known'),
 	user_id: SnowflakeStringType.describe('The member, always the authenticated user'),
 	join_timestamp: z.string().describe('ISO 8601 timestamp of when the user joined'),
 	flags: z.number().int().describe('Membership flags'),
 });
-
-export type RpcThreadMembership = z.infer<typeof RpcThreadMembership>;
 
 export const RpcSessionTimings = z.object({
 	unit: z.literal('microseconds').describe('Timing unit for every duration in this object'),

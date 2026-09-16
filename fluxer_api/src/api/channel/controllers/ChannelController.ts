@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {requireSudoMode} from '@app/api/auth/services/SudoVerificationService';
-import {createChannelID, createUserID} from '@app/api/BrandedTypes';
+import {createAttachmentID, createChannelID, createMessageID, createUserID} from '@app/api/BrandedTypes';
 import {DefaultUserOnly, LoginRequired} from '@app/api/middleware/AuthMiddleware';
 import {GroupDmRecipientAddProtectionMiddleware} from '@app/api/middleware/GroupDmProtectionMiddleware';
 import {RateLimitMiddleware} from '@app/api/middleware/RateLimitMiddleware';
@@ -18,6 +18,7 @@ import {
 	ChannelUpdateRequestBody,
 	DeleteChannelQuery,
 	PermissionOverwriteCreateRequest,
+	StarterMessageAttachmentRequest,
 	ThreadCreateRequest,
 	ThreadsQuery,
 	ThreadUpdateRequest,
@@ -124,6 +125,38 @@ export function ChannelController(app: HonoApp) {
 			const requestCache = ctx.get('requestCache');
 			return ctx.json(
 				await ctx.get('guildService').channels.updateThread({userId, threadChannelId, data, requestCache}),
+			);
+		},
+	);
+	// Echowire: "add to post" - append an attachment from a reply to the post's starter message.
+	app.post(
+		'/channels/:channel_id/starter-message/attachments',
+		RateLimitMiddleware(RateLimitConfigs.THREAD_STARTER_ATTACHMENT),
+		LoginRequired,
+		Validator('param', ChannelIdParam),
+		Validator('json', StarterMessageAttachmentRequest),
+		OpenAPI({
+			operationId: 'add_attachment_to_starter_message',
+			summary: 'Add an attachment to a forum post',
+			description:
+				"Appends an attachment that already exists on a message in this forum post to the post's starter message, where it becomes the post thumbnail. Requires being the post owner or having Manage Threads.",
+			responseSchema: ChannelResponse,
+			statusCode: 200,
+			security: ['botToken', 'bearerToken', 'sessionToken'],
+			tags: 'Channels',
+		}),
+		async (ctx) => {
+			const userId = ctx.get('user').id;
+			const threadChannelId = createChannelID(ctx.req.valid('param').channel_id);
+			const body = ctx.req.valid('json');
+			return ctx.json(
+				await ctx.get('guildService').channels.addAttachmentToStarterMessage({
+					userId,
+					threadChannelId,
+					sourceMessageId: createMessageID(BigInt(body.message_id)),
+					attachmentId: createAttachmentID(BigInt(body.attachment_id)),
+					requestCache: ctx.get('requestCache'),
+				}),
 			);
 		},
 	);

@@ -115,6 +115,10 @@ export const ChannelRateLimitConfigs = {
 		bucket: 'channel:thread:member:remove::channel_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},
 	} as RouteRateLimitConfig,
+	THREAD_STARTER_ATTACHMENT: {
+		bucket: 'channel:thread:starter:attachment::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
 	THREAD_MEMBER_GET: {
 		bucket: 'channel:thread:member:get::channel_id',
 		config: {limit: 40, windowMs: ms('10 seconds')},

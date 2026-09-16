@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {AttachmentDecayService} from '@app/api/attachment/AttachmentDecayService';
 import {
+	type AttachmentID,
 	type ChannelID,
 	createChannelID,
 	createMessageID,
@@ -17,6 +19,7 @@ import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {countCapacityChannels} from '@app/api/channel/services/ChannelCapacity';
+import {dispatchMessageUpdateBroadcast} from '@app/api/channel/services/message/MessageGatewayDispatch';
 import {makeAttachmentCdnUrl, purgeMessageAttachments} from '@app/api/channel/services/message/MessageHelpers';
 import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
 import {
@@ -29,10 +32,12 @@ import {
 	getThreadParentPermissions,
 	hasPermissionBits,
 	permissionChannelId,
+	resolveAppliedTags,
 	withPrivateThreadMemberIds,
 } from '@app/api/channel/services/ThreadAccess';
 import {purgeThread} from '@app/api/channel/services/ThreadPurge';
 import type {PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
+import type {MessageRow} from '@app/api/database/types/MessageTypes';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@app/api/guild/GuildAuditLogTypes';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
@@ -56,13 +61,16 @@ import {ContentWarningLevel, GuildFeatures, resolveVoiceChannelBitrate} from '@f
 import {
 	MAX_ACTIVE_THREADS_PER_CHANNEL,
 	MAX_ACTIVE_THREADS_PER_GUILD,
+	MAX_ATTACHMENTS_PER_MESSAGE,
 	MAX_CHANNELS_PER_CATEGORY,
 	MAX_GUILD_CHANNELS,
+	MAX_THREAD_MEMBERS,
 	VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT,
 } from '@fluxer/constants/src/LimitConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {MaxActiveThreadsError} from '@fluxer/errors/src/domains/channel/MaxActiveThreadsError';
 import {MaxCategoryChannelsError} from '@fluxer/errors/src/domains/channel/MaxCategoryChannelsError';
+import {MaxThreadMembersError} from '@fluxer/errors/src/domains/channel/MaxThreadMembersError';
 import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
 import {UnknownMessageError} from '@fluxer/errors/src/domains/channel/UnknownMessageError';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
@@ -122,6 +130,7 @@ export class ChannelOperationsService {
 	) {}
 
 	private readonly threadMemberRepository = new ThreadMemberRepository();
+	private readonly attachmentDecayService = new AttachmentDecayService();
 
 	async createChannel(
 		params: {
@@ -213,7 +222,8 @@ export class ChannelOperationsService {
 		const channelId = createChannelID(await this.snowflakeService.generate());
 		// Echowire: forum channels carry available_tags (each tag gets a server-assigned snowflake id),
 		// a default reaction, and a default sort order.
-		let forumAvailableTags: Array<{id: string; name: string; emoji_name: string | null}> | null = null;
+		let forumAvailableTags: Array<{id: string; name: string; emoji_name: string | null; moderated: boolean}> | null =
+			null;
 		let forumDefaultReaction: {emoji_id: string | null; emoji_name: string | null} | null = null;
 		let forumDefaultSortOrder: number | null = null;
 		let forumDefaultAutoArchive: number | null = null;
@@ -227,6 +237,7 @@ export class ChannelOperationsService {
 					id: tag.id ?? (await this.snowflakeService.generate()).toString(),
 					name: tag.name,
 					emoji_name: tag.emoji_name ?? null,
+					moderated: tag.moderated ?? false,
 				})),
 			);
 			forumDefaultReaction = params.data.default_reaction_emoji
@@ -354,6 +365,14 @@ export class ChannelOperationsService {
 			if (!params.data.applied_tags.every((tagId) => validTagIds.has(tagId))) {
 				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
 			}
+			// Echowire: a moderated tag needs MANAGE_THREADS. A new post has none applied yet, so this
+			// rejects rather than preserves.
+			resolveAppliedTags({
+				requested: params.data.applied_tags,
+				current: [],
+				availableTags: parent.availableTags,
+				canModerate: canModerateThreads(parentPermissions),
+			});
 		}
 		// Echowire: a forum that requires a tag rejects tagless posts.
 		if (
@@ -651,19 +670,141 @@ export class ChannelOperationsService {
 
 	// Echowire: a thread started from a message shares that message's id and its starter lives in the
 	// parent; any other thread (every forum post) uses its own first message.
+	// Echowire: a thread started from a message shares that message's id and its starter lives in the
+	// parent; any other thread (every forum post) uses its own first message.
+	private async resolveStarterMessage(thread: Channel): Promise<Message | null> {
+		const threadIdAsMessage = createMessageID(BigInt(thread.id));
+		const fromParent = thread.parentId
+			? await this.channelRepository.getMessage(thread.parentId, threadIdAsMessage)
+			: null;
+		if (fromParent) {
+			return fromParent;
+		}
+		const [first] = await this.channelRepository.listMessages(thread.id, undefined, 1, threadIdAsMessage);
+		return first ?? null;
+	}
+
+	// Echowire: "add to post". The author of a forum post replies with media and then appends that
+	// media to the post's starter message, where it becomes the card thumbnail. Nothing is uploaded:
+	// the attachment already exists, and its CDN key is derived from the channel and the attachment
+	// id, so one blob serves both messages.
+	async addAttachmentToStarterMessage(params: {
+		userId: UserID;
+		threadChannelId: ChannelID;
+		sourceMessageId: MessageID;
+		attachmentId: AttachmentID;
+		requestCache: RequestCache;
+	}): Promise<ChannelResponse> {
+		const thread = await this.channelRepository.findUnique(params.threadChannelId);
+		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
+			throw new UnknownChannelError();
+		}
+		const parent = thread.parentId ? await this.channelRepository.findUnique(thread.parentId) : null;
+		if (!parent || parent.type !== ChannelTypes.GUILD_FORUM) {
+			throw new UnknownChannelError();
+		}
+		const parentPermissions = await getThreadParentPermissions({
+			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
+			guildId: thread.guildId,
+			channel: thread,
+			userId: params.userId,
+		});
+		const canView = await canViewThread({
+			gatewayService: this.gatewayService,
+			channelRepository: this.channelRepository,
+			threadMemberRepository: this.threadMemberRepository,
+			guildId: thread.guildId,
+			channel: thread,
+			userId: params.userId,
+			parentPermissions,
+		});
+		if (!canView) {
+			throw new MissingPermissionsError();
+		}
+		if (thread.ownerId !== params.userId && !canModerateThreads(parentPermissions)) {
+			throw new MissingPermissionsError();
+		}
+		const source = await this.channelRepository.getMessage(thread.id, params.sourceMessageId);
+		if (!source) {
+			throw new UnknownMessageError();
+		}
+		const starter = await this.resolveStarterMessage(thread);
+		if (!starter) {
+			throw new UnknownMessageError();
+		}
+		if (starter.id === source.id) {
+			throw InputValidationError.fromCode('message_id', ValidationErrorCodes.STARTER_ATTACHMENT_SOURCE_INVALID);
+		}
+		const sourceRow = source.toRow();
+		const attachment = (sourceRow.attachments ?? []).find((entry) => entry.attachment_id === params.attachmentId);
+		if (!attachment) {
+			throw InputValidationError.fromCode('attachment_id', ValidationErrorCodes.ATTACHMENT_ID_NOT_FOUND_IN_MESSAGE);
+		}
+		const starterRow = starter.toRow();
+		const existing = starterRow.attachments ?? [];
+		if (existing.some((entry) => entry.attachment_id === params.attachmentId)) {
+			throw InputValidationError.fromCode('attachment_id', ValidationErrorCodes.STARTER_ATTACHMENT_ALREADY_PRESENT);
+		}
+		const guild = await this.guildRepository.findUnique(thread.guildId);
+		const maxAttachments = resolveLimitSafe(
+			this.limitConfigService.getConfigSnapshot(),
+			createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null}),
+			'max_attachments_per_message',
+			MAX_ATTACHMENTS_PER_MESSAGE,
+		);
+		if (existing.length >= maxAttachments) {
+			throw InputValidationError.fromCode('attachment_id', ValidationErrorCodes.STARTER_ATTACHMENT_LIMIT_REACHED);
+		}
+		const hadThumbnail = existing.length > 0;
+		const updatedRow: MessageRow = {...starterRow, attachments: [...existing, attachment]};
+		const updated = await this.channelRepository.messages.upsertMessage(updatedRow, starterRow);
+		// Echowire: point the attachment's decay record at the starter message, so when attachment
+		// decay is enabled the blob's lifetime follows the post rather than the reply.
+		await this.attachmentDecayService.upsertMany([
+			{
+				attachmentId: attachment.attachment_id,
+				channelId: thread.id,
+				messageId: starter.id,
+				filename: attachment.filename,
+				sizeBytes: attachment.size,
+				uploadedAt: new Date(),
+			},
+		]);
+		await dispatchMessageUpdateBroadcast({
+			gatewayService: this.gatewayService,
+			channel: thread,
+			message: updated,
+		});
+		const response = await mapChannelToResponse({
+			channel: thread,
+			currentUserId: null,
+			userCacheService: this.userCacheService,
+			requestCache: params.requestCache,
+		});
+		response.starter_message_preview = await this.buildStarterMessagePreview(thread, params.requestCache);
+		// Echowire: only a starter that had no attachment gains a thumbnail, so only then does the
+		// forum card change and only then is a THREAD_UPDATE worth dispatching.
+		if (!hadThumbnail) {
+			await this.gatewayService.dispatchGuild({
+				guildId: thread.guildId,
+				event: 'THREAD_UPDATE',
+				data: await withPrivateThreadMemberIds({
+					channel: thread,
+					response,
+					threadMemberRepository: this.threadMemberRepository,
+				}),
+			});
+		}
+		return response;
+	}
+
 	private async buildStarterMessagePreview(
 		thread: Channel,
 		requestCache: RequestCache,
 	): Promise<ThreadStarterMessagePreviewResponse | null> {
 		try {
-			const threadIdAsMessage = createMessageID(BigInt(thread.id));
-			let message: Message | null = thread.parentId
-				? await this.channelRepository.getMessage(thread.parentId, threadIdAsMessage)
-				: null;
-			if (!message) {
-				const [first] = await this.channelRepository.listMessages(thread.id, undefined, 1, threadIdAsMessage);
-				message = first ?? null;
-			}
+			const message = await this.resolveStarterMessage(thread);
 			if (!message) {
 				return null;
 			}
@@ -773,7 +914,13 @@ export class ChannelOperationsService {
 				// tags on an existing post must not be a way around it.
 				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
 			}
-			appliedTags = data.applied_tags.length > 0 ? data.applied_tags : null;
+			const effectiveTags = resolveAppliedTags({
+				requested: data.applied_tags,
+				current: row.applied_tags ?? [],
+				availableTags: parent?.availableTags ?? null,
+				canModerate: isModerator,
+			});
+			appliedTags = effectiveTags.length > 0 ? effectiveTags : null;
 		}
 		const archivedChanged = data.archived !== undefined && data.archived !== row.thread_archived;
 		// Echowire: write only the fields this request changes. Upserting the whole row read above
@@ -788,6 +935,7 @@ export class ChannelOperationsService {
 			thread_archive_timestamp: archivedChanged ? new Date() : undefined,
 			thread_pinned: data.pinned,
 			applied_tags: data.applied_tags !== undefined ? appliedTags : undefined,
+			rate_limit_per_user: data.rate_limit_per_user,
 		});
 		const channel = await this.channelRepository.findUnique(thread.id);
 		if (!channel) {
@@ -892,6 +1040,25 @@ export class ChannelOperationsService {
 		});
 	}
 
+	// Echowire: a thread or forum post holds a bounded member list. Every member of a private thread
+	// is carried to the gateway so it can scope that thread's events, so the list cannot grow without
+	// limit. The creator is added as part of creating the thread and is never refused.
+	private async ensureThreadMemberCapacity(thread: Channel): Promise<void> {
+		const guild = thread.guildId ? await this.guildRepository.findUnique(thread.guildId) : null;
+		const ctx = createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null});
+		const maxMembers = resolveLimitSafe(
+			this.limitConfigService.getConfigSnapshot(),
+			ctx,
+			'max_thread_members',
+			MAX_THREAD_MEMBERS,
+			'guild',
+		);
+		const members = await this.threadMemberRepository.listMembers(thread.id);
+		if (members.length >= maxMembers) {
+			throw new MaxThreadMembersError(maxMembers);
+		}
+	}
+
 	// Echowire: recompute member_count from the membership table and persist it on the thread.
 	private async syncThreadMemberCount(threadChannelId: ChannelID): Promise<number> {
 		const thread = await this.channelRepository.findUnique(threadChannelId);
@@ -925,6 +1092,7 @@ export class ChannelOperationsService {
 		if (existing) {
 			return;
 		}
+		await this.ensureThreadMemberCapacity(thread);
 		// Echowire: nobody adds themselves to a private thread. Its owner, a thread moderator, or any
 		// member when the thread is invitable, adds them through PUT .../thread-members/{user_id}.
 		if (thread.type === ChannelTypes.PRIVATE_THREAD && !canModerateThreads(parentPermissions)) {
@@ -1063,6 +1231,7 @@ export class ChannelOperationsService {
 		if (await this.threadMemberRepository.getMember(thread.id, params.targetUserId)) {
 			return;
 		}
+		await this.ensureThreadMemberCapacity(thread);
 		const member = await this.threadMemberRepository.addMember(thread.id, params.targetUserId);
 		const count = await this.syncThreadMemberCount(thread.id);
 		await this.gatewayService.dispatchGuild({

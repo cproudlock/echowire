@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type {ChannelID, GuildID, UserID} from '@app/api/BrandedTypes';
+import type {AttachmentID, ChannelID, GuildID, MessageID, UserID} from '@app/api/BrandedTypes';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
@@ -157,6 +157,17 @@ export class GuildChannelService {
 		requestCache: RequestCache;
 	}): Promise<ChannelResponse> {
 		return this.channelOps.updateThread(params);
+	}
+
+	// Echowire: add to post - append an attachment from a reply to the starter message of a post.
+	async addAttachmentToStarterMessage(params: {
+		userId: UserID;
+		threadChannelId: ChannelID;
+		sourceMessageId: MessageID;
+		attachmentId: AttachmentID;
+		requestCache: RequestCache;
+	}): Promise<ChannelResponse> {
+		return this.channelOps.addAttachmentToStarterMessage(params);
 	}
 
 	// Echowire: delete a thread.

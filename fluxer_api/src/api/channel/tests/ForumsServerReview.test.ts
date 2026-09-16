@@ -5,7 +5,11 @@
 
 import {type ChannelID, createChannelID, createMessageID} from '@app/api/BrandedTypes';
 import {ChannelDataRepository} from '@app/api/channel/repositories/ChannelDataRepository';
-import {createPermissionOverwrite, setupTestGuildWithMembers} from '@app/api/channel/tests/ChannelTestUtils';
+import {
+	allowPrivateThreads,
+	createPermissionOverwrite,
+	setupTestGuildWithMembers,
+} from '@app/api/channel/tests/ChannelTestUtils';
 import {ensureSessionStarted, sendMessage} from '@app/api/message/tests/MessageTestUtils';
 import type {Channel} from '@app/api/models/Channel';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
@@ -232,7 +236,8 @@ describe('Forums server review fixes', () => {
 	});
 
 	test('THREAD_DELETE for a private thread tells the gateway who its members were', async () => {
-		const {members, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator] = members;
 		const thread = await createThread(harness, creator.token, systemChannel.id, {
 			name: 'short lived',

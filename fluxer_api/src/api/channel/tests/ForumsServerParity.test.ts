@@ -7,6 +7,7 @@ import {createChannelID} from '@app/api/BrandedTypes';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {
 	addMemberRole,
+	allowPrivateThreads,
 	createChannel,
 	createPermissionOverwrite,
 	createRole,
@@ -289,6 +290,7 @@ describe('Forum and thread server parity', () => {
 
 	test('guild active threads list follows access rules and returns the caller memberships', async () => {
 		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator, outsider] = members;
 		const publicThread = await createThread(harness, creator.token, systemChannel.id, {name: 'public'});
 		const privateThread = await createThread(harness, creator.token, systemChannel.id, {
@@ -333,7 +335,8 @@ describe('Forum and thread server parity', () => {
 	});
 
 	test('private thread payloads to the gateway carry member ids', async () => {
-		const {members, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator] = members;
 		const privateThread = await createThread(harness, creator.token, systemChannel.id, {
 			name: 'secret',

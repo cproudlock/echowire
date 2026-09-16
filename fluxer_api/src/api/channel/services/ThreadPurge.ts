@@ -41,6 +41,19 @@ export async function buildThreadDeletePayload(
 	return data;
 }
 
+// Echowire: membership rows are partitioned by thread, so they have to be removed alongside the
+// threads they belong to. Used when a whole guild goes.
+export async function removeThreadMembershipsForChannels(
+	channels: ReadonlyArray<Pick<Channel, 'id' | 'type'>>,
+	threadMemberRepository: ThreadMemberRepository,
+): Promise<void> {
+	await Promise.all(
+		channels
+			.filter((channel) => THREAD_CHANNEL_TYPES.has(channel.type))
+			.map((channel) => threadMemberRepository.removeAllMembers(channel.id)),
+	);
+}
+
 export async function purgeThread(params: {
 	thread: Channel;
 	guildId: GuildID;

@@ -71,10 +71,17 @@ const CHANNEL_SCOPED_ROUTES: ReadonlyArray<{name: string; path: string; config: 
 		path: '/channels/:channel_id/thread-members/@me',
 		config: RateLimitConfigs.THREAD_MEMBER_LEAVE,
 	},
-	{name: 'list thread members', path: '/channels/:channel_id/thread-members', config: RateLimitConfigs.THREAD_MEMBER_LIST},
+	{
+		name: 'list thread members',
+		path: '/channels/:channel_id/thread-members',
+		config: RateLimitConfigs.THREAD_MEMBER_LIST,
+	},
 ];
 
-function buildApp(path: string, config: RouteRateLimitConfig): {app: Hono<HonoEnv>; service: RecordingRateLimitService} {
+function buildApp(
+	path: string,
+	config: RouteRateLimitConfig,
+): {app: Hono<HonoEnv>; service: RecordingRateLimitService} {
 	const service = new RecordingRateLimitService();
 	const app = new Hono<HonoEnv>({strict: true});
 	app.use('*', async (ctx, next) => {

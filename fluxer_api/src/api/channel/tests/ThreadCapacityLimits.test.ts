@@ -23,7 +23,12 @@ async function setLimits(limits: Partial<Record<LimitKey, number>>): Promise<voi
 	});
 }
 
-async function createForum(harness: ApiTestHarness, token: string, guildId: string, name = 'forum'): Promise<ChannelResponse> {
+async function createForum(
+	harness: ApiTestHarness,
+	token: string,
+	guildId: string,
+	name = 'forum',
+): Promise<ChannelResponse> {
 	return createBuilder<ChannelResponse>(harness, token)
 		.post(`/guilds/${guildId}/channels`)
 		.body({name, type: ChannelTypes.GUILD_FORUM})

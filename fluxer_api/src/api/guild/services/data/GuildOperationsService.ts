@@ -11,6 +11,8 @@ import {
 	type UserID,
 } from '@app/api/BrandedTypes';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
+import {removeThreadMembershipsForChannels} from '@app/api/channel/services/ThreadPurge';
 import type {ChannelService} from '@app/api/channel/services/ChannelService';
 import {BatchBuilder} from '@app/api/database/CassandraQueryExecution';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
@@ -767,6 +769,9 @@ export class GuildOperationsService {
 			channels.map((channel) => deleteChannelMessageSearchDocuments(channel.id, {context: {source: 'guild_delete'}})),
 		);
 		await Promise.all(channels.map((channel) => this.channelService.attachments.purgeChannelAttachments(channel)));
+		// Echowire: thread membership rows are partitioned by thread, so deleting the guild's channels
+		// leaves them orphaned unless they go with the threads they belong to.
+		await removeThreadMembershipsForChannels(channels, new ThreadMemberRepository());
 		const discoveryRow = await this.discoveryRepository.findByGuildId(guildId);
 		if (discoveryRow) {
 			await this.discoveryRepository.deleteByGuildId(guildId, discoveryRow.status, discoveryRow.applied_at);

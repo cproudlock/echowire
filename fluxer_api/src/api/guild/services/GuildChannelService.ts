@@ -175,7 +175,7 @@ export class GuildChannelService {
 	async listThreadMembers(params: {
 		threadChannelId: ChannelID;
 		userId: UserID;
-	}): Promise<Array<{user_id: string; join_timestamp: string; flags: number}>> {
+	}): Promise<Array<{id: string; user_id: string; join_timestamp: string; flags: number}>> {
 		return this.channelOps.listThreadMembers(params);
 	}
 

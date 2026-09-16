@@ -744,8 +744,8 @@ export class ChannelOperationsService {
 		// Echowire: editing a forum post's tags — validate against the parent forum's available_tags.
 		let appliedTags = row.applied_tags;
 		if (data.applied_tags !== undefined) {
+			const parent = thread.parentId ? await this.channelRepository.findUnique(thread.parentId) : null;
 			if (data.applied_tags.length > 0) {
-				const parent = thread.parentId ? await this.channelRepository.findUnique(thread.parentId) : null;
 				if (!parent || parent.type !== ChannelTypes.GUILD_FORUM) {
 					throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
 				}
@@ -753,6 +753,10 @@ export class ChannelOperationsService {
 				if (!data.applied_tags.every((tagId) => validTagIds.has(tagId))) {
 					throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
 				}
+			} else if (parent?.type === ChannelTypes.GUILD_FORUM && parent.forumRequireTag) {
+				// Echowire: a forum that requires a tag rejects tagless posts on create, so clearing the
+				// tags on an existing post must not be a way around it.
+				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
 			}
 			appliedTags = data.applied_tags.length > 0 ? data.applied_tags : null;
 		}
@@ -962,7 +966,7 @@ export class ChannelOperationsService {
 	async listThreadMembers(params: {
 		threadChannelId: ChannelID;
 		userId: UserID;
-	}): Promise<Array<{user_id: string; join_timestamp: string; flags: number}>> {
+	}): Promise<Array<{id: string; user_id: string; join_timestamp: string; flags: number}>> {
 		const thread = await this.channelRepository.findUnique(params.threadChannelId);
 		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
 			throw new UnknownChannelError();
@@ -980,6 +984,7 @@ export class ChannelOperationsService {
 		}
 		const members = await this.threadMemberRepository.listMembers(params.threadChannelId);
 		return members.map((member) => ({
+			id: thread.id.toString(),
 			user_id: member.userId.toString(),
 			join_timestamp: member.joinTimestamp.toISOString(),
 			flags: member.flags,

@@ -341,7 +341,8 @@ describe('Forum and thread server parity', () => {
 		});
 		const [created] = dispatchesFor('THREAD_CREATE', privateThread.id);
 		expect(created?.thread_member_ids).toEqual([creator.userId]);
-		expect(privateThread.thread_member_ids).toBeUndefined();
+		// thread_member_ids is gateway-internal and not part of the public schema.
+		expect((privateThread as Record<string, unknown>).thread_member_ids).toBeUndefined();
 
 		const publicThread = await createThread(harness, creator.token, systemChannel.id, {name: 'open'});
 		const [publicCreated] = dispatchesFor('THREAD_CREATE', publicThread.id);

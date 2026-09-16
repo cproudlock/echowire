@@ -25059,11 +25059,6 @@
 						"description": "Approximate count of members in the thread (threads only)",
 						"$ref": "#/components/schemas/Int32Type"
 					},
-					"thread_member_ids": {
-						"description": "Member IDs of a private thread, so the gateway can deliver its events to members",
-						"type": "array",
-						"items": {"$ref": "#/components/schemas/SnowflakeStringType"}
-					},
 					"message_count": {
 						"description": "Approximate count of messages in the thread (threads only)",
 						"$ref": "#/components/schemas/Int32Type"
@@ -33082,11 +33077,12 @@
 			"ThreadMemberResponse": {
 				"type": "object",
 				"properties": {
+					"id": {"description": "The ID of the thread", "$ref": "#/components/schemas/SnowflakeStringType"},
 					"user_id": {"type": "string", "description": "ID of the member"},
 					"join_timestamp": {"type": "string", "description": "When the member joined the thread"},
 					"flags": {"type": "number", "description": "Thread member flags"}
 				},
-				"required": ["user_id", "join_timestamp", "flags"],
+				"required": ["id", "user_id", "join_timestamp", "flags"],
 				"additionalProperties": false
 			},
 			"DiscoveryCategoryResponse": {

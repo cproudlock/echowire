@@ -9,7 +9,7 @@ import {
 	privateChannelLastMessageIdPatch,
 	privateChannelMetadataPatch,
 } from '@app/api/channel/PrivateChannelSnapshot';
-import {type ChannelRow, NULL_THREAD_FIELDS, type PrivateChannelRow} from '@app/api/database/types/ChannelTypes';
+import {type ChannelRow, type PrivateChannelRow} from '@app/api/database/types/ChannelTypes';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {describe, expect, test} from 'vitest';
 
@@ -44,7 +44,6 @@ function gdmRow(overrides: Partial<ChannelRow> = {}): ChannelRow {
 		last_pin_timestamp: null,
 		permission_overwrites: null,
 		nicks: new Map([['2', 'Al']]),
-		...NULL_THREAD_FIELDS,
 		soft_deleted: false,
 		indexed_at: null,
 		version: 7,

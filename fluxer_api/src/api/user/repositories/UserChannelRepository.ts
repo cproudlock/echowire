@@ -17,7 +17,6 @@ import {Db} from '@app/api/database/CassandraTypes';
 import {
 	type ChannelRow,
 	type DmStateRow,
-	NULL_THREAD_FIELDS,
 	type PrivateChannelRow,
 } from '@app/api/database/types/ChannelTypes';
 import {Logger} from '@app/api/Logger';
@@ -165,7 +164,6 @@ function buildDmChannelRow({
 		last_pin_timestamp: null,
 		permission_overwrites: null,
 		nicks: null,
-		...NULL_THREAD_FIELDS,
 		soft_deleted: false,
 		indexed_at: null,
 		version: 1,

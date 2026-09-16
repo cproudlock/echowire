@@ -32,7 +32,7 @@ import {
 	withPrivateThreadMemberIds,
 } from '@app/api/channel/services/ThreadAccess';
 import {purgeThread} from '@app/api/channel/services/ThreadPurge';
-import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
+import type {PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@app/api/guild/GuildAuditLogTypes';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
@@ -271,7 +271,6 @@ export class ChannelOperationsService {
 			last_pin_timestamp: null,
 			permission_overwrites: permissionOverwrites,
 			nicks: null,
-			...NULL_THREAD_FIELDS,
 			available_tags: forumAvailableTags,
 			default_reaction_emoji: forumDefaultReaction,
 			default_sort_order: forumDefaultSortOrder,

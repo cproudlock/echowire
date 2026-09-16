@@ -24,6 +24,9 @@ export interface ForumTag {
 	id: string;
 	name: string;
 	emoji_name: Nullish<string>;
+	// Echowire: a moderated tag may only be applied or removed by a member who can moderate
+	// threads. Tags stored before this field existed read as null, which means not moderated.
+	moderated: Nullish<boolean>;
 }
 export interface DefaultReactionEmoji {
 	emoji_id: Nullish<string>;
@@ -44,6 +47,7 @@ const THREAD_METADATA_COLUMNS = [
 	'thread_create_timestamp',
 	'thread_member_count',
 	'thread_message_count',
+	'thread_recent_participant_ids',
 	'thread_pinned',
 	'available_tags',
 	'applied_tags',
@@ -102,6 +106,10 @@ export interface ChannelRow {
 	thread_create_timestamp?: Nullish<Date>;
 	thread_member_count?: Nullish<number>;
 	thread_message_count?: Nullish<number>;
+	// Echowire: the last few distinct message authors, most recent first, written in the same patch
+	// that advances last_message_id. A rolling window for participant avatars on forum cards, not a
+	// membership list and not a complete author list.
+	thread_recent_participant_ids?: Nullish<Array<string>>;
 	thread_pinned?: Nullish<boolean>;
 	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order are set on
 	// GUILD_FORUM channels; applied_tags is set on threads (forum posts). Optional, as above.
@@ -209,6 +217,7 @@ export const CHANNEL_COLUMNS = [
 	'thread_create_timestamp',
 	'thread_member_count',
 	'thread_message_count',
+	'thread_recent_participant_ids',
 	'thread_pinned',
 	'available_tags',
 	'applied_tags',

@@ -49,6 +49,7 @@ export class Channel {
 	readonly threadMetadata: ThreadMetadata | null;
 	readonly memberCount: number | null;
 	readonly messageCount: number | null;
+	readonly recentParticipantIds: Array<string> | null;
 	// Echowire forum fields: tags live on the forum channel; appliedTags on its threads (posts).
 	readonly availableTags: Array<ForumTag> | null;
 	readonly appliedTags: Array<string> | null;
@@ -107,6 +108,7 @@ export class Channel {
 			: null;
 		this.memberCount = this.threadMetadata ? (row.thread_member_count ?? 0) : null;
 		this.messageCount = this.threadMetadata ? (row.thread_message_count ?? 0) : null;
+		this.recentParticipantIds = this.threadMetadata ? (row.thread_recent_participant_ids ?? []) : null;
 		this.availableTags = this.type === ChannelTypes.GUILD_FORUM ? (row.available_tags ?? []) : null;
 		this.appliedTags = this.threadMetadata ? (row.applied_tags ?? []) : null;
 		this.defaultReactionEmoji = this.type === ChannelTypes.GUILD_FORUM ? (row.default_reaction_emoji ?? null) : null;
@@ -165,6 +167,7 @@ export class Channel {
 			thread_create_timestamp: this.threadMetadata?.createTimestamp ?? null,
 			thread_member_count: this.memberCount ?? null,
 			thread_message_count: this.messageCount ?? null,
+			thread_recent_participant_ids: this.recentParticipantIds ?? null,
 			thread_pinned: this.threadMetadata ? this.pinned : null,
 			available_tags: this.availableTags ?? null,
 			applied_tags: this.appliedTags ?? null,

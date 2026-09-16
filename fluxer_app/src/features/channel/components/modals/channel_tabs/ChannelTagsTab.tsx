@@ -7,6 +7,7 @@
 import * as ChannelCommands from '@app/features/channel/commands/ChannelCommands';
 import styles from '@app/features/channel/components/modals/channel_tabs/ChannelTagsTab.module.css';
 import Channels from '@app/features/channel/state/Channels';
+import {supportsModeratedTags} from '@app/features/channel/utils/ForumPaneUtils';
 import {
 	ForumLayout,
 	ForumSortOrder,
@@ -26,6 +27,8 @@ interface EditableTag {
 	id?: string;
 	name: string;
 	emojiName: string | null;
+	// null on a server that does not report moderated tags, in which case the column is hidden.
+	moderated: boolean | null;
 }
 
 const MAX_TAGS = 20;
@@ -56,11 +59,18 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 	const [layout, setLayout] = useState<number>(resolveForumLayout(channel?.defaultForumLayout));
 	const [postSlowmode, setPostSlowmode] = useState<number>(channel?.defaultThreadRateLimitPerUser ?? 0);
 	const [tags, setTags] = useState<Array<EditableTag>>(() =>
-		(channel?.availableTags ?? []).map((tag) => ({id: tag.id, name: tag.name, emojiName: tag.emojiName})),
+		(channel?.availableTags ?? []).map((tag) => ({
+			id: tag.id,
+			name: tag.name,
+			emojiName: tag.emojiName,
+			moderated: tag.moderated,
+		})),
 	);
 	const [requireTag, setRequireTag] = useState(channel?.forumRequireTag ?? false);
 	const [defaultDuration, setDefaultDuration] = useState<number>(channel?.forumDefaultAutoArchiveDuration ?? 4320);
 	const [saving, setSaving] = useState(false);
+	// Echowire: moderated tags exist only where the server reports the field on its tags.
+	const moderatedTagsSupported = supportsModeratedTags(channel?.availableTags ?? []);
 
 	if (!channel) {
 		return null;
@@ -71,7 +81,7 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 	};
 	const addTag = () => {
 		if (tags.length >= MAX_TAGS) return;
-		setTags((prev) => [...prev, {name: '', emojiName: null}]);
+		setTags((prev) => [...prev, {name: '', emojiName: null, moderated: moderatedTagsSupported ? false : null}]);
 	};
 	const removeTag = (index: number) => {
 		setTags((prev) => prev.filter((_, i) => i !== index));
@@ -93,6 +103,7 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 					id: tag.id,
 					name: tag.name,
 					emoji_name: tag.emojiName && tag.emojiName.length > 0 ? tag.emojiName : null,
+					...(moderatedTagsSupported ? {moderated: tag.moderated === true} : {}),
 				})),
 				require_tag: requireTag,
 				default_auto_archive_duration: defaultDuration,
@@ -216,6 +227,11 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 					<input type="checkbox" checked={requireTag} onChange={(e) => setRequireTag(e.target.checked)} />
 					<Trans>Require members to select a tag when posting</Trans>
 				</label>
+				{moderatedTagsSupported && (
+					<div className={styles.hint}>
+						<Trans>A moderated tag can only be applied by members who can manage threads.</Trans>
+					</div>
+				)}
 				{tags.map((tag, index) => (
 					<div key={index} className={styles.tagRow}>
 						<input
@@ -236,6 +252,16 @@ const ChannelTagsTab = observer(({channelId}: {channelId: string}) => {
 							maxLength={20}
 							aria-label={t`Tag name`}
 						/>
+						{moderatedTagsSupported && (
+							<label className={styles.moderatedToggle}>
+								<input
+									type="checkbox"
+									checked={tag.moderated === true}
+									onChange={(e) => updateTag(index, {moderated: e.target.checked})}
+								/>
+								<Trans>Moderators only</Trans>
+							</label>
+						)}
 						<button
 							type="button"
 							className={styles.deleteButton}

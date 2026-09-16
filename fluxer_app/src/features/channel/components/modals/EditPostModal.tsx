@@ -9,6 +9,8 @@ import {ForumTagChip} from '@app/features/channel/components/forum/ForumTagChip'
 import styles from '@app/features/channel/components/modals/EditPostModal.module.css';
 import type {Channel} from '@app/features/channel/models/Channel';
 import Channels from '@app/features/channel/state/Channels';
+import {selectableForumTags} from '@app/features/channel/utils/ForumPaneUtils';
+import {canModerateThreads} from '@app/features/channel/utils/ThreadActions';
 import {CANCEL_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
@@ -43,13 +45,21 @@ export const EditPostModal = observer(({thread}: {thread: Channel}) => {
 	const {i18n} = useLingui();
 	const parent = thread.parentId ? Channels.getChannel(thread.parentId) : undefined;
 	const isPost = parent?.isForum() === true;
-	const availableTags = isPost ? (parent?.availableTags ?? []) : [];
+	const allTags = isPost ? (parent?.availableTags ?? []) : [];
 	const [title, setTitle] = useState(thread.name ?? '');
 	const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set(thread.appliedTags));
 	const [duration, setDuration] = useState<AutoArchiveDuration>(toDuration(thread.threadMetadata?.autoArchiveDuration));
 	const [saving, setSaving] = useState(false);
 	const requireTag = isPost && parent?.forumRequireTag === true;
 	const canSave = title.trim().length > 0 && (!requireTag || selectedTags.size > 0);
+	// Moderated tags need manage rights, except ones already applied, which stay so a save keeps them.
+	const availableTags = selectableForumTags(allTags, {
+		canManage: canModerateThreads({
+			channelId: thread.parentId ?? thread.id,
+			guildId: thread.guildId ?? undefined,
+		}),
+		appliedTagIds: new Set(thread.appliedTags),
+	});
 
 	const toggleTag = (tagId: string) => {
 		setSelectedTags((prev) => {

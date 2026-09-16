@@ -10,6 +10,8 @@ import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {ForumTagChip} from '@app/features/channel/components/forum/ForumTagChip';
 import styles from '@app/features/channel/components/modals/CreateForumPostModal.module.css';
 import type {Channel} from '@app/features/channel/models/Channel';
+import {selectableForumTags} from '@app/features/channel/utils/ForumPaneUtils';
+import {canModerateThreads} from '@app/features/channel/utils/ThreadActions';
 import {CANCEL_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import * as MessageCommands from '@app/features/messaging/commands/MessageCommands';
 import {selectChannel} from '@app/features/navigation/commands/NavigationCommands';
@@ -48,6 +50,10 @@ export const CreateForumPostModal = observer(
 		const [selectedTagIds, setSelectedTagIds] = useState<Set<string>>(new Set());
 		const [submitting, setSubmitting] = useState(false);
 		const canSubmit = title.trim().length > 0 && (!channel.forumRequireTag || selectedTagIds.size > 0);
+		// Moderated tags are moderator-only, matching the server rule.
+		const selectableTags = selectableForumTags(channel.availableTags, {
+			canManage: canModerateThreads({channelId: channel.id, guildId: channel.guildId ?? undefined}),
+		});
 
 		const toggleTag = (tagId: string) => {
 			setSelectedTagIds((prev) => {
@@ -110,13 +116,13 @@ export const CreateForumPostModal = observer(
 							required={true}
 							data-flx="channel.create-forum-post-modal.input"
 						/>
-						{channel.availableTags.length > 0 && (
+						{selectableTags.length > 0 && (
 							<div className={styles.field}>
 								<div className={styles.label}>
 									{i18n._(channel.forumRequireTag ? TAGS_REQUIRED_DESCRIPTOR : TAGS_DESCRIPTOR)}
 								</div>
 								<div className={styles.tags}>
-									{channel.availableTags.map((tag) => (
+									{selectableTags.map((tag) => (
 										<ForumTagChip
 											key={tag.id}
 											tag={tag}

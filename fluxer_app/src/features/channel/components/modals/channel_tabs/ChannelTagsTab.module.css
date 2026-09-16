@@ -109,3 +109,13 @@
 	display: flex;
 	justify-content: flex-end;
 }
+
+.moderatedToggle {
+	display: inline-flex;
+	flex: none;
+	align-items: center;
+	gap: 0.375rem;
+	color: var(--text-secondary);
+	font-size: 0.75rem;
+	white-space: nowrap;
+}

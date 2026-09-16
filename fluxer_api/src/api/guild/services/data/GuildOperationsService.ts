@@ -12,8 +12,8 @@ import {
 } from '@app/api/BrandedTypes';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
-import {removeThreadMembershipsForChannels} from '@app/api/channel/services/ThreadPurge';
 import type {ChannelService} from '@app/api/channel/services/ChannelService';
+import {removeThreadMembershipsForChannels} from '@app/api/channel/services/ThreadPurge';
 import {BatchBuilder} from '@app/api/database/CassandraQueryExecution';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildRow} from '@app/api/database/types/GuildTypes';

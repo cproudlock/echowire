@@ -55,7 +55,7 @@ export function hasPermissionBits(permissions: bigint, required: bigint): boolea
 // Echowire: thread_member_ids is internal to the gateway, which uses it to deliver a private
 // thread's events to its members, and guild_data_wire strips it before any client sees it. It is
 // therefore not part of the public ChannelResponse schema.
-export type ThreadGatewayChannelPayload = ChannelResponse & {thread_member_ids?: ReadonlyArray<string>};
+type ThreadGatewayChannelPayload = ChannelResponse & {thread_member_ids?: ReadonlyArray<string>};
 
 export async function withPrivateThreadMemberIds(params: {
 	channel: Pick<Channel, 'id' | 'type'>;

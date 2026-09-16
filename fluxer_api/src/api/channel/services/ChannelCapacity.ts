@@ -12,8 +12,7 @@ export function countCapacityChannels(channels: ReadonlyArray<Pick<Channel, 'typ
 	return channels.filter((channel) => !THREAD_CHANNEL_TYPES.has(channel.type)).length;
 }
 
-export function countActiveThreads(
-	channels: ReadonlyArray<Pick<Channel, 'type' | 'threadMetadata'>>,
-): number {
-	return channels.filter((channel) => THREAD_CHANNEL_TYPES.has(channel.type) && !channel.threadMetadata?.archived).length;
+export function countActiveThreads(channels: ReadonlyArray<Pick<Channel, 'type' | 'threadMetadata'>>): number {
+	return channels.filter((channel) => THREAD_CHANNEL_TYPES.has(channel.type) && !channel.threadMetadata?.archived)
+		.length;
 }

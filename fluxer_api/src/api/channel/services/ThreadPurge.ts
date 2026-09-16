@@ -23,7 +23,7 @@ export function threadsOfParent(channels: ReadonlyArray<Channel>, parentId: Chan
 // THREAD_DELETE payload. A private thread carries its member ids (captured before membership is
 // removed) so the gateway can limit the event to members and parent managers; the field is
 // stripped before any client sees it.
-export async function buildThreadDeletePayload(
+async function buildThreadDeletePayload(
 	thread: Channel,
 	guildId: GuildID,
 	threadMemberRepository: ThreadMemberRepository,

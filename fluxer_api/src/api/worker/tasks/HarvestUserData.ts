@@ -21,6 +21,7 @@ import {
 	type UserID,
 } from '@app/api/BrandedTypes';
 import {Config} from '@app/api/Config';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {makeAttachmentCdnUrl} from '@app/api/channel/services/message/MessageHelpers';
 import {
 	isChannelEligible,
@@ -34,7 +35,6 @@ import {Logger} from '@app/api/Logger';
 import type {Application} from '@app/api/models/Application';
 import type {Attachment} from '@app/api/models/Attachment';
 import type {AuthSession} from '@app/api/models/AuthSession';
-import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {Channel} from '@app/api/models/Channel';
 import type {FavoriteMeme} from '@app/api/models/FavoriteMeme';
 import type {GiftCode} from '@app/api/models/GiftCode';

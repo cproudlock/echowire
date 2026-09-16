@@ -93,6 +93,7 @@ export const ForumTagResponse = z.object({
 	id: SnowflakeStringType.describe('The unique identifier for this tag'),
 	name: z.string().describe('The name of the tag'),
 	emoji_name: z.string().nullable().describe('The emoji associated with this tag, or null'),
+	moderated: z.boolean().describe('Whether only members who can moderate threads may apply or remove this tag'),
 });
 
 export type ForumTagResponse = z.infer<typeof ForumTagResponse>;
@@ -198,6 +199,10 @@ export const ChannelResponse = z.object({
 	member_count: Int32Type.optional().describe('Approximate count of members in the thread (threads only)'),
 	message_count: Int32Type.optional().describe('Approximate count of messages in the thread (threads only)'),
 	pinned: z.boolean().optional().describe('Whether this forum post / thread is pinned to the top'),
+	recent_participant_ids: z
+		.array(SnowflakeStringType)
+		.nullish()
+		.describe('The most recent distinct message authors in a thread, newest first (up to 5)'),
 	starter_message_preview: ThreadStarterMessagePreviewResponse.nullish().describe(
 		'Preview of the starter message; present on thread list endpoints only',
 	),
@@ -299,6 +304,7 @@ export interface Channel {
 	readonly member_count?: number;
 	readonly message_count?: number;
 	readonly pinned?: boolean;
+	readonly recent_participant_ids?: Array<string> | null;
 	readonly starter_message_preview?: ThreadStarterMessagePreviewResponse | null;
 	// Echowire forum fields.
 	readonly available_tags?: ReadonlyArray<{

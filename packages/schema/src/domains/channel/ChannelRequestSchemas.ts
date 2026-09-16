@@ -159,6 +159,10 @@ export const ForumTagInput = z.object({
 	id: SnowflakeStringType.optional().describe('Existing tag ID (omit to create a new tag)'),
 	name: createStringType(1, 20).describe('Tag name (1-20 characters)'),
 	emoji_name: z.string().nullish().describe('Optional emoji for the tag'),
+	moderated: z
+		.boolean()
+		.optional()
+		.describe('Restrict applying and removing this tag to members who can moderate threads'),
 });
 export type ForumTagInput = z.infer<typeof ForumTagInput>;
 
@@ -468,6 +472,22 @@ export const ThreadUpdateRequest = z.object({
 		.optional()
 		.describe('Replacement set of tag IDs for a forum post (max 5)'),
 	pinned: z.boolean().optional().describe('Whether to pin this forum post to the top (moderators only)'),
+	rate_limit_per_user: z
+		.number()
+		.int()
+		.min(0)
+		.max(21600)
+		.optional()
+		.describe('Slowmode for this thread or forum post in seconds (0-21600)'),
 });
 
 export type ThreadUpdateRequest = z.infer<typeof ThreadUpdateRequest>;
+
+// Echowire: "add to post". Appends an attachment that already exists on a message inside a forum
+// post to that post's starter message, where it becomes the post thumbnail.
+export const StarterMessageAttachmentRequest = z.object({
+	message_id: SnowflakeStringType.describe('A message in this post that carries the attachment'),
+	attachment_id: SnowflakeStringType.describe('The attachment to append to the starter message'),
+});
+
+export type StarterMessageAttachmentRequest = z.infer<typeof StarterMessageAttachmentRequest>;

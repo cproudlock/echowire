@@ -72,6 +72,41 @@ export const ChannelRateLimitConfigs = {
 		bucket: 'channel:typing::channel_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},
 	} as RouteRateLimitConfig,
+	// Echowire: thread and forum post routes. These carry channel_id only, so a bucket naming
+	// :guild_id (as GUILD_CHANNEL_CREATE does) never resolves and every caller would share one
+	// global bucket across every guild. Each route gets its own bucket keyed on the channel.
+	THREAD_CREATE: {
+		bucket: 'channel:thread:create::channel_id',
+		config: {limit: 10, windowMs: ms('1 minute')},
+	} as RouteRateLimitConfig,
+	THREAD_UPDATE: {
+		bucket: 'channel:thread:update::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_DELETE: {
+		bucket: 'channel:thread:delete::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_LIST_ACTIVE: {
+		bucket: 'channel:threads:active::channel_id',
+		config: {limit: 40, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_LIST_ARCHIVED: {
+		bucket: 'channel:threads:archived::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_MEMBER_JOIN: {
+		bucket: 'channel:thread:member:join::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_MEMBER_LEAVE: {
+		bucket: 'channel:thread:member:leave::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	THREAD_MEMBER_LIST: {
+		bucket: 'channel:thread:members::channel_id',
+		config: {limit: 40, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
 	CHANNEL_PINS: {
 		bucket: 'channel:pins::channel_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},

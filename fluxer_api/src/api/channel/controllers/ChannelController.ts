@@ -43,7 +43,7 @@ export function ChannelController(app: HonoApp) {
 	// Echowire: create a thread under a text/forum channel.
 	app.post(
 		'/channels/:channel_id/threads',
-		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_CREATE),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		Validator('json', ThreadCreateRequest),
@@ -71,7 +71,7 @@ export function ChannelController(app: HonoApp) {
 	// Echowire: list active threads under a text/forum channel.
 	app.get(
 		'/channels/:channel_id/threads',
-		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_LIST_ACTIVE),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		OpenAPI({
@@ -95,7 +95,7 @@ export function ChannelController(app: HonoApp) {
 	// Echowire: update a thread (archive/unarchive/lock/rename).
 	app.patch(
 		'/channels/:channel_id/thread',
-		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_UPDATE),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		Validator('json', ThreadUpdateRequest),
@@ -121,7 +121,7 @@ export function ChannelController(app: HonoApp) {
 	// Echowire: delete a thread.
 	app.delete(
 		'/channels/:channel_id/thread',
-		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNEL_CREATE),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_DELETE),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		OpenAPI({
@@ -143,7 +143,7 @@ export function ChannelController(app: HonoApp) {
 	// Echowire: list archived threads under a text/forum channel.
 	app.get(
 		'/channels/:channel_id/threads/archived',
-		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_LIST_ARCHIVED),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		OpenAPI({
@@ -167,7 +167,7 @@ export function ChannelController(app: HonoApp) {
 	// Echowire: thread membership — join (@me), leave (@me), list.
 	app.put(
 		'/channels/:channel_id/thread-members/@me',
-		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_MEMBER_JOIN),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		OpenAPI({
@@ -188,7 +188,7 @@ export function ChannelController(app: HonoApp) {
 	);
 	app.delete(
 		'/channels/:channel_id/thread-members/@me',
-		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_MEMBER_LEAVE),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		OpenAPI({
@@ -209,7 +209,7 @@ export function ChannelController(app: HonoApp) {
 	);
 	app.get(
 		'/channels/:channel_id/thread-members',
-		RateLimitMiddleware(RateLimitConfigs.CHANNEL_GET),
+		RateLimitMiddleware(RateLimitConfigs.THREAD_MEMBER_LIST),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
 		OpenAPI({

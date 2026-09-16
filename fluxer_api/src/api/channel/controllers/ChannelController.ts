@@ -477,6 +477,7 @@ export function ChannelController(app: HonoApp) {
 			const data = ctx.req.valid('json');
 			const clientFeatures = parseClientFeaturesHeader(ctx.req.header(CLIENT_FEATURES_HEADER));
 			const requestCache = ctx.get('requestCache');
+			const auditLogReason = ctx.get('auditLogReason') ?? null;
 			const channelRequestService = ctx.get('channelRequestService');
 			return ctx.json(
 				await channelRequestService.updateChannel({
@@ -485,6 +486,7 @@ export function ChannelController(app: HonoApp) {
 					data,
 					clientFeatures,
 					requestCache,
+					auditLogReason,
 				}),
 			);
 		},
@@ -516,6 +518,7 @@ export function ChannelController(app: HonoApp) {
 			const {silent, delete_messages} = ctx.req.valid('query');
 			const body = ctx.req.valid('json');
 			const requestCache = ctx.get('requestCache');
+			const auditLogReason = ctx.get('auditLogReason') ?? null;
 			const channelRequestService = ctx.get('channelRequestService');
 			await ctx.get('channelService').channelData.operations.getChannel({userId, channelId});
 			if (delete_messages) {
@@ -524,7 +527,7 @@ export function ChannelController(app: HonoApp) {
 					channelIds: [channelId],
 				});
 			}
-			await channelRequestService.deleteChannel({userId, channelId, requestCache, silent});
+			await channelRequestService.deleteChannel({userId, channelId, requestCache, silent, auditLogReason});
 			return ctx.body(null, 204);
 		},
 	);
@@ -621,6 +624,7 @@ export function ChannelController(app: HonoApp) {
 			const data = ctx.req.valid('json');
 			const clientFeatures = parseClientFeaturesHeader(ctx.req.header(CLIENT_FEATURES_HEADER));
 			const requestCache = ctx.get('requestCache');
+			const auditLogReason = ctx.get('auditLogReason') ?? null;
 			await ctx.get('channelService').channelData.operations.setChannelPermissionOverwrite({
 				userId,
 				channelId,
@@ -632,6 +636,7 @@ export function ChannelController(app: HonoApp) {
 				},
 				clientFeatures,
 				requestCache,
+				auditLogReason,
 			});
 			return ctx.body(null, 204);
 		},
@@ -656,9 +661,14 @@ export function ChannelController(app: HonoApp) {
 			const channelId = createChannelID(ctx.req.valid('param').channel_id);
 			const overwriteId = ctx.req.valid('param').overwrite_id;
 			const requestCache = ctx.get('requestCache');
-			await ctx
-				.get('channelService')
-				.channelData.operations.deleteChannelPermissionOverwrite({userId, channelId, overwriteId, requestCache});
+			const auditLogReason = ctx.get('auditLogReason') ?? null;
+			await ctx.get('channelService').channelData.operations.deleteChannelPermissionOverwrite({
+				userId,
+				channelId,
+				overwriteId,
+				requestCache,
+				auditLogReason,
+			});
 			return ctx.body(null, 204);
 		},
 	);

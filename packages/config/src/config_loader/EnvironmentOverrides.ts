@@ -85,6 +85,7 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_API_MAX_INFLIGHT_REQUESTS: {path: ['services', 'api', 'max_inflight_requests'], parse: parseInteger},
 	FLUXER_API_IP_BAN_EXEMPT_IPS: {path: ['services', 'api', 'ip_ban_exempt_ips'], parse: parseCsv},
 	FLUXER_API_ADDITIONAL_CORS_ORIGINS: {path: ['services', 'api', 'additional_cors_origins'], parse: parseCsv},
+	FLUXER_API_DONATION_PROXY_KEY: {path: ['services', 'api', 'donation_proxy_key']},
 	FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES: {
 		path: ['services', 'api', 'desktop_github_redirect_countries'],
 		parse: parseCsv,
@@ -111,6 +112,15 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_API_WORKER_LANE_CONCURRENCY_OVERRIDES: {
 		path: ['services', 'api', 'worker', 'lane_concurrency_overrides'],
 		parse: parseJsonObject,
+	},
+	FLUXER_API_STORAGE_CHANGE_FEED_ENABLED: {
+		path: ['services', 'api', 'storage_change_feed', 'enabled'],
+		parse: parseBoolean,
+	},
+	FLUXER_API_STORAGE_CHANGE_FEED_STREAM: {path: ['services', 'api', 'storage_change_feed', 'stream']},
+	FLUXER_API_STORAGE_CHANGE_FEED_SKIP_BUCKETS: {
+		path: ['services', 'api', 'storage_change_feed', 'skip_buckets'],
+		parse: parseCsv,
 	},
 	FLUXER_API_UNFURL_IGNORED_HOSTS: {path: ['services', 'api', 'unfurl_ignored_hosts'], parse: parseCsv},
 	FLUXER_API_EMBEDS_OEMBED_HTML_ENABLED: {
@@ -371,6 +381,8 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_APP_WORDMARK_URL: {path: ['instance', 'branding', 'wordmark_url']},
 	FLUXER_APP_FAVICON_URL: {path: ['instance', 'branding', 'favicon_url']},
 	FLUXER_APP_THEME_COLOR: {path: ['instance', 'branding', 'theme_color']},
+	FLUXER_APP_STATUS_PAGE_URL: {path: ['instance', 'branding', 'status_page_url']},
+	FLUXER_APP_STATUS_PAGE_INCIDENT_HISTORY_URL: {path: ['instance', 'branding', 'status_page_incident_history_url']},
 	FLUXER_INSTANCE_SETUP_CONFIGURED: {path: ['instance', 'setup', 'configured'], parse: parseBoolean},
 	FLUXER_ABUSE_INBOUND_PHONE_COUNTRY_CODES: {
 		path: ['instance', 'abuse_policy', 'inbound_phone_country_codes'],

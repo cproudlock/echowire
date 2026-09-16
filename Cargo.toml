@@ -8,6 +8,7 @@ members = [
 	# stays a workspace member and must NOT be re-added to `exclude` on future merges.
 	"fluxer_marketing",
 	"fluxer_media_proxy",
+	"fluxer_recon",
 	"fluxer_gifs",
 	"fluxer_svc",
 	"fluxer_messages",
@@ -22,7 +23,6 @@ members = [
 	"fluxer_users",
 	"fluxer_unfurl",
 	"packages/markdown_parser/rust",
-	"fluxer_recon",
 ]
 exclude = [
 	"packages/markdown_parser/rust/fuzz",

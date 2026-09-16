@@ -11,7 +11,6 @@ import {
 	createMessageResponseDataService,
 	messageResponseAccessForGuild,
 } from '@app/api/channel/services/message/MessageResponseDataService';
-import {NULL_THREAD_FIELDS} from '@app/api/database/types/ChannelTypes';
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {ISnowflakeService} from '@app/api/infrastructure/ISnowflakeService';
 import type {UserCacheService} from '@app/api/infrastructure/UserCacheService';
@@ -486,7 +485,6 @@ export class UserChannelService {
 			last_pin_timestamp: null,
 			permission_overwrites: null,
 			nicks: null,
-			...NULL_THREAD_FIELDS,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,

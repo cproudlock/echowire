@@ -20,6 +20,7 @@ import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildEr
 import type {
 	ChannelCreateRequest,
 	ThreadCreateRequest,
+	ThreadsQuery,
 	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {ChannelResponse, GuildActiveThreadsResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
@@ -124,6 +125,7 @@ export class GuildChannelService {
 		userId: UserID;
 		parentChannelId: ChannelID;
 		requestCache: RequestCache;
+		page?: ThreadsQuery;
 	}): Promise<Array<ChannelResponse>> {
 		return this.channelOps.listActiveThreads(params);
 	}
@@ -142,6 +144,7 @@ export class GuildChannelService {
 		userId: UserID;
 		parentChannelId: ChannelID;
 		requestCache: RequestCache;
+		page?: ThreadsQuery;
 	}): Promise<Array<ChannelResponse>> {
 		return this.channelOps.listArchivedThreads(params);
 	}
@@ -172,8 +175,24 @@ export class GuildChannelService {
 	async listThreadMembers(params: {
 		threadChannelId: ChannelID;
 		userId: UserID;
-	}): Promise<Array<{user_id: string; join_timestamp: string; flags: number}>> {
+	}): Promise<Array<{id: string; user_id: string; join_timestamp: string; flags: number}>> {
 		return this.channelOps.listThreadMembers(params);
+	}
+
+	async addThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
+		return this.channelOps.addThreadMember(params);
+	}
+
+	async removeThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
+		return this.channelOps.removeThreadMember(params);
+	}
+
+	async getThreadMember(params: {
+		threadChannelId: ChannelID;
+		userId: UserID;
+		targetUserId: UserID;
+	}): Promise<{id: string; user_id: string; join_timestamp: string; flags: number}> {
+		return this.channelOps.getThreadMember(params);
 	}
 
 	async updateChannelPositions(

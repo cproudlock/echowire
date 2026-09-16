@@ -288,3 +288,38 @@ The caller must hold [MANAGE_ROLES](/http-api/permissions/) in the moved channel
 ### Rate limit
 
 30 requests per 10 seconds for each authenticated user and guild ID, on the `guild:channel:positions::guild_id` bucket.
+
+## List active guild threads
+
+<RouteHeader method="GET" path="/v1/guilds/{guild_id}/threads/active" bot />
+
+Returns every unarchived thread in the guild that the caller can view, together with the caller's
+membership of those threads. A client uses it on guild select to nest threads under their parent
+channel without asking each channel in turn.
+
+### Limitations
+
+- The caller must be a member of the guild.
+- A thread is returned only when the caller can view its parent channel, and a private thread only
+  when the caller is a member of it or holds [MANAGE_CHANNELS](/http-api/permissions/) on the parent.
+- Threads whose parent channel no longer exists are never returned.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| guild_id | snowflake | The ID of the guild |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | [active guild threads](#active-guild-threads-object) object | Threads were returned |
+| 404 | [error response](/http-api/#error-response) | Guild does not exist, or the caller is not a member, each returning `UNKNOWN_GUILD` |
+
+### Active guild threads object
+
+| Field | Type | Description |
+| --- | --- | --- |
+| threads | array[[channel](/http-api/channels/#channel-object) object] | The visible unarchived threads, each carrying [starter_message_preview](/http-api/channels/#starter-message-preview-object) when the caller may read history |
+| members | array[[thread member](/http-api/channels/#thread-member-object) object] | The caller's membership of the returned threads |

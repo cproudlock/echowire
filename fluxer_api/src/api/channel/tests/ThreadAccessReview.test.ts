@@ -8,6 +8,7 @@ import {createTestAccount} from '@app/api/auth/tests/AuthTestUtils';
 import {createChannelID, createGuildID} from '@app/api/BrandedTypes';
 import {ChannelDataRepository} from '@app/api/channel/repositories/ChannelDataRepository';
 import {
+	allowPrivateThreads,
 	createChannel,
 	createGuild,
 	createPermissionOverwrite,
@@ -103,7 +104,8 @@ describe('Thread access review fixes', () => {
 	});
 
 	test('creating a private thread posts no THREAD_CREATED message in the parent', async () => {
-		const {owner, members, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 1);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator] = members;
 		const privateThread = await createThread(harness, creator.token, systemChannel.id, {
 			name: 'hush',
@@ -119,7 +121,8 @@ describe('Thread access review fixes', () => {
 	});
 
 	test('the create-from-message path does not reveal a private thread to a non-member', async () => {
-		const {members, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator, outsider] = members;
 		const withPrivate = await sendMessage(harness, creator.token, systemChannel.id, 'start here');
 		const withoutPrivate = await sendMessage(harness, creator.token, systemChannel.id, 'nothing here');
@@ -194,7 +197,8 @@ describe('private thread members in gateway-derived paths', () => {
 	});
 
 	test('a private thread member finds its messages in guild search; an outsider does not', async () => {
-		const {owner, guild, members, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		await allowPrivateThreads(harness, owner.token, guild.id);
 		const [creator, outsider] = members;
 		const thread = await createThread(harness, creator.token, systemChannel.id, {
 			name: 'hideout',

@@ -77,6 +77,13 @@ export class AdminGuildLookupService {
 					parent_id: c.parentId?.toString() ?? null,
 					nsfw: c.isNsfw,
 					url: c.url,
+					// Echowire: thread and forum post state, so the admin channel list can group threads
+					// under their parent instead of rendering them as unknown rows at position 0.
+					archived: c.threadMetadata?.archived ?? null,
+					locked: c.threadMetadata?.locked ?? null,
+					pinned: c.threadMetadata ? c.pinned : null,
+					message_count: c.messageCount,
+					member_count: c.memberCount,
 				})),
 				roles: roles.map((r) => ({
 					id: r.id.toString(),

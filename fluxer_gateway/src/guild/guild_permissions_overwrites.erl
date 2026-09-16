@@ -142,7 +142,9 @@ thread_member_ids(Channel) ->
 -spec restrict_thread_permissions(integer(), permission(), user_id() | undefined, [term()]) ->
     permission().
 restrict_thread_permissions(?CHANNEL_TYPE_PRIVATE_THREAD, Perms, UserId, MemberIds) ->
-    IsManager = permission_bits:has(Perms, constants:manage_channels_permission()),
+    IsManager =
+        permission_bits:has(Perms, constants:manage_threads_permission()) orelse
+            permission_bits:has(Perms, constants:manage_channels_permission()),
     IsMember =
         is_integer(UserId) andalso UserId > 0 andalso snowflake_id:member(UserId, MemberIds),
     case IsManager orelse IsMember of
@@ -501,6 +503,16 @@ private_thread_requires_manage_channels_test() ->
     Manager = maybe_apply_channel_overwrites(ManagerBase, 11, [], 21, 5, State),
     ?assertEqual(true, permission_bits:has(Manager, View)).
 
+%% Echowire: MANAGE_THREADS is the thread-specific moderator bit, and it opens a private thread
+%% on its own. MANAGE_CHANNELS keeps working, which is what every existing moderator role holds.
+private_thread_admits_a_thread_moderator_test() ->
+    View = constants:view_channel_permission(),
+    ManageThreads = constants:manage_threads_permission(),
+    State = thread_test_state(),
+    Base = permission_bits:add(View, ManageThreads),
+    Moderator = maybe_apply_channel_overwrites(Base, 11, [], 21, 5, State),
+    ?assertEqual(true, permission_bits:has(Moderator, View)).
+
 private_thread_admits_its_members_test() ->
     View = constants:view_channel_permission(),
     State = thread_test_state(),
@@ -554,5 +566,84 @@ thread_with_deleted_parent_is_not_viewable_test() ->
     ?assertEqual(false, permission_bits:has(Perms, View)),
     Admin = maybe_apply_channel_overwrites(View, 11, [9], 51, 5, State),
     ?assertEqual(false, permission_bits:has(Admin, View)).
+
+%% Echowire: the gateway half of the thread visibility contract. The api decides the same question
+%% in ThreadAccess.ts and is tested against the same file by
+%% fluxer_api/src/api/channel/tests/ThreadVisibilityContract.test.ts, so a rule that changes on one
+%% side without the other fails on one of the two. The file lives at contracts/
+%% thread_visibility_cases.json in the repository root.
+contract_cases_path() ->
+    Candidates = [
+        "../contracts/thread_visibility_cases.json",
+        "contracts/thread_visibility_cases.json",
+        "../../contracts/thread_visibility_cases.json"
+    ],
+    case lists:search(fun filelib:is_regular/1, Candidates) of
+        {value, Path} -> Path;
+        false -> error({thread_visibility_contract_not_found, Candidates})
+    end.
+
+contract_permission_bits(Names) ->
+    lists:foldl(
+        fun
+            (<<"VIEW_CHANNEL">>, Acc) ->
+                permission_bits:add(Acc, constants:view_channel_permission());
+            (<<"MANAGE_CHANNELS">>, Acc) ->
+                permission_bits:add(Acc, constants:manage_channels_permission());
+            (<<"MANAGE_THREADS">>, Acc) ->
+                permission_bits:add(Acc, constants:manage_threads_permission());
+            (Other, _Acc) ->
+                error({unmapped_contract_permission, Other})
+        end,
+        0,
+        Names
+    ).
+
+%% One case as the gateway sees it: the thread in the channel index, its parent present unless the
+%% case says it was deleted, and the caller's parent permissions supplied as the base permissions.
+contract_case_can_view(Case) ->
+    ThreadType = maps:get(<<"thread_type">>, Case),
+    ParentMissing = maps:get(<<"parent_missing">>, Case),
+    UserId = binary_to_integer(maps:get(<<"user_id">>, Case)),
+    MemberIds = maps:get(<<"member_ids">>, Case),
+    Base = contract_permission_bits(maps:get(<<"parent_permissions">>, Case)),
+    Thread = #{
+        <<"id">> => <<"9000">>,
+        <<"type">> => ThreadType,
+        <<"parent_id">> => <<"9001">>,
+        <<"thread_member_ids">> => MemberIds,
+        <<"permission_overwrites">> => []
+    },
+    Parent = #{
+        <<"id">> => <<"9001">>,
+        <<"type">> => 0,
+        <<"permission_overwrites">> => []
+    },
+    Channels =
+        case ParentMissing of
+            true -> [Thread];
+            false -> [Thread, Parent]
+        end,
+    State = #{data => guild_data_index:put_channels(Channels, #{})},
+    Perms = maybe_apply_channel_overwrites(Base, UserId, [], 9000, 5, State),
+    permission_bits:has(Perms, constants:view_channel_permission()).
+
+thread_visibility_contract_test() ->
+    {ok, Raw} = file:read_file(contract_cases_path()),
+    Contract = json:decode(Raw),
+    Cases = maps:get(<<"cases">>, Contract),
+    ?assert(length(Cases) > 0),
+    lists:foreach(
+        fun(Case) ->
+            Expected = maps:get(<<"expect_can_view">>, Case),
+            Actual = contract_case_can_view(Case),
+            ?assertEqual(
+                Expected,
+                Actual,
+                binary_to_list(maps:get(<<"name">>, Case))
+            )
+        end,
+        Cases
+    ).
 
 -endif.

@@ -75,6 +75,7 @@ function registerCronJobs(cron: CronScheduler): void {
 	cron.upsert('archiveInactiveThreads', 'archiveInactiveThreads', {}, '0 */5 * * * *', {ledger: false});
 	// Echowire: sweep threads orphaned by parent-channel deletes that predate ThreadPurge.
 	cron.upsert('purgeOrphanedThreads', 'purgeOrphanedThreads', {}, '0 17 * * * *', {ledger: false});
+	cron.upsert('backfillThreadMembersByUser', 'backfillThreadMembersByUser', {}, '0 41 * * * *', {ledger: false});
 	cron.upsert('syncDiscoveryIndex', 'syncDiscoveryIndex', {}, '0 */15 * * * *', {ledger: false});
 	if (Config.blocklistFeeds.enabled) {
 		cron.upsert('syncDisposableEmailDomains', 'syncDisposableEmailDomains', {}, '0 0 */6 * * *', {ledger: true});

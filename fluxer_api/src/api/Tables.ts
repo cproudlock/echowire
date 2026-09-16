@@ -147,6 +147,7 @@ import {
 	type PrivateChannelRow,
 	WEBHOOK_COLUMNS,
 	type WebhookRow,
+	withChannelThreadDefaults,
 } from '@app/api/database/types/ChannelTypes';
 import {USER_CONNECTION_STORAGE_COLUMNS, type UserConnectionStorageRow} from '@app/api/database/types/ConnectionTypes';
 import {
@@ -558,11 +559,23 @@ export const GuildMembers = defineTable<GuildMemberRow, 'guild_id' | 'user_id'>(
 	columns: GUILD_MEMBER_COLUMNS,
 	primaryKey: ['guild_id', 'user_id'],
 });
-export const Channels = defineTable<ChannelRow, 'channel_id' | 'soft_deleted'>({
+const ChannelsTable = defineTable<ChannelRow, 'channel_id' | 'soft_deleted'>({
 	name: 'channels',
 	columns: CHANNEL_COLUMNS,
 	primaryKey: ['channel_id', 'soft_deleted'],
 });
+
+// Echowire: thread and forum columns are optional on ChannelRow, so the full-row writers normalise
+// the absent ones to null here. That keeps what reaches the store identical to spelling every column
+// out at the call site, while a plain channel row literal neither mentions thread state nor can
+// forget it. Partial writes (patchByPk, patchThreadFields) are untouched and still address single
+// columns. See docs/adr/0005-channel-thread-metadata-shape.md.
+export const Channels = {
+	...ChannelsTable,
+	insert: (row: ChannelRow) => ChannelsTable.insert(withChannelThreadDefaults(row)),
+	insertIfNotExists: (row: ChannelRow) => ChannelsTable.insertIfNotExists(withChannelThreadDefaults(row)),
+	upsertAll: (row: ChannelRow) => ChannelsTable.upsertAll(withChannelThreadDefaults(row)),
+};
 export const ChannelsByGuild = defineTable<ChannelsByGuildRow, 'guild_id' | 'channel_id'>({
 	name: 'channels_by_guild_id',
 	columns: CHANNELS_BY_GUILD_COLUMNS,
@@ -641,6 +654,31 @@ export const ThreadMembers = defineTable<ThreadMemberRow, 'thread_id' | 'user_id
 	columns: THREAD_MEMBER_COLUMNS,
 	primaryKey: ['thread_id', 'user_id'],
 	partitionKey: ['thread_id'],
+});
+
+// Echowire: the same membership from the user's side. Partitioned by user so a session can be told
+// which threads it belongs to without walking every thread of every guild, which is what the
+// thread list endpoints, account deletion and the data export each had to do. guild_id is carried
+// so a reader can group by guild without loading the channels.
+export interface ThreadMemberByUserRow {
+	user_id: bigint;
+	thread_id: bigint;
+	guild_id: bigint | null;
+	join_timestamp: Date;
+	flags: number;
+}
+const THREAD_MEMBER_BY_USER_COLUMNS = [
+	'user_id',
+	'thread_id',
+	'guild_id',
+	'join_timestamp',
+	'flags',
+] as const satisfies ReadonlyArray<keyof ThreadMemberByUserRow>;
+export const ThreadMembersByUser = defineTable<ThreadMemberByUserRow, 'user_id' | 'thread_id', 'user_id'>({
+	name: 'thread_members_by_user',
+	columns: THREAD_MEMBER_BY_USER_COLUMNS,
+	primaryKey: ['user_id', 'thread_id'],
+	partitionKey: ['user_id'],
 });
 export const Messages = defineTable<MessageRow, 'channel_id' | 'bucket' | 'message_id', 'channel_id' | 'bucket'>({
 	name: 'messages',

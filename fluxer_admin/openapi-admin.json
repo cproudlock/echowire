@@ -1930,6 +1930,203 @@
 				]
 			}
 		},
+		"/admin/channels/{channel_id}/thread": {
+			"patch": {
+				"operationId": "update_admin_channel_thread",
+				"summary": "Update thread state",
+				"tags": ["Admin"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/AdminThreadResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Archives, unarchives, locks or unlocks a thread or forum post as an instance admin. Dispatches THREAD_UPDATE to the guild. Logged to audit log. Requires CHANNEL_THREAD_UPDATE permission.",
+				"security": [{"adminApiKey": []}],
+				"parameters": [
+					{
+						"name": "channel_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"description": "The ID of the channel",
+							"allOf": [{"$ref": "#/components/schemas/SnowflakeType"}]
+						},
+						"description": "The ID of the channel"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {"application/json": {"schema": {"$ref": "#/components/schemas/UpdateAdminThreadRequest"}}}
+				}
+			},
+			"delete": {
+				"operationId": "delete_admin_channel_thread",
+				"summary": "Delete thread",
+				"tags": ["Admin"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/SuccessResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Permanently deletes a thread or forum post and purges its messages, attachments and search documents. Irreversible. Logged to audit log. Requires CHANNEL_THREAD_DELETE permission.",
+				"security": [{"adminApiKey": []}],
+				"parameters": [
+					{
+						"name": "channel_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"description": "The ID of the channel",
+							"allOf": [{"$ref": "#/components/schemas/SnowflakeType"}]
+						},
+						"description": "The ID of the channel"
+					}
+				]
+			}
+		},
+		"/admin/channels/{channel_id}/threads": {
+			"get": {
+				"operationId": "list_admin_channel_threads",
+				"summary": "List channel threads",
+				"tags": ["Admin"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ListChannelThreadsResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Lists the threads or forum posts under a text or forum channel, newest first, with their archive, lock and pin state. Returns an empty list for channel types that cannot parent threads. Requires CHANNEL_LIST_THREADS permission.",
+				"security": [{"adminApiKey": []}],
+				"parameters": [
+					{
+						"name": "channel_id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"description": "The ID of the channel",
+							"allOf": [{"$ref": "#/components/schemas/SnowflakeType"}]
+						},
+						"description": "The ID of the channel"
+					}
+				]
+			}
+		},
 		"/admin/discovery/applications": {
 			"get": {
 				"operationId": "list_admin_discovery_applications",
@@ -9874,7 +10071,7 @@
 				"type": "object",
 				"properties": {
 					"acls": {
-						"maxItems": 112,
+						"maxItems": 115,
 						"type": "array",
 						"items": {"$ref": "#/components/schemas/AdminAclType"},
 						"description": "List of access control permissions to assign"
@@ -10425,6 +10622,8 @@
 							"max_attachments_per_message",
 							"max_bio_length",
 							"max_bookmarks",
+							"max_active_threads_per_channel",
+							"max_active_threads_per_guild",
 							"max_channels_per_category",
 							"max_custom_backgrounds",
 							"max_embeds_per_message",
@@ -12095,6 +12294,110 @@
 				"type": "array",
 				"items": {"$ref": "#/components/schemas/DiscoveryAdminPendingApplicationResponse"}
 			},
+			"ListChannelThreadsResponse": {
+				"type": "object",
+				"properties": {
+					"threads": {
+						"maxItems": 1000,
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/AdminThreadSummary"},
+						"description": "Threads under the channel, newest first"
+					}
+				},
+				"required": ["threads"],
+				"additionalProperties": false
+			},
+			"UpdateAdminThreadRequest": {
+				"type": "object",
+				"properties": {
+					"archived": {"description": "Archive or unarchive the thread", "type": "boolean"},
+					"locked": {"description": "Lock or unlock the thread", "type": "boolean"}
+				}
+			},
+			"AdminThreadResponse": {
+				"type": "object",
+				"properties": {
+					"thread": {
+						"properties": {
+							"id": {
+								"description": "Thread or forum post ID",
+								"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+							},
+							"guild_id": {
+								"description": "Guild the thread belongs to",
+								"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+							},
+							"parent_id": {
+								"nullable": true,
+								"description": "Parent text or forum channel ID",
+								"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+							},
+							"parent_name": {
+								"nullable": true,
+								"description": "Name of the parent channel, when it still exists",
+								"type": "string"
+							},
+							"name": {"nullable": true, "description": "Thread or post title", "type": "string"},
+							"type": {
+								"type": "integer",
+								"minimum": -9007199254740991,
+								"maximum": 9007199254740991,
+								"description": "Channel type: 11 public thread, 12 private thread"
+							},
+							"owner_id": {
+								"nullable": true,
+								"description": "User who created the thread",
+								"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+							},
+							"archived": {"type": "boolean", "description": "Whether the thread is archived"},
+							"locked": {"type": "boolean", "description": "Whether the thread is locked to moderators"},
+							"pinned": {"type": "boolean", "description": "Whether the forum post is pinned in its forum"},
+							"message_count": {
+								"nullable": true,
+								"description": "Replies in the thread, excluding a forum post starter",
+								"type": "integer",
+								"minimum": -9007199254740991,
+								"maximum": 9007199254740991
+							},
+							"member_count": {
+								"nullable": true,
+								"description": "Members who have joined the thread",
+								"type": "integer",
+								"minimum": -9007199254740991,
+								"maximum": 9007199254740991
+							},
+							"auto_archive_duration": {
+								"nullable": true,
+								"description": "Inactivity minutes before auto archive",
+								"type": "integer",
+								"minimum": -9007199254740991,
+								"maximum": 9007199254740991
+							},
+							"archive_timestamp": {
+								"nullable": true,
+								"description": "ISO 8601 timestamp of the last archive state change",
+								"type": "string"
+							},
+							"create_timestamp": {
+								"nullable": true,
+								"description": "ISO 8601 timestamp when the thread was created",
+								"type": "string"
+							},
+							"applied_tags": {
+								"nullable": true,
+								"description": "Forum tag IDs applied to the post",
+								"maxItems": 20,
+								"type": "array",
+								"items": {"$ref": "#/components/schemas/SnowflakeStringType"}
+							}
+						},
+						"description": "The thread after the update",
+						"allOf": [{"$ref": "#/components/schemas/AdminThreadSummary"}]
+					}
+				},
+				"required": ["thread"],
+				"additionalProperties": false
+			},
 			"DeleteMessageResponse": {
 				"type": "object",
 				"properties": {"success": {"type": "boolean", "enum": [true]}},
@@ -12726,7 +13029,7 @@
 					},
 					"acls": {
 						"description": "Replacement list of access control permissions for the key",
-						"maxItems": 112,
+						"maxItems": 115,
 						"type": "array",
 						"items": {"$ref": "#/components/schemas/AdminAclType"}
 					}
@@ -12744,7 +13047,7 @@
 						"type": "string"
 					},
 					"acls": {
-						"maxItems": 112,
+						"maxItems": 115,
 						"type": "array",
 						"items": {"type": "string"},
 						"description": "List of access control permissions for the key"
@@ -12774,7 +13077,7 @@
 						"maximum": 365
 					},
 					"acls": {
-						"maxItems": 112,
+						"maxItems": 115,
 						"type": "array",
 						"items": {"$ref": "#/components/schemas/AdminAclType"},
 						"description": "List of access control permissions for the key"
@@ -12795,7 +13098,7 @@
 						"type": "string"
 					},
 					"acls": {
-						"maxItems": 112,
+						"maxItems": 115,
 						"type": "array",
 						"items": {"type": "string"},
 						"description": "List of access control permissions for the key"
@@ -12808,7 +13111,7 @@
 				"type": "object",
 				"properties": {
 					"acls": {
-						"maxItems": 112,
+						"maxItems": 115,
 						"type": "array",
 						"items": {"type": "string", "minLength": 1, "maxLength": 64},
 						"description": "Every admin access control permission the admin API recognises"
@@ -12876,6 +13179,9 @@
 					"guild:audit_log:view",
 					"guild:ban_member",
 					"guild:delete",
+					"channel:list:threads",
+					"channel:thread:update",
+					"channel:thread:delete",
 					"guild:force_add_member",
 					"guild:kick_member",
 					"guild:list:members",
@@ -14440,6 +14746,101 @@
 					{"name": "IS_ANIMATED", "value": "32", "description": "Attachment is animated"}
 				]
 			},
+			"AdminThreadSummary": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"description": "Thread or forum post ID",
+						"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+					},
+					"guild_id": {
+						"description": "Guild the thread belongs to",
+						"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+					},
+					"parent_id": {
+						"nullable": true,
+						"description": "Parent text or forum channel ID",
+						"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+					},
+					"parent_name": {
+						"nullable": true,
+						"description": "Name of the parent channel, when it still exists",
+						"type": "string"
+					},
+					"name": {"nullable": true, "description": "Thread or post title", "type": "string"},
+					"type": {
+						"type": "integer",
+						"minimum": -9007199254740991,
+						"maximum": 9007199254740991,
+						"description": "Channel type: 11 public thread, 12 private thread"
+					},
+					"owner_id": {
+						"nullable": true,
+						"description": "User who created the thread",
+						"allOf": [{"$ref": "#/components/schemas/SnowflakeStringType"}]
+					},
+					"archived": {"type": "boolean", "description": "Whether the thread is archived"},
+					"locked": {"type": "boolean", "description": "Whether the thread is locked to moderators"},
+					"pinned": {"type": "boolean", "description": "Whether the forum post is pinned in its forum"},
+					"message_count": {
+						"nullable": true,
+						"description": "Replies in the thread, excluding a forum post starter",
+						"type": "integer",
+						"minimum": -9007199254740991,
+						"maximum": 9007199254740991
+					},
+					"member_count": {
+						"nullable": true,
+						"description": "Members who have joined the thread",
+						"type": "integer",
+						"minimum": -9007199254740991,
+						"maximum": 9007199254740991
+					},
+					"auto_archive_duration": {
+						"nullable": true,
+						"description": "Inactivity minutes before auto archive",
+						"type": "integer",
+						"minimum": -9007199254740991,
+						"maximum": 9007199254740991
+					},
+					"archive_timestamp": {
+						"nullable": true,
+						"description": "ISO 8601 timestamp of the last archive state change",
+						"type": "string"
+					},
+					"create_timestamp": {
+						"nullable": true,
+						"description": "ISO 8601 timestamp when the thread was created",
+						"type": "string"
+					},
+					"applied_tags": {
+						"nullable": true,
+						"description": "Forum tag IDs applied to the post",
+						"maxItems": 20,
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/SnowflakeStringType"}
+					}
+				},
+				"required": [
+					"id",
+					"guild_id",
+					"parent_id",
+					"parent_name",
+					"name",
+					"type",
+					"owner_id",
+					"archived",
+					"locked",
+					"pinned",
+					"message_count",
+					"member_count",
+					"auto_archive_duration",
+					"archive_timestamp",
+					"create_timestamp",
+					"applied_tags"
+				],
+				"additionalProperties": false
+			},
 			"DiscoveryAdminPendingApplicationResponse": {
 				"type": "object",
 				"properties": {
@@ -14684,9 +15085,25 @@
 						"description": "Allows management of guild expressions"
 					},
 					{
+						"name": "MANAGE_THREADS",
+						"value": "17179869184",
+						"description": "Allows managing threads and forum posts others started"
+					},
+					{
+						"name": "CREATE_PUBLIC_THREADS",
+						"value": "34359738368",
+						"description": "Allows creating threads and forum posts"
+					},
+					{"name": "CREATE_PRIVATE_THREADS", "value": "68719476736", "description": "Allows creating private threads"},
+					{
 						"name": "USE_EXTERNAL_STICKERS",
 						"value": "137438953472",
 						"description": "Allows using stickers from other guilds"
+					},
+					{
+						"name": "SEND_MESSAGES_IN_THREADS",
+						"value": "274877906944",
+						"description": "Allows sending messages in threads and forum posts"
 					},
 					{"name": "MODERATE_MEMBERS", "value": "1099511627776", "description": "Allows timing out users"},
 					{"name": "CREATE_EXPRESSIONS", "value": "8796093022208", "description": "Allows creating guild expressions"},
@@ -15436,7 +15853,7 @@
 					"pending_bulk_message_deletion_at": {"nullable": true, "type": "string"},
 					"deletion_reason_code": {"nullable": true, "allOf": [{"$ref": "#/components/schemas/Int32Type"}]},
 					"deletion_public_reason": {"nullable": true, "type": "string"},
-					"acls": {"maxItems": 112, "type": "array", "items": {"type": "string"}},
+					"acls": {"maxItems": 115, "type": "array", "items": {"type": "string"}},
 					"traits": {"maxItems": 100, "type": "array", "items": {"type": "string"}},
 					"has_totp": {"type": "boolean"},
 					"authenticator_types": {"maxItems": 10, "type": "array", "items": {"$ref": "#/components/schemas/Int32Type"}},

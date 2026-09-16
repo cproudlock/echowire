@@ -22,7 +22,7 @@ export function GuildChannelController(app: HonoApp) {
 	// Echowire: every active thread the caller can view in the guild, with the caller's memberships.
 	app.get(
 		'/guilds/:guild_id/threads/active',
-		RateLimitMiddleware(RateLimitConfigs.GUILD_CHANNELS_LIST),
+		RateLimitMiddleware(RateLimitConfigs.GUILD_THREADS_ACTIVE_LIST),
 		LoginRequired,
 		Validator('param', GuildIdParam),
 		OpenAPI({

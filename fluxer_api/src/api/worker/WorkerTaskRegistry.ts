@@ -9,6 +9,7 @@ import bulkScheduleUserDeletion from '@app/api/worker/tasks/admin_bulk/BulkSched
 import bulkUpdateGuildFeatures from '@app/api/worker/tasks/admin_bulk/BulkUpdateGuildFeatures';
 import bulkUpdateSuspiciousActivityFlags from '@app/api/worker/tasks/admin_bulk/BulkUpdateSuspiciousActivityFlags';
 import bulkUpdateUserFlags from '@app/api/worker/tasks/admin_bulk/BulkUpdateUserFlags';
+import backfillThreadMembersByUser from '@app/api/worker/tasks/BackfillThreadMembersByUser';
 import batchGuildAuditLogMessageDeletes from '@app/api/worker/tasks/BatchGuildAuditLogMessageDeletes';
 import bulkDeleteSelfMessagesImmediate from '@app/api/worker/tasks/BulkDeleteSelfMessagesImmediate';
 import bulkDeleteUserMessages from '@app/api/worker/tasks/BulkDeleteUserMessages';
@@ -50,6 +51,7 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	applicationProcessDeletion,
 	archiveInactiveThreads,
 	purgeOrphanedThreads,
+	backfillThreadMembersByUser,
 	batchGuildAuditLogMessageDeletes,
 	bulkAddGuildMembers: bulkAddGuildMembers,
 	bulkBanFileShas: bulkBanFileShas,

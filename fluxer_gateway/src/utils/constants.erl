@@ -19,6 +19,7 @@
     administrator_permission/0,
     manage_roles_permission/0,
     manage_channels_permission/0,
+    manage_threads_permission/0,
     connect_permission/0,
     speak_permission/0,
     stream_permission/0,
@@ -130,6 +131,11 @@ manage_roles_permission() -> 268435456.
 
 -spec manage_channels_permission() -> pos_integer().
 manage_channels_permission() -> 16.
+
+%% Echowire: MANAGE_THREADS, 1 bsl 34, Discord's own position for it. Moderating a thread accepts
+%% either this or MANAGE_CHANNELS, the permission every existing moderator role already holds.
+-spec manage_threads_permission() -> pos_integer().
+manage_threads_permission() -> 17179869184.
 
 -spec connect_permission() -> pos_integer().
 connect_permission() -> 1048576.

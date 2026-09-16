@@ -68,6 +68,7 @@ const LANE_CONFIG = {
 		tasks: [
 			'archiveInactiveThreads',
 			'purgeOrphanedThreads',
+			'backfillThreadMembersByUser',
 			'expireAttachments',
 			'indexChannelMessages',
 			'indexGuildMembers',

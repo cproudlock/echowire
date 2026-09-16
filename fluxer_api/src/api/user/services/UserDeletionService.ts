@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {randomInt} from 'node:crypto';
-import {createMessageID, createUserID, type MessageID, type UserID} from '@app/api/BrandedTypes';
+import {createMessageID, createUserID, type GuildID, type MessageID, type UserID} from '@app/api/BrandedTypes';
 import {Config} from '@app/api/Config';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {ChannelRepository} from '@app/api/channel/ChannelRepository';
+import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import type {IConnectionRepository} from '@app/api/connection/IConnectionRepository';
 import type {FavoriteMemeRepository} from '@app/api/favorite_meme/FavoriteMemeRepository';
 import type {GuildRepository} from '@app/api/guild/repositories/GuildRepository';
@@ -249,6 +250,10 @@ export async function processUserDeletion(
 						);
 					}
 				}
+				// Echowire: leave every thread of this guild before the membership row goes, or the
+				// deleted account keeps inflating member_count and stays in the member ids a private
+				// thread carries. The by-user membership index names those threads directly.
+				await removeThreadMembershipsInGuild({guildId, userId, channelRepository});
 				await guildRepository.deleteMember(guildId, userId);
 				const guild = await guildRepository.findUnique(guildId);
 				if (guild) {
@@ -479,4 +484,28 @@ export async function processUserDeletion(
 	await userCacheService.setUserPartialResponseFromUser(anonymisedUser);
 	await userRepository.completeDeletion(anonymisedUser);
 	Logger.debug({userId, deletionReasonCode}, 'User account anonymization completed successfully');
+}
+
+// Echowire: drop the user from every thread of one guild and correct each thread's member_count.
+export async function removeThreadMembershipsInGuild(params: {
+	guildId: GuildID;
+	userId: UserID;
+	channelRepository: ChannelRepository;
+}): Promise<void> {
+	const {guildId, userId, channelRepository} = params;
+	const threadMemberRepository = new ThreadMemberRepository();
+	const memberships = await threadMemberRepository.listMembershipsForUser(userId);
+	for (const membership of memberships) {
+		if (membership.guildId !== guildId) {
+			continue;
+		}
+		const threadId = membership.threadId;
+		try {
+			await threadMemberRepository.removeMember(threadId, userId);
+			const members = await threadMemberRepository.listMembers(threadId);
+			await channelRepository.channelData.patchThreadFields(threadId, {thread_member_count: members.length});
+		} catch (error) {
+			Logger.error({error, userId, guildId, channelId: threadId.toString()}, 'Failed to leave thread on deletion');
+		}
+	}
 }

@@ -16,6 +16,7 @@ mod messages;
 mod search;
 mod system;
 mod system_dm;
+mod threads;
 mod user_detail;
 mod voice;
 
@@ -35,5 +36,6 @@ pub use messages::*;
 pub use search::*;
 pub use system::*;
 pub use system_dm::*;
+pub use threads::*;
 pub use user_detail::*;
 pub use voice::*;

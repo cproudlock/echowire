@@ -131,6 +131,7 @@ The initial session state. Sent once after a successful [Identify](/gateway/comm
 | users<sup>4</sup> | array[[partial user](/http-api/users/#partial-user-object) object] | Users referenced by the payload |
 | sessions | array[[session presence object](#session-presence-object)] | The account's other live sessions |
 | read_states | array[[read state](/http-api/read-states/#read-state-object) object] | Per-channel read state |
+| thread_members | array[[thread member](/http-api/channels/#thread-member-object) object] | Every thread the user has joined, each carrying `guild_id`, so a client never has to ask which threads it belongs to |
 | user_settings | ?[user settings](/http-api/users/#user-settings-object) object | Account-wide settings |
 | user_guild_settings | array[[user guild settings](/http-api/users/settings/#user-guild-settings-object) object] | Per-guild notification settings |
 | notes | map[snowflake, string] | Private notes keyed by user ID |
@@ -514,7 +515,9 @@ A user left a group direct message the session belongs to.
 
 A thread was created under a text or forum channel. The payload is the complete [channel object](/http-api/channels/#channel-object) for the thread, with `guild_id` present.
 
-Recipients are every session subscribed to the guild. The creator is already a member when the Dispatch arrives, so `member_count` is 1.
+Recipients are the sessions that can view the thread, resolved from the parent channel's permission overwrites. A private thread reaches only its members and the sessions holding `MANAGE_CHANNELS` on the parent. The creator is already a member when the Dispatch arrives, so `member_count` is 1.
+
+The payload never carries `thread_member_ids`. That field exists only between the api and the gateway, so the gateway can scope a private thread's events, and it is stripped before any session sees it. No HTTP response returns it either.
 
 ### <span id="thread-update"></span>THREAD_UPDATE
 
@@ -544,6 +547,27 @@ The membership of a thread changed. One Dispatch carries either a single join or
 | removed_member_ids | ?array[snowflake] | Present on a leave |
 
 A join or leave that changes nothing, such as joining a thread the user already belongs to, produces no Dispatch.
+
+### <span id="thread-list-sync"></span>THREAD_LIST_SYNC
+
+Access to a channel arrived, so the threads under it are listed. It follows the
+[Channel Create](#channel-create) that announces the parent when a role change or a channel
+overwrite makes that parent visible, and it is not sent at connect time: every thread a session can
+already see is in the guild payload at Ready.
+
+| Field | Type | Description |
+| --- | --- | --- |
+| guild_id | snowflake | Guild the threads belong to |
+| channel_ids | array[snowflake] | The parent channels these threads hang under |
+| threads | array[[channel](/http-api/channels/#channel-object) object] | The unarchived threads the session may view |
+| members | array[[thread member](/http-api/channels/#thread-member-object) object] | Always empty, see below |
+
+A parent with no unarchived threads under it produces no Dispatch.
+
+`members` is always empty. A session learns its own thread memberships from `thread_members` in the
+Ready payload and keeps them current through [Thread Members Update](#thread-members-update);
+telling one session about another user's membership of a private thread is what the thread rules
+forbid.
 
 ### <span id="webhooks-update"></span>WEBHOOKS_UPDATE
 

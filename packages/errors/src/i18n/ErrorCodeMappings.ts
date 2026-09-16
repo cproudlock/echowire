@@ -187,6 +187,7 @@ export const ErrorCodeToI18nKey = {
 	[APIErrorCodes.GROUP_DM_RECIPIENTS_NOT_ADDABLE]: 'channels_and_guilds.group_dm_recipients_not_addable',
 	[APIErrorCodes.MAX_GROUP_DM_RECIPIENTS]: 'channels_and_guilds.max_group_dm_recipients_reached',
 	[APIErrorCodes.MAX_GROUP_DMS]: 'channels_and_guilds.max_group_dms_reached',
+	[APIErrorCodes.MAX_ACTIVE_THREADS]: 'channels_and_guilds.max_active_threads_reached',
 	[APIErrorCodes.MAX_GUILD_CHANNELS]: 'channels_and_guilds.max_guild_channels_reached',
 	[APIErrorCodes.MAX_GUILD_MEMBERS]: 'channels_and_guilds.max_guild_members_reached',
 	[APIErrorCodes.MAX_GUILD_ROLES]: 'channels_and_guilds.max_guild_roles_reached',

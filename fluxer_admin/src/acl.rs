@@ -11,6 +11,9 @@ pub const ARCHIVE_TRIGGER_USER: &str = "archive:trigger:user";
 pub const ARCHIVE_VIEW_ALL: &str = "archive:view_all";
 pub const ASSET_PURGE: &str = "asset:purge";
 pub const AUDIT_LOG_VIEW: &str = "audit_log:view";
+pub const CHANNEL_LIST_THREADS: &str = "channel:list:threads";
+pub const CHANNEL_THREAD_UPDATE: &str = "channel:thread:update";
+pub const CHANNEL_THREAD_DELETE: &str = "channel:thread:delete";
 pub const AUTHENTICATE: &str = "admin:authenticate";
 pub const JOBS_VIEW: &str = "jobs:view";
 pub const JOBS_CANCEL: &str = "jobs:cancel";
@@ -125,6 +128,9 @@ pub const ALL_ACLS: &[&str] = &[
     ASSET_PURGE,
     AUDIT_LOG_VIEW,
     AUTHENTICATE,
+    CHANNEL_LIST_THREADS,
+    CHANNEL_THREAD_UPDATE,
+    CHANNEL_THREAD_DELETE,
     JOBS_VIEW,
     JOBS_CANCEL,
     BAN_EMAIL_ADD,

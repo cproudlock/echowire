@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {type ChannelID, type UserID, userIdToChannelId} from '@app/api/BrandedTypes';
-import {type ChannelRow, NULL_THREAD_FIELDS} from '@app/api/database/types/ChannelTypes';
+import type {ChannelRow} from '@app/api/database/types/ChannelTypes';
 import type {Channel} from '@app/api/models/Channel';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 
@@ -39,7 +39,6 @@ function buildPersonalNotesChannelRow(userId: UserID): ChannelRow {
 		last_pin_timestamp: null,
 		permission_overwrites: null,
 		nicks: null,
-		...NULL_THREAD_FIELDS,
 		soft_deleted: false,
 		indexed_at: null,
 		version: 1,

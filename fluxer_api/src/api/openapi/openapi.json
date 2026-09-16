@@ -4769,6 +4769,203 @@
 				]
 			}
 		},
+		"/channels/{channel_id}/thread-members/{user_id}": {
+			"put": {
+				"operationId": "add_thread_member",
+				"summary": "Add a thread member",
+				"tags": ["Channels"],
+				"responses": {
+					"204": {"description": "No Content"},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Adds another user to a thread. The target must be able to view the parent channel. Requires being the thread owner or having Manage Threads, or membership of an invitable private thread.",
+				"security": [{"botToken": []}, {"sessionToken": []}],
+				"parameters": [
+					{
+						"name": "channel_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the channel"
+					},
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the user", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the user"
+					}
+				]
+			},
+			"delete": {
+				"operationId": "remove_thread_member",
+				"summary": "Remove a thread member",
+				"tags": ["Channels"],
+				"responses": {
+					"204": {"description": "No Content"},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Removes a user from a thread. Requires being the thread owner or having Manage Threads, unless the caller is removing themselves.",
+				"security": [{"botToken": []}, {"sessionToken": []}],
+				"parameters": [
+					{
+						"name": "channel_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the channel"
+					},
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the user", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the user"
+					}
+				]
+			},
+			"get": {
+				"operationId": "get_thread_member",
+				"summary": "Get a thread member",
+				"tags": ["Channels"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThreadMemberResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"401": {
+						"description": "Unauthorized - Authentication is required or the token is invalid",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"403": {
+						"description": "Forbidden - You do not have permission to perform this action",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Fetches one member of a thread. Requires being able to view the thread.",
+				"security": [{"botToken": []}, {"sessionToken": []}],
+				"parameters": [
+					{
+						"name": "channel_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the channel"
+					},
+					{
+						"name": "user_id",
+						"in": "path",
+						"required": true,
+						"schema": {"description": "The ID of the user", "$ref": "#/components/schemas/SnowflakeType"},
+						"description": "The ID of the user"
+					}
+				]
+			}
+		},
 		"/channels/{channel_id}/threads": {
 			"post": {
 				"operationId": "create_thread",
@@ -4882,7 +5079,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Lists the active (non-archived) threads under a text or forum channel.",
+				"description": "Lists the active (non-archived) threads under a text or forum channel. Newest first; `before` and `limit` page through them, and omitting both returns every visible thread.",
 				"security": [{"botToken": []}, {"sessionToken": []}],
 				"parameters": [
 					{
@@ -4891,6 +5088,27 @@
 						"required": true,
 						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
 						"description": "The ID of the channel"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Maximum threads to return (1-100); omit for every visible thread",
+							"default": "0",
+							"type": "string"
+						},
+						"description": "Maximum threads to return (1-100); omit for every visible thread"
+					},
+					{
+						"name": "before",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Return threads with an ID lower than this one",
+							"$ref": "#/components/schemas/SnowflakeType"
+						},
+						"description": "Return threads with an ID lower than this one"
 					}
 				]
 			}
@@ -4944,7 +5162,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Lists the archived threads under a text or forum channel.",
+				"description": "Lists the archived threads under a text or forum channel. Newest first; `before` and `limit` page through them, and omitting both returns every visible thread.",
 				"security": [{"botToken": []}, {"sessionToken": []}],
 				"parameters": [
 					{
@@ -4953,6 +5171,27 @@
 						"required": true,
 						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
 						"description": "The ID of the channel"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Maximum threads to return (1-100); omit for every visible thread",
+							"default": "0",
+							"type": "string"
+						},
+						"description": "Maximum threads to return (1-100); omit for every visible thread"
+					},
+					{
+						"name": "before",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Return threads with an ID lower than this one",
+							"$ref": "#/components/schemas/SnowflakeType"
+						},
+						"description": "Return threads with an ID lower than this one"
 					}
 				]
 			}
@@ -25017,11 +25256,6 @@
 						"description": "Approximate count of members in the thread (threads only)",
 						"$ref": "#/components/schemas/Int32Type"
 					},
-					"thread_member_ids": {
-						"description": "Member IDs of a private thread, so the gateway can deliver its events to members",
-						"type": "array",
-						"items": {"$ref": "#/components/schemas/SnowflakeStringType"}
-					},
 					"message_count": {
 						"description": "Approximate count of messages in the thread (threads only)",
 						"$ref": "#/components/schemas/Int32Type"
@@ -29360,9 +29594,24 @@
 							{"type": "integer", "x-enumNames": ["PUBLIC_THREAD"], "enum": [11]},
 							{"type": "integer", "x-enumNames": ["PRIVATE_THREAD"], "enum": [12]}
 						]
+					},
+					"invitable": {
+						"description": "Whether members of a private thread may add other members. Only meaningful for private threads; defaults to false.",
+						"type": "boolean"
 					}
 				},
 				"required": ["name"]
+			},
+			"ThreadMemberResponse": {
+				"type": "object",
+				"properties": {
+					"id": {"description": "The ID of the thread", "$ref": "#/components/schemas/SnowflakeStringType"},
+					"user_id": {"type": "string", "description": "ID of the member"},
+					"join_timestamp": {"type": "string", "description": "When the member joined the thread"},
+					"flags": {"type": "number", "description": "Thread member flags"}
+				},
+				"required": ["id", "user_id", "join_timestamp", "flags"],
+				"additionalProperties": false
 			},
 			"ThreadMemberListResponse": {"type": "array", "items": {"$ref": "#/components/schemas/ThreadMemberResponse"}},
 			"ThreadUpdateRequest": {
@@ -33037,16 +33286,6 @@
 				"required": ["id", "name", "emoji", "ping_endpoint"],
 				"additionalProperties": false
 			},
-			"ThreadMemberResponse": {
-				"type": "object",
-				"properties": {
-					"user_id": {"type": "string", "description": "ID of the member"},
-					"join_timestamp": {"type": "string", "description": "When the member joined the thread"},
-					"flags": {"type": "number", "description": "Thread member flags"}
-				},
-				"required": ["user_id", "join_timestamp", "flags"],
-				"additionalProperties": false
-			},
 			"DiscoveryCategoryResponse": {
 				"type": "object",
 				"properties": {
@@ -33744,9 +33983,25 @@
 						"description": "Allows management of guild expressions"
 					},
 					{
+						"name": "MANAGE_THREADS",
+						"value": "17179869184",
+						"description": "Allows managing threads and forum posts others started"
+					},
+					{
+						"name": "CREATE_PUBLIC_THREADS",
+						"value": "34359738368",
+						"description": "Allows creating threads and forum posts"
+					},
+					{"name": "CREATE_PRIVATE_THREADS", "value": "68719476736", "description": "Allows creating private threads"},
+					{
 						"name": "USE_EXTERNAL_STICKERS",
 						"value": "137438953472",
 						"description": "Allows using stickers from other guilds"
+					},
+					{
+						"name": "SEND_MESSAGES_IN_THREADS",
+						"value": "274877906944",
+						"description": "Allows sending messages in threads and forum posts"
 					},
 					{"name": "MODERATE_MEMBERS", "value": "1099511627776", "description": "Allows timing out users"},
 					{"name": "CREATE_EXPRESSIONS", "value": "8796093022208", "description": "Allows creating guild expressions"},

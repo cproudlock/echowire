@@ -339,7 +339,7 @@ function rowToObject(row: cassandra.types.Row, columnNames: ReadonlyArray<string
  * Project a raw source row onto the columns the target table declares:
  *   - drop any source-only column (record it so we can warn once);
  *   - never invent values for target-only columns — leave them absent so the
- *     upsert's own defaults (e.g. NULL_THREAD_FIELDS) apply.
+ *     upsert's own defaults (the thread and forum columns) apply.
  * Values (including explicit nulls) are passed through untouched; the writer
  * handles all encoding.
  */

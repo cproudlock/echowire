@@ -33,6 +33,7 @@ const CONTRACT_PATH = join(import.meta.dirname, '../../../../../contracts/thread
 const PERMISSION_BITS: Record<string, bigint> = {
 	VIEW_CHANNEL: Permissions.VIEW_CHANNEL,
 	MANAGE_CHANNELS: Permissions.MANAGE_CHANNELS,
+	MANAGE_THREADS: Permissions.MANAGE_THREADS,
 };
 
 function loadCases(): Array<ContractCase> {

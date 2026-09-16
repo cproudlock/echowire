@@ -590,6 +590,8 @@ contract_permission_bits(Names) ->
                 permission_bits:add(Acc, constants:view_channel_permission());
             (<<"MANAGE_CHANNELS">>, Acc) ->
                 permission_bits:add(Acc, constants:manage_channels_permission());
+            (<<"MANAGE_THREADS">>, Acc) ->
+                permission_bits:add(Acc, constants:manage_threads_permission());
             (Other, _Acc) ->
                 error({unmapped_contract_permission, Other})
         end,

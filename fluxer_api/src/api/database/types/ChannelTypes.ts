@@ -30,48 +30,42 @@ export interface DefaultReactionEmoji {
 	emoji_name: Nullish<string>;
 }
 
-// Echowire: spread into any non-thread / non-forum ChannelRow literal to satisfy the full-row-upsert
-// DSL (it requires every CHANNEL_COLUMNS key present). Covers both the thread_* fields and the forum
-// fields (available_tags/applied_tags/default_reaction_emoji/default_sort_order) so the common
-// channel-create sites stay terse; forum/thread sites override the relevant keys.
-export const NULL_THREAD_FIELDS = {
-	thread_archived: null,
-	thread_auto_archive_duration: null,
-	thread_archive_timestamp: null,
-	thread_locked: null,
-	thread_invitable: null,
-	thread_create_timestamp: null,
-	thread_member_count: null,
-	thread_message_count: null,
-	thread_pinned: null,
-	available_tags: null,
-	applied_tags: null,
-	default_reaction_emoji: null,
-	default_sort_order: null,
-	forum_default_auto_archive_duration: null,
-	forum_require_tag: null,
-	default_forum_layout: null,
-	default_thread_rate_limit_per_user: null,
-} satisfies Pick<
-	ChannelRow,
-	| 'thread_archived'
-	| 'thread_auto_archive_duration'
-	| 'thread_archive_timestamp'
-	| 'thread_locked'
-	| 'thread_invitable'
-	| 'thread_create_timestamp'
-	| 'thread_member_count'
-	| 'thread_message_count'
-	| 'thread_pinned'
-	| 'available_tags'
-	| 'applied_tags'
-	| 'default_reaction_emoji'
-	| 'default_sort_order'
-	| 'forum_default_auto_archive_duration'
-	| 'forum_require_tag'
-	| 'default_forum_layout'
-	| 'default_thread_rate_limit_per_user'
->;
+// Echowire: thread and forum state lives on the channel row but is set only on threads, forum
+// posts and forums. The columns are optional here so a plain channel row literal never mentions
+// them, and `withChannelThreadDefaults` fills the missing ones with null at the single write
+// boundary in Tables.ts, which is what the full-row upsert DSL requires. See
+// docs/adr/0005-channel-thread-metadata-shape.md.
+const THREAD_METADATA_COLUMNS = [
+	'thread_archived',
+	'thread_auto_archive_duration',
+	'thread_archive_timestamp',
+	'thread_locked',
+	'thread_invitable',
+	'thread_create_timestamp',
+	'thread_member_count',
+	'thread_message_count',
+	'thread_pinned',
+	'available_tags',
+	'applied_tags',
+	'default_reaction_emoji',
+	'default_sort_order',
+	'forum_default_auto_archive_duration',
+	'forum_require_tag',
+	'default_forum_layout',
+	'default_thread_rate_limit_per_user',
+] as const satisfies ReadonlyArray<keyof ChannelRow>;
+
+type ThreadMetadataColumn = (typeof THREAD_METADATA_COLUMNS)[number];
+
+export function withChannelThreadDefaults(row: ChannelRow): ChannelRow {
+	const filled: ChannelRow = {...row};
+	for (const column of THREAD_METADATA_COLUMNS) {
+		if (filled[column] === undefined) {
+			(filled as Record<ThreadMetadataColumn, null>)[column] = null;
+		}
+	}
+	return filled;
+}
 
 export interface ChannelRow {
 	channel_id: ChannelID;
@@ -98,29 +92,28 @@ export interface ChannelRow {
 	permission_overwrites: Nullish<Map<RoleID | UserID, PermissionOverwrite>>;
 	nicks: Nullish<Map<string, string>>;
 	// Echowire: thread fields (flat, like other Date/scalar columns so they round-trip through the KV layer).
-	// Present only when `type` is a thread; owner_id (above) is the thread creator. NON-optional Nullish so
-	// the full-row-upsert DSL (which requires every CHANNEL_COLUMNS key present) is satisfied at all sites.
-	thread_archived: Nullish<boolean>;
-	thread_auto_archive_duration: Nullish<number>;
-	thread_archive_timestamp: Nullish<Date>;
-	thread_locked: Nullish<boolean>;
-	thread_invitable: Nullish<boolean>;
-	thread_create_timestamp: Nullish<Date>;
-	thread_member_count: Nullish<number>;
-	thread_message_count: Nullish<number>;
-	thread_pinned: Nullish<boolean>;
+	// Present only when `type` is a thread; owner_id (above) is the thread creator. Optional: the write
+	// boundary fills the absent ones with null, so only thread sites name them.
+	thread_archived?: Nullish<boolean>;
+	thread_auto_archive_duration?: Nullish<number>;
+	thread_archive_timestamp?: Nullish<Date>;
+	thread_locked?: Nullish<boolean>;
+	thread_invitable?: Nullish<boolean>;
+	thread_create_timestamp?: Nullish<Date>;
+	thread_member_count?: Nullish<number>;
+	thread_message_count?: Nullish<number>;
+	thread_pinned?: Nullish<boolean>;
 	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order are set on
-	// GUILD_FORUM channels; applied_tags is set on threads (forum posts). NON-optional Nullish so the
-	// full-row-upsert DSL is satisfied at every construction site.
-	available_tags: Nullish<Array<ForumTag>>;
-	applied_tags: Nullish<Array<string>>;
-	default_reaction_emoji: Nullish<DefaultReactionEmoji>;
-	default_sort_order: Nullish<number>;
-	forum_default_auto_archive_duration: Nullish<number>;
-	forum_require_tag: Nullish<boolean>;
+	// GUILD_FORUM channels; applied_tags is set on threads (forum posts). Optional, as above.
+	available_tags?: Nullish<Array<ForumTag>>;
+	applied_tags?: Nullish<Array<string>>;
+	default_reaction_emoji?: Nullish<DefaultReactionEmoji>;
+	default_sort_order?: Nullish<number>;
+	forum_default_auto_archive_duration?: Nullish<number>;
+	forum_require_tag?: Nullish<boolean>;
 	// Echowire: forum list layout (0 not set, 1 list, 2 gallery) and the slowmode new posts inherit.
-	default_forum_layout: Nullish<number>;
-	default_thread_rate_limit_per_user: Nullish<number>;
+	default_forum_layout?: Nullish<number>;
+	default_thread_rate_limit_per_user?: Nullish<number>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;

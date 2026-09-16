@@ -26,7 +26,16 @@ import * as TextCopyCommands from '@app/features/ui/commands/TextCopyCommands';
 import UserSettings from '@app/features/user/state/UserSettings';
 import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
-import {ArchiveIcon, BellIcon, BellSlashIcon, LockIcon, LockOpenIcon, PushPinIcon} from '@phosphor-icons/react';
+import {
+	ArchiveIcon,
+	ArrowsInSimpleIcon,
+	ArrowsOutSimpleIcon,
+	BellIcon,
+	BellSlashIcon,
+	LockIcon,
+	LockOpenIcon,
+	PushPinIcon,
+} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 
 const COPY_THREAD_ID_DESCRIPTOR = msg({
@@ -34,7 +43,15 @@ const COPY_THREAD_ID_DESCRIPTOR = msg({
 	comment: 'Developer mode item in the thread or forum post menu that copies the thread id.',
 });
 
-export const ThreadPostMenu = observer(({thread, onClose}: {thread: Channel; onClose: () => void}) => {
+interface ThreadPostMenuProps {
+	thread: Channel;
+	onClose: () => void;
+	// Supplied by the forum split view, which is the only place a pane can expand.
+	fullView?: boolean;
+	onToggleFullView?: () => void;
+}
+
+export const ThreadPostMenu = observer(({thread, onClose, fullView, onToggleFullView}: ThreadPostMenuProps) => {
 	const {i18n} = useLingui();
 	const parent = thread.parentId ? Channels.getChannel(thread.parentId) : undefined;
 	const isPost = parent?.isForum() === true;
@@ -82,6 +99,17 @@ export const ThreadPostMenu = observer(({thread, onClose}: {thread: Channel; onC
 							? i18n._(msg({message: 'Follow Post', comment: 'Post menu item that follows a forum post.'}))
 							: i18n._(msg({message: 'Join Thread', comment: 'Thread menu item that joins a thread.'}))}
 				</MenuItem>
+				{onToggleFullView && (
+					<MenuItem
+						icon={fullView ? <ArrowsInSimpleIcon size={20} /> : <ArrowsOutSimpleIcon size={20} />}
+						onClick={() => {
+							onClose();
+							onToggleFullView();
+						}}
+					>
+						{fullView ? <Trans>Exit Full View</Trans> : <Trans>Open in Full View</Trans>}
+					</MenuItem>
+				)}
 			</MenuGroup>
 			<MenuGroup>
 				<MuteChannelMenuItem channel={thread} onClose={onClose} />

@@ -20,6 +20,7 @@ import {ChannelViewScaffold} from '@app/features/channel/components/channel_view
 import {useChannelSearchState} from '@app/features/channel/components/channel_view/useChannelSearchState';
 import {useVoiceCallChromePinState} from '@app/features/channel/components/channel_view/useVoiceCallChromePinState';
 import {ForumChannelView} from '@app/features/channel/components/forum/ForumChannelView';
+import {ForumSplitView} from '@app/features/channel/components/forum/ForumSplitView';
 import {MatureContentChannelGate} from '@app/features/channel/components/MatureContentChannelGate';
 import {useMessagesBottomBarVisibility} from '@app/features/channel/components/MessagesBottomBarVisibility';
 import {ThreadArchivedBanner} from '@app/features/channel/components/ThreadArchivedBanner';
@@ -28,7 +29,9 @@ import {useChannelMemberListVisibility} from '@app/features/channel/hooks/useCha
 import {useChannelSearchVisibility} from '@app/features/channel/hooks/useChannelSearchVisibility';
 import type {Channel} from '@app/features/channel/models/Channel';
 import Channels from '@app/features/channel/state/Channels';
+import ForumViewPreferences from '@app/features/channel/state/ForumViewPreferences';
 import * as ChannelUtils from '@app/features/channel/utils/ChannelUtils';
+import {ForumPaneMode, resolveForumPaneState} from '@app/features/channel/utils/ForumPaneUtils';
 import DeveloperOptions from '@app/features/devtools/state/DeveloperOptions';
 import GuildMatureContentAgree, {MatureContentGateReason} from '@app/features/guild/state/GuildMatureContentAgree';
 import Guilds from '@app/features/guild/state/Guilds';
@@ -531,6 +534,61 @@ export const GuildChannelView = observer(({channelId, guildId}: GuildChannelView
 		);
 	}
 	const shouldRenderMemberList = isMemberListVisible && !isMobileLayout && !isSearchActive;
+	// Echowire: an open forum post keeps its forum's list beside it, unless the viewer asked for
+	// full view or the viewport is too narrow to hold both.
+	const forumPane = resolveForumPaneState({
+		selected: channel,
+		getChannel: (id) => Channels.getChannel(id) ?? null,
+		fullView: ForumViewPreferences.isFullView(channel.parentId ?? ''),
+		narrow: isMobileLayout,
+	});
+	if (forumPane.mode !== ForumPaneMode.LIST && forumPane.forum && forumPane.post) {
+		const {forum, post} = forumPane;
+		return (
+			<ChannelViewScaffold
+				header={
+					<ChannelHeader
+						channel={forum}
+						showMembersToggle={true}
+						showPins={false}
+						data-flx="channel.channel-view.guild-channel-view.channel-header--forum-post"
+					/>
+				}
+				chatArea={
+					<ForumSplitView forum={forum} post={post} showList={forumPane.mode === ForumPaneMode.SPLIT}>
+						<ChannelChatLayout
+							messages={
+								<Messages
+									key={post.id}
+									channel={post}
+									onBottomBarVisibilityChange={onBottomBarVisibilityChange}
+									data-flx="channel.channel-view.guild-channel-view.messages--forum-post"
+								/>
+							}
+							textarea={
+								<>
+									<ThreadArchivedBanner channel={post} />
+									{renderChatArea()}
+								</>
+							}
+							data-flx="channel.channel-view.guild-channel-view.channel-chat-layout--forum-post"
+						/>
+					</ForumSplitView>
+				}
+				sidePanel={
+					shouldRenderMemberList ? (
+						<ChannelMembers
+							channel={forum}
+							guild={guild}
+							data-flx="channel.channel-view.guild-channel-view.channel-members--forum-post"
+						/>
+					) : null
+				}
+				showMemberListDivider={shouldRenderMemberList}
+				data-flx="channel.channel-view.guild-channel-view.channel-view-scaffold--forum-post"
+			/>
+		);
+	}
 	// Echowire: forum channels render a post grid instead of a message stream + composer.
 	if (channel.isForum()) {
 		return (

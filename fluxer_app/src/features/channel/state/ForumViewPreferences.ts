@@ -16,6 +16,8 @@ export interface ForumViewOverride {
 class ForumViewPreferences {
 	overrides: Record<string, ForumViewOverride> = {};
 	lastViewedAt: Record<string, number> = {};
+	// Forums whose open post should fill the body instead of sitting beside the list.
+	fullView: Record<string, boolean> = {};
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
@@ -23,7 +25,7 @@ class ForumViewPreferences {
 	}
 
 	private async initPersistence(): Promise<void> {
-		await makePersistent(this, 'ForumViewPreferences', ['overrides', 'lastViewedAt']);
+		await makePersistent(this, 'ForumViewPreferences', ['overrides', 'lastViewedAt', 'fullView']);
 	}
 
 	getOverride(forumId: string): ForumViewOverride {
@@ -42,6 +44,14 @@ class ForumViewPreferences {
 		const next = {...this.overrides};
 		delete next[forumId];
 		this.overrides = next;
+	}
+
+	isFullView(forumId: string): boolean {
+		return this.fullView[forumId] === true;
+	}
+
+	toggleFullView(forumId: string): void {
+		this.fullView = {...this.fullView, [forumId]: !this.fullView[forumId]};
 	}
 
 	getLastViewedAt(forumId: string): number | null {

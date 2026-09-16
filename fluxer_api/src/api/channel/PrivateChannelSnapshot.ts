@@ -2,7 +2,7 @@
 
 import type {UserID} from '@app/api/BrandedTypes';
 import {Db, type DbOp} from '@app/api/database/CassandraTypes';
-import {type ChannelRow, type PrivateChannelRow} from '@app/api/database/types/ChannelTypes';
+import type {ChannelRow, PrivateChannelRow} from '@app/api/database/types/ChannelTypes';
 import {type ChannelType, ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 
 type SnapshotPatch = Partial<{

@@ -14,11 +14,7 @@ import {
 	upsertOne,
 } from '@app/api/database/CassandraQueryExecution';
 import {Db} from '@app/api/database/CassandraTypes';
-import {
-	type ChannelRow,
-	type DmStateRow,
-	type PrivateChannelRow,
-} from '@app/api/database/types/ChannelTypes';
+import type {ChannelRow, DmStateRow, PrivateChannelRow} from '@app/api/database/types/ChannelTypes';
 import {Logger} from '@app/api/Logger';
 import {Channel} from '@app/api/models/Channel';
 import {Channels, DmStates, PinnedDms, PrivateChannels, ReadStates, UserDmHistory} from '@app/api/Tables';

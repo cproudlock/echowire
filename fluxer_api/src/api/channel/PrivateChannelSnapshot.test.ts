@@ -9,7 +9,7 @@ import {
 	privateChannelLastMessageIdPatch,
 	privateChannelMetadataPatch,
 } from '@app/api/channel/PrivateChannelSnapshot';
-import {type ChannelRow, type PrivateChannelRow} from '@app/api/database/types/ChannelTypes';
+import type {ChannelRow, PrivateChannelRow} from '@app/api/database/types/ChannelTypes';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {describe, expect, test} from 'vitest';
 

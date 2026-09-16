@@ -35,7 +35,7 @@ export interface DefaultReactionEmoji {
 // them, and `withChannelThreadDefaults` fills the missing ones with null at the single write
 // boundary in Tables.ts, which is what the full-row upsert DSL requires. See
 // docs/adr/0005-channel-thread-metadata-shape.md.
-export const THREAD_METADATA_COLUMNS = [
+const THREAD_METADATA_COLUMNS = [
 	'thread_archived',
 	'thread_auto_archive_duration',
 	'thread_archive_timestamp',
@@ -55,7 +55,7 @@ export const THREAD_METADATA_COLUMNS = [
 	'default_thread_rate_limit_per_user',
 ] as const satisfies ReadonlyArray<keyof ChannelRow>;
 
-export type ThreadMetadataColumn = (typeof THREAD_METADATA_COLUMNS)[number];
+type ThreadMetadataColumn = (typeof THREAD_METADATA_COLUMNS)[number];
 
 export function withChannelThreadDefaults(row: ChannelRow): ChannelRow {
 	const filled: ChannelRow = {...row};

@@ -4882,7 +4882,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Lists the active (non-archived) threads under a text or forum channel.",
+				"description": "Lists the active (non-archived) threads under a text or forum channel. Newest first; `before` and `limit` page through them, and omitting both returns every visible thread.",
 				"security": [{"botToken": []}, {"sessionToken": []}],
 				"parameters": [
 					{
@@ -4891,6 +4891,27 @@
 						"required": true,
 						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
 						"description": "The ID of the channel"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Maximum threads to return (1-100); omit for every visible thread",
+							"default": "0",
+							"type": "string"
+						},
+						"description": "Maximum threads to return (1-100); omit for every visible thread"
+					},
+					{
+						"name": "before",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Return threads with an ID lower than this one",
+							"$ref": "#/components/schemas/SnowflakeType"
+						},
+						"description": "Return threads with an ID lower than this one"
 					}
 				]
 			}
@@ -4944,7 +4965,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Lists the archived threads under a text or forum channel.",
+				"description": "Lists the archived threads under a text or forum channel. Newest first; `before` and `limit` page through them, and omitting both returns every visible thread.",
 				"security": [{"botToken": []}, {"sessionToken": []}],
 				"parameters": [
 					{
@@ -4953,6 +4974,27 @@
 						"required": true,
 						"schema": {"description": "The ID of the channel", "$ref": "#/components/schemas/SnowflakeType"},
 						"description": "The ID of the channel"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Maximum threads to return (1-100); omit for every visible thread",
+							"default": "0",
+							"type": "string"
+						},
+						"description": "Maximum threads to return (1-100); omit for every visible thread"
+					},
+					{
+						"name": "before",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Return threads with an ID lower than this one",
+							"$ref": "#/components/schemas/SnowflakeType"
+						},
+						"description": "Return threads with an ID lower than this one"
 					}
 				]
 			}

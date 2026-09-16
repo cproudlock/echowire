@@ -16,6 +16,7 @@ import {
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
+import {countCapacityChannels} from '@app/api/channel/services/ChannelCapacity';
 import {makeAttachmentCdnUrl, purgeMessageAttachments} from '@app/api/channel/services/message/MessageHelpers';
 import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
 import {
@@ -25,6 +26,7 @@ import {
 	hasPermissionBits,
 	withPrivateThreadMemberIds,
 } from '@app/api/channel/services/ThreadAccess';
+import {purgeThread} from '@app/api/channel/services/ThreadPurge';
 import {NULL_THREAD_FIELDS, type PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@app/api/guild/GuildAuditLogTypes';
@@ -38,6 +40,7 @@ import type {LimitConfigService} from '@app/api/limits/LimitConfigService';
 import {resolveLimitSafe} from '@app/api/limits/LimitConfigUtils';
 import {createLimitMatchContext} from '@app/api/limits/LimitMatchContextBuilder';
 import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
+import {getPurgeQueue, getStorageService} from '@app/api/middleware/ServiceSingletons';
 import type {Channel} from '@app/api/models/Channel';
 import {ChannelPermissionOverwrite} from '@app/api/models/ChannelPermissionOverwrite';
 import type {Message} from '@app/api/models/Message';
@@ -53,6 +56,7 @@ import {
 	VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT,
 } from '@fluxer/constants/src/LimitConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
+import {MaxActiveThreadsError} from '@fluxer/errors/src/domains/channel/MaxActiveThreadsError';
 import {MaxCategoryChannelsError} from '@fluxer/errors/src/domains/channel/MaxCategoryChannelsError';
 import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
 import {UnknownMessageError} from '@fluxer/errors/src/domains/channel/UnknownMessageError';
@@ -60,15 +64,12 @@ import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidat
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
 import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
-import {countCapacityChannels} from '@app/api/channel/services/ChannelCapacity';
-import {purgeThread} from '@app/api/channel/services/ThreadPurge';
-import {getPurgeQueue, getStorageService} from '@app/api/middleware/ServiceSingletons';
-import {MaxActiveThreadsError} from '@fluxer/errors/src/domains/channel/MaxActiveThreadsError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
 import type {
 	ChannelCreateRequest,
 	ThreadCreateRequest,
+	ThreadsQuery,
 	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {
@@ -88,6 +89,16 @@ import type {IRateLimitService} from '@pkgs/rate_limit/src/IRateLimitService';
 
 const STARTER_PREVIEW_MAX_LENGTH = 200;
 const THREAD_PURGE_ATTACHMENT_BATCH = 100;
+
+// Echowire: newest first, then Discord-style `before` and `limit`. With neither parameter the list
+// is returned whole, which is what clients built against the unpaged endpoints expect.
+function applyThreadPaging(threads: ReadonlyArray<Channel>, page: ThreadsQuery | undefined): Array<Channel> {
+	const sorted = [...threads].sort((left, right) => (right.id > left.id ? 1 : right.id < left.id ? -1 : 0));
+	const before = page?.before;
+	const windowed = before === undefined ? sorted : sorted.filter((thread) => thread.id < BigInt(before));
+	const limit = page?.limit;
+	return limit === undefined || limit <= 0 ? windowed : windowed.slice(0, limit);
+}
 
 export class ChannelOperationsService {
 	constructor(
@@ -505,6 +516,7 @@ export class ChannelOperationsService {
 		userId: UserID;
 		parentChannelId: ChannelID;
 		requestCache: RequestCache;
+		page?: ThreadsQuery;
 	}): Promise<Array<ChannelResponse>> {
 		const parent = await this.channelRepository.findUnique(params.parentChannelId);
 		if (!parent || parent.isSoftDeleted || !parent.guildId) {
@@ -526,7 +538,7 @@ export class ChannelOperationsService {
 				!channel.threadMetadata?.archived,
 		);
 		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
-		return this.mapThreadsWithPreview(visibleThreads, params.requestCache, () =>
+		return this.mapThreadsWithPreview(applyThreadPaging(visibleThreads, params.page), params.requestCache, () =>
 			hasPermissionBits(parentPermissions, Permissions.READ_MESSAGE_HISTORY),
 		);
 	}
@@ -673,6 +685,7 @@ export class ChannelOperationsService {
 		userId: UserID;
 		parentChannelId: ChannelID;
 		requestCache: RequestCache;
+		page?: ThreadsQuery;
 	}): Promise<Array<ChannelResponse>> {
 		const parent = await this.channelRepository.findUnique(params.parentChannelId);
 		if (!parent || parent.isSoftDeleted || !parent.guildId) {
@@ -694,7 +707,7 @@ export class ChannelOperationsService {
 				channel.threadMetadata?.archived === true,
 		);
 		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
-		return this.mapThreadsWithPreview(visibleThreads, params.requestCache, () =>
+		return this.mapThreadsWithPreview(applyThreadPaging(visibleThreads, params.page), params.requestCache, () =>
 			hasPermissionBits(parentPermissions, Permissions.READ_MESSAGE_HISTORY),
 		);
 	}

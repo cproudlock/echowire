@@ -20,6 +20,7 @@ import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildEr
 import type {
 	ChannelCreateRequest,
 	ThreadCreateRequest,
+	ThreadsQuery,
 	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {ChannelResponse, GuildActiveThreadsResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
@@ -124,6 +125,7 @@ export class GuildChannelService {
 		userId: UserID;
 		parentChannelId: ChannelID;
 		requestCache: RequestCache;
+		page?: ThreadsQuery;
 	}): Promise<Array<ChannelResponse>> {
 		return this.channelOps.listActiveThreads(params);
 	}
@@ -142,6 +144,7 @@ export class GuildChannelService {
 		userId: UserID;
 		parentChannelId: ChannelID;
 		requestCache: RequestCache;
+		page?: ThreadsQuery;
 	}): Promise<Array<ChannelResponse>> {
 		return this.channelOps.listArchivedThreads(params);
 	}

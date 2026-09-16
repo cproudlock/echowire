@@ -10425,6 +10425,8 @@
 							"max_attachments_per_message",
 							"max_bio_length",
 							"max_bookmarks",
+							"max_active_threads_per_channel",
+							"max_active_threads_per_guild",
 							"max_channels_per_category",
 							"max_custom_backgrounds",
 							"max_embeds_per_message",

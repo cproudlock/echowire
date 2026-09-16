@@ -19,6 +19,7 @@ import {
 	DeleteChannelQuery,
 	PermissionOverwriteCreateRequest,
 	ThreadCreateRequest,
+	ThreadsQuery,
 	ThreadUpdateRequest,
 } from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import {
@@ -74,10 +75,12 @@ export function ChannelController(app: HonoApp) {
 		RateLimitMiddleware(RateLimitConfigs.THREAD_LIST_ACTIVE),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
+		Validator('query', ThreadsQuery),
 		OpenAPI({
 			operationId: 'list_active_threads',
 			summary: 'List active threads',
-			description: 'Lists the active (non-archived) threads under a text or forum channel.',
+			description:
+				'Lists the active (non-archived) threads under a text or forum channel. Newest first; `before` and `limit` page through them, and omitting both returns every visible thread.',
 			responseSchema: ChannelListResponse,
 			statusCode: 200,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
@@ -88,7 +91,12 @@ export function ChannelController(app: HonoApp) {
 			const parentChannelId = createChannelID(ctx.req.valid('param').channel_id);
 			const requestCache = ctx.get('requestCache');
 			return ctx.json(
-				await ctx.get('guildService').channels.listActiveThreads({userId, parentChannelId, requestCache}),
+				await ctx.get('guildService').channels.listActiveThreads({
+					userId,
+					parentChannelId,
+					requestCache,
+					page: ctx.req.valid('query'),
+				}),
 			);
 		},
 	);
@@ -146,10 +154,12 @@ export function ChannelController(app: HonoApp) {
 		RateLimitMiddleware(RateLimitConfigs.THREAD_LIST_ARCHIVED),
 		LoginRequired,
 		Validator('param', ChannelIdParam),
+		Validator('query', ThreadsQuery),
 		OpenAPI({
 			operationId: 'list_archived_threads',
 			summary: 'List archived threads',
-			description: 'Lists the archived threads under a text or forum channel.',
+			description:
+				'Lists the archived threads under a text or forum channel. Newest first; `before` and `limit` page through them, and omitting both returns every visible thread.',
 			responseSchema: ChannelListResponse,
 			statusCode: 200,
 			security: ['botToken', 'bearerToken', 'sessionToken'],
@@ -160,7 +170,12 @@ export function ChannelController(app: HonoApp) {
 			const parentChannelId = createChannelID(ctx.req.valid('param').channel_id);
 			const requestCache = ctx.get('requestCache');
 			return ctx.json(
-				await ctx.get('guildService').channels.listArchivedThreads({userId, parentChannelId, requestCache}),
+				await ctx.get('guildService').channels.listArchivedThreads({
+					userId,
+					parentChannelId,
+					requestCache,
+					page: ctx.req.valid('query'),
+				}),
 			);
 		},
 	);

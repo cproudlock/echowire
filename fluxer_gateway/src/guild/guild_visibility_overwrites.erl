@@ -191,11 +191,10 @@ dispatch_removed_channels(Removed, Pid, OldState, GuildId) ->
     sets:set(channel_id()), pid(), binary(), map(), guild_state(), integer()
 ) -> ok.
 dispatch_added_channels(Added, Pid, SessionId, SessionData, StateWithCache, GuildId) ->
-    %% Echowire: a channel that just became visible brings its threads with it, which nothing
-    %% announced before, so a client had to refetch the guild thread list to find them.
-    guild_thread_sync:dispatch_for_parents(
-        sets:to_list(Added), Pid, StateWithCache, GuildId
-    ),
+    %% Echowire: a channel that just became visible brings its open threads with it. The client
+    %% learns them by reloading GET /guilds/{id}/threads/active, which is the one authoritative
+    %% answer to "which threads may I see", rather than a second gateway event carrying a
+    %% different answer. See docs/adr/0007.
     lists:foreach(
         fun(ChannelId) ->
             guild_visibility_roles:dispatch_channel_create(

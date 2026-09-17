@@ -1565,7 +1565,7 @@ export class RpcService {
 				? timeUserDataStep('list_private_channels', async () => this.userRepository.listPrivateChannels(userId))
 				: Promise.resolve<Array<Channel>>([]),
 			// Echowire: one read of the by-user membership index tells the session which threads it
-			// belongs to, which is what the gateway needs to send THREAD_LIST_SYNC.
+			// belongs to, which is what the session payload reports as thread_members.
 			timeUserDataStep('list_thread_memberships', async () =>
 				new ThreadMemberRepository().listMembershipsForUser(userId),
 			),

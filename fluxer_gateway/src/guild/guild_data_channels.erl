@@ -9,6 +9,7 @@
     find_everyone_viewable_text_channel/2,
     sort_channels_for_ordering/1,
     derive_member_view/4,
+    is_open_thread/1,
     sanitize_voice_state/1,
     voice_members_from_states/2,
     merge_members/2
@@ -65,7 +66,7 @@ first_viewable_fold(_Channel, _GuildId, _EveryonePerms, Acc) ->
 derive_member_view(_UserId, undefined, _State, _Channels) ->
     {[], null};
 derive_member_view(UserId, Member, State, Channels) ->
-    Filtered = filter_viewable_channels(UserId, Member, State, Channels),
+    Filtered = filter_viewable_channels(UserId, Member, State, drop_archived_threads(Channels)),
     FilteredIds = sets:from_list(channel_ids(Filtered)),
     MissingParentIds = find_missing_parent_ids(Filtered, FilteredIds),
     ExtraCategories = collect_extra_categories(MissingParentIds, Channels),
@@ -104,6 +105,42 @@ merge_member(Member, {Acc, Seen}) ->
 -spec sort_channels_for_ordering(channel_list()) -> channel_list().
 sort_channels_for_ordering(Channels) ->
     guild_data_channels_order:sort_channels_for_ordering(Channels).
+
+%% Echowire: an archived thread is not part of a session's channel list. Every archived thread a
+%% member could ever view used to ride along in the guild payload, which grows without bound as a
+%% forum ages. A client reaches an archived thread three ways instead: the per-parent archived
+%% list, the guild active thread list once it is unarchived, or GET /channels/{id} when a link
+%% points straight at one. The thread stays in the gateway's own index either way, because
+%% permission resolution maps a thread to its parent through it.
+-spec drop_archived_threads(channel_list()) -> channel_list().
+drop_archived_threads(Channels) ->
+    lists:filter(fun(Channel) -> not is_archived_thread(Channel) end, Channels).
+
+-spec is_archived_thread(map()) -> boolean().
+is_archived_thread(Channel) ->
+    is_thread_type(channel_type_of(Channel)) andalso is_archived(Channel).
+
+%% The open threads of a channel list, which is the same rule stated positively.
+-spec is_open_thread(map()) -> boolean().
+is_open_thread(Channel) ->
+    is_thread_type(channel_type_of(Channel)) andalso not is_archived(Channel).
+
+-spec is_thread_type(integer() | undefined) -> boolean().
+is_thread_type(11) -> true;
+is_thread_type(12) -> true;
+is_thread_type(_Other) -> false.
+
+%% thread_metadata.archived is the stored shape; a thread without metadata counts as open.
+-spec is_archived(map()) -> boolean().
+is_archived(Channel) ->
+    case maps:get(<<"thread_metadata">>, Channel, undefined) of
+        Metadata when is_map(Metadata) -> maps:get(<<"archived">>, Metadata, false) =:= true;
+        _ -> false
+    end.
+
+-spec channel_type_of(map()) -> integer() | undefined.
+channel_type_of(Channel) ->
+    guild_data_normalize_schema:int(maps:get(<<"type">>, Channel, undefined)).
 
 -spec filter_viewable_channels(user_id(), guild_member(), guild_state(), channel_list()) ->
     channel_list().
@@ -272,3 +309,67 @@ safe_snowflake_id(Value) ->
     catch
         error:{invalid_snowflake, _} -> undefined
     end.
+
+-ifdef(TEST).
+-include_lib("eunit/include/eunit.hrl").
+
+thread_fixtures() ->
+    Text = #{<<"id">> => <<"10">>, <<"type">> => 0},
+    Open = #{
+        <<"id">> => <<"20">>,
+        <<"type">> => 11,
+        <<"parent_id">> => <<"10">>,
+        <<"thread_metadata">> => #{<<"archived">> => false}
+    },
+    Archived = #{
+        <<"id">> => <<"21">>,
+        <<"type">> => 11,
+        <<"parent_id">> => <<"10">>,
+        <<"thread_metadata">> => #{<<"archived">> => true}
+    },
+    ArchivedPrivate = #{
+        <<"id">> => <<"22">>,
+        <<"type">> => 12,
+        <<"parent_id">> => <<"10">>,
+        <<"thread_metadata">> => #{<<"archived">> => true}
+    },
+    NoMetadata = #{<<"id">> => <<"23">>, <<"type">> => 11, <<"parent_id">> => <<"10">>},
+    {Text, Open, Archived, ArchivedPrivate, NoMetadata}.
+
+channel_ids_of(Channels) ->
+    lists:sort([maps:get(<<"id">>, Channel) || Channel <- Channels]).
+
+drop_archived_threads_keeps_channels_and_open_threads_test() ->
+    {Text, Open, Archived, ArchivedPrivate, NoMetadata} = thread_fixtures(),
+    Kept = drop_archived_threads([Text, Open, Archived, ArchivedPrivate, NoMetadata]),
+    ?assertEqual([<<"10">>, <<"20">>, <<"23">>], channel_ids_of(Kept)).
+
+drop_archived_threads_drops_private_archived_threads_test() ->
+    {_Text, _Open, _Archived, ArchivedPrivate, _NoMetadata} = thread_fixtures(),
+    ?assertEqual([], drop_archived_threads([ArchivedPrivate])).
+
+%% A thread carrying no metadata counts as open, so a row written before the field existed is
+%% never hidden from a session.
+is_open_thread_treats_missing_metadata_as_open_test() ->
+    {Text, Open, Archived, _ArchivedPrivate, NoMetadata} = thread_fixtures(),
+    ?assertEqual(true, is_open_thread(Open)),
+    ?assertEqual(true, is_open_thread(NoMetadata)),
+    ?assertEqual(false, is_open_thread(Archived)),
+    ?assertEqual(false, is_open_thread(Text)).
+
+%% A string type, which is how a normalised payload can arrive, is still recognised.
+is_open_thread_accepts_a_string_type_test() ->
+    ?assertEqual(
+        true,
+        is_open_thread(#{<<"id">> => <<"30">>, <<"type">> => <<"11">>})
+    ),
+    ?assertEqual(
+        false,
+        is_open_thread(#{
+            <<"id">> => <<"31">>,
+            <<"type">> => <<"11">>,
+            <<"thread_metadata">> => #{<<"archived">> => true}
+        })
+    ).
+
+-endif.

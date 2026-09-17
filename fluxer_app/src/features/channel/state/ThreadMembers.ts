@@ -48,6 +48,26 @@ class ThreadMembers {
 		}
 	}
 
+	// Echowire: the caller's own memberships from the session payload. Each row names one thread
+	// the caller has joined, so it is merged in as a self-membership rather than a full member list:
+	// READY says nothing about who else is in a thread.
+	@action
+	handleGatewayReady(rows: ReadonlyArray<{id: string; user_id: string; join_timestamp: string}>): void {
+		const currentUserId = Authentication.currentUserId;
+		if (!currentUserId) return;
+		for (const [threadId, members] of this.byThread.entries()) {
+			const withoutSelf = members.filter((member) => member.userId !== currentUserId);
+			if (withoutSelf.length === 0) {
+				this.byThread.delete(threadId);
+			} else if (withoutSelf.length !== members.length) {
+				this.byThread.set(threadId, withoutSelf);
+			}
+		}
+		for (const row of rows) {
+			this.addMember(row.id, {userId: row.user_id, joinTimestamp: row.join_timestamp});
+		}
+	}
+
 	@action
 	removeMember(threadId: string, userId: string): void {
 		const existing = this.byThread.get(threadId);

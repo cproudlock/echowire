@@ -48,7 +48,11 @@ Every bit Fluxer defines appears below.
 | 1 &lt;&lt; 28 | MANAGE_ROLES<sup>5</sup> | Create, modify, position, and delete a role, assign a role to a member, and set a channel permission overwrite |
 | 1 &lt;&lt; 29 | MANAGE_WEBHOOKS | Create, modify, and delete a webhook on a guild channel |
 | 1 &lt;&lt; 30 | MANAGE_EXPRESSIONS<sup>6</sup> | Modify and delete an emoji or sticker created by another member |
+| 1 &lt;&lt; 34 | MANAGE_THREADS<sup>8</sup> | Lock, unlock, pin, unpin, archive, unarchive, retag, and delete a thread or forum post another member started, and remove its members |
+| 1 &lt;&lt; 35 | CREATE_PUBLIC_THREADS<sup>8</sup> | Create a public thread, or a post in a forum channel |
+| 1 &lt;&lt; 36 | CREATE_PRIVATE_THREADS<sup>8</sup> | Create a private thread |
 | 1 &lt;&lt; 37 | USE_EXTERNAL_STICKERS | Use a sticker owned by another guild |
+| 1 &lt;&lt; 38 | SEND_MESSAGES_IN_THREADS<sup>8</sup> | Send a message inside a thread or forum post, independently of `SEND_MESSAGES` on the parent channel |
 | 1 &lt;&lt; 40 | MODERATE_MEMBERS | Apply and clear a member communication timeout |
 | 1 &lt;&lt; 43 | CREATE_EXPRESSIONS<sup>6</sup> | Create an emoji or sticker, and modify or delete the ones the caller created |
 | 1 &lt;&lt; 51 | PIN_MESSAGES | Pin and unpin a message in a guild channel |
@@ -70,7 +74,9 @@ Every bit Fluxer defines appears below.
 
 <sup>7</sup> The bit is [feature-gated on write](#feature-gated-permission-bits), so a request that does not declare the feature cannot change it
 
-Bits 19, 31 through 36, 38, 39, 41, 42, 44 through 50, and 55 through 63 are unassigned.
+<sup>8</sup> Resolved against the thread's parent channel, and subject to the [legacy fallback](/topics/threads-and-forums/#permissions) in a guild whose roles predate these bits
+
+Bits 19, 31 through 33, 39, 41, 42, 44 through 50, and 55 through 63 are unassigned.
 
 :::note[`STREAM` authorises a track on the existing connection]
 The track is a screenshare or a camera. Fluxer opens no second connection for it, and losing the bit mutes the published tracks while the voice connection stays up.
@@ -98,7 +104,7 @@ On [Create guild role](#create-guild-role), a request that supplies `permissions
 
 ## Elevated permissions
 
-`KICK_MEMBERS`, `BAN_MEMBERS`, `ADMINISTRATOR`, `MANAGE_CHANNELS`, `MANAGE_GUILD`, `MANAGE_MESSAGES`, `MANAGE_ROLES`, `MANAGE_WEBHOOKS`, and `MODERATE_MEMBERS` are elevated permissions. In a guild whose [MFA level](/http-api/guilds/#mfa-levels) is elevated, only the guild owner uses them without an enrolled authenticator.
+`KICK_MEMBERS`, `BAN_MEMBERS`, `ADMINISTRATOR`, `MANAGE_CHANNELS`, `MANAGE_GUILD`, `MANAGE_MESSAGES`, `MANAGE_ROLES`, `MANAGE_WEBHOOKS`, `MANAGE_EXPRESSIONS`, `MANAGE_THREADS`, and `MODERATE_MEMBERS` are elevated permissions. In a guild whose [MFA level](/http-api/guilds/#mfa-levels) is elevated, only the guild owner uses them without an enrolled authenticator.
 
 An operation that asserts an elevated permission the caller holds but cannot use returns 400 `TWO_FACTOR_REQUIRED`. The check runs after Fluxer has confirmed the permission itself, so a caller who lacks the permission outright receives 403 `MISSING_PERMISSIONS` instead.
 

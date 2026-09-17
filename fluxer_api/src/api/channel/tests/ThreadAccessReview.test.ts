@@ -177,13 +177,13 @@ describe('Thread access review fixes', () => {
 describe('orphaned thread detection', () => {
 	const live = {isSoftDeleted: false};
 	const gone = {isSoftDeleted: true};
-	test('flags threads with a missing, soft-deleted or absent parent and nothing else', async () => {
+	test('flags threads with a missing, soft-deleted or absent parent and nothing else', () => {
 		const parentId = createChannelID(1n);
-		expect(await isOrphanedThread({type: ChannelTypes.PUBLIC_THREAD, parentId}, async () => live)).toBe(false);
-		expect(await isOrphanedThread({type: ChannelTypes.PUBLIC_THREAD, parentId}, async () => null)).toBe(true);
-		expect(await isOrphanedThread({type: ChannelTypes.PRIVATE_THREAD, parentId}, async () => gone)).toBe(true);
-		expect(await isOrphanedThread({type: ChannelTypes.PUBLIC_THREAD, parentId: null}, async () => live)).toBe(true);
-		expect(await isOrphanedThread({type: ChannelTypes.GUILD_TEXT, parentId: null}, async () => null)).toBe(false);
+		expect(isOrphanedThread({type: ChannelTypes.PUBLIC_THREAD, parentId}, () => live)).toBe(false);
+		expect(isOrphanedThread({type: ChannelTypes.PUBLIC_THREAD, parentId}, () => null)).toBe(true);
+		expect(isOrphanedThread({type: ChannelTypes.PRIVATE_THREAD, parentId}, () => gone)).toBe(true);
+		expect(isOrphanedThread({type: ChannelTypes.PUBLIC_THREAD, parentId: null}, () => live)).toBe(true);
+		expect(isOrphanedThread({type: ChannelTypes.GUILD_TEXT, parentId: null}, () => null)).toBe(false);
 	});
 });
 

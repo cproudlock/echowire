@@ -355,18 +355,31 @@ describe('Forum and thread server parity', () => {
 
 describe('isThreadInactive', () => {
 	const now = Date.parse('2026-09-14T12:00:00.000Z');
+	// The worker reads the loaded thread now rather than an SQL projection, so these cases are
+	// written against the model's thread metadata.
+	function thread(
+		autoArchiveDuration: number,
+		createTimestamp: string | null,
+		lastMessageId: string | null,
+	): Parameters<typeof isThreadInactive>[0] {
+		return {
+			lastMessageId: lastMessageId === null ? null : (BigInt(lastMessageId) as never),
+			threadMetadata: {
+				archived: false,
+				autoArchiveDuration,
+				archiveTimestamp: null,
+				locked: false,
+				invitable: false,
+				createTimestamp: createTimestamp === null ? null : new Date(createTimestamp),
+			},
+		};
+	}
 	test('uses the thread creation time when there are no messages', () => {
-		expect(isThreadInactive({duration: '60', create_ts: '2026-09-14T10:30:00.000Z', last_message_id: null}, now)).toBe(
-			true,
-		);
-		expect(isThreadInactive({duration: '60', create_ts: '2026-09-14T11:30:00.000Z', last_message_id: null}, now)).toBe(
-			false,
-		);
+		expect(isThreadInactive(thread(60, '2026-09-14T10:30:00.000Z', null), now)).toBe(true);
+		expect(isThreadInactive(thread(60, '2026-09-14T11:30:00.000Z', null), now)).toBe(false);
 	});
 	test('ignores invalid durations', () => {
-		expect(isThreadInactive({duration: '0', create_ts: '2020-01-01T00:00:00.000Z', last_message_id: null}, now)).toBe(
-			false,
-		);
-		expect(isThreadInactive({duration: 'nope', create_ts: null, last_message_id: null}, now)).toBe(false);
+		expect(isThreadInactive(thread(0, '2020-01-01T00:00:00.000Z', null), now)).toBe(false);
+		expect(isThreadInactive(thread(Number.NaN, null, null), now)).toBe(false);
 	});
 });

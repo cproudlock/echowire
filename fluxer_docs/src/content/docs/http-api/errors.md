@@ -652,6 +652,10 @@ You've reached the maximum of {count, plural, one {# group DM} other {# group DM
 
 You've reached the maximum of {count, plural, one {# group DM recipient} other {# group DM recipients}}
 
+### `MAX_ACTIVE_THREADS`
+
+You've reached the maximum of {count, plural, one {# active thread} other {# active threads}}. Archive a thread or post to make room.
+
 ### `MAX_GUILDS`
 
 You've reached the maximum of {count, plural, one {# community} other {# communities}}
@@ -679,6 +683,10 @@ You've reached the maximum of {count, plural, one {# reaction} other {# reaction
 ### `MAX_STICKERS`
 
 You've reached the maximum of {count, plural, one {# sticker} other {# stickers}}
+
+### `MAX_THREAD_MEMBERS`
+
+This thread has reached the maximum of {count, plural, one {# member} other {# members}}.
 
 ### `MAX_WEBHOOKS_PER_CHANNEL`
 

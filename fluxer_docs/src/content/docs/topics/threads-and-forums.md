@@ -9,6 +9,33 @@ forum channel holds nothing but threads: every post in a forum is a thread whose
 forum. Both are ordinary channels elsewhere in the api, addressed by their own channel ID, so the
 [Channels resource](/http-api/channels/) defines every per-thread operation.
 
+## How a client learns about threads
+
+One route answers the question of which threads a caller may see:
+`GET /v1/guilds/{guild_id}/threads/active`. It returns the open threads and forum posts of a guild
+that the caller may view, each with a starter message preview, together with the caller's own
+memberships. It is the authoritative load, called when a guild is opened and again when access to
+a channel arrives. Everything else either feeds that answer or narrows it.
+
+Ready is the fast first paint. Its guild payload carries the guild's channels, open threads
+included, and `thread_members` for the caller. It carries no starter previews, and no archived
+threads: every archived thread a member could ever view would otherwise ride along and grow
+without bound as a forum ages.
+
+Live changes arrive as [Thread Create](/gateway/events/#thread-create),
+[Thread Update](/gateway/events/#thread-update), [Thread Delete](/gateway/events/#thread-delete)
+and [Thread Members Update](/gateway/events/#thread-members-update), one change each, once a client
+has loaded.
+
+Two routes narrow the picture. The archived threads of one parent, paged, come from
+`GET /v1/channels/{channel_id}/threads/archived`, which is how history in a single channel is
+browsed. A single channel comes from `GET /v1/channels/{channel_id}`, which is how a link that
+points at a thread the session payload does not carry recovers, an archived one in practice.
+
+There is no thread list event. When a role change or a channel overwrite makes a parent visible,
+[Channel Create](/gateway/events/#channel-create) announces the parent and the client reloads the
+route above, rather than a second mechanism reporting its own answer to the same question.
+
 ## Channel types
 
 | Type | Name | What it is |

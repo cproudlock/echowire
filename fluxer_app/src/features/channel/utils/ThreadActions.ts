@@ -4,7 +4,8 @@
 // MANAGE_CHANNELS is checked on the parent channel.
 //   Lock, unlock, pin, unpin: managers only.
 //   Close or reopen: managers, or the owner while the thread is unlocked.
-//   Rename, edit tags, change auto-archive: managers, or the owner while the thread is unlocked.
+//   Rename, edit tags, change auto-archive, set slowmode: managers, or the owner while unlocked.
+//   Toggle invitability: managers only, matching the moderator-only list the server enforces.
 // A manager here holds MANAGE_THREADS or MANAGE_CHANNELS on the parent, matching ThreadAccess.ts.
 //   Delete: managers or the owner.
 
@@ -70,6 +71,8 @@ export interface ThreadActions {
 	canReopen: boolean;
 	canEdit: boolean;
 	canDelete: boolean;
+	canSetSlowmode: boolean;
+	canSetInvitable: boolean;
 }
 
 export function resolveThreadActions({isOwner, canManage, locked}: ThreadActionInput): ThreadActions {
@@ -82,6 +85,10 @@ export function resolveThreadActions({isOwner, canManage, locked}: ThreadActionI
 		canReopen: canManage || ownerOfUnlocked,
 		canEdit: canManage || ownerOfUnlocked,
 		canDelete: canManage || isOwner,
+		// rate_limit_per_user is absent from the server's moderator-only list, so it follows the
+		// same rule as the rest of an edit; invitable is on that list, so it is managers only.
+		canSetSlowmode: canManage || ownerOfUnlocked,
+		canSetInvitable: canManage,
 	};
 }
 

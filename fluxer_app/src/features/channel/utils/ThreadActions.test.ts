@@ -16,6 +16,8 @@ describe('resolveThreadActions', () => {
 			canReopen: true,
 			canEdit: true,
 			canDelete: true,
+			canSetSlowmode: true,
+			canSetInvitable: true,
 		});
 	});
 
@@ -28,6 +30,8 @@ describe('resolveThreadActions', () => {
 			canReopen: true,
 			canEdit: true,
 			canDelete: true,
+			canSetSlowmode: true,
+			canSetInvitable: false,
 		});
 	});
 
@@ -36,6 +40,12 @@ describe('resolveThreadActions', () => {
 		expect(actions.canReopen).toBe(false);
 		expect(actions.canClose).toBe(false);
 		expect(actions.canEdit).toBe(false);
+		expect(actions.canSetSlowmode).toBe(false);
+	});
+
+	it('keeps invitability for managers only, even for the owner of an unlocked post', () => {
+		expect(resolveThreadActions({isOwner: true, canManage: false, locked: false}).canSetInvitable).toBe(false);
+		expect(resolveThreadActions({isOwner: false, canManage: true, locked: false}).canSetInvitable).toBe(true);
 	});
 
 	it('gives other members nothing', () => {

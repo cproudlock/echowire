@@ -43,6 +43,8 @@ export interface UpdateThreadParams {
 	applied_tags?: Array<string>;
 	// Pin/unpin a forum post (moderators).
 	pinned?: boolean;
+	// Slowmode for this thread or post in seconds (0 to 21600).
+	rate_limit_per_user?: number;
 }
 
 // Create a thread under a text/forum parent channel. Returns the created thread channel.
@@ -179,6 +181,33 @@ export async function leaveThread(threadChannelId: string): Promise<void> {
 		await http.delete(Endpoints.CHANNEL_THREAD_MEMBER_ME(threadChannelId));
 	} catch (error) {
 		logger.error(`Failed to leave thread ${threadChannelId}:`, error);
+		void listThreadMembers(threadChannelId);
+		throw error;
+	}
+}
+
+// Echowire: add another member to a thread. The server decides who may do this (owner, moderator,
+// an invitable private thread's member, or anyone who may post in a public thread) and refuses a
+// target who cannot see the parent channel, so the caller surfaces the failure rather than guessing.
+export async function addThreadMember(threadChannelId: string, userId: string): Promise<void> {
+	try {
+		await http.put(Endpoints.CHANNEL_THREAD_MEMBER(threadChannelId, userId));
+		ThreadMembers.addMember(threadChannelId, {userId, joinTimestamp: new Date().toISOString()});
+	} catch (error) {
+		logger.error(`Failed to add ${userId} to thread ${threadChannelId}:`, error);
+		void listThreadMembers(threadChannelId);
+		throw error;
+	}
+}
+
+// Echowire: remove another member from a thread. Removing yourself is a leave, which has its own
+// command, so this is for moderators and the thread owner.
+export async function removeThreadMember(threadChannelId: string, userId: string): Promise<void> {
+	ThreadMembers.removeMember(threadChannelId, userId);
+	try {
+		await http.delete(Endpoints.CHANNEL_THREAD_MEMBER(threadChannelId, userId));
+	} catch (error) {
+		logger.error(`Failed to remove ${userId} from thread ${threadChannelId}:`, error);
 		void listThreadMembers(threadChannelId);
 		throw error;
 	}

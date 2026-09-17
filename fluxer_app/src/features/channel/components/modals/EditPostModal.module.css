@@ -34,3 +34,8 @@
 	color: var(--text-primary);
 	font: inherit;
 }
+
+.hint {
+	color: var(--text-muted);
+	font-size: 0.75rem;
+}

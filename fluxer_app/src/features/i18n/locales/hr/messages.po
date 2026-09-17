@@ -40662,3 +40662,55 @@ msgstr "Predložite poboljšanje"
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:344
 msgid "Threads and posts"
 msgstr "Niti i objave"
+
+#. Label for the switch that lets thread members invite others to a private thread.
+#: src/features/channel/components/modals/EditPostModal.tsx:42
+msgid "Members can add others"
+msgstr "Members can add others"
+
+#: src/features/channel/components/modals/EditPostModal.tsx:196
+msgid "New posts in this forum start at the forum's slowmode."
+msgstr "New posts in this forum start at the forum's slowmode."
+
+#. Placeholder in the search box for adding someone to a thread or forum post.
+#: src/features/channel/components/modals/AddThreadMemberModal.tsx:37
+msgid "Search members"
+msgstr "Search members"
+
+#. Title of the dialog for adding someone to a thread or forum post.
+#: src/features/channel/components/modals/AddThreadMemberModal.tsx:41
+msgid "Add member"
+msgstr "Add member"
+
+#: src/features/channel/components/modals/AddThreadMemberModal.tsx:120
+msgid "This thread is full, so nobody else can be added."
+msgstr "This thread is full, so nobody else can be added."
+
+#: src/features/channel/components/modals/AddThreadMemberModal.tsx:122
+msgid "That member can't see this channel, so they can't be added."
+msgstr "That member can't see this channel, so they can't be added."
+
+#: src/features/channel/components/modals/AddThreadMemberModal.tsx:124
+msgid "You don't have permission to add members here."
+msgstr "You don't have permission to add members here."
+
+#: src/features/channel/components/modals/AddThreadMemberModal.tsx:126
+msgid "Couldn't add that member. Try again."
+msgstr "Couldn't add that member. Try again."
+
+#: src/features/channel/components/modals/AddThreadMemberModal.tsx:152
+msgid "No members to add."
+msgstr "No members to add."
+
+#. Tooltip on the button that removes someone from a thread.
+#: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:37
+msgid "Remove from thread"
+msgstr "Remove from thread"
+
+#: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:71
+msgid "You don't have permission to remove members here."
+msgstr "You don't have permission to remove members here."
+
+#: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:73
+msgid "Couldn't remove that member. Try again."
+msgstr "Couldn't remove that member. Try again."

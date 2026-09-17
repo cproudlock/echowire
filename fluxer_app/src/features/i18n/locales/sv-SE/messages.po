@@ -40092,244 +40092,244 @@ msgstr "Zooma ut"
 #. Pill beside a forum channel in the channel list: how many posts have new activity since the user last visited.
 #: src/features/app/components/layout/ChannelItem.tsx:113
 msgid "{count} New"
-msgstr "{count} New"
+msgstr "{count} nya"
 
 #. Accessible label for the reply count on a forum post card.
 #. Reply count on a row in the threads popout.
 #: src/features/channel/components/forum/ForumPostCard.tsx:31
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:30
 msgid "{count} replies"
-msgstr "{count} replies"
+msgstr "{count} svar"
 
 #. Forum post card: time since the last message, for example "5m ago". {time} is a short duration.
 #: src/features/channel/components/forum/ForumPostCard.tsx:27
 msgid "{time} ago"
-msgstr "{time} ago"
+msgstr "{time} sedan"
 
 #: src/features/channel/components/ThreadCreatedMessage.tsx:71
 msgid "{username} started a thread: {threadLink}"
-msgstr "{username} started a thread: {threadLink}"
+msgstr "{username} startade en tråd: {threadLink}"
 
 #. System message shown in a channel when a user starts a thread. Preserve {username} and {threadName}.
 #: src/features/messaging/utils/SystemMessageUtils.tsx:139
 msgid "{username} started a thread: {threadName}"
-msgstr "{username} started a thread: {threadName}"
+msgstr "{username} startade en tråd: {threadName}"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:36
 msgid "10 seconds"
-msgstr "10 seconds"
+msgstr "10 sekunder"
 
 #. Auto-archive duration option.
 #. Auto-archive duration option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:29
 #: src/features/channel/components/modals/EditPostModal.tsx:33
 msgid "24 hours"
-msgstr "24 hours"
+msgstr "24 timmar"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:37
 msgid "30 seconds"
-msgstr "30 seconds"
+msgstr "30 sekunder"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:35
 msgid "5 seconds"
-msgstr "5 seconds"
+msgstr "5 sekunder"
 
 #. Shown in the "started a thread" system message when the thread no longer exists.
 #: src/features/channel/components/ThreadCreatedMessage.tsx:18
 msgid "a thread that was deleted"
-msgstr "a thread that was deleted"
+msgstr "en borttagen tråd"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:248
 msgid "Add tag"
-msgstr "Add tag"
+msgstr "Lägg till tagg"
 
 #. Tooltip on the archive-thread button in a thread header.
 #: src/features/channel/components/ChannelHeader.tsx:144
 msgid "Archive Thread"
-msgstr "Archive Thread"
+msgstr "Arkivera tråd"
 
 #. Threads popout tab: closed threads.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:23
 msgid "Archived"
-msgstr "Archived"
+msgstr "Arkiverade"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:55
 msgid "Are you sure you want to delete this? This cannot be undone."
-msgstr "Are you sure you want to delete this? This cannot be undone."
+msgstr "Vill du verkligen ta bort detta? Det kan inte ångras."
 
 #. Empty forum heading.
 #: src/features/channel/components/forum/ForumChannelView.tsx:77
 msgid "Be the first to start the conversation!"
-msgstr "Be the first to start the conversation!"
+msgstr "Starta samtalet!"
 
 #. Forum tag picker item that removes every tag filter.
 #: src/features/channel/components/forum/ForumChannelView.tsx:72
 msgid "Clear tags"
-msgstr "Clear tags"
+msgstr "Rensa taggar"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:134
 msgid "Close Post"
-msgstr "Close Post"
+msgstr "Stäng inlägg"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:134
 msgid "Close Thread"
-msgstr "Close Thread"
+msgstr "Stäng tråd"
 
 #. Forum toggle that shows posts closed by a moderator or hidden after inactivity.
 #: src/features/channel/components/forum/ForumChannelView.tsx:73
 msgid "Closed posts"
-msgstr "Closed posts"
+msgstr "Stängda inlägg"
 
 #. Developer mode item in the thread or forum post menu that copies the thread id.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:32
 msgid "Copy Thread ID"
-msgstr "Copy Thread ID"
+msgstr "Kopiera tråd-ID"
 
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:80
 msgid "Couldn't create the post. You may be posting too quickly; try again shortly."
-msgstr "Couldn't create the post. You may be posting too quickly; try again shortly."
+msgstr "Inlägget kunde inte skapas. Du publicerar kanske för snabbt; försök igen om en stund."
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:97
 msgid "Couldn't save the forum settings"
-msgstr "Couldn't save the forum settings"
+msgstr "Foruminställningarna kunde inte sparas"
 
 #: src/features/channel/components/modals/EditPostModal.tsx:74
 msgid "Couldn't save your changes. Try again."
-msgstr "Couldn't save your changes. Try again."
+msgstr "Dina ändringar kunde inte sparas. Försök igen."
 
 #. Title/submit of the forum create-post modal.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:28
 msgid "Create Post"
-msgstr "Create Post"
+msgstr "Skapa inlägg"
 
 #. Message right-click action that starts a thread from the message.
 #. Title and submit button of the create-thread modal. Keep it concise.
 #: src/features/channel/components/MessageActionMenu.tsx:122
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:25
 msgid "Create Thread"
-msgstr "Create Thread"
+msgstr "Skapa tråd"
 
 #. Forum sort option: newest posts first.
 #: src/features/channel/components/forum/ForumChannelView.tsx:63
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:148
 msgid "Date Posted"
-msgstr "Date Posted"
+msgstr "Publiceringsdatum"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:153
 msgid "Default layout"
-msgstr "Default layout"
+msgstr "Standardlayout"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:125
 msgid "Default reaction"
-msgstr "Default reaction"
+msgstr "Standardreaktion"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:139
 msgid "Default sort order"
-msgstr "Default sort order"
+msgstr "Standardsortering"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:54
 msgid "Delete post"
-msgstr "Delete post"
+msgstr "Ta bort inlägg"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:139
 msgid "Delete Post"
-msgstr "Delete Post"
+msgstr "Ta bort inlägg"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:239
 msgid "Delete tag"
-msgstr "Delete tag"
+msgstr "Ta bort tagg"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:54
 msgid "Delete thread"
-msgstr "Delete thread"
+msgstr "Ta bort tråd"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:139
 msgid "Delete Thread"
-msgstr "Delete Thread"
+msgstr "Ta bort tråd"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:99
 #: src/features/channel/components/modals/EditPostModal.tsx:83
 msgid "Edit Post"
-msgstr "Edit Post"
+msgstr "Redigera inlägg"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:99
 #: src/features/channel/components/modals/EditPostModal.tsx:83
 msgid "Edit Thread"
-msgstr "Edit Thread"
+msgstr "Redigera tråd"
 
 #. Header toggle that follows a thread or forum post to get its notifications.
 #: src/features/channel/components/channel_header_components/ThreadManageButton.tsx:23
 msgid "Follow"
-msgstr "Follow"
+msgstr "Följ"
 
 #. Post menu item that follows a forum post.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:82
 msgid "Follow Post"
-msgstr "Follow Post"
+msgstr "Följ inlägget"
 
 #. Header toggle state when the user follows a thread or forum post; clicking unfollows.
 #: src/features/channel/components/channel_header_components/ThreadManageButton.tsx:27
 msgid "Following"
-msgstr "Following"
+msgstr "Följer"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:95
 msgid "Forum settings saved"
-msgstr "Forum settings saved"
+msgstr "Foruminställningarna sparades"
 
 #. Forum layout option: a grid of post cards with images.
 #: src/features/channel/components/forum/ForumChannelView.tsx:66
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:162
 msgid "Gallery"
-msgstr "Gallery"
+msgstr "Galleri"
 
 #. Label for how long a thread or post stays open without new messages before it is closed.
 #. Label for the auto-archive duration selector in the create-thread modal.
 #: src/features/channel/components/modals/EditPostModal.tsx:27
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:37
 msgid "Hide after inactivity"
-msgstr "Hide after inactivity"
+msgstr "Dölj efter inaktivitet"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:184
 msgid "Hide posts after inactivity"
-msgstr "Hide posts after inactivity"
+msgstr "Dölj inlägg efter inaktivitet"
 
 #. Thread menu item that joins a thread.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:83
 msgid "Join Thread"
-msgstr "Join Thread"
+msgstr "Gå med i tråden"
 
 #. Thread menu item that leaves a joined thread.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:80
 msgid "Leave Thread"
-msgstr "Leave Thread"
+msgstr "Lämna tråden"
 
 #. Forum layout option: one post per row.
 #: src/features/channel/components/forum/ForumChannelView.tsx:65
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:161
 msgid "List"
-msgstr "List"
+msgstr "Lista"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:115
 msgid "Lock"
-msgstr "Lock"
+msgstr "Lås"
 
 #. Placeholder for the forum post title.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:30
 msgid "New post"
-msgstr "New post"
+msgstr "Nytt inlägg"
 
 #. Button that starts a new forum post.
 #: src/features/channel/components/forum/ForumChannelView.tsx:53
 msgid "New Post"
-msgstr "New Post"
+msgstr "Nytt inlägg"
 
 #. Accessible label of the threads popout button that starts a thread.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:24
 msgid "New thread"
-msgstr "New thread"
+msgstr "Ny tråd"
 
 #. Placeholder example for the thread name field.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:33
@@ -40339,269 +40339,269 @@ msgstr "new-thread"
 #. Threads popout empty state.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:27
 msgid "No active threads"
-msgstr "No active threads"
+msgstr "Inga aktiva trådar"
 
 #. Threads popout empty state.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:26
 msgid "No archived threads"
-msgstr "No archived threads"
+msgstr "Inga arkiverade trådar"
 
 #. Forum list message when showing closed posts and there are none.
 #: src/features/channel/components/forum/ForumChannelView.tsx:89
 msgid "No closed posts."
-msgstr "No closed posts."
+msgstr "Inga stängda inlägg."
 
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:86
 msgid "No members yet"
-msgstr "No members yet"
+msgstr "Inga medlemmar än"
 
 #. Forum list message when filters hide every post.
 #: src/features/channel/components/forum/ForumChannelView.tsx:85
 msgid "No posts match your search or tags."
-msgstr "No posts match your search or tags."
+msgstr "Inga inlägg matchar din sökning eller dina taggar."
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:126
 msgid "Open Post"
-msgstr "Open Post"
+msgstr "Öppna inlägg"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:107
 msgid "Pin Post"
-msgstr "Pin Post"
+msgstr "Fäst inlägg"
 
 #. Heading above the forum's posting guidelines in the create-post modal.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:107
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:37
 msgid "Post guidelines"
-msgstr "Post guidelines"
+msgstr "Riktlinjer för inlägg"
 
 #. Label for the forum post title field.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:29
 msgid "Post title"
-msgstr "Post title"
+msgstr "Inläggets titel"
 
 #. Forum sort option: posts with the newest messages first.
 #: src/features/channel/components/forum/ForumChannelView.tsx:59
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:147
 msgid "Recently Active"
-msgstr "Recently Active"
+msgstr "Senast aktiva"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:126
 msgid "Reopen Thread"
-msgstr "Reopen Thread"
+msgstr "Återöppna tråd"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:212
 msgid "Require members to select a tag when posting"
-msgstr "Require members to select a tag when posting"
+msgstr "Kräv att medlemmar väljer en tagg när de publicerar"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:255
 msgid "Save forum settings"
-msgstr "Save forum settings"
+msgstr "Spara foruminställningar"
 
 #. Placeholder of the forum search box. Typing filters post titles; New Post uses the text as the title.
 #: src/features/channel/components/forum/ForumChannelView.tsx:49
 msgid "Search or create a post..."
-msgstr "Search or create a post..."
+msgstr "Sök eller skapa ett inlägg..."
 
 #. Composer placeholder inside a thread or forum post. {name} is the thread or post title.
 #: src/features/channel/components/LexicalChannelTextareaContent.tsx:128
 msgid "Send a message in \"{name}\""
-msgstr "Send a message in \"{name}\""
+msgstr "Skicka ett meddelande i \"{name}\""
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:110
 msgid "Shown to members when they start a post."
-msgstr "Shown to members when they start a post."
+msgstr "Visas för medlemmar när de skapar ett inlägg."
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:167
 msgid "Slowmode in new posts"
-msgstr "Slowmode in new posts"
+msgstr "Långsamt läge i nya inlägg"
 
 #. Forum button that opens sort order and layout choices.
 #: src/features/channel/components/forum/ForumChannelView.tsx:54
 msgid "Sort & View"
-msgstr "Sort & View"
+msgstr "Sortering och vy"
 
 #. Group label in the forum Sort & View menu.
 #: src/features/channel/components/forum/ForumChannelView.tsx:58
 msgid "Sort by"
-msgstr "Sort by"
+msgstr "Sortera efter"
 
 #. Label above the source-message preview when creating a thread from a message.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:41
 msgid "Starting thread from this message"
-msgstr "Starting thread from this message"
+msgstr "Skapar en tråd från det här meddelandet"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:224
 msgid "Tag emoji"
-msgstr "Tag emoji"
+msgstr "Taggens emoji"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:231
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:233
 msgid "Tag name"
-msgstr "Tag name"
+msgstr "Taggens namn"
 
 #. Channel settings tab for managing forum post tags.
 #: src/features/user/components/settings_utils/ChannelSettingsConstants.ts:19
 msgctxt "channel-settings-tab"
 msgid "Tags"
-msgstr "Tags"
+msgstr "Taggar"
 
 #: src/features/channel/components/modals/EditPostModal.tsx:101
 msgid "Tags (at least one required)"
-msgstr "Tags (at least one required)"
+msgstr "Taggar (minst en krävs)"
 
 #. Label above the forum tag selector when the forum requires a tag on every post.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:33
 msgid "Tags (pick at least one)"
-msgstr "Tags (pick at least one)"
+msgstr "Taggar (välj minst en)"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:208
 msgid "Tags help members organize and filter posts in this forum (up to 20)."
-msgstr "Tags help members organize and filter posts in this forum (up to 20)."
+msgstr "Taggar hjälper medlemmar att organisera och filtrera inlägg i det här forumet (upp till 20)."
 
 #. Banner shown above the composer when viewing an archived thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:15
 msgid "This thread is archived."
-msgstr "This thread is archived."
+msgstr "Den här tråden är arkiverad."
 
 #. Banner shown above the composer when viewing a locked thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:23
 msgid "This thread is locked. Only moderators can send messages."
-msgstr "This thread is locked. Only moderators can send messages."
+msgstr "Den här tråden är låst. Endast moderatorer kan skicka meddelanden."
 
 #. Tooltip on the thread members button.
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:19
 msgid "Thread members"
-msgstr "Thread members"
+msgstr "Trådmedlemmar"
 
 #. Short label for the thread name field in the create-thread modal.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:29
 msgid "Thread name"
-msgstr "Thread name"
+msgstr "Trådens namn"
 
 #. Label above the source message pinned at the top of a thread.
 #: src/features/channel/components/ThreadStarterMessage.tsx:18
 msgid "Thread started from this message"
-msgstr "Thread started from this message"
+msgstr "Tråd skapad från det här meddelandet"
 
 #. Accessible label of a row in the threads popout.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:28
 msgid "Thread: {name}"
-msgstr "Thread: {name}"
+msgstr "Tråd: {name}"
 
 #. Accessible label of an unread row in the threads popout.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:29
 msgid "Thread: {name}, unread"
-msgstr "Thread: {name}, unread"
+msgstr "Tråd: {name}, oläst"
 
 #. Channel header button that lists the channel threads.
 #: src/features/channel/components/channel_header_components/ChannelThreadsButton.tsx:18
 msgid "Threads"
-msgstr "Threads"
+msgstr "Trådar"
 
 #. Label for the thread or forum post title field.
 #: src/features/channel/components/modals/EditPostModal.tsx:26
 msgid "Title"
-msgstr "Title"
+msgstr "Titel"
 
 #. Button that reopens an archived thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:19
 msgid "Unarchive"
-msgstr "Unarchive"
+msgstr "Återställ från arkiv"
 
 #. Tooltip on the unarchive-thread button in a thread header.
 #: src/features/channel/components/ChannelHeader.tsx:148
 msgid "Unarchive Thread"
-msgstr "Unarchive Thread"
+msgstr "Återställ tråd från arkiv"
 
 #. Post menu item that leaves a followed forum post.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:79
 msgid "Unfollow Post"
-msgstr "Unfollow Post"
+msgstr "Sluta följa inlägget"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:115
 msgid "Unlock"
-msgstr "Unlock"
+msgstr "Lås upp"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:107
 msgid "Unpin Post"
-msgstr "Unpin Post"
+msgstr "Ta bort inlägget från fästa"
 
 #. Group label in the forum Sort & View menu.
 #: src/features/channel/components/forum/ForumChannelView.tsx:64
 msgid "View as"
-msgstr "View as"
+msgstr "Visa som"
 
 #. Empty forum prompt. {name} is the forum channel name.
 #: src/features/channel/components/forum/ForumChannelView.tsx:81
 msgid "What do you want to post about in #{name}?"
-msgstr "What do you want to post about in #{name}?"
+msgstr "Vad vill du skriva om i #{name}?"
 
 #. Placeholder for the forum post body.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:31
 msgid "Write something…"
-msgstr "Write something…"
+msgstr "Skriv något…"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:232
 msgid "A moderated tag can only be applied by members who can manage threads."
-msgstr "A moderated tag can only be applied by members who can manage threads."
+msgstr "En modererad tagg kan bara läggas till av medlemmar som kan hantera trådar."
 
 #. Action on your own reply that appends its image to the forum post you started.
 #: src/features/ui/action_menu/MessageContextMenu.tsx:110
 msgid "Add to Post"
-msgstr "Add to Post"
+msgstr "Lägg till i inlägget"
 
 #. Permission description: manage threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:484
 msgid "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
-msgstr "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
+msgstr "Låter medlemmar byta namn på, stänga, återöppna, låsa, fästa och ta bort trådar och inlägg som skapats av vem som helst, samt se privata trådar."
 
 #. Permission description: send messages in threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:480
 msgid "Allows members to reply inside threads and forum posts, separately from the parent channel."
-msgstr "Allows members to reply inside threads and forum posts, separately from the parent channel."
+msgstr "Låter medlemmar svara i trådar och foruminlägg, oberoende av den överordnade kanalen."
 
 #. Permission description: create posts and threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:472
 msgid "Allows members to start threads in text channels and posts in forum channels."
-msgstr "Allows members to start threads in text channels and posts in forum channels."
+msgstr "Låter medlemmar starta trådar i textkanaler och inlägg i forumkanaler."
 
 #. Permission description: create private threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:476
 msgid "Allows members to start threads that only invited members can see."
-msgstr "Allows members to start threads that only invited members can see."
+msgstr "Låter medlemmar starta trådar som bara inbjudna medlemmar kan se."
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:28
 msgid "Ask for help with something"
-msgstr "Ask for help with something"
+msgstr "Be om hjälp med något"
 
 #. Permission name: allows starting threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:456
 msgid "Create posts and threads"
-msgstr "Create posts and threads"
+msgstr "Skapa inlägg och trådar"
 
 #. Permission name: allows starting invite-only threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:460
 msgid "Create private threads"
-msgstr "Create private threads"
+msgstr "Skapa privata trådar"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:110
 msgid "Exit Full View"
-msgstr "Exit Full View"
+msgstr "Lämna helvyn"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:27
 msgid "Introduce yourself"
-msgstr "Introduce yourself"
+msgstr "Presentera dig"
 
 #. Permission name: allows moderating threads and forum posts started by other members.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:468
 msgid "Manage threads and posts"
-msgstr "Manage threads and posts"
+msgstr "Hantera trådar och inlägg"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:262
 msgid "Moderators only"
-msgstr "Moderators only"
+msgstr "Endast moderatorer"
 
 #. Short pill marking messages by the member who started a thread or forum post.
 #: src/features/channel/components/MessageOriginalPosterTag.tsx:12
@@ -40610,59 +40610,59 @@ msgstr "OP"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:110
 msgid "Open in Full View"
-msgstr "Open in Full View"
+msgstr "Öppna i helvy"
 
 #. Tooltip of the OP pill.
 #: src/features/channel/components/MessageOriginalPosterTag.tsx:16
 msgid "Original poster"
-msgstr "Original poster"
+msgstr "Inläggets skapare"
 
 #. Introduction above the example post ideas.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:22
 msgid "Pick one to start a post, or write your own."
-msgstr "Pick one to start a post, or write your own."
+msgstr "Välj en idé för ett inlägg, eller skriv din egen."
 
 #. Accessible label of the "..." button in the header of an open forum post.
 #: src/features/channel/components/forum/ForumSplitView.tsx:21
 msgid "Post actions"
-msgstr "Post actions"
+msgstr "Inläggsåtgärder"
 
 #. Title of the sheet listing example first posts for an empty forum.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:18
 msgid "Post ideas"
-msgstr "Post ideas"
+msgstr "Inläggsidéer"
 
 #. Button under the first message of a forum post that reacts to it.
 #: src/features/channel/components/forum/ForumPostIntro.tsx:33
 msgid "React to Post"
-msgstr "React to Post"
+msgstr "Reagera på inlägget"
 
 #. Button on an empty forum that lists example first posts.
 #: src/features/channel/components/forum/ForumChannelView.tsx:89
 msgid "See Examples"
-msgstr "See Examples"
+msgstr "Se exempel"
 
 #. Permission name: allows replying inside threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:464
 msgid "Send messages in threads and posts"
-msgstr "Send messages in threads and posts"
+msgstr "Skicka meddelanden i trådar och inlägg"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:29
 msgid "Share something you made"
-msgstr "Share something you made"
+msgstr "Dela något du har skapat"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:30
 msgid "Start a discussion"
-msgstr "Start a discussion"
+msgstr "Starta en diskussion"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:31
 msgid "Suggest an improvement"
-msgstr "Suggest an improvement"
+msgstr "Föreslå en förbättring"
 
 #. Permission category: threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:344
 msgid "Threads and posts"
-msgstr "Threads and posts"
+msgstr "Trådar och inlägg"

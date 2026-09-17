@@ -40088,244 +40088,244 @@ msgstr "축소"
 #. Pill beside a forum channel in the channel list: how many posts have new activity since the user last visited.
 #: src/features/app/components/layout/ChannelItem.tsx:113
 msgid "{count} New"
-msgstr "{count} New"
+msgstr "새 소식 {count}개"
 
 #. Accessible label for the reply count on a forum post card.
 #. Reply count on a row in the threads popout.
 #: src/features/channel/components/forum/ForumPostCard.tsx:31
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:30
 msgid "{count} replies"
-msgstr "{count} replies"
+msgstr "답장 {count}개"
 
 #. Forum post card: time since the last message, for example "5m ago". {time} is a short duration.
 #: src/features/channel/components/forum/ForumPostCard.tsx:27
 msgid "{time} ago"
-msgstr "{time} ago"
+msgstr "{time} 전"
 
 #: src/features/channel/components/ThreadCreatedMessage.tsx:71
 msgid "{username} started a thread: {threadLink}"
-msgstr "{username} started a thread: {threadLink}"
+msgstr "{username}님이 스레드를 시작했습니다: {threadLink}"
 
 #. System message shown in a channel when a user starts a thread. Preserve {username} and {threadName}.
 #: src/features/messaging/utils/SystemMessageUtils.tsx:139
 msgid "{username} started a thread: {threadName}"
-msgstr "{username} started a thread: {threadName}"
+msgstr "{username}님이 스레드를 시작했습니다: {threadName}"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:36
 msgid "10 seconds"
-msgstr "10 seconds"
+msgstr "10초"
 
 #. Auto-archive duration option.
 #. Auto-archive duration option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:29
 #: src/features/channel/components/modals/EditPostModal.tsx:33
 msgid "24 hours"
-msgstr "24 hours"
+msgstr "24시간"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:37
 msgid "30 seconds"
-msgstr "30 seconds"
+msgstr "30초"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:35
 msgid "5 seconds"
-msgstr "5 seconds"
+msgstr "5초"
 
 #. Shown in the "started a thread" system message when the thread no longer exists.
 #: src/features/channel/components/ThreadCreatedMessage.tsx:18
 msgid "a thread that was deleted"
-msgstr "a thread that was deleted"
+msgstr "삭제된 스레드"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:248
 msgid "Add tag"
-msgstr "Add tag"
+msgstr "태그 추가"
 
 #. Tooltip on the archive-thread button in a thread header.
 #: src/features/channel/components/ChannelHeader.tsx:144
 msgid "Archive Thread"
-msgstr "Archive Thread"
+msgstr "스레드 보관"
 
 #. Threads popout tab: closed threads.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:23
 msgid "Archived"
-msgstr "Archived"
+msgstr "보관됨"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:55
 msgid "Are you sure you want to delete this? This cannot be undone."
-msgstr "Are you sure you want to delete this? This cannot be undone."
+msgstr "정말 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
 
 #. Empty forum heading.
 #: src/features/channel/components/forum/ForumChannelView.tsx:77
 msgid "Be the first to start the conversation!"
-msgstr "Be the first to start the conversation!"
+msgstr "대화를 시작해 보세요!"
 
 #. Forum tag picker item that removes every tag filter.
 #: src/features/channel/components/forum/ForumChannelView.tsx:72
 msgid "Clear tags"
-msgstr "Clear tags"
+msgstr "태그 지우기"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:134
 msgid "Close Post"
-msgstr "Close Post"
+msgstr "게시물 닫기"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:134
 msgid "Close Thread"
-msgstr "Close Thread"
+msgstr "스레드 닫기"
 
 #. Forum toggle that shows posts closed by a moderator or hidden after inactivity.
 #: src/features/channel/components/forum/ForumChannelView.tsx:73
 msgid "Closed posts"
-msgstr "Closed posts"
+msgstr "닫힌 게시물"
 
 #. Developer mode item in the thread or forum post menu that copies the thread id.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:32
 msgid "Copy Thread ID"
-msgstr "Copy Thread ID"
+msgstr "스레드 ID 복사"
 
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:80
 msgid "Couldn't create the post. You may be posting too quickly; try again shortly."
-msgstr "Couldn't create the post. You may be posting too quickly; try again shortly."
+msgstr "게시물을 만들 수 없습니다. 너무 빠르게 게시하고 있을 수 있습니다. 잠시 후 다시 시도해 주세요."
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:97
 msgid "Couldn't save the forum settings"
-msgstr "Couldn't save the forum settings"
+msgstr "포럼 설정을 저장할 수 없습니다"
 
 #: src/features/channel/components/modals/EditPostModal.tsx:74
 msgid "Couldn't save your changes. Try again."
-msgstr "Couldn't save your changes. Try again."
+msgstr "변경 사항을 저장할 수 없습니다. 다시 시도해 주세요."
 
 #. Title/submit of the forum create-post modal.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:28
 msgid "Create Post"
-msgstr "Create Post"
+msgstr "게시물 만들기"
 
 #. Message right-click action that starts a thread from the message.
 #. Title and submit button of the create-thread modal. Keep it concise.
 #: src/features/channel/components/MessageActionMenu.tsx:122
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:25
 msgid "Create Thread"
-msgstr "Create Thread"
+msgstr "스레드 만들기"
 
 #. Forum sort option: newest posts first.
 #: src/features/channel/components/forum/ForumChannelView.tsx:63
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:148
 msgid "Date Posted"
-msgstr "Date Posted"
+msgstr "게시 날짜"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:153
 msgid "Default layout"
-msgstr "Default layout"
+msgstr "기본 레이아웃"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:125
 msgid "Default reaction"
-msgstr "Default reaction"
+msgstr "기본 반응"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:139
 msgid "Default sort order"
-msgstr "Default sort order"
+msgstr "기본 정렬 순서"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:54
 msgid "Delete post"
-msgstr "Delete post"
+msgstr "게시물 삭제"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:139
 msgid "Delete Post"
-msgstr "Delete Post"
+msgstr "게시물 삭제"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:239
 msgid "Delete tag"
-msgstr "Delete tag"
+msgstr "태그 삭제"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:54
 msgid "Delete thread"
-msgstr "Delete thread"
+msgstr "스레드 삭제"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:139
 msgid "Delete Thread"
-msgstr "Delete Thread"
+msgstr "스레드 삭제"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:99
 #: src/features/channel/components/modals/EditPostModal.tsx:83
 msgid "Edit Post"
-msgstr "Edit Post"
+msgstr "게시물 편집"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:99
 #: src/features/channel/components/modals/EditPostModal.tsx:83
 msgid "Edit Thread"
-msgstr "Edit Thread"
+msgstr "스레드 편집"
 
 #. Header toggle that follows a thread or forum post to get its notifications.
 #: src/features/channel/components/channel_header_components/ThreadManageButton.tsx:23
 msgid "Follow"
-msgstr "Follow"
+msgstr "팔로우"
 
 #. Post menu item that follows a forum post.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:82
 msgid "Follow Post"
-msgstr "Follow Post"
+msgstr "게시물 팔로우"
 
 #. Header toggle state when the user follows a thread or forum post; clicking unfollows.
 #: src/features/channel/components/channel_header_components/ThreadManageButton.tsx:27
 msgid "Following"
-msgstr "Following"
+msgstr "팔로잉"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:95
 msgid "Forum settings saved"
-msgstr "Forum settings saved"
+msgstr "포럼 설정이 저장되었습니다"
 
 #. Forum layout option: a grid of post cards with images.
 #: src/features/channel/components/forum/ForumChannelView.tsx:66
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:162
 msgid "Gallery"
-msgstr "Gallery"
+msgstr "갤러리"
 
 #. Label for how long a thread or post stays open without new messages before it is closed.
 #. Label for the auto-archive duration selector in the create-thread modal.
 #: src/features/channel/components/modals/EditPostModal.tsx:27
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:37
 msgid "Hide after inactivity"
-msgstr "Hide after inactivity"
+msgstr "비활성 후 숨기기"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:184
 msgid "Hide posts after inactivity"
-msgstr "Hide posts after inactivity"
+msgstr "비활성 후 게시물 숨기기"
 
 #. Thread menu item that joins a thread.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:83
 msgid "Join Thread"
-msgstr "Join Thread"
+msgstr "스레드 참여"
 
 #. Thread menu item that leaves a joined thread.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:80
 msgid "Leave Thread"
-msgstr "Leave Thread"
+msgstr "스레드 나가기"
 
 #. Forum layout option: one post per row.
 #: src/features/channel/components/forum/ForumChannelView.tsx:65
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:161
 msgid "List"
-msgstr "List"
+msgstr "목록"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:115
 msgid "Lock"
-msgstr "Lock"
+msgstr "잠그기"
 
 #. Placeholder for the forum post title.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:30
 msgid "New post"
-msgstr "New post"
+msgstr "새 게시물"
 
 #. Button that starts a new forum post.
 #: src/features/channel/components/forum/ForumChannelView.tsx:53
 msgid "New Post"
-msgstr "New Post"
+msgstr "새 게시물"
 
 #. Accessible label of the threads popout button that starts a thread.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:24
 msgid "New thread"
-msgstr "New thread"
+msgstr "새 스레드"
 
 #. Placeholder example for the thread name field.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:33
@@ -40335,269 +40335,269 @@ msgstr "new-thread"
 #. Threads popout empty state.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:27
 msgid "No active threads"
-msgstr "No active threads"
+msgstr "활성 스레드가 없습니다"
 
 #. Threads popout empty state.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:26
 msgid "No archived threads"
-msgstr "No archived threads"
+msgstr "보관된 스레드가 없습니다"
 
 #. Forum list message when showing closed posts and there are none.
 #: src/features/channel/components/forum/ForumChannelView.tsx:89
 msgid "No closed posts."
-msgstr "No closed posts."
+msgstr "닫힌 게시물이 없습니다."
 
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:86
 msgid "No members yet"
-msgstr "No members yet"
+msgstr "아직 멤버가 없습니다"
 
 #. Forum list message when filters hide every post.
 #: src/features/channel/components/forum/ForumChannelView.tsx:85
 msgid "No posts match your search or tags."
-msgstr "No posts match your search or tags."
+msgstr "검색어나 태그와 일치하는 게시물이 없습니다."
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:126
 msgid "Open Post"
-msgstr "Open Post"
+msgstr "게시물 열기"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:107
 msgid "Pin Post"
-msgstr "Pin Post"
+msgstr "게시물 고정"
 
 #. Heading above the forum's posting guidelines in the create-post modal.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:107
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:37
 msgid "Post guidelines"
-msgstr "Post guidelines"
+msgstr "게시 가이드라인"
 
 #. Label for the forum post title field.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:29
 msgid "Post title"
-msgstr "Post title"
+msgstr "게시물 제목"
 
 #. Forum sort option: posts with the newest messages first.
 #: src/features/channel/components/forum/ForumChannelView.tsx:59
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:147
 msgid "Recently Active"
-msgstr "Recently Active"
+msgstr "최근 활동순"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:126
 msgid "Reopen Thread"
-msgstr "Reopen Thread"
+msgstr "스레드 다시 열기"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:212
 msgid "Require members to select a tag when posting"
-msgstr "Require members to select a tag when posting"
+msgstr "게시할 때 멤버가 태그를 선택하도록 요구"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:255
 msgid "Save forum settings"
-msgstr "Save forum settings"
+msgstr "포럼 설정 저장"
 
 #. Placeholder of the forum search box. Typing filters post titles; New Post uses the text as the title.
 #: src/features/channel/components/forum/ForumChannelView.tsx:49
 msgid "Search or create a post..."
-msgstr "Search or create a post..."
+msgstr "게시물 검색 또는 만들기..."
 
 #. Composer placeholder inside a thread or forum post. {name} is the thread or post title.
 #: src/features/channel/components/LexicalChannelTextareaContent.tsx:128
 msgid "Send a message in \"{name}\""
-msgstr "Send a message in \"{name}\""
+msgstr "\"{name}\"에 메시지 보내기"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:110
 msgid "Shown to members when they start a post."
-msgstr "Shown to members when they start a post."
+msgstr "멤버가 게시물을 만들 때 표시됩니다."
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:167
 msgid "Slowmode in new posts"
-msgstr "Slowmode in new posts"
+msgstr "새 게시물의 슬로우 모드"
 
 #. Forum button that opens sort order and layout choices.
 #: src/features/channel/components/forum/ForumChannelView.tsx:54
 msgid "Sort & View"
-msgstr "Sort & View"
+msgstr "정렬 및 보기"
 
 #. Group label in the forum Sort & View menu.
 #: src/features/channel/components/forum/ForumChannelView.tsx:58
 msgid "Sort by"
-msgstr "Sort by"
+msgstr "정렬 기준"
 
 #. Label above the source-message preview when creating a thread from a message.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:41
 msgid "Starting thread from this message"
-msgstr "Starting thread from this message"
+msgstr "이 메시지로 스레드를 만들고 있습니다"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:224
 msgid "Tag emoji"
-msgstr "Tag emoji"
+msgstr "태그 이모지"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:231
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:233
 msgid "Tag name"
-msgstr "Tag name"
+msgstr "태그 이름"
 
 #. Channel settings tab for managing forum post tags.
 #: src/features/user/components/settings_utils/ChannelSettingsConstants.ts:19
 msgctxt "channel-settings-tab"
 msgid "Tags"
-msgstr "Tags"
+msgstr "태그"
 
 #: src/features/channel/components/modals/EditPostModal.tsx:101
 msgid "Tags (at least one required)"
-msgstr "Tags (at least one required)"
+msgstr "태그(하나 이상 필요)"
 
 #. Label above the forum tag selector when the forum requires a tag on every post.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:33
 msgid "Tags (pick at least one)"
-msgstr "Tags (pick at least one)"
+msgstr "태그(하나 이상 선택)"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:208
 msgid "Tags help members organize and filter posts in this forum (up to 20)."
-msgstr "Tags help members organize and filter posts in this forum (up to 20)."
+msgstr "태그는 멤버가 이 포럼의 게시물을 정리하고 필터링하는 데 도움이 됩니다(최대 20개)."
 
 #. Banner shown above the composer when viewing an archived thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:15
 msgid "This thread is archived."
-msgstr "This thread is archived."
+msgstr "이 스레드는 보관되었습니다."
 
 #. Banner shown above the composer when viewing a locked thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:23
 msgid "This thread is locked. Only moderators can send messages."
-msgstr "This thread is locked. Only moderators can send messages."
+msgstr "이 스레드는 잠겨 있습니다. 모더레이터만 메시지를 보낼 수 있습니다."
 
 #. Tooltip on the thread members button.
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:19
 msgid "Thread members"
-msgstr "Thread members"
+msgstr "스레드 멤버"
 
 #. Short label for the thread name field in the create-thread modal.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:29
 msgid "Thread name"
-msgstr "Thread name"
+msgstr "스레드 이름"
 
 #. Label above the source message pinned at the top of a thread.
 #: src/features/channel/components/ThreadStarterMessage.tsx:18
 msgid "Thread started from this message"
-msgstr "Thread started from this message"
+msgstr "이 메시지에서 만든 스레드"
 
 #. Accessible label of a row in the threads popout.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:28
 msgid "Thread: {name}"
-msgstr "Thread: {name}"
+msgstr "스레드: {name}"
 
 #. Accessible label of an unread row in the threads popout.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:29
 msgid "Thread: {name}, unread"
-msgstr "Thread: {name}, unread"
+msgstr "스레드: {name}, 안 읽음"
 
 #. Channel header button that lists the channel threads.
 #: src/features/channel/components/channel_header_components/ChannelThreadsButton.tsx:18
 msgid "Threads"
-msgstr "Threads"
+msgstr "스레드"
 
 #. Label for the thread or forum post title field.
 #: src/features/channel/components/modals/EditPostModal.tsx:26
 msgid "Title"
-msgstr "Title"
+msgstr "제목"
 
 #. Button that reopens an archived thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:19
 msgid "Unarchive"
-msgstr "Unarchive"
+msgstr "보관 해제"
 
 #. Tooltip on the unarchive-thread button in a thread header.
 #: src/features/channel/components/ChannelHeader.tsx:148
 msgid "Unarchive Thread"
-msgstr "Unarchive Thread"
+msgstr "스레드 보관 해제"
 
 #. Post menu item that leaves a followed forum post.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:79
 msgid "Unfollow Post"
-msgstr "Unfollow Post"
+msgstr "게시물 팔로우 취소"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:115
 msgid "Unlock"
-msgstr "Unlock"
+msgstr "잠금 해제"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:107
 msgid "Unpin Post"
-msgstr "Unpin Post"
+msgstr "게시물 고정 해제"
 
 #. Group label in the forum Sort & View menu.
 #: src/features/channel/components/forum/ForumChannelView.tsx:64
 msgid "View as"
-msgstr "View as"
+msgstr "보기 방식"
 
 #. Empty forum prompt. {name} is the forum channel name.
 #: src/features/channel/components/forum/ForumChannelView.tsx:81
 msgid "What do you want to post about in #{name}?"
-msgstr "What do you want to post about in #{name}?"
+msgstr "#{name}에 어떤 내용을 게시할까요?"
 
 #. Placeholder for the forum post body.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:31
 msgid "Write something…"
-msgstr "Write something…"
+msgstr "내용을 입력하세요…"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:232
 msgid "A moderated tag can only be applied by members who can manage threads."
-msgstr "A moderated tag can only be applied by members who can manage threads."
+msgstr "관리 전용 태그는 스레드를 관리할 수 있는 멤버만 적용할 수 있습니다."
 
 #. Action on your own reply that appends its image to the forum post you started.
 #: src/features/ui/action_menu/MessageContextMenu.tsx:110
 msgid "Add to Post"
-msgstr "Add to Post"
+msgstr "게시물에 추가"
 
 #. Permission description: manage threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:484
 msgid "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
-msgstr "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
+msgstr "멤버가 누구나 만든 스레드와 게시물의 이름을 바꾸고, 닫고, 다시 열고, 잠그고, 고정하고, 삭제할 수 있으며 비공개 스레드를 볼 수 있습니다."
 
 #. Permission description: send messages in threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:480
 msgid "Allows members to reply inside threads and forum posts, separately from the parent channel."
-msgstr "Allows members to reply inside threads and forum posts, separately from the parent channel."
+msgstr "멤버가 상위 채널과 별개로 스레드와 포럼 게시물 안에서 답장할 수 있습니다."
 
 #. Permission description: create posts and threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:472
 msgid "Allows members to start threads in text channels and posts in forum channels."
-msgstr "Allows members to start threads in text channels and posts in forum channels."
+msgstr "멤버가 텍스트 채널에서 스레드를, 포럼 채널에서 게시물을 만들 수 있습니다."
 
 #. Permission description: create private threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:476
 msgid "Allows members to start threads that only invited members can see."
-msgstr "Allows members to start threads that only invited members can see."
+msgstr "멤버가 초대된 멤버만 볼 수 있는 스레드를 만들 수 있습니다."
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:28
 msgid "Ask for help with something"
-msgstr "Ask for help with something"
+msgstr "도움 요청하기"
 
 #. Permission name: allows starting threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:456
 msgid "Create posts and threads"
-msgstr "Create posts and threads"
+msgstr "게시물 및 스레드 만들기"
 
 #. Permission name: allows starting invite-only threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:460
 msgid "Create private threads"
-msgstr "Create private threads"
+msgstr "비공개 스레드 만들기"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:110
 msgid "Exit Full View"
-msgstr "Exit Full View"
+msgstr "전체 보기 종료"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:27
 msgid "Introduce yourself"
-msgstr "Introduce yourself"
+msgstr "자기소개하기"
 
 #. Permission name: allows moderating threads and forum posts started by other members.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:468
 msgid "Manage threads and posts"
-msgstr "Manage threads and posts"
+msgstr "스레드 및 게시물 관리"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:262
 msgid "Moderators only"
-msgstr "Moderators only"
+msgstr "모더레이터 전용"
 
 #. Short pill marking messages by the member who started a thread or forum post.
 #: src/features/channel/components/MessageOriginalPosterTag.tsx:12
@@ -40606,59 +40606,59 @@ msgstr "OP"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:110
 msgid "Open in Full View"
-msgstr "Open in Full View"
+msgstr "전체 보기로 열기"
 
 #. Tooltip of the OP pill.
 #: src/features/channel/components/MessageOriginalPosterTag.tsx:16
 msgid "Original poster"
-msgstr "Original poster"
+msgstr "작성자"
 
 #. Introduction above the example post ideas.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:22
 msgid "Pick one to start a post, or write your own."
-msgstr "Pick one to start a post, or write your own."
+msgstr "게시물을 시작할 아이디어를 고르거나 직접 작성하세요."
 
 #. Accessible label of the "..." button in the header of an open forum post.
 #: src/features/channel/components/forum/ForumSplitView.tsx:21
 msgid "Post actions"
-msgstr "Post actions"
+msgstr "게시물 작업"
 
 #. Title of the sheet listing example first posts for an empty forum.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:18
 msgid "Post ideas"
-msgstr "Post ideas"
+msgstr "게시물 아이디어"
 
 #. Button under the first message of a forum post that reacts to it.
 #: src/features/channel/components/forum/ForumPostIntro.tsx:33
 msgid "React to Post"
-msgstr "React to Post"
+msgstr "게시물에 반응"
 
 #. Button on an empty forum that lists example first posts.
 #: src/features/channel/components/forum/ForumChannelView.tsx:89
 msgid "See Examples"
-msgstr "See Examples"
+msgstr "예시 보기"
 
 #. Permission name: allows replying inside threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:464
 msgid "Send messages in threads and posts"
-msgstr "Send messages in threads and posts"
+msgstr "스레드 및 게시물에서 메시지 보내기"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:29
 msgid "Share something you made"
-msgstr "Share something you made"
+msgstr "직접 만든 것을 공유하기"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:30
 msgid "Start a discussion"
-msgstr "Start a discussion"
+msgstr "토론 시작하기"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:31
 msgid "Suggest an improvement"
-msgstr "Suggest an improvement"
+msgstr "개선 제안하기"
 
 #. Permission category: threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:344
 msgid "Threads and posts"
-msgstr "Threads and posts"
+msgstr "스레드 및 게시물"

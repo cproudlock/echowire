@@ -54,6 +54,7 @@ A channel object always has its identity and type. Every other field is present 
 | default_forum_layout? | ?integer | The default post layout, where `0` is not set, `1` is list, `2` is gallery |
 | default_thread_rate_limit_per_user? | ?integer | The slowmode in seconds a new post inherits |
 | require_tag? | boolean | Whether a post in this forum must apply at least one tag |
+| recent_participant_ids? | ?array[snowflake] | The most recent distinct message authors in a thread, newest first, up to five |
 | starter_message_preview? | ?[starter message preview](#starter-message-preview-object) object | A preview of the opening message, on thread list responses only |
 
 <sup>1</sup> Omitted when a group direct message stores no name, and never present on a direct message or on the personal notes channel
@@ -262,6 +263,7 @@ A forum tag is one selectable label a forum channel defines in `available_tags`.
 | id | snowflake | The ID of the tag |
 | name | string | The name shown for the tag |
 | emoji_name | ?string | The emoji shown beside the tag, or null when it has none |
+| moderated | boolean | Whether only a member who can moderate threads may apply or remove this tag |
 
 ### Example
 
@@ -269,7 +271,8 @@ A forum tag is one selectable label a forum channel defines in `available_tags`.
 {
   "id": "1472454332581490688",
   "name": "Bug report",
-  "emoji_name": "🐛"
+  "emoji_name": "🐛",
+  "moderated": false
 }
 ```
 
@@ -1148,3 +1151,143 @@ Returns the [thread member objects](#thread-member-object) for a thread.
 ### Rate limit
 
 100 requests per 10 seconds for each authenticated user and channel ID, on the `channel:read::channel_id` bucket.
+## Add a thread member
+
+<RouteHeader method="PUT" path="/v1/channels/{channel_id}/thread-members/{user_id}" bot />
+
+Adds another user to a thread. The call is idempotent.
+
+### Limitations
+
+- The caller needs to be the thread's owner, or hold [MANAGE_THREADS](/http-api/permissions/) or `MANAGE_CHANNELS` on the parent channel.
+- A member of a private thread may also add others when the thread's `thread_metadata.invitable` is true, and a member of a public thread may add others when they can send messages in it.
+- The target must hold `VIEW_CHANNEL` on the parent channel.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread to add the user to |
+| user_id | snowflake | The ID of the user to add |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 204 | empty | User was added, or already belonged to the thread |
+| 403 | [error response](/http-api/#error-response) | Caller may not add this user, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel is unknown, deleted, or not a thread, each returning `UNKNOWN_CHANNEL` |
+| 404 | [error response](/http-api/#error-response) | Target cannot view the parent channel, returning `UNKNOWN_MEMBER` |
+
+### Side effects
+
+An add that creates a membership recounts the thread's `member_count` and emits [Thread Members Update](/gateway/events/#thread-members-update) carrying the target in `added_members`.
+
+### Rate limit
+
+20 requests per 10 seconds for each authenticated user and channel ID, on the `channel:thread:member:add::channel_id` bucket.
+
+## Remove a thread member
+
+<RouteHeader method="DELETE" path="/v1/channels/{channel_id}/thread-members/{user_id}" bot />
+
+Removes a user from a thread. Removing the caller is the same as [leaving](#leave-a-thread).
+
+### Limitations
+
+- Removing another user needs to be the thread's owner, or hold [MANAGE_THREADS](/http-api/permissions/) or `MANAGE_CHANNELS` on the parent channel.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread to remove the user from |
+| user_id | snowflake | The ID of the user to remove |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 204 | empty | User was removed, or did not belong to the thread |
+| 403 | [error response](/http-api/#error-response) | Caller may not remove this user, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel does not exist, is deleted, or is not a thread, each returning `UNKNOWN_CHANNEL` |
+
+### Side effects
+
+A removal that deletes a membership recounts the thread's `member_count` and emits [Thread Members Update](/gateway/events/#thread-members-update) carrying the target in `removed_member_ids`.
+
+### Rate limit
+
+20 requests per 10 seconds for each authenticated user and channel ID, on the `channel:thread:member:remove::channel_id` bucket.
+
+## Get a thread member
+
+<RouteHeader method="GET" path="/v1/channels/{channel_id}/thread-members/{user_id}" bot />
+
+Returns one [thread member object](#thread-member-object).
+
+### Limitations
+
+- The caller needs to be able to view the thread, which for a private thread means membership of it or thread moderation on the parent channel.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the thread |
+| user_id | snowflake | The ID of the user whose membership is returned |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | [thread member](#thread-member-object) object | Membership was returned |
+| 403 | [error response](/http-api/#error-response) | Caller cannot view the thread, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel is unknown, deleted, or not a thread, each returning `UNKNOWN_CHANNEL` |
+| 404 | [error response](/http-api/#error-response) | User does not belong to the thread, returning `UNKNOWN_MEMBER` |
+
+### Rate limit
+
+40 requests per 10 seconds for each authenticated user and channel ID, on the `channel:thread:member:get::channel_id` bucket.
+## Add an attachment to a forum post
+
+<RouteHeader method="POST" path="/v1/channels/{channel_id}/starter-message/attachments" bot />
+
+Appends an attachment that already exists on a message in this forum post to the post's starter message, where it becomes the post thumbnail.
+
+### Limitations
+
+- The caller needs to be the post's owner, or hold [MANAGE_THREADS](/http-api/permissions/) or `MANAGE_CHANNELS` on the parent forum.
+- The source message must belong to this post, and the attachment must belong to that message.
+- The starter message holds at most `max_attachments_per_message` attachments.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the forum post |
+
+### JSON parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| message_id | snowflake | A message in this post that carries the attachment |
+| attachment_id | snowflake | The attachment to append to the starter message |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | [channel](#channel-object) object | The post, with its refreshed `starter_message_preview` |
+| 400 | [error response](/http-api/#error-response) | The attachment is already on the starter message, or the starter message is full |
+| 403 | [error response](/http-api/#error-response) | Caller may not edit this post, returning `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel is unknown or not a forum post, returning `UNKNOWN_CHANNEL` |
+| 404 | [error response](/http-api/#error-response) | Message or attachment is unknown, returning `UNKNOWN_MESSAGE` |
+
+### Side effects
+
+The starter message emits [Message Update](/gateway/events/#message-update). When the post's thumbnail changes, the post also emits [Thread Update](/gateway/events/#thread-update).
+
+### Rate limit
+
+10 requests per 10 seconds for each authenticated user and channel ID, on the `channel:thread:starter:attachment::channel_id` bucket.

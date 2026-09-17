@@ -40088,244 +40088,244 @@ msgstr "缩小"
 #. Pill beside a forum channel in the channel list: how many posts have new activity since the user last visited.
 #: src/features/app/components/layout/ChannelItem.tsx:113
 msgid "{count} New"
-msgstr "{count} New"
+msgstr "{count} 条新内容"
 
 #. Accessible label for the reply count on a forum post card.
 #. Reply count on a row in the threads popout.
 #: src/features/channel/components/forum/ForumPostCard.tsx:31
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:30
 msgid "{count} replies"
-msgstr "{count} replies"
+msgstr "{count} 条回复"
 
 #. Forum post card: time since the last message, for example "5m ago". {time} is a short duration.
 #: src/features/channel/components/forum/ForumPostCard.tsx:27
 msgid "{time} ago"
-msgstr "{time} ago"
+msgstr "{time}前"
 
 #: src/features/channel/components/ThreadCreatedMessage.tsx:71
 msgid "{username} started a thread: {threadLink}"
-msgstr "{username} started a thread: {threadLink}"
+msgstr "{username} 创建了子区：{threadLink}"
 
 #. System message shown in a channel when a user starts a thread. Preserve {username} and {threadName}.
 #: src/features/messaging/utils/SystemMessageUtils.tsx:139
 msgid "{username} started a thread: {threadName}"
-msgstr "{username} started a thread: {threadName}"
+msgstr "{username} 创建了子区：{threadName}"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:36
 msgid "10 seconds"
-msgstr "10 seconds"
+msgstr "10 秒"
 
 #. Auto-archive duration option.
 #. Auto-archive duration option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:29
 #: src/features/channel/components/modals/EditPostModal.tsx:33
 msgid "24 hours"
-msgstr "24 hours"
+msgstr "24 小时"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:37
 msgid "30 seconds"
-msgstr "30 seconds"
+msgstr "30 秒"
 
 #. Slowmode option.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:35
 msgid "5 seconds"
-msgstr "5 seconds"
+msgstr "5 秒"
 
 #. Shown in the "started a thread" system message when the thread no longer exists.
 #: src/features/channel/components/ThreadCreatedMessage.tsx:18
 msgid "a thread that was deleted"
-msgstr "a thread that was deleted"
+msgstr "已删除的子区"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:248
 msgid "Add tag"
-msgstr "Add tag"
+msgstr "添加标签"
 
 #. Tooltip on the archive-thread button in a thread header.
 #: src/features/channel/components/ChannelHeader.tsx:144
 msgid "Archive Thread"
-msgstr "Archive Thread"
+msgstr "归档子区"
 
 #. Threads popout tab: closed threads.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:23
 msgid "Archived"
-msgstr "Archived"
+msgstr "已归档"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:55
 msgid "Are you sure you want to delete this? This cannot be undone."
-msgstr "Are you sure you want to delete this? This cannot be undone."
+msgstr "确定要删除吗？此操作无法撤销。"
 
 #. Empty forum heading.
 #: src/features/channel/components/forum/ForumChannelView.tsx:77
 msgid "Be the first to start the conversation!"
-msgstr "Be the first to start the conversation!"
+msgstr "来发起第一次对话吧！"
 
 #. Forum tag picker item that removes every tag filter.
 #: src/features/channel/components/forum/ForumChannelView.tsx:72
 msgid "Clear tags"
-msgstr "Clear tags"
+msgstr "清除标签"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:134
 msgid "Close Post"
-msgstr "Close Post"
+msgstr "关闭帖子"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:134
 msgid "Close Thread"
-msgstr "Close Thread"
+msgstr "关闭子区"
 
 #. Forum toggle that shows posts closed by a moderator or hidden after inactivity.
 #: src/features/channel/components/forum/ForumChannelView.tsx:73
 msgid "Closed posts"
-msgstr "Closed posts"
+msgstr "已关闭的帖子"
 
 #. Developer mode item in the thread or forum post menu that copies the thread id.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:32
 msgid "Copy Thread ID"
-msgstr "Copy Thread ID"
+msgstr "复制子区 ID"
 
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:80
 msgid "Couldn't create the post. You may be posting too quickly; try again shortly."
-msgstr "Couldn't create the post. You may be posting too quickly; try again shortly."
+msgstr "无法创建帖子。你可能发布得太快了，请稍后再试。"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:97
 msgid "Couldn't save the forum settings"
-msgstr "Couldn't save the forum settings"
+msgstr "无法保存论坛设置"
 
 #: src/features/channel/components/modals/EditPostModal.tsx:74
 msgid "Couldn't save your changes. Try again."
-msgstr "Couldn't save your changes. Try again."
+msgstr "无法保存你的更改，请重试。"
 
 #. Title/submit of the forum create-post modal.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:28
 msgid "Create Post"
-msgstr "Create Post"
+msgstr "创建帖子"
 
 #. Message right-click action that starts a thread from the message.
 #. Title and submit button of the create-thread modal. Keep it concise.
 #: src/features/channel/components/MessageActionMenu.tsx:122
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:25
 msgid "Create Thread"
-msgstr "Create Thread"
+msgstr "创建子区"
 
 #. Forum sort option: newest posts first.
 #: src/features/channel/components/forum/ForumChannelView.tsx:63
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:148
 msgid "Date Posted"
-msgstr "Date Posted"
+msgstr "发布时间"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:153
 msgid "Default layout"
-msgstr "Default layout"
+msgstr "默认布局"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:125
 msgid "Default reaction"
-msgstr "Default reaction"
+msgstr "默认表情回应"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:139
 msgid "Default sort order"
-msgstr "Default sort order"
+msgstr "默认排序方式"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:54
 msgid "Delete post"
-msgstr "Delete post"
+msgstr "删除帖子"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:139
 msgid "Delete Post"
-msgstr "Delete Post"
+msgstr "删除帖子"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:239
 msgid "Delete tag"
-msgstr "Delete tag"
+msgstr "删除标签"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:54
 msgid "Delete thread"
-msgstr "Delete thread"
+msgstr "删除子区"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:139
 msgid "Delete Thread"
-msgstr "Delete Thread"
+msgstr "删除子区"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:99
 #: src/features/channel/components/modals/EditPostModal.tsx:83
 msgid "Edit Post"
-msgstr "Edit Post"
+msgstr "编辑帖子"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:99
 #: src/features/channel/components/modals/EditPostModal.tsx:83
 msgid "Edit Thread"
-msgstr "Edit Thread"
+msgstr "编辑子区"
 
 #. Header toggle that follows a thread or forum post to get its notifications.
 #: src/features/channel/components/channel_header_components/ThreadManageButton.tsx:23
 msgid "Follow"
-msgstr "Follow"
+msgstr "关注"
 
 #. Post menu item that follows a forum post.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:82
 msgid "Follow Post"
-msgstr "Follow Post"
+msgstr "关注帖子"
 
 #. Header toggle state when the user follows a thread or forum post; clicking unfollows.
 #: src/features/channel/components/channel_header_components/ThreadManageButton.tsx:27
 msgid "Following"
-msgstr "Following"
+msgstr "已关注"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:95
 msgid "Forum settings saved"
-msgstr "Forum settings saved"
+msgstr "论坛设置已保存"
 
 #. Forum layout option: a grid of post cards with images.
 #: src/features/channel/components/forum/ForumChannelView.tsx:66
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:162
 msgid "Gallery"
-msgstr "Gallery"
+msgstr "图库"
 
 #. Label for how long a thread or post stays open without new messages before it is closed.
 #. Label for the auto-archive duration selector in the create-thread modal.
 #: src/features/channel/components/modals/EditPostModal.tsx:27
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:37
 msgid "Hide after inactivity"
-msgstr "Hide after inactivity"
+msgstr "无活动后隐藏"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:184
 msgid "Hide posts after inactivity"
-msgstr "Hide posts after inactivity"
+msgstr "无活动后隐藏帖子"
 
 #. Thread menu item that joins a thread.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:83
 msgid "Join Thread"
-msgstr "Join Thread"
+msgstr "加入子区"
 
 #. Thread menu item that leaves a joined thread.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:80
 msgid "Leave Thread"
-msgstr "Leave Thread"
+msgstr "退出子区"
 
 #. Forum layout option: one post per row.
 #: src/features/channel/components/forum/ForumChannelView.tsx:65
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:161
 msgid "List"
-msgstr "List"
+msgstr "列表"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:115
 msgid "Lock"
-msgstr "Lock"
+msgstr "锁定"
 
 #. Placeholder for the forum post title.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:30
 msgid "New post"
-msgstr "New post"
+msgstr "新帖子"
 
 #. Button that starts a new forum post.
 #: src/features/channel/components/forum/ForumChannelView.tsx:53
 msgid "New Post"
-msgstr "New Post"
+msgstr "新帖子"
 
 #. Accessible label of the threads popout button that starts a thread.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:24
 msgid "New thread"
-msgstr "New thread"
+msgstr "新子区"
 
 #. Placeholder example for the thread name field.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:33
@@ -40335,269 +40335,269 @@ msgstr "new-thread"
 #. Threads popout empty state.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:27
 msgid "No active threads"
-msgstr "No active threads"
+msgstr "没有活跃的子区"
 
 #. Threads popout empty state.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:26
 msgid "No archived threads"
-msgstr "No archived threads"
+msgstr "没有已归档的子区"
 
 #. Forum list message when showing closed posts and there are none.
 #: src/features/channel/components/forum/ForumChannelView.tsx:89
 msgid "No closed posts."
-msgstr "No closed posts."
+msgstr "没有已关闭的帖子。"
 
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:86
 msgid "No members yet"
-msgstr "No members yet"
+msgstr "暂无成员"
 
 #. Forum list message when filters hide every post.
 #: src/features/channel/components/forum/ForumChannelView.tsx:85
 msgid "No posts match your search or tags."
-msgstr "No posts match your search or tags."
+msgstr "没有符合搜索条件或标签的帖子。"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:126
 msgid "Open Post"
-msgstr "Open Post"
+msgstr "打开帖子"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:107
 msgid "Pin Post"
-msgstr "Pin Post"
+msgstr "置顶帖子"
 
 #. Heading above the forum's posting guidelines in the create-post modal.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:107
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:37
 msgid "Post guidelines"
-msgstr "Post guidelines"
+msgstr "发帖须知"
 
 #. Label for the forum post title field.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:29
 msgid "Post title"
-msgstr "Post title"
+msgstr "帖子标题"
 
 #. Forum sort option: posts with the newest messages first.
 #: src/features/channel/components/forum/ForumChannelView.tsx:59
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:147
 msgid "Recently Active"
-msgstr "Recently Active"
+msgstr "最近活跃"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:126
 msgid "Reopen Thread"
-msgstr "Reopen Thread"
+msgstr "重新打开子区"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:212
 msgid "Require members to select a tag when posting"
-msgstr "Require members to select a tag when posting"
+msgstr "要求成员发帖时选择标签"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:255
 msgid "Save forum settings"
-msgstr "Save forum settings"
+msgstr "保存论坛设置"
 
 #. Placeholder of the forum search box. Typing filters post titles; New Post uses the text as the title.
 #: src/features/channel/components/forum/ForumChannelView.tsx:49
 msgid "Search or create a post..."
-msgstr "Search or create a post..."
+msgstr "搜索或创建帖子..."
 
 #. Composer placeholder inside a thread or forum post. {name} is the thread or post title.
 #: src/features/channel/components/LexicalChannelTextareaContent.tsx:128
 msgid "Send a message in \"{name}\""
-msgstr "Send a message in \"{name}\""
+msgstr "在“{name}”中发送消息"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:110
 msgid "Shown to members when they start a post."
-msgstr "Shown to members when they start a post."
+msgstr "成员发帖时会看到此内容。"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:167
 msgid "Slowmode in new posts"
-msgstr "Slowmode in new posts"
+msgstr "新帖子的慢速模式"
 
 #. Forum button that opens sort order and layout choices.
 #: src/features/channel/components/forum/ForumChannelView.tsx:54
 msgid "Sort & View"
-msgstr "Sort & View"
+msgstr "排序与视图"
 
 #. Group label in the forum Sort & View menu.
 #: src/features/channel/components/forum/ForumChannelView.tsx:58
 msgid "Sort by"
-msgstr "Sort by"
+msgstr "排序方式"
 
 #. Label above the source-message preview when creating a thread from a message.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:41
 msgid "Starting thread from this message"
-msgstr "Starting thread from this message"
+msgstr "正在从此消息创建子区"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:224
 msgid "Tag emoji"
-msgstr "Tag emoji"
+msgstr "标签表情"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:231
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:233
 msgid "Tag name"
-msgstr "Tag name"
+msgstr "标签名称"
 
 #. Channel settings tab for managing forum post tags.
 #: src/features/user/components/settings_utils/ChannelSettingsConstants.ts:19
 msgctxt "channel-settings-tab"
 msgid "Tags"
-msgstr "Tags"
+msgstr "标签"
 
 #: src/features/channel/components/modals/EditPostModal.tsx:101
 msgid "Tags (at least one required)"
-msgstr "Tags (at least one required)"
+msgstr "标签（至少需要一个）"
 
 #. Label above the forum tag selector when the forum requires a tag on every post.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:33
 msgid "Tags (pick at least one)"
-msgstr "Tags (pick at least one)"
+msgstr "标签（至少选择一个）"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:208
 msgid "Tags help members organize and filter posts in this forum (up to 20)."
-msgstr "Tags help members organize and filter posts in this forum (up to 20)."
+msgstr "标签可帮助成员整理和筛选此论坛中的帖子（最多 20 个）。"
 
 #. Banner shown above the composer when viewing an archived thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:15
 msgid "This thread is archived."
-msgstr "This thread is archived."
+msgstr "此子区已归档。"
 
 #. Banner shown above the composer when viewing a locked thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:23
 msgid "This thread is locked. Only moderators can send messages."
-msgstr "This thread is locked. Only moderators can send messages."
+msgstr "此子区已锁定，只有管理员可以发送消息。"
 
 #. Tooltip on the thread members button.
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:19
 msgid "Thread members"
-msgstr "Thread members"
+msgstr "子区成员"
 
 #. Short label for the thread name field in the create-thread modal.
 #: src/features/channel/components/modals/ThreadCreateModal.tsx:29
 msgid "Thread name"
-msgstr "Thread name"
+msgstr "子区名称"
 
 #. Label above the source message pinned at the top of a thread.
 #: src/features/channel/components/ThreadStarterMessage.tsx:18
 msgid "Thread started from this message"
-msgstr "Thread started from this message"
+msgstr "从此消息创建的子区"
 
 #. Accessible label of a row in the threads popout.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:28
 msgid "Thread: {name}"
-msgstr "Thread: {name}"
+msgstr "子区：{name}"
 
 #. Accessible label of an unread row in the threads popout.
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:29
 msgid "Thread: {name}, unread"
-msgstr "Thread: {name}, unread"
+msgstr "子区：{name}，未读"
 
 #. Channel header button that lists the channel threads.
 #: src/features/channel/components/channel_header_components/ChannelThreadsButton.tsx:18
 msgid "Threads"
-msgstr "Threads"
+msgstr "子区"
 
 #. Label for the thread or forum post title field.
 #: src/features/channel/components/modals/EditPostModal.tsx:26
 msgid "Title"
-msgstr "Title"
+msgstr "标题"
 
 #. Button that reopens an archived thread.
 #: src/features/channel/components/ThreadArchivedBanner.tsx:19
 msgid "Unarchive"
-msgstr "Unarchive"
+msgstr "取消归档"
 
 #. Tooltip on the unarchive-thread button in a thread header.
 #: src/features/channel/components/ChannelHeader.tsx:148
 msgid "Unarchive Thread"
-msgstr "Unarchive Thread"
+msgstr "取消归档子区"
 
 #. Post menu item that leaves a followed forum post.
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:79
 msgid "Unfollow Post"
-msgstr "Unfollow Post"
+msgstr "取消关注帖子"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:115
 msgid "Unlock"
-msgstr "Unlock"
+msgstr "解锁"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:107
 msgid "Unpin Post"
-msgstr "Unpin Post"
+msgstr "取消置顶帖子"
 
 #. Group label in the forum Sort & View menu.
 #: src/features/channel/components/forum/ForumChannelView.tsx:64
 msgid "View as"
-msgstr "View as"
+msgstr "视图"
 
 #. Empty forum prompt. {name} is the forum channel name.
 #: src/features/channel/components/forum/ForumChannelView.tsx:81
 msgid "What do you want to post about in #{name}?"
-msgstr "What do you want to post about in #{name}?"
+msgstr "你想在 #{name} 中发布什么内容？"
 
 #. Placeholder for the forum post body.
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:31
 msgid "Write something…"
-msgstr "Write something…"
+msgstr "写点什么…"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:232
 msgid "A moderated tag can only be applied by members who can manage threads."
-msgstr "A moderated tag can only be applied by members who can manage threads."
+msgstr "受管制标签只能由可以管理子区的成员添加。"
 
 #. Action on your own reply that appends its image to the forum post you started.
 #: src/features/ui/action_menu/MessageContextMenu.tsx:110
 msgid "Add to Post"
-msgstr "Add to Post"
+msgstr "添加到帖子"
 
 #. Permission description: manage threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:484
 msgid "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
-msgstr "Allows members to rename, close, reopen, lock, pin and delete threads and posts started by anyone, and to see private threads."
+msgstr "允许成员重命名、关闭、重新打开、锁定、置顶和删除任何人创建的子区和帖子，并查看私密子区。"
 
 #. Permission description: send messages in threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:480
 msgid "Allows members to reply inside threads and forum posts, separately from the parent channel."
-msgstr "Allows members to reply inside threads and forum posts, separately from the parent channel."
+msgstr "允许成员在子区和论坛帖子中回复，与上级频道分开控制。"
 
 #. Permission description: create posts and threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:472
 msgid "Allows members to start threads in text channels and posts in forum channels."
-msgstr "Allows members to start threads in text channels and posts in forum channels."
+msgstr "允许成员在文字频道中创建子区，并在论坛频道中发帖。"
 
 #. Permission description: create private threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:476
 msgid "Allows members to start threads that only invited members can see."
-msgstr "Allows members to start threads that only invited members can see."
+msgstr "允许成员创建仅受邀成员可见的子区。"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:28
 msgid "Ask for help with something"
-msgstr "Ask for help with something"
+msgstr "寻求帮助"
 
 #. Permission name: allows starting threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:456
 msgid "Create posts and threads"
-msgstr "Create posts and threads"
+msgstr "创建帖子和子区"
 
 #. Permission name: allows starting invite-only threads.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:460
 msgid "Create private threads"
-msgstr "Create private threads"
+msgstr "创建私密子区"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:110
 msgid "Exit Full View"
-msgstr "Exit Full View"
+msgstr "退出全屏视图"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:27
 msgid "Introduce yourself"
-msgstr "Introduce yourself"
+msgstr "介绍一下自己"
 
 #. Permission name: allows moderating threads and forum posts started by other members.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:468
 msgid "Manage threads and posts"
-msgstr "Manage threads and posts"
+msgstr "管理子区和帖子"
 
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:262
 msgid "Moderators only"
-msgstr "Moderators only"
+msgstr "仅管理员"
 
 #. Short pill marking messages by the member who started a thread or forum post.
 #: src/features/channel/components/MessageOriginalPosterTag.tsx:12
@@ -40606,59 +40606,59 @@ msgstr "OP"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:110
 msgid "Open in Full View"
-msgstr "Open in Full View"
+msgstr "在全屏视图中打开"
 
 #. Tooltip of the OP pill.
 #: src/features/channel/components/MessageOriginalPosterTag.tsx:16
 msgid "Original poster"
-msgstr "Original poster"
+msgstr "发帖人"
 
 #. Introduction above the example post ideas.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:22
 msgid "Pick one to start a post, or write your own."
-msgstr "Pick one to start a post, or write your own."
+msgstr "选择一个主题开始发帖，或自己写一个。"
 
 #. Accessible label of the "..." button in the header of an open forum post.
 #: src/features/channel/components/forum/ForumSplitView.tsx:21
 msgid "Post actions"
-msgstr "Post actions"
+msgstr "帖子操作"
 
 #. Title of the sheet listing example first posts for an empty forum.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:18
 msgid "Post ideas"
-msgstr "Post ideas"
+msgstr "发帖灵感"
 
 #. Button under the first message of a forum post that reacts to it.
 #: src/features/channel/components/forum/ForumPostIntro.tsx:33
 msgid "React to Post"
-msgstr "React to Post"
+msgstr "回应帖子"
 
 #. Button on an empty forum that lists example first posts.
 #: src/features/channel/components/forum/ForumChannelView.tsx:89
 msgid "See Examples"
-msgstr "See Examples"
+msgstr "查看示例"
 
 #. Permission name: allows replying inside threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:464
 msgid "Send messages in threads and posts"
-msgstr "Send messages in threads and posts"
+msgstr "在子区和帖子中发送消息"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:29
 msgid "Share something you made"
-msgstr "Share something you made"
+msgstr "分享你的作品"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:30
 msgid "Start a discussion"
-msgstr "Start a discussion"
+msgstr "发起讨论"
 
 #. Example forum post idea.
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:31
 msgid "Suggest an improvement"
-msgstr "Suggest an improvement"
+msgstr "提出改进建议"
 
 #. Permission category: threads and forum posts.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:344
 msgid "Threads and posts"
-msgstr "Threads and posts"
+msgstr "子区和帖子"

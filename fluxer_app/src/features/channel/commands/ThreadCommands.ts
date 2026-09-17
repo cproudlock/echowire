@@ -213,17 +213,6 @@ export async function removeThreadMember(threadChannelId: string, userId: string
 	}
 }
 
-// Echowire: fetch one thread member. Answers 404 when the user is not a member, which callers use
-// to tell "not a member" from "cannot see the thread".
-export async function fetchThreadMember(threadChannelId: string, userId: string): Promise<boolean> {
-	try {
-		await http.get(Endpoints.CHANNEL_THREAD_MEMBER(threadChannelId, userId));
-		return true;
-	} catch {
-		return false;
-	}
-}
-
 // Echowire: append an attachment already on a reply to the post's starter message, where it becomes
 // the card thumbnail (forums phase 2 contract, section 2). The route answers with the post, whose
 // starter_message_preview already carries the new thumbnail, so the card updates from the response.

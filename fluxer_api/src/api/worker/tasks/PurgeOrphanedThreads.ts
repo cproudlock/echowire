@@ -5,79 +5,58 @@
 // still exist in the store, and with no parent they have nothing to resolve permissions against.
 // The API and gateway already treat them as inaccessible; this sweep removes them. It is
 // idempotent: a thread with a live parent is never touched, and a purged thread no longer matches.
-// Postgres-only, paging the generic KV table in row_key order like ArchiveInactiveThreads.
+//
+// Runs on both backends by walking guilds and their channels (see ThreadSweepScan.ts), replacing a
+// raw SQL scan only Postgres could answer. Archived threads are included, because an archived
+// thread whose parent was deleted is still an orphan holding storage. The parent lookup comes from
+// the guild's own channel set, so deciding orphanhood costs no extra read.
 
-import {type ChannelID, createChannelID, type MessageID} from '@app/api/BrandedTypes';
-import {Config} from '@app/api/Config';
+import type {MessageID} from '@app/api/BrandedTypes';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {purgeMessageAttachments} from '@app/api/channel/services/message/MessageHelpers';
 import {purgeThread} from '@app/api/channel/services/ThreadPurge';
+import {scanGuildThreads} from '@app/api/channel/services/ThreadSweepScan';
 import type {Channel} from '@app/api/models/Channel';
 import {getWorkerDependencies} from '@app/api/worker/WorkerContext';
-import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
-import {getDefaultPostgresClient} from '@pkgs/postgres/src/Client';
+import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
 import type {WorkerTaskHandler} from '@pkgs/worker/src/contracts/WorkerTask';
 
-interface ThreadRow {
-	row_key: string;
-	channel_id: string | null;
-}
-
-const PAGE_SIZE = 500;
 const ATTACHMENT_BATCH = 100;
 
-// A thread is orphaned when it has no parent id, or its parent row is missing or soft-deleted.
-export async function isOrphanedThread(
+// A thread is orphaned when it has no parent id, or its parent is missing or soft-deleted. The
+// lookup is a plain function so the caller can answer it from a set it already holds.
+export function isOrphanedThread(
 	thread: Pick<Channel, 'type' | 'parentId'>,
-	findChannel: (channelId: ChannelID) => Promise<Pick<Channel, 'isSoftDeleted'> | null>,
-): Promise<boolean> {
+	findChannel: (channelId: string) => Pick<Channel, 'isSoftDeleted'> | null,
+): boolean {
 	if (!THREAD_CHANNEL_TYPES.has(thread.type)) {
 		return false;
 	}
 	if (!thread.parentId) {
 		return true;
 	}
-	const parent = await findChannel(thread.parentId);
+	const parent = findChannel(String(thread.parentId));
 	return parent === null || parent.isSoftDeleted;
 }
 
 const purgeOrphanedThreads: WorkerTaskHandler = async (_payload, helpers) => {
-	if (Config.database.backend !== 'postgres') {
-		return;
-	}
-	const {channelRepository, gatewayService, storageService, purgeQueue} = getWorkerDependencies();
-	const client = getDefaultPostgresClient();
+	const {channelRepository, gatewayService, guildRepository, storageService, purgeQueue} = getWorkerDependencies();
 	const threadMemberRepository = new ThreadMemberRepository();
 	let purged = 0;
-	let cursor = '';
-	for (;;) {
-		const result = await client.query<ThreadRow>(
-			`SELECT row_key, row_data->'channel_id'->>'value' AS channel_id
-			 FROM ${client.kvTable()}
-			 WHERE table_name = 'channels'
-			   AND row_key > $3
-			   AND row_data->>'type' IN ($1, $2)
-			 ORDER BY row_key
-			 LIMIT ${PAGE_SIZE}`,
-			[String(ChannelTypes.PUBLIC_THREAD), String(ChannelTypes.PRIVATE_THREAD), cursor],
-		);
-		for (const row of result.rows) {
-			if (!row.channel_id) {
-				continue;
-			}
-			const thread = await channelRepository.findUnique(createChannelID(BigInt(row.channel_id)));
-			if (!thread || !thread.guildId) {
-				continue;
-			}
-			if (!(await isOrphanedThread(thread, (id) => channelRepository.findUnique(id)))) {
+	for await (const {guildId, threads, channelsById} of scanGuildThreads(
+		guildRepository,
+		channelRepository.channelData,
+	)) {
+		for (const thread of threads) {
+			if (!isOrphanedThread(thread, (id) => channelsById.get(id) ?? null)) {
 				continue;
 			}
 			try {
 				await purgeThread({
 					thread,
-					guildId: thread.guildId,
+					guildId,
 					deleteMessages: (id) => channelRepository.messages.deleteAllChannelMessages(id),
-					deleteChannelRow: (id, guildId) => channelRepository.channelData.delete(id, guildId),
+					deleteChannelRow: (id, purgeGuildId) => channelRepository.channelData.delete(id, purgeGuildId),
 					purgeAttachments: async (target) => {
 						let before: MessageID | undefined;
 						for (;;) {
@@ -95,13 +74,9 @@ const purgeOrphanedThreads: WorkerTaskHandler = async (_payload, helpers) => {
 				});
 				purged += 1;
 			} catch (error) {
-				helpers.logger.warn({error, channelId: row.channel_id}, 'Failed to purge orphaned thread');
+				helpers.logger.warn({error, channelId: String(thread.id)}, 'Failed to purge orphaned thread');
 			}
 		}
-		if (result.rows.length < PAGE_SIZE) {
-			break;
-		}
-		cursor = result.rows[result.rows.length - 1].row_key;
 	}
 	if (purged > 0) {
 		helpers.logger.info({purged}, 'Purged threads whose parent channel no longer exists');

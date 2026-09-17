@@ -1719,14 +1719,12 @@ These settings exist only in the dashboard: attachment decay, which defaults to 
 
 ## Services
 
-:::caution[Thread maintenance requires the Postgres backend]
-Two background jobs keep threads tidy: one archives threads that have gone quiet past their
-auto-archive duration, and one sweeps up threads whose parent channel was deleted before that
-cascade existed. Both scan the key-value table directly and run only when
-`FLUXER_DATABASE_BACKEND` is `postgres`. On a Cassandra deployment they exit immediately, so
-threads never auto-archive there and must be archived by hand. Access control is unaffected: a
-thread whose parent is gone is denied on every path regardless of backend.
-:::
+Three background jobs keep threads tidy: one archives threads that have gone quiet past their
+auto-archive duration, one sweeps up threads whose parent channel was deleted before that cascade
+existed, and one fills in membership index rows written before that index existed. All three run on
+either value of `FLUXER_DATABASE_BACKEND`. They page every guild and read that guild's channels,
+which both backends serve, so the work scales with the number of guilds rather than with the size
+of the key-value table.
 
 The stack runs its containers on one Docker bridge network, which is private to the stack.
 

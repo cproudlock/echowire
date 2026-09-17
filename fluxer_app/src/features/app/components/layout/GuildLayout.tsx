@@ -9,6 +9,7 @@ import {Nagbar} from '@app/features/app/components/layout/Nagbar';
 import {NagbarButton} from '@app/features/app/components/layout/NagbarButton';
 import {GuildSidebarSkeleton} from '@app/features/app/components/skeleton/GuildSidebarSkeleton';
 import {PRODUCT_NAME} from '@app/features/app/config/I18nDisplayConstants';
+import * as ChannelCommands from '@app/features/channel/commands/ChannelCommands';
 import {MatureContentChannelGate} from '@app/features/channel/components/MatureContentChannelGate';
 import Channels from '@app/features/channel/state/Channels';
 import * as GuildCommands from '@app/features/guild/commands/GuildCommands';
@@ -436,16 +437,26 @@ export const GuildLayout = observer(({children}: {children: React.ReactNode}) =>
 			ComponentBus.dispatch('LAYOUT_RESIZED');
 		}
 	}, [nagbarCount]);
+	// Echowire: a routed channel the store has never seen is usually an archived thread, because a
+	// session's channel list carries open channels and open threads only. Ask the server for it
+	// before giving up, and bounce to the first readable channel only when it truly is not ours.
 	useEffect(() => {
 		if (!guild || !channelId || guildUnavailable || guildNotFound) return;
 		const currentChannel = Channels.getChannel(channelId);
 		const currentPath = Navigation.pathname;
 		const expectedPath = Routes.guildChannel(guildId, channelId);
-		if (currentPath === expectedPath && !currentChannel) {
+		if (currentPath !== expectedPath || currentChannel) return;
+		let cancelled = false;
+		void ChannelCommands.fetchChannel(channelId).then((fetched) => {
+			if (cancelled || fetched) return;
+			if (Navigation.pathname !== expectedPath || Channels.getChannel(channelId)) return;
 			if (firstAccessibleTextChannel) {
 				Navigation.navigateToGuild(guildId, firstAccessibleTextChannel.id, undefined, 'replace');
 			}
-		}
+		});
+		return () => {
+			cancelled = true;
+		};
 	}, [guild, guildId, channelId, firstAccessibleTextChannel, guildUnavailable, guildNotFound]);
 	const guildNagbars = (
 		<>

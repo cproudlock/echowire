@@ -15,6 +15,22 @@ const logger = new Logger('Channels');
 const MAX_CONCURRENT_SLOWMODE_STATE_REQUESTS = 32;
 const SLOWMODE_STATE_REQUEST_TIMEOUT_MS = 15_000;
 
+// Echowire: fetch one channel by id. A session's channel list carries the guild's open channels
+// and open threads, not every archived thread, so a link straight to an archived thread lands on
+// an id the store has never seen. This resolves that id instead of bouncing the reader elsewhere.
+// Returns null when the channel is gone or the reader may not view it.
+export async function fetchChannel(channelId: string): Promise<Channel | null> {
+	try {
+		const response = await http.get<Channel>(Endpoints.CHANNEL(channelId));
+		const channel = response.body;
+		Channels.handleChannelCreate({channel});
+		return channel;
+	} catch (error) {
+		logger.info(`Channel ${channelId} could not be fetched:`, error);
+		return null;
+	}
+}
+
 export interface ChannelRtcRegion {
 	id: string;
 	name: string;

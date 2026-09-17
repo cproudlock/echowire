@@ -7,6 +7,7 @@ import Authentication from '@app/features/auth/state/Authentication';
 import AuthSession from '@app/features/auth/state/AuthSession';
 import ChannelPins from '@app/features/channel/state/ChannelPins';
 import Channels from '@app/features/channel/state/Channels';
+import ThreadMembers from '@app/features/channel/state/ThreadMembers';
 import UserConnection from '@app/features/connection/state/UserConnection';
 import Emoji from '@app/features/emoji/state/Emoji';
 import Sticker from '@app/features/emoji/state/EmojiSticker';
@@ -52,6 +53,15 @@ import {runInAction} from 'mobx';
 
 const logger = new Logger('READY Handler');
 
+// Echowire: the caller's own thread memberships, one row per thread they have joined. It is the
+// authoritative answer to "which threads am I in", read from the by-user membership index, and it
+// keeps the client from having to ask per thread.
+interface GatewayThreadMember {
+	id: string;
+	user_id: string;
+	join_timestamp: string;
+}
+
 interface ReadyPayload {
 	session_id: string;
 	guilds: Array<GuildReadyData>;
@@ -68,6 +78,7 @@ interface ReadyPayload {
 	user_settings?: UserSettingsWire;
 	user_guild_settings?: Array<GatewayGuildSettings>;
 	read_states?: Array<GatewayReadState>;
+	thread_members?: Array<GatewayThreadMember>;
 	read_state_proto?: string;
 	presences?: Array<PresenceRecord>;
 	auth_session_id_hash?: string;
@@ -178,6 +189,7 @@ function handleReadyInternal(data: ReadyPayload, context: GatewayHandlerContext)
 		readStateProto: data.read_state_proto,
 		channels,
 	});
+	ThreadMembers.handleGatewayReady(data.thread_members ?? []);
 	GuildReadState.handleGatewayReady();
 	Presence.handleGatewayReady(data.user, guilds, data.presences);
 	MediaEngine.handleGatewayReady(guilds);

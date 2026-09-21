@@ -67,15 +67,8 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_S3_SECRET_ACCESS_KEY: {path: ['s3', 'secret_access_key']},
 	FLUXER_S3_BUCKET_CDN: {path: ['s3', 'buckets', 'cdn']},
 	FLUXER_S3_BUCKET_UPLOADS: {path: ['s3', 'buckets', 'uploads']},
-	FLUXER_S3_BUCKET_DOWNLOADS: {path: ['s3', 'buckets', 'downloads']},
 	FLUXER_S3_BUCKET_REPORTS: {path: ['s3', 'buckets', 'reports']},
 	FLUXER_S3_BUCKET_HARVESTS: {path: ['s3', 'buckets', 'harvests']},
-	FLUXER_S3_DOWNLOADS_ENDPOINT: {path: ['s3_downloads', 'endpoint']},
-	FLUXER_S3_DOWNLOADS_PUBLIC_ENDPOINT: {path: ['s3_downloads', 'presigned_url_base']},
-	FLUXER_S3_DOWNLOADS_FORCE_PATH_STYLE: {path: ['s3_downloads', 'force_path_style'], parse: parseBoolean},
-	FLUXER_S3_DOWNLOADS_REGION: {path: ['s3_downloads', 'region']},
-	FLUXER_S3_DOWNLOADS_ACCESS_KEY_ID: {path: ['s3_downloads', 'access_key_id']},
-	FLUXER_S3_DOWNLOADS_SECRET_ACCESS_KEY: {path: ['s3_downloads', 'secret_access_key']},
 	FLUXER_NATS_URL: {path: ['services', 'nats', 'core_url']},
 	FLUXER_NATS_JETSTREAM_URL: {path: ['services', 'nats', 'jetstream_url']},
 	FLUXER_NATS_AUTH_TOKEN: {path: ['services', 'nats', 'auth_token']},
@@ -86,16 +79,8 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_API_IP_BAN_EXEMPT_IPS: {path: ['services', 'api', 'ip_ban_exempt_ips'], parse: parseCsv},
 	FLUXER_API_ADDITIONAL_CORS_ORIGINS: {path: ['services', 'api', 'additional_cors_origins'], parse: parseCsv},
 	FLUXER_API_DONATION_PROXY_KEY: {path: ['services', 'api', 'donation_proxy_key']},
-	FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES: {
-		path: ['services', 'api', 'desktop_github_redirect_countries'],
-		parse: parseCsv,
-	},
 	FLUXER_API_PRESIGNED_ATTACHMENT_UPLOADS_ENABLED: {
 		path: ['services', 'api', 'presigned_attachment_uploads_enabled'],
-		parse: parseBoolean,
-	},
-	FLUXER_API_PRESIGNED_DOWNLOADS_ENABLED: {
-		path: ['services', 'api', 'presigned_downloads_enabled'],
 		parse: parseBoolean,
 	},
 	FLUXER_API_PRESIGNED_HARVEST_DOWNLOADS_ENABLED: {
@@ -171,6 +156,10 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	},
 	FLUXER_MEDIA_PROXY_UPLOAD_RELAY_KEEP_DIRECT_COUNTRIES: {
 		path: ['services', 'media_proxy', 'upload_relay', 'keep_direct_countries'],
+		parse: parseCsv,
+	},
+	FLUXER_MEDIA_PROXY_ATTACHMENT_URL_SECRETS_BASE64: {
+		path: ['services', 'media_proxy', 'attachment_urls', 'secrets_base64'],
 		parse: parseCsv,
 	},
 	FLUXER_ADMIN_PORT: {path: ['services', 'admin', 'port'], parse: parseInteger},
@@ -337,23 +326,16 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 		parse: parseInteger,
 	},
 	FLUXER_BLOCKLIST_FEEDS_ENABLED: {path: ['integrations', 'blocklist_feeds', 'enabled'], parse: parseBoolean},
+	FLUXER_TOR_EXIT_LIST_ENABLED: {path: ['integrations', 'tor_exit_list', 'enabled'], parse: parseBoolean},
+	FLUXER_BREACHED_PASSWORD_CHECK_ENABLED: {
+		path: ['integrations', 'breached_password_check', 'enabled'],
+		parse: parseBoolean,
+	},
 	FLUXER_RISK_INTEGRATION_ENABLED: {path: ['integrations', 'risk_integration', 'enabled'], parse: parseBoolean},
 	FLUXER_RISK_IPINFO_API_KEY: {path: ['integrations', 'risk_integration', 'ipinfo_api_key']},
 	FLUXER_ACCOUNT_POLICY_DSL: {
 		path: ['integrations', 'risk_integration', 'account_policy_dsl'],
 		parse: parseEnvValue,
-	},
-	FLUXER_RISK_TOR_BLOCK_ALL_RELAYS: {
-		path: ['integrations', 'risk_integration', 'tor', 'block_all_relays'],
-		parse: parseBoolean,
-	},
-	FLUXER_RISK_TOR_REVERSE_DNS_HEURISTIC: {
-		path: ['integrations', 'risk_integration', 'tor', 'reverse_dns_heuristic'],
-		parse: parseBoolean,
-	},
-	FLUXER_RISK_TOR_REVERSE_DNS_TIMEOUT_MS: {
-		path: ['integrations', 'risk_integration', 'tor', 'reverse_dns_timeout_ms'],
-		parse: parseInteger,
 	},
 	FLUXER_PUSH_APNS_ENABLED: {path: ['integrations', 'push', 'apns', 'enabled'], parse: parseBoolean},
 	FLUXER_PUSH_APNS_TEAM_ID: {path: ['integrations', 'push', 'apns', 'team_id']},

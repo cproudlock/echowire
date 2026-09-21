@@ -1,6 +1,7 @@
 {
-	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"$schema": "https://unpkg.com/knip@6/schema.json",
 	"include": ["files", "exports", "types", "dependencies", "unlisted", "binaries", "catalog"],
+	"ignoreExportsUsedInFile": true,
 	"ignoreDependencies": [
 		"@bufbuild/protoc-gen-es",
 		"@tailwindcss/cli",
@@ -37,7 +38,9 @@
 		"packages/schema/src/domains/channel/ChannelRequestSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelSchemas.ts": ["exports"],
 		"packages/schema/src/domains/download/DownloadSchemas.ts": ["exports"],
+		"packages/schema/src/domains/admin/ScreenShareDeliverySchemas.ts": ["exports"],
 		"packages/schema/src/domains/admin/VoiceNoiseSuppressionSchemas.ts": ["exports"],
+		"packages/schema/src/domains/download/DownloadSchemas.ts": ["exports"],
 		"packages/schema/src/domains/geolocation/GeolocationSchemas.ts": ["exports"],
 		"packages/schema/src/domains/guild/GuildAuditLogSchemas.ts": ["exports"],
 		"pnpm-workspace.yaml": ["catalog"]
@@ -79,12 +82,12 @@
 				"native/*/test/**/*.mjs"
 			],
 			"project": ["src/**/*.{ts,tsx,mjs,js}", "scripts/**/*.mjs", "native/**/*.{js,mjs,cjs,d.ts}"],
+			"ignoreBinaries": ["reg.exe", "update-desktop-database"],
 			"ignoreDependencies": ["electron-builder", "electron-builder-squirrel-windows"]
 		},
 		"fluxer_docs": {
 			"entry": ["scripts/*.ts", "src/**/*.astro"],
-			"project": ["src/**/*.{ts,astro}", "scripts/**/*.ts"],
-			"ignoreDependencies": ["sharp"]
+			"project": ["src/**/*.{ts,astro,mdx}", "scripts/**/*.ts"]
 		},
 		"packages/openapi": {
 			"project": ["src/**/*.ts"]

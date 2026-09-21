@@ -872,11 +872,11 @@ msgstr "{communityName} נגישה כרגע רק לחברי צוות של {produ
 msgid "{count, plural, =0 {∞ No limit} one {# participant} other {# participants}}"
 msgstr "{count, plural, =0 {∞ ללא הגבלה} one {# משתתף} other {# משתתפים}}"
 
-#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:193
+#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:141
 msgid "{count, plural, one {... (# line left)} other {... (# lines left)}}"
 msgstr "{count, plural, one {... (נותרה שורה אחת)} other {... (נותרו # שורות)}}"
 
-#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:210
+#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:158
 msgid "{count, plural, one {... (# row left)} other {... (# rows left)}}"
 msgstr "{count, plural, one {... (נותרה שורה אחת)} other {... (נותרו # שורות)}}"
 
@@ -1070,7 +1070,7 @@ msgstr "{count, plural, one {הרחב (שורה אחת)} other {הרחב (# שו
 msgid "{count, plural, one {Expand (# row)} other {Expand (# rows)}}"
 msgstr "{count, plural, one {הרחב (שורה אחת)} other {הרחב (# שורות)}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:317
+#: src/features/voice/components/VoiceParticipantTile.tsx:320
 msgid "{count, plural, one {Expand # other device} other {Expand # other devices}}"
 msgstr "{count, plural, one {הרחב מכשיר אחד נוסף} other {הרחב # מכשירים נוספים}}"
 
@@ -1091,7 +1091,7 @@ msgstr "{count, plural, one {בשיחה} other {# בשיחה}}"
 msgid "{count, plural, one {Join video call (# participant)} other {Join video call (# participants)}}"
 msgstr "{count, plural, one {הצטרף לשיחת וידאו (משתתף אחד)} other {הצטרף לשיחת וידאו (# משתתפים)}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:669
+#: src/features/voice/components/VoiceParticipantTile.tsx:676
 msgid "{count, plural, one {Keep watching # stream and add this one} other {Keep watching # streams and add this one}}"
 msgstr "{count, plural, one {המשך לצפות בשידור אחד והוסף גם את זה} other {המשך לצפות ב-# שידורים והוסף גם את זה}}"
 
@@ -1187,7 +1187,7 @@ msgid "{days, plural, one {Your invite link expires in # day.} other {Your invit
 msgstr "{days, plural, one {תוקף קישור ההזמנה שלך יפוג בעוד יום אחד.} two {תוקף קישור ההזמנה שלך יפוג בעוד יומיים.} other {תוקף קישור ההזמנה שלך יפוג בעוד # ימים.}}"
 
 #. Audio device label for a default route with the concrete microphone or speaker endpoint in parentheses. defaultDeviceLabel is already localized, for example "Windows Default".
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:30
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:34
 msgid "{defaultDeviceLabel} ({endpointLabel})"
 msgstr "{defaultDeviceLabel} ({endpointLabel})"
 
@@ -1340,9 +1340,16 @@ msgid "{fourHours} hours"
 msgstr "{fourHours} שעות"
 
 #. Footer summary frame-rate label in the screen share picker. {fps} is the integer frame rate. FPS is a technical token.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:253
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:254
 msgid "{fps} FPS"
 msgstr "{fps} FPS"
+
+#. Frame rate option label in the video tab. FPS is a technical token and frameRate is a whole number.
+#. Frame rate option label in the video tab. FPS is a technical token and frameRate is a whole number.
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:53
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:115
+msgid "{frameRate} FPS"
+msgstr "{frameRate} FPS"
 
 #. Short label in the app layout channel list content. Preserve {guildName}; it is inserted by code.
 #: src/features/app/components/layout/ChannelListContent.tsx:88
@@ -1453,7 +1460,7 @@ msgid "{length, plural, one {# user} other {# users}}"
 msgstr "{length, plural, one {# משתמש} two {# משתמשים} other {# משתמשים}}"
 
 #. Spectator count badge on a screen-share tile. {length} is the integer number of viewers. Consider pluralization on review.
-#: src/features/voice/components/voice_participant_tile/shared.ts:75
+#: src/features/voice/components/voice_participant_tile/shared.ts:73
 msgid "{length, plural, one {# watching} other {# watching}}"
 msgstr "{length, plural, one {צופה אחד} two {# צופים} other {# צופים}}"
 
@@ -1716,7 +1723,7 @@ msgid "{productName} needs access to your microphone. Allow microphone access in
 msgstr "{productName} זקוק לגישה למיקרופון שלך. אפשר גישה למיקרופון בהגדרות הפרטיות של מערכת ההפעלה שלך והפעל מחדש את האפליקציה."
 
 #. Camera settings notice shown when camera permission has not been granted.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:49
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:61
 msgid "{productName} needs camera access to list your devices."
 msgstr "{productName} זקוק לגישה למצלמה כדי להציג את המכשירים שלך."
 
@@ -1825,7 +1832,7 @@ msgid "{renderedPresenceCount} online"
 msgstr "{renderedPresenceCount} מחוברים"
 
 #. Compact stream info pill label. {resolution} is a technical token such as 1080p or 4K. {fps} is the frame rate. FPS is a technical token.
-#: src/features/voice/components/StreamInfoPill.tsx:12
+#: src/features/voice/components/StreamInfoPill.tsx:14
 msgid "{resolution} {fps} FPS"
 msgstr "{resolution} {fps} FPS"
 
@@ -2217,12 +2224,6 @@ msgstr "שעון 12 שעות"
 msgid "1440p"
 msgstr "1440p"
 
-#. Frame rate option label in the stream settings menu. FPS is a technical token.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:42
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:109
-msgid "15 FPS"
-msgstr "15 פריימים לשנייה"
-
 #. Short label in the guild overview tab utils helper. Keep it concise.
 #: src/features/guild/utils/guild_tabs/GuildOverviewTabUtils.tsx:31
 msgid "15 minutes"
@@ -2262,6 +2263,8 @@ msgid "25 uses"
 msgstr "25 שימושים"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:150
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:40
 msgid "2FA"
 msgstr "2FA"
@@ -2292,12 +2295,6 @@ msgstr "3 חברים (מקלידים)"
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:102
 msgid "3 months"
 msgstr "3 חודשים"
-
-#. Frame rate option label in the stream settings menu. FPS is a technical token.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:43
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:113
-msgid "30 FPS"
-msgstr "30 פריימים לשנייה"
 
 #. Fixed duration label for a 30-minute interval. Used as a standalone label in duration text or option lists.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:10
@@ -2348,16 +2345,10 @@ msgstr "6 חודשים"
 
 #. Placeholder for the MFA login one-time password field.
 #. Short label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:53
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:58
 #: src/features/auth/flow/MfaScreen.tsx:22
 msgid "6-digit code"
 msgstr "קוד בן 6 ספרות"
-
-#. Frame rate option label in the stream settings menu. FPS is a technical token.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:44
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:117
-msgid "60 FPS"
-msgstr "60 פריימים לשנייה"
 
 #. Timeout duration option for moderating a member.
 #: src/features/moderation/components/modals/TimeoutMemberOptions.ts:12
@@ -2569,7 +2560,7 @@ msgid "Accept"
 msgstr "קבל"
 
 #. Button label for accepting an incoming direct call. Means answering a ringing call, not approving a request.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:90
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:94
 msgctxt "incoming-call-action"
 msgid "Accept"
 msgstr "ענה"
@@ -2633,7 +2624,7 @@ msgid "Account & premium overrides"
 msgstr "עקיפות חשבון ופרימיום"
 
 #. Security settings section for third-party app access and signed-in devices.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:49
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:88
 msgid "Account access"
 msgstr "גישה לחשבון"
 
@@ -2960,7 +2951,7 @@ msgstr "הוסף חשבון כדי להמשיך."
 msgid "Add an email and password to your account first."
 msgstr "הוסף/הוסיפי קודם אימייל וסיסמה לחשבון שלך."
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:192
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:296
 msgid "Add an extra layer of security to your account"
 msgstr "הוסף שכבת אבטחה נוספת לחשבונך"
 
@@ -3076,7 +3067,7 @@ msgid "Add override"
 msgstr "הוספת עקיפה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:335
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:439
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:130
 msgid "Add passkey"
 msgstr "הוספת מפתח גישה"
@@ -3174,12 +3165,12 @@ msgstr "הוספה לקבוצה"
 #. Action that adds the selected media to saved media.
 #. Action that adds the selected media to saved media.
 #: src/features/expressions/components/modals/AddFavoriteMemeModal.tsx:16
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:177
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:178
 msgid "Add to saved media"
 msgstr "הוספה למדיה השמורה"
 
 #. Media context menu action that saves a GIF favorite by URL without uploading it.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:169
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:170
 msgid "Add to URL-only GIF favorites"
 msgstr "הוספה לקובצי GIF מועדפים לפי כתובת URL בלבד"
 
@@ -3280,11 +3271,11 @@ msgstr "נוסף למועדפים"
 msgid "Added to saved media"
 msgstr "נוסף למדיה השמורה"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:377
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:495
 msgid "Added: {createdDate}"
 msgstr "נוסף: {createdDate}"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:373
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:491
 msgid "Added: {createdDate} • last used: {lastUsedDate}"
 msgstr "נוסף: {createdDate} • שימוש אחרון: {lastUsedDate}"
 
@@ -3304,11 +3295,6 @@ msgstr "נדרש אימות נוסף"
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:16
 msgid "Address"
 msgstr "כתובת"
-
-#. Description for an H.264 backup stream select. Keep H.264, CPU, and GPU literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:124
-msgid "Adds H.264 for mixed clients. Requires more encoding."
-msgstr "מוסיף H.264 עבור לקוחות מעורבים. דורש יותר עבודה בעיבוד."
 
 #. Description for the custom profile option in the voice tab.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:96
@@ -3365,7 +3351,7 @@ msgid "Advanced"
 msgstr "מתקדם"
 
 #. Subsection title in the video tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:88
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:114
 msgid "Advanced video settings"
 msgstr "הגדרות וידאו מתקדמות"
 
@@ -3452,7 +3438,7 @@ msgstr "פקדי יישור זמינים רק במסכים רחבים יותר"
 #: src/features/app/config/AuditLogConstants.ts:143
 #: src/features/channel/components/direct_message/DMFriendsView.tsx:41
 #: src/features/channel/components/guild_members_page/GuildMembersPageDescriptors.ts:10
-#: src/features/channel/components/MobileMemesPicker.tsx:42
+#: src/features/channel/components/MobileMemesPicker.tsx:43
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:12
 #: src/features/discovery/components/bottomsheets/DiscoveryCategoryBottomSheet.tsx:11
 #: src/features/discovery/discovery/DiscoveryNavbar.tsx:21
@@ -3576,7 +3562,7 @@ msgstr "אפשר"
 msgid "Allow {everyoneMention} and {hereMention}"
 msgstr "אפשר {everyoneMention} ו-{hereMention}"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:209
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:236
 msgid "Allow {PRODUCT_NAME} to access your camera in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 msgstr "אפשר ל-{PRODUCT_NAME} לגשת למצלמה שלך ב-{MACOS_SYSTEM_SETTINGS_NAME} ← {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} ← {MACOS_CAMERA_PERMISSION_NAME}."
 
@@ -3604,8 +3590,8 @@ msgstr "אפשר לכל מי שיכול לצפות בפרופיל המלא של�
 
 #. Settings search entry label for the AV1 screen-share opt-in. AV1 is a codec name and should stay literal.
 #. Switch label for the AV1 screen-share opt-in. AV1 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:183
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:88
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:136
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:87
 msgid "Allow AV1 for screen sharing"
 msgstr "אפשר AV1 לשיתוף מסך"
 
@@ -3619,7 +3605,7 @@ msgstr "אפשר הודעות פרטיות מבוטים"
 msgid "Allow bots to send you direct messages?"
 msgstr "לאפשר לבוטים לשלוח לך הודעות פרטיות?"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:229
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:256
 msgid "Allow camera"
 msgstr "אפשר מצלמה"
 
@@ -3663,8 +3649,8 @@ msgstr "אפשר לכל הקהילות"
 
 #. Settings search entry label for the H.265/HEVC screen-share opt-in. H.265 and HEVC are codec names and should stay literal.
 #. Switch label for the H.265/HEVC screen-share opt-in. H.265 and HEVC are codec names and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:187
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:92
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:140
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:91
 msgid "Allow H.265 (HEVC) for screen sharing"
 msgstr "אפשר H.265 (HEVC) לשיתוף מסך"
 
@@ -4015,13 +4001,13 @@ msgstr "אימוג'י, קובצי GIF ומדבקות מונפשים נשארים
 
 #. Media type chip shown in the media viewer info panel for animated GIFs.
 #. Short label in the channel and chat embed gifv. Keep it concise.
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:67
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:101
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:68
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:102
 msgid "Animated GIF"
 msgstr "GIF מונפש"
 
 #. Short label in the channel and chat embed gifv. Keep it concise.
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:63
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:64
 msgid "Animated GIF video"
 msgstr "סרטון GIF מונפש"
 
@@ -4050,12 +4036,12 @@ msgid "Animated icons require the {animatedIconFeature} community feature."
 msgstr "אייקונים מונפשים דורשים את תכונת הקהילה {animatedIconFeature}."
 
 #. Media type chip shown in the media viewer info panel for animated images.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:109
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:110
 msgid "Animated image"
 msgstr "תמונה מונפשת"
 
 #. Accessible label for an animated image (APNG/AVIF) shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:77
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:78
 msgid "Animated image preview"
 msgstr "תצוגה מקדימה של תמונה מונפשת"
 
@@ -4075,7 +4061,7 @@ msgid "Animated uploads require a {premiumProductName} subscription."
 msgstr "העלאת קבצים מונפשים דורשת מנוי {premiumProductName}."
 
 #. Media type chip shown in the media viewer info panel for short looping video clips.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:105
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:106
 msgid "Animated video"
 msgstr "וידאו מונפש"
 
@@ -4269,7 +4255,7 @@ msgid "App state"
 msgstr "מצב האפליקציה"
 
 #. Fallback label for an app window card in the screen-share picker when the OS does not give us a window title.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:141
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:142
 msgid "App window"
 msgstr "חלון אפליקציה"
 
@@ -4362,7 +4348,7 @@ msgstr "האפליקציה עודכנה בהצלחה"
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:29
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:184
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:185
 msgid "Applications"
 msgstr "אפליקציות"
 
@@ -4469,7 +4455,7 @@ msgid "Are you sure you want to delete the category \"{categoryName}\"? This can
 msgstr "האם למחוק את הקטגוריה \"{categoryName}\"? לא ניתן לבטל פעולה זו."
 
 #. placeholder {0}: passkey.name
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:141
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:227
 msgid "Are you sure you want to delete the passkey <0>{0}</0>?"
 msgstr "האם למחוק את מפתח הגישה <0>{0}</0>?"
 
@@ -4481,7 +4467,7 @@ msgstr "האם למחוק את הקובץ המצורף הזה? לא ניתן ל�
 msgid "Are you sure you want to delete this community? This action cannot be undone. All channels, messages, and settings will be permanently deleted."
 msgstr "האם למחוק את הקהילה הזו? לא ניתן לבטל פעולה זו. כל הערוצים, ההודעות וההגדרות יימחקו לצמיתות."
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:150
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:235
 msgid "Are you sure you want to delete this passkey?"
 msgstr "האם למחוק את מפתח הגישה הזה?"
 
@@ -4560,6 +4546,12 @@ msgstr "סמיילי ASCII"
 msgid "Ask before starting calls"
 msgstr "בקש אישור לפני תחילת שיחות"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:449
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:154
+msgid "Ask for a passkey after your password when you sign in"
+msgstr "בקשת מפתח גישה לאחר הסיסמה שלך בעת הכניסה"
+
 #. Short label in the theme studio. Keep it concise.
 #: src/features/theme_studio/ThemeStudio.tsx:56
 msgid "Assets"
@@ -4587,7 +4579,7 @@ msgstr "קובץ מצורף"
 #. Accessible label for a thumbnail in the media viewer. index1 is the 1-based attachment index.
 #. Accessible label for the active attachment in the media viewer. index1 is the 1-based index.
 #: src/features/messaging/components/modals/media_modal/shared.ts:129
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:73
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:74
 msgid "Attachment {index1}"
 msgstr "קובץ מצורף {index1}"
 
@@ -4614,12 +4606,12 @@ msgid "Attachment expired"
 msgstr "הקובץ המצורף פג תוקף"
 
 #. Toast shown when an attachment URL is no longer accessible.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:133
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:134
 msgid "Attachment has expired or is unavailable"
 msgstr "הקובץ המצורף פג תוקף או אינו זמין"
 
 #. Developer-mode toast confirming an attachment ID was copied.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:161
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:162
 msgid "Attachment ID copied to clipboard"
 msgstr "מזהה הקובץ המצורף הועתק ללוח"
 
@@ -4689,12 +4681,12 @@ msgid "Audio boost"
 msgstr "הגברת שמע"
 
 #. Section header in the stream settings menu. Selects the audio capture device for the share.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:133
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:137
 msgid "Audio device"
 msgstr "התקן שמע"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:16
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:15
 msgid "Audio device alerts"
 msgstr "התראות על התקן שמע"
 
@@ -4709,7 +4701,7 @@ msgid "Audio level"
 msgstr "עוצמת שמע"
 
 #. Footer summary status shown when capture-device audio is disabled.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:258
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:259
 msgid "Audio muted"
 msgstr "השמע מושתק"
 
@@ -4729,12 +4721,12 @@ msgid "Audio packet loss:"
 msgstr "איבוד מנות שמע:"
 
 #. Aria label for the inline audio attachment player container.
-#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:34
+#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:35
 msgid "Audio player"
 msgstr "נגן שמע"
 
 #. Accessible label for an audio clip shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:93
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:94
 msgid "Audio preview"
 msgstr "תצוגה מקדימה של שמע"
 
@@ -4769,7 +4761,7 @@ msgid "Audio processing (focused voice)"
 msgstr "עיבוד שמע (קול ממוקד)"
 
 #. Aria label on the playback progress slider in the inline audio attachment player.
-#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:38
+#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:39
 msgid "Audio progress"
 msgstr "התקדמות שמע"
 
@@ -4784,7 +4776,7 @@ msgid "Audio send:"
 msgstr "שליחת שמע:"
 
 #. Section header in the stream settings menu grouping audio-related toggles.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:145
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:149
 msgid "Audio settings"
 msgstr "הגדרות שמע"
 
@@ -4795,7 +4787,7 @@ msgid "Audio settings"
 msgstr "הגדרות שמע"
 
 #. Toggle / summary row label in the Linux audio source picker. {summaryLabel} is one of the audio-source summary labels.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:43
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:45
 msgid "Audio sources: {summaryLabel}"
 msgstr "מקורות שמע: {summaryLabel}"
 
@@ -4828,13 +4820,13 @@ msgstr "אימות"
 msgid "Authenticator"
 msgstr "אימות דו-שלבי"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:204
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:308
 msgid "Authenticator app"
 msgstr "אפליקציית אימות"
 
 #. Label for the MFA login one-time password field from an authenticator app or backup code.
 #. Short label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:49
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:54
 #: src/features/auth/flow/MfaScreen.tsx:18
 msgid "Authenticator code"
 msgstr "קוד אימות"
@@ -4905,7 +4897,7 @@ msgstr "אפליקציות מורשות"
 #. Settings section label for OAuth applications authorized by the user.
 #. User settings tab for OAuth or connected apps authorized by the user.
 #: src/features/user/components/modals/tabs/account_security_tab/AccountManagementModals.tsx:17
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:57
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:96
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:507
 #: src/features/user/components/settings_utils/search_index/AuthorizedAppsIndex.ts:10
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:151
@@ -4995,9 +4987,9 @@ msgstr "הצעת השלמה אוטומטית: {label}, {selectedOptionPosition} 
 #. Voice region option label in the voice settings menu meaning let Fluxer pick the best region automatically.
 #. Voice region picker option label meaning 'let Fluxer pick the best region automatically'.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/RtcRegionSelect.tsx:19
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:64
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:104
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:144
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:56
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:76
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:97
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:264
 #: src/features/voice/components/VoiceRegionSelector.tsx:16
 #: src/features/voice/components/VoiceSettingsMenus.tsx:93
@@ -5005,14 +4997,14 @@ msgid "Automatic"
 msgstr "אוטומטי"
 
 #. Option label for the screen-share codec select. codec is the automatically selected codec label.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:169
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:122
 msgid "Automatic ({codec})"
 msgstr "אוטומטי ({codec})"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Voice setting label for automatically evening out microphone volume.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:48
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:211
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:47
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:215
 msgid "Automatic gain control"
 msgstr "בקרת הגברה אוטומטית"
 
@@ -5102,12 +5094,12 @@ msgid "Autoscrolling"
 msgstr "גלילה אוטומטית"
 
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:101
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:100
 msgid "AV1"
 msgstr "AV1"
 
 #. Option label for the screen-share codec select while the AV1 opt-in is off and the option is disabled. AV1 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:173
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:126
 msgid "AV1 (requires opt-in)"
 msgstr "AV1 (דורש אישור מראש)"
 
@@ -5317,11 +5309,18 @@ msgstr "אזור בחירת רקע עם תמיכה בגרירה ושחרור"
 msgid "Backspace"
 msgstr "Backspace"
 
+#. Label and placeholder for the MFA login field when the only code the account can use is a backup code.
+#. Label and placeholder for the code field in the authentication sudo verification modal when the only code the account can use is a backup code.
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:62
+#: src/features/auth/flow/MfaScreen.tsx:38
+msgid "Backup code"
+msgstr "קוד גיבוי"
+
 #. Security modal title for one-time account recovery codes.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/auth/components/modals/BackupCodesModal.tsx:18
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:274
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:378
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:74
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:68
 msgid "Backup codes"
@@ -5336,11 +5335,6 @@ msgstr "קודי הגיבוי נוצרו מחדש"
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:201
 msgid "Badge"
 msgstr "תג"
-
-#. Option label for a software encoder quality select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:88
-msgid "Balanced"
-msgstr "מאוזן"
 
 #. IAR modal: quick-action card button label for opening the ban dialog.
 #. Short moderation action label. Ban a member from a community by removing them and preventing rejoining.
@@ -5564,7 +5558,7 @@ msgid "Biometrics"
 msgstr "ביומטריה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:169
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:152
 msgid "Bitrate"
 msgstr "קצב סיביות"
 
@@ -5934,7 +5928,7 @@ msgid "Browser back"
 msgstr "דפדפן: אחורה"
 
 #. Audio device label prefix for the browser-managed default audio device.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:26
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:30
 msgid "Browser default"
 msgstr "ברירת מחדל של הדפדפן"
 
@@ -5959,7 +5953,7 @@ msgid "Browser locale: {format}"
 msgstr "תבנית השעה של הדפדפן: {format}"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:64
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:63
 msgid "Browser mic gain for custom processing"
 msgstr "עוצמת המיקרופון בדפדפן עבור עיבוד קולי מותאם אישית"
 
@@ -6204,20 +6198,20 @@ msgstr "שיחות"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the video tab. Keep it concise.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:720
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:72
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:98
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:162
 #: src/features/voice/utils/SettingsDeviceOptions.ts:24
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:10
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:14
 msgid "Camera"
 msgstr "מצלמה"
 
 #. Title shown in the screen-share Devices tab before camera preview permission is granted.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:156
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:157
 msgid "Camera access is needed for device previews"
 msgstr "נדרשת גישה למצלמה לתצוגה מקדימה של המכשיר"
 
 #. Description shown after camera preview permission is denied or unavailable.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:164
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:165
 msgid "Camera access was not granted. Update camera permissions, then try again."
 msgstr "הגישה למצלמה לא הוענקה. עדכן את הרשאות המצלמה, ואז נסה שוב."
 
@@ -6238,7 +6232,7 @@ msgid "Camera error"
 msgstr "שגיאת מצלמה"
 
 #. Overlay text on a participant tile when the local user hid the remote camera feed.
-#: src/features/voice/components/voice_participant_tile/shared.ts:49
+#: src/features/voice/components/voice_participant_tile/shared.ts:47
 msgid "Camera hidden"
 msgstr "מצלמה מוסתרת"
 
@@ -6248,7 +6242,7 @@ msgid "Camera limit reached — up to {voiceChannelCameraUserLimit} people can s
 msgstr "הגעת למגבלת מצלמות — עד {voiceChannelCameraUserLimit} משתמשים יכולים לשתף וידאו בערוץ זה."
 
 #. Accessible status label while a voice participant camera feed is starting before video is renderable.
-#: src/features/voice/components/voice_participant_tile/shared.ts:53
+#: src/features/voice/components/voice_participant_tile/shared.ts:51
 msgid "Camera loading"
 msgstr "מצלמה בטעינה"
 
@@ -6282,13 +6276,13 @@ msgstr "תצוגה מקדימה של המצלמה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the video tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:76
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:102
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:202
 msgid "Camera quality"
 msgstr "איכות מצלמה"
 
 #. Voice control dropdown label or menu item for camera settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:231
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:235
 msgid "Camera settings"
 msgstr "הגדרות מצלמה"
 
@@ -6341,7 +6335,7 @@ msgstr "לא ניתן להעלות קבצים כאן"
 #: src/features/auth/components/modals/DeviceRevokeModal.tsx:72
 #: src/features/auth/components/modals/PasskeyNameModal.tsx:80
 #: src/features/auth/components/modals/PasskeyPinModal.tsx:104
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:264
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:278
 #: src/features/auth/flow/BrowserLoginHandoffModal.tsx:140
 #: src/features/channel/components/bottomsheets/CreateDMBottomSheet.tsx:137
 #: src/features/channel/components/MentionEveryonePopout.tsx:177
@@ -6485,24 +6479,29 @@ msgid "Captcha verification failed. Try again."
 msgstr "אימות הקאפצ'ה נכשל. יש לנסות שוב."
 
 #. Section header in the Linux audio source picker. Lists capture-target options (entire system / specific apps).
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:48
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:50
 msgid "Capture"
 msgstr "לכידה"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:880
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:812
 msgid "Capture app audio"
 msgstr "לכידת שמע מהאפליקציה"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:882
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:814
 msgid "Capture desktop audio"
 msgstr "לכידת שמע מהמחשב"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:879
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:811
 msgid "Capture device audio"
 msgstr "לכידת שמע מהמכשיר"
 
+#. Note shown beside the stored Screen share preset in the stream settings menu and the video settings tab of a capture device share, explaining why that preset is not used.
+#: src/features/voice/components/StreamSettingsMenuContentStateMachine.ts:34
+msgid "Capture devices use the Gaming preset."
+msgstr "מכשירי לכידה משתמשים בהגדרות קבועות מראש של \"משחקים\"."
+
 #. Toggle label in the stream settings menu for a window share whose audio scope the user widened from the shared window to the whole system mix.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:157
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:161
 msgid "Capture entire system audio"
 msgstr "לכידת כל שמע המערכת"
 
@@ -6742,7 +6741,7 @@ msgid "Change stream"
 msgstr "שינוי השידור"
 
 #. Modal title for the screen-share picker when switching an ongoing stream to a new source.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:217
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:218
 msgid "Change stream source"
 msgstr "שינוי מקור השידור"
 
@@ -7033,7 +7032,7 @@ msgid "Channel access"
 msgstr "גישה לערוץ"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:117
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
 msgid "Channel access denied"
 msgstr "הגישה לערוץ נדחתה"
 
@@ -7098,7 +7097,7 @@ msgstr "מזהה הערוץ הועתק ללוח הגזירים"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:86
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:87
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "קישור לערוץ"
@@ -7531,7 +7530,7 @@ msgid "Choose payment method"
 msgstr "בחירת אמצעי תשלום"
 
 #. Modal title for the screen-share picker when starting a new screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:221
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:222
 msgid "Choose something to share"
 msgstr "בחר מה לשתף"
 
@@ -7638,11 +7637,6 @@ msgstr "בחר את השפה שלך"
 msgid "Choose your profile accent color"
 msgstr "בחר את צבע ההדגשה של הפרופיל שלך"
 
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:117
-msgid "Cisco"
-msgstr "Cisco"
-
 #. Generic account action label that opens or submits the flow to secure an unclaimed account.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:152
 msgid "Claim account"
@@ -7685,7 +7679,7 @@ msgstr "כדי לשלוח דיווחים, תבע את החשבון שלך ואמ
 msgid "Claim your account by adding an email and password. We will send a verification code to confirm your email before finishing."
 msgstr "תבע את החשבון שלך על ידי הוספת אימייל וסיסמה. נשלח קוד אימות כדי לאשר את האימייל שלך לפני השלמת התהליך."
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:173
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:277
 msgid "Claim your account to access security features like two-factor authentication and passkeys."
 msgstr "תבע את החשבון שלך כדי לגשת לתכונות אבטחה כמו אימות דו-שלבי ומפתחות גישה."
 
@@ -7907,7 +7901,7 @@ msgid "Clear trusted domains ({trustedDomainsCount})"
 msgstr "נקה דומיינים מהימנים ({trustedDomainsCount})"
 
 #. Footer summary description for the text-focused screen-share quality preset.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:245
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:246
 msgid "Clearer text"
 msgstr "טקסט ברור יותר"
 
@@ -8080,7 +8074,7 @@ msgstr "סגירה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:162
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:182
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:120
 msgid "Close account"
 msgstr "סגירת חשבון"
@@ -8241,7 +8235,7 @@ msgid "Code:"
 msgstr "קוד:"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:76
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:75
 msgid "Codec"
 msgstr "קודק"
 
@@ -8286,7 +8280,7 @@ msgstr "כיווץ נושא הערוץ"
 #. Tooltip / aria label on a voice participant tile button that collapses expanded device tiles for one user.
 #. Voice menu action that collapses expanded device tiles back into a single tile.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:128
-#: src/features/voice/components/VoiceParticipantTile.tsx:178
+#: src/features/voice/components/VoiceParticipantTile.tsx:176
 msgid "Collapse devices"
 msgstr "כיווץ מכשירים"
 
@@ -8478,7 +8472,7 @@ msgid "Community creator"
 msgstr "יוצר הקהילה"
 
 #. Moderation voice menu label. Makes a member unable to hear others in this community voice chat. Distinct from community mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:145
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:149
 msgid "Community deafen"
 msgstr "השתקת שמע בקהילה"
 
@@ -8566,7 +8560,7 @@ msgid "Community MFA requirement nagbar"
 msgstr "שורת התראה על דרישת אימות דו-שלבי בקהילה"
 
 #. Moderation voice menu label. Mutes a member's microphone in this community voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:120
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:124
 msgid "Community mute"
 msgstr "השתקת מיקרופון בקהילה"
 
@@ -8767,7 +8761,7 @@ msgstr "מיקוד תיבת ההודעה"
 #. Button label that opens a dedicated advanced settings modal for configuring screen-share encoder controls.
 #. Button label that opens a dedicated advanced settings modal.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx:164
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:160
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:113
 msgid "Configure"
 msgstr "הגדרות מתקדמות"
 
@@ -8905,7 +8899,7 @@ msgstr "אישור או לחיצה כפולה להצטרפות לערוץ קול
 msgid "Conflicts with {conflictLabel}"
 msgstr "מתנגש עם {conflictLabel}"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:214
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:241
 msgid "Connect a camera and try again."
 msgstr "חבר מצלמה ונסה שוב."
 
@@ -8914,7 +8908,7 @@ msgstr "חבר מצלמה ונסה שוב."
 msgid "Connect a camera or virtual capture device, then try again."
 msgstr "חבר מצלמה או התקן לכידה וירטואלי, ואז נסה שוב."
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:133
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:134
 msgid "Connect a display, then try again."
 msgstr "חבר צג, ואז נסה שוב."
 
@@ -9044,12 +9038,12 @@ msgid "Connection volume"
 msgstr "עוצמת שמע של החיבור"
 
 #. Settings search entry label. Names an advanced voice setting in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:28
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:27
 msgid "Connection volume controls"
 msgstr "בקרות עוצמת הקול של החיבור"
 
 #. Developer / debug overlay text on a participant tile. {connectionId} is the voice connection identifier.
-#: src/features/voice/components/voice_participant_tile/shared.ts:111
+#: src/features/voice/components/voice_participant_tile/shared.ts:91
 msgid "Connection: {connectionId}"
 msgstr "חיבור: {connectionId}"
 
@@ -9115,7 +9109,7 @@ msgid "Content filtering"
 msgstr "סינון תוכן"
 
 #. Label for an advanced screen-share select. Refers to the WebRTC MediaStreamTrack contentHint value.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:136
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:88
 msgid "Content hint"
 msgstr "סוג התוכן לקידוד"
 
@@ -9182,7 +9176,7 @@ msgstr "המשך לדווח על הקהילה"
 msgid "Continue to report user"
 msgstr "המשך לדווח על המשתמש"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:231
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:245
 msgid "Continue with passkey"
 msgstr "המשך עם מפתח גישה"
 
@@ -9278,7 +9272,7 @@ msgstr "נתוני JSON הועתקו ללוח הגזירים"
 
 #. Generic success toast confirming that content was copied to the clipboard.
 #. Toast shown after copying text to the clipboard succeeds.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:145
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:146
 #: src/features/ui/commands/TextCopyCommands.ts:11
 msgid "Copied to clipboard"
 msgstr "הועתק ללוח הגזירים"
@@ -9313,12 +9307,12 @@ msgid "Copy attachment ID"
 msgstr "העתקת מזהה קובץ מצורף"
 
 #. Media context menu action that copies an audio attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:61
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:62
 msgid "Copy audio"
 msgstr "העתקת שמע"
 
 #. Media context menu action that copies the URL of the audio attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:81
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:82
 msgid "Copy audio link"
 msgstr "העתקת קישור לשמע"
 
@@ -9406,17 +9400,17 @@ msgid "Copy endpoint"
 msgstr "העתקת נקודת קצה"
 
 #. Media context menu action that copies the URL of the file attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:85
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:86
 msgid "Copy file link"
 msgstr "העתקת קישור לקובץ"
 
 #. Media context menu action that copies a GIF attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:53
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:54
 msgid "Copy GIF"
 msgstr "העתקת GIF"
 
 #. Media context menu action that copies the URL of the GIF attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:73
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:74
 msgid "Copy GIF link"
 msgstr "העתקת קישור ל-GIF"
 
@@ -9441,7 +9435,7 @@ msgid "Copy identifier"
 msgstr "העתקת מזהה"
 
 #. Media context menu action that copies an image attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:49
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:50
 msgid "Copy image"
 msgstr "העתקת תמונה"
 
@@ -9449,7 +9443,7 @@ msgstr "העתקת תמונה"
 #. Image context menu action that copies the image URL to the clipboard.
 #. Image context menu action that copies the image URL to the clipboard.
 #: src/features/ui/action_menu/items/EmojiContextMenuItems.tsx:44
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:69
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:70
 #: src/features/ui/action_menu/items/StickerContextMenuItems.tsx:44
 msgid "Copy image link"
 msgstr "העתקת קישור לתמונה"
@@ -9494,7 +9488,7 @@ msgid "Copy link to section"
 msgstr "העתקת קישור למקטע"
 
 #. Generic media context menu action label when the specific type is unknown.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:65
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:66
 msgid "Copy media"
 msgstr "העתקת מדיה"
 
@@ -9601,12 +9595,12 @@ msgid "Copy value"
 msgstr "העתקת הערך"
 
 #. Media context menu action that copies a video attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:57
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:58
 msgid "Copy video"
 msgstr "העתקת סרטון"
 
 #. Media context menu action that copies the URL of the video attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:77
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:78
 msgid "Copy video link"
 msgstr "העתקת קישור לסרטון"
 
@@ -9625,7 +9619,7 @@ msgid "Copy webhook URL"
 msgstr "העתקת כתובת ה-URL של ה-webhook"
 
 #. Progress toast shown while encoding and copying an image to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:153
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:154
 msgid "Copying image..."
 msgstr "מעתיק תמונה..."
 
@@ -9789,7 +9783,7 @@ msgid "Couldn't delete application"
 msgstr "לא ניתן היה למחוק את האפליקציה"
 
 #. Title of the error modal shown when removing a registered passkey fails.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:36
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:38
 msgid "Couldn't delete passkey"
 msgstr "לא ניתן היה למחוק את מפתח הגישה"
 
@@ -10128,6 +10122,11 @@ msgstr "לא ניתן לעדכן את שכפול האימוג'י"
 #: src/features/ui/action_menu/items/StaffUserControlsMenuItems.tsx:24
 msgid "Couldn't update mention suppression bypass"
 msgstr "לא ניתן היה לעדכן את עקיפת השתקת האזכורים"
+
+#. Title of the error modal shown when the passkey two-factor setting could not be saved.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:84
+msgid "Couldn't update passkey two-factor authentication"
+msgstr "לא ניתן היה לעדכן את האימות הדו-שלבי באמצעות מפתח גישה"
 
 #. Error modal title shown when saving role changes fails.
 #: src/features/moderation/components/alerts/RoleUpdateFailedModal.tsx:9
@@ -10589,8 +10588,8 @@ msgstr "נוכחי: {mutedText}"
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx:186
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:94
 #: src/features/voice/components/bottomsheets/VoiceSettingsBottomSheets.tsx:45
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:237
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:97
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:238
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:103
 msgid "Custom"
 msgstr "מותאם אישית"
 
@@ -10785,7 +10784,7 @@ msgid "Custom video backgrounds"
 msgstr "רקעים מותאמים אישית לווידאו"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:60
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:59
 msgid "Custom voice processing"
 msgstr "עיבוד קולי מותאם אישית"
 
@@ -11020,22 +11019,22 @@ msgid "Day"
 msgstr "יום"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:142
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:162
 msgid "Deactivate"
 msgstr "השבתה"
 
 #. Voice action label. Turns off what the user hears in voice chat. Distinct from microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:78
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:82
 msgid "Deafen"
 msgstr "השתק שמע"
 
 #. Voice menu action that deafens every device or session so this user cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:137
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:141
 msgid "Deafen all devices"
 msgstr "השתק את השמע בכל המכשירים"
 
 #. Voice menu action. Deafens one active device or session so it stops hearing voice audio. Distinct from muting its microphone.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:132
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:136
 msgid "Deafen device"
 msgstr "השתק את השמע במכשיר"
 
@@ -11055,24 +11054,24 @@ msgid "Deafen other members in voice channels, so they cannot hear or speak."
 msgstr "השתק את השמע של חברים אחרים בערוצי קול, כך שהם לא יוכלו לשמוע או לדבר."
 
 #. Settings label for the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:155
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:159
 msgid "Deafen shortcut"
 msgstr "קיצור דרך להשתקת שמע"
 
 #. Voice control label. Turns off what the current user hears in voice chat. Distinct from microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:124
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:128
 msgid "Deafen yourself"
 msgstr "השתק את השמע שלך"
 
 #. Accessible label for the deafened voice badge shown on an avatar.
 #. Voice chat status label. The user cannot hear voice chat. Distinct from muted.
 #: src/features/ui/avatars/AvatarWithPresence.tsx:25
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:66
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:70
 msgid "Deafened"
 msgstr "השמע מושתק"
 
 #. Voice chat status label. A moderator deafened the user in this community, so they cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:53
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:57
 msgid "Deafened by moderators"
 msgstr "השמע הושתק על ידי מנהלים"
 
@@ -11167,7 +11166,7 @@ msgid "Default"
 msgstr "ברירת מחדל"
 
 #. Fallback label for the system default camera in the screen-share devices tab.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:152
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:153
 msgid "Default camera"
 msgstr "מצלמת ברירת מחדל"
 
@@ -11259,8 +11258,8 @@ msgstr "דלאוור"
 #. Tooltip for the custom emoji delete button.
 #: src/features/channel/components/embeds/media/EmbedAudio.tsx:29
 #: src/features/channel/components/embeds/media/MediaContainer.tsx:23
-#: src/features/channel/components/MobileMemesPicker.tsx:88
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:39
+#: src/features/channel/components/MobileMemesPicker.tsx:89
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:40
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:204
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:216
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
@@ -11268,11 +11267,11 @@ msgstr "דלאוור"
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/platform/utils/DesktopLocaleBridge.ts:76
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:399
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:290
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:238
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:154
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:174
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:190
 msgid "Delete"
 msgstr "מחק"
@@ -11289,8 +11288,8 @@ msgstr "למחוק את :{emojiName}:? לא ניתן לבטל פעולה זו."
 
 #. Body of the destructive delete confirmation alert in the saved media picker. memeName is the user-chosen name. Keep quotation marks.
 #. Error message in the channel and chat mobile memes picker. Preserve {memeName}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/channel/components/MobileMemesPicker.tsx:83
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:34
+#: src/features/channel/components/MobileMemesPicker.tsx:84
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:35
 msgid "Delete \"{memeName}\"? Can't be undone."
 msgstr "למחוק את \"{memeName}\"? לא ניתן לבטל פעולה זו."
 
@@ -11400,7 +11399,7 @@ msgid "Delete invite"
 msgstr "מחיקת הזמנה"
 
 #. Accessible label for the delete button on a saved media tile in the picker.
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:56
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:57
 msgid "Delete media"
 msgstr "מחיקת מדיה"
 
@@ -11441,7 +11440,7 @@ msgid "Delete other members' messages. Pinning is controlled separately."
 msgstr "מחיקת הודעות של חברים אחרים. הצמדה נשלטת בנפרד."
 
 #. Security settings: confirmation modal title and primary button for removing a registered passkey. Destructive action; keep plain and direct.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:31
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:33
 msgid "Delete passkey"
 msgstr "מחיקת מפתח גישה"
 
@@ -11467,8 +11466,8 @@ msgstr "מחיקת תפקיד"
 
 #. Accessible label and tooltip for the delete button on a saved media tile in the mobile memes picker.
 #. Title of the destructive delete confirmation alert in the saved media (memes) picker.
-#: src/features/channel/components/MobileMemesPicker.tsx:79
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:30
+#: src/features/channel/components/MobileMemesPicker.tsx:80
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:31
 msgid "Delete saved media"
 msgstr "מחיקת מדיה שמורה"
 
@@ -11528,7 +11527,7 @@ msgid "Delete webhook"
 msgstr "מחיקת webhook"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:166
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:186
 msgid "Delete your account"
 msgstr "מחיקת החשבון שלך"
 
@@ -11720,7 +11719,7 @@ msgid "Desktop away"
 msgstr "לא פעיל במחשב"
 
 #. Aria label on a participant tile icon that indicates the participant is on desktop.
-#: src/features/voice/components/voice_participant_tile/shared.ts:107
+#: src/features/voice/components/voice_participant_tile/shared.ts:87
 msgid "Desktop device"
 msgstr "מחשב שולחני"
 
@@ -11806,7 +11805,7 @@ msgid "Detached banner"
 msgstr "באנר מנותק"
 
 #. Option label for a WebRTC content hint select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:152
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:105
 msgid "Detail"
 msgstr "פירוט"
 
@@ -11850,13 +11849,13 @@ msgstr "מצב מפתח"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:129
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "כלי מפתחים"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:133
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "כלי מפתחים זמינים דרך תג הצוות בכותרת הערוץ."
 
@@ -11876,9 +11875,20 @@ msgid "Device"
 msgstr "מכשיר"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:12
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:11
 msgid "Device alerts"
 msgstr "התראות מכשיר"
+
+#. Screen-share audio summary on a video device share. {deviceLabel} is the name of the audio input paired with the capture device.
+#: src/features/voice/utils/ScreenShareAudioSummary.ts:55
+msgid "Device audio ({deviceLabel})"
+msgstr "שמע של שיתוף מסך במכשיר וידאו. {deviceLabel} הוא שם קלט השמע המשויך למכשיר הלכידה."
+
+#. Screen-share audio summary on a video device share that publishes only the audio of the capture device itself.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:868
+#: src/features/voice/utils/ScreenShareAudioSummary.ts:50
+msgid "Device audio only"
+msgstr "שמע מהמכשיר בלבד"
 
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:131
 msgid "Device details"
@@ -11889,12 +11899,12 @@ msgstr "פרטי מכשיר"
 msgid "Device revoked"
 msgstr "המכשיר נותק"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1074
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:1006
 msgid "Device selection"
 msgstr "בחירת מכשיר"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:36
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:35
 msgid "Device volume"
 msgstr "עוצמת שמע של המכשיר"
 
@@ -11908,17 +11918,17 @@ msgstr "מכשיר:"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Tab label in the screen-share picker. Lists cameras and virtual capture devices.
 #. User settings tab for managing devices linked to the current account.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:65
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:104
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:530
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:11
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:82
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:57
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:192
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:193
 msgid "Devices"
 msgstr "מכשירים"
 
 #. Description for the Custom streaming preset. Lightly playful prose; keep tone casual.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:101
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:107
 msgid "Dial in your own numbers"
 msgstr "כוונון ידני של הרזולוציה וקצב הפריימים"
 
@@ -11954,7 +11964,7 @@ msgid "Dim strikethrough text"
 msgstr "עמעום טקסט עם קו חוצה"
 
 #. Voice input processing profile with raw microphone audio.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:199
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:203
 msgid "Direct input"
 msgstr "קלט ישיר"
 
@@ -12019,9 +12029,9 @@ msgstr "העלאה ישירה פעילה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short footer action in the screen-share picker that disables screen-share preview frame uploads.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:238
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:138
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:278
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:342
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:158
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:279
 msgid "Disable"
 msgstr "השבתה"
 
@@ -12094,7 +12104,7 @@ msgid "Disable mobile push notifications"
 msgstr "השבתת התראות דחיפה בנייד"
 
 #. Short label for an advanced screen-share preview preference.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:48
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:44
 msgid "Disable picture-in-picture popout for screen shares"
 msgstr "השבתת חלון קופץ של תמונה בתוך תמונה לשיתופי מסך"
 
@@ -12193,7 +12203,7 @@ msgid "Disabled value"
 msgstr "ערך מושבת"
 
 #. Explains what happens after disabling screen-share preview uploads. Refers to already-uploaded preview thumbnails.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:326
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:327
 msgid "Disabling previews stops future preview uploads. Existing preview images may remain visible until the stream ends or the preview refreshes."
 msgstr "השבתת התצוגות המקדימות תמנע העלאות עתידיות של תמונות מקדימות. ייתכן שתמונות מקדימות שהועלו בעבר עדיין יהיו גלויות עד לסיום הסטרימינג או עד לרענון התצוגה המקדימה."
 
@@ -12207,17 +12217,17 @@ msgid "Discard voice message"
 msgstr "מחיקת ההודעה הקולית"
 
 #. Voice action label. Leaves the current voice call or disconnects a user from voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:86
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:90
 msgid "Disconnect"
 msgstr "התנתק"
 
 #. Voice menu action that disconnects every active device or session from voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:108
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:112
 msgid "Disconnect all devices"
 msgstr "נתק את כל המכשירים"
 
 #. Voice menu action that disconnects one active device or session from voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:104
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:108
 msgid "Disconnect device"
 msgstr "נתק מכשיר"
 
@@ -12342,7 +12352,7 @@ msgid "Display"
 msgstr "תצוגה"
 
 #. Fallback label for a display / monitor card in the screen-share picker when the OS does not give us a display name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:146
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:147
 msgctxt "display-screen"
 msgid "Display"
 msgstr "מסך"
@@ -12614,7 +12624,7 @@ msgstr "אל תציע את {deviceName} שוב"
 #: src/features/moderation/components/report/ReportBreadcrumbs.tsx:31
 #: src/features/search/components/search/ChannelFilterSheet.tsx:165
 #: src/features/search/components/search/HasFilterSheet.tsx:206
-#: src/features/search/components/search/UserFilterSheet.tsx:175
+#: src/features/search/components/search/UserFilterSheet.tsx:186
 msgid "Done"
 msgstr "בוצע"
 
@@ -12652,7 +12662,7 @@ msgid "Download <0>fluxer-verification</0> and place it in your <1>.well-known</
 msgstr "הורד את <0>fluxer-verification</0> והנח אותו בתיקיית <1>.well-known</1> כדי שנוכל לאמת את הדומיין."
 
 #. Media context menu action that downloads an audio attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:121
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:122
 msgid "Download audio"
 msgstr "הורד את האודיו"
 
@@ -12687,7 +12697,7 @@ msgid "Download desktop update {version} ({formatBytes})"
 msgstr "הורד עדכון למחשב {version} ({formatBytes})"
 
 #. Media context menu action that downloads a file attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:125
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:126
 msgid "Download file"
 msgstr "הורד את הקובץ"
 
@@ -12696,12 +12706,12 @@ msgid "Download fluxer-verification"
 msgstr "הורד את fluxer-verification"
 
 #. Media context menu action that downloads a GIF attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:113
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:114
 msgid "Download GIF"
 msgstr "הורד את ה-GIF"
 
 #. Image context menu action that downloads the image to disk.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:109
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:110
 msgid "Download image"
 msgstr "הורד את התמונה"
 
@@ -12715,7 +12725,7 @@ msgstr "הורדת קובץ ההתקנה"
 #. Tooltip on the download button in the media viewer modal.
 #: src/features/channel/components/embeds/media/MediaContainer.tsx:28
 #: src/features/messaging/components/modals/media_modal/shared.ts:73
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:129
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:130
 msgid "Download media"
 msgstr "הורדת מדיה"
 
@@ -12725,7 +12735,7 @@ msgid "Download package"
 msgstr "הורדת חבילה"
 
 #. Media context menu action that downloads a video attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:117
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:118
 msgid "Download video"
 msgstr "הורד את הסרטון"
 
@@ -12931,7 +12941,7 @@ msgid "Echo"
 msgstr "הד"
 
 #. Voice setting label for preventing speaker audio from feeding into the microphone.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:207
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:211
 msgid "Echo cancellation"
 msgstr "ביטול הד"
 
@@ -12964,7 +12974,7 @@ msgstr "עריכת גישה עבור {0}"
 #. Accessible label in the edit alt text modal. Keep it concise.
 #. Action that opens the modal for editing an image or video accessibility description.
 #: src/features/messaging/components/modals/EditAltTextModal.tsx:32
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:165
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:166
 msgid "Edit alt text"
 msgstr "עריכת טקסט אלטרנטיבי"
 
@@ -13054,7 +13064,7 @@ msgid "Edit keyboard shortcut"
 msgstr "עריכת קיצור מקלדת"
 
 #. Tooltip on the edit button on a saved media tile in the picker.
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:48
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:49
 msgid "Edit media"
 msgstr "עריכת מדיה"
 
@@ -13103,8 +13113,8 @@ msgstr "עריכת מנוע חיפוש תמונה הפוך"
 #. Accessible label for the edit button on a saved media tile in the picker.
 #. Action that opens the editor for a saved media (favorite meme) entry.
 #. Button or menu action label in the channel and chat mobile memes picker. Keep it concise.
-#: src/features/channel/components/MobileMemesPicker.tsx:93
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:52
+#: src/features/channel/components/MobileMemesPicker.tsx:94
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:53
 #: src/features/expressions/components/modals/EditFavoriteMemeModal.tsx:18
 msgid "Edit saved media"
 msgstr "עריכת מדיה שמורה"
@@ -13462,7 +13472,7 @@ msgstr "אין מועדפים"
 #: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:32
 #: src/features/app/components/layout/GuildLayout.tsx:54
 #: src/features/invite/components/DisableInvitesButton.tsx:27
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:256
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:360
 #: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:23
 msgid "Enable"
 msgstr "הפעלה"
@@ -13527,7 +13537,7 @@ msgid "Enable browser notifications"
 msgstr "הפעלת התראות בדפדפן"
 
 #. Description shown before the user explicitly requests camera preview permission.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:160
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:161
 msgid "Enable camera access to preview cameras and capture devices before choosing one to stream."
 msgstr "אפשר גישה למצלמה כדי להציג תצוגה מקדימה של מצלמות והתקני לכידה לפני שתבחר אחד לשידור."
 
@@ -13643,7 +13653,7 @@ msgid "Enable or disable built-in translators. Enabled translators appear in the
 msgstr "הפעלה או השבתה של מתרגמים מובנים. מתרגמים מופעלים יופיעו בתפריט ההקשר של ההודעה בעת בחירת טקסט."
 
 #. Button that explicitly requests camera permission for device previews.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:168
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:169
 msgid "Enable previews"
 msgstr "אפשר תצוגות מקדימות"
 
@@ -13741,20 +13751,20 @@ msgstr "מופעל"
 
 #. Label for an advanced screen-share select. Refers to hardware or software video encoding.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:56
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:153
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:52
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:136
 msgid "Encoder path"
 msgstr "נתיב המקודד"
 
 #. Description for the encoder path select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:60
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControlsState.ts:6
 msgid "Encoder preference for new screen shares."
 msgstr "העדפת מקודד עבור שיתופי מסך חדשים."
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:173
-msgid "Encoder, SVC, backup stream, and bitrate presets"
-msgstr "הגדרות מוכנות מראש למקודד, SVC, זרם גיבוי וקצב סיביות"
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:156
+msgid "Encoder, SVC, and bitrate presets"
+msgstr "קידוד, SVC והגדרות קבועות מראש של קצב סיביות"
 
 #. IAR modal: rule label.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:349
@@ -13795,12 +13805,12 @@ msgid "End screen share"
 msgstr "הפסקת שיתוף מסך"
 
 #. Pre-join indicator shown beneath the Join button on a DM or group DM call where at least one connected participant (typically an outdated bot) does not support E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:326
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:330
 msgid "End-to-end encryption is unavailable because an unsupported participant is in this call."
 msgstr "הצפנה מקצה לקצה אינה זמינה מכיוון שמשתתף לא נתמך נמצא בשיחה זו."
 
 #. Pre-join indicator shown beneath the Join button on a voice channel where at least one connected participant (typically an outdated bot) does not support E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:321
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:325
 msgid "End-to-end encryption is unavailable because an unsupported participant is in this voice channel."
 msgstr "הצפנה מקצה לקצה אינה זמינה מכיוון שמשתתף לא נתמך נמצא בערוץ הקולי הזה."
 
@@ -13941,6 +13951,16 @@ msgstr "הזן קוד מתנה…"
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:375
 msgid "Enter new email"
 msgstr "הזן אימייל חדש"
+
+#. MFA code entry instructions shown when the account uses passkeys as its second factor.
+#: src/features/auth/flow/MfaScreen.tsx:42
+msgid "Enter one of your backup codes if you can't use your passkey."
+msgstr "הזן אחד מקודי הגיבוי שלך אם אינך יכול להשתמש במפתח הגישה שלך."
+
+#. Body text in the authentication sudo verification modal, shown when the only code the account can enter is a backup code. Keep the tone plain and specific.
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:41
+msgid "Enter one of your backup codes."
+msgstr "הזן אחד מקודי הגיבוי שלך."
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:66
@@ -14087,7 +14107,7 @@ msgid "Entertainment"
 msgstr "בידור"
 
 #. Tab label in the screen-share picker. Lists shareable monitors / displays.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:188
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:189
 msgid "Entire screen"
 msgstr "כל המסך"
 
@@ -14096,7 +14116,7 @@ msgstr "כל המסך"
 msgid "Entire system"
 msgstr "כל המערכת"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:253
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:260
 msgid "Entire system audio"
 msgstr "כל צלילי המערכת"
 
@@ -14156,7 +14176,7 @@ msgid "Error"
 msgstr "שגיאה"
 
 #. Subtitle on a remote screen-share tile after loading the watched stream failed. {code} is a numeric diagnostic code.
-#: src/features/voice/components/voice_participant_tile/shared.ts:44
+#: src/features/voice/components/voice_participant_tile/shared.ts:42
 msgid "error code {code}"
 msgstr "קוד שגיאה {code}"
 
@@ -14269,7 +14289,7 @@ msgid "exclude a user"
 msgstr "לא לכלול משתמש"
 
 #. Section header in the Linux audio source picker for apps excluded from the system mix.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:57
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:59
 msgid "Exclude from system"
 msgstr "אל תכלול במערכת"
 
@@ -14594,7 +14614,7 @@ msgstr "העתקת קישור ההזמנה נכשלה"
 
 #. Error toast shown when copying to the clipboard fails.
 #. Toast shown after copying text to the clipboard fails.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:149
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:150
 #: src/features/ui/commands/TextCopyCommands.ts:15
 msgid "Failed to copy to clipboard"
 msgstr "ההעתקה ללוח נכשלה"
@@ -14686,7 +14706,7 @@ msgid "Failed to load invites. Try again."
 msgstr "טעינת ההזמנות נכשלה. יש לנסות שוב."
 
 #. Error text shown in the screen-share picker when the list of shareable windows/displays fails to load.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:120
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:121
 msgid "Failed to load shareable sources."
 msgstr "טעינת המקורות הניתנים לשיתוף נכשלה."
 
@@ -15240,16 +15260,6 @@ msgctxt "us-state"
 msgid "Florida"
 msgstr "פלורידה"
 
-#. Description for the high-tier Gaming streaming preset (Plutonium). Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:74
-msgid "Fluid motion at 1440p 60 FPS"
-msgstr "תנועה חלקה ב-1440p 60 FPS"
-
-#. Description for the free-tier Gaming streaming preset. Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:79
-msgid "Fluid motion at 720p 30 FPS"
-msgstr "תנועה חלקה ב-720p 30 FPS"
-
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
@@ -15297,7 +15307,7 @@ msgid "Focus window"
 msgstr "הבא חלון לחזית"
 
 #. Voice input processing profile optimized for spoken voice.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:195
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:199
 msgid "Focused voice"
 msgstr "קול ממוקד"
 
@@ -15332,10 +15342,6 @@ msgstr "הגדרות תיקייה"
 #: src/features/app/components/whats_new/WhatsNewModal.tsx:33
 msgid "Follow us on {blueskyProviderName}"
 msgstr "עקבו אחרינו ב-{blueskyProviderName}"
-
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:936
-msgid "Follow voice input"
-msgstr "מעקב אחר קלט קולי"
 
 #. Label in the sounds, shown on a sound row that has no volume override. Preserve {effectiveValue}; it is inserted by code and already holds the locale-formatted percentage, including the percent sign.
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx:84
@@ -15416,7 +15422,7 @@ msgstr "בשבילי"
 msgid "For this check, you send us a text message instead of receiving one from us."
 msgstr "בבדיקה הזו יש לשלוח לנו הודעת טקסט במקום לקבל הודעה מאיתנו."
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:169
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:183
 msgid "For your security, please confirm it's you to continue."
 msgstr "למען אבטחתך, יש לאמת את זהותך כדי להמשיך."
 
@@ -15562,7 +15568,7 @@ msgid "Forward"
 msgstr "העברה"
 
 #. Tooltip / aria label on the forward / fast-forward button in the standalone audio player. {defaultSeekAmount} is an integer second count.
-#: src/features/voice/components/media_player/components/AudioPlayer.tsx:31
+#: src/features/voice/components/media_player/components/AudioPlayer.tsx:32
 msgid "Forward {defaultSeekAmount} seconds"
 msgstr "קדימה ב-{defaultSeekAmount} שניות"
 
@@ -15603,14 +15609,14 @@ msgstr "מסגרת"
 
 #. Section header in the stream settings menu for frame rate options.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:314
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:341
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:230
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:129
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:133
 msgid "Frame rate"
 msgstr "קצב פריימים"
 
 #. Video settings note shown when higher frame rates require premium.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:57
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:69
 msgid "Frame rates above 30 FPS require {premiumProductName}"
 msgstr "קצב פריימים מעל 30 FPS דורש {premiumProductName}"
 
@@ -15829,7 +15835,7 @@ msgid "Fully quit and restart {productName} so macOS applies this permission."
 msgstr "צא לגמרי מ-{productName} והפעל אותו מחדש כדי ש-macOS יחיל את ההרשאה הזו."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:52
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:51
 msgid "Gain control"
 msgstr "בקרת הגברה"
 
@@ -15931,9 +15937,11 @@ msgstr "לחצן בקר Y / משולש"
 #. Discovery category dropdown option in the community Discovery settings tab.
 #. Footer summary label for the gaming screen-share quality preset.
 #. Streaming preset label in the stream settings menu. Higher frame rate, optimized for video games.
+#. Video settings label for the motion-focused screen share quality preset.
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:76
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:229
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:70
+#: src/features/user/components/modals/tabs/UserVideoTabState.ts:24
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:230
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:76
 msgid "Gaming"
 msgstr "גיימינג"
 
@@ -16074,7 +16082,7 @@ msgid "GIF picker loading"
 msgstr "טוען בורר GIF"
 
 #. Accessible label for an animated GIF shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:85
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:86
 msgid "GIF preview"
 msgstr "תצוגה מקדימה של GIF"
 
@@ -16438,7 +16446,7 @@ msgstr "הוענקו {permissions}"
 msgid "Grants all permissions and bypasses channel restrictions. Highly sensitive."
 msgstr "מעניק את כל ההרשאות ועוקף הגבלות ערוץ. רגיש במיוחד."
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1061
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:993
 msgid "Granular selection"
 msgstr "בחירה פרטנית"
 
@@ -16616,23 +16624,8 @@ msgstr "הקבוצה עודכנה"
 msgid "Grouping"
 msgstr "קיבוץ"
 
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:113
-msgid "H.264"
-msgstr "H.264"
-
-#. Label for an advanced screen-share select. H.264 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:120
-msgid "H.264 backup stream"
-msgstr "זרם גיבוי H.264"
-
-#. Option label for an H.264 backup stream select. H.264 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:132
-msgid "H.264 simulcast backup"
-msgstr "גיבוי H.264 בשידור סימולטני"
-
 #. Option label for the screen-share codec select while the HEVC opt-in is off and the option is disabled. H.265 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:178
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:131
 msgid "H.265 (requires opt-in)"
 msgstr "H.265 (דורש אישור מראש)"
 
@@ -16688,7 +16681,7 @@ msgid "Hardware acceleration can cause rendering glitches with transparent windo
 msgstr "האצת חומרה עלולה לגרום לבעיות רינדור עם חלונות שקופים. נסה --disable-gpu אם אתה רואה הבהוב או מריחה."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:161
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:144
 msgid "Hardware encoder"
 msgstr "מקודד חומרה"
 
@@ -16828,13 +16821,8 @@ msgstr "מרכז עזרה"
 msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
 msgstr "עזור לתרגם את {PRODUCT_NAME} לשפה שלך ב-<0>{I18N_WEBLATE_DOMAIN}</0>."
 
-#. Description for a WebRTC content hint select. Keep Motion, Detail, and text as plain option concepts.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:140
-msgid "Helps the browser choose motion, detail, or text handling."
-msgstr "מסייע לדפדפן לבחור טיפול בתנועה, בפרטים או בטקסט."
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:105
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
 msgstr "HEVC"
 
@@ -16997,7 +16985,7 @@ msgid "Hide muted channels by default?"
 msgstr "להסתיר ערוצים מושתקים כברירת מחדל?"
 
 #. Short label for an advanced stream privacy preference.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:52
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:48
 msgid "Hide my stream preview thumbnail"
 msgstr "הסתר את התמונה הממוזערת של התצוגה המקדימה של השידור שלי"
 
@@ -17016,7 +17004,7 @@ msgstr "הסתר סיסמה"
 msgid "Hide picture-in-picture popout?"
 msgstr "להסתיר את החלון הקופץ של תמונה בתוך תמונה?"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:838
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:770
 msgid "Hide preview thumbnail"
 msgstr "הסתר תצוגה מקדימה ממוזערת"
 
@@ -17078,11 +17066,6 @@ msgstr "טווח דינמי רחב"
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabHdrTab.tsx:29
 msgid "High dynamic range display mode"
 msgstr "מצב תצוגה בטווח דינמי רחב (HDR)"
-
-#. Description for a software encoder quality select. Keep AV1 and CPU literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:80
-msgid "Higher quality can increase CPU usage and latency."
-msgstr "איכות גבוהה יותר עלולה להגדיל את השימוש ב-CPU ואת ההשהיה."
 
 #. Description for the DeepFilterNet3 noise suppression strength slider.
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:71
@@ -17415,7 +17398,7 @@ msgstr "אם ברצונך לאפשר לחברים האלה לגשת להודעו
 #. Button label for silencing an incoming direct call without joining.
 #. Button, menu item, or tooltip for ignoring an incoming friend request.
 #: src/features/relationship/utils/RelationshipMessageDescriptors.ts:21
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:100
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:104
 msgid "Ignore"
 msgstr "התעלם"
 
@@ -17424,11 +17407,11 @@ msgstr "התעלם"
 msgid "Ignore friend request"
 msgstr "התעלם מבקשת חברות"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1051
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:983
 msgid "Ignore hardware devices"
 msgstr "התעלם מהתקני חומרה"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1027
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:959
 msgid "Ignore input media"
 msgstr "התעלם מקלט מדיה"
 
@@ -17459,7 +17442,7 @@ msgstr "להתעלם מבקשת החברות מ-{displayName}?"
 msgid "Ignore this channel's slowmode cooldown."
 msgstr "התעלם מהשהיית המצב האיטי של הערוץ הזה."
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1038
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:970
 msgid "Ignore virtual"
 msgstr "התעלם מהתקנים וירטואליים"
 
@@ -17497,7 +17480,7 @@ msgstr "אילינוי"
 #. Type label for image media.
 #: src/features/channel/components/embeds/media/EmbedImage.tsx:47
 #: src/features/expressions/utils/FavoriteMemeUtils.ts:14
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:113
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:114
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:25
 msgid "Image"
 msgstr "תמונה"
@@ -17508,7 +17491,7 @@ msgid "Image assets"
 msgstr "נכסי תמונה"
 
 #. Success toast confirming that an image was copied as a bitmap to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:157
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:158
 msgid "Image copied to clipboard"
 msgstr "התמונה הועתקה ללוח הגזירים"
 
@@ -17542,7 +17525,7 @@ msgid "Image options"
 msgstr "אפשרויות תמונה"
 
 #. Accessible label for a static image shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:81
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:82
 msgid "Image preview"
 msgstr "תצוגה מקדימה של תמונה"
 
@@ -17569,7 +17552,7 @@ msgstr "העלאת תמונה"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the channel and chat memes picker header. Keep it concise.
 #. Tab label in the mobile memes picker. Filters to saved images.
-#: src/features/channel/components/MobileMemesPicker.tsx:46
+#: src/features/channel/components/MobileMemesPicker.tsx:47
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:16
 #: src/features/user/components/settings_utils/section_registry/ChatSettingsSections.ts:105
 msgid "Images"
@@ -17750,7 +17733,7 @@ msgid "In voice"
 msgstr "בשיחה קולית"
 
 #. Short status label shown when the user is currently connected to voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:175
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:179
 msgid "In voice chat"
 msgstr "בצ'אט קולי"
 
@@ -17815,7 +17798,7 @@ msgid "Include all except selected"
 msgstr "כלול הכל מלבד הנבחרים"
 
 #. Section header in the Linux audio source picker for the per-app inclusion list.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:53
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:55
 msgid "Include apps"
 msgstr "כלול אפליקציות"
 
@@ -18005,7 +17988,7 @@ msgid "Input and output"
 msgstr "קלט ופלט"
 
 #. Voice settings label for selecting a microphone input device.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:179
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:183
 msgid "Input device"
 msgstr "התקן קלט"
 
@@ -18027,7 +18010,7 @@ msgid "Input profile: {processingModeLabel}"
 msgstr "פרופיל קלט: {processingModeLabel}"
 
 #. Voice control dropdown label or menu item for microphone input settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:223
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:227
 msgid "Input settings"
 msgstr "הגדרות קלט"
 
@@ -18036,7 +18019,7 @@ msgid "Input states"
 msgstr "מצבי קלט"
 
 #. Voice settings slider label for microphone volume.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:187
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:191
 msgid "Input volume"
 msgstr "עוצמת קלט"
 
@@ -18294,7 +18277,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "קישור ההזמנה מוסתר בזמן שיתוף:"
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:145
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
 msgid "Invite link masked while sharing"
 msgstr "קישור ההזמנה מוסתר בזמן שיתוף"
 
@@ -18707,7 +18690,7 @@ msgid "Jump to {displayName}"
 msgstr "קפוץ אל {displayName}"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:100
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:101
 msgid "Jump to {labelText}"
 msgstr "קפוץ אל {labelText}"
 
@@ -18764,12 +18747,12 @@ msgid "Jump to the current call"
 msgstr "קפיצה לשיחה הנוכחית"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
 msgid "Jump to the linked channel"
 msgstr "קפוץ לערוץ המקושר"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:96
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:97
 msgid "Jump to the linked message"
 msgstr "קפוץ להודעה המקושרת"
 
@@ -18779,7 +18762,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "קפוץ להודעה של {authorNickname}"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:91
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:92
 msgid "Jump to the message in {labelText}"
 msgstr "קפוץ להודעה ב-{labelText}"
 
@@ -19074,7 +19057,7 @@ msgid "Layering"
 msgstr "שכבות"
 
 #. Description for an SVC mode select. Keep SVC and AV1 literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:100
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:72
 msgid "Layering for AV1 and VP9 when available."
 msgstr "שכבות עבור AV1 ו-VP9 כשהן זמינות."
 
@@ -19084,7 +19067,7 @@ msgid "Layout"
 msgstr "פריסה"
 
 #. Accessible label for the screen-share picker footer info button.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:282
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:283
 msgid "Learn about screen share previews"
 msgstr "למידע נוסף על תצוגות מקדימות של שיתוף מסך"
 
@@ -19427,7 +19410,7 @@ msgid "Link styling"
 msgstr "עיצוב קישורים"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:137
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
 msgid "Link unavailable"
 msgstr "הקישור אינו זמין"
 
@@ -19477,7 +19460,7 @@ msgid "Linux app"
 msgstr "אפליקציית לינוקס"
 
 #. Audio device label prefix for the operating system default audio device on Linux.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:22
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:26
 msgid "Linux default"
 msgstr "ברירת מחדל של לינוקס"
 
@@ -19580,7 +19563,7 @@ msgid "Loading theme..."
 msgstr "טוען ערכת נושא..."
 
 #. Generic loading toast or label shown while an operation is in progress.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:141
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:142
 msgid "Loading..."
 msgstr "טוען..."
 
@@ -19715,7 +19698,7 @@ msgid "macOS app"
 msgstr "אפליקציית macOS"
 
 #. Audio device label prefix for the operating system default audio device on macOS.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:18
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:22
 msgid "macOS default"
 msgstr "ברירת מחדל של macOS"
 
@@ -19804,8 +19787,8 @@ msgstr "תוכנה זדונית או קישורים מסוכנים"
 msgid "Malware, credential theft, or harmful files."
 msgstr "תוכנות זדוניות, גניבת פרטי כניסה או קבצים מזיקים."
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:443
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:478
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:561
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:596
 msgid "Manage"
 msgstr "נהל"
 
@@ -19815,7 +19798,7 @@ msgid "Manage accounts"
 msgstr "ניהול חשבונות"
 
 #. Security settings section description for account access controls.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:53
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:92
 msgid "Manage apps and devices with access to your account"
 msgstr "ניהול אפליקציות ומכשירים עם גישה לחשבון שלך"
 
@@ -20235,7 +20218,7 @@ msgid "Maximum protection for family-friendly spaces"
 msgstr "הגנה מרבית למרחבים ידידותיים למשפחה"
 
 #. Settings search entry description for the AV1 and H.265 screen-share opt-in toggles.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:97
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:96
 msgid "May cause compatibility issues for viewers. We’re working on improving this."
 msgstr "עלול לגרום לבעיות תאימות עבור צופים. אנו עובדים על שיפור זה."
 
@@ -20318,7 +20301,7 @@ msgstr "הרצועה הבאה"
 #. Accessible label for the overflow menu button in the media viewer modal.
 #. Short label in the channel and chat media action bottom sheet. Keep it concise.
 #: src/features/channel/components/MediaActionBottomSheet.tsx:37
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:69
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:70
 msgid "Media options"
 msgstr "אפשרויות מדיה"
 
@@ -20328,7 +20311,7 @@ msgid "Media play/pause"
 msgstr "ניגון/השהיה"
 
 #. Generic accessible label for unknown media in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:97
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:98
 msgid "Media preview"
 msgstr "תצוגה מקדימה של המדיה"
 
@@ -20783,7 +20766,7 @@ msgid "Message layout"
 msgstr "פריסת הודעות"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:81
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:82
 msgid "message link"
 msgstr "קישור להודעה"
 
@@ -20964,7 +20947,7 @@ msgid "Microphone access was denied. Enable it in your system settings and try a
 msgstr "הגישה למיקרופון נדחתה. אפשר אותה בהגדרות המערכת שלך ונסה שוב."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:56
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:55
 msgid "Microphone gain"
 msgstr "עוצמת המיקרופון"
 
@@ -20979,7 +20962,7 @@ msgid "Microphone test"
 msgstr "בדיקת מיקרופון"
 
 #. Pre-join indicator shown beneath the Join button on a voice channel where every connected participant supports E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:311
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:315
 msgid "Microphone, camera, and screen share content are end-to-end encrypted."
 msgstr "המיקרופון, המצלמה ותוכן שיתוף המסך מוצפנים מקצה לקצה."
 
@@ -21048,7 +21031,7 @@ msgstr "קטינים בסיכון, תוכן למבוגרים במקום הלא �
 #. Camera settings menu checkbox for flipping the local camera preview horizontally.
 #. Switch label in the camera preview modal for flipping the local camera preview horizontally.
 #. Switch label in the video tab for flipping the local camera preview horizontally.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:80
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:106
 #: src/features/voice/components/modals/CameraPreviewModal.tsx:72
 #: src/features/voice/components/VoiceSettingsMenus.tsx:114
 msgid "Mirror camera"
@@ -21098,7 +21081,7 @@ msgid "Misspelled words"
 msgstr "שגיאות כתיב"
 
 #. Aria label on a participant tile icon that indicates the participant is on mobile.
-#: src/features/voice/components/voice_participant_tile/shared.ts:103
+#: src/features/voice/components/voice_participant_tile/shared.ts:83
 msgid "Mobile device"
 msgstr "מכשיר נייד"
 
@@ -21325,7 +21308,7 @@ msgstr "הכי רלוונטי"
 #: src/features/theme_studio/sections/TokenGroups.ts:102
 #: src/features/user/components/modals/tabs/accessibility_tab/AccessibilityTabInline.tsx:31
 #: src/features/user/components/modals/tabs/AccessibilityTab.tsx:99
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:148
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:101
 #: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts:297
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:271
 msgid "Motion"
@@ -21547,7 +21530,7 @@ msgid "Mute all"
 msgstr "השתק הכל"
 
 #. Voice menu action that mutes every device or session's microphone for this user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:112
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:116
 msgid "Mute all devices"
 msgstr "השתק את כל המכשירים"
 
@@ -21651,7 +21634,7 @@ msgid "Mute sounds"
 msgstr "השתקת צלילים"
 
 #. Tooltip / button label on a voice participant tile that mutes the remote screen-share or camera audio.
-#: src/features/voice/components/voice_participant_tile/shared.ts:24
+#: src/features/voice/components/voice_participant_tile/shared.ts:22
 msgid "Mute stream audio"
 msgstr "השתקת שמע השידור"
 
@@ -21682,13 +21665,13 @@ msgstr "מושתק"
 #. Status badge on a voice participant tile. The participant's microphone is muted.
 #: src/features/app/components/layout/VoiceStateIcons.tsx:19
 #: src/features/ui/avatars/AvatarWithPresence.tsx:20
-#: src/features/voice/components/voice_participant_tile/shared.ts:98
+#: src/features/voice/components/voice_participant_tile/shared.ts:78
 msgctxt "microphone-state"
 msgid "Muted"
 msgstr "המיקרופון מושתק"
 
 #. Voice chat status label. A moderator muted the user in this community, so they cannot speak but can still hear others.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:39
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:43
 msgid "Muted by moderators"
 msgstr "הושתק על ידי מנהלים"
 
@@ -22159,7 +22142,7 @@ msgid "New Mexico"
 msgstr "ניו מקסיקו"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:20
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:19
 msgid "New microphone"
 msgstr "מיקרופון חדש"
 
@@ -22282,7 +22265,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "אין הרשאת {sendMessagesPermission}"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:125
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
 msgid "No access"
 msgstr "אין גישה"
 
@@ -22321,7 +22304,7 @@ msgstr "לא נמצאו הגדרות מתקדמות"
 msgid "No AFK channel"
 msgstr "אין ערוץ AFK"
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:124
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:125
 msgid "No application windows found"
 msgstr "לא נמצאו חלונות של אפליקציות"
 
@@ -22338,6 +22321,11 @@ msgstr "אין נכסים עדיין"
 #: src/features/voice/utils/ScreenShareAudioSummary.ts:20
 msgid "No audio"
 msgstr "אין שמע"
+
+#. Screen-share audio summary on a video device share whose capture device has no audio input of its own.
+#: src/features/voice/utils/ScreenShareAudioSummary.ts:60
+msgid "No audio from this device"
+msgstr "אין שמע ממכשיר זה"
 
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:429
 msgid "No authorized applications"
@@ -22380,7 +22368,7 @@ msgstr "אין סימניות"
 msgid "No bot banner"
 msgstr "אין באנר לבוט"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:205
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:232
 msgid "No camera found"
 msgstr "לא נמצאה מצלמה"
 
@@ -22460,7 +22448,7 @@ msgstr "אין תיאור."
 msgid "No desktop update is available."
 msgstr "אין עדכון זמין לאפליקציית המחשב."
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:130
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:131
 msgid "No displays found"
 msgstr "לא נמצאו תצוגות"
 
@@ -22530,6 +22518,11 @@ msgstr "אין עדיין מתנות"
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthCommunityStep.tsx:35
 msgid "No group DMs or communities where you can grant the requested permissions are available."
 msgstr "אין צ'אטים קבוצתיים או קהילות זמינים שבהם אפשר להעניק את ההרשאות המבוקשות."
+
+#. Description for the encoder path select, shown when this device has no hardware video encoder. Prefer hardware and Automatic are the option labels of the same select.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControlsState.ts:10
+msgid "No hardware encoder was found on this device, so Prefer hardware works like Automatic."
+msgstr "לא נמצא מקודד חומרה במכשיר זה, לכן \"העדפת חומרה\" פועלת כמו \"אוטומטי\"."
 
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleSidebar.tsx:175
 msgid "No hoisted roles. Enable \"Show this role separately\" on a role to see it here."
@@ -22684,7 +22677,7 @@ msgstr "לא התקבל גוף תגובה"
 #. Empty-state text in the channel and chat memes picker view.
 #. Heading shown when the channel search query returned zero matches.
 #: src/features/channel/components/channel_search_results/ChannelSearchResultsShared.tsx:74
-#: src/features/channel/components/MobileMemesPicker.tsx:66
+#: src/features/channel/components/MobileMemesPicker.tsx:67
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:32
 msgid "No results"
 msgstr "אין תוצאות"
@@ -22713,7 +22706,7 @@ msgstr "אין עדיין תפקידים. הוסף תפקידים ב{rolesSettin
 
 #. Empty state title in the mobile memes picker when the user has saved nothing yet.
 #. Empty-state text in the channel and chat memes picker view.
-#: src/features/channel/components/MobileMemesPicker.tsx:58
+#: src/features/channel/components/MobileMemesPicker.tsx:59
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:24
 msgid "No saved media"
 msgstr "אין מדיה שמורה"
@@ -22837,11 +22830,11 @@ msgstr "לא נמצא משתמש עם שם המשתמש הזה."
 msgid "No users are currently banned from this community."
 msgstr "אין משתמשים חסומים כרגע מהקהילה הזו."
 
-#: src/features/search/components/search/UserFilterSheet.tsx:127
+#: src/features/search/components/search/UserFilterSheet.tsx:138
 msgid "No users available"
 msgstr "אין משתמשים זמינים"
 
-#: src/features/search/components/search/UserFilterSheet.tsx:127
+#: src/features/search/components/search/UserFilterSheet.tsx:138
 msgid "No users found"
 msgstr "לא נמצאו משתמשים"
 
@@ -22850,7 +22843,7 @@ msgstr "לא נמצאו משתמשים"
 msgid "No verification is required."
 msgstr "אין צורך באימות."
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:175
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:189
 msgid "No verification methods available"
 msgstr "אין שיטות אימות זמינות"
 
@@ -22885,7 +22878,7 @@ msgid "Noise gate"
 msgstr "שער רעש"
 
 #. Voice setting label for microphone background-noise filtering.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:203
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:207
 msgid "Noise suppression"
 msgstr "דיכוי רעשים"
 
@@ -22911,7 +22904,7 @@ msgstr "ללא המרה"
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:220
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:261
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:268
 msgid "None"
 msgstr "ללא"
 
@@ -23183,14 +23176,12 @@ msgstr "חפצים"
 #. Mature content option in the community moderation settings tab.
 #. Mature-content option that leaves this channel ungated.
 #. Off state suffix appended to the reply bar mention toggle label.
-#. Option label for an H.264 backup stream select.
 #: src/features/channel/components/ChannelReplyBar.tsx:62
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:26
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/SlowmodeControl.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:97
 #: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:139
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:73
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:128
 msgid "Off"
 msgstr "כבוי"
 
@@ -23322,7 +23313,7 @@ msgstr "חל רק על מסכים רחבים."
 msgid "Only credit cards are accepted. Debit and prepaid cards cannot be used for the mature content check."
 msgstr "מתקבלים כרטיסי אשראי בלבד. לא ניתן להשתמש בכרטיסי חיוב או בכרטיסים נטענים לצורך אימות התוכן למבוגרים."
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1016
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:948
 msgid "Only default speakers"
 msgstr "רמקולי ברירת המחדל בלבד"
 
@@ -23370,7 +23361,7 @@ msgstr "יש להריץ כאן קוד רק אם אתה מבין בדיוק מה 
 msgid "Only show message previews for DMs with unread messages"
 msgstr "הצג תצוגה מקדימה של הודעות רק בצ'אטים פרטיים עם הודעות שלא נקראו"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1006
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:938
 msgid "Only speakers"
 msgstr "רמקולים בלבד"
 
@@ -23446,7 +23437,7 @@ msgid "Open {displayName}"
 msgstr "פתח את {displayName}"
 
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:109
 msgid "Open {labelText} in settings"
 msgstr "פתח את {labelText} בהגדרות"
 
@@ -23476,25 +23467,25 @@ msgid "Open @{displayName}"
 msgstr "פתח את @{displayName}"
 
 #. Button label in the video tab that jumps to the advanced settings media section.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:92
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:118
 msgid "Open advanced media settings"
 msgstr "פתח הגדרות מדיה מתקדמות"
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:127
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:128
 msgid "Open an application window, then try again."
 msgstr "פתח חלון של אפליקציה, ואז נסה שוב."
 
 #. Button or menu action label in the channel and chat attachment grid item. Keep it concise.
 #. Button or menu action label in the channel and chat embed gifv. Keep it concise.
 #: src/features/channel/components/embeds/attachments/AttachmentGridItem.tsx:74
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:55
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:56
 msgid "Open animated GIF in full view"
 msgstr "פתח GIF מונפש בתצוגה מלאה"
 
 #. Button or menu action label in the channel and chat attachment grid item. Keep it concise.
 #. Button or menu action label in the channel and chat embed gifv. Keep it concise.
 #: src/features/channel/components/embeds/attachments/AttachmentGridItem.tsx:70
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:51
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:52
 msgid "Open animated GIF video in full view"
 msgstr "פתח סרטון GIF מונפש בתצוגה מלאה"
 
@@ -23504,7 +23495,7 @@ msgid "Open audio in full view"
 msgstr "פתח אודיו בתצוגה מלאה"
 
 #. Media context menu action that opens the audio URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:101
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:102
 msgid "Open audio link"
 msgstr "פתח קישור שמע"
 
@@ -23543,7 +23534,7 @@ msgid "Open browser"
 msgstr "פתח דפדפן"
 
 #. Primary button in the screen-share picker on web. Hands off to the browser's native getDisplayMedia picker.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:208
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:209
 msgid "Open browser picker"
 msgstr "פתיחת בורר דפדפנים"
 
@@ -23657,12 +23648,12 @@ msgid "Open favorites menu"
 msgstr "פתיחת תפריט מועדפים"
 
 #. Media context menu action that opens the file URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:105
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:106
 msgid "Open file link"
 msgstr "פתח קישור לקובץ"
 
 #. Media context menu action that opens the GIF URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:93
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:94
 msgid "Open GIF link"
 msgstr "פתח קישור GIF"
 
@@ -23687,7 +23678,7 @@ msgstr "פתח תמונה בדפדפן"
 #. Button or menu action label in the channel and chat embed gifv. Keep it concise.
 #. Button or menu action label in the channel and chat embed image. Keep it concise.
 #: src/features/channel/components/embeds/attachments/AttachmentGridItem.tsx:78
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:59
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:60
 #: src/features/channel/components/embeds/media/EmbedImage.tsx:43
 msgid "Open image in full view"
 msgstr "פתח תמונה בתצוגה מלאה"
@@ -23696,7 +23687,7 @@ msgstr "פתח תמונה בתצוגה מלאה"
 #. Image context menu action that opens the image URL in an external browser.
 #. Image context menu action that opens the image URL in an external browser.
 #: src/features/ui/action_menu/items/EmojiContextMenuItems.tsx:48
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:89
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:90
 #: src/features/ui/action_menu/items/StickerContextMenuItems.tsx:48
 msgid "Open image link"
 msgstr "פתח קישור לתמונה"
@@ -23811,7 +23802,7 @@ msgid "Open system DM"
 msgstr "פתח את צ'אט המערכת"
 
 #. Primary button in the screen-share picker on Linux/Wayland. Hands off to the OS xdg-desktop-portal picker.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:213
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:214
 msgid "Open system picker"
 msgstr "פתיחת בורר המערכת"
 
@@ -23873,7 +23864,7 @@ msgid "Open video in full view"
 msgstr "פתח סרטון בתצוגה מלאה"
 
 #. Media context menu action that opens the video URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:97
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:98
 msgid "Open video link"
 msgstr "פתח קישור וידאו"
 
@@ -23883,7 +23874,7 @@ msgid "Open voice"
 msgstr "פתח שיחה קולית"
 
 #. Accessible button label that opens the user settings tab for microphone, speaker, camera, and call stats.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:251
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:255
 msgid "Open voice & video settings"
 msgstr "פתיחת הגדרות שמע ווידאו"
 
@@ -23909,21 +23900,6 @@ msgstr "פתח את אפליקציית ההודעות בטלפון שלך והת
 #: src/features/input/state/input_keybind/shared.ts:245
 msgid "Open your settings"
 msgstr "פתח את ההגדרות שלך"
-
-#. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:121
-msgid "OpenH264 software codec on Linux"
-msgstr "קודק תוכנה OpenH264 בלינוקס"
-
-#. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:109
-msgid "OpenH264 video codec"
-msgstr "קודק וידאו OpenH264"
-
-#. Switch label for the OpenH264 codec toggle. "OpenH264" is a product name and "Cisco Systems, Inc." is a company name; do not translate either.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:39
-msgid "OpenH264 Video Codec provided by Cisco Systems, Inc."
-msgstr "קודק הווידאו OpenH264 מסופק על ידי Cisco Systems, Inc."
 
 #. Screen-reader-only hint for the Members entry in community settings. The entry receives keyboard focus without automatically opening.
 #: src/features/app/components/dialogs/components/DesktopGuildSettingsView.tsx:66
@@ -24116,12 +24092,12 @@ msgid "Output"
 msgstr "פלט"
 
 #. Voice settings label for selecting a speaker or output device.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:183
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:187
 msgid "Output device"
 msgstr "התקן פלט"
 
 #. Voice control dropdown label or menu item for speaker/output settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:227
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:231
 msgid "Output settings"
 msgstr "הגדרות פלט"
 
@@ -24130,7 +24106,7 @@ msgstr "הגדרות פלט"
 #. Voice settings slider label for speaker or output volume.
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:90
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:228
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:191
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:195
 msgid "Output volume"
 msgstr "עוצמת פלט"
 
@@ -24233,7 +24209,7 @@ msgid "Participant limit"
 msgstr "מגבלת משתתפים"
 
 #. Aria label for the participant context-menu trigger button. {participantDisplayName} is the participant's display name.
-#: src/features/voice/components/voice_participant_tile/shared.ts:115
+#: src/features/voice/components/voice_participant_tile/shared.ts:95
 msgid "Participant options for {participantDisplayName}"
 msgstr "אפשרויות משתתף עבור {participantDisplayName}"
 
@@ -24271,7 +24247,7 @@ msgstr "שם מפתח גישה"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:305
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:409
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:90
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:88
 msgid "Passkeys"
@@ -24420,7 +24396,7 @@ msgid "Pause invites? New users won't be able to join through invite links until
 msgstr "להשהות הזמנות? משתמשים חדשים לא יוכלו להצטרף דרך קישורי הזמנה עד שתפעיל אותם מחדש. חברים קיימים לא יושפעו."
 
 #. Short label for an advanced screen-share preview preference.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:44
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:40
 msgid "Pause my screen share preview in the background"
 msgstr "השהה את התצוגה המקדימה של שיתוף המסך שלי ברקע"
 
@@ -24537,7 +24513,7 @@ msgid "Per-community profiles"
 msgstr "פרופילים לכל קהילה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:32
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:31
 msgid "Per-device volume"
 msgstr "עוצמת קול לכל מכשיר"
 
@@ -24785,7 +24761,7 @@ msgid "Picture"
 msgstr "תמונה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:133
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:116
 msgid "Picture-in-picture"
 msgstr "תמונה בתוך תמונה"
 
@@ -24915,7 +24891,7 @@ msgid "Pins popout"
 msgstr "חלון קופץ של הודעות מוצמדות"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:137
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:120
 msgid "PiP"
 msgstr "תמונה בתוך תמונה"
 
@@ -25117,7 +25093,7 @@ msgid "Prefer @mention"
 msgstr "העדפת אזכור ב-@"
 
 #. Option label for an encoder path select. Refers to hardware video encoders.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:68
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:60
 msgid "Prefer hardware"
 msgstr "העדף חומרה"
 
@@ -25129,7 +25105,7 @@ msgid "Prefer no @mention"
 msgstr "העדפה ללא אזכור ב-@"
 
 #. Option label for an encoder path select. Refers to software video encoders.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:72
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:64
 msgid "Prefer software"
 msgstr "העדף תוכנה"
 
@@ -25149,7 +25125,7 @@ msgid "Preferences..."
 msgstr "העדפות..."
 
 #. Accessible label for the advanced screen-share codec preference select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:165
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:118
 msgid "Preferred screen share codec"
 msgstr "קודק שיתוף מסך מועדף"
 
@@ -25296,22 +25272,22 @@ msgid "Preview hidden"
 msgstr "תצוגה מקדימה מוסתרת"
 
 #. Privacy explanation for screen-share previews in a one-to-one DM call. productName is the app name. Refers to preview thumbnail images generated from a screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:320
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:321
 msgid "Preview images are stored by {productName} temporarily for delivery and are not end-to-end encrypted. Disable previews if you do not want screen-share frames uploaded for thumbnails."
 msgstr "תמונות התצוגה המקדימה מאוחסנות באופן זמני על ידי {productName} לצורך העברתן ואינן מוצפנות מקצה לקצה. השבת תמונות תצוגה מקדימה אם אינך רוצה שהפריימים של שיתוף המסך יועלו ליצירת תמונות ממוזערות."
 
 #. Privacy explanation for screen-share previews in a group DM call. productName is the app name. Refers to preview thumbnail images generated from a screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:314
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:315
 msgid "Preview images are stored by {productName} temporarily for delivery and are not end-to-end encrypted. People in this group DM do not need to be actively watching your stream to see the thumbnail."
 msgstr "תמונות התצוגה המקדימה מאוחסנות באופן זמני על ידי {productName} לצורך העברתן ואינן מוצפנות מקצה לקצה. אנשים בצ'אט הקבוצתי הזה לא צריכים לצפות בשידור שלך כדי לראות את התמונה הממוזערת."
 
 #. Privacy explanation for screen-share previews in a guild voice channel. productName is the app name. Refers to preview thumbnail images generated from a screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:308
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:309
 msgid "Preview images are stored by {productName} temporarily for delivery and are not end-to-end encrypted. People still need permission to connect, but they do not need to be actively watching your stream."
 msgstr "תמונות התצוגה המקדימה מאוחסנות באופן זמני על ידי {productName} לצורך העברה ואינן מוצפנות מקצה לקצה. עדיין נדרשת הרשאה כדי להתחבר, אך אין צורך שהמשתמשים יצפו בשידור שלך בזמן אמת."
 
 #. Overlay on the local screen-share preview when playback is paused to reduce CPU / battery use. Local share is still being sent to others.
-#: src/features/voice/components/voice_participant_tile/shared.ts:61
+#: src/features/voice/components/voice_participant_tile/shared.ts:59
 msgid "Preview paused to save resources"
 msgstr "התצוגה המקדימה הושהתה כדי לחסוך במשאבים"
 
@@ -25323,7 +25299,7 @@ msgid "Preview sound"
 msgstr "השמעת צליל"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:145
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:128
 msgid "Preview, popout, and stream thumbnail behavior"
 msgstr "תצוגה מקדימה, פתיחה בחלון נפרד והתנהגות התמונה הממוזערת של השידור"
 
@@ -25653,7 +25629,7 @@ msgid "Prompt"
 msgstr "בקשת אישור"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:24
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:23
 msgid "Prompt for new audio devices"
 msgstr "הצגת בקשה כשמתחבר התקן שמע חדש"
 
@@ -25886,11 +25862,6 @@ msgstr "דיבור בלחיצה עובד רק כשהכרטיסייה בדפדפ�
 msgid "Push-to-talk won't unmute your microphone while you're deafened. Undeafen yourself to talk."
 msgstr "דיבור בלחיצה לא יבטל את השתקת המיקרופון כל עוד השמע שלך מושתק. בטל את השתקת השמע כדי לדבר."
 
-#. Option label for a software encoder quality select. Means slower/higher-quality.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:92
-msgid "Quality"
-msgstr "איכות"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the theme studio. Keep it concise.
 #: src/features/theme_studio/ThemeStudio.tsx:52
@@ -25993,11 +25964,6 @@ msgstr "הוגבל קצב"
 msgid "Raw embed JSON"
 msgstr "JSON גולמי של ההטמעה"
 
-#. Description for the high-tier Screen share streaming preset (Plutonium). Source resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:87
-msgid "Razor-sharp text at native source resolution, 15 FPS"
-msgstr "טקסט חד במיוחד ברזולוציה מקורית, 15 פריימים לשנייה"
-
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:73
 msgid "Re-record"
@@ -26087,11 +26053,6 @@ msgstr "מוכן לקנות מתנה?"
 #: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
 msgid "Ready to upgrade?"
 msgstr "מוכן לשדרג?"
-
-#. Option label for a software encoder quality select. Means fastest/lower-latency.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:84
-msgid "Real-time"
-msgstr "זמן אמת"
 
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTab.tsx:595
 #: src/features/moderation/components/modals/BanDetailsModal.tsx:74
@@ -26320,7 +26281,7 @@ msgstr "ההפניה הועתקה."
 msgid "Referral parameters"
 msgstr "פרמטרים של הפניה"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:305
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:312
 msgid "Refresh audio sources"
 msgstr "רענון מקורות שמע"
 
@@ -26390,7 +26351,7 @@ msgstr "יצירה מחדש תבטל את התוקף של האסימון הנו�
 msgid "Register"
 msgstr "הרשמה"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:318
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:422
 msgid "Registered passkeys"
 msgstr "מפתחות גישה רשומים"
 
@@ -26414,7 +26375,7 @@ msgid "Regular button clicked."
 msgstr "כפתור רגיל נלחץ."
 
 #. Button label for rejecting an incoming direct call.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:96
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:100
 msgid "Reject"
 msgstr "דחה"
 
@@ -26522,7 +26483,7 @@ msgstr "זכור גודל ומיקום של החלון"
 #: src/features/ui/action_menu/UserContextMenu.tsx:97
 #: src/features/user/components/modals/tabs/chat_settings_tab/SearchEnginesTab.tsx:26
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx:55
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:158
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:178
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:194
 #: src/features/webhook/components/WebhookListItem.tsx:277
 msgid "Remove"
@@ -26648,7 +26609,7 @@ msgid "Remove from group"
 msgstr "הסר מהקבוצה"
 
 #. Action that removes the selected media from saved media.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:181
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:182
 msgid "Remove from saved media"
 msgstr "הסרה מהמדיה השמורה"
 
@@ -26660,7 +26621,7 @@ msgid "Remove from top"
 msgstr "בטל הישארות בחלון עליון"
 
 #. Media context menu action that removes a GIF favorite saved by URL.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:173
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:174
 msgid "Remove from URL-only GIF favorites"
 msgstr "הסרה מקובצי GIF מועדפים לפי כתובת URL בלבד"
 
@@ -26962,7 +26923,7 @@ msgstr "הסרת הרשאות עלולה להגביל את התכונות של �
 msgid "Removing the timeout will allow <0>{targetUserTag}</0> to send messages, react, and join voice channels again."
 msgstr "הסרת פסק הזמן תאפשר ל-<0>{targetUserTag}</0> לשלוח שוב הודעות, להגיב ולהצטרף לערוצי קול."
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:391
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:509
 msgid "Rename"
 msgstr "שנה שם"
 
@@ -27174,7 +27135,7 @@ msgstr "ריפוסטים: <0>{countLabel}</0>"
 msgid "Request a new code first."
 msgstr "יש לבקש קוד חדש תחילה."
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:135
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:136
 msgid "Request a new reset link"
 msgstr "בקשת קישור איפוס חדש"
 
@@ -27202,6 +27163,12 @@ msgstr "בקשות"
 msgid "Require 2FA for moderation actions"
 msgstr "דרוש אימות דו-שלבי לפעולות ניהול"
 
+#. Settings search entry label. Also used as a search synonym in the settings search bar.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:448
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:138
+msgid "Require a passkey as your second factor"
+msgstr "דרישת מפתח גישה כשלב האימות השני"
+
 #. Short label for an advanced voice-channel navigation preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedAppearanceControls.tsx:17
 msgid "Require double-click to join voice channels"
@@ -27216,6 +27183,11 @@ msgstr "דרוש אישור ידני לבקשות חברות"
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/ApplicationInfoSection.tsx:44
 msgid "Require OAuth2 code grant"
 msgstr "דרושה הענקת קוד OAuth2"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:146
+msgid "Require passkey"
+msgstr "דרישת מפתח גישה"
 
 #: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:466
 msgid "Require two-factor authentication for moderators before they can ban, kick, time out, or remove messages."
@@ -27435,7 +27407,7 @@ msgstr "איפוס נתונים"
 msgid "Reset font size"
 msgstr "איפוס גודל גופן"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:128
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:129
 msgid "Reset link invalid or expired"
 msgstr "קישור האיפוס שגוי או שפג תוקפו"
 
@@ -27451,7 +27423,7 @@ msgstr "איפוס מיקום המדיה"
 
 #. Short label in the authentication reset password page. Keep the tone plain and specific.
 #: src/features/auth/components/pages/ResetPasswordPage.tsx:19
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:185
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:186
 msgid "Reset password"
 msgstr "איפוס סיסמה"
 
@@ -27672,7 +27644,7 @@ msgstr "שינוי גודל, הגדלה והצמדת חלונות תלויים �
 #. Section header in the stream settings menu for resolution options.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:206
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:125
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:129
 msgid "Resolution"
 msgstr "רזולוציה"
 
@@ -27845,7 +27817,7 @@ msgid "Review and confirm"
 msgstr "בדיקה ואישור"
 
 #. Security settings row description for authorized apps.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:61
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:100
 msgid "Review apps that can access your account."
 msgstr "בדוק אילו אפליקציות יכולות לגשת לחשבון שלך."
 
@@ -27860,7 +27832,7 @@ msgid "Review past purchases and refund options"
 msgstr "סקירת רכישות קודמות ואפשרויות החזר כספי"
 
 #. Security settings row description for linked devices.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:69
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:108
 msgid "Review signed-in devices and sign out of sessions you don't recognize."
 msgstr "עיין במכשירים המחוברים והתנתק מהסשנים שאינך מזהה."
 
@@ -27953,7 +27925,7 @@ msgid "Revoked ban for {0}"
 msgstr "החסימה של {0} בוטלה"
 
 #. Tooltip / aria label on the rewind button in the standalone audio player. {defaultSeekAmount} is an integer second count.
-#: src/features/voice/components/media_player/components/AudioPlayer.tsx:26
+#: src/features/voice/components/media_player/components/AudioPlayer.tsx:27
 msgid "Rewind {defaultSeekAmount} seconds"
 msgstr "הרץ אחורה ב-{defaultSeekAmount} שניות"
 
@@ -28253,7 +28225,7 @@ msgstr "שמירת אייקון"
 
 #. Button or menu action label in the channel and chat memes picker view. Keep it concise.
 #. Empty state body in the mobile memes picker explaining how to save media. Tone can be friendly.
-#: src/features/channel/components/MobileMemesPicker.tsx:62
+#: src/features/channel/components/MobileMemesPicker.tsx:63
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:28
 msgid "Save some media from messages to get started!"
 msgstr "שמור מדיה מההודעות כדי להתחיל!"
@@ -28361,9 +28333,11 @@ msgstr "נדרשת הרשאת הקלטת מסך"
 #. Footer summary label for the text-focused screen-share quality preset.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Streaming preset label in the stream settings menu. Optimized for sharp text in screen shares.
+#. Video settings label for the text-focused screen share quality preset.
+#: src/features/user/components/modals/tabs/UserVideoTabState.ts:28
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:222
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:233
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:83
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:234
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:89
 msgid "Screen share"
 msgstr "שיתוף מסך"
 
@@ -28378,22 +28352,22 @@ msgid "Screen share audio boost"
 msgstr "הגברת שמע בשיתוף מסך"
 
 #. Error modal title shown when the selected native screen-share audio route cannot start safely.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:176
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:177
 msgid "Screen share audio couldn't start"
 msgstr "לא ניתן היה להתחיל את שיתוף המסך עם שמע"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:68
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:67
 msgid "Screen share codec"
 msgstr "קודק שיתוף מסך"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:149
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:132
 msgid "Screen share encoder controls"
 msgstr "בקרות מקודד שיתוף מסך"
 
 #. Title of a modal shown when an active screen share stops unexpectedly.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:113
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:120
 msgctxt "screen-share"
 msgid "Screen share ended"
 msgstr "שיתוף מסך הסתיים"
@@ -28409,27 +28383,27 @@ msgid "Screen share is using software encoding ({codec}). Quality may be reduced
 msgstr "שיתוף המסך משתמש בקידוד תוכנה ({codec}). ייתכן שהאיכות תהיה נמוכה יותר וצריכת המעבד תגדל. ייתכן שכרטיס המסך שלך אינו תומך בקידוד חומרה עבור הקודק הזה."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:129
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:112
 msgid "Screen share preview"
 msgstr "תצוגה מקדימה של שיתוף מסך"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:125
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:108
 msgid "Screen share preview behavior"
 msgstr "התנהגות תצוגה מקדימה של שיתוף מסך"
 
 #. Title of an informational modal explaining screen-share preview frame uploads.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:286
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:287
 msgid "Screen share previews"
 msgstr "תצוגות מקדימות של שיתוף מסך"
 
 #. Compact footer status in the screen-share picker when preview frame uploads are disabled.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:274
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:275
 msgid "Screen share previews are disabled."
 msgstr "תצוגות מקדימות של שיתוף מסך מושבתות."
 
 #. Compact footer status in the screen-share picker when preview frame uploads are enabled.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:270
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:271
 msgid "Screen share previews are enabled."
 msgstr "תצוגות מקדימות של שיתוף מסך מופעלות."
 
@@ -28440,13 +28414,13 @@ msgstr "פרטיות שיתוף מסך"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the video tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:84
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:110
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:214
 msgid "Screen share quality"
 msgstr "איכות שיתוף מסך"
 
 #. Voice control dropdown label or menu item for screen sharing and stream quality settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:235
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:239
 msgid "Screen share settings"
 msgstr "הגדרות שיתוף מסך"
 
@@ -28475,7 +28449,7 @@ msgid "Screen sharing"
 msgstr "שיתוף מסך"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:72
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:71
 msgid "Screen sharing codec"
 msgstr "קודק שיתוף מסך"
 
@@ -28772,7 +28746,7 @@ msgstr "חיפוש תפקידים או חברים…"
 
 #. Button or menu action label in the channel and chat memes picker header. Keep it concise.
 #. Placeholder text in the mobile memes picker search input.
-#: src/features/channel/components/MobileMemesPicker.tsx:54
+#: src/features/channel/components/MobileMemesPicker.tsx:55
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:24
 msgid "Search saved media"
 msgstr "חיפוש מדיה שמורה"
@@ -28870,6 +28844,11 @@ msgstr "מחפש"
 msgid "Searching for people..."
 msgstr "מחפש אנשים..."
 
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:142
+msgid "Second factor"
+msgstr "שלב אימות שני"
+
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:112
 msgid "Second option"
 msgstr "אפשרות שנייה"
@@ -28934,7 +28913,7 @@ msgctxt "security-settings-section"
 msgid "Security"
 msgstr "אבטחה"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:171
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:275
 msgid "Security features"
 msgstr "תכונות אבטחה"
 
@@ -28991,12 +28970,12 @@ msgstr "תצוגה מקדימה"
 
 #. Hover action on a device card that selects the device without starting the stream.
 #: src/features/app/components/dialogs/components/PricingCard.tsx:65
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:200
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:201
 msgid "Select"
 msgstr "בחר"
 
 #. Accessible label for a saved media tile in the mobile memes picker. accessibleName is the media filename or alt text.
-#: src/features/channel/components/MobileMemesPicker.tsx:74
+#: src/features/channel/components/MobileMemesPicker.tsx:75
 msgid "Select {accessibleName}"
 msgstr "בחר {accessibleName}"
 
@@ -29356,7 +29335,7 @@ msgid "Send reset link"
 msgstr "שלח קישור איפוס"
 
 #. Accessible label for a saved media tile in the picker. Activating sends it. memeName is the user-chosen name.
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:43
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:44
 msgid "Send saved media {memeName}"
 msgstr "שליחת מדיה שמורה {memeName}"
 
@@ -29435,8 +29414,8 @@ msgstr "שליחת הודעות מושבתת בקהילה זו"
 
 #. Description for the stereo microphone switch in the voice settings.
 #: src/features/voice/utils/noise_suppression/NoiseSuppressionLabels.ts:49
-msgid "Sends both channels of a stereo microphone. Works only with no suppression or standard suppression."
-msgstr "שולח את שני הערוצים של מיקרופון סטריאו. עובד רק ללא דיכוי או עם דיכוי רגיל."
+msgid "Sends both channels of a stereo microphone. Needs all processing off and a channel at 128 kbps or higher."
+msgstr "שולח את שני הערוצים של מיקרופון סטריאו. דורש שכל העיבוד כבוי וערוץ במהירות 128 קילו-ביט לשנייה או יותר."
 
 #. Description for the studio / direct-input option in the voice processing settings radio group.
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:38
@@ -29547,6 +29526,11 @@ msgstr "הגדר סטטוס מותאם אישית"
 msgid "Set a member list position for the role"
 msgstr "הגדרת מיקום לתפקיד ברשימת החברים"
 
+#. Video settings note shown when a streaming preset decides the screen share resolution and frame rate. preset is the Gaming or Screen share preset label, and Custom is the third preset label.
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:87
+msgid "Set by the {preset} preset. Picking a value here switches to Custom."
+msgstr "מוגדר על ידי קביעת התצורה של {preset}. בחירת ערך כאן תעבור ל'מותאם אישית'."
+
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:28
 msgid "Set custom shortcut"
@@ -29568,7 +29552,7 @@ msgid "Set custom volumes for individual sounds. Sounds without an override foll
 msgstr "הגדר עוצמת קול מותאמת אישית לצלילים ספציפיים. צלילים ללא הגדרה מותאמת פועלים לפי עוצמת הקול הראשית."
 
 #. Settings description for assigning the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:160
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:164
 msgid "Set deafen shortcut"
 msgstr "הגדר קיצור דרך להשתקת שמע"
 
@@ -29582,8 +29566,8 @@ msgstr "הוגדר כאן"
 msgid "Set mute shortcut"
 msgstr "הגדר קיצור דרך להשתקת מיקרופון"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:116
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:144
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:117
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:145
 msgid "Set new password"
 msgstr "הגדרת סיסמה חדשה"
 
@@ -29733,7 +29717,7 @@ msgstr "הגדר מאוחר יותר"
 msgid "Set voice region"
 msgstr "הגדרת אזור קולי"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:147
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:148
 msgid "Set your new password."
 msgstr "הגדר את הסיסמה החדשה שלך."
 
@@ -29765,7 +29749,7 @@ msgid "Settings"
 msgstr "הגדרות"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:113
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
 msgid "settings link"
 msgstr "קישור להגדרות"
 
@@ -29820,7 +29804,7 @@ msgid "Share gift"
 msgstr "שיתוף מתנה"
 
 #. Hover action on an application or display card that starts sharing that source.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:196
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:197
 msgid "Share screen"
 msgstr "שתף מסך"
 
@@ -29830,7 +29814,7 @@ msgid "Share screens and windows."
 msgstr "שתף מסכים וחלונות."
 
 #. Toggle label for sharing audio with an active stream.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:153
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:157
 msgid "Share stream audio"
 msgstr "שתף שמע של הזרם"
 
@@ -29862,11 +29846,11 @@ msgid "Share with community mods."
 msgstr "שתף עם מנהלי הקהילה."
 
 #. Voice control button or tooltip label for starting screen sharing.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:219
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:223
 msgid "Share your screen"
 msgstr "שתף את המסך שלך"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:298
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:325
 msgid "Share your screen in high definition (1080p), quad HD (1440p), or native source resolution, at up to 60 FPS."
 msgstr "שתף את המסך שלך באיכות HD (1080p), ב-Quad HD (1440p) או ברזולוציית מקור טבעית, עד 60 פריימים לשנייה."
 
@@ -29895,7 +29879,7 @@ msgid "Shared window"
 msgstr "חלון משותף"
 
 #. Capture option in the Linux audio source picker on a window share. Captures only the audio of the window being shared.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:38
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:40
 msgid "Shared window audio"
 msgstr "שמע החלון המשותף"
 
@@ -29910,9 +29894,14 @@ msgid "Sharing personal information"
 msgstr "שיתוף מידע אישי"
 
 #. Description for the free-tier Screen share streaming preset. Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:92
-msgid "Sharper text at 720p, 30 FPS"
-msgstr "טקסט חד יותר ב-720p, 30 FPS"
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:98
+msgid "Sharp text at 720p, up to 30 FPS"
+msgstr "טקסט חד ב-720p, עד 30 FPS"
+
+#. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:93
+msgid "Sharp text at up to 4K, up to 15 FPS"
+msgstr "טקסט חד עד 4K, עד 15 FPS"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:189
@@ -30065,7 +30054,7 @@ msgid "Show call avatars"
 msgstr "הצג אווטרים של שיחה"
 
 #. Action label that reveals a previously hidden remote camera feed.
-#: src/features/voice/components/voice_participant_tile/shared.ts:57
+#: src/features/voice/components/voice_participant_tile/shared.ts:55
 msgid "Show camera"
 msgstr "הצג מצלמה"
 
@@ -30323,7 +30312,7 @@ msgstr "הצג Pickles"
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Short label for an advanced voice device preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVoiceControls.tsx:11
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:8
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:7
 msgid "Show new device alerts"
 msgstr "הצגת התראות על מכשירים חדשים"
 
@@ -30360,7 +30349,7 @@ msgid "Show password"
 msgstr "הצג סיסמה"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:44
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:43
 msgid "Show per-device participant volume sliders in voice menus"
 msgstr "הצג פקדי עוצמת קול למשתתפים לפי מכשיר בתפריטי קול"
 
@@ -30658,6 +30647,10 @@ msgstr "שיחות שקטות"
 msgid "Silent calls from everyone"
 msgstr "שיחות שקטות מכולם"
 
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:874
+msgid "Silent when the capture device has no audio input of its own"
+msgstr "השתק כאשר למכשיר הלכידה אין קלט שמע משלו"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:390
 msgid "Single click"
@@ -30681,7 +30674,7 @@ msgid "Single community mode"
 msgstr "מצב קהילה יחידה"
 
 #. Option label for an SVC mode select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:108
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:80
 msgid "Single layer"
 msgstr "שכבה אחת"
 
@@ -30966,6 +30959,16 @@ msgstr "סמיילי"
 msgid "Smileys"
 msgstr "סמיילים"
 
+#. Description for the free-tier Gaming streaming preset. Resolution and frame rate are technical tokens.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:85
+msgid "Smooth 30 FPS at up to 720p"
+msgstr "חלק 30 FPS עד 720p"
+
+#. Description for the high-tier Gaming streaming preset (Plutonium). Resolution and frame rate are technical tokens.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:80
+msgid "Smooth 60 FPS at up to 1440p"
+msgstr "60 FPS חלקים עד 1440p"
+
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label for an advanced desktop scrolling toggle.
@@ -30976,7 +30979,7 @@ msgid "Smooth scrolling"
 msgstr "גלילה חלקה"
 
 #. Footer summary description for the gaming screen-share quality preset.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:241
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:242
 msgid "Smoother video"
 msgstr "וידאו חלק יותר"
 
@@ -31010,14 +31013,9 @@ msgid "Social"
 msgstr "רשתות חברתיות"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:157
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:140
 msgid "Software encoder"
 msgstr "מקודד תוכנה"
-
-#. Label for an advanced screen-share select. Refers to software video encoder quality bias.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:76
-msgid "Software encoder quality"
-msgstr "איכות מקודד תוכנה"
 
 #: src/features/app/components/dialogs/components/PricingCard.tsx:64
 #: src/features/app/components/dialogs/components/PricingCard.tsx:92
@@ -31038,11 +31036,6 @@ msgstr "חלק מהקבצים שאתה מנסה להעלות חורגים ממג
 #: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:27
 msgid "Some users can't be added"
 msgstr "לא ניתן להוסיף חלק מהמשתמשים"
-
-#. Fallback tooltip on the passive badge on your own screen-share tile when the encoder reports no specific limitation.
-#: src/features/voice/components/voice_participant_tile/shared.ts:93
-msgid "Something is limiting this stream, so viewers are getting fewer frames than you asked for."
-msgstr "משהו מגביל את השידור הזה, ולכן הצופים מקבלים פחות פריימים ממה שביקשת."
 
 #. Generic error modal title for an unexpected failure.
 #. Generic error toast title.
@@ -31246,10 +31239,12 @@ msgstr "צלילים"
 
 #. Footer summary resolution label for native source resolution.
 #. Resolution option in the stream settings menu meaning the original source resolution (no downscale).
+#. Screen share resolution token in the stream info pill on the sharing tile, used when the person asked for the original source resolution and the app does not know the source size. Matches the Source option in the stream settings menu.
 #. Short label in the video tab for the native source resolution option. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:68
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:249
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:105
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:83
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:250
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:111
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:336
 msgid "Source"
 msgstr "מקור"
 
@@ -31342,11 +31337,6 @@ msgstr "ספרדית (אמריקה הלטינית)"
 #: src/features/user/utils/LocaleUtils.ts:44
 msgid "Spanish (Spain)"
 msgstr "ספרדית (ספרד)"
-
-#. Option label for an SVC mode select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:116
-msgid "Spatial and temporal layers"
-msgstr "שכבות מרחביות וזמניות"
 
 #. Permission name: allows speaking in voice channels.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:462
@@ -31601,7 +31591,7 @@ msgstr "להתחיל שיחת קול?"
 msgid "Start call"
 msgstr "התחלת שיחה"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:259
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:286
 msgid "Start camera test and configure effects"
 msgstr "התחל בדיקת מצלמה והגדר אפקטים"
 
@@ -31951,8 +31941,13 @@ msgstr "הפסק שידור"
 msgid "Stop trusting all links?"
 msgstr "להפסיק לבטוח בכל הקישורים?"
 
+#. Security settings: confirmation modal title for turning off passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:64
+msgid "Stop using passkeys for two-factor authentication?"
+msgstr "להפסיק להשתמש במפתחות גישה לאימות דו-שלבי?"
+
 #. Voice control action for stopping the currently focused or selected stream.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:239
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:243
 msgid "Stop watching"
 msgstr "הפסק צפייה"
 
@@ -32014,46 +32009,41 @@ msgstr "מונע מקול הרמקולים לחזור אל המיקרופון ש
 #. Primary footer action that starts streaming the selected capture device.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:236
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:204
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:205
 msgid "Stream"
 msgstr "שידור"
 
 #. Accessible status label for the black buffering frame shown while a screen share codec is renegotiated.
-#: src/features/voice/components/voice_participant_tile/shared.ts:36
+#: src/features/voice/components/voice_participant_tile/shared.ts:34
 msgid "Stream buffering"
 msgstr "השידור נטען"
 
 #. Status overlay on a voice participant tile when the remote screen share has ended.
-#: src/features/voice/components/voice_participant_tile/shared.ts:28
+#: src/features/voice/components/voice_participant_tile/shared.ts:26
 msgid "Stream ended"
 msgstr "השידור הסתיים"
 
 #. Overlay text on a participant tile when the local user hid the remote screen share.
-#: src/features/voice/components/voice_participant_tile/shared.ts:32
+#: src/features/voice/components/voice_participant_tile/shared.ts:30
 msgid "Stream hidden"
 msgstr "השידור מוסתר"
-
-#. Accessible label for a passive badge on your own screen-share tile, shown when the encoder stays below the frame rate you asked for.
-#: src/features/voice/components/voice_participant_tile/shared.ts:80
-msgid "Stream is not keeping up"
-msgstr "השידור לא עומד בקצב"
 
 #. Aria label for the small thumbnail preview on the screen-share hover card.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the user settings voice activity card. Keep it concise.
 #: src/features/user/components/profile/VoiceActivityCard.tsx:90
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:141
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:124
 #: src/features/voice/components/StreamWatchHoverCard.tsx:21
 msgid "Stream preview"
 msgstr "תצוגה מקדימה של השידור"
 
 #. Compact submenu label for changing the resolution and frame rate of an active stream.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:149
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:153
 msgid "Stream quality"
 msgstr "איכות השידור"
 
 #. Toolbar / menu button label in the screen-share picker. Opens the stream quality settings popover.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:225
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:226
 msgid "Stream settings"
 msgstr "הגדרות שידור"
 
@@ -32074,7 +32064,7 @@ msgid "Streaming"
 msgstr "בשידור"
 
 #. Section header in the stream settings menu. Picks between Gaming / Screen share / Custom presets.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:121
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:125
 msgid "Streaming mode"
 msgstr "מצב סטרימינג"
 
@@ -32270,17 +32260,17 @@ msgid "Surfaces"
 msgstr "משטחים"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:146
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:166
 msgid "Suspend"
 msgstr "השעיה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:165
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:148
 msgid "SVC"
 msgstr "SVC"
 
 #. Label for an advanced screen-share select. SVC is a WebRTC acronym and should stay uppercase.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:96
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:68
 msgid "SVC mode"
 msgstr "מצב SVC"
 
@@ -32553,8 +32543,8 @@ msgstr "הודעות מערכת מצוות {productName}. לא ניתן להשי
 
 #. Audio device option label meaning the OS default audio input device.
 #. Footer summary fallback for the default capture-device audio input.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:262
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:137
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:263
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:141
 msgid "System default"
 msgstr "ברירת מחדל של המערכת"
 
@@ -32755,12 +32745,12 @@ msgid "Template URL"
 msgstr "כתובת URL של תבנית"
 
 #. Option label for an SVC mode select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:112
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:84
 msgid "Temporal layers"
 msgstr "שכבות זמניות"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:150
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:170
 msgid "Temporarily disable your account"
 msgstr "השבתה זמנית של החשבון"
 
@@ -32832,7 +32822,7 @@ msgstr "טקסס"
 #: src/features/channel/utils/ChannelUtils.tsx:51
 #: src/features/lexical/composer/nodes/SlashSlotNode.ts:23
 #: src/features/theme_studio/sections/TokenGroups.ts:50
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:156
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:109
 msgid "Text"
 msgstr "טקסט"
 
@@ -33064,7 +33054,7 @@ msgid "The bot has been added."
 msgstr "הבוט נוסף."
 
 #. Status shown when a device preview has not released the camera before the bounded handoff deadline.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:172
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:173
 msgid "The camera preview is still stopping. Try streaming again in a moment."
 msgstr "התצוגה המקדימה של המצלמה עדיין נעצרת. יש לנסות לשדר שוב בעוד רגע."
 
@@ -33242,7 +33232,7 @@ msgid "The role granted {permissions}"
 msgstr "התפקיד העניק את ההרשאות {permissions}"
 
 #. Body of a modal shown when a browser screen share track ends outside the app, for example from the browser sharing controls.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:118
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:125
 msgctxt "screen-share"
 msgid "The screen share source stopped sending video, so your screen share was stopped."
 msgstr "מקור שיתוף המסך הפסיק לשלוח וידאו, ולכן שיתוף המסך שלך הופסק."
@@ -33484,7 +33474,7 @@ msgid "This browser console is a developer tool."
 msgstr "מסוף הדפדפן הזה הוא כלי למפתחים."
 
 #. Pre-join indicator shown beneath the Join button on a DM or group DM call where every connected participant supports E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:316
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:320
 msgid "This call is end-to-end encrypted."
 msgstr "שיחה זו מוצפנת מקצה לקצה."
 
@@ -33770,7 +33760,7 @@ msgid "This install is managed by your system. Update {productName} from your so
 msgstr "ההתקנה הזו מנוהלת על ידי המערכת שלך. עדכן את {productName} דרך מרכז התוכנה או מנהל החבילות שלך."
 
 #. Neutral video settings note shown when higher screen share quality is disabled by instance limits.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:61
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:73
 msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "המופע הזה מאפשר כרגע שיתוף מסך עד 720p ב-30 FPS."
 
@@ -33867,6 +33857,14 @@ msgstr "זהו התיאור של האפשרות השנייה"
 msgid "This is the third option description"
 msgstr "זהו התיאור של האפשרות השלישית"
 
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:248
+msgid "This is your last passkey and passkeys are your second factor. Deleting it turns off two-factor authentication for your account, and your current backup codes will stop working."
+msgstr "זהו מפתח הגישה האחרון שלך, ומפתחות גישה הם שלב האימות השני שלך. מחיקתו תשבית את האימות הדו-שלבי בחשבונך, וקודי הגיבוי הנוכחיים שלך יפסיקו לפעול."
+
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:243
+msgid "This is your last passkey. Once it's gone you won't be able to use a passkey as your second factor."
+msgstr "זהו מפתח הגישה האחרון שלך. לאחר שיימחק, לא תוכל להשתמש במפתח גישה כשלב האימות השני שלך."
+
 #. Required-action form error for landline, toll-free, premium, shared-cost, UAN, voicemail and pager lines. Do not name which line type the provider returned.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:549
 msgid "This isn't a mobile number, so it can't receive our text. Try a mobile number, or contact support if you think that's wrong."
@@ -33883,7 +33881,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "ערוץ קישור זה מסומן ככולל תוכן למבוגרים ועשוי להכיל חומר שאינו הולם עבור חלק מהמשתמשים."
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:141
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
 msgid "This link is not available for your account."
 msgstr "הקישור הזה אינו זמין לחשבון שלך."
 
@@ -33964,17 +33962,17 @@ msgid "This option is required. Please provide a value."
 msgstr "אפשרות זו נדרשת. יש לספק ערך."
 
 #. Voice participant status tooltip shown when channel permissions or voice suppression prevent another participant from speaking.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:48
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:52
 msgid "This participant can't speak in this channel"
 msgstr "משתתף זה אינו יכול לדבר בערוץ זה"
 
 #. Voice participant status tooltip for another user. They cannot hear voice chat. Distinct from muted.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:74
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:78
 msgid "This participant is deafened"
 msgstr "השמע של משתתף זה מושתק"
 
 #. Voice participant status tooltip for another user. A moderator deafened that participant so they cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:61
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:65
 msgid "This participant was deafened by moderators"
 msgstr "השמע של משתתף זה הושתק על ידי מנהלים"
 
@@ -33989,7 +33987,7 @@ msgid "This phone number has already been used. Try another number or contact su
 msgstr "מספר הטלפון הזה כבר נמצא בשימוש. נסה מספר אחר או צור קשר עם התמיכה."
 
 #. Empty state in the screen-share picker shown to web users. Explains that this advanced picker requires the desktop app.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:136
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:137
 msgid "This picker is only available in the desktop app."
 msgstr "בורר זה זמין רק באפליקציית המחשב."
 
@@ -34035,7 +34033,7 @@ msgstr "פעולה זו תסיר את כל הדומיינים המהימנים. 
 msgid "This removes every custom shortcut and re-enables all built-in shortcuts. This cannot be undone."
 msgstr "פעולה זו תסיר את כל קיצורי הדרך המותאמים אישית ותפעיל מחדש את כל קיצורי הדרך המובנים. לא ניתן לבטל פעולה זו."
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:131
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:132
 msgid "This reset link has expired. Reset links last 1 hour. Please request a new one."
 msgstr "תוקף קישור האיפוס הזה פג. קישורי איפוס תקפים למשך שעה אחת. אנא בקש קישור חדש."
 
@@ -34418,7 +34416,7 @@ msgid "Toggle controls"
 msgstr "הצגת/הסתרת הפקדים"
 
 #. Keyboard shortcut label. Toggles voice deafen, which controls whether the user hears voice chat. Distinct from microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:150
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:154
 msgid "Toggle deafen"
 msgstr "החלפת מצב השתקת השמע"
 
@@ -34683,7 +34681,7 @@ msgstr "שינויים בסמל מגש המערכת יחולו רק לאחר ה�
 
 #. Short label in the channel and chat gif picker grid. Keep it concise.
 #. Short label in the channel and chat gif picker header. Keep it concise.
-#: src/features/channel/components/pickers/gif/GifPickerGrid.tsx:25
+#: src/features/channel/components/pickers/gif/GifPickerGrid.tsx:26
 #: src/features/channel/components/pickers/gif/GifPickerHeader.tsx:18
 msgid "Trending GIFs"
 msgstr "קובצי GIF פופולריים"
@@ -34777,7 +34775,7 @@ msgstr "נסה שאילתת חיפוש אחרת."
 
 #. Empty state body in the mobile memes picker suggesting query changes.
 #. Label in the channel and chat memes picker view.
-#: src/features/channel/components/MobileMemesPicker.tsx:70
+#: src/features/channel/components/MobileMemesPicker.tsx:71
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:36
 msgid "Try a different search term or filter"
 msgstr "נסה מונח חיפוש או מסנן אחר"
@@ -34900,7 +34898,9 @@ msgid "Turkish"
 msgstr "טורקית"
 
 #. Button label that turns off streaming privacy.
+#. Security settings: confirm button for turning off passkey-based two-factor authentication.
 #: src/features/app/components/layout/app_layout/nagbars/StreamerModeNagbar.tsx:16
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:80
 msgid "Turn off"
 msgstr "כיבוי"
 
@@ -34916,7 +34916,7 @@ msgid "Turn off anything you're not comfortable with. Some features may stop wor
 msgstr "כבה כל מה שלא נוח לך איתו. ייתכן שחלק מהתכונות יפסיקו לפעול."
 
 #. Error modal body shown after a native screen-share audio route fails to start.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:180
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:181
 msgid "Turn off audio sharing for this source or try again in a moment."
 msgstr "כבה את שיתוף השמע עבור מקור זה או נסה שוב בעוד רגע."
 
@@ -34956,6 +34956,11 @@ msgstr "כיבוי שידור"
 msgid "Turn off streaming privacy before viewing login or account security details."
 msgstr "כבה את פרטיות הסטרימינג לפני הצגת פרטי התחברות או אבטחת חשבון."
 
+#. Security settings: confirm button for turning on passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:60
+msgid "Turn on"
+msgstr "הפעלה"
+
 #. Permission description in the channel-scoped permissions editor for the Stream Video permission. Covers both the webcam and screen sharing.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:292
 msgid "Turn on a camera or share a screen in this voice channel."
@@ -34972,7 +34977,7 @@ msgid "Turn on automatically when OBS or XSplit is detected"
 msgstr "הפעלה אוטומטית כשמזוהה OBS או XSplit"
 
 #. Voice control button or tooltip label for enabling the camera.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:215
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:219
 msgid "Turn on camera"
 msgstr "הפעל מצלמה"
 
@@ -35095,7 +35100,7 @@ msgstr "אימות דו-שלבי הושבת"
 msgid "Two-factor authentication enabled"
 msgstr "אימות דו-שלבי הופעל"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:211
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:315
 msgid "Two-factor authentication is enabled"
 msgstr "אימות דו-שלבי מופעל"
 
@@ -35322,17 +35327,17 @@ msgid "Uncollectible"
 msgstr "לא ניתן לגבייה"
 
 #. Voice action label. Restores what the user hears in voice chat. Distinct from microphone unmute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:82
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:86
 msgid "Undeafen"
 msgstr "בטל השתקת שמע"
 
 #. Voice menu action that restores voice audio on every device or session for this user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:141
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:145
 msgid "Undeafen all devices"
 msgstr "בטל את השתקת השמע בכל המכשירים"
 
 #. Voice control label. Restores what the current user hears in voice chat. Distinct from microphone unmute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:128
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:132
 msgid "Undeafen yourself"
 msgstr "בטל את השתקת השמע שלך"
 
@@ -35570,7 +35575,7 @@ msgstr "משתמש לא ידוע"
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTab.tsx:102
 #: src/features/lexical/composer/nodes/SlashSlotNode.ts:61
 #: src/features/voice/components/VoiceParticipantAvatarList.tsx:44
-#: src/features/voice/components/VoiceParticipantTile.tsx:174
+#: src/features/voice/components/VoiceParticipantTile.tsx:172
 #: src/features/webhook/components/WebhookListItem.tsx:31
 msgid "Unknown user"
 msgstr "משתמש לא ידוע"
@@ -35614,7 +35619,7 @@ msgid "Unlock custom emojis in DMs with {premiumProductName}"
 msgstr "קבל גישה לאימוג'ים מותאמים אישית בהודעות פרטיות עם {premiumProductName}"
 
 #. Premium upsell title in video settings.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:53
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:65
 msgid "Unlock HD screen share with {premiumProductName}"
 msgstr "קבל גישה לשיתוף מסך באיכות HD עם {premiumProductName}"
 
@@ -35671,7 +35676,7 @@ msgid "Unmute {label}"
 msgstr "בטל השתקה של {label}"
 
 #. Voice menu action that unmutes every device or session for this user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:116
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:120
 msgid "Unmute all devices"
 msgstr "בטל השתקה בכל המכשירים"
 
@@ -35723,7 +35728,7 @@ msgid "Unmute microphone"
 msgstr "בטל השתקת מיקרופון"
 
 #. Tooltip / button label on a voice participant tile that unmutes the remote screen-share or camera audio.
-#: src/features/voice/components/voice_participant_tile/shared.ts:20
+#: src/features/voice/components/voice_participant_tile/shared.ts:18
 msgid "Unmute stream audio"
 msgstr "בטל השתקת שמע השידור"
 
@@ -35753,8 +35758,8 @@ msgstr "קבוצה ללא שם"
 
 #. Fallback label for an audio input device whose name is not reported by the OS.
 #. Footer summary fallback for an audio input without a reported name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:266
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:141
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:267
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:145
 msgid "Unnamed input"
 msgstr "קלט ללא שם"
 
@@ -36165,7 +36170,7 @@ msgid "Upload new emoji and stickers, and manage your own creations."
 msgstr "העלה אימוג'י ומדבקות חדשים, ונהל את היצירות שלך."
 
 #. Description for the screen-share preview toggle in the informational modal.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:332
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:333
 msgid "Upload preview frames for screen shares."
 msgstr "העלה פריימים לתצוגה מקדימה עבור שיתופי מסך."
 
@@ -36246,7 +36251,7 @@ msgid "URL"
 msgstr "URL"
 
 #. Success toast confirming that a media URL was copied as text fallback.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:137
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:138
 msgid "URL copied to clipboard"
 msgstr "כתובת ה-URL הועתקה ללוח הגזירים"
 
@@ -36339,7 +36344,7 @@ msgstr "השתמש בערך האמיתי"
 msgid "Use alternative method"
 msgstr "שימוש בשיטה חלופית"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:213
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:317
 msgid "Use an authenticator app to generate codes for two-factor authentication"
 msgstr "השתמש באפליקציית אימות כדי ליצור קודים לאימות דו-שלבי"
 
@@ -36510,11 +36515,16 @@ msgstr "השתמש בשורת כותרת מקורית"
 msgid "Use only if it clearly breaks {productName}'s rules and doesn't fit above."
 msgstr "יש להשתמש רק אם זה מפר באופן ברור את הכללים של {productName} ולא מתאים לאף אחת מהאפשרויות שלעיל."
 
+#. Security settings: confirmation modal title for turning on passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:51
+msgid "Use passkeys for two-factor authentication?"
+msgstr "להשתמש במפתחות גישה לאימות דו-שלבי?"
+
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:306
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:410
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:134
-msgid "Use passkeys for passwordless sign-in and two-factor authentication"
-msgstr "השתמש במפתחות גישה לכניסה ללא סיסמה ולאימות דו-שלבי"
+msgid "Use passkeys to sign in without a password"
+msgstr "שימוש במפתחות גישה כדי להיכנס ללא סיסמה"
 
 #. Button in the required-action modal. Selects the phone verification path.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:174
@@ -36636,6 +36646,11 @@ msgstr "בשימוש בקהילות שלא הוגדר בהן צליל משלהן
 msgid "Used in communities that do not have their own sound."
 msgstr "בשימוש בקהילות שאין להן צליל משלהן."
 
+#. Description for a WebRTC content hint select. Custom, Gaming and Screen share are the stream quality preset labels.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:92
+msgid "Used in Custom mode. The Gaming and Screen share presets set their own hint."
+msgstr "בשימוש במצב מותאם אישית. ההגדרות הקבועות מראש \"משחקים\" ו\"שיתוף מסך\" מגדירות רמז משלהן."
+
 #. Description text in the entrance sound section.
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:94
 msgid "Used in direct-message calls. If you do not set one, your global sound is used instead."
@@ -36746,7 +36761,7 @@ msgid "User tag (optional)"
 msgstr "תגית משתמש (אופציונלי)"
 
 #. Voice menu slider label for the saved volume of a specific user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:243
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:247
 msgid "User volume"
 msgstr "עוצמת שמע של משתמש"
 
@@ -36967,7 +36982,7 @@ msgstr "נשלחה הודעת אימות. יש לבדוק את תיבת הדוא
 msgid "Verification expired"
 msgstr "האימות פג תוקף"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:57
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:67
 #: src/features/auth/components/pages/VerifyEmailPage.tsx:108
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:241
 msgid "Verification failed"
@@ -37008,12 +37023,12 @@ msgid "Verify email"
 msgstr "אימות אימייל"
 
 #. Accessible form label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:41
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:46
 msgid "Verify identity form"
 msgstr "טופס אימות זהות"
 
 #. Short label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:45
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:50
 msgid "Verify it's you"
 msgstr "אימות זהותך"
 
@@ -37056,12 +37071,12 @@ msgid "Verify your email address to send friend requests."
 msgstr "אמת את כתובת האימייל שלך כדי לשלוח בקשות חברות."
 
 #. Security settings warning shown when an unverified account cannot register a new passkey.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:45
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:47
 msgid "Verify your email before adding a passkey."
 msgstr "יש לאמת את כתובת האימייל שלך לפני הוספת מפתח גישה."
 
 #. Security settings warning shown when an unverified account cannot enable authenticator-app two-factor authentication.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:40
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:42
 msgid "Verify your email before adding an authenticator app."
 msgstr "יש לאמת את כתובת האימייל שלך לפני הוספת אפליקציית אימות."
 
@@ -37140,7 +37155,7 @@ msgstr "מאמת את הכרטיס"
 msgid "Verifying code…"
 msgstr "מאמת קוד…"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:119
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:120
 msgid "Verifying your reset link…"
 msgstr "מאמת את קישור האיפוס שלך…"
 
@@ -37206,12 +37221,12 @@ msgid "Video call unavailable"
 msgstr "שיחת וידאו לא זמינה"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:80
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:79
 msgid "Video codec"
 msgstr "קודק וידאו"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:84
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:83
 msgid "Video codec for screen sharing"
 msgstr "קודק וידאו לשיתוף מסך"
 
@@ -37234,7 +37249,7 @@ msgstr "איבוד מנות וידאו:"
 #. Accessible label for a video thumbnail in the media viewer thumbnail strip.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/messaging/components/modals/media_modal/shared.ts:133
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:89
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:90
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:182
 msgid "Video preview"
 msgstr "תצוגה מקדימה של וידאו"
@@ -37290,7 +37305,7 @@ msgstr "העלאת סרטון"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the channel and chat memes picker header. Keep it concise.
 #. Tab label in the mobile memes picker. Filters to saved videos.
-#: src/features/channel/components/MobileMemesPicker.tsx:50
+#: src/features/channel/components/MobileMemesPicker.tsx:51
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:20
 #: src/features/user/components/settings_utils/section_registry/ChatSettingsSections.ts:109
 msgid "Videos"
@@ -37353,7 +37368,7 @@ msgstr "הצגה וניהול של משתמשים חסומים."
 msgid "View and manage every webhook configured across your community."
 msgstr "הצגה וניהול של כל ה-webhooks שהוגדרו בקהילה שלך."
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:280
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:384
 msgid "View and manage your backup codes for account recovery"
 msgstr "הצגה וניהול של קודי הגיבוי שלך לשחזור החשבון"
 
@@ -37387,7 +37402,7 @@ msgstr "הצגת ערוץ"
 msgid "View channel members"
 msgstr "הצגת חברי ערוץ"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:298
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:402
 msgid "View codes"
 msgstr "הצגת קודים"
 
@@ -37640,7 +37655,7 @@ msgid "Voice & video"
 msgstr "שמע ווידאו"
 
 #. Voice menu item that opens the user settings tab for microphone, speaker, camera, and call stats.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:247
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:251
 msgid "Voice & video settings"
 msgstr "הגדרות שמע ווידאו"
 
@@ -37692,7 +37707,7 @@ msgstr "קיצורי דרך לקול ווידאו"
 
 #. Short label for a voice call (lobby header, DM action, settings section).
 #: src/features/user/components/modals/UserProfileMobileSheet.tsx:744
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:35
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:39
 msgid "Voice call"
 msgstr "שיחה קולית"
 
@@ -37760,7 +37775,7 @@ msgid "Voice connection debug"
 msgstr "ניפוי באגים בחיבור קולי"
 
 #. Notification sound label for the event where the user becomes deafened in voice chat. Distinct from voice mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:165
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:169
 msgid "Voice deafen"
 msgstr "השתקת שמע"
 
@@ -37787,7 +37802,7 @@ msgid "Voice message"
 msgstr "הודעה קולית"
 
 #. Short label in the channel and chat voice message player. Keep it concise.
-#: src/features/channel/components/embeds/media/VoiceMessagePlayer.tsx:30
+#: src/features/channel/components/embeds/media/VoiceMessagePlayer.tsx:31
 msgid "Voice message player"
 msgstr "נגן הודעה קולית"
 
@@ -37839,7 +37854,7 @@ msgid "Voice settings"
 msgstr "הגדרות קול"
 
 #. Notification sound label for the event where the user is no longer deafened in voice chat. Distinct from voice unmute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:170
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:174
 msgid "Voice undeafen"
 msgstr "ביטול השתקת שמע"
 
@@ -37882,7 +37897,7 @@ msgid "Volume mute"
 msgstr "השתקת השמע"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:40
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:39
 msgid "Volume sliders"
 msgstr "מחווני עוצמת קול"
 
@@ -37915,7 +37930,7 @@ msgstr "המתן כאן"
 msgid "Waiting for connection..."
 msgstr "ממתין לחיבור..."
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:218
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:232
 msgid "Waiting for passkey…"
 msgstr "ממתין למפתח גישה…"
 
@@ -37957,7 +37972,7 @@ msgid "Washington"
 msgstr "וושינגטון"
 
 #. Compact button label on a participant tile. Joins / opens the remote screen share.
-#: src/features/voice/components/voice_participant_tile/shared.ts:71
+#: src/features/voice/components/voice_participant_tile/shared.ts:69
 msgid "Watch"
 msgstr "צפייה"
 
@@ -37972,7 +37987,7 @@ msgid "Watching"
 msgstr "צופה"
 
 #. Title on a remote screen-share tile when loading the watched stream failed.
-#: src/features/voice/components/voice_participant_tile/shared.ts:40
+#: src/features/voice/components/voice_participant_tile/shared.ts:38
 msgid "Watching failed :("
 msgstr "הצפייה נכשלה :("
 
@@ -38436,6 +38451,11 @@ msgstr "מה לכלול"
 msgid "What to search for."
 msgstr "מה לחפש."
 
+#. Informational overlay on your own screen-share tile while the shared screen or window sends no new frames, for example when it is static or minimised. Not an error.
+#: src/features/voice/components/VoiceParticipantTile.tsx:180
+msgid "What you're sharing isn't updating"
+msgstr "מה שאתה משתף לא מתעדכן"
+
 #. Placeholder question in the custom status text field.
 #. Placeholder question in the custom status text field.
 #: src/features/user/components/modals/CustomStatusBottomSheet.tsx:40
@@ -38472,17 +38492,17 @@ msgid "When posted as links in chat"
 msgstr "כאשר נשלח כקישור בצ'אט"
 
 #. Explanation of screen-share preview uploads in a group DM call. productName is the app name; JPEG is an image format name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:296
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:297
 msgid "When previews are enabled, {productName} uploads occasional JPEG frames from your screen share so other people in this group DM can see a thumbnail before they watch."
 msgstr "כאשר התצוגות המקדימות מופעלות, {productName} מעלה מדי פעם פריימים בפורמט JPEG משיתוף המסך שלך, כך שאנשים אחרים בצ'אט הקבוצתי הזה יוכלו לראות תמונה ממוזערת לפני שהם צופים."
 
 #. Explanation of screen-share preview uploads in a guild voice channel. productName is the app name; JPEG is an image format name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:290
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:291
 msgid "When previews are enabled, {productName} uploads occasional JPEG frames from your screen share so people with permission to connect to this voice channel can see a thumbnail before they watch."
 msgstr "כאשר התצוגות המקדימות מופעלות, {productName} מעלה מדי פעם פריימים בפורמט JPEG משיתוף המסך שלך, כך שאנשים בעלי הרשאה להתחבר לערוץ הקולי הזה יוכלו לראות תמונה ממוזערת לפני שהם צופים."
 
 #. Explanation of screen-share preview uploads in a one-to-one DM call. productName is the app name; JPEG is an image format name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:302
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:303
 msgid "When previews are enabled, {productName} uploads occasional JPEG frames from your screen share so the other person in this DM can see a thumbnail before they watch."
 msgstr "כאשר התצוגות המקדימות מופעלות, {productName} מעלה מדי פעם פריימים בפורמט JPEG משיתוף המסך שלך, כך שהמשתמש השני בצ'אט הפרטי הזה יוכל לראות תמונה ממוזערת לפני שהוא צופה."
 
@@ -38634,7 +38654,7 @@ msgid "Windows cut off at the top or bottom of the screen, and docked DevTools, 
 msgstr "חלונות שנחתכים בחלק העליון או התחתון של המסך, וכלי פיתוח מעוגנים, עלולים להציג רקע אפור במקום להישאר שקופים."
 
 #. Audio device label prefix for the operating system default audio device on Windows.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:14
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:18
 msgid "Windows default"
 msgstr "ברירת מחדל של Windows"
 
@@ -38807,7 +38827,7 @@ msgid "You are banned from this community and cannot join."
 msgstr "נחסמת מהקהילה הזו ואינך יכול להצטרף אליה."
 
 #. Voice participant status tooltip for the current user. They cannot hear voice chat. Distinct from muted.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:70
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:74
 msgid "You are deafened"
 msgstr "השמע שלך מושתק"
 
@@ -39030,7 +39050,7 @@ msgid "You can't share your screen in this channel"
 msgstr "אינך יכול לשתף את המסך שלך בערוץ זה"
 
 #. Voice control tooltip shown when channel permissions prevent the current user from speaking.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:44
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:48
 msgid "You can't speak in this channel"
 msgstr "אינך יכול לדבר בערוץ זה"
 
@@ -39111,7 +39131,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "שינית את התג שלך בזמן שהיית ב-{PREMIUM_PRODUCT_NAME}. הוא ישתנה באופן אקראי כשתוקף ה-{PREMIUM_PRODUCT_NAME} שלך יפוג, אלא אם כן הוא יתחדש."
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
 msgid "You do not have access to the channel where this message was sent."
 msgstr "אין לך גישה לערוץ שבו נשלחה ההודעה הזו."
 
@@ -39352,7 +39372,7 @@ msgid "You stay in {ownedNames}. Owners cannot leave their own community."
 msgstr "אתה נשאר ב-{ownedNames}. בעלים לא יכולים לעזוב את הקהילה שלהם."
 
 #. Voice chat status tooltip for the current user. A moderator deafened them so they cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:57
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:61
 msgid "You were deafened by moderators"
 msgstr "השמע שלך הושתק על ידי מנהלים"
 
@@ -39376,6 +39396,11 @@ msgstr "תעזוב את {guildNames}. שום דבר שפרסמת לא נמחק, 
 msgid "You will still need to finish the email step."
 msgstr "עדיין תצטרך להשלים את שלב האימייל."
 
+#. Security settings: confirmation modal body for turning off passkey-based two-factor authentication when the account also has an authenticator app.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:74
+msgid "You won't be asked for a passkey after your password anymore. Your authenticator app stays as your second factor."
+msgstr "לא תתבקש עוד לספק מפתח גישה לאחר הסיסמה שלך. אפליקציית האימות תישאר שלב האימות השני שלך."
+
 #: src/features/app/components/floating/UserAreaPopout.tsx:92
 #: src/features/user/components/modals/StatusChangeBottomSheet.tsx:40
 msgid "You won't receive notifications on desktop"
@@ -39389,6 +39414,11 @@ msgstr "תופיע במצב לא מקוון"
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:464
 msgid "You'll have to sign back in on all signed-out devices"
 msgstr "יהיה עליך להתחבר מחדש בכל המכשירים שנותקו"
+
+#. Security settings: confirmation modal body for turning on passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:55
+msgid "You'll need one of your passkeys to sign in on a new device. If you lose every passkey you can be locked out of your account. Backup codes will be saved for you so you still have a way in."
+msgstr "תצטרך אחד ממפתחות הגישה שלך כדי להיכנס ממכשיר חדש. אם תאבד את כל מפתחות הגישה שלך, אתה עלול לאבד לצמיתות את הגישה לחשבונך. קודי גיבוי יישמרו עבורך, כך שעדיין תהיה לך דרך להיכנס."
 
 #. Privacy > Active now: confirmation modal body when turning sharing on.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ActiveNowTab.tsx:41
@@ -39678,9 +39708,14 @@ msgstr "החשבון שלך חדש מדי כדי לשלוח הודעות בקה�
 msgid "Your account request is pending approval. You can sign in after an admin approves it."
 msgstr "בקשת החשבון שלך ממתינה לאישור. אפשר להתחבר לאחר שמנהל יאשר אותה."
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:181
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:195
 msgid "Your account requires multi-factor authentication, but no supported methods are set up on this device. Sign in on a device with your authenticator app or security key, or contact support."
 msgstr "החשבון שלך דורש אימות רב-שלבי, אך לא הוגדרו שיטות נתמכות במכשיר זה. היכנס באמצעות מכשיר עם אפליקציית האימות או מפתח האבטחה שלך, או פנה לתמיכה."
+
+#. Security settings: confirmation modal body for turning off passkey-based two-factor authentication when passkeys are the only second factor on the account.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:68
+msgid "Your account will no longer be protected by two-factor authentication when you sign in with your password. You'll also lose elevated permissions in servers that require two-factor authentication."
+msgstr "החשבון שלך כבר לא יהיה מוגן באמצעות אימות דו-שלבי בעת כניסה עם הסיסמה שלך. כמו כן, תאבד את ההרשאות המוגברות שלך בקהילות שבהן נדרש אימות דו-שלבי."
 
 #. Hint under the set-aside button in the required-action modal when the user is in no community that triggers the check. This is the common case. Do not phrase it as undoing a join.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:284
@@ -39730,11 +39765,6 @@ msgstr "הקהילה שלך מופיעה בגילוי. ניתן לעדכן את 
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:349
 msgid "Your community needs at least {minMemberCount, plural, one {# member} other {# members}} before it can be listed in Discovery."
 msgstr "הקהילה שלך צריכה לפחות {minMemberCount, plural, one {חבר אחד} two {# חברים} other {# חברים}} כדי שתוכל להופיע בגילוי."
-
-#. Tooltip on the passive badge on your own screen-share tile when the encoder is limited by CPU.
-#: src/features/voice/components/voice_participant_tile/shared.ts:85
-msgid "Your CPU cannot keep up, so viewers are getting fewer frames than you asked for."
-msgstr "המעבד שלך לא עומד בקצב, ולכן הצופים מקבלים פחות פריימים ממה שביקשת."
 
 #. Body copy on the mature content check callback page after a successful check submission.
 #: src/features/auth/components/pages/MatureContentCheckCallbackPage.tsx:14
@@ -39867,11 +39897,6 @@ msgstr "ההודעה שלך לא עודכנה"
 msgid "Your most recent purchase is no longer within the refund window. Contact support for billing issues."
 msgstr "הרכישה האחרונה שלך אינה עומדת עוד בחלון הזמן להחזר כספי. צור קשר עם התמיכה בנושאי חיוב."
 
-#. Tooltip on the passive badge on your own screen-share tile when the encoder is limited by bandwidth.
-#: src/features/voice/components/voice_participant_tile/shared.ts:89
-msgid "Your network cannot keep up, so viewers are getting fewer frames than you asked for."
-msgstr "הרשת שלך לא עומדת בקצב, ולכן הצופים מקבלים פחות פריימים ממה שביקשת."
-
 #. Placeholder text inside the new email field. Sentence-fragment hint, intentionally lowercase.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:88
 msgid "your new email"
@@ -39931,14 +39956,19 @@ msgstr "האזור שלך"
 msgid "Your registration needs an extra anti-spam check before you can continue."
 msgstr "ההרשמה שלך דורשת בדיקה נוספת למניעת ספאם לפני שתוכל להמשיך."
 
+#. Video settings note shown when the saved screen share quality is above what this account can send. Resolutions are short labels such as 1440p or Source and rates are whole numbers. FPS is a technical token.
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:92
+msgid "Your saved {savedResolution} at {savedFrameRate} FPS needs {premiumProductName}, so shares use {resolution} at {frameRate} FPS."
+msgstr "האיכות ששמרת של {savedResolution} ב- {savedFrameRate} FPS דורשת {premiumProductName}, לכן השיתופים משתמשים ב- {resolution} ב- {frameRate} FPS."
+
 #. Body of a modal shown when the video codec the browser negotiated for an active screen share is outside the codecs the app allows and no allowed codec could be published, which forces the share to stop.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:124
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:131
 msgctxt "screen-share"
 msgid "Your screen share could not be published with a compatible video codec, so it was stopped. Try sharing again."
 msgstr "לא ניתן היה לפרסם את שיתוף המסך שלך בקודק וידאו תואם, ולכן הוא הופסק. נסה לשתף שוב."
 
 #. Subtitle under the preview-paused overlay reassuring the user that the screen share is still live for others.
-#: src/features/voice/components/voice_participant_tile/shared.ts:66
+#: src/features/voice/components/voice_participant_tile/shared.ts:64
 msgid "Your stream is still live"
 msgstr "השידור שלך עדיין פעיל"
 
@@ -40031,7 +40061,7 @@ msgid "Your vanity URL has been set to {inviteEndpoint}/{vanitySlug}"
 msgstr "כתובת ה-URL המותאמת אישית שלך הוגדרה ל-{inviteEndpoint}/{vanitySlug}"
 
 #. Body of a modal shown when the local video encoder produces no frames for an active screen share, which forces the share to stop.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:131
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:138
 msgctxt "screen-share"
 msgid "Your video encoder stopped encoding frames, so your screen share was stopped. Try sharing again."
 msgstr "מקודד הווידאו שלך הפסיק לקודד פריימים, ולכן שיתוף המסך שלך הופסק. נסה לשתף שוב."

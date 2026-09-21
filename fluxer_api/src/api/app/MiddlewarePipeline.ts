@@ -29,10 +29,19 @@ interface MiddlewarePipelineOptions {
 	trustClientIpHeader: boolean;
 	clientIpHeaderName?: string;
 	maxInflightRequests: number;
+	torExitBlockingEnabled: boolean;
 }
 
 export function configureMiddleware(routes: HonoApp, options: MiddlewarePipelineOptions): void {
-	const {logger, nodeEnv, corsOrigins, trustClientIpHeader, clientIpHeaderName, maxInflightRequests} = options;
+	const {
+		logger,
+		nodeEnv,
+		corsOrigins,
+		trustClientIpHeader,
+		clientIpHeaderName,
+		maxInflightRequests,
+		torExitBlockingEnabled,
+	} = options;
 	const resolvedHeader = resolveClientIpHeaderName(clientIpHeaderName);
 	routes.use('/webhooks/:webhook_id/:token', cors({origins: '*'}));
 	routes.use('/webhooks/:webhook_id/:token/messages/:message_id', cors({origins: '*'}));
@@ -86,7 +95,9 @@ export function configureMiddleware(routes: HonoApp, options: MiddlewarePipeline
 			}),
 		);
 	}
-	routes.use(TorExitMiddleware);
+	if (torExitBlockingEnabled) {
+		routes.use(TorExitMiddleware);
+	}
 	routes.use(AuditLogMiddleware);
 	// Echowire: upstream reworked RequireClientIpMiddleware to take {exemptPaths}
 	// and resolve the client IP from Config.proxy.client_ip_header (single header)

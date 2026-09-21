@@ -79,18 +79,9 @@ export interface MasterConfig {
 		buckets: {
 			cdn: string;
 			uploads: string;
-			downloads: string;
 			reports: string;
 			harvests: string;
 		};
-	};
-	s3_downloads?: {
-		endpoint: string;
-		presigned_url_base?: string;
-		force_path_style?: boolean;
-		region?: string;
-		access_key_id?: string;
-		secret_access_key?: string;
 	};
 	services: {
 		api: {
@@ -101,9 +92,7 @@ export interface MasterConfig {
 			ip_ban_exempt_ips: Array<string>;
 			additional_cors_origins: Array<string>;
 			donation_proxy_key: string;
-			desktop_github_redirect_countries: Array<string>;
 			presigned_attachment_uploads_enabled: boolean;
-			presigned_downloads_enabled: boolean;
 			presigned_harvest_downloads_enabled: boolean;
 			unfurl_ignored_hosts: Array<string>;
 			embeds: {
@@ -152,6 +141,9 @@ export interface MasterConfig {
 				max_body_bytes: number;
 				token_ttl_secs: number;
 				keep_direct_countries: Array<string>;
+			};
+			attachment_urls: {
+				secrets_base64: Array<string>;
 			};
 		};
 		gateway: {
@@ -296,15 +288,16 @@ export interface MasterConfig {
 		blocklist_feeds: {
 			enabled?: boolean;
 		};
+		tor_exit_list: {
+			enabled?: boolean;
+		};
+		breached_password_check: {
+			enabled?: boolean;
+		};
 		risk_integration: {
 			enabled: boolean;
 			ipinfo_api_key: string;
 			account_policy_dsl?: unknown;
-			tor: {
-				block_all_relays: boolean;
-				reverse_dns_heuristic: boolean;
-				reverse_dns_timeout_ms: number;
-			};
 		};
 		push: {
 			apns: {

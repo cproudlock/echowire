@@ -102,7 +102,6 @@ function defaultConfig(): MasterConfig {
 			buckets: {
 				cdn: 'fluxer',
 				uploads: 'fluxer-uploads',
-				downloads: 'fluxer-downloads',
 				reports: 'fluxer-reports',
 				harvests: 'fluxer-harvests',
 			},
@@ -116,9 +115,7 @@ function defaultConfig(): MasterConfig {
 				ip_ban_exempt_ips: [],
 				additional_cors_origins: DEFAULT_ADDITIONAL_CORS_ORIGINS,
 				donation_proxy_key: '',
-				desktop_github_redirect_countries: [],
 				presigned_attachment_uploads_enabled: false,
-				presigned_downloads_enabled: false,
 				presigned_harvest_downloads_enabled: true,
 				unfurl_ignored_hosts: [],
 				embeds: {
@@ -154,6 +151,9 @@ function defaultConfig(): MasterConfig {
 					max_body_bytes: 524_288_000,
 					token_ttl_secs: 900,
 					keep_direct_countries: [],
+				},
+				attachment_urls: {
+					secrets_base64: [],
 				},
 			},
 			gateway: {
@@ -262,15 +262,12 @@ function defaultConfig(): MasterConfig {
 				},
 			},
 			blocklist_feeds: {},
+			tor_exit_list: {},
+			breached_password_check: {},
 			risk_integration: {
 				enabled: false,
 				ipinfo_api_key: '',
 				account_policy_dsl: undefined,
-				tor: {
-					block_all_relays: false,
-					reverse_dns_heuristic: false,
-					reverse_dns_timeout_ms: 750,
-				},
 			},
 			push: {
 				apns: {
@@ -364,6 +361,28 @@ function validateUploadRelaySecret(value: string, mode: string): void {
 	}
 	if (Buffer.from(trimmed, 'base64').length < 32) {
 		throw new Error('FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64 must decode to at least 32 bytes');
+	}
+}
+
+function isCanonicalStandardBase64(value: string): boolean {
+	if (!/^[A-Za-z0-9+/]+={0,2}$/u.test(value)) {
+		return false;
+	}
+	return Buffer.from(value, 'base64').toString('base64') === value;
+}
+
+function validateAttachmentUrlSecrets(values: Array<string>): void {
+	for (const value of values) {
+		const trimmed = value.trim();
+		if (trimmed.length === 0) {
+			continue;
+		}
+		if (!isCanonicalStandardBase64(trimmed)) {
+			throw new Error('FLUXER_MEDIA_PROXY_ATTACHMENT_URL_SECRETS_BASE64 entries must be standard base64');
+		}
+		if (Buffer.from(trimmed, 'base64').length < 32) {
+			throw new Error('FLUXER_MEDIA_PROXY_ATTACHMENT_URL_SECRETS_BASE64 entries must decode to at least 32 bytes');
+		}
 	}
 }
 
@@ -588,6 +607,7 @@ function normalizeConfig(config: MasterConfig): MasterConfig {
 	requireString(config.s3?.secret_access_key, 'FLUXER_S3_SECRET_ACCESS_KEY');
 	requireString(config.services.media_proxy.secret_key, 'FLUXER_MEDIA_PROXY_SECRET_KEY');
 	validateUploadRelaySecret(config.services.media_proxy.upload_relay.secret_base64, config.services.media_proxy.mode);
+	validateAttachmentUrlSecrets(config.services.media_proxy.attachment_urls.secrets_base64);
 	requireString(config.services.admin.secret_key_base, 'FLUXER_ADMIN_SECRET_KEY_BASE');
 	requireString(config.services.admin.oauth_client_secret, 'FLUXER_ADMIN_OAUTH_CLIENT_SECRET');
 	requireString(config.services.gateway.rpc_auth_token, 'FLUXER_GATEWAY_RPC_AUTH_TOKEN');
@@ -636,10 +656,6 @@ function applyPublicPort(config: MasterConfig, endpoints: DerivedEndpoints): Mas
 		},
 		endpoints: normalizedEndpoints,
 		s3: config.s3 && {...config.s3, presigned_url_base: normalizeOptional(config.s3.presigned_url_base)},
-		s3_downloads: config.s3_downloads && {
-			...config.s3_downloads,
-			presigned_url_base: normalizeOptional(config.s3_downloads.presigned_url_base),
-		},
 		services: {
 			...config.services,
 			media_proxy: {

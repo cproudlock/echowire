@@ -4,6 +4,7 @@ import {ME} from '@fluxer/constants/src/AppConstants';
 
 export const Endpoints = {
 	INSTANCE: '/instance',
+	ATTACHMENTS_REFRESH_URLS: '/attachments/refresh-urls',
 	AUTH_LOGIN: '/auth/login',
 	AUTH_LOGIN_MFA_TOTP: '/auth/login/mfa/totp',
 	AUTH_LOGIN_MFA_WEBAUTHN_OPTIONS: '/auth/login/mfa/webauthn/authentication-options',
@@ -179,6 +180,7 @@ export const Endpoints = {
 	USER_MFA_WEBAUTHN_CREDENTIALS: '/users/@me/mfa/webauthn/credentials',
 	USER_MFA_WEBAUTHN_REGISTRATION_OPTIONS: '/users/@me/mfa/webauthn/credentials/registration-options',
 	USER_MFA_WEBAUTHN_CREDENTIAL: (credentialId: string) => `/users/@me/mfa/webauthn/credentials/${credentialId}`,
+	USER_MFA_WEBAUTHN_TWO_FACTOR: '/users/@me/mfa/webauthn/two-factor',
 	USER_PHONE_SEND_VERIFICATION: '/users/@me/phone/send-verification',
 	USER_PHONE_INBOUND_CHALLENGE: '/users/@me/phone/inbound-challenge',
 	USER_PHONE_VERIFY: '/users/@me/phone/verify',

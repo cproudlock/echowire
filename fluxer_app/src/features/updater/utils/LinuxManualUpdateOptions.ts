@@ -30,9 +30,13 @@ const LINUX_MANUAL_ARCH_TOKENS: Record<LinuxManualDownloadFormat, Record<LinuxDo
 	tar_gz: {x64: 'x64', arm64: 'arm64'},
 };
 
+// Echowire: this instance has no api. subdomain, so both channels fall back to the
+// site's own /api path. Updater.ts passes the configured endpoint explicitly, so these
+// only apply if that argument is ever dropped, but a wrong fallback would build links
+// to an upstream host.
 const DEFAULT_API_ENDPOINTS: Record<DesktopDownloadChannel, string> = {
-	stable: 'https://api.fluxer.app',
-	canary: 'https://api.canary.fluxer.app',
+	stable: 'https://echowire.org/api',
+	canary: 'https://echowire.org/api',
 };
 
 interface ParsedLinuxDownloadUrl {

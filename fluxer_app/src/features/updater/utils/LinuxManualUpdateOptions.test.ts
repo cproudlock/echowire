@@ -15,8 +15,8 @@ vi.mock('@app/features/app/config/Config', () => ({
 
 const REPORTED_VERSION = '2026.908.173325';
 const NEWER_VERSION = '2026.909.202036';
-const CANARY_X64 = 'https://api.canary.fluxer.app/dl/desktop/canary/linux/x64';
-const STABLE_X64 = 'https://api.fluxer.app/dl/desktop/stable/linux/x64';
+const CANARY_X64 = 'https://echowire.org/api/dl/desktop/canary/linux/x64';
+const STABLE_X64 = 'https://echowire.org/api/dl/desktop/stable/linux/x64';
 
 function desktopMainOptions(params: {
 	linkBase: string;
@@ -156,19 +156,19 @@ describe('buildLinuxManualUpdateOptions', () => {
 	it('uses arm64 links and file name tokens on arm64 systems', () => {
 		const expected = [
 			{
-				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/appimage`,
+				url: `https://echowire.org/api/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/appimage`,
 				suggestedName: `echowire-${REPORTED_VERSION}-linux-arm64.AppImage`,
 			},
 			{
-				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
+				url: `https://echowire.org/api/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
 				suggestedName: `echowire-${REPORTED_VERSION}-linux-arm64.deb`,
 			},
 			{
-				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/rpm`,
+				url: `https://echowire.org/api/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/rpm`,
 				suggestedName: `echowire-${REPORTED_VERSION}-linux-aarch64.rpm`,
 			},
 			{
-				url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/tar_gz`,
+				url: `https://echowire.org/api/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/tar_gz`,
 				suggestedName: `echowire-${REPORTED_VERSION}-linux-arm64.tar.gz`,
 			},
 		];
@@ -178,11 +178,11 @@ describe('buildLinuxManualUpdateOptions', () => {
 			version: REPORTED_VERSION,
 		});
 		const fromLatestLink = buildLinuxManualUpdateOptions({
-			downloadUrl: 'https://api.fluxer.app/dl/desktop/stable/linux/arm64/latest/appimage',
+			downloadUrl: 'https://echowire.org/api/dl/desktop/stable/linux/arm64/latest/appimage',
 			version: REPORTED_VERSION,
 		});
 		const fromPinnedLink = buildLinuxManualUpdateOptions({
-			downloadUrl: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
+			downloadUrl: `https://echowire.org/api/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
 			version: REPORTED_VERSION,
 		});
 		for (const options of [fromDesktopInfo, fromLatestLink, fromPinnedLink]) {
@@ -221,7 +221,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 		const proxiedCanaryLink = buildLinuxManualUpdateOptions({
 			downloadUrl: 'https://web.canary.fluxer.app/api/dl/desktop/canary/linux/x64/latest/deb',
 			version: REPORTED_VERSION,
-			apiEndpoint: 'https://api.fluxer.app',
+			apiEndpoint: 'https://echowire.org/api',
 		});
 		expect(stable[1].url).toBe(`${STABLE_X64}/${REPORTED_VERSION}/deb`);
 		expect(canary[1].url).toBe(`${CANARY_X64}/${REPORTED_VERSION}/deb`);
@@ -239,7 +239,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 			channel: 'canary',
 			arch: 'x64',
 			version: REPORTED_VERSION,
-			apiEndpoint: 'https://api.canary.fluxer.app',
+			apiEndpoint: 'https://echowire.org/api',
 			knownOptions: desktopMainOptions({
 				linkBase: CANARY_X64,
 				productName: 'echowire-canary',
@@ -285,7 +285,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 
 	it('ignores a download link that is not for Linux', () => {
 		const options = buildLinuxManualUpdateOptions({
-			downloadUrl: 'https://api.fluxer.app/dl/desktop/stable/darwin/arm64/latest/dmg?test=1',
+			downloadUrl: 'https://echowire.org/api/dl/desktop/stable/darwin/arm64/latest/dmg?test=1',
 			channel: 'canary',
 			arch: 'x64',
 			version: REPORTED_VERSION,
@@ -307,7 +307,7 @@ describe('buildLinuxManualUpdateOptions', () => {
 				{
 					format: 'deb',
 					label: 'DEB package',
-					url: `https://api.fluxer.app/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
+					url: `https://echowire.org/api/dl/desktop/stable/linux/arm64/${REPORTED_VERSION}/deb`,
 					suggestedName: `echowire-${REPORTED_VERSION}-linux-amd64.deb`,
 					sha256: 'arm64-deb',
 				},

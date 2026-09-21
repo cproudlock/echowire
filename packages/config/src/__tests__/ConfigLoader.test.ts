@@ -660,7 +660,6 @@ describe('ConfigLoader', () => {
 		expect(config.integrations.breached_password_check.enabled).toBe(false);
 	});
 
-	test('leaves Bluesky login off with no legal URLs by default', async () => {
 	// Echowire: the fork ships Bluesky login on, pointing at its own legal pages,
 	// where upstream ships it off with no URLs.
 	test('enables Bluesky login with the fork legal URLs by default', async () => {

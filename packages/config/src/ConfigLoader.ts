@@ -115,6 +115,7 @@ function defaultConfig(): MasterConfig {
 				ip_ban_exempt_ips: [],
 				additional_cors_origins: DEFAULT_ADDITIONAL_CORS_ORIGINS,
 				donation_proxy_key: '',
+				desktop_github_redirect_countries: [],
 				presigned_attachment_uploads_enabled: false,
 				presigned_harvest_downloads_enabled: true,
 				unfurl_ignored_hosts: [],

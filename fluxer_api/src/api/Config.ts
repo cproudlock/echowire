@@ -91,6 +91,18 @@ function normalizeIpBanExemptIps(values: Array<string>): Array<string> {
 	return Array.from(normalized);
 }
 
+function normalizeCountryCodes(values: Array<string>, configName: string): ReadonlySet<string> {
+	const normalized = new Set<string>();
+	for (const value of values) {
+		const countryCode = value.trim().toUpperCase();
+		if (!/^[A-Z]{2}$/u.test(countryCode)) {
+			throw new Error(`${configName} contains an invalid ISO 3166-1 alpha-2 country code: ${value}`);
+		}
+		normalized.add(countryCode);
+	}
+	return normalized;
+}
+
 function mapPushProviderApps(
 	apps:
 		| Array<{

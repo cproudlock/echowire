@@ -279,6 +279,9 @@ function applyVoiceProcessingDefaultsMigrationV1(parsed: Record<string, unknown>
 	// Clear per-device overrides so the Custom profile applies on every input device.
 	parsed.voiceProcessingModeByDeviceLabel = {};
 	parsed.voiceProcessingDefaultsMigratedV1 = true;
+	return true;
+}
+
 function applyScreenShareFrameRateFloorMigrationV1(parsed: Record<string, unknown>): boolean {
 	if (!ScreenShareDeliveryRollout.enabled) {
 		return false;

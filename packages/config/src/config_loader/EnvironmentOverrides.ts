@@ -79,6 +79,10 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_API_IP_BAN_EXEMPT_IPS: {path: ['services', 'api', 'ip_ban_exempt_ips'], parse: parseCsv},
 	FLUXER_API_ADDITIONAL_CORS_ORIGINS: {path: ['services', 'api', 'additional_cors_origins'], parse: parseCsv},
 	FLUXER_API_DONATION_PROXY_KEY: {path: ['services', 'api', 'donation_proxy_key']},
+	FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES: {
+		path: ['services', 'api', 'desktop_github_redirect_countries'],
+		parse: parseCsv,
+	},
 	FLUXER_API_PRESIGNED_ATTACHMENT_UPLOADS_ENABLED: {
 		path: ['services', 'api', 'presigned_attachment_uploads_enabled'],
 		parse: parseBoolean,

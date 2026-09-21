@@ -1302,3 +1302,288 @@ mod tests {
         );
     }
 }
+
+// Echowire: the fork keeps publishing desktop artifacts to its own R2 bucket, because it has
+// no equivalent of upstream's pkgs.fluxer.com and its API serves downloads and updates from R2.
+// Upstream #2847 retired its downloads bucket and deleted these S3 helpers along with it, so
+// they are carried here for the fork's build-desktop publish pipeline.
+
+pub(crate) fn s3_directory_prefix(prefix: &str) -> String {
+    let prefix = prefix.trim_matches('/');
+    if prefix.is_empty() {
+        String::new()
+    } else {
+        format!("{prefix}/")
+    }
+}
+
+pub(crate) fn join_s3_key(prefix: &str, child: &str) -> String {
+    let prefix = prefix.trim_matches('/');
+    let child = child.trim_matches('/');
+    match (prefix.is_empty(), child.is_empty()) {
+        (true, true) => String::new(),
+        (true, false) => child.to_string(),
+        (false, true) => prefix.to_string(),
+        (false, false) => format!("{prefix}/{child}"),
+    }
+}
+
+fn safe_download_target(target: &Path, relative: &str) -> Result<PathBuf> {
+    let candidate = Path::new(relative);
+    for component in candidate.components() {
+        ensure!(
+            matches!(component, std::path::Component::Normal(_)),
+            "Refusing to write S3 object outside download target: {relative}"
+        );
+    }
+    Ok(target.join(candidate))
+}
+
+pub(crate) fn count_files_min_depth(root: &Path, min_depth: usize) -> Result<usize> {
+    let mut count = 0;
+    for entry in WalkDir::new(root).min_depth(min_depth) {
+        if entry?.file_type().is_file() {
+            count += 1;
+        }
+    }
+    Ok(count)
+}
+
+pub(crate) fn directory_upload_plan<F>(
+    prefix: &str,
+    root: &Path,
+    include: F,
+) -> Result<Vec<S3UploadPlanItem>>
+where
+    F: Fn(&Path) -> bool,
+{
+    Ok(collect_files(root)?
+        .into_iter()
+        .filter_map(|file| {
+            let relative = file.strip_prefix(root).ok()?;
+            if !include(relative) {
+                return None;
+            }
+            let key = join_s3_key(prefix, &path_to_s3_key(relative));
+            Some(S3UploadPlanItem::new(file, key).with_detected_content_type())
+        })
+        .collect::<Vec<_>>())
+}
+
+async fn send_s3_get_object(
+    client: &S3Client,
+    bucket: &str,
+    key: &str,
+) -> Result<aws_sdk_s3::operation::get_object::GetObjectOutput> {
+    let attempts = s3_retry_attempts();
+    for attempt in 1..=attempts {
+        match client.get_object().bucket(bucket).key(key).send().await {
+            Ok(response) => return Ok(response),
+            Err(error) => {
+                let code = error
+                    .as_service_error()
+                    .and_then(|error| error.code())
+                    .map(ToOwned::to_owned);
+                let status = error
+                    .raw_response()
+                    .map(|response| response.status().as_u16());
+                if is_retryable_s3_error(code.as_deref(), status) && attempt < attempts {
+                    sleep_before_s3_retry(
+                        "read",
+                        &format!("s3://{bucket}/{key}"),
+                        attempt,
+                        attempts,
+                        code.as_deref(),
+                        status,
+                    )
+                    .await;
+                    continue;
+                }
+                let summary = s3_error_summary(code.as_deref(), status);
+                return Err(error)
+                    .with_context(|| format!("Failed to read s3://{bucket}/{key}{summary}"));
+            }
+        }
+    }
+    unreachable!("S3 retry attempts are always greater than zero")
+}
+
+pub(crate) async fn get_s3_object_bytes(
+    client: &S3Client,
+    bucket: &str,
+    key: &str,
+) -> Result<bytes::Bytes> {
+    let object = send_s3_get_object(client, bucket, key).await?;
+    Ok(object
+        .body
+        .collect()
+        .await
+        .with_context(|| format!("Failed to collect s3://{bucket}/{key} body"))?
+        .into_bytes())
+}
+
+pub(crate) async fn list_s3_keys(
+    client: &S3Client,
+    bucket: &str,
+    prefix: &str,
+) -> Result<Vec<String>> {
+    Ok(list_s3_objects(client, bucket, prefix)
+        .await?
+        .into_iter()
+        .map(|object| object.key)
+        .collect())
+}
+
+pub(crate) async fn download_s3_prefix(
+    client: &S3Client,
+    bucket: &str,
+    prefix: &str,
+    target: &Path,
+) -> Result<()> {
+    let list_prefix = s3_directory_prefix(prefix);
+    let keys = list_s3_keys(client, bucket, &list_prefix).await?;
+    for key in keys {
+        let relative = key
+            .strip_prefix(&list_prefix)
+            .unwrap_or(&key)
+            .trim_start_matches('/');
+        if relative.is_empty() {
+            continue;
+        }
+        let output = safe_download_target(target, relative)?;
+        if let Some(parent) = output.parent() {
+            tokio::fs::create_dir_all(parent)
+                .await
+                .with_context(|| format!("Failed to create {}", parent.display()))?;
+        }
+        let bytes = get_s3_object_bytes(client, bucket, &key).await?;
+        tokio::fs::write(&output, bytes)
+            .await
+            .with_context(|| format!("Failed to write {}", output.display()))?;
+        println!("Downloaded s3://{bucket}/{key} -> {}", output.display());
+    }
+    Ok(())
+}
+
+async fn put_file_to_s3_overwrite(
+    client: &S3Client,
+    bucket: &str,
+    item: &S3UploadPlanItem,
+) -> Result<()> {
+    println!(
+        "Overwriting {} -> s3://{bucket}/{}",
+        item.path.display(),
+        item.key
+    );
+    let identity = s3_file_identity(&item.path)?;
+    let attempts = s3_retry_attempts();
+    for attempt in 1..=attempts {
+        let body = ByteStream::from_path(&item.path)
+            .await
+            .with_context(|| format!("Failed to read {}", item.path.display()))?;
+        let mut request = client
+            .put_object()
+            .bucket(bucket)
+            .key(&item.key)
+            .content_md5(identity.md5_base64.clone())
+            .body(body);
+        if let Some(content_type) = &item.content_type {
+            request = request.content_type(content_type);
+        }
+        if let Some(cache_control) = &item.cache_control {
+            request = request.cache_control(cache_control);
+        }
+        match request.send().await {
+            Ok(_) => return Ok(()),
+            Err(error) => {
+                let code = error
+                    .as_service_error()
+                    .and_then(|error| error.code())
+                    .map(ToOwned::to_owned);
+                let status = error
+                    .raw_response()
+                    .map(|response| response.status().as_u16());
+                if is_retryable_s3_error(code.as_deref(), status) && attempt < attempts {
+                    sleep_before_s3_retry(
+                        "overwrite upload",
+                        &format!("s3://{bucket}/{}", item.key),
+                        attempt,
+                        attempts,
+                        code.as_deref(),
+                        status,
+                    )
+                    .await;
+                    continue;
+                }
+                let summary = s3_error_summary(code.as_deref(), status);
+                return Err(error).with_context(|| {
+                    format!(
+                        "Failed to overwrite upload s3://{bucket}/{}{summary}",
+                        item.key
+                    )
+                });
+            }
+        }
+    }
+    unreachable!("S3 retry attempts are always greater than zero")
+}
+
+pub(crate) async fn upload_s3_plan_overwrite(
+    client: &S3Client,
+    bucket: &str,
+    plan: Vec<S3UploadPlanItem>,
+) -> Result<S3UploadStats> {
+    ensure_unique_s3_keys(&plan)?;
+    let concurrency = s3_write_concurrency();
+    let semaphore = Arc::new(Semaphore::new(concurrency));
+    let bucket = bucket.to_string();
+    let mut tasks = JoinSet::new();
+    for item in plan {
+        let permit = semaphore
+            .clone()
+            .acquire_owned()
+            .await
+            .context("S3 upload semaphore closed")?;
+        let client = client.clone();
+        let bucket = bucket.clone();
+        tasks.spawn(async move {
+            let _permit = permit;
+            put_file_to_s3_overwrite(&client, &bucket, &item)
+                .await
+                .with_context(|| {
+                    format!("Failed overwrite upload for s3://{}/{}", bucket, item.key)
+                })?;
+            Ok::<_, anyhow::Error>(S3UploadDisposition::Uploaded)
+        });
+    }
+
+    let mut stats = S3UploadStats::default();
+    while let Some(result) = tasks.join_next().await {
+        match result.context("S3 upload task failed")?? {
+            S3UploadDisposition::Uploaded => stats.uploaded += 1,
+            S3UploadDisposition::SkippedExisting => stats.skipped_existing += 1,
+            S3UploadDisposition::MetadataRepaired => stats.metadata_repaired += 1,
+        }
+    }
+
+    Ok(stats)
+}
+
+pub(crate) async fn upload_directory_to_s3<F>(
+    client: &S3Client,
+    bucket: &str,
+    prefix: &str,
+    root: &Path,
+    include: F,
+) -> Result<()>
+where
+    F: Fn(&Path) -> bool,
+{
+    let plan = directory_upload_plan(prefix, root, include)?;
+    let stats = upload_s3_plan_append_only(client, bucket, plan).await?;
+    println!(
+        "Append-only upload complete for s3://{bucket}/{prefix}: uploaded {}, skipped existing {}",
+        stats.uploaded, stats.skipped_existing
+    );
+    Ok(())
+}

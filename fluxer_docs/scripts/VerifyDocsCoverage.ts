@@ -75,22 +75,6 @@ const MAIN_SPEC_EXEMPT = new Map<string, {file: string; anchor: string; reason: 
 		},
 	],
 	[
-		'GET /dl/desktop/{}/{}/{}/latest/{}.zsync',
-		{
-			file: DOWNLOAD_CONTROLLER,
-			anchor: '`${DESKTOP_REDIRECT_PREFIX}/:channel/:plat/:arch/latest/:format{[a-z_]+\\\\.zsync}`,',
-			reason: 'the path constrains :format by regex and has no OpenAPI path template',
-		},
-	],
-	[
-		'GET /dl/desktop/{}/{}/{}/{}/{}.zsync',
-		{
-			file: DOWNLOAD_CONTROLLER,
-			anchor: '`${DESKTOP_REDIRECT_PREFIX}/:channel/:plat/:arch/:version/:format{[a-z_]+\\\\.zsync}`,',
-			reason: 'the path constrains :format by regex and has no OpenAPI path template',
-		},
-	],
-	[
 		'GET /dl/{}',
 		{
 			file: DOWNLOAD_CONTROLLER,
@@ -179,18 +163,6 @@ const EXEMPTION_RULES: ReadonlyArray<ExemptionRule> = [
 			{file: 'fluxer_api/src/api/test/TestHarnessController.ts', anchor: 'function ensureHarnessAccess'},
 		],
 		covers: (_shape, routePath) => routePath.startsWith('/test/'),
-	},
-	{
-		name: 'deprecated desktop download redirect',
-		justification:
-			'every /dl route is an undocumented deprecated redirect onto pkgs.fluxer.com, kept only for desktop clients already in the field. Nothing current calls one, so documenting them would advertise a path new callers must not use',
-		anchors: [
-			{
-				file: 'fluxer_api/src/api/download/DownloadController.ts',
-				anchor: 'function redirectToPackageOrigin',
-			},
-		],
-		covers: (_shape, routePath) => routePath === '/dl' || routePath.startsWith('/dl/'),
 	},
 	{
 		name: 'backported separately',

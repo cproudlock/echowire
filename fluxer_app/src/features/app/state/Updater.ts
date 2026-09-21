@@ -414,6 +414,7 @@ class Updater {
 			channel: this.channel ?? Config.PUBLIC_RELEASE_CHANNEL,
 			arch: this.desktopArch,
 			version: event.version ?? null,
+			apiEndpoint: Config.PUBLIC_BOOTSTRAP_API_PUBLIC_ENDPOINT,
 			knownOptions: options,
 		});
 	}

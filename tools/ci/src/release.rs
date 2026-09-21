@@ -1266,9 +1266,15 @@ mod tests {
             asset_for("darwin/x64/RELEASES.json"),
             asset_for("darwin/x64/releases.json")
         );
+        // Echowire: derive the product prefix rather than hardcoding upstream branding, so this
+        // test tracks desktop_release_product instead of drifting back to Fluxer names.
+        let dmg = format!(
+            "{}-{SAMPLE_VERSION}-mac-universal.dmg",
+            desktop_release_product(SAMPLE_CHANNEL).unwrap()
+        );
         assert_eq!(
-            asset_for("darwin/x64/Fluxer-Canary-2026.913.210037-mac-universal.dmg"),
-            asset_for("darwin/arm64/Fluxer-Canary-2026.913.210037-mac-universal.dmg")
+            asset_for(&format!("darwin/x64/{dmg}")),
+            asset_for(&format!("darwin/arm64/{dmg}"))
         );
         assert_ne!(
             asset_for("darwin/x64/RELEASES.json"),

@@ -99,7 +99,6 @@ enum DesktopStep {
     BuildAppMacos,
     VerifyBundleId,
     BuildAppWindows,
-    CheckSigningSecrets,
     ValidateWindowsSigningInputs,
     WriteWindowsSigningMetadata,
     ResolveWindowsUnpackedDir,
@@ -219,7 +218,6 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
         DesktopStep::BuildAppMacos => build_app_step(DesktopBuildPlatform::Macos),
         DesktopStep::VerifyBundleId => verify_bundle_id_step(),
         DesktopStep::BuildAppWindows => build_app_step(DesktopBuildPlatform::Windows),
-        DesktopStep::CheckSigningSecrets => check_signing_secrets_step(),
         DesktopStep::ValidateWindowsSigningInputs => validate_windows_signing_inputs_step(),
         DesktopStep::WriteWindowsSigningMetadata => write_windows_signing_metadata_step(),
         DesktopStep::ResolveWindowsUnpackedDir => resolve_windows_unpacked_dir_step(),
@@ -1793,23 +1791,6 @@ const TRUSTED_SIGNING_EXCLUDED_CREDENTIALS: &[&str] = &[
     "AzureDeveloperCliCredential",
     "InteractiveBrowserCredential",
 ];
-
-// Echowire: the fork gates Windows signing on whether the Azure Trusted Signing secrets are
-// present, because a fork clone has none and the whole sign_windows job has to be skippable.
-// Upstream has no equivalent job, so this step is fork-only. The build-desktop workflow has
-// dispatched check_signing_secrets since the signing job was added, but the step was never
-// implemented, so that job could only ever fail; this supplies it.
-fn check_signing_secrets_step() -> Result<()> {
-    let enabled = env::var("AZURE_CLIENT_ID")
-        .map(|value| !value.trim().is_empty())
-        .unwrap_or(false);
-    println!(
-        "Azure Trusted Signing secrets {}; Windows signing is {}.",
-        if enabled { "present" } else { "absent" },
-        if enabled { "enabled" } else { "skipped" }
-    );
-    append_github_output(&[("enabled", if enabled { "true" } else { "false" })])
-}
 
 fn validate_windows_signing_inputs_step() -> Result<()> {
     let missing = WINDOWS_SIGNING_ENV

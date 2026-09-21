@@ -15,7 +15,12 @@ class ThreadMembers {
 	private readonly byThread = observable.map<string, Array<ThreadMemberEntry>>();
 
 	constructor() {
-		makeObservable(this);
+		makeObservable(this, {
+			setMembers: action,
+			addMember: action,
+			handleGatewayReady: action,
+			removeMember: action,
+		});
 	}
 
 	getMembers(threadId: string): ReadonlyArray<ThreadMemberEntry> {
@@ -31,12 +36,10 @@ class ThreadMembers {
 		return (this.byThread.get(threadId) ?? []).some((member) => member.userId === userId);
 	}
 
-	@action
 	setMembers(threadId: string, members: Array<ThreadMemberEntry>): void {
 		this.byThread.set(threadId, members);
 	}
 
-	@action
 	addMember(threadId: string, member: ThreadMemberEntry): void {
 		const existing = this.byThread.get(threadId);
 		if (!existing) {
@@ -51,7 +54,6 @@ class ThreadMembers {
 	// Echowire: the caller's own memberships from the session payload. Each row names one thread
 	// the caller has joined, so it is merged in as a self-membership rather than a full member list:
 	// READY says nothing about who else is in a thread.
-	@action
 	handleGatewayReady(rows: ReadonlyArray<{id: string; user_id: string; join_timestamp: string}>): void {
 		const currentUserId = Authentication.currentUserId;
 		if (!currentUserId) return;
@@ -68,7 +70,6 @@ class ThreadMembers {
 		}
 	}
 
-	@action
 	removeMember(threadId: string, userId: string): void {
 		const existing = this.byThread.get(threadId);
 		if (existing) {

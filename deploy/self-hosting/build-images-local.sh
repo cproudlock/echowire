@@ -34,7 +34,7 @@ IMAGES=(
 	"fluxer-unfurl|fluxer_unfurl/Dockerfile|"
 	"fluxer-users|fluxer_users/Dockerfile|"
 	"fluxer-marketing|fluxer_marketing/Dockerfile|"
-	"fluxer-app-proxy-self-hosted|fluxer_app_proxy/Dockerfile|--build-arg FLUXER_APP_PROXY_TIME_FREEZE_ENABLED=false"
+	"fluxer-app-proxy-self-hosted|fluxer_app_proxy/Dockerfile|"
 )
 
 build() {

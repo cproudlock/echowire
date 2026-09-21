@@ -67,8 +67,15 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_S3_SECRET_ACCESS_KEY: {path: ['s3', 'secret_access_key']},
 	FLUXER_S3_BUCKET_CDN: {path: ['s3', 'buckets', 'cdn']},
 	FLUXER_S3_BUCKET_UPLOADS: {path: ['s3', 'buckets', 'uploads']},
+	FLUXER_S3_BUCKET_DOWNLOADS: {path: ['s3', 'buckets', 'downloads']},
 	FLUXER_S3_BUCKET_REPORTS: {path: ['s3', 'buckets', 'reports']},
 	FLUXER_S3_BUCKET_HARVESTS: {path: ['s3', 'buckets', 'harvests']},
+	FLUXER_S3_DOWNLOADS_ENDPOINT: {path: ['s3_downloads', 'endpoint']},
+	FLUXER_S3_DOWNLOADS_PUBLIC_ENDPOINT: {path: ['s3_downloads', 'presigned_url_base']},
+	FLUXER_S3_DOWNLOADS_FORCE_PATH_STYLE: {path: ['s3_downloads', 'force_path_style'], parse: parseBoolean},
+	FLUXER_S3_DOWNLOADS_REGION: {path: ['s3_downloads', 'region']},
+	FLUXER_S3_DOWNLOADS_ACCESS_KEY_ID: {path: ['s3_downloads', 'access_key_id']},
+	FLUXER_S3_DOWNLOADS_SECRET_ACCESS_KEY: {path: ['s3_downloads', 'secret_access_key']},
 	FLUXER_NATS_URL: {path: ['services', 'nats', 'core_url']},
 	FLUXER_NATS_JETSTREAM_URL: {path: ['services', 'nats', 'jetstream_url']},
 	FLUXER_NATS_AUTH_TOKEN: {path: ['services', 'nats', 'auth_token']},
@@ -85,6 +92,10 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	},
 	FLUXER_API_PRESIGNED_ATTACHMENT_UPLOADS_ENABLED: {
 		path: ['services', 'api', 'presigned_attachment_uploads_enabled'],
+		parse: parseBoolean,
+	},
+	FLUXER_API_PRESIGNED_DOWNLOADS_ENABLED: {
+		path: ['services', 'api', 'presigned_downloads_enabled'],
 		parse: parseBoolean,
 	},
 	FLUXER_API_PRESIGNED_HARVEST_DOWNLOADS_ENABLED: {

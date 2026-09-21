@@ -79,9 +79,18 @@ export interface MasterConfig {
 		buckets: {
 			cdn: string;
 			uploads: string;
+			downloads: string;
 			reports: string;
 			harvests: string;
 		};
+	};
+	s3_downloads?: {
+		endpoint: string;
+		presigned_url_base?: string;
+		force_path_style?: boolean;
+		region?: string;
+		access_key_id?: string;
+		secret_access_key?: string;
 	};
 	services: {
 		api: {
@@ -94,6 +103,7 @@ export interface MasterConfig {
 			donation_proxy_key: string;
 			desktop_github_redirect_countries: Array<string>;
 			presigned_attachment_uploads_enabled: boolean;
+			presigned_downloads_enabled: boolean;
 			presigned_harvest_downloads_enabled: boolean;
 			unfurl_ignored_hosts: Array<string>;
 			embeds: {

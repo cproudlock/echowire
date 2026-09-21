@@ -1697,7 +1697,13 @@ module.exports = {
 	},
 	deb: {
 		packageCategory: 'net',
-		// Echowire: supersede the old `fluxer` package on upgrade.
+		desktop: {
+			entry: linuxDesktopEntryWithActions,
+			desktopActions: linuxDesktopActions,
+		},
+		// Echowire: supersede the old `fluxer` package on upgrade, alongside upstream's own
+		// superseding of `fluxer-app`. Both legacy names have to be replaced, so the two
+		// argument lists are unioned rather than one overwriting the other.
 		fpm: [
 			'--replaces',
 			legacyLinuxPackageName,
@@ -1705,12 +1711,8 @@ module.exports = {
 			legacyLinuxPackageName,
 			'--provides',
 			legacyLinuxPackageName,
+			...legacyLinuxStableDebFpmArgs,
 		],
-		desktop: {
-			entry: linuxDesktopEntryWithActions,
-			desktopActions: linuxDesktopActions,
-		},
-		fpm: legacyLinuxStableDebFpmArgs,
 		depends: [
 			'libgtk-3-0t64 | libgtk-3-0',
 			'libnotify4',
@@ -1735,7 +1737,15 @@ module.exports = {
 		afterRemove: 'packaging/linux/rpm-after-remove.tpl',
 		// Echowire: keep the rpm build-id link args + supersede the old `fluxer` package.
 		// fpm has no --obsoletes flag; for RPM it maps --replaces to the Obsoletes tag.
-		fpm: [...rpmBuildIdLinkFpmArgs, '--replaces', legacyLinuxPackageName, '--provides', legacyLinuxPackageName],
+		fpm: [
+			...rpmBuildIdLinkFpmArgs,
+			'--replaces',
+			legacyLinuxPackageName,
+			'--provides',
+			legacyLinuxPackageName,
+			...legacyLinuxStableRpmFpmArgs,
+			...legacyLinuxOptDirRpmFpmArgs,
+		],
 		depends: [
 			'gtk3',
 			'libnotify',

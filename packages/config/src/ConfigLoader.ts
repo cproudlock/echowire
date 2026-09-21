@@ -102,6 +102,7 @@ function defaultConfig(): MasterConfig {
 			buckets: {
 				cdn: 'fluxer',
 				uploads: 'fluxer-uploads',
+				downloads: 'fluxer-downloads',
 				reports: 'fluxer-reports',
 				harvests: 'fluxer-harvests',
 			},
@@ -117,6 +118,7 @@ function defaultConfig(): MasterConfig {
 				donation_proxy_key: '',
 				desktop_github_redirect_countries: [],
 				presigned_attachment_uploads_enabled: false,
+				presigned_downloads_enabled: false,
 				presigned_harvest_downloads_enabled: true,
 				unfurl_ignored_hosts: [],
 				embeds: {
@@ -657,6 +659,10 @@ function applyPublicPort(config: MasterConfig, endpoints: DerivedEndpoints): Mas
 		},
 		endpoints: normalizedEndpoints,
 		s3: config.s3 && {...config.s3, presigned_url_base: normalizeOptional(config.s3.presigned_url_base)},
+		s3_downloads: config.s3_downloads && {
+			...config.s3_downloads,
+			presigned_url_base: normalizeOptional(config.s3_downloads.presigned_url_base),
+		},
 		services: {
 			...config.services,
 			media_proxy: {

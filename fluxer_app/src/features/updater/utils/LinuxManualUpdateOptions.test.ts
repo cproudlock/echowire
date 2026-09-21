@@ -260,29 +260,28 @@ describe('buildLinuxManualUpdateOptions', () => {
 		}
 	});
 
-	it.each([
-		'v2026.908.173325',
-		'2026.908',
-		'2026.908.173325-beta',
-	])('treats the off-shape version %s as unknown', (version) => {
-		const options = buildLinuxManualUpdateOptions({
-			downloadUrl: `${STABLE_X64}/latest/appimage`,
-			version,
-			knownOptions: desktopMainOptions({
-				linkBase: STABLE_X64,
-				productName: 'echowire',
+	it.each(['v2026.908.173325', '2026.908', '2026.908.173325-beta'])(
+		'treats the off-shape version %s as unknown',
+		(version) => {
+			const options = buildLinuxManualUpdateOptions({
+				downloadUrl: `${STABLE_X64}/latest/appimage`,
 				version,
-				linkVersion: 'latest',
-			}),
-		});
-		expect(options[1]).toEqual({
-			format: 'deb',
-			label: 'DEB package',
-			url: `${STABLE_X64}/latest/deb`,
-			suggestedName: 'echowire-latest-linux-amd64.deb',
-			sha256: null,
-		});
-	});
+				knownOptions: desktopMainOptions({
+					linkBase: STABLE_X64,
+					productName: 'echowire',
+					version,
+					linkVersion: 'latest',
+				}),
+			});
+			expect(options[1]).toEqual({
+				format: 'deb',
+				label: 'DEB package',
+				url: `${STABLE_X64}/latest/deb`,
+				suggestedName: 'echowire-latest-linux-amd64.deb',
+				sha256: null,
+			});
+		},
+	);
 
 	it('ignores a download link that is not for Linux', () => {
 		const options = buildLinuxManualUpdateOptions({

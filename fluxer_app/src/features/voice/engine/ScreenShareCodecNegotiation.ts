@@ -2,7 +2,6 @@
 
 import {getDesktopTroubleshootingSettings} from '@app/features/devtools/utils/DesktopTroubleshootingUtils';
 import {Logger} from '@app/features/platform/utils/AppLogger';
-import {isFirefoxBrowser} from '@app/features/ui/utils/NativeUtils';
 import {
 	computeDecodableByKnownParticipants,
 	type FluxerVideoCodecName,
@@ -34,21 +33,15 @@ import {loadNativeHardwareEncoderCapabilities} from '@app/features/voice/utils/N
 import {
 	buildScreenShareCodecAdvertisements,
 	CODEC_PREFERENCE,
-	type CodecNegotiationSelection,
-	computeNegotiatedVideoCodec,
 	countUnknownScreenShareParticipants,
 	type FluxerCodecAdvertisement,
 	type FluxerCodecName,
 	type FluxerCodecType,
-	type FluxerVideoCodecName,
-	getDecodeSet,
-	getEncodeSet,
 	isScreenShareCodecUpgrade,
 	type NegotiationReason,
 	rankScreenShareCodecs,
 	SCREEN_SHARE_CODEC_ADVERTISEMENT_GRACE_MS,
 	SCREEN_SHARE_CODEC_CHANGE_SUPPRESSION_MS,
-	VIDEO_CODEC_NAMES,
 } from '@app/features/voice/utils/ScreenShareCodecSelection';
 import {
 	getScreenShareDecodeFailures,
@@ -95,43 +88,8 @@ const CODEC_PRIORITY_MAX = 65_535;
 // opt-in that is off by default (getScreenShareAv1OptIn, checked in the publish policy), and
 // ranks hardware codecs ahead of software ones, so that list is gone and this ordering relies on
 // upstream's ranking instead. AV1 has always been, and remains, fully supported for RECEIVING.
-const CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['av1', 'h265', 'h264', 'vp9', 'vp8'];
 const COMPATIBILITY_FALLBACK_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['h264', 'vp9', 'vp8'];
 const BASELINE_VIDEO_CODEC: VideoCodec = 'vp8';
-const VIDEO_CODEC_PROTOCOL_TABLE: Record<
-	VideoCodec,
-	{
-		payloadType: number;
-		rtxPayloadType: number;
-		priority: number;
-	}
-> = {
-	av1: {payloadType: 101, rtxPayloadType: 102, priority: 5000},
-	h265: {payloadType: 105, rtxPayloadType: 106, priority: 4000},
-	h264: {payloadType: 103, rtxPayloadType: 104, priority: 3000},
-	vp9: {payloadType: 109, rtxPayloadType: 110, priority: 2000},
-	vp8: {payloadType: 107, rtxPayloadType: 108, priority: 1000},
-};
-
-type FluxerCodecName = 'opus' | FluxerVideoCodecName;
-type FluxerCodecType = 'audio' | 'video';
-export type NegotiationReason =
-	| 'connected'
-	| 'data'
-	| 'participant-connected'
-	| 'participant-disconnected'
-	| 'reconnected'
-	| 'manual';
-
-export interface FluxerCodecAdvertisement {
-	name: FluxerCodecName;
-	type: FluxerCodecType;
-	payload_type: number;
-	rtx_payload_type?: number;
-	priority: number;
-	encode?: boolean;
-	decode?: boolean;
-}
 
 export interface FluxerSelectProtocolMessage {
 	op: typeof SELECT_PROTOCOL_OP;
@@ -270,6 +228,8 @@ export function computeNegotiatedVideoCodec(
 		unknownParticipants,
 		decodableByKnownParticipants: computeDecodableByKnownParticipants(remoteCodecs),
 	};
+}
+
 export function buildLocalCodecAdvertisements(
 	order: ReadonlyArray<VideoCodec> = getScreenShareCodecPreferenceOrder(),
 ): Array<FluxerCodecAdvertisement> {

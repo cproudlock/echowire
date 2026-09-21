@@ -19,6 +19,7 @@ import {createNcmecApiConfig, NcmecReporter} from '@app/api/csam/NcmecReporter';
 import {NcmecRepository} from '@app/api/csam/NcmecRepository';
 import {NcmecSubmissionService} from '@app/api/csam/NcmecSubmissionService';
 import {DonationRepository} from '@app/api/donation/DonationRepository';
+import {DownloadService} from '@app/api/download/DownloadService';
 import {createEmailProvider} from '@app/api/email/EmailProviderFactory';
 import {FavoriteMemeRepository} from '@app/api/favorite_meme/FavoriteMemeRepository';
 import {GatewayRequestService} from '@app/api/gateway/GatewayRequestService';
@@ -45,7 +46,7 @@ import {KVActivityTracker} from '@app/api/infrastructure/KVActivityTracker';
 import {KVBulkMessageDeletionQueueService} from '@app/api/infrastructure/KVBulkMessageDeletionQueueService';
 import {NatsUnfurlerService} from '@app/api/infrastructure/NatsUnfurlerService';
 import {PremiumStateReconciliationQueueService} from '@app/api/infrastructure/PremiumStateReconciliationQueueService';
-import {createStorageService} from '@app/api/infrastructure/StorageServiceFactory';
+import {createDownloadsStorageService, createStorageService} from '@app/api/infrastructure/StorageServiceFactory';
 import {UserCacheService} from '@app/api/infrastructure/UserCacheService';
 import {createUsersServiceClient} from '@app/api/infrastructure/UsersServiceClient';
 import {VirusScanService} from '@app/api/infrastructure/VirusScanService';
@@ -216,6 +217,10 @@ export const getStorageService: () => IStorageService = (() => {
 	const fallback = singleton(() => createStorageService());
 	return () => _injectedStorageService ?? fallback();
 })();
+const getDownloadsStorageService: () => IStorageService = (() => {
+	const override = singleton(() => createDownloadsStorageService());
+	return () => override() ?? getStorageService();
+})();
 export const getErrorI18nService = singleton(() => new ErrorI18nService());
 let limitConfigServiceInstance: LimitConfigService | null = null;
 export const getLimitConfigService = singleton(
@@ -299,6 +304,7 @@ export function getKVAccountDeletionQueue(): KVAccountDeletionQueueService {
 	return accountDeletionQueue;
 }
 
+export const getDownloadService = singleton(() => new DownloadService(getDownloadsStorageService()));
 export const getThemeService = singleton(() => new ThemeService(getStorageService()));
 const getNcmecReporter = singleton(() => new NcmecReporter({config: createNcmecApiConfig(), fetch}));
 const getNcmecRepository = singleton(() => new NcmecRepository());

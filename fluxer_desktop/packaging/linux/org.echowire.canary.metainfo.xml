@@ -42,7 +42,7 @@
         <color type="primary">#FFA600</color>
     </branding>
     <screenshots>
-        <screenshot type="default">
+        <screenshot type="default" xml:lang="en">
             <caption>The main echowire window.</caption>
             <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.avif</image>
         </screenshot>

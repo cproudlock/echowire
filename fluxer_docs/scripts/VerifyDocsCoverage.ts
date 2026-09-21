@@ -192,6 +192,7 @@ const MEDIA_PROXY_ROUTES = new Map([
 	['HEAD /_health', '.route("/_health", get(routes::ops::health))'],
 	['GET /_metrics', '.route("/_metrics", get(routes::ops::metrics_handler))'],
 	['POST /_metadata', '.route("/_metadata", post(routes::internal::metadata_handler))'],
+	['POST /_sniff', '.route("/_sniff", post(routes::internal::sniff_handler))'],
 	['POST /_thumbnail', '.route("/_thumbnail", post(routes::internal::thumbnail_handler))'],
 	['POST /_frames', '.route("/_frames", post(routes::internal::frames_handler))'],
 	[
@@ -438,6 +439,25 @@ for (const [route, {documentedIn}] of OUT_OF_BAND_CREDENTIAL) {
 	}
 }
 failures += section('stale anchors (the code moved, update this script)', staleAnchors);
+
+const mediaProxyRouterSource = await readFile(path.join(MEDIA_PROXY_SERVER_DIR, 'runtime.rs'), 'utf8');
+const mediaProxyRegisteredPaths = [...mediaProxyRouterSource.matchAll(/\.route\(\s*"([^"]+)"/gu)].map((match) =>
+	match[1].replace(/\{[^}]*\}/gu, '{}'),
+);
+const mediaProxyListedPaths = new Set([...MEDIA_PROXY_ROUTES.keys()].map((shape) => shape.split(' ')[1]));
+const unlistedMediaProxyPaths = [...new Set(mediaProxyRegisteredPaths)]
+	.filter((routePath) => !mediaProxyListedPaths.has(routePath))
+	.map((routePath) => `${routePath}: build_router registers it and MEDIA_PROXY_ROUTES does not name it`)
+	.sort();
+if (mediaProxyRegisteredPaths.length === 0) {
+	unlistedMediaProxyPaths.push(
+		'fluxer_media_proxy/src/server/runtime.rs registers no route, so this check has gone blind',
+	);
+}
+failures += section('registered by fluxer_media_proxy but absent from this script', unlistedMediaProxyPaths);
+console.log(
+	`  routes registered in fluxer_media_proxy/src/server/runtime.rs: ${mediaProxyRegisteredPaths.length.toString()}`,
+);
 
 const mediaProxyDocumented = documented.filter((route) => route.file.startsWith('media-proxy/'));
 const adminDocumented = documented.filter(
@@ -1617,27 +1637,15 @@ console.log('unthrottled routes and global bucket claims');
 	const problems: Array<string> = [];
 	const uniquePublic = [...new Set(publicUnthrottled)].sort();
 
-	const unthrottledByDesign = new Set([
-		'GET /dl/desktop/{}/{}/{}/latest',
-		'GET /dl/desktop/{}/{}/{}/latest/{}',
-		'GET /dl/desktop/{}/{}/{}/versions',
-		'GET /dl/desktop/{}/{}/{}/{}/{}',
-	]);
-	const unexpected = uniquePublic.filter((shape) => !unthrottledByDesign.has(shape));
-	const nowThrottled = [...unthrottledByDesign].filter((shape) => !uniquePublic.includes(shape)).sort();
+	const unexpected = uniquePublic;
 
 	if (unexpected.length > 0) {
 		problems.push(
-			`rate-limits.md says every HTTP API operation outside the desktop downloads declares a bucket, but ${unexpected.length.toString()} more declare none: ${unexpected.join(', ')}`,
+			`rate-limits.md says every HTTP API operation declares a bucket, but ${unexpected.length.toString()} declare none: ${unexpected.join(', ')}`,
 		);
 	}
-	if (nowThrottled.length > 0) {
-		problems.push(
-			`rate-limits.md names the desktop downloads as the only operations with no bucket, but ${nowThrottled.length.toString()} now declare one: ${nowThrottled.join(', ')}`,
-		);
-	}
-	if (!page.includes('[desktop download](/http-api/downloads/)')) {
-		problems.push('rate-limits.md no longer names the desktop downloads as the operations with no bucket');
+	if (!page.includes('Every HTTP API and Admin API operation declares a bucket')) {
+		problems.push('rate-limits.md no longer states that every operation declares a bucket');
 	}
 	if (adminUnthrottled.length > 0) {
 		const named = adminUnthrottled.map((entry) => `${entry.method} ${entry.route}`).sort();

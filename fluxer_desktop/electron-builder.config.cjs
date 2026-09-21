@@ -7,11 +7,15 @@ const os = require('node:os');
 const path = require('node:path');
 const {promisify} = require('node:util');
 const execFileAsync = promisify(execFile);
-// Echowire: the brand is lowercase. productName names the macOS bundle, the Windows exe and the
-// Linux /opt directory; none of those carry user data (UserDataPath.ts keys that off 'fluxer'),
-// and appId, the Velopack pack id and the Linux package names are unchanged, so installs upgrade
-// in place.
+// Echowire: the brand is lowercase. productName names the macOS bundle and the Windows exe;
+// neither carries user data (UserDataPath.ts keys that off 'fluxer'), and appId, the Velopack
+// pack id and the Linux package names are unchanged, so installs upgrade in place. Upstream
+// added a separate Linux /opt directory name, which the fork follows to keep that path free of
+// the space in the canary product name.
+const isLinuxBuild = process.argv.includes('--linux');
 const productName = isCanary ? 'echowire canary' : 'echowire';
+const linuxOptDirName = isCanary ? 'echowire-canary' : 'echowire';
+const installedProductName = isLinuxBuild ? linuxOptDirName : productName;
 // Echowire: artifact names must not contain the space in productName. The release contract on
 // both ends (tools/ci release.rs and the API DesktopReleaseContract) only accepts
 // [A-Za-z0-9._-] in storage keys and GitHub asset names, and the updater looks for this
@@ -35,8 +39,22 @@ const rpmBuildIdLinkFpmArgs = [
 	'--rpm-rpmbuild-define',
 	'_missing_build_ids_terminate_build 0',
 ];
+const legacyLinuxStableDebPackageName = 'fluxer-app';
+const legacyLinuxStableRpmPackageName = 'fluxer_app';
+const legacyLinuxStablePackageNames = {
+	'.deb': legacyLinuxStableDebPackageName,
+	'.rpm': legacyLinuxStableRpmPackageName,
+};
+const legacyLinuxStableDebFpmArgs = isCanary
+	? []
+	: ['--replaces', legacyLinuxStableDebPackageName, '--conflicts', legacyLinuxStableDebPackageName];
+const legacyLinuxStableRpmFpmArgs = isCanary
+	? []
+	: ['--replaces', legacyLinuxStableRpmPackageName, '--conflicts', legacyLinuxStableRpmPackageName];
+const legacyLinuxCanaryOptDir = '/opt/Fluxer Canary';
+const legacyLinuxOptDirSweepScript = path.resolve(__dirname, 'packaging/linux/rpm-post-transaction.sh');
+const legacyLinuxOptDirRpmFpmArgs = isCanary ? ['--rpm-posttrans', legacyLinuxOptDirSweepScript] : [];
 const macOSMinimumSystemVersion = '13.0';
-const isLinuxBuild = process.argv.includes('--linux');
 const isMacBuild = process.argv.includes('--mac');
 const isWindowsBuild = process.argv.includes('--win');
 const targetPlatform = isLinuxBuild ? 'linux' : isMacBuild ? 'darwin' : isWindowsBuild ? 'win32' : process.platform;
@@ -56,6 +74,12 @@ if (electronArch && !supportedMacTargetArchs.includes(electronArch)) {
 
 if (targetNativeArch === 'universal' && targetPlatform !== 'darwin') {
 	throw new Error(`ELECTRON_ARCH=universal is only supported for macOS builds, received platform ${targetPlatform}`);
+}
+
+if (isLinuxBuild && /\s/.test(linuxOptDirName)) {
+	throw new Error(
+		`Linux install directory /opt/${linuxOptDirName} contains whitespace. Chromium splits the SUID sandbox path on spaces, so the zygote fails to start on hosts without unprivileged user namespaces.`,
+	);
 }
 
 const targetArchs = electronArch && electronArch !== 'universal' ? [electronArch] : supportedTargetArchs;
@@ -340,7 +364,8 @@ const linuxDesktopEntryWithActions = {
 	...linuxDesktopEntry,
 	Actions: linuxDesktopActionList,
 };
-const linuxInstalledExecPath = quoteDesktopExecArg(path.posix.join('/opt', productName, linuxPackageName));
+const linuxInstalledBinaryPath = path.posix.join('/opt', linuxOptDirName, linuxPackageName);
+const linuxInstalledExecPath = quoteDesktopExecArg(linuxInstalledBinaryPath);
 const linuxDesktopActions = {
 	'open-settings': {
 		Name: 'Open Settings',
@@ -564,7 +589,7 @@ async function expectedNativeRuntimeArtifactsForAppDir(platform, arch, appDir) {
 			}
 		}
 	} catch (error) {
-		if (!error || error.code !== 'ENOENT') throw error;
+		if (error?.code !== 'ENOENT') throw error;
 	}
 	for (const libraryName of [...linuxWebAuthnRuntimeLibraries].sort()) {
 		artifacts.push({
@@ -824,7 +849,7 @@ async function addLinuxLegacyBinarySymlink(context) {
 	try {
 		await fs.symlink(currentName, linkPath);
 	} catch (error) {
-		if (!error || error.code !== 'EEXIST') throw error;
+		if (error?.code !== 'EEXIST') throw error;
 	}
 }
 
@@ -1267,8 +1292,193 @@ async function verifyAppImageArtifactsUseSandboxAwareLauncher(buildResult) {
 	throw new Error(lines.join('\n'));
 }
 
+async function readRpmPostUninstallScriptlet(artifactPath) {
+	try {
+		const {stdout} = await execFileAsync('rpm', ['-qp', '--qf', '%{POSTUN}', artifactPath], {
+			maxBuffer: 16 * 1024 * 1024,
+		});
+		return stdout;
+	} catch (error) {
+		if (error && error.code === 'ENOENT') {
+			throw new Error(`Cannot inspect RPM artifact ${artifactPath}: rpm executable is not available.`);
+		}
+		const stderr = typeof error?.stderr === 'string' ? error.stderr.trim() : '';
+		throw new Error(`Cannot inspect RPM artifact ${artifactPath}: ${stderr || error?.message || String(error)}`);
+	}
+}
+
+async function verifyRpmArtifactsSurviveASamePathUpgrade(buildResult) {
+	const rpmArtifacts = (buildResult.artifactPaths ?? []).filter(
+		(artifactPath) => path.extname(artifactPath) === '.rpm',
+	);
+	const guard = `if [ ! -e '${linuxInstalledBinaryPath}' ]; then`;
+	const violations = [];
+	for (const artifactPath of rpmArtifacts) {
+		const scriptlet = await readRpmPostUninstallScriptlet(artifactPath);
+		if (!scriptlet.includes('update-alternatives --remove')) continue;
+		if (
+			scriptlet.indexOf(guard) === -1 ||
+			scriptlet.indexOf(guard) > scriptlet.indexOf('update-alternatives --remove')
+		) {
+			violations.push(artifactPath);
+		}
+	}
+	if (violations.length === 0) return;
+
+	const lines = [
+		'RPM %postun must not remove the /usr/bin alternative unless the installed binary is already gone.',
+		'rpm runs the new %post before the old %postun and passes the old one $1=1, so an unguarded removal deletes the',
+		'alternative the new %post just registered whenever both versions install into the same /opt directory.',
+		"rpm runs the old package's %postun, so this guard only protects upgrades from builds that already have it,",
+		'not the first upgrade onto this build.',
+		`Expected the scriptlet to open with ${guard}`,
+	];
+	for (const artifactPath of violations) {
+		lines.push(`  - ${path.basename(artifactPath)}`);
+	}
+	throw new Error(lines.join('\n'));
+}
+
+async function readRpmPostTransactionScriptlet(artifactPath) {
+	try {
+		const {stdout} = await execFileAsync('rpm', ['-qp', '--qf', '%{POSTTRANS}', artifactPath], {
+			maxBuffer: 16 * 1024 * 1024,
+		});
+		return stdout === '(none)' ? '' : stdout;
+	} catch (error) {
+		if (error && error.code === 'ENOENT') {
+			throw new Error(`Cannot inspect RPM artifact ${artifactPath}: rpm executable is not available.`);
+		}
+		const stderr = typeof error?.stderr === 'string' ? error.stderr.trim() : '';
+		throw new Error(`Cannot inspect RPM artifact ${artifactPath}: ${stderr || error?.message || String(error)}`);
+	}
+}
+
+async function verifyRpmArtifactsSweepTheRenamedInstallDirectory(buildResult) {
+	if (!isCanary) return;
+	const rpmArtifacts = (buildResult.artifactPaths ?? []).filter(
+		(artifactPath) => path.extname(artifactPath) === '.rpm',
+	);
+	const violations = [];
+	for (const artifactPath of rpmArtifacts) {
+		const scriptlet = await readRpmPostTransactionScriptlet(artifactPath);
+		const detail = !scriptlet.includes(legacyLinuxCanaryOptDir)
+			? `does not reference ${legacyLinuxCanaryOptDir}`
+			: !scriptlet.includes('rmdir')
+				? 'does not sweep the directory with rmdir'
+				: /\brm\s+-[a-zA-Z]*[rf]/.test(scriptlet)
+					? 'removes files rather than only empty directories'
+					: null;
+		if (detail !== null) {
+			violations.push({artifactPath, detail});
+		}
+	}
+	if (violations.length === 0) return;
+
+	const lines = [
+		`RPM %posttrans must sweep the empty ${legacyLinuxCanaryOptDir} skeleton left by the /opt rename.`,
+		'fpm emits no directory entries for rpm, so the old directories survive the upgrade unowned by any package and',
+		'survive a later uninstall too. The sweep must stay rmdir-based so it can never delete a live install.',
+	];
+	for (const {artifactPath, detail} of violations) {
+		lines.push(`  - ${path.basename(artifactPath)}: ${detail}`);
+	}
+	throw new Error(lines.join('\n'));
+}
+
+async function readDebControlField(artifactPath, field) {
+	try {
+		const {stdout} = await execFileAsync('dpkg-deb', ['-f', artifactPath, field], {
+			maxBuffer: 1024 * 1024,
+		});
+		return stdout;
+	} catch (error) {
+		if (error && error.code === 'ENOENT') {
+			throw new Error(`Cannot inspect DEB artifact ${artifactPath}: dpkg-deb executable is not available.`);
+		}
+		const stderr = typeof error?.stderr === 'string' ? error.stderr.trim() : '';
+		throw new Error(`Cannot inspect DEB artifact ${artifactPath}: ${stderr || error?.message || String(error)}`);
+	}
+}
+
+async function readRpmRelationNames(artifactPath, queryFlag) {
+	try {
+		const {stdout} = await execFileAsync('rpm', ['-qp', queryFlag, artifactPath], {
+			maxBuffer: 1024 * 1024,
+		});
+		return stdout;
+	} catch (error) {
+		if (error && error.code === 'ENOENT') {
+			throw new Error(`Cannot inspect RPM artifact ${artifactPath}: rpm executable is not available.`);
+		}
+		const stderr = typeof error?.stderr === 'string' ? error.stderr.trim() : '';
+		throw new Error(`Cannot inspect RPM artifact ${artifactPath}: ${stderr || error?.message || String(error)}`);
+	}
+}
+
+function parsePackageRelationNames(output) {
+	return output
+		.split(/[\r\n,]+/)
+		.map((entry) => entry.trim())
+		.filter((entry) => entry && entry !== '(none)')
+		.map((entry) => entry.split(/\s+/)[0]);
+}
+
+async function readLinuxPackageReplacementNames(artifactPath) {
+	if (path.extname(artifactPath) === '.deb') {
+		return {
+			replaces: parsePackageRelationNames(await readDebControlField(artifactPath, 'Replaces')),
+			conflicts: parsePackageRelationNames(await readDebControlField(artifactPath, 'Conflicts')),
+		};
+	}
+	return {
+		replaces: parsePackageRelationNames(await readRpmRelationNames(artifactPath, '--obsoletes')),
+		conflicts: parsePackageRelationNames(await readRpmRelationNames(artifactPath, '--conflicts')),
+	};
+}
+
+async function verifyLinuxPackagesDeclareTheLegacyStableReplacement(buildResult) {
+	const packageArtifacts = (buildResult.artifactPaths ?? []).filter((artifactPath) =>
+		['.deb', '.rpm'].includes(path.extname(artifactPath)),
+	);
+	const violations = [];
+	for (const artifactPath of packageArtifacts) {
+		const legacyName = legacyLinuxStablePackageNames[path.extname(artifactPath)];
+		const {replaces, conflicts} = await readLinuxPackageReplacementNames(artifactPath);
+		const declared = [
+			...(replaces.includes(legacyName) ? ['replaces'] : []),
+			...(conflicts.includes(legacyName) ? ['conflicts'] : []),
+		];
+		if (isCanary && declared.length > 0) {
+			violations.push({
+				artifactPath,
+				detail: `canary declares ${declared.join(' and ')} on ${legacyName}, which belongs to stable only`,
+			});
+		} else if (!isCanary && declared.length !== 2) {
+			violations.push({
+				artifactPath,
+				detail: `stable declares ${declared.join(' and ') || 'neither'} on ${legacyName}, expected both`,
+			});
+		}
+	}
+	if (violations.length === 0) return;
+
+	const lines = [
+		'Stable Linux package artifact(s) must declare both the replaces and the conflicts relation on the legacy package.',
+		'Without both, dpkg aborts every legacy install on the file-overwrite check and dnf models the new package as a',
+		'second install that coexists with the old one. Canary never shipped under the legacy names, so it declares neither.',
+	];
+	for (const {artifactPath, detail} of violations) {
+		lines.push(`  - ${path.basename(artifactPath)}: ${detail}`);
+	}
+	throw new Error(lines.join('\n'));
+}
+
 async function verifyLinuxArtifactContracts(buildResult) {
 	await verifyRpmArtifactsDoNotOwnBuildIds(buildResult);
+	await verifyRpmArtifactsSurviveASamePathUpgrade(buildResult);
+	await verifyRpmArtifactsSweepTheRenamedInstallDirectory(buildResult);
+	await verifyLinuxPackagesDeclareTheLegacyStableReplacement(buildResult);
 	await verifyLinuxPackagesContainAppArmorProfile(buildResult);
 	await verifyAppImageArtifactsGlibcCompatibility(buildResult);
 	await verifyAppImageArtifactsDoNotNeedFuse2(buildResult);
@@ -1277,7 +1487,7 @@ async function verifyLinuxArtifactContracts(buildResult) {
 
 module.exports = {
 	appId,
-	productName,
+	productName: installedProductName,
 	copyright: 'Copyright © 2026 echowire',
 	artifactName: `${artifactProductName}-\${version}-\${os}-\${arch}.\${ext}`,
 	directories: {
@@ -1487,7 +1697,13 @@ module.exports = {
 	},
 	deb: {
 		packageCategory: 'net',
-		// Echowire: supersede the old `fluxer` package on upgrade.
+		desktop: {
+			entry: linuxDesktopEntryWithActions,
+			desktopActions: linuxDesktopActions,
+		},
+		// Echowire: supersede the old `fluxer` package on upgrade, alongside upstream's own
+		// superseding of `fluxer-app`. Both legacy names have to be replaced, so the two
+		// argument lists are unioned rather than one overwriting the other.
 		fpm: [
 			'--replaces',
 			legacyLinuxPackageName,
@@ -1495,23 +1711,20 @@ module.exports = {
 			legacyLinuxPackageName,
 			'--provides',
 			legacyLinuxPackageName,
+			...legacyLinuxStableDebFpmArgs,
 		],
-		desktop: {
-			entry: linuxDesktopEntryWithActions,
-			desktopActions: linuxDesktopActions,
-		},
 		depends: [
-			'libgtk-3-0',
+			'libgtk-3-0t64 | libgtk-3-0',
 			'libnotify4',
 			'libnss3',
 			'libxss1',
 			'libxtst6',
 			'xdg-utils',
-			'libatspi2.0-0',
+			'libatspi2.0-0t64 | libatspi2.0-0',
 			'libuuid1',
 			'libsecret-1-0',
 			'libpulse0',
-			'libpipewire-0.3-0',
+			'libpipewire-0.3-0t64 | libpipewire-0.3-0',
 			'libstdc++6',
 			'libgcc-s1',
 		],
@@ -1521,9 +1734,18 @@ module.exports = {
 			entry: linuxDesktopEntryWithActions,
 			desktopActions: linuxDesktopActions,
 		},
+		afterRemove: 'packaging/linux/rpm-after-remove.tpl',
 		// Echowire: keep the rpm build-id link args + supersede the old `fluxer` package.
 		// fpm has no --obsoletes flag; for RPM it maps --replaces to the Obsoletes tag.
-		fpm: [...rpmBuildIdLinkFpmArgs, '--replaces', legacyLinuxPackageName, '--provides', legacyLinuxPackageName],
+		fpm: [
+			...rpmBuildIdLinkFpmArgs,
+			'--replaces',
+			legacyLinuxPackageName,
+			'--provides',
+			legacyLinuxPackageName,
+			...legacyLinuxStableRpmFpmArgs,
+			...legacyLinuxOptDirRpmFpmArgs,
+		],
 		depends: [
 			'gtk3',
 			'libnotify',

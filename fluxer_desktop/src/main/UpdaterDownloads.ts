@@ -80,7 +80,7 @@ function isLinuxManualDesktopFormat(format: ManualDesktopFormat): format is Linu
 	return format === 'appimage' || format === 'deb' || format === 'rpm' || format === 'tar_gz';
 }
 
-function buildManualVersionDownloadUrl(version: string, format: ManualDesktopFormat): string {
+export function buildManualVersionDownloadUrl(version: string, format: ManualDesktopFormat): string {
 	return `${UPDATE_BASE_URL}/${version}/${format}`;
 }
 

@@ -1617,7 +1617,7 @@ export function TestHarnessController(app: HonoApp) {
 					'[test/worker/process-pending-deletions] Processing deletion',
 				);
 				const user = await userRepository.findUnique(userId);
-				if (!user || !user.pendingDeletionAt) {
+				if (!user?.pendingDeletionAt) {
 					Logger.info(
 						{
 							userId: userId.toString(),

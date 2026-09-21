@@ -173,6 +173,10 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 		path: ['services', 'media_proxy', 'upload_relay', 'keep_direct_countries'],
 		parse: parseCsv,
 	},
+	FLUXER_MEDIA_PROXY_ATTACHMENT_URL_SECRETS_BASE64: {
+		path: ['services', 'media_proxy', 'attachment_urls', 'secrets_base64'],
+		parse: parseCsv,
+	},
 	FLUXER_ADMIN_PORT: {path: ['services', 'admin', 'port'], parse: parseInteger},
 	FLUXER_ADMIN_BASE_PATH: {path: ['services', 'admin', 'base_path']},
 	FLUXER_ADMIN_SECRET_KEY_BASE: {path: ['services', 'admin', 'secret_key_base']},
@@ -337,23 +341,16 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 		parse: parseInteger,
 	},
 	FLUXER_BLOCKLIST_FEEDS_ENABLED: {path: ['integrations', 'blocklist_feeds', 'enabled'], parse: parseBoolean},
+	FLUXER_TOR_EXIT_LIST_ENABLED: {path: ['integrations', 'tor_exit_list', 'enabled'], parse: parseBoolean},
+	FLUXER_BREACHED_PASSWORD_CHECK_ENABLED: {
+		path: ['integrations', 'breached_password_check', 'enabled'],
+		parse: parseBoolean,
+	},
 	FLUXER_RISK_INTEGRATION_ENABLED: {path: ['integrations', 'risk_integration', 'enabled'], parse: parseBoolean},
 	FLUXER_RISK_IPINFO_API_KEY: {path: ['integrations', 'risk_integration', 'ipinfo_api_key']},
 	FLUXER_ACCOUNT_POLICY_DSL: {
 		path: ['integrations', 'risk_integration', 'account_policy_dsl'],
 		parse: parseEnvValue,
-	},
-	FLUXER_RISK_TOR_BLOCK_ALL_RELAYS: {
-		path: ['integrations', 'risk_integration', 'tor', 'block_all_relays'],
-		parse: parseBoolean,
-	},
-	FLUXER_RISK_TOR_REVERSE_DNS_HEURISTIC: {
-		path: ['integrations', 'risk_integration', 'tor', 'reverse_dns_heuristic'],
-		parse: parseBoolean,
-	},
-	FLUXER_RISK_TOR_REVERSE_DNS_TIMEOUT_MS: {
-		path: ['integrations', 'risk_integration', 'tor', 'reverse_dns_timeout_ms'],
-		parse: parseInteger,
 	},
 	FLUXER_PUSH_APNS_ENABLED: {path: ['integrations', 'push', 'apns', 'enabled'], parse: parseBoolean},
 	FLUXER_PUSH_APNS_TEAM_ID: {path: ['integrations', 'push', 'apns', 'team_id']},

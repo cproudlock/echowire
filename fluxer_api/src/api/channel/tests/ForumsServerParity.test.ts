@@ -165,7 +165,11 @@ describe('Forum and thread server parity', () => {
 		expect((await getThread(harness, member.token, thread.id)).thread_metadata?.archived).toBe(false);
 		const updates = dispatchesFor('THREAD_UPDATE', thread.id);
 		expect(updates.length).toBeGreaterThan(0);
-		expect((updates.at(-1)?.thread_metadata as {archived: boolean}).archived).toBe(false);
+		const latest = updates.at(-1);
+		if (!latest) {
+			throw new Error('expected at least one THREAD_UPDATE dispatch');
+		}
+		expect((latest.thread_metadata as {archived: boolean}).archived).toBe(false);
 	});
 
 	test('a locked archived thread rejects member sends but reopens for a moderator and stays locked', async () => {

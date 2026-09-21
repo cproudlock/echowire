@@ -13,7 +13,6 @@ members = [
 	"fluxer_messages",
 	"fluxer_snowflakes",
 	"tools/ci",
-	"tools/content/update-frozen-snapshot",
 	"tools/dev",
 	"tools/i18n_auto",
 	# Echowire: kept alongside the in-tree marketing crate, since upstream deleted this with

@@ -87,7 +87,6 @@ export interface PerTrackStats {
 	maxPushLatencyMs?: number;
 	adaptiveSendTier?: string;
 	adaptiveSendReason?: string;
-	sourceFrames?: number;
 	framesEncoded?: number;
 	framesDecoded?: number;
 	framesDropped?: number;
@@ -169,7 +168,7 @@ type RoomWithEngine = Room & {
 };
 
 interface StatsSource {
-	getStats(): Promise<StatsReportMap>;
+	getStats(): Promise<StatsReportMap | undefined>;
 	getTransceivers?(): ReadonlyArray<StatsTransceiver>;
 }
 
@@ -456,7 +455,7 @@ function buildPerTrackStat(args: {
 		frameHeight: report.frameHeight,
 		sourceFrameWidth: mediaSource?.frameWidth ?? mediaSource?.width,
 		sourceFrameHeight: mediaSource?.frameHeight ?? mediaSource?.height,
-		sourceFrames: mediaSource?.frames,
+		framesCaptured: mediaSource?.frames,
 		framesEncoded: report.framesEncoded,
 		framesDecoded: report.framesDecoded,
 		framesDropped: report.framesDropped,
@@ -539,6 +538,7 @@ async function collectFromStatsSource(
 	transport: TransportInfo | null;
 }> {
 	const reports = await source.getStats();
+	if (!reports) return {tracks: [], rtt: 0, transport: null};
 	const midToSenderTrackId = new Map<string, string>();
 	for (const transceiver of source.getTransceivers?.() ?? []) {
 		const senderTrackId = transceiver.sender?.track?.id;
@@ -621,6 +621,7 @@ function toVoiceEngineV2OutboundStats(track: PerTrackStats): VoiceEngineV2Outbou
 		...(track.framesDropped !== undefined ? {framesDropped: track.framesDropped} : {}),
 		...(track.framesCoalesced !== undefined ? {framesCoalesced: track.framesCoalesced} : {}),
 		...(track.framesCaptured !== undefined ? {framesCaptured: track.framesCaptured} : {}),
+		...(track.sourceFramesPerSecond !== undefined ? {sourceFps: track.sourceFramesPerSecond} : {}),
 		...(track.captureFailures !== undefined ? {captureFailures: track.captureFailures} : {}),
 		...(track.maxQueueAgeMs !== undefined ? {maxQueueAgeMs: track.maxQueueAgeMs} : {}),
 		...(track.maxPushLatencyMs !== undefined ? {maxPushLatencyMs: track.maxPushLatencyMs} : {}),

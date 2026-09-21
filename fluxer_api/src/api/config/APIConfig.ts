@@ -119,6 +119,9 @@ export interface APIConfig {
 			tokenTtlSecs: number;
 			keepDirectCountries: Array<string>;
 		};
+		attachmentUrls: {
+			secretsBase64: Array<string>;
+		};
 	};
 	geoip: APIGeoipConfig;
 	proxy: {
@@ -167,9 +170,9 @@ export interface APIConfig {
 		buckets: {
 			cdn: string;
 			uploads: string;
+			downloads: string;
 			reports: string;
 			harvests: string;
-			downloads: string;
 		};
 	};
 	s3Downloads: ResolvedDownloadsProvider;
@@ -203,6 +206,12 @@ export interface APIConfig {
 		accountPolicyDsl?: unknown;
 	};
 	blocklistFeeds: {
+		enabled: boolean;
+	};
+	torExitList: {
+		enabled: boolean;
+	};
+	breachedPasswordCheck: {
 		enabled: boolean;
 	};
 	captcha: {

@@ -36,8 +36,8 @@ use walkdir::WalkDir;
 use zip::write::SimpleFileOptions;
 
 const PUBLIC_DL_BASE: &str = "https://api.fluxer.app/dl";
-const PNPM_VERSION: &str = "10.29.3";
-const RUST_TOOLCHAIN: &str = "1.93.0";
+const PNPM_VERSION: &str = "12.4.2";
+const RUST_TOOLCHAIN: &str = "1.98.1";
 const DEFAULT_DESKTOP_VARIANT: &str = "default";
 const LINUX_PIPEWIRE_VERSION: &str = "0.3.65";
 const LINUX_PIPEWIRE_SOURCE_SHA256: &str =
@@ -46,6 +46,7 @@ const LINUX_LIBFIDO2_VERSION: &str = "1.16.0";
 const LINUX_LIBFIDO2_SOURCE_SHA256: &str =
     "8c2b6fb279b5b42e9ac92ade71832e485852647b53607c43baaafbbcecea04e4";
 pub(crate) const MACOS_UNIVERSAL_ARCH: &str = "universal";
+const MACOS_MINIMUM_SYSTEM_VERSION: &str = "13.0";
 const WINDOWS_GAME_CAPTURE_DESKTOP_VARIANT: &str = "windows-game-capture";
 
 #[derive(Debug, Args, Clone)]
@@ -82,7 +83,7 @@ enum DesktopStep {
     WindowsPaths,
     SetWorkdirUnix,
     EnsurePython3Windows,
-    SetupPnpmCorepack,
+    SetupPnpm,
     ResolvePnpmStoreWindows,
     ResolvePnpmStoreUnix,
     InstallSetuptoolsWindowsArm64,
@@ -98,6 +99,7 @@ enum DesktopStep {
     BuildAppMacos,
     VerifyBundleId,
     BuildAppWindows,
+    CheckSigningSecrets,
     ValidateWindowsSigningInputs,
     WriteWindowsSigningMetadata,
     ResolveWindowsUnpackedDir,
@@ -193,7 +195,7 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
         DesktopStep::WindowsPaths => windows_paths_step().await,
         DesktopStep::SetWorkdirUnix => set_workdir_unix_step(),
         DesktopStep::EnsurePython3Windows => ensure_python3_windows_step(),
-        DesktopStep::SetupPnpmCorepack => setup_pnpm_corepack_step(),
+        DesktopStep::SetupPnpm => setup_pnpm_step(),
         DesktopStep::ResolvePnpmStoreWindows | DesktopStep::ResolvePnpmStoreUnix => {
             resolve_pnpm_store_step()
         }
@@ -217,6 +219,7 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
         DesktopStep::BuildAppMacos => build_app_step(DesktopBuildPlatform::Macos),
         DesktopStep::VerifyBundleId => verify_bundle_id_step(),
         DesktopStep::BuildAppWindows => build_app_step(DesktopBuildPlatform::Windows),
+        DesktopStep::CheckSigningSecrets => check_signing_secrets_step(),
         DesktopStep::ValidateWindowsSigningInputs => validate_windows_signing_inputs_step(),
         DesktopStep::WriteWindowsSigningMetadata => write_windows_signing_metadata_step(),
         DesktopStep::ResolveWindowsUnpackedDir => resolve_windows_unpacked_dir_step(),
@@ -526,19 +529,20 @@ async fn windows_paths_step() -> Result<()> {
     let store_dir = PathBuf::from(&github_workspace).join(format!("pnpm-store-{arch}"));
     fs::create_dir_all(&store_dir)
         .with_context(|| format!("Failed to create {}", store_dir.display()))?;
-    fs::write(
-        Path::new(r"W:\.npmrc"),
-        format!("store-dir={}\n", store_dir.display()),
-    )
-    .context("Failed to write W:\\.npmrc")?;
 
     append_github_env(&[
         ("WORKDIR", "W:"),
         ("TEMP", r"C:\t"),
         ("TMP", r"C:\t"),
         ("ELECTRON_BUILDER_CACHE", r"C:\ebcache"),
-        ("NPM_CONFIG_STORE_DIR", store_dir.to_string_lossy().as_ref()),
-        ("npm_config_store_dir", store_dir.to_string_lossy().as_ref()),
+        (
+            "PNPM_CONFIG_STORE_DIR",
+            store_dir.to_string_lossy().as_ref(),
+        ),
+        (
+            "pnpm_config_store_dir",
+            store_dir.to_string_lossy().as_ref(),
+        ),
     ])?;
 
     run_command(CommandSpec::new("git").args(["config", "--global", "core.longpaths", "true"]))?;
@@ -588,11 +592,11 @@ fn set_workdir_unix_step() -> Result<()> {
         fs::create_dir_all(&store_dir)
             .with_context(|| format!("Failed to create {}", store_dir.display()))?;
         env_pairs.push((
-            "NPM_CONFIG_STORE_DIR",
+            "PNPM_CONFIG_STORE_DIR",
             store_dir.to_string_lossy().to_string(),
         ));
         env_pairs.push((
-            "npm_config_store_dir",
+            "pnpm_config_store_dir",
             store_dir.to_string_lossy().to_string(),
         ));
     }
@@ -624,69 +628,31 @@ fn ensure_python3_windows_step() -> Result<()> {
     Ok(())
 }
 
-fn setup_pnpm_corepack_step() -> Result<()> {
-    let corepack = corepack_program()?;
-    run_command(CommandSpec::new(corepack.clone()).arg("enable"))?;
-    run_command(CommandSpec::new(corepack).args([
-        "prepare",
-        &format!("pnpm@{PNPM_VERSION}"),
-        "--activate",
-    ]))?;
-    ensure_pnpm_available()
-}
+fn setup_pnpm_step() -> Result<()> {
+    let npm = npm_program()?;
+    let pnpm_package = format!("pnpm@{PNPM_VERSION}");
+    run_command(CommandSpec::new(npm.clone()).args(["install", "--global", &pnpm_package]))?;
 
-fn corepack_program() -> Result<OsString> {
-    if command_succeeds(CommandSpec::new("corepack").arg("--version")) {
-        return Ok(OsString::from("corepack"));
-    }
+    let npm_prefix = output_text(CommandSpec::new(npm).args(["prefix", "--global"]))
+        .context("Failed to resolve global npm prefix after installing pnpm")?;
+    let npm_bin = if cfg!(windows) {
+        PathBuf::from(npm_prefix)
+    } else {
+        PathBuf::from(npm_prefix).join("bin")
+    };
+    append_github_path(&npm_bin)?;
 
-    if cfg!(windows) {
-        let node_dir =
-            node_executable_dir().context("Failed to locate Node.js while resolving corepack")?;
-
-        for file_name in ["corepack.cmd", "corepack.exe", "corepack"] {
-            let candidate = node_dir.join(file_name);
-            if candidate.exists() {
-                return Ok(candidate.into_os_string());
-            }
-        }
-
-        bail!(
-            "corepack not found on PATH or next to Node.js at {}",
-            node_dir.display()
-        );
-    }
-
-    bail!("corepack not found on PATH")
-}
-
-fn ensure_pnpm_available() -> Result<()> {
-    if let Ok(pnpm) = pnpm_program()
-        && command_succeeds(CommandSpec::new(pnpm).arg("--version"))
-    {
-        return Ok(());
-    }
-
-    if cfg!(windows) {
-        let npm = npm_program()?;
-        let pnpm_package = format!("pnpm@{PNPM_VERSION}");
-        run_command(CommandSpec::new(npm.clone()).args(["install", "--global", &pnpm_package]))?;
-
-        let npm_prefix = output_text(CommandSpec::new(npm).args(["prefix", "--global"]))
-            .context("Failed to resolve global npm prefix after installing pnpm")?;
-        let npm_prefix = PathBuf::from(npm_prefix);
-        append_github_path(&npm_prefix)?;
-
-        for file_name in ["pnpm.cmd", "pnpm.exe", "pnpm"] {
-            let candidate = npm_prefix.join(file_name);
-            if candidate.exists() {
-                return run_command(CommandSpec::new(candidate.into_os_string()).arg("--version"));
-            }
+    for file_name in ["pnpm.cmd", "pnpm.exe", "pnpm"] {
+        let candidate = npm_bin.join(file_name);
+        if candidate.exists() {
+            return run_command(CommandSpec::new(candidate.into_os_string()).arg("--version"));
         }
     }
 
-    run_command(pnpm_command()?.arg("--version"))
-        .context("Failed to verify pnpm after Corepack setup")
+    bail!(
+        "pnpm not found in {} after installing {pnpm_package}",
+        npm_bin.display()
+    )
 }
 
 fn pnpm_command() -> Result<CommandSpec> {
@@ -1450,7 +1416,7 @@ fn install_velopack_cli_step() -> Result<()> {
         tool_dir.to_string_lossy().as_ref(),
         "vpk",
         "--version",
-        "0.0.1298",
+        "1.2.0",
     ]))
 }
 
@@ -1827,6 +1793,23 @@ const TRUSTED_SIGNING_EXCLUDED_CREDENTIALS: &[&str] = &[
     "AzureDeveloperCliCredential",
     "InteractiveBrowserCredential",
 ];
+
+// Echowire: the fork gates Windows signing on whether the Azure Trusted Signing secrets are
+// present, because a fork clone has none and the whole sign_windows job has to be skippable.
+// Upstream has no equivalent job, so this step is fork-only. The build-desktop workflow has
+// dispatched check_signing_secrets since the signing job was added, but the step was never
+// implemented, so that job could only ever fail; this supplies it.
+fn check_signing_secrets_step() -> Result<()> {
+    let enabled = env::var("AZURE_CLIENT_ID")
+        .map(|value| !value.trim().is_empty())
+        .unwrap_or(false);
+    println!(
+        "Azure Trusted Signing secrets {}; Windows signing is {}.",
+        if enabled { "present" } else { "absent" },
+        if enabled { "enabled" } else { "skipped" }
+    );
+    append_github_output(&[("enabled", if enabled { "true" } else { "false" })])
+}
 
 fn validate_windows_signing_inputs_step() -> Result<()> {
     let missing = WINDOWS_SIGNING_ENV
@@ -4062,7 +4045,7 @@ fn build_desktop_manifest(dest: &Path, input: &PayloadManifestInput) -> Result<D
         version: input.version.clone(),
         pub_date: input.pub_date.clone(),
         minimum_system_version: if input.platform == "darwin" {
-            Some("12.0".to_string())
+            Some(MACOS_MINIMUM_SYSTEM_VERSION.to_string())
         } else {
             None
         },
@@ -4654,7 +4637,7 @@ fn extension_is(path: &Path, extension: &str) -> bool {
     path.extension().and_then(OsStr::to_str) == Some(extension)
 }
 
-fn file_name_string(path: &Path) -> Result<String> {
+pub(crate) fn file_name_string(path: &Path) -> Result<String> {
     path.file_name()
         .and_then(OsStr::to_str)
         .map(ToOwned::to_owned)
@@ -5665,7 +5648,7 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
             variant: None,
             version: "2026.520.1".to_string(),
             pub_date: "2026-05-20T01:02:03Z".to_string(),
-            minimum_system_version: Some("12.0".to_string()),
+            minimum_system_version: Some(MACOS_MINIMUM_SYSTEM_VERSION.to_string()),
             files: BTreeMap::from([(
                 "zip".to_string(),
                 DesktopManifestFile::Name("Fluxer-2026.520.1-arm64.zip".to_string()),
@@ -5682,6 +5665,76 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
             "https://api.fluxer.app/dl/desktop-test/canary/darwin/arm64/Fluxer-2026.520.1-arm64.zip"
         );
         assert!(temp.path().join("releases.json").exists());
+    }
+
+    #[test]
+    fn desktop_manifest_publishes_macos_minimum_only_for_darwin() {
+        let temp = tempfile::tempdir().unwrap();
+
+        let darwin_root = temp.path().join("darwin");
+        write_file(&darwin_root.join("Fluxer-2026.520.1-arm64.zip"), "zip");
+        let darwin_manifest = build_desktop_manifest(
+            &darwin_root,
+            &PayloadManifestInput {
+                channel: "stable".to_string(),
+                platform: "darwin".to_string(),
+                arch: "arm64".to_string(),
+                desktop_variant: DEFAULT_DESKTOP_VARIANT.to_string(),
+                version: "2026.520.1".to_string(),
+                pub_date: "2026-05-20T01:02:03Z".to_string(),
+            },
+        )
+        .unwrap();
+        assert_eq!(
+            darwin_manifest.minimum_system_version.as_deref(),
+            Some(MACOS_MINIMUM_SYSTEM_VERSION)
+        );
+
+        let linux_root = temp.path().join("linux");
+        write_file(&linux_root.join("Fluxer-2026.520.1-x64.deb"), "deb");
+        let linux_manifest = build_desktop_manifest(
+            &linux_root,
+            &PayloadManifestInput {
+                channel: "stable".to_string(),
+                platform: "linux".to_string(),
+                arch: "x64".to_string(),
+                desktop_variant: DEFAULT_DESKTOP_VARIANT.to_string(),
+                version: "2026.520.1".to_string(),
+                pub_date: "2026-05-20T01:02:03Z".to_string(),
+            },
+        )
+        .unwrap();
+        assert_eq!(linux_manifest.minimum_system_version, None);
+
+        let windows_root = temp.path().join("win32");
+        write_file(&windows_root.join("Fluxer-Setup-2026.520.1-x64.exe"), "exe");
+        let windows_manifest = build_desktop_manifest(
+            &windows_root,
+            &PayloadManifestInput {
+                channel: "stable".to_string(),
+                platform: "win32".to_string(),
+                arch: "x64".to_string(),
+                desktop_variant: DEFAULT_DESKTOP_VARIANT.to_string(),
+                version: "2026.520.1".to_string(),
+                pub_date: "2026-05-20T01:02:03Z".to_string(),
+            },
+        )
+        .unwrap();
+        assert_eq!(windows_manifest.minimum_system_version, None);
+    }
+
+    #[test]
+    fn desktop_macos_minimum_matches_electron_builder_config() {
+        let config_path = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../../fluxer_desktop/electron-builder.config.cjs");
+        let config = fs::read_to_string(&config_path)
+            .expect("the electron-builder config should be readable");
+        let declared = config
+            .split_once("const macOSMinimumSystemVersion = '")
+            .and_then(|(_, rest)| rest.split_once('\''))
+            .map(|(value, _)| value)
+            .expect("the electron-builder config should declare macOSMinimumSystemVersion");
+        assert_eq!(declared, MACOS_MINIMUM_SYSTEM_VERSION);
     }
 
     #[test]

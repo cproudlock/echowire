@@ -872,11 +872,11 @@ msgstr "目前只有 {productName} 的員工可以存取「{communityName}」"
 msgid "{count, plural, =0 {∞ No limit} one {# participant} other {# participants}}"
 msgstr "{count, plural, =0 {∞ 無上限} one {# 位參與者} other {# 位參與者}}"
 
-#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:193
+#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:141
 msgid "{count, plural, one {... (# line left)} other {... (# lines left)}}"
 msgstr "{count, plural, one {...（剩餘 # 行）} other {...（剩餘 # 行）}}"
 
-#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:210
+#: src/features/channel/components/embeds/attachments/TextualAttachmentPreview.tsx:158
 msgid "{count, plural, one {... (# row left)} other {... (# rows left)}}"
 msgstr "{count, plural, one {...（剩餘 # 列）} other {...（剩餘 # 列）}}"
 
@@ -1070,7 +1070,7 @@ msgstr "{count, plural, one {展開（# 行）} other {展開（# 行）}}"
 msgid "{count, plural, one {Expand (# row)} other {Expand (# rows)}}"
 msgstr "{count, plural, one {展開（# 列）} other {展開（# 列）}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:317
+#: src/features/voice/components/VoiceParticipantTile.tsx:320
 msgid "{count, plural, one {Expand # other device} other {Expand # other devices}}"
 msgstr "{count, plural, one {展開其他 # 個裝置} other {展開其他 # 個裝置}}"
 
@@ -1091,7 +1091,7 @@ msgstr "{count, plural, one {通話中} other {# 人通話中}}"
 msgid "{count, plural, one {Join video call (# participant)} other {Join video call (# participants)}}"
 msgstr "{count, plural, one {加入視訊通話（# 位參與者）} other {加入視訊通話（# 位參與者）}}"
 
-#: src/features/voice/components/VoiceParticipantTile.tsx:669
+#: src/features/voice/components/VoiceParticipantTile.tsx:676
 msgid "{count, plural, one {Keep watching # stream and add this one} other {Keep watching # streams and add this one}}"
 msgstr "{count, plural, one {繼續觀看 # 個直播並新增這個} other {繼續觀看 # 個直播並新增這個}}"
 
@@ -1187,7 +1187,7 @@ msgid "{days, plural, one {Your invite link expires in # day.} other {Your invit
 msgstr "{days, plural, one {您的邀請連結將於 # 天後過期。} other {您的邀請連結將於 # 天後過期。}}"
 
 #. Audio device label for a default route with the concrete microphone or speaker endpoint in parentheses. defaultDeviceLabel is already localized, for example "Windows Default".
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:30
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:34
 msgid "{defaultDeviceLabel} ({endpointLabel})"
 msgstr "{defaultDeviceLabel}（{endpointLabel}）"
 
@@ -1340,9 +1340,16 @@ msgid "{fourHours} hours"
 msgstr "{fourHours} 小時"
 
 #. Footer summary frame-rate label in the screen share picker. {fps} is the integer frame rate. FPS is a technical token.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:253
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:254
 msgid "{fps} FPS"
 msgstr "{fps} FPS"
+
+#. Frame rate option label in the video tab. FPS is a technical token and frameRate is a whole number.
+#. Frame rate option label in the video tab. FPS is a technical token and frameRate is a whole number.
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:53
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:115
+msgid "{frameRate} FPS"
+msgstr "{frameRate} FPS"
 
 #. Short label in the app layout channel list content. Preserve {guildName}; it is inserted by code.
 #: src/features/app/components/layout/ChannelListContent.tsx:88
@@ -1453,7 +1460,7 @@ msgid "{length, plural, one {# user} other {# users}}"
 msgstr "{length, plural, one {# 位使用者} other {# 位使用者}}"
 
 #. Spectator count badge on a screen-share tile. {length} is the integer number of viewers. Consider pluralization on review.
-#: src/features/voice/components/voice_participant_tile/shared.ts:75
+#: src/features/voice/components/voice_participant_tile/shared.ts:73
 msgid "{length, plural, one {# watching} other {# watching}}"
 msgstr "{length, plural, one {# 位觀眾} other {# 位觀眾}}"
 
@@ -1716,7 +1723,7 @@ msgid "{productName} needs access to your microphone. Allow microphone access in
 msgstr "{productName} 需要存取您的麥克風。請在作業系統的隱私設定中允許麥克風存取，然後重新啟動應用程式。"
 
 #. Camera settings notice shown when camera permission has not been granted.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:49
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:61
 msgid "{productName} needs camera access to list your devices."
 msgstr "{productName} 需要相機存取權限才能列出您的裝置。"
 
@@ -1825,7 +1832,7 @@ msgid "{renderedPresenceCount} online"
 msgstr "{renderedPresenceCount} 位在線上"
 
 #. Compact stream info pill label. {resolution} is a technical token such as 1080p or 4K. {fps} is the frame rate. FPS is a technical token.
-#: src/features/voice/components/StreamInfoPill.tsx:12
+#: src/features/voice/components/StreamInfoPill.tsx:14
 msgid "{resolution} {fps} FPS"
 msgstr "{resolution} {fps} FPS"
 
@@ -2217,12 +2224,6 @@ msgstr "12 小時制"
 msgid "1440p"
 msgstr "1440p"
 
-#. Frame rate option label in the stream settings menu. FPS is a technical token.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:42
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:109
-msgid "15 FPS"
-msgstr "15 FPS"
-
 #. Short label in the guild overview tab utils helper. Keep it concise.
 #: src/features/guild/utils/guild_tabs/GuildOverviewTabUtils.tsx:31
 msgid "15 minutes"
@@ -2262,6 +2263,8 @@ msgid "25 uses"
 msgstr "25 次使用"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:150
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:40
 msgid "2FA"
 msgstr "2FA"
@@ -2292,12 +2295,6 @@ msgstr "3 位成員（正在輸入）"
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:102
 msgid "3 months"
 msgstr "3 個月"
-
-#. Frame rate option label in the stream settings menu. FPS is a technical token.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:43
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:113
-msgid "30 FPS"
-msgstr "30 FPS"
 
 #. Fixed duration label for a 30-minute interval. Used as a standalone label in duration text or option lists.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:10
@@ -2348,16 +2345,10 @@ msgstr "6 個月"
 
 #. Placeholder for the MFA login one-time password field.
 #. Short label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:53
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:58
 #: src/features/auth/flow/MfaScreen.tsx:22
 msgid "6-digit code"
 msgstr "6 位數驗證碼"
-
-#. Frame rate option label in the stream settings menu. FPS is a technical token.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:44
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:117
-msgid "60 FPS"
-msgstr "60 FPS"
 
 #. Timeout duration option for moderating a member.
 #: src/features/moderation/components/modals/TimeoutMemberOptions.ts:12
@@ -2569,7 +2560,7 @@ msgid "Accept"
 msgstr "接受"
 
 #. Button label for accepting an incoming direct call. Means answering a ringing call, not approving a request.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:90
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:94
 msgctxt "incoming-call-action"
 msgid "Accept"
 msgstr "接聽"
@@ -2633,7 +2624,7 @@ msgid "Account & premium overrides"
 msgstr "帳號與進階方案覆寫"
 
 #. Security settings section for third-party app access and signed-in devices.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:49
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:88
 msgid "Account access"
 msgstr "帳號存取權"
 
@@ -2960,7 +2951,7 @@ msgstr "新增帳號以繼續。"
 msgid "Add an email and password to your account first."
 msgstr "請先為您的帳號新增電子郵件和密碼。"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:192
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:296
 msgid "Add an extra layer of security to your account"
 msgstr "為您的帳號多加一層安全防護"
 
@@ -3076,7 +3067,7 @@ msgid "Add override"
 msgstr "新增覆寫"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:335
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:439
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:130
 msgid "Add passkey"
 msgstr "新增通行金鑰"
@@ -3174,12 +3165,12 @@ msgstr "新增到群組"
 #. Action that adds the selected media to saved media.
 #. Action that adds the selected media to saved media.
 #: src/features/expressions/components/modals/AddFavoriteMemeModal.tsx:16
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:177
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:178
 msgid "Add to saved media"
 msgstr "新增至已儲存的媒體"
 
 #. Media context menu action that saves a GIF favorite by URL without uploading it.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:169
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:170
 msgid "Add to URL-only GIF favorites"
 msgstr "加入僅限網址的 GIF 最愛"
 
@@ -3280,11 +3271,11 @@ msgstr "已加入我的最愛"
 msgid "Added to saved media"
 msgstr "已新增至已儲存的媒體"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:377
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:495
 msgid "Added: {createdDate}"
 msgstr "新增日期：{createdDate}"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:373
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:491
 msgid "Added: {createdDate} • last used: {lastUsedDate}"
 msgstr "新增日期：{createdDate} • 上次使用：{lastUsedDate}"
 
@@ -3304,11 +3295,6 @@ msgstr "需要額外驗證"
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:16
 msgid "Address"
 msgstr "電子郵件地址"
-
-#. Description for an H.264 backup stream select. Keep H.264, CPU, and GPU literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:124
-msgid "Adds H.264 for mixed clients. Requires more encoding."
-msgstr "新增 H.264 以支援混用的用戶端。會增加編碼負擔。"
 
 #. Description for the custom profile option in the voice tab.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:96
@@ -3365,7 +3351,7 @@ msgid "Advanced"
 msgstr "進階"
 
 #. Subsection title in the video tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:88
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:114
 msgid "Advanced video settings"
 msgstr "進階視訊設定"
 
@@ -3452,7 +3438,7 @@ msgstr "對齊控制項僅適用於較寬的螢幕"
 #: src/features/app/config/AuditLogConstants.ts:143
 #: src/features/channel/components/direct_message/DMFriendsView.tsx:41
 #: src/features/channel/components/guild_members_page/GuildMembersPageDescriptors.ts:10
-#: src/features/channel/components/MobileMemesPicker.tsx:42
+#: src/features/channel/components/MobileMemesPicker.tsx:43
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:12
 #: src/features/discovery/components/bottomsheets/DiscoveryCategoryBottomSheet.tsx:11
 #: src/features/discovery/discovery/DiscoveryNavbar.tsx:21
@@ -3576,7 +3562,7 @@ msgstr "允許"
 msgid "Allow {everyoneMention} and {hereMention}"
 msgstr "允許 {everyoneMention} 和 {hereMention}"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:209
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:236
 msgid "Allow {PRODUCT_NAME} to access your camera in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 msgstr "在「{MACOS_SYSTEM_SETTINGS_NAME}」→「{MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME}」→「{MACOS_CAMERA_PERMISSION_NAME}」中允許 {PRODUCT_NAME} 存取您的相機。"
 
@@ -3604,8 +3590,8 @@ msgstr "允許所有能檢視您完整個人檔案的人查看您的當地時間
 
 #. Settings search entry label for the AV1 screen-share opt-in. AV1 is a codec name and should stay literal.
 #. Switch label for the AV1 screen-share opt-in. AV1 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:183
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:88
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:136
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:87
 msgid "Allow AV1 for screen sharing"
 msgstr "允許 AV1 用於螢幕分享"
 
@@ -3619,7 +3605,7 @@ msgstr "允許機器人傳送私訊"
 msgid "Allow bots to send you direct messages?"
 msgstr "允許機器人傳送私訊給您？"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:229
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:256
 msgid "Allow camera"
 msgstr "允許使用相機"
 
@@ -3663,8 +3649,8 @@ msgstr "允許所有社群"
 
 #. Settings search entry label for the H.265/HEVC screen-share opt-in. H.265 and HEVC are codec names and should stay literal.
 #. Switch label for the H.265/HEVC screen-share opt-in. H.265 and HEVC are codec names and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:187
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:92
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:140
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:91
 msgid "Allow H.265 (HEVC) for screen sharing"
 msgstr "允許使用 H.265 (HEVC) 進行螢幕分享"
 
@@ -4015,13 +4001,13 @@ msgstr "動態表情符號、GIF 和貼圖仍可在「動畫」分頁中自行�
 
 #. Media type chip shown in the media viewer info panel for animated GIFs.
 #. Short label in the channel and chat embed gifv. Keep it concise.
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:67
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:101
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:68
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:102
 msgid "Animated GIF"
 msgstr "動態 GIF"
 
 #. Short label in the channel and chat embed gifv. Keep it concise.
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:63
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:64
 msgid "Animated GIF video"
 msgstr "動態 GIF 影片"
 
@@ -4050,12 +4036,12 @@ msgid "Animated icons require the {animatedIconFeature} community feature."
 msgstr "動態圖示需要社群具備「{animatedIconFeature}」功能。"
 
 #. Media type chip shown in the media viewer info panel for animated images.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:109
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:110
 msgid "Animated image"
 msgstr "動態圖片"
 
 #. Accessible label for an animated image (APNG/AVIF) shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:77
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:78
 msgid "Animated image preview"
 msgstr "動態圖片預覽"
 
@@ -4075,7 +4061,7 @@ msgid "Animated uploads require a {premiumProductName} subscription."
 msgstr "上傳動態檔案需要訂閱 {premiumProductName}。"
 
 #. Media type chip shown in the media viewer info panel for short looping video clips.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:105
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:106
 msgid "Animated video"
 msgstr "動態影片"
 
@@ -4269,7 +4255,7 @@ msgid "App state"
 msgstr "應用程式狀態"
 
 #. Fallback label for an app window card in the screen-share picker when the OS does not give us a window title.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:141
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:142
 msgid "App window"
 msgstr "應用程式視窗"
 
@@ -4362,7 +4348,7 @@ msgstr "應用程式已成功更新"
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:29
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:184
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:185
 msgid "Applications"
 msgstr "應用程式"
 
@@ -4469,7 +4455,7 @@ msgid "Are you sure you want to delete the category \"{categoryName}\"? This can
 msgstr "確定要刪除「{categoryName}」類別嗎？此動作無法復原。"
 
 #. placeholder {0}: passkey.name
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:141
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:227
 msgid "Are you sure you want to delete the passkey <0>{0}</0>?"
 msgstr "您確定要刪除通行金鑰 <0>{0}</0> 嗎？"
 
@@ -4481,7 +4467,7 @@ msgstr "確定要刪除此附件嗎？此動作無法復原，且會將此訊息
 msgid "Are you sure you want to delete this community? This action cannot be undone. All channels, messages, and settings will be permanently deleted."
 msgstr "確定要刪除這個社群嗎？此動作無法復原。所有頻道、訊息和設定都將永久刪除。"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:150
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:235
 msgid "Are you sure you want to delete this passkey?"
 msgstr "確定要刪除此通行金鑰嗎？"
 
@@ -4560,6 +4546,12 @@ msgstr "ASCII 顏文字"
 msgid "Ask before starting calls"
 msgstr "開始通話前詢問"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:449
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:154
+msgid "Ask for a passkey after your password when you sign in"
+msgstr "登入時，在輸入密碼後要求使用通行金鑰"
+
 #. Short label in the theme studio. Keep it concise.
 #: src/features/theme_studio/ThemeStudio.tsx:56
 msgid "Assets"
@@ -4587,7 +4579,7 @@ msgstr "附件"
 #. Accessible label for a thumbnail in the media viewer. index1 is the 1-based attachment index.
 #. Accessible label for the active attachment in the media viewer. index1 is the 1-based index.
 #: src/features/messaging/components/modals/media_modal/shared.ts:129
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:73
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:74
 msgid "Attachment {index1}"
 msgstr "附件 {index1}"
 
@@ -4614,12 +4606,12 @@ msgid "Attachment expired"
 msgstr "附件已過期"
 
 #. Toast shown when an attachment URL is no longer accessible.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:133
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:134
 msgid "Attachment has expired or is unavailable"
 msgstr "附件已過期或無法使用"
 
 #. Developer-mode toast confirming an attachment ID was copied.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:161
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:162
 msgid "Attachment ID copied to clipboard"
 msgstr "附件 ID 已複製到剪貼簿"
 
@@ -4689,12 +4681,12 @@ msgid "Audio boost"
 msgstr "音訊增強"
 
 #. Section header in the stream settings menu. Selects the audio capture device for the share.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:133
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:137
 msgid "Audio device"
 msgstr "音訊裝置"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:16
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:15
 msgid "Audio device alerts"
 msgstr "音訊裝置警示"
 
@@ -4709,7 +4701,7 @@ msgid "Audio level"
 msgstr "音量"
 
 #. Footer summary status shown when capture-device audio is disabled.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:258
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:259
 msgid "Audio muted"
 msgstr "音訊已靜音"
 
@@ -4729,12 +4721,12 @@ msgid "Audio packet loss:"
 msgstr "音訊封包遺失："
 
 #. Aria label for the inline audio attachment player container.
-#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:34
+#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:35
 msgid "Audio player"
 msgstr "音訊播放器"
 
 #. Accessible label for an audio clip shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:93
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:94
 msgid "Audio preview"
 msgstr "音訊預覽"
 
@@ -4769,7 +4761,7 @@ msgid "Audio processing (focused voice)"
 msgstr "音訊處理（語音聚焦）"
 
 #. Aria label on the playback progress slider in the inline audio attachment player.
-#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:38
+#: src/features/voice/components/media_player/components/InlineAudioPlayer.tsx:39
 msgid "Audio progress"
 msgstr "音訊播放進度"
 
@@ -4784,7 +4776,7 @@ msgid "Audio send:"
 msgstr "音訊傳送："
 
 #. Section header in the stream settings menu grouping audio-related toggles.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:145
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:149
 msgid "Audio settings"
 msgstr "音訊設定"
 
@@ -4795,7 +4787,7 @@ msgid "Audio settings"
 msgstr "音訊設定"
 
 #. Toggle / summary row label in the Linux audio source picker. {summaryLabel} is one of the audio-source summary labels.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:43
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:45
 msgid "Audio sources: {summaryLabel}"
 msgstr "音訊來源：{summaryLabel}"
 
@@ -4828,13 +4820,13 @@ msgstr "驗證"
 msgid "Authenticator"
 msgstr "驗證器"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:204
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:308
 msgid "Authenticator app"
 msgstr "驗證器應用程式"
 
 #. Label for the MFA login one-time password field from an authenticator app or backup code.
 #. Short label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:49
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:54
 #: src/features/auth/flow/MfaScreen.tsx:18
 msgid "Authenticator code"
 msgstr "驗證器代碼"
@@ -4905,7 +4897,7 @@ msgstr "已授權的應用程式"
 #. Settings section label for OAuth applications authorized by the user.
 #. User settings tab for OAuth or connected apps authorized by the user.
 #: src/features/user/components/modals/tabs/account_security_tab/AccountManagementModals.tsx:17
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:57
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:96
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:507
 #: src/features/user/components/settings_utils/search_index/AuthorizedAppsIndex.ts:10
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:151
@@ -4995,9 +4987,9 @@ msgstr "自動完成建議：{label}，第 {selectedOptionPosition} 項，共 {r
 #. Voice region option label in the voice settings menu meaning let Fluxer pick the best region automatically.
 #. Voice region picker option label meaning 'let Fluxer pick the best region automatically'.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/RtcRegionSelect.tsx:19
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:64
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:104
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:144
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:56
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:76
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:97
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:264
 #: src/features/voice/components/VoiceRegionSelector.tsx:16
 #: src/features/voice/components/VoiceSettingsMenus.tsx:93
@@ -5005,14 +4997,14 @@ msgid "Automatic"
 msgstr "自動"
 
 #. Option label for the screen-share codec select. codec is the automatically selected codec label.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:169
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:122
 msgid "Automatic ({codec})"
 msgstr "自動 ({codec})"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Voice setting label for automatically evening out microphone volume.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:48
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:211
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:47
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:215
 msgid "Automatic gain control"
 msgstr "自動增益控制"
 
@@ -5102,12 +5094,12 @@ msgid "Autoscrolling"
 msgstr "自動捲動"
 
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:101
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:100
 msgid "AV1"
 msgstr "AV1"
 
 #. Option label for the screen-share codec select while the AV1 opt-in is off and the option is disabled. AV1 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:173
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:126
 msgid "AV1 (requires opt-in)"
 msgstr "AV1（需先啟用）"
 
@@ -5317,11 +5309,18 @@ msgstr "支援拖放的背景選擇區域"
 msgid "Backspace"
 msgstr "倒退鍵"
 
+#. Label and placeholder for the MFA login field when the only code the account can use is a backup code.
+#. Label and placeholder for the code field in the authentication sudo verification modal when the only code the account can use is a backup code.
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:62
+#: src/features/auth/flow/MfaScreen.tsx:38
+msgid "Backup code"
+msgstr "備用碼"
+
 #. Security modal title for one-time account recovery codes.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/auth/components/modals/BackupCodesModal.tsx:18
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:274
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:378
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:74
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:68
 msgid "Backup codes"
@@ -5336,11 +5335,6 @@ msgstr "備用碼已重新產生"
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:201
 msgid "Badge"
 msgstr "徽章"
-
-#. Option label for a software encoder quality select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:88
-msgid "Balanced"
-msgstr "平衡"
 
 #. IAR modal: quick-action card button label for opening the ban dialog.
 #. Short moderation action label. Ban a member from a community by removing them and preventing rejoining.
@@ -5564,7 +5558,7 @@ msgid "Biometrics"
 msgstr "生物辨識"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:169
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:152
 msgid "Bitrate"
 msgstr "位元率"
 
@@ -5934,7 +5928,7 @@ msgid "Browser back"
 msgstr "瀏覽器：上一頁"
 
 #. Audio device label prefix for the browser-managed default audio device.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:26
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:30
 msgid "Browser default"
 msgstr "瀏覽器預設"
 
@@ -5959,7 +5953,7 @@ msgid "Browser locale: {format}"
 msgstr "瀏覽器時間格式：{format}"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:64
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:63
 msgid "Browser mic gain for custom processing"
 msgstr "用於自訂處理的瀏覽器麥克風增益"
 
@@ -6204,20 +6198,20 @@ msgstr "通話"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the video tab. Keep it concise.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:720
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:72
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:98
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:162
 #: src/features/voice/utils/SettingsDeviceOptions.ts:24
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:10
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:14
 msgid "Camera"
 msgstr "相機"
 
 #. Title shown in the screen-share Devices tab before camera preview permission is granted.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:156
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:157
 msgid "Camera access is needed for device previews"
 msgstr "需要相機權限才能預覽裝置"
 
 #. Description shown after camera preview permission is denied or unavailable.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:164
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:165
 msgid "Camera access was not granted. Update camera permissions, then try again."
 msgstr "相機權限未獲授權。請更新相機權限後再試一次。"
 
@@ -6238,7 +6232,7 @@ msgid "Camera error"
 msgstr "相機錯誤"
 
 #. Overlay text on a participant tile when the local user hid the remote camera feed.
-#: src/features/voice/components/voice_participant_tile/shared.ts:49
+#: src/features/voice/components/voice_participant_tile/shared.ts:47
 msgid "Camera hidden"
 msgstr "相機已隱藏"
 
@@ -6248,7 +6242,7 @@ msgid "Camera limit reached — up to {voiceChannelCameraUserLimit} people can s
 msgstr "已達相機上限，此頻道最多可有 {voiceChannelCameraUserLimit} 人分享視訊。"
 
 #. Accessible status label while a voice participant camera feed is starting before video is renderable.
-#: src/features/voice/components/voice_participant_tile/shared.ts:53
+#: src/features/voice/components/voice_participant_tile/shared.ts:51
 msgid "Camera loading"
 msgstr "相機載入中"
 
@@ -6282,13 +6276,13 @@ msgstr "相機預覽"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the video tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:76
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:102
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:202
 msgid "Camera quality"
 msgstr "相機畫質"
 
 #. Voice control dropdown label or menu item for camera settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:231
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:235
 msgid "Camera settings"
 msgstr "相機設定"
 
@@ -6341,7 +6335,7 @@ msgstr "無法在這裡上傳檔案"
 #: src/features/auth/components/modals/DeviceRevokeModal.tsx:72
 #: src/features/auth/components/modals/PasskeyNameModal.tsx:80
 #: src/features/auth/components/modals/PasskeyPinModal.tsx:104
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:264
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:278
 #: src/features/auth/flow/BrowserLoginHandoffModal.tsx:140
 #: src/features/channel/components/bottomsheets/CreateDMBottomSheet.tsx:137
 #: src/features/channel/components/MentionEveryonePopout.tsx:177
@@ -6485,24 +6479,29 @@ msgid "Captcha verification failed. Try again."
 msgstr "驗證碼驗證失敗。請再試一次。"
 
 #. Section header in the Linux audio source picker. Lists capture-target options (entire system / specific apps).
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:48
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:50
 msgid "Capture"
 msgstr "擷取"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:880
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:812
 msgid "Capture app audio"
 msgstr "擷取應用程式音訊"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:882
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:814
 msgid "Capture desktop audio"
 msgstr "擷取桌面音訊"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:879
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:811
 msgid "Capture device audio"
 msgstr "擷取裝置音訊"
 
+#. Note shown beside the stored Screen share preset in the stream settings menu and the video settings tab of a capture device share, explaining why that preset is not used.
+#: src/features/voice/components/StreamSettingsMenuContentStateMachine.ts:34
+msgid "Capture devices use the Gaming preset."
+msgstr "擷取裝置使用「遊戲」預設。"
+
 #. Toggle label in the stream settings menu for a window share whose audio scope the user widened from the shared window to the whole system mix.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:157
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:161
 msgid "Capture entire system audio"
 msgstr "擷取整個系統音訊"
 
@@ -6742,7 +6741,7 @@ msgid "Change stream"
 msgstr "變更串流"
 
 #. Modal title for the screen-share picker when switching an ongoing stream to a new source.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:217
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:218
 msgid "Change stream source"
 msgstr "變更直播來源"
 
@@ -7033,7 +7032,7 @@ msgid "Channel access"
 msgstr "頻道存取權"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:117
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
 msgid "Channel access denied"
 msgstr "頻道存取遭拒"
 
@@ -7098,7 +7097,7 @@ msgstr "頻道 ID 已複製到剪貼簿"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:86
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:87
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "頻道連結"
@@ -7531,7 +7530,7 @@ msgid "Choose payment method"
 msgstr "選擇付款方式"
 
 #. Modal title for the screen-share picker when starting a new screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:221
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:222
 msgid "Choose something to share"
 msgstr "選擇要分享的內容"
 
@@ -7638,11 +7637,6 @@ msgstr "選擇您的語言"
 msgid "Choose your profile accent color"
 msgstr "選擇您的個人檔案主題顏色"
 
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:117
-msgid "Cisco"
-msgstr "Cisco"
-
 #. Generic account action label that opens or submits the flow to secure an unclaimed account.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:152
 msgid "Claim account"
@@ -7685,7 +7679,7 @@ msgstr "請先認領帳號並驗證電子郵件，才能傳送檢舉。"
 msgid "Claim your account by adding an email and password. We will send a verification code to confirm your email before finishing."
 msgstr "請新增電子郵件和密碼來認領您的帳號。完成前我們會傳送驗證碼，以確認您的電子郵件。"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:173
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:277
 msgid "Claim your account to access security features like two-factor authentication and passkeys."
 msgstr "認領您的帳號，即可使用雙重驗證和通行金鑰等安全功能。"
 
@@ -7907,7 +7901,7 @@ msgid "Clear trusted domains ({trustedDomainsCount})"
 msgstr "清除信任的網域 ({trustedDomainsCount})"
 
 #. Footer summary description for the text-focused screen-share quality preset.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:245
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:246
 msgid "Clearer text"
 msgstr "文字更清晰"
 
@@ -8080,7 +8074,7 @@ msgstr "關閉"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:162
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:182
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:120
 msgid "Close account"
 msgstr "關閉帳號"
@@ -8241,7 +8235,7 @@ msgid "Code:"
 msgstr "代碼："
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:76
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:75
 msgid "Codec"
 msgstr "編解碼器"
 
@@ -8286,7 +8280,7 @@ msgstr "收合頻道主題"
 #. Tooltip / aria label on a voice participant tile button that collapses expanded device tiles for one user.
 #. Voice menu action that collapses expanded device tiles back into a single tile.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:128
-#: src/features/voice/components/VoiceParticipantTile.tsx:178
+#: src/features/voice/components/VoiceParticipantTile.tsx:176
 msgid "Collapse devices"
 msgstr "收合裝置"
 
@@ -8478,7 +8472,7 @@ msgid "Community creator"
 msgstr "社群建立者"
 
 #. Moderation voice menu label. Makes a member unable to hear others in this community voice chat. Distinct from community mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:145
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:149
 msgid "Community deafen"
 msgstr "社群耳機靜音"
 
@@ -8566,7 +8560,7 @@ msgid "Community MFA requirement nagbar"
 msgstr "社群 MFA 要求提示列"
 
 #. Moderation voice menu label. Mutes a member's microphone in this community voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:120
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:124
 msgid "Community mute"
 msgstr "社群麥克風靜音"
 
@@ -8767,7 +8761,7 @@ msgstr "輸入框自動對焦"
 #. Button label that opens a dedicated advanced settings modal for configuring screen-share encoder controls.
 #. Button label that opens a dedicated advanced settings modal.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx:164
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:160
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:113
 msgid "Configure"
 msgstr "設定"
 
@@ -8905,7 +8899,7 @@ msgstr "社群語音加入時的確認或雙擊動作"
 msgid "Conflicts with {conflictLabel}"
 msgstr "與 {conflictLabel} 衝突"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:214
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:241
 msgid "Connect a camera and try again."
 msgstr "請連接相機後再試一次。"
 
@@ -8914,7 +8908,7 @@ msgstr "請連接相機後再試一次。"
 msgid "Connect a camera or virtual capture device, then try again."
 msgstr "請連接相機或虛擬擷取裝置，然後再試一次。"
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:133
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:134
 msgid "Connect a display, then try again."
 msgstr "請連接顯示器後再試一次。"
 
@@ -9044,12 +9038,12 @@ msgid "Connection volume"
 msgstr "連線音量"
 
 #. Settings search entry label. Names an advanced voice setting in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:28
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:27
 msgid "Connection volume controls"
 msgstr "連線音量控制"
 
 #. Developer / debug overlay text on a participant tile. {connectionId} is the voice connection identifier.
-#: src/features/voice/components/voice_participant_tile/shared.ts:111
+#: src/features/voice/components/voice_participant_tile/shared.ts:91
 msgid "Connection: {connectionId}"
 msgstr "連線：{connectionId}"
 
@@ -9115,7 +9109,7 @@ msgid "Content filtering"
 msgstr "內容篩選"
 
 #. Label for an advanced screen-share select. Refers to the WebRTC MediaStreamTrack contentHint value.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:136
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:88
 msgid "Content hint"
 msgstr "內容提示"
 
@@ -9182,7 +9176,7 @@ msgstr "繼續檢舉社群"
 msgid "Continue to report user"
 msgstr "繼續檢舉使用者"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:231
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:245
 msgid "Continue with passkey"
 msgstr "使用通行金鑰繼續"
 
@@ -9278,7 +9272,7 @@ msgstr "已將統計資料 JSON 複製到剪貼簿"
 
 #. Generic success toast confirming that content was copied to the clipboard.
 #. Toast shown after copying text to the clipboard succeeds.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:145
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:146
 #: src/features/ui/commands/TextCopyCommands.ts:11
 msgid "Copied to clipboard"
 msgstr "已複製到剪貼簿"
@@ -9313,12 +9307,12 @@ msgid "Copy attachment ID"
 msgstr "複製附件 ID"
 
 #. Media context menu action that copies an audio attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:61
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:62
 msgid "Copy audio"
 msgstr "複製音訊"
 
 #. Media context menu action that copies the URL of the audio attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:81
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:82
 msgid "Copy audio link"
 msgstr "複製音訊連結"
 
@@ -9406,17 +9400,17 @@ msgid "Copy endpoint"
 msgstr "複製端點"
 
 #. Media context menu action that copies the URL of the file attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:85
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:86
 msgid "Copy file link"
 msgstr "複製檔案連結"
 
 #. Media context menu action that copies a GIF attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:53
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:54
 msgid "Copy GIF"
 msgstr "複製 GIF"
 
 #. Media context menu action that copies the URL of the GIF attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:73
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:74
 msgid "Copy GIF link"
 msgstr "複製 GIF 連結"
 
@@ -9441,7 +9435,7 @@ msgid "Copy identifier"
 msgstr "複製識別碼"
 
 #. Media context menu action that copies an image attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:49
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:50
 msgid "Copy image"
 msgstr "複製圖片"
 
@@ -9449,7 +9443,7 @@ msgstr "複製圖片"
 #. Image context menu action that copies the image URL to the clipboard.
 #. Image context menu action that copies the image URL to the clipboard.
 #: src/features/ui/action_menu/items/EmojiContextMenuItems.tsx:44
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:69
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:70
 #: src/features/ui/action_menu/items/StickerContextMenuItems.tsx:44
 msgid "Copy image link"
 msgstr "複製圖片連結"
@@ -9494,7 +9488,7 @@ msgid "Copy link to section"
 msgstr "複製區段連結"
 
 #. Generic media context menu action label when the specific type is unknown.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:65
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:66
 msgid "Copy media"
 msgstr "複製媒體"
 
@@ -9601,12 +9595,12 @@ msgid "Copy value"
 msgstr "複製值"
 
 #. Media context menu action that copies a video attachment to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:57
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:58
 msgid "Copy video"
 msgstr "複製影片"
 
 #. Media context menu action that copies the URL of the video attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:77
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:78
 msgid "Copy video link"
 msgstr "複製影片連結"
 
@@ -9625,7 +9619,7 @@ msgid "Copy webhook URL"
 msgstr "複製 Webhook 網址"
 
 #. Progress toast shown while encoding and copying an image to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:153
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:154
 msgid "Copying image..."
 msgstr "正在複製圖片…"
 
@@ -9789,7 +9783,7 @@ msgid "Couldn't delete application"
 msgstr "無法刪除應用程式"
 
 #. Title of the error modal shown when removing a registered passkey fails.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:36
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:38
 msgid "Couldn't delete passkey"
 msgstr "無法刪除通行金鑰"
 
@@ -10128,6 +10122,11 @@ msgstr "無法更新表情符號複製設定"
 #: src/features/ui/action_menu/items/StaffUserControlsMenuItems.tsx:24
 msgid "Couldn't update mention suppression bypass"
 msgstr "無法更新提及抑制略過設定"
+
+#. Title of the error modal shown when the passkey two-factor setting could not be saved.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:84
+msgid "Couldn't update passkey two-factor authentication"
+msgstr "無法更新通行金鑰雙重驗證"
 
 #. Error modal title shown when saving role changes fails.
 #: src/features/moderation/components/alerts/RoleUpdateFailedModal.tsx:9
@@ -10589,8 +10588,8 @@ msgstr "目前：{mutedText}"
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx:186
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:94
 #: src/features/voice/components/bottomsheets/VoiceSettingsBottomSheets.tsx:45
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:237
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:97
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:238
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:103
 msgid "Custom"
 msgstr "自訂"
 
@@ -10785,7 +10784,7 @@ msgid "Custom video backgrounds"
 msgstr "自訂視訊背景"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:60
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:59
 msgid "Custom voice processing"
 msgstr "自訂語音處理"
 
@@ -11020,22 +11019,22 @@ msgid "Day"
 msgstr "日"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:142
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:162
 msgid "Deactivate"
 msgstr "停用"
 
 #. Voice action label. Turns off what the user hears in voice chat. Distinct from microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:78
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:82
 msgid "Deafen"
 msgstr "耳機靜音"
 
 #. Voice menu action that deafens every device or session so this user cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:137
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:141
 msgid "Deafen all devices"
 msgstr "將所有裝置設為耳機靜音"
 
 #. Voice menu action. Deafens one active device or session so it stops hearing voice audio. Distinct from muting its microphone.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:132
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:136
 msgid "Deafen device"
 msgstr "將裝置設為耳機靜音"
 
@@ -11055,24 +11054,24 @@ msgid "Deafen other members in voice channels, so they cannot hear or speak."
 msgstr "將語音頻道中的其他成員設為耳機靜音，讓他們無法聽見或發言。"
 
 #. Settings label for the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:155
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:159
 msgid "Deafen shortcut"
 msgstr "耳機靜音快速鍵"
 
 #. Voice control label. Turns off what the current user hears in voice chat. Distinct from microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:124
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:128
 msgid "Deafen yourself"
 msgstr "將自己設為耳機靜音"
 
 #. Accessible label for the deafened voice badge shown on an avatar.
 #. Voice chat status label. The user cannot hear voice chat. Distinct from muted.
 #: src/features/ui/avatars/AvatarWithPresence.tsx:25
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:66
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:70
 msgid "Deafened"
 msgstr "已耳機靜音"
 
 #. Voice chat status label. A moderator deafened the user in this community, so they cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:53
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:57
 msgid "Deafened by moderators"
 msgstr "遭管理員設為耳機靜音"
 
@@ -11167,7 +11166,7 @@ msgid "Default"
 msgstr "預設"
 
 #. Fallback label for the system default camera in the screen-share devices tab.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:152
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:153
 msgid "Default camera"
 msgstr "預設相機"
 
@@ -11259,8 +11258,8 @@ msgstr "德拉瓦州"
 #. Tooltip for the custom emoji delete button.
 #: src/features/channel/components/embeds/media/EmbedAudio.tsx:29
 #: src/features/channel/components/embeds/media/MediaContainer.tsx:23
-#: src/features/channel/components/MobileMemesPicker.tsx:88
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:39
+#: src/features/channel/components/MobileMemesPicker.tsx:89
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:40
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:204
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:216
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
@@ -11268,11 +11267,11 @@ msgstr "德拉瓦州"
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/platform/utils/DesktopLocaleBridge.ts:76
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:399
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:290
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:238
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:154
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:174
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:190
 msgid "Delete"
 msgstr "刪除"
@@ -11289,8 +11288,8 @@ msgstr "要刪除 :{emojiName}: 嗎？此動作無法復原。"
 
 #. Body of the destructive delete confirmation alert in the saved media picker. memeName is the user-chosen name. Keep quotation marks.
 #. Error message in the channel and chat mobile memes picker. Preserve {memeName}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/channel/components/MobileMemesPicker.tsx:83
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:34
+#: src/features/channel/components/MobileMemesPicker.tsx:84
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:35
 msgid "Delete \"{memeName}\"? Can't be undone."
 msgstr "要刪除「{memeName}」嗎？此動作無法復原。"
 
@@ -11400,7 +11399,7 @@ msgid "Delete invite"
 msgstr "刪除邀請"
 
 #. Accessible label for the delete button on a saved media tile in the picker.
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:56
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:57
 msgid "Delete media"
 msgstr "刪除媒體"
 
@@ -11441,7 +11440,7 @@ msgid "Delete other members' messages. Pinning is controlled separately."
 msgstr "刪除其他成員的訊息。釘選另有獨立權限。"
 
 #. Security settings: confirmation modal title and primary button for removing a registered passkey. Destructive action; keep plain and direct.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:31
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:33
 msgid "Delete passkey"
 msgstr "刪除通行金鑰"
 
@@ -11467,8 +11466,8 @@ msgstr "刪除身分組"
 
 #. Accessible label and tooltip for the delete button on a saved media tile in the mobile memes picker.
 #. Title of the destructive delete confirmation alert in the saved media (memes) picker.
-#: src/features/channel/components/MobileMemesPicker.tsx:79
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:30
+#: src/features/channel/components/MobileMemesPicker.tsx:80
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:31
 msgid "Delete saved media"
 msgstr "刪除已儲存的媒體"
 
@@ -11528,7 +11527,7 @@ msgid "Delete webhook"
 msgstr "刪除 Webhook"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:166
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:186
 msgid "Delete your account"
 msgstr "刪除您的帳號"
 
@@ -11720,7 +11719,7 @@ msgid "Desktop away"
 msgstr "電腦閒置"
 
 #. Aria label on a participant tile icon that indicates the participant is on desktop.
-#: src/features/voice/components/voice_participant_tile/shared.ts:107
+#: src/features/voice/components/voice_participant_tile/shared.ts:87
 msgid "Desktop device"
 msgstr "電腦裝置"
 
@@ -11806,7 +11805,7 @@ msgid "Detached banner"
 msgstr "分離式橫幅"
 
 #. Option label for a WebRTC content hint select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:152
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:105
 msgid "Detail"
 msgstr "細節"
 
@@ -11850,13 +11849,13 @@ msgstr "開發人員狀態"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:129
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "開發人員工具"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:133
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "開發人員工具可從頻道標題列的員工徽章開啟。"
 
@@ -11876,9 +11875,20 @@ msgid "Device"
 msgstr "裝置"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:12
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:11
 msgid "Device alerts"
 msgstr "裝置警示"
+
+#. Screen-share audio summary on a video device share. {deviceLabel} is the name of the audio input paired with the capture device.
+#: src/features/voice/utils/ScreenShareAudioSummary.ts:55
+msgid "Device audio ({deviceLabel})"
+msgstr "裝置音訊 ({deviceLabel})"
+
+#. Screen-share audio summary on a video device share that publishes only the audio of the capture device itself.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:868
+#: src/features/voice/utils/ScreenShareAudioSummary.ts:50
+msgid "Device audio only"
+msgstr "僅音訊裝置"
 
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:131
 msgid "Device details"
@@ -11889,12 +11899,12 @@ msgstr "裝置詳細資訊"
 msgid "Device revoked"
 msgstr "裝置已撤銷"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1074
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:1006
 msgid "Device selection"
 msgstr "選擇裝置"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:36
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:35
 msgid "Device volume"
 msgstr "裝置音量"
 
@@ -11908,17 +11918,17 @@ msgstr "裝置："
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Tab label in the screen-share picker. Lists cameras and virtual capture devices.
 #. User settings tab for managing devices linked to the current account.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:65
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:104
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:530
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:11
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:82
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:57
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:192
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:193
 msgid "Devices"
 msgstr "裝置"
 
 #. Description for the Custom streaming preset. Lightly playful prose; keep tone casual.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:101
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:107
 msgid "Dial in your own numbers"
 msgstr "自行微調各項數值"
 
@@ -11954,7 +11964,7 @@ msgid "Dim strikethrough text"
 msgstr "調暗刪除線文字"
 
 #. Voice input processing profile with raw microphone audio.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:199
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:203
 msgid "Direct input"
 msgstr "直接輸入"
 
@@ -12019,9 +12029,9 @@ msgstr "直接上傳已啟用"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short footer action in the screen-share picker that disables screen-share preview frame uploads.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:238
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:138
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:278
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:342
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:158
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:279
 msgid "Disable"
 msgstr "停用"
 
@@ -12094,7 +12104,7 @@ msgid "Disable mobile push notifications"
 msgstr "關閉行動裝置推播通知"
 
 #. Short label for an advanced screen-share preview preference.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:48
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:44
 msgid "Disable picture-in-picture popout for screen shares"
 msgstr "停用螢幕分享的子母畫面彈出視窗"
 
@@ -12193,7 +12203,7 @@ msgid "Disabled value"
 msgstr "已停用值"
 
 #. Explains what happens after disabling screen-share preview uploads. Refers to already-uploaded preview thumbnails.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:326
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:327
 msgid "Disabling previews stops future preview uploads. Existing preview images may remain visible until the stream ends or the preview refreshes."
 msgstr "停用預覽功能會停止後續的預覽圖片上傳。已上傳的預覽圖片可能會繼續顯示，直到直播結束或預覽重新整理為止。"
 
@@ -12207,17 +12217,17 @@ msgid "Discard voice message"
 msgstr "捨棄語音訊息"
 
 #. Voice action label. Leaves the current voice call or disconnects a user from voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:86
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:90
 msgid "Disconnect"
 msgstr "中斷連線"
 
 #. Voice menu action that disconnects every active device or session from voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:108
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:112
 msgid "Disconnect all devices"
 msgstr "中斷所有裝置連線"
 
 #. Voice menu action that disconnects one active device or session from voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:104
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:108
 msgid "Disconnect device"
 msgstr "中斷裝置連線"
 
@@ -12342,7 +12352,7 @@ msgid "Display"
 msgstr "顯示"
 
 #. Fallback label for a display / monitor card in the screen-share picker when the OS does not give us a display name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:146
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:147
 msgctxt "display-screen"
 msgid "Display"
 msgstr "顯示器"
@@ -12614,7 +12624,7 @@ msgstr "不要再推薦「{deviceName}」"
 #: src/features/moderation/components/report/ReportBreadcrumbs.tsx:31
 #: src/features/search/components/search/ChannelFilterSheet.tsx:165
 #: src/features/search/components/search/HasFilterSheet.tsx:206
-#: src/features/search/components/search/UserFilterSheet.tsx:175
+#: src/features/search/components/search/UserFilterSheet.tsx:186
 msgid "Done"
 msgstr "完成"
 
@@ -12652,7 +12662,7 @@ msgid "Download <0>fluxer-verification</0> and place it in your <1>.well-known</
 msgstr "請下載 <0>fluxer-verification</0> 並將其放置在您的 <1>.well-known</1> 資料夾中，以便我們驗證網域。"
 
 #. Media context menu action that downloads an audio attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:121
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:122
 msgid "Download audio"
 msgstr "下載音訊"
 
@@ -12687,7 +12697,7 @@ msgid "Download desktop update {version} ({formatBytes})"
 msgstr "下載桌面版更新 {version} ({formatBytes})"
 
 #. Media context menu action that downloads a file attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:125
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:126
 msgid "Download file"
 msgstr "下載檔案"
 
@@ -12696,12 +12706,12 @@ msgid "Download fluxer-verification"
 msgstr "下載 fluxer-verification"
 
 #. Media context menu action that downloads a GIF attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:113
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:114
 msgid "Download GIF"
 msgstr "下載 GIF"
 
 #. Image context menu action that downloads the image to disk.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:109
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:110
 msgid "Download image"
 msgstr "下載圖片"
 
@@ -12715,7 +12725,7 @@ msgstr "下載安裝程式"
 #. Tooltip on the download button in the media viewer modal.
 #: src/features/channel/components/embeds/media/MediaContainer.tsx:28
 #: src/features/messaging/components/modals/media_modal/shared.ts:73
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:129
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:130
 msgid "Download media"
 msgstr "下載媒體"
 
@@ -12725,7 +12735,7 @@ msgid "Download package"
 msgstr "下載套件"
 
 #. Media context menu action that downloads a video attachment.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:117
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:118
 msgid "Download video"
 msgstr "下載影片"
 
@@ -12931,7 +12941,7 @@ msgid "Echo"
 msgstr "回音"
 
 #. Voice setting label for preventing speaker audio from feeding into the microphone.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:207
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:211
 msgid "Echo cancellation"
 msgstr "回音消除"
 
@@ -12964,7 +12974,7 @@ msgstr "編輯「{0}」的存取權限"
 #. Accessible label in the edit alt text modal. Keep it concise.
 #. Action that opens the modal for editing an image or video accessibility description.
 #: src/features/messaging/components/modals/EditAltTextModal.tsx:32
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:165
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:166
 msgid "Edit alt text"
 msgstr "編輯替代文字"
 
@@ -13054,7 +13064,7 @@ msgid "Edit keyboard shortcut"
 msgstr "編輯鍵盤快捷鍵"
 
 #. Tooltip on the edit button on a saved media tile in the picker.
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:48
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:49
 msgid "Edit media"
 msgstr "編輯媒體"
 
@@ -13103,8 +13113,8 @@ msgstr "編輯反向圖片搜尋引擎"
 #. Accessible label for the edit button on a saved media tile in the picker.
 #. Action that opens the editor for a saved media (favorite meme) entry.
 #. Button or menu action label in the channel and chat mobile memes picker. Keep it concise.
-#: src/features/channel/components/MobileMemesPicker.tsx:93
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:52
+#: src/features/channel/components/MobileMemesPicker.tsx:94
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:53
 #: src/features/expressions/components/modals/EditFavoriteMemeModal.tsx:18
 msgid "Edit saved media"
 msgstr "編輯已儲存的媒體"
@@ -13462,7 +13472,7 @@ msgstr "沒有最愛項目"
 #: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:32
 #: src/features/app/components/layout/GuildLayout.tsx:54
 #: src/features/invite/components/DisableInvitesButton.tsx:27
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:256
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:360
 #: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:23
 msgid "Enable"
 msgstr "啟用"
@@ -13527,7 +13537,7 @@ msgid "Enable browser notifications"
 msgstr "啟用瀏覽器通知"
 
 #. Description shown before the user explicitly requests camera preview permission.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:160
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:161
 msgid "Enable camera access to preview cameras and capture devices before choosing one to stream."
 msgstr "啟用相機權限，以便在選擇要串流的相機和擷取裝置前預覽它們。"
 
@@ -13643,7 +13653,7 @@ msgid "Enable or disable built-in translators. Enabled translators appear in the
 msgstr "啟用或停用內建翻譯工具。已啟用的翻譯工具會在選取文字時，顯示於訊息操作選單中。"
 
 #. Button that explicitly requests camera permission for device previews.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:168
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:169
 msgid "Enable previews"
 msgstr "啟用預覽"
 
@@ -13741,20 +13751,20 @@ msgstr "已啟用"
 
 #. Label for an advanced screen-share select. Refers to hardware or software video encoding.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:56
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:153
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:52
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:136
 msgid "Encoder path"
 msgstr "編碼方式"
 
 #. Description for the encoder path select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:60
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControlsState.ts:6
 msgid "Encoder preference for new screen shares."
 msgstr "新螢幕分享的編碼器偏好設定。"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:173
-msgid "Encoder, SVC, backup stream, and bitrate presets"
-msgstr "編碼器、SVC、備份串流和位元速率預設值"
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:156
+msgid "Encoder, SVC, and bitrate presets"
+msgstr "編碼器、SVC 和位元率預設"
 
 #. IAR modal: rule label.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:349
@@ -13795,12 +13805,12 @@ msgid "End screen share"
 msgstr "結束螢幕分享"
 
 #. Pre-join indicator shown beneath the Join button on a DM or group DM call where at least one connected participant (typically an outdated bot) does not support E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:326
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:330
 msgid "End-to-end encryption is unavailable because an unsupported participant is in this call."
 msgstr "由於通話中有不支援的參與者，因此無法使用端對端加密。"
 
 #. Pre-join indicator shown beneath the Join button on a voice channel where at least one connected participant (typically an outdated bot) does not support E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:321
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:325
 msgid "End-to-end encryption is unavailable because an unsupported participant is in this voice channel."
 msgstr "由於語音頻道中有不支援的參與者，因此無法使用端對端加密。"
 
@@ -13941,6 +13951,16 @@ msgstr "輸入禮物代碼…"
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:375
 msgid "Enter new email"
 msgstr "輸入新電子郵件"
+
+#. MFA code entry instructions shown when the account uses passkeys as its second factor.
+#: src/features/auth/flow/MfaScreen.tsx:42
+msgid "Enter one of your backup codes if you can't use your passkey."
+msgstr "如果您無法使用通行金鑰，請輸入其中一組備用碼。"
+
+#. Body text in the authentication sudo verification modal, shown when the only code the account can enter is a backup code. Keep the tone plain and specific.
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:41
+msgid "Enter one of your backup codes."
+msgstr "請輸入其中一組備用碼。"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:66
@@ -14087,7 +14107,7 @@ msgid "Entertainment"
 msgstr "娛樂"
 
 #. Tab label in the screen-share picker. Lists shareable monitors / displays.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:188
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:189
 msgid "Entire screen"
 msgstr "整個螢幕"
 
@@ -14096,7 +14116,7 @@ msgstr "整個螢幕"
 msgid "Entire system"
 msgstr "整個系統"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:253
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:260
 msgid "Entire system audio"
 msgstr "整個系統音訊"
 
@@ -14156,7 +14176,7 @@ msgid "Error"
 msgstr "錯誤"
 
 #. Subtitle on a remote screen-share tile after loading the watched stream failed. {code} is a numeric diagnostic code.
-#: src/features/voice/components/voice_participant_tile/shared.ts:44
+#: src/features/voice/components/voice_participant_tile/shared.ts:42
 msgid "error code {code}"
 msgstr "錯誤代碼 {code}"
 
@@ -14269,7 +14289,7 @@ msgid "exclude a user"
 msgstr "排除某位使用者"
 
 #. Section header in the Linux audio source picker for apps excluded from the system mix.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:57
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:59
 msgid "Exclude from system"
 msgstr "從系統排除"
 
@@ -14594,7 +14614,7 @@ msgstr "無法複製邀請連結"
 
 #. Error toast shown when copying to the clipboard fails.
 #. Toast shown after copying text to the clipboard fails.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:149
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:150
 #: src/features/ui/commands/TextCopyCommands.ts:15
 msgid "Failed to copy to clipboard"
 msgstr "無法複製到剪貼簿"
@@ -14686,7 +14706,7 @@ msgid "Failed to load invites. Try again."
 msgstr "載入邀請失敗。請再試一次。"
 
 #. Error text shown in the screen-share picker when the list of shareable windows/displays fails to load.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:120
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:121
 msgid "Failed to load shareable sources."
 msgstr "無法載入可分享的來源。"
 
@@ -15240,16 +15260,6 @@ msgctxt "us-state"
 msgid "Florida"
 msgstr "佛羅里達州"
 
-#. Description for the high-tier Gaming streaming preset (Plutonium). Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:74
-msgid "Fluid motion at 1440p 60 FPS"
-msgstr "1440p 60 FPS 流暢動態"
-
-#. Description for the free-tier Gaming streaming preset. Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:79
-msgid "Fluid motion at 720p 30 FPS"
-msgstr "720p 30 FPS 流暢動態"
-
 #. Placeholder for the product name input in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:93
 msgid "Fluxer"
@@ -15297,7 +15307,7 @@ msgid "Focus window"
 msgstr "將視窗移至前景"
 
 #. Voice input processing profile optimized for spoken voice.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:195
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:199
 msgid "Focused voice"
 msgstr "語音聚焦"
 
@@ -15332,10 +15342,6 @@ msgstr "資料夾設定"
 #: src/features/app/components/whats_new/WhatsNewModal.tsx:33
 msgid "Follow us on {blueskyProviderName}"
 msgstr "在 {blueskyProviderName} 上追蹤我們"
-
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:936
-msgid "Follow voice input"
-msgstr "跟隨語音輸入"
 
 #. Label in the sounds, shown on a sound row that has no volume override. Preserve {effectiveValue}; it is inserted by code and already holds the locale-formatted percentage, including the percent sign.
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx:84
@@ -15416,7 +15422,7 @@ msgstr "自己使用"
 msgid "For this check, you send us a text message instead of receiving one from us."
 msgstr "這次驗證，您需要傳送簡訊給我們，而不是接收我們的簡訊。"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:169
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:183
 msgid "For your security, please confirm it's you to continue."
 msgstr "為了您的帳戶安全，請驗證是您本人操作，才能繼續。"
 
@@ -15562,7 +15568,7 @@ msgid "Forward"
 msgstr "轉傳"
 
 #. Tooltip / aria label on the forward / fast-forward button in the standalone audio player. {defaultSeekAmount} is an integer second count.
-#: src/features/voice/components/media_player/components/AudioPlayer.tsx:31
+#: src/features/voice/components/media_player/components/AudioPlayer.tsx:32
 msgid "Forward {defaultSeekAmount} seconds"
 msgstr "快轉 {defaultSeekAmount} 秒"
 
@@ -15603,14 +15609,14 @@ msgstr "視窗外框"
 
 #. Section header in the stream settings menu for frame rate options.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:314
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:341
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:230
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:129
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:133
 msgid "Frame rate"
 msgstr "影格率"
 
 #. Video settings note shown when higher frame rates require premium.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:57
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:69
 msgid "Frame rates above 30 FPS require {premiumProductName}"
 msgstr "高於 30 FPS 的影格速率需要 {premiumProductName}"
 
@@ -15829,7 +15835,7 @@ msgid "Fully quit and restart {productName} so macOS applies this permission."
 msgstr "請完全結束並重新啟動 {productName}，以便 macOS 套用此權限。"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:52
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:51
 msgid "Gain control"
 msgstr "增益控制"
 
@@ -15931,9 +15937,11 @@ msgstr "控制器 Y / 三角"
 #. Discovery category dropdown option in the community Discovery settings tab.
 #. Footer summary label for the gaming screen-share quality preset.
 #. Streaming preset label in the stream settings menu. Higher frame rate, optimized for video games.
+#. Video settings label for the motion-focused screen share quality preset.
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:76
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:229
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:70
+#: src/features/user/components/modals/tabs/UserVideoTabState.ts:24
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:230
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:76
 msgid "Gaming"
 msgstr "遊戲"
 
@@ -16074,7 +16082,7 @@ msgid "GIF picker loading"
 msgstr "正在載入 GIF 選擇器"
 
 #. Accessible label for an animated GIF shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:85
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:86
 msgid "GIF preview"
 msgstr "GIF 預覽"
 
@@ -16438,7 +16446,7 @@ msgstr "已授予 {permissions}"
 msgid "Grants all permissions and bypasses channel restrictions. Highly sensitive."
 msgstr "授予所有權限並繞過頻道限制。高度敏感。"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1061
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:993
 msgid "Granular selection"
 msgstr "精細選取"
 
@@ -16616,23 +16624,8 @@ msgstr "群組已更新"
 msgid "Grouping"
 msgstr "分組"
 
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:113
-msgid "H.264"
-msgstr "H.264"
-
-#. Label for an advanced screen-share select. H.264 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:120
-msgid "H.264 backup stream"
-msgstr "H.264 備用串流"
-
-#. Option label for an H.264 backup stream select. H.264 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:132
-msgid "H.264 simulcast backup"
-msgstr "H.264 同步串流備份"
-
 #. Option label for the screen-share codec select while the HEVC opt-in is off and the option is disabled. H.265 is a codec name and should stay literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:178
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:131
 msgid "H.265 (requires opt-in)"
 msgstr "H.265（需要選擇加入）"
 
@@ -16688,7 +16681,7 @@ msgid "Hardware acceleration can cause rendering glitches with transparent windo
 msgstr "硬體加速可能會導致透明視窗出現渲染異常。如果出現閃爍或拖影，請嘗試使用 --disable-gpu。"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:161
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:144
 msgid "Hardware encoder"
 msgstr "硬體編碼器"
 
@@ -16828,13 +16821,8 @@ msgstr "說明中心"
 msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
 msgstr "協助將 {PRODUCT_NAME} 翻譯成您的語言，請前往 <0>{I18N_WEBLATE_DOMAIN}</0>。"
 
-#. Description for a WebRTC content hint select. Keep Motion, Detail, and text as plain option concepts.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:140
-msgid "Helps the browser choose motion, detail, or text handling."
-msgstr "協助瀏覽器選擇動態、細節或文字的處理方式。"
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:105
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
 msgstr "HEVC"
 
@@ -16997,7 +16985,7 @@ msgid "Hide muted channels by default?"
 msgstr "預設隱藏已靜音的頻道？"
 
 #. Short label for an advanced stream privacy preference.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:52
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:48
 msgid "Hide my stream preview thumbnail"
 msgstr "隱藏我的直播預覽縮圖"
 
@@ -17016,7 +17004,7 @@ msgstr "隱藏密碼"
 msgid "Hide picture-in-picture popout?"
 msgstr "要隱藏子母畫面嗎？"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:838
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:770
 msgid "Hide preview thumbnail"
 msgstr "隱藏預覽縮圖"
 
@@ -17078,11 +17066,6 @@ msgstr "高動態範圍"
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabHdrTab.tsx:29
 msgid "High dynamic range display mode"
 msgstr "高動態範圍顯示模式"
-
-#. Description for a software encoder quality select. Keep AV1 and CPU literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:80
-msgid "Higher quality can increase CPU usage and latency."
-msgstr "較高的品質可能會增加 CPU 使用量和延遲。"
 
 #. Description for the DeepFilterNet3 noise suppression strength slider.
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:71
@@ -17415,7 +17398,7 @@ msgstr "如果您希望這些成員能查看特定日期之後傳送的歷史訊
 #. Button label for silencing an incoming direct call without joining.
 #. Button, menu item, or tooltip for ignoring an incoming friend request.
 #: src/features/relationship/utils/RelationshipMessageDescriptors.ts:21
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:100
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:104
 msgid "Ignore"
 msgstr "忽略"
 
@@ -17424,11 +17407,11 @@ msgstr "忽略"
 msgid "Ignore friend request"
 msgstr "忽略好友邀請"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1051
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:983
 msgid "Ignore hardware devices"
 msgstr "忽略硬體裝置"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1027
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:959
 msgid "Ignore input media"
 msgstr "忽略輸入媒體"
 
@@ -17459,7 +17442,7 @@ msgstr "要忽略來自 {displayName} 的好友邀請嗎？"
 msgid "Ignore this channel's slowmode cooldown."
 msgstr "忽略此頻道的慢速模式冷卻時間。"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1038
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:970
 msgid "Ignore virtual"
 msgstr "忽略虛擬裝置"
 
@@ -17497,7 +17480,7 @@ msgstr "伊利諾州"
 #. Type label for image media.
 #: src/features/channel/components/embeds/media/EmbedImage.tsx:47
 #: src/features/expressions/utils/FavoriteMemeUtils.ts:14
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:113
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:114
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:25
 msgid "Image"
 msgstr "圖片"
@@ -17508,7 +17491,7 @@ msgid "Image assets"
 msgstr "圖片素材"
 
 #. Success toast confirming that an image was copied as a bitmap to the clipboard.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:157
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:158
 msgid "Image copied to clipboard"
 msgstr "圖片已複製到剪貼簿"
 
@@ -17542,7 +17525,7 @@ msgid "Image options"
 msgstr "圖片選項"
 
 #. Accessible label for a static image shown in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:81
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:82
 msgid "Image preview"
 msgstr "圖片預覽"
 
@@ -17569,7 +17552,7 @@ msgstr "上傳圖片"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the channel and chat memes picker header. Keep it concise.
 #. Tab label in the mobile memes picker. Filters to saved images.
-#: src/features/channel/components/MobileMemesPicker.tsx:46
+#: src/features/channel/components/MobileMemesPicker.tsx:47
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:16
 #: src/features/user/components/settings_utils/section_registry/ChatSettingsSections.ts:105
 msgid "Images"
@@ -17750,7 +17733,7 @@ msgid "In voice"
 msgstr "在語音通話中"
 
 #. Short status label shown when the user is currently connected to voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:175
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:179
 msgid "In voice chat"
 msgstr "在語音聊天中"
 
@@ -17815,7 +17798,7 @@ msgid "Include all except selected"
 msgstr "選取以外的所有社群"
 
 #. Section header in the Linux audio source picker for the per-app inclusion list.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:53
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:55
 msgid "Include apps"
 msgstr "包含應用程式"
 
@@ -18005,7 +17988,7 @@ msgid "Input and output"
 msgstr "輸入與輸出"
 
 #. Voice settings label for selecting a microphone input device.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:179
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:183
 msgid "Input device"
 msgstr "輸入裝置"
 
@@ -18027,7 +18010,7 @@ msgid "Input profile: {processingModeLabel}"
 msgstr "輸入設定檔：{processingModeLabel}"
 
 #. Voice control dropdown label or menu item for microphone input settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:223
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:227
 msgid "Input settings"
 msgstr "輸入設定"
 
@@ -18036,7 +18019,7 @@ msgid "Input states"
 msgstr "輸入狀態"
 
 #. Voice settings slider label for microphone volume.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:187
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:191
 msgid "Input volume"
 msgstr "輸入音量"
 
@@ -18294,7 +18277,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "分享時隱藏邀請連結："
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:145
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
 msgid "Invite link masked while sharing"
 msgstr "分享時已隱藏邀請連結"
 
@@ -18707,7 +18690,7 @@ msgid "Jump to {displayName}"
 msgstr "跳到「{displayName}」"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:100
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:101
 msgid "Jump to {labelText}"
 msgstr "跳到「{labelText}」"
 
@@ -18764,12 +18747,12 @@ msgid "Jump to the current call"
 msgstr "跳到目前的通話"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
 msgid "Jump to the linked channel"
 msgstr "跳到連結的頻道"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:96
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:97
 msgid "Jump to the linked message"
 msgstr "跳到連結的訊息"
 
@@ -18779,7 +18762,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "跳到 {authorNickname} 的訊息"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:91
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:92
 msgid "Jump to the message in {labelText}"
 msgstr "跳到「{labelText}」中的訊息"
 
@@ -19074,7 +19057,7 @@ msgid "Layering"
 msgstr "堆疊層級"
 
 #. Description for an SVC mode select. Keep SVC and AV1 literal.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:100
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:72
 msgid "Layering for AV1 and VP9 when available."
 msgstr "適用於 AV1 和 VP9 的分層處理（如果可用）。"
 
@@ -19084,7 +19067,7 @@ msgid "Layout"
 msgstr "版面配置"
 
 #. Accessible label for the screen-share picker footer info button.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:282
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:283
 msgid "Learn about screen share previews"
 msgstr "了解螢幕分享預覽功能"
 
@@ -19427,7 +19410,7 @@ msgid "Link styling"
 msgstr "連結樣式"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:137
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
 msgid "Link unavailable"
 msgstr "連結無法使用"
 
@@ -19477,7 +19460,7 @@ msgid "Linux app"
 msgstr "Linux 應用程式"
 
 #. Audio device label prefix for the operating system default audio device on Linux.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:22
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:26
 msgid "Linux default"
 msgstr "Linux 預設值"
 
@@ -19580,7 +19563,7 @@ msgid "Loading theme..."
 msgstr "正在載入主題…"
 
 #. Generic loading toast or label shown while an operation is in progress.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:141
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:142
 msgid "Loading..."
 msgstr "正在載入…"
 
@@ -19715,7 +19698,7 @@ msgid "macOS app"
 msgstr "macOS 應用程式"
 
 #. Audio device label prefix for the operating system default audio device on macOS.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:18
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:22
 msgid "macOS default"
 msgstr "macOS 預設值"
 
@@ -19804,8 +19787,8 @@ msgstr "惡意軟體或危險連結"
 msgid "Malware, credential theft, or harmful files."
 msgstr "惡意軟體、竊取帳號密碼或有害檔案。"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:443
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:478
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:561
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:596
 msgid "Manage"
 msgstr "管理"
 
@@ -19815,7 +19798,7 @@ msgid "Manage accounts"
 msgstr "管理帳號"
 
 #. Security settings section description for account access controls.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:53
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:92
 msgid "Manage apps and devices with access to your account"
 msgstr "管理可存取您帳號的應用程式和裝置"
 
@@ -20235,7 +20218,7 @@ msgid "Maximum protection for family-friendly spaces"
 msgstr "為闔家適宜的空間提供最高等級的保護"
 
 #. Settings search entry description for the AV1 and H.265 screen-share opt-in toggles.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:97
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:96
 msgid "May cause compatibility issues for viewers. We’re working on improving this."
 msgstr "可能會導致觀眾出現相容性問題。我們正在努力改善此情況。"
 
@@ -20318,7 +20301,7 @@ msgstr "下一首"
 #. Accessible label for the overflow menu button in the media viewer modal.
 #. Short label in the channel and chat media action bottom sheet. Keep it concise.
 #: src/features/channel/components/MediaActionBottomSheet.tsx:37
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:69
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:70
 msgid "Media options"
 msgstr "媒體選項"
 
@@ -20328,7 +20311,7 @@ msgid "Media play/pause"
 msgstr "播放/暫停"
 
 #. Generic accessible label for unknown media in the media viewer.
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:97
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:98
 msgid "Media preview"
 msgstr "媒體預覽"
 
@@ -20783,7 +20766,7 @@ msgid "Message layout"
 msgstr "訊息版面配置"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:81
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:82
 msgid "message link"
 msgstr "訊息連結"
 
@@ -20964,7 +20947,7 @@ msgid "Microphone access was denied. Enable it in your system settings and try a
 msgstr "麥克風存取遭拒。請在系統設定中啟用後再試一次。"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:56
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:55
 msgid "Microphone gain"
 msgstr "麥克風增益"
 
@@ -20979,7 +20962,7 @@ msgid "Microphone test"
 msgstr "麥克風測試"
 
 #. Pre-join indicator shown beneath the Join button on a voice channel where every connected participant supports E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:311
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:315
 msgid "Microphone, camera, and screen share content are end-to-end encrypted."
 msgstr "麥克風、相機和螢幕分享內容已進行端對端加密。"
 
@@ -21048,7 +21031,7 @@ msgstr "未成年人面臨風險、成人內容出現在不當的地方，或不
 #. Camera settings menu checkbox for flipping the local camera preview horizontally.
 #. Switch label in the camera preview modal for flipping the local camera preview horizontally.
 #. Switch label in the video tab for flipping the local camera preview horizontally.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:80
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:106
 #: src/features/voice/components/modals/CameraPreviewModal.tsx:72
 #: src/features/voice/components/VoiceSettingsMenus.tsx:114
 msgid "Mirror camera"
@@ -21098,7 +21081,7 @@ msgid "Misspelled words"
 msgstr "錯字"
 
 #. Aria label on a participant tile icon that indicates the participant is on mobile.
-#: src/features/voice/components/voice_participant_tile/shared.ts:103
+#: src/features/voice/components/voice_participant_tile/shared.ts:83
 msgid "Mobile device"
 msgstr "行動裝置"
 
@@ -21325,7 +21308,7 @@ msgstr "最相關"
 #: src/features/theme_studio/sections/TokenGroups.ts:102
 #: src/features/user/components/modals/tabs/accessibility_tab/AccessibilityTabInline.tsx:31
 #: src/features/user/components/modals/tabs/AccessibilityTab.tsx:99
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:148
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:101
 #: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts:297
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:271
 msgid "Motion"
@@ -21547,7 +21530,7 @@ msgid "Mute all"
 msgstr "全部靜音"
 
 #. Voice menu action that mutes every device or session's microphone for this user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:112
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:116
 msgid "Mute all devices"
 msgstr "將所有裝置設為靜音"
 
@@ -21651,7 +21634,7 @@ msgid "Mute sounds"
 msgstr "靜音"
 
 #. Tooltip / button label on a voice participant tile that mutes the remote screen-share or camera audio.
-#: src/features/voice/components/voice_participant_tile/shared.ts:24
+#: src/features/voice/components/voice_participant_tile/shared.ts:22
 msgid "Mute stream audio"
 msgstr "將串流音訊靜音"
 
@@ -21682,13 +21665,13 @@ msgstr "已靜音"
 #. Status badge on a voice participant tile. The participant's microphone is muted.
 #: src/features/app/components/layout/VoiceStateIcons.tsx:19
 #: src/features/ui/avatars/AvatarWithPresence.tsx:20
-#: src/features/voice/components/voice_participant_tile/shared.ts:98
+#: src/features/voice/components/voice_participant_tile/shared.ts:78
 msgctxt "microphone-state"
 msgid "Muted"
 msgstr "麥克風已靜音"
 
 #. Voice chat status label. A moderator muted the user in this community, so they cannot speak but can still hear others.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:39
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:43
 msgid "Muted by moderators"
 msgstr "遭管理員設為靜音"
 
@@ -22159,7 +22142,7 @@ msgid "New Mexico"
 msgstr "新墨西哥州"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:20
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:19
 msgid "New microphone"
 msgstr "新的麥克風"
 
@@ -22282,7 +22265,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "沒有 {sendMessagesPermission} 權限"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:125
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
 msgid "No access"
 msgstr "無法存取"
 
@@ -22321,7 +22304,7 @@ msgstr "找不到進階設定"
 msgid "No AFK channel"
 msgstr "沒有閒置頻道"
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:124
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:125
 msgid "No application windows found"
 msgstr "找不到應用程式視窗"
 
@@ -22338,6 +22321,11 @@ msgstr "尚無素材"
 #: src/features/voice/utils/ScreenShareAudioSummary.ts:20
 msgid "No audio"
 msgstr "沒有音訊"
+
+#. Screen-share audio summary on a video device share whose capture device has no audio input of its own.
+#: src/features/voice/utils/ScreenShareAudioSummary.ts:60
+msgid "No audio from this device"
+msgstr "此裝置沒有音訊"
 
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:429
 msgid "No authorized applications"
@@ -22380,7 +22368,7 @@ msgstr "沒有書籤"
 msgid "No bot banner"
 msgstr "沒有機器人橫幅"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:205
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:232
 msgid "No camera found"
 msgstr "找不到相機"
 
@@ -22460,7 +22448,7 @@ msgstr "沒有說明。"
 msgid "No desktop update is available."
 msgstr "沒有可用的桌面版更新。"
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:130
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:131
 msgid "No displays found"
 msgstr "找不到顯示器"
 
@@ -22530,6 +22518,11 @@ msgstr "還沒有任何禮物"
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthCommunityStep.tsx:35
 msgid "No group DMs or communities where you can grant the requested permissions are available."
 msgstr "沒有可授予所要求權限的社群或群組私訊。"
+
+#. Description for the encoder path select, shown when this device has no hardware video encoder. Prefer hardware and Automatic are the option labels of the same select.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControlsState.ts:10
+msgid "No hardware encoder was found on this device, so Prefer hardware works like Automatic."
+msgstr "此裝置未找到硬體編碼器，因此「偏好硬體」的運作方式與「自動」相同。"
 
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleSidebar.tsx:175
 msgid "No hoisted roles. Enable \"Show this role separately\" on a role to see it here."
@@ -22684,7 +22677,7 @@ msgstr "未收到回應內容"
 #. Empty-state text in the channel and chat memes picker view.
 #. Heading shown when the channel search query returned zero matches.
 #: src/features/channel/components/channel_search_results/ChannelSearchResultsShared.tsx:74
-#: src/features/channel/components/MobileMemesPicker.tsx:66
+#: src/features/channel/components/MobileMemesPicker.tsx:67
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:32
 msgid "No results"
 msgstr "沒有結果"
@@ -22713,7 +22706,7 @@ msgstr "還沒有任何身分組。請在{rolesSettingsPath}新增身分組"
 
 #. Empty state title in the mobile memes picker when the user has saved nothing yet.
 #. Empty-state text in the channel and chat memes picker view.
-#: src/features/channel/components/MobileMemesPicker.tsx:58
+#: src/features/channel/components/MobileMemesPicker.tsx:59
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:24
 msgid "No saved media"
 msgstr "沒有已儲存的媒體"
@@ -22837,11 +22830,11 @@ msgstr "找不到符合該使用者名稱的使用者。"
 msgid "No users are currently banned from this community."
 msgstr "目前沒有使用者在這個社群遭到停權。"
 
-#: src/features/search/components/search/UserFilterSheet.tsx:127
+#: src/features/search/components/search/UserFilterSheet.tsx:138
 msgid "No users available"
 msgstr "沒有可用的使用者"
 
-#: src/features/search/components/search/UserFilterSheet.tsx:127
+#: src/features/search/components/search/UserFilterSheet.tsx:138
 msgid "No users found"
 msgstr "找不到使用者"
 
@@ -22850,7 +22843,7 @@ msgstr "找不到使用者"
 msgid "No verification is required."
 msgstr "不需要驗證。"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:175
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:189
 msgid "No verification methods available"
 msgstr "沒有可用的驗證方式"
 
@@ -22885,7 +22878,7 @@ msgid "Noise gate"
 msgstr "雜訊閘"
 
 #. Voice setting label for microphone background-noise filtering.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:203
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:207
 msgid "Noise suppression"
 msgstr "雜訊抑制"
 
@@ -22911,7 +22904,7 @@ msgstr "無轉換"
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:220
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:261
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:268
 msgid "None"
 msgstr "無"
 
@@ -23183,14 +23176,12 @@ msgstr "物品"
 #. Mature content option in the community moderation settings tab.
 #. Mature-content option that leaves this channel ungated.
 #. Off state suffix appended to the reply bar mention toggle label.
-#. Option label for an H.264 backup stream select.
 #: src/features/channel/components/ChannelReplyBar.tsx:62
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:26
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/SlowmodeControl.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:97
 #: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:139
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:73
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:128
 msgid "Off"
 msgstr "關閉"
 
@@ -23322,7 +23313,7 @@ msgstr "僅適用於寬螢幕。"
 msgid "Only credit cards are accepted. Debit and prepaid cards cannot be used for the mature content check."
 msgstr "僅接受信用卡。簽帳金融卡和預付卡無法用於成人內容檢查。"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1016
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:948
 msgid "Only default speakers"
 msgstr "僅限預設揚聲器"
 
@@ -23370,7 +23361,7 @@ msgstr "請僅在您完全了解其作用時，才在此處執行程式碼。"
 msgid "Only show message previews for DMs with unread messages"
 msgstr "只顯示有未讀訊息的私訊預覽"
 
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:1006
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:938
 msgid "Only speakers"
 msgstr "僅限揚聲器"
 
@@ -23446,7 +23437,7 @@ msgid "Open {displayName}"
 msgstr "開啟 {displayName}"
 
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:109
 msgid "Open {labelText} in settings"
 msgstr "在設定中開啟 {labelText}"
 
@@ -23476,25 +23467,25 @@ msgid "Open @{displayName}"
 msgstr "開啟 @{displayName}"
 
 #. Button label in the video tab that jumps to the advanced settings media section.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:92
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:118
 msgid "Open advanced media settings"
 msgstr "開啟進階媒體設定"
 
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:127
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:128
 msgid "Open an application window, then try again."
 msgstr "開啟應用程式視窗後，請再試一次。"
 
 #. Button or menu action label in the channel and chat attachment grid item. Keep it concise.
 #. Button or menu action label in the channel and chat embed gifv. Keep it concise.
 #: src/features/channel/components/embeds/attachments/AttachmentGridItem.tsx:74
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:55
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:56
 msgid "Open animated GIF in full view"
 msgstr "以全螢幕檢視動畫 GIF"
 
 #. Button or menu action label in the channel and chat attachment grid item. Keep it concise.
 #. Button or menu action label in the channel and chat embed gifv. Keep it concise.
 #: src/features/channel/components/embeds/attachments/AttachmentGridItem.tsx:70
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:51
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:52
 msgid "Open animated GIF video in full view"
 msgstr "以全螢幕檢視動畫 GIF 影片"
 
@@ -23504,7 +23495,7 @@ msgid "Open audio in full view"
 msgstr "以全螢幕檢視音訊"
 
 #. Media context menu action that opens the audio URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:101
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:102
 msgid "Open audio link"
 msgstr "開啟音訊連結"
 
@@ -23543,7 +23534,7 @@ msgid "Open browser"
 msgstr "開啟瀏覽器"
 
 #. Primary button in the screen-share picker on web. Hands off to the browser's native getDisplayMedia picker.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:208
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:209
 msgid "Open browser picker"
 msgstr "開啟瀏覽器選取器"
 
@@ -23657,12 +23648,12 @@ msgid "Open favorites menu"
 msgstr "開啟我的最愛選單"
 
 #. Media context menu action that opens the file URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:105
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:106
 msgid "Open file link"
 msgstr "開啟檔案連結"
 
 #. Media context menu action that opens the GIF URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:93
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:94
 msgid "Open GIF link"
 msgstr "開啟 GIF 連結"
 
@@ -23687,7 +23678,7 @@ msgstr "在瀏覽器中開啟圖片"
 #. Button or menu action label in the channel and chat embed gifv. Keep it concise.
 #. Button or menu action label in the channel and chat embed image. Keep it concise.
 #: src/features/channel/components/embeds/attachments/AttachmentGridItem.tsx:78
-#: src/features/channel/components/embeds/media/EmbedGifv.tsx:59
+#: src/features/channel/components/embeds/media/EmbedGifv.tsx:60
 #: src/features/channel/components/embeds/media/EmbedImage.tsx:43
 msgid "Open image in full view"
 msgstr "以全螢幕檢視圖片"
@@ -23696,7 +23687,7 @@ msgstr "以全螢幕檢視圖片"
 #. Image context menu action that opens the image URL in an external browser.
 #. Image context menu action that opens the image URL in an external browser.
 #: src/features/ui/action_menu/items/EmojiContextMenuItems.tsx:48
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:89
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:90
 #: src/features/ui/action_menu/items/StickerContextMenuItems.tsx:48
 msgid "Open image link"
 msgstr "開啟圖片連結"
@@ -23811,7 +23802,7 @@ msgid "Open system DM"
 msgstr "開啟系統私訊"
 
 #. Primary button in the screen-share picker on Linux/Wayland. Hands off to the OS xdg-desktop-portal picker.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:213
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:214
 msgid "Open system picker"
 msgstr "開啟系統選取器"
 
@@ -23873,7 +23864,7 @@ msgid "Open video in full view"
 msgstr "以全螢幕檢視影片"
 
 #. Media context menu action that opens the video URL in an external browser.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:97
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:98
 msgid "Open video link"
 msgstr "開啟影片連結"
 
@@ -23883,7 +23874,7 @@ msgid "Open voice"
 msgstr "開啟語音"
 
 #. Accessible button label that opens the user settings tab for microphone, speaker, camera, and call stats.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:251
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:255
 msgid "Open voice & video settings"
 msgstr "開啟語音與視訊設定"
 
@@ -23909,21 +23900,6 @@ msgstr "開啟手機訊息應用程式，然後開始新的簡訊。"
 #: src/features/input/state/input_keybind/shared.ts:245
 msgid "Open your settings"
 msgstr "開啟設定"
-
-#. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:121
-msgid "OpenH264 software codec on Linux"
-msgstr "OpenH264 軟體編解碼器（Linux）"
-
-#. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:109
-msgid "OpenH264 video codec"
-msgstr "OpenH264 視訊編解碼器"
-
-#. Switch label for the OpenH264 codec toggle. "OpenH264" is a product name and "Cisco Systems, Inc." is a company name; do not translate either.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:39
-msgid "OpenH264 Video Codec provided by Cisco Systems, Inc."
-msgstr "Cisco Systems, Inc. 提供的 OpenH264 視訊編解碼器。"
 
 #. Screen-reader-only hint for the Members entry in community settings. The entry receives keyboard focus without automatically opening.
 #: src/features/app/components/dialogs/components/DesktopGuildSettingsView.tsx:66
@@ -24116,12 +24092,12 @@ msgid "Output"
 msgstr "輸出"
 
 #. Voice settings label for selecting a speaker or output device.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:183
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:187
 msgid "Output device"
 msgstr "輸出裝置"
 
 #. Voice control dropdown label or menu item for speaker/output settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:227
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:231
 msgid "Output settings"
 msgstr "輸出設定"
 
@@ -24130,7 +24106,7 @@ msgstr "輸出設定"
 #. Voice settings slider label for speaker or output volume.
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:90
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:228
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:191
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:195
 msgid "Output volume"
 msgstr "輸出音量"
 
@@ -24233,7 +24209,7 @@ msgid "Participant limit"
 msgstr "成員上限"
 
 #. Aria label for the participant context-menu trigger button. {participantDisplayName} is the participant's display name.
-#: src/features/voice/components/voice_participant_tile/shared.ts:115
+#: src/features/voice/components/voice_participant_tile/shared.ts:95
 msgid "Participant options for {participantDisplayName}"
 msgstr "「{participantDisplayName}」的參與者選項"
 
@@ -24271,7 +24247,7 @@ msgstr "通行金鑰名稱"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:305
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:409
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:90
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:88
 msgid "Passkeys"
@@ -24420,7 +24396,7 @@ msgid "Pause invites? New users won't be able to join through invite links until
 msgstr "要暫停邀請嗎？在您重新啟用之前，新使用者將無法透過邀請連結加入。現有成員不會受到影響。"
 
 #. Short label for an advanced screen-share preview preference.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:44
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:40
 msgid "Pause my screen share preview in the background"
 msgstr "在背景暫停我的螢幕分享預覽"
 
@@ -24537,7 +24513,7 @@ msgid "Per-community profiles"
 msgstr "各社群獨立個人檔案"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:32
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:31
 msgid "Per-device volume"
 msgstr "裝置音量"
 
@@ -24785,7 +24761,7 @@ msgid "Picture"
 msgstr "圖片"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:133
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:116
 msgid "Picture-in-picture"
 msgstr "子母畫面"
 
@@ -24915,7 +24891,7 @@ msgid "Pins popout"
 msgstr "釘選彈出視窗"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:137
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:120
 msgid "PiP"
 msgstr "PiP"
 
@@ -25117,7 +25093,7 @@ msgid "Prefer @mention"
 msgstr "偏好 @提及"
 
 #. Option label for an encoder path select. Refers to hardware video encoders.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:68
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:60
 msgid "Prefer hardware"
 msgstr "偏好硬體"
 
@@ -25129,7 +25105,7 @@ msgid "Prefer no @mention"
 msgstr "偏好不要 @提及"
 
 #. Option label for an encoder path select. Refers to software video encoders.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:72
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:64
 msgid "Prefer software"
 msgstr "偏好軟體"
 
@@ -25149,7 +25125,7 @@ msgid "Preferences..."
 msgstr "偏好設定..."
 
 #. Accessible label for the advanced screen-share codec preference select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:165
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:118
 msgid "Preferred screen share codec"
 msgstr "偏好的螢幕分享編解碼器"
 
@@ -25298,22 +25274,22 @@ msgid "Preview hidden"
 msgstr "預覽已隱藏"
 
 #. Privacy explanation for screen-share previews in a one-to-one DM call. productName is the app name. Refers to preview thumbnail images generated from a screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:320
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:321
 msgid "Preview images are stored by {productName} temporarily for delivery and are not end-to-end encrypted. Disable previews if you do not want screen-share frames uploaded for thumbnails."
 msgstr "預覽圖片會由 {productName} 暫時儲存，以便傳送，且不會進行端對端加密。如果您不希望上傳螢幕分享畫面以產生縮圖，請停用預覽功能。"
 
 #. Privacy explanation for screen-share previews in a group DM call. productName is the app name. Refers to preview thumbnail images generated from a screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:314
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:315
 msgid "Preview images are stored by {productName} temporarily for delivery and are not end-to-end encrypted. People in this group DM do not need to be actively watching your stream to see the thumbnail."
 msgstr "預覽圖片會由 {productName} 暫時儲存，以便傳送，且不會進行端對端加密。此群組私訊中的成員不需要主動觀看您的畫面串流，即可看到縮圖。"
 
 #. Privacy explanation for screen-share previews in a guild voice channel. productName is the app name. Refers to preview thumbnail images generated from a screen share.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:308
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:309
 msgid "Preview images are stored by {productName} temporarily for delivery and are not end-to-end encrypted. People still need permission to connect, but they do not need to be actively watching your stream."
 msgstr "預覽圖片會由 {productName} 暫時儲存，以便傳送，且不會進行端對端加密。其他人仍需具備權限才能連線，但不需要主動觀看您的畫面串流。"
 
 #. Overlay on the local screen-share preview when playback is paused to reduce CPU / battery use. Local share is still being sent to others.
-#: src/features/voice/components/voice_participant_tile/shared.ts:61
+#: src/features/voice/components/voice_participant_tile/shared.ts:59
 msgid "Preview paused to save resources"
 msgstr "預覽已暫停以節省資源"
 
@@ -25325,7 +25301,7 @@ msgid "Preview sound"
 msgstr "預覽音效"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:145
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:128
 msgid "Preview, popout, and stream thumbnail behavior"
 msgstr "預覽、彈出視窗和串流縮圖行為"
 
@@ -25655,7 +25631,7 @@ msgid "Prompt"
 msgstr "提示"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:24
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:23
 msgid "Prompt for new audio devices"
 msgstr "偵測到新音訊裝置時提示"
 
@@ -25888,11 +25864,6 @@ msgstr "按住說話僅在瀏覽器分頁使用中時有效。"
 msgid "Push-to-talk won't unmute your microphone while you're deafened. Undeafen yourself to talk."
 msgstr "您處於耳機靜音狀態時，按住說話不會解除麥克風靜音。請先解除耳機靜音才能說話。"
 
-#. Option label for a software encoder quality select. Means slower/higher-quality.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:92
-msgid "Quality"
-msgstr "畫質"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the theme studio. Keep it concise.
 #: src/features/theme_studio/ThemeStudio.tsx:52
@@ -25995,11 +25966,6 @@ msgstr "頻率限制"
 msgid "Raw embed JSON"
 msgstr "原始嵌入 JSON"
 
-#. Description for the high-tier Screen share streaming preset (Plutonium). Source resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:87
-msgid "Razor-sharp text at native source resolution, 15 FPS"
-msgstr "原始解析度 15 FPS 銳利文字"
-
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:73
 msgid "Re-record"
@@ -26089,11 +26055,6 @@ msgstr "準備好購買禮物了嗎？"
 #: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
 msgid "Ready to upgrade?"
 msgstr "準備好升級了嗎？"
-
-#. Option label for a software encoder quality select. Means fastest/lower-latency.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:84
-msgid "Real-time"
-msgstr "即時"
 
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTab.tsx:595
 #: src/features/moderation/components/modals/BanDetailsModal.tsx:74
@@ -26322,7 +26283,7 @@ msgstr "已複製參照。"
 msgid "Referral parameters"
 msgstr "推薦參數"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:305
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:312
 msgid "Refresh audio sources"
 msgstr "重新整理音訊來源"
 
@@ -26392,7 +26353,7 @@ msgstr "重新產生會讓目前的權杖失效。請更新所有使用舊值的
 msgid "Register"
 msgstr "註冊"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:318
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:422
 msgid "Registered passkeys"
 msgstr "已註冊的通行金鑰"
 
@@ -26416,7 +26377,7 @@ msgid "Regular button clicked."
 msgstr "已點擊一般按鈕。"
 
 #. Button label for rejecting an incoming direct call.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:96
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:100
 msgid "Reject"
 msgstr "拒絕"
 
@@ -26524,7 +26485,7 @@ msgstr "記住視窗大小和位置"
 #: src/features/ui/action_menu/UserContextMenu.tsx:97
 #: src/features/user/components/modals/tabs/chat_settings_tab/SearchEnginesTab.tsx:26
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx:55
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:158
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:178
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:194
 #: src/features/webhook/components/WebhookListItem.tsx:277
 msgid "Remove"
@@ -26650,7 +26611,7 @@ msgid "Remove from group"
 msgstr "從群組中移除"
 
 #. Action that removes the selected media from saved media.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:181
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:182
 msgid "Remove from saved media"
 msgstr "從已儲存的媒體中移除"
 
@@ -26662,7 +26623,7 @@ msgid "Remove from top"
 msgstr "取消置頂"
 
 #. Media context menu action that removes a GIF favorite saved by URL.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:173
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:174
 msgid "Remove from URL-only GIF favorites"
 msgstr "從僅限網址的 GIF 最愛中移除"
 
@@ -26964,7 +26925,7 @@ msgstr "移除權限可能會限制機器人功能。"
 msgid "Removing the timeout will allow <0>{targetUserTag}</0> to send messages, react, and join voice channels again."
 msgstr "解除禁言後，<0>{targetUserTag}</0> 將能再次傳送訊息、新增反應和加入語音頻道。"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:391
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:509
 msgid "Rename"
 msgstr "重新命名"
 
@@ -27176,7 +27137,7 @@ msgstr "轉發：<0>{countLabel}</0>"
 msgid "Request a new code first."
 msgstr "請先要求新驗證碼。"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:135
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:136
 msgid "Request a new reset link"
 msgstr "要求新的重設連結"
 
@@ -27204,6 +27165,12 @@ msgstr "邀請"
 msgid "Require 2FA for moderation actions"
 msgstr "管理動作需要雙重驗證"
 
+#. Settings search entry label. Also used as a search synonym in the settings search bar.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:448
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:138
+msgid "Require a passkey as your second factor"
+msgstr "要求以通行金鑰作為第二道驗證"
+
 #. Short label for an advanced voice-channel navigation preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedAppearanceControls.tsx:17
 msgid "Require double-click to join voice channels"
@@ -27218,6 +27185,11 @@ msgstr "需要手動核准好友"
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/ApplicationInfoSection.tsx:44
 msgid "Require OAuth2 code grant"
 msgstr "需要 OAuth2 授權碼授予"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:146
+msgid "Require passkey"
+msgstr "要求通行金鑰"
 
 #: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:466
 msgid "Require two-factor authentication for moderators before they can ban, kick, time out, or remove messages."
@@ -27437,7 +27409,7 @@ msgstr "重設資料"
 msgid "Reset font size"
 msgstr "重設字體大小"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:128
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:129
 msgid "Reset link invalid or expired"
 msgstr "重設連結無效或已過期"
 
@@ -27453,7 +27425,7 @@ msgstr "重設媒體位置"
 
 #. Short label in the authentication reset password page. Keep the tone plain and specific.
 #: src/features/auth/components/pages/ResetPasswordPage.tsx:19
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:185
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:186
 msgid "Reset password"
 msgstr "重設密碼"
 
@@ -27674,7 +27646,7 @@ msgstr "調整大小、最大化和視窗貼齊取決於合成器。未啟用用
 #. Section header in the stream settings menu for resolution options.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:206
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:125
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:129
 msgid "Resolution"
 msgstr "解析度"
 
@@ -27847,7 +27819,7 @@ msgid "Review and confirm"
 msgstr "檢視並確認"
 
 #. Security settings row description for authorized apps.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:61
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:100
 msgid "Review apps that can access your account."
 msgstr "檢視可以存取您帳號的應用程式。"
 
@@ -27862,7 +27834,7 @@ msgid "Review past purchases and refund options"
 msgstr "檢視過往購買項目與退款選項"
 
 #. Security settings row description for linked devices.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:69
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:108
 msgid "Review signed-in devices and sign out of sessions you don't recognize."
 msgstr "檢視已登入的裝置，並登出您不認識的工作階段。"
 
@@ -27955,7 +27927,7 @@ msgid "Revoked ban for {0}"
 msgstr "已解除 {0} 的停權"
 
 #. Tooltip / aria label on the rewind button in the standalone audio player. {defaultSeekAmount} is an integer second count.
-#: src/features/voice/components/media_player/components/AudioPlayer.tsx:26
+#: src/features/voice/components/media_player/components/AudioPlayer.tsx:27
 msgid "Rewind {defaultSeekAmount} seconds"
 msgstr "倒轉 {defaultSeekAmount} 秒"
 
@@ -28255,7 +28227,7 @@ msgstr "儲存圖示"
 
 #. Button or menu action label in the channel and chat memes picker view. Keep it concise.
 #. Empty state body in the mobile memes picker explaining how to save media. Tone can be friendly.
-#: src/features/channel/components/MobileMemesPicker.tsx:62
+#: src/features/channel/components/MobileMemesPicker.tsx:63
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:28
 msgid "Save some media from messages to get started!"
 msgstr "從訊息儲存一些媒體，即可開始使用！"
@@ -28363,9 +28335,11 @@ msgstr "需要螢幕錄影權限"
 #. Footer summary label for the text-focused screen-share quality preset.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Streaming preset label in the stream settings menu. Optimized for sharp text in screen shares.
+#. Video settings label for the text-focused screen share quality preset.
+#: src/features/user/components/modals/tabs/UserVideoTabState.ts:28
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:222
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:233
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:83
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:234
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:89
 msgid "Screen share"
 msgstr "螢幕分享"
 
@@ -28380,22 +28354,22 @@ msgid "Screen share audio boost"
 msgstr "螢幕分享音訊增強"
 
 #. Error modal title shown when the selected native screen-share audio route cannot start safely.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:176
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:177
 msgid "Screen share audio couldn't start"
 msgstr "無法啟動螢幕分享音訊"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:68
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:67
 msgid "Screen share codec"
 msgstr "螢幕分享編解碼器"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:149
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:132
 msgid "Screen share encoder controls"
 msgstr "螢幕分享編碼器控制項"
 
 #. Title of a modal shown when an active screen share stops unexpectedly.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:113
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:120
 msgctxt "screen-share"
 msgid "Screen share ended"
 msgstr "螢幕分享已結束"
@@ -28411,27 +28385,27 @@ msgid "Screen share is using software encoding ({codec}). Quality may be reduced
 msgstr "螢幕分享正在使用軟體編碼 ({codec})。畫質可能會降低，且 CPU 使用率會增加。您的 GPU 可能不支援此編解碼器的硬體編碼。"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:129
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:112
 msgid "Screen share preview"
 msgstr "螢幕分享預覽"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:125
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:108
 msgid "Screen share preview behavior"
 msgstr "螢幕分享預覽行為"
 
 #. Title of an informational modal explaining screen-share preview frame uploads.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:286
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:287
 msgid "Screen share previews"
 msgstr "螢幕分享預覽"
 
 #. Compact footer status in the screen-share picker when preview frame uploads are disabled.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:274
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:275
 msgid "Screen share previews are disabled."
 msgstr "螢幕分享預覽已停用。"
 
 #. Compact footer status in the screen-share picker when preview frame uploads are enabled.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:270
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:271
 msgid "Screen share previews are enabled."
 msgstr "螢幕分享預覽已啟用。"
 
@@ -28442,13 +28416,13 @@ msgstr "螢幕分享隱私"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the video tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:84
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:110
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:214
 msgid "Screen share quality"
 msgstr "螢幕分享畫質"
 
 #. Voice control dropdown label or menu item for screen sharing and stream quality settings.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:235
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:239
 msgid "Screen share settings"
 msgstr "螢幕分享設定"
 
@@ -28477,7 +28451,7 @@ msgid "Screen sharing"
 msgstr "螢幕分享"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:72
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:71
 msgid "Screen sharing codec"
 msgstr "螢幕分享編解碼器"
 
@@ -28774,7 +28748,7 @@ msgstr "搜尋身分組或成員…"
 
 #. Button or menu action label in the channel and chat memes picker header. Keep it concise.
 #. Placeholder text in the mobile memes picker search input.
-#: src/features/channel/components/MobileMemesPicker.tsx:54
+#: src/features/channel/components/MobileMemesPicker.tsx:55
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:24
 msgid "Search saved media"
 msgstr "搜尋已儲存的媒體"
@@ -28872,6 +28846,11 @@ msgstr "正在搜尋"
 msgid "Searching for people..."
 msgstr "正在搜尋使用者…"
 
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:142
+msgid "Second factor"
+msgstr "第二道驗證"
+
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:112
 msgid "Second option"
 msgstr "第二個選項"
@@ -28936,7 +28915,7 @@ msgctxt "security-settings-section"
 msgid "Security"
 msgstr "安全性"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:171
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:275
 msgid "Security features"
 msgstr "安全性功能"
 
@@ -28993,12 +28972,12 @@ msgstr "進度預覽"
 
 #. Hover action on a device card that selects the device without starting the stream.
 #: src/features/app/components/dialogs/components/PricingCard.tsx:65
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:200
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:201
 msgid "Select"
 msgstr "選擇"
 
 #. Accessible label for a saved media tile in the mobile memes picker. accessibleName is the media filename or alt text.
-#: src/features/channel/components/MobileMemesPicker.tsx:74
+#: src/features/channel/components/MobileMemesPicker.tsx:75
 msgid "Select {accessibleName}"
 msgstr "選取「{accessibleName}」"
 
@@ -29358,7 +29337,7 @@ msgid "Send reset link"
 msgstr "傳送重設連結"
 
 #. Accessible label for a saved media tile in the picker. Activating sends it. memeName is the user-chosen name.
-#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:43
+#: src/features/channel/components/pickers/memes/MemeGridItem.tsx:44
 msgid "Send saved media {memeName}"
 msgstr "傳送已儲存的媒體 {memeName}"
 
@@ -29437,8 +29416,8 @@ msgstr "此社群已停用訊息傳送功能"
 
 #. Description for the stereo microphone switch in the voice settings.
 #: src/features/voice/utils/noise_suppression/NoiseSuppressionLabels.ts:49
-msgid "Sends both channels of a stereo microphone. Works only with no suppression or standard suppression."
-msgstr "將立體聲麥克風的兩個聲道都傳送出去。僅在未啟用或啟用標準降噪時有效。"
+msgid "Sends both channels of a stereo microphone. Needs all processing off and a channel at 128 kbps or higher."
+msgstr "傳送立體聲麥克風的兩個聲道。需要關閉所有處理，且聲道速率為 128 kbps 或更高。"
 
 #. Description for the studio / direct-input option in the voice processing settings radio group.
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:38
@@ -29549,6 +29528,11 @@ msgstr "設定自訂狀態"
 msgid "Set a member list position for the role"
 msgstr "為身分組設定成員列表中的位置"
 
+#. Video settings note shown when a streaming preset decides the screen share resolution and frame rate. preset is the Gaming or Screen share preset label, and Custom is the third preset label.
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:87
+msgid "Set by the {preset} preset. Picking a value here switches to Custom."
+msgstr "由 {preset} 預設值決定。選擇此處的值將切換至「自訂」。"
+
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:28
 msgid "Set custom shortcut"
@@ -29570,7 +29554,7 @@ msgid "Set custom volumes for individual sounds. Sounds without an override foll
 msgstr "為個別音效設定自訂音量。未覆寫的音效將依循主音量。"
 
 #. Settings description for assigning the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:160
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:164
 msgid "Set deafen shortcut"
 msgstr "設定耳機靜音快速鍵"
 
@@ -29584,8 +29568,8 @@ msgstr "在此設定"
 msgid "Set mute shortcut"
 msgstr "設定靜音快速鍵"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:116
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:144
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:117
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:145
 msgid "Set new password"
 msgstr "設定新密碼"
 
@@ -29735,7 +29719,7 @@ msgstr "稍後設定"
 msgid "Set voice region"
 msgstr "設定語音區域"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:147
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:148
 msgid "Set your new password."
 msgstr "設定新密碼。"
 
@@ -29767,7 +29751,7 @@ msgid "Settings"
 msgstr "設定"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:113
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
 msgid "settings link"
 msgstr "設定連結"
 
@@ -29822,7 +29806,7 @@ msgid "Share gift"
 msgstr "分享禮物"
 
 #. Hover action on an application or display card that starts sharing that source.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:196
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:197
 msgid "Share screen"
 msgstr "分享螢幕"
 
@@ -29832,7 +29816,7 @@ msgid "Share screens and windows."
 msgstr "分享螢幕和視窗。"
 
 #. Toggle label for sharing audio with an active stream.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:153
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:157
 msgid "Share stream audio"
 msgstr "分享直播音訊"
 
@@ -29864,11 +29848,11 @@ msgid "Share with community mods."
 msgstr "分享給社群管理員。"
 
 #. Voice control button or tooltip label for starting screen sharing.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:219
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:223
 msgid "Share your screen"
 msgstr "分享您的螢幕"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:298
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:325
 msgid "Share your screen in high definition (1080p), quad HD (1440p), or native source resolution, at up to 60 FPS."
 msgstr "以高畫質 (1080p)、Quad HD (1440p) 或原始來源解析度分享您的螢幕，最高可達 60 FPS。"
 
@@ -29897,7 +29881,7 @@ msgid "Shared window"
 msgstr "分享的視窗"
 
 #. Capture option in the Linux audio source picker on a window share. Captures only the audio of the window being shared.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:38
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:40
 msgid "Shared window audio"
 msgstr "分享的視窗音訊"
 
@@ -29912,9 +29896,14 @@ msgid "Sharing personal information"
 msgstr "分享個人資訊"
 
 #. Description for the free-tier Screen share streaming preset. Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:92
-msgid "Sharper text at 720p, 30 FPS"
-msgstr "720p、30 FPS 時文字更清晰"
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:98
+msgid "Sharp text at 720p, up to 30 FPS"
+msgstr "清晰的 720p 文字，最高 30 FPS"
+
+#. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:93
+msgid "Sharp text at up to 4K, up to 15 FPS"
+msgstr "最高 4K 畫質，每秒最高 15 張畫面"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:189
@@ -30067,7 +30056,7 @@ msgid "Show call avatars"
 msgstr "顯示通話頭像"
 
 #. Action label that reveals a previously hidden remote camera feed.
-#: src/features/voice/components/voice_participant_tile/shared.ts:57
+#: src/features/voice/components/voice_participant_tile/shared.ts:55
 msgid "Show camera"
 msgstr "顯示相機"
 
@@ -30325,7 +30314,7 @@ msgstr "顯示 Pickles"
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Short label for an advanced voice device preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVoiceControls.tsx:11
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:8
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:7
 msgid "Show new device alerts"
 msgstr "顯示新裝置提醒"
 
@@ -30362,7 +30351,7 @@ msgid "Show password"
 msgstr "顯示密碼"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:44
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:43
 msgid "Show per-device participant volume sliders in voice menus"
 msgstr "在語音選單中顯示個別裝置的參與者音量滑桿"
 
@@ -30660,6 +30649,10 @@ msgstr "靜音來電"
 msgid "Silent calls from everyone"
 msgstr "所有人來電靜音"
 
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:874
+msgid "Silent when the capture device has no audio input of its own"
+msgstr "當擷取裝置沒有自己的音訊輸入時保持靜音"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:390
 msgid "Single click"
@@ -30683,7 +30676,7 @@ msgid "Single community mode"
 msgstr "單一社群模式"
 
 #. Option label for an SVC mode select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:108
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:80
 msgid "Single layer"
 msgstr "單層"
 
@@ -30968,6 +30961,16 @@ msgstr "笑臉"
 msgid "Smileys"
 msgstr "表情符號"
 
+#. Description for the free-tier Gaming streaming preset. Resolution and frame rate are technical tokens.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:85
+msgid "Smooth 30 FPS at up to 720p"
+msgstr "流暢的 30 FPS，最高支援 720p"
+
+#. Description for the high-tier Gaming streaming preset (Plutonium). Resolution and frame rate are technical tokens.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:80
+msgid "Smooth 60 FPS at up to 1440p"
+msgstr "流暢的 60 FPS，最高支援 1440p"
+
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label for an advanced desktop scrolling toggle.
@@ -30978,7 +30981,7 @@ msgid "Smooth scrolling"
 msgstr "平滑捲動"
 
 #. Footer summary description for the gaming screen-share quality preset.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:241
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:242
 msgid "Smoother video"
 msgstr "畫面更流暢"
 
@@ -31012,14 +31015,9 @@ msgid "Social"
 msgstr "社群"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:157
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:140
 msgid "Software encoder"
 msgstr "軟體編碼器"
-
-#. Label for an advanced screen-share select. Refers to software video encoder quality bias.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:76
-msgid "Software encoder quality"
-msgstr "軟體編碼器品質"
 
 #: src/features/app/components/dialogs/components/PricingCard.tsx:64
 #: src/features/app/components/dialogs/components/PricingCard.tsx:92
@@ -31040,11 +31038,6 @@ msgstr "您嘗試上傳的某些檔案超出檔案大小上限，每個檔案不
 #: src/features/channel/components/modals/UnaddableRecipientsConfirmModal.tsx:27
 msgid "Some users can't be added"
 msgstr "部分使用者無法新增"
-
-#. Fallback tooltip on the passive badge on your own screen-share tile when the encoder reports no specific limitation.
-#: src/features/voice/components/voice_participant_tile/shared.ts:93
-msgid "Something is limiting this stream, so viewers are getting fewer frames than you asked for."
-msgstr "某項因素正在限制此串流，因此觀眾收到的畫面張數少於您要求的數量。"
 
 #. Generic error modal title for an unexpected failure.
 #. Generic error toast title.
@@ -31248,10 +31241,12 @@ msgstr "音效"
 
 #. Footer summary resolution label for native source resolution.
 #. Resolution option in the stream settings menu meaning the original source resolution (no downscale).
+#. Screen share resolution token in the stream info pill on the sharing tile, used when the person asked for the original source resolution and the app does not know the source size. Matches the Source option in the stream settings menu.
 #. Short label in the video tab for the native source resolution option. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:68
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:249
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:105
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:83
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:250
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:111
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:336
 msgid "Source"
 msgstr "來源"
 
@@ -31344,11 +31339,6 @@ msgstr "西班牙文（拉丁美洲）"
 #: src/features/user/utils/LocaleUtils.ts:44
 msgid "Spanish (Spain)"
 msgstr "西班牙文（西班牙）"
-
-#. Option label for an SVC mode select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:116
-msgid "Spatial and temporal layers"
-msgstr "空間與時間層"
 
 #. Permission name: allows speaking in voice channels.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:462
@@ -31603,7 +31593,7 @@ msgstr "要開始語音通話嗎？"
 msgid "Start call"
 msgstr "開始通話"
 
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:259
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:286
 msgid "Start camera test and configure effects"
 msgstr "開始相機測試並設定效果"
 
@@ -31953,8 +31943,13 @@ msgstr "停止直播"
 msgid "Stop trusting all links?"
 msgstr "要停止信任所有連結嗎？"
 
+#. Security settings: confirmation modal title for turning off passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:64
+msgid "Stop using passkeys for two-factor authentication?"
+msgstr "要停止使用通行金鑰進行雙重驗證嗎？"
+
 #. Voice control action for stopping the currently focused or selected stream.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:239
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:243
 msgid "Stop watching"
 msgstr "停止觀看"
 
@@ -32016,46 +32011,41 @@ msgstr "避免喇叭的聲音回傳到您的麥克風。"
 #. Primary footer action that starts streaming the selected capture device.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:236
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:204
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:205
 msgid "Stream"
 msgstr "直播"
 
 #. Accessible status label for the black buffering frame shown while a screen share codec is renegotiated.
-#: src/features/voice/components/voice_participant_tile/shared.ts:36
+#: src/features/voice/components/voice_participant_tile/shared.ts:34
 msgid "Stream buffering"
 msgstr "直播緩衝中"
 
 #. Status overlay on a voice participant tile when the remote screen share has ended.
-#: src/features/voice/components/voice_participant_tile/shared.ts:28
+#: src/features/voice/components/voice_participant_tile/shared.ts:26
 msgid "Stream ended"
 msgstr "直播已結束"
 
 #. Overlay text on a participant tile when the local user hid the remote screen share.
-#: src/features/voice/components/voice_participant_tile/shared.ts:32
+#: src/features/voice/components/voice_participant_tile/shared.ts:30
 msgid "Stream hidden"
 msgstr "已隱藏直播"
-
-#. Accessible label for a passive badge on your own screen-share tile, shown when the encoder stays below the frame rate you asked for.
-#: src/features/voice/components/voice_participant_tile/shared.ts:80
-msgid "Stream is not keeping up"
-msgstr "直播跟不上"
 
 #. Aria label for the small thumbnail preview on the screen-share hover card.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the user settings voice activity card. Keep it concise.
 #: src/features/user/components/profile/VoiceActivityCard.tsx:90
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:141
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:124
 #: src/features/voice/components/StreamWatchHoverCard.tsx:21
 msgid "Stream preview"
 msgstr "直播預覽"
 
 #. Compact submenu label for changing the resolution and frame rate of an active stream.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:149
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:153
 msgid "Stream quality"
 msgstr "直播畫質"
 
 #. Toolbar / menu button label in the screen-share picker. Opens the stream quality settings popover.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:225
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:226
 msgid "Stream settings"
 msgstr "直播設定"
 
@@ -32076,7 +32066,7 @@ msgid "Streaming"
 msgstr "直播中"
 
 #. Section header in the stream settings menu. Picks between Gaming / Screen share / Custom presets.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:121
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:125
 msgid "Streaming mode"
 msgstr "直播模式"
 
@@ -32272,17 +32262,17 @@ msgid "Surfaces"
 msgstr "表面"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:146
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:166
 msgid "Suspend"
 msgstr "凍結"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:165
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:148
 msgid "SVC"
 msgstr "SVC"
 
 #. Label for an advanced screen-share select. SVC is a WebRTC acronym and should stay uppercase.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:96
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:68
 msgid "SVC mode"
 msgstr "SVC 模式"
 
@@ -32555,8 +32545,8 @@ msgstr "來自 {productName} 團隊的系統公告。您無法在此回覆。"
 
 #. Audio device option label meaning the OS default audio input device.
 #. Footer summary fallback for the default capture-device audio input.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:262
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:137
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:263
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:141
 msgid "System default"
 msgstr "系統預設"
 
@@ -32757,12 +32747,12 @@ msgid "Template URL"
 msgstr "範本網址"
 
 #. Option label for an SVC mode select.
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:112
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:84
 msgid "Temporal layers"
 msgstr "時間層"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:150
+#: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:170
 msgid "Temporarily disable your account"
 msgstr "暫時停用您的帳號"
 
@@ -32834,7 +32824,7 @@ msgstr "德克薩斯州"
 #: src/features/channel/utils/ChannelUtils.tsx:51
 #: src/features/lexical/composer/nodes/SlashSlotNode.ts:23
 #: src/features/theme_studio/sections/TokenGroups.ts:50
-#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:156
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:109
 msgid "Text"
 msgstr "文字"
 
@@ -33066,7 +33056,7 @@ msgid "The bot has been added."
 msgstr "已新增機器人。"
 
 #. Status shown when a device preview has not released the camera before the bounded handoff deadline.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:172
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:173
 msgid "The camera preview is still stopping. Try streaming again in a moment."
 msgstr "相機預覽仍在停止中。請稍後再重新開始串流。"
 
@@ -33244,7 +33234,7 @@ msgid "The role granted {permissions}"
 msgstr "該身分組曾授予 {permissions}"
 
 #. Body of a modal shown when a browser screen share track ends outside the app, for example from the browser sharing controls.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:118
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:125
 msgctxt "screen-share"
 msgid "The screen share source stopped sending video, so your screen share was stopped."
 msgstr "螢幕分享來源已停止傳送視訊，因此您的螢幕分享已停止。"
@@ -33486,7 +33476,7 @@ msgid "This browser console is a developer tool."
 msgstr "這個瀏覽器主控台是開發人員工具。"
 
 #. Pre-join indicator shown beneath the Join button on a DM or group DM call where every connected participant supports E2EE.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:316
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:320
 msgid "This call is end-to-end encrypted."
 msgstr "此通話已端對端加密。"
 
@@ -33772,7 +33762,7 @@ msgid "This install is managed by your system. Update {productName} from your so
 msgstr "這個安裝是由您的系統管理。請從您的軟體中心或套件管理器更新 {productName}。"
 
 #. Neutral video settings note shown when higher screen share quality is disabled by instance limits.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:61
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:73
 msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "此實例目前支援最高 720p、30 FPS 的螢幕分享。"
 
@@ -33869,6 +33859,14 @@ msgstr "這是第二個選項的說明"
 msgid "This is the third option description"
 msgstr "這是第三個選項的說明"
 
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:248
+msgid "This is your last passkey and passkeys are your second factor. Deleting it turns off two-factor authentication for your account, and your current backup codes will stop working."
+msgstr "這是您最後一個通行金鑰，而通行金鑰是您的第二道驗證。刪除後，您帳號的雙重驗證將會關閉，目前的備用碼也會失效。"
+
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:243
+msgid "This is your last passkey. Once it's gone you won't be able to use a passkey as your second factor."
+msgstr "這是您最後一個通行金鑰。刪除後，您將無法再以通行金鑰作為第二道驗證。"
+
 #. Required-action form error for landline, toll-free, premium, shared-cost, UAN, voicemail and pager lines. Do not name which line type the provider returned.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:549
 msgid "This isn't a mobile number, so it can't receive our text. Try a mobile number, or contact support if you think that's wrong."
@@ -33885,7 +33883,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "此連結頻道已標示為成人內容，可能會開啟不適合部分使用者的內容。"
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:141
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
 msgid "This link is not available for your account."
 msgstr "您的帳號無法使用此連結。"
 
@@ -33966,17 +33964,17 @@ msgid "This option is required. Please provide a value."
 msgstr "這個選項是必填的。請提供值。"
 
 #. Voice participant status tooltip shown when channel permissions or voice suppression prevent another participant from speaking.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:48
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:52
 msgid "This participant can't speak in this channel"
 msgstr "這位參與者無法在此頻道中發言"
 
 #. Voice participant status tooltip for another user. They cannot hear voice chat. Distinct from muted.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:74
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:78
 msgid "This participant is deafened"
 msgstr "此參與者已耳機靜音"
 
 #. Voice participant status tooltip for another user. A moderator deafened that participant so they cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:61
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:65
 msgid "This participant was deafened by moderators"
 msgstr "此參與者遭管理員設為耳機靜音"
 
@@ -33991,7 +33989,7 @@ msgid "This phone number has already been used. Try another number or contact su
 msgstr "此電話號碼已被使用。請嘗試其他號碼或聯絡客服。"
 
 #. Empty state in the screen-share picker shown to web users. Explains that this advanced picker requires the desktop app.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:136
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:137
 msgid "This picker is only available in the desktop app."
 msgstr "此選擇器僅適用於桌面版應用程式。"
 
@@ -34037,7 +34035,7 @@ msgstr "這會移除所有信任的網域。您將會再次看到所有網域的
 msgid "This removes every custom shortcut and re-enables all built-in shortcuts. This cannot be undone."
 msgstr "這會移除所有自訂快速鍵，並重新啟用所有內建快速鍵。此動作無法復原。"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:131
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:132
 msgid "This reset link has expired. Reset links last 1 hour. Please request a new one."
 msgstr "此重設連結已過期。重設連結有效時間為 1 小時。請重新申請一個。"
 
@@ -34420,7 +34418,7 @@ msgid "Toggle controls"
 msgstr "切換控制項"
 
 #. Keyboard shortcut label. Toggles voice deafen, which controls whether the user hears voice chat. Distinct from microphone mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:150
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:154
 msgid "Toggle deafen"
 msgstr "切換耳機靜音"
 
@@ -34685,7 +34683,7 @@ msgstr "在 Linux 上，系統匣圖示的變更只有在重新啟動後才會�
 
 #. Short label in the channel and chat gif picker grid. Keep it concise.
 #. Short label in the channel and chat gif picker header. Keep it concise.
-#: src/features/channel/components/pickers/gif/GifPickerGrid.tsx:25
+#: src/features/channel/components/pickers/gif/GifPickerGrid.tsx:26
 #: src/features/channel/components/pickers/gif/GifPickerHeader.tsx:18
 msgid "Trending GIFs"
 msgstr "熱門 GIF"
@@ -34779,7 +34777,7 @@ msgstr "請換一個搜尋字詞。"
 
 #. Empty state body in the mobile memes picker suggesting query changes.
 #. Label in the channel and chat memes picker view.
-#: src/features/channel/components/MobileMemesPicker.tsx:70
+#: src/features/channel/components/MobileMemesPicker.tsx:71
 #: src/features/channel/components/pickers/memes/MemesPickerView.tsx:36
 msgid "Try a different search term or filter"
 msgstr "試試其他搜尋字詞或篩選條件"
@@ -34902,7 +34900,9 @@ msgid "Turkish"
 msgstr "土耳其文"
 
 #. Button label that turns off streaming privacy.
+#. Security settings: confirm button for turning off passkey-based two-factor authentication.
 #: src/features/app/components/layout/app_layout/nagbars/StreamerModeNagbar.tsx:16
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:80
 msgid "Turn off"
 msgstr "關閉"
 
@@ -34918,7 +34918,7 @@ msgid "Turn off anything you're not comfortable with. Some features may stop wor
 msgstr "關閉任何您不放心的項目。部分功能可能會停止運作。"
 
 #. Error modal body shown after a native screen-share audio route fails to start.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:180
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:181
 msgid "Turn off audio sharing for this source or try again in a moment."
 msgstr "關閉此來源的音訊分享，或稍後再試。"
 
@@ -34958,6 +34958,11 @@ msgstr "關閉直播"
 msgid "Turn off streaming privacy before viewing login or account security details."
 msgstr "請先關閉直播隱私設定，才能查看登入或帳號安全詳細資訊。"
 
+#. Security settings: confirm button for turning on passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:60
+msgid "Turn on"
+msgstr "開啟"
+
 #. Permission description in the channel-scoped permissions editor for the Stream Video permission. Covers both the webcam and screen sharing.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:292
 msgid "Turn on a camera or share a screen in this voice channel."
@@ -34974,7 +34979,7 @@ msgid "Turn on automatically when OBS or XSplit is detected"
 msgstr "偵測到 OBS 或 XSplit 時自動開啟"
 
 #. Voice control button or tooltip label for enabling the camera.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:215
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:219
 msgid "Turn on camera"
 msgstr "開啟相機"
 
@@ -35097,7 +35102,7 @@ msgstr "雙重驗證已停用"
 msgid "Two-factor authentication enabled"
 msgstr "雙重驗證已啟用"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:211
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:315
 msgid "Two-factor authentication is enabled"
 msgstr "雙重驗證已啟用"
 
@@ -35324,17 +35329,17 @@ msgid "Uncollectible"
 msgstr "無法收取"
 
 #. Voice action label. Restores what the user hears in voice chat. Distinct from microphone unmute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:82
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:86
 msgid "Undeafen"
 msgstr "解除耳機靜音"
 
 #. Voice menu action that restores voice audio on every device or session for this user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:141
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:145
 msgid "Undeafen all devices"
 msgstr "解除所有裝置的耳機靜音"
 
 #. Voice control label. Restores what the current user hears in voice chat. Distinct from microphone unmute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:128
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:132
 msgid "Undeafen yourself"
 msgstr "解除自己的耳機靜音"
 
@@ -35572,7 +35577,7 @@ msgstr "不明使用者"
 #: src/features/guild/components/modals/guild_tabs/GuildAuditLogTab.tsx:102
 #: src/features/lexical/composer/nodes/SlashSlotNode.ts:61
 #: src/features/voice/components/VoiceParticipantAvatarList.tsx:44
-#: src/features/voice/components/VoiceParticipantTile.tsx:174
+#: src/features/voice/components/VoiceParticipantTile.tsx:172
 #: src/features/webhook/components/WebhookListItem.tsx:31
 msgid "Unknown user"
 msgstr "不明使用者"
@@ -35616,7 +35621,7 @@ msgid "Unlock custom emojis in DMs with {premiumProductName}"
 msgstr "使用 {premiumProductName} 在私訊中解鎖自訂表情符號"
 
 #. Premium upsell title in video settings.
-#: src/features/user/components/modals/tabs/UserVideoTab.tsx:53
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:65
 msgid "Unlock HD screen share with {premiumProductName}"
 msgstr "使用 {premiumProductName} 解鎖高畫質螢幕分享"
 
@@ -35673,7 +35678,7 @@ msgid "Unmute {label}"
 msgstr "將「{label}」解除靜音"
 
 #. Voice menu action that unmutes every device or session for this user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:116
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:120
 msgid "Unmute all devices"
 msgstr "解除所有裝置靜音"
 
@@ -35725,7 +35730,7 @@ msgid "Unmute microphone"
 msgstr "解除麥克風靜音"
 
 #. Tooltip / button label on a voice participant tile that unmutes the remote screen-share or camera audio.
-#: src/features/voice/components/voice_participant_tile/shared.ts:20
+#: src/features/voice/components/voice_participant_tile/shared.ts:18
 msgid "Unmute stream audio"
 msgstr "解除串流音訊靜音"
 
@@ -35755,8 +35760,8 @@ msgstr "未命名群組"
 
 #. Fallback label for an audio input device whose name is not reported by the OS.
 #. Footer summary fallback for an audio input without a reported name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:266
-#: src/features/voice/components/StreamSettingsMenuContent.tsx:141
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:267
+#: src/features/voice/components/StreamSettingsMenuContent.tsx:145
 msgid "Unnamed input"
 msgstr "未命名的輸入裝置"
 
@@ -36167,7 +36172,7 @@ msgid "Upload new emoji and stickers, and manage your own creations."
 msgstr "上傳新的表情符號和貼圖，並管理您自己的創作。"
 
 #. Description for the screen-share preview toggle in the informational modal.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:332
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:333
 msgid "Upload preview frames for screen shares."
 msgstr "上傳螢幕分享的預覽畫面。"
 
@@ -36248,7 +36253,7 @@ msgid "URL"
 msgstr "網址"
 
 #. Success toast confirming that a media URL was copied as text fallback.
-#: src/features/ui/action_menu/items/MediaMenuData.tsx:137
+#: src/features/ui/action_menu/items/MediaMenuData.tsx:138
 msgid "URL copied to clipboard"
 msgstr "網址已複製到剪貼簿"
 
@@ -36341,7 +36346,7 @@ msgstr "使用實際值"
 msgid "Use alternative method"
 msgstr "使用其他方式"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:213
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:317
 msgid "Use an authenticator app to generate codes for two-factor authentication"
 msgstr "使用驗證器應用程式產生雙重驗證碼"
 
@@ -36512,11 +36517,16 @@ msgstr "使用原生標題列"
 msgid "Use only if it clearly breaks {productName}'s rules and doesn't fit above."
 msgstr "僅在內容明確違反 {productName} 規則且不符合上述任何選項時使用。"
 
+#. Security settings: confirmation modal title for turning on passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:51
+msgid "Use passkeys for two-factor authentication?"
+msgstr "要使用通行金鑰進行雙重驗證嗎？"
+
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:306
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:410
 #: src/features/user/components/settings_utils/search_index/AccountSecurityIndex.ts:134
-msgid "Use passkeys for passwordless sign-in and two-factor authentication"
-msgstr "使用通行金鑰進行免密碼登入和雙重驗證"
+msgid "Use passkeys to sign in without a password"
+msgstr "使用通行金鑰登入，無需密碼"
 
 #. Button in the required-action modal. Selects the phone verification path.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:174
@@ -36638,6 +36648,11 @@ msgstr "用於尚未設定專屬音效的社群。"
 msgid "Used in communities that do not have their own sound."
 msgstr "用於沒有專屬音效的社群。"
 
+#. Description for a WebRTC content hint select. Custom, Gaming and Screen share are the stream quality preset labels.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedVideoControls.tsx:92
+msgid "Used in Custom mode. The Gaming and Screen share presets set their own hint."
+msgstr "用於「自訂」模式。遊戲和螢幕共享預設會設定自己的提示。"
+
 #. Description text in the entrance sound section.
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:94
 msgid "Used in direct-message calls. If you do not set one, your global sound is used instead."
@@ -36748,7 +36763,7 @@ msgid "User tag (optional)"
 msgstr "使用者標籤（選填）"
 
 #. Voice menu slider label for the saved volume of a specific user.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:243
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:247
 msgid "User volume"
 msgstr "使用者音量"
 
@@ -36969,7 +36984,7 @@ msgstr "驗證電子郵件已寄出。請檢查您的收件匣。"
 msgid "Verification expired"
 msgstr "驗證已過期"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:57
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:67
 #: src/features/auth/components/pages/VerifyEmailPage.tsx:108
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:241
 msgid "Verification failed"
@@ -37010,12 +37025,12 @@ msgid "Verify email"
 msgstr "驗證電子郵件"
 
 #. Accessible form label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:41
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:46
 msgid "Verify identity form"
 msgstr "驗證身分表單"
 
 #. Short label in the authentication sudo verification modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:45
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:50
 msgid "Verify it's you"
 msgstr "驗證是您本人操作"
 
@@ -37058,12 +37073,12 @@ msgid "Verify your email address to send friend requests."
 msgstr "請驗證您的電子郵件地址，才能傳送好友邀請。"
 
 #. Security settings warning shown when an unverified account cannot register a new passkey.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:45
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:47
 msgid "Verify your email before adding a passkey."
 msgstr "請先驗證您的電子郵件，再新增通行金鑰。"
 
 #. Security settings warning shown when an unverified account cannot enable authenticator-app two-factor authentication.
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:40
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:42
 msgid "Verify your email before adding an authenticator app."
 msgstr "請先驗證您的電子郵件，然後再新增驗證器應用程式。"
 
@@ -37142,7 +37157,7 @@ msgstr "正在驗證卡片"
 msgid "Verifying code…"
 msgstr "正在驗證代碼…"
 
-#: src/features/auth/components/pages/ResetPasswordPage.tsx:119
+#: src/features/auth/components/pages/ResetPasswordPage.tsx:120
 msgid "Verifying your reset link…"
 msgstr "正在驗證您的重設連結…"
 
@@ -37208,12 +37223,12 @@ msgid "Video call unavailable"
 msgstr "視訊通話無法使用"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:80
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:79
 msgid "Video codec"
 msgstr "視訊編解碼器"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:84
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:83
 msgid "Video codec for screen sharing"
 msgstr "螢幕分享的視訊編解碼器"
 
@@ -37236,7 +37251,7 @@ msgstr "視訊封包遺失："
 #. Accessible label for a video thumbnail in the media viewer thumbnail strip.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/messaging/components/modals/media_modal/shared.ts:133
-#: src/features/messaging/components/modals/MediaViewerModal.tsx:89
+#: src/features/messaging/components/modals/MediaViewerModal.tsx:90
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:182
 msgid "Video preview"
 msgstr "影片預覽"
@@ -37292,7 +37307,7 @@ msgstr "上傳影片"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the channel and chat memes picker header. Keep it concise.
 #. Tab label in the mobile memes picker. Filters to saved videos.
-#: src/features/channel/components/MobileMemesPicker.tsx:50
+#: src/features/channel/components/MobileMemesPicker.tsx:51
 #: src/features/channel/components/pickers/memes/MemesPickerHeader.tsx:20
 #: src/features/user/components/settings_utils/section_registry/ChatSettingsSections.ts:109
 msgid "Videos"
@@ -37355,7 +37370,7 @@ msgstr "檢視並管理已停權的使用者。"
 msgid "View and manage every webhook configured across your community."
 msgstr "檢視並管理社群中設定的所有 Webhook。"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:280
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:384
 msgid "View and manage your backup codes for account recovery"
 msgstr "檢視並管理用於帳號復原的備用碼"
 
@@ -37389,7 +37404,7 @@ msgstr "檢視頻道"
 msgid "View channel members"
 msgstr "檢視頻道成員"
 
-#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:298
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:402
 msgid "View codes"
 msgstr "檢視備用碼"
 
@@ -37642,7 +37657,7 @@ msgid "Voice & video"
 msgstr "語音與視訊"
 
 #. Voice menu item that opens the user settings tab for microphone, speaker, camera, and call stats.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:247
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:251
 msgid "Voice & video settings"
 msgstr "語音與視訊設定"
 
@@ -37694,7 +37709,7 @@ msgstr "語音與視訊快速鍵"
 
 #. Short label for a voice call (lobby header, DM action, settings section).
 #: src/features/user/components/modals/UserProfileMobileSheet.tsx:744
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:35
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:39
 msgid "Voice call"
 msgstr "語音通話"
 
@@ -37762,7 +37777,7 @@ msgid "Voice connection debug"
 msgstr "語音連線偵錯"
 
 #. Notification sound label for the event where the user becomes deafened in voice chat. Distinct from voice mute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:165
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:169
 msgid "Voice deafen"
 msgstr "語音耳機靜音"
 
@@ -37789,7 +37804,7 @@ msgid "Voice message"
 msgstr "語音訊息"
 
 #. Short label in the channel and chat voice message player. Keep it concise.
-#: src/features/channel/components/embeds/media/VoiceMessagePlayer.tsx:30
+#: src/features/channel/components/embeds/media/VoiceMessagePlayer.tsx:31
 msgid "Voice message player"
 msgstr "語音訊息播放器"
 
@@ -37841,7 +37856,7 @@ msgid "Voice settings"
 msgstr "語音設定"
 
 #. Notification sound label for the event where the user is no longer deafened in voice chat. Distinct from voice unmute.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:170
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:174
 msgid "Voice undeafen"
 msgstr "語音解除耳機靜音"
 
@@ -37884,7 +37899,7 @@ msgid "Volume mute"
 msgstr "靜音"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:40
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:39
 msgid "Volume sliders"
 msgstr "音量滑桿"
 
@@ -37917,7 +37932,7 @@ msgstr "請在此等候"
 msgid "Waiting for connection..."
 msgstr "正在等待連線…"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:218
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:232
 msgid "Waiting for passkey…"
 msgstr "正在等候通行金鑰…"
 
@@ -37959,7 +37974,7 @@ msgid "Washington"
 msgstr "華盛頓州"
 
 #. Compact button label on a participant tile. Joins / opens the remote screen share.
-#: src/features/voice/components/voice_participant_tile/shared.ts:71
+#: src/features/voice/components/voice_participant_tile/shared.ts:69
 msgid "Watch"
 msgstr "觀看"
 
@@ -37974,7 +37989,7 @@ msgid "Watching"
 msgstr "正在觀看"
 
 #. Title on a remote screen-share tile when loading the watched stream failed.
-#: src/features/voice/components/voice_participant_tile/shared.ts:40
+#: src/features/voice/components/voice_participant_tile/shared.ts:38
 msgid "Watching failed :("
 msgstr "觀看失敗 :("
 
@@ -38438,6 +38453,11 @@ msgstr "要包含的內容"
 msgid "What to search for."
 msgstr "要搜尋的內容。"
 
+#. Informational overlay on your own screen-share tile while the shared screen or window sends no new frames, for example when it is static or minimised. Not an error.
+#: src/features/voice/components/VoiceParticipantTile.tsx:180
+msgid "What you're sharing isn't updating"
+msgstr "您分享的內容沒有更新"
+
 #. Placeholder question in the custom status text field.
 #. Placeholder question in the custom status text field.
 #: src/features/user/components/modals/CustomStatusBottomSheet.tsx:40
@@ -38474,17 +38494,17 @@ msgid "When posted as links in chat"
 msgstr "在聊天中以連結形式張貼時"
 
 #. Explanation of screen-share preview uploads in a group DM call. productName is the app name; JPEG is an image format name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:296
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:297
 msgid "When previews are enabled, {productName} uploads occasional JPEG frames from your screen share so other people in this group DM can see a thumbnail before they watch."
 msgstr "啟用預覽時，{productName} 會不定期上傳您螢幕分享的 JPEG 畫面，讓此群組私訊中的其他人在觀看前可以先看到縮圖。"
 
 #. Explanation of screen-share preview uploads in a guild voice channel. productName is the app name; JPEG is an image format name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:290
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:291
 msgid "When previews are enabled, {productName} uploads occasional JPEG frames from your screen share so people with permission to connect to this voice channel can see a thumbnail before they watch."
 msgstr "啟用預覽時，{productName} 會不定期上傳您螢幕分享的 JPEG 畫面，讓有權限連線到此語音頻道的人在觀看前可以先看到縮圖。"
 
 #. Explanation of screen-share preview uploads in a one-to-one DM call. productName is the app name; JPEG is an image format name.
-#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:302
+#: src/features/voice/components/modals/ScreenSharePickerModal.tsx:303
 msgid "When previews are enabled, {productName} uploads occasional JPEG frames from your screen share so the other person in this DM can see a thumbnail before they watch."
 msgstr "啟用預覽時，{productName} 會不定期上傳您螢幕分享的 JPEG 畫面，讓此私訊中的對方在觀看前可以先看到縮圖。"
 
@@ -38636,7 +38656,7 @@ msgid "Windows cut off at the top or bottom of the screen, and docked DevTools, 
 msgstr "視窗在螢幕頂部或底部被裁切，以及停靠的開發人員工具，可能會呈現灰色背景而非保持透明。"
 
 #. Audio device label prefix for the operating system default audio device on Windows.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:14
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:18
 msgid "Windows default"
 msgstr "Windows 預設值"
 
@@ -38809,7 +38829,7 @@ msgid "You are banned from this community and cannot join."
 msgstr "您已被此社群停權，無法加入。"
 
 #. Voice participant status tooltip for the current user. They cannot hear voice chat. Distinct from muted.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:70
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:74
 msgid "You are deafened"
 msgstr "您已耳機靜音"
 
@@ -39032,7 +39052,7 @@ msgid "You can't share your screen in this channel"
 msgstr "您無法在此頻道分享螢幕畫面"
 
 #. Voice control tooltip shown when channel permissions prevent the current user from speaking.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:44
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:48
 msgid "You can't speak in this channel"
 msgstr "您無法在此頻道中發言"
 
@@ -39113,7 +39133,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "您在訂閱 {PREMIUM_PRODUCT_NAME} 期間變更了標籤。除非續訂，否則您的 {PREMIUM_PRODUCT_NAME} 到期時，標籤將會隨機重新產生。"
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
 msgid "You do not have access to the channel where this message was sent."
 msgstr "您沒有權限存取傳送此訊息的頻道。"
 
@@ -39354,7 +39374,7 @@ msgid "You stay in {ownedNames}. Owners cannot leave their own community."
 msgstr "您會留在 {ownedNames}。社群擁有者無法離開自己的社群。"
 
 #. Voice chat status tooltip for the current user. A moderator deafened them so they cannot hear voice chat.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts:57
+#: src/features/voice/utils/VoiceMessageDescriptors.ts:61
 msgid "You were deafened by moderators"
 msgstr "您已遭管理員設為耳機靜音"
 
@@ -39378,6 +39398,11 @@ msgstr "您將離開 {guildNames}。您發布的內容不會被刪除，之後�
 msgid "You will still need to finish the email step."
 msgstr "您還是需要完成電子郵件驗證步驟。"
 
+#. Security settings: confirmation modal body for turning off passkey-based two-factor authentication when the account also has an authenticator app.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:74
+msgid "You won't be asked for a passkey after your password anymore. Your authenticator app stays as your second factor."
+msgstr "輸入密碼後，系統將不再要求您提供通行金鑰。您的驗證器應用程式仍會是您的第二道驗證。"
+
 #: src/features/app/components/floating/UserAreaPopout.tsx:92
 #: src/features/user/components/modals/StatusChangeBottomSheet.tsx:40
 msgid "You won't receive notifications on desktop"
@@ -39391,6 +39416,11 @@ msgstr "您會顯示為離線"
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:464
 msgid "You'll have to sign back in on all signed-out devices"
 msgstr "您必須在所有已登出的裝置上重新登入"
+
+#. Security settings: confirmation modal body for turning on passkey-based two-factor authentication.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:55
+msgid "You'll need one of your passkeys to sign in on a new device. If you lose every passkey you can be locked out of your account. Backup codes will be saved for you so you still have a way in."
+msgstr "在新裝置上登入時，您需要使用其中一個通行金鑰。如果您遺失所有通行金鑰，就可能永久無法存取您的帳號。系統會為您保存備用碼，讓您仍有辦法登入。"
 
 #. Privacy > Active now: confirmation modal body when turning sharing on.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ActiveNowTab.tsx:41
@@ -39680,9 +39710,14 @@ msgstr "您的帳號建立時間太短，無法在此社群傳送訊息。"
 msgid "Your account request is pending approval. You can sign in after an admin approves it."
 msgstr "您的帳號申請正在等待核准。管理員核准後即可登入。"
 
-#: src/features/auth/components/modals/SudoVerificationModal.tsx:181
+#: src/features/auth/components/modals/SudoVerificationModal.tsx:195
 msgid "Your account requires multi-factor authentication, but no supported methods are set up on this device. Sign in on a device with your authenticator app or security key, or contact support."
 msgstr "您的帳號需要多重要素驗證，但此裝置上未設定任何支援的方法。請使用已設定驗證器應用程式或安全金鑰的裝置登入，或聯絡客服。"
+
+#. Security settings: confirmation modal body for turning off passkey-based two-factor authentication when passkeys are the only second factor on the account.
+#: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:68
+msgid "Your account will no longer be protected by two-factor authentication when you sign in with your password. You'll also lose elevated permissions in servers that require two-factor authentication."
+msgstr "使用密碼登入時，您的帳號將不再受雙重驗證保護。您也會失去在要求雙重驗證的社群中的進階權限。"
 
 #. Hint under the set-aside button in the required-action modal when the user is in no community that triggers the check. This is the common case. Do not phrase it as undoing a join.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:284
@@ -39732,11 +39767,6 @@ msgstr "您的社群已列在探索中。您可以在下方更新刊登資訊，
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:349
 msgid "Your community needs at least {minMemberCount, plural, one {# member} other {# members}} before it can be listed in Discovery."
 msgstr "您的社群至少需要 {minMemberCount, plural, one {# 位成員} other {# 位成員}} 才能列入探索。"
-
-#. Tooltip on the passive badge on your own screen-share tile when the encoder is limited by CPU.
-#: src/features/voice/components/voice_participant_tile/shared.ts:85
-msgid "Your CPU cannot keep up, so viewers are getting fewer frames than you asked for."
-msgstr "您的 CPU 處理速度跟不上，因此觀眾收到的畫面張數少於您要求的數量。"
 
 #. Body copy on the mature content check callback page after a successful check submission.
 #: src/features/auth/components/pages/MatureContentCheckCallbackPage.tsx:14
@@ -39869,11 +39899,6 @@ msgstr "您的訊息未更新"
 msgid "Your most recent purchase is no longer within the refund window. Contact support for billing issues."
 msgstr "您最近的購買已超出退款期限。如需處理帳務問題，請聯絡客服。"
 
-#. Tooltip on the passive badge on your own screen-share tile when the encoder is limited by bandwidth.
-#: src/features/voice/components/voice_participant_tile/shared.ts:89
-msgid "Your network cannot keep up, so viewers are getting fewer frames than you asked for."
-msgstr "您的網路跟不上，因此觀眾收到的畫面張數少於您要求的數量。"
-
 #. Placeholder text inside the new email field. Sentence-fragment hint, intentionally lowercase.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:88
 msgid "your new email"
@@ -39933,14 +39958,19 @@ msgstr "您的地區"
 msgid "Your registration needs an extra anti-spam check before you can continue."
 msgstr "您的註冊需要額外的防垃圾訊息驗證，才能繼續。"
 
+#. Video settings note shown when the saved screen share quality is above what this account can send. Resolutions are short labels such as 1440p or Source and rates are whole numbers. FPS is a technical token.
+#: src/features/user/components/modals/tabs/UserVideoTab.tsx:92
+msgid "Your saved {savedResolution} at {savedFrameRate} FPS needs {premiumProductName}, so shares use {resolution} at {frameRate} FPS."
+msgstr "你儲存的 {savedResolution} @ {savedFrameRate} FPS 需要 {premiumProductName}，因此分享會使用 {resolution} @ {frameRate} FPS。"
+
 #. Body of a modal shown when the video codec the browser negotiated for an active screen share is outside the codecs the app allows and no allowed codec could be published, which forces the share to stop.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:124
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:131
 msgctxt "screen-share"
 msgid "Your screen share could not be published with a compatible video codec, so it was stopped. Try sharing again."
 msgstr "由於無法使用相容的視訊編解碼器發布您的螢幕畫面，因此已停止分享。請再試一次。"
 
 #. Subtitle under the preview-paused overlay reassuring the user that the screen share is still live for others.
-#: src/features/voice/components/voice_participant_tile/shared.ts:66
+#: src/features/voice/components/voice_participant_tile/shared.ts:64
 msgid "Your stream is still live"
 msgstr "您的直播仍在進行中"
 
@@ -40033,7 +40063,7 @@ msgid "Your vanity URL has been set to {inviteEndpoint}/{vanitySlug}"
 msgstr "您的自訂網址已設為 {inviteEndpoint}/{vanitySlug}"
 
 #. Body of a modal shown when the local video encoder produces no frames for an active screen share, which forces the share to stop.
-#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:131
+#: src/features/voice/engine/v2/VoiceEngineV2AppScreenShareExecutionAdapter.tsx:138
 msgctxt "screen-share"
 msgid "Your video encoder stopped encoding frames, so your screen share was stopped. Try sharing again."
 msgstr "您的視訊編碼器停止編碼影格，因此您的螢幕分享已停止。請重新嘗試分享。"

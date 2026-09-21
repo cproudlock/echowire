@@ -72,7 +72,9 @@ class ForumPostPreviews {
 	private readonly byThread = observable.map<string, StarterMessagePreview | null>();
 
 	constructor() {
-		makeObservable(this);
+		makeObservable(this, {
+			ingest: action,
+		});
 	}
 
 	// Undefined means the server has not sent a preview for this thread (older server or an event
@@ -81,7 +83,6 @@ class ForumPostPreviews {
 		return this.byThread.get(threadId);
 	}
 
-	@action
 	ingest(threads: ReadonlyArray<{id: string; starter_message_preview?: WireStarterMessagePreview | null}>): void {
 		for (const thread of threads) {
 			if (thread.starter_message_preview === undefined) continue;

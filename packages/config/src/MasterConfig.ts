@@ -153,6 +153,9 @@ export interface MasterConfig {
 				token_ttl_secs: number;
 				keep_direct_countries: Array<string>;
 			};
+			attachment_urls: {
+				secrets_base64: Array<string>;
+			};
 		};
 		gateway: {
 			port: number;
@@ -296,15 +299,16 @@ export interface MasterConfig {
 		blocklist_feeds: {
 			enabled?: boolean;
 		};
+		tor_exit_list: {
+			enabled?: boolean;
+		};
+		breached_password_check: {
+			enabled?: boolean;
+		};
 		risk_integration: {
 			enabled: boolean;
 			ipinfo_api_key: string;
 			account_policy_dsl?: unknown;
-			tor: {
-				block_all_relays: boolean;
-				reverse_dns_heuristic: boolean;
-				reverse_dns_timeout_ms: number;
-			};
 		};
 		push: {
 			apns: {

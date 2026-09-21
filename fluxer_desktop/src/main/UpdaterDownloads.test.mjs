@@ -99,26 +99,26 @@ describe('UpdaterDownloads Linux manual update options', () => {
 			options.map((option) => [option.url, option.suggestedName]),
 			[
 				[
-					'https://api.fluxer.app/dl/desktop/stable/linux/arm64/2026.910.101500/appimage',
+					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/appimage',
 					'Fluxer-2026.910.101500-linux-arm64.AppImage',
 				],
 				[
-					'https://api.fluxer.app/dl/desktop/stable/linux/arm64/2026.910.101500/deb',
+					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/deb',
 					'Fluxer-2026.910.101500-linux-arm64.deb',
 				],
 				[
-					'https://api.fluxer.app/dl/desktop/stable/linux/arm64/2026.910.101500/rpm',
+					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/rpm',
 					'Fluxer-2026.910.101500-linux-aarch64.rpm',
 				],
 				[
-					'https://api.fluxer.app/dl/desktop/stable/linux/arm64/2026.910.101500/tar_gz',
+					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/tar_gz',
 					'Fluxer-2026.910.101500-linux-arm64.tar.gz',
 				],
 			],
 		);
 	});
 
-	test('names canary and stable artefacts after their own product and api', () => {
+	test('names canary and stable artefacts after their own product and origin', () => {
 		const info = latestInfo('2026.910.101500');
 		const stableDeb = structuredClone(loadUpdaterDownloads({channel: 'stable'}).getManualDownloadOptions(info)).find(
 			(option) => option.format === 'deb',
@@ -156,7 +156,7 @@ describe('UpdaterDownloads Linux manual update options', () => {
 		}
 		assert.equal(
 			getManualDownloadUrl(info),
-			'https://api.canary.fluxer.app/dl/desktop/canary/linux/x64/2026.908.173325/appimage',
+			'https://pkgs.fluxer.com/desktop/canary/linux/x64/2026.908.173325/appimage',
 		);
 	});
 });
@@ -173,7 +173,7 @@ describe('UpdaterDownloads manual download url', () => {
 
 		assert.equal(
 			getManualDownloadUrl(info),
-			'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/appimage',
+			'https://pkgs.fluxer.com/desktop/stable/linux/x64/2026.910.101500/appimage',
 		);
 	});
 

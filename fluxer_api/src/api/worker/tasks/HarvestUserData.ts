@@ -11,6 +11,7 @@ import {
 	createArchiveTask,
 	throwIfArchiveTerminallyFailed,
 } from '@app/api/archive/ArchiveTask';
+import {makeDataPackageAttachmentCdnUrl} from '@app/api/attachment/AttachmentUrls';
 import {
 	type ChannelID,
 	createAttachmentID,
@@ -22,7 +23,6 @@ import {
 } from '@app/api/BrandedTypes';
 import {Config} from '@app/api/Config';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
-import {makeAttachmentCdnUrl} from '@app/api/channel/services/message/MessageHelpers';
 import {
 	isChannelEligible,
 	isTimestampInWindow,
@@ -385,7 +385,7 @@ export async function harvestMessages(
 					content_type: attachment.contentType,
 					content_hash: null,
 					archive_path: null,
-					cdn_url: makeAttachmentCdnUrl(channelId, attachment.id, attachment.filename),
+					cdn_url: makeDataPackageAttachmentCdnUrl(channelId, attachment.id, attachment.filename),
 					width: attachment.width,
 					height: attachment.height,
 				})),

@@ -126,9 +126,10 @@ describe('thread visibility contract', () => {
 		}
 	});
 
-	test.each(
-		cases.map((contractCase) => [contractCase.name, contractCase] as const),
-	)('api agrees with the contract: %s', async (_name, contractCase) => {
-		expect(await apiCanView(contractCase)).toBe(contractCase.expect_can_view);
-	});
+	test.each(cases.map((contractCase) => [contractCase.name, contractCase] as const))(
+		'api agrees with the contract: %s',
+		async (_name, contractCase) => {
+			expect(await apiCanView(contractCase)).toBe(contractCase.expect_can_view);
+		},
+	);
 });

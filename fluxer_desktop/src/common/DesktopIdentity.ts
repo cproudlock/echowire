@@ -16,7 +16,10 @@ export const LINUX_DESKTOP_ENTRY_ID = BUILD_CHANNEL === 'canary' ? 'echowire-can
 // Old ids previous builds wrote; used to clean up stale user-local duplicates on upgrade.
 export const LINUX_LEGACY_DESKTOP_ENTRY_IDS = BUILD_CHANNEL === 'canary' ? ['fluxer-canary'] : ['fluxer'];
 export const WINDOWS_SHORTCUT_AUTHOR = 'echowire';
-const WINDOWS_VELOPACK_ID = BUILD_CHANNEL === 'canary' ? 'fluxer_desktop_canary' : 'fluxer_desktop';
+export const WINDOWS_VELOPACK_ID = BUILD_CHANNEL === 'canary' ? 'fluxer_desktop_canary' : 'fluxer_desktop';
+// Echowire: the directory older Squirrel-based installs used, kept at upstream's value because it
+// names installs that already exist on disk. Rebranding it would make the cleanup match nothing.
+export const WINDOWS_LEGACY_SQUIRREL_ID = 'fluxer_app';
 // Echowire: an identifier, not display text. Changing it would orphan pinned taskbar entries and
 // the registered toast activator, so it keeps the original casing.
 export const WINDOWS_APP_USER_MODEL_ID = BUILD_CHANNEL === 'canary' ? 'Echowire.Echowire.Canary' : 'Echowire.Echowire';

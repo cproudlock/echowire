@@ -7,7 +7,7 @@
     <developer id="org.echowire">
         <name>echowire</name>
     </developer>
-    <summary>Instant messaging and VoIP</summary>
+    <summary>A chat app that puts you first</summary>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>AGPL-3.0-or-later</project_license>
     <icon type="stock">org.echowire.app</icon>
@@ -42,7 +42,7 @@
         <color type="primary">#4641D9</color>
     </branding>
     <screenshots>
-        <screenshot type="default">
+        <screenshot type="default" xml:lang="en">
             <caption>The main echowire window.</caption>
             <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.avif</image>
         </screenshot>

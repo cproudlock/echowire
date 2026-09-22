@@ -70,6 +70,7 @@ const LANE_CONFIG = {
 			'purgeOrphanedThreads',
 			'backfillThreadMembersByUser',
 			'expireAttachments',
+			'expireStaleJobs',
 			'indexChannelMessages',
 			'indexGuildMembers',
 			'processAssetDeletionQueue',

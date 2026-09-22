@@ -44,14 +44,18 @@
     <screenshots>
         <screenshot type="default" xml:lang="en">
             <caption>The main echowire window.</caption>
-            <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.avif</image>
+            <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.png</image>
         </screenshot>
     </screenshots>
+    <!-- Echowire: this must name the version the flatpak actually installs, taken from
+         https://echowire.org/api/dl/desktop/stable/linux/x64/latest. It is the one field
+         flatpak-external-data-checker does not update on a version bump. -->
     <releases>
-        <release version="0.0.8" date="2026-02-16"/>
+        <release version="2026.825.12857" date="2026-08-25"/>
     </releases>
     <url type="bugtracker">https://github.com/cproudlock/echowire/issues</url>
     <url type="homepage">https://echowire.org</url>
+    <url type="help">https://echowire.org/help</url>
     <url type="donation">https://echowire.org/donate</url>
     <url type="vcs-browser">https://github.com/cproudlock/echowire.git</url>
     <update_contact>support@echowire.org</update_contact>

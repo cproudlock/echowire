@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Echowire: canary counterpart of org.echowire.app.yml, replacing the upstream
+# app.fluxer.FluxerCanary pair that was left pointing at files this tree renamed to
+# org.echowire.*. Canary is not submitted to Flathub; this exists so a local flatpak of the
+# canary channel can be built the same way as stable.
+id: org.echowire.canary
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+base: org.electronjs.Electron2.BaseApp
+base-version: '25.08'
+branch: canary
+command: org.echowire.canary
+separate-locales: false
+finish-args:
+  - --share=ipc
+  - --share=network
+  - --socket=wayland
+  - --socket=fallback-x11
+  - --socket=pulseaudio
+  # Camera access for video calls. The portal covers screen sharing through pipewire below, but
+  # chromium still opens camera devices directly.
+  - --device=all
+  - --filesystem=xdg-download
+  - --filesystem=xdg-run/pipewire-0:ro
+  - --filesystem=xdg-run/speech-dispatcher:ro
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.kde.StatusNotifierWatcher
+  - --talk-name=org.ayatana.indicator.application
+  - --talk-name=com.canonical.indicator.application
+  - --env=ELECTRON_OZONE_PLATFORM_HINT=auto
+  - --env=XCURSOR_PATH=/run/host/user-share/icons:/run/host/share/icons
+build-options:
+  strip: false
+  no-debuginfo: true
+cleanup-commands:
+  - rm -f /app/echowire-canary/chrome-sandbox
+modules:
+  - name: echowire-canary
+    buildsystem: simple
+    build-commands:
+      - install -Dm755 org.echowire.canary.sh ${FLATPAK_DEST}/bin/${FLATPAK_ID}
+      - mkdir -p ${FLATPAK_DEST}/echowire-canary
+      - cp -a app/. ${FLATPAK_DEST}/echowire-canary/
+      - patch-electron-desktop-filename ${FLATPAK_DEST}/echowire-canary/resources/app.asar
+      - install -Dm644 org.echowire.canary.desktop ${FLATPAK_DEST}/share/applications/${FLATPAK_ID}.desktop
+      - install -Dm644 org.echowire.canary.metainfo.xml ${FLATPAK_DEST}/share/metainfo/${FLATPAK_ID}.metainfo.xml
+      - install -Dm644 org.echowire.canary.svg ${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/${FLATPAK_ID}.svg
+    sources:
+      - type: file
+        path: org.echowire.canary.sh
+      - type: file
+        path: org.echowire.canary.desktop
+      - type: file
+        path: org.echowire.canary.metainfo.xml
+      - type: file
+        path: org.echowire.canary.svg

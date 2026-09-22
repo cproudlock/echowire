@@ -588,6 +588,11 @@ services:
       FLUXER_API_ENDPOINT: ${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}/api
       FLUXER_APP_ENDPOINT: ${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}
       FLUXER_STATIC_CDN_ENDPOINT: ${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}
+      # Echowire: shows the apt and rpm install instructions on /download. Turn it on only after
+      # `fluxer-ci linux-repo publish` has actually populated the bucket, otherwise the page tells
+      # people to fetch a key and an index that are not there. See
+      # deploy/LINUX-PACKAGE-REPOSITORIES.md.
+      FLUXER_MARKETING_LINUX_REPO_ENABLED: ${FLUXER_MARKETING_LINUX_REPO_ENABLED:-false}
 
   snowflakes:
     <<: *fluxer-service

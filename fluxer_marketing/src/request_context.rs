@@ -55,6 +55,8 @@ pub struct RequestContext {
     pub platform: Platform,
     pub architecture: Architecture,
     pub test_build: bool,
+    // Echowire: whether the signed apt and rpm repositories are published yet.
+    pub linux_repo_enabled: bool,
 }
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -114,6 +116,7 @@ impl RequestContext {
                 .query()
                 .map(|query| query.contains("test=1") || query.contains("test=true"))
                 .unwrap_or(false),
+            linux_repo_enabled: state.config.linux_repo_enabled,
         }
     }
 

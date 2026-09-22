@@ -857,9 +857,10 @@ async fn download_page_renders_strips_and_cache_header() {
         "/dl/desktop/{}/win32/x64/latest/setup?test=1",
         ReleaseChannel::Stable.segment()
     );
-    // Echowire builds win32/x64 only; the Windows alternate is the game-capture build.
-    let expected_game_capture_url = format!(
-        "/dl/desktop/{}/win32/x64/windows-game-capture/latest/setup?test=1",
+    // Echowire builds win32/x64 only; the Windows alternate is the portable build, because the
+    // game-capture variant this used to link is published on neither channel.
+    let expected_portable_url = format!(
+        "/dl/desktop/{}/win32/x64/latest/portable?test=1",
         ReleaseChannel::Stable.segment()
     );
     let app = build_router(config);
@@ -885,7 +886,8 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(!html.contains("download-card-grid"));
     assert!(!html.contains("/dl/desktop/source/latest"));
     assert!(html.contains(&expected_download_url));
-    assert!(html.contains(&expected_game_capture_url));
+    assert!(html.contains(&expected_portable_url));
+    assert!(!html.contains("windows-game-capture"));
     let channel = ReleaseChannel::Stable.segment();
     assert!(html.contains(&format!(
         "/dl/desktop/{channel}/linux/x64/latest/appimage?test=1"
@@ -894,6 +896,40 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(!html.contains("darwin"));
     assert!(!html.contains("flathub"));
     assert!(!html.contains(&format!("/dl/desktop/{channel}/linux/arm64/")));
+}
+
+// Echowire: the apt and rpm repositories are published by a separate step that needs a signing
+// key, so the page must not describe them until someone has actually published them.
+#[tokio::test]
+async fn download_page_hides_package_repositories_until_they_are_published() {
+    let mut config = test_config();
+    config.api_endpoint = "http://127.0.0.1:9".to_owned();
+    config.linux_repo_enabled = false;
+    let app = build_router(config);
+    let html = render_path(app, "/download").await;
+    assert!(!html.contains("apt-get install echowire"));
+    assert!(!html.contains("/dl/apt/"));
+    assert!(!html.contains("/dl/rpm/"));
+}
+
+#[tokio::test]
+async fn download_page_shows_signed_package_repository_instructions_when_published() {
+    let mut config = test_config();
+    config.api_endpoint = "https://api.fluxer.test".to_owned();
+    config.linux_repo_enabled = true;
+    let app = build_router(config);
+    let html = render_path(app, "/download").await;
+    assert!(html.contains("Install from the package repository"));
+    assert!(html.contains("https://api.fluxer.test/dl/apt/echowire.asc"));
+    assert!(html.contains("https://api.fluxer.test/dl/apt/echowire.sources"));
+    assert!(html.contains("/etc/apt/keyrings/echowire.asc"));
+    assert!(html.contains("apt-get install echowire"));
+    assert!(html.contains("https://api.fluxer.test/dl/rpm/echowire.asc"));
+    assert!(html.contains("https://api.fluxer.test/dl/rpm/echowire.repo"));
+    assert!(html.contains("dnf install echowire"));
+    // Still nothing about flatpak: the flathub submission has not been accepted.
+    assert!(!html.contains("flathub"));
+    assert!(!html.contains("flatpak"));
 }
 
 #[tokio::test]

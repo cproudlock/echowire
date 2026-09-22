@@ -26,6 +26,9 @@ COPY --chown=65532:65532 fluxer_static/desktop /srv/fluxer-static/desktop
 COPY --chown=65532:65532 fluxer_static/embeds /srv/fluxer-static/embeds
 COPY --chown=65532:65532 fluxer_static/emoji /srv/fluxer-static/emoji
 COPY --chown=65532:65532 fluxer_static/libs /srv/fluxer-static/libs
+# Echowire: the marketing pages and the flatpak metainfo both link screenshots under
+# /marketing, and nothing served them, so every one of those images was a 404.
+COPY --chown=65532:65532 fluxer_static/marketing /srv/fluxer-static/marketing
 COPY --chown=65532:65532 fluxer_static/web /srv/fluxer-static/web
 
 RUN setcap -r /usr/bin/caddy \

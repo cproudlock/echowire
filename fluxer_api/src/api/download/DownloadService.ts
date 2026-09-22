@@ -61,7 +61,18 @@ const MAX_DESKTOP_OBJECTS_PER_PREFIX = 10_000;
 const MAX_DESKTOP_RELEASE_CANDIDATES = 10;
 const DESKTOP_BUCKET_PREFIX = 'desktop';
 const DESKTOP_TEST_BUCKET_PREFIX = 'desktop-test';
-const DOWNLOAD_KEY_ALLOWED_PREFIXES = [`${DESKTOP_BUCKET_PREFIX}/`, `${DESKTOP_TEST_BUCKET_PREFIX}/`];
+// Echowire: this instance publishes its own signed apt and rpm repositories into the same
+// downloads bucket, so /dl has to serve those trees too. Repository metadata is small, mutable
+// and requested with ranges by apt, all of which the existing streaming path already handles.
+const APT_REPO_BUCKET_PREFIX = 'apt';
+const RPM_REPO_BUCKET_PREFIX = 'rpm';
+const DOWNLOAD_KEY_ALLOWED_PREFIXES = [
+	`${DESKTOP_BUCKET_PREFIX}/`,
+	`${DESKTOP_TEST_BUCKET_PREFIX}/`,
+	`${APT_REPO_BUCKET_PREFIX}/`,
+	`${RPM_REPO_BUCKET_PREFIX}/`,
+];
+const LINUX_REPO_BUCKET_PREFIXES = [`${APT_REPO_BUCKET_PREFIX}/`, `${RPM_REPO_BUCKET_PREFIX}/`];
 // Echowire: desktop releases are published to the fork (RELEASE_REPOSITORY in
 // tools/ci/src/release.rs), so the redirect must point there, not at upstream.
 const GITHUB_RELEASE_DOWNLOAD_BASE_URL = 'https://github.com/cproudlock/echowire/releases/download';
@@ -73,6 +84,7 @@ function desktopBucketPrefix(test?: boolean): string {
 
 const MUTABLE_DOWNLOAD_CACHE_CONTROL = 'public, max-age=300';
 const VERSIONED_ARTIFACT_CACHE_CONTROL = 'public, max-age=31536000';
+const LINUX_REPO_INDEX_CACHE_CONTROL = 'public, max-age=60';
 
 function isDesktopReleaseFeedFilename(filename: string): boolean {
 	return (
@@ -96,7 +108,24 @@ function isVersionedDesktopArtifactKey(key: string): boolean {
 	return !isDesktopReleaseFeedFilename(filename);
 }
 
+// Echowire: inside a linux repository the package files are immutable (their version is part of
+// the filename) while the index is rewritten on every publish. Serving a stale index is worse than
+// a slow one: apt refuses to install a package whose hash is not in the Release it already has.
+function isLinuxRepoKey(key: string): boolean {
+	return LINUX_REPO_BUCKET_PREFIXES.some((prefix) => key.startsWith(prefix));
+}
+
+function isImmutableLinuxRepoPackageKey(key: string): boolean {
+	if (!isLinuxRepoKey(key)) {
+		return false;
+	}
+	return key.endsWith('.deb') || key.endsWith('.rpm');
+}
+
 export function downloadCacheControlForKey(key: string): string {
+	if (isLinuxRepoKey(key)) {
+		return isImmutableLinuxRepoPackageKey(key) ? VERSIONED_ARTIFACT_CACHE_CONTROL : LINUX_REPO_INDEX_CACHE_CONTROL;
+	}
 	return isVersionedDesktopArtifactKey(key) ? VERSIONED_ARTIFACT_CACHE_CONTROL : MUTABLE_DOWNLOAD_CACHE_CONTROL;
 }
 

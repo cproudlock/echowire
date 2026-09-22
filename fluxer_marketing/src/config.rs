@@ -19,6 +19,10 @@ pub struct MarketingConfig {
     pub geoip_source: GeoipSourceConfig,
     pub geoip_s3_config: Option<GeoipS3Config>,
     pub trust_client_ip_header: bool,
+    // Echowire: the download page only shows the apt and rpm instructions once the
+    // repositories have actually been published, so it ships off. See
+    // deploy/LINUX-PACKAGE-REPOSITORIES.md.
+    pub linux_repo_enabled: bool,
     pub client_ip_header_name: String,
     pub release_channel: ReleaseChannel,
     pub build_version: String,
@@ -82,6 +86,7 @@ impl MarketingConfig {
                 &["FLUXER_TRUST_CLIENT_IP_HEADER", "TRUST_CLIENT_IP_HEADER"],
                 false,
             ),
+            linux_repo_enabled: cfg::read_bool_env(&["FLUXER_MARKETING_LINUX_REPO_ENABLED"], false),
             client_ip_header_name: cfg::read_first_env(
                 &[
                     "FLUXER_CLIENT_IP_HEADER_NAME",

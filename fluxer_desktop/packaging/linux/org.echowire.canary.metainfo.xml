@@ -44,12 +44,16 @@
     <screenshots>
         <screenshot type="default" xml:lang="en">
             <caption>The main echowire window.</caption>
-            <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.avif</image>
+            <image type="source" width="1920" height="1080">https://echowire.org/marketing/screenshots/desktop-1920w.png</image>
         </screenshot>
     </screenshots>
+    <releases>
+        <release version="2026.823.233628" date="2026-08-23"/>
+    </releases>
     <url type="bugtracker">https://github.com/cproudlock/echowire/issues</url>
     <url type="homepage">https://canary.echowire.org</url>
     <url type="donation">https://echowire.org/donate</url>
+    <url type="help">https://echowire.org/help</url>
     <url type="vcs-browser">https://github.com/cproudlock/echowire.git</url>
     <update_contact>support@echowire.org</update_contact>
     <provides>

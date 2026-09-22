@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+FROM node:24-bookworm-slim AS node
+
 FROM rust:1-bookworm AS builder
 
 ARG BUILD_VERSION=""
@@ -8,9 +10,19 @@ ARG TARGETARCH
 WORKDIR /usr/src/app
 
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends ca-certificates nodejs npm pkg-config \
-	&& npm install -g pnpm@10.29.3 \
+	&& apt-get install -y --no-install-recommends ca-certificates pkg-config \
 	&& rm -rf /var/lib/apt/lists/*
+
+# echowire: bookworm ships Node 18, and pnpm 11 (the version pinned in
+# packageManager, which pnpm switches to on its own) needs 22.13 or newer, so
+# take Node from the official image instead of apt.
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/npm
+RUN ln -sf ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+	&& node --version \
+	&& npm --version \
+	&& npm install -g pnpm@11.27.0 \
+	&& pnpm --version
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY patches patches

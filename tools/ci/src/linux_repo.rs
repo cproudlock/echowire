@@ -709,13 +709,13 @@ impl SigningContext {
             .arg("_gpg_digest_algo sha256")
             .env("GNUPGHOME", self.home.path());
         if let Some(passphrase_file) = &self.passphrase_file {
-            let passphrase = fs::read_to_string(passphrase_file)
-                .context("Failed to read the staged signing passphrase")?;
+            // The passphrase goes in by path, never as an argument: rpmsign's signing command
+            // ends up in the process table, where every other user on the host can read it.
             spec = spec.arg("--define").arg(format!(
-                "__gpg_sign_cmd %{{__gpg}} gpg --batch --pinentry-mode loopback --passphrase {} \
-                 --no-armor --no-secmem-warning -u \"%{{_gpg_name}}\" -sbo %{{__signature_filename}} \
-                 %{{__plaintext_filename}}",
-                passphrase.trim()
+                "__gpg_sign_cmd %{{__gpg}} gpg --batch --pinentry-mode loopback \
+                 --passphrase-file {} --no-armor --no-secmem-warning -u \"%{{_gpg_name}}\" -sbo \
+                 %{{__signature_filename}} %{{__plaintext_filename}}",
+                passphrase_file.display()
             ));
         }
         run_command(spec.arg(package))

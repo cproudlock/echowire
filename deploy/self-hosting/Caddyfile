@@ -1,7 +1,10 @@
 # Echowire Caddyfile for the `edge` service (merge-upstream-2026-09-06).
 # Upstream #2486 structure (trusted_proxies, per-route X-Forwarded-For, /_health, :8088
 # -> /.well-known/fluxer) with fork retentions: the @marketing routes to marketing:3010
-# and /fonts/* in @staticAssets. Site address stays :80 (HTTP; TLS terminates at Cloudflare).
+# and /fonts/* in @staticAssets. /marketing/* is a static asset tree, not a marketing
+# route: the marketing service only serves named files under /static, so routing it there
+# 404d every screenshot the pages and the flatpak metainfo link to.
+# Site address stays :80 (HTTP; TLS terminates at Cloudflare).
 {
 	servers {
 		trusted_proxies static {$FLUXER_EDGE_TRUSTED_PROXIES:private_ranges}
@@ -46,13 +49,13 @@
 		reverse_proxy admin:8080
 	}
 
-	@staticAssets path /fonts/* /web/* /emoji/* /libs/* /avatars/* /badges/* /desktop/* /embeds/*
+	@staticAssets path /fonts/* /web/* /emoji/* /libs/* /avatars/* /badges/* /desktop/* /embeds/* /marketing/*
 	handle @staticAssets {
 		reverse_proxy static-proxy:8080
 	}
 
 	# Echowire: keep the vendored rebranded marketing service (upstream #2486 dropped it).
-	@marketing path /static/* /marketing/* /help /help/* /download /terms /privacy /guidelines /security /company-information /blog /blog/* /reverb /donate /donate/* /careers /careers/* /partners /press /press/* /en /en/*
+	@marketing path /static/* /help /help/* /download /terms /privacy /guidelines /security /company-information /blog /blog/* /reverb /donate /donate/* /careers /careers/* /partners /press /press/* /en /en/*
 	handle @marketing {
 		reverse_proxy marketing:3010 {
 			header_up X-Forwarded-For {client_ip}

@@ -166,6 +166,7 @@ pub fn download_page(
                         (mobile_download_row(i18n, ctx, MobileDownload::Ios))
                         (mobile_download_row(i18n, ctx, MobileDownload::Android))
                     }
+                    (linux_repo_instructions(i18n, ctx))
                 }
                 (pwa::pwa_install_modal(i18n, ctx))
             }
@@ -1618,6 +1619,54 @@ fn render_desktop_or_download_button(i18n: &MarketingI18n, ctx: &RequestContext)
     }
 }
 
+// Echowire: the apt and rpm repositories from deploy/LINUX-PACKAGE-REPOSITORIES.md. Rendered
+// only when they have been published, because instructions for a repository that does not answer
+// are worse than no instructions.
+fn linux_repo_instructions(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
+    if !ctx.linux_repo_enabled {
+        return html! {};
+    }
+    let key_url = ctx.api_url("/dl/apt/echowire.asc");
+    let sources_url = ctx.api_url("/dl/apt/echowire.sources");
+    let rpm_key_url = ctx.api_url("/dl/rpm/echowire.asc");
+    let repo_url = ctx.api_url("/dl/rpm/echowire.repo");
+    let apt_commands = format!(
+        "sudo install -d -m 0755 /etc/apt/keyrings\n\
+         sudo curl -fsSL {key_url} -o /etc/apt/keyrings/echowire.asc\n\
+         sudo curl -fsSL {sources_url} -o /etc/apt/sources.list.d/echowire.sources\n\
+         sudo apt-get update\n\
+         sudo apt-get install echowire"
+    );
+    let rpm_commands = format!(
+        "sudo rpm --import {rpm_key_url}\n\
+         sudo curl -fsSL {repo_url} -o /etc/yum.repos.d/echowire.repo\n\
+         sudo dnf install echowire"
+    );
+    html! {
+        section class="mt-12 border-gray-200 border-t pt-10 md:mt-16 md:pt-12" {
+            h2 class="display text-2xl text-gray-950 md:text-3xl" {
+                (tr(i18n, ctx, DOWNLOAD_LINUX_REPO_HEADING_DESCRIPTOR))
+            }
+            p class="mt-3 max-w-2xl text-gray-600" {
+                (tr(i18n, ctx, DOWNLOAD_LINUX_REPO_BODY_DESCRIPTOR))
+            }
+            div class="mt-6 grid gap-6 md:grid-cols-2" {
+                @for (heading, commands) in [
+                    (DOWNLOAD_LINUX_REPO_DEBIAN_HEADING_DESCRIPTOR, &apt_commands),
+                    (DOWNLOAD_LINUX_REPO_RPM_HEADING_DESCRIPTOR, &rpm_commands),
+                ] {
+                    div {
+                        h3 class="body-sm font-semibold text-gray-950" { (tr(i18n, ctx, heading)) }
+                        pre class="mt-2 overflow-x-auto rounded-xl bg-gray-950 p-4 text-white" {
+                            code class="font-mono text-xs leading-relaxed" { (commands) }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 struct AltBuild {
     label: String,
     url: String,
@@ -1641,22 +1690,14 @@ fn alternate_builds(
     let other_arch = if arch == "arm64" { "x64" } else { "arm64" };
     match platform {
         Platform::Windows => {
-            // Echowire builds win32/x64 only (no arm64 Windows), plus the game-capture variant.
-            // Offer the game-capture build (dropped by upstream redesign #1515) as the alternate
-            // instead of a non-existent other-arch setup.
-            let mut builds = vec![alt(
-                "Game Capture".to_owned(),
-                desktop_url_variant(ctx, "win32", arch, "windows-game-capture", "setup"),
+            // Echowire builds win32/x64 only (no arm64 Windows), so the alternate cannot be the
+            // other architecture. The game-capture variant this used to offer is published on
+            // neither channel and the link 404d; portable is published on both.
+            vec![alt(
+                tr(i18n, ctx, PLATFORM_SUPPORT_PLATFORMS_PORTABLE_DESCRIPTOR),
+                desktop_url(ctx, "win32", arch, "portable"),
                 false,
-            )];
-            if ctx.download_channel.is_canary() {
-                builds.push(alt(
-                    tr(i18n, ctx, PLATFORM_SUPPORT_PLATFORMS_PORTABLE_DESCRIPTOR),
-                    desktop_url(ctx, "win32", arch, "portable"),
-                    false,
-                ));
-            }
-            builds
+            )]
         }
         Platform::Macos => {
             let label = if other_arch == "arm64" {
@@ -1921,19 +1962,6 @@ fn desktop_url(ctx: &RequestContext, platform: &str, arch: &str, format: &str) -
 // Echowire: variant-aware desktop URL (e.g. the Windows game-capture build). The upstream
 // download-page redesign (#1515) dropped the variant helper + the game-capture download entry,
 // but we still build the windows-game-capture variant, so re-expose it on the download page.
-fn desktop_url_variant(
-    ctx: &RequestContext,
-    platform: &str,
-    arch: &str,
-    variant: &str,
-    format: &str,
-) -> String {
-    let channel = ctx.download_channel.segment();
-    let path = format!("/dl/desktop/{channel}/{platform}/{arch}/{variant}/latest/{format}");
-    let final_path = desktop_path_with_query(path, ctx.test_build);
-    ctx.api_url(&final_path)
-}
-
 fn desktop_path_with_query(mut path: String, test_build: bool) -> String {
     if test_build {
         path.push('?');

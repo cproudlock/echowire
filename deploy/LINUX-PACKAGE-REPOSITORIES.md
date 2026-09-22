@@ -191,6 +191,33 @@ The `.repo` file sets both `gpgcheck=1` (the package signature) and
 `repo_gpgcheck=1` (the index signature), and defines a disabled
 `echowire-canary` section.
 
+## Turning on the download page section
+
+The `/download` page carries the two snippets above, but it is **off by default**
+and shows nothing until the repositories exist. Instructions for a repository
+that does not answer are worse than no instructions.
+
+After the first successful `linux-repo publish`, and after checking that
+
+```bash
+curl -fsSL https://echowire.org/api/dl/apt/dists/stable/InRelease | head -3
+curl -fsSL https://echowire.org/api/dl/rpm/stable/x86_64/repodata/repomd.xml | head -3
+```
+
+both return content, set this in the node's `.env` and restart the marketing
+service:
+
+```ini
+FLUXER_MARKETING_LINUX_REPO_ENABLED=true
+```
+
+The page builds the urls from the marketing service's own `FLUXER_API_ENDPOINT`,
+so a self-hosted instance shows its own domain rather than ours.
+
+The page deliberately says nothing about flatpak. It stays that way until a
+Flathub submission is accepted; see
+`fluxer_desktop/packaging/flathub/README.md`.
+
 ## Rotating the key
 
 There is no graceful rotation. A client that has pinned the old key cannot

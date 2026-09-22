@@ -1249,8 +1249,12 @@ console.log('self-hosting guide against deploy/self-hosting');
 		}
 	}
 
+	// Echowire: build-images-local.sh builds the fork's images on the workstation, because this
+	// fork has no paid CI. It lives beside the stack files but is never part of the installer
+	// payload, so it is excluded here rather than added to the installers' download lists.
+	const NOT_INSTALLER_PAYLOAD = new Set(['.gitignore', 'build-images-local.sh']);
 	const shippedAssets = (await readdir(path.join(REPO_ROOT, 'deploy/self-hosting')))
-		.filter((entry) => entry !== '.gitignore')
+		.filter((entry) => !NOT_INSTALLER_PAYLOAD.has(entry))
 		.sort();
 	const shellStackFiles = shellRows('fluxer_stack_files', 'FILES', 'the install.sh download list');
 	const powershellStackFiles: Array<string> = [];
@@ -1637,15 +1641,35 @@ console.log('unthrottled routes and global bucket claims');
 	const problems: Array<string> = [];
 	const uniquePublic = [...new Set(publicUnthrottled)].sort();
 
-	const unexpected = uniquePublic;
+	// Echowire: upstream #2853 turned every /dl route into a deprecated redirect onto its own
+	// package origin and deleted this allowance along with the prose clause behind it. This fork
+	// serves and documents its own desktop releases, so the four download operations are still
+	// live, still documented, and still deliberately without a bucket. The inverse check below
+	// keeps the allowance honest: if one of them ever gains a bucket, the list must shrink.
+	const unthrottledByDesign = new Set([
+		'GET /dl/desktop/{}/{}/{}/latest',
+		'GET /dl/desktop/{}/{}/{}/latest/{}',
+		'GET /dl/desktop/{}/{}/{}/versions',
+		'GET /dl/desktop/{}/{}/{}/{}/{}',
+	]);
+	const unexpected = uniquePublic.filter((shape) => !unthrottledByDesign.has(shape));
+	const nowThrottled = [...unthrottledByDesign].filter((shape) => !uniquePublic.includes(shape)).sort();
 
 	if (unexpected.length > 0) {
 		problems.push(
-			`rate-limits.md says every HTTP API operation declares a bucket, but ${unexpected.length.toString()} declare none: ${unexpected.join(', ')}`,
+			`rate-limits.md says every HTTP API operation outside the desktop downloads declares a bucket, but ${unexpected.length.toString()} more declare none: ${unexpected.join(', ')}`,
+		);
+	}
+	if (nowThrottled.length > 0) {
+		problems.push(
+			`rate-limits.md names the desktop downloads as the only operations with no bucket, but ${nowThrottled.length.toString()} now declare one: ${nowThrottled.join(', ')}`,
 		);
 	}
 	if (!page.includes('Every HTTP API and Admin API operation declares a bucket')) {
 		problems.push('rate-limits.md no longer states that every operation declares a bucket');
+	}
+	if (!page.includes('[desktop download](/http-api/downloads/)')) {
+		problems.push('rate-limits.md no longer names the desktop downloads as the operations with no bucket');
 	}
 	if (adminUnthrottled.length > 0) {
 		const named = adminUnthrottled.map((entry) => `${entry.method} ${entry.route}`).sort();

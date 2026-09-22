@@ -74,19 +74,13 @@ jobs:
         with:
           toolchain: "1.98.1"
 
-      - name: Create token
-        id: create-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
-        with:
-          client-id: ${{ vars.FLUXER_CI_APP_ID }}
-          private-key: ${{ secrets.FLUXER_CI_APP_KEY }}
-          owner: fluxerapp
-          repositories: fluxer
-          permission-contents: read
+      # Echowire: upstream mints a token from their own GitHub App, which this
+      # fork cannot do. The built-in Actions token has the contents:read this
+      # job declares, and it reads releases from our own repository.
       - name: Set metadata
         id: meta
         env:
-          GH_TOKEN: ${{ steps.create-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
           FLUXER_BUILD_VERSION: ${{ inputs.build_version }}
         run: >-
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
@@ -634,8 +628,10 @@ jobs:
       S3_DESKTOP_PREFIX: ${{ needs.meta.outputs.s3_prefix }}
       DESKTOP_RELEASE_ASSETS_PREFIX: _handoff/desktop-release-assets/${{ needs.meta.outputs.build_channel }}/${{ needs.meta.outputs.version }}/${{ needs.meta.outputs.source_sha }}
       DESKTOP_METADATA_PREFIX: _handoff/desktop-metadata/${{ needs.meta.outputs.build_channel }}/${{ needs.meta.outputs.version }}/${{ needs.meta.outputs.source_sha }}
-      S3_ENDPOINT: ${{ vars.DOWNLOADS_S3_ENDPOINT }}
-      S3_BUCKET: ${{ vars.DOWNLOADS_S3_BUCKET }}
+      # Echowire: same fork R2 target the build and upload jobs use; upstream
+      # moved these to repository variables this fork does not set.
+      S3_ENDPOINT: https://e54c5c050e04de8b819ab033506f952c.r2.cloudflarestorage.com
+      S3_BUCKET: fluxer-downloads
       AWS_ACCESS_KEY_ID: ${{ secrets.DOWNLOADS_AWS_ACCESS_KEY_ID || secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.DOWNLOADS_AWS_SECRET_ACCESS_KEY || secrets.AWS_SECRET_ACCESS_KEY }}
     steps:
@@ -654,19 +650,11 @@ jobs:
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
           --step download_release_assets
 
-      - name: Create token
-        id: create-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1
-        with:
-          client-id: ${{ vars.FLUXER_CI_APP_ID }}
-          private-key: ${{ secrets.FLUXER_CI_APP_KEY }}
-          # Echowire fork: token targets our repo, not fluxerapp/fluxer
-          owner: cproudlock
-          repositories: echowire
-          permission-contents: write
+      # Echowire: no GitHub App here either; this job already declares
+      # contents:write, which is what publishing a release needs.
       - name: Publish GitHub desktop release
         env:
-          GH_TOKEN: ${{ steps.create-token.outputs.token }}
+          GH_TOKEN: ${{ github.token }}
           CHANNEL: ${{ needs.meta.outputs.build_channel }}
           VERSION: ${{ needs.meta.outputs.version }}
           SOURCE_SHA: ${{ needs.meta.outputs.source_sha }}

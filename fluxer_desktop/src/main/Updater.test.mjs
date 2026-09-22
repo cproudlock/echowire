@@ -24,7 +24,13 @@ function transform(name) {
 			format: 'cjs',
 			platform: 'node',
 			target: 'node20',
-			define: {'import.meta.url': JSON.stringify(url.href)},
+			// Echowire: DESKTOP_BUILD_VARIANT is a compile-time global that scripts/build.mjs
+			// substitutes via esbuild define. Without it here the module throws
+			// ReferenceError on load, exactly as an unbundled desktop build would.
+			define: {
+				'import.meta.url': JSON.stringify(url.href),
+				DESKTOP_BUILD_VARIANT: JSON.stringify('default'),
+			},
 		}).code,
 	};
 }
@@ -184,7 +190,13 @@ function loadUpdater({
 		clearTimeout,
 		setImmediate,
 		fetch: (input, init) => {
-			const url = String(input).replace(/https:\/\/pkgs\.fluxer\.com\/desktop\/canary\/[^/]+\/[^/]+/, baseUrl);
+			// Echowire: the updater feed is this instance's own /api path, not upstream's package
+			// origin, so the stub has to rewrite our host or the request escapes to the network
+			// and the updater reports no update at all.
+			const url = String(input).replace(
+				/^https:\/\/(?:canary\.)?echowire\.org\/api\/dl\/desktop\/(?:stable|canary)\/[^/]+\/[^/]+/,
+				baseUrl,
+			);
 			return fetch(url, init);
 		},
 		require: (specifier) => {
@@ -327,7 +339,7 @@ describe('Updater AppImage lifecycle', () => {
 			assert.equal(available.downloadOptions[0].format, 'appimage');
 			assert.equal(
 				available.downloadOptions[0].suggestedName,
-				`Fluxer-Canary-${PUBLISHED_VERSION}-linux-arm64.AppImage`,
+				`echowire-canary-${PUBLISHED_VERSION}-linux-arm64.AppImage`,
 			);
 		} finally {
 			chmodSync(install.applications, 0o755);

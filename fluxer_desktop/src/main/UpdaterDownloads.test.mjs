@@ -12,18 +12,30 @@ const esbuild = require('esbuild');
 
 const sourcePath = fileURLToPath(new URL('./UpdaterDownloads.ts', import.meta.url));
 const source = readFileSync(sourcePath, 'utf8');
-const transformedSource = esbuild.transformSync(source, {
-	loader: 'ts',
-	format: 'cjs',
-	platform: 'node',
-	target: 'node20',
-}).code;
+
+// Echowire: DESKTOP_BUILD_VARIANT is a compile-time global, substituted by esbuild define in
+// scripts/build.mjs. Compile per variant here so these tests exercise the same substitution a
+// shipped build gets, rather than a stub, and so the Windows variant segment is covered.
+const transformedSourceByVariant = new Map();
+function transformedSourceFor(variant) {
+	const cached = transformedSourceByVariant.get(variant);
+	if (cached !== undefined) return cached;
+	const code = esbuild.transformSync(source, {
+		loader: 'ts',
+		format: 'cjs',
+		platform: 'node',
+		target: 'node20',
+		define: {DESKTOP_BUILD_VARIANT: JSON.stringify(variant)},
+	}).code;
+	transformedSourceByVariant.set(variant, code);
+	return code;
+}
 
 const APPIMAGE_SHA256 = 'a'.repeat(64);
 const DEB_SHA256 = 'b'.repeat(64);
 const TAR_GZ_SHA256 = 'c'.repeat(64);
 
-function loadUpdaterDownloads({channel = 'stable', platform = 'linux', arch = 'x64'} = {}) {
+function loadUpdaterDownloads({channel = 'stable', platform = 'linux', arch = 'x64', variant = 'default'} = {}) {
 	function requireStub(specifier) {
 		if (specifier === '@electron/common/BuildChannel') return {BUILD_CHANNEL: channel};
 		throw new Error(`Unexpected import: ${specifier}`);
@@ -36,7 +48,7 @@ function loadUpdaterDownloads({channel = 'stable', platform = 'linux', arch = 'x
 		exports: module.exports,
 		process: {platform, arch},
 	});
-	vm.runInContext(transformedSource, context, {filename: sourcePath});
+	vm.runInContext(transformedSourceFor(variant), context, {filename: sourcePath});
 	return module.exports;
 }
 
@@ -63,28 +75,28 @@ describe('UpdaterDownloads Linux manual update options', () => {
 			{
 				format: 'appimage',
 				label: 'AppImage',
-				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/appimage',
+				url: 'https://echowire.org/api/dl/desktop/stable/linux/x64/2026.910.101500/appimage',
 				suggestedName: 'echowire-2026.910.101500-linux-x86_64.AppImage',
 				sha256: APPIMAGE_SHA256,
 			},
 			{
 				format: 'deb',
 				label: 'DEB package',
-				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/deb',
+				url: 'https://echowire.org/api/dl/desktop/stable/linux/x64/2026.910.101500/deb',
 				suggestedName: 'echowire-2026.910.101500-linux-amd64.deb',
 				sha256: DEB_SHA256,
 			},
 			{
 				format: 'rpm',
 				label: 'RPM package',
-				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/rpm',
+				url: 'https://echowire.org/api/dl/desktop/stable/linux/x64/2026.910.101500/rpm',
 				suggestedName: 'echowire-2026.910.101500-linux-x86_64.rpm',
 				sha256: null,
 			},
 			{
 				format: 'tar_gz',
 				label: 'tar.gz archive',
-				url: 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/tar_gz',
+				url: 'https://echowire.org/api/dl/desktop/stable/linux/x64/2026.910.101500/tar_gz',
 				suggestedName: 'echowire-2026.910.101500-linux-x64.tar.gz',
 				sha256: TAR_GZ_SHA256,
 			},
@@ -99,20 +111,20 @@ describe('UpdaterDownloads Linux manual update options', () => {
 			options.map((option) => [option.url, option.suggestedName]),
 			[
 				[
-					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/appimage',
-					'Fluxer-2026.910.101500-linux-arm64.AppImage',
+					'https://echowire.org/api/dl/desktop/stable/linux/arm64/2026.910.101500/appimage',
+					'echowire-2026.910.101500-linux-arm64.AppImage',
 				],
 				[
-					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/deb',
-					'Fluxer-2026.910.101500-linux-arm64.deb',
+					'https://echowire.org/api/dl/desktop/stable/linux/arm64/2026.910.101500/deb',
+					'echowire-2026.910.101500-linux-arm64.deb',
 				],
 				[
-					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/rpm',
-					'Fluxer-2026.910.101500-linux-aarch64.rpm',
+					'https://echowire.org/api/dl/desktop/stable/linux/arm64/2026.910.101500/rpm',
+					'echowire-2026.910.101500-linux-aarch64.rpm',
 				],
 				[
-					'https://pkgs.fluxer.com/desktop/stable/linux/arm64/2026.910.101500/tar_gz',
-					'Fluxer-2026.910.101500-linux-arm64.tar.gz',
+					'https://echowire.org/api/dl/desktop/stable/linux/arm64/2026.910.101500/tar_gz',
+					'echowire-2026.910.101500-linux-arm64.tar.gz',
 				],
 			],
 		);
@@ -127,9 +139,9 @@ describe('UpdaterDownloads Linux manual update options', () => {
 			(option) => option.format === 'deb',
 		);
 
-		assert.equal(stableDeb.url, 'https://api.fluxer.app/dl/desktop/stable/linux/x64/2026.910.101500/deb');
+		assert.equal(stableDeb.url, 'https://echowire.org/api/dl/desktop/stable/linux/x64/2026.910.101500/deb');
 		assert.equal(stableDeb.suggestedName, 'echowire-2026.910.101500-linux-amd64.deb');
-		assert.equal(canaryDeb.url, 'https://api.canary.fluxer.app/dl/desktop/canary/linux/x64/2026.910.101500/deb');
+		assert.equal(canaryDeb.url, 'https://canary.echowire.org/api/dl/desktop/canary/linux/x64/2026.910.101500/deb');
 		assert.equal(canaryDeb.suggestedName, 'echowire-canary-2026.910.101500-linux-amd64.deb');
 	});
 
@@ -145,7 +157,7 @@ describe('UpdaterDownloads Linux manual update options', () => {
 		const deb = options.find((option) => option.format === 'deb');
 
 		assert.equal(deb.suggestedName, 'echowire-canary-2026.908.173325-linux-amd64.deb');
-		assert.equal(deb.url, 'https://api.canary.fluxer.app/dl/desktop/canary/linux/x64/2026.908.173325/deb');
+		assert.equal(deb.url, 'https://canary.echowire.org/api/dl/desktop/canary/linux/x64/2026.908.173325/deb');
 		assert.equal(deb.sha256, DEB_SHA256);
 		assert.equal(options.length, 4);
 		for (const option of options) {
@@ -156,7 +168,7 @@ describe('UpdaterDownloads Linux manual update options', () => {
 		}
 		assert.equal(
 			getManualDownloadUrl(info),
-			'https://pkgs.fluxer.com/desktop/canary/linux/x64/2026.908.173325/appimage',
+			'https://canary.echowire.org/api/dl/desktop/canary/linux/x64/2026.908.173325/appimage',
 		);
 	});
 });
@@ -173,7 +185,7 @@ describe('UpdaterDownloads manual download url', () => {
 
 		assert.equal(
 			getManualDownloadUrl(info),
-			'https://pkgs.fluxer.com/desktop/stable/linux/x64/2026.910.101500/appimage',
+			'https://echowire.org/api/dl/desktop/stable/linux/x64/2026.910.101500/appimage',
 		);
 	});
 
@@ -195,11 +207,29 @@ describe('UpdaterDownloads manual download url', () => {
 		assert.equal(getManualDownloadUrl(latestInfo('2026.910.101500', {setup})), setup.url);
 	});
 
+	test('scopes the Windows update feed to a named build variant', () => {
+		const {UPDATE_BASE_URL} = loadUpdaterDownloads({platform: 'win32', variant: 'windows-game-capture'});
+
+		assert.equal(UPDATE_BASE_URL, 'https://echowire.org/api/dl/desktop/stable/win32/x64/windows-game-capture');
+	});
+
+	test('leaves the Windows update feed unscoped for the default variant', () => {
+		const {UPDATE_BASE_URL} = loadUpdaterDownloads({platform: 'win32', variant: 'default'});
+
+		assert.equal(UPDATE_BASE_URL, 'https://echowire.org/api/dl/desktop/stable/win32/x64');
+	});
+
+	test('never scopes a non-Windows feed, even for a named variant', () => {
+		const {UPDATE_BASE_URL} = loadUpdaterDownloads({platform: 'linux', variant: 'windows-game-capture'});
+
+		assert.equal(UPDATE_BASE_URL, 'https://echowire.org/api/dl/desktop/stable/linux/x64');
+	});
+
 	test('falls back to the download page when no file resolves', () => {
 		const stable = loadUpdaterDownloads({channel: 'stable', platform: 'darwin'});
 		const canary = loadUpdaterDownloads({channel: 'canary', platform: 'win32'});
 
-		assert.equal(stable.getManualDownloadUrl(latestInfo('2026.910.101500')), 'https://fluxer.app/download');
-		assert.equal(canary.getManualDownloadUrl(latestInfo('2026.910.101500')), 'https://canary.fluxer.app/download');
+		assert.equal(stable.getManualDownloadUrl(latestInfo('2026.910.101500')), 'https://echowire.org/download');
+		assert.equal(canary.getManualDownloadUrl(latestInfo('2026.910.101500')), 'https://canary.echowire.org/download');
 	});
 });

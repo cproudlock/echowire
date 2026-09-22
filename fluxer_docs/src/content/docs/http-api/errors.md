@@ -1517,6 +1517,14 @@ File index {index} exceeds the maximum allowed index of {maxIndex}
 
 File not found
 
+### `FORUM_TAG_INVALID`
+
+One or more of these tags aren't available in this forum
+
+### `FORUM_TAG_REQUIRED`
+
+This forum requires at least one tag on every post
+
 ### `FORWARD_MESSAGES_CANNOT_CONTAIN_CONTENT`
 
 Forwarded messages can't include content, embeds, attachments, or stickers
@@ -1924,6 +1932,18 @@ SSO test code is missing the email payload
 ### `SSO_UNABLE_TO_ALLOCATE_DISCRIMINATOR`
 
 We couldn't allocate a discriminator for your SSO account
+
+### `STARTER_ATTACHMENT_ALREADY_PRESENT`
+
+This attachment is already on the post
+
+### `STARTER_ATTACHMENT_LIMIT_REACHED`
+
+The post has reached its attachment limit
+
+### `STARTER_ATTACHMENT_SOURCE_INVALID`
+
+The source message can't be the post's own first message
 
 ### `STRING_LENGTH_EXACT`
 

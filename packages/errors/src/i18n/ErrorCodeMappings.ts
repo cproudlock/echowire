@@ -155,11 +155,11 @@ export const ErrorCodeToI18nKey = {
 	[ValidationErrorCodes.EMBEDS_EXCEED_MAX_CHARACTERS]: 'embeds.embeds_exceed_max_characters',
 	[ValidationErrorCodes.INVALID_EMAIL_ADDRESS]: 'email.invalid_format',
 	[ValidationErrorCodes.INVALID_MESSAGE_DATA]: 'messages.invalid_message_data',
-	[ValidationErrorCodes.FORUM_TAG_INVALID]: 'admin_and_system.invalid_form_body',
-	[ValidationErrorCodes.FORUM_TAG_REQUIRED]: 'admin_and_system.invalid_form_body',
-	[ValidationErrorCodes.STARTER_ATTACHMENT_ALREADY_PRESENT]: 'admin_and_system.invalid_form_body',
-	[ValidationErrorCodes.STARTER_ATTACHMENT_LIMIT_REACHED]: 'admin_and_system.invalid_form_body',
-	[ValidationErrorCodes.STARTER_ATTACHMENT_SOURCE_INVALID]: 'admin_and_system.invalid_form_body',
+	[ValidationErrorCodes.FORUM_TAG_INVALID]: 'channels_and_guilds.forum_tag_invalid',
+	[ValidationErrorCodes.FORUM_TAG_REQUIRED]: 'channels_and_guilds.forum_tag_required',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_ALREADY_PRESENT]: 'channels_and_guilds.starter_attachment_already_present',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_LIMIT_REACHED]: 'channels_and_guilds.starter_attachment_limit_reached',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_SOURCE_INVALID]: 'channels_and_guilds.starter_attachment_source_invalid',
 	[ValidationErrorCodes.FORWARD_MESSAGES_CANNOT_CONTAIN_CONTENT]:
 		'messages.forward_messages_cannot_include_extra_content',
 	[ValidationErrorCodes.FORWARD_REFERENCE_REQUIRES_CHANNEL_AND_MESSAGE]:

@@ -11,6 +11,7 @@ mod desktop_native;
 mod functions;
 mod gateway;
 mod image_set;
+mod linux_repo;
 mod release;
 mod schema;
 
@@ -38,6 +39,7 @@ enum Command {
     CleanSchemaGeneratedFiles(schema::CleanSchemaGeneratedFilesArgs),
     Gateway(gateway::GatewayArgs),
     ImageSet(image_set::ImageSetArgs),
+    LinuxRepo(linux_repo::LinuxRepoArgs),
     Release(release::ReleaseArgs),
     ResolveCalver(calver::ResolveCalverArgs),
 }
@@ -57,6 +59,7 @@ pub async fn run() -> Result<()> {
         Command::CleanSchemaGeneratedFiles(args) => schema::run_clean_generated_files(args),
         Command::Gateway(args) => gateway::run_gateway(args),
         Command::ImageSet(args) => image_set::run(args),
+        Command::LinuxRepo(args) => linux_repo::run(args).await,
         Command::Release(args) => release::run(args).await,
         Command::ResolveCalver(args) => calver::run(args),
     }

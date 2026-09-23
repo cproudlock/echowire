@@ -34,6 +34,7 @@ IMAGES=(
 	"fluxer-unfurl|fluxer_unfurl/Dockerfile|"
 	"fluxer-users|fluxer_users/Dockerfile|"
 	"fluxer-marketing|fluxer_marketing/Dockerfile|"
+	"fluxer-push|fluxer_push/Dockerfile|"
 	"fluxer-app-proxy-self-hosted|fluxer_app_proxy/Dockerfile|"
 )
 

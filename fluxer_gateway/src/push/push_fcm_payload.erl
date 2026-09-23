@@ -155,10 +155,12 @@ build_notification_data(Payload, Title, Body, Tag, ImageUrl) ->
 
 -spec resolve_title(map(), map()) -> binary().
 resolve_title(Notification, Payload) ->
+    %% Echowire: shown to the user when a payload carries no title, so it must
+    %% match ?FALLBACK_TITLE in push_notification.erl.
     sanitize_text(
         push_utils:normalize_binary(
-            maps:get(<<"title">>, Notification, maps:get(<<"title">>, Payload, <<"Fluxer">>)),
-            <<"Fluxer">>
+            maps:get(<<"title">>, Notification, maps:get(<<"title">>, Payload, <<"echowire">>)),
+            <<"echowire">>
         )
     ).
 

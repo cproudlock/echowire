@@ -1989,7 +1989,8 @@ fn pack_and_validate_windows_velopack(
         "--packTitle",
         config.pack_title,
         "--packAuthors",
-        "Fluxer Platform AB",
+        // Echowire: the installer publisher must match the signing certificate.
+        "Proudlock Technology LLC",
         "--shortcuts",
         "Desktop,StartMenu",
         "--runtime",
@@ -2355,7 +2356,10 @@ fn create_portable_zip_windows_step() -> Result<()> {
     Ok(())
 }
 
-const FLUXER_WINDOWS_SIGNER_COMMON_NAME: &str = "Fluxer Platform AB";
+// Echowire: our Windows binaries are signed by our own Azure Trusted Signing
+// certificate, not the upstream one. Thumbprint
+// 2DF70643E6DBC1C37A6CF4DFBC1E2A684F2D5CC3.
+const FLUXER_WINDOWS_SIGNER_COMMON_NAME: &str = "Proudlock Technology LLC";
 const THIRD_PARTY_WINDOWS_SIGNATURE_ALLOWLIST: &[(&str, &str)] = &[
     (
         "d3dcompiler_47.dll",
@@ -5377,7 +5381,8 @@ mod tests {
                 "Checkout source",
                 "Set up Rust toolchain (CI helpers)",
                 "Download GitHub release assets",
-                "Create token",
+                // Echowire: no "Create token" step; this fork has no GitHub App
+                // and publishes with the built-in Actions token.
                 "Publish GitHub desktop release",
                 "Publish GitHub release readiness marker",
                 "Publish payload metadata to S3",
@@ -5406,7 +5411,8 @@ mod tests {
         }
         for entry in [
             "S3_DESKTOP_PREFIX: ${{ needs.meta.outputs.s3_prefix }}",
-            "S3_BUCKET: ${{ vars.DOWNLOADS_S3_BUCKET }}",
+            // Echowire: pinned to the fork bucket, not a repository variable.
+            "S3_BUCKET: fluxer-downloads",
             "AWS_ACCESS_KEY_ID: ${{ secrets.DOWNLOADS_AWS_ACCESS_KEY_ID || secrets.AWS_ACCESS_KEY_ID }}",
         ] {
             assert!(

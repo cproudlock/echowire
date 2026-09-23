@@ -91,9 +91,14 @@ fn desktop_release_coordinate_routes(entry: &DesktopReleasePlatform) -> usize {
         + usize::from(entry.update_payload_suffix.is_some())
 }
 
-fn desktop_release_route_inventory() -> BTreeMap<String, usize> {
+// Echowire: a release may deliberately omit a whole platform, because macOS has
+// had no buildable runner since the self-hosted one died in August. The inventory
+// is therefore computed over the platforms a release actually covers. Completeness
+// WITHIN a covered platform stays mandatory, so a half-built platform still fails.
+fn desktop_release_route_inventory_for(platforms: &BTreeSet<&str>) -> BTreeMap<String, usize> {
     DESKTOP_RELEASE_PLATFORMS
         .iter()
+        .filter(|entry| platforms.contains(entry.platform))
         .flat_map(|entry| {
             DESKTOP_RELEASE_ARCHES.iter().map(move |arch| {
                 (
@@ -105,13 +110,33 @@ fn desktop_release_route_inventory() -> BTreeMap<String, usize> {
         .collect()
 }
 
+#[cfg(test)]
+fn every_desktop_release_platform() -> BTreeSet<&'static str> {
+    DESKTOP_RELEASE_PLATFORMS
+        .iter()
+        .map(|entry| entry.platform)
+        .collect()
+}
+
+#[cfg(test)]
+fn desktop_release_route_inventory() -> BTreeMap<String, usize> {
+    desktop_release_route_inventory_for(&every_desktop_release_platform())
+}
+
+#[cfg(test)]
 fn desktop_release_route_count() -> usize {
     desktop_release_route_inventory().values().sum()
 }
 
+#[cfg(test)]
 fn desktop_release_asset_count() -> usize {
+    desktop_release_asset_count_for(&every_desktop_release_platform())
+}
+
+fn desktop_release_asset_count_for(platforms: &BTreeSet<&str>) -> usize {
     DESKTOP_RELEASE_PLATFORMS
         .iter()
+        .filter(|entry| platforms.contains(entry.platform))
         .map(|entry| {
             let builds = if entry.one_build_serves_every_arch {
                 1
@@ -241,17 +266,18 @@ pub(crate) fn validate_desktop_release_descriptor(
     );
     parse_version_instant(version)
         .with_context(|| format!("Invalid desktop release descriptor version {version:?}"))?;
-    let route_count = desktop_release_route_count();
+    // Echowire: the exact route total depends on which platforms this release
+    // covers, so it is enforced per coordinate by the inventory check below.
     ensure!(
-        descriptor.assets.len() == route_count,
-        "Desktop release descriptor must contain {route_count} routes, found {}",
-        descriptor.assets.len()
+        !descriptor.assets.is_empty(),
+        "Desktop release descriptor contains no assets"
     );
     let storage_prefix = format!("desktop/{channel}/");
     let release_prefix = format!("{}-{version}-", desktop_release_product(channel)?);
     let descriptor_name = desktop_release_descriptor_filename(channel, version)?;
     let mut storage_keys = BTreeSet::new();
     let mut route_counts = BTreeMap::<String, usize>::new();
+    let mut present_platforms = BTreeSet::<&str>::new();
     let mut release_assets = BTreeMap::<&str, (&str, u64)>::new();
     let mut release_asset_names = BTreeMap::from([(
         descriptor_name.to_ascii_lowercase(),
@@ -281,6 +307,7 @@ pub(crate) fn validate_desktop_release_descriptor(
         *route_counts
             .entry(format!("{}/{}", key_segments[2], key_segments[3]))
             .or_default() += 1;
+        present_platforms.insert(key_segments[2]);
         let expected_release_asset = desktop_release_asset_name(
             channel,
             version,
@@ -335,13 +362,17 @@ pub(crate) fn validate_desktop_release_descriptor(
             );
         }
     }
-    let asset_count = desktop_release_asset_count();
+    ensure!(
+        !present_platforms.is_empty(),
+        "Desktop release descriptor covers no platforms"
+    );
+    let asset_count = desktop_release_asset_count_for(&present_platforms);
     ensure!(
         release_assets.len() == asset_count,
         "Desktop release descriptor must contain {asset_count} unique release assets, found {}",
         release_assets.len()
     );
-    let expected_route_counts = desktop_release_route_inventory();
+    let expected_route_counts = desktop_release_route_inventory_for(&present_platforms);
     ensure!(
         route_counts == expected_route_counts,
         "Desktop release descriptor route inventory mismatch: expected {expected_route_counts:?}, found {route_counts:?}"
@@ -1173,10 +1204,19 @@ mod tests {
     }
 
     fn sample_descriptor() -> DesktopReleaseDescriptor {
+        sample_descriptor_covering(&every_desktop_release_platform())
+    }
+
+    // Echowire: a release may deliberately cover only some platforms, so the
+    // fixture has to be able to as well.
+    fn sample_descriptor_covering(platforms: &BTreeSet<&str>) -> DesktopReleaseDescriptor {
         let product = desktop_release_product(SAMPLE_CHANNEL).unwrap();
         let mut contents = BTreeMap::<String, (String, u64)>::new();
         let mut assets = Vec::new();
         for (platform, arch) in desktop_release_coordinates() {
+            if !platforms.contains(platform) {
+                continue;
+            }
             for filename in sample_storage_filenames(platform, arch, product) {
                 let release_asset = desktop_release_asset_name(
                     SAMPLE_CHANNEL,
@@ -1283,28 +1323,67 @@ mod tests {
     }
 
     #[test]
+    fn a_release_that_omits_macos_entirely_validates() {
+        let descriptor =
+            sample_descriptor_covering(&BTreeSet::from(["win32", "linux"]));
+
+        validate_sample(&descriptor).unwrap();
+        assert!(
+            descriptor
+                .assets
+                .iter()
+                .all(|asset| !asset.storage_key.contains("/darwin/")),
+            "the fixture must not carry darwin routes"
+        );
+    }
+
+    #[test]
+    fn a_release_that_omits_only_half_of_windows_is_refused() {
+        let mut descriptor = sample_descriptor_covering(&BTreeSet::from(["win32", "linux"]));
+        descriptor
+            .assets
+            .retain(|asset| !asset.storage_key.starts_with(&format!(
+                "desktop/{SAMPLE_CHANNEL}/win32/arm64/"
+            )));
+
+        let error = validate_sample(&descriptor).unwrap_err().to_string();
+        assert!(
+            error.contains("route inventory mismatch") || error.contains("unique release assets"),
+            "a platform present but incomplete must still be refused, got {error}"
+        );
+    }
+
+    #[test]
     fn a_release_missing_a_route_is_refused() {
         let mut descriptor = sample_descriptor();
         descriptor.assets.pop().unwrap();
         assert_eq!(
             validate_sample(&descriptor).unwrap_err().to_string(),
-            "Desktop release descriptor must contain 30 routes, found 29"
+            "Desktop release descriptor must contain 26 unique release assets, found 25"
         );
     }
 
     #[test]
     fn a_release_carrying_an_extra_route_is_refused() {
         let mut descriptor = sample_descriptor();
+        let storage_filename = "latest-linux.yml";
         let extra = DesktopReleaseAsset {
-            storage_key: format!("desktop/{SAMPLE_CHANNEL}/linux/x64/latest-linux.yml"),
-            release_asset: format!("Fluxer-Canary-{SAMPLE_VERSION}-linux-x64-latest-linux.yml"),
+            storage_key: format!("desktop/{SAMPLE_CHANNEL}/linux/x64/{storage_filename}"),
+            release_asset: desktop_release_asset_name(
+                SAMPLE_CHANNEL,
+                SAMPLE_VERSION,
+                "linux",
+                "x64",
+                storage_filename,
+            )
+            .unwrap(),
             sha256: format!("{:064x}", 99u64),
             size: 4096,
         };
         descriptor.assets.push(extra);
         assert_eq!(
             validate_sample(&descriptor).unwrap_err().to_string(),
-            "Desktop release descriptor must contain 30 routes, found 31"
+            "Desktop release descriptor must contain 26 unique release assets, found 27"
         );
     }
 

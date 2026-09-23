@@ -582,6 +582,7 @@ jobs:
         run: >-
           cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
           --step prepare_release_assets
+          --skip-targets "${{ inputs.skip_targets }}"
 
       - name: Publish GitHub release descriptor
         if: needs.meta.outputs.test_build != 'true'

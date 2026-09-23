@@ -248,7 +248,7 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
         DesktopStep::DownloadHandoff => download_handoff_step().await,
         DesktopStep::CleanupHandoff => cleanup_handoff_step().await,
         DesktopStep::BuildPayload => build_payload_step(),
-        DesktopStep::PrepareReleaseAssets => prepare_release_assets_step(),
+        DesktopStep::PrepareReleaseAssets => prepare_release_assets_step(&args),
         DesktopStep::UploadReleaseAssets => upload_release_assets_step().await,
         DesktopStep::DownloadReleaseAssets => download_release_assets_step().await,
         DesktopStep::UploadPayload => upload_payload_step().await,
@@ -3585,14 +3585,9 @@ fn build_payload_step() -> Result<()> {
     let pub_date = require_env("PUB_DATE")?;
     let artifacts = Path::new("artifacts");
     for (dir, identity) in payload_artifact_dirs(artifacts, &channel)? {
-        let platform = match identity.platform.as_str() {
-            "windows" => "win32",
-            "macos" => "darwin",
-            "linux" => "linux",
-            other => {
-                println!("Unknown platform: {other}");
-                continue;
-            }
+        let Some(platform) = published_platform_token(identity.platform.as_str()) else {
+            println!("Unknown platform: {}", identity.platform);
+            continue;
         };
         for published_arch in published_arches(platform, &identity.arch) {
             let mut dest = payload_root
@@ -3626,7 +3621,46 @@ fn build_payload_step() -> Result<()> {
     print_tree(&payload_root, 6)
 }
 
-fn prepare_release_assets_step() -> Result<()> {
+// Echowire: the single mapping from build platform name to published path
+// segment, shared by the payload builder and the release assembler so the two
+// cannot drift apart.
+fn published_platform_token(platform: &str) -> Option<&'static str> {
+    match platform {
+        "windows" => Some("win32"),
+        "macos" => Some("darwin"),
+        "linux" => Some("linux"),
+        _ => None,
+    }
+}
+
+fn payload_coordinates(platforms: &[Platform]) -> Result<Vec<(&'static str, &'static str)>> {
+    let mut coordinates = Vec::new();
+    for platform in platforms {
+        let token = published_platform_token(platform.platform)
+            .ok_or_else(|| anyhow!("Unknown desktop platform {:?}", platform.platform))?;
+        for arch in published_arches(token, platform.arch) {
+            coordinates.push((token, arch));
+        }
+    }
+    Ok(coordinates)
+}
+
+fn require_release_payload_dirs(
+    payload_root: &Path,
+    coordinates: &[(&'static str, &'static str)],
+) -> Result<()> {
+    for (platform, arch) in coordinates {
+        let dir = payload_root.join(platform).join(arch);
+        ensure!(
+            dir.is_dir(),
+            "Desktop release payload directory is missing: {}",
+            dir.display()
+        );
+    }
+    Ok(())
+}
+
+fn prepare_release_assets_step(args: &BuildDesktopArgs) -> Result<()> {
     let channel = require_env("CHANNEL")?;
     let version = require_env("VERSION")?;
     let source_sha = require_env("SOURCE_SHA")?;
@@ -3643,20 +3677,18 @@ fn prepare_release_assets_step() -> Result<()> {
 
     let mut release_builder =
         DesktopReleaseAssetBuilder::new(&s3_prefix, &channel, &version, product, release_assets);
-    for (platform, arch) in [
-        ("win32", "x64"),
-        ("win32", "arm64"),
-        ("darwin", "x64"),
-        ("darwin", "arm64"),
-        ("linux", "x64"),
-        ("linux", "arm64"),
-    ] {
+    // Echowire: the coordinates a release must carry come from the same skip
+    // inputs the build matrix reads, so a deliberate skip is honoured while an
+    // accidentally missing payload still fails below.
+    let coordinates = payload_coordinates(&selected_platforms(args)?)?;
+    for (platform, arch) in payload_coordinates(PLATFORMS)? {
+        if !coordinates.contains(&(platform, arch)) {
+            println!("Release deliberately omits {platform}/{arch}");
+        }
+    }
+    require_release_payload_dirs(&payload_root, &coordinates)?;
+    for (platform, arch) in coordinates {
         let dir = payload_root.join(platform).join(arch);
-        ensure!(
-            dir.is_dir(),
-            "Desktop release payload directory is missing: {}",
-            dir.display()
-        );
         let manifest_path = dir.join("manifest.json");
         let manifest: DesktopManifest = serde_json::from_slice(
             &fs::read(&manifest_path)
@@ -4851,6 +4883,86 @@ mod tests {
             selected
                 .iter()
                 .all(|platform| platform.desktop_variant == DEFAULT_DESKTOP_VARIANT)
+        );
+    }
+
+    #[test]
+    fn release_coordinates_cover_every_published_platform_and_arch() {
+        let coordinates = payload_coordinates(&selected_platforms(&matrix_args()).unwrap()).unwrap();
+
+        assert_eq!(
+            coordinates,
+            vec![
+                ("win32", "x64"),
+                ("win32", "arm64"),
+                ("darwin", "x64"),
+                ("darwin", "arm64"),
+                ("linux", "x64"),
+                ("linux", "arm64"),
+            ]
+        );
+    }
+
+    #[test]
+    fn skipping_macos_drops_both_darwin_release_coordinates() {
+        let mut args = matrix_args();
+        args.skip_targets = Some("macos".to_string());
+
+        let coordinates = payload_coordinates(&selected_platforms(&args).unwrap()).unwrap();
+
+        assert_eq!(
+            coordinates,
+            vec![
+                ("win32", "x64"),
+                ("win32", "arm64"),
+                ("linux", "x64"),
+                ("linux", "arm64"),
+            ]
+        );
+    }
+
+    #[test]
+    fn a_skipped_platform_may_be_absent_but_a_missing_one_still_fails() {
+        let temp = tempfile::tempdir().unwrap();
+        let payload_root = temp.path();
+        for (platform, arch) in [
+            ("win32", "x64"),
+            ("win32", "arm64"),
+            ("linux", "x64"),
+            ("linux", "arm64"),
+        ] {
+            fs::create_dir_all(payload_root.join(platform).join(arch)).unwrap();
+        }
+
+        let mut skipped = matrix_args();
+        skipped.skip_targets = Some("macos".to_string());
+        let honoured = payload_coordinates(&selected_platforms(&skipped).unwrap()).unwrap();
+        require_release_payload_dirs(payload_root, &honoured).unwrap();
+
+        let required = payload_coordinates(&selected_platforms(&matrix_args()).unwrap()).unwrap();
+        let error = require_release_payload_dirs(payload_root, &required).unwrap_err();
+        assert!(
+            error.to_string().contains("darwin"),
+            "expected the unskipped darwin payload to be required, got {error}"
+        );
+    }
+
+    #[test]
+    fn an_accidentally_missing_windows_payload_still_fails_when_only_macos_is_skipped() {
+        let temp = tempfile::tempdir().unwrap();
+        let payload_root = temp.path();
+        for (platform, arch) in [("linux", "x64"), ("linux", "arm64"), ("win32", "x64")] {
+            fs::create_dir_all(payload_root.join(platform).join(arch)).unwrap();
+        }
+
+        let mut args = matrix_args();
+        args.skip_targets = Some("macos".to_string());
+        let coordinates = payload_coordinates(&selected_platforms(&args).unwrap()).unwrap();
+
+        let error = require_release_payload_dirs(payload_root, &coordinates).unwrap_err();
+        assert!(
+            error.to_string().contains("win32/arm64"),
+            "a silently failed Windows arm64 build must not ship, got {error}"
         );
     }
 

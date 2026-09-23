@@ -48,7 +48,12 @@ const DESKTOP_RELEASE_PLATFORMS: [DesktopReleasePlatform; 3] = [
         platform: "linux",
         shipped_formats: &["appimage", "deb", "rpm", "tar_gz"],
         updater_feeds: &[],
-        update_payload_suffix: Some(".AppImage.zsync"),
+        // Echowire: upstream #2849 declared an AppImage zsync route, but nothing
+        // in this fork generates the .AppImage.zsync control file, so claiming
+        // the route made every release descriptor unsatisfiable for linux. The
+        // API contract in DesktopReleaseContract.ts already expects four linux
+        // routes, which is what the pipeline actually ships.
+        update_payload_suffix: None,
         one_build_serves_every_arch: false,
     },
 ];
@@ -1194,7 +1199,6 @@ mod tests {
             ],
             "linux" => vec![
                 format!("{prefix}-linux-{arch}.AppImage"),
-                format!("{prefix}-linux-{arch}.AppImage.zsync"),
                 format!("{prefix}-linux-{arch}.deb"),
                 format!("{prefix}-linux-{arch}.rpm"),
                 format!("{prefix}-linux-{arch}.tar.gz"),
@@ -1265,14 +1269,14 @@ mod tests {
             BTreeMap::from([
                 ("darwin/arm64".to_string(), 4usize),
                 ("darwin/x64".to_string(), 4usize),
-                ("linux/arm64".to_string(), 5usize),
-                ("linux/x64".to_string(), 5usize),
+                ("linux/arm64".to_string(), 4usize),
+                ("linux/x64".to_string(), 4usize),
                 ("win32/arm64".to_string(), 6usize),
                 ("win32/x64".to_string(), 6usize),
             ])
         );
-        assert_eq!(desktop_release_route_count(), 30);
-        assert_eq!(desktop_release_asset_count(), 26);
+        assert_eq!(desktop_release_route_count(), 28);
+        assert_eq!(desktop_release_asset_count(), 24);
     }
 
     #[test]
@@ -1359,7 +1363,7 @@ mod tests {
         descriptor.assets.pop().unwrap();
         assert_eq!(
             validate_sample(&descriptor).unwrap_err().to_string(),
-            "Desktop release descriptor must contain 26 unique release assets, found 25"
+            "Desktop release descriptor must contain 24 unique release assets, found 23"
         );
     }
 
@@ -1383,7 +1387,7 @@ mod tests {
         descriptor.assets.push(extra);
         assert_eq!(
             validate_sample(&descriptor).unwrap_err().to_string(),
-            "Desktop release descriptor must contain 26 unique release assets, found 27"
+            "Desktop release descriptor must contain 24 unique release assets, found 25"
         );
     }
 

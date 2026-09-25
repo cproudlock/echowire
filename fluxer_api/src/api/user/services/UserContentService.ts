@@ -455,8 +455,44 @@ export class UserContentService {
 			provider_environment: providerEnvironment,
 		};
 		const subscription = await this.userRepository.createPushSubscription(data);
+		await this.pruneDuplicateMobileRegistrations(userId, device.token, subscriptionId);
 		await this.gatewayService.invalidatePushSubscriptions({userId});
 		return subscription;
+	}
+
+	/**
+	 * echowire: one device token owns exactly one registration.
+	 *
+	 * The subscription id is derived from platform, app_id, provider_environment and
+	 * the token, so any of those changing gives the same physical device a second row
+	 * while the first survives. The gateway sends once per row, so the device receives
+	 * one notification per stale row it has accumulated. Moving between release
+	 * channels does it, and so does any client that changes what it reports.
+	 *
+	 * The provider-side pruning in the gateway cannot catch this: every one of those
+	 * rows holds the same live token, so FCM answers 200 and reports nothing to prune.
+	 *
+	 * Written after a user was found holding three registrations for one phone and
+	 * receiving every direct message three times. Registration is the only point that
+	 * can see the collision, because it is the only place the token is known
+	 * alongside the rows already stored. Pruning here heals an affected device on its
+	 * next launch, with no migration and no action from the user.
+	 */
+	private async pruneDuplicateMobileRegistrations(
+		userId: UserID,
+		endpoint: string,
+		keepSubscriptionId: string,
+	): Promise<void> {
+		const existing = await this.userRepository.listPushSubscriptions(userId);
+		const stale = existing.filter(
+			(subscription) =>
+				subscription.platform !== WEB_PUSH_PLATFORM &&
+				subscription.endpoint === endpoint &&
+				subscription.subscriptionId !== keepSubscriptionId,
+		);
+		for (const subscription of stale) {
+			await this.userRepository.deletePushSubscription(userId, subscription.subscriptionId);
+		}
 	}
 
 	async listMobileDevices(userId: UserID): Promise<Array<PushSubscription>> {

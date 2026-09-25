@@ -221,6 +221,44 @@ describe('Push Subscription Lifecycle', () => {
 		expect(devices.devices).toHaveLength(1);
 		expect(devices.devices[0]?.provider_environment).toBe('production');
 	});
+	test('re-registering one token under a new app_id leaves a single device', async () => {
+		// Regression: the subscription id folds in app_id, so moving between release
+		// channels gave one phone two rows and the gateway sent to both. Every row held
+		// the same live token, so provider-side pruning never fired.
+		const account = await createTestAccount(harness);
+		const token = 'fcm-channel-switch-token';
+		await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+			app_id: 'beta',
+			provider_environment: 'production',
+		});
+		const current = await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+			app_id: 'stable',
+			provider_environment: 'production',
+		});
+		const devices = await listMobileDevices(harness, account.token);
+		expect(devices.devices).toHaveLength(1);
+		expect(devices.devices[0]?.device_id).toBe(current.device_id);
+		expect(devices.devices[0]?.app_id).toBe('stable');
+	});
+	test('a second device keeps its own registration', async () => {
+		const account = await createTestAccount(harness);
+		await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token: 'fcm-phone-token',
+			provider_environment: 'production',
+		});
+		await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token: 'fcm-tablet-token',
+			provider_environment: 'production',
+		});
+		const devices = await listMobileDevices(harness, account.token);
+		expect(devices.devices).toHaveLength(2);
+	});
 	test('Web Push and raw token registrations coexist for one platform', async () => {
 		const account = await createTestAccount(harness);
 		const rawDevice = await registerMobileDevice(harness, account.token, {

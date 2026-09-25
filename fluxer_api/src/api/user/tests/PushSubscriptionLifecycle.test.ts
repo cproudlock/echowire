@@ -200,6 +200,27 @@ describe('Push Subscription Lifecycle', () => {
 		expect(subscription.p256dhKey).toBeNull();
 		expect(subscription.authKey).toBeNull();
 	});
+	test('android_fcm registration is stable whether or not provider_environment is sent', async () => {
+		// Regression: mobile 1.7.28 sent provider_environment, 1.7.29 stopped. The value
+		// is a component of the subscription id, so the same device re-keyed onto a
+		// second row and the gateway sent one notification per row. Both shapes must
+		// resolve to one registration.
+		const account = await createTestAccount(harness);
+		const token = 'fcm-same-device-token';
+		const withEnvironment = await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+			provider_environment: 'production',
+		});
+		const withoutEnvironment = await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+		});
+		expect(withoutEnvironment.device_id).toBe(withEnvironment.device_id);
+		const devices = await listMobileDevices(harness, account.token);
+		expect(devices.devices).toHaveLength(1);
+		expect(devices.devices[0]?.provider_environment).toBe('production');
+	});
 	test('Web Push and raw token registrations coexist for one platform', async () => {
 		const account = await createTestAccount(harness);
 		const rawDevice = await registerMobileDevice(harness, account.token, {

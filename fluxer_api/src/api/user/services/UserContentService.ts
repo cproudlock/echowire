@@ -81,7 +81,7 @@ interface UserContentRepository extends IUserAccountRepository, IUserContentRepo
 
 const WEB_PUSH_PLATFORM = 'web_push' as const;
 const DEFAULT_MOBILE_APP_ID = 'stable';
-const DEFAULT_APNS_PROVIDER_ENVIRONMENT = 'production';
+const DEFAULT_MOBILE_PROVIDER_ENVIRONMENT = 'production';
 
 function createPushSubscriptionId(parts: Array<string>): string {
 	const stableInput = parts.map((part) => `${part.length}:${part}`).join('|');
@@ -141,7 +141,15 @@ function normalizeProviderEnvironment(
 	environment: RegisterMobileDeviceRequest['provider_environment'],
 ): string | null {
 	if (environment) return environment;
-	return platform === 'ios_apns' || platform === 'ios_apns_voip' ? DEFAULT_APNS_PROVIDER_ENVIRONMENT : null;
+	// echowire: android_fcm defaults to production rather than null. The value is
+	// meaningless to FCM, but it is a component of the subscription id, so a client
+	// that stops sending it re-keys an existing device onto a second row and the
+	// gateway then sends one notification per row. That happened between mobile
+	// 1.7.28 and 1.7.29 and duplicated every Android notification. Canonicalising
+	// here converges both clients on the id older releases already used, which a
+	// client-side fix alone cannot do for installs already in the field.
+	if (platform === 'android_fcm') return DEFAULT_MOBILE_PROVIDER_ENVIRONMENT;
+	return platform === 'ios_apns' || platform === 'ios_apns_voip' ? DEFAULT_MOBILE_PROVIDER_ENVIRONMENT : null;
 }
 
 const isUnreachableEntityError = (error: unknown): boolean =>

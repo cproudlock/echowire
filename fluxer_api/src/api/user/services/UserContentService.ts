@@ -81,7 +81,7 @@ interface UserContentRepository extends IUserAccountRepository, IUserContentRepo
 
 const WEB_PUSH_PLATFORM = 'web_push' as const;
 const DEFAULT_MOBILE_APP_ID = 'stable';
-const DEFAULT_APNS_PROVIDER_ENVIRONMENT = 'production';
+const DEFAULT_MOBILE_PROVIDER_ENVIRONMENT = 'production';
 
 function createPushSubscriptionId(parts: Array<string>): string {
 	const stableInput = parts.map((part) => `${part.length}:${part}`).join('|');
@@ -114,7 +114,12 @@ function normalizeProviderEnvironment(
 	environment: RegisterMobileDeviceRequest['provider_environment'],
 ): string | null {
 	if (environment) return environment;
-	return platform === 'ios_apns' ? DEFAULT_APNS_PROVIDER_ENVIRONMENT : null;
+	// echowire: android_fcm defaults to production rather than null. The value is
+	// meaningless to FCM, but it is a component of the subscription id, so a client
+	// that stops sending it re-keys an existing device onto a second row and the
+	// gateway then sends one notification per row.
+	if (platform === 'android_fcm') return DEFAULT_MOBILE_PROVIDER_ENVIRONMENT;
+	return platform === 'ios_apns' ? DEFAULT_MOBILE_PROVIDER_ENVIRONMENT : null;
 }
 
 const isUnreachableEntityError = (error: unknown): boolean =>
@@ -419,8 +424,40 @@ export class UserContentService {
 			provider_environment: providerEnvironment,
 		};
 		const subscription = await this.userRepository.createPushSubscription(data);
+		await this.pruneDuplicateMobileRegistrations(userId, device.token, subscriptionId);
 		await this.gatewayService.invalidatePushSubscriptions({userId});
 		return subscription;
+	}
+
+	/**
+	 * echowire: one device token owns exactly one registration.
+	 *
+	 * The subscription id is derived from platform, app_id, provider_environment and
+	 * the token, so any of those changing gives the same physical device a second row
+	 * while the first survives. The gateway sends once per row, so the device receives
+	 * one notification per stale row it has accumulated.
+	 *
+	 * The provider-side pruning in the gateway cannot catch this: every one of those
+	 * rows holds the same live token, so FCM answers 200 and reports nothing to prune.
+	 *
+	 * Pruning here heals an affected device on its next launch, with no migration and
+	 * no action from the user.
+	 */
+	private async pruneDuplicateMobileRegistrations(
+		userId: UserID,
+		endpoint: string,
+		keepSubscriptionId: string,
+	): Promise<void> {
+		const existing = await this.userRepository.listPushSubscriptions(userId);
+		const stale = existing.filter(
+			(subscription) =>
+				subscription.platform !== WEB_PUSH_PLATFORM &&
+				subscription.endpoint === endpoint &&
+				subscription.subscriptionId !== keepSubscriptionId,
+		);
+		for (const subscription of stale) {
+			await this.userRepository.deletePushSubscription(userId, subscription.subscriptionId);
+		}
 	}
 
 	async listMobileDevices(userId: UserID): Promise<Array<PushSubscription>> {

@@ -93,6 +93,58 @@ describe('Push Subscription Lifecycle', () => {
 			},
 		]);
 	});
+	test('android_fcm registration is stable whether or not provider_environment is sent', async () => {
+		const account = await createTestAccount(harness);
+		const token = 'fcm-same-device-token';
+		const withEnvironment = await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+			provider_environment: 'production',
+		});
+		const withoutEnvironment = await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+		});
+		expect(withoutEnvironment.device_id).toBe(withEnvironment.device_id);
+		const devices = await listMobileDevices(harness, account.token);
+		expect(devices.devices).toHaveLength(1);
+		expect(devices.devices[0]?.provider_environment).toBe('production');
+	});
+	test('re-registering one token under a new app_id leaves a single device', async () => {
+		const account = await createTestAccount(harness);
+		const token = 'fcm-channel-switch-token';
+		await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+			app_id: 'beta',
+			provider_environment: 'production',
+		});
+		const current = await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token,
+			app_id: 'stable',
+			provider_environment: 'production',
+		});
+		const devices = await listMobileDevices(harness, account.token);
+		expect(devices.devices).toHaveLength(1);
+		expect(devices.devices[0]?.device_id).toBe(current.device_id);
+		expect(devices.devices[0]?.app_id).toBe('stable');
+	});
+	test('a second device keeps its own registration', async () => {
+		const account = await createTestAccount(harness);
+		await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token: 'fcm-phone-token',
+			provider_environment: 'production',
+		});
+		await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token: 'fcm-tablet-token',
+			provider_environment: 'production',
+		});
+		const devices = await listMobileDevices(harness, account.token);
+		expect(devices.devices).toHaveLength(2);
+	});
 	test('delete mobile device removes it from the mobile list', async () => {
 		const account = await createTestAccount(harness);
 		const registered = await registerMobileDevice(harness, account.token, {

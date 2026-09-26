@@ -76,10 +76,17 @@ build_notification_message(DeviceToken, Payload) ->
 %% collapsing.
 -spec build_android_notification(binary(), binary() | undefined) -> map().
 build_android_notification(Tag, ImageUrl) ->
+    %% Echowire: no click_action. Neither this fork's manifest nor upstream's
+    %% declares an activity for FLUXER_MESSAGE, and when the action cannot be
+    %% resolved the tap opens the launcher without the data payload, so the
+    %% client finds no channel_id, resolves no route and leaves the user on the
+    %% default screen. Omitting it makes FCM use the default launch intent,
+    %% which carries the data, and the client routes to the channel. Verified
+    %% on a real device on 2026-09-26: identical payload with the action taken
+    %% out routed correctly, with it in place it did not.
     maybe_put(<<"image">>, ImageUrl, #{
         <<"channel_id">> => <<"fluxer_default_push">>,
-        <<"tag">> => Tag,
-        <<"click_action">> => <<"FLUXER_MESSAGE">>
+        <<"tag">> => Tag
     }).
 
 %% Notification + data FCM message.
@@ -362,6 +369,8 @@ build_message_includes_android_chat_notification_fields_test() ->
     ?assertEqual(<<"86400s">>, maps:get(<<"ttl">>, maps:get(<<"android">>, Message))),
     AndroidNotification = maps:get(<<"notification">>, maps:get(<<"android">>, Message)),
     ?assertEqual(<<"fluxer_default_push">>, maps:get(<<"channel_id">>, AndroidNotification)),
+    %% Echowire: a click_action the app cannot resolve strips the tap payload.
+    ?assertNot(maps:is_key(<<"click_action">>, AndroidNotification)),
     ?assertEqual(<<"channel:123:456">>, maps:get(<<"tag">>, AndroidNotification)),
     %% `group` is NOT a valid FCM v1 android.notification field — its presence
     %% made FCM reject the whole message with HTTP 400. It must be absent.

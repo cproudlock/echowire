@@ -78,6 +78,13 @@ env_gateway_base_config() ->
         <<"gateway_role">> => env_optional_binary("FLUXER_GATEWAY_ROLE"),
         <<"rpc_auth_token">> => env_binary("FLUXER_GATEWAY_RPC_AUTH_TOKEN", <<>>),
         <<"push_enabled">> => env_bool("FLUXER_GATEWAY_PUSH_ENABLED", true),
+        %% Echowire: off until a client that creates fluxer_messages and
+        %% fluxer_direct_messages at process start is adopted. Turning it on
+        %% earlier makes Android silently drop every push for anyone still on an
+        %% older build.
+        <<"push_android_per_type_channels">> => env_bool(
+            "FLUXER_PUSH_ANDROID_PER_TYPE_CHANNELS", false
+        ),
         <<"push_clear_notifications_enabled">> => env_bool(
             "FLUXER_GATEWAY_PUSH_CLEAR_NOTIFICATIONS_ENABLED", true
         ),
@@ -243,6 +250,9 @@ build_core_config(Service, Internal, Nats, Proxy) ->
 build_push_config(Service, Public) ->
     #{
         push_enabled => get_bool(Service, <<"push_enabled">>, true),
+        push_android_per_type_channels => get_bool(
+            Service, <<"push_android_per_type_channels">>, false
+        ),
         push_user_guild_settings_cache_mb =>
             get_int(Service, <<"push_user_guild_settings_cache_mb">>, 1024),
         push_subscriptions_cache_mb => get_int(

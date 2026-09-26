@@ -12,6 +12,16 @@
 
 -type fcm_response() :: {ok, integer(), term(), binary()} | {error, term()}.
 
+%% Echowire: the legacy channel every shipped client creates natively at process
+%% start (FluxerApplication.onCreate). Android 26+ DROPS a notification naming a
+%% channel the app has not created, so this stays the default target until a
+%% client that creates the per-type channels eagerly is widely adopted.
+-define(LEGACY_ANDROID_CHANNEL_ID, <<"fluxer_default_push">>).
+%% The per-type channels the client creates for local notifications, each with
+%% its own sound. Only targeted when push_android_per_type_channels is on.
+-define(MESSAGE_ANDROID_CHANNEL_ID, <<"fluxer_messages">>).
+-define(DIRECT_MESSAGE_ANDROID_CHANNEL_ID, <<"fluxer_direct_messages">>).
+
 -spec build_message(binary(), map()) -> map().
 build_message(DeviceToken, #{<<"type">> := <<"notification_clear">>} = Payload) ->
     build_clear_message(DeviceToken, Payload);
@@ -64,7 +74,7 @@ build_notification_message(DeviceToken, Payload) ->
     ),
     Data = build_notification_data(Payload, Title, Body, Tag, ImageUrl),
     Group = resolve_notification_group(maps:get(<<"data">>, Payload, #{}), Tag),
-    AndroidNotification = build_android_notification(Tag, ImageUrl),
+    AndroidNotification = build_android_notification(Tag, ImageUrl, Data),
     wrap_notification_message(DeviceToken, NotificationBody, Data, AndroidNotification, Group).
 
 %% NOTE: FCM v1's AndroidNotification has NO `group` field — including it makes
@@ -74,8 +84,12 @@ build_notification_message(DeviceToken, Payload) ->
 %% client-side concern (NotificationCompat setGroup), so we simply omit it here;
 %% collapse_key (a valid field, set in wrap_notification_message) still handles
 %% collapsing.
--spec build_android_notification(binary(), binary() | undefined) -> map().
-build_android_notification(Tag, ImageUrl) ->
+-spec build_android_notification(binary(), binary() | undefined, map()) -> map().
+build_android_notification(Tag, ImageUrl, Data) ->
+    build_android_notification(Tag, ImageUrl, Data, per_type_channels_enabled()).
+
+-spec build_android_notification(binary(), binary() | undefined, map(), boolean()) -> map().
+build_android_notification(Tag, ImageUrl, Data, PerTypeChannels) ->
     %% Echowire: no click_action. Neither this fork's manifest nor upstream's
     %% declares an activity for FLUXER_MESSAGE, and when the action cannot be
     %% resolved the tap opens the launcher without the data payload, so the
@@ -85,9 +99,52 @@ build_android_notification(Tag, ImageUrl) ->
     %% on a real device on 2026-09-26: identical payload with the action taken
     %% out routed correctly, with it in place it did not.
     maybe_put(<<"image">>, ImageUrl, #{
-        <<"channel_id">> => <<"fluxer_default_push">>,
+        <<"channel_id">> => resolve_android_channel_id(Data, PerTypeChannels),
         <<"tag">> => Tag
     }).
+
+%% Echowire: which notification channel the Android system should render into.
+%% Off by default, and it must stay that way until a client that creates the
+%% per-type channels at process start is adopted: naming a channel the installed
+%% app has not created makes Android drop the notification with no error
+%% anywhere, on the device or on the server.
+-spec resolve_android_channel_id(map(), boolean()) -> binary().
+resolve_android_channel_id(_Data, false) ->
+    ?LEGACY_ANDROID_CHANNEL_ID;
+resolve_android_channel_id(Data, true) ->
+    case is_direct_message(Data) of
+        true -> ?DIRECT_MESSAGE_ANDROID_CHANNEL_ID;
+        false -> ?MESSAGE_ANDROID_CHANNEL_ID
+    end.
+
+%% Mirrors isDmPushPayload on the client rather than inventing a second rule:
+%% a missing, empty, "@me" or "null" guild_id means a direct message. The
+%% literal "null" matters because build_data/2 emits the atom null for a DM and
+%% data_as_strings/1 stringifies it.
+-spec is_direct_message(map()) -> boolean().
+is_direct_message(Data) when is_map(Data) ->
+    case maps:get(<<"guild_id">>, Data, undefined) of
+        undefined -> true;
+        null -> true;
+        <<>> -> true;
+        <<"null">> -> true;
+        <<"@me">> -> true;
+        Value when is_binary(Value) -> false;
+        _ -> true
+    end;
+is_direct_message(_Data) ->
+    true.
+
+%% Reading the flag must never be able to change delivery by failing: any error
+%% falls back to the legacy channel, which every shipped client creates.
+-spec per_type_channels_enabled() -> boolean().
+per_type_channels_enabled() ->
+    try fluxer_gateway_env:get(push_android_per_type_channels) of
+        true -> true;
+        _ -> false
+    catch
+        _:_ -> false
+    end.
 
 %% Notification + data FCM message.
 %%
@@ -383,6 +440,57 @@ build_message_includes_android_chat_notification_fields_test() ->
     Data = maps:get(<<"data">>, Message),
     ?assertEqual(<<"4">>, maps:get(<<"badge_count">>, Data)),
     ?assertEqual(<<"https://cdn.example/image.png">>, maps:get(<<"image_url">>, Data)).
+
+per_type_channels_off_keeps_the_legacy_channel_test() ->
+    Guild = #{<<"guild_id">> => <<"77">>},
+    Dm = #{<<"guild_id">> => <<"null">>},
+    ?assertEqual(
+        <<"fluxer_default_push">>,
+        maps:get(
+            <<"channel_id">>, build_android_notification(<<"t">>, undefined, Guild, false)
+        )
+    ),
+    ?assertEqual(
+        <<"fluxer_default_push">>,
+        maps:get(<<"channel_id">>, build_android_notification(<<"t">>, undefined, Dm, false))
+    ).
+
+per_type_channels_on_splits_dm_and_guild_test() ->
+    Guild = #{<<"guild_id">> => <<"77">>},
+    ?assertEqual(
+        <<"fluxer_messages">>,
+        maps:get(<<"channel_id">>, build_android_notification(<<"t">>, undefined, Guild, true))
+    ),
+    %% Every shape the client treats as a DM must pick the DM channel.
+    lists:foreach(
+        fun(Data) ->
+            ?assertEqual(
+                <<"fluxer_direct_messages">>,
+                maps:get(
+                    <<"channel_id">>,
+                    build_android_notification(<<"t">>, undefined, Data, true)
+                )
+            )
+        end,
+        [
+            #{<<"guild_id">> => <<"null">>},
+            #{<<"guild_id">> => null},
+            #{<<"guild_id">> => <<"@me">>},
+            #{<<"guild_id">> => <<>>},
+            #{}
+        ]
+    ).
+
+per_type_channels_never_reintroduce_click_action_test() ->
+    lists:foreach(
+        fun(PerType) ->
+            AndroidNotification = build_android_notification(
+                <<"t">>, undefined, #{<<"guild_id">> => <<"77">>}, PerType
+            ),
+            ?assertNot(maps:is_key(<<"click_action">>, AndroidNotification))
+        end,
+        [false, true]
+    ).
 
 build_clear_message_is_data_only_and_collapsible_test() ->
     Payload = #{

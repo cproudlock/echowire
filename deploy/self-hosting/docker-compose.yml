@@ -123,6 +123,7 @@ x-fluxer-env: &fluxer-env
   # from these. Upstream's compose does not pass them, so dropping this block on a merge
   # silently disables all mobile push (it did, from 2026-09-07 until 2026-09-15).
   FLUXER_GATEWAY_PUSH_ENABLED: ${FLUXER_GATEWAY_PUSH_ENABLED:-true}
+  FLUXER_PUSH_ANDROID_PER_TYPE_CHANNELS: ${FLUXER_PUSH_ANDROID_PER_TYPE_CHANNELS:-false}
   FLUXER_PUSH_APNS_ENABLED: ${FLUXER_PUSH_APNS_ENABLED:-false}
   FLUXER_PUSH_APNS_TEAM_ID: ${FLUXER_PUSH_APNS_TEAM_ID:-}
   FLUXER_PUSH_APNS_KEY_ID: ${FLUXER_PUSH_APNS_KEY_ID:-}

@@ -10724,8 +10724,8 @@
 					},
 					"gateway_rollout": {"$ref": "#/components/schemas/GatewayRolloutConfigResponse"},
 					"voice_noise_suppression": {"$ref": "#/components/schemas/VoiceNoiseSuppressionConfigResponse"},
-					"screen_share_delivery": {"$ref": "#/components/schemas/ScreenShareDeliveryConfigResponse"},
 					"push_service_delivery": {"$ref": "#/components/schemas/PushServiceDeliveryConfigResponse"},
+					"domain_migration": {"$ref": "#/components/schemas/DomainMigrationConfigResponse"},
 					"experiment_delivery": {"$ref": "#/components/schemas/ExperimentDeliveryConfigResponse"},
 					"registration": {
 						"type": "object",
@@ -11153,8 +11153,8 @@
 					"sso",
 					"gateway_rollout",
 					"voice_noise_suppression",
-					"screen_share_delivery",
 					"push_service_delivery",
+					"domain_migration",
 					"experiment_delivery",
 					"registration",
 					"self_hosted",
@@ -11289,13 +11289,13 @@
 						"nullable": true,
 						"allOf": [{"$ref": "#/components/schemas/VoiceNoiseSuppressionConfigUpdateRequest"}]
 					},
-					"screen_share_delivery": {
-						"nullable": true,
-						"allOf": [{"$ref": "#/components/schemas/ScreenShareDeliveryConfigUpdateRequest"}]
-					},
 					"push_service_delivery": {
 						"nullable": true,
 						"allOf": [{"$ref": "#/components/schemas/PushServiceDeliveryConfigUpdateRequest"}]
+					},
+					"domain_migration": {
+						"nullable": true,
+						"allOf": [{"$ref": "#/components/schemas/DomainMigrationConfigUpdateRequest"}]
 					},
 					"experiment_delivery": {
 						"nullable": true,
@@ -15616,7 +15616,7 @@
 					"poll_jitter_percent": {"type": "integer", "minimum": 0, "maximum": 50}
 				}
 			},
-			"PushServiceDeliveryConfigUpdateRequest": {
+			"DomainMigrationConfigUpdateRequest": {
 				"type": "object",
 				"properties": {
 					"enabled": {"type": "boolean"},
@@ -15631,15 +15631,17 @@
 						"maxItems": 1000,
 						"type": "array",
 						"items": {"type": "string", "pattern": "^\\d{1,20}$"}
-					}
+					},
+					"anonymous_rollout_basis_points": {"type": "integer", "minimum": 0, "maximum": 10000},
+					"standalone_forwarding": {"type": "boolean"}
 				}
 			},
-			"ScreenShareDeliveryConfigUpdateRequest": {
+			"PushServiceDeliveryConfigUpdateRequest": {
 				"type": "object",
 				"properties": {
 					"enabled": {"type": "boolean"},
 					"rollout_basis_points": {"type": "integer", "minimum": 0, "maximum": 10000},
-					"rollout_salt": {"type": "string", "minLength": 1, "maxLength": 64},
+					"rollout_salt": {"type": "string", "minLength": 1, "maxLength": 64, "pattern": "^[\\x20-\\x7e]+$"},
 					"included_user_ids": {
 						"maxItems": 1000,
 						"type": "array",
@@ -15717,14 +15719,14 @@
 				"required": ["poll_interval_seconds", "poll_jitter_percent"],
 				"additionalProperties": false
 			},
-			"PushServiceDeliveryConfigResponse": {
+			"DomainMigrationConfigResponse": {
 				"type": "object",
 				"properties": {
 					"enabled": {"default": false, "type": "boolean"},
 					"config_version": {"default": 0, "type": "integer", "minimum": 0, "maximum": 9007199254740991},
 					"rollout_basis_points": {"default": 0, "type": "integer", "minimum": 0, "maximum": 10000},
 					"rollout_salt": {
-						"default": "push-service-delivery-v1",
+						"default": "domain-migration-v1",
 						"type": "string",
 						"minLength": 1,
 						"maxLength": 64,
@@ -15741,7 +15743,9 @@
 						"maxItems": 1000,
 						"type": "array",
 						"items": {"type": "string", "pattern": "^\\d{1,20}$"}
-					}
+					},
+					"anonymous_rollout_basis_points": {"default": 0, "type": "integer", "minimum": 0, "maximum": 10000},
+					"standalone_forwarding": {"default": false, "type": "boolean"}
 				},
 				"required": [
 					"enabled",
@@ -15749,17 +15753,25 @@
 					"rollout_basis_points",
 					"rollout_salt",
 					"included_user_ids",
-					"excluded_user_ids"
+					"excluded_user_ids",
+					"anonymous_rollout_basis_points",
+					"standalone_forwarding"
 				],
 				"additionalProperties": false
 			},
-			"ScreenShareDeliveryConfigResponse": {
+			"PushServiceDeliveryConfigResponse": {
 				"type": "object",
 				"properties": {
 					"enabled": {"default": false, "type": "boolean"},
 					"config_version": {"default": 0, "type": "integer", "minimum": 0, "maximum": 9007199254740991},
 					"rollout_basis_points": {"default": 0, "type": "integer", "minimum": 0, "maximum": 10000},
-					"rollout_salt": {"default": "screen-share-delivery-v1", "type": "string", "minLength": 1, "maxLength": 64},
+					"rollout_salt": {
+						"default": "push-service-delivery-v1",
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 64,
+						"pattern": "^[\\x20-\\x7e]+$"
+					},
 					"included_user_ids": {
 						"default": [],
 						"maxItems": 1000,
@@ -16125,9 +16137,10 @@
 					"id": {"type": "string", "description": "The credential ID"},
 					"name": {"type": "string", "description": "User-assigned name for the credential"},
 					"created_at": {"type": "string", "description": "When the credential was registered"},
-					"last_used_at": {"nullable": true, "description": "When the credential was last used", "type": "string"}
+					"last_used_at": {"nullable": true, "description": "When the credential was last used", "type": "string"},
+					"rp_id": {"type": "string", "description": "Relying party ID the passkey belongs to"}
 				},
-				"required": ["id", "name", "created_at", "last_used_at"],
+				"required": ["id", "name", "created_at", "last_used_at", "rp_id"],
 				"additionalProperties": false
 			},
 			"VoiceServerAdminResponse": {

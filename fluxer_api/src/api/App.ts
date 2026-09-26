@@ -45,9 +45,13 @@ export async function createAPIApp(options: CreateAPIAppOptions): Promise<APIApp
 	configureMiddleware(routes, {
 		logger,
 		nodeEnv: config.nodeEnv,
+		// Echowire: union of upstream new webAppOrigins (app origin plus any
+		// configured aliases) and the fork additionalCorsOrigins, which their
+		// rewrite dropped. Empty entries are filtered because marketing can be
+		// unset on a self-hosted instance.
 		corsOrigins: [
 			...new Set(
-				[config.endpoints.webApp, config.endpoints.marketing, ...config.additionalCorsOrigins].filter(
+				[...config.endpoints.webAppOrigins, config.endpoints.marketing, ...config.additionalCorsOrigins].filter(
 					(origin) => origin.length > 0,
 				),
 			),

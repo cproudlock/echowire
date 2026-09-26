@@ -211,10 +211,36 @@ describe('ConfigLoader', () => {
 			'https://canary.echowire.org',
 			'https://web.canary.echowire.org',
 			'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
-			'android:apk-key-hash:zRmCKDKo3uCX2GDZISjJx8Rzo3J-Y3Gbp7s7mAaUH28',
 			'http://localhost:8088',
 		]);
 	});
+
+	test('defaults to no app origin aliases', async () => {
+		stubMinimalEnv();
+		const config = await loadConfig();
+		expect(config.services.api.app_origin_aliases).toEqual([]);
+	});
+
+	test('normalizes and deduplicates app origin aliases', async () => {
+		stubMinimalEnv({
+			FLUXER_APP_ORIGIN_ALIASES:
+				'https://Web.Fluxer.App/, https://fluxer.com,https://fluxer.com:443,http://localhost:3000',
+		});
+		const config = await loadConfig();
+		expect(config.services.api.app_origin_aliases).toEqual([
+			'https://web.fluxer.app',
+			'https://fluxer.com',
+			'http://localhost:3000',
+		]);
+	});
+
+	test.each(['fluxer.com', 'https://fluxer.com/app', 'ftp://fluxer.com', 'https://user@fluxer.com'])(
+		'rejects the app origin alias %s',
+		async (alias) => {
+			stubMinimalEnv({FLUXER_APP_ORIGIN_ALIASES: alias});
+			await expect(loadConfig()).rejects.toThrow('FLUXER_APP_ORIGIN_ALIASES entry 1 must be an HTTP(S) origin');
+		},
+	);
 
 	test('rejects an empty client API endpoint override', async () => {
 		stubMinimalEnv({FLUXER_API_CLIENT_ENDPOINT: ''});
@@ -465,6 +491,8 @@ describe('ConfigLoader', () => {
 			FLUXER_APP_STATUS_PAGE_INCIDENT_HISTORY_URL: 'https://status.example/history',
 			FLUXER_INSTANCE_SETUP_CONFIGURED: 'true',
 			FLUXER_ABUSE_INBOUND_PHONE_COUNTRY_CODES: 'AA,BB',
+			FLUXER_ABUSE_PHONE_FLAGGING_ENABLED: 'false',
+			FLUXER_ABUSE_PHONE_FLAGGING_EXEMPT_COUNTRY_CODES: 'CC,DD',
 			FLUXER_ABUSE_PHONE_INBOUND_REQUIRED_PREFIXES: '+101,+202',
 			FLUXER_ABUSE_DIRECT_CONTACT_SPAM_ENABLED: 'true',
 			FLUXER_ABUSE_DIRECT_CONTACT_SPAM_COUNTRY_CODES: 'AA,BB',
@@ -493,6 +521,10 @@ describe('ConfigLoader', () => {
 		expect(config.instance.setup.configured).toBe(true);
 		expect(config.instance.abuse_policy).toEqual({
 			inbound_phone_country_codes: ['AA', 'BB'],
+			phone_flagging: {
+				enabled: false,
+				exempt_country_codes: ['CC', 'DD'],
+			},
 			phone_verification: {
 				inbound_required_prefixes: ['+101', '+202'],
 			},

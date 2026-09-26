@@ -134,7 +134,7 @@ function suppressDeferredPhoneFlags(rawFlags: number): number {
 	if ((rawFlags & DEFERRED_PHONE_ON_COMMUNITY_JOIN) === 0) {
 		return rawFlags;
 	}
-	if (getCachedDeferredPhoneGateEnabled() === false) {
+	if (getCachedDeferredPhoneGateEnabled() === false && Config.abusePolicy.phoneFlagging.enabled) {
 		return rawFlags & ~DEFERRED_PHONE_ON_COMMUNITY_JOIN;
 	}
 	return rawFlags & ~DEFERRABLE_PHONE_FLAGS;
@@ -273,6 +273,10 @@ function mapExpiredPremiumFields<T>(mapper: (field: PremiumClearField) => T): Re
 
 export function createPremiumClearPatch(): Partial<UserRow> {
 	return mapExpiredPremiumFields(() => null) as Partial<UserRow>;
+}
+
+export function clearPerksSanitizedFlag(premiumFlags: number): number {
+	return premiumFlags & ~PremiumFlags.PERKS_SANITIZED;
 }
 
 const PROFILE_SUBSTRING_EXEMPT_FLAGS = UserFlags.STAFF;

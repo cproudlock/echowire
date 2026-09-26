@@ -13,6 +13,19 @@ export const STABLE_APP_URL = 'https://echowire.org';
 // apply. Revisit only if canary becomes a genuinely separate deployment with
 // its own per-host instance config.
 export const CANARY_APP_URL = 'https://echowire.org';
+
+// Echowire: upstream is migrating to a second domain and gained these four
+// exports, which their DesktopConfig, Window and preload code now imports, so
+// they must exist. This instance is not migrating anywhere, so they are
+// neutralised rather than removed: the migrated origin is our own origin and
+// the entry path is empty, which makes getAppUrl() return the same URL down
+// both branches and getOfficialAppOrigins() a list of one origin repeated.
+// PASSKEY_RP_IDS reaches the renderer through the preload bridge, so it names
+// our relying party, never upstream's.
+export const STABLE_MIGRATED_APP_ORIGIN = 'https://echowire.org';
+export const CANARY_MIGRATED_APP_ORIGIN = 'https://echowire.org';
+export const MIGRATED_APP_ENTRY_PATH = '';
+export const PASSKEY_RP_IDS = ['echowire.org'] as const;
 export const STATIC_CDN_URL = 'https://fluxerstatic.com';
 export const DEFAULT_WINDOW_WIDTH = 1280;
 export const DEFAULT_WINDOW_HEIGHT = 800;

@@ -19,9 +19,9 @@ import {startDockerContainer} from '@app/api/test/DockerTestContainer';
 import {InMemoryCassandraQueryExecutor} from '@app/api/test/InMemoryCassandraQueryExecutor';
 import {MockKVProvider} from '@app/api/test/mocks/MockKVProvider';
 import {
-	DEFAULT_SCREEN_SHARE_DELIVERY_CONFIG,
-	type ScreenShareDeliveryConfig,
-} from '@fluxer/schema/src/domains/admin/ScreenShareDeliverySchemas';
+	DEFAULT_DOMAIN_MIGRATION_CONFIG,
+	type DomainMigrationConfig,
+} from '@fluxer/schema/src/domains/admin/DomainMigrationSchemas';
 import {
 	DEFAULT_VOICE_NOISE_SUPPRESSION_CONFIG,
 	type VoiceNoiseSuppressionConfig,
@@ -39,7 +39,7 @@ import {
 import {afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi} from 'vitest';
 
 const VOICE_NOISE_SUPPRESSION_CONFIG_KEY = 'voice_noise_suppression_config';
-const SCREEN_SHARE_DELIVERY_CONFIG_KEY = 'screen_share_delivery_config';
+const DOMAIN_MIGRATION_CONFIG_KEY = 'domain_migration_config';
 const EXPERIMENT_DELIVERY_CONFIG_KEY = 'experiment_delivery_config';
 const APP_PUBLIC_CONFIG_KEY = 'app_public_config';
 const INSTANCE_POLICY_CONFIG_KEY = 'instance_policy_config';
@@ -356,13 +356,13 @@ describe('InstanceConfigRepository', () => {
 		});
 	});
 
-	it('returns the default screen share delivery config when the key is absent', async () => {
+	it('returns the default domain migration config when the key is absent', async () => {
 		const executor = new CountingInMemoryCassandraQueryExecutor();
 		setCassandraQueryExecutorForTesting(executor);
 		const kvProvider = new MockKVProvider();
 		const repository = createRepository(kvProvider);
 
-		await expect(repository.getScreenShareDeliveryConfig()).resolves.toEqual(DEFAULT_SCREEN_SHARE_DELIVERY_CONFIG);
+		await expect(repository.getDomainMigrationConfig()).resolves.toEqual(DEFAULT_DOMAIN_MIGRATION_CONFIG);
 	});
 
 	it.each([
@@ -370,53 +370,75 @@ describe('InstanceConfigRepository', () => {
 		{name: 'a json array', stored: '[]'},
 		{name: 'out-of-range values', stored: '{"rollout_basis_points":99999}'},
 		{name: 'a non-boolean enabled flag', stored: '{"enabled":"yes"}'},
-	])('falls back to the default screen share delivery config for $name', async ({stored}) => {
+	])('falls back to the default domain migration config for $name', async ({stored}) => {
 		const executor = new CountingInMemoryCassandraQueryExecutor();
 		setCassandraQueryExecutorForTesting(executor);
 		const kvProvider = new MockKVProvider();
 		const repository = createRepository(kvProvider);
 
-		await repository.setConfig(SCREEN_SHARE_DELIVERY_CONFIG_KEY, stored);
+		await repository.setConfig(DOMAIN_MIGRATION_CONFIG_KEY, stored);
 
-		await expect(repository.getScreenShareDeliveryConfig()).resolves.toEqual(DEFAULT_SCREEN_SHARE_DELIVERY_CONFIG);
+		await expect(repository.getDomainMigrationConfig()).resolves.toEqual(DEFAULT_DOMAIN_MIGRATION_CONFIG);
 	});
 
-	it('round-trips a stored screen share delivery config', async () => {
+	it('round-trips a stored domain migration config', async () => {
 		const executor = new CountingInMemoryCassandraQueryExecutor();
 		setCassandraQueryExecutorForTesting(executor);
 		const kvProvider = new MockKVProvider();
 		const repository = createRepository(kvProvider);
 
-		const config: ScreenShareDeliveryConfig = {
-			...DEFAULT_SCREEN_SHARE_DELIVERY_CONFIG,
+		const config: DomainMigrationConfig = {
+			...DEFAULT_DOMAIN_MIGRATION_CONFIG,
 			enabled: true,
 			config_version: 5,
 			rollout_basis_points: 2500,
-			rollout_salt: 'screen-share-delivery-v2',
+			rollout_salt: 'domain-migration-v2',
 			included_user_ids: ['1400000000000000001'],
 			excluded_user_ids: ['1400000000000000002'],
+			anonymous_rollout_basis_points: 300,
+			standalone_forwarding: true,
 		};
-		await repository.setScreenShareDeliveryConfig(config);
+		await repository.setDomainMigrationConfig(config);
 
-		await expect(repository.getScreenShareDeliveryConfig()).resolves.toEqual(config);
+		await expect(repository.getDomainMigrationConfig()).resolves.toEqual(config);
 	});
 
-	it('fills newly added screen share delivery fields from the schema defaults', async () => {
+	it('fills newly added domain migration fields from the schema defaults', async () => {
 		const executor = new CountingInMemoryCassandraQueryExecutor();
 		setCassandraQueryExecutorForTesting(executor);
 		const kvProvider = new MockKVProvider();
 		const repository = createRepository(kvProvider);
 
 		await repository.setConfig(
-			SCREEN_SHARE_DELIVERY_CONFIG_KEY,
+			DOMAIN_MIGRATION_CONFIG_KEY,
 			JSON.stringify({enabled: true, config_version: 2, rollout_basis_points: 1000}),
 		);
 
-		await expect(repository.getScreenShareDeliveryConfig()).resolves.toEqual({
-			...DEFAULT_SCREEN_SHARE_DELIVERY_CONFIG,
+		await expect(repository.getDomainMigrationConfig()).resolves.toEqual({
+			...DEFAULT_DOMAIN_MIGRATION_CONFIG,
 			enabled: true,
 			config_version: 2,
 			rollout_basis_points: 1000,
+		});
+	});
+
+	it('publishes a refresh so another repository observes the domain migration config', async () => {
+		const executor = new CountingInMemoryCassandraQueryExecutor();
+		setCassandraQueryExecutorForTesting(executor);
+		const kvProvider = new MockKVProvider();
+		const reader = createRepository(kvProvider);
+		const writer = createRepository(kvProvider);
+
+		await expect(reader.getDomainMigrationConfig()).resolves.toEqual(DEFAULT_DOMAIN_MIGRATION_CONFIG);
+
+		await writer.setDomainMigrationConfig({
+			...DEFAULT_DOMAIN_MIGRATION_CONFIG,
+			enabled: true,
+			config_version: 1,
+		});
+
+		await vi.waitFor(async () => {
+			expect(await reader.getDomainMigrationConfig()).toMatchObject({enabled: true, config_version: 1});
 		});
 	});
 
@@ -489,26 +511,6 @@ describe('InstanceConfigRepository', () => {
 
 		await vi.waitFor(async () => {
 			expect(await reader.getVoiceNoiseSuppressionConfig()).toMatchObject({enabled: true, config_version: 1});
-		});
-	});
-
-	it('publishes a refresh so another repository observes the screen share delivery config', async () => {
-		const executor = new CountingInMemoryCassandraQueryExecutor();
-		setCassandraQueryExecutorForTesting(executor);
-		const kvProvider = new MockKVProvider();
-		const reader = createRepository(kvProvider);
-		const writer = createRepository(kvProvider);
-
-		await expect(reader.getScreenShareDeliveryConfig()).resolves.toEqual(DEFAULT_SCREEN_SHARE_DELIVERY_CONFIG);
-
-		await writer.setScreenShareDeliveryConfig({
-			...DEFAULT_SCREEN_SHARE_DELIVERY_CONFIG,
-			enabled: true,
-			config_version: 1,
-		});
-
-		await vi.waitFor(async () => {
-			expect(await reader.getScreenShareDeliveryConfig()).toMatchObject({enabled: true, config_version: 1});
 		});
 	});
 

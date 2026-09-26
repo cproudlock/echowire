@@ -2,13 +2,13 @@
 
 use crate::{
     api::types::{
-        AppPublicConfigResponse, EXPERIMENT_MAX_TARGETED_USERS, ExperimentDeliveryConfigResponse,
+        AppPublicConfigResponse, DOMAIN_MIGRATION_DEFAULT_SALT, DomainMigrationConfigResponse,
+        EXPERIMENT_MAX_TARGETED_USERS, ExperimentDeliveryConfigResponse,
         GatewayRolloutConfigResponse, InstanceConfigResponse, InstanceIntegrationsResponse,
         InstanceMediaResponse, InstancePolicyResponse, InstanceRegistrationResponse,
         LimitConfigResponse, NoiseSuppressionBackend, PUSH_SERVICE_DELIVERY_DEFAULT_SALT,
         PendingRegistrationResponse, PushServiceDeliveryConfigResponse, RegistrationUrlResponse,
-        SCREEN_SHARE_DELIVERY_DEFAULT_SALT, ScreenShareDeliveryConfigResponse, SsoConfigResponse,
-        VOICE_NS_MAX_GUILD_OVERRIDES, VoiceNoiseSuppressionConfigResponse,
+        SsoConfigResponse, VOICE_NS_MAX_GUILD_OVERRIDES, VoiceNoiseSuppressionConfigResponse,
     },
     config::AdminConfig,
     middleware::auth::AuthContext,
@@ -149,8 +149,8 @@ pub fn instance_config_page(
                     html! {
                         (gateway_rollout_section(base, csrf_token, &instance_config.gateway_rollout))
                         (voice_noise_suppression_section(base, csrf_token, &instance_config.voice_noise_suppression))
-                        (screen_share_delivery_section(base, csrf_token, &instance_config.screen_share_delivery))
                         (push_service_delivery_section(base, csrf_token, &instance_config.push_service_delivery))
+                        (domain_migration_section(base, csrf_token, &instance_config.domain_migration))
                         (experiment_delivery_section(base, csrf_token, &instance_config.experiment_delivery))
                         @if let Some(limit_config) = limit_config {
                             (limit_config_section(base, limit_config))
@@ -1179,117 +1179,6 @@ fn voice_noise_suppression_section(
     )
 }
 
-fn screen_share_delivery_section(
-    base: &str,
-    csrf_token: &str,
-    screen_share_delivery: &ScreenShareDeliveryConfigResponse,
-) -> Markup {
-    let status = if screen_share_delivery.enabled {
-        ("Live", BadgeVariant::Success)
-    } else {
-        ("Inert", BadgeVariant::Default)
-    };
-    let included_user_ids = screen_share_delivery.included_user_ids.join("\n");
-    let excluded_user_ids = screen_share_delivery.excluded_user_ids.join("\n");
-    section_card_with_description(
-        "Screen Share Delivery",
-        "Pick how many clients publish screen shares through the reworked delivery path. While \
-         the master switch below is off nothing on this form reaches any client: every user \
-         keeps the screen share pipeline they have today, whatever the rest of these fields say. \
-         A client that is already sharing keeps the path it started on until the share ends.",
-        html! {
-            form method="post" action={(base) "/instance-config?action=update_screen_share_delivery"} {
-                (csrf_input(csrf_token))
-                div class="space-y-6" {
-                    div class="flex flex-wrap items-center gap-2" {
-                        h3 class="text-sm font-semibold text-neutral-900" { "Master switch" }
-                        (badge(status.0, status.1))
-                        span class="text-xs text-neutral-500" {
-                            "Config version " (screen_share_delivery.config_version)
-                        }
-                    }
-                    (checkbox(
-                        "screen_share_delivery_enabled",
-                        "true",
-                        "Serve screen share delivery assignments to clients",
-                        screen_share_delivery.enabled,
-                        true,
-                    ))
-                    p class="text-xs text-neutral-500" {
-                        "Off is the safe state. With this unchecked every client is told the \
-                         feature is inert and keeps its current behavior, so the rollout and \
-                         targeting fields below have no effect at all."
-                    }
-
-                    h3 class="text-sm font-semibold text-neutral-900" { "Rollout" }
-                    (number_field(
-                        "screen_share_delivery_rollout_basis_points",
-                        "Rollout (basis points)",
-                        &screen_share_delivery.rollout_basis_points.to_string(),
-                        Some(0), Some(10000), "1",
-                        Some("Share of users bucketed into the canary, in basis points: 0 is nobody, 100 is 1%, 10000 is everybody."),
-                    ))
-                    div class="flex flex-col gap-2" {
-                        (text_input(
-                            "screen_share_delivery_rollout_salt",
-                            "Rollout Salt",
-                            &screen_share_delivery.rollout_salt,
-                            SCREEN_SHARE_DELIVERY_DEFAULT_SALT,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "Seeds the bucketing hash. Changing it reshuffles which users fall \
-                             inside the percentage above. Leave it alone to keep the current \
-                             cohort stable."
-                        }
-                    }
-                    div class="flex flex-col gap-2" {
-                        (textarea_input(
-                            "screen_share_delivery_included_user_ids",
-                            "Always-on User IDs",
-                            "1500000000000000001\n1500000000000000002",
-                            &included_user_ids,
-                            4,
-                            false,
-                        ))
-                        (entry_count_hint(
-                            screen_share_delivery.included_user_ids.len(),
-                            EXPERIMENT_MAX_TARGETED_USERS,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "One snowflake per line, or comma separated. These users are targeted \
-                             regardless of the percentage above. IDs must contain 1 to 20 decimal \
-                             digits. Invalid entries prevent the save. Blank entries and duplicate \
-                             IDs are ignored."
-                        }
-                    }
-                    div class="flex flex-col gap-2" {
-                        (textarea_input(
-                            "screen_share_delivery_excluded_user_ids",
-                            "Never-on User IDs",
-                            "1500000000000000003\n1500000000000000004",
-                            &excluded_user_ids,
-                            4,
-                            false,
-                        ))
-                        (entry_count_hint(
-                            screen_share_delivery.excluded_user_ids.len(),
-                            EXPERIMENT_MAX_TARGETED_USERS,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "Same format. Exclusion wins over both the always-on list and the \
-                             percentage. This is the per-user kill switch."
-                        }
-                    }
-
-                    (form_actions(html! {
-                        (submit_button("Save Screen Share Delivery Configuration"))
-                    }))
-                }
-            }
-        },
-    )
-}
-
 fn push_service_delivery_section(
     base: &str,
     csrf_token: &str,
@@ -1392,6 +1281,139 @@ fn push_service_delivery_section(
 
                     (form_actions(html! {
                         (submit_button("Save Push Service Delivery Configuration"))
+                    }))
+                }
+            }
+        },
+    )
+}
+
+fn domain_migration_section(
+    base: &str,
+    csrf_token: &str,
+    domain_migration: &DomainMigrationConfigResponse,
+) -> Markup {
+    let status = if domain_migration.enabled {
+        ("Live", BadgeVariant::Success)
+    } else {
+        ("Inert", BadgeVariant::Default)
+    };
+    let included_user_ids = domain_migration.included_user_ids.join("\n");
+    let excluded_user_ids = domain_migration.excluded_user_ids.join("\n");
+    section_card_with_description(
+        "Domain Migration",
+        "Moves web clients of the official instance from the legacy web app origin to the new \
+         one. Selected accounts copy their local data across and continue on the new origin. \
+         Clients of other instances read this configuration and ignore it.",
+        html! {
+            form method="post" action={(base) "/instance-config?action=update_domain_migration"} {
+                (csrf_input(csrf_token))
+                div class="space-y-6" {
+                    div class="flex flex-wrap items-center gap-2" {
+                        h3 class="text-sm font-semibold text-neutral-900" { "Master switch" }
+                        (badge(status.0, status.1))
+                        span class="text-xs text-neutral-500" {
+                            "Config version " (domain_migration.config_version)
+                        }
+                    }
+                    (checkbox(
+                        "domain_migration_enabled",
+                        "true",
+                        "Move selected web clients to the new origin",
+                        domain_migration.enabled,
+                        true,
+                    ))
+                    p class="text-xs text-neutral-500" {
+                        "Off is the safe state and the kill switch. With this unchecked no client \
+                         starts a migration and clients that already migrated stop forwarding the \
+                         legacy origin, so the rollout and targeting fields below have no effect at all."
+                    }
+
+                    h3 class="text-sm font-semibold text-neutral-900" { "Installed apps" }
+                    (checkbox(
+                        "domain_migration_standalone_forwarding",
+                        "true",
+                        "Forward installed desktop web apps to the new origin",
+                        domain_migration.standalone_forwarding,
+                        true,
+                    ))
+                    p class="text-xs text-neutral-500" {
+                        "Leave this off until the manifest scope extension and the association file \
+                         are live and verified. While it is off, installed Chromium desktop apps copy \
+                         their data across but stay on the legacy origin and offer to install the new \
+                         app. Installed mobile and Safari apps never forward either way."
+                    }
+
+                    h3 class="text-sm font-semibold text-neutral-900" { "Rollout" }
+                    (number_field(
+                        "domain_migration_rollout_basis_points",
+                        "Rollout (basis points)",
+                        &domain_migration.rollout_basis_points.to_string(),
+                        Some(0), Some(10000), "1",
+                        Some("Share of logged-in users bucketed into the migration, in basis points: 0 is nobody, 100 is 1%, 10000 is everybody."),
+                    ))
+                    (number_field(
+                        "domain_migration_anonymous_rollout_basis_points",
+                        "Anonymous rollout (basis points)",
+                        &domain_migration.anonymous_rollout_basis_points.to_string(),
+                        Some(0), Some(10000), "1",
+                        Some("Share of logged-out devices sent to the new origin, in basis points. Each device is bucketed on its own random ID."),
+                    ))
+                    div class="flex flex-col gap-2" {
+                        (text_input(
+                            "domain_migration_rollout_salt",
+                            "Rollout Salt",
+                            &domain_migration.rollout_salt,
+                            DOMAIN_MIGRATION_DEFAULT_SALT,
+                        ))
+                        p class="text-xs text-neutral-500" {
+                            "Seeds the bucketing hash for users and devices. Changing it reshuffles \
+                             which users and devices fall inside the percentages above. Leave it \
+                             alone to keep the current cohort stable."
+                        }
+                    }
+                    div class="flex flex-col gap-2" {
+                        (textarea_input(
+                            "domain_migration_included_user_ids",
+                            "Always-on User IDs",
+                            "1500000000000000001\n1500000000000000002",
+                            &included_user_ids,
+                            4,
+                            false,
+                        ))
+                        (entry_count_hint(
+                            domain_migration.included_user_ids.len(),
+                            EXPERIMENT_MAX_TARGETED_USERS,
+                        ))
+                        p class="text-xs text-neutral-500" {
+                            "One snowflake per line, or comma separated. These users are targeted \
+                             regardless of the percentage above. IDs must contain 1 to 20 decimal \
+                             digits. Invalid entries prevent the save. Blank entries and duplicate \
+                             IDs are ignored."
+                        }
+                    }
+                    div class="flex flex-col gap-2" {
+                        (textarea_input(
+                            "domain_migration_excluded_user_ids",
+                            "Never-on User IDs",
+                            "1500000000000000003\n1500000000000000004",
+                            &excluded_user_ids,
+                            4,
+                            false,
+                        ))
+                        (entry_count_hint(
+                            domain_migration.excluded_user_ids.len(),
+                            EXPERIMENT_MAX_TARGETED_USERS,
+                        ))
+                        p class="text-xs text-neutral-500" {
+                            "Same format. Exclusion wins over both the always-on list and the \
+                             percentage. It stops new migrations only. A user who already moved \
+                             stays on the new origin."
+                        }
+                    }
+
+                    (form_actions(html! {
+                        (submit_button("Save Domain Migration Configuration"))
                     }))
                 }
             }
@@ -2043,19 +2065,22 @@ mod tests {
     }
 
     #[test]
-    fn screen_share_delivery_section_shows_list_counts_and_the_master_switch() {
-        let screen_share_delivery = ScreenShareDeliveryConfigResponse {
+    fn domain_migration_section_shows_both_rollouts_and_list_counts() {
+        let domain_migration = DomainMigrationConfigResponse {
+            anonymous_rollout_basis_points: 250,
             included_user_ids: vec!["1500000000000000001".to_owned()],
             excluded_user_ids: vec![
                 "1500000000000000002".to_owned(),
                 "1500000000000000003".to_owned(),
             ],
-            ..ScreenShareDeliveryConfigResponse::default()
+            ..DomainMigrationConfigResponse::default()
         };
-        let markup =
-            screen_share_delivery_section("/admin", "csrf", &screen_share_delivery).into_string();
-        assert!(markup.contains("action=update_screen_share_delivery"));
-        assert!(markup.contains("screen_share_delivery_enabled"));
+        let markup = domain_migration_section("/admin", "csrf", &domain_migration).into_string();
+        assert!(markup.contains("action=update_domain_migration"));
+        assert!(markup.contains("domain_migration_enabled"));
+        assert!(markup.contains("name=\"domain_migration_anonymous_rollout_basis_points\""));
+        assert!(markup.contains("value=\"250\""));
+        assert!(markup.contains("name=\"domain_migration_standalone_forwarding\""));
         assert!(markup.contains("1 of 1000 stored"));
         assert!(markup.contains("2 of 1000 stored"));
         assert!(!markup.contains("at the cap"));

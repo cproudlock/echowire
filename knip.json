@@ -8,10 +8,7 @@
 		"@types/events",
 		"events",
 		"fflate",
-		"gifenc",
-		"gifuct-js",
-		"tailwindcss",
-		"upng-js"
+		"tailwindcss"
 	],
 	"ignoreFiles": [
 		"fluxer_admin/src/styles/app.css",
@@ -36,7 +33,6 @@
 		"fluxer_desktop/src/main/NotificationState.ts": ["exports", "types"],
 		"packages/schema/src/domains/admin/AdminUserSchemas.ts": ["exports"],
 		"packages/schema/src/domains/admin/PushServiceDeliverySchemas.ts": ["exports"],
-		"packages/schema/src/domains/admin/ScreenShareDeliverySchemas.ts": ["exports"],
 		"packages/schema/src/domains/admin/VoiceNoiseSuppressionSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelRequestSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelSchemas.ts": ["exports"],

@@ -3,7 +3,6 @@
 import AppStorage from '@app/features/platform/state/PersistentStorage';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import {makePersistent} from '@app/features/platform/utils/MobXPersistence';
-import ScreenShareDeliveryRollout from '@app/features/voice/state/ScreenShareDeliveryRollout';
 import type {
 	CodecPreference,
 	ScreenShareContentHint,
@@ -283,9 +282,6 @@ function applyVoiceProcessingDefaultsMigrationV1(parsed: Record<string, unknown>
 }
 
 function applyScreenShareFrameRateFloorMigrationV1(parsed: Record<string, unknown>): boolean {
-	if (!ScreenShareDeliveryRollout.enabled) {
-		return false;
-	}
 	if (parsed.screenShareFrameRateFloorMigratedV1 === true) {
 		return false;
 	}

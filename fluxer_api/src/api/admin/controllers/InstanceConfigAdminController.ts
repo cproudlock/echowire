@@ -34,9 +34,9 @@ import {
 	PendingRegistrationActionRequest,
 	RegistrationUrlIdParam,
 } from '@fluxer/schema/src/domains/admin/AdminSchemas';
+import {DomainMigrationConfigSchema} from '@fluxer/schema/src/domains/admin/DomainMigrationSchemas';
 import {GatewayRolloutConfigSchema} from '@fluxer/schema/src/domains/admin/GatewayRolloutSchemas';
 import {PushServiceDeliveryConfigSchema} from '@fluxer/schema/src/domains/admin/PushServiceDeliverySchemas';
-import {ScreenShareDeliveryConfigSchema} from '@fluxer/schema/src/domains/admin/ScreenShareDeliverySchemas';
 import {VoiceNoiseSuppressionConfigSchema} from '@fluxer/schema/src/domains/admin/VoiceNoiseSuppressionSchemas';
 import {UserIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import {ExperimentDeliveryConfigSchema} from '@fluxer/schema/src/domains/experiment/ExperimentSchemas';
@@ -65,8 +65,8 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 		ssoConfig,
 		gatewayRollout,
 		voiceNoiseSuppression,
-		screenShareDelivery,
 		pushServiceDelivery,
+		domainMigration,
 		experimentDelivery,
 		registrationConfig,
 		registrationUrls,
@@ -75,8 +75,8 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 		instanceConfigRepository.getSsoConfig(),
 		instanceConfigRepository.getGatewayRolloutConfig(),
 		instanceConfigRepository.getVoiceNoiseSuppressionConfig(),
-		instanceConfigRepository.getScreenShareDeliveryConfig(),
 		instanceConfigRepository.getPushServiceDeliveryConfig(),
+		instanceConfigRepository.getDomainMigrationConfig(),
 		instanceConfigRepository.getExperimentDeliveryConfig(),
 		instanceConfigRepository.getRegistrationConfig(),
 		instanceConfigRepository.getRegistrationUrlsForAdmin(),
@@ -108,8 +108,8 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 		},
 		gateway_rollout: gatewayRollout,
 		voice_noise_suppression: voiceNoiseSuppression,
-		screen_share_delivery: screenShareDelivery,
 		push_service_delivery: pushServiceDelivery,
+		domain_migration: domainMigration,
 		experiment_delivery: experimentDelivery,
 		registration: {
 			...registrationConfig,
@@ -273,18 +273,6 @@ export function InstanceConfigAdminController(app: HonoApp) {
 					);
 				}
 			}
-			if (data.screen_share_delivery) {
-				const patch = omitUndefinedFields(data.screen_share_delivery);
-				if (Object.keys(patch).length > 0) {
-					await instanceConfigRepository.updateScreenShareDeliveryConfig((current) =>
-						ScreenShareDeliveryConfigSchema.parse({
-							...current,
-							...patch,
-							config_version: current.config_version + 1,
-						}),
-					);
-				}
-			}
 			if (data.push_service_delivery) {
 				const patch = omitUndefinedFields(data.push_service_delivery);
 				if (Object.keys(patch).length > 0) {
@@ -296,6 +284,18 @@ export function InstanceConfigAdminController(app: HonoApp) {
 						}),
 					);
 					await getPushServiceDeliveryConfigPublisher().publish(landed);
+				}
+			}
+			if (data.domain_migration) {
+				const patch = omitUndefinedFields(data.domain_migration);
+				if (Object.keys(patch).length > 0) {
+					await instanceConfigRepository.updateDomainMigrationConfig((current) =>
+						DomainMigrationConfigSchema.parse({
+							...current,
+							...patch,
+							config_version: current.config_version + 1,
+						}),
+					);
 				}
 			}
 			if (data.experiment_delivery) {

@@ -123,6 +123,7 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 		parse: parseCsv,
 	},
 	FLUXER_API_UNFURL_IGNORED_HOSTS: {path: ['services', 'api', 'unfurl_ignored_hosts'], parse: parseCsv},
+	FLUXER_APP_ORIGIN_ALIASES: {path: ['services', 'api', 'app_origin_aliases'], parse: parseCsv},
 	FLUXER_API_EMBEDS_OEMBED_HTML_ENABLED: {
 		path: ['services', 'api', 'embeds', 'oembed_html_enabled'],
 		parse: parseBoolean,
@@ -383,6 +384,14 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_INSTANCE_SETUP_CONFIGURED: {path: ['instance', 'setup', 'configured'], parse: parseBoolean},
 	FLUXER_ABUSE_INBOUND_PHONE_COUNTRY_CODES: {
 		path: ['instance', 'abuse_policy', 'inbound_phone_country_codes'],
+		parse: parseCsv,
+	},
+	FLUXER_ABUSE_PHONE_FLAGGING_ENABLED: {
+		path: ['instance', 'abuse_policy', 'phone_flagging', 'enabled'],
+		parse: parseBoolean,
+	},
+	FLUXER_ABUSE_PHONE_FLAGGING_EXEMPT_COUNTRY_CODES: {
+		path: ['instance', 'abuse_policy', 'phone_flagging', 'exempt_country_codes'],
 		parse: parseCsv,
 	},
 	FLUXER_ABUSE_PHONE_INBOUND_REQUIRED_PREFIXES: {

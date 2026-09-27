@@ -333,7 +333,7 @@ muted_forum_suppresses_push_for_its_posts_test() ->
     PostMessage = #{<<"channel_type">> => 11, <<"thread_parent_id">> => <<"200">>},
     ?assertEqual(
         false,
-        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{})
+        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{}, undefined)
     ).
 
 post_override_beats_muted_forum_test() ->
@@ -346,12 +346,16 @@ post_override_beats_muted_forum_test() ->
     PostMessage = #{<<"channel_type">> => 11, <<"thread_parent_id">> => <<"200">>},
     ?assertEqual(
         true,
-        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{})
+        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{}, undefined)
     ).
 
 expired_forum_mute_no_longer_suppresses_its_posts_test() ->
-    PastMs = integer_to_binary(erlang:system_time(millisecond) - 60000),
-    FutureMs = integer_to_binary(erlang:system_time(millisecond) + 60000),
+    %% Echowire: end_time is an ISO8601 string on the wire, so it must be built with
+    %% the rfc3339 helper. Epoch milliseconds fail to parse, which mute_end_ms treats as
+    %% "no expiry", so the expired case wrongly stayed muted and the active case passed
+    %% for the wrong reason.
+    PastMs = rfc3339_in_ms(-60000),
+    FutureMs = rfc3339_in_ms(60000),
     PostMessage = #{<<"channel_type">> => 11, <<"thread_parent_id">> => <<"200">>},
     Expired = #{
         channel_overrides => #{
@@ -360,7 +364,7 @@ expired_forum_mute_no_longer_suppresses_its_posts_test() ->
     },
     ?assertEqual(
         true,
-        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Expired, 1, #{})
+        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Expired, 1, #{}, undefined)
     ),
     Active = #{
         channel_overrides => #{
@@ -369,7 +373,7 @@ expired_forum_mute_no_longer_suppresses_its_posts_test() ->
     },
     ?assertEqual(
         false,
-        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Active, 1, #{})
+        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Active, 1, #{}, undefined)
     ).
 
 guild_muted_suppresses_push_test() ->

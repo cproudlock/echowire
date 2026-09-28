@@ -400,7 +400,6 @@ export class UserContentService {
 			provider_environment: null,
 		};
 		const subscription = await this.storeWebPushSubscription(data, originKind ?? null, installedApp === true);
-		await this.gatewayService.invalidatePushSubscriptions({userId});
 		return subscription;
 	}
 
@@ -476,7 +475,6 @@ export class UserContentService {
 
 	async deletePushSubscription(userId: UserID, subscriptionId: string): Promise<void> {
 		await this.userRepository.deletePushSubscription(userId, subscriptionId);
-		await this.gatewayService.invalidatePushSubscriptions({userId});
 	}
 
 	async rotatePushSubscription(params: {
@@ -512,7 +510,6 @@ export class UserContentService {
 			provider_environment: null,
 		};
 		const subscription = await this.storeWebPushSubscription(data, originKind ?? null, installedApp === true);
-		await this.gatewayService.invalidatePushSubscriptions({userId});
 		return subscription;
 	}
 
@@ -539,7 +536,6 @@ export class UserContentService {
 		};
 		const subscription = await this.userRepository.createPushSubscription(data);
 		await this.pruneDuplicateMobileRegistrations(userId, device.token, subscriptionId);
-		await this.gatewayService.invalidatePushSubscriptions({userId});
 		return subscription;
 	}
 

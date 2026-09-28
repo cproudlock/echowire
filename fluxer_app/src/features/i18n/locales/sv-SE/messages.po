@@ -797,8 +797,13 @@ msgstr "{altText} — förhandsvisning med ljust tema"
 msgid "{appCount, plural, one {# app selected for access revocation} other {# apps selected for access revocation}}"
 msgstr "{appCount, plural, one {# app vald för återkallande av åtkomst} other {# appar valda för återkallande av åtkomst}}"
 
+#. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+msgid "{appName} can't reach its servers. It will keep trying in the background."
+msgstr "{appName} kan inte nå sina servrar. Den kommer att fortsätta försöka i bakgrunden."
+
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+#: src/features/platform/utils/DesktopLocaleBridge.ts:285
 msgid "{appName} failed to start"
 msgstr "{appName} kunde inte starta"
 
@@ -1586,19 +1591,19 @@ msgstr "{premiumProductName}-abonnemang"
 msgid "{presenceCount} online"
 msgstr "{presenceCount} online"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:39
+#: src/features/app/components/BootstrapErrorScreen.tsx:46
 msgid "{PRODUCT_NAME} failed to start properly. This could be due to corrupted data or a temporary issue."
 msgstr "{PRODUCT_NAME} kunde inte starta ordentligt. Detta kan bero på skadad data eller ett tillfälligt problem."
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:196
+#: src/features/auth/state/NewDeviceMonitoring.tsx:208
 msgid "{PRODUCT_NAME} has found a new audio device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} har hittat en ny ljudenhet med namnet <0>{deviceName}</0>. Vill du byta till den?"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:185
+#: src/features/auth/state/NewDeviceMonitoring.tsx:197
 msgid "{PRODUCT_NAME} has found a new audio input device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} har hittat en ny ljudingångsenhet som heter <0>{deviceName}</0>. Vill du byta till den?"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:190
+#: src/features/auth/state/NewDeviceMonitoring.tsx:202
 msgid "{PRODUCT_NAME} has found a new audio output device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} har hittat en ny ljudutgångsenhet med namnet <0>{deviceName}</0>. Vill du byta till den?"
 
@@ -1619,7 +1624,7 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "{PRODUCT_NAME} måste startas om för att inaktivera Chromiums hårdvaruacceleration. Använd detta endast om du felsöker grafikproblem eller hög GPU-användning."
 
 #. Accessible label for the Fluxer application icon.
-#: src/features/ui/components/icons/FluxerIcon.tsx:10
+#: src/features/ui/components/icons/FluxerIconMark.tsx:6
 msgid "{productName} application icon"
 msgstr "{productName}-appikon"
 
@@ -2538,7 +2543,7 @@ msgid "About"
 msgstr "Om"
 
 #. Desktop app menu item. Opens the About panel. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:16
+#: src/features/platform/utils/DesktopLocaleBridge.ts:17
 msgid "About {appName}"
 msgstr "Om {appName}"
 
@@ -2604,6 +2609,16 @@ msgstr "Acceptera inbjudan"
 #: src/features/relationship/utils/RelationshipActionUtils.tsx:77
 msgid "Accept the friend request from {userName}?"
 msgstr "Acceptera vänförfrågan från {userName}?"
+
+#. Label for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+msgid "Accept the push relay supplemental privacy notice"
+msgstr "Acceptera det kompletterande meddelandet om integritet för push-vidarebefordran"
+
+#. Summary value when the operator accepted the push relay notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:390
+msgid "Accepted"
+msgstr "Accepterat"
 
 #. Short label in the notification utils helper. Keep it concise.
 #: src/features/notification/utils/NotificationUtils.ts:32
@@ -2860,7 +2875,7 @@ msgid "Activity threshold"
 msgstr "Aktivitetströskel"
 
 #. Native View menu item that resets zoom to 100%.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:108
+#: src/features/platform/utils/DesktopLocaleBridge.ts:109
 msgid "Actual size"
 msgstr "Faktisk storlek"
 
@@ -2898,7 +2913,7 @@ msgstr "Lägg till en kommentar (valfritt)"
 msgid "Add a community"
 msgstr "Lägg till en community"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:75
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:77
 msgid "Add a different account"
 msgstr "Lägg till ett annat konto"
 
@@ -2908,7 +2923,7 @@ msgid "Add a friend to get started."
 msgstr "Lägg till en vän för att komma igång."
 
 #. Setup wizard body for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:934
+#: src/features/app/components/setup/SetupWizardSteps.tsx:972
 msgid "Add a Klipy API key to enable GIF search at runtime."
 msgstr "Lägg till en Klipy-API-nyckel för att aktivera GIF-sökning när instansen körs."
 
@@ -2945,7 +2960,7 @@ msgid "Add a working email"
 msgstr "Lägg till en fungerande e-postadress"
 
 #. Setup wizard body for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:942
+#: src/features/app/components/setup/SetupWizardSteps.tsx:980
 msgid "Add a YouTube Data API key to enrich YouTube links."
 msgstr "Lägg till en YouTube Data API-nyckel för att visa utökade förhandsvisningar av YouTube-länkar."
 
@@ -2960,7 +2975,7 @@ msgid "Add action."
 msgstr "Lägg till åtgärd."
 
 #. OAuth authorization account step button. Opens the flow to sign in with another account.
-#: src/features/auth/components/accounts/AccountSelector.tsx:185
+#: src/features/auth/components/accounts/AccountSelector.tsx:186
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:124
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:30
 msgid "Add an account"
@@ -2991,7 +3006,7 @@ msgid "Add another reaction"
 msgstr "Lägg till en till reaktion"
 
 #. Setup wizard body for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:966
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1004
 msgid "Add Bluesky OAuth client metadata and a signing key."
 msgstr "Lägg till Bluesky OAuth-klientmetadata och en signeringsnyckel."
 
@@ -3066,7 +3081,7 @@ msgid "Add item"
 msgstr "Lägg till objekt"
 
 #. Title of the native file picker that selects local theme files to add.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:266
+#: src/features/platform/utils/DesktopLocaleBridge.ts:267
 #: src/features/theme_studio/sections/AssetsSection.tsx:150
 msgid "Add local files"
 msgstr "Lägg till lokala filer"
@@ -3141,7 +3156,7 @@ msgid "Add shortcut"
 msgstr "Lägg till genväg"
 
 #. Setup wizard body for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:958
+#: src/features/app/components/setup/SetupWizardSteps.tsx:996
 msgid "Add SMTP credentials so the instance can send verification and notification email."
 msgstr "Lägg till SMTP-uppgifter så att instansen kan skicka e-post för verifiering och aviseringar."
 
@@ -3168,7 +3183,7 @@ msgid "Add stream"
 msgstr "Lägg till sändning"
 
 #. Description for configuring an optional setup wizard integration now.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:926
+#: src/features/app/components/setup/SetupWizardSteps.tsx:964
 msgid "Add the credentials during setup."
 msgstr "Lägg till uppgifterna under installationen."
 
@@ -4232,17 +4247,17 @@ msgid "Anyone can call you, including strangers"
 msgstr "Vem som helst kan ringa dig, inklusive främlingar"
 
 #. Description for the open registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:159
+#: src/features/app/components/setup/SetupWizardSteps.tsx:162
 msgid "Anyone can create an account."
 msgstr "Alla kan skapa ett konto."
 
 #. Description for the approval registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:167
+#: src/features/app/components/setup/SetupWizardSteps.tsx:170
 msgid "Anyone can request an account, but an administrator must approve it."
 msgstr "Vem som helst kan begära ett konto, men en administratör måste godkänna det."
 
 #. Label for an integration API key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:979
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1017
 msgid "API key"
 msgstr "API-nyckel"
 
@@ -4401,7 +4416,7 @@ msgid "Apply to all communities"
 msgstr "Tillämpa på alla communities"
 
 #. Registration mode option requiring admin approval.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:163
+#: src/features/app/components/setup/SetupWizardSteps.tsx:166
 msgid "Approval required"
 msgstr "Godkännande krävs"
 
@@ -4515,7 +4530,7 @@ msgid "Are you sure you want to remove <0>{engineName}</0>?"
 msgstr "Är du säker på att du vill ta bort <0>{engineName}</0>?"
 
 #. Confirm dialog message for the destructive reset action. Tone stays plain.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:178
+#: src/features/platform/utils/DesktopLocaleBridge.ts:179
 msgid "Are you sure you want to reset {appName}'s app data?"
 msgstr "Är du säker på att du vill återställa appdata för {appName}?"
 
@@ -4626,8 +4641,8 @@ msgstr "Bilageåtgärder"
 
 #. Setup wizard media expiry step title.
 #. Summary row label for the attachment expiry choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:217
-#: src/features/app/components/setup/SetupWizardSteps.tsx:352
+#: src/features/app/components/setup/SetupWizardSteps.tsx:220
+#: src/features/app/components/setup/SetupWizardSteps.tsx:378
 msgid "Attachment expiration"
 msgstr "Utgångstid för bilagor"
 
@@ -5208,7 +5223,7 @@ msgstr "Borta just nu"
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
 #. OAuth authorization secondary button. Returns to the previous carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:77
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:78
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAuthorizeActions.tsx:14
 #: src/features/auth/flow/IpAuthorizationScreen.tsx:155
 #: src/features/channel/components/channel_header/shared.ts:27
@@ -5301,7 +5316,7 @@ msgstr "Premiumförmåner är inaktiverade på servern"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:59
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:5
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:731
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:732
 msgid "Background"
 msgstr "Bakgrund"
 
@@ -5705,12 +5720,12 @@ msgid "Bluesky"
 msgstr "Bluesky"
 
 #. Label for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:294
+#: src/features/app/components/setup/SetupWizardSteps.tsx:320
 msgid "Bluesky connections"
 msgstr "Bluesky-anslutningar"
 
 #. Setup wizard title for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:962
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1000
 msgid "Bluesky OAuth"
 msgstr "Bluesky OAuth"
 
@@ -5728,7 +5743,7 @@ msgid "Blur"
 msgstr "Gör suddigt"
 
 #. Slider label in the camera preview modal controlling how strong the background blur effect is.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:81
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:82
 msgid "Blur strength"
 msgstr "Oskärpans styrka"
 
@@ -5878,7 +5893,7 @@ msgid "Bot profile"
 msgstr "Botprofil"
 
 #. Setup wizard title for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:946
+#: src/features/app/components/setup/SetupWizardSteps.tsx:984
 msgid "Bot protection"
 msgstr "Botskydd"
 
@@ -5944,7 +5959,7 @@ msgid "Branding"
 msgstr "Varumärke"
 
 #. Accessible label for a branding image preview in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:141
+#: src/features/app/components/setup/SetupWizardSteps.tsx:144
 msgid "Branding asset preview"
 msgstr "Förhandsgranskning av varumärkesresurs"
 
@@ -6263,7 +6278,7 @@ msgstr "Kameraenhet"
 msgid "Camera effects"
 msgstr "Kameraeffekter"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:809
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:810
 msgid "Camera error"
 msgstr "Kamerafel"
 
@@ -6306,7 +6321,7 @@ msgstr "Kamerabehörighet krävs"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Title of the camera preview modal.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:186
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:63
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:64
 msgid "Camera preview"
 msgstr "Kameraförhandsvisning"
 
@@ -6341,6 +6356,11 @@ msgstr "Kameror är avstängda vid fler än {voiceChannelCameraUserLimit} deltag
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:252
 msgid "Can't access that email?"
 msgstr "Kommer du inte åt den e-postadressen?"
+
+#. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+msgid "Can't connect"
+msgstr "Kan inte ansluta"
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
@@ -6409,7 +6429,7 @@ msgstr "Kan inte ladda upp filer här"
 #: src/features/user/components/modals/PhoneAddModal.tsx:401
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:174
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:33
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:845
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:846
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:81
 msgid "Cancel"
 msgstr "Avbryt"
@@ -6510,7 +6530,7 @@ msgid "Cannot delete account"
 msgstr "Kan inte radera konto"
 
 #. Toast error shown when captcha verification fails inside the auth captcha interceptor.
-#: src/features/auth/components/CaptchaInterceptor.tsx:14
+#: src/features/auth/components/CaptchaInterceptor.tsx:15
 msgid "Captcha verification failed. Try again."
 msgstr "Verifiering av captcha misslyckades. Försök igen."
 
@@ -6651,7 +6671,7 @@ msgstr "Centrerad"
 msgid "Change avatar"
 msgstr "Ändra avatar"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:744
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:745
 msgid "Change background"
 msgstr "Ändra bakgrund"
 
@@ -7297,11 +7317,11 @@ msgid "Chat shortcuts"
 msgstr "Chattgenvägar"
 
 #. Tray menu item. Triggers the auto-updater to look for a new desktop build.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:224
+#: src/features/platform/utils/DesktopLocaleBridge.ts:225
 msgid "Check for updates"
 msgstr "Sök efter uppdateringar"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:56
+#: src/features/app/components/BootstrapErrorScreen.tsx:63
 msgid "Check our <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> for status updates."
 msgstr "Se <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> för statusuppdateringar."
 
@@ -7352,6 +7372,10 @@ msgstr "Kontrollerar åtkomst..."
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx:23
 msgid "Checking screen recording permission..."
 msgstr "Kontrollerar skärminspelningsbehörigheten…"
+
+#: src/features/auth/components/AltchaVerification.tsx:62
+msgid "Checking your browser. This takes a few seconds."
+msgstr "Kontrollerar din webbläsare. Det här tar några sekunder."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:67
@@ -7464,7 +7488,7 @@ msgid "Choose a supported audio file and try again."
 msgstr "Välj en ljudfil som stöds och försök igen."
 
 #. Setup wizard title for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:60
+#: src/features/app/components/setup/SetupWizardSteps.tsx:63
 msgid "Choose a theme"
 msgstr "Välj ett tema"
 
@@ -7476,7 +7500,8 @@ msgstr "Välj ett fönster i systemväljaren"
 #. OAuth authorization step title. The user must choose which account to authorize with.
 #: src/features/auth/components/accounts/AccountSelector.tsx:61
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:17
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:68
+#: src/features/auth/flow/AuthLoginLayout.tsx:492
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:70
 msgid "Choose an account"
 msgstr "Välj ett konto"
 
@@ -7517,7 +7542,7 @@ msgid "Choose friends to message."
 msgstr "Välj vänner att skicka meddelanden till."
 
 #. Setup wizard body for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:950
+#: src/features/app/components/setup/SetupWizardSteps.tsx:988
 msgid "Choose hCaptcha or Cloudflare Turnstile for signup challenges."
 msgstr "Välj hCaptcha eller Cloudflare Turnstile för kontroller vid registrering."
 
@@ -7532,7 +7557,7 @@ msgid "Choose how messages are displayed in chat channels."
 msgstr "Välj hur meddelanden visas i chattkanaler."
 
 #. Setup wizard registration step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:150
+#: src/features/app/components/setup/SetupWizardSteps.tsx:153
 msgid "Choose how new accounts are created on this instance."
 msgstr "Välj hur nya konton skapas på den här instansen."
 
@@ -7552,7 +7577,7 @@ msgid "Choose how you'd like to pay for this subscription."
 msgstr "Välj hur du vill betala för abonnemanget."
 
 #. Setup wizard community model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:180
+#: src/features/app/components/setup/SetupWizardSteps.tsx:183
 msgid "Choose how your instance works"
 msgstr "Välj hur din instans fungerar"
 
@@ -7580,7 +7605,7 @@ msgid "Choose the category that best describes your community. You can change th
 msgstr "Välj den kategori som bäst beskriver din community. Du kan ändra detta när som helst."
 
 #. Setup wizard premium model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:303
+#: src/features/app/components/setup/SetupWizardSteps.tsx:329
 msgid "Choose the premium model"
 msgstr "Välj premiummodell"
 
@@ -7635,7 +7660,7 @@ msgid "Choose where {PRODUCT_NAME} should send images for reverse image search. 
 msgstr "Välj vart {PRODUCT_NAME} ska skicka bilder för omvänd bildsökning. Vi kommer att komma ihåg ditt val. Du kan ändra det eller lägga till en egen leverantör senare i {searchEnginesSettingsPath}."
 
 #. Setup wizard media expiry step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:221
+#: src/features/app/components/setup/SetupWizardSteps.tsx:224
 msgid "Choose whether uploaded attachments should expire automatically based on size."
 msgstr "Välj om bifogade filer automatiskt ska gå ut baserat på storlek."
 
@@ -7817,7 +7842,7 @@ msgstr "Rensar mikrofonsignalen för tydligt tal."
 #. Button or menu action label in the theme studio quick css section. Keep it concise.
 #. Button that removes an uploaded branding image.
 #. Inline button in the Recent searches section that wipes the search history list.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:117
+#: src/features/app/components/setup/SetupWizardSteps.tsx:120
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
 #: src/features/input/components/KeybindRecorder.tsx:442
@@ -8045,7 +8070,7 @@ msgid "Client"
 msgstr "Klient"
 
 #. Label for Bluesky OAuth client name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1056
 msgid "Client name"
 msgstr "Klientnamn"
 
@@ -8062,7 +8087,7 @@ msgid "Client secret regenerated. Update any code that uses the old secret."
 msgstr "En ny klienthemlighet har skapats. Uppdatera all kod som använder den gamla."
 
 #. Label for Bluesky OAuth client URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1022
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1060
 msgid "Client URL"
 msgstr "Klient-URL"
 
@@ -8109,7 +8134,7 @@ msgstr "Kloning är inaktiverad"
 #. Aria-label / button text for dismissing a modal, sheet, popout, or overlay. Short.
 #. Native Window menu item that closes the focused desktop window.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:311
-#: src/features/platform/utils/DesktopLocaleBridge.ts:138
+#: src/features/platform/utils/DesktopLocaleBridge.ts:139
 msgid "Close"
 msgstr "Stäng"
 
@@ -8195,7 +8220,7 @@ msgid "Close your DM with {username}? You can reopen it anytime."
 msgstr "Stäng din DM-konversation med {username}? Du kan öppna den igen när som helst."
 
 #. Registration mode option that disables public registration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:171
+#: src/features/app/components/setup/SetupWizardSteps.tsx:174
 msgid "Closed"
 msgstr "Stängd"
 
@@ -8215,7 +8240,7 @@ msgid "Cloud upload"
 msgstr "Molnuppladdning"
 
 #. Cloudflare Turnstile provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:975
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1013
 msgid "Cloudflare Turnstile"
 msgstr "Cloudflare Turnstile"
 
@@ -8607,7 +8632,7 @@ msgstr "Tysta medlemmen i communityn"
 
 #. Label for the single community name input in the setup wizard.
 #. Label of the community name input in the create-community form.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:196
+#: src/features/app/components/setup/SetupWizardSteps.tsx:199
 #: src/features/guild/components/modals/add_guild_modal/shared.ts:123
 msgid "Community name"
 msgstr "Namn på community"
@@ -8773,7 +8798,7 @@ msgid "Completing your sign-in…"
 msgstr "Slutför inloggningen…"
 
 #. Windows jump-list task description (tooltip text) for the New direct message action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:253
+#: src/features/platform/utils/DesktopLocaleBridge.ts:254
 msgid "Compose a new direct message"
 msgstr "Skriv ett nytt direktmeddelande"
 
@@ -8825,7 +8850,7 @@ msgid "Configure keyboard shortcuts"
 msgstr "Konfigurera kortkommandon"
 
 #. Option for configuring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:922
+#: src/features/app/components/setup/SetupWizardSteps.tsx:960
 msgid "Configure now"
 msgstr "Konfigurera nu"
 
@@ -9097,7 +9122,7 @@ msgstr "Anslutning: {connectionId}"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for external accounts and verified domains.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:415
-#: src/features/user/components/popouts/UserProfileShared.tsx:614
+#: src/features/user/components/popouts/UserProfileShared.tsx:615
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:8
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:30
 msgid "Connections"
@@ -9346,7 +9371,7 @@ msgstr "URL kopierad till urklipp"
 #: src/features/auth/components/modals/BackupCodesModal.tsx:96
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:50
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:397
-#: src/features/platform/utils/DesktopLocaleBridge.ts:63
+#: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:73
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
@@ -9391,7 +9416,7 @@ msgstr "Kopiera banner-URL"
 
 #. Tray menu item. Copies build / version diagnostics to the clipboard for bug reports.
 #: src/features/app/components/floating/UserAreaPopout.tsx:707
-#: src/features/platform/utils/DesktopLocaleBridge.ts:228
+#: src/features/platform/utils/DesktopLocaleBridge.ts:229
 msgid "Copy build info"
 msgstr "Kopiera bygginfo"
 
@@ -9594,7 +9619,7 @@ msgid "Copy setup key"
 msgstr "Kopiera konfigurationsnyckeln"
 
 #. Button on the crash screen that copies developer diagnostic text.
-#: src/features/app/components/ErrorFallback.tsx:152
+#: src/features/app/components/ErrorFallback.tsx:155
 msgid "Copy stack trace"
 msgstr "Kopiera stackspårning"
 
@@ -9687,7 +9712,7 @@ msgid "Could not decode this audio file."
 msgstr "Kunde inte avkoda den här ljudfilen."
 
 #. Error shown when the setup wizard fails to load the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:93
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:94
 msgid "Could not load the instance configuration. Try reloading the page."
 msgstr "Kunde inte ladda instanskonfigurationen. Försök att ladda om sidan."
 
@@ -10060,7 +10085,7 @@ msgid "Couldn't ring this person"
 msgstr "Kunde inte ringa den här personen"
 
 #. Error message in the use textarea submit hook. Preserve {detail}; it is inserted by code.
-#: src/features/messaging/hooks/useTextareaSubmit.ts:48
+#: src/features/messaging/hooks/useTextareaSubmit.ts:53
 msgid "Couldn't run that command: {detail}"
 msgstr "Kunde inte köra kommandot: {detail}"
 
@@ -10304,7 +10329,7 @@ msgid "Create account to claim gift"
 msgstr "Skapa konto för att lösa in present"
 
 #. Button that opens the registration flow to create the first administrator account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:68
+#: src/features/app/components/setup/SetupWizardSteps.tsx:71
 msgid "Create administrator account"
 msgstr "Skapa administratörskonto"
 
@@ -10415,7 +10440,7 @@ msgid "Create role"
 msgstr "Skapa roll"
 
 #. Setup wizard title prompting the operator to create the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:48
+#: src/features/app/components/setup/SetupWizardSteps.tsx:51
 msgid "Create the administrator account"
 msgstr "Skapa administratörskontot"
 
@@ -10905,7 +10930,7 @@ msgstr "För att anpassa din avatar, banner, accentfärg och presentation för e
 #. Native Edit menu item that cuts the selection to the clipboard. Imperative verb, not the noun.
 #. Textarea right-click context menu item that cuts the selected text.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:46
-#: src/features/platform/utils/DesktopLocaleBridge.ts:59
+#: src/features/platform/utils/DesktopLocaleBridge.ts:60
 msgid "Cut"
 msgstr "Klipp ut"
 
@@ -11164,7 +11189,7 @@ msgid "Debug user"
 msgstr "Felsök användare"
 
 #. Setup wizard premium model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:307
+#: src/features/app/components/setup/SetupWizardSteps.tsx:333
 msgid "Decide how premium limits apply to people on this instance."
 msgstr "Bestäm hur premiumgränserna ska gälla för personer på den här instansen."
 
@@ -11201,7 +11226,7 @@ msgstr "Standard"
 #. Default camera device option.
 #. Default device option label in the voice settings menu (alternate call site for the same concept as DEFAULT_DESCRIPTOR).
 #. Fallback device option shown before a microphone, speaker, or camera label is available.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:67
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:68
 #: src/features/voice/components/VoiceSettingsMenus.tsx:87
 #: src/features/voice/utils/SettingsDeviceOptions.ts:11
 msgctxt "device-option"
@@ -11308,7 +11333,7 @@ msgstr "Delaware"
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
 #: src/features/messaging/commands/MessageCommands.tsx:79
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
-#: src/features/platform/utils/DesktopLocaleBridge.ts:76
+#: src/features/platform/utils/DesktopLocaleBridge.ts:77
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
@@ -12043,7 +12068,7 @@ msgstr "Förhandsvisningar av direktmeddelanden"
 
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:348
+#: src/features/app/components/setup/SetupWizardSteps.tsx:374
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:629
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
@@ -12123,7 +12148,7 @@ msgid "Disable desktop notifications?"
 msgstr "Inaktivera datoraviseringar?"
 
 #. Label for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:208
+#: src/features/app/components/setup/SetupWizardSteps.tsx:211
 msgid "Disable direct messages and friend requests"
 msgstr "Inaktivera direktmeddelanden och vänförfrågningar"
 
@@ -12132,7 +12157,7 @@ msgid "Disable favorites"
 msgstr "Inaktivera favoriter"
 
 #. Troubleshooting menu item. Turns off Chromium hardware acceleration and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:158
+#: src/features/platform/utils/DesktopLocaleBridge.ts:159
 msgid "Disable hardware acceleration and restart"
 msgstr "Inaktivera maskinvaruacceleration och starta om"
 
@@ -12199,7 +12224,7 @@ msgid "Disable video locally"
 msgstr "Inaktivera video lokalt"
 
 #. Summary value when a setup option is disabled.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:364
+#: src/features/app/components/setup/SetupWizardSteps.tsx:402
 msgid "Disabled"
 msgstr "Inaktiverad"
 
@@ -12275,14 +12300,14 @@ msgid "Disconnect device"
 msgstr "Koppla från enhet"
 
 #. Tray menu item shown while in a voice call. {channel} is the voice channel name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:216
+#: src/features/platform/utils/DesktopLocaleBridge.ts:217
 msgid "Disconnect from {channel}"
 msgstr "Koppla från {channel}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tray menu item. Leaves the current voice call when the channel name is unavailable.
 #: src/features/input/state/input_keybind/shared.ts:317
-#: src/features/platform/utils/DesktopLocaleBridge.ts:220
+#: src/features/platform/utils/DesktopLocaleBridge.ts:221
 msgid "Disconnect from voice"
 msgstr "Koppla från röstchatten"
 
@@ -12534,7 +12559,7 @@ msgstr "TXT-post i DNS"
 #. Short label in the app constants.
 #. Tray status menu item. User presence that suppresses notifications.
 #: src/features/app/constants/AppConstants.ts:33
-#: src/features/platform/utils/DesktopLocaleBridge.ts:200
+#: src/features/platform/utils/DesktopLocaleBridge.ts:201
 msgid "Do not disturb"
 msgstr "Stör ej"
 
@@ -12659,7 +12684,7 @@ msgstr "Visa inte igen"
 msgid "Don't show typing indicators in the channel list"
 msgstr "Visa inte skrivindikatorer i kanallistan"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:51
+#: src/features/auth/state/NewDeviceMonitoring.tsx:57
 msgid "Don't suggest {deviceName} again"
 msgstr "Föreslå inte {deviceName} igen"
 
@@ -12998,7 +13023,7 @@ msgstr "Ekoeliminering"
 #. Button or menu action label in the search engines tab. Keep it concise.
 #. Top-level native menu bar title (Edit menu, holds cut/copy/paste).
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:43
-#: src/features/platform/utils/DesktopLocaleBridge.ts:47
+#: src/features/platform/utils/DesktopLocaleBridge.ts:48
 #: src/features/user/components/modals/tabs/chat_settings_tab/SearchEnginesTab.tsx:35
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx:51
 msgid "Edit"
@@ -13270,7 +13295,7 @@ msgid "Email changed"
 msgstr "E-postadress ändrad"
 
 #. Setup wizard title for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:954
+#: src/features/app/components/setup/SetupWizardSteps.tsx:992
 msgid "Email delivery"
 msgstr "E-postleverans"
 
@@ -13561,7 +13586,7 @@ msgid "Enable at least one translator below."
 msgstr "Aktivera minst en översättare nedan."
 
 #. Label for enabling attachment expiry during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:225
+#: src/features/app/components/setup/SetupWizardSteps.tsx:228
 msgid "Enable attachment expiration"
 msgstr "Aktivera utgångstid för bilagor"
 
@@ -13575,7 +13600,7 @@ msgid "Enable beta feature"
 msgstr "Aktivera beta-funktion"
 
 #. Label for enabling Bluesky OAuth in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1014
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1052
 msgid "Enable Bluesky OAuth"
 msgstr "Aktivera Bluesky OAuth"
 
@@ -13608,7 +13633,7 @@ msgid "Enable developer mode"
 msgstr "Aktivera utvecklarläge"
 
 #. Label for enabling SMTP email delivery in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:982
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1020
 msgid "Enable email delivery"
 msgstr "Aktivera e-postleverans"
 
@@ -13627,7 +13652,7 @@ msgid "Enable favorites"
 msgstr "Aktivera favoriter"
 
 #. Troubleshooting menu item. Turns Chromium hardware acceleration back on and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:162
+#: src/features/platform/utils/DesktopLocaleBridge.ts:163
 msgid "Enable hardware acceleration and restart"
 msgstr "Aktivera maskinvaruacceleration och starta om"
 
@@ -13750,7 +13775,7 @@ msgid "Enable text selection"
 msgstr "Aktivera textmarkering"
 
 #. Setup wizard optional services step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:270
+#: src/features/app/components/setup/SetupWizardSteps.tsx:296
 msgid "Enable the integrations whose credentials you have configured. Only available services are shown."
 msgstr "Aktivera de integrationer vars autentiseringsuppgifter du har konfigurerat. Endast tillgängliga tjänster visas."
 
@@ -13791,7 +13816,7 @@ msgstr "Aktivera videominiatyrbilder för snabbspolning"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Summary value when a setup option is enabled.
 #. Toggle item in the textarea spellcheck submenu. Master enable for spellcheck.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:360
+#: src/features/app/components/setup/SetupWizardSteps.tsx:398
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:21
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:66
 msgid "Enabled"
@@ -13913,7 +13938,7 @@ msgid "Enter a code in the format ABCD-1234."
 msgstr "Ange en kod i formatet ABCD-1234."
 
 #. Validation error for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:204
+#: src/features/app/components/setup/SetupWizardSteps.tsx:207
 msgid "Enter a community name between 1 and 100 characters."
 msgstr "Ange ett communitynamn på mellan 1 och 100 tecken."
 
@@ -13923,7 +13948,7 @@ msgid "Enter a gift code to redeem {premiumProductName} for your account."
 msgstr "Ange en presentkod för att lösa in {premiumProductName} för ditt konto."
 
 #. Validation error for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:97
+#: src/features/app/components/setup/SetupWizardSteps.tsx:100
 msgid "Enter a product name between 1 and 80 characters."
 msgstr "Ange ett produktnamn mellan 1 och 80 tecken."
 
@@ -14306,7 +14331,7 @@ msgid "Everyone"
 msgstr "Alla"
 
 #. Premium model option that gives everyone the highest limits.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:319
+#: src/features/app/components/setup/SetupWizardSteps.tsx:345
 msgid "Everyone is premium"
 msgstr "Alla är premium"
 
@@ -14352,7 +14377,7 @@ msgstr "uteslut en del av ett filnamn för en bilaga"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:38
+#: src/features/platform/utils/DesktopLocaleBridge.ts:39
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Exit"
 msgstr "Avsluta"
@@ -14435,7 +14460,7 @@ msgid "EXPERIMENTAL"
 msgstr "EXPERIMENTELLT"
 
 #. Label for attachment decay curve.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:253
+#: src/features/app/components/setup/SetupWizardSteps.tsx:256
 msgid "Expiration curve"
 msgstr "Kurva för utgångstid"
 
@@ -14565,11 +14590,6 @@ msgstr "Exportera mina data"
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:110
 msgid "Export themes"
 msgstr "Exportera teman"
-
-#. Developer / debug surface — keep terse and technical. Tooltip / description for the profile timezone settings toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
-msgid "Expose the staff-only time zone section in profile settings."
-msgstr "Visa tidszonsinställningarna för personal i profilinställningarna."
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -14702,7 +14722,7 @@ msgid "Failed to delete channel"
 msgstr "Kunde inte radera kanal"
 
 #. Toast / inline error in the camera preview modal when enabling the camera fails.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:59
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:60
 msgid "Failed to enable camera."
 msgstr "Kunde inte aktivera kameran."
 
@@ -14717,7 +14737,7 @@ msgid "Failed to forward message"
 msgstr "Kunde inte vidarebefordra meddelandet"
 
 #. Short label in the authentication desktop handoff account selector. Keep the tone plain and specific.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:17
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
 msgid "Failed to generate token"
 msgstr "Kunde inte skapa token"
 
@@ -14881,12 +14901,12 @@ msgstr "Kunde inte skicka anmälan. Försök igen."
 msgid "Failed to send verification email. Try again later."
 msgstr "Det gick inte att skicka verifieringsmeddelandet. Försök igen senare."
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:36
+#: src/features/app/components/BootstrapErrorScreen.tsx:43
 msgid "Failed to start"
 msgstr "Kunde inte starta"
 
 #. Error text in the camera preview modal when the camera stream cannot be opened. Prompts user to check OS / browser permissions.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:54
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:55
 msgid "Failed to start camera preview. Check your camera permissions."
 msgstr "Det gick inte att starta kameraförhandsvisningen. Kontrollera dina kamerabehörigheter."
 
@@ -14974,7 +14994,7 @@ msgid "False claims likely to cause real-world harm."
 msgstr "Falska påståenden som sannolikt orsakar verklig skada."
 
 #. Label for the favicon branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:137
+#: src/features/app/components/setup/SetupWizardSteps.tsx:140
 msgid "Favicon"
 msgstr "Favicon"
 
@@ -15074,7 +15094,7 @@ msgid "Fetch a URL and inspect the embed payload the chat renderer receives."
 msgstr "Hämta en URL och inspektera den inbäddade datan som chattrenderaren tar emot."
 
 #. Top-level native menu bar title (File menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:43
+#: src/features/platform/utils/DesktopLocaleBridge.ts:44
 msgid "File"
 msgstr "Fil"
 
@@ -15232,7 +15252,7 @@ msgstr "Filtrering"
 msgid "Filtering by {language}"
 msgstr "Filtrerar efter {language}"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:788
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:789
 msgid "Finalizing camera..."
 msgstr "Slutför kamerainställningen..."
 
@@ -15270,8 +15290,8 @@ msgstr "Slutför i den nya fliken. Om du stängde den, tryck på Fortsätt med l
 
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
-#: src/features/app/components/setup/SetupWizardSteps.tsx:328
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:86
+#: src/features/app/components/setup/SetupWizardSteps.tsx:354
 msgid "Finish setup"
 msgstr "Slutför installationen"
 
@@ -15318,7 +15338,7 @@ msgid "Florida"
 msgstr "Florida"
 
 #. Placeholder for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:93
+#: src/features/app/components/setup/SetupWizardSteps.tsx:96
 msgid "Fluxer"
 msgstr "echowire"
 
@@ -15546,7 +15566,7 @@ msgid "Force profile skeletons"
 msgstr "Tvinga fram laddningsplatshållare för profiler"
 
 #. Native View menu item that reloads the window and ignores the cache. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:100
+#: src/features/platform/utils/DesktopLocaleBridge.ts:101
 msgid "Force reload"
 msgstr "Tvinga omladdning"
 
@@ -15852,12 +15872,12 @@ msgid "from <0>{0}</0>"
 msgstr "från <0>{0}</0>"
 
 #. Label for SMTP from email input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:986
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1024
 msgid "From email"
 msgstr "Avsändarens e-postadress"
 
 #. Label for SMTP from name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:990
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1028
 msgid "From name"
 msgstr "Avsändarnamn"
 
@@ -16149,7 +16169,7 @@ msgid "GIF preview"
 msgstr "GIF-förhandsvisning"
 
 #. Setup wizard title for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:930
+#: src/features/app/components/setup/SetupWizardSteps.tsx:968
 msgid "GIF search"
 msgstr "GIF-sökning"
 
@@ -16322,7 +16342,7 @@ msgid "Gifts"
 msgstr "Presenter"
 
 #. Description for the everyone-is-premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:323
+#: src/features/app/components/setup/SetupWizardSteps.tsx:349
 msgid "Give everyone on this instance the highest premium limits."
 msgstr "Ge alla på den här instansen de högsta premiumgränserna."
 
@@ -16793,7 +16813,7 @@ msgstr "Hatiska uttalanden"
 msgid "Having fun?"
 msgstr "Har du roligt?"
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:157
+#: src/features/auth/components/modals/CaptchaModal.tsx:175
 msgid "Having issues? Try hCaptcha instead"
 msgstr "Har du problem? Prova hCaptcha istället"
 
@@ -16804,7 +16824,7 @@ msgid "Hawaii"
 msgstr "Hawaii"
 
 #. hCaptcha provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:974
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1012
 msgid "hCaptcha"
 msgstr "hCaptcha"
 
@@ -16870,7 +16890,7 @@ msgid "Hello, {username}! Nice to have you here."
 msgstr "Hej, {username}! Kul att du är här."
 
 #. Top-level native menu bar title (Help menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:142
+#: src/features/platform/utils/DesktopLocaleBridge.ts:143
 msgid "Help"
 msgstr "Hjälp"
 
@@ -16950,7 +16970,7 @@ msgid "Hide"
 msgstr "Dölj"
 
 #. macOS app menu / tray item. Hides the desktop app window.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:30
+#: src/features/platform/utils/DesktopLocaleBridge.ts:31
 msgid "Hide {appName}"
 msgstr "Dölj {appName}"
 
@@ -17328,7 +17348,7 @@ msgstr "Jag förstår"
 
 #. Label for the icon branding asset.
 #. Short label in the guild icon upload field. Keep it concise.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:121
+#: src/features/app/components/setup/SetupWizardSteps.tsx:124
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:27
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:89
 msgid "Icon"
@@ -17548,7 +17568,7 @@ msgid "Image"
 msgstr "Bild"
 
 #. Label for the branding image asset uploaders in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:105
+#: src/features/app/components/setup/SetupWizardSteps.tsx:108
 msgid "Image assets"
 msgstr "Bildresurser"
 
@@ -17672,7 +17692,7 @@ msgid "Import favorite GIFs"
 msgstr "Importera favorit-GIF:ar"
 
 #. Title of the native folder picker that imports a directory of theme files.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:270
+#: src/features/platform/utils/DesktopLocaleBridge.ts:271
 #: src/features/theme_studio/sections/LibrarySection.tsx:349
 msgid "Import folder"
 msgstr "Importera mapp"
@@ -17984,7 +18004,7 @@ msgstr "Ärvd"
 msgid "Inherited from {inheritedFromLabel}"
 msgstr "Ärvt från {inheritedFromLabel}"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:790
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:791
 msgid "Initializing camera..."
 msgstr "Initierar kamera..."
 
@@ -18139,12 +18159,12 @@ msgid "Installing desktop update…"
 msgstr "Installerar uppdatering för datorappen…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:294
+#: src/features/platform/utils/DesktopLocaleBridge.ts:305
 msgid "Instant messaging and VoIP"
 msgstr "Snabbmeddelanden och VoIP"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:289
+#: src/features/platform/utils/DesktopLocaleBridge.ts:300
 msgid "Instant Messenger"
 msgstr "Snabbmeddelandeklient"
 
@@ -18278,7 +18298,7 @@ msgstr "Inverterad knapp klickad."
 #. Short label in the app constants.
 #. Tray status menu item. User presence that appears offline to others.
 #: src/features/app/constants/AppConstants.ts:37
-#: src/features/platform/utils/DesktopLocaleBridge.ts:204
+#: src/features/platform/utils/DesktopLocaleBridge.ts:205
 msgid "Invisible"
 msgstr "Osynlig"
 
@@ -18883,7 +18903,7 @@ msgid "Keep attachments when clearing an edit"
 msgstr "Behåll bilagor vid rensning av en redigering"
 
 #. Description for the mirror premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:315
+#: src/features/app/components/setup/SetupWizardSteps.tsx:341
 msgid "Keep free and premium tiers. You can customize the tiers later."
 msgstr "Behåll gratis- och premiumnivåerna. Du kan anpassa nivåerna senare."
 
@@ -19010,7 +19030,7 @@ msgid "Kicked {targetUserTag} from the community"
 msgstr "Sparkade ut {targetUserTag} ur communityn"
 
 #. Label for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+#: src/features/app/components/setup/SetupWizardSteps.tsx:304
 msgid "Klipy GIFs"
 msgstr "Klipy-GIF:ar"
 
@@ -19022,7 +19042,7 @@ msgstr "Koreanska"
 #. Label for the setup wizard language selector.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. User settings tab for language, locale, and time display preferences.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:56
+#: src/features/app/components/setup/SetupWizardSteps.tsx:59
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:6
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:132
 msgid "Language"
@@ -19046,7 +19066,7 @@ msgid "Large"
 msgstr "Stor"
 
 #. Label for attachment decay maximum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:237
+#: src/features/app/components/setup/SetupWizardSteps.tsx:240
 msgid "Large file threshold (MB)"
 msgstr "Tröskel för stora filer (MB)"
 
@@ -19213,6 +19233,11 @@ msgstr "Lämna den här gruppen? Du kommer inte längre att se dess meddelanden.
 msgid "Leave voice call"
 msgstr "Lämna röstsamtal"
 
+#. Description for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
+msgstr "Om du stänger av detta används inte reläet och aviseringar skickas inte till de officiella mobilapparna. Du kan godkänna det senare i administrationspanelen."
+
 #. Card alignment option that aligns content to the left.
 #: src/features/ui/card_alignment_controls/CardAlignmentControls.tsx:17
 #: src/features/user/components/modals/tabs/component_gallery_tab/OverlaysTab.tsx:108
@@ -19287,12 +19312,12 @@ msgid "Let others clone your stickers"
 msgstr "Låt andra klona dina klistermärken"
 
 #. Description for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:298
+#: src/features/app/components/setup/SetupWizardSteps.tsx:324
 msgid "Let people link their Bluesky account to their profile."
 msgstr "Låt folk koppla sitt Bluesky-konto till sin profil."
 
 #. Description for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+#: src/features/app/components/setup/SetupWizardSteps.tsx:308
 msgid "Let people search and send GIFs powered by Klipy."
 msgstr "Låt folk söka efter och skicka GIF:ar med Klipy."
 
@@ -19601,7 +19626,7 @@ msgid "Loading destinations…"
 msgstr "Laddar destinationer…"
 
 #. Accessible status while the setup wizard loads the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:89
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:90
 msgid "Loading instance configuration"
 msgstr "Läser in instanskonfigurationen"
 
@@ -19631,7 +19656,7 @@ msgid "Loading states"
 msgstr "Laddningslägen"
 
 #. Setup wizard body while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:76
+#: src/features/app/components/setup/SetupWizardSteps.tsx:79
 msgid "Loading the current instance configuration."
 msgstr "Läser in den aktuella instanskonfigurationen."
 
@@ -19703,12 +19728,12 @@ msgid "Login"
 msgstr "Logga in"
 
 #. Label for the logo branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:129
+#: src/features/app/components/setup/SetupWizardSteps.tsx:132
 msgid "Logo"
 msgstr "Logotyp"
 
 #. Label for Bluesky OAuth logo URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1026
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1064
 msgid "Logo URL"
 msgstr "Logotyp-URL"
 
@@ -19833,7 +19858,7 @@ msgid "Make group owner"
 msgstr "Gör till gruppägare"
 
 #. Setup wizard branding step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:81
+#: src/features/app/components/setup/SetupWizardSteps.tsx:84
 msgid "Make the instance yours"
 msgstr "Gör instansen till din"
 
@@ -20280,12 +20305,12 @@ msgid "Maximizes visible messages with minimal spacing."
 msgstr "Maximerar synliga meddelanden med minimalt avstånd."
 
 #. Label for attachment decay maximum eligible size.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:241
+#: src/features/app/components/setup/SetupWizardSteps.tsx:244
 msgid "Maximum eligible size (MB)"
 msgstr "Största filstorlek som omfattas (MB)"
 
 #. Label for attachment decay maximum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:249
+#: src/features/app/components/setup/SetupWizardSteps.tsx:252
 msgid "Maximum lifetime (days)"
 msgstr "Maximal livslängd (dagar)"
 
@@ -20486,7 +20511,7 @@ msgid "Member roles updated"
 msgstr "Medlemsroller uppdaterade"
 
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx:83
-#: src/features/user/components/popouts/UserProfileShared.tsx:282
+#: src/features/user/components/popouts/UserProfileShared.tsx:283
 msgid "Member since"
 msgstr "Medlem sedan"
 
@@ -21068,7 +21093,7 @@ msgstr "24-timmarsklocka"
 #. Native Window menu item that minimizes the focused desktop window. Imperative verb.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:128
+#: src/features/platform/utils/DesktopLocaleBridge.ts:129
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:186
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:190
 msgid "Minimize"
@@ -21090,7 +21115,7 @@ msgid "Minimize window"
 msgstr "Minimera fönster"
 
 #. Label for attachment decay minimum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:245
+#: src/features/app/components/setup/SetupWizardSteps.tsx:248
 msgid "Minimum lifetime (days)"
 msgstr "Minimal livslängd (dagar)"
 
@@ -21109,7 +21134,7 @@ msgstr "Minderåriga i riskzonen, vuxet innehåll på fel plats eller oönskat b
 #. Switch label in the camera preview modal for flipping the local camera preview horizontally.
 #. Switch label in the video tab for flipping the local camera preview horizontally.
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx:106
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:72
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:73
 #: src/features/voice/components/VoiceSettingsMenus.tsx:114
 msgid "Mirror camera"
 msgstr "Spegelvänd kamera"
@@ -21119,7 +21144,7 @@ msgid "Mirror of the Appearance tab toggle for light/dark/coal preference. Disab
 msgstr "En spegling av växlingsknappen för ljust/mörkt/kol-läge under fliken Utseende. Inaktivera för ett grundtema per enhet."
 
 #. Premium model option that mirrors free and premium tiers.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:311
+#: src/features/app/components/setup/SetupWizardSteps.tsx:337
 msgid "Mirror tiers"
 msgstr "Spegla nivåerna"
 
@@ -21167,7 +21192,9 @@ msgid "Mobile online status on avatars"
 msgstr "Mobil onlinestatus på avatarer"
 
 #. Section label for mobile push notification settings.
+#. Setup wizard push relay consent step title.
 #. Switch label in the community notification settings modal. Controls whether mobile push notifications are delivered for this community.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:269
 #: src/features/guild/components/modals/GuildNotificationSettingsModal.tsx:112
 #: src/features/ui/action_menu/items/GuildMenuItems.tsx:81
 msgid "Mobile push notifications"
@@ -21681,7 +21708,7 @@ msgstr "Tysta medlemmar"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Mutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:63
-#: src/features/platform/utils/DesktopLocaleBridge.ts:208
+#: src/features/platform/utils/DesktopLocaleBridge.ts:209
 msgid "Mute microphone"
 msgstr "Stäng av mikrofonen"
 
@@ -21850,7 +21877,7 @@ msgid "My category"
 msgstr "Min kategori"
 
 #. Placeholder for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:200
+#: src/features/app/components/setup/SetupWizardSteps.tsx:203
 msgid "My community"
 msgstr "Min community"
 
@@ -22136,7 +22163,7 @@ msgid "New accounts can join up to 10 communities in the first 24 hours. Try aga
 msgstr "Nya konton kan gå med i upp till 10 communities under de första 24 timmarna. Försök igen senare."
 
 #. Body text in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:23
+#: src/features/auth/state/NewDeviceMonitoring.tsx:26
 msgid "New audio device detected!"
 msgstr "Ny ljudenhet upptäcktes!"
 
@@ -22166,7 +22193,7 @@ msgid "New community muted"
 msgstr "Ny community tystad"
 
 #. Windows jump-list task title. Starts composing a new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:249
+#: src/features/platform/utils/DesktopLocaleBridge.ts:250
 msgid "New direct message"
 msgstr "Nytt direktmeddelande"
 
@@ -22289,7 +22316,7 @@ msgstr "Nyast först"
 #. Button that moves to the next setup wizard step.
 #. Generic primary or pagination action label that advances to the next step, page, or item.
 #. Primary button in the required-action modal. Moves to the next carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:81
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:82
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:154
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:721
 msgid "Next"
@@ -22351,7 +22378,7 @@ msgstr "Ingen åtkomst"
 msgid "No accessible channels"
 msgstr "Inga tillgängliga kanaler"
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:148
+#: src/features/auth/components/accounts/AccountSelector.tsx:150
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:88
 msgid "No accounts"
 msgstr "Inga konton"
@@ -22673,7 +22700,7 @@ msgid "No one can add you to group chats without asking"
 msgstr "Ingen kan lägga till dig i gruppchattar utan att fråga först"
 
 #. Message shown when no optional services are available in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:274
+#: src/features/app/components/setup/SetupWizardSteps.tsx:300
 msgid "No optional services are available on this instance. You can skip this step."
 msgstr "Inga valfria tjänster är tillgängliga på den här instansen. Du kan hoppa över det här steget."
 
@@ -22930,7 +22957,7 @@ msgid "No webhooks"
 msgstr "Inga webhooks"
 
 #. Developer option label for short-circuiting the in-app reporting (IAR) flow. When enabled, submitting a report skips the network call.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:144
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
 msgid "No-op in-app reports"
 msgstr "Låt anmälningar i appen inte göra något"
 
@@ -23028,6 +23055,11 @@ msgstr "Inte ett tal"
 msgid "Not a whole number"
 msgstr "Inte ett heltal"
 
+#. Summary value when the operator left the push relay notice unaccepted.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:394
+msgid "Not accepted"
+msgstr "Inte accepterat"
+
 #. Fallback value when a saved billing payment method has no expiration date.
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:18
 msgid "Not available"
@@ -23060,7 +23092,7 @@ msgstr "Sidan hittades inte"
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:43
-#: src/features/auth/state/NewDeviceMonitoring.tsx:31
+#: src/features/auth/state/NewDeviceMonitoring.tsx:34
 msgid "Not now"
 msgstr "Inte nu"
 
@@ -23489,19 +23521,19 @@ msgstr "Opacitet"
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:21
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:159
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:429
-#: src/features/platform/utils/DesktopLocaleBridge.ts:261
+#: src/features/platform/utils/DesktopLocaleBridge.ts:262
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingRow.tsx:22
 msgid "Open"
 msgstr "Öppna"
 
 #. Registration mode option allowing anyone to register.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:154
+#: src/features/app/components/setup/SetupWizardSteps.tsx:157
 msgctxt "registration-policy"
 msgid "Open"
 msgstr "Öppen"
 
 #. Windows jump-list task description (tooltip text) for the Open settings action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:245
+#: src/features/platform/utils/DesktopLocaleBridge.ts:246
 msgid "Open {appName} settings"
 msgstr "Öppna inställningarna för {appName}"
 
@@ -24027,7 +24059,7 @@ msgstr "Operativsystem"
 msgid "Opt into experimental per-community and per-channel unread badge controls"
 msgstr "Aktivera experimentella inställningar för märken för olästa meddelanden per community och kanal"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:786
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:787
 msgid "Optimizing camera..."
 msgstr "Optimerar kamera..."
 
@@ -24057,7 +24089,7 @@ msgid "Optional arguments"
 msgstr "Valfria argument"
 
 #. Setup wizard optional services step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:266
+#: src/features/app/components/setup/SetupWizardSteps.tsx:292
 msgid "Optional services"
 msgstr "Valfria tjänster"
 
@@ -24373,7 +24405,7 @@ msgstr "Lösennycklar kräver ett signerat macOS-paket med ett giltigt app-ID. I
 
 #. Generic form-field label for a password.
 #. Label for SMTP password input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:997
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1035
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:215
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:146
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:183
@@ -24440,7 +24472,7 @@ msgstr "Senaste 7 dagarna"
 #. Native Edit menu item that pastes the clipboard contents. Imperative verb, not the noun.
 #. Textarea right-click context menu item that pastes clipboard contents.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:54
-#: src/features/platform/utils/DesktopLocaleBridge.ts:67
+#: src/features/platform/utils/DesktopLocaleBridge.ts:68
 msgid "Paste"
 msgstr "Klistra in"
 
@@ -24449,7 +24481,7 @@ msgid "Paste a {theOtherPlatform} template URL to import its structure into a ne
 msgstr "Klistra in en {theOtherPlatform}-mall-URL för att importera dess struktur till en ny community."
 
 #. Native macOS Edit menu item that pastes the clipboard contents using the formatting of the surrounding text. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:71
+#: src/features/platform/utils/DesktopLocaleBridge.ts:72
 msgid "Paste and match style"
 msgstr "Klistra in och matcha stil"
 
@@ -24837,7 +24869,7 @@ msgid "Pick one or more dictionaries. Words from any selected dictionary are acc
 msgstr "Välj en eller flera ordlistor. Ord från valda ordlistor accepteras, vilket är användbart för flerspråkiga chattar."
 
 #. Setup wizard body for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:64
+#: src/features/app/components/setup/SetupWizardSteps.tsx:67
 msgid "Pick the appearance this administrator account should start with."
 msgstr "Välj utseendet som detta administratörskonto ska börja med."
 
@@ -25162,7 +25194,7 @@ msgid "Popup"
 msgstr "Popup"
 
 #. Label for SMTP port input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:995
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1033
 msgid "Port"
 msgstr "Port"
 
@@ -25226,12 +25258,12 @@ msgid "Prefer using SSO? Continue with {ssoDisplayName}."
 msgstr "Föredrar du att använda SSO? Fortsätt med {ssoDisplayName}."
 
 #. macOS app menu submenu title. Keep "Preferences" to match the macOS HIG; in-app surfaces still use "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:25
+#: src/features/platform/utils/DesktopLocaleBridge.ts:26
 msgid "Preferences"
 msgstr "Inställningar"
 
 #. macOS app menu item that opens app settings. Trailing ellipsis follows the macOS HIG convention. Keep "Preferences" here even though the in-app term is "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:20
+#: src/features/platform/utils/DesktopLocaleBridge.ts:21
 msgid "Preferences..."
 msgstr "Inställningar..."
 
@@ -25272,7 +25304,7 @@ msgstr "Reverb-nådeperiodens meddelandefält"
 msgstr "Meddelandefält för respitperiod för Premium"
 
 #. Summary row label for the premium model in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:356
+#: src/features/app/components/setup/SetupWizardSteps.tsx:386
 msgid "Premium model"
 msgstr "Premiummodell"
 
@@ -25312,7 +25344,7 @@ msgid "Preparing"
 msgstr "Förbereder"
 
 #. Setup wizard title while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:72
+#: src/features/app/components/setup/SetupWizardSteps.tsx:75
 msgid "Preparing setup"
 msgstr "Förbereder installation"
 
@@ -25562,7 +25594,7 @@ msgid "Privacy settings"
 msgstr "Sekretessinställningar"
 
 #. Label for Bluesky OAuth privacy URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1072
 msgid "Privacy URL"
 msgstr "URL till integritetspolicyn"
 
@@ -25587,7 +25619,7 @@ msgid "Private details"
 msgstr "Privata detaljer"
 
 #. Label for Bluesky OAuth private key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1042
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1080
 msgid "Private key"
 msgstr "Privat nyckel"
 
@@ -25612,8 +25644,8 @@ msgstr "Bearbetar"
 
 #. Label for the product name input in the setup wizard.
 #. Summary row label for the product name in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:89
-#: src/features/app/components/setup/SetupWizardSteps.tsx:336
+#: src/features/app/components/setup/SetupWizardSteps.tsx:92
+#: src/features/app/components/setup/SetupWizardSteps.tsx:362
 msgid "Product name"
 msgstr "Produktnamn"
 
@@ -25797,7 +25829,7 @@ msgid "Provide your full legal name for the declaration."
 msgstr "Ange ditt fullständiga juridiska namn för deklarationen."
 
 #. Label for an integration provider choice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:970
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1008
 msgid "Provider"
 msgstr "Leverantör"
 
@@ -25819,7 +25851,7 @@ msgid "Public community"
 msgstr "Offentlig community"
 
 #. Description for the closed registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:175
+#: src/features/app/components/setup/SetupWizardSteps.tsx:178
 msgid "Public registration is closed."
 msgstr "Offentlig registrering är stängd."
 
@@ -25911,6 +25943,11 @@ msgstr "Rensade {deletedCount, plural, one {# meddelande} other {# meddelanden}}
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:42
 msgid "Push notification inactive timeout"
 msgstr "Tidsgräns för inaktivitet före pushaviseringar"
+
+#. Summary row label for the push relay consent on the setup wizard finish step.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:382
+msgid "Push relay notice"
+msgstr "Meddelande om push-vidarebefordran"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:131
@@ -26057,7 +26094,7 @@ msgid "Quit"
 msgstr "Avsluta"
 
 #. macOS / tray menu item that fully quits the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:34
+#: src/features/platform/utils/DesktopLocaleBridge.ts:35
 msgid "Quit {appName}"
 msgstr "Avsluta {appName}"
 
@@ -26171,6 +26208,11 @@ msgstr "Läs communityns aktivitetslogg med ändringar och modereringsåtgärder
 msgid "Read the documentation ({domain})"
 msgstr "Läs dokumentationen ({domain})"
 
+#. Link to the push relay supplemental privacy notice shown during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
+msgid "Read the supplemental privacy notice"
+msgstr "Läs det kompletterande sekretessmeddelandet"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -26224,7 +26266,7 @@ msgid "Receive:"
 msgstr "Ta emot:"
 
 #. Windows jump-list category title. Groups recently opened DMs / communities.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:257
+#: src/features/platform/utils/DesktopLocaleBridge.ts:258
 msgid "Recent"
 msgstr "Senaste"
 
@@ -26382,7 +26424,7 @@ msgstr "Omdirigerings-URI:er"
 #. Native Edit menu item that redoes the last undone edit. Imperative verb.
 #. Textarea right-click context menu item that redoes the last undone edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:42
-#: src/features/platform/utils/DesktopLocaleBridge.ts:55
+#: src/features/platform/utils/DesktopLocaleBridge.ts:56
 msgid "Redo"
 msgstr "Gör om"
 
@@ -26486,7 +26528,7 @@ msgid "Registered passkeys"
 msgstr "Registrerade lösennycklar"
 
 #. Summary row label for the registration mode in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:340
+#: src/features/app/components/setup/SetupWizardSteps.tsx:366
 msgid "Registration"
 msgstr "Registrering"
 
@@ -26533,7 +26575,7 @@ msgstr "Relevant"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Troubleshooting menu item. Reloads the renderer process. Keep short.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:166
+#: src/features/platform/utils/DesktopLocaleBridge.ts:167
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:90
 msgid "Reload"
 msgstr "Ladda om"
@@ -26553,7 +26595,7 @@ msgid "Reload {productName} to use web update {version}"
 msgstr "Ladda om {productName} för att använda webbaserad uppdatering {version}"
 
 #. Button on the crash screen that reloads the current app.
-#: src/features/app/components/ErrorFallback.tsx:142
+#: src/features/app/components/ErrorFallback.tsx:145
 msgid "Reload app"
 msgstr "Ladda om appen"
 
@@ -26601,7 +26643,7 @@ msgstr "Kom ihåg fönsterstorlek och position"
 #. Short label in the shared app saved message missing card. Keep the tone plain and specific.
 #: src/features/app/components/shared/SavedMessageMissingCard.tsx:14
 #: src/features/auth/components/accounts/AccountSelector.tsx:78
-#: src/features/auth/components/accounts/AccountSelector.tsx:125
+#: src/features/auth/components/accounts/AccountSelector.tsx:128
 #: src/features/channel/components/MessageReactionsSheet.tsx:43
 #: src/features/expressions/components/modals/AddFavoriteChannelModal.tsx:52
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildBannerUploadField.tsx:156
@@ -27098,12 +27140,12 @@ msgid "Render placeholders"
 msgstr "Rendera platshållare"
 
 #. Label for attachment decay renewal threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:257
+#: src/features/app/components/setup/SetupWizardSteps.tsx:260
 msgid "Renew threshold (days)"
 msgstr "Förnyelsetröskel (dagar)"
 
 #. Label for attachment decay renewal window.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:261
+#: src/features/app/components/setup/SetupWizardSteps.tsx:264
 msgid "Renew window (days)"
 msgstr "Förnyelsefönster (dagar)"
 
@@ -27113,7 +27155,7 @@ msgstr "Förnyas den <0>{renewalDate}.</0>"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that replaces an already uploaded branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:113
+#: src/features/app/components/setup/SetupWizardSteps.tsx:116
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:80
 msgid "Replace"
 msgstr "Ersätt"
@@ -27224,7 +27266,7 @@ msgid "Report illegal content"
 msgstr "Anmäl olagligt innehåll"
 
 #. Native Help submenu item. Opens the bug / issue reporting flow.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:150
+#: src/features/platform/utils/DesktopLocaleBridge.ts:151
 msgid "Report issue"
 msgstr "Rapportera problem"
 
@@ -27499,21 +27541,21 @@ msgid "Reset all shortcuts?"
 msgstr "Återställa alla genvägar?"
 
 #. Destructive confirm button on the reset-app-data dialog.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:188
+#: src/features/platform/utils/DesktopLocaleBridge.ts:189
 msgid "Reset and restart"
 msgstr "Återställ och starta om"
 
 #. Confirm dialog title for the destructive reset action.
 #. Destructive button on the crash screen. Clears local app data except preserved drafts.
 #. Destructive button on the startup failure screen. Clears local app data except preserved drafts.
-#: src/features/app/components/BootstrapErrorScreen.tsx:75
-#: src/features/app/components/ErrorFallback.tsx:164
-#: src/features/platform/utils/DesktopLocaleBridge.ts:174
+#: src/features/app/components/BootstrapErrorScreen.tsx:82
+#: src/features/app/components/ErrorFallback.tsx:167
+#: src/features/platform/utils/DesktopLocaleBridge.ts:175
 msgid "Reset app data"
 msgstr "Återställ appdata"
 
 #. Destructive troubleshooting menu item. Clears local app data, signs out, and restarts.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:170
+#: src/features/platform/utils/DesktopLocaleBridge.ts:171
 msgid "Reset app data and restart"
 msgstr "Återställ appdata och starta om"
 
@@ -27789,7 +27831,7 @@ msgid "Respect the sender's intent, with no warning when they toggle the @mentio
 msgstr "Respektera avsändarens avsikt utan varning när @-omnämnandet ändras"
 
 #. Tray menu item that restarts the desktop app process.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:232
+#: src/features/platform/utils/DesktopLocaleBridge.ts:233
 msgid "Restart {appName}"
 msgstr "Starta om {appName}"
 
@@ -27986,7 +28028,7 @@ msgid "Review what this app is asking for before you continue."
 msgstr "Granska vad den här appen begär innan du fortsätter."
 
 #. Setup wizard finish step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:332
+#: src/features/app/components/setup/SetupWizardSteps.tsx:358
 msgid "Review your choices below, then finish. This saves the configuration and opens the instance."
 msgstr "Granska dina val nedan och slutför sedan. Detta sparar konfigurationen och öppnar instansen."
 
@@ -28242,7 +28284,7 @@ msgid "Run at login"
 msgstr "Kör vid inloggning"
 
 #. Description for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:192
+#: src/features/app/components/setup/SetupWizardSteps.tsx:195
 msgid "Run the instance as one community instead of many. This can only be enabled now, during setup."
 msgstr "Kör instansen som en enda community istället för många. Detta kan bara aktiveras nu, under installationen."
 
@@ -29036,7 +29078,7 @@ msgid "Secret"
 msgstr "Hemlighet"
 
 #. Label for a CAPTCHA secret key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:981
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1019
 msgid "Secret key"
 msgstr "Hemlig nyckel"
 
@@ -29191,14 +29233,14 @@ msgstr "Välj ett scenario att tillämpa..."
 msgid "Select a violation category."
 msgstr "Välj en kategori för överträdelsen."
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:114
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 msgid "Select account"
 msgstr "Välj konto"
 
 #. Native Edit menu item that selects everything in the focused field. Imperative verb.
 #. Textarea right-click context menu item that selects all text in the textarea.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:58
-#: src/features/platform/utils/DesktopLocaleBridge.ts:80
+#: src/features/platform/utils/DesktopLocaleBridge.ts:81
 msgid "Select all"
 msgstr "Markera allt"
 
@@ -29242,7 +29284,7 @@ msgstr "Välj behörighetsomfång (och omdirigerings-URI om det behövs)"
 msgid "Select text"
 msgstr "Markera text"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:69
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:71
 msgid "Select the account you want to sign in with on your new device."
 msgstr "Välj det konto du vill logga in med på din nya enhet."
 
@@ -29324,7 +29366,7 @@ msgid "Self-harm or suicide"
 msgstr "Självskadebeteende eller självmord"
 
 #. Accessible label for the self-host setup wizard carousel.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:69
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:70
 msgid "Self-host setup"
 msgstr "Konfiguration för drift på egen server"
 
@@ -29660,11 +29702,6 @@ msgstr "Session"
 msgid "Session expired for {identifier}. Sign in again."
 msgstr "Sessionen har gått ut för {identifier}. Logga in igen."
 
-#. Toast error shown in the desktop-handoff account picker when the session for the chosen account has expired.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
-msgid "Session expired. Sign in again."
-msgstr "Sessionen har upphört. Logga in igen."
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:15
 msgid "Sessions"
@@ -29805,7 +29842,7 @@ msgid "Set the nickname to {nick}"
 msgstr "Ställde in smeknamnet till {nick}"
 
 #. Setup wizard branding step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:85
+#: src/features/app/components/setup/SetupWizardSteps.tsx:88
 msgid "Set the public product name, theme color, and image assets that clients display."
 msgstr "Ange det offentliga produktnamnet, temafärgen och bildresurserna som klienter visar."
 
@@ -29857,7 +29894,7 @@ msgid "Set this check aside?"
 msgstr "Skjuta upp den här kontrollen?"
 
 #. Title for the self-host setup wizard modal.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:74
 msgid "Set up {productName}"
 msgstr "Konfigurera {productName}"
 
@@ -29867,7 +29904,7 @@ msgid "Set up authenticator app"
 msgstr "Konfigurera autentiseringsapp"
 
 #. Option for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:914
+#: src/features/app/components/setup/SetupWizardSteps.tsx:952
 msgid "Set up later"
 msgstr "Konfigurera senare"
 
@@ -30160,7 +30197,7 @@ msgid "Show"
 msgstr "Visa"
 
 #. Tray menu item that brings the desktop app window to the foreground.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:192
+#: src/features/platform/utils/DesktopLocaleBridge.ts:193
 msgid "Show {appName}"
 msgstr "Visa {appName}"
 
@@ -30517,18 +30554,13 @@ msgstr "Visa lösenord"
 msgid "Show per-device participant volume sliders in voice menus"
 msgstr "Visa volymreglage för deltagare per enhet i röstmenyer"
 
-#. Developer option label for exposing the staff-only profile timezone section in profile settings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
-msgid "Show profile time zone settings"
-msgstr "Visa inställningar för profilens tidszon"
-
 #. Short label for an advanced message action bar preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx:56
 msgid "Show quick reactions"
 msgstr "Visa snabbreaktioner"
 
 #. Description for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:290
+#: src/features/app/components/setup/SetupWizardSteps.tsx:316
 msgid "Show rich previews for YouTube links."
 msgstr "Visa utökade förhandsvisningar för YouTube-länkar."
 
@@ -30652,6 +30684,7 @@ msgstr "Sidofält"
 msgid "Sign in"
 msgstr "Logga in"
 
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 #: src/features/auth/utils/AccountSwitcherModalUtils.tsx:274
 msgid "Sign in again"
 msgstr "Logga in igen"
@@ -30766,7 +30799,7 @@ msgid "Signed-in devices"
 msgstr "Inloggade enheter"
 
 #. Label for Bluesky OAuth signing key ID input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1038
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1076
 msgid "Signing key ID"
 msgstr "Signeringsnyckel-ID"
 
@@ -30833,12 +30866,12 @@ msgid "Single column"
 msgstr "En kolumn"
 
 #. Summary row label for the single community choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:344
+#: src/features/app/components/setup/SetupWizardSteps.tsx:370
 msgid "Single community"
 msgstr "Enskild community"
 
 #. Label for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:188
+#: src/features/app/components/setup/SetupWizardSteps.tsx:191
 msgid "Single community mode"
 msgstr "Läge för enskild community"
 
@@ -30857,7 +30890,7 @@ msgid "Single user (all statuses)"
 msgstr "En användare (alla statusar)"
 
 #. Label for a CAPTCHA site key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:980
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
 msgid "Site key"
 msgstr "Webbplatsnyckel"
 
@@ -30900,7 +30933,7 @@ msgid "Skip the external link warning for all domains"
 msgstr "Hoppa över varningen för externa länkar för alla domäner"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the no-op in-app reports toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:149
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:140
 msgid "Skip the network call when an in-app report is submitted. The flow still advances to the success screen so you can exercise the UI, but nothing is actually sent to the safety team."
 msgstr "Hoppa över nätverksanropet när en anmälan skickas i appen. Flödet går ändå vidare till bekräftelsen så att du kan prova gränssnittet, men inget skickas till säkerhetsteamet."
 
@@ -30910,7 +30943,7 @@ msgid "Skip the system leave notice — nobody gets pinged."
 msgstr "Hoppa över systemmeddelandet om att du lämnar – ingen får en avisering."
 
 #. Description for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:918
+#: src/features/app/components/setup/SetupWizardSteps.tsx:956
 msgid "Skip this now and configure it from the admin panel."
 msgstr "Hoppa över detta nu och konfigurera det från administrationspanelen."
 
@@ -31097,7 +31130,7 @@ msgid "Small button clicked."
 msgstr "Liten knapp klickad."
 
 #. Label for attachment decay minimum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:233
+#: src/features/app/components/setup/SetupWizardSteps.tsx:236
 msgid "Small file threshold (MB)"
 msgstr "Tröskel för små filer (MB)"
 
@@ -31158,17 +31191,17 @@ msgid "SMS verification is unavailable right now. Try again later or contact sup
 msgstr "Sms-verifiering är inte tillgänglig just nu. Försök igen senare eller kontakta supporten."
 
 #. Success message after validating SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1006
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1044
 msgid "SMTP connection verified."
 msgstr "SMTP-anslutning verifierad."
 
 #. Label for SMTP host input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:994
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1032
 msgid "SMTP host"
 msgstr "SMTP-värd"
 
 #. Failure message after validating SMTP credentials when the server returns no error detail.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1010
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1048
 msgid "SMTP validation failed."
 msgstr "SMTP-valideringen misslyckades."
 
@@ -31215,11 +31248,11 @@ msgstr "Vissa användare kan inte läggas till"
 msgid "Something went wrong"
 msgstr "Något gick fel"
 
-#: src/features/app/components/ErrorFallback.tsx:126
+#: src/features/app/components/ErrorFallback.tsx:129
 msgid "Something went wrong and the app crashed. An update is available that may fix this issue."
 msgstr "Något gick fel och appen kraschade. En uppdatering finns tillgänglig som kan lösa problemet."
 
-#: src/features/app/components/ErrorFallback.tsx:128
+#: src/features/app/components/ErrorFallback.tsx:131
 msgid "Something went wrong and the app crashed. Try reloading or resetting the app."
 msgstr "Något gick fel och appen kraschade. Försök att ladda om eller återställa appen."
 
@@ -31561,7 +31594,7 @@ msgstr "Åskådare – {count}"
 
 #. Native macOS Edit submenu title for text-to-speech actions.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:84
+#: src/features/platform/utils/DesktopLocaleBridge.ts:85
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:142
 msgid "Speech"
 msgstr "Tal"
@@ -31729,7 +31762,7 @@ msgid "Start"
 msgstr "Starta"
 
 #. Reason shown by the Linux Flatpak background permission portal when enabling launch-at-login. {appName} is the desktop app name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:236
+#: src/features/platform/utils/DesktopLocaleBridge.ts:237
 msgid "Start {appName} automatically when you sign in."
 msgstr "Starta {appName} automatiskt när du loggar in."
 
@@ -31799,7 +31832,7 @@ msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{
 msgstr "Börja sökningar med <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> för att begränsa resultaten."
 
 #. Native macOS Edit > Speech submenu item that starts reading the selected text aloud. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:88
+#: src/features/platform/utils/DesktopLocaleBridge.ts:89
 msgid "Start speaking"
 msgstr "Starta uppläsning"
 
@@ -31843,7 +31876,7 @@ msgstr "Statisk Pickles"
 #. Tray menu submenu title for the user presence status picker.
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:126
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:69
-#: src/features/platform/utils/DesktopLocaleBridge.ts:196
+#: src/features/platform/utils/DesktopLocaleBridge.ts:197
 msgid "Status"
 msgstr "Status"
 
@@ -32093,7 +32126,7 @@ msgstr "Sluta dela röstaktivitet med alla vänner?"
 #. Message context menu item that stops the text-to-speech playback in progress.
 #. Native macOS Edit > Speech submenu item that stops reading text aloud. Imperative verb.
 #: src/features/channel/components/MessageActionMenu.tsx:94
-#: src/features/platform/utils/DesktopLocaleBridge.ts:92
+#: src/features/platform/utils/DesktopLocaleBridge.ts:93
 #: src/features/ui/action_menu/items/MessageMenuItems.tsx:74
 msgid "Stop speaking"
 msgstr "Stoppa uppläsning"
@@ -32483,7 +32516,7 @@ msgid "Switch between your global profile and per-community profiles"
 msgstr "Växla mellan din globala profil och profiler per community"
 
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:27
+#: src/features/auth/state/NewDeviceMonitoring.tsx:30
 msgid "Switch device"
 msgstr "Byt enhet"
 
@@ -32611,7 +32644,7 @@ msgid "Switches"
 msgstr "Växlar"
 
 #. Label for the symbol branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:125
+#: src/features/app/components/setup/SetupWizardSteps.tsx:128
 msgid "Symbol"
 msgstr "Symbol"
 
@@ -32895,7 +32928,7 @@ msgid "Taskbar badge"
 msgstr "Märke på aktivitetsfältets ikon"
 
 #. Windows jump-list category title. Groups quick actions like open settings and new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:241
+#: src/features/platform/utils/DesktopLocaleBridge.ts:242
 msgid "Tasks"
 msgstr "Uppgifter"
 
@@ -32964,7 +32997,7 @@ msgid "Terms of service"
 msgstr "Användarvillkor"
 
 #. Label for Bluesky OAuth terms URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1030
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1068
 msgid "Terms URL"
 msgstr "URL för villkor"
 
@@ -32974,7 +33007,7 @@ msgid "Terrorism or violent extremism"
 msgstr "Terrorism eller våldsbejakande extremism"
 
 #. Button that validates SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1002
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1040
 msgid "Test SMTP"
 msgstr "Testa SMTP"
 
@@ -33164,7 +33197,7 @@ msgid "That friend request is no longer available. Refresh and try again."
 msgstr "Den vänförfrågan är inte längre tillgänglig. Uppdatera och försök igen."
 
 #. Error shown when a branding image fails to upload in the setup wizard.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:102
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:103
 msgid "That image could not be used. Try a different file."
 msgstr "Bilden kunde inte användas. Prova en annan fil."
 
@@ -33196,15 +33229,15 @@ msgid "The #0000 tag is reserved for Visionary subscribers. Visionary is no long
 msgstr "Taggen #0000 är reserverad för Visionary-medlemmar. Visionary kan inte längre köpas."
 
 #. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:97
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:98
 msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
 msgstr "API:et har ett annat ursprung än den här sidan, så konfigurationsförfrågningar skickas utan din session. Kontrollera vilket offentligt ursprung och vilken port instansen är konfigurerad med och ladda sedan om."
 
-#: src/features/app/components/ErrorFallback.tsx:120
+#: src/features/app/components/ErrorFallback.tsx:123
 msgid "The app crashed"
 msgstr "Appen kraschade"
 
-#: src/features/app/components/ErrorFallback.tsx:124
+#: src/features/app/components/ErrorFallback.tsx:127
 msgid "The app has crashed. Checking for updates that might fix this issue…"
 msgstr "Appen har kraschat. Söker efter uppdateringar som kan lösa problemet…"
 
@@ -33374,6 +33407,11 @@ msgstr "Det nya priset är redan schemalagt för {effectiveDate}."
 msgid "The new voice channel will reuse the permissions, user limit, and bitrate from <0>{channelLabel}</0>."
 msgstr "Den nya röstkanalen kommer att återanvända behörigheterna, användargränsen och bithastigheten från <0>{channelLabel}</0>."
 
+#. Setup wizard push relay consent step body.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:273
+msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
+msgstr "Mobilapparna för Fluxer tar emot notiser via Fluxers push-vidarebefordran, som skickar dem till Apple och Google. Självhostade UnifiedPush- och ntfy-slutpunkter når aldrig vidarebefordran och kräver inget avtal."
+
 #. Activity log detail row under a removed channel permission override, listing the permissions it explicitly allowed before it was removed. It describes the removed override. It does not mean these permissions are allowed now. A permission override is a channel-level exception to the permissions of a role or member. It allows or denies chosen permissions in one channel or category only. Use the same word for override as the channel permissions settings, such as Add override. {permissions} is a list of permission names joined into one phrase, for example "View channel and Send messages". A long list ends with a count, for example "View channel, Send messages, and 3 more permissions".
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:378
 msgid "The override allowed {permissions}"
@@ -33482,7 +33520,7 @@ msgstr "Temaförändringar synkroniseras med alla dina enheter. Avstängt behål
 
 #. Label for the theme color picker in the setup wizard.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:101
+#: src/features/app/components/setup/SetupWizardSteps.tsx:104
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:165
 msgid "Theme color"
 msgstr "Temafärg"
@@ -33502,7 +33540,7 @@ msgstr "Temafiler"
 msgid "Theme library"
 msgstr "Temabibliotek"
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:175
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:70
 msgid "Theme not found"
 msgstr "Tema hittades inte"
@@ -33582,7 +33620,7 @@ msgid "There was an error loading the webhooks. Try again."
 msgstr "Ett fel uppstod vid inläsning av webhooks. Försök igen."
 
 #. Setup wizard community model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:184
+#: src/features/app/components/setup/SetupWizardSteps.tsx:187
 msgid "These options change how people use the instance. Some can only be chosen during setup."
 msgstr "Dessa alternativ ändrar hur folk använder instansen. Vissa kan bara väljas under installationen."
 
@@ -33908,7 +33946,7 @@ msgstr "Filen är {fileSize}, vilket är över gränsen på {maxSize}. Animerade
 msgid "This friends list needs more power"
 msgstr "Den här vänlistan behöver mer kraft"
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:177
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:178
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:84
 msgid "This gift code has already been claimed."
 msgstr "Den här presentkoden har redan lösts in."
@@ -33920,7 +33958,7 @@ msgstr "Den här presentkoden har redan lösts in."
 msgid "This gift code is invalid or already claimed."
 msgstr "Den här presentkoden är ogiltig eller har redan lösts in."
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:166
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:167
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:73
 msgid "This gift code may be invalid, expired, or already redeemed."
 msgstr "Den här presentkoden kan vara ogiltig, utgången eller redan inlöst."
@@ -33964,7 +34002,7 @@ msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "Den här instansen tillåter för närvarande skärmdelning upp till 720p vid 30 FPS."
 
 #. Setup wizard body prompting the operator to register the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:52
+#: src/features/app/components/setup/SetupWizardSteps.tsx:55
 msgid "This instance has no accounts yet. The first account you create automatically becomes the administrator."
 msgstr "Den här instansen har inga konton ännu. Det första kontot du skapar blir automatiskt administratör."
 
@@ -34290,7 +34328,7 @@ msgstr "Temat är för stort för att dela"
 msgid "This theme link is missing data."
 msgstr "Temalänken saknar data."
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:177
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:71
 msgid "This theme may have been removed or the link is invalid."
 msgstr "Det här temat kan ha tagits bort eller så är länken ogiltig."
@@ -34304,7 +34342,7 @@ msgstr "den här användaren"
 msgid "This user has limited their profile. Some details are hidden from people who aren't their friends."
 msgstr "Den här användaren har begränsat sin profil. Vissa detaljer är dolda för personer som inte är deras vänner."
 
-#: src/features/user/components/popouts/UserProfileShared.tsx:394
+#: src/features/user/components/popouts/UserProfileShared.tsx:395
 msgid "This user has no roles in this community."
 msgstr "Den här användaren har inga roller i den här communityn."
 
@@ -34427,7 +34465,7 @@ msgid "This will sign out the selected {sessionCount, plural, one {device} other
 msgstr "Detta loggar ut {sessionCount, plural, one {den valda enheten} other {de valda enheterna}} från ditt konto. Du måste logga in igen på varje enhet."
 
 #. Confirm dialog detail text for the destructive reset action. appName is the desktop app name. Reassures users that server-side data is safe.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:182
+#: src/features/platform/utils/DesktopLocaleBridge.ts:183
 msgid "This will sign you out, clear cached files and stored sessions, and restart the desktop app. Your account, communities, and messages in {appName} are not affected."
 msgstr "Detta loggar ut dig, rensar cachelagrade filer och sparade sessioner och startar om datorappen. Ditt konto, dina communities och dina meddelanden i {appName} påverkas inte."
 
@@ -34630,7 +34668,7 @@ msgid "Toggle deafen"
 msgstr "Slå på eller av ljudet"
 
 #. Native View menu item that opens or closes Chromium developer tools.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:104
+#: src/features/platform/utils/DesktopLocaleBridge.ts:105
 msgid "Toggle developer tools"
 msgstr "Visa eller dölj utvecklarverktyg"
 
@@ -34640,7 +34678,7 @@ msgid "Toggle embed suppression"
 msgstr "Visa eller dölj inbäddningar"
 
 #. Native View menu item that enters or leaves full screen. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:120
+#: src/features/platform/utils/DesktopLocaleBridge.ts:121
 msgid "Toggle full screen"
 msgstr "Växla helskärm"
 
@@ -34910,7 +34948,7 @@ msgid "Trimmed clip is over the {limit} size limit. Try a shorter selection."
 msgstr "Det trimmade klippet överskrider storleksgränsen på {limit}. Försök med en kortare markering."
 
 #. Native Help submenu title that groups recovery actions like reload and reset.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:154
+#: src/features/platform/utils/DesktopLocaleBridge.ts:155
 msgid "Troubleshooting"
 msgstr "Felsökning"
 
@@ -35000,6 +35038,7 @@ msgid "Try a different variable name or clear the search."
 msgstr "Prova ett annat variabelnamn eller rensa sökningen."
 
 #. Generic action label for retrying a failed or interrupted operation.
+#: src/features/auth/components/AltchaVerification.tsx:53
 #: src/features/auth/flow/AuthRouteLoadError.tsx:22
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:75
 msgid "Try again"
@@ -35077,7 +35116,7 @@ msgstr "Prova säkerhetsnyckel/lösennyckel i stället"
 msgid "Try sending your message again."
 msgstr "Försök skicka meddelandet igen."
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:159
+#: src/features/auth/components/modals/CaptchaModal.tsx:177
 msgid "Try Turnstile instead"
 msgstr "Prova Turnstile istället"
 
@@ -35149,7 +35188,7 @@ msgid "Turn off device stream"
 msgstr "Stoppa enhetens sändning"
 
 #. Description for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:212
+#: src/features/app/components/setup/SetupWizardSteps.tsx:215
 msgid "Turn off private messaging and friends across the instance. This can be reversed only once later."
 msgstr "Stäng av privata meddelanden och vänförfrågningar i hela instansen. Detta kan bara ångras en gång senare."
 
@@ -35593,7 +35632,7 @@ msgstr "Jag förstår"
 #. Native Edit menu item that undoes the last edit. Imperative verb.
 #. Textarea right-click context menu item that undoes the last edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:38
-#: src/features/platform/utils/DesktopLocaleBridge.ts:51
+#: src/features/platform/utils/DesktopLocaleBridge.ts:52
 msgid "Undo"
 msgstr "Ångra"
 
@@ -35721,7 +35760,7 @@ msgstr "Okänd enhet"
 
 #. Fallback diagnostic text on the crash screen when an Error object has no message.
 #. Fallback error text shown when LaTeX rendering fails without an error message.
-#: src/features/app/components/ErrorFallback.tsx:25
+#: src/features/app/components/ErrorFallback.tsx:28
 #: src/features/messaging/components/markdown/renderers/common/CodeElements.tsx:37
 msgid "Unknown error"
 msgstr "Okänt fel"
@@ -35936,7 +35975,7 @@ msgstr "Sluta tysta favoriter"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Unmutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:59
-#: src/features/platform/utils/DesktopLocaleBridge.ts:212
+#: src/features/platform/utils/DesktopLocaleBridge.ts:213
 msgid "Unmute microphone"
 msgstr "Slå på mikrofonen"
 
@@ -36108,12 +36147,12 @@ msgid "Unread message badge"
 msgstr "Märke för olästa meddelanden"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:274
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
 msgid "Unread messages"
 msgstr "Olästa meddelanden"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:279
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
 msgid "Unread messages: {count}"
 msgstr "Olästa meddelanden: {count}"
 
@@ -36205,7 +36244,7 @@ msgid "Update {productName} to view this message."
 msgstr "Uppdatera {productName} för att se det här meddelandet."
 
 #. Button on the crash screen that applies a found app update.
-#: src/features/app/components/ErrorFallback.tsx:140
+#: src/features/app/components/ErrorFallback.tsx:143
 msgid "Update app"
 msgstr "Uppdatera appen"
 
@@ -36291,7 +36330,7 @@ msgstr "Uppgradera för att lagra upp till 15 anpassade bakgrunder och låsa upp
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that opens a file picker to upload a branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:109
+#: src/features/app/components/setup/SetupWizardSteps.tsx:112
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:84
 msgid "Upload"
 msgstr "Ladda upp"
@@ -36835,7 +36874,7 @@ msgid "Use this when troubleshooting the client or collecting logs. It may add v
 msgstr "Använd detta när du felsöker klienten eller samlar in loggar. Det kan lägga till utförliga meddelanden i webbläsarkonsolen för den aktuella klienten."
 
 #. Label for SMTP TLS toggle.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:998
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1036
 msgid "Use TLS"
 msgstr "Använd TLS"
 
@@ -37001,7 +37040,7 @@ msgstr "Användarvolym"
 #. Generic form-field label for a username.
 #. Label for SMTP username input.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:996
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:572
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:218
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:56
@@ -37283,7 +37322,7 @@ msgid "Verify phone number form"
 msgstr "Formulär för att verifiera telefonnummer"
 
 #. Short label in the authentication captcha modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/CaptchaModal.tsx:15
+#: src/features/auth/components/modals/CaptchaModal.tsx:17
 msgid "Verify you're human"
 msgstr "Verifiera att du är människa"
 
@@ -37550,7 +37589,7 @@ msgid "Vietnamese"
 msgstr "Vietnamesiska"
 
 #. Top-level native menu bar title (View menu, holds zoom and reload).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:96
+#: src/features/platform/utils/DesktopLocaleBridge.ts:97
 msgid "View"
 msgstr "Visa"
 
@@ -38343,7 +38382,7 @@ msgstr "Vi har sänkt priset på {premiumProductName} i Brasilien. Det kostar nu
 msgid "We need one verification step before you continue. This helps protect accounts and keep spam off {productName}."
 msgstr "Vi behöver ett verifieringssteg innan du kan fortsätta. Detta hjälper till att skydda konton och hålla spam borta från {productName}."
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:116
+#: src/features/auth/components/modals/CaptchaModal.tsx:128
 msgid "We need to make sure you're not a bot. Complete the verification below."
 msgstr "Vi behöver säkerställa att du inte är en robot. Slutför verifieringen nedan."
 
@@ -38560,7 +38599,7 @@ msgid "Webhooks updated"
 msgstr "Webhooks uppdaterade"
 
 #. Native Help submenu item that opens the Fluxer marketing website.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:146
+#: src/features/platform/utils/DesktopLocaleBridge.ts:147
 msgid "Website"
 msgstr "Webbplats"
 
@@ -38614,7 +38653,7 @@ msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {
 msgstr "Välkommen till {premiumProductFullName}. Ditt årsabonnemang förnyas den {formattedDate}. Utforska dina {premiumProductName}-förmåner och hantera ditt abonnemang."
 
 #. Setup wizard title shown once the operator is signed in as the instance admin.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:39
+#: src/features/app/components/setup/SetupWizardSteps.tsx:42
 msgid "Welcome to {productName}"
 msgstr "Välkommen till {productName}"
 
@@ -38712,7 +38751,7 @@ msgid "When a custom threshold date is not set, members without the <0>{readMess
 msgstr "När inget anpassat gränsdatum har angetts kan medlemmar utan behörigheten <0>{readMessageHistoryPermissionLabel}</0> inte se äldre meddelanden. De ser bara meddelanden i realtid när de kommer och meddelandena försvinner när klienten startas om."
 
 #. Description for the attachment expiry setup switch.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:229
+#: src/features/app/components/setup/SetupWizardSteps.tsx:232
 msgid "When attachment expiration is disabled, attachments remain available until manually removed."
 msgstr "När utgångstiden för bilagor är inaktiverad finns bilagor kvar tills de tas bort manuellt."
 
@@ -38810,7 +38849,7 @@ msgid "Who can friend"
 msgstr "Vem som kan lägga till dig som vän"
 
 #. Setup wizard registration step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:146
+#: src/features/app/components/setup/SetupWizardSteps.tsx:149
 msgid "Who can join"
 msgstr "Vem kan gå med"
 
@@ -38844,7 +38883,7 @@ msgstr "Win"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Top-level native menu bar title (Window menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:124
+#: src/features/platform/utils/DesktopLocaleBridge.ts:125
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:74
 msgid "Window"
 msgstr "Fönster"
@@ -38945,7 +38984,7 @@ msgid "Without this permission, push-to-talk is required."
 msgstr "Utan den här behörigheten krävs tryck för att prata."
 
 #. Label for the wordmark branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:133
+#: src/features/app/components/setup/SetupWizardSteps.tsx:136
 msgid "Wordmark"
 msgstr "Ordlogotyp"
 
@@ -39081,7 +39120,7 @@ msgid "You are now navigating to {paymentProviderName} to complete the payment. 
 msgstr "Du navigeras nu till {paymentProviderName} för att slutföra betalningen. Återgå till {productName} när du har slutfört den."
 
 #. Setup wizard body shown to the signed-in instance administrator.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:43
+#: src/features/app/components/setup/SetupWizardSteps.tsx:46
 msgid "You are signed in as the instance administrator. The next steps configure branding, registration, and core policy for everyone on this instance."
 msgstr "Du är inloggad som instansadministratör. Nästa steg konfigurerar varumärke, registrering och kärnpolicy för alla på den här instansen."
 
@@ -39302,7 +39341,7 @@ msgstr "Du kan inte prata i den här kanalen"
 #. Tooltip / error shown in the camera preview modal when the user lacks Video permission in the current channel. Tone stays plain.
 #. Tooltip in the voice control bar when the user lacks the Video permission in this channel. Tone stays plain.
 #. Tooltip shown when the user lacks the Video permission in the voice channel. Tone stays plain.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:76
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:77
 #: src/features/voice/components/voice_connection_status/LocalParticipantControls.tsx:50
 #: src/features/voice/components/VoiceControlBar.tsx:127
 msgid "You can't turn on your camera in this channel"
@@ -39976,6 +40015,10 @@ msgstr "Din åtgärd kunde inte slutföras eftersom den flaggades av våra säke
 msgid "Your application is pending review. You can still update your listing details or withdraw the application."
 msgstr "Din ansökan väntar på granskning. Du kan fortfarande uppdatera listningens uppgifter eller dra tillbaka ansökan."
 
+#: src/features/auth/components/AltchaVerification.tsx:50
+msgid "Your browser couldn't finish the check."
+msgstr "Webbläsaren kunde inte slutföra kontrollen."
+
 #. Body of the browser-audio-required modal explaining why the user must click before audio can play.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx:12
 msgid "Your browser requires user interaction before audio can be played. Click the button below to enable voice chat."
@@ -40322,12 +40365,12 @@ msgid "Your video encoder stopped encoding frames, so your screen share was stop
 msgstr "Din videokodare slutade koda bildrutor, så din skärmdelning stoppades. Försök dela igen."
 
 #. Label for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:286
+#: src/features/app/components/setup/SetupWizardSteps.tsx:312
 msgid "YouTube enrichment"
 msgstr "YouTube-berikning"
 
 #. Setup wizard title for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:938
+#: src/features/app/components/setup/SetupWizardSteps.tsx:976
 msgid "YouTube previews"
 msgstr "YouTube-förhandsvisningar"
 
@@ -40343,7 +40386,7 @@ msgid "Zoom"
 msgstr "Zooma"
 
 #. Native Window menu item that zooms the focused window, meaning maximize or restore it. Not image zoom and not UI zoom level.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:132
+#: src/features/platform/utils/DesktopLocaleBridge.ts:133
 msgctxt "window-menu"
 msgid "Zoom"
 msgstr "Zooma"
@@ -40354,7 +40397,7 @@ msgstr "Zooma"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:628
 #: src/features/input/state/input_keybind/shared.ts:253
-#: src/features/platform/utils/DesktopLocaleBridge.ts:112
+#: src/features/platform/utils/DesktopLocaleBridge.ts:113
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:82
 msgid "Zoom in"
 msgstr "Zooma in"
@@ -40365,7 +40408,7 @@ msgstr "Zooma in"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:624
 #: src/features/input/state/input_keybind/shared.ts:257
-#: src/features/platform/utils/DesktopLocaleBridge.ts:116
+#: src/features/platform/utils/DesktopLocaleBridge.ts:117
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "Zooma ut"

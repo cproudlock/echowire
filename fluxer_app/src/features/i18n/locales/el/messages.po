@@ -797,8 +797,13 @@ msgstr "{altText} — προεπισκόπηση με ανοιχτό θέμα"
 msgid "{appCount, plural, one {# app selected for access revocation} other {# apps selected for access revocation}}"
 msgstr "{appCount, plural, one {# εφαρμογή επιλέχθηκε για ανάκληση πρόσβασης} other {# εφαρμογές επιλέχθηκαν για ανάκληση πρόσβασης}}"
 
+#. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+msgid "{appName} can't reach its servers. It will keep trying in the background."
+msgstr "Το {appName} δεν μπορεί να συνδεθεί στους διακομιστές του. Θα συνεχίσει να προσπαθεί στο παρασκήνιο."
+
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+#: src/features/platform/utils/DesktopLocaleBridge.ts:285
 msgid "{appName} failed to start"
 msgstr "Το {appName} δεν μπόρεσε να ξεκινήσει"
 
@@ -1586,19 +1591,19 @@ msgstr "Συνδρομή {premiumProductName}"
 msgid "{presenceCount} online"
 msgstr "{presenceCount} σε σύνδεση"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:39
+#: src/features/app/components/BootstrapErrorScreen.tsx:46
 msgid "{PRODUCT_NAME} failed to start properly. This could be due to corrupted data or a temporary issue."
 msgstr "Το {PRODUCT_NAME} δεν ξεκίνησε σωστά. Αυτό μπορεί να οφείλεται σε κατεστραμμένα δεδομένα ή σε ένα προσωρινό πρόβλημα."
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:196
+#: src/features/auth/state/NewDeviceMonitoring.tsx:208
 msgid "{PRODUCT_NAME} has found a new audio device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "Το {PRODUCT_NAME} βρήκε μια νέα συσκευή ήχου με όνομα <0>{deviceName}</0>. Θέλετε να μεταβείτε σε αυτήν;"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:185
+#: src/features/auth/state/NewDeviceMonitoring.tsx:197
 msgid "{PRODUCT_NAME} has found a new audio input device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "Το {PRODUCT_NAME} βρήκε μια νέα συσκευή εισόδου ήχου με όνομα <0>{deviceName}</0>. Θέλετε να μεταβείτε σε αυτήν;"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:190
+#: src/features/auth/state/NewDeviceMonitoring.tsx:202
 msgid "{PRODUCT_NAME} has found a new audio output device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "Το {PRODUCT_NAME} βρήκε μια νέα συσκευή εξόδου ήχου με όνομα <0>{deviceName}</0>. Θέλετε να μεταβείτε σε αυτήν;"
 
@@ -1619,7 +1624,7 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "Το {PRODUCT_NAME} πρέπει να επανεκκινηθεί για να απενεργοποιηθεί η επιτάχυνση υλικού του Chromium. Χρησιμοποιήστε το μόνο αν αντιμετωπίζετε προβλήματα γραφικών ή υψηλή χρήση GPU."
 
 #. Accessible label for the Fluxer application icon.
-#: src/features/ui/components/icons/FluxerIcon.tsx:10
+#: src/features/ui/components/icons/FluxerIconMark.tsx:6
 msgid "{productName} application icon"
 msgstr "Εικονίδιο εφαρμογής {productName}"
 
@@ -2538,7 +2543,7 @@ msgid "About"
 msgstr "Πληροφορίες"
 
 #. Desktop app menu item. Opens the About panel. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:16
+#: src/features/platform/utils/DesktopLocaleBridge.ts:17
 msgid "About {appName}"
 msgstr "Σχετικά με το {appName}"
 
@@ -2604,6 +2609,16 @@ msgstr "Αποδοχή πρόσκλησης"
 #: src/features/relationship/utils/RelationshipActionUtils.tsx:77
 msgid "Accept the friend request from {userName}?"
 msgstr "Να αποδεχτείτε το αίτημα φιλίας από τον/την {userName};"
+
+#. Label for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+msgid "Accept the push relay supplemental privacy notice"
+msgstr "Αποδοχή της συμπληρωματικής ειδοποίησης απορρήτου για την προώθηση ειδοποιήσεων"
+
+#. Summary value when the operator accepted the push relay notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:390
+msgid "Accepted"
+msgstr "Έγινε αποδοχή"
 
 #. Short label in the notification utils helper. Keep it concise.
 #: src/features/notification/utils/NotificationUtils.ts:32
@@ -2860,7 +2875,7 @@ msgid "Activity threshold"
 msgstr "Όριο δραστηριότητας"
 
 #. Native View menu item that resets zoom to 100%.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:108
+#: src/features/platform/utils/DesktopLocaleBridge.ts:109
 msgid "Actual size"
 msgstr "Πραγματικό μέγεθος"
 
@@ -2898,7 +2913,7 @@ msgstr "Προσθήκη σχολίου (προαιρετικό)"
 msgid "Add a community"
 msgstr "Προσθήκη κοινότητας"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:75
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:77
 msgid "Add a different account"
 msgstr "Προσθήκη άλλου λογαριασμού"
 
@@ -2908,7 +2923,7 @@ msgid "Add a friend to get started."
 msgstr "Πρόσθεσε έναν φίλο για να ξεκινήσεις."
 
 #. Setup wizard body for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:934
+#: src/features/app/components/setup/SetupWizardSteps.tsx:972
 msgid "Add a Klipy API key to enable GIF search at runtime."
 msgstr "Προσθέστε ένα κλειδί API του Klipy για να ενεργοποιήσετε την αναζήτηση GIF κατά την εκτέλεση."
 
@@ -2945,7 +2960,7 @@ msgid "Add a working email"
 msgstr "Προσθέστε ένα email που λειτουργεί"
 
 #. Setup wizard body for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:942
+#: src/features/app/components/setup/SetupWizardSteps.tsx:980
 msgid "Add a YouTube Data API key to enrich YouTube links."
 msgstr "Προσθέστε ένα κλειδί API YouTube Data για να εμπλουτίσετε τους συνδέσμους του YouTube."
 
@@ -2960,7 +2975,7 @@ msgid "Add action."
 msgstr "Προσθήκη ενέργειας."
 
 #. OAuth authorization account step button. Opens the flow to sign in with another account.
-#: src/features/auth/components/accounts/AccountSelector.tsx:185
+#: src/features/auth/components/accounts/AccountSelector.tsx:186
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:124
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:30
 msgid "Add an account"
@@ -2991,7 +3006,7 @@ msgid "Add another reaction"
 msgstr "Προσθήκη άλλης αντίδρασης"
 
 #. Setup wizard body for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:966
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1004
 msgid "Add Bluesky OAuth client metadata and a signing key."
 msgstr "Προσθέστε μεταδεδομένα πελάτη OAuth και ένα κλειδί υπογραφής για το Bluesky."
 
@@ -3066,7 +3081,7 @@ msgid "Add item"
 msgstr "Προσθήκη αντικειμένου"
 
 #. Title of the native file picker that selects local theme files to add.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:266
+#: src/features/platform/utils/DesktopLocaleBridge.ts:267
 #: src/features/theme_studio/sections/AssetsSection.tsx:150
 msgid "Add local files"
 msgstr "Προσθήκη τοπικών αρχείων"
@@ -3141,7 +3156,7 @@ msgid "Add shortcut"
 msgstr "Προσθήκη συντόμευσης"
 
 #. Setup wizard body for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:958
+#: src/features/app/components/setup/SetupWizardSteps.tsx:996
 msgid "Add SMTP credentials so the instance can send verification and notification email."
 msgstr "Προσθέστε διαπιστευτήρια SMTP, ώστε η παρουσία να μπορεί να στέλνει email επαλήθευσης και ειδοποιήσεων."
 
@@ -3168,7 +3183,7 @@ msgid "Add stream"
 msgstr "Προσθήκη ροής"
 
 #. Description for configuring an optional setup wizard integration now.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:926
+#: src/features/app/components/setup/SetupWizardSteps.tsx:964
 msgid "Add the credentials during setup."
 msgstr "Προσθέστε τα διαπιστευτήρια κατά τη ρύθμιση."
 
@@ -4232,17 +4247,17 @@ msgid "Anyone can call you, including strangers"
 msgstr "Οποιοσδήποτε μπορεί να σας καλέσει, συμπεριλαμβανομένων των αγνώστων"
 
 #. Description for the open registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:159
+#: src/features/app/components/setup/SetupWizardSteps.tsx:162
 msgid "Anyone can create an account."
 msgstr "Οποιοσδήποτε μπορεί να δημιουργήσει λογαριασμό."
 
 #. Description for the approval registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:167
+#: src/features/app/components/setup/SetupWizardSteps.tsx:170
 msgid "Anyone can request an account, but an administrator must approve it."
 msgstr "Οποιοσδήποτε μπορεί να ζητήσει λογαριασμό, αλλά ένας διαχειριστής πρέπει να τον εγκρίνει."
 
 #. Label for an integration API key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:979
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1017
 msgid "API key"
 msgstr "Κλειδί API"
 
@@ -4401,7 +4416,7 @@ msgid "Apply to all communities"
 msgstr "Εφαρμογή σε όλες τις κοινότητες"
 
 #. Registration mode option requiring admin approval.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:163
+#: src/features/app/components/setup/SetupWizardSteps.tsx:166
 msgid "Approval required"
 msgstr "Απαιτείται έγκριση"
 
@@ -4515,7 +4530,7 @@ msgid "Are you sure you want to remove <0>{engineName}</0>?"
 msgstr "Είστε σίγουροι ότι θέλετε να καταργήσετε το <0>{engineName}</0>;"
 
 #. Confirm dialog message for the destructive reset action. Tone stays plain.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:178
+#: src/features/platform/utils/DesktopLocaleBridge.ts:179
 msgid "Are you sure you want to reset {appName}'s app data?"
 msgstr "Είστε σίγουροι ότι θέλετε να επαναφέρετε τα δεδομένα εφαρμογής του {appName};"
 
@@ -4626,8 +4641,8 @@ msgstr "Ενέργειες συνημμένου"
 
 #. Setup wizard media expiry step title.
 #. Summary row label for the attachment expiry choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:217
-#: src/features/app/components/setup/SetupWizardSteps.tsx:352
+#: src/features/app/components/setup/SetupWizardSteps.tsx:220
+#: src/features/app/components/setup/SetupWizardSteps.tsx:378
 msgid "Attachment expiration"
 msgstr "Λήξη συνημμένων"
 
@@ -5208,7 +5223,7 @@ msgstr "Απών τώρα"
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
 #. OAuth authorization secondary button. Returns to the previous carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:77
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:78
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAuthorizeActions.tsx:14
 #: src/features/auth/flow/IpAuthorizationScreen.tsx:155
 #: src/features/channel/components/channel_header/shared.ts:27
@@ -5301,7 +5316,7 @@ msgstr "Οι premium παροχές του backend είναι απενεργοπ
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:59
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:5
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:731
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:732
 msgid "Background"
 msgstr "Φόντο"
 
@@ -5705,12 +5720,12 @@ msgid "Bluesky"
 msgstr "Bluesky"
 
 #. Label for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:294
+#: src/features/app/components/setup/SetupWizardSteps.tsx:320
 msgid "Bluesky connections"
 msgstr "Συνδέσεις Bluesky"
 
 #. Setup wizard title for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:962
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1000
 msgid "Bluesky OAuth"
 msgstr "Bluesky OAuth"
 
@@ -5728,7 +5743,7 @@ msgid "Blur"
 msgstr "Θάμπωμα"
 
 #. Slider label in the camera preview modal controlling how strong the background blur effect is.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:81
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:82
 msgid "Blur strength"
 msgstr "Ένταση θαμπώματος"
 
@@ -5878,7 +5893,7 @@ msgid "Bot profile"
 msgstr "Προφίλ bot"
 
 #. Setup wizard title for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:946
+#: src/features/app/components/setup/SetupWizardSteps.tsx:984
 msgid "Bot protection"
 msgstr "Προστασία από bot"
 
@@ -5944,7 +5959,7 @@ msgid "Branding"
 msgstr "Επωνυμία"
 
 #. Accessible label for a branding image preview in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:141
+#: src/features/app/components/setup/SetupWizardSteps.tsx:144
 msgid "Branding asset preview"
 msgstr "Προεπισκόπηση στοιχείου επωνυμίας"
 
@@ -6263,7 +6278,7 @@ msgstr "Συσκευή κάμερας"
 msgid "Camera effects"
 msgstr "Εφέ κάμερας"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:809
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:810
 msgid "Camera error"
 msgstr "Σφάλμα κάμερας"
 
@@ -6306,7 +6321,7 @@ msgstr "Απαιτείται άδεια κάμερας"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Title of the camera preview modal.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:186
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:63
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:64
 msgid "Camera preview"
 msgstr "Προεπισκόπηση κάμερας"
 
@@ -6341,6 +6356,11 @@ msgstr "Οι κάμερες είναι απενεργοποιημένες πάν
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:252
 msgid "Can't access that email?"
 msgstr "Δεν έχετε πρόσβαση σε αυτό το email;"
+
+#. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+msgid "Can't connect"
+msgstr "Δεν είναι δυνατή η σύνδεση"
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
@@ -6409,7 +6429,7 @@ msgstr "Δεν μπορείτε να ανεβάσετε αρχεία εδώ"
 #: src/features/user/components/modals/PhoneAddModal.tsx:401
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:174
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:33
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:845
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:846
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:81
 msgid "Cancel"
 msgstr "Ακύρωση"
@@ -6510,7 +6530,7 @@ msgid "Cannot delete account"
 msgstr "Δεν είναι δυνατή η διαγραφή λογαριασμού"
 
 #. Toast error shown when captcha verification fails inside the auth captcha interceptor.
-#: src/features/auth/components/CaptchaInterceptor.tsx:14
+#: src/features/auth/components/CaptchaInterceptor.tsx:15
 msgid "Captcha verification failed. Try again."
 msgstr "Η επαλήθευση Captcha απέτυχε. Δοκιμάστε ξανά."
 
@@ -6651,7 +6671,7 @@ msgstr "Στο κέντρο"
 msgid "Change avatar"
 msgstr "Αλλαγή avatar"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:744
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:745
 msgid "Change background"
 msgstr "Αλλαγή φόντου"
 
@@ -7297,11 +7317,11 @@ msgid "Chat shortcuts"
 msgstr "Συντομεύσεις συνομιλίας"
 
 #. Tray menu item. Triggers the auto-updater to look for a new desktop build.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:224
+#: src/features/platform/utils/DesktopLocaleBridge.ts:225
 msgid "Check for updates"
 msgstr "Έλεγχος για ενημερώσεις"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:56
+#: src/features/app/components/BootstrapErrorScreen.tsx:63
 msgid "Check our <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> for status updates."
 msgstr "Ελέγξτε το <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> για ενημερώσεις κατάστασης."
 
@@ -7352,6 +7372,10 @@ msgstr "Έλεγχος πρόσβασης..."
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx:23
 msgid "Checking screen recording permission..."
 msgstr "Έλεγχος της άδειας εγγραφής οθόνης..."
+
+#: src/features/auth/components/AltchaVerification.tsx:62
+msgid "Checking your browser. This takes a few seconds."
+msgstr "Ελέγχουμε το πρόγραμμα περιήγησής σας. Αυτό διαρκεί λίγα δευτερόλεπτα."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:67
@@ -7464,7 +7488,7 @@ msgid "Choose a supported audio file and try again."
 msgstr "Επιλέξτε ένα υποστηριζόμενο αρχείο ήχου και δοκιμάστε ξανά."
 
 #. Setup wizard title for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:60
+#: src/features/app/components/setup/SetupWizardSteps.tsx:63
 msgid "Choose a theme"
 msgstr "Επιλέξτε ένα θέμα"
 
@@ -7476,7 +7500,8 @@ msgstr "Επιλέξτε ένα παράθυρο από τον επιλογέα 
 #. OAuth authorization step title. The user must choose which account to authorize with.
 #: src/features/auth/components/accounts/AccountSelector.tsx:61
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:17
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:68
+#: src/features/auth/flow/AuthLoginLayout.tsx:492
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:70
 msgid "Choose an account"
 msgstr "Επιλέξτε λογαριασμό"
 
@@ -7517,7 +7542,7 @@ msgid "Choose friends to message."
 msgstr "Επιλέξτε φίλους για αποστολή μηνύματος."
 
 #. Setup wizard body for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:950
+#: src/features/app/components/setup/SetupWizardSteps.tsx:988
 msgid "Choose hCaptcha or Cloudflare Turnstile for signup challenges."
 msgstr "Επιλέξτε hCaptcha ή Cloudflare Turnstile για τους ελέγχους ασφαλείας κατά την εγγραφή."
 
@@ -7532,7 +7557,7 @@ msgid "Choose how messages are displayed in chat channels."
 msgstr "Επίλεξε πώς θα εμφανίζονται τα μηνύματα στα κανάλια συνομιλίας."
 
 #. Setup wizard registration step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:150
+#: src/features/app/components/setup/SetupWizardSteps.tsx:153
 msgid "Choose how new accounts are created on this instance."
 msgstr "Επιλέξτε πώς δημιουργούνται οι νέοι λογαριασμοί σε αυτήν την παρουσία."
 
@@ -7552,7 +7577,7 @@ msgid "Choose how you'd like to pay for this subscription."
 msgstr "Επίλεξε πώς θέλεις να πληρώσεις για αυτήν τη συνδρομή."
 
 #. Setup wizard community model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:180
+#: src/features/app/components/setup/SetupWizardSteps.tsx:183
 msgid "Choose how your instance works"
 msgstr "Επιλέξτε πώς λειτουργεί η παρουσία σας"
 
@@ -7580,7 +7605,7 @@ msgid "Choose the category that best describes your community. You can change th
 msgstr "Επίλεξε την κατηγορία που περιγράφει καλύτερα την κοινότητά σου. Μπορείς να την αλλάξεις οποιαδήποτε στιγμή."
 
 #. Setup wizard premium model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:303
+#: src/features/app/components/setup/SetupWizardSteps.tsx:329
 msgid "Choose the premium model"
 msgstr "Επιλέξτε το μοντέλο premium"
 
@@ -7635,7 +7660,7 @@ msgid "Choose where {PRODUCT_NAME} should send images for reverse image search. 
 msgstr "Επιλέξτε πού θα πρέπει να στέλνει το {PRODUCT_NAME} τις εικόνες για αντίστροφη αναζήτηση εικόνας. Θα θυμόμαστε την επιλογή σας. Μπορείτε να την αλλάξετε ή να προσθέσετε τον δικό σας πάροχο αργότερα στις {searchEnginesSettingsPath}."
 
 #. Setup wizard media expiry step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:221
+#: src/features/app/components/setup/SetupWizardSteps.tsx:224
 msgid "Choose whether uploaded attachments should expire automatically based on size."
 msgstr "Επιλέξτε αν τα συνημμένα που ανεβαίνουν θα λήγουν αυτόματα ανάλογα με το μέγεθός τους."
 
@@ -7817,7 +7842,7 @@ msgstr "Καθαρίζει το μικρόφωνό σας για καθαρή ο
 #. Button or menu action label in the theme studio quick css section. Keep it concise.
 #. Button that removes an uploaded branding image.
 #. Inline button in the Recent searches section that wipes the search history list.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:117
+#: src/features/app/components/setup/SetupWizardSteps.tsx:120
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
 #: src/features/input/components/KeybindRecorder.tsx:442
@@ -8045,7 +8070,7 @@ msgid "Client"
 msgstr "Εφαρμογή"
 
 #. Label for Bluesky OAuth client name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1056
 msgid "Client name"
 msgstr "Όνομα πελάτη"
 
@@ -8062,7 +8087,7 @@ msgid "Client secret regenerated. Update any code that uses the old secret."
 msgstr "Το μυστικό του πελάτη ανανεώθηκε. Ενημερώστε κάθε κώδικα που χρησιμοποιεί το παλιό μυστικό."
 
 #. Label for Bluesky OAuth client URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1022
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1060
 msgid "Client URL"
 msgstr "URL πελάτη"
 
@@ -8109,7 +8134,7 @@ msgstr "Η κλωνοποίηση είναι απενεργοποιημένη"
 #. Aria-label / button text for dismissing a modal, sheet, popout, or overlay. Short.
 #. Native Window menu item that closes the focused desktop window.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:311
-#: src/features/platform/utils/DesktopLocaleBridge.ts:138
+#: src/features/platform/utils/DesktopLocaleBridge.ts:139
 msgid "Close"
 msgstr "Κλείσιμο"
 
@@ -8195,7 +8220,7 @@ msgid "Close your DM with {username}? You can reopen it anytime."
 msgstr "Να κλείσει το DM σας με τον/την {username}; Μπορείτε να το ανοίξετε ξανά ανά πάσα στιγμή."
 
 #. Registration mode option that disables public registration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:171
+#: src/features/app/components/setup/SetupWizardSteps.tsx:174
 msgid "Closed"
 msgstr "Κλειστή"
 
@@ -8215,7 +8240,7 @@ msgid "Cloud upload"
 msgstr "Αποστολή στο cloud"
 
 #. Cloudflare Turnstile provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:975
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1013
 msgid "Cloudflare Turnstile"
 msgstr "Cloudflare Turnstile"
 
@@ -8607,7 +8632,7 @@ msgstr "Σίγαση μέλους στην κοινότητα"
 
 #. Label for the single community name input in the setup wizard.
 #. Label of the community name input in the create-community form.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:196
+#: src/features/app/components/setup/SetupWizardSteps.tsx:199
 #: src/features/guild/components/modals/add_guild_modal/shared.ts:123
 msgid "Community name"
 msgstr "Όνομα κοινότητας"
@@ -8773,7 +8798,7 @@ msgid "Completing your sign-in…"
 msgstr "Ολοκληρώνεται η σύνδεσή σας…"
 
 #. Windows jump-list task description (tooltip text) for the New direct message action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:253
+#: src/features/platform/utils/DesktopLocaleBridge.ts:254
 msgid "Compose a new direct message"
 msgstr "Σύνταξη νέου απευθείας μηνύματος"
 
@@ -8825,7 +8850,7 @@ msgid "Configure keyboard shortcuts"
 msgstr "Διαμόρφωση συντομεύσεων πληκτρολογίου"
 
 #. Option for configuring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:922
+#: src/features/app/components/setup/SetupWizardSteps.tsx:960
 msgid "Configure now"
 msgstr "Ρύθμιση τώρα"
 
@@ -9097,7 +9122,7 @@ msgstr "Σύνδεση: {connectionId}"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for external accounts and verified domains.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:415
-#: src/features/user/components/popouts/UserProfileShared.tsx:614
+#: src/features/user/components/popouts/UserProfileShared.tsx:615
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:8
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:30
 msgid "Connections"
@@ -9346,7 +9371,7 @@ msgstr "Αντιγράφηκε η διεύθυνση URL στο πρόχειρο
 #: src/features/auth/components/modals/BackupCodesModal.tsx:96
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:50
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:397
-#: src/features/platform/utils/DesktopLocaleBridge.ts:63
+#: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:73
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
@@ -9391,7 +9416,7 @@ msgstr "Αντιγραφή URL εικόνας εξωφύλλου"
 
 #. Tray menu item. Copies build / version diagnostics to the clipboard for bug reports.
 #: src/features/app/components/floating/UserAreaPopout.tsx:707
-#: src/features/platform/utils/DesktopLocaleBridge.ts:228
+#: src/features/platform/utils/DesktopLocaleBridge.ts:229
 msgid "Copy build info"
 msgstr "Αντιγραφή πληροφοριών έκδοσης"
 
@@ -9594,7 +9619,7 @@ msgid "Copy setup key"
 msgstr "Αντιγραφή κλειδιού εγκατάστασης"
 
 #. Button on the crash screen that copies developer diagnostic text.
-#: src/features/app/components/ErrorFallback.tsx:152
+#: src/features/app/components/ErrorFallback.tsx:155
 msgid "Copy stack trace"
 msgstr "Αντιγραφή ίχνους στοίβας"
 
@@ -9687,7 +9712,7 @@ msgid "Could not decode this audio file."
 msgstr "Δεν ήταν δυνατή η αποκωδικοποίηση αυτού του αρχείου ήχου."
 
 #. Error shown when the setup wizard fails to load the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:93
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:94
 msgid "Could not load the instance configuration. Try reloading the page."
 msgstr "Δεν ήταν δυνατή η φόρτωση της διαμόρφωσης της παρουσίας. Δοκιμάστε να ανανεώσετε τη σελίδα."
 
@@ -10060,7 +10085,7 @@ msgid "Couldn't ring this person"
 msgstr "Δεν ήταν δυνατή η κλήση αυτού του ατόμου"
 
 #. Error message in the use textarea submit hook. Preserve {detail}; it is inserted by code.
-#: src/features/messaging/hooks/useTextareaSubmit.ts:48
+#: src/features/messaging/hooks/useTextareaSubmit.ts:53
 msgid "Couldn't run that command: {detail}"
 msgstr "Δεν ήταν δυνατή η εκτέλεση της εντολής: {detail}"
 
@@ -10304,7 +10329,7 @@ msgid "Create account to claim gift"
 msgstr "Δημιουργία λογαριασμού για παραλαβή δώρου"
 
 #. Button that opens the registration flow to create the first administrator account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:68
+#: src/features/app/components/setup/SetupWizardSteps.tsx:71
 msgid "Create administrator account"
 msgstr "Δημιουργία λογαριασμού διαχειριστή"
 
@@ -10415,7 +10440,7 @@ msgid "Create role"
 msgstr "Δημιουργία ρόλου"
 
 #. Setup wizard title prompting the operator to create the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:48
+#: src/features/app/components/setup/SetupWizardSteps.tsx:51
 msgid "Create the administrator account"
 msgstr "Δημιουργήστε τον λογαριασμό διαχειριστή"
 
@@ -10905,7 +10930,7 @@ msgstr "Για να προσαρμόσετε το avatar, το banner, το χρ
 #. Native Edit menu item that cuts the selection to the clipboard. Imperative verb, not the noun.
 #. Textarea right-click context menu item that cuts the selected text.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:46
-#: src/features/platform/utils/DesktopLocaleBridge.ts:59
+#: src/features/platform/utils/DesktopLocaleBridge.ts:60
 msgid "Cut"
 msgstr "Αποκοπή"
 
@@ -11164,7 +11189,7 @@ msgid "Debug user"
 msgstr "Εντοπισμός σφαλμάτων χρήστη"
 
 #. Setup wizard premium model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:307
+#: src/features/app/components/setup/SetupWizardSteps.tsx:333
 msgid "Decide how premium limits apply to people on this instance."
 msgstr "Αποφασίστε πώς τα premium όρια θα ισχύουν για τους χρήστες σε αυτήν την παρουσία."
 
@@ -11201,7 +11226,7 @@ msgstr "Προεπιλογή"
 #. Default camera device option.
 #. Default device option label in the voice settings menu (alternate call site for the same concept as DEFAULT_DESCRIPTOR).
 #. Fallback device option shown before a microphone, speaker, or camera label is available.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:67
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:68
 #: src/features/voice/components/VoiceSettingsMenus.tsx:87
 #: src/features/voice/utils/SettingsDeviceOptions.ts:11
 msgctxt "device-option"
@@ -11308,7 +11333,7 @@ msgstr "Ντέλαγουερ"
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
 #: src/features/messaging/commands/MessageCommands.tsx:79
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
-#: src/features/platform/utils/DesktopLocaleBridge.ts:76
+#: src/features/platform/utils/DesktopLocaleBridge.ts:77
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
@@ -12043,7 +12068,7 @@ msgstr "Προεπισκοπήσεις απευθείας μηνυμάτων"
 
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:348
+#: src/features/app/components/setup/SetupWizardSteps.tsx:374
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:629
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
@@ -12123,7 +12148,7 @@ msgid "Disable desktop notifications?"
 msgstr "Απενεργοποίηση ειδοποιήσεων στην επιφάνεια εργασίας;"
 
 #. Label for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:208
+#: src/features/app/components/setup/SetupWizardSteps.tsx:211
 msgid "Disable direct messages and friend requests"
 msgstr "Απενεργοποίηση απευθείας μηνυμάτων και αιτημάτων φιλίας"
 
@@ -12132,7 +12157,7 @@ msgid "Disable favorites"
 msgstr "Απενεργοποίηση αγαπημένων"
 
 #. Troubleshooting menu item. Turns off Chromium hardware acceleration and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:158
+#: src/features/platform/utils/DesktopLocaleBridge.ts:159
 msgid "Disable hardware acceleration and restart"
 msgstr "Απενεργοποίηση επιτάχυνσης υλικού και επανεκκίνηση"
 
@@ -12199,7 +12224,7 @@ msgid "Disable video locally"
 msgstr "Απενεργοποίηση βίντεο τοπικά"
 
 #. Summary value when a setup option is disabled.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:364
+#: src/features/app/components/setup/SetupWizardSteps.tsx:402
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
@@ -12275,14 +12300,14 @@ msgid "Disconnect device"
 msgstr "Αποσύνδεση συσκευής"
 
 #. Tray menu item shown while in a voice call. {channel} is the voice channel name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:216
+#: src/features/platform/utils/DesktopLocaleBridge.ts:217
 msgid "Disconnect from {channel}"
 msgstr "Αποσύνδεση από το {channel}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tray menu item. Leaves the current voice call when the channel name is unavailable.
 #: src/features/input/state/input_keybind/shared.ts:317
-#: src/features/platform/utils/DesktopLocaleBridge.ts:220
+#: src/features/platform/utils/DesktopLocaleBridge.ts:221
 msgid "Disconnect from voice"
 msgstr "Αποσύνδεση από τη φωνητική συνομιλία"
 
@@ -12534,7 +12559,7 @@ msgstr "Εγγραφή DNS TXT"
 #. Short label in the app constants.
 #. Tray status menu item. User presence that suppresses notifications.
 #: src/features/app/constants/AppConstants.ts:33
-#: src/features/platform/utils/DesktopLocaleBridge.ts:200
+#: src/features/platform/utils/DesktopLocaleBridge.ts:201
 msgid "Do not disturb"
 msgstr "Μην ενοχλείτε"
 
@@ -12659,7 +12684,7 @@ msgstr "Να μην εμφανιστεί ξανά"
 msgid "Don't show typing indicators in the channel list"
 msgstr "Να μην εμφανίζονται οι ενδείξεις πληκτρολόγησης στη λίστα καναλιών"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:51
+#: src/features/auth/state/NewDeviceMonitoring.tsx:57
 msgid "Don't suggest {deviceName} again"
 msgstr "Να μην προταθεί ξανά η συσκευή {deviceName}"
 
@@ -12998,7 +13023,7 @@ msgstr "Ακύρωση ηχούς"
 #. Button or menu action label in the search engines tab. Keep it concise.
 #. Top-level native menu bar title (Edit menu, holds cut/copy/paste).
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:43
-#: src/features/platform/utils/DesktopLocaleBridge.ts:47
+#: src/features/platform/utils/DesktopLocaleBridge.ts:48
 #: src/features/user/components/modals/tabs/chat_settings_tab/SearchEnginesTab.tsx:35
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx:51
 msgid "Edit"
@@ -13270,7 +13295,7 @@ msgid "Email changed"
 msgstr "Το email άλλαξε"
 
 #. Setup wizard title for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:954
+#: src/features/app/components/setup/SetupWizardSteps.tsx:992
 msgid "Email delivery"
 msgstr "Παράδοση email"
 
@@ -13561,7 +13586,7 @@ msgid "Enable at least one translator below."
 msgstr "Ενεργοποιήστε τουλάχιστον έναν μεταφραστή παρακάτω."
 
 #. Label for enabling attachment expiry during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:225
+#: src/features/app/components/setup/SetupWizardSteps.tsx:228
 msgid "Enable attachment expiration"
 msgstr "Ενεργοποίηση λήξης συνημμένων"
 
@@ -13575,7 +13600,7 @@ msgid "Enable beta feature"
 msgstr "Ενεργοποίηση λειτουργίας beta"
 
 #. Label for enabling Bluesky OAuth in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1014
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1052
 msgid "Enable Bluesky OAuth"
 msgstr "Ενεργοποίηση OAuth του Bluesky"
 
@@ -13608,7 +13633,7 @@ msgid "Enable developer mode"
 msgstr "Ενεργοποίηση λειτουργίας προγραμματιστή"
 
 #. Label for enabling SMTP email delivery in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:982
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1020
 msgid "Enable email delivery"
 msgstr "Ενεργοποίηση παράδοσης email"
 
@@ -13627,7 +13652,7 @@ msgid "Enable favorites"
 msgstr "Ενεργοποίηση αγαπημένων"
 
 #. Troubleshooting menu item. Turns Chromium hardware acceleration back on and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:162
+#: src/features/platform/utils/DesktopLocaleBridge.ts:163
 msgid "Enable hardware acceleration and restart"
 msgstr "Ενεργοποίηση επιτάχυνσης υλικού και επανεκκίνηση"
 
@@ -13750,7 +13775,7 @@ msgid "Enable text selection"
 msgstr "Ενεργοποίηση επιλογής κειμένου"
 
 #. Setup wizard optional services step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:270
+#: src/features/app/components/setup/SetupWizardSteps.tsx:296
 msgid "Enable the integrations whose credentials you have configured. Only available services are shown."
 msgstr "Ενεργοποιήστε τις ενσωματώσεις για τις οποίες έχετε διαμορφώσει τα διαπιστευτήρια. Εμφανίζονται μόνο οι διαθέσιμες υπηρεσίες."
 
@@ -13791,7 +13816,7 @@ msgstr "Ενεργοποίηση μικρογραφιών προεπισκόπη
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Summary value when a setup option is enabled.
 #. Toggle item in the textarea spellcheck submenu. Master enable for spellcheck.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:360
+#: src/features/app/components/setup/SetupWizardSteps.tsx:398
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:21
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:66
 msgid "Enabled"
@@ -13913,7 +13938,7 @@ msgid "Enter a code in the format ABCD-1234."
 msgstr "Εισαγάγετε έναν κωδικό με τη μορφή ABCD-1234."
 
 #. Validation error for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:204
+#: src/features/app/components/setup/SetupWizardSteps.tsx:207
 msgid "Enter a community name between 1 and 100 characters."
 msgstr "Εισαγάγετε ένα όνομα κοινότητας από 1 έως 100 χαρακτήρες."
 
@@ -13923,7 +13948,7 @@ msgid "Enter a gift code to redeem {premiumProductName} for your account."
 msgstr "Εισαγάγετε έναν κωδικό δώρου για να εξαργυρώσετε το {premiumProductName} για τον λογαριασμό σας."
 
 #. Validation error for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:97
+#: src/features/app/components/setup/SetupWizardSteps.tsx:100
 msgid "Enter a product name between 1 and 80 characters."
 msgstr "Εισαγάγετε ένα όνομα προϊόντος από 1 έως 80 χαρακτήρες."
 
@@ -14306,7 +14331,7 @@ msgid "Everyone"
 msgstr "Όλοι"
 
 #. Premium model option that gives everyone the highest limits.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:319
+#: src/features/app/components/setup/SetupWizardSteps.tsx:345
 msgid "Everyone is premium"
 msgstr "Όλοι είναι premium"
 
@@ -14352,7 +14377,7 @@ msgstr "εξαίρεση μέρους ονόματος αρχείου συνημ
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:38
+#: src/features/platform/utils/DesktopLocaleBridge.ts:39
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Exit"
 msgstr "Έξοδος"
@@ -14435,7 +14460,7 @@ msgid "EXPERIMENTAL"
 msgstr "ΠΕΙΡΑΜΑΤΙΚΟ"
 
 #. Label for attachment decay curve.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:253
+#: src/features/app/components/setup/SetupWizardSteps.tsx:256
 msgid "Expiration curve"
 msgstr "Καμπύλη λήξης"
 
@@ -14565,11 +14590,6 @@ msgstr "Εξαγωγή των δεδομένων μου"
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:110
 msgid "Export themes"
 msgstr "Εξαγωγή θεμάτων"
-
-#. Developer / debug surface — keep terse and technical. Tooltip / description for the profile timezone settings toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
-msgid "Expose the staff-only time zone section in profile settings."
-msgstr "Εμφανίζει στις ρυθμίσεις προφίλ την ενότητα ζώνης ώρας που είναι μόνο για το προσωπικό."
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -14702,7 +14722,7 @@ msgid "Failed to delete channel"
 msgstr "Αποτυχία διαγραφής καναλιού"
 
 #. Toast / inline error in the camera preview modal when enabling the camera fails.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:59
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:60
 msgid "Failed to enable camera."
 msgstr "Αποτυχία ενεργοποίησης κάμερας."
 
@@ -14717,7 +14737,7 @@ msgid "Failed to forward message"
 msgstr "Αποτυχία προώθησης μηνύματος"
 
 #. Short label in the authentication desktop handoff account selector. Keep the tone plain and specific.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:17
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
 msgid "Failed to generate token"
 msgstr "Αποτυχία δημιουργίας διακριτικού"
 
@@ -14881,12 +14901,12 @@ msgstr "Αποτυχία αποστολής αναφοράς. Δοκιμάστε
 msgid "Failed to send verification email. Try again later."
 msgstr "Αποτυχία αποστολής email επαλήθευσης. Δοκιμάστε ξανά αργότερα."
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:36
+#: src/features/app/components/BootstrapErrorScreen.tsx:43
 msgid "Failed to start"
 msgstr "Αποτυχία εκκίνησης"
 
 #. Error text in the camera preview modal when the camera stream cannot be opened. Prompts user to check OS / browser permissions.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:54
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:55
 msgid "Failed to start camera preview. Check your camera permissions."
 msgstr "Αποτυχία έναρξης προεπισκόπησης κάμερας. Ελέγξτε τα δικαιώματα της κάμεράς σας."
 
@@ -14974,7 +14994,7 @@ msgid "False claims likely to cause real-world harm."
 msgstr "Ψευδείς ισχυρισμοί που ενδέχεται να προκαλέσουν πραγματική βλάβη."
 
 #. Label for the favicon branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:137
+#: src/features/app/components/setup/SetupWizardSteps.tsx:140
 msgid "Favicon"
 msgstr "Favicon"
 
@@ -15074,7 +15094,7 @@ msgid "Fetch a URL and inspect the embed payload the chat renderer receives."
 msgstr "Ανακτήστε μια διεύθυνση URL και επιθεωρήστε το περιεχόμενο ενσωμάτωσης που λαμβάνει ο μηχανισμός απόδοσης της συνομιλίας."
 
 #. Top-level native menu bar title (File menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:43
+#: src/features/platform/utils/DesktopLocaleBridge.ts:44
 msgid "File"
 msgstr "Αρχείο"
 
@@ -15232,7 +15252,7 @@ msgstr "Φιλτράρισμα"
 msgid "Filtering by {language}"
 msgstr "Φιλτράρισμα κατά {language}"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:788
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:789
 msgid "Finalizing camera..."
 msgstr "Οριστικοποίηση κάμερας..."
 
@@ -15270,8 +15290,8 @@ msgstr "Ολοκληρώστε στη νέα καρτέλα. Αν την κλε�
 
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
-#: src/features/app/components/setup/SetupWizardSteps.tsx:328
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:86
+#: src/features/app/components/setup/SetupWizardSteps.tsx:354
 msgid "Finish setup"
 msgstr "Ολοκλήρωση ρύθμισης"
 
@@ -15318,7 +15338,7 @@ msgid "Florida"
 msgstr "Φλόριντα"
 
 #. Placeholder for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:93
+#: src/features/app/components/setup/SetupWizardSteps.tsx:96
 msgid "Fluxer"
 msgstr "echowire"
 
@@ -15546,7 +15566,7 @@ msgid "Force profile skeletons"
 msgstr "Εξαναγκασμός σκελετών προφίλ"
 
 #. Native View menu item that reloads the window and ignores the cache. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:100
+#: src/features/platform/utils/DesktopLocaleBridge.ts:101
 msgid "Force reload"
 msgstr "Αναγκαστική επαναφόρτωση"
 
@@ -15852,12 +15872,12 @@ msgid "from <0>{0}</0>"
 msgstr "από <0>{0}</0>"
 
 #. Label for SMTP from email input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:986
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1024
 msgid "From email"
 msgstr "Διεύθυνση email αποστολέα"
 
 #. Label for SMTP from name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:990
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1028
 msgid "From name"
 msgstr "Όνομα αποστολέα"
 
@@ -16149,7 +16169,7 @@ msgid "GIF preview"
 msgstr "Προεπισκόπηση GIF"
 
 #. Setup wizard title for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:930
+#: src/features/app/components/setup/SetupWizardSteps.tsx:968
 msgid "GIF search"
 msgstr "Αναζήτηση GIF"
 
@@ -16322,7 +16342,7 @@ msgid "Gifts"
 msgstr "Δώρα"
 
 #. Description for the everyone-is-premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:323
+#: src/features/app/components/setup/SetupWizardSteps.tsx:349
 msgid "Give everyone on this instance the highest premium limits."
 msgstr "Δώστε σε όλους σε αυτήν την παρουσία τα υψηλότερα όρια premium."
 
@@ -16793,7 +16813,7 @@ msgstr "Ρητορική μίσους"
 msgid "Having fun?"
 msgstr "Περνάς καλά;"
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:157
+#: src/features/auth/components/modals/CaptchaModal.tsx:175
 msgid "Having issues? Try hCaptcha instead"
 msgstr "Αντιμετωπίζετε προβλήματα; Δοκιμάστε το hCaptcha"
 
@@ -16804,7 +16824,7 @@ msgid "Hawaii"
 msgstr "Χαβάη"
 
 #. hCaptcha provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:974
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1012
 msgid "hCaptcha"
 msgstr "hCaptcha"
 
@@ -16870,7 +16890,7 @@ msgid "Hello, {username}! Nice to have you here."
 msgstr "Γεια σου, {username}! Χαρά μας που σε έχουμε εδώ."
 
 #. Top-level native menu bar title (Help menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:142
+#: src/features/platform/utils/DesktopLocaleBridge.ts:143
 msgid "Help"
 msgstr "Βοήθεια"
 
@@ -16950,7 +16970,7 @@ msgid "Hide"
 msgstr "Απόκρυψη"
 
 #. macOS app menu / tray item. Hides the desktop app window.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:30
+#: src/features/platform/utils/DesktopLocaleBridge.ts:31
 msgid "Hide {appName}"
 msgstr "Απόκρυψη {appName}"
 
@@ -17328,7 +17348,7 @@ msgstr "Καταλαβαίνω"
 
 #. Label for the icon branding asset.
 #. Short label in the guild icon upload field. Keep it concise.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:121
+#: src/features/app/components/setup/SetupWizardSteps.tsx:124
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:27
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:89
 msgid "Icon"
@@ -17548,7 +17568,7 @@ msgid "Image"
 msgstr "Εικόνα"
 
 #. Label for the branding image asset uploaders in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:105
+#: src/features/app/components/setup/SetupWizardSteps.tsx:108
 msgid "Image assets"
 msgstr "Εικόνες"
 
@@ -17672,7 +17692,7 @@ msgid "Import favorite GIFs"
 msgstr "Εισαγωγή αγαπημένων GIF"
 
 #. Title of the native folder picker that imports a directory of theme files.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:270
+#: src/features/platform/utils/DesktopLocaleBridge.ts:271
 #: src/features/theme_studio/sections/LibrarySection.tsx:349
 msgid "Import folder"
 msgstr "Εισαγωγή φακέλου"
@@ -17984,7 +18004,7 @@ msgstr "Κληρονομημένο"
 msgid "Inherited from {inheritedFromLabel}"
 msgstr "Κληρονομήθηκε από {inheritedFromLabel}"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:790
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:791
 msgid "Initializing camera..."
 msgstr "Αρχικοποίηση κάμερας..."
 
@@ -18139,12 +18159,12 @@ msgid "Installing desktop update…"
 msgstr "Εγκατάσταση ενημέρωσης για υπολογιστή…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:294
+#: src/features/platform/utils/DesktopLocaleBridge.ts:305
 msgid "Instant messaging and VoIP"
 msgstr "Άμεσα μηνύματα και VoIP"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:289
+#: src/features/platform/utils/DesktopLocaleBridge.ts:300
 msgid "Instant Messenger"
 msgstr "Εφαρμογή άμεσων μηνυμάτων"
 
@@ -18278,7 +18298,7 @@ msgstr "Πατήθηκε το κουμπί \"ανεστραμμένο\"."
 #. Short label in the app constants.
 #. Tray status menu item. User presence that appears offline to others.
 #: src/features/app/constants/AppConstants.ts:37
-#: src/features/platform/utils/DesktopLocaleBridge.ts:204
+#: src/features/platform/utils/DesktopLocaleBridge.ts:205
 msgid "Invisible"
 msgstr "Αόρατος"
 
@@ -18883,7 +18903,7 @@ msgid "Keep attachments when clearing an edit"
 msgstr "Διατήρηση συνημμένων κατά την εκκαθάριση επεξεργασίας"
 
 #. Description for the mirror premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:315
+#: src/features/app/components/setup/SetupWizardSteps.tsx:341
 msgid "Keep free and premium tiers. You can customize the tiers later."
 msgstr "Διατηρήστε τις δωρεάν και premium βαθμίδες. Μπορείτε να προσαρμόσετε τις βαθμίδες αργότερα."
 
@@ -19010,7 +19030,7 @@ msgid "Kicked {targetUserTag} from the community"
 msgstr "Αποβλήθηκε ο/η {targetUserTag} από την κοινότητα"
 
 #. Label for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+#: src/features/app/components/setup/SetupWizardSteps.tsx:304
 msgid "Klipy GIFs"
 msgstr "GIF Klipy"
 
@@ -19022,7 +19042,7 @@ msgstr "Κορεατικά"
 #. Label for the setup wizard language selector.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. User settings tab for language, locale, and time display preferences.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:56
+#: src/features/app/components/setup/SetupWizardSteps.tsx:59
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:6
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:132
 msgid "Language"
@@ -19046,7 +19066,7 @@ msgid "Large"
 msgstr "Μεγάλο"
 
 #. Label for attachment decay maximum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:237
+#: src/features/app/components/setup/SetupWizardSteps.tsx:240
 msgid "Large file threshold (MB)"
 msgstr "Όριο μεγάλου αρχείου (MB)"
 
@@ -19213,6 +19233,11 @@ msgstr "Να φύγετε από αυτήν την ομάδα; Δεν θα βλ�
 msgid "Leave voice call"
 msgstr "Αποχώρηση από τη φωνητική κλήση"
 
+#. Description for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
+msgstr "Αν το αφήσετε απενεργοποιημένο, το relay δεν χρησιμοποιείται και οι επίσημες εφαρμογές για κινητά δεν λαμβάνουν ειδοποιήσεις. Μπορείτε να το αποδεχτείτε αργότερα από τον πίνακα διαχείρισης."
+
 #. Card alignment option that aligns content to the left.
 #: src/features/ui/card_alignment_controls/CardAlignmentControls.tsx:17
 #: src/features/user/components/modals/tabs/component_gallery_tab/OverlaysTab.tsx:108
@@ -19287,12 +19312,12 @@ msgid "Let others clone your stickers"
 msgstr "Να επιτρέπεται σε άλλους να κλωνοποιούν τα αυτοκόλλητά σας"
 
 #. Description for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:298
+#: src/features/app/components/setup/SetupWizardSteps.tsx:324
 msgid "Let people link their Bluesky account to their profile."
 msgstr "Επιτρέψτε στους χρήστες να συνδέουν τον λογαριασμό τους στο Bluesky με το προφίλ τους."
 
 #. Description for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+#: src/features/app/components/setup/SetupWizardSteps.tsx:308
 msgid "Let people search and send GIFs powered by Klipy."
 msgstr "Επιτρέψτε στους χρήστες να αναζητούν και να στέλνουν GIF μέσω του Klipy."
 
@@ -19601,7 +19626,7 @@ msgid "Loading destinations…"
 msgstr "Φόρτωση προορισμών…"
 
 #. Accessible status while the setup wizard loads the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:89
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:90
 msgid "Loading instance configuration"
 msgstr "Φόρτωση διαμόρφωσης παρουσίας"
 
@@ -19631,7 +19656,7 @@ msgid "Loading states"
 msgstr "Καταστάσεις φόρτωσης"
 
 #. Setup wizard body while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:76
+#: src/features/app/components/setup/SetupWizardSteps.tsx:79
 msgid "Loading the current instance configuration."
 msgstr "Φόρτωση της τρέχουσας διαμόρφωσης της παρουσίας."
 
@@ -19703,12 +19728,12 @@ msgid "Login"
 msgstr "Σύνδεση"
 
 #. Label for the logo branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:129
+#: src/features/app/components/setup/SetupWizardSteps.tsx:132
 msgid "Logo"
 msgstr "Λογότυπο"
 
 #. Label for Bluesky OAuth logo URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1026
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1064
 msgid "Logo URL"
 msgstr "Διεύθυνση URL λογότυπου"
 
@@ -19833,7 +19858,7 @@ msgid "Make group owner"
 msgstr "Ορισμός ως κατόχου ομάδας"
 
 #. Setup wizard branding step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:81
+#: src/features/app/components/setup/SetupWizardSteps.tsx:84
 msgid "Make the instance yours"
 msgstr "Κάντε την παρουσία δική σας"
 
@@ -20280,12 +20305,12 @@ msgid "Maximizes visible messages with minimal spacing."
 msgstr "Μεγιστοποιεί τον αριθμό των ορατών μηνυμάτων με ελάχιστα κενά."
 
 #. Label for attachment decay maximum eligible size.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:241
+#: src/features/app/components/setup/SetupWizardSteps.tsx:244
 msgid "Maximum eligible size (MB)"
 msgstr "Μέγιστο επιλέξιμο μέγεθος (MB)"
 
 #. Label for attachment decay maximum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:249
+#: src/features/app/components/setup/SetupWizardSteps.tsx:252
 msgid "Maximum lifetime (days)"
 msgstr "Μέγιστη διάρκεια ζωής (ημέρες)"
 
@@ -20486,7 +20511,7 @@ msgid "Member roles updated"
 msgstr "Οι ρόλοι του μέλους ενημερώθηκαν"
 
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx:83
-#: src/features/user/components/popouts/UserProfileShared.tsx:282
+#: src/features/user/components/popouts/UserProfileShared.tsx:283
 msgid "Member since"
 msgstr "Μέλος από"
 
@@ -21068,7 +21093,7 @@ msgstr "24ωρη μορφή ώρας"
 #. Native Window menu item that minimizes the focused desktop window. Imperative verb.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:128
+#: src/features/platform/utils/DesktopLocaleBridge.ts:129
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:186
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:190
 msgid "Minimize"
@@ -21090,7 +21115,7 @@ msgid "Minimize window"
 msgstr "Ελαχιστοποίηση παραθύρου"
 
 #. Label for attachment decay minimum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:245
+#: src/features/app/components/setup/SetupWizardSteps.tsx:248
 msgid "Minimum lifetime (days)"
 msgstr "Ελάχιστη διάρκεια ζωής (ημέρες)"
 
@@ -21109,7 +21134,7 @@ msgstr "Ανήλικοι σε κίνδυνο, περιεχόμενο ενηλί�
 #. Switch label in the camera preview modal for flipping the local camera preview horizontally.
 #. Switch label in the video tab for flipping the local camera preview horizontally.
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx:106
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:72
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:73
 #: src/features/voice/components/VoiceSettingsMenus.tsx:114
 msgid "Mirror camera"
 msgstr "Αντικατοπτρισμός κάμερας"
@@ -21119,7 +21144,7 @@ msgid "Mirror of the Appearance tab toggle for light/dark/coal preference. Disab
 msgstr "Αντικατοπτρίζει την εναλλαγή της καρτέλας «Εμφάνιση» για την προτίμηση φωτεινού, σκοτεινού ή Coal. Απενεργοποιήστε το για ξεχωριστό βασικό θέμα ανά συσκευή."
 
 #. Premium model option that mirrors free and premium tiers.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:311
+#: src/features/app/components/setup/SetupWizardSteps.tsx:337
 msgid "Mirror tiers"
 msgstr "Αντιγραφή βαθμίδων"
 
@@ -21167,7 +21192,9 @@ msgid "Mobile online status on avatars"
 msgstr "Κατάσταση σύνδεσης από κινητό στα avatar"
 
 #. Section label for mobile push notification settings.
+#. Setup wizard push relay consent step title.
 #. Switch label in the community notification settings modal. Controls whether mobile push notifications are delivered for this community.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:269
 #: src/features/guild/components/modals/GuildNotificationSettingsModal.tsx:112
 #: src/features/ui/action_menu/items/GuildMenuItems.tsx:81
 msgid "Mobile push notifications"
@@ -21681,7 +21708,7 @@ msgstr "Σίγαση μελών"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Mutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:63
-#: src/features/platform/utils/DesktopLocaleBridge.ts:208
+#: src/features/platform/utils/DesktopLocaleBridge.ts:209
 msgid "Mute microphone"
 msgstr "Σίγαση μικροφώνου"
 
@@ -21850,7 +21877,7 @@ msgid "My category"
 msgstr "Η κατηγορία μου"
 
 #. Placeholder for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:200
+#: src/features/app/components/setup/SetupWizardSteps.tsx:203
 msgid "My community"
 msgstr "Η κοινότητά μου"
 
@@ -22136,7 +22163,7 @@ msgid "New accounts can join up to 10 communities in the first 24 hours. Try aga
 msgstr "Οι νέοι λογαριασμοί μπορούν να συμμετάσχουν σε έως και 10 κοινότητες τις πρώτες 24 ώρες. Δοκιμάστε ξανά αργότερα."
 
 #. Body text in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:23
+#: src/features/auth/state/NewDeviceMonitoring.tsx:26
 msgid "New audio device detected!"
 msgstr "Εντοπίστηκε νέα συσκευή ήχου!"
 
@@ -22166,7 +22193,7 @@ msgid "New community muted"
 msgstr "Νέα κοινότητα σε σίγαση"
 
 #. Windows jump-list task title. Starts composing a new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:249
+#: src/features/platform/utils/DesktopLocaleBridge.ts:250
 msgid "New direct message"
 msgstr "Νέο απευθείας μήνυμα"
 
@@ -22289,7 +22316,7 @@ msgstr "Πιο πρόσφατα πρώτα"
 #. Button that moves to the next setup wizard step.
 #. Generic primary or pagination action label that advances to the next step, page, or item.
 #. Primary button in the required-action modal. Moves to the next carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:81
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:82
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:154
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:721
 msgid "Next"
@@ -22351,7 +22378,7 @@ msgstr "Δεν υπάρχει πρόσβαση"
 msgid "No accessible channels"
 msgstr "Δεν υπάρχουν προσβάσιμα κανάλια"
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:148
+#: src/features/auth/components/accounts/AccountSelector.tsx:150
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:88
 msgid "No accounts"
 msgstr "Δεν υπάρχουν λογαριασμοί"
@@ -22673,7 +22700,7 @@ msgid "No one can add you to group chats without asking"
 msgstr "Κανείς δεν μπορεί να σας προσθέσει σε ομαδικές συνομιλίες χωρίς να σας ρωτήσει"
 
 #. Message shown when no optional services are available in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:274
+#: src/features/app/components/setup/SetupWizardSteps.tsx:300
 msgid "No optional services are available on this instance. You can skip this step."
 msgstr "Δεν υπάρχουν διαθέσιμες προαιρετικές υπηρεσίες σε αυτήν την παρουσία. Μπορείτε να παραλείψετε αυτό το βήμα."
 
@@ -22930,7 +22957,7 @@ msgid "No webhooks"
 msgstr "Δεν υπάρχουν webhooks"
 
 #. Developer option label for short-circuiting the in-app reporting (IAR) flow. When enabled, submitting a report skips the network call.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:144
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
 msgid "No-op in-app reports"
 msgstr "Αναφορές εντός εφαρμογής χωρίς λειτουργία"
 
@@ -23028,6 +23055,11 @@ msgstr "Δεν είναι αριθμός"
 msgid "Not a whole number"
 msgstr "Δεν είναι ακέραιος αριθμός"
 
+#. Summary value when the operator left the push relay notice unaccepted.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:394
+msgid "Not accepted"
+msgstr "Δεν έγινε αποδεκτή"
+
 #. Fallback value when a saved billing payment method has no expiration date.
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:18
 msgid "Not available"
@@ -23060,7 +23092,7 @@ msgstr "Δεν βρέθηκε"
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:43
-#: src/features/auth/state/NewDeviceMonitoring.tsx:31
+#: src/features/auth/state/NewDeviceMonitoring.tsx:34
 msgid "Not now"
 msgstr "Όχι τώρα"
 
@@ -23489,19 +23521,19 @@ msgstr "Διαφάνεια"
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:21
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:159
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:429
-#: src/features/platform/utils/DesktopLocaleBridge.ts:261
+#: src/features/platform/utils/DesktopLocaleBridge.ts:262
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingRow.tsx:22
 msgid "Open"
 msgstr "Άνοιγμα"
 
 #. Registration mode option allowing anyone to register.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:154
+#: src/features/app/components/setup/SetupWizardSteps.tsx:157
 msgctxt "registration-policy"
 msgid "Open"
 msgstr "Ανοιχτή"
 
 #. Windows jump-list task description (tooltip text) for the Open settings action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:245
+#: src/features/platform/utils/DesktopLocaleBridge.ts:246
 msgid "Open {appName} settings"
 msgstr "Άνοιγμα ρυθμίσεων του {appName}"
 
@@ -24027,7 +24059,7 @@ msgstr "Λειτουργικό σύστημα"
 msgid "Opt into experimental per-community and per-channel unread badge controls"
 msgstr "Ενεργοποίηση πειραματικών ρυθμίσεων για τα σήματα μη αναγνωσμένων ανά κοινότητα και ανά κανάλι"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:786
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:787
 msgid "Optimizing camera..."
 msgstr "Βελτιστοποίηση κάμερας..."
 
@@ -24057,7 +24089,7 @@ msgid "Optional arguments"
 msgstr "Προαιρετικά ορίσματα"
 
 #. Setup wizard optional services step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:266
+#: src/features/app/components/setup/SetupWizardSteps.tsx:292
 msgid "Optional services"
 msgstr "Προαιρετικές υπηρεσίες"
 
@@ -24373,7 +24405,7 @@ msgstr "Τα κλειδιά πρόσβασης απαιτούν ένα υπογ�
 
 #. Generic form-field label for a password.
 #. Label for SMTP password input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:997
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1035
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:215
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:146
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:183
@@ -24440,7 +24472,7 @@ msgstr "Τελευταίες 7 ημέρες"
 #. Native Edit menu item that pastes the clipboard contents. Imperative verb, not the noun.
 #. Textarea right-click context menu item that pastes clipboard contents.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:54
-#: src/features/platform/utils/DesktopLocaleBridge.ts:67
+#: src/features/platform/utils/DesktopLocaleBridge.ts:68
 msgid "Paste"
 msgstr "Επικόλληση"
 
@@ -24449,7 +24481,7 @@ msgid "Paste a {theOtherPlatform} template URL to import its structure into a ne
 msgstr "Επικολλήστε ένα URL προτύπου {theOtherPlatform} για να εισαγάγετε τη δομή του σε μια νέα κοινότητα."
 
 #. Native macOS Edit menu item that pastes the clipboard contents using the formatting of the surrounding text. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:71
+#: src/features/platform/utils/DesktopLocaleBridge.ts:72
 msgid "Paste and match style"
 msgstr "Επικόλληση και αντιστοίχιση στιλ"
 
@@ -24837,7 +24869,7 @@ msgid "Pick one or more dictionaries. Words from any selected dictionary are acc
 msgstr "Επιλέξτε ένα ή περισσότερα λεξικά. Γίνονται δεκτές λέξεις από οποιοδήποτε επιλεγμένο λεξικό, κάτι που είναι χρήσιμο για πολύγλωσσες συνομιλίες."
 
 #. Setup wizard body for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:64
+#: src/features/app/components/setup/SetupWizardSteps.tsx:67
 msgid "Pick the appearance this administrator account should start with."
 msgstr "Επιλέξτε την εμφάνιση με την οποία θα ξεκινήσει αυτός ο λογαριασμός διαχειριστή."
 
@@ -25162,7 +25194,7 @@ msgid "Popup"
 msgstr "Αναδυόμενο"
 
 #. Label for SMTP port input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:995
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1033
 msgid "Port"
 msgstr "Θύρα"
 
@@ -25226,12 +25258,12 @@ msgid "Prefer using SSO? Continue with {ssoDisplayName}."
 msgstr "Προτιμάτε να χρησιμοποιήσετε SSO; Συνεχίστε με {ssoDisplayName}."
 
 #. macOS app menu submenu title. Keep "Preferences" to match the macOS HIG; in-app surfaces still use "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:25
+#: src/features/platform/utils/DesktopLocaleBridge.ts:26
 msgid "Preferences"
 msgstr "Προτιμήσεις"
 
 #. macOS app menu item that opens app settings. Trailing ellipsis follows the macOS HIG convention. Keep "Preferences" here even though the in-app term is "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:20
+#: src/features/platform/utils/DesktopLocaleBridge.ts:21
 msgid "Preferences..."
 msgstr "Προτιμήσεις..."
 
@@ -25268,7 +25300,7 @@ msgid "Premium grace period nagbar"
 msgstr "Γραμμή ειδοποιήσεων περιόδου χάριτος Premium"
 
 #. Summary row label for the premium model in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:356
+#: src/features/app/components/setup/SetupWizardSteps.tsx:386
 msgid "Premium model"
 msgstr "Μοντέλο Premium"
 
@@ -25308,7 +25340,7 @@ msgid "Preparing"
 msgstr "Ετοιμασία"
 
 #. Setup wizard title while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:72
+#: src/features/app/components/setup/SetupWizardSteps.tsx:75
 msgid "Preparing setup"
 msgstr "Προετοιμασία ρύθμισης"
 
@@ -25558,7 +25590,7 @@ msgid "Privacy settings"
 msgstr "Ρυθμίσεις απορρήτου"
 
 #. Label for Bluesky OAuth privacy URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1072
 msgid "Privacy URL"
 msgstr "Διεύθυνση URL απορρήτου"
 
@@ -25583,7 +25615,7 @@ msgid "Private details"
 msgstr "Προσωπικά στοιχεία"
 
 #. Label for Bluesky OAuth private key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1042
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1080
 msgid "Private key"
 msgstr "Ιδιωτικό κλειδί"
 
@@ -25608,8 +25640,8 @@ msgstr "Επεξεργασία"
 
 #. Label for the product name input in the setup wizard.
 #. Summary row label for the product name in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:89
-#: src/features/app/components/setup/SetupWizardSteps.tsx:336
+#: src/features/app/components/setup/SetupWizardSteps.tsx:92
+#: src/features/app/components/setup/SetupWizardSteps.tsx:362
 msgid "Product name"
 msgstr "Όνομα προϊόντος"
 
@@ -25793,7 +25825,7 @@ msgid "Provide your full legal name for the declaration."
 msgstr "Δώστε το πλήρες νόμιμο όνομά σας για τη δήλωση."
 
 #. Label for an integration provider choice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:970
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1008
 msgid "Provider"
 msgstr "Πάροχος"
 
@@ -25815,7 +25847,7 @@ msgid "Public community"
 msgstr "Δημόσια κοινότητα"
 
 #. Description for the closed registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:175
+#: src/features/app/components/setup/SetupWizardSteps.tsx:178
 msgid "Public registration is closed."
 msgstr "Η δημόσια εγγραφή έχει κλείσει."
 
@@ -25907,6 +25939,11 @@ msgstr "{deletedCount, plural, one {Διαγράφηκε # μήνυμα} other {
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:42
 msgid "Push notification inactive timeout"
 msgstr "Χρονικό όριο αδράνειας ειδοποιήσεων push"
+
+#. Summary row label for the push relay consent on the setup wizard finish step.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:382
+msgid "Push relay notice"
+msgstr "Ειδοποίηση προώθησης"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:131
@@ -26053,7 +26090,7 @@ msgid "Quit"
 msgstr "Έξοδος"
 
 #. macOS / tray menu item that fully quits the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:34
+#: src/features/platform/utils/DesktopLocaleBridge.ts:35
 msgid "Quit {appName}"
 msgstr "Έξοδος από το {appName}"
 
@@ -26167,6 +26204,11 @@ msgstr "Ανάγνωση του αρχείου καταγραφής δραστη
 msgid "Read the documentation ({domain})"
 msgstr "Διαβάστε την τεκμηρίωση ({domain})"
 
+#. Link to the push relay supplemental privacy notice shown during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
+msgid "Read the supplemental privacy notice"
+msgstr "Διαβάστε τη συμπληρωματική ειδοποίηση απορρήτου"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -26220,7 +26262,7 @@ msgid "Receive:"
 msgstr "Λήψη:"
 
 #. Windows jump-list category title. Groups recently opened DMs / communities.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:257
+#: src/features/platform/utils/DesktopLocaleBridge.ts:258
 msgid "Recent"
 msgstr "Πρόσφατα"
 
@@ -26378,7 +26420,7 @@ msgstr "URI ανακατεύθυνσης"
 #. Native Edit menu item that redoes the last undone edit. Imperative verb.
 #. Textarea right-click context menu item that redoes the last undone edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:42
-#: src/features/platform/utils/DesktopLocaleBridge.ts:55
+#: src/features/platform/utils/DesktopLocaleBridge.ts:56
 msgid "Redo"
 msgstr "Επανάληψη"
 
@@ -26482,7 +26524,7 @@ msgid "Registered passkeys"
 msgstr "Καταχωρισμένα κλειδιά πρόσβασης"
 
 #. Summary row label for the registration mode in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:340
+#: src/features/app/components/setup/SetupWizardSteps.tsx:366
 msgid "Registration"
 msgstr "Εγγραφή"
 
@@ -26529,7 +26571,7 @@ msgstr "Σχετικά"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Troubleshooting menu item. Reloads the renderer process. Keep short.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:166
+#: src/features/platform/utils/DesktopLocaleBridge.ts:167
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:90
 msgid "Reload"
 msgstr "Επαναφόρτωση"
@@ -26549,7 +26591,7 @@ msgid "Reload {productName} to use web update {version}"
 msgstr "Επαναφορτώστε το {productName} για να χρησιμοποιήσετε την ενημέρωση ιστού {version}"
 
 #. Button on the crash screen that reloads the current app.
-#: src/features/app/components/ErrorFallback.tsx:142
+#: src/features/app/components/ErrorFallback.tsx:145
 msgid "Reload app"
 msgstr "Επαναφόρτωση εφαρμογής"
 
@@ -26597,7 +26639,7 @@ msgstr "Απομνημόνευση μεγέθους και θέσης παραθ
 #. Short label in the shared app saved message missing card. Keep the tone plain and specific.
 #: src/features/app/components/shared/SavedMessageMissingCard.tsx:14
 #: src/features/auth/components/accounts/AccountSelector.tsx:78
-#: src/features/auth/components/accounts/AccountSelector.tsx:125
+#: src/features/auth/components/accounts/AccountSelector.tsx:128
 #: src/features/channel/components/MessageReactionsSheet.tsx:43
 #: src/features/expressions/components/modals/AddFavoriteChannelModal.tsx:52
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildBannerUploadField.tsx:156
@@ -27094,12 +27136,12 @@ msgid "Render placeholders"
 msgstr "Απόδοση placeholder"
 
 #. Label for attachment decay renewal threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:257
+#: src/features/app/components/setup/SetupWizardSteps.tsx:260
 msgid "Renew threshold (days)"
 msgstr "Όριο ανανέωσης (ημέρες)"
 
 #. Label for attachment decay renewal window.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:261
+#: src/features/app/components/setup/SetupWizardSteps.tsx:264
 msgid "Renew window (days)"
 msgstr "Παράθυρο ανανέωσης (ημέρες)"
 
@@ -27109,7 +27151,7 @@ msgstr "Ανανεώνεται στις <0>{renewalDate}.</0>"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that replaces an already uploaded branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:113
+#: src/features/app/components/setup/SetupWizardSteps.tsx:116
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:80
 msgid "Replace"
 msgstr "Αντικατάσταση"
@@ -27220,7 +27262,7 @@ msgid "Report illegal content"
 msgstr "Αναφορά παράνομου περιεχομένου"
 
 #. Native Help submenu item. Opens the bug / issue reporting flow.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:150
+#: src/features/platform/utils/DesktopLocaleBridge.ts:151
 msgid "Report issue"
 msgstr "Αναφορά προβλήματος"
 
@@ -27495,21 +27537,21 @@ msgid "Reset all shortcuts?"
 msgstr "Επαναφορά όλων των συντομεύσεων;"
 
 #. Destructive confirm button on the reset-app-data dialog.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:188
+#: src/features/platform/utils/DesktopLocaleBridge.ts:189
 msgid "Reset and restart"
 msgstr "Επαναφορά και επανεκκίνηση"
 
 #. Confirm dialog title for the destructive reset action.
 #. Destructive button on the crash screen. Clears local app data except preserved drafts.
 #. Destructive button on the startup failure screen. Clears local app data except preserved drafts.
-#: src/features/app/components/BootstrapErrorScreen.tsx:75
-#: src/features/app/components/ErrorFallback.tsx:164
-#: src/features/platform/utils/DesktopLocaleBridge.ts:174
+#: src/features/app/components/BootstrapErrorScreen.tsx:82
+#: src/features/app/components/ErrorFallback.tsx:167
+#: src/features/platform/utils/DesktopLocaleBridge.ts:175
 msgid "Reset app data"
 msgstr "Επαναφορά δεδομένων εφαρμογής"
 
 #. Destructive troubleshooting menu item. Clears local app data, signs out, and restarts.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:170
+#: src/features/platform/utils/DesktopLocaleBridge.ts:171
 msgid "Reset app data and restart"
 msgstr "Επαναφορά δεδομένων εφαρμογής και επανεκκίνηση"
 
@@ -27785,7 +27827,7 @@ msgid "Respect the sender's intent, with no warning when they toggle the @mentio
 msgstr "Σέβεται την πρόθεση του αποστολέα, χωρίς προειδοποίηση όταν αλλάζει την αναφορά (@mention)"
 
 #. Tray menu item that restarts the desktop app process.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:232
+#: src/features/platform/utils/DesktopLocaleBridge.ts:233
 msgid "Restart {appName}"
 msgstr "Επανεκκίνηση του {appName}"
 
@@ -27982,7 +28024,7 @@ msgid "Review what this app is asking for before you continue."
 msgstr "Έλεγξε τι ζητάει αυτή η εφαρμογή πριν συνεχίσεις."
 
 #. Setup wizard finish step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:332
+#: src/features/app/components/setup/SetupWizardSteps.tsx:358
 msgid "Review your choices below, then finish. This saves the configuration and opens the instance."
 msgstr "Ελέγξτε τις επιλογές σας παρακάτω και, στη συνέχεια, ολοκληρώστε. Αυτό θα αποθηκεύσει τη διαμόρφωση και θα ανοίξει την παρουσία."
 
@@ -28238,7 +28280,7 @@ msgid "Run at login"
 msgstr "Εκτέλεση κατά την είσοδο"
 
 #. Description for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:192
+#: src/features/app/components/setup/SetupWizardSteps.tsx:195
 msgid "Run the instance as one community instead of many. This can only be enabled now, during setup."
 msgstr "Εκτελέστε την παρουσία ως μία κοινότητα αντί για πολλές. Αυτό μπορεί να ενεργοποιηθεί μόνο τώρα, κατά τη ρύθμιση."
 
@@ -29032,7 +29074,7 @@ msgid "Secret"
 msgstr "Μυστικό"
 
 #. Label for a CAPTCHA secret key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:981
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1019
 msgid "Secret key"
 msgstr "Μυστικό κλειδί"
 
@@ -29187,14 +29229,14 @@ msgstr "Επιλέξτε ένα σενάριο για εφαρμογή..."
 msgid "Select a violation category."
 msgstr "Επιλέξτε κατηγορία παράβασης."
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:114
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 msgid "Select account"
 msgstr "Επιλογή λογαριασμού"
 
 #. Native Edit menu item that selects everything in the focused field. Imperative verb.
 #. Textarea right-click context menu item that selects all text in the textarea.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:58
-#: src/features/platform/utils/DesktopLocaleBridge.ts:80
+#: src/features/platform/utils/DesktopLocaleBridge.ts:81
 msgid "Select all"
 msgstr "Επιλογή όλων"
 
@@ -29238,7 +29280,7 @@ msgstr "Επιλέξτε πεδία εφαρμογής (και URI ανακατ�
 msgid "Select text"
 msgstr "Επιλογή κειμένου"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:69
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:71
 msgid "Select the account you want to sign in with on your new device."
 msgstr "Επιλέξτε τον λογαριασμό με τον οποίο θέλετε να συνδεθείτε στη νέα σας συσκευή."
 
@@ -29320,7 +29362,7 @@ msgid "Self-harm or suicide"
 msgstr "Αυτοτραυματισμός ή αυτοκτονία"
 
 #. Accessible label for the self-host setup wizard carousel.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:69
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:70
 msgid "Self-host setup"
 msgstr "Ρύθμιση αυτοφιλοξενίας"
 
@@ -29656,11 +29698,6 @@ msgstr "Συνεδρία"
 msgid "Session expired for {identifier}. Sign in again."
 msgstr "Η συνεδρία για το {identifier} έληξε. Συνδεθείτε ξανά."
 
-#. Toast error shown in the desktop-handoff account picker when the session for the chosen account has expired.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
-msgid "Session expired. Sign in again."
-msgstr "Η συνεδρία έληξε. Συνδεθείτε ξανά."
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:15
 msgid "Sessions"
@@ -29801,7 +29838,7 @@ msgid "Set the nickname to {nick}"
 msgstr "Ορίστηκε το ψευδώνυμο σε {nick}"
 
 #. Setup wizard branding step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:85
+#: src/features/app/components/setup/SetupWizardSteps.tsx:88
 msgid "Set the public product name, theme color, and image assets that clients display."
 msgstr "Ορίστε το δημόσιο όνομα προϊόντος, το χρώμα θέματος και τα στοιχεία εικόνας που εμφανίζονται στους πελάτες."
 
@@ -29853,7 +29890,7 @@ msgid "Set this check aside?"
 msgstr "Αναβολή αυτού του ελέγχου;"
 
 #. Title for the self-host setup wizard modal.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:74
 msgid "Set up {productName}"
 msgstr "Ρύθμιση του {productName}"
 
@@ -29863,7 +29900,7 @@ msgid "Set up authenticator app"
 msgstr "Ρύθμιση εφαρμογής ελέγχου ταυτότητας"
 
 #. Option for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:914
+#: src/features/app/components/setup/SetupWizardSteps.tsx:952
 msgid "Set up later"
 msgstr "Ρύθμιση αργότερα"
 
@@ -30156,7 +30193,7 @@ msgid "Show"
 msgstr "Εμφάνιση"
 
 #. Tray menu item that brings the desktop app window to the foreground.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:192
+#: src/features/platform/utils/DesktopLocaleBridge.ts:193
 msgid "Show {appName}"
 msgstr "Εμφάνιση {appName}"
 
@@ -30513,18 +30550,13 @@ msgstr "Εμφάνιση κωδικού"
 msgid "Show per-device participant volume sliders in voice menus"
 msgstr "Εμφάνιση ρυθμιστικών έντασης ήχου συμμετεχόντων ανά συσκευή στα μενού φωνής"
 
-#. Developer option label for exposing the staff-only profile timezone section in profile settings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
-msgid "Show profile time zone settings"
-msgstr "Εμφάνιση ρυθμίσεων ζώνης ώρας προφίλ"
-
 #. Short label for an advanced message action bar preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx:56
 msgid "Show quick reactions"
 msgstr "Εμφάνιση γρήγορων αντιδράσεων"
 
 #. Description for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:290
+#: src/features/app/components/setup/SetupWizardSteps.tsx:316
 msgid "Show rich previews for YouTube links."
 msgstr "Εμφάνιση πλούσιων προεπισκοπήσεων για συνδέσμους YouTube."
 
@@ -30648,6 +30680,7 @@ msgstr "Πλευρική γραμμή"
 msgid "Sign in"
 msgstr "Σύνδεση"
 
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 #: src/features/auth/utils/AccountSwitcherModalUtils.tsx:274
 msgid "Sign in again"
 msgstr "Συνδεθείτε ξανά"
@@ -30762,7 +30795,7 @@ msgid "Signed-in devices"
 msgstr "Συνδεδεμένες συσκευές"
 
 #. Label for Bluesky OAuth signing key ID input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1038
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1076
 msgid "Signing key ID"
 msgstr "Αναγνωριστικό κλειδιού υπογραφής"
 
@@ -30829,12 +30862,12 @@ msgid "Single column"
 msgstr "Μία στήλη"
 
 #. Summary row label for the single community choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:344
+#: src/features/app/components/setup/SetupWizardSteps.tsx:370
 msgid "Single community"
 msgstr "Μία κοινότητα"
 
 #. Label for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:188
+#: src/features/app/components/setup/SetupWizardSteps.tsx:191
 msgid "Single community mode"
 msgstr "Λειτουργία μίας κοινότητας"
 
@@ -30853,7 +30886,7 @@ msgid "Single user (all statuses)"
 msgstr "Ένας χρήστης (όλες οι καταστάσεις)"
 
 #. Label for a CAPTCHA site key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:980
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
 msgid "Site key"
 msgstr "Κλειδί ιστότοπου"
 
@@ -30896,7 +30929,7 @@ msgid "Skip the external link warning for all domains"
 msgstr "Παράλειψη προειδοποίησης εξωτερικού συνδέσμου για όλους τους τομείς"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the no-op in-app reports toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:149
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:140
 msgid "Skip the network call when an in-app report is submitted. The flow still advances to the success screen so you can exercise the UI, but nothing is actually sent to the safety team."
 msgstr "Παράλειψη της κλήσης δικτύου κατά την υποβολή αναφοράς εντός εφαρμογής. Η ροή προχωρά στην οθόνη επιτυχίας, ώστε να δοκιμάσετε το UI, αλλά δεν αποστέλλεται τίποτα στην ομάδα ασφαλείας."
 
@@ -30906,7 +30939,7 @@ msgid "Skip the system leave notice — nobody gets pinged."
 msgstr "Παράλειψη του μηνύματος αποχώρησης του συστήματος. Δεν ειδοποιείται κανείς."
 
 #. Description for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:918
+#: src/features/app/components/setup/SetupWizardSteps.tsx:956
 msgid "Skip this now and configure it from the admin panel."
 msgstr "Παράλειψη τώρα και ρύθμιση από τον πίνακα διαχείρισης."
 
@@ -31093,7 +31126,7 @@ msgid "Small button clicked."
 msgstr "Πατήθηκε το μικρό κουμπί."
 
 #. Label for attachment decay minimum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:233
+#: src/features/app/components/setup/SetupWizardSteps.tsx:236
 msgid "Small file threshold (MB)"
 msgstr "Όριο μικρού αρχείου (MB)"
 
@@ -31154,17 +31187,17 @@ msgid "SMS verification is unavailable right now. Try again later or contact sup
 msgstr "Η επαλήθευση SMS δεν είναι διαθέσιμη αυτήν τη στιγμή. Δοκιμάστε ξανά αργότερα ή επικοινωνήστε με την υποστήριξη."
 
 #. Success message after validating SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1006
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1044
 msgid "SMTP connection verified."
 msgstr "Η σύνδεση SMTP επαληθεύτηκε."
 
 #. Label for SMTP host input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:994
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1032
 msgid "SMTP host"
 msgstr "Διακομιστής SMTP"
 
 #. Failure message after validating SMTP credentials when the server returns no error detail.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1010
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1048
 msgid "SMTP validation failed."
 msgstr "Η επαλήθευση SMTP απέτυχε."
 
@@ -31211,11 +31244,11 @@ msgstr "Ορισμένοι χρήστες δεν μπορούν να προστ�
 msgid "Something went wrong"
 msgstr "Κάτι πήγε στραβά"
 
-#: src/features/app/components/ErrorFallback.tsx:126
+#: src/features/app/components/ErrorFallback.tsx:129
 msgid "Something went wrong and the app crashed. An update is available that may fix this issue."
 msgstr "Κάτι πήγε στραβά και η εφαρμογή έκλεισε απροσδόκητα. Υπάρχει διαθέσιμη ενημέρωση που μπορεί να διορθώσει αυτό το πρόβλημα."
 
-#: src/features/app/components/ErrorFallback.tsx:128
+#: src/features/app/components/ErrorFallback.tsx:131
 msgid "Something went wrong and the app crashed. Try reloading or resetting the app."
 msgstr "Κάτι πήγε στραβά και η εφαρμογή έκλεισε απροσδόκητα. Δοκιμάστε να την επανεκκινήσετε ή να την επαναφέρετε."
 
@@ -31557,7 +31590,7 @@ msgstr "Θεατές - {count}"
 
 #. Native macOS Edit submenu title for text-to-speech actions.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:84
+#: src/features/platform/utils/DesktopLocaleBridge.ts:85
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:142
 msgid "Speech"
 msgstr "Ομιλία"
@@ -31725,7 +31758,7 @@ msgid "Start"
 msgstr "Έναρξη"
 
 #. Reason shown by the Linux Flatpak background permission portal when enabling launch-at-login. {appName} is the desktop app name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:236
+#: src/features/platform/utils/DesktopLocaleBridge.ts:237
 msgid "Start {appName} automatically when you sign in."
 msgstr "Αυτόματη εκκίνηση του {appName} κατά τη σύνδεση."
 
@@ -31795,7 +31828,7 @@ msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{
 msgstr "Ξεκινήστε τις αναζητήσεις με <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> για να περιορίσετε τα αποτελέσματα."
 
 #. Native macOS Edit > Speech submenu item that starts reading the selected text aloud. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:88
+#: src/features/platform/utils/DesktopLocaleBridge.ts:89
 msgid "Start speaking"
 msgstr "Έναρξη ομιλίας"
 
@@ -31839,7 +31872,7 @@ msgstr "Στατική Pickles"
 #. Tray menu submenu title for the user presence status picker.
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:126
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:69
-#: src/features/platform/utils/DesktopLocaleBridge.ts:196
+#: src/features/platform/utils/DesktopLocaleBridge.ts:197
 msgid "Status"
 msgstr "Κατάσταση"
 
@@ -32089,7 +32122,7 @@ msgstr "Να σταματήσει η κοινοποίηση της φωνητι�
 #. Message context menu item that stops the text-to-speech playback in progress.
 #. Native macOS Edit > Speech submenu item that stops reading text aloud. Imperative verb.
 #: src/features/channel/components/MessageActionMenu.tsx:94
-#: src/features/platform/utils/DesktopLocaleBridge.ts:92
+#: src/features/platform/utils/DesktopLocaleBridge.ts:93
 #: src/features/ui/action_menu/items/MessageMenuItems.tsx:74
 msgid "Stop speaking"
 msgstr "Διακοπή ομιλίας"
@@ -32479,7 +32512,7 @@ msgid "Switch between your global profile and per-community profiles"
 msgstr "Εναλλαγή μεταξύ του καθολικού προφίλ σας και των προφίλ ανά κοινότητα"
 
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:27
+#: src/features/auth/state/NewDeviceMonitoring.tsx:30
 msgid "Switch device"
 msgstr "Αλλαγή συσκευής"
 
@@ -32607,7 +32640,7 @@ msgid "Switches"
 msgstr "Διακόπτες"
 
 #. Label for the symbol branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:125
+#: src/features/app/components/setup/SetupWizardSteps.tsx:128
 msgid "Symbol"
 msgstr "Σύμβολο"
 
@@ -32891,7 +32924,7 @@ msgid "Taskbar badge"
 msgstr "Σήμα στη γραμμή εργασιών"
 
 #. Windows jump-list category title. Groups quick actions like open settings and new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:241
+#: src/features/platform/utils/DesktopLocaleBridge.ts:242
 msgid "Tasks"
 msgstr "Εργασίες"
 
@@ -32960,7 +32993,7 @@ msgid "Terms of service"
 msgstr "Όροι παροχής υπηρεσιών"
 
 #. Label for Bluesky OAuth terms URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1030
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1068
 msgid "Terms URL"
 msgstr "Διεύθυνση URL όρων"
 
@@ -32970,7 +33003,7 @@ msgid "Terrorism or violent extremism"
 msgstr "Τρομοκρατία ή βίαιος εξτρεμισμός"
 
 #. Button that validates SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1002
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1040
 msgid "Test SMTP"
 msgstr "Δοκιμή SMTP"
 
@@ -33160,7 +33193,7 @@ msgid "That friend request is no longer available. Refresh and try again."
 msgstr "Αυτό το αίτημα φιλίας δεν είναι πλέον διαθέσιμο. Ανανεώστε και δοκιμάστε ξανά."
 
 #. Error shown when a branding image fails to upload in the setup wizard.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:102
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:103
 msgid "That image could not be used. Try a different file."
 msgstr "Δεν ήταν δυνατή η χρήση αυτής της εικόνας. Δοκιμάστε διαφορετικό αρχείο."
 
@@ -33192,15 +33225,15 @@ msgid "The #0000 tag is reserved for Visionary subscribers. Visionary is no long
 msgstr "Η ετικέτα #0000 είναι δεσμευμένη για τους συνδρομητές Visionary. Το Visionary δεν είναι πλέον διαθέσιμο για αγορά."
 
 #. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:97
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:98
 msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
 msgstr "Το API βρίσκεται σε διαφορετική προέλευση από αυτήν τη σελίδα, οπότε τα αιτήματα ρύθμισης αποστέλλονται χωρίς τη συνεδρία σας. Ελέγξτε τη δημόσια προέλευση και τη θύρα με την οποία έχει ρυθμιστεί αυτή η παρουσία και έπειτα ανανεώστε τη σελίδα."
 
-#: src/features/app/components/ErrorFallback.tsx:120
+#: src/features/app/components/ErrorFallback.tsx:123
 msgid "The app crashed"
 msgstr "Η εφαρμογή έκλεισε απροσδόκητα"
 
-#: src/features/app/components/ErrorFallback.tsx:124
+#: src/features/app/components/ErrorFallback.tsx:127
 msgid "The app has crashed. Checking for updates that might fix this issue…"
 msgstr "Η εφαρμογή έκλεισε απροσδόκητα. Αναζητούμε ενημερώσεις που μπορεί να διορθώσουν το πρόβλημα…"
 
@@ -33370,6 +33403,11 @@ msgstr "Η νέα τιμή έχει ήδη προγραμματιστεί για
 msgid "The new voice channel will reuse the permissions, user limit, and bitrate from <0>{channelLabel}</0>."
 msgstr "Το νέο φωνητικό κανάλι θα επαναχρησιμοποιήσει τα δικαιώματα, το όριο χρηστών και το bitrate από το <0>{channelLabel}</0>."
 
+#. Setup wizard push relay consent step body.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:273
+msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
+msgstr "Οι επίσημες εφαρμογές Fluxer για κινητά λαμβάνουν ειδοποιήσεις μέσω του διαμεσολαβητή ειδοποιήσεων push του Fluxer, ο οποίος τις παραδίδει στην Apple και την Google. Οι αυτο-φιλοξενούμενες τελικές συσκευές UnifiedPush και ntfy δεν φτάνουν ποτέ στον διαμεσολαβητή και δεν χρειάζονται συμφωνία."
+
 #. Activity log detail row under a removed channel permission override, listing the permissions it explicitly allowed before it was removed. It describes the removed override. It does not mean these permissions are allowed now. A permission override is a channel-level exception to the permissions of a role or member. It allows or denies chosen permissions in one channel or category only. Use the same word for override as the channel permissions settings, such as Add override. {permissions} is a list of permission names joined into one phrase, for example "View channel and Send messages". A long list ends with a count, for example "View channel, Send messages, and 3 more permissions".
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:378
 msgid "The override allowed {permissions}"
@@ -33478,7 +33516,7 @@ msgstr "Οι αλλαγές θέματος συγχρονίζονται σε ό�
 
 #. Label for the theme color picker in the setup wizard.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:101
+#: src/features/app/components/setup/SetupWizardSteps.tsx:104
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:165
 msgid "Theme color"
 msgstr "Χρώμα θέματος"
@@ -33498,7 +33536,7 @@ msgstr "Αρχεία θέματος"
 msgid "Theme library"
 msgstr "Βιβλιοθήκη θεμάτων"
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:175
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:70
 msgid "Theme not found"
 msgstr "Το θέμα δεν βρέθηκε"
@@ -33578,7 +33616,7 @@ msgid "There was an error loading the webhooks. Try again."
 msgstr "Παρουσιάστηκε σφάλμα κατά τη φόρτωση των webhooks. Δοκιμάστε ξανά."
 
 #. Setup wizard community model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:184
+#: src/features/app/components/setup/SetupWizardSteps.tsx:187
 msgid "These options change how people use the instance. Some can only be chosen during setup."
 msgstr "Αυτές οι επιλογές αλλάζουν τον τρόπο χρήσης της παρουσίας. Ορισμένες μπορούν να επιλεγούν μόνο κατά την εγκατάσταση."
 
@@ -33904,7 +33942,7 @@ msgstr "Αυτό το αρχείο είναι {fileSize}, πάνω από το �
 msgid "This friends list needs more power"
 msgstr "Αυτή η λίστα φίλων θέλει λίγη ενίσχυση"
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:177
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:178
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:84
 msgid "This gift code has already been claimed."
 msgstr "Αυτός ο κωδικός δώρου έχει ήδη παραληφθεί."
@@ -33916,7 +33954,7 @@ msgstr "Αυτός ο κωδικός δώρου έχει ήδη παραληφθ
 msgid "This gift code is invalid or already claimed."
 msgstr "Αυτός ο κωδικός δώρου δεν είναι έγκυρος ή έχει ήδη παραληφθεί."
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:166
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:167
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:73
 msgid "This gift code may be invalid, expired, or already redeemed."
 msgstr "Αυτός ο κωδικός δώρου μπορεί να είναι μη έγκυρος, να έχει λήξει ή να έχει ήδη εξαργυρωθεί."
@@ -33960,7 +33998,7 @@ msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "Αυτή η παρουσία αυτήν τη στιγμή επιτρέπει κοινή χρήση οθόνης έως 720p στα 30 FPS."
 
 #. Setup wizard body prompting the operator to register the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:52
+#: src/features/app/components/setup/SetupWizardSteps.tsx:55
 msgid "This instance has no accounts yet. The first account you create automatically becomes the administrator."
 msgstr "Αυτή η παρουσία δεν έχει λογαριασμούς ακόμα. Ο πρώτος λογαριασμός που θα δημιουργήσετε γίνεται αυτόματα ο διαχειριστής."
 
@@ -34286,7 +34324,7 @@ msgstr "Αυτό το θέμα είναι πολύ μεγάλο για κοιν�
 msgid "This theme link is missing data."
 msgstr "Αυτός ο σύνδεσμος θέματος δεν έχει δεδομένα."
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:177
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:71
 msgid "This theme may have been removed or the link is invalid."
 msgstr "Αυτό το θέμα μπορεί να έχει καταργηθεί ή ο σύνδεσμος δεν είναι έγκυρος."
@@ -34300,7 +34338,7 @@ msgstr "αυτός ο χρήστης"
 msgid "This user has limited their profile. Some details are hidden from people who aren't their friends."
 msgstr "Αυτός ο χρήστης έχει περιορίσει το προφίλ του. Ορισμένες λεπτομέρειες είναι κρυφές από άτομα που δεν είναι φίλοι του."
 
-#: src/features/user/components/popouts/UserProfileShared.tsx:394
+#: src/features/user/components/popouts/UserProfileShared.tsx:395
 msgid "This user has no roles in this community."
 msgstr "Αυτός ο χρήστης δεν έχει ρόλους σε αυτήν την κοινότητα."
 
@@ -34423,7 +34461,7 @@ msgid "This will sign out the selected {sessionCount, plural, one {device} other
 msgstr "Αυτό θα αποσυνδέσει {sessionCount, plural, one {την επιλεγμένη συσκευή} other {τις επιλεγμένες συσκευές}} από τον λογαριασμό σας. Θα χρειαστεί να συνδεθείτε ξανά {sessionCount, plural, one {σε αυτήν τη συσκευή} other {σε κάθε συσκευή}}."
 
 #. Confirm dialog detail text for the destructive reset action. appName is the desktop app name. Reassures users that server-side data is safe.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:182
+#: src/features/platform/utils/DesktopLocaleBridge.ts:183
 msgid "This will sign you out, clear cached files and stored sessions, and restart the desktop app. Your account, communities, and messages in {appName} are not affected."
 msgstr "Αυτό θα σας αποσυνδέσει, θα διαγράψει τα προσωρινά αρχεία και τις αποθηκευμένες συνεδρίες και θα επανεκκινήσει την εφαρμογή για επιτραπέζιους υπολογιστές. Ο λογαριασμός σας, οι κοινότητες και τα μηνύματά σας στο {appName} δεν θα επηρεαστούν."
 
@@ -34626,7 +34664,7 @@ msgid "Toggle deafen"
 msgstr "Εναλλαγή σίγασης ήχου"
 
 #. Native View menu item that opens or closes Chromium developer tools.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:104
+#: src/features/platform/utils/DesktopLocaleBridge.ts:105
 msgid "Toggle developer tools"
 msgstr "Εναλλαγή εργαλείων προγραμματιστή"
 
@@ -34636,7 +34674,7 @@ msgid "Toggle embed suppression"
 msgstr "Εναλλαγή καταστολής ενσωματώσεων"
 
 #. Native View menu item that enters or leaves full screen. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:120
+#: src/features/platform/utils/DesktopLocaleBridge.ts:121
 msgid "Toggle full screen"
 msgstr "Εναλλαγή πλήρους οθόνης"
 
@@ -34906,7 +34944,7 @@ msgid "Trimmed clip is over the {limit} size limit. Try a shorter selection."
 msgstr "Το περικομμένο κλιπ υπερβαίνει το όριο μεγέθους των {limit}. Δοκιμάστε μια μικρότερη επιλογή."
 
 #. Native Help submenu title that groups recovery actions like reload and reset.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:154
+#: src/features/platform/utils/DesktopLocaleBridge.ts:155
 msgid "Troubleshooting"
 msgstr "Αντιμετώπιση προβλημάτων"
 
@@ -34996,6 +35034,7 @@ msgid "Try a different variable name or clear the search."
 msgstr "Δοκιμάστε ένα διαφορετικό όνομα μεταβλητής ή διαγράψτε την αναζήτηση."
 
 #. Generic action label for retrying a failed or interrupted operation.
+#: src/features/auth/components/AltchaVerification.tsx:53
 #: src/features/auth/flow/AuthRouteLoadError.tsx:22
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:75
 msgid "Try again"
@@ -35073,7 +35112,7 @@ msgstr "Δοκιμάστε κλειδί ασφαλείας / κλειδί πρό
 msgid "Try sending your message again."
 msgstr "Δοκιμάστε να στείλετε ξανά το μήνυμά σας."
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:159
+#: src/features/auth/components/modals/CaptchaModal.tsx:177
 msgid "Try Turnstile instead"
 msgstr "Δοκιμάστε το Turnstile αντ' αυτού"
 
@@ -35145,7 +35184,7 @@ msgid "Turn off device stream"
 msgstr "Απενεργοποίηση ροής συσκευής"
 
 #. Description for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:212
+#: src/features/app/components/setup/SetupWizardSteps.tsx:215
 msgid "Turn off private messaging and friends across the instance. This can be reversed only once later."
 msgstr "Απενεργοποίηση ιδιωτικών μηνυμάτων και αιτημάτων φιλίας σε ολόκληρη την παρουσία. Αυτό μπορεί να αντιστραφεί μόνο μία φορά αργότερα."
 
@@ -35589,7 +35628,7 @@ msgstr "Το κατάλαβα"
 #. Native Edit menu item that undoes the last edit. Imperative verb.
 #. Textarea right-click context menu item that undoes the last edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:38
-#: src/features/platform/utils/DesktopLocaleBridge.ts:51
+#: src/features/platform/utils/DesktopLocaleBridge.ts:52
 msgid "Undo"
 msgstr "Αναίρεση"
 
@@ -35717,7 +35756,7 @@ msgstr "Άγνωστη συσκευή"
 
 #. Fallback diagnostic text on the crash screen when an Error object has no message.
 #. Fallback error text shown when LaTeX rendering fails without an error message.
-#: src/features/app/components/ErrorFallback.tsx:25
+#: src/features/app/components/ErrorFallback.tsx:28
 #: src/features/messaging/components/markdown/renderers/common/CodeElements.tsx:37
 msgid "Unknown error"
 msgstr "Άγνωστο σφάλμα"
@@ -35932,7 +35971,7 @@ msgstr "Κατάργηση σίγασης αγαπημένων"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Unmutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:59
-#: src/features/platform/utils/DesktopLocaleBridge.ts:212
+#: src/features/platform/utils/DesktopLocaleBridge.ts:213
 msgid "Unmute microphone"
 msgstr "Ενεργοποίηση μικροφώνου"
 
@@ -36104,12 +36143,12 @@ msgid "Unread message badge"
 msgstr "Σήμα μη αναγνωσμένων μηνυμάτων"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:274
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
 msgid "Unread messages"
 msgstr "Μη αναγνωσμένα μηνύματα"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:279
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
 msgid "Unread messages: {count}"
 msgstr "Μη αναγνωσμένα μηνύματα: {count}"
 
@@ -36201,7 +36240,7 @@ msgid "Update {productName} to view this message."
 msgstr "Ενημερώστε το {productName} για να δείτε αυτό το μήνυμα."
 
 #. Button on the crash screen that applies a found app update.
-#: src/features/app/components/ErrorFallback.tsx:140
+#: src/features/app/components/ErrorFallback.tsx:143
 msgid "Update app"
 msgstr "Ενημέρωση εφαρμογής"
 
@@ -36287,7 +36326,7 @@ msgstr "Αναβαθμίστε για να αποθηκεύσετε έως κα�
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that opens a file picker to upload a branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:109
+#: src/features/app/components/setup/SetupWizardSteps.tsx:112
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:84
 msgid "Upload"
 msgstr "Ανέβασμα"
@@ -36831,7 +36870,7 @@ msgid "Use this when troubleshooting the client or collecting logs. It may add v
 msgstr "Χρησιμοποιήστε το για την αντιμετώπιση προβλημάτων του προγράμματος-πελάτη ή τη συλλογή αρχείων καταγραφής. Ενδέχεται να προσθέσει λεπτομερή μηνύματα στην κονσόλα του προγράμματος περιήγησης για τον τρέχοντα πελάτη."
 
 #. Label for SMTP TLS toggle.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:998
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1036
 msgid "Use TLS"
 msgstr "Χρήση TLS"
 
@@ -36997,7 +37036,7 @@ msgstr "Ένταση χρήστη"
 #. Generic form-field label for a username.
 #. Label for SMTP username input.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:996
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:572
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:218
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:56
@@ -37279,7 +37318,7 @@ msgid "Verify phone number form"
 msgstr "Φόρμα επαλήθευσης αριθμού τηλεφώνου"
 
 #. Short label in the authentication captcha modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/CaptchaModal.tsx:15
+#: src/features/auth/components/modals/CaptchaModal.tsx:17
 msgid "Verify you're human"
 msgstr "Επιβεβαιώστε ότι είστε άνθρωπος"
 
@@ -37546,7 +37585,7 @@ msgid "Vietnamese"
 msgstr "Βιετναμέζικα"
 
 #. Top-level native menu bar title (View menu, holds zoom and reload).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:96
+#: src/features/platform/utils/DesktopLocaleBridge.ts:97
 msgid "View"
 msgstr "Προβολή"
 
@@ -38339,7 +38378,7 @@ msgstr "Μειώσαμε την τιμή του {premiumProductName} στη Βρ
 msgid "We need one verification step before you continue. This helps protect accounts and keep spam off {productName}."
 msgstr "Χρειάζεται ένα βήμα επαλήθευσης πριν συνεχίσετε. Αυτό βοηθά στην προστασία των λογαριασμών και στην αποφυγή ανεπιθύμητων μηνυμάτων στο {productName}."
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:116
+#: src/features/auth/components/modals/CaptchaModal.tsx:128
 msgid "We need to make sure you're not a bot. Complete the verification below."
 msgstr "Πρέπει να βεβαιωθούμε ότι δεν είστε ρομπότ. Ολοκληρώστε την παρακάτω επαλήθευση."
 
@@ -38556,7 +38595,7 @@ msgid "Webhooks updated"
 msgstr "Τα webhook ενημερώθηκαν"
 
 #. Native Help submenu item that opens the Fluxer marketing website.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:146
+#: src/features/platform/utils/DesktopLocaleBridge.ts:147
 msgid "Website"
 msgstr "Ιστότοπος"
 
@@ -38610,7 +38649,7 @@ msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {
 msgstr "Καλώς ήρθατε στο {premiumProductFullName}. Η ετήσια συνδρομή σας ανανεώνεται στις {formattedDate}. Ανακαλύψτε τα προνόμια του {premiumProductName} και διαχειριστείτε τη συνδρομή σας."
 
 #. Setup wizard title shown once the operator is signed in as the instance admin.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:39
+#: src/features/app/components/setup/SetupWizardSteps.tsx:42
 msgid "Welcome to {productName}"
 msgstr "Καλώς ήρθατε στο {productName}"
 
@@ -38708,7 +38747,7 @@ msgid "When a custom threshold date is not set, members without the <0>{readMess
 msgstr "Όταν δεν έχει οριστεί προσαρμοσμένη ημερομηνία ορίου, τα μέλη χωρίς το δικαίωμα <0>{readMessageHistoryPermissionLabel}</0> δεν μπορούν να δουν παλαιότερα μηνύματα. Θα βλέπουν μόνο τα μηνύματα σε πραγματικό χρόνο καθώς φτάνουν, και αυτά θα εξαφανίζονται όταν κάνουν επανεκκίνηση της εφαρμογής τους."
 
 #. Description for the attachment expiry setup switch.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:229
+#: src/features/app/components/setup/SetupWizardSteps.tsx:232
 msgid "When attachment expiration is disabled, attachments remain available until manually removed."
 msgstr "Όταν η λήξη συνημμένων είναι απενεργοποιημένη, τα συνημμένα παραμένουν διαθέσιμα μέχρι να αφαιρεθούν χειροκίνητα."
 
@@ -38806,7 +38845,7 @@ msgid "Who can friend"
 msgstr "Ποιος μπορεί να με κάνει φίλο"
 
 #. Setup wizard registration step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:146
+#: src/features/app/components/setup/SetupWizardSteps.tsx:149
 msgid "Who can join"
 msgstr "Ποιος μπορεί να συμμετάσχει"
 
@@ -38840,7 +38879,7 @@ msgstr "Win"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Top-level native menu bar title (Window menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:124
+#: src/features/platform/utils/DesktopLocaleBridge.ts:125
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:74
 msgid "Window"
 msgstr "Παράθυρο"
@@ -38941,7 +38980,7 @@ msgid "Without this permission, push-to-talk is required."
 msgstr "Χωρίς αυτό το δικαίωμα, απαιτείται η λειτουργία push-to-talk."
 
 #. Label for the wordmark branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:133
+#: src/features/app/components/setup/SetupWizardSteps.tsx:136
 msgid "Wordmark"
 msgstr "Λεκτικό λογότυπο"
 
@@ -39077,7 +39116,7 @@ msgid "You are now navigating to {paymentProviderName} to complete the payment. 
 msgstr "Μεταβαίνετε τώρα στο {paymentProviderName} για να ολοκληρώσετε την πληρωμή. Επιστρέψτε στο {productName} μόλις την ολοκληρώσετε."
 
 #. Setup wizard body shown to the signed-in instance administrator.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:43
+#: src/features/app/components/setup/SetupWizardSteps.tsx:46
 msgid "You are signed in as the instance administrator. The next steps configure branding, registration, and core policy for everyone on this instance."
 msgstr "Έχετε συνδεθεί ως διαχειριστής της παρουσίας. Τα επόμενα βήματα διαμορφώνουν την επωνυμία, την εγγραφή και την κύρια πολιτική για όλους σε αυτήν την παρουσία."
 
@@ -39298,7 +39337,7 @@ msgstr "Δεν μπορείτε να μιλήσετε σε αυτό το καν�
 #. Tooltip / error shown in the camera preview modal when the user lacks Video permission in the current channel. Tone stays plain.
 #. Tooltip in the voice control bar when the user lacks the Video permission in this channel. Tone stays plain.
 #. Tooltip shown when the user lacks the Video permission in the voice channel. Tone stays plain.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:76
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:77
 #: src/features/voice/components/voice_connection_status/LocalParticipantControls.tsx:50
 #: src/features/voice/components/VoiceControlBar.tsx:127
 msgid "You can't turn on your camera in this channel"
@@ -39972,6 +40011,10 @@ msgstr "Η ενέργειά σας δεν ολοκληρώθηκε επειδή 
 msgid "Your application is pending review. You can still update your listing details or withdraw the application."
 msgstr "Η αίτησή σας εκκρεμεί για έλεγχο. Μπορείτε ακόμα να ενημερώσετε τα στοιχεία της καταχώρισής σας ή να αποσύρετε την αίτηση."
 
+#: src/features/auth/components/AltchaVerification.tsx:50
+msgid "Your browser couldn't finish the check."
+msgstr "Ο περιηγητής σας δεν μπόρεσε να ολοκληρώσει τον έλεγχο."
+
 #. Body of the browser-audio-required modal explaining why the user must click before audio can play.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx:12
 msgid "Your browser requires user interaction before audio can be played. Click the button below to enable voice chat."
@@ -40318,12 +40361,12 @@ msgid "Your video encoder stopped encoding frames, so your screen share was stop
 msgstr "Ο κωδικοποιητής βίντεο σταμάτησε να κωδικοποιεί καρέ, οπότε η κοινή χρήση οθόνης διακόπηκε. Δοκιμάστε να την μοιραστείτε ξανά."
 
 #. Label for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:286
+#: src/features/app/components/setup/SetupWizardSteps.tsx:312
 msgid "YouTube enrichment"
 msgstr "Εμπλουτισμός YouTube"
 
 #. Setup wizard title for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:938
+#: src/features/app/components/setup/SetupWizardSteps.tsx:976
 msgid "YouTube previews"
 msgstr "Προεπισκοπήσεις YouTube"
 
@@ -40339,7 +40382,7 @@ msgid "Zoom"
 msgstr "Ζουμ"
 
 #. Native Window menu item that zooms the focused window, meaning maximize or restore it. Not image zoom and not UI zoom level.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:132
+#: src/features/platform/utils/DesktopLocaleBridge.ts:133
 msgctxt "window-menu"
 msgid "Zoom"
 msgstr "Ζουμ"
@@ -40350,7 +40393,7 @@ msgstr "Ζουμ"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:628
 #: src/features/input/state/input_keybind/shared.ts:253
-#: src/features/platform/utils/DesktopLocaleBridge.ts:112
+#: src/features/platform/utils/DesktopLocaleBridge.ts:113
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:82
 msgid "Zoom in"
 msgstr "Μεγέθυνση"
@@ -40361,7 +40404,7 @@ msgstr "Μεγέθυνση"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:624
 #: src/features/input/state/input_keybind/shared.ts:257
-#: src/features/platform/utils/DesktopLocaleBridge.ts:116
+#: src/features/platform/utils/DesktopLocaleBridge.ts:117
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "Σμίκρυνση"

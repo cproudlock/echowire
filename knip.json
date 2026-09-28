@@ -32,7 +32,6 @@
 		"fluxer_desktop/src/main/LinuxDesktopEntry.ts": ["exports"],
 		"fluxer_desktop/src/main/NotificationState.ts": ["exports", "types"],
 		"packages/schema/src/domains/admin/AdminUserSchemas.ts": ["exports"],
-		"packages/schema/src/domains/admin/PushServiceDeliverySchemas.ts": ["exports"],
 		"packages/schema/src/domains/admin/VoiceNoiseSuppressionSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelRequestSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelSchemas.ts": ["exports"],

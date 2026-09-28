@@ -337,11 +337,11 @@ These pick which container images Compose pulls. All are optional.
 
 | Variable | Value in `.env.example` |
 | --- | --- |
-| FLUXER_REGISTRY_OWNER | `fluxerapp` |
+| FLUXER_REGISTRY_OWNER | `cproudlock` |
 | FLUXER_REGISTRY | `ghcr.io/${FLUXER_REGISTRY_OWNER}` |
 | FLUXER_IMAGE_TAG | `v1` |
 
-`FLUXER_REGISTRY_OWNER` is the owner segment of the image names and falls back to `fluxerapp`. `FLUXER_REGISTRY` is the registry images are pulled from and falls back to `ghcr.io/` followed by the owner. `FLUXER_IMAGE_TAG` is the tag on every Fluxer image and falls back to `v1`.
+`FLUXER_REGISTRY_OWNER` is the owner segment of the image names and falls back to `cproudlock`, whose images carry forums and threads. Point it at `fluxerapp` only if you deliberately want upstream Fluxer without those features. `FLUXER_REGISTRY` is the registry images are pulled from and falls back to `ghcr.io/` followed by the owner. `FLUXER_IMAGE_TAG` is the tag on every Fluxer image and falls back to `v1`.
 
 These affect only the Fluxer images. `docker-compose.yml` pins the `caddy`, `postgres`, `valkey`, `nats`, `meilisearch`, `seaweedfs`, and `livekit` images, and `.env` cannot change them.
 

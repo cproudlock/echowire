@@ -29,6 +29,10 @@ import {
 	type RegistrationUrlResponse,
 } from '@fluxer/schema/src/domains/admin/AdminSchemas';
 import {
+	type AltchaCaptchaConfig,
+	AltchaCaptchaConfigSchema,
+} from '@fluxer/schema/src/domains/admin/AltchaCaptchaSchemas';
+import {
 	type DomainMigrationConfig,
 	DomainMigrationConfigSchema,
 } from '@fluxer/schema/src/domains/admin/DomainMigrationSchemas';
@@ -37,9 +41,15 @@ import {
 	GatewayRolloutConfigSchema,
 } from '@fluxer/schema/src/domains/admin/GatewayRolloutSchemas';
 import {
-	type PushServiceDeliveryConfig,
-	PushServiceDeliveryConfigSchema,
-} from '@fluxer/schema/src/domains/admin/PushServiceDeliverySchemas';
+	type ProfileTimezoneConfig,
+	ProfileTimezoneConfigSchema,
+} from '@fluxer/schema/src/domains/admin/ProfileTimezoneSchemas';
+import {
+	type LegacyPushServiceDeliveryWire,
+	type PushRelayConfig,
+	PushRelayConfigSchema,
+	toLegacyPushServiceDeliveryWire,
+} from '@fluxer/schema/src/domains/admin/PushRelaySchemas';
 import {
 	type VoiceNoiseSuppressionConfig,
 	VoiceNoiseSuppressionConfigSchema,
@@ -66,8 +76,10 @@ import {z} from 'zod';
 
 const GATEWAY_ROLLOUT_CONFIG_KEY = 'gateway_rollout_config';
 const VOICE_NOISE_SUPPRESSION_CONFIG_KEY = 'voice_noise_suppression_config';
-const PUSH_SERVICE_DELIVERY_CONFIG_KEY = 'push_service_delivery_config';
+const PUSH_RELAY_CONFIG_KEY = 'push_service_delivery_config';
 const DOMAIN_MIGRATION_CONFIG_KEY = 'domain_migration_config';
+const ALTCHA_CAPTCHA_CONFIG_KEY = 'altcha_captcha_config';
+const PROFILE_TIMEZONE_CONFIG_KEY = 'profile_timezone_config';
 const EXPERIMENT_DELIVERY_CONFIG_KEY = 'experiment_delivery_config';
 const REGISTRATION_CONFIG_KEY = 'registration_config';
 const REGISTRATION_URLS_KEY = 'registration_urls';
@@ -374,8 +386,10 @@ type StoredConfigSection =
 	| 'app public'
 	| 'gateway rollout'
 	| 'voice noise suppression'
-	| 'push service delivery'
+	| 'push relay'
 	| 'domain migration'
+	| 'altcha captcha'
+	| 'profile timezone'
 	| 'experiment delivery'
 	| 'instance policy'
 	| 'integrations'
@@ -514,12 +528,37 @@ function parseStoredVoiceNoiseSuppressionConfig(raw: string | null): VoiceNoiseS
 	return parseStoredConfigOrDefault(VoiceNoiseSuppressionConfigSchema, raw, 'voice noise suppression');
 }
 
-function parseStoredPushServiceDeliveryConfig(raw: string | null): PushServiceDeliveryConfig {
-	return parseStoredConfigOrDefault(PushServiceDeliveryConfigSchema, raw, 'push service delivery');
+const StoredPushRelayConfigSchema = PushRelayConfigSchema.extend({
+	config_version: z.number().int().min(0).default(0),
+});
+
+function parseStoredPushRelayConfig(raw: string | null): LegacyPushServiceDeliveryWire {
+	const {config_version, ...config} = salvageStoredConfig(
+		StoredPushRelayConfigSchema,
+		readStoredConfigValue(raw, 'push relay'),
+		'push relay',
+	);
+	return toLegacyPushServiceDeliveryWire(config, config_version);
+}
+
+function toPushRelayConfig(wire: LegacyPushServiceDeliveryWire): PushRelayConfig {
+	return {
+		relay_consent_accepted: wire.relay_consent_accepted,
+		relay_consent_accepted_at: wire.relay_consent_accepted_at,
+		relay_consent_accepted_by: wire.relay_consent_accepted_by,
+	};
 }
 
 function parseStoredDomainMigrationConfig(raw: string | null): DomainMigrationConfig {
 	return parseStoredConfigOrDefault(DomainMigrationConfigSchema, raw, 'domain migration');
+}
+
+function parseStoredAltchaCaptchaConfig(raw: string | null): AltchaCaptchaConfig {
+	return parseStoredConfigOrDefault(AltchaCaptchaConfigSchema, raw, 'altcha captcha');
+}
+
+function parseStoredProfileTimezoneConfig(raw: string | null): ProfileTimezoneConfig {
+	return parseStoredConfigOrDefault(ProfileTimezoneConfigSchema, raw, 'profile timezone');
 }
 
 function parseStoredExperimentDeliveryConfig(raw: string | null): ExperimentDeliveryConfig {
@@ -1169,8 +1208,10 @@ export class InstanceConfigRepository {
 			parseStoredGatewayRolloutConfig(snapshot.get(GATEWAY_ROLLOUT_CONFIG_KEY) ?? null),
 		);
 		parseStoredVoiceNoiseSuppressionConfig(snapshot.get(VOICE_NOISE_SUPPRESSION_CONFIG_KEY) ?? null);
-		parseStoredPushServiceDeliveryConfig(snapshot.get(PUSH_SERVICE_DELIVERY_CONFIG_KEY) ?? null);
+		parseStoredPushRelayConfig(snapshot.get(PUSH_RELAY_CONFIG_KEY) ?? null);
 		parseStoredDomainMigrationConfig(snapshot.get(DOMAIN_MIGRATION_CONFIG_KEY) ?? null);
+		parseStoredAltchaCaptchaConfig(snapshot.get(ALTCHA_CAPTCHA_CONFIG_KEY) ?? null);
+		parseStoredProfileTimezoneConfig(snapshot.get(PROFILE_TIMEZONE_CONFIG_KEY) ?? null);
 		parseStoredExperimentDeliveryConfig(snapshot.get(EXPERIMENT_DELIVERY_CONFIG_KEY) ?? null);
 		const policy = parseStoredInstancePolicyConfig(snapshot.get(INSTANCE_POLICY_CONFIG_KEY) ?? null);
 		checkStoredConfig('registration', () =>
@@ -1267,21 +1308,21 @@ export class InstanceConfigRepository {
 		);
 	}
 
-	async getPushServiceDeliveryConfig(): Promise<PushServiceDeliveryConfig> {
-		const raw = await this.getConfig(PUSH_SERVICE_DELIVERY_CONFIG_KEY);
-		return parseStoredPushServiceDeliveryConfig(raw);
+	async getLegacyPushServiceDeliveryWire(): Promise<LegacyPushServiceDeliveryWire> {
+		const raw = await this.getConfig(PUSH_RELAY_CONFIG_KEY);
+		return parseStoredPushRelayConfig(raw);
 	}
 
-	updatePushServiceDeliveryConfig(
-		update: (current: PushServiceDeliveryConfig) => PushServiceDeliveryConfig,
-	): Promise<PushServiceDeliveryConfig> {
-		return this.updateStoredConfig(PUSH_SERVICE_DELIVERY_CONFIG_KEY, (raw) =>
-			validateStoredConfig(
-				PushServiceDeliveryConfigSchema,
-				update(parseStoredPushServiceDeliveryConfig(raw)),
-				'push service delivery',
-			),
-		);
+	async getPushRelayConfig(): Promise<PushRelayConfig> {
+		return toPushRelayConfig(await this.getLegacyPushServiceDeliveryWire());
+	}
+
+	updatePushRelayConfig(update: (current: PushRelayConfig) => PushRelayConfig): Promise<LegacyPushServiceDeliveryWire> {
+		return this.updateStoredConfig(PUSH_RELAY_CONFIG_KEY, (raw) => {
+			const current = parseStoredPushRelayConfig(raw);
+			const next = validateStoredConfig(PushRelayConfigSchema, update(toPushRelayConfig(current)), 'push relay');
+			return toLegacyPushServiceDeliveryWire(next, current.config_version + 1);
+		});
 	}
 
 	async getDomainMigrationConfig(): Promise<DomainMigrationConfig> {
@@ -1301,6 +1342,44 @@ export class InstanceConfigRepository {
 				DomainMigrationConfigSchema,
 				update(parseStoredDomainMigrationConfig(raw)),
 				'domain migration',
+			),
+		);
+	}
+
+	async getAltchaCaptchaConfig(): Promise<AltchaCaptchaConfig> {
+		const raw = await this.getConfig(ALTCHA_CAPTCHA_CONFIG_KEY);
+		return parseStoredAltchaCaptchaConfig(raw);
+	}
+
+	async setAltchaCaptchaConfig(config: AltchaCaptchaConfig): Promise<void> {
+		await this.updateAltchaCaptchaConfig(() => config);
+	}
+
+	updateAltchaCaptchaConfig(
+		update: (current: AltchaCaptchaConfig) => AltchaCaptchaConfig,
+	): Promise<AltchaCaptchaConfig> {
+		return this.updateStoredConfig(ALTCHA_CAPTCHA_CONFIG_KEY, (raw) =>
+			validateStoredConfig(AltchaCaptchaConfigSchema, update(parseStoredAltchaCaptchaConfig(raw)), 'altcha captcha'),
+		);
+	}
+
+	async getProfileTimezoneConfig(): Promise<ProfileTimezoneConfig> {
+		const raw = await this.getConfig(PROFILE_TIMEZONE_CONFIG_KEY);
+		return parseStoredProfileTimezoneConfig(raw);
+	}
+
+	async setProfileTimezoneConfig(config: ProfileTimezoneConfig): Promise<void> {
+		await this.updateProfileTimezoneConfig(() => config);
+	}
+
+	updateProfileTimezoneConfig(
+		update: (current: ProfileTimezoneConfig) => ProfileTimezoneConfig,
+	): Promise<ProfileTimezoneConfig> {
+		return this.updateStoredConfig(PROFILE_TIMEZONE_CONFIG_KEY, (raw) =>
+			validateStoredConfig(
+				ProfileTimezoneConfigSchema,
+				update(parseStoredProfileTimezoneConfig(raw)),
+				'profile timezone',
 			),
 		);
 	}

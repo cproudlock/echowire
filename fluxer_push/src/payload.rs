@@ -17,7 +17,12 @@ const FALLBACK_TITLE: &str = "echowire";
 // previously carried the uppercase spelling here, which would have broken
 // notification replies had this service ever been enabled.
 const APNS_CATEGORY: &str = "fluxer_message";
-const FCM_CLICK_ACTION: &str = "FLUXER_MESSAGE";
+// Echowire: no FCM click_action. Neither this fork's Android manifest nor
+// upstream's declares an activity for FLUXER_MESSAGE, so the action cannot be
+// resolved, the tap opens the launcher without the data payload, and the client
+// resolves no route and lands the user on the default screen. Verified on a real
+// device on 2026-09-26 against the gateway's Erlang sender, which upstream has
+// since deleted in favour of this service, so the fix has to live here too.
 const APNS_SOUND: &str = "default";
 const APNS_ALERT_EXPIRATION_SECONDS: i64 = 86_400;
 const APNS_BACKGROUND_EXPIRATION_SECONDS: i64 = 86_400;
@@ -209,7 +214,6 @@ fn fcm_notification_message(device_token: &str, envelope: &Value) -> Value {
     let mut android_notification = json!({
         "channel_id": "fluxer_default_push",
         "tag": tag,
-        "click_action": FCM_CLICK_ACTION,
     });
     put_image(&mut android_notification, image_url);
     json!({
@@ -610,7 +614,6 @@ mod tests {
     fn message_job(image_url: Option<&str>) -> MessageJob {
         MessageJob {
             v: 1,
-            config_version: 7,
             guild_id: "0".to_owned(),
             channel_id: CHANNEL_ID.to_owned(),
             message_id: MESSAGE_ID.to_owned(),
@@ -631,7 +634,6 @@ mod tests {
     fn clear_job() -> ClearJob {
         ClearJob {
             v: 1,
-            config_version: 7,
             user_id: USER_ID.to_owned(),
             channel_id: CHANNEL_ID.to_owned(),
             message_id: MESSAGE_ID.to_owned(),
@@ -667,14 +669,17 @@ mod tests {
     }
 
     #[test]
-    fn the_android_click_action_keeps_its_own_identifier() {
+    fn the_android_notification_sets_no_click_action() {
+        // Echowire: a click_action the app cannot resolve strips the tap payload,
+        // so the key must stay absent. See the constant comment above.
         let message = fcm_message(
             "device-token",
             &web_push_message(&message_job(None), USER_ID, 3),
         );
-        assert_eq!(
-            message["message"]["android"]["notification"]["click_action"],
-            json!("FLUXER_MESSAGE")
+        assert!(
+            message["message"]["android"]["notification"]
+                .get("click_action")
+                .is_none()
         );
     }
 

@@ -797,8 +797,13 @@ msgstr "{altText} — लाइट थीम में पूर्वावल�
 msgid "{appCount, plural, one {# app selected for access revocation} other {# apps selected for access revocation}}"
 msgstr "{appCount, plural, one {एक्सेस रद्द करने के लिए # ऐप चुना गया} other {एक्सेस रद्द करने के लिए # ऐप्स चुने गए}}"
 
+#. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+msgid "{appName} can't reach its servers. It will keep trying in the background."
+msgstr "{appName} अपने सर्वर तक नहीं पहुँच पा रहा है। यह बैकग्राउंड में कोशिश करता रहेगा।"
+
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+#: src/features/platform/utils/DesktopLocaleBridge.ts:285
 msgid "{appName} failed to start"
 msgstr "{appName} शुरू नहीं हो सका"
 
@@ -1586,19 +1591,19 @@ msgstr "{premiumProductName} सदस्यता"
 msgid "{presenceCount} online"
 msgstr "{presenceCount} ऑनलाइन"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:39
+#: src/features/app/components/BootstrapErrorScreen.tsx:46
 msgid "{PRODUCT_NAME} failed to start properly. This could be due to corrupted data or a temporary issue."
 msgstr "{PRODUCT_NAME} ठीक से शुरू नहीं हो पाया। यह खराब डेटा या किसी अस्थायी समस्या के कारण हो सकता है।"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:196
+#: src/features/auth/state/NewDeviceMonitoring.tsx:208
 msgid "{PRODUCT_NAME} has found a new audio device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} को <0>{deviceName}</0> नाम का एक नया ऑडियो डिवाइस मिला है। क्या आप इस पर स्विच करना चाहते हैं?"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:185
+#: src/features/auth/state/NewDeviceMonitoring.tsx:197
 msgid "{PRODUCT_NAME} has found a new audio input device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} को <0>{deviceName}</0> नाम का एक नया ऑडियो इनपुट डिवाइस मिला है। क्या आप इस पर स्विच करना चाहते हैं?"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:190
+#: src/features/auth/state/NewDeviceMonitoring.tsx:202
 msgid "{PRODUCT_NAME} has found a new audio output device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} को <0>{deviceName}</0> नाम का एक नया ऑडियो आउटपुट डिवाइस मिला है। क्या आप इस पर स्विच करना चाहते हैं?"
 
@@ -1619,7 +1624,7 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "क्रोमियम का हार्डवेयर एक्सीलरेशन बंद करने के लिए {PRODUCT_NAME} को रीस्टार्ट करना होगा। इसे तभी इस्तेमाल करें जब आप ग्राफ़िक्स की गड़बड़ियों या ज़्यादा GPU इस्तेमाल की समस्या सुलझा रहे हों।"
 
 #. Accessible label for the Fluxer application icon.
-#: src/features/ui/components/icons/FluxerIcon.tsx:10
+#: src/features/ui/components/icons/FluxerIconMark.tsx:6
 msgid "{productName} application icon"
 msgstr "{productName} ऐप्लिकेशन आइकॉन"
 
@@ -2538,7 +2543,7 @@ msgid "About"
 msgstr "बारे में"
 
 #. Desktop app menu item. Opens the About panel. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:16
+#: src/features/platform/utils/DesktopLocaleBridge.ts:17
 msgid "About {appName}"
 msgstr "{appName} के बारे में"
 
@@ -2604,6 +2609,16 @@ msgstr "इनवाइट स्वीकार करें"
 #: src/features/relationship/utils/RelationshipActionUtils.tsx:77
 msgid "Accept the friend request from {userName}?"
 msgstr "{userName} की फ्रेंड रिक्वेस्ट स्वीकार करें?"
+
+#. Label for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+msgid "Accept the push relay supplemental privacy notice"
+msgstr "पुश रिले की अतिरिक्त गोपनीयता सूचना स्वीकार करें"
+
+#. Summary value when the operator accepted the push relay notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:390
+msgid "Accepted"
+msgstr "स्वीकार किया"
 
 #. Short label in the notification utils helper. Keep it concise.
 #: src/features/notification/utils/NotificationUtils.ts:32
@@ -2860,7 +2875,7 @@ msgid "Activity threshold"
 msgstr "गतिविधि थ्रेशोल्ड"
 
 #. Native View menu item that resets zoom to 100%.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:108
+#: src/features/platform/utils/DesktopLocaleBridge.ts:109
 msgid "Actual size"
 msgstr "वास्तविक आकार"
 
@@ -2898,7 +2913,7 @@ msgstr "कोई टिप्पणी जोड़ें (वैकल्प�
 msgid "Add a community"
 msgstr "कम्युनिटी जोड़ें"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:75
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:77
 msgid "Add a different account"
 msgstr "कोई दूसरा अकाउंट जोड़ें"
 
@@ -2908,7 +2923,7 @@ msgid "Add a friend to get started."
 msgstr "शुरू करने के लिए किसी दोस्त को जोड़ें।"
 
 #. Setup wizard body for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:934
+#: src/features/app/components/setup/SetupWizardSteps.tsx:972
 msgid "Add a Klipy API key to enable GIF search at runtime."
 msgstr "रनटाइम पर GIF खोज चालू करने के लिए Klipy API कुंजी जोड़ें।"
 
@@ -2945,7 +2960,7 @@ msgid "Add a working email"
 msgstr "एक काम करने वाला ईमेल जोड़ें"
 
 #. Setup wizard body for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:942
+#: src/features/app/components/setup/SetupWizardSteps.tsx:980
 msgid "Add a YouTube Data API key to enrich YouTube links."
 msgstr "YouTube लिंक को बेहतर बनाने के लिए YouTube Data API कुंजी जोड़ें।"
 
@@ -2960,7 +2975,7 @@ msgid "Add action."
 msgstr "कार्रवाई जोड़ें।"
 
 #. OAuth authorization account step button. Opens the flow to sign in with another account.
-#: src/features/auth/components/accounts/AccountSelector.tsx:185
+#: src/features/auth/components/accounts/AccountSelector.tsx:186
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:124
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:30
 msgid "Add an account"
@@ -2991,7 +3006,7 @@ msgid "Add another reaction"
 msgstr "एक और रिएक्शन जोड़ें"
 
 #. Setup wizard body for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:966
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1004
 msgid "Add Bluesky OAuth client metadata and a signing key."
 msgstr "Bluesky OAuth क्लाइंट मेटाडेटा और एक साइनिंग कुंजी जोड़ें।"
 
@@ -3066,7 +3081,7 @@ msgid "Add item"
 msgstr "आइटम जोड़ें"
 
 #. Title of the native file picker that selects local theme files to add.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:266
+#: src/features/platform/utils/DesktopLocaleBridge.ts:267
 #: src/features/theme_studio/sections/AssetsSection.tsx:150
 msgid "Add local files"
 msgstr "स्थानीय फ़ाइलें जोड़ें"
@@ -3141,7 +3156,7 @@ msgid "Add shortcut"
 msgstr "शॉर्टकट जोड़ें"
 
 #. Setup wizard body for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:958
+#: src/features/app/components/setup/SetupWizardSteps.tsx:996
 msgid "Add SMTP credentials so the instance can send verification and notification email."
 msgstr "SMTP क्रेडेंशियल जोड़ें, ताकि इंस्टेंस वेरिफ़िकेशन और सूचना ईमेल भेज सके।"
 
@@ -3168,7 +3183,7 @@ msgid "Add stream"
 msgstr "स्ट्रीम जोड़ें"
 
 #. Description for configuring an optional setup wizard integration now.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:926
+#: src/features/app/components/setup/SetupWizardSteps.tsx:964
 msgid "Add the credentials during setup."
 msgstr "सेटअप के दौरान क्रेडेंशियल जोड़ें।"
 
@@ -4232,17 +4247,17 @@ msgid "Anyone can call you, including strangers"
 msgstr "कोई भी आपको कॉल कर सकता है, जिसमें अजनबी भी शामिल हैं"
 
 #. Description for the open registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:159
+#: src/features/app/components/setup/SetupWizardSteps.tsx:162
 msgid "Anyone can create an account."
 msgstr "कोई भी अकाउंट बना सकता है।"
 
 #. Description for the approval registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:167
+#: src/features/app/components/setup/SetupWizardSteps.tsx:170
 msgid "Anyone can request an account, but an administrator must approve it."
 msgstr "कोई भी अकाउंट के लिए अनुरोध कर सकता है, लेकिन एडमिनिस्ट्रेटर को उसे मंज़ूरी देनी होगी।"
 
 #. Label for an integration API key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:979
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1017
 msgid "API key"
 msgstr "API कुंजी"
 
@@ -4401,7 +4416,7 @@ msgid "Apply to all communities"
 msgstr "सभी कम्युनिटी पर लागू करें"
 
 #. Registration mode option requiring admin approval.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:163
+#: src/features/app/components/setup/SetupWizardSteps.tsx:166
 msgid "Approval required"
 msgstr "मंज़ूरी ज़रूरी"
 
@@ -4515,7 +4530,7 @@ msgid "Are you sure you want to remove <0>{engineName}</0>?"
 msgstr "क्या आप वाकई <0>{engineName}</0> हटाना चाहते हैं?"
 
 #. Confirm dialog message for the destructive reset action. Tone stays plain.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:178
+#: src/features/platform/utils/DesktopLocaleBridge.ts:179
 msgid "Are you sure you want to reset {appName}'s app data?"
 msgstr "क्या आप वाकई {appName} के ऐप डेटा को रीसेट करना चाहते हैं?"
 
@@ -4626,8 +4641,8 @@ msgstr "अटैचमेंट ऐक्शन"
 
 #. Setup wizard media expiry step title.
 #. Summary row label for the attachment expiry choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:217
-#: src/features/app/components/setup/SetupWizardSteps.tsx:352
+#: src/features/app/components/setup/SetupWizardSteps.tsx:220
+#: src/features/app/components/setup/SetupWizardSteps.tsx:378
 msgid "Attachment expiration"
 msgstr "अटैचमेंट की समाप्ति"
 
@@ -5208,7 +5223,7 @@ msgstr "अभी दूर हूँ"
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
 #. OAuth authorization secondary button. Returns to the previous carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:77
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:78
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAuthorizeActions.tsx:14
 #: src/features/auth/flow/IpAuthorizationScreen.tsx:155
 #: src/features/channel/components/channel_header/shared.ts:27
@@ -5301,7 +5316,7 @@ msgstr "बैकएंड प्रीमियम पर्क अक्षम
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:59
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:5
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:731
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:732
 msgid "Background"
 msgstr "बैकग्राउंड"
 
@@ -5705,12 +5720,12 @@ msgid "Bluesky"
 msgstr "ब्लूस्काई"
 
 #. Label for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:294
+#: src/features/app/components/setup/SetupWizardSteps.tsx:320
 msgid "Bluesky connections"
 msgstr "ब्लूस्काई कनेक्शन"
 
 #. Setup wizard title for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:962
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1000
 msgid "Bluesky OAuth"
 msgstr "ब्लूस्काई OAuth"
 
@@ -5728,7 +5743,7 @@ msgid "Blur"
 msgstr "धुंधला करें"
 
 #. Slider label in the camera preview modal controlling how strong the background blur effect is.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:81
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:82
 msgid "Blur strength"
 msgstr "धुंधलेपन की मात्रा"
 
@@ -5878,7 +5893,7 @@ msgid "Bot profile"
 msgstr "बॉट प्रोफ़ाइल"
 
 #. Setup wizard title for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:946
+#: src/features/app/components/setup/SetupWizardSteps.tsx:984
 msgid "Bot protection"
 msgstr "बॉट सुरक्षा"
 
@@ -5944,7 +5959,7 @@ msgid "Branding"
 msgstr "ब्रांडिंग"
 
 #. Accessible label for a branding image preview in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:141
+#: src/features/app/components/setup/SetupWizardSteps.tsx:144
 msgid "Branding asset preview"
 msgstr "ब्रांडिंग एसेट का प्रीव्यू"
 
@@ -6263,7 +6278,7 @@ msgstr "कैमरा डिवाइस"
 msgid "Camera effects"
 msgstr "कैमरा इफ़ेक्ट"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:809
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:810
 msgid "Camera error"
 msgstr "कैमरा त्रुटि"
 
@@ -6306,7 +6321,7 @@ msgstr "कैमरे की अनुमति ज़रूरी है"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Title of the camera preview modal.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:186
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:63
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:64
 msgid "Camera preview"
 msgstr "कैमरा प्रीव्यू"
 
@@ -6341,6 +6356,11 @@ msgstr "{voiceChannelCameraUserLimit} से ज़्यादा प्रत�
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:252
 msgid "Can't access that email?"
 msgstr "उस ईमेल को एक्सेस नहीं कर पा रहे हैं?"
+
+#. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+msgid "Can't connect"
+msgstr "कनेक्ट नहीं हो पा रहा है"
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
@@ -6409,7 +6429,7 @@ msgstr "यहां फ़ाइलें अपलोड नहीं की �
 #: src/features/user/components/modals/PhoneAddModal.tsx:401
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:174
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:33
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:845
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:846
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:81
 msgid "Cancel"
 msgstr "रद्द करें"
@@ -6510,7 +6530,7 @@ msgid "Cannot delete account"
 msgstr "अकाउंट नहीं मिटाया जा सकता"
 
 #. Toast error shown when captcha verification fails inside the auth captcha interceptor.
-#: src/features/auth/components/CaptchaInterceptor.tsx:14
+#: src/features/auth/components/CaptchaInterceptor.tsx:15
 msgid "Captcha verification failed. Try again."
 msgstr "कैप्चा वेरिफ़िकेशन विफल रहा। फिर से कोशिश करें।"
 
@@ -6651,7 +6671,7 @@ msgstr "केंद्रित"
 msgid "Change avatar"
 msgstr "अवतार बदलें"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:744
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:745
 msgid "Change background"
 msgstr "बैकग्राउंड बदलें"
 
@@ -7297,11 +7317,11 @@ msgid "Chat shortcuts"
 msgstr "चैट शॉर्टकट"
 
 #. Tray menu item. Triggers the auto-updater to look for a new desktop build.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:224
+#: src/features/platform/utils/DesktopLocaleBridge.ts:225
 msgid "Check for updates"
 msgstr "अपडेट देखें"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:56
+#: src/features/app/components/BootstrapErrorScreen.tsx:63
 msgid "Check our <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> for status updates."
 msgstr "स्टेटस अपडेट के लिए हमारा <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> देखें।"
 
@@ -7352,6 +7372,10 @@ msgstr "एक्सेस जाँचा जा रहा है..."
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx:23
 msgid "Checking screen recording permission..."
 msgstr "स्क्रीन रिकॉर्डिंग अनुमति की जाँच की जा रही है..."
+
+#: src/features/auth/components/AltchaVerification.tsx:62
+msgid "Checking your browser. This takes a few seconds."
+msgstr "आपके ब्राउज़र की जाँच हो रही है। इसमें कुछ सेकंड लगेंगे।"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:67
@@ -7464,7 +7488,7 @@ msgid "Choose a supported audio file and try again."
 msgstr "कोई समर्थित ऑडियो फ़ाइल चुनें और फिर से कोशिश करें।"
 
 #. Setup wizard title for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:60
+#: src/features/app/components/setup/SetupWizardSteps.tsx:63
 msgid "Choose a theme"
 msgstr "एक थीम चुनें"
 
@@ -7476,7 +7500,8 @@ msgstr "अपने सिस्टम पिकर में एक विं�
 #. OAuth authorization step title. The user must choose which account to authorize with.
 #: src/features/auth/components/accounts/AccountSelector.tsx:61
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:17
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:68
+#: src/features/auth/flow/AuthLoginLayout.tsx:492
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:70
 msgid "Choose an account"
 msgstr "कोई अकाउंट चुनें"
 
@@ -7517,7 +7542,7 @@ msgid "Choose friends to message."
 msgstr "मैसेज करने के लिए दोस्तों को चुनें।"
 
 #. Setup wizard body for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:950
+#: src/features/app/components/setup/SetupWizardSteps.tsx:988
 msgid "Choose hCaptcha or Cloudflare Turnstile for signup challenges."
 msgstr "साइनअप चुनौतियों के लिए hCaptcha या Cloudflare Turnstile चुनें।"
 
@@ -7532,7 +7557,7 @@ msgid "Choose how messages are displayed in chat channels."
 msgstr "चुनें कि चैट चैनलों में मैसेज कैसे दिखते हैं।"
 
 #. Setup wizard registration step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:150
+#: src/features/app/components/setup/SetupWizardSteps.tsx:153
 msgid "Choose how new accounts are created on this instance."
 msgstr "चुनें कि इस इंस्टेंस पर नए अकाउंट कैसे बनते हैं।"
 
@@ -7552,7 +7577,7 @@ msgid "Choose how you'd like to pay for this subscription."
 msgstr "चुनें कि आप इस सदस्यता के लिए कैसे भुगतान करना चाहेंगे।"
 
 #. Setup wizard community model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:180
+#: src/features/app/components/setup/SetupWizardSteps.tsx:183
 msgid "Choose how your instance works"
 msgstr "चुनें कि आपका इंस्टेंस कैसे काम करता है"
 
@@ -7580,7 +7605,7 @@ msgid "Choose the category that best describes your community. You can change th
 msgstr "वह श्रेणी चुनें जो आपकी कम्युनिटी के लिए सबसे सही हो। आप इसे कभी भी बदल सकते हैं।"
 
 #. Setup wizard premium model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:303
+#: src/features/app/components/setup/SetupWizardSteps.tsx:329
 msgid "Choose the premium model"
 msgstr "प्रीमियम मॉडल चुनें"
 
@@ -7635,7 +7660,7 @@ msgid "Choose where {PRODUCT_NAME} should send images for reverse image search. 
 msgstr "चुनें कि {PRODUCT_NAME} रिवर्स इमेज सर्च के लिए इमेज कहाँ भेजे। हम आपकी पसंद याद रखेंगे। आप इसे बाद में {searchEnginesSettingsPath} में बदल सकते हैं या अपना खुद का प्रोवाइडर जोड़ सकते हैं।"
 
 #. Setup wizard media expiry step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:221
+#: src/features/app/components/setup/SetupWizardSteps.tsx:224
 msgid "Choose whether uploaded attachments should expire automatically based on size."
 msgstr "चुनें कि अपलोड किए गए अटैचमेंट आकार के आधार पर अपने आप समाप्त हों या नहीं।"
 
@@ -7817,7 +7842,7 @@ msgstr "स्पष्ट बातचीत के लिए आपके म�
 #. Button or menu action label in the theme studio quick css section. Keep it concise.
 #. Button that removes an uploaded branding image.
 #. Inline button in the Recent searches section that wipes the search history list.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:117
+#: src/features/app/components/setup/SetupWizardSteps.tsx:120
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
 #: src/features/input/components/KeybindRecorder.tsx:442
@@ -8045,7 +8070,7 @@ msgid "Client"
 msgstr "क्लाइंट"
 
 #. Label for Bluesky OAuth client name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1056
 msgid "Client name"
 msgstr "क्लाइंट का नाम"
 
@@ -8062,7 +8087,7 @@ msgid "Client secret regenerated. Update any code that uses the old secret."
 msgstr "क्लाइंट सीक्रेट फिर से जनरेट हो गया है। पुराने सीक्रेट का इस्तेमाल करने वाले किसी भी कोड को अपडेट करें।"
 
 #. Label for Bluesky OAuth client URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1022
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1060
 msgid "Client URL"
 msgstr "क्लाइंट यूआरएल"
 
@@ -8109,7 +8134,7 @@ msgstr "क्लोनिंग बंद है"
 #. Aria-label / button text for dismissing a modal, sheet, popout, or overlay. Short.
 #. Native Window menu item that closes the focused desktop window.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:311
-#: src/features/platform/utils/DesktopLocaleBridge.ts:138
+#: src/features/platform/utils/DesktopLocaleBridge.ts:139
 msgid "Close"
 msgstr "बंद करें"
 
@@ -8195,7 +8220,7 @@ msgid "Close your DM with {username}? You can reopen it anytime."
 msgstr "क्या आप {username} के साथ अपनी DM बंद करना चाहते हैं? आप इसे कभी भी फिर से खोल सकते हैं।"
 
 #. Registration mode option that disables public registration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:171
+#: src/features/app/components/setup/SetupWizardSteps.tsx:174
 msgid "Closed"
 msgstr "बंद"
 
@@ -8215,7 +8240,7 @@ msgid "Cloud upload"
 msgstr "क्लाउड अपलोड"
 
 #. Cloudflare Turnstile provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:975
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1013
 msgid "Cloudflare Turnstile"
 msgstr "Cloudflare Turnstile"
 
@@ -8607,7 +8632,7 @@ msgstr "कम्युनिटी म्यूट"
 
 #. Label for the single community name input in the setup wizard.
 #. Label of the community name input in the create-community form.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:196
+#: src/features/app/components/setup/SetupWizardSteps.tsx:199
 #: src/features/guild/components/modals/add_guild_modal/shared.ts:123
 msgid "Community name"
 msgstr "कम्युनिटी का नाम"
@@ -8773,7 +8798,7 @@ msgid "Completing your sign-in…"
 msgstr "आपकी साइन-इन प्रक्रिया पूरी हो रही है…"
 
 #. Windows jump-list task description (tooltip text) for the New direct message action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:253
+#: src/features/platform/utils/DesktopLocaleBridge.ts:254
 msgid "Compose a new direct message"
 msgstr "नया डायरेक्ट मैसेज लिखें"
 
@@ -8825,7 +8850,7 @@ msgid "Configure keyboard shortcuts"
 msgstr "कीबोर्ड शॉर्टकट कॉन्फ़िगर करें"
 
 #. Option for configuring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:922
+#: src/features/app/components/setup/SetupWizardSteps.tsx:960
 msgid "Configure now"
 msgstr "अभी कॉन्फ़िगर करें"
 
@@ -9097,7 +9122,7 @@ msgstr "कनेक्शन: {connectionId}"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for external accounts and verified domains.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:415
-#: src/features/user/components/popouts/UserProfileShared.tsx:614
+#: src/features/user/components/popouts/UserProfileShared.tsx:615
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:8
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:30
 msgid "Connections"
@@ -9346,7 +9371,7 @@ msgstr "यूआरएल क्लिपबोर्ड पर कॉपी �
 #: src/features/auth/components/modals/BackupCodesModal.tsx:96
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:50
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:397
-#: src/features/platform/utils/DesktopLocaleBridge.ts:63
+#: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:73
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
@@ -9391,7 +9416,7 @@ msgstr "बैनर यूआरएल कॉपी करें"
 
 #. Tray menu item. Copies build / version diagnostics to the clipboard for bug reports.
 #: src/features/app/components/floating/UserAreaPopout.tsx:707
-#: src/features/platform/utils/DesktopLocaleBridge.ts:228
+#: src/features/platform/utils/DesktopLocaleBridge.ts:229
 msgid "Copy build info"
 msgstr "बिल्ड की जानकारी कॉपी करें"
 
@@ -9594,7 +9619,7 @@ msgid "Copy setup key"
 msgstr "सेटअप कुंजी कॉपी करें"
 
 #. Button on the crash screen that copies developer diagnostic text.
-#: src/features/app/components/ErrorFallback.tsx:152
+#: src/features/app/components/ErrorFallback.tsx:155
 msgid "Copy stack trace"
 msgstr "स्टैक ट्रेस कॉपी करें"
 
@@ -9687,7 +9712,7 @@ msgid "Could not decode this audio file."
 msgstr "इस ऑडियो फ़ाइल को डीकोड नहीं किया जा सका।"
 
 #. Error shown when the setup wizard fails to load the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:93
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:94
 msgid "Could not load the instance configuration. Try reloading the page."
 msgstr "इंस्टेंस कॉन्फ़िगरेशन लोड नहीं हो सका। पेज को रीलोड करने का प्रयास करें।"
 
@@ -10060,7 +10085,7 @@ msgid "Couldn't ring this person"
 msgstr "इस व्यक्ति को कॉल नहीं किया जा सका"
 
 #. Error message in the use textarea submit hook. Preserve {detail}; it is inserted by code.
-#: src/features/messaging/hooks/useTextareaSubmit.ts:48
+#: src/features/messaging/hooks/useTextareaSubmit.ts:53
 msgid "Couldn't run that command: {detail}"
 msgstr "वह कमांड नहीं चल सका: {detail}"
 
@@ -10304,7 +10329,7 @@ msgid "Create account to claim gift"
 msgstr "उपहार पाने के लिए अकाउंट बनाएँ"
 
 #. Button that opens the registration flow to create the first administrator account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:68
+#: src/features/app/components/setup/SetupWizardSteps.tsx:71
 msgid "Create administrator account"
 msgstr "एडमिनिस्ट्रेटर अकाउंट बनाएँ"
 
@@ -10415,7 +10440,7 @@ msgid "Create role"
 msgstr "रोल बनाएँ"
 
 #. Setup wizard title prompting the operator to create the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:48
+#: src/features/app/components/setup/SetupWizardSteps.tsx:51
 msgid "Create the administrator account"
 msgstr "एडमिनिस्ट्रेटर अकाउंट बनाएँ"
 
@@ -10905,7 +10930,7 @@ msgstr "अलग-अलग कम्युनिटी के लिए अप�
 #. Native Edit menu item that cuts the selection to the clipboard. Imperative verb, not the noun.
 #. Textarea right-click context menu item that cuts the selected text.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:46
-#: src/features/platform/utils/DesktopLocaleBridge.ts:59
+#: src/features/platform/utils/DesktopLocaleBridge.ts:60
 msgid "Cut"
 msgstr "काटें"
 
@@ -11164,7 +11189,7 @@ msgid "Debug user"
 msgstr "यूज़र को डीबग करें"
 
 #. Setup wizard premium model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:307
+#: src/features/app/components/setup/SetupWizardSteps.tsx:333
 msgid "Decide how premium limits apply to people on this instance."
 msgstr "तय करें कि प्रीमियम सीमाएँ इस इंस्टेंस के लोगों पर कैसे लागू होती हैं।"
 
@@ -11201,7 +11226,7 @@ msgstr "डिफ़ॉल्ट"
 #. Default camera device option.
 #. Default device option label in the voice settings menu (alternate call site for the same concept as DEFAULT_DESCRIPTOR).
 #. Fallback device option shown before a microphone, speaker, or camera label is available.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:67
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:68
 #: src/features/voice/components/VoiceSettingsMenus.tsx:87
 #: src/features/voice/utils/SettingsDeviceOptions.ts:11
 msgctxt "device-option"
@@ -11308,7 +11333,7 @@ msgstr "डेलावेयर"
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
 #: src/features/messaging/commands/MessageCommands.tsx:79
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
-#: src/features/platform/utils/DesktopLocaleBridge.ts:76
+#: src/features/platform/utils/DesktopLocaleBridge.ts:77
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
@@ -12043,7 +12068,7 @@ msgstr "डायरेक्ट मैसेज के प्रीव्यू
 
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:348
+#: src/features/app/components/setup/SetupWizardSteps.tsx:374
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:629
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
@@ -12123,7 +12148,7 @@ msgid "Disable desktop notifications?"
 msgstr "डेस्कटॉप नोटिफ़िकेशन बंद करें?"
 
 #. Label for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:208
+#: src/features/app/components/setup/SetupWizardSteps.tsx:211
 msgid "Disable direct messages and friend requests"
 msgstr "डायरेक्ट मैसेज और फ्रेंड रिक्वेस्ट बंद करें"
 
@@ -12132,7 +12157,7 @@ msgid "Disable favorites"
 msgstr "पसंदीदा बंद करें"
 
 #. Troubleshooting menu item. Turns off Chromium hardware acceleration and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:158
+#: src/features/platform/utils/DesktopLocaleBridge.ts:159
 msgid "Disable hardware acceleration and restart"
 msgstr "हार्डवेयर एक्सीलरेशन बंद करें और रीस्टार्ट करें"
 
@@ -12199,7 +12224,7 @@ msgid "Disable video locally"
 msgstr "वीडियो सिर्फ़ अपने लिए बंद करें"
 
 #. Summary value when a setup option is disabled.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:364
+#: src/features/app/components/setup/SetupWizardSteps.tsx:402
 msgid "Disabled"
 msgstr "बंद किया गया"
 
@@ -12275,14 +12300,14 @@ msgid "Disconnect device"
 msgstr "डिवाइस डिस्कनेक्ट करें"
 
 #. Tray menu item shown while in a voice call. {channel} is the voice channel name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:216
+#: src/features/platform/utils/DesktopLocaleBridge.ts:217
 msgid "Disconnect from {channel}"
 msgstr "{channel} से डिस्कनेक्ट करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tray menu item. Leaves the current voice call when the channel name is unavailable.
 #: src/features/input/state/input_keybind/shared.ts:317
-#: src/features/platform/utils/DesktopLocaleBridge.ts:220
+#: src/features/platform/utils/DesktopLocaleBridge.ts:221
 msgid "Disconnect from voice"
 msgstr "वॉइस से डिस्कनेक्ट करें"
 
@@ -12534,7 +12559,7 @@ msgstr "DNS TXT रिकॉर्ड"
 #. Short label in the app constants.
 #. Tray status menu item. User presence that suppresses notifications.
 #: src/features/app/constants/AppConstants.ts:33
-#: src/features/platform/utils/DesktopLocaleBridge.ts:200
+#: src/features/platform/utils/DesktopLocaleBridge.ts:201
 msgid "Do not disturb"
 msgstr "परेशान न करें"
 
@@ -12659,7 +12684,7 @@ msgstr "दोबारा न दिखाएँ"
 msgid "Don't show typing indicators in the channel list"
 msgstr "चैनल सूची में टाइपिंग इंडिकेटर न दिखाएं"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:51
+#: src/features/auth/state/NewDeviceMonitoring.tsx:57
 msgid "Don't suggest {deviceName} again"
 msgstr "{deviceName} का सुझाव दोबारा न दें"
 
@@ -12998,7 +13023,7 @@ msgstr "इको कैंसलेशन"
 #. Button or menu action label in the search engines tab. Keep it concise.
 #. Top-level native menu bar title (Edit menu, holds cut/copy/paste).
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:43
-#: src/features/platform/utils/DesktopLocaleBridge.ts:47
+#: src/features/platform/utils/DesktopLocaleBridge.ts:48
 #: src/features/user/components/modals/tabs/chat_settings_tab/SearchEnginesTab.tsx:35
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx:51
 msgid "Edit"
@@ -13270,7 +13295,7 @@ msgid "Email changed"
 msgstr "ईमेल बदल गया"
 
 #. Setup wizard title for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:954
+#: src/features/app/components/setup/SetupWizardSteps.tsx:992
 msgid "Email delivery"
 msgstr "ईमेल डिलीवरी"
 
@@ -13561,7 +13586,7 @@ msgid "Enable at least one translator below."
 msgstr "नीचे कम से कम एक अनुवादक चालू करें।"
 
 #. Label for enabling attachment expiry during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:225
+#: src/features/app/components/setup/SetupWizardSteps.tsx:228
 msgid "Enable attachment expiration"
 msgstr "अटैचमेंट की समाप्ति चालू करें"
 
@@ -13575,7 +13600,7 @@ msgid "Enable beta feature"
 msgstr "बीटा सुविधा चालू करें"
 
 #. Label for enabling Bluesky OAuth in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1014
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1052
 msgid "Enable Bluesky OAuth"
 msgstr "ब्लूस्काई OAuth चालू करें"
 
@@ -13608,7 +13633,7 @@ msgid "Enable developer mode"
 msgstr "डेवलपर मोड चालू करें"
 
 #. Label for enabling SMTP email delivery in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:982
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1020
 msgid "Enable email delivery"
 msgstr "ईमेल डिलीवरी चालू करें"
 
@@ -13627,7 +13652,7 @@ msgid "Enable favorites"
 msgstr "पसंदीदा चालू करें"
 
 #. Troubleshooting menu item. Turns Chromium hardware acceleration back on and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:162
+#: src/features/platform/utils/DesktopLocaleBridge.ts:163
 msgid "Enable hardware acceleration and restart"
 msgstr "हार्डवेयर एक्सीलरेशन चालू करें और रीस्टार्ट करें"
 
@@ -13750,7 +13775,7 @@ msgid "Enable text selection"
 msgstr "टेक्स्ट चुनने की सुविधा चालू करें"
 
 #. Setup wizard optional services step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:270
+#: src/features/app/components/setup/SetupWizardSteps.tsx:296
 msgid "Enable the integrations whose credentials you have configured. Only available services are shown."
 msgstr "उन इंटीग्रेशन को चालू करें जिनके क्रेडेंशियल आपने कॉन्फ़िगर किए हैं। सिर्फ़ उपलब्ध सेवाएँ दिखाई जाती हैं।"
 
@@ -13791,7 +13816,7 @@ msgstr "वीडियो सीक थंबनेल चालू करे�
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Summary value when a setup option is enabled.
 #. Toggle item in the textarea spellcheck submenu. Master enable for spellcheck.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:360
+#: src/features/app/components/setup/SetupWizardSteps.tsx:398
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:21
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:66
 msgid "Enabled"
@@ -13913,7 +13938,7 @@ msgid "Enter a code in the format ABCD-1234."
 msgstr "ABCD-1234 फ़ॉर्मैट में कोड डालें।"
 
 #. Validation error for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:204
+#: src/features/app/components/setup/SetupWizardSteps.tsx:207
 msgid "Enter a community name between 1 and 100 characters."
 msgstr "कम्युनिटी का नाम 1 से 100 अक्षरों के बीच डालें।"
 
@@ -13923,7 +13948,7 @@ msgid "Enter a gift code to redeem {premiumProductName} for your account."
 msgstr "अपने अकाउंट के लिए {premiumProductName} रिडीम करने के लिए उपहार कोड डालें।"
 
 #. Validation error for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:97
+#: src/features/app/components/setup/SetupWizardSteps.tsx:100
 msgid "Enter a product name between 1 and 80 characters."
 msgstr "उत्पाद का नाम 1 से 80 अक्षरों के बीच डालें।"
 
@@ -14306,7 +14331,7 @@ msgid "Everyone"
 msgstr "हर कोई"
 
 #. Premium model option that gives everyone the highest limits.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:319
+#: src/features/app/components/setup/SetupWizardSteps.tsx:345
 msgid "Everyone is premium"
 msgstr "सभी प्रीमियम हैं"
 
@@ -14352,7 +14377,7 @@ msgstr "अटैचमेंट के फ़ाइल नाम के कि�
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:38
+#: src/features/platform/utils/DesktopLocaleBridge.ts:39
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Exit"
 msgstr "बाहर निकलें"
@@ -14435,7 +14460,7 @@ msgid "EXPERIMENTAL"
 msgstr "प्रायोगिक"
 
 #. Label for attachment decay curve.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:253
+#: src/features/app/components/setup/SetupWizardSteps.tsx:256
 msgid "Expiration curve"
 msgstr "एक्सपायरी कर्व"
 
@@ -14565,11 +14590,6 @@ msgstr "मेरा डेटा एक्सपोर्ट करें"
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:110
 msgid "Export themes"
 msgstr "थीम एक्सपोर्ट करें"
-
-#. Developer / debug surface — keep terse and technical. Tooltip / description for the profile timezone settings toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
-msgid "Expose the staff-only time zone section in profile settings."
-msgstr "प्रोफ़ाइल सेटिंग्स में केवल कर्मचारियों के लिए समय क्षेत्र अनुभाग दिखाएँ।"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -14702,7 +14722,7 @@ msgid "Failed to delete channel"
 msgstr "चैनल नहीं मिटाया जा सका"
 
 #. Toast / inline error in the camera preview modal when enabling the camera fails.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:59
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:60
 msgid "Failed to enable camera."
 msgstr "कैमरा चालू नहीं हो पाया।"
 
@@ -14717,7 +14737,7 @@ msgid "Failed to forward message"
 msgstr "मैसेज फ़ॉरवर्ड नहीं हो पाया"
 
 #. Short label in the authentication desktop handoff account selector. Keep the tone plain and specific.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:17
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
 msgid "Failed to generate token"
 msgstr "टोकन जनरेट नहीं हो पाया"
 
@@ -14881,12 +14901,12 @@ msgstr "रिपोर्ट नहीं भेजी जा सकी। फ�
 msgid "Failed to send verification email. Try again later."
 msgstr "पुष्टि करने वाला ईमेल नहीं भेजा जा सका। बाद में फिर से कोशिश करें।"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:36
+#: src/features/app/components/BootstrapErrorScreen.tsx:43
 msgid "Failed to start"
 msgstr "शुरू नहीं हो पाया"
 
 #. Error text in the camera preview modal when the camera stream cannot be opened. Prompts user to check OS / browser permissions.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:54
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:55
 msgid "Failed to start camera preview. Check your camera permissions."
 msgstr "कैमरा प्रीव्यू शुरू नहीं हो पाया। अपनी कैमरा अनुमतियां जांचें।"
 
@@ -14974,7 +14994,7 @@ msgid "False claims likely to cause real-world harm."
 msgstr "झूठे दावे जिनसे वास्तविक दुनिया में नुकसान होने की संभावना है।"
 
 #. Label for the favicon branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:137
+#: src/features/app/components/setup/SetupWizardSteps.tsx:140
 msgid "Favicon"
 msgstr "फ़ेविकॉन"
 
@@ -15074,7 +15094,7 @@ msgid "Fetch a URL and inspect the embed payload the chat renderer receives."
 msgstr "कोई यूआरएल फ़ेच करें और देखें कि चैट रेंडरर को कौन-सा एम्बेड पेलोड मिलता है।"
 
 #. Top-level native menu bar title (File menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:43
+#: src/features/platform/utils/DesktopLocaleBridge.ts:44
 msgid "File"
 msgstr "फ़ाइल"
 
@@ -15232,7 +15252,7 @@ msgstr "फ़िल्टरिंग"
 msgid "Filtering by {language}"
 msgstr "{language} के अनुसार फ़िल्टर किया जा रहा है"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:788
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:789
 msgid "Finalizing camera..."
 msgstr "कैमरा तैयार किया जा रहा है..."
 
@@ -15270,8 +15290,8 @@ msgstr "नए टैब में पूरा करें। अगर आप
 
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
-#: src/features/app/components/setup/SetupWizardSteps.tsx:328
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:86
+#: src/features/app/components/setup/SetupWizardSteps.tsx:354
 msgid "Finish setup"
 msgstr "सेटअप पूरा करें"
 
@@ -15318,7 +15338,7 @@ msgid "Florida"
 msgstr "फ़्लोरिडा"
 
 #. Placeholder for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:93
+#: src/features/app/components/setup/SetupWizardSteps.tsx:96
 msgid "Fluxer"
 msgstr "Fluxer"
 
@@ -15546,7 +15566,7 @@ msgid "Force profile skeletons"
 msgstr "प्रोफ़ाइल स्केलेटन को फ़ोर्स करें"
 
 #. Native View menu item that reloads the window and ignores the cache. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:100
+#: src/features/platform/utils/DesktopLocaleBridge.ts:101
 msgid "Force reload"
 msgstr "ज़बरदस्ती फिर से लोड करें"
 
@@ -15852,12 +15872,12 @@ msgid "from <0>{0}</0>"
 msgstr "<0>{0}</0> से"
 
 #. Label for SMTP from email input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:986
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1024
 msgid "From email"
 msgstr "प्रेषक ईमेल"
 
 #. Label for SMTP from name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:990
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1028
 msgid "From name"
 msgstr "प्रेषक का नाम"
 
@@ -16149,7 +16169,7 @@ msgid "GIF preview"
 msgstr "GIF का प्रीव्यू"
 
 #. Setup wizard title for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:930
+#: src/features/app/components/setup/SetupWizardSteps.tsx:968
 msgid "GIF search"
 msgstr "GIF खोज"
 
@@ -16322,7 +16342,7 @@ msgid "Gifts"
 msgstr "उपहार"
 
 #. Description for the everyone-is-premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:323
+#: src/features/app/components/setup/SetupWizardSteps.tsx:349
 msgid "Give everyone on this instance the highest premium limits."
 msgstr "इस इंस्टेंस के सभी लोगों को सबसे ज़्यादा प्रीमियम सीमाएँ दें।"
 
@@ -16793,7 +16813,7 @@ msgstr "नफ़रत फैलाने वाला भाषण"
 msgid "Having fun?"
 msgstr "मज़े कर रहे हैं?"
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:157
+#: src/features/auth/components/modals/CaptchaModal.tsx:175
 msgid "Having issues? Try hCaptcha instead"
 msgstr "समस्या आ रही है? इसके बजाय hCaptcha आज़माएँ"
 
@@ -16804,7 +16824,7 @@ msgid "Hawaii"
 msgstr "हवाई"
 
 #. hCaptcha provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:974
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1012
 msgid "hCaptcha"
 msgstr "hCaptcha"
 
@@ -16870,7 +16890,7 @@ msgid "Hello, {username}! Nice to have you here."
 msgstr "नमस्ते, {username}! आपको यहाँ देखकर अच्छा लगा।"
 
 #. Top-level native menu bar title (Help menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:142
+#: src/features/platform/utils/DesktopLocaleBridge.ts:143
 msgid "Help"
 msgstr "सहायता"
 
@@ -16950,7 +16970,7 @@ msgid "Hide"
 msgstr "छिपाएँ"
 
 #. macOS app menu / tray item. Hides the desktop app window.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:30
+#: src/features/platform/utils/DesktopLocaleBridge.ts:31
 msgid "Hide {appName}"
 msgstr "{appName} छिपाएँ"
 
@@ -17328,7 +17348,7 @@ msgstr "मैं समझ गया/गई"
 
 #. Label for the icon branding asset.
 #. Short label in the guild icon upload field. Keep it concise.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:121
+#: src/features/app/components/setup/SetupWizardSteps.tsx:124
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:27
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:89
 msgid "Icon"
@@ -17548,7 +17568,7 @@ msgid "Image"
 msgstr "इमेज"
 
 #. Label for the branding image asset uploaders in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:105
+#: src/features/app/components/setup/SetupWizardSteps.tsx:108
 msgid "Image assets"
 msgstr "इमेज एसेट"
 
@@ -17672,7 +17692,7 @@ msgid "Import favorite GIFs"
 msgstr "पसंदीदा GIF इंपोर्ट करें"
 
 #. Title of the native folder picker that imports a directory of theme files.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:270
+#: src/features/platform/utils/DesktopLocaleBridge.ts:271
 #: src/features/theme_studio/sections/LibrarySection.tsx:349
 msgid "Import folder"
 msgstr "फ़ोल्डर इंपोर्ट करें"
@@ -17984,7 +18004,7 @@ msgstr "इनहेरिटेड"
 msgid "Inherited from {inheritedFromLabel}"
 msgstr "{inheritedFromLabel} से इनहेरिट किया गया"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:790
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:791
 msgid "Initializing camera..."
 msgstr "कैमरा शुरू हो रहा है..."
 
@@ -18139,12 +18159,12 @@ msgid "Installing desktop update…"
 msgstr "डेस्कटॉप अपडेट इंस्टॉल हो रहा है…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:294
+#: src/features/platform/utils/DesktopLocaleBridge.ts:305
 msgid "Instant messaging and VoIP"
 msgstr "इंस्टेंट मैसेजिंग और VoIP"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:289
+#: src/features/platform/utils/DesktopLocaleBridge.ts:300
 msgid "Instant Messenger"
 msgstr "इंस्टेंट मैसेंजर"
 
@@ -18278,7 +18298,7 @@ msgstr "उलटा बटन क्लिक किया गया।"
 #. Short label in the app constants.
 #. Tray status menu item. User presence that appears offline to others.
 #: src/features/app/constants/AppConstants.ts:37
-#: src/features/platform/utils/DesktopLocaleBridge.ts:204
+#: src/features/platform/utils/DesktopLocaleBridge.ts:205
 msgid "Invisible"
 msgstr "अदृश्य"
 
@@ -18883,7 +18903,7 @@ msgid "Keep attachments when clearing an edit"
 msgstr "एडिट साफ़ करते समय अटैचमेंट रखें"
 
 #. Description for the mirror premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:315
+#: src/features/app/components/setup/SetupWizardSteps.tsx:341
 msgid "Keep free and premium tiers. You can customize the tiers later."
 msgstr "मुफ़्त और प्रीमियम टियर रखें। आप बाद में टियर को कस्टमाइज़ कर सकते हैं।"
 
@@ -19010,7 +19030,7 @@ msgid "Kicked {targetUserTag} from the community"
 msgstr "{targetUserTag} को कम्युनिटी से किक कर दिया गया"
 
 #. Label for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+#: src/features/app/components/setup/SetupWizardSteps.tsx:304
 msgid "Klipy GIFs"
 msgstr "Klipy GIF"
 
@@ -19022,7 +19042,7 @@ msgstr "कोरियाई"
 #. Label for the setup wizard language selector.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. User settings tab for language, locale, and time display preferences.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:56
+#: src/features/app/components/setup/SetupWizardSteps.tsx:59
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:6
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:132
 msgid "Language"
@@ -19046,7 +19066,7 @@ msgid "Large"
 msgstr "बड़ा"
 
 #. Label for attachment decay maximum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:237
+#: src/features/app/components/setup/SetupWizardSteps.tsx:240
 msgid "Large file threshold (MB)"
 msgstr "बड़ी फ़ाइल सीमा (MB)"
 
@@ -19213,6 +19233,11 @@ msgstr "क्या आप यह ग्रुप छोड़ना चाह�
 msgid "Leave voice call"
 msgstr "वॉइस कॉल छोड़ें"
 
+#. Description for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
+msgstr "इसे बंद रखने से रिले का उपयोग नहीं होगा और सूचनाएं आधिकारिक मोबाइल ऐप्स पर नहीं पहुंचेंगी। आप इसे बाद में एडमिन पैनल में स्वीकार कर सकते हैं।"
+
 #. Card alignment option that aligns content to the left.
 #: src/features/ui/card_alignment_controls/CardAlignmentControls.tsx:17
 #: src/features/user/components/modals/tabs/component_gallery_tab/OverlaysTab.tsx:108
@@ -19287,12 +19312,12 @@ msgid "Let others clone your stickers"
 msgstr "दूसरों को अपने स्टिकर क्लोन करने दें"
 
 #. Description for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:298
+#: src/features/app/components/setup/SetupWizardSteps.tsx:324
 msgid "Let people link their Bluesky account to their profile."
 msgstr "लोगों को अपनी प्रोफ़ाइल से अपना Bluesky अकाउंट लिंक करने दें।"
 
 #. Description for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+#: src/features/app/components/setup/SetupWizardSteps.tsx:308
 msgid "Let people search and send GIFs powered by Klipy."
 msgstr "लोगों को Klipy से चलने वाले GIF खोजने और भेजने दें।"
 
@@ -19601,7 +19626,7 @@ msgid "Loading destinations…"
 msgstr "गंतव्य लोड हो रहे हैं…"
 
 #. Accessible status while the setup wizard loads the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:89
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:90
 msgid "Loading instance configuration"
 msgstr "इंस्टेंस कॉन्फ़िगरेशन लोड हो रहा है"
 
@@ -19631,7 +19656,7 @@ msgid "Loading states"
 msgstr "लोडिंग स्थिति"
 
 #. Setup wizard body while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:76
+#: src/features/app/components/setup/SetupWizardSteps.tsx:79
 msgid "Loading the current instance configuration."
 msgstr "वर्तमान इंस्टेंस कॉन्फ़िगरेशन लोड हो रहा है।"
 
@@ -19703,12 +19728,12 @@ msgid "Login"
 msgstr "लॉगिन करें"
 
 #. Label for the logo branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:129
+#: src/features/app/components/setup/SetupWizardSteps.tsx:132
 msgid "Logo"
 msgstr "लोगो"
 
 #. Label for Bluesky OAuth logo URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1026
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1064
 msgid "Logo URL"
 msgstr "लोगो यूआरएल"
 
@@ -19833,7 +19858,7 @@ msgid "Make group owner"
 msgstr "ग्रुप का मालिक बनाएं"
 
 #. Setup wizard branding step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:81
+#: src/features/app/components/setup/SetupWizardSteps.tsx:84
 msgid "Make the instance yours"
 msgstr "इंस्टेंस को अपना बनाएं"
 
@@ -20280,12 +20305,12 @@ msgid "Maximizes visible messages with minimal spacing."
 msgstr "कम से कम स्पेस के साथ ज़्यादा से ज़्यादा मैसेज दिखते हैं।"
 
 #. Label for attachment decay maximum eligible size.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:241
+#: src/features/app/components/setup/SetupWizardSteps.tsx:244
 msgid "Maximum eligible size (MB)"
 msgstr "अधिकतम योग्य आकार (MB)"
 
 #. Label for attachment decay maximum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:249
+#: src/features/app/components/setup/SetupWizardSteps.tsx:252
 msgid "Maximum lifetime (days)"
 msgstr "अधिकतम जीवनकाल (दिन)"
 
@@ -20486,7 +20511,7 @@ msgid "Member roles updated"
 msgstr "सदस्य के रोल अपडेट किए गए"
 
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx:83
-#: src/features/user/components/popouts/UserProfileShared.tsx:282
+#: src/features/user/components/popouts/UserProfileShared.tsx:283
 msgid "Member since"
 msgstr "सदस्य बने"
 
@@ -21068,7 +21093,7 @@ msgstr "मिलिट्री टाइम"
 #. Native Window menu item that minimizes the focused desktop window. Imperative verb.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:128
+#: src/features/platform/utils/DesktopLocaleBridge.ts:129
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:186
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:190
 msgid "Minimize"
@@ -21090,7 +21115,7 @@ msgid "Minimize window"
 msgstr "विंडो को छोटा करें"
 
 #. Label for attachment decay minimum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:245
+#: src/features/app/components/setup/SetupWizardSteps.tsx:248
 msgid "Minimum lifetime (days)"
 msgstr "न्यूनतम जीवनकाल (दिन)"
 
@@ -21109,7 +21134,7 @@ msgstr "नाबालिगों के लिए जोखिम, गलत 
 #. Switch label in the camera preview modal for flipping the local camera preview horizontally.
 #. Switch label in the video tab for flipping the local camera preview horizontally.
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx:106
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:72
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:73
 #: src/features/voice/components/VoiceSettingsMenus.tsx:114
 msgid "Mirror camera"
 msgstr "कैमरा मिरर करें"
@@ -21119,7 +21144,7 @@ msgid "Mirror of the Appearance tab toggle for light/dark/coal preference. Disab
 msgstr "दिखावट टैब के हल्का/गहरा/कोल टॉगल का मिरर। हर डिवाइस के लिए अलग बेस थीम चाहिए तो इसे बंद करें।"
 
 #. Premium model option that mirrors free and premium tiers.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:311
+#: src/features/app/components/setup/SetupWizardSteps.tsx:337
 msgid "Mirror tiers"
 msgstr "टियर मिरर करें"
 
@@ -21167,7 +21192,9 @@ msgid "Mobile online status on avatars"
 msgstr "अवतार पर मोबाइल ऑनलाइन स्टेटस"
 
 #. Section label for mobile push notification settings.
+#. Setup wizard push relay consent step title.
 #. Switch label in the community notification settings modal. Controls whether mobile push notifications are delivered for this community.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:269
 #: src/features/guild/components/modals/GuildNotificationSettingsModal.tsx:112
 #: src/features/ui/action_menu/items/GuildMenuItems.tsx:81
 msgid "Mobile push notifications"
@@ -21681,7 +21708,7 @@ msgstr "सदस्यों को म्यूट करें"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Mutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:63
-#: src/features/platform/utils/DesktopLocaleBridge.ts:208
+#: src/features/platform/utils/DesktopLocaleBridge.ts:209
 msgid "Mute microphone"
 msgstr "माइक म्यूट करें"
 
@@ -21850,7 +21877,7 @@ msgid "My category"
 msgstr "मेरी श्रेणी"
 
 #. Placeholder for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:200
+#: src/features/app/components/setup/SetupWizardSteps.tsx:203
 msgid "My community"
 msgstr "मेरी कम्युनिटी"
 
@@ -22136,7 +22163,7 @@ msgid "New accounts can join up to 10 communities in the first 24 hours. Try aga
 msgstr "नए अकाउंट पहले 24 घंटों में ज़्यादा से ज़्यादा 10 कम्युनिटी में शामिल हो सकते हैं। बाद में फिर से कोशिश करें।"
 
 #. Body text in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:23
+#: src/features/auth/state/NewDeviceMonitoring.tsx:26
 msgid "New audio device detected!"
 msgstr "नया ऑडियो डिवाइस मिला!"
 
@@ -22166,7 +22193,7 @@ msgid "New community muted"
 msgstr "नई कम्युनिटी म्यूट"
 
 #. Windows jump-list task title. Starts composing a new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:249
+#: src/features/platform/utils/DesktopLocaleBridge.ts:250
 msgid "New direct message"
 msgstr "नया डायरेक्ट मैसेज"
 
@@ -22289,7 +22316,7 @@ msgstr "सबसे नया पहले"
 #. Button that moves to the next setup wizard step.
 #. Generic primary or pagination action label that advances to the next step, page, or item.
 #. Primary button in the required-action modal. Moves to the next carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:81
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:82
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:154
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:721
 msgid "Next"
@@ -22351,7 +22378,7 @@ msgstr "कोई एक्सेस नहीं"
 msgid "No accessible channels"
 msgstr "किसी चैनल का एक्सेस नहीं"
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:148
+#: src/features/auth/components/accounts/AccountSelector.tsx:150
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:88
 msgid "No accounts"
 msgstr "कोई अकाउंट नहीं"
@@ -22673,7 +22700,7 @@ msgid "No one can add you to group chats without asking"
 msgstr "कोई भी आपको बिना पूछे ग्रुप चैट में नहीं जोड़ सकता"
 
 #. Message shown when no optional services are available in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:274
+#: src/features/app/components/setup/SetupWizardSteps.tsx:300
 msgid "No optional services are available on this instance. You can skip this step."
 msgstr "इस इंस्टेंस पर कोई वैकल्पिक सेवा उपलब्ध नहीं है। आप इस चरण को छोड़ सकते हैं।"
 
@@ -22930,7 +22957,7 @@ msgid "No webhooks"
 msgstr "कोई वेबहुक नहीं"
 
 #. Developer option label for short-circuiting the in-app reporting (IAR) flow. When enabled, submitting a report skips the network call.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:144
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
 msgid "No-op in-app reports"
 msgstr "इन-ऐप रिपोर्ट को नो-ऑप करें"
 
@@ -23028,6 +23055,11 @@ msgstr "संख्या नहीं है"
 msgid "Not a whole number"
 msgstr "पूर्ण संख्या नहीं है"
 
+#. Summary value when the operator left the push relay notice unaccepted.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:394
+msgid "Not accepted"
+msgstr "स्वीकार नहीं किया गया"
+
 #. Fallback value when a saved billing payment method has no expiration date.
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:18
 msgid "Not available"
@@ -23060,7 +23092,7 @@ msgstr "नहीं मिला"
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:43
-#: src/features/auth/state/NewDeviceMonitoring.tsx:31
+#: src/features/auth/state/NewDeviceMonitoring.tsx:34
 msgid "Not now"
 msgstr "अभी नहीं"
 
@@ -23489,19 +23521,19 @@ msgstr "अपारदर्शिता"
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:21
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:159
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:429
-#: src/features/platform/utils/DesktopLocaleBridge.ts:261
+#: src/features/platform/utils/DesktopLocaleBridge.ts:262
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingRow.tsx:22
 msgid "Open"
 msgstr "खोलें"
 
 #. Registration mode option allowing anyone to register.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:154
+#: src/features/app/components/setup/SetupWizardSteps.tsx:157
 msgctxt "registration-policy"
 msgid "Open"
 msgstr "खुला"
 
 #. Windows jump-list task description (tooltip text) for the Open settings action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:245
+#: src/features/platform/utils/DesktopLocaleBridge.ts:246
 msgid "Open {appName} settings"
 msgstr "{appName} सेटिंग्स खोलें"
 
@@ -24027,7 +24059,7 @@ msgstr "ऑपरेटिंग सिस्टम"
 msgid "Opt into experimental per-community and per-channel unread badge controls"
 msgstr "हर कम्युनिटी और चैनल के लिए प्रायोगिक अनरीड बैज कंट्रोल चालू करें"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:786
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:787
 msgid "Optimizing camera..."
 msgstr "कैमरा ऑप्टिमाइज़ किया जा रहा है..."
 
@@ -24057,7 +24089,7 @@ msgid "Optional arguments"
 msgstr "वैकल्पिक आर्ग्युमेंट"
 
 #. Setup wizard optional services step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:266
+#: src/features/app/components/setup/SetupWizardSteps.tsx:292
 msgid "Optional services"
 msgstr "वैकल्पिक सेवाएँ"
 
@@ -24373,7 +24405,7 @@ msgstr "पासकी के लिए मान्य ऐप्लिके�
 
 #. Generic form-field label for a password.
 #. Label for SMTP password input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:997
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1035
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:215
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:146
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:183
@@ -24440,7 +24472,7 @@ msgstr "पिछले 7 दिन"
 #. Native Edit menu item that pastes the clipboard contents. Imperative verb, not the noun.
 #. Textarea right-click context menu item that pastes clipboard contents.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:54
-#: src/features/platform/utils/DesktopLocaleBridge.ts:67
+#: src/features/platform/utils/DesktopLocaleBridge.ts:68
 msgid "Paste"
 msgstr "पेस्ट करें"
 
@@ -24449,7 +24481,7 @@ msgid "Paste a {theOtherPlatform} template URL to import its structure into a ne
 msgstr "{theOtherPlatform} टेम्पलेट यूआरएल पेस्ट करें और उसकी संरचना किसी नई कम्युनिटी में इंपोर्ट करें।"
 
 #. Native macOS Edit menu item that pastes the clipboard contents using the formatting of the surrounding text. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:71
+#: src/features/platform/utils/DesktopLocaleBridge.ts:72
 msgid "Paste and match style"
 msgstr "पेस्ट करें और स्टाइल मिलाएँ"
 
@@ -24837,7 +24869,7 @@ msgid "Pick one or more dictionaries. Words from any selected dictionary are acc
 msgstr "एक या ज़्यादा शब्दकोश चुनें। किसी भी चुने गए शब्दकोश के शब्द स्वीकार किए जाते हैं, जो बहुभाषी चैट के लिए उपयोगी है।"
 
 #. Setup wizard body for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:64
+#: src/features/app/components/setup/SetupWizardSteps.tsx:67
 msgid "Pick the appearance this administrator account should start with."
 msgstr "चुनें कि यह एडमिनिस्ट्रेटर अकाउंट शुरू में कैसा दिखे।"
 
@@ -25162,7 +25194,7 @@ msgid "Popup"
 msgstr "पॉपअप"
 
 #. Label for SMTP port input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:995
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1033
 msgid "Port"
 msgstr "पोर्ट"
 
@@ -25226,12 +25258,12 @@ msgid "Prefer using SSO? Continue with {ssoDisplayName}."
 msgstr "SSO इस्तेमाल करना चाहते हैं? {ssoDisplayName} के साथ जारी रखें।"
 
 #. macOS app menu submenu title. Keep "Preferences" to match the macOS HIG; in-app surfaces still use "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:25
+#: src/features/platform/utils/DesktopLocaleBridge.ts:26
 msgid "Preferences"
 msgstr "प्राथमिकताएँ"
 
 #. macOS app menu item that opens app settings. Trailing ellipsis follows the macOS HIG convention. Keep "Preferences" here even though the in-app term is "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:20
+#: src/features/platform/utils/DesktopLocaleBridge.ts:21
 msgid "Preferences..."
 msgstr "प्राथमिकताएँ..."
 
@@ -25268,7 +25300,7 @@ msgid "Premium grace period nagbar"
 msgstr "प्रीमियम ग्रेस पीरियड नागबार"
 
 #. Summary row label for the premium model in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:356
+#: src/features/app/components/setup/SetupWizardSteps.tsx:386
 msgid "Premium model"
 msgstr "प्रीमियम मॉडल"
 
@@ -25308,7 +25340,7 @@ msgid "Preparing"
 msgstr "तैयार हो रहा है"
 
 #. Setup wizard title while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:72
+#: src/features/app/components/setup/SetupWizardSteps.tsx:75
 msgid "Preparing setup"
 msgstr "सेटअप तैयार हो रहा है"
 
@@ -25558,7 +25590,7 @@ msgid "Privacy settings"
 msgstr "गोपनीयता सेटिंग्स"
 
 #. Label for Bluesky OAuth privacy URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1072
 msgid "Privacy URL"
 msgstr "गोपनीयता यूआरएल"
 
@@ -25583,7 +25615,7 @@ msgid "Private details"
 msgstr "निजी विवरण"
 
 #. Label for Bluesky OAuth private key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1042
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1080
 msgid "Private key"
 msgstr "निजी कुंजी"
 
@@ -25608,8 +25640,8 @@ msgstr "प्रोसेस हो रहा है"
 
 #. Label for the product name input in the setup wizard.
 #. Summary row label for the product name in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:89
-#: src/features/app/components/setup/SetupWizardSteps.tsx:336
+#: src/features/app/components/setup/SetupWizardSteps.tsx:92
+#: src/features/app/components/setup/SetupWizardSteps.tsx:362
 msgid "Product name"
 msgstr "उत्पाद का नाम"
 
@@ -25793,7 +25825,7 @@ msgid "Provide your full legal name for the declaration."
 msgstr "घोषणा के लिए अपना पूरा कानूनी नाम दें।"
 
 #. Label for an integration provider choice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:970
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1008
 msgid "Provider"
 msgstr "प्रदाता"
 
@@ -25815,7 +25847,7 @@ msgid "Public community"
 msgstr "सार्वजनिक कम्युनिटी"
 
 #. Description for the closed registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:175
+#: src/features/app/components/setup/SetupWizardSteps.tsx:178
 msgid "Public registration is closed."
 msgstr "सार्वजनिक रजिस्ट्रेशन बंद है।"
 
@@ -25907,6 +25939,11 @@ msgstr "निजी नोट्स से {deletedCount, plural, =0 {# मै�
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:42
 msgid "Push notification inactive timeout"
 msgstr "पुश नोटिफ़िकेशन निष्क्रिय टाइमआउट"
+
+#. Summary row label for the push relay consent on the setup wizard finish step.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:382
+msgid "Push relay notice"
+msgstr "पुश रिले सूचना"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:131
@@ -26053,7 +26090,7 @@ msgid "Quit"
 msgstr "बंद करें"
 
 #. macOS / tray menu item that fully quits the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:34
+#: src/features/platform/utils/DesktopLocaleBridge.ts:35
 msgid "Quit {appName}"
 msgstr "{appName} से बाहर निकलें"
 
@@ -26167,6 +26204,11 @@ msgstr "कम्युनिटी के बदलावों और मॉ�
 msgid "Read the documentation ({domain})"
 msgstr "डॉक्यूमेंटेशन पढ़ें ({domain})"
 
+#. Link to the push relay supplemental privacy notice shown during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
+msgid "Read the supplemental privacy notice"
+msgstr "पूरक गोपनीयता सूचना पढ़ें"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -26220,7 +26262,7 @@ msgid "Receive:"
 msgstr "प्राप्त:"
 
 #. Windows jump-list category title. Groups recently opened DMs / communities.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:257
+#: src/features/platform/utils/DesktopLocaleBridge.ts:258
 msgid "Recent"
 msgstr "हाल ही के"
 
@@ -26378,7 +26420,7 @@ msgstr "रीडायरेक्ट यूआरआई"
 #. Native Edit menu item that redoes the last undone edit. Imperative verb.
 #. Textarea right-click context menu item that redoes the last undone edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:42
-#: src/features/platform/utils/DesktopLocaleBridge.ts:55
+#: src/features/platform/utils/DesktopLocaleBridge.ts:56
 msgid "Redo"
 msgstr "फिर से करें"
 
@@ -26482,7 +26524,7 @@ msgid "Registered passkeys"
 msgstr "रजिस्टर्ड पासकी"
 
 #. Summary row label for the registration mode in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:340
+#: src/features/app/components/setup/SetupWizardSteps.tsx:366
 msgid "Registration"
 msgstr "रजिस्ट्रेशन"
 
@@ -26529,7 +26571,7 @@ msgstr "प्रासंगिक"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Troubleshooting menu item. Reloads the renderer process. Keep short.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:166
+#: src/features/platform/utils/DesktopLocaleBridge.ts:167
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:90
 msgid "Reload"
 msgstr "फिर से लोड करें"
@@ -26549,7 +26591,7 @@ msgid "Reload {productName} to use web update {version}"
 msgstr "{productName} को रीलोड करें ताकि वेब अपडेट {version} का उपयोग किया जा सके"
 
 #. Button on the crash screen that reloads the current app.
-#: src/features/app/components/ErrorFallback.tsx:142
+#: src/features/app/components/ErrorFallback.tsx:145
 msgid "Reload app"
 msgstr "ऐप फिर से लोड करें"
 
@@ -26597,7 +26639,7 @@ msgstr "विंडो का साइज़ और पोज़िशन य�
 #. Short label in the shared app saved message missing card. Keep the tone plain and specific.
 #: src/features/app/components/shared/SavedMessageMissingCard.tsx:14
 #: src/features/auth/components/accounts/AccountSelector.tsx:78
-#: src/features/auth/components/accounts/AccountSelector.tsx:125
+#: src/features/auth/components/accounts/AccountSelector.tsx:128
 #: src/features/channel/components/MessageReactionsSheet.tsx:43
 #: src/features/expressions/components/modals/AddFavoriteChannelModal.tsx:52
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildBannerUploadField.tsx:156
@@ -27094,12 +27136,12 @@ msgid "Render placeholders"
 msgstr "प्लेसहोल्डर रेंडर करें"
 
 #. Label for attachment decay renewal threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:257
+#: src/features/app/components/setup/SetupWizardSteps.tsx:260
 msgid "Renew threshold (days)"
 msgstr "नवीनीकरण सीमा (दिन)"
 
 #. Label for attachment decay renewal window.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:261
+#: src/features/app/components/setup/SetupWizardSteps.tsx:264
 msgid "Renew window (days)"
 msgstr "नवीनीकरण विंडो (दिन)"
 
@@ -27109,7 +27151,7 @@ msgstr "<0>{renewalDate}</0> को रिन्यू होगा।"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that replaces an already uploaded branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:113
+#: src/features/app/components/setup/SetupWizardSteps.tsx:116
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:80
 msgid "Replace"
 msgstr "बदलें"
@@ -27220,7 +27262,7 @@ msgid "Report illegal content"
 msgstr "गैर-कानूनी सामग्री की रिपोर्ट करें"
 
 #. Native Help submenu item. Opens the bug / issue reporting flow.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:150
+#: src/features/platform/utils/DesktopLocaleBridge.ts:151
 msgid "Report issue"
 msgstr "समस्या की रिपोर्ट करें"
 
@@ -27495,21 +27537,21 @@ msgid "Reset all shortcuts?"
 msgstr "सभी शॉर्टकट रीसेट करें?"
 
 #. Destructive confirm button on the reset-app-data dialog.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:188
+#: src/features/platform/utils/DesktopLocaleBridge.ts:189
 msgid "Reset and restart"
 msgstr "रीसेट करके रीस्टार्ट करें"
 
 #. Confirm dialog title for the destructive reset action.
 #. Destructive button on the crash screen. Clears local app data except preserved drafts.
 #. Destructive button on the startup failure screen. Clears local app data except preserved drafts.
-#: src/features/app/components/BootstrapErrorScreen.tsx:75
-#: src/features/app/components/ErrorFallback.tsx:164
-#: src/features/platform/utils/DesktopLocaleBridge.ts:174
+#: src/features/app/components/BootstrapErrorScreen.tsx:82
+#: src/features/app/components/ErrorFallback.tsx:167
+#: src/features/platform/utils/DesktopLocaleBridge.ts:175
 msgid "Reset app data"
 msgstr "ऐप डेटा रीसेट करें"
 
 #. Destructive troubleshooting menu item. Clears local app data, signs out, and restarts.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:170
+#: src/features/platform/utils/DesktopLocaleBridge.ts:171
 msgid "Reset app data and restart"
 msgstr "ऐप डेटा रीसेट करें और रीस्टार्ट करें"
 
@@ -27785,7 +27827,7 @@ msgid "Respect the sender's intent, with no warning when they toggle the @mentio
 msgstr "भेजने वाले की मर्ज़ी चलेगी, @मेंशन टॉगल करने पर कोई चेतावनी नहीं"
 
 #. Tray menu item that restarts the desktop app process.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:232
+#: src/features/platform/utils/DesktopLocaleBridge.ts:233
 msgid "Restart {appName}"
 msgstr "{appName} को रीस्टार्ट करें"
 
@@ -27982,7 +28024,7 @@ msgid "Review what this app is asking for before you continue."
 msgstr "जारी रखने से पहले देखें कि यह ऐप क्या माँग रहा है।"
 
 #. Setup wizard finish step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:332
+#: src/features/app/components/setup/SetupWizardSteps.tsx:358
 msgid "Review your choices below, then finish. This saves the configuration and opens the instance."
 msgstr "नीचे अपने विकल्प देखें, फिर सेटअप पूरा करें। इससे कॉन्फ़िगरेशन सेव होगा और इंस्टेंस खुल जाएगा।"
 
@@ -28238,7 +28280,7 @@ msgid "Run at login"
 msgstr "लॉगिन पर चलाएँ"
 
 #. Description for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:192
+#: src/features/app/components/setup/SetupWizardSteps.tsx:195
 msgid "Run the instance as one community instead of many. This can only be enabled now, during setup."
 msgstr "इंस्टेंस को कई कम्युनिटी के बजाय एक ही कम्युनिटी के तौर पर चलाएँ। इसे सिर्फ़ अभी, सेटअप के दौरान ही चालू किया जा सकता है।"
 
@@ -29032,7 +29074,7 @@ msgid "Secret"
 msgstr "सीक्रेट"
 
 #. Label for a CAPTCHA secret key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:981
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1019
 msgid "Secret key"
 msgstr "गुप्त कुंजी"
 
@@ -29187,14 +29229,14 @@ msgstr "लागू करने के लिए एक परिदृश्�
 msgid "Select a violation category."
 msgstr "उल्लंघन की श्रेणी चुनें।"
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:114
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 msgid "Select account"
 msgstr "अकाउंट चुनें"
 
 #. Native Edit menu item that selects everything in the focused field. Imperative verb.
 #. Textarea right-click context menu item that selects all text in the textarea.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:58
-#: src/features/platform/utils/DesktopLocaleBridge.ts:80
+#: src/features/platform/utils/DesktopLocaleBridge.ts:81
 msgid "Select all"
 msgstr "सभी चुनें"
 
@@ -29238,7 +29280,7 @@ msgstr "स्कोप चुनें (और अगर ज़रूरी ह
 msgid "Select text"
 msgstr "टेक्स्ट चुनें"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:69
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:71
 msgid "Select the account you want to sign in with on your new device."
 msgstr "वह खाता चुनें जिससे आप अपने नए डिवाइस पर साइन इन करना चाहते हैं।"
 
@@ -29320,7 +29362,7 @@ msgid "Self-harm or suicide"
 msgstr "खुद को नुकसान पहुँचाना या आत्महत्या"
 
 #. Accessible label for the self-host setup wizard carousel.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:69
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:70
 msgid "Self-host setup"
 msgstr "सेल्फ़-होस्ट सेटअप"
 
@@ -29656,11 +29698,6 @@ msgstr "सेशन"
 msgid "Session expired for {identifier}. Sign in again."
 msgstr "{identifier} के लिए सेशन समाप्त हो गया है। फिर से साइन इन करें।"
 
-#. Toast error shown in the desktop-handoff account picker when the session for the chosen account has expired.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
-msgid "Session expired. Sign in again."
-msgstr "सेशन समाप्त हो गया है। फिर से साइन इन करें।"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:15
 msgid "Sessions"
@@ -29801,7 +29838,7 @@ msgid "Set the nickname to {nick}"
 msgstr "उपनाम {nick} पर सेट किया गया"
 
 #. Setup wizard branding step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:85
+#: src/features/app/components/setup/SetupWizardSteps.tsx:88
 msgid "Set the public product name, theme color, and image assets that clients display."
 msgstr "क्लाइंट द्वारा प्रदर्शित सार्वजनिक उत्पाद का नाम, थीम रंग और इमेज एसेट सेट करें।"
 
@@ -29853,7 +29890,7 @@ msgid "Set this check aside?"
 msgstr "इस जाँच को अलग रख दें?"
 
 #. Title for the self-host setup wizard modal.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:74
 msgid "Set up {productName}"
 msgstr "{productName} सेट अप करें"
 
@@ -29863,7 +29900,7 @@ msgid "Set up authenticator app"
 msgstr "ऑथेंटिकेटर ऐप सेट अप करें"
 
 #. Option for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:914
+#: src/features/app/components/setup/SetupWizardSteps.tsx:952
 msgid "Set up later"
 msgstr "बाद में सेट अप करें"
 
@@ -30156,7 +30193,7 @@ msgid "Show"
 msgstr "दिखाएँ"
 
 #. Tray menu item that brings the desktop app window to the foreground.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:192
+#: src/features/platform/utils/DesktopLocaleBridge.ts:193
 msgid "Show {appName}"
 msgstr "{appName} दिखाएं"
 
@@ -30513,18 +30550,13 @@ msgstr "पासवर्ड दिखाएं"
 msgid "Show per-device participant volume sliders in voice menus"
 msgstr "वॉइस मेन्यू में प्रति-डिवाइस प्रतिभागी वॉल्यूम स्लाइडर दिखाएं"
 
-#. Developer option label for exposing the staff-only profile timezone section in profile settings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
-msgid "Show profile time zone settings"
-msgstr "प्रोफ़ाइल की समय क्षेत्र सेटिंग्स दिखाएं"
-
 #. Short label for an advanced message action bar preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx:56
 msgid "Show quick reactions"
 msgstr "क्विक रिएक्शन दिखाएं"
 
 #. Description for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:290
+#: src/features/app/components/setup/SetupWizardSteps.tsx:316
 msgid "Show rich previews for YouTube links."
 msgstr "YouTube लिंक के लिए रिच प्रीव्यू दिखाएं।"
 
@@ -30648,6 +30680,7 @@ msgstr "साइडबार"
 msgid "Sign in"
 msgstr "साइन इन करें"
 
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 #: src/features/auth/utils/AccountSwitcherModalUtils.tsx:274
 msgid "Sign in again"
 msgstr "फिर से साइन इन करें"
@@ -30762,7 +30795,7 @@ msgid "Signed-in devices"
 msgstr "साइन इन किए गए डिवाइस"
 
 #. Label for Bluesky OAuth signing key ID input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1038
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1076
 msgid "Signing key ID"
 msgstr "साइनिंग कुंजी आईडी"
 
@@ -30829,12 +30862,12 @@ msgid "Single column"
 msgstr "एक कॉलम"
 
 #. Summary row label for the single community choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:344
+#: src/features/app/components/setup/SetupWizardSteps.tsx:370
 msgid "Single community"
 msgstr "एक कम्युनिटी"
 
 #. Label for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:188
+#: src/features/app/components/setup/SetupWizardSteps.tsx:191
 msgid "Single community mode"
 msgstr "सिंगल कम्युनिटी मोड"
 
@@ -30853,7 +30886,7 @@ msgid "Single user (all statuses)"
 msgstr "एक यूज़र (सभी स्टेटस)"
 
 #. Label for a CAPTCHA site key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:980
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
 msgid "Site key"
 msgstr "साइट कुंजी"
 
@@ -30896,7 +30929,7 @@ msgid "Skip the external link warning for all domains"
 msgstr "सभी डोमेन के लिए बाहरी लिंक चेतावनी को छोड़ें"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the no-op in-app reports toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:149
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:140
 msgid "Skip the network call when an in-app report is submitted. The flow still advances to the success screen so you can exercise the UI, but nothing is actually sent to the safety team."
 msgstr "इन-ऐप रिपोर्ट सबमिट होने पर नेटवर्क कॉल छोड़ दें। फ़्लो फिर भी सफलता स्क्रीन तक बढ़ता है ताकि आप UI आज़मा सकें, लेकिन सुरक्षा टीम को असल में कुछ नहीं भेजा जाता।"
 
@@ -30906,7 +30939,7 @@ msgid "Skip the system leave notice — nobody gets pinged."
 msgstr "छोड़ने का सिस्टम मैसेज नहीं दिखेगा, किसी को पिंग नहीं होगा।"
 
 #. Description for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:918
+#: src/features/app/components/setup/SetupWizardSteps.tsx:956
 msgid "Skip this now and configure it from the admin panel."
 msgstr "इसे अभी छोड़ें और एडमिन पैनल से कॉन्फ़िगर करें।"
 
@@ -31093,7 +31126,7 @@ msgid "Small button clicked."
 msgstr "छोटा बटन क्लिक किया गया।"
 
 #. Label for attachment decay minimum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:233
+#: src/features/app/components/setup/SetupWizardSteps.tsx:236
 msgid "Small file threshold (MB)"
 msgstr "छोटी फ़ाइल थ्रेशोल्ड (MB)"
 
@@ -31154,17 +31187,17 @@ msgid "SMS verification is unavailable right now. Try again later or contact sup
 msgstr "SMS वेरिफ़िकेशन अभी उपलब्ध नहीं है। बाद में फिर से कोशिश करें या सहायता से संपर्क करें।"
 
 #. Success message after validating SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1006
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1044
 msgid "SMTP connection verified."
 msgstr "SMTP कनेक्शन सत्यापित हो गया।"
 
 #. Label for SMTP host input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:994
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1032
 msgid "SMTP host"
 msgstr "SMTP होस्ट"
 
 #. Failure message after validating SMTP credentials when the server returns no error detail.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1010
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1048
 msgid "SMTP validation failed."
 msgstr "SMTP वैलिडेशन विफल रहा।"
 
@@ -31211,11 +31244,11 @@ msgstr "कुछ यूज़र को जोड़ा नहीं जा स
 msgid "Something went wrong"
 msgstr "कुछ गड़बड़ हो गई"
 
-#: src/features/app/components/ErrorFallback.tsx:126
+#: src/features/app/components/ErrorFallback.tsx:129
 msgid "Something went wrong and the app crashed. An update is available that may fix this issue."
 msgstr "कुछ गड़बड़ हो गई और ऐप क्रैश हो गया। एक अपडेट उपलब्ध है जिससे यह समस्या ठीक हो सकती है।"
 
-#: src/features/app/components/ErrorFallback.tsx:128
+#: src/features/app/components/ErrorFallback.tsx:131
 msgid "Something went wrong and the app crashed. Try reloading or resetting the app."
 msgstr "कुछ गड़बड़ हो गई और ऐप क्रैश हो गया। फिर से लोड करने या रीसेट करने की कोशिश करें।"
 
@@ -31557,7 +31590,7 @@ msgstr "दर्शक - {count}"
 
 #. Native macOS Edit submenu title for text-to-speech actions.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:84
+#: src/features/platform/utils/DesktopLocaleBridge.ts:85
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:142
 msgid "Speech"
 msgstr "स्पीच"
@@ -31725,7 +31758,7 @@ msgid "Start"
 msgstr "शुरू करें"
 
 #. Reason shown by the Linux Flatpak background permission portal when enabling launch-at-login. {appName} is the desktop app name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:236
+#: src/features/platform/utils/DesktopLocaleBridge.ts:237
 msgid "Start {appName} automatically when you sign in."
 msgstr "साइन इन करने पर {appName} को अपने आप शुरू करें।"
 
@@ -31795,7 +31828,7 @@ msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{
 msgstr "परिणाम सीमित करने के लिए खोज <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> से शुरू करें।"
 
 #. Native macOS Edit > Speech submenu item that starts reading the selected text aloud. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:88
+#: src/features/platform/utils/DesktopLocaleBridge.ts:89
 msgid "Start speaking"
 msgstr "बोलना शुरू करें"
 
@@ -31839,7 +31872,7 @@ msgstr "स्टैटिक Pickles"
 #. Tray menu submenu title for the user presence status picker.
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:126
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:69
-#: src/features/platform/utils/DesktopLocaleBridge.ts:196
+#: src/features/platform/utils/DesktopLocaleBridge.ts:197
 msgid "Status"
 msgstr "स्टेटस"
 
@@ -32089,7 +32122,7 @@ msgstr "सभी दोस्तों के साथ वॉइस गति�
 #. Message context menu item that stops the text-to-speech playback in progress.
 #. Native macOS Edit > Speech submenu item that stops reading text aloud. Imperative verb.
 #: src/features/channel/components/MessageActionMenu.tsx:94
-#: src/features/platform/utils/DesktopLocaleBridge.ts:92
+#: src/features/platform/utils/DesktopLocaleBridge.ts:93
 #: src/features/ui/action_menu/items/MessageMenuItems.tsx:74
 msgid "Stop speaking"
 msgstr "बोलना बंद करें"
@@ -32479,7 +32512,7 @@ msgid "Switch between your global profile and per-community profiles"
 msgstr "अपनी ग्लोबल प्रोफ़ाइल और हर कम्युनिटी की प्रोफ़ाइल के बीच स्विच करें"
 
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:27
+#: src/features/auth/state/NewDeviceMonitoring.tsx:30
 msgid "Switch device"
 msgstr "डिवाइस बदलें"
 
@@ -32607,7 +32640,7 @@ msgid "Switches"
 msgstr "स्विच"
 
 #. Label for the symbol branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:125
+#: src/features/app/components/setup/SetupWizardSteps.tsx:128
 msgid "Symbol"
 msgstr "प्रतीक"
 
@@ -32891,7 +32924,7 @@ msgid "Taskbar badge"
 msgstr "टास्कबार बैज"
 
 #. Windows jump-list category title. Groups quick actions like open settings and new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:241
+#: src/features/platform/utils/DesktopLocaleBridge.ts:242
 msgid "Tasks"
 msgstr "टास्क"
 
@@ -32960,7 +32993,7 @@ msgid "Terms of service"
 msgstr "सेवा की शर्तें"
 
 #. Label for Bluesky OAuth terms URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1030
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1068
 msgid "Terms URL"
 msgstr "नियम यूआरएल"
 
@@ -32970,7 +33003,7 @@ msgid "Terrorism or violent extremism"
 msgstr "आतंकवाद या हिंसक चरमपंथ"
 
 #. Button that validates SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1002
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1040
 msgid "Test SMTP"
 msgstr "SMTP टेस्ट करें"
 
@@ -33160,7 +33193,7 @@ msgid "That friend request is no longer available. Refresh and try again."
 msgstr "वह फ्रेंड रिक्वेस्ट अब उपलब्ध नहीं है। रीफ़्रेश करें और फिर से कोशिश करें।"
 
 #. Error shown when a branding image fails to upload in the setup wizard.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:102
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:103
 msgid "That image could not be used. Try a different file."
 msgstr "वह इमेज इस्तेमाल नहीं की जा सकी। कोई दूसरी फ़ाइल आज़माएँ।"
 
@@ -33192,15 +33225,15 @@ msgid "The #0000 tag is reserved for Visionary subscribers. Visionary is no long
 msgstr "#0000 टैग विजनरी सब्सक्राइबर के लिए रिज़र्व है। विजनरी अब खरीदने के लिए उपलब्ध नहीं है।"
 
 #. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:97
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:98
 msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
 msgstr "API इस पेज से अलग ओरिजिन पर है, इसलिए सेटअप अनुरोध आपके सेशन के बिना भेजे जा रहे हैं। इस इंस्टेंस के लिए कॉन्फ़िगर किए गए पब्लिक ओरिजिन और पोर्ट की जाँच करें, फिर रीलोड करें।"
 
-#: src/features/app/components/ErrorFallback.tsx:120
+#: src/features/app/components/ErrorFallback.tsx:123
 msgid "The app crashed"
 msgstr "ऐप क्रैश हो गया"
 
-#: src/features/app/components/ErrorFallback.tsx:124
+#: src/features/app/components/ErrorFallback.tsx:127
 msgid "The app has crashed. Checking for updates that might fix this issue…"
 msgstr "ऐप क्रैश हो गया है। ऐसे अपडेट देखे जा रहे हैं जिनसे यह समस्या ठीक हो सकती है…"
 
@@ -33370,6 +33403,11 @@ msgstr "नई कीमत {effectiveDate} के लिए पहले से
 msgid "The new voice channel will reuse the permissions, user limit, and bitrate from <0>{channelLabel}</0>."
 msgstr "नया वॉइस चैनल <0>{channelLabel}</0> से अनुमतियाँ, यूज़र सीमा और बिटरेट का फिर से इस्तेमाल करेगा।"
 
+#. Setup wizard push relay consent step body.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:273
+msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
+msgstr "Fluxer के आधिकारिक मोबाइल ऐप, Fluxer के पुश रिले के ज़रिए सूचनाएं प्राप्त करते हैं, जो उन्हें Apple और Google को सौंपता है। सेल्फ-होस्टेड UnifiedPush और ntfy एंडपॉइंट कभी भी रिले तक नहीं पहुँचते और उन्हें किसी समझौते की आवश्यकता नहीं होती।"
+
 #. Activity log detail row under a removed channel permission override, listing the permissions it explicitly allowed before it was removed. It describes the removed override. It does not mean these permissions are allowed now. A permission override is a channel-level exception to the permissions of a role or member. It allows or denies chosen permissions in one channel or category only. Use the same word for override as the channel permissions settings, such as Add override. {permissions} is a list of permission names joined into one phrase, for example "View channel and Send messages". A long list ends with a count, for example "View channel, Send messages, and 3 more permissions".
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:378
 msgid "The override allowed {permissions}"
@@ -33478,7 +33516,7 @@ msgstr "थीम में किए गए बदलाव आपके सभ
 
 #. Label for the theme color picker in the setup wizard.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:101
+#: src/features/app/components/setup/SetupWizardSteps.tsx:104
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:165
 msgid "Theme color"
 msgstr "थीम का रंग"
@@ -33498,7 +33536,7 @@ msgstr "थीम फ़ाइलें"
 msgid "Theme library"
 msgstr "थीम लाइब्रेरी"
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:175
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:70
 msgid "Theme not found"
 msgstr "थीम नहीं मिली"
@@ -33578,7 +33616,7 @@ msgid "There was an error loading the webhooks. Try again."
 msgstr "वेबहुक लोड करने में समस्या हुई। फिर से कोशिश करें।"
 
 #. Setup wizard community model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:184
+#: src/features/app/components/setup/SetupWizardSteps.tsx:187
 msgid "These options change how people use the instance. Some can only be chosen during setup."
 msgstr "ये विकल्प तय करते हैं कि लोग इंस्टेंस का इस्तेमाल कैसे करेंगे। कुछ विकल्प सिर्फ़ सेटअप के दौरान ही चुने जा सकते हैं।"
 
@@ -33904,7 +33942,7 @@ msgstr "यह फ़ाइल {fileSize} की है, जो {maxSize} की
 msgid "This friends list needs more power"
 msgstr "इस दोस्त सूची में थोड़ी और जान चाहिए"
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:177
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:178
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:84
 msgid "This gift code has already been claimed."
 msgstr "यह उपहार कोड पहले ही क्लेम किया जा चुका है।"
@@ -33916,7 +33954,7 @@ msgstr "यह उपहार कोड पहले ही क्लेम क
 msgid "This gift code is invalid or already claimed."
 msgstr "यह उपहार कोड अमान्य है या पहले ही क्लेम किया जा चुका है।"
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:166
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:167
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:73
 msgid "This gift code may be invalid, expired, or already redeemed."
 msgstr "हो सकता है कि यह उपहार कोड अमान्य हो, समाप्त हो चुका हो या पहले ही रिडीम किया जा चुका हो।"
@@ -33960,7 +33998,7 @@ msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "यह इंस्टेंस वर्तमान में 30 FPS पर 720p तक स्क्रीन शेयर की अनुमति देता है।"
 
 #. Setup wizard body prompting the operator to register the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:52
+#: src/features/app/components/setup/SetupWizardSteps.tsx:55
 msgid "This instance has no accounts yet. The first account you create automatically becomes the administrator."
 msgstr "इस इंस्टेंस में अभी तक कोई अकाउंट नहीं है। आपका बनाया गया पहला अकाउंट अपने आप एडमिनिस्ट्रेटर बन जाएगा।"
 
@@ -34286,7 +34324,7 @@ msgstr "यह थीम शेयर करने के लिए बहुत
 msgid "This theme link is missing data."
 msgstr "इस थीम लिंक में डेटा मौजूद नहीं है।"
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:177
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:71
 msgid "This theme may have been removed or the link is invalid."
 msgstr "यह थीम हटा दी गई होगी या लिंक अमान्य है।"
@@ -34300,7 +34338,7 @@ msgstr "इस यूज़र"
 msgid "This user has limited their profile. Some details are hidden from people who aren't their friends."
 msgstr "इस यूज़र ने अपनी प्रोफ़ाइल सीमित कर दी है। कुछ जानकारी उन लोगों से छिपी हुई है जो उनके दोस्त नहीं हैं।"
 
-#: src/features/user/components/popouts/UserProfileShared.tsx:394
+#: src/features/user/components/popouts/UserProfileShared.tsx:395
 msgid "This user has no roles in this community."
 msgstr "इस यूज़र के इस कम्युनिटी में कोई रोल नहीं है।"
 
@@ -34423,7 +34461,7 @@ msgid "This will sign out the selected {sessionCount, plural, one {device} other
 msgstr "इससे चुने गए {sessionCount, plural, one {डिवाइस} other {डिवाइस}} आपके अकाउंट से साइन आउट हो जाएँगे। आपको उन {sessionCount, plural, one {डिवाइस} other {डिवाइस}} पर फिर से साइन इन करना होगा।"
 
 #. Confirm dialog detail text for the destructive reset action. appName is the desktop app name. Reassures users that server-side data is safe.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:182
+#: src/features/platform/utils/DesktopLocaleBridge.ts:183
 msgid "This will sign you out, clear cached files and stored sessions, and restart the desktop app. Your account, communities, and messages in {appName} are not affected."
 msgstr "इससे आप लॉग आउट हो जाएंगे, कैश की गई फ़ाइलें और स्टोर किए गए सेशन साफ़ हो जाएंगे, और डेस्कटॉप ऐप रीस्टार्ट होगा। {appName} में आपके अकाउंट, कम्युनिटी और मैसेज पर कोई असर नहीं पड़ेगा।"
 
@@ -34626,7 +34664,7 @@ msgid "Toggle deafen"
 msgstr "डीफ़ेन टॉगल करें"
 
 #. Native View menu item that opens or closes Chromium developer tools.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:104
+#: src/features/platform/utils/DesktopLocaleBridge.ts:105
 msgid "Toggle developer tools"
 msgstr "डेवलपर टूल टॉगल करें"
 
@@ -34636,7 +34674,7 @@ msgid "Toggle embed suppression"
 msgstr "एम्बेड छिपाना टॉगल करें"
 
 #. Native View menu item that enters or leaves full screen. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:120
+#: src/features/platform/utils/DesktopLocaleBridge.ts:121
 msgid "Toggle full screen"
 msgstr "फ़ुलस्क्रीन टॉगल करें"
 
@@ -34906,7 +34944,7 @@ msgid "Trimmed clip is over the {limit} size limit. Try a shorter selection."
 msgstr "ट्रिम किया गया क्लिप {limit} साइज़ लिमिट से ज़्यादा है। छोटा सिलेक्शन आज़माएँ।"
 
 #. Native Help submenu title that groups recovery actions like reload and reset.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:154
+#: src/features/platform/utils/DesktopLocaleBridge.ts:155
 msgid "Troubleshooting"
 msgstr "समस्या निवारण"
 
@@ -34996,6 +35034,7 @@ msgid "Try a different variable name or clear the search."
 msgstr "कोई दूसरा वैरिएबल नाम आज़माएँ या खोज साफ़ करें।"
 
 #. Generic action label for retrying a failed or interrupted operation.
+#: src/features/auth/components/AltchaVerification.tsx:53
 #: src/features/auth/flow/AuthRouteLoadError.tsx:22
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:75
 msgid "Try again"
@@ -35073,7 +35112,7 @@ msgstr "इसके बजाय सुरक्षा कुंजी/पा�
 msgid "Try sending your message again."
 msgstr "अपना मैसेज फिर से भेजने की कोशिश करें।"
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:159
+#: src/features/auth/components/modals/CaptchaModal.tsx:177
 msgid "Try Turnstile instead"
 msgstr "इसके बजाय Turnstile आज़माएँ"
 
@@ -35145,7 +35184,7 @@ msgid "Turn off device stream"
 msgstr "डिवाइस स्ट्रीम बंद करें"
 
 #. Description for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:212
+#: src/features/app/components/setup/SetupWizardSteps.tsx:215
 msgid "Turn off private messaging and friends across the instance. This can be reversed only once later."
 msgstr "पूरे इंस्टेंस पर निजी मैसेजिंग और दोस्त फ़ीचर बंद करें। इसे बाद में सिर्फ़ एक बार वापस चालू किया जा सकता है।"
 
@@ -35589,7 +35628,7 @@ msgstr "समझ गया"
 #. Native Edit menu item that undoes the last edit. Imperative verb.
 #. Textarea right-click context menu item that undoes the last edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:38
-#: src/features/platform/utils/DesktopLocaleBridge.ts:51
+#: src/features/platform/utils/DesktopLocaleBridge.ts:52
 msgid "Undo"
 msgstr "पूर्ववत करें"
 
@@ -35717,7 +35756,7 @@ msgstr "अज्ञात डिवाइस"
 
 #. Fallback diagnostic text on the crash screen when an Error object has no message.
 #. Fallback error text shown when LaTeX rendering fails without an error message.
-#: src/features/app/components/ErrorFallback.tsx:25
+#: src/features/app/components/ErrorFallback.tsx:28
 #: src/features/messaging/components/markdown/renderers/common/CodeElements.tsx:37
 msgid "Unknown error"
 msgstr "अज्ञात गड़बड़ी"
@@ -35932,7 +35971,7 @@ msgstr "पसंदीदा को अनम्यूट करें"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Unmutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:59
-#: src/features/platform/utils/DesktopLocaleBridge.ts:212
+#: src/features/platform/utils/DesktopLocaleBridge.ts:213
 msgid "Unmute microphone"
 msgstr "माइक अनम्यूट करें"
 
@@ -36104,12 +36143,12 @@ msgid "Unread message badge"
 msgstr "न पढ़े गए मैसेज का बैज"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:274
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
 msgid "Unread messages"
 msgstr "अपठित मैसेज"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:279
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
 msgid "Unread messages: {count}"
 msgstr "अपठित मैसेज: {count}"
 
@@ -36201,7 +36240,7 @@ msgid "Update {productName} to view this message."
 msgstr "यह मैसेज देखने के लिए {productName} को अपडेट करें।"
 
 #. Button on the crash screen that applies a found app update.
-#: src/features/app/components/ErrorFallback.tsx:140
+#: src/features/app/components/ErrorFallback.tsx:143
 msgid "Update app"
 msgstr "ऐप अपडेट करें"
 
@@ -36287,7 +36326,7 @@ msgstr "15 तक कस्टम बैकग्राउंड स्टोर
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that opens a file picker to upload a branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:109
+#: src/features/app/components/setup/SetupWizardSteps.tsx:112
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:84
 msgid "Upload"
 msgstr "अपलोड करें"
@@ -36831,7 +36870,7 @@ msgid "Use this when troubleshooting the client or collecting logs. It may add v
 msgstr "इसका इस्तेमाल क्लाइंट को ट्रबलशूट करते समय या लॉग इकट्ठा करते समय करें। यह मौजूदा क्लाइंट के लिए ब्राउज़र कंसोल में ज़्यादा जानकारी वाले मैसेज जोड़ सकता है।"
 
 #. Label for SMTP TLS toggle.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:998
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1036
 msgid "Use TLS"
 msgstr "TLS का उपयोग करें"
 
@@ -36997,7 +37036,7 @@ msgstr "यूज़र का वॉल्यूम"
 #. Generic form-field label for a username.
 #. Label for SMTP username input.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:996
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:572
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:218
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:56
@@ -37279,7 +37318,7 @@ msgid "Verify phone number form"
 msgstr "फ़ोन नंबर वेरिफ़ाई करने का फ़ॉर्म"
 
 #. Short label in the authentication captcha modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/CaptchaModal.tsx:15
+#: src/features/auth/components/modals/CaptchaModal.tsx:17
 msgid "Verify you're human"
 msgstr "पुष्टि करें कि आप इंसान हैं"
 
@@ -37546,7 +37585,7 @@ msgid "Vietnamese"
 msgstr "वियतनामी"
 
 #. Top-level native menu bar title (View menu, holds zoom and reload).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:96
+#: src/features/platform/utils/DesktopLocaleBridge.ts:97
 msgid "View"
 msgstr "देखें"
 
@@ -38339,7 +38378,7 @@ msgstr "हमने ब्राज़ील में {premiumProductName} क
 msgid "We need one verification step before you continue. This helps protect accounts and keep spam off {productName}."
 msgstr "जारी रखने से पहले हमें एक वेरिफ़िकेशन चरण की ज़रूरत है। यह अकाउंट को सुरक्षित रखने और {productName} से स्पैम दूर रखने में मदद करता है।"
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:116
+#: src/features/auth/components/modals/CaptchaModal.tsx:128
 msgid "We need to make sure you're not a bot. Complete the verification below."
 msgstr "हमें यह सुनिश्चित करना होगा कि आप बॉट नहीं हैं। नीचे दिया गया वेरिफ़िकेशन पूरा करें।"
 
@@ -38556,7 +38595,7 @@ msgid "Webhooks updated"
 msgstr "वेबहुक अपडेट किए गए"
 
 #. Native Help submenu item that opens the Fluxer marketing website.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:146
+#: src/features/platform/utils/DesktopLocaleBridge.ts:147
 msgid "Website"
 msgstr "वेबसाइट"
 
@@ -38610,7 +38649,7 @@ msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {
 msgstr "{premiumProductFullName} में आपका स्वागत है। आपकी सालाना सदस्यता {formattedDate} को रिन्यू होगी। अपने {premiumProductName} पर्क देखें और अपनी सदस्यता प्रबंधित करें।"
 
 #. Setup wizard title shown once the operator is signed in as the instance admin.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:39
+#: src/features/app/components/setup/SetupWizardSteps.tsx:42
 msgid "Welcome to {productName}"
 msgstr "{productName} में आपका स्वागत है"
 
@@ -38708,7 +38747,7 @@ msgid "When a custom threshold date is not set, members without the <0>{readMess
 msgstr "जब कोई कस्टम थ्रेशोल्ड डेट सेट नहीं होती, तो <0>{readMessageHistoryPermissionLabel}</0> अनुमति के बिना सदस्य कोई भी पुराना मैसेज नहीं देख सकते। वे मैसेज सिर्फ़ रियल टाइम में आते हुए ही देख पाएंगे, और क्लाइंट रीस्टार्ट करने पर वे गायब हो जाएंगे।"
 
 #. Description for the attachment expiry setup switch.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:229
+#: src/features/app/components/setup/SetupWizardSteps.tsx:232
 msgid "When attachment expiration is disabled, attachments remain available until manually removed."
 msgstr "जब अटैचमेंट की समाप्ति बंद होती है, तो अटैचमेंट मैन्युअल रूप से हटाए जाने तक उपलब्ध रहते हैं।"
 
@@ -38806,7 +38845,7 @@ msgid "Who can friend"
 msgstr "कौन फ्रेंड बना सकता है"
 
 #. Setup wizard registration step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:146
+#: src/features/app/components/setup/SetupWizardSteps.tsx:149
 msgid "Who can join"
 msgstr "कौन शामिल हो सकता है"
 
@@ -38840,7 +38879,7 @@ msgstr "Win"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Top-level native menu bar title (Window menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:124
+#: src/features/platform/utils/DesktopLocaleBridge.ts:125
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:74
 msgid "Window"
 msgstr "विंडो"
@@ -38941,7 +38980,7 @@ msgid "Without this permission, push-to-talk is required."
 msgstr "इस अनुमति के बिना, पुश-टू-टॉक ज़रूरी है।"
 
 #. Label for the wordmark branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:133
+#: src/features/app/components/setup/SetupWizardSteps.tsx:136
 msgid "Wordmark"
 msgstr "वर्डमार्क"
 
@@ -39077,7 +39116,7 @@ msgid "You are now navigating to {paymentProviderName} to complete the payment. 
 msgstr "आप भुगतान पूरा करने के लिए अब {paymentProviderName} पर जा रहे हैं। इसे पूरा करने के बाद {productName} पर वापस आएं।"
 
 #. Setup wizard body shown to the signed-in instance administrator.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:43
+#: src/features/app/components/setup/SetupWizardSteps.tsx:46
 msgid "You are signed in as the instance administrator. The next steps configure branding, registration, and core policy for everyone on this instance."
 msgstr "आप इंस्टेंस एडमिनिस्ट्रेटर के तौर पर साइन इन हैं। अगले चरण इस इंस्टेंस पर सभी के लिए ब्रांडिंग, रजिस्ट्रेशन और मुख्य पॉलिसी को कॉन्फ़िगर करेंगे।"
 
@@ -39298,7 +39337,7 @@ msgstr "आप इस चैनल में बोल नहीं सकते
 #. Tooltip / error shown in the camera preview modal when the user lacks Video permission in the current channel. Tone stays plain.
 #. Tooltip in the voice control bar when the user lacks the Video permission in this channel. Tone stays plain.
 #. Tooltip shown when the user lacks the Video permission in the voice channel. Tone stays plain.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:76
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:77
 #: src/features/voice/components/voice_connection_status/LocalParticipantControls.tsx:50
 #: src/features/voice/components/VoiceControlBar.tsx:127
 msgid "You can't turn on your camera in this channel"
@@ -39972,6 +40011,10 @@ msgstr "आपकी कार्रवाई पूरी नहीं हो �
 msgid "Your application is pending review. You can still update your listing details or withdraw the application."
 msgstr "आपका आवेदन समीक्षा के लिए लंबित है। आप अभी भी अपनी लिस्टिंग का विवरण अपडेट कर सकते हैं या आवेदन वापस ले सकते हैं।"
 
+#: src/features/auth/components/AltchaVerification.tsx:50
+msgid "Your browser couldn't finish the check."
+msgstr "आपका ब्राउज़र जाँच पूरी नहीं कर सका।"
+
 #. Body of the browser-audio-required modal explaining why the user must click before audio can play.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx:12
 msgid "Your browser requires user interaction before audio can be played. Click the button below to enable voice chat."
@@ -40318,12 +40361,12 @@ msgid "Your video encoder stopped encoding frames, so your screen share was stop
 msgstr "आपके वीडियो एन्कोडर ने फ़्रेम एन्कोड करना बंद कर दिया, इसलिए आपकी स्क्रीन शेयरिंग रोक दी गई। फिर से शेयर करने की कोशिश करें।"
 
 #. Label for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:286
+#: src/features/app/components/setup/SetupWizardSteps.tsx:312
 msgid "YouTube enrichment"
 msgstr "YouTube एनरिचमेंट"
 
 #. Setup wizard title for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:938
+#: src/features/app/components/setup/SetupWizardSteps.tsx:976
 msgid "YouTube previews"
 msgstr "YouTube प्रीव्यू"
 
@@ -40339,7 +40382,7 @@ msgid "Zoom"
 msgstr "ज़ूम"
 
 #. Native Window menu item that zooms the focused window, meaning maximize or restore it. Not image zoom and not UI zoom level.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:132
+#: src/features/platform/utils/DesktopLocaleBridge.ts:133
 msgctxt "window-menu"
 msgid "Zoom"
 msgstr "ज़ूम"
@@ -40350,7 +40393,7 @@ msgstr "ज़ूम"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:628
 #: src/features/input/state/input_keybind/shared.ts:253
-#: src/features/platform/utils/DesktopLocaleBridge.ts:112
+#: src/features/platform/utils/DesktopLocaleBridge.ts:113
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:82
 msgid "Zoom in"
 msgstr "ज़ूम इन करें"
@@ -40361,7 +40404,7 @@ msgstr "ज़ूम इन करें"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:624
 #: src/features/input/state/input_keybind/shared.ts:257
-#: src/features/platform/utils/DesktopLocaleBridge.ts:116
+#: src/features/platform/utils/DesktopLocaleBridge.ts:117
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "छोटा करें"

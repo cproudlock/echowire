@@ -797,8 +797,13 @@ msgstr "{altText} — bản xem trước với giao diện sáng"
 msgid "{appCount, plural, one {# app selected for access revocation} other {# apps selected for access revocation}}"
 msgstr "{appCount, plural, one {# ứng dụng đã chọn để thu hồi quyền truy cập} other {# ứng dụng đã chọn để thu hồi quyền truy cập}}"
 
+#. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+msgid "{appName} can't reach its servers. It will keep trying in the background."
+msgstr "{appName} không thể kết nối với máy chủ. Ứng dụng sẽ tiếp tục thử lại ở chế độ nền."
+
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+#: src/features/platform/utils/DesktopLocaleBridge.ts:285
 msgid "{appName} failed to start"
 msgstr "Không thể khởi động {appName}"
 
@@ -1586,19 +1591,19 @@ msgstr "Gói đăng ký {premiumProductName}"
 msgid "{presenceCount} online"
 msgstr "{presenceCount} đang hoạt động"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:39
+#: src/features/app/components/BootstrapErrorScreen.tsx:46
 msgid "{PRODUCT_NAME} failed to start properly. This could be due to corrupted data or a temporary issue."
 msgstr "{PRODUCT_NAME} không khởi động được. Có thể do dữ liệu bị lỗi hoặc sự cố tạm thời."
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:196
+#: src/features/auth/state/NewDeviceMonitoring.tsx:208
 msgid "{PRODUCT_NAME} has found a new audio device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} đã tìm thấy một thiết bị âm thanh mới có tên <0>{deviceName}</0>. Bạn có muốn chuyển sang thiết bị này không?"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:185
+#: src/features/auth/state/NewDeviceMonitoring.tsx:197
 msgid "{PRODUCT_NAME} has found a new audio input device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} đã tìm thấy một thiết bị đầu vào âm thanh mới có tên <0>{deviceName}</0>. Bạn có muốn chuyển sang thiết bị này không?"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:190
+#: src/features/auth/state/NewDeviceMonitoring.tsx:202
 msgid "{PRODUCT_NAME} has found a new audio output device named <0>{deviceName}</0>. Do you want to switch to it?"
 msgstr "{PRODUCT_NAME} đã tìm thấy một thiết bị đầu ra âm thanh mới có tên <0>{deviceName}</0>. Bạn có muốn chuyển sang thiết bị này không?"
 
@@ -1619,7 +1624,7 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "{PRODUCT_NAME} cần khởi động lại để tắt tính năng tăng tốc phần cứng của Chromium. Chỉ sử dụng tùy chọn này nếu bạn đang khắc phục sự cố đồ họa hoặc mức sử dụng GPU cao."
 
 #. Accessible label for the Fluxer application icon.
-#: src/features/ui/components/icons/FluxerIcon.tsx:10
+#: src/features/ui/components/icons/FluxerIconMark.tsx:6
 msgid "{productName} application icon"
 msgstr "Biểu tượng ứng dụng {productName}"
 
@@ -2538,7 +2543,7 @@ msgid "About"
 msgstr "Giới thiệu"
 
 #. Desktop app menu item. Opens the About panel. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:16
+#: src/features/platform/utils/DesktopLocaleBridge.ts:17
 msgid "About {appName}"
 msgstr "Giới thiệu về {appName}"
 
@@ -2604,6 +2609,16 @@ msgstr "Chấp nhận lời mời"
 #: src/features/relationship/utils/RelationshipActionUtils.tsx:77
 msgid "Accept the friend request from {userName}?"
 msgstr "Chấp nhận lời mời kết bạn từ {userName}?"
+
+#. Label for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+msgid "Accept the push relay supplemental privacy notice"
+msgstr "Chấp nhận thông báo bổ sung về quyền riêng tư của dịch vụ chuyển tiếp đẩy"
+
+#. Summary value when the operator accepted the push relay notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:390
+msgid "Accepted"
+msgstr "Đã chấp nhận"
 
 #. Short label in the notification utils helper. Keep it concise.
 #: src/features/notification/utils/NotificationUtils.ts:32
@@ -2860,7 +2875,7 @@ msgid "Activity threshold"
 msgstr "Ngưỡng hoạt động"
 
 #. Native View menu item that resets zoom to 100%.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:108
+#: src/features/platform/utils/DesktopLocaleBridge.ts:109
 msgid "Actual size"
 msgstr "Kích thước thật"
 
@@ -2898,7 +2913,7 @@ msgstr "Thêm bình luận (tùy chọn)"
 msgid "Add a community"
 msgstr "Thêm cộng đồng"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:75
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:77
 msgid "Add a different account"
 msgstr "Thêm tài khoản khác"
 
@@ -2908,7 +2923,7 @@ msgid "Add a friend to get started."
 msgstr "Thêm bạn bè để bắt đầu."
 
 #. Setup wizard body for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:934
+#: src/features/app/components/setup/SetupWizardSteps.tsx:972
 msgid "Add a Klipy API key to enable GIF search at runtime."
 msgstr "Thêm khóa API Klipy để cho phép tìm kiếm GIF trong thời gian chạy."
 
@@ -2945,7 +2960,7 @@ msgid "Add a working email"
 msgstr "Thêm email còn hoạt động"
 
 #. Setup wizard body for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:942
+#: src/features/app/components/setup/SetupWizardSteps.tsx:980
 msgid "Add a YouTube Data API key to enrich YouTube links."
 msgstr "Thêm khóa YouTube Data API để bổ sung thông tin cho các liên kết YouTube."
 
@@ -2960,7 +2975,7 @@ msgid "Add action."
 msgstr "Thêm hành động."
 
 #. OAuth authorization account step button. Opens the flow to sign in with another account.
-#: src/features/auth/components/accounts/AccountSelector.tsx:185
+#: src/features/auth/components/accounts/AccountSelector.tsx:186
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:124
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:30
 msgid "Add an account"
@@ -2991,7 +3006,7 @@ msgid "Add another reaction"
 msgstr "Thêm cảm xúc khác"
 
 #. Setup wizard body for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:966
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1004
 msgid "Add Bluesky OAuth client metadata and a signing key."
 msgstr "Thêm siêu dữ liệu ứng dụng OAuth Bluesky và khóa ký."
 
@@ -3066,7 +3081,7 @@ msgid "Add item"
 msgstr "Thêm mục"
 
 #. Title of the native file picker that selects local theme files to add.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:266
+#: src/features/platform/utils/DesktopLocaleBridge.ts:267
 #: src/features/theme_studio/sections/AssetsSection.tsx:150
 msgid "Add local files"
 msgstr "Thêm tệp cục bộ"
@@ -3141,7 +3156,7 @@ msgid "Add shortcut"
 msgstr "Thêm phím tắt"
 
 #. Setup wizard body for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:958
+#: src/features/app/components/setup/SetupWizardSteps.tsx:996
 msgid "Add SMTP credentials so the instance can send verification and notification email."
 msgstr "Thêm thông tin xác thực SMTP để máy chủ có thể gửi email xác minh và thông báo."
 
@@ -3168,7 +3183,7 @@ msgid "Add stream"
 msgstr "Thêm luồng phát"
 
 #. Description for configuring an optional setup wizard integration now.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:926
+#: src/features/app/components/setup/SetupWizardSteps.tsx:964
 msgid "Add the credentials during setup."
 msgstr "Thêm thông tin xác thực trong quá trình thiết lập."
 
@@ -4232,17 +4247,17 @@ msgid "Anyone can call you, including strangers"
 msgstr "Bất kỳ ai cũng có thể gọi cho bạn, kể cả người lạ"
 
 #. Description for the open registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:159
+#: src/features/app/components/setup/SetupWizardSteps.tsx:162
 msgid "Anyone can create an account."
 msgstr "Bất kỳ ai cũng có thể tạo tài khoản."
 
 #. Description for the approval registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:167
+#: src/features/app/components/setup/SetupWizardSteps.tsx:170
 msgid "Anyone can request an account, but an administrator must approve it."
 msgstr "Bất kỳ ai cũng có thể yêu cầu tài khoản, nhưng quản trị viên phải phê duyệt."
 
 #. Label for an integration API key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:979
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1017
 msgid "API key"
 msgstr "Khóa API"
 
@@ -4401,7 +4416,7 @@ msgid "Apply to all communities"
 msgstr "Áp dụng cho tất cả cộng đồng"
 
 #. Registration mode option requiring admin approval.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:163
+#: src/features/app/components/setup/SetupWizardSteps.tsx:166
 msgid "Approval required"
 msgstr "Cần phê duyệt"
 
@@ -4515,7 +4530,7 @@ msgid "Are you sure you want to remove <0>{engineName}</0>?"
 msgstr "Bạn có chắc chắn muốn xóa <0>{engineName}</0> không?"
 
 #. Confirm dialog message for the destructive reset action. Tone stays plain.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:178
+#: src/features/platform/utils/DesktopLocaleBridge.ts:179
 msgid "Are you sure you want to reset {appName}'s app data?"
 msgstr "Bạn có chắc chắn muốn đặt lại dữ liệu ứng dụng của {appName} không?"
 
@@ -4626,8 +4641,8 @@ msgstr "Thao tác với tệp đính kèm"
 
 #. Setup wizard media expiry step title.
 #. Summary row label for the attachment expiry choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:217
-#: src/features/app/components/setup/SetupWizardSteps.tsx:352
+#: src/features/app/components/setup/SetupWizardSteps.tsx:220
+#: src/features/app/components/setup/SetupWizardSteps.tsx:378
 msgid "Attachment expiration"
 msgstr "Thời hạn tệp đính kèm"
 
@@ -5208,7 +5223,7 @@ msgstr "Đang vắng mặt"
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
 #. OAuth authorization secondary button. Returns to the previous carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:77
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:78
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAuthorizeActions.tsx:14
 #: src/features/auth/flow/IpAuthorizationScreen.tsx:155
 #: src/features/channel/components/channel_header/shared.ts:27
@@ -5301,7 +5316,7 @@ msgstr "Đã tắt đặc quyền premium của backend"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:59
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:5
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:731
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:732
 msgid "Background"
 msgstr "Ảnh nền"
 
@@ -5705,12 +5720,12 @@ msgid "Bluesky"
 msgstr "Bluesky"
 
 #. Label for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:294
+#: src/features/app/components/setup/SetupWizardSteps.tsx:320
 msgid "Bluesky connections"
 msgstr "Kết nối Bluesky"
 
 #. Setup wizard title for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:962
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1000
 msgid "Bluesky OAuth"
 msgstr "OAuth Bluesky"
 
@@ -5728,7 +5743,7 @@ msgid "Blur"
 msgstr "Làm mờ"
 
 #. Slider label in the camera preview modal controlling how strong the background blur effect is.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:81
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:82
 msgid "Blur strength"
 msgstr "Độ mạnh của hiệu ứng làm mờ nền"
 
@@ -5878,7 +5893,7 @@ msgid "Bot profile"
 msgstr "Hồ sơ bot"
 
 #. Setup wizard title for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:946
+#: src/features/app/components/setup/SetupWizardSteps.tsx:984
 msgid "Bot protection"
 msgstr "Chống bot"
 
@@ -5944,7 +5959,7 @@ msgid "Branding"
 msgstr "Thương hiệu"
 
 #. Accessible label for a branding image preview in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:141
+#: src/features/app/components/setup/SetupWizardSteps.tsx:144
 msgid "Branding asset preview"
 msgstr "Xem trước tài sản thương hiệu"
 
@@ -6263,7 +6278,7 @@ msgstr "Thiết bị camera"
 msgid "Camera effects"
 msgstr "Hiệu ứng camera"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:809
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:810
 msgid "Camera error"
 msgstr "Lỗi camera"
 
@@ -6306,7 +6321,7 @@ msgstr "Cần có quyền truy cập camera"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Title of the camera preview modal.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:186
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:63
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:64
 msgid "Camera preview"
 msgstr "Xem trước camera"
 
@@ -6341,6 +6356,11 @@ msgstr "Camera sẽ tắt khi có hơn {voiceChannelCameraUserLimit} người th
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:252
 msgid "Can't access that email?"
 msgstr "Không truy cập được email đó?"
+
+#. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+msgid "Can't connect"
+msgstr "Không thể kết nối"
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
@@ -6409,7 +6429,7 @@ msgstr "Không thể tải tệp lên ở đây"
 #: src/features/user/components/modals/PhoneAddModal.tsx:401
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:174
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:33
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:845
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:846
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:81
 msgid "Cancel"
 msgstr "Hủy"
@@ -6510,7 +6530,7 @@ msgid "Cannot delete account"
 msgstr "Không thể xóa tài khoản"
 
 #. Toast error shown when captcha verification fails inside the auth captcha interceptor.
-#: src/features/auth/components/CaptchaInterceptor.tsx:14
+#: src/features/auth/components/CaptchaInterceptor.tsx:15
 msgid "Captcha verification failed. Try again."
 msgstr "Xác minh CAPTCHA không thành công. Hãy thử lại."
 
@@ -6651,7 +6671,7 @@ msgstr "Căn giữa"
 msgid "Change avatar"
 msgstr "Đổi ảnh đại diện"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:744
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:745
 msgid "Change background"
 msgstr "Đổi hình nền"
 
@@ -7297,11 +7317,11 @@ msgid "Chat shortcuts"
 msgstr "Phím tắt trò chuyện"
 
 #. Tray menu item. Triggers the auto-updater to look for a new desktop build.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:224
+#: src/features/platform/utils/DesktopLocaleBridge.ts:225
 msgid "Check for updates"
 msgstr "Kiểm tra cập nhật"
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:56
+#: src/features/app/components/BootstrapErrorScreen.tsx:63
 msgid "Check our <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> for status updates."
 msgstr "Kiểm tra <0>{BLUESKY_PROVIDER_NAME} ({FLUXER_BLUESKY_HANDLE})</0> của chúng tôi để biết thông tin cập nhật trạng thái."
 
@@ -7352,6 +7372,10 @@ msgstr "Đang kiểm tra quyền truy cập..."
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx:23
 msgid "Checking screen recording permission..."
 msgstr "Đang kiểm tra quyền ghi màn hình..."
+
+#: src/features/auth/components/AltchaVerification.tsx:62
+msgid "Checking your browser. This takes a few seconds."
+msgstr "Đang kiểm tra trình duyệt của bạn. Việc này sẽ mất vài giây."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:67
@@ -7464,7 +7488,7 @@ msgid "Choose a supported audio file and try again."
 msgstr "Chọn một tệp âm thanh được hỗ trợ và thử lại."
 
 #. Setup wizard title for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:60
+#: src/features/app/components/setup/SetupWizardSteps.tsx:63
 msgid "Choose a theme"
 msgstr "Chọn giao diện"
 
@@ -7476,7 +7500,8 @@ msgstr "Chọn một cửa sổ trong trình chọn của hệ thống"
 #. OAuth authorization step title. The user must choose which account to authorize with.
 #: src/features/auth/components/accounts/AccountSelector.tsx:61
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthAccountStep.tsx:17
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:68
+#: src/features/auth/flow/AuthLoginLayout.tsx:492
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:70
 msgid "Choose an account"
 msgstr "Chọn một tài khoản"
 
@@ -7517,7 +7542,7 @@ msgid "Choose friends to message."
 msgstr "Chọn bạn bè để nhắn tin."
 
 #. Setup wizard body for CAPTCHA integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:950
+#: src/features/app/components/setup/SetupWizardSteps.tsx:988
 msgid "Choose hCaptcha or Cloudflare Turnstile for signup challenges."
 msgstr "Chọn hCaptcha hoặc Cloudflare Turnstile cho các thử thách đăng ký."
 
@@ -7532,7 +7557,7 @@ msgid "Choose how messages are displayed in chat channels."
 msgstr "Chọn cách tin nhắn hiển thị trong các kênh trò chuyện."
 
 #. Setup wizard registration step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:150
+#: src/features/app/components/setup/SetupWizardSteps.tsx:153
 msgid "Choose how new accounts are created on this instance."
 msgstr "Chọn cách tạo tài khoản mới trên máy chủ này."
 
@@ -7552,7 +7577,7 @@ msgid "Choose how you'd like to pay for this subscription."
 msgstr "Chọn cách bạn muốn thanh toán cho gói đăng ký này."
 
 #. Setup wizard community model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:180
+#: src/features/app/components/setup/SetupWizardSteps.tsx:183
 msgid "Choose how your instance works"
 msgstr "Chọn cách máy chủ của bạn hoạt động"
 
@@ -7580,7 +7605,7 @@ msgid "Choose the category that best describes your community. You can change th
 msgstr "Chọn danh mục mô tả đúng nhất về cộng đồng của bạn. Bạn có thể thay đổi bất cứ lúc nào."
 
 #. Setup wizard premium model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:303
+#: src/features/app/components/setup/SetupWizardSteps.tsx:329
 msgid "Choose the premium model"
 msgstr "Chọn mô hình cao cấp"
 
@@ -7635,7 +7660,7 @@ msgid "Choose where {PRODUCT_NAME} should send images for reverse image search. 
 msgstr "Chọn nơi {PRODUCT_NAME} sẽ gửi hình ảnh để tìm kiếm hình ảnh ngược. Chúng tôi sẽ ghi nhớ lựa chọn của bạn. Bạn có thể thay đổi hoặc thêm nhà cung cấp của riêng mình sau này trong {searchEnginesSettingsPath}."
 
 #. Setup wizard media expiry step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:221
+#: src/features/app/components/setup/SetupWizardSteps.tsx:224
 msgid "Choose whether uploaded attachments should expire automatically based on size."
 msgstr "Chọn xem các tệp đính kèm đã tải lên có hết hạn tự động dựa trên kích thước hay không."
 
@@ -7817,7 +7842,7 @@ msgstr "Xử lý âm thanh micrô để giọng nói rõ ràng hơn."
 #. Button or menu action label in the theme studio quick css section. Keep it concise.
 #. Button that removes an uploaded branding image.
 #. Inline button in the Recent searches section that wipes the search history list.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:117
+#: src/features/app/components/setup/SetupWizardSteps.tsx:120
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
 #: src/features/input/components/KeybindRecorder.tsx:442
@@ -8045,7 +8070,7 @@ msgid "Client"
 msgstr "Ứng dụng khách"
 
 #. Label for Bluesky OAuth client name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1056
 msgid "Client name"
 msgstr "Tên ứng dụng khách"
 
@@ -8062,7 +8087,7 @@ msgid "Client secret regenerated. Update any code that uses the old secret."
 msgstr "Đã tạo lại mã bí mật của máy khách. Hãy cập nhật bất kỳ mã nào đang sử dụng mã bí mật cũ."
 
 #. Label for Bluesky OAuth client URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1022
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1060
 msgid "Client URL"
 msgstr "URL ứng dụng khách"
 
@@ -8109,7 +8134,7 @@ msgstr "Đã tắt tính năng nhân bản"
 #. Aria-label / button text for dismissing a modal, sheet, popout, or overlay. Short.
 #. Native Window menu item that closes the focused desktop window.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:311
-#: src/features/platform/utils/DesktopLocaleBridge.ts:138
+#: src/features/platform/utils/DesktopLocaleBridge.ts:139
 msgid "Close"
 msgstr "Đóng"
 
@@ -8195,7 +8220,7 @@ msgid "Close your DM with {username}? You can reopen it anytime."
 msgstr "Đóng tin nhắn trực tiếp với {username}? Bạn có thể mở lại bất cứ lúc nào."
 
 #. Registration mode option that disables public registration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:171
+#: src/features/app/components/setup/SetupWizardSteps.tsx:174
 msgid "Closed"
 msgstr "Đã đóng"
 
@@ -8215,7 +8240,7 @@ msgid "Cloud upload"
 msgstr "Tải lên đám mây"
 
 #. Cloudflare Turnstile provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:975
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1013
 msgid "Cloudflare Turnstile"
 msgstr "Cloudflare Turnstile"
 
@@ -8607,7 +8632,7 @@ msgstr "Tắt tiếng trong cộng đồng"
 
 #. Label for the single community name input in the setup wizard.
 #. Label of the community name input in the create-community form.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:196
+#: src/features/app/components/setup/SetupWizardSteps.tsx:199
 #: src/features/guild/components/modals/add_guild_modal/shared.ts:123
 msgid "Community name"
 msgstr "Tên cộng đồng"
@@ -8773,7 +8798,7 @@ msgid "Completing your sign-in…"
 msgstr "Đang hoàn tất đăng nhập của bạn…"
 
 #. Windows jump-list task description (tooltip text) for the New direct message action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:253
+#: src/features/platform/utils/DesktopLocaleBridge.ts:254
 msgid "Compose a new direct message"
 msgstr "Soạn tin nhắn trực tiếp mới"
 
@@ -8825,7 +8850,7 @@ msgid "Configure keyboard shortcuts"
 msgstr "Cấu hình phím tắt"
 
 #. Option for configuring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:922
+#: src/features/app/components/setup/SetupWizardSteps.tsx:960
 msgid "Configure now"
 msgstr "Cấu hình ngay"
 
@@ -9097,7 +9122,7 @@ msgstr "Kết nối: {connectionId}"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for external accounts and verified domains.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:415
-#: src/features/user/components/popouts/UserProfileShared.tsx:614
+#: src/features/user/components/popouts/UserProfileShared.tsx:615
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:8
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:30
 msgid "Connections"
@@ -9346,7 +9371,7 @@ msgstr "Đã sao chép URL vào bảng nhớ tạm"
 #: src/features/auth/components/modals/BackupCodesModal.tsx:96
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:50
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:397
-#: src/features/platform/utils/DesktopLocaleBridge.ts:63
+#: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:73
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
@@ -9391,7 +9416,7 @@ msgstr "Sao chép URL ảnh bìa"
 
 #. Tray menu item. Copies build / version diagnostics to the clipboard for bug reports.
 #: src/features/app/components/floating/UserAreaPopout.tsx:707
-#: src/features/platform/utils/DesktopLocaleBridge.ts:228
+#: src/features/platform/utils/DesktopLocaleBridge.ts:229
 msgid "Copy build info"
 msgstr "Sao chép thông tin bản dựng"
 
@@ -9594,7 +9619,7 @@ msgid "Copy setup key"
 msgstr "Sao chép khóa thiết lập"
 
 #. Button on the crash screen that copies developer diagnostic text.
-#: src/features/app/components/ErrorFallback.tsx:152
+#: src/features/app/components/ErrorFallback.tsx:155
 msgid "Copy stack trace"
 msgstr "Sao chép dấu vết ngăn xếp"
 
@@ -9687,7 +9712,7 @@ msgid "Could not decode this audio file."
 msgstr "Không thể giải mã tệp âm thanh này."
 
 #. Error shown when the setup wizard fails to load the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:93
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:94
 msgid "Could not load the instance configuration. Try reloading the page."
 msgstr "Không thể tải cấu hình máy chủ. Hãy thử tải lại trang."
 
@@ -10060,7 +10085,7 @@ msgid "Couldn't ring this person"
 msgstr "Không thể gọi người này"
 
 #. Error message in the use textarea submit hook. Preserve {detail}; it is inserted by code.
-#: src/features/messaging/hooks/useTextareaSubmit.ts:48
+#: src/features/messaging/hooks/useTextareaSubmit.ts:53
 msgid "Couldn't run that command: {detail}"
 msgstr "Không thể chạy lệnh đó: {detail}"
 
@@ -10304,7 +10329,7 @@ msgid "Create account to claim gift"
 msgstr "Tạo tài khoản để nhận quà"
 
 #. Button that opens the registration flow to create the first administrator account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:68
+#: src/features/app/components/setup/SetupWizardSteps.tsx:71
 msgid "Create administrator account"
 msgstr "Tạo tài khoản quản trị viên"
 
@@ -10415,7 +10440,7 @@ msgid "Create role"
 msgstr "Tạo vai trò"
 
 #. Setup wizard title prompting the operator to create the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:48
+#: src/features/app/components/setup/SetupWizardSteps.tsx:51
 msgid "Create the administrator account"
 msgstr "Tạo tài khoản quản trị viên"
 
@@ -10905,7 +10930,7 @@ msgstr "Cần {PREMIUM_PRODUCT_NAME} để tùy chỉnh ảnh đại diện, ả
 #. Native Edit menu item that cuts the selection to the clipboard. Imperative verb, not the noun.
 #. Textarea right-click context menu item that cuts the selected text.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:46
-#: src/features/platform/utils/DesktopLocaleBridge.ts:59
+#: src/features/platform/utils/DesktopLocaleBridge.ts:60
 msgid "Cut"
 msgstr "Cắt"
 
@@ -11164,7 +11189,7 @@ msgid "Debug user"
 msgstr "Gỡ lỗi người dùng"
 
 #. Setup wizard premium model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:307
+#: src/features/app/components/setup/SetupWizardSteps.tsx:333
 msgid "Decide how premium limits apply to people on this instance."
 msgstr "Quyết định xem giới hạn cao cấp sẽ áp dụng cho mọi người trên máy chủ này như thế nào."
 
@@ -11201,7 +11226,7 @@ msgstr "Mặc định"
 #. Default camera device option.
 #. Default device option label in the voice settings menu (alternate call site for the same concept as DEFAULT_DESCRIPTOR).
 #. Fallback device option shown before a microphone, speaker, or camera label is available.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:67
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:68
 #: src/features/voice/components/VoiceSettingsMenus.tsx:87
 #: src/features/voice/utils/SettingsDeviceOptions.ts:11
 msgctxt "device-option"
@@ -11308,7 +11333,7 @@ msgstr "Delaware"
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:35
 #: src/features/messaging/commands/MessageCommands.tsx:79
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
-#: src/features/platform/utils/DesktopLocaleBridge.ts:76
+#: src/features/platform/utils/DesktopLocaleBridge.ts:77
 #: src/features/theme_studio/sections/LibrarySection.tsx:514
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
@@ -12045,7 +12070,7 @@ msgstr "Xem trước tin nhắn trực tiếp"
 
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:348
+#: src/features/app/components/setup/SetupWizardSteps.tsx:374
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:629
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
@@ -12125,7 +12150,7 @@ msgid "Disable desktop notifications?"
 msgstr "Tắt thông báo trên máy tính?"
 
 #. Label for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:208
+#: src/features/app/components/setup/SetupWizardSteps.tsx:211
 msgid "Disable direct messages and friend requests"
 msgstr "Tắt tin nhắn trực tiếp và lời mời kết bạn"
 
@@ -12134,7 +12159,7 @@ msgid "Disable favorites"
 msgstr "Tắt mục yêu thích"
 
 #. Troubleshooting menu item. Turns off Chromium hardware acceleration and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:158
+#: src/features/platform/utils/DesktopLocaleBridge.ts:159
 msgid "Disable hardware acceleration and restart"
 msgstr "Tắt tăng tốc phần cứng và khởi động lại"
 
@@ -12201,7 +12226,7 @@ msgid "Disable video locally"
 msgstr "Tắt video chỉ trên máy này"
 
 #. Summary value when a setup option is disabled.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:364
+#: src/features/app/components/setup/SetupWizardSteps.tsx:402
 msgid "Disabled"
 msgstr "Đã tắt"
 
@@ -12277,14 +12302,14 @@ msgid "Disconnect device"
 msgstr "Ngắt kết nối thiết bị"
 
 #. Tray menu item shown while in a voice call. {channel} is the voice channel name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:216
+#: src/features/platform/utils/DesktopLocaleBridge.ts:217
 msgid "Disconnect from {channel}"
 msgstr "Ngắt kết nối khỏi {channel}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tray menu item. Leaves the current voice call when the channel name is unavailable.
 #: src/features/input/state/input_keybind/shared.ts:317
-#: src/features/platform/utils/DesktopLocaleBridge.ts:220
+#: src/features/platform/utils/DesktopLocaleBridge.ts:221
 msgid "Disconnect from voice"
 msgstr "Ngắt kết nối thoại"
 
@@ -12536,7 +12561,7 @@ msgstr "Bản ghi DNS TXT"
 #. Short label in the app constants.
 #. Tray status menu item. User presence that suppresses notifications.
 #: src/features/app/constants/AppConstants.ts:33
-#: src/features/platform/utils/DesktopLocaleBridge.ts:200
+#: src/features/platform/utils/DesktopLocaleBridge.ts:201
 msgid "Do not disturb"
 msgstr "Không làm phiền"
 
@@ -12661,7 +12686,7 @@ msgstr "Không hiển thị lại"
 msgid "Don't show typing indicators in the channel list"
 msgstr "Không hiển thị trạng thái đang nhập trong danh sách kênh"
 
-#: src/features/auth/state/NewDeviceMonitoring.tsx:51
+#: src/features/auth/state/NewDeviceMonitoring.tsx:57
 msgid "Don't suggest {deviceName} again"
 msgstr "Không gợi ý {deviceName} nữa"
 
@@ -13000,7 +13025,7 @@ msgstr "Khử tiếng vọng"
 #. Button or menu action label in the search engines tab. Keep it concise.
 #. Top-level native menu bar title (Edit menu, holds cut/copy/paste).
 #: src/features/emoji/components/stickers/StickerGridItem.tsx:43
-#: src/features/platform/utils/DesktopLocaleBridge.ts:47
+#: src/features/platform/utils/DesktopLocaleBridge.ts:48
 #: src/features/user/components/modals/tabs/chat_settings_tab/SearchEnginesTab.tsx:35
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx:51
 msgid "Edit"
@@ -13272,7 +13297,7 @@ msgid "Email changed"
 msgstr "Đã đổi email"
 
 #. Setup wizard title for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:954
+#: src/features/app/components/setup/SetupWizardSteps.tsx:992
 msgid "Email delivery"
 msgstr "Gửi email"
 
@@ -13563,7 +13588,7 @@ msgid "Enable at least one translator below."
 msgstr "Bật ít nhất một trình dịch bên dưới."
 
 #. Label for enabling attachment expiry during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:225
+#: src/features/app/components/setup/SetupWizardSteps.tsx:228
 msgid "Enable attachment expiration"
 msgstr "Bật tính năng hết hạn tệp đính kèm"
 
@@ -13577,7 +13602,7 @@ msgid "Enable beta feature"
 msgstr "Bật tính năng thử nghiệm"
 
 #. Label for enabling Bluesky OAuth in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1014
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1052
 msgid "Enable Bluesky OAuth"
 msgstr "Bật OAuth của Bluesky"
 
@@ -13610,7 +13635,7 @@ msgid "Enable developer mode"
 msgstr "Bật chế độ nhà phát triển"
 
 #. Label for enabling SMTP email delivery in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:982
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1020
 msgid "Enable email delivery"
 msgstr "Bật gửi email"
 
@@ -13629,7 +13654,7 @@ msgid "Enable favorites"
 msgstr "Bật mục yêu thích"
 
 #. Troubleshooting menu item. Turns Chromium hardware acceleration back on and restarts the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:162
+#: src/features/platform/utils/DesktopLocaleBridge.ts:163
 msgid "Enable hardware acceleration and restart"
 msgstr "Bật tăng tốc phần cứng và khởi động lại"
 
@@ -13752,7 +13777,7 @@ msgid "Enable text selection"
 msgstr "Bật chọn văn bản"
 
 #. Setup wizard optional services step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:270
+#: src/features/app/components/setup/SetupWizardSteps.tsx:296
 msgid "Enable the integrations whose credentials you have configured. Only available services are shown."
 msgstr "Bật các tích hợp mà bạn đã cấu hình thông tin đăng nhập. Chỉ hiển thị các dịch vụ khả dụng."
 
@@ -13793,7 +13818,7 @@ msgstr "Bật hình thu nhỏ khi tua video"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Summary value when a setup option is enabled.
 #. Toggle item in the textarea spellcheck submenu. Master enable for spellcheck.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:360
+#: src/features/app/components/setup/SetupWizardSteps.tsx:398
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:21
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:66
 msgid "Enabled"
@@ -13915,7 +13940,7 @@ msgid "Enter a code in the format ABCD-1234."
 msgstr "Nhập mã theo định dạng ABCD-1234."
 
 #. Validation error for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:204
+#: src/features/app/components/setup/SetupWizardSteps.tsx:207
 msgid "Enter a community name between 1 and 100 characters."
 msgstr "Nhập tên cộng đồng có độ dài từ 1 đến 100 ký tự."
 
@@ -13925,7 +13950,7 @@ msgid "Enter a gift code to redeem {premiumProductName} for your account."
 msgstr "Nhập mã quà tặng để đổi {premiumProductName} cho tài khoản của bạn."
 
 #. Validation error for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:97
+#: src/features/app/components/setup/SetupWizardSteps.tsx:100
 msgid "Enter a product name between 1 and 80 characters."
 msgstr "Nhập tên sản phẩm có độ dài từ 1 đến 80 ký tự."
 
@@ -14308,7 +14333,7 @@ msgid "Everyone"
 msgstr "Mọi người"
 
 #. Premium model option that gives everyone the highest limits.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:319
+#: src/features/app/components/setup/SetupWizardSteps.tsx:345
 msgid "Everyone is premium"
 msgstr "Mọi người đều là cao cấp"
 
@@ -14354,7 +14379,7 @@ msgstr "loại trừ một phần tên tệp đính kèm"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:38
+#: src/features/platform/utils/DesktopLocaleBridge.ts:39
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Exit"
 msgstr "Thoát"
@@ -14437,7 +14462,7 @@ msgid "EXPERIMENTAL"
 msgstr "THỬ NGHIỆM"
 
 #. Label for attachment decay curve.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:253
+#: src/features/app/components/setup/SetupWizardSteps.tsx:256
 msgid "Expiration curve"
 msgstr "Đường cong hết hạn"
 
@@ -14567,11 +14592,6 @@ msgstr "Xuất dữ liệu của tôi"
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:110
 msgid "Export themes"
 msgstr "Xuất chủ đề"
-
-#. Developer / debug surface — keep terse and technical. Tooltip / description for the profile timezone settings toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:139
-msgid "Expose the staff-only time zone section in profile settings."
-msgstr "Hiển thị phần cài đặt múi giờ dành riêng cho nhân viên trong cài đặt hồ sơ."
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -14704,7 +14724,7 @@ msgid "Failed to delete channel"
 msgstr "Không thể xóa kênh"
 
 #. Toast / inline error in the camera preview modal when enabling the camera fails.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:59
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:60
 msgid "Failed to enable camera."
 msgstr "Không thể bật camera."
 
@@ -14719,7 +14739,7 @@ msgid "Failed to forward message"
 msgstr "Không thể chuyển tiếp tin nhắn"
 
 #. Short label in the authentication desktop handoff account selector. Keep the tone plain and specific.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:17
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
 msgid "Failed to generate token"
 msgstr "Không tạo được mã thông báo"
 
@@ -14883,12 +14903,12 @@ msgstr "Không gửi được báo cáo. Vui lòng thử lại."
 msgid "Failed to send verification email. Try again later."
 msgstr "Không gửi được email xác minh. Vui lòng thử lại sau."
 
-#: src/features/app/components/BootstrapErrorScreen.tsx:36
+#: src/features/app/components/BootstrapErrorScreen.tsx:43
 msgid "Failed to start"
 msgstr "Không thể khởi động"
 
 #. Error text in the camera preview modal when the camera stream cannot be opened. Prompts user to check OS / browser permissions.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:54
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:55
 msgid "Failed to start camera preview. Check your camera permissions."
 msgstr "Không thể khởi chạy bản xem trước camera. Vui lòng kiểm tra quyền truy cập camera của bạn."
 
@@ -14976,7 +14996,7 @@ msgid "False claims likely to cause real-world harm."
 msgstr "Tuyên bố sai sự thật có khả năng gây hại trong thế giới thực."
 
 #. Label for the favicon branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:137
+#: src/features/app/components/setup/SetupWizardSteps.tsx:140
 msgid "Favicon"
 msgstr "Biểu tượng trang web"
 
@@ -15076,7 +15096,7 @@ msgid "Fetch a URL and inspect the embed payload the chat renderer receives."
 msgstr "Lấy một URL và kiểm tra nội dung nhúng mà trình hiển thị trò chuyện nhận được."
 
 #. Top-level native menu bar title (File menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:43
+#: src/features/platform/utils/DesktopLocaleBridge.ts:44
 msgid "File"
 msgstr "Tệp"
 
@@ -15234,7 +15254,7 @@ msgstr "Lọc"
 msgid "Filtering by {language}"
 msgstr "Lọc theo {language}"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:788
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:789
 msgid "Finalizing camera..."
 msgstr "Đang hoàn tất thiết lập camera..."
 
@@ -15272,8 +15292,8 @@ msgstr "Hoàn tất trong tab mới. Nếu bạn đã đóng tab đó, hãy nh�
 
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
-#: src/features/app/components/setup/SetupWizardSteps.tsx:328
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:86
+#: src/features/app/components/setup/SetupWizardSteps.tsx:354
 msgid "Finish setup"
 msgstr "Hoàn tất thiết lập"
 
@@ -15320,7 +15340,7 @@ msgid "Florida"
 msgstr "Florida"
 
 #. Placeholder for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:93
+#: src/features/app/components/setup/SetupWizardSteps.tsx:96
 msgid "Fluxer"
 msgstr "echowire"
 
@@ -15548,7 +15568,7 @@ msgid "Force profile skeletons"
 msgstr "Buộc hiển thị khung hồ sơ"
 
 #. Native View menu item that reloads the window and ignores the cache. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:100
+#: src/features/platform/utils/DesktopLocaleBridge.ts:101
 msgid "Force reload"
 msgstr "Buộc tải lại"
 
@@ -15854,12 +15874,12 @@ msgid "from <0>{0}</0>"
 msgstr "từ <0>{0}</0>"
 
 #. Label for SMTP from email input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:986
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1024
 msgid "From email"
 msgstr "Địa chỉ email người gửi"
 
 #. Label for SMTP from name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:990
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1028
 msgid "From name"
 msgstr "Tên người gửi"
 
@@ -16151,7 +16171,7 @@ msgid "GIF preview"
 msgstr "Xem trước GIF"
 
 #. Setup wizard title for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:930
+#: src/features/app/components/setup/SetupWizardSteps.tsx:968
 msgid "GIF search"
 msgstr "Tìm kiếm GIF"
 
@@ -16324,7 +16344,7 @@ msgid "Gifts"
 msgstr "Quà tặng"
 
 #. Description for the everyone-is-premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:323
+#: src/features/app/components/setup/SetupWizardSteps.tsx:349
 msgid "Give everyone on this instance the highest premium limits."
 msgstr "Cấp cho mọi người trên máy chủ này mức giới hạn cao nhất của gói cao cấp."
 
@@ -16795,7 +16815,7 @@ msgstr "Ngôn từ gây thù ghét"
 msgid "Having fun?"
 msgstr "Đang vui chứ?"
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:157
+#: src/features/auth/components/modals/CaptchaModal.tsx:175
 msgid "Having issues? Try hCaptcha instead"
 msgstr "Gặp sự cố? Thử dùng hCaptcha"
 
@@ -16806,7 +16826,7 @@ msgid "Hawaii"
 msgstr "Hawaii"
 
 #. hCaptcha provider option.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:974
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1012
 msgid "hCaptcha"
 msgstr "hCaptcha"
 
@@ -16872,7 +16892,7 @@ msgid "Hello, {username}! Nice to have you here."
 msgstr "Chào {username}! Rất vui khi có bạn ở đây."
 
 #. Top-level native menu bar title (Help menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:142
+#: src/features/platform/utils/DesktopLocaleBridge.ts:143
 msgid "Help"
 msgstr "Trợ giúp"
 
@@ -16952,7 +16972,7 @@ msgid "Hide"
 msgstr "Ẩn"
 
 #. macOS app menu / tray item. Hides the desktop app window.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:30
+#: src/features/platform/utils/DesktopLocaleBridge.ts:31
 msgid "Hide {appName}"
 msgstr "Ẩn {appName}"
 
@@ -17330,7 +17350,7 @@ msgstr "Tôi đã hiểu"
 
 #. Label for the icon branding asset.
 #. Short label in the guild icon upload field. Keep it concise.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:121
+#: src/features/app/components/setup/SetupWizardSteps.tsx:124
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:27
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:89
 msgid "Icon"
@@ -17550,7 +17570,7 @@ msgid "Image"
 msgstr "Hình ảnh"
 
 #. Label for the branding image asset uploaders in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:105
+#: src/features/app/components/setup/SetupWizardSteps.tsx:108
 msgid "Image assets"
 msgstr "Tài nguyên hình ảnh"
 
@@ -17674,7 +17694,7 @@ msgid "Import favorite GIFs"
 msgstr "Nhập GIF yêu thích"
 
 #. Title of the native folder picker that imports a directory of theme files.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:270
+#: src/features/platform/utils/DesktopLocaleBridge.ts:271
 #: src/features/theme_studio/sections/LibrarySection.tsx:349
 msgid "Import folder"
 msgstr "Nhập thư mục"
@@ -17986,7 +18006,7 @@ msgstr "Kế thừa"
 msgid "Inherited from {inheritedFromLabel}"
 msgstr "Kế thừa từ {inheritedFromLabel}"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:790
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:791
 msgid "Initializing camera..."
 msgstr "Đang khởi tạo camera..."
 
@@ -18141,12 +18161,12 @@ msgid "Installing desktop update…"
 msgstr "Đang cài đặt bản cập nhật cho máy tính…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:294
+#: src/features/platform/utils/DesktopLocaleBridge.ts:305
 msgid "Instant messaging and VoIP"
 msgstr "Nhắn tin tức thời và VoIP"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:289
+#: src/features/platform/utils/DesktopLocaleBridge.ts:300
 msgid "Instant Messenger"
 msgstr "Trình nhắn tin tức thời"
 
@@ -18280,7 +18300,7 @@ msgstr "Đã nhấp vào nút đảo ngược."
 #. Short label in the app constants.
 #. Tray status menu item. User presence that appears offline to others.
 #: src/features/app/constants/AppConstants.ts:37
-#: src/features/platform/utils/DesktopLocaleBridge.ts:204
+#: src/features/platform/utils/DesktopLocaleBridge.ts:205
 msgid "Invisible"
 msgstr "Ẩn"
 
@@ -18885,7 +18905,7 @@ msgid "Keep attachments when clearing an edit"
 msgstr "Giữ tệp đính kèm khi xóa hết nội dung chỉnh sửa"
 
 #. Description for the mirror premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:315
+#: src/features/app/components/setup/SetupWizardSteps.tsx:341
 msgid "Keep free and premium tiers. You can customize the tiers later."
 msgstr "Giữ nguyên các gói miễn phí và cao cấp. Bạn có thể tùy chỉnh các gói này sau."
 
@@ -19012,7 +19032,7 @@ msgid "Kicked {targetUserTag} from the community"
 msgstr "Đã đuổi {targetUserTag} khỏi cộng đồng"
 
 #. Label for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+#: src/features/app/components/setup/SetupWizardSteps.tsx:304
 msgid "Klipy GIFs"
 msgstr "GIF Klipy"
 
@@ -19024,7 +19044,7 @@ msgstr "Tiếng Hàn"
 #. Label for the setup wizard language selector.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. User settings tab for language, locale, and time display preferences.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:56
+#: src/features/app/components/setup/SetupWizardSteps.tsx:59
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:6
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:132
 msgid "Language"
@@ -19048,7 +19068,7 @@ msgid "Large"
 msgstr "Lớn"
 
 #. Label for attachment decay maximum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:237
+#: src/features/app/components/setup/SetupWizardSteps.tsx:240
 msgid "Large file threshold (MB)"
 msgstr "Ngưỡng tệp lớn (MB)"
 
@@ -19215,6 +19235,11 @@ msgstr "Rời khỏi nhóm này? Bạn sẽ không còn thấy tin nhắn của 
 msgid "Leave voice call"
 msgstr "Rời cuộc gọi thoại"
 
+#. Description for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
+msgstr "Nếu để tắt tùy chọn này, relay sẽ không được sử dụng và các ứng dụng di động chính thức sẽ không nhận được thông báo. Bạn có thể chấp nhận sau trong bảng quản trị."
+
 #. Card alignment option that aligns content to the left.
 #: src/features/ui/card_alignment_controls/CardAlignmentControls.tsx:17
 #: src/features/user/components/modals/tabs/component_gallery_tab/OverlaysTab.tsx:108
@@ -19289,12 +19314,12 @@ msgid "Let others clone your stickers"
 msgstr "Cho phép người khác sao chép nhãn dán của bạn"
 
 #. Description for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:298
+#: src/features/app/components/setup/SetupWizardSteps.tsx:324
 msgid "Let people link their Bluesky account to their profile."
 msgstr "Cho phép mọi người liên kết tài khoản Bluesky với hồ sơ của họ."
 
 #. Description for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+#: src/features/app/components/setup/SetupWizardSteps.tsx:308
 msgid "Let people search and send GIFs powered by Klipy."
 msgstr "Cho phép mọi người tìm kiếm và gửi ảnh GIF được cung cấp bởi Klipy."
 
@@ -19603,7 +19628,7 @@ msgid "Loading destinations…"
 msgstr "Đang tải điểm đến…"
 
 #. Accessible status while the setup wizard loads the instance configuration.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:89
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:90
 msgid "Loading instance configuration"
 msgstr "Đang tải cấu hình máy chủ"
 
@@ -19633,7 +19658,7 @@ msgid "Loading states"
 msgstr "Trạng thái đang tải"
 
 #. Setup wizard body while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:76
+#: src/features/app/components/setup/SetupWizardSteps.tsx:79
 msgid "Loading the current instance configuration."
 msgstr "Đang tải cấu hình máy chủ hiện tại."
 
@@ -19705,12 +19730,12 @@ msgid "Login"
 msgstr "Đăng nhập"
 
 #. Label for the logo branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:129
+#: src/features/app/components/setup/SetupWizardSteps.tsx:132
 msgid "Logo"
 msgstr "Logo"
 
 #. Label for Bluesky OAuth logo URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1026
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1064
 msgid "Logo URL"
 msgstr "URL logo"
 
@@ -19835,7 +19860,7 @@ msgid "Make group owner"
 msgstr "Đặt làm chủ nhóm"
 
 #. Setup wizard branding step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:81
+#: src/features/app/components/setup/SetupWizardSteps.tsx:84
 msgid "Make the instance yours"
 msgstr "Cá nhân hóa máy chủ của bạn"
 
@@ -20282,12 +20307,12 @@ msgid "Maximizes visible messages with minimal spacing."
 msgstr "Hiển thị tối đa số tin nhắn với khoảng cách tối thiểu."
 
 #. Label for attachment decay maximum eligible size.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:241
+#: src/features/app/components/setup/SetupWizardSteps.tsx:244
 msgid "Maximum eligible size (MB)"
 msgstr "Kích thước tối đa đủ điều kiện (MB)"
 
 #. Label for attachment decay maximum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:249
+#: src/features/app/components/setup/SetupWizardSteps.tsx:252
 msgid "Maximum lifetime (days)"
 msgstr "Thời gian tồn tại tối đa (ngày)"
 
@@ -20488,7 +20513,7 @@ msgid "Member roles updated"
 msgstr "Đã cập nhật vai trò thành viên"
 
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx:83
-#: src/features/user/components/popouts/UserProfileShared.tsx:282
+#: src/features/user/components/popouts/UserProfileShared.tsx:283
 msgid "Member since"
 msgstr "Thành viên từ"
 
@@ -21070,7 +21095,7 @@ msgstr "Định dạng 24 giờ"
 #. Native Window menu item that minimizes the focused desktop window. Imperative verb.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:128
+#: src/features/platform/utils/DesktopLocaleBridge.ts:129
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:186
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:190
 msgid "Minimize"
@@ -21092,7 +21117,7 @@ msgid "Minimize window"
 msgstr "Thu nhỏ cửa sổ"
 
 #. Label for attachment decay minimum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:245
+#: src/features/app/components/setup/SetupWizardSteps.tsx:248
 msgid "Minimum lifetime (days)"
 msgstr "Thời gian tồn tại tối thiểu (ngày)"
 
@@ -21111,7 +21136,7 @@ msgstr "Trẻ vị thành niên gặp rủi ro, nội dung người lớn không
 #. Switch label in the camera preview modal for flipping the local camera preview horizontally.
 #. Switch label in the video tab for flipping the local camera preview horizontally.
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx:106
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:72
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:73
 #: src/features/voice/components/VoiceSettingsMenus.tsx:114
 msgid "Mirror camera"
 msgstr "Phản chiếu camera"
@@ -21121,7 +21146,7 @@ msgid "Mirror of the Appearance tab toggle for light/dark/coal preference. Disab
 msgstr "Bản sao của nút bật/tắt ở tab Giao diện cho tùy chọn sáng/tối/than. Tắt để dùng giao diện cơ bản riêng cho từng thiết bị."
 
 #. Premium model option that mirrors free and premium tiers.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:311
+#: src/features/app/components/setup/SetupWizardSteps.tsx:337
 msgid "Mirror tiers"
 msgstr "Giữ nguyên các gói"
 
@@ -21169,7 +21194,9 @@ msgid "Mobile online status on avatars"
 msgstr "Trạng thái trực tuyến trên di động ở ảnh đại diện"
 
 #. Section label for mobile push notification settings.
+#. Setup wizard push relay consent step title.
 #. Switch label in the community notification settings modal. Controls whether mobile push notifications are delivered for this community.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:269
 #: src/features/guild/components/modals/GuildNotificationSettingsModal.tsx:112
 #: src/features/ui/action_menu/items/GuildMenuItems.tsx:81
 msgid "Mobile push notifications"
@@ -21683,7 +21710,7 @@ msgstr "Tắt tiếng thành viên"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Mutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:63
-#: src/features/platform/utils/DesktopLocaleBridge.ts:208
+#: src/features/platform/utils/DesktopLocaleBridge.ts:209
 msgid "Mute microphone"
 msgstr "Tắt micrô"
 
@@ -21852,7 +21879,7 @@ msgid "My category"
 msgstr "Danh mục của tôi"
 
 #. Placeholder for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:200
+#: src/features/app/components/setup/SetupWizardSteps.tsx:203
 msgid "My community"
 msgstr "Cộng đồng của tôi"
 
@@ -22138,7 +22165,7 @@ msgid "New accounts can join up to 10 communities in the first 24 hours. Try aga
 msgstr "Tài khoản mới có thể tham gia tối đa 10 cộng đồng trong 24 giờ đầu tiên. Vui lòng thử lại sau."
 
 #. Body text in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:23
+#: src/features/auth/state/NewDeviceMonitoring.tsx:26
 msgid "New audio device detected!"
 msgstr "Đã phát hiện thiết bị âm thanh mới!"
 
@@ -22168,7 +22195,7 @@ msgid "New community muted"
 msgstr "Kênh tắt thông báo ở cộng đồng mới"
 
 #. Windows jump-list task title. Starts composing a new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:249
+#: src/features/platform/utils/DesktopLocaleBridge.ts:250
 msgid "New direct message"
 msgstr "Tin nhắn trực tiếp mới"
 
@@ -22291,7 +22318,7 @@ msgstr "Mới nhất trước"
 #. Button that moves to the next setup wizard step.
 #. Generic primary or pagination action label that advances to the next step, page, or item.
 #. Primary button in the required-action modal. Moves to the next carousel step.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:81
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:82
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:154
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:721
 msgid "Next"
@@ -22353,7 +22380,7 @@ msgstr "Không có quyền truy cập"
 msgid "No accessible channels"
 msgstr "Không có kênh nào truy cập được"
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:148
+#: src/features/auth/components/accounts/AccountSelector.tsx:150
 #: src/features/auth/components/accounts/AccountSwitcherModal.tsx:88
 msgid "No accounts"
 msgstr "Không có tài khoản nào"
@@ -22675,7 +22702,7 @@ msgid "No one can add you to group chats without asking"
 msgstr "Không ai có thể thêm bạn vào nhóm trò chuyện mà không hỏi trước"
 
 #. Message shown when no optional services are available in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:274
+#: src/features/app/components/setup/SetupWizardSteps.tsx:300
 msgid "No optional services are available on this instance. You can skip this step."
 msgstr "Không có dịch vụ tùy chọn nào khả dụng trên máy chủ này. Bạn có thể bỏ qua bước này."
 
@@ -22932,7 +22959,7 @@ msgid "No webhooks"
 msgstr "Không có webhook nào"
 
 #. Developer option label for short-circuiting the in-app reporting (IAR) flow. When enabled, submitting a report skips the network call.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:144
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
 msgid "No-op in-app reports"
 msgstr "Bỏ qua gửi báo cáo trong ứng dụng"
 
@@ -23030,6 +23057,11 @@ msgstr "Không phải là số"
 msgid "Not a whole number"
 msgstr "Không phải là số nguyên"
 
+#. Summary value when the operator left the push relay notice unaccepted.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:394
+msgid "Not accepted"
+msgstr "Không chấp nhận"
+
 #. Fallback value when a saved billing payment method has no expiration date.
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:18
 msgid "Not available"
@@ -23062,7 +23094,7 @@ msgstr "Không tìm thấy trang"
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:43
-#: src/features/auth/state/NewDeviceMonitoring.tsx:31
+#: src/features/auth/state/NewDeviceMonitoring.tsx:34
 msgid "Not now"
 msgstr "Để sau"
 
@@ -23491,19 +23523,19 @@ msgstr "Độ mờ"
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:21
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:159
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:429
-#: src/features/platform/utils/DesktopLocaleBridge.ts:261
+#: src/features/platform/utils/DesktopLocaleBridge.ts:262
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingRow.tsx:22
 msgid "Open"
 msgstr "Mở"
 
 #. Registration mode option allowing anyone to register.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:154
+#: src/features/app/components/setup/SetupWizardSteps.tsx:157
 msgctxt "registration-policy"
 msgid "Open"
 msgstr "Mở"
 
 #. Windows jump-list task description (tooltip text) for the Open settings action.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:245
+#: src/features/platform/utils/DesktopLocaleBridge.ts:246
 msgid "Open {appName} settings"
 msgstr "Mở cài đặt {appName}"
 
@@ -24029,7 +24061,7 @@ msgstr "Hệ điều hành"
 msgid "Opt into experimental per-community and per-channel unread badge controls"
 msgstr "Bật các tùy chọn thử nghiệm kiểm soát huy hiệu chưa đọc cho từng cộng đồng và từng kênh"
 
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:786
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:787
 msgid "Optimizing camera..."
 msgstr "Đang tối ưu hóa camera..."
 
@@ -24059,7 +24091,7 @@ msgid "Optional arguments"
 msgstr "Các đối số tùy chọn"
 
 #. Setup wizard optional services step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:266
+#: src/features/app/components/setup/SetupWizardSteps.tsx:292
 msgid "Optional services"
 msgstr "Dịch vụ tùy chọn"
 
@@ -24375,7 +24407,7 @@ msgstr "Khóa truy cập yêu cầu gói macOS đã ký có mã định danh ứ
 
 #. Generic form-field label for a password.
 #. Label for SMTP password input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:997
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1035
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:215
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:146
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:183
@@ -24442,7 +24474,7 @@ msgstr "7 ngày qua"
 #. Native Edit menu item that pastes the clipboard contents. Imperative verb, not the noun.
 #. Textarea right-click context menu item that pastes clipboard contents.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:54
-#: src/features/platform/utils/DesktopLocaleBridge.ts:67
+#: src/features/platform/utils/DesktopLocaleBridge.ts:68
 msgid "Paste"
 msgstr "Dán"
 
@@ -24451,7 +24483,7 @@ msgid "Paste a {theOtherPlatform} template URL to import its structure into a ne
 msgstr "Dán URL mẫu của {theOtherPlatform} để nhập cấu trúc của mẫu đó vào một cộng đồng mới."
 
 #. Native macOS Edit menu item that pastes the clipboard contents using the formatting of the surrounding text. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:71
+#: src/features/platform/utils/DesktopLocaleBridge.ts:72
 msgid "Paste and match style"
 msgstr "Dán và khớp định dạng"
 
@@ -24839,7 +24871,7 @@ msgid "Pick one or more dictionaries. Words from any selected dictionary are acc
 msgstr "Chọn một hoặc nhiều từ điển. Từ có trong bất kỳ từ điển nào bạn chọn đều được chấp nhận, rất hữu ích cho các cuộc trò chuyện đa ngôn ngữ."
 
 #. Setup wizard body for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:64
+#: src/features/app/components/setup/SetupWizardSteps.tsx:67
 msgid "Pick the appearance this administrator account should start with."
 msgstr "Chọn giao diện ban đầu cho tài khoản quản trị viên này."
 
@@ -25164,7 +25196,7 @@ msgid "Popup"
 msgstr "Cửa sổ bật lên"
 
 #. Label for SMTP port input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:995
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1033
 msgid "Port"
 msgstr "Cổng"
 
@@ -25228,12 +25260,12 @@ msgid "Prefer using SSO? Continue with {ssoDisplayName}."
 msgstr "Bạn muốn dùng SSO? Tiếp tục với {ssoDisplayName}."
 
 #. macOS app menu submenu title. Keep "Preferences" to match the macOS HIG; in-app surfaces still use "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:25
+#: src/features/platform/utils/DesktopLocaleBridge.ts:26
 msgid "Preferences"
 msgstr "Tùy chọn"
 
 #. macOS app menu item that opens app settings. Trailing ellipsis follows the macOS HIG convention. Keep "Preferences" here even though the in-app term is "settings".
-#: src/features/platform/utils/DesktopLocaleBridge.ts:20
+#: src/features/platform/utils/DesktopLocaleBridge.ts:21
 msgid "Preferences..."
 msgstr "Tùy chọn..."
 
@@ -25270,7 +25302,7 @@ msgid "Premium grace period nagbar"
 msgstr "Thanh thông báo thời gian ân hạn Premium"
 
 #. Summary row label for the premium model in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:356
+#: src/features/app/components/setup/SetupWizardSteps.tsx:386
 msgid "Premium model"
 msgstr "Mô hình cao cấp"
 
@@ -25310,7 +25342,7 @@ msgid "Preparing"
 msgstr "Đang chuẩn bị"
 
 #. Setup wizard title while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:72
+#: src/features/app/components/setup/SetupWizardSteps.tsx:75
 msgid "Preparing setup"
 msgstr "Đang chuẩn bị thiết lập"
 
@@ -25560,7 +25592,7 @@ msgid "Privacy settings"
 msgstr "Cài đặt quyền riêng tư"
 
 #. Label for Bluesky OAuth privacy URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1072
 msgid "Privacy URL"
 msgstr "URL quyền riêng tư"
 
@@ -25585,7 +25617,7 @@ msgid "Private details"
 msgstr "Thông tin riêng tư"
 
 #. Label for Bluesky OAuth private key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1042
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1080
 msgid "Private key"
 msgstr "Khóa riêng"
 
@@ -25610,8 +25642,8 @@ msgstr "Đang xử lý"
 
 #. Label for the product name input in the setup wizard.
 #. Summary row label for the product name in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:89
-#: src/features/app/components/setup/SetupWizardSteps.tsx:336
+#: src/features/app/components/setup/SetupWizardSteps.tsx:92
+#: src/features/app/components/setup/SetupWizardSteps.tsx:362
 msgid "Product name"
 msgstr "Tên sản phẩm"
 
@@ -25795,7 +25827,7 @@ msgid "Provide your full legal name for the declaration."
 msgstr "Cung cấp họ tên đầy đủ của bạn để khai báo."
 
 #. Label for an integration provider choice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:970
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1008
 msgid "Provider"
 msgstr "Nhà cung cấp"
 
@@ -25817,7 +25849,7 @@ msgid "Public community"
 msgstr "Cộng đồng công khai"
 
 #. Description for the closed registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:175
+#: src/features/app/components/setup/SetupWizardSteps.tsx:178
 msgid "Public registration is closed."
 msgstr "Đăng ký công khai đã đóng."
 
@@ -25909,6 +25941,11 @@ msgstr "Đã xóa {deletedCount, plural, other {# tin nhắn}} khỏi ghi chú c
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:42
 msgid "Push notification inactive timeout"
 msgstr "Thời gian không hoạt động trước khi nhận thông báo đẩy"
+
+#. Summary row label for the push relay consent on the setup wizard finish step.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:382
+msgid "Push relay notice"
+msgstr "Thông báo chuyển tiếp đẩy"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts:131
@@ -26055,7 +26092,7 @@ msgid "Quit"
 msgstr "Thoát"
 
 #. macOS / tray menu item that fully quits the desktop app.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:34
+#: src/features/platform/utils/DesktopLocaleBridge.ts:35
 msgid "Quit {appName}"
 msgstr "Thoát {appName}"
 
@@ -26169,6 +26206,11 @@ msgstr "Đọc nhật ký hoạt động của cộng đồng về các thay đ�
 msgid "Read the documentation ({domain})"
 msgstr "Đọc tài liệu ({domain})"
 
+#. Link to the push relay supplemental privacy notice shown during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
+msgid "Read the supplemental privacy notice"
+msgstr "Đọc thông báo quyền riêng tư bổ sung"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -26222,7 +26264,7 @@ msgid "Receive:"
 msgstr "Nhận:"
 
 #. Windows jump-list category title. Groups recently opened DMs / communities.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:257
+#: src/features/platform/utils/DesktopLocaleBridge.ts:258
 msgid "Recent"
 msgstr "Gần đây"
 
@@ -26380,7 +26422,7 @@ msgstr "URI chuyển hướng"
 #. Native Edit menu item that redoes the last undone edit. Imperative verb.
 #. Textarea right-click context menu item that redoes the last undone edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:42
-#: src/features/platform/utils/DesktopLocaleBridge.ts:55
+#: src/features/platform/utils/DesktopLocaleBridge.ts:56
 msgid "Redo"
 msgstr "Làm lại"
 
@@ -26484,7 +26526,7 @@ msgid "Registered passkeys"
 msgstr "Khóa truy cập đã đăng ký"
 
 #. Summary row label for the registration mode in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:340
+#: src/features/app/components/setup/SetupWizardSteps.tsx:366
 msgid "Registration"
 msgstr "Đăng ký"
 
@@ -26531,7 +26573,7 @@ msgstr "Liên quan"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Troubleshooting menu item. Reloads the renderer process. Keep short.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:166
+#: src/features/platform/utils/DesktopLocaleBridge.ts:167
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:90
 msgid "Reload"
 msgstr "Tải lại"
@@ -26551,7 +26593,7 @@ msgid "Reload {productName} to use web update {version}"
 msgstr "Tải lại {productName} để sử dụng bản cập nhật web {version}"
 
 #. Button on the crash screen that reloads the current app.
-#: src/features/app/components/ErrorFallback.tsx:142
+#: src/features/app/components/ErrorFallback.tsx:145
 msgid "Reload app"
 msgstr "Tải lại ứng dụng"
 
@@ -26599,7 +26641,7 @@ msgstr "Ghi nhớ kích thước và vị trí cửa sổ"
 #. Short label in the shared app saved message missing card. Keep the tone plain and specific.
 #: src/features/app/components/shared/SavedMessageMissingCard.tsx:14
 #: src/features/auth/components/accounts/AccountSelector.tsx:78
-#: src/features/auth/components/accounts/AccountSelector.tsx:125
+#: src/features/auth/components/accounts/AccountSelector.tsx:128
 #: src/features/channel/components/MessageReactionsSheet.tsx:43
 #: src/features/expressions/components/modals/AddFavoriteChannelModal.tsx:52
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildBannerUploadField.tsx:156
@@ -27096,12 +27138,12 @@ msgid "Render placeholders"
 msgstr "Hiển thị phần giữ chỗ"
 
 #. Label for attachment decay renewal threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:257
+#: src/features/app/components/setup/SetupWizardSteps.tsx:260
 msgid "Renew threshold (days)"
 msgstr "Ngưỡng gia hạn (ngày)"
 
 #. Label for attachment decay renewal window.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:261
+#: src/features/app/components/setup/SetupWizardSteps.tsx:264
 msgid "Renew window (days)"
 msgstr "Khoảng thời gian gia hạn (ngày)"
 
@@ -27111,7 +27153,7 @@ msgstr "Gia hạn vào <0>{renewalDate}.</0>"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that replaces an already uploaded branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:113
+#: src/features/app/components/setup/SetupWizardSteps.tsx:116
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:80
 msgid "Replace"
 msgstr "Thay thế"
@@ -27222,7 +27264,7 @@ msgid "Report illegal content"
 msgstr "Báo cáo nội dung bất hợp pháp"
 
 #. Native Help submenu item. Opens the bug / issue reporting flow.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:150
+#: src/features/platform/utils/DesktopLocaleBridge.ts:151
 msgid "Report issue"
 msgstr "Báo cáo sự cố"
 
@@ -27497,21 +27539,21 @@ msgid "Reset all shortcuts?"
 msgstr "Đặt lại tất cả phím tắt?"
 
 #. Destructive confirm button on the reset-app-data dialog.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:188
+#: src/features/platform/utils/DesktopLocaleBridge.ts:189
 msgid "Reset and restart"
 msgstr "Đặt lại và khởi động lại"
 
 #. Confirm dialog title for the destructive reset action.
 #. Destructive button on the crash screen. Clears local app data except preserved drafts.
 #. Destructive button on the startup failure screen. Clears local app data except preserved drafts.
-#: src/features/app/components/BootstrapErrorScreen.tsx:75
-#: src/features/app/components/ErrorFallback.tsx:164
-#: src/features/platform/utils/DesktopLocaleBridge.ts:174
+#: src/features/app/components/BootstrapErrorScreen.tsx:82
+#: src/features/app/components/ErrorFallback.tsx:167
+#: src/features/platform/utils/DesktopLocaleBridge.ts:175
 msgid "Reset app data"
 msgstr "Đặt lại dữ liệu ứng dụng"
 
 #. Destructive troubleshooting menu item. Clears local app data, signs out, and restarts.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:170
+#: src/features/platform/utils/DesktopLocaleBridge.ts:171
 msgid "Reset app data and restart"
 msgstr "Đặt lại dữ liệu ứng dụng và khởi động lại"
 
@@ -27787,7 +27829,7 @@ msgid "Respect the sender's intent, with no warning when they toggle the @mentio
 msgstr "Tôn trọng ý định của người gửi, không cảnh báo khi họ bật/tắt nhắc đến @"
 
 #. Tray menu item that restarts the desktop app process.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:232
+#: src/features/platform/utils/DesktopLocaleBridge.ts:233
 msgid "Restart {appName}"
 msgstr "Khởi động lại {appName}"
 
@@ -27984,7 +28026,7 @@ msgid "Review what this app is asking for before you continue."
 msgstr "Xem lại những gì ứng dụng này yêu cầu trước khi tiếp tục."
 
 #. Setup wizard finish step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:332
+#: src/features/app/components/setup/SetupWizardSteps.tsx:358
 msgid "Review your choices below, then finish. This saves the configuration and opens the instance."
 msgstr "Xem lại các lựa chọn của bạn bên dưới, sau đó hoàn tất. Thao tác này sẽ lưu cấu hình và mở máy chủ."
 
@@ -28240,7 +28282,7 @@ msgid "Run at login"
 msgstr "Chạy khi đăng nhập"
 
 #. Description for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:192
+#: src/features/app/components/setup/SetupWizardSteps.tsx:195
 msgid "Run the instance as one community instead of many. This can only be enabled now, during setup."
 msgstr "Chạy máy chủ dưới dạng một cộng đồng thay vì nhiều cộng đồng. Tùy chọn này chỉ có thể bật bây giờ, trong quá trình thiết lập."
 
@@ -29034,7 +29076,7 @@ msgid "Secret"
 msgstr "Bí mật"
 
 #. Label for a CAPTCHA secret key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:981
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1019
 msgid "Secret key"
 msgstr "Khóa bí mật"
 
@@ -29189,14 +29231,14 @@ msgstr "Chọn một kịch bản để áp dụng..."
 msgid "Select a violation category."
 msgstr "Chọn danh mục vi phạm."
 
-#: src/features/auth/components/accounts/AccountSelector.tsx:114
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 msgid "Select account"
 msgstr "Chọn tài khoản"
 
 #. Native Edit menu item that selects everything in the focused field. Imperative verb.
 #. Textarea right-click context menu item that selects all text in the textarea.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:58
-#: src/features/platform/utils/DesktopLocaleBridge.ts:80
+#: src/features/platform/utils/DesktopLocaleBridge.ts:81
 msgid "Select all"
 msgstr "Chọn tất cả"
 
@@ -29240,7 +29282,7 @@ msgstr "Chọn phạm vi (và URI chuyển hướng nếu cần)"
 msgid "Select text"
 msgstr "Chọn văn bản"
 
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:69
+#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:71
 msgid "Select the account you want to sign in with on your new device."
 msgstr "Chọn tài khoản bạn muốn đăng nhập trên thiết bị mới của mình."
 
@@ -29322,7 +29364,7 @@ msgid "Self-harm or suicide"
 msgstr "Tự làm hại bản thân hoặc tự tử"
 
 #. Accessible label for the self-host setup wizard carousel.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:69
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:70
 msgid "Self-host setup"
 msgstr "Thiết lập tự lưu trữ"
 
@@ -29658,11 +29700,6 @@ msgstr "Phiên"
 msgid "Session expired for {identifier}. Sign in again."
 msgstr "Phiên đăng nhập của {identifier} đã hết hạn. Hãy đăng nhập lại."
 
-#. Toast error shown in the desktop-handoff account picker when the session for the chosen account has expired.
-#: src/features/auth/flow/DesktopHandoffAccountSelector.tsx:12
-msgid "Session expired. Sign in again."
-msgstr "Phiên đăng nhập đã hết hạn. Hãy đăng nhập lại."
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:15
 msgid "Sessions"
@@ -29803,7 +29840,7 @@ msgid "Set the nickname to {nick}"
 msgstr "Đã đặt biệt danh thành {nick}"
 
 #. Setup wizard branding step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:85
+#: src/features/app/components/setup/SetupWizardSteps.tsx:88
 msgid "Set the public product name, theme color, and image assets that clients display."
 msgstr "Đặt tên sản phẩm công khai, màu chủ đề và các tệp hình ảnh mà ứng dụng hiển thị."
 
@@ -29855,7 +29892,7 @@ msgid "Set this check aside?"
 msgstr "Tạm gác lại việc kiểm tra này?"
 
 #. Title for the self-host setup wizard modal.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:74
 msgid "Set up {productName}"
 msgstr "Thiết lập {productName}"
 
@@ -29865,7 +29902,7 @@ msgid "Set up authenticator app"
 msgstr "Thiết lập ứng dụng xác thực"
 
 #. Option for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:914
+#: src/features/app/components/setup/SetupWizardSteps.tsx:952
 msgid "Set up later"
 msgstr "Thiết lập sau"
 
@@ -30158,7 +30195,7 @@ msgid "Show"
 msgstr "Hiển thị"
 
 #. Tray menu item that brings the desktop app window to the foreground.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:192
+#: src/features/platform/utils/DesktopLocaleBridge.ts:193
 msgid "Show {appName}"
 msgstr "Hiện {appName}"
 
@@ -30515,18 +30552,13 @@ msgstr "Hiện mật khẩu"
 msgid "Show per-device participant volume sliders in voice menus"
 msgstr "Hiển thị thanh trượt âm lượng người tham gia theo từng thiết bị trong menu thoại"
 
-#. Developer option label for exposing the staff-only profile timezone section in profile settings.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:135
-msgid "Show profile time zone settings"
-msgstr "Hiển thị cài đặt múi giờ hồ sơ"
-
 #. Short label for an advanced message action bar preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx:56
 msgid "Show quick reactions"
 msgstr "Hiện cảm xúc nhanh"
 
 #. Description for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:290
+#: src/features/app/components/setup/SetupWizardSteps.tsx:316
 msgid "Show rich previews for YouTube links."
 msgstr "Hiển thị bản xem trước phong phú cho các liên kết YouTube."
 
@@ -30650,6 +30682,7 @@ msgstr "Thanh bên"
 msgid "Sign in"
 msgstr "Đăng nhập"
 
+#: src/features/auth/components/accounts/AccountSelector.tsx:117
 #: src/features/auth/utils/AccountSwitcherModalUtils.tsx:274
 msgid "Sign in again"
 msgstr "Đăng nhập lại"
@@ -30764,7 +30797,7 @@ msgid "Signed-in devices"
 msgstr "Thiết bị đã đăng nhập"
 
 #. Label for Bluesky OAuth signing key ID input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1038
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1076
 msgid "Signing key ID"
 msgstr "ID khóa ký"
 
@@ -30831,12 +30864,12 @@ msgid "Single column"
 msgstr "Một cột"
 
 #. Summary row label for the single community choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:344
+#: src/features/app/components/setup/SetupWizardSteps.tsx:370
 msgid "Single community"
 msgstr "Cộng đồng duy nhất"
 
 #. Label for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:188
+#: src/features/app/components/setup/SetupWizardSteps.tsx:191
 msgid "Single community mode"
 msgstr "Chế độ cộng đồng duy nhất"
 
@@ -30855,7 +30888,7 @@ msgid "Single user (all statuses)"
 msgstr "Một người dùng (tất cả trạng thái)"
 
 #. Label for a CAPTCHA site key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:980
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1018
 msgid "Site key"
 msgstr "Khóa trang"
 
@@ -30898,7 +30931,7 @@ msgid "Skip the external link warning for all domains"
 msgstr "Bỏ qua cảnh báo liên kết ngoài cho tất cả các miền"
 
 #. Developer / debug surface — keep terse and technical. Tooltip / description for the no-op in-app reports toggle.
-#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:149
+#: src/features/devtools/components/DeveloperOptionsToggleGroups.ts:140
 msgid "Skip the network call when an in-app report is submitted. The flow still advances to the success screen so you can exercise the UI, but nothing is actually sent to the safety team."
 msgstr "Bỏ qua lệnh gọi mạng khi gửi báo cáo trong ứng dụng. Luồng vẫn chuyển sang màn hình thành công để bạn thử giao diện, nhưng không có gì thực sự được gửi đến đội ngũ an toàn."
 
@@ -30908,7 +30941,7 @@ msgid "Skip the system leave notice — nobody gets pinged."
 msgstr "Bỏ qua thông báo rời nhóm của hệ thống, không ai bị làm phiền."
 
 #. Description for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:918
+#: src/features/app/components/setup/SetupWizardSteps.tsx:956
 msgid "Skip this now and configure it from the admin panel."
 msgstr "Bỏ qua bây giờ và cấu hình từ bảng quản trị."
 
@@ -31095,7 +31128,7 @@ msgid "Small button clicked."
 msgstr "Đã nhấp vào nút nhỏ."
 
 #. Label for attachment decay minimum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:233
+#: src/features/app/components/setup/SetupWizardSteps.tsx:236
 msgid "Small file threshold (MB)"
 msgstr "Ngưỡng tệp nhỏ (MB)"
 
@@ -31156,17 +31189,17 @@ msgid "SMS verification is unavailable right now. Try again later or contact sup
 msgstr "Xác minh SMS hiện không khả dụng. Vui lòng thử lại sau hoặc liên hệ với bộ phận hỗ trợ."
 
 #. Success message after validating SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1006
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1044
 msgid "SMTP connection verified."
 msgstr "Đã xác minh kết nối SMTP."
 
 #. Label for SMTP host input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:994
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1032
 msgid "SMTP host"
 msgstr "Máy chủ SMTP"
 
 #. Failure message after validating SMTP credentials when the server returns no error detail.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1010
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1048
 msgid "SMTP validation failed."
 msgstr "Xác minh SMTP không thành công."
 
@@ -31213,11 +31246,11 @@ msgstr "Không thể thêm một số người dùng"
 msgid "Something went wrong"
 msgstr "Đã xảy ra lỗi"
 
-#: src/features/app/components/ErrorFallback.tsx:126
+#: src/features/app/components/ErrorFallback.tsx:129
 msgid "Something went wrong and the app crashed. An update is available that may fix this issue."
 msgstr "Đã xảy ra lỗi khiến ứng dụng bị sập. Có bản cập nhật mới có thể khắc phục sự cố này."
 
-#: src/features/app/components/ErrorFallback.tsx:128
+#: src/features/app/components/ErrorFallback.tsx:131
 msgid "Something went wrong and the app crashed. Try reloading or resetting the app."
 msgstr "Đã xảy ra lỗi khiến ứng dụng bị sập. Hãy thử tải lại hoặc đặt lại ứng dụng."
 
@@ -31559,7 +31592,7 @@ msgstr "Người xem - {count}"
 
 #. Native macOS Edit submenu title for text-to-speech actions.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:84
+#: src/features/platform/utils/DesktopLocaleBridge.ts:85
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:142
 msgid "Speech"
 msgstr "Giọng nói"
@@ -31727,7 +31760,7 @@ msgid "Start"
 msgstr "Bắt đầu"
 
 #. Reason shown by the Linux Flatpak background permission portal when enabling launch-at-login. {appName} is the desktop app name.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:236
+#: src/features/platform/utils/DesktopLocaleBridge.ts:237
 msgid "Start {appName} automatically when you sign in."
 msgstr "Tự động khởi chạy {appName} khi bạn đăng nhập."
 
@@ -31797,7 +31830,7 @@ msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{
 msgstr "Bắt đầu tìm kiếm bằng <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> để thu hẹp kết quả."
 
 #. Native macOS Edit > Speech submenu item that starts reading the selected text aloud. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:88
+#: src/features/platform/utils/DesktopLocaleBridge.ts:89
 msgid "Start speaking"
 msgstr "Bắt đầu đọc"
 
@@ -31841,7 +31874,7 @@ msgstr "Pickles tĩnh"
 #. Tray menu submenu title for the user presence status picker.
 #: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx:126
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:69
-#: src/features/platform/utils/DesktopLocaleBridge.ts:196
+#: src/features/platform/utils/DesktopLocaleBridge.ts:197
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -32091,7 +32124,7 @@ msgstr "Dừng chia sẻ hoạt động thoại với tất cả bạn bè?"
 #. Message context menu item that stops the text-to-speech playback in progress.
 #. Native macOS Edit > Speech submenu item that stops reading text aloud. Imperative verb.
 #: src/features/channel/components/MessageActionMenu.tsx:94
-#: src/features/platform/utils/DesktopLocaleBridge.ts:92
+#: src/features/platform/utils/DesktopLocaleBridge.ts:93
 #: src/features/ui/action_menu/items/MessageMenuItems.tsx:74
 msgid "Stop speaking"
 msgstr "Dừng đọc"
@@ -32481,7 +32514,7 @@ msgid "Switch between your global profile and per-community profiles"
 msgstr "Chuyển đổi giữa hồ sơ chung và hồ sơ từng cộng đồng"
 
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
-#: src/features/auth/state/NewDeviceMonitoring.tsx:27
+#: src/features/auth/state/NewDeviceMonitoring.tsx:30
 msgid "Switch device"
 msgstr "Đổi thiết bị"
 
@@ -32609,7 +32642,7 @@ msgid "Switches"
 msgstr "Công tắc"
 
 #. Label for the symbol branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:125
+#: src/features/app/components/setup/SetupWizardSteps.tsx:128
 msgid "Symbol"
 msgstr "Biểu tượng"
 
@@ -32893,7 +32926,7 @@ msgid "Taskbar badge"
 msgstr "Huy hiệu thanh tác vụ"
 
 #. Windows jump-list category title. Groups quick actions like open settings and new DM.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:241
+#: src/features/platform/utils/DesktopLocaleBridge.ts:242
 msgid "Tasks"
 msgstr "Tác vụ"
 
@@ -32962,7 +32995,7 @@ msgid "Terms of service"
 msgstr "Điều khoản dịch vụ"
 
 #. Label for Bluesky OAuth terms URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1030
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1068
 msgid "Terms URL"
 msgstr "URL điều khoản"
 
@@ -32972,7 +33005,7 @@ msgid "Terrorism or violent extremism"
 msgstr "Khủng bố hoặc chủ nghĩa cực đoan bạo lực"
 
 #. Button that validates SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1002
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1040
 msgid "Test SMTP"
 msgstr "Kiểm tra SMTP"
 
@@ -33162,7 +33195,7 @@ msgid "That friend request is no longer available. Refresh and try again."
 msgstr "Lời mời kết bạn đó không còn khả dụng. Hãy làm mới và thử lại."
 
 #. Error shown when a branding image fails to upload in the setup wizard.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:102
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:103
 msgid "That image could not be used. Try a different file."
 msgstr "Không thể sử dụng ảnh đó. Hãy thử một tệp khác."
 
@@ -33194,15 +33227,15 @@ msgid "The #0000 tag is reserved for Visionary subscribers. Visionary is no long
 msgstr "Thẻ #0000 được dành riêng cho người đăng ký Visionary. Visionary hiện không còn được bán."
 
 #. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
-#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:97
+#: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:98
 msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
 msgstr "API đang ở một nguồn gốc khác với trang này, nên các yêu cầu thiết lập được gửi đi mà không có phiên của bạn. Hãy kiểm tra nguồn gốc và cổng công khai mà máy chủ này được cấu hình, sau đó tải lại."
 
-#: src/features/app/components/ErrorFallback.tsx:120
+#: src/features/app/components/ErrorFallback.tsx:123
 msgid "The app crashed"
 msgstr "Ứng dụng đã gặp sự cố"
 
-#: src/features/app/components/ErrorFallback.tsx:124
+#: src/features/app/components/ErrorFallback.tsx:127
 msgid "The app has crashed. Checking for updates that might fix this issue…"
 msgstr "Ứng dụng đã gặp sự cố. Đang kiểm tra bản cập nhật có thể khắc phục vấn đề này…"
 
@@ -33372,6 +33405,11 @@ msgstr "Giá mới đã được lên lịch vào {effectiveDate}."
 msgid "The new voice channel will reuse the permissions, user limit, and bitrate from <0>{channelLabel}</0>."
 msgstr "Kênh thoại mới sẽ sử dụng lại quyền, giới hạn người dùng và tốc độ bit từ <0>{channelLabel}</0>."
 
+#. Setup wizard push relay consent step body.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:273
+msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
+msgstr "Các ứng dụng di động Fluxer chính thức nhận thông báo qua dịch vụ chuyển tiếp đẩy của Fluxer, dịch vụ này sẽ chuyển chúng đến Apple và Google. Các điểm cuối UnifiedPush và ntfy tự lưu trữ không bao giờ tiếp cận dịch vụ chuyển tiếp và không cần thỏa thuận."
+
 #. Activity log detail row under a removed channel permission override, listing the permissions it explicitly allowed before it was removed. It describes the removed override. It does not mean these permissions are allowed now. A permission override is a channel-level exception to the permissions of a role or member. It allows or denies chosen permissions in one channel or category only. Use the same word for override as the channel permissions settings, such as Add override. {permissions} is a list of permission names joined into one phrase, for example "View channel and Send messages". A long list ends with a count, for example "View channel, Send messages, and 3 more permissions".
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:378
 msgid "The override allowed {permissions}"
@@ -33480,7 +33518,7 @@ msgstr "Các thay đổi về giao diện sẽ đồng bộ hóa trên tất c�
 
 #. Label for the theme color picker in the setup wizard.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:101
+#: src/features/app/components/setup/SetupWizardSteps.tsx:104
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:165
 msgid "Theme color"
 msgstr "Màu chủ đề"
@@ -33500,7 +33538,7 @@ msgstr "Tệp chủ đề"
 msgid "Theme library"
 msgstr "Thư viện chủ đề"
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:175
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:70
 msgid "Theme not found"
 msgstr "Không tìm thấy chủ đề"
@@ -33580,7 +33618,7 @@ msgid "There was an error loading the webhooks. Try again."
 msgstr "Đã xảy ra lỗi khi tải webhook. Vui lòng thử lại."
 
 #. Setup wizard community model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:184
+#: src/features/app/components/setup/SetupWizardSteps.tsx:187
 msgid "These options change how people use the instance. Some can only be chosen during setup."
 msgstr "Các tùy chọn này thay đổi cách mọi người sử dụng máy chủ. Một số tùy chọn chỉ có thể chọn trong quá trình thiết lập."
 
@@ -33906,7 +33944,7 @@ msgstr "Tệp này có dung lượng {fileSize}, vượt quá giới hạn {maxS
 msgid "This friends list needs more power"
 msgstr "Danh sách bạn bè này cần thêm sức mạnh"
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:177
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:178
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:84
 msgid "This gift code has already been claimed."
 msgstr "Mã quà tặng này đã được nhận."
@@ -33918,7 +33956,7 @@ msgstr "Mã quà tặng này đã được nhận."
 msgid "This gift code is invalid or already claimed."
 msgstr "Mã quà tặng này không hợp lệ hoặc đã được nhận."
 
-#: src/features/expressions/components/pages/GiftLoginPage.tsx:166
+#: src/features/expressions/components/pages/GiftLoginPage.tsx:167
 #: src/features/expressions/components/pages/GiftRegisterPage.tsx:73
 msgid "This gift code may be invalid, expired, or already redeemed."
 msgstr "Mã quà tặng này có thể không hợp lệ, đã hết hạn hoặc đã được sử dụng."
@@ -33962,7 +34000,7 @@ msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "Máy chủ này hiện cho phép chia sẻ màn hình tối đa 720p ở 30 FPS."
 
 #. Setup wizard body prompting the operator to register the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:52
+#: src/features/app/components/setup/SetupWizardSteps.tsx:55
 msgid "This instance has no accounts yet. The first account you create automatically becomes the administrator."
 msgstr "Máy chủ này chưa có tài khoản nào. Tài khoản đầu tiên bạn tạo sẽ tự động trở thành quản trị viên."
 
@@ -34288,7 +34326,7 @@ msgstr "Chủ đề này quá lớn để chia sẻ"
 msgid "This theme link is missing data."
 msgstr "Liên kết chủ đề này bị thiếu dữ liệu."
 
-#: src/features/theme/components/pages/ThemeLoginPage.tsx:176
+#: src/features/theme/components/pages/ThemeLoginPage.tsx:177
 #: src/features/theme/components/pages/ThemeRegisterPage.tsx:71
 msgid "This theme may have been removed or the link is invalid."
 msgstr "Chủ đề này có thể đã bị gỡ hoặc liên kết không hợp lệ."
@@ -34302,7 +34340,7 @@ msgstr "người dùng này"
 msgid "This user has limited their profile. Some details are hidden from people who aren't their friends."
 msgstr "Người dùng này đã giới hạn hồ sơ của mình. Một số thông tin bị ẩn với những người không phải là bạn bè."
 
-#: src/features/user/components/popouts/UserProfileShared.tsx:394
+#: src/features/user/components/popouts/UserProfileShared.tsx:395
 msgid "This user has no roles in this community."
 msgstr "Người dùng này không có vai trò nào trong cộng đồng này."
 
@@ -34425,7 +34463,7 @@ msgid "This will sign out the selected {sessionCount, plural, one {device} other
 msgstr "Thao tác này sẽ đăng xuất {sessionCount, plural, one {thiết bị} other {thiết bị}} đã chọn khỏi tài khoản của bạn. Bạn sẽ cần đăng nhập lại trên {sessionCount, plural, one {thiết bị} other {thiết bị}} đó."
 
 #. Confirm dialog detail text for the destructive reset action. appName is the desktop app name. Reassures users that server-side data is safe.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:182
+#: src/features/platform/utils/DesktopLocaleBridge.ts:183
 msgid "This will sign you out, clear cached files and stored sessions, and restart the desktop app. Your account, communities, and messages in {appName} are not affected."
 msgstr "Thao tác này sẽ đăng xuất bạn, xóa các tệp đã lưu trong bộ nhớ cache và phiên làm việc, đồng thời khởi động lại ứng dụng dành cho máy tính để bàn. Tài khoản, cộng đồng và tin nhắn của bạn trên {appName} sẽ không bị ảnh hưởng."
 
@@ -34628,7 +34666,7 @@ msgid "Toggle deafen"
 msgstr "Bật/tắt chế độ tắt tiếng nghe"
 
 #. Native View menu item that opens or closes Chromium developer tools.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:104
+#: src/features/platform/utils/DesktopLocaleBridge.ts:105
 msgid "Toggle developer tools"
 msgstr "Bật/tắt công cụ dành cho nhà phát triển"
 
@@ -34638,7 +34676,7 @@ msgid "Toggle embed suppression"
 msgstr "Bật/tắt ẩn nhúng"
 
 #. Native View menu item that enters or leaves full screen. Imperative verb.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:120
+#: src/features/platform/utils/DesktopLocaleBridge.ts:121
 msgid "Toggle full screen"
 msgstr "Bật/tắt toàn màn hình"
 
@@ -34908,7 +34946,7 @@ msgid "Trimmed clip is over the {limit} size limit. Try a shorter selection."
 msgstr "Đoạn đã cắt vượt quá giới hạn kích thước {limit}. Hãy thử chọn một đoạn ngắn hơn."
 
 #. Native Help submenu title that groups recovery actions like reload and reset.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:154
+#: src/features/platform/utils/DesktopLocaleBridge.ts:155
 msgid "Troubleshooting"
 msgstr "Khắc phục sự cố"
 
@@ -34998,6 +35036,7 @@ msgid "Try a different variable name or clear the search."
 msgstr "Thử một tên biến khác hoặc xóa tìm kiếm."
 
 #. Generic action label for retrying a failed or interrupted operation.
+#: src/features/auth/components/AltchaVerification.tsx:53
 #: src/features/auth/flow/AuthRouteLoadError.tsx:22
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:75
 msgid "Try again"
@@ -35075,7 +35114,7 @@ msgstr "Thử dùng khóa bảo mật / khóa truy cập"
 msgid "Try sending your message again."
 msgstr "Thử gửi lại tin nhắn của bạn."
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:159
+#: src/features/auth/components/modals/CaptchaModal.tsx:177
 msgid "Try Turnstile instead"
 msgstr "Thử dùng Turnstile"
 
@@ -35147,7 +35186,7 @@ msgid "Turn off device stream"
 msgstr "Tắt luồng trực tiếp trên thiết bị"
 
 #. Description for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:212
+#: src/features/app/components/setup/SetupWizardSteps.tsx:215
 msgid "Turn off private messaging and friends across the instance. This can be reversed only once later."
 msgstr "Tắt tin nhắn riêng tư và yêu cầu kết bạn trên toàn bộ máy chủ. Bạn chỉ có thể bật lại tính năng này một lần."
 
@@ -35591,7 +35630,7 @@ msgstr "Đã hiểu"
 #. Native Edit menu item that undoes the last edit. Imperative verb.
 #. Textarea right-click context menu item that undoes the last edit.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:38
-#: src/features/platform/utils/DesktopLocaleBridge.ts:51
+#: src/features/platform/utils/DesktopLocaleBridge.ts:52
 msgid "Undo"
 msgstr "Hoàn tác"
 
@@ -35719,7 +35758,7 @@ msgstr "Thiết bị không xác định"
 
 #. Fallback diagnostic text on the crash screen when an Error object has no message.
 #. Fallback error text shown when LaTeX rendering fails without an error message.
-#: src/features/app/components/ErrorFallback.tsx:25
+#: src/features/app/components/ErrorFallback.tsx:28
 #: src/features/messaging/components/markdown/renderers/common/CodeElements.tsx:37
 msgid "Unknown error"
 msgstr "Lỗi không xác định"
@@ -35934,7 +35973,7 @@ msgstr "Bật thông báo mục yêu thích"
 #. Short label in the app layout user area.
 #. Tray menu item shown while in a voice call. Unmutes the local microphone.
 #: src/features/app/components/layout/UserArea.tsx:59
-#: src/features/platform/utils/DesktopLocaleBridge.ts:212
+#: src/features/platform/utils/DesktopLocaleBridge.ts:213
 msgid "Unmute microphone"
 msgstr "Bật tiếng micrô"
 
@@ -36106,12 +36145,12 @@ msgid "Unread message badge"
 msgstr "Huy hiệu tin nhắn chưa đọc"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:274
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
 msgid "Unread messages"
 msgstr "Tin nhắn chưa đọc"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:279
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
 msgid "Unread messages: {count}"
 msgstr "Tin nhắn chưa đọc: {count}"
 
@@ -36203,7 +36242,7 @@ msgid "Update {productName} to view this message."
 msgstr "Cập nhật {productName} để xem tin nhắn này."
 
 #. Button on the crash screen that applies a found app update.
-#: src/features/app/components/ErrorFallback.tsx:140
+#: src/features/app/components/ErrorFallback.tsx:143
 msgid "Update app"
 msgstr "Cập nhật ứng dụng"
 
@@ -36289,7 +36328,7 @@ msgstr "Nâng cấp để lưu trữ tối đa 15 hình nền tùy chỉnh và m
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that opens a file picker to upload a branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:109
+#: src/features/app/components/setup/SetupWizardSteps.tsx:112
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:84
 msgid "Upload"
 msgstr "Tải lên"
@@ -36833,7 +36872,7 @@ msgid "Use this when troubleshooting the client or collecting logs. It may add v
 msgstr "Dùng khi khắc phục sự cố ứng dụng hoặc thu thập nhật ký. Thao tác này có thể thêm các thông báo chi tiết vào bảng điều khiển của trình duyệt cho ứng dụng hiện tại."
 
 #. Label for SMTP TLS toggle.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:998
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1036
 msgid "Use TLS"
 msgstr "Sử dụng TLS"
 
@@ -36999,7 +37038,7 @@ msgstr "Âm lượng người dùng"
 #. Generic form-field label for a username.
 #. Label for SMTP username input.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:996
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1034
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:572
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:218
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:56
@@ -37281,7 +37320,7 @@ msgid "Verify phone number form"
 msgstr "Biểu mẫu xác minh số điện thoại"
 
 #. Short label in the authentication captcha modal. Keep the tone plain and specific.
-#: src/features/auth/components/modals/CaptchaModal.tsx:15
+#: src/features/auth/components/modals/CaptchaModal.tsx:17
 msgid "Verify you're human"
 msgstr "Xác minh bạn không phải robot"
 
@@ -37548,7 +37587,7 @@ msgid "Vietnamese"
 msgstr "Tiếng Việt"
 
 #. Top-level native menu bar title (View menu, holds zoom and reload).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:96
+#: src/features/platform/utils/DesktopLocaleBridge.ts:97
 msgid "View"
 msgstr "Xem"
 
@@ -38341,7 +38380,7 @@ msgstr "Chúng tôi đã giảm giá {premiumProductName} tại Brazil. Giá hi�
 msgid "We need one verification step before you continue. This helps protect accounts and keep spam off {productName}."
 msgstr "Chúng tôi cần một bước xác minh trước khi bạn tiếp tục. Điều này giúp bảo vệ tài khoản và ngăn spam trên {productName}."
 
-#: src/features/auth/components/modals/CaptchaModal.tsx:116
+#: src/features/auth/components/modals/CaptchaModal.tsx:128
 msgid "We need to make sure you're not a bot. Complete the verification below."
 msgstr "Chúng tôi cần xác minh bạn không phải là bot. Vui lòng hoàn tất xác minh bên dưới."
 
@@ -38558,7 +38597,7 @@ msgid "Webhooks updated"
 msgstr "Đã cập nhật webhook"
 
 #. Native Help submenu item that opens the Fluxer marketing website.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:146
+#: src/features/platform/utils/DesktopLocaleBridge.ts:147
 msgid "Website"
 msgstr "Trang web"
 
@@ -38612,7 +38651,7 @@ msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {
 msgstr "Chào mừng đến với {premiumProductFullName}. Đăng ký hàng năm của bạn sẽ được gia hạn vào ngày {formattedDate}. Khám phá các đặc quyền {premiumProductName} của bạn và quản lý đăng ký."
 
 #. Setup wizard title shown once the operator is signed in as the instance admin.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:39
+#: src/features/app/components/setup/SetupWizardSteps.tsx:42
 msgid "Welcome to {productName}"
 msgstr "Chào mừng bạn đến với {productName}"
 
@@ -38710,7 +38749,7 @@ msgid "When a custom threshold date is not set, members without the <0>{readMess
 msgstr "Khi không đặt ngày giới hạn tùy chỉnh, thành viên không có quyền <0>{readMessageHistoryPermissionLabel}</0> sẽ không xem được tin nhắn cũ. Họ sẽ chỉ thấy tin nhắn theo thời gian thực khi chúng đến và chúng sẽ biến mất khi họ khởi động lại ứng dụng."
 
 #. Description for the attachment expiry setup switch.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:229
+#: src/features/app/components/setup/SetupWizardSteps.tsx:232
 msgid "When attachment expiration is disabled, attachments remain available until manually removed."
 msgstr "Khi tắt tính năng hết hạn tệp đính kèm, các tệp đính kèm vẫn khả dụng cho đến khi bị xóa thủ công."
 
@@ -38808,7 +38847,7 @@ msgid "Who can friend"
 msgstr "Ai có thể kết bạn"
 
 #. Setup wizard registration step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:146
+#: src/features/app/components/setup/SetupWizardSteps.tsx:149
 msgid "Who can join"
 msgstr "Ai có thể tham gia"
 
@@ -38842,7 +38881,7 @@ msgstr "Win"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Top-level native menu bar title (Window menu).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:124
+#: src/features/platform/utils/DesktopLocaleBridge.ts:125
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:74
 msgid "Window"
 msgstr "Cửa sổ"
@@ -38943,7 +38982,7 @@ msgid "Without this permission, push-to-talk is required."
 msgstr "Nếu không có quyền này, bạn phải dùng chế độ nhấn để nói."
 
 #. Label for the wordmark branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:133
+#: src/features/app/components/setup/SetupWizardSteps.tsx:136
 msgid "Wordmark"
 msgstr "Wordmark"
 
@@ -39079,7 +39118,7 @@ msgid "You are now navigating to {paymentProviderName} to complete the payment. 
 msgstr "Bạn đang được chuyển hướng đến {paymentProviderName} để hoàn tất thanh toán. Quay lại {productName} sau khi bạn hoàn tất."
 
 #. Setup wizard body shown to the signed-in instance administrator.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:43
+#: src/features/app/components/setup/SetupWizardSteps.tsx:46
 msgid "You are signed in as the instance administrator. The next steps configure branding, registration, and core policy for everyone on this instance."
 msgstr "Bạn đã đăng nhập với tư cách quản trị viên máy chủ. Các bước tiếp theo sẽ cấu hình thương hiệu, đăng ký và chính sách cốt lõi cho mọi người trên máy chủ này."
 
@@ -39300,7 +39339,7 @@ msgstr "Bạn không thể nói trong kênh này"
 #. Tooltip / error shown in the camera preview modal when the user lacks Video permission in the current channel. Tone stays plain.
 #. Tooltip in the voice control bar when the user lacks the Video permission in this channel. Tone stays plain.
 #. Tooltip shown when the user lacks the Video permission in the voice channel. Tone stays plain.
-#: src/features/voice/components/modals/CameraPreviewModal.tsx:76
+#: src/features/voice/components/modals/CameraPreviewModal.tsx:77
 #: src/features/voice/components/voice_connection_status/LocalParticipantControls.tsx:50
 #: src/features/voice/components/VoiceControlBar.tsx:127
 msgid "You can't turn on your camera in this channel"
@@ -39974,6 +40013,10 @@ msgstr "Hành động của bạn không thể hoàn tất vì đã bị hệ th
 msgid "Your application is pending review. You can still update your listing details or withdraw the application."
 msgstr "Đơn đăng ký của bạn đang chờ xét duyệt. Bạn vẫn có thể cập nhật chi tiết hoặc rút lại đơn đăng ký."
 
+#: src/features/auth/components/AltchaVerification.tsx:50
+msgid "Your browser couldn't finish the check."
+msgstr "Trình duyệt của bạn không thể hoàn tất kiểm tra."
+
 #. Body of the browser-audio-required modal explaining why the user must click before audio can play.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx:12
 msgid "Your browser requires user interaction before audio can be played. Click the button below to enable voice chat."
@@ -40320,12 +40363,12 @@ msgid "Your video encoder stopped encoding frames, so your screen share was stop
 msgstr "Bộ mã hóa video của bạn đã ngừng mã hóa khung hình, vì vậy lượt chia sẻ màn hình của bạn đã bị dừng. Hãy thử chia sẻ lại."
 
 #. Label for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:286
+#: src/features/app/components/setup/SetupWizardSteps.tsx:312
 msgid "YouTube enrichment"
 msgstr "Bổ sung thông tin YouTube"
 
 #. Setup wizard title for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:938
+#: src/features/app/components/setup/SetupWizardSteps.tsx:976
 msgid "YouTube previews"
 msgstr "Xem trước YouTube"
 
@@ -40341,7 +40384,7 @@ msgid "Zoom"
 msgstr "Thu phóng"
 
 #. Native Window menu item that zooms the focused window, meaning maximize or restore it. Not image zoom and not UI zoom level.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:132
+#: src/features/platform/utils/DesktopLocaleBridge.ts:133
 msgctxt "window-menu"
 msgid "Zoom"
 msgstr "Thu phóng cửa sổ"
@@ -40352,7 +40395,7 @@ msgstr "Thu phóng cửa sổ"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:628
 #: src/features/input/state/input_keybind/shared.ts:253
-#: src/features/platform/utils/DesktopLocaleBridge.ts:112
+#: src/features/platform/utils/DesktopLocaleBridge.ts:113
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:82
 msgid "Zoom in"
 msgstr "Phóng to"
@@ -40363,7 +40406,7 @@ msgstr "Phóng to"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:624
 #: src/features/input/state/input_keybind/shared.ts:257
-#: src/features/platform/utils/DesktopLocaleBridge.ts:116
+#: src/features/platform/utils/DesktopLocaleBridge.ts:117
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "Thu nhỏ"

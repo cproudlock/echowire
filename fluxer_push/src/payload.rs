@@ -2,7 +2,7 @@
 
 use crate::job::{ClearJob, MessageJob, RingJob};
 use crate::metrics::PayloadShrink;
-use crate::unix_seconds;
+use crate::{unix_millis, unix_seconds};
 use serde_json::{Map, Value, json};
 
 const WEB_PUSH_MARKER: u64 = 8030;
@@ -35,6 +35,12 @@ const RING_CALLER_ID_KEY: &str = "caller_id";
 const RING_CALLER_NAME_KEY: &str = "caller_name";
 const RING_CALLER_AVATAR_KEY: &str = "caller_avatar_url";
 const RING_AVATAR_KEYS: [&str; 1] = [RING_CALLER_AVATAR_KEY];
+// Echowire: text and delivery window for a ring translated onto the legacy
+// direct routes. The ring job carries no channel name, only ids, so the caller
+// is the most specific thing we can name.
+const RING_BODY: &str = "Incoming call";
+const RING_TTL_FALLBACK_SECONDS: i64 = 30;
+const RING_TTL_MAX_SECONDS: i64 = 120;
 const RING_IDENTITY_KEYS: [&str; 2] = [RING_CALLER_ID_KEY, RING_CALLER_NAME_KEY];
 const MINIMAL_DATA_KEYS: [&str; 9] = [
     "type",
@@ -160,7 +166,79 @@ pub fn fcm_message(device_token: &str, envelope: &Value) -> Value {
     if is_clear(envelope) {
         return fcm_clear_message(device_token, envelope);
     }
+    // Echowire: rings reach this fork over the legacy direct route, so the ring
+    // envelope has to become a real FCM notification rather than falling through
+    // the message builder, which would render the fallback title and no body.
+    if is_ring(envelope) {
+        return fcm_ring_message(device_token, envelope);
+    }
     fcm_notification_message(device_token, envelope)
+}
+
+// Echowire: a ring as a plain high-priority FCM notification, on the channel our
+// clients create at process start, carrying the ids the client's tap router
+// resolves a route from. No click_action: nothing declares an intent filter for
+// it, and setting it strips the tap payload.
+fn fcm_ring_message(device_token: &str, envelope: &Value) -> Value {
+    let (title, body) = ring_text(envelope);
+    let mut data = stringified_data(envelope.get("data"));
+    data.insert("type".to_owned(), RING_TYPE.into());
+    data.insert("title".to_owned(), title.as_str().into());
+    data.insert("body".to_owned(), body.as_str().into());
+    let tag = ring_tag(&data);
+    data.insert("tag".to_owned(), tag.as_str().into());
+    json!({
+        "message": {
+            "token": device_token,
+            "notification": {"title": title, "body": body},
+            "data": data,
+            "android": {
+                "priority": "HIGH",
+                "ttl": format!("{}s", ring_ttl_seconds(envelope)),
+                "collapse_key": tag,
+                "notification": {
+                    "channel_id": "fluxer_default_push",
+                    "tag": tag,
+                },
+            },
+            "fcm_options": {"analytics_label": RING_TYPE},
+        },
+    })
+}
+
+fn is_ring(envelope: &Value) -> bool {
+    matches!(record_kind(envelope), RecordKind::Ring)
+}
+
+fn ring_text(envelope: &Value) -> (String, String) {
+    let caller = envelope
+        .get("data")
+        .and_then(|data| field(data, RING_CALLER_NAME_KEY))
+        .map(sanitized_text)
+        .filter(|name| !name.is_empty());
+    (
+        caller.unwrap_or_else(|| FALLBACK_TITLE.to_owned()),
+        RING_BODY.to_owned(),
+    )
+}
+
+fn ring_tag(data: &Map<String, Value>) -> String {
+    match data.get("channel_id").and_then(Value::as_str) {
+        Some(channel_id) if !channel_id.is_empty() => format!("call:{channel_id}"),
+        _ => FALLBACK_TAG.to_owned(),
+    }
+}
+
+// A ring is only meaningful inside its window, so it must not sit in a provider
+// queue for a day like an ordinary notification.
+fn ring_ttl_seconds(envelope: &Value) -> i64 {
+    envelope
+        .get("data")
+        .and_then(|data| data.get("expires_at_ms"))
+        .and_then(Value::as_i64)
+        .map(|expires| (expires - unix_millis()) / 1000)
+        .unwrap_or(RING_TTL_FALLBACK_SECONDS)
+        .clamp(1, RING_TTL_MAX_SECONDS)
 }
 
 fn fcm_clear_message(device_token: &str, envelope: &Value) -> Value {
@@ -241,14 +319,24 @@ pub fn apns_payload(envelope: &Value) -> Value {
         return Value::Object(payload);
     }
     let notification = envelope.get("notification");
-    let title = notification
-        .and_then(|value| field(value, "title"))
-        .or_else(|| field(envelope, "title"))
-        .unwrap_or(FALLBACK_TITLE);
-    let body = notification
-        .and_then(|value| field(value, "body"))
-        .or_else(|| field(envelope, "body"))
-        .unwrap_or("");
+    // Echowire: same reason as the FCM builder. A ring arriving on the legacy
+    // APNs route has no notification block, so name the caller rather than
+    // showing the fallback title with an empty body.
+    let ring = is_ring(envelope).then(|| ring_text(envelope));
+    let title = match ring.as_ref() {
+        Some((title, _)) => title.as_str(),
+        None => notification
+            .and_then(|value| field(value, "title"))
+            .or_else(|| field(envelope, "title"))
+            .unwrap_or(FALLBACK_TITLE),
+    };
+    let body = match ring.as_ref() {
+        Some((_, body)) => body.as_str(),
+        None => notification
+            .and_then(|value| field(value, "body"))
+            .or_else(|| field(envelope, "body"))
+            .unwrap_or(""),
+    };
     let url = data
         .and_then(|data| field(data, "url"))
         .or_else(|| notification.and_then(|value| field(value, "navigate")));
@@ -294,6 +382,9 @@ pub fn apns_delivery_headers(envelope: &Value) -> Vec<(String, String)> {
     let expiration = unix_seconds()
         + if clear {
             APNS_BACKGROUND_EXPIRATION_SECONDS
+        } else if is_ring(envelope) {
+            // Echowire: expire with the ring window rather than tomorrow.
+            ring_ttl_seconds(envelope)
         } else {
             APNS_ALERT_EXPIRATION_SECONDS
         };
@@ -605,7 +696,7 @@ fn serialize(value: &Value) -> Vec<u8> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::job::{ClearJob, MessageJob, NotificationFields};
+    use crate::job::{ClearJob, MessageJob, NotificationFields, RingJob};
 
     const CHANNEL_ID: &str = "9876543210987654321";
     const MESSAGE_ID: &str = "1122334455667788990";
@@ -638,6 +729,108 @@ mod tests {
             channel_id: CHANNEL_ID.to_owned(),
             message_id: MESSAGE_ID.to_owned(),
         }
+    }
+
+    // Echowire: rings on the legacy direct routes, which is what this fork
+    // registers for. Upstream only ever renders a ring as a web push envelope.
+    fn ring_job(caller_name: Option<&str>) -> RingJob {
+        RingJob {
+            v: 1,
+            user_id: USER_ID.to_owned(),
+            channel_id: CHANNEL_ID.to_owned(),
+            message_id: MESSAGE_ID.to_owned(),
+            started_at_ms: 1_790_000_000_000,
+            expires_at_ms: unix_millis() + 30_000,
+            caller_id: Some("1472410036750807040".to_owned()),
+            caller_name: caller_name.map(str::to_owned),
+            caller_avatar_url: None,
+        }
+    }
+
+    fn ring_fcm(caller_name: Option<&str>) -> Value {
+        fcm_message(
+            "fcm-device-token",
+            &web_push_call_ring(&ring_job(caller_name)),
+        )
+    }
+
+    #[test]
+    fn a_ring_reaches_a_raw_fcm_registration_as_a_notification() {
+        let message = ring_fcm(Some("Elias"))["message"].clone();
+        assert_eq!(message["notification"]["title"], json!("Elias"));
+        assert_eq!(message["notification"]["body"], json!("Incoming call"));
+        assert_eq!(message["android"]["priority"], json!("HIGH"));
+        assert_eq!(
+            message["android"]["notification"]["channel_id"],
+            json!("fluxer_default_push")
+        );
+        assert_eq!(message["token"], json!("fcm-device-token"));
+    }
+
+    #[test]
+    fn a_ring_carries_the_ids_the_client_routes_from() {
+        let data = ring_fcm(Some("Elias"))["message"]["data"].clone();
+        assert_eq!(data["type"], json!("call_ring"));
+        assert_eq!(data["channel_id"], json!(CHANNEL_ID));
+        assert_eq!(data["message_id"], json!(MESSAGE_ID));
+        assert_eq!(data["target_user_id"], json!(USER_ID));
+        assert!(data["expires_at_ms"].is_string());
+    }
+
+    #[test]
+    fn a_ring_never_sets_a_click_action() {
+        let serialized = serde_json::to_string(&ring_fcm(Some("Elias"))).expect("serialises");
+        assert!(!serialized.contains("click_action"));
+    }
+
+    #[test]
+    fn a_ring_without_a_caller_name_still_reads_as_a_call() {
+        let message = ring_fcm(None)["message"].clone();
+        assert_eq!(message["notification"]["title"], json!("echowire"));
+        assert_eq!(message["notification"]["body"], json!("Incoming call"));
+    }
+
+    #[test]
+    fn a_ring_expires_with_its_window_rather_than_tomorrow() {
+        let ttl = ring_fcm(Some("Elias"))["message"]["android"]["ttl"].clone();
+        let seconds: i64 = ttl
+            .as_str()
+            .expect("a ttl string")
+            .trim_end_matches('s')
+            .parse()
+            .expect("a ttl in seconds");
+        assert!((1..=120).contains(&seconds), "ttl was {seconds}s");
+    }
+
+    #[test]
+    fn a_ring_collapses_per_channel() {
+        let message = ring_fcm(Some("Elias"))["message"].clone();
+        let expected = json!(format!("call:{CHANNEL_ID}"));
+        assert_eq!(message["android"]["collapse_key"], expected);
+        assert_eq!(message["android"]["notification"]["tag"], expected);
+    }
+
+    #[test]
+    fn a_ring_keeps_its_web_push_envelope_unchanged() {
+        let envelope = web_push_call_ring(&ring_job(Some("Elias")));
+        assert_eq!(envelope["web_push"], json!(8030));
+        assert_eq!(envelope["type"], json!("call_ring"));
+        assert_eq!(envelope["data"]["caller_name"], json!("Elias"));
+        assert!(
+            envelope.get("notification").is_none(),
+            "the web push envelope must not gain a notification block"
+        );
+        assert!(envelope.get("title").is_none());
+    }
+
+    #[test]
+    fn a_ring_becomes_an_apns_alert_naming_the_caller() {
+        let payload = apns_payload(&web_push_call_ring(&ring_job(Some("Elias"))));
+        assert_eq!(
+            payload["aps"]["alert"],
+            json!({"title": "Elias", "body": "Incoming call"})
+        );
+        assert_eq!(payload["channel_id"], json!(CHANNEL_ID));
     }
 
     fn apns_for(image_url: Option<&str>) -> Value {

@@ -67,7 +67,18 @@ impl Audience {
     fn rings(subscription: &Subscription) -> bool {
         match subscription.platform() {
             Some(Platform::IosApnsVoip) => true,
-            Some(Platform::AndroidFcm) => subscription.is_web_push_registration(),
+            // Echowire: upstream admits only relay-shaped registrations here,
+            // because their clients register an endpoint URL at their own relay
+            // and receive a ring as an encrypted web push envelope. This fork
+            // registers RAW provider tokens, since upstream's registration would
+            // post our users' device tokens to their host, so that filter
+            // dropped every ring we ever published and an incoming call reached
+            // no device at all once upstream #2978 also silenced the CALL
+            // message. Admit raw FCM and APNs: route_of already sends them down
+            // the legacy direct routes, and payload.rs translates the ring into
+            // a plain provider notification. Remove this if we ever adopt relay
+            // registration.
+            Some(Platform::AndroidFcm | Platform::IosApns) => true,
             _ => false,
         }
     }
@@ -670,5 +681,54 @@ fn record_depth(state: &AppState, admission: &Semaphore, capacity: usize) {
 fn reap(result: Result<(), tokio::task::JoinError>) {
     if let Err(error) = result {
         warn!(error = %error, "push job task failed");
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn subscription(platform: &str, endpoint: &str, keyed: bool) -> Subscription {
+        Subscription {
+            subscription_id: "sub-1".to_owned(),
+            endpoint: endpoint.to_owned(),
+            p256dh_key: keyed.then(|| "p256dh".to_owned()),
+            auth_key: keyed.then(|| "auth".to_owned()),
+            platform: Some(platform.to_owned()),
+            app_id: None,
+            provider_environment: None,
+        }
+    }
+
+    // Echowire: a raw FCM token is what this fork actually registers, and it
+    // must receive rings over the legacy direct route.
+    #[test]
+    fn a_raw_fcm_registration_is_admitted_for_a_ring() {
+        let raw = subscription("android_fcm", "fcm-device-token", false);
+        assert!(Audience::Ring.admits(&raw));
+    }
+
+    #[test]
+    fn a_raw_apns_registration_is_admitted_for_a_ring() {
+        let raw = subscription("ios_apns", "apns-device-token", false);
+        assert!(Audience::Ring.admits(&raw));
+    }
+
+    #[test]
+    fn a_relay_shaped_registration_is_still_admitted_for_a_ring() {
+        let relay = subscription("android_fcm", "https://relay.example/x", true);
+        assert!(Audience::Ring.admits(&relay));
+    }
+
+    #[test]
+    fn a_web_push_registration_is_still_excluded_from_rings() {
+        let web = subscription("web_push", "https://push.example/x", true);
+        assert!(!Audience::Ring.admits(&web));
+    }
+
+    #[test]
+    fn a_voip_registration_is_still_excluded_from_standard_pushes() {
+        let voip = subscription("ios_apns_voip", "https://relay.example/x", true);
+        assert!(!Audience::Standard.admits(&voip));
     }
 }

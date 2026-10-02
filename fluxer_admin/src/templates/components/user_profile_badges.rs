@@ -13,12 +13,40 @@ struct BadgeDef {
     tooltip: String,
 }
 
+fn premium_tooltip(
+    premium_type: i32,
+    premium_since: Option<&str>,
+    is_self_hosted: bool,
+    self_hosted_premium_name: Option<&str>,
+) -> Option<String> {
+    if is_self_hosted {
+        let name = self_hosted_premium_name?;
+        return Some(match premium_since {
+            Some(since) => format!("{name} subscriber since {since}"),
+            None => name.to_owned(),
+        });
+    }
+    // Echowire: the premium tier is Reverb, not upstream Plutonium.
+    Some(if premium_type == premium_types::LIFETIME {
+        match premium_since {
+            Some(since) => format!("echowire Visionary since {since}"),
+            None => "echowire Visionary".into(),
+        }
+    } else {
+        match premium_since {
+            Some(since) => format!("echowire Reverb subscriber since {since}"),
+            None => "echowire Reverb".into(),
+        }
+    })
+}
+
 pub fn user_profile_badges(
     static_cdn_endpoint: &str,
     flags: u64,
     premium_type: Option<i32>,
     premium_since: Option<&str>,
     is_self_hosted: bool,
+    self_hosted_premium_name: Option<&str>,
     size_sm: bool,
 ) -> Markup {
     let cdn = static_cdn_endpoint.trim_end_matches('/');
@@ -48,23 +76,11 @@ pub fn user_profile_badges(
             tooltip: "echowire Bug Hunter".into(),
         });
     }
-    if !is_self_hosted
-        && let Some(pt) = premium_type
+    if let Some(pt) = premium_type
         && pt != premium_types::NONE
+        && let Some(tooltip) =
+            premium_tooltip(pt, premium_since, is_self_hosted, self_hosted_premium_name)
     {
-        let tooltip = if pt == premium_types::LIFETIME {
-            match premium_since {
-                Some(since) => format!("echowire Visionary since {since}"),
-                None => "echowire Visionary".into(),
-            }
-        } else {
-            match premium_since {
-                Some(since) => {
-                    format!("echowire Reverb subscriber since {since}")
-                }
-                None => "echowire Reverb".into(),
-            }
-        };
         badges.push(BadgeDef {
             icon_url: format!("{cdn}/badges/plutonium.svg"),
             tooltip,
@@ -88,5 +104,44 @@ pub fn user_profile_badges(
                     class=(badge_size);
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn render(self_hosted: bool, name: Option<&str>, premium_type: i32) -> String {
+        user_profile_badges(
+            "https://static.example.com",
+            0,
+            Some(premium_type),
+            Some("2026-01-01"),
+            self_hosted,
+            name,
+            false,
+        )
+        .into_string()
+    }
+
+    // Echowire: upstream asserts its own Plutonium and Visionary wording here. The
+    // branch only runs when the instance is not self-hosted, which is never true for
+    // this fork, but the labels are rebranded so a misconfigured is_self_hosted
+    // cannot leak the upstream brand into a tooltip.
+    #[test]
+    fn hosted_premium_badges_use_the_echowire_labels() {
+        assert!(
+            render(false, Some("Gold"), 1).contains("echowire Reverb subscriber since 2026-01-01")
+        );
+        assert!(render(false, None, 2).contains("echowire Visionary since 2026-01-01"));
+    }
+
+    #[test]
+    fn self_hosted_premium_badges_use_the_configured_name() {
+        let markup = render(true, Some("Gold"), 1);
+        assert!(markup.contains("Gold subscriber since 2026-01-01"));
+        assert!(!markup.contains("Plutonium"));
+        assert!(render(true, Some("Gold"), 2).contains("Gold subscriber since"));
+        assert!(!render(true, None, 1).contains("img"));
     }
 }

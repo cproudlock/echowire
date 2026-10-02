@@ -11,6 +11,14 @@ function getBootstrapProductName(): string {
 	return productName || 'echowire';
 }
 
+function getBootstrapPremiumProductName(): string {
+	if (typeof window === 'undefined') {
+		return 'Reverb';
+	}
+	const premiumProductName = window.__FLUXER_BOOTSTRAP__?.instance.app_public?.branding?.premium_product_name?.trim();
+	return premiumProductName || 'Reverb';
+}
+
 export const PRODUCT_NAME = getBootstrapProductName();
-export const PREMIUM_PRODUCT_NAME = 'Reverb';
+export const PREMIUM_PRODUCT_NAME = getBootstrapPremiumProductName();
 export const PREMIUM_PRODUCT_FULL_NAME = `${PRODUCT_NAME} ${PREMIUM_PRODUCT_NAME}`;

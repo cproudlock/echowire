@@ -291,30 +291,58 @@ async fn exact_stream_accepts_small_transport_chunks_and_bounds_empty_ones() {
 }
 
 #[tokio::test]
-async fn buffered_read_accepts_small_transport_chunks_and_bounds_empty_ones() {
-    // Cloudflare R2 answers a small object in many more, and much smaller,
-    // frames than the bundled SeaweedFS does. Counting every frame against the
-    // chunk allowance rejected every R2 read; only frames carrying no bytes may
-    // spend it, which is what the streaming path has always done.
-    const CHUNK_BYTES: usize = 64;
-    const BODY_BYTES: usize = 4 * 1024;
-    let budget = ByteBudget::new(4 << 20);
-    let chunks: Vec<Result<Bytes, std::io::Error>> = (0..BODY_BYTES / CHUNK_BYTES)
-        .map(|_| Ok(Bytes::from(vec![7u8; CHUNK_BYTES])))
-        .collect();
-    assert!(
-        chunks.len() as u64 > response_body_limit::response_body_chunk_limit(BODY_BYTES as u64)
-    );
-    let data = read_response_bytes(provider_chunked_response(chunks), BODY_BYTES, &budget)
-        .await
-        .expect("small transport chunks");
-    assert_eq!(data.as_ref().len(), BODY_BYTES);
+async fn response_reader_accepts_transport_chunks_of_any_size_within_the_length() {
+    // Upstream #3144 arrived at the fork's empty-chunk accounting independently and
+    // went one step further by dropping the per-chunk byte ceiling as well, so the
+    // fork's divergence here is retired rather than carried. This test is upstream's,
+    // which already covers both halves of what the fork's own regression test
+    // covered, plus the large-chunk case the fork still rejected. It reuses the
+    // existing provider_chunked_response rather than upstream's near-identical
+    // chunked_provider_response, so there is one chunked-response helper and not two.
+    const LARGE_CHUNK_BYTES: usize =
+        crate::response_body_limit::RESPONSE_BODY_TRANSPORT_CHUNK_BYTES_MAX + 155_648;
+    let budget = ByteBudget::new(4 * LARGE_CHUNK_BYTES);
+    let large = read_response_bytes(
+        provider_response(vec![7u8; LARGE_CHUNK_BYTES]),
+        LARGE_CHUNK_BYTES,
+        &budget,
+    )
+    .await
+    .expect("a transport chunk larger than the reserved allowance");
+    assert_eq!(large.as_ref().len(), LARGE_CHUNK_BYTES);
 
-    let mut flood: Vec<Result<Bytes, std::io::Error>> =
-        (0..4096).map(|_| Ok(Bytes::new())).collect();
-    flood.push(Ok(Bytes::from_static(b"abcd")));
+    // Cloudflare R2 answers a small object in many more, and much smaller, frames
+    // than the bundled SeaweedFS does. Carried over from the fork's regression test:
+    // assert the case genuinely exceeds the old every-frame allowance, so this cannot
+    // quietly stop exercising the thing it exists to exercise.
+    const SMALL_CHUNK_BYTES: usize = 1448;
+    const SMALL_CHUNKS: usize = 512;
+    assert!(
+        SMALL_CHUNKS as u64
+            > response_body_limit::response_body_chunk_limit(
+                (SMALL_CHUNK_BYTES * SMALL_CHUNKS) as u64
+            )
+    );
+    let small = read_response_bytes(
+        provider_chunked_response(
+            (0..SMALL_CHUNKS)
+                .map(|_| Ok(Bytes::from(vec![9u8; SMALL_CHUNK_BYTES])))
+                .collect(),
+        ),
+        SMALL_CHUNK_BYTES * SMALL_CHUNKS,
+        &budget,
+    )
+    .await
+    .expect("packet-sized transport chunks");
+    assert_eq!(small.as_ref().len(), SMALL_CHUNK_BYTES * SMALL_CHUNKS);
+
     assert!(matches!(
-        read_response_bytes(provider_chunked_response(flood), 4, &budget).await,
+        read_response_bytes(
+            provider_chunked_response((0..4096).map(|_| Ok(Bytes::new())).collect()),
+            4,
+            &budget,
+        )
+        .await,
         Err(StorageError::ObjectStorage(_))
     ));
 }

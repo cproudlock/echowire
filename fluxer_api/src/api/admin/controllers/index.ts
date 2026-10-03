@@ -17,6 +17,7 @@ import {LimitConfigAdminController} from '@app/api/admin/controllers/LimitConfig
 import {MessageAdminController} from '@app/api/admin/controllers/MessageAdminController';
 import {ReportAdminController} from '@app/api/admin/controllers/ReportAdminController';
 import {SearchAdminController} from '@app/api/admin/controllers/SearchAdminController';
+import {StoreBillingAdminController} from '@app/api/admin/controllers/StoreBillingAdminController';
 import {SystemDmAdminController} from '@app/api/admin/controllers/SystemDmAdminController';
 import {ThreadAdminController} from '@app/api/admin/controllers/ThreadAdminController';
 import {UserAdminController} from '@app/api/admin/controllers/UserAdminController';
@@ -27,6 +28,7 @@ export function registerAdminControllers(app: HonoApp) {
 	AdminApiKeyAdminController(app);
 	ApplicationAdminController(app);
 	UserAdminController(app);
+	StoreBillingAdminController(app);
 	CodesAdminController(app);
 	GuildAdminController(app);
 	ThreadAdminController(app);

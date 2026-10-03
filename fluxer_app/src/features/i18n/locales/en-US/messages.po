@@ -1624,7 +1624,7 @@ msgid "{PAYMENT_PROVIDER_NAME} handles payment securely."
 msgstr "{PAYMENT_PROVIDER_NAME} handles payment securely."
 
 #. Modal body for the mobile card verification confirmation. Explains the two-step flow and the return path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:190
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:198
 msgid "{paymentProviderName} will first verify that your card is eligible for localized pricing, then take you to payment. Return to {productName} once you've completed it."
 msgstr "{paymentProviderName} will first verify that your card is eligible for localized pricing, then take you to payment. Return to {productName} once you've completed it."
 
@@ -2647,7 +2647,7 @@ msgid "A Linux desktop update is available. Choose the package format for this s
 msgstr "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
 
 #. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:700
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:742
 msgid "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
 msgstr "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
 
@@ -2962,7 +2962,7 @@ msgstr "Actions"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning the paid subscription is active.
 #. Threads popout tab: threads still open.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:447
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:452
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:37
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:22
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:19
@@ -3110,7 +3110,7 @@ msgid "Add a friend to get started."
 msgstr "Add a friend to get started."
 
 #. Setup wizard body for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:928
+#: src/features/app/components/setup/SetupWizardSteps.tsx:927
 msgid "Add a Klipy API key to enable GIF search at runtime."
 msgstr "Add a Klipy API key to enable GIF search at runtime."
 
@@ -3147,7 +3147,7 @@ msgid "Add a working email"
 msgstr "Add a working email"
 
 #. Setup wizard body for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:936
+#: src/features/app/components/setup/SetupWizardSteps.tsx:935
 msgid "Add a YouTube Data API key to enrich YouTube links."
 msgstr "Add a YouTube Data API key to enrich YouTube links."
 
@@ -3193,7 +3193,7 @@ msgid "Add another reaction"
 msgstr "Add another reaction"
 
 #. Setup wizard body for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:952
+#: src/features/app/components/setup/SetupWizardSteps.tsx:951
 msgid "Add Bluesky OAuth client metadata and a signing key."
 msgstr "Add Bluesky OAuth client metadata and a signing key."
 
@@ -3350,7 +3350,7 @@ msgid "Add shortcut"
 msgstr "Add shortcut"
 
 #. Setup wizard body for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:944
+#: src/features/app/components/setup/SetupWizardSteps.tsx:943
 msgid "Add SMTP credentials so the instance can send verification and notification email."
 msgstr "Add SMTP credentials so the instance can send verification and notification email."
 
@@ -3381,7 +3381,7 @@ msgid "Add tag"
 msgstr "Add tag"
 
 #. Description for configuring an optional setup wizard integration now.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:920
+#: src/features/app/components/setup/SetupWizardSteps.tsx:919
 msgid "Add the credentials during setup."
 msgstr "Add the credentials during setup."
 
@@ -3692,19 +3692,19 @@ msgstr "Alignment controls are only available on wider screens"
 msgid "All"
 msgstr "All"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:540
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:582
 msgid "All <0/> for <1>{effectiveMonthlyPrice}/month</1>."
 msgstr "All <0/> for <1>{effectiveMonthlyPrice}/month</1>."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:562
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:604
 msgid "All <0/> for <1>{effectiveYearlyPrice}/year</1>."
 msgstr "All <0/> for <1>{effectiveYearlyPrice}/year</1>."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:583
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:625
 msgid "All <0/> included with your subscription."
 msgstr "All <0/> included with your subscription."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:530
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:572
 msgid "All <0/>, forever. No billing, no renewals."
 msgstr "All <0/>, forever. No billing, no renewals."
 
@@ -4492,17 +4492,17 @@ msgid "Anyone can call you, including strangers"
 msgstr "Anyone can call you, including strangers"
 
 #. Description for the open registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:157
+#: src/features/app/components/setup/SetupWizardSteps.tsx:156
 msgid "Anyone can create an account."
 msgstr "Anyone can create an account."
 
 #. Description for the approval registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:165
+#: src/features/app/components/setup/SetupWizardSteps.tsx:164
 msgid "Anyone can request an account, but an administrator must approve it."
 msgstr "Anyone can request an account, but an administrator must approve it."
 
 #. Label for an integration API key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:956
+#: src/features/app/components/setup/SetupWizardSteps.tsx:955
 msgid "API key"
 msgstr "API key"
 
@@ -4661,7 +4661,7 @@ msgid "Apply to all communities"
 msgstr "Apply to all communities"
 
 #. Registration mode option requiring admin approval.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:161
+#: src/features/app/components/setup/SetupWizardSteps.tsx:160
 msgid "Approval required"
 msgstr "Approval required"
 
@@ -4905,8 +4905,8 @@ msgstr "Attachment actions"
 
 #. Setup wizard media expiry step title.
 #. Summary row label for the attachment expiry choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:215
-#: src/features/app/components/setup/SetupWizardSteps.tsx:351
+#: src/features/app/components/setup/SetupWizardSteps.tsx:214
+#: src/features/app/components/setup/SetupWizardSteps.tsx:350
 msgid "Attachment expiration"
 msgstr "Attachment expiration"
 
@@ -5827,6 +5827,16 @@ msgstr "Best with the desktop app"
 msgid "Between 1 and 32 characters"
 msgstr "Between 1 and 32 characters"
 
+#. Plutonium subscription card text for an App Store or Google Play subscription. {storeName} is the store brand name, App Store or Google Play, and must not be translated.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:535
+msgid "Billed through {storeName}."
+msgstr "Billed through {storeName}."
+
+#. Plutonium subscription card text for an App Store or Google Play subscription that will not renew. {storeName} is the store brand name, App Store or Google Play, and must not be translated. {endDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:525
+msgid "Billed through {storeName}. Ends on <0>{endDate}</0>."
+msgstr "Billed through {storeName}. Ends on <0>{endDate}</0>."
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:27
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:202
@@ -5993,12 +6003,12 @@ msgid "Bluesky"
 msgstr "Bluesky"
 
 #. Label for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:292
+#: src/features/app/components/setup/SetupWizardSteps.tsx:291
 msgid "Bluesky connections"
 msgstr "Bluesky connections"
 
 #. Setup wizard title for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:948
+#: src/features/app/components/setup/SetupWizardSteps.tsx:947
 msgid "Bluesky OAuth"
 msgstr "Bluesky OAuth"
 
@@ -6227,7 +6237,7 @@ msgid "Branding"
 msgstr "Branding"
 
 #. Accessible label for a branding image preview in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:139
+#: src/features/app/components/setup/SetupWizardSteps.tsx:138
 msgid "Branding asset preview"
 msgstr "Branding asset preview"
 
@@ -6747,7 +6757,7 @@ msgid "Cancel import"
 msgstr "Cancel import"
 
 #. Billing button that cancels a scheduled move to a lower subscription price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:837
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:892
 msgid "Cancel price change"
 msgstr "Cancel price change"
 
@@ -6762,13 +6772,13 @@ msgid "Cancel request"
 msgstr "Cancel request"
 
 #. Billing button that cancels a scheduled billing-cycle change.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:845
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:900
 msgid "Cancel scheduled switch"
 msgstr "Cancel scheduled switch"
 
 #. Billing button that starts subscription cancellation.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:860
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:915
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
 #: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
@@ -6781,7 +6791,7 @@ msgid "Cancel subscription?"
 msgstr "Cancel subscription?"
 
 #. Plutonium subscription card hint shown to a subscriber who could move to a lower price but has another billing change already scheduled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:663
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:705
 msgid "Cancel the scheduled change to move to the current price instead."
 msgstr "Cancel the scheduled change to move to the current price instead."
 
@@ -6791,7 +6801,7 @@ msgid "Cancel upload"
 msgstr "Cancel upload"
 
 #. Billing button that cancels a scheduled yearly upgrade.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:841
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:896
 msgid "Cancel yearly upgrade"
 msgstr "Cancel yearly upgrade"
 
@@ -6801,7 +6811,7 @@ msgid "Cancel your friend request to {displayName}?"
 msgstr "Cancel your friend request to {displayName}?"
 
 #. Subscription status badge meaning cancellation is scheduled for the renewal date.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:435
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:440
 msgid "Canceling"
 msgstr "Canceling"
 
@@ -6810,7 +6820,7 @@ msgstr "Canceling"
 msgid "Cancellation"
 msgstr "Cancellation"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:517
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:559
 msgid "Cancels on <0>{cancelDate}</0>. <1/> remain active until then."
 msgstr "Cancels on <0>{cancelDate}</0>. <1/> remain active until then."
 
@@ -7080,7 +7090,7 @@ msgid "Change password form"
 msgstr "Change password form"
 
 #. Subscription status badge meaning a future billing plan change is scheduled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:439
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:444
 msgid "Change scheduled"
 msgstr "Change scheduled"
 
@@ -7681,17 +7691,17 @@ msgid "Checkout"
 msgstr "Checkout"
 
 #. Modal body for the generic "checkout blocked" state on a self-hosted instance.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:156
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:164
 msgid "Checkout is blocked for this account."
 msgstr "Checkout is blocked for this account."
 
 #. Modal body for the generic "checkout blocked" state. Provides the support email.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:152
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:160
 msgid "Checkout is blocked for this account. Contact {supportEmail} if you need help."
 msgstr "Checkout is blocked for this account. Contact {supportEmail} if you need help."
 
 #. Modal title for the generic "checkout blocked" state when no more specific reason is known.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:148
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:156
 msgid "Checkout unavailable"
 msgstr "Checkout unavailable"
 
@@ -7791,7 +7801,7 @@ msgid "Choose a supported audio file and try again."
 msgstr "Choose a supported audio file and try again."
 
 #. Setup wizard title for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:62
+#: src/features/app/components/setup/SetupWizardSteps.tsx:61
 msgid "Choose a theme"
 msgstr "Choose a theme"
 
@@ -7855,7 +7865,7 @@ msgid "Choose how messages are displayed in chat channels."
 msgstr "Choose how messages are displayed in chat channels."
 
 #. Setup wizard registration step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:148
+#: src/features/app/components/setup/SetupWizardSteps.tsx:147
 msgid "Choose how new accounts are created on this instance."
 msgstr "Choose how new accounts are created on this instance."
 
@@ -7870,12 +7880,12 @@ msgid "Choose how times are displayed throughout the app"
 msgstr "Choose how times are displayed throughout the app"
 
 #. Plutonium subscription payment method picker description, generic fallback when no country-specific copy applies.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:58
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:60
 msgid "Choose how you'd like to pay for this subscription."
 msgstr "Choose how you'd like to pay for this subscription."
 
 #. Setup wizard community model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:178
+#: src/features/app/components/setup/SetupWizardSteps.tsx:177
 msgid "Choose how your instance works"
 msgstr "Choose how your instance works"
 
@@ -7889,7 +7899,7 @@ msgid "Choose one verification method. Either method can clear this check."
 msgstr "Choose one verification method. Either method can clear this check."
 
 #. Modal title for the payment method picker (local card vs alternative method).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:204
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:212
 msgid "Choose payment method"
 msgstr "Choose payment method"
 
@@ -7903,7 +7913,7 @@ msgid "Choose the category that best describes your community. You can change th
 msgstr "Choose the category that best describes your community. You can change this any time."
 
 #. Setup wizard premium model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:301
+#: src/features/app/components/setup/SetupWizardSteps.tsx:300
 msgid "Choose the premium model"
 msgstr "Choose the premium model"
 
@@ -7963,7 +7973,7 @@ msgid "Choose where its published messages should go. You can unfollow any time 
 msgstr "Choose where its published messages should go. You can unfollow any time in Community settings → Webhooks."
 
 #. Setup wizard media expiry step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:219
+#: src/features/app/components/setup/SetupWizardSteps.tsx:218
 msgid "Choose whether uploaded attachments should expire automatically based on size."
 msgstr "Choose whether uploaded attachments should expire automatically based on size."
 
@@ -8155,7 +8165,7 @@ msgstr "Cleans up your mic for clear speech."
 #. Button or menu action label in the theme studio quick css section. Keep it concise.
 #. Button that removes an uploaded branding image.
 #. Inline button in the Recent searches section that wipes the search history list.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:115
+#: src/features/app/components/setup/SetupWizardSteps.tsx:114
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
 #: src/features/input/components/KeybindRecorder.tsx:442
@@ -8388,7 +8398,7 @@ msgid "Client"
 msgstr "Client"
 
 #. Label for Bluesky OAuth client name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:993
+#: src/features/app/components/setup/SetupWizardSteps.tsx:992
 msgid "Client name"
 msgstr "Client name"
 
@@ -8405,7 +8415,7 @@ msgid "Client secret regenerated. Update any code that uses the old secret."
 msgstr "Client secret regenerated. Update any code that uses the old secret."
 
 #. Label for Bluesky OAuth client URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:997
+#: src/features/app/components/setup/SetupWizardSteps.tsx:996
 msgid "Client URL"
 msgstr "Client URL"
 
@@ -8548,7 +8558,7 @@ msgid "Close your DM with {username}? You can reopen it anytime."
 msgstr "Close your DM with {username}? You can reopen it anytime."
 
 #. Registration mode option that disables public registration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:169
+#: src/features/app/components/setup/SetupWizardSteps.tsx:168
 msgid "Closed"
 msgstr "Closed"
 
@@ -8974,7 +8984,7 @@ msgstr "Community mute"
 
 #. Label for the single community name input in the setup wizard.
 #. Label of the community name input in the create-community form.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:194
+#: src/features/app/components/setup/SetupWizardSteps.tsx:193
 #: src/features/guild/components/modals/add_guild_modal/shared.ts:120
 msgid "Community name"
 msgstr "Community name"
@@ -9112,7 +9122,7 @@ msgid "Complete one of the verification paths below to continue using {productNa
 msgstr "Complete one of the verification paths below to continue using {productName}."
 
 #. Modal title for the mobile checkout confirmation when opening the payment provider in a browser.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:186
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:194
 msgid "Complete payment"
 msgstr "Complete payment"
 
@@ -9198,7 +9208,7 @@ msgid "Configure keyboard shortcuts"
 msgstr "Configure keyboard shortcuts"
 
 #. Option for configuring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:916
+#: src/features/app/components/setup/SetupWizardSteps.tsx:915
 msgid "Configure now"
 msgstr "Configure now"
 
@@ -9586,7 +9596,7 @@ msgid "Continue"
 msgstr "Continue"
 
 #. Plutonium checkout pre-approval prompt secondary button. Continues straight to the standard checkout screen.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:89
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:91
 msgid "Continue to checkout"
 msgstr "Continue to checkout"
 
@@ -10376,7 +10386,7 @@ msgstr "Couldn't open search result"
 #. Title of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Title of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Title of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:30
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:32
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:14
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:29
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:29
@@ -10545,7 +10555,7 @@ msgid "Couldn't start {blueskyProviderName} authorization"
 msgstr "Couldn't start {blueskyProviderName} authorization"
 
 #. Title of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:160
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:168
 msgid "Couldn't start checkout"
 msgstr "Couldn't start checkout"
 
@@ -10747,7 +10757,7 @@ msgid "Create account to claim gift"
 msgstr "Create account to claim gift"
 
 #. Button that opens the registration flow to create the first administrator account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:70
+#: src/features/app/components/setup/SetupWizardSteps.tsx:69
 msgid "Create administrator account"
 msgstr "Create administrator account"
 
@@ -10873,7 +10883,7 @@ msgid "Create role"
 msgstr "Create role"
 
 #. Setup wizard title prompting the operator to create the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:50
+#: src/features/app/components/setup/SetupWizardSteps.tsx:49
 msgid "Create the administrator account"
 msgstr "Create the administrator account"
 
@@ -11315,7 +11325,7 @@ msgstr "Custom…"
 
 #. Billing button that opens the external customer portal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:766
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:821
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:39
 msgid "Customer portal"
 msgstr "Customer portal"
@@ -11640,7 +11650,7 @@ msgid "Debug user"
 msgstr "Debug user"
 
 #. Setup wizard premium model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:305
+#: src/features/app/components/setup/SetupWizardSteps.tsx:304
 msgid "Decide how premium limits apply to people on this instance."
 msgstr "Decide how premium limits apply to people on this instance."
 
@@ -12562,7 +12572,7 @@ msgstr "Direct message previews"
 
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:347
+#: src/features/app/components/setup/SetupWizardSteps.tsx:346
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:630
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
@@ -12642,7 +12652,7 @@ msgid "Disable desktop notifications?"
 msgstr "Disable desktop notifications?"
 
 #. Label for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:206
+#: src/features/app/components/setup/SetupWizardSteps.tsx:205
 msgid "Disable direct messages and friend requests"
 msgstr "Disable direct messages and friend requests"
 
@@ -12719,7 +12729,7 @@ msgstr "Disable video locally"
 
 #. Status next to a built-in shortcut the user turned off in the keybinds tab.
 #. Summary value when a setup option is disabled.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:363
+#: src/features/app/components/setup/SetupWizardSteps.tsx:362
 #: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:45
 msgid "Disabled"
 msgstr "Disabled"
@@ -13857,7 +13867,7 @@ msgid "Email changed"
 msgstr "Email changed"
 
 #. Setup wizard title for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:940
+#: src/features/app/components/setup/SetupWizardSteps.tsx:939
 msgid "Email delivery"
 msgstr "Email delivery"
 
@@ -14148,7 +14158,7 @@ msgid "Enable at least one translator below."
 msgstr "Enable at least one translator below."
 
 #. Label for enabling attachment expiry during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:223
+#: src/features/app/components/setup/SetupWizardSteps.tsx:222
 msgid "Enable attachment expiration"
 msgstr "Enable attachment expiration"
 
@@ -14162,7 +14172,7 @@ msgid "Enable beta feature"
 msgstr "Enable beta feature"
 
 #. Label for enabling Bluesky OAuth in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:989
+#: src/features/app/components/setup/SetupWizardSteps.tsx:988
 msgid "Enable Bluesky OAuth"
 msgstr "Enable Bluesky OAuth"
 
@@ -14195,7 +14205,7 @@ msgid "Enable developer mode"
 msgstr "Enable developer mode"
 
 #. Label for enabling SMTP email delivery in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:957
+#: src/features/app/components/setup/SetupWizardSteps.tsx:956
 msgid "Enable email delivery"
 msgstr "Enable email delivery"
 
@@ -14337,7 +14347,7 @@ msgid "Enable text selection"
 msgstr "Enable text selection"
 
 #. Setup wizard optional services step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:268
+#: src/features/app/components/setup/SetupWizardSteps.tsx:267
 msgid "Enable the integrations whose credentials you have configured. Only available services are shown."
 msgstr "Enable the integrations whose credentials you have configured. Only available services are shown."
 
@@ -14378,7 +14388,7 @@ msgstr "Enable video seek thumbnails"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Summary value when a setup option is enabled.
 #. Toggle item in the textarea spellcheck submenu. Master enable for spellcheck.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:359
+#: src/features/app/components/setup/SetupWizardSteps.tsx:358
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:21
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:66
 msgid "Enabled"
@@ -14422,7 +14432,7 @@ msgid "End date"
 msgstr "End date"
 
 #. Billing button that ends premium grace period immediately.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:872
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:927
 msgid "End grace now"
 msgstr "End grace now"
 
@@ -14502,7 +14512,7 @@ msgid "Enter a code in the format ABCD-1234."
 msgstr "Enter a code in the format ABCD-1234."
 
 #. Validation error for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:202
+#: src/features/app/components/setup/SetupWizardSteps.tsx:201
 msgid "Enter a community name between 1 and 100 characters."
 msgstr "Enter a community name between 1 and 100 characters."
 
@@ -14512,7 +14522,7 @@ msgid "Enter a gift code to redeem {premiumProductName} for your account."
 msgstr "Enter a gift code to redeem {premiumProductName} for your account."
 
 #. Validation error for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:95
+#: src/features/app/components/setup/SetupWizardSteps.tsx:94
 msgid "Enter a product name between 1 and 80 characters."
 msgstr "Enter a product name between 1 and 80 characters."
 
@@ -14900,7 +14910,7 @@ msgid "Everyone"
 msgstr "Everyone"
 
 #. Premium model option that gives everyone the highest limits.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:318
+#: src/features/app/components/setup/SetupWizardSteps.tsx:317
 msgid "Everyone is premium"
 msgstr "Everyone is premium"
 
@@ -15033,7 +15043,7 @@ msgid "EXPERIMENTAL"
 msgstr "EXPERIMENTAL"
 
 #. Label for attachment decay curve.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:251
+#: src/features/app/components/setup/SetupWizardSteps.tsx:250
 msgid "Expiration curve"
 msgstr "Expiration curve"
 
@@ -15045,7 +15055,7 @@ msgstr "Expire after"
 #. Error message in the invite list item.
 #. Short label in the authentication account row. Keep the tone plain and specific.
 #. Subscription status badge meaning premium access has fully expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:425
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:430
 #: src/features/auth/components/accounts/AccountRow.tsx:19
 #: src/features/invite/components/InviteListItem.tsx:32
 msgid "Expired"
@@ -15081,7 +15091,7 @@ msgstr "Expired on {date}"
 msgid "Expired on {earliest}"
 msgstr "Expired on {earliest}"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:456
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:461
 msgid "Expired on <0>{expiredDate}</0>. <1/> are no longer active. You can resubscribe at any time."
 msgstr "Expired on <0>{expiredDate}</0>. <1/> are no longer active. You can resubscribe at any time."
 
@@ -15567,7 +15577,7 @@ msgid "False claims likely to cause real-world harm."
 msgstr "False claims likely to cause real-world harm."
 
 #. Label for the favicon branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:135
+#: src/features/app/components/setup/SetupWizardSteps.tsx:134
 msgid "Favicon"
 msgstr "Favicon"
 
@@ -15866,7 +15876,7 @@ msgstr "Finish in the new tab. If you closed it, press Continue with passkey aga
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
-#: src/features/app/components/setup/SetupWizardSteps.tsx:327
+#: src/features/app/components/setup/SetupWizardSteps.tsx:326
 msgid "Finish setup"
 msgstr "Finish setup"
 
@@ -16511,12 +16521,12 @@ msgid "from <0>{0}</0>"
 msgstr "from <0>{0}</0>"
 
 #. Label for SMTP from email input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:961
+#: src/features/app/components/setup/SetupWizardSteps.tsx:960
 msgid "From email"
 msgstr "From email"
 
 #. Label for SMTP from name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:965
+#: src/features/app/components/setup/SetupWizardSteps.tsx:964
 msgid "From name"
 msgstr "From name"
 
@@ -16829,7 +16839,7 @@ msgid "GIF preview"
 msgstr "GIF preview"
 
 #. Setup wizard title for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:924
+#: src/features/app/components/setup/SetupWizardSteps.tsx:923
 msgid "GIF search"
 msgstr "GIF search"
 
@@ -16850,7 +16860,7 @@ msgstr "GIFs could not load"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning premium access came from a gift.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:445
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:450
 #: src/features/expressions/components/modals/GiftAcceptModal.tsx:294
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:79
 msgid "Gift"
@@ -17002,7 +17012,7 @@ msgstr "Gift: expiring soon"
 msgid "Gift: grace period (still have access)"
 msgstr "Gift: grace period (still have access)"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:502
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:544
 msgid "Gifted <0/> until <1>{giftEndDate}</1>. Does not renew automatically. Redeem more gift codes to extend."
 msgstr "Gifted <0/> until <1>{giftEndDate}</1>. Does not renew automatically. Redeem more gift codes to extend."
 
@@ -17019,7 +17029,7 @@ msgid "Gifts aren't available right now."
 msgstr "Gifts aren't available right now."
 
 #. Description for the everyone-is-premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:322
+#: src/features/app/components/setup/SetupWizardSteps.tsx:321
 msgid "Give everyone on this instance the highest premium limits."
 msgstr "Give everyone on this instance the highest premium limits."
 
@@ -17188,7 +17198,7 @@ msgid "Got it!"
 msgstr "Got it!"
 
 #. Subscription status badge meaning access remains briefly after subscription end.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:427
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:432
 msgid "Grace period"
 msgstr "Grace period"
 
@@ -17493,7 +17503,7 @@ msgid "Hate speech"
 msgstr "Hate speech"
 
 #. Premium page text shown on an instance where the premium tier cannot be bought, only redeemed. {PREMIUM_PRODUCT_NAME} is the premium tier name.
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:296
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:299
 msgid "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 msgstr "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 
@@ -18049,7 +18059,7 @@ msgstr "I understand"
 
 #. Label for the icon branding asset.
 #. Short label in the guild icon upload field. Keep it concise.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:119
+#: src/features/app/components/setup/SetupWizardSteps.tsx:118
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:27
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:89
 msgid "Icon"
@@ -18269,7 +18279,7 @@ msgid "Image"
 msgstr "Image"
 
 #. Label for the branding image asset uploaders in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:103
+#: src/features/app/components/setup/SetupWizardSteps.tsx:102
 msgid "Image assets"
 msgstr "Image assets"
 
@@ -19621,7 +19631,7 @@ msgid "Keep attachments when clearing an edit"
 msgstr "Keep attachments when clearing an edit"
 
 #. Description for the mirror premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:313
+#: src/features/app/components/setup/SetupWizardSteps.tsx:312
 msgid "Keep free and premium tiers. You can customize the tiers, sell premium through Stripe, or hand out gift codes later from the admin panel."
 msgstr "Keep free and premium tiers. You can customize the tiers, sell premium through Stripe, or hand out gift codes later from the admin panel."
 
@@ -19750,7 +19760,7 @@ msgid "Kicked {targetUserTag} from the community"
 msgstr "Kicked {targetUserTag} from the community"
 
 #. Label for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:276
+#: src/features/app/components/setup/SetupWizardSteps.tsx:275
 msgid "Klipy GIFs"
 msgstr "Klipy GIFs"
 
@@ -19762,7 +19772,7 @@ msgstr "Korean"
 #. Label for the setup wizard language selector.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. User settings tab for language, locale, and time display preferences.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:58
+#: src/features/app/components/setup/SetupWizardSteps.tsx:57
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:6
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:132
 msgid "Language"
@@ -19786,7 +19796,7 @@ msgid "Large"
 msgstr "Large"
 
 #. Label for attachment decay maximum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:235
+#: src/features/app/components/setup/SetupWizardSteps.tsx:234
 msgid "Large file threshold (MB)"
 msgstr "Large file threshold (MB)"
 
@@ -20009,8 +20019,8 @@ msgstr "Left mouse button"
 msgid "Left tooltip"
 msgstr "Left tooltip"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:555
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:577
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:597
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:619
 msgid "Legacy rate"
 msgstr "Legacy rate"
 
@@ -20043,12 +20053,12 @@ msgid "Let others clone your stickers"
 msgstr "Let others clone your stickers"
 
 #. Description for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:296
+#: src/features/app/components/setup/SetupWizardSteps.tsx:295
 msgid "Let people link their Bluesky account to their profile."
 msgstr "Let people link their Bluesky account to their profile."
 
 #. Description for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:280
+#: src/features/app/components/setup/SetupWizardSteps.tsx:279
 msgid "Let people search and send GIFs powered by Klipy."
 msgstr "Let people search and send GIFs powered by Klipy."
 
@@ -20102,7 +20112,7 @@ msgstr "Library: {count} of {max}"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Subscription status badge meaning permanent premium access.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:443
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:448
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:22
 msgid "Lifetime"
 msgstr "Lifetime"
@@ -20398,7 +20408,7 @@ msgid "Loading states"
 msgstr "Loading states"
 
 #. Setup wizard body while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:78
+#: src/features/app/components/setup/SetupWizardSteps.tsx:77
 msgid "Loading the current instance configuration."
 msgstr "Loading the current instance configuration."
 
@@ -20448,7 +20458,7 @@ msgid "Localization"
 msgstr "Localization"
 
 #. Error modal body shown when the localized card pre-approval session cannot be started.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:200
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:208
 msgid "Localized card verification is not available right now. Try again later."
 msgstr "Localized card verification is not available right now. Try again later."
 
@@ -20474,12 +20484,12 @@ msgid "Login"
 msgstr "Login"
 
 #. Label for the logo branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:127
+#: src/features/app/components/setup/SetupWizardSteps.tsx:126
 msgid "Logo"
 msgstr "Logo"
 
 #. Label for Bluesky OAuth logo URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1001
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1000
 msgid "Logo URL"
 msgstr "Logo URL"
 
@@ -20604,7 +20614,7 @@ msgid "Make group owner"
 msgstr "Make group owner"
 
 #. Setup wizard branding step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:83
+#: src/features/app/components/setup/SetupWizardSteps.tsx:82
 msgid "Make the instance yours"
 msgstr "Make the instance yours"
 
@@ -21058,12 +21068,12 @@ msgid "Maximizes visible messages with minimal spacing."
 msgstr "Maximizes visible messages with minimal spacing."
 
 #. Label for attachment decay maximum eligible size.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:239
+#: src/features/app/components/setup/SetupWizardSteps.tsx:238
 msgid "Maximum eligible size (MB)"
 msgstr "Maximum eligible size (MB)"
 
 #. Label for attachment decay maximum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:247
+#: src/features/app/components/setup/SetupWizardSteps.tsx:246
 msgid "Maximum lifetime (days)"
 msgstr "Maximum lifetime (days)"
 
@@ -21904,7 +21914,7 @@ msgid "Minimize window"
 msgstr "Minimize window"
 
 #. Label for attachment decay minimum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:243
+#: src/features/app/components/setup/SetupWizardSteps.tsx:242
 msgid "Minimum lifetime (days)"
 msgstr "Minimum lifetime (days)"
 
@@ -21933,7 +21943,7 @@ msgid "Mirror of the Appearance tab toggle for light/dark/coal preference. Disab
 msgstr "Mirror of the Appearance tab toggle for light/dark/coal preference. Disable for a per-device base theme."
 
 #. Premium model option that mirrors free and premium tiers.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:309
+#: src/features/app/components/setup/SetupWizardSteps.tsx:308
 msgid "Mirror tiers"
 msgstr "Mirror tiers"
 
@@ -22111,11 +22121,11 @@ msgstr "Monthly"
 msgid "Monthly {monthlyPrice}"
 msgstr "Monthly {monthlyPrice}"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:647
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:689
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>."
 msgstr "Monthly billing starts on <0>{pendingChangeDate}</0>."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:640
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>. First monthly charge: {pendingInitialPriceLabel}. Future monthly renewals: {pendingRecurringPriceLabel}/month."
 msgstr "Monthly billing starts on <0>{pendingChangeDate}</0>. First monthly charge: {pendingInitialPriceLabel}. Future monthly renewals: {pendingRecurringPriceLabel}/month."
 
@@ -22670,7 +22680,7 @@ msgid "My category"
 msgstr "My category"
 
 #. Placeholder for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:198
+#: src/features/app/components/setup/SetupWizardSteps.tsx:197
 msgid "My community"
 msgstr "My community"
 
@@ -23056,12 +23066,12 @@ msgid "New posts in this forum start at the forum's slowmode."
 msgstr "New posts in this forum start at the forum's slowmode."
 
 #. Plutonium subscription card line shown when a move to a lower price is scheduled but the new amount is unknown. {pendingChangeDate} is a date already formatted and localized by code; never write a date into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:611
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:653
 msgid "New price scheduled for <0>{pendingChangeDate}</0>."
 msgstr "New price scheduled for <0>{pendingChangeDate}</0>."
 
 #. Plutonium subscription card line shown when a move to a lower price is scheduled. {pendingChangeDate} is a date and {pendingTargetPriceLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:605
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:647
 msgid "New price scheduled for <0>{pendingChangeDate}</0>. Renewals will be {pendingTargetPriceLabel} from then on."
 msgstr "New price scheduled for <0>{pendingChangeDate}</0>. Renewals will be {pendingTargetPriceLabel} from then on."
 
@@ -23529,7 +23539,7 @@ msgid "No one can add you to group chats without asking"
 msgstr "No one can add you to group chats without asking"
 
 #. Message shown when no optional services are available in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:272
+#: src/features/app/components/setup/SetupWizardSteps.tsx:271
 msgid "No optional services are available on this instance. You can skip this step."
 msgstr "No optional services are available on this instance. You can skip this step."
 
@@ -23920,7 +23930,7 @@ msgstr "Not found"
 #. Short label in the Plutonium self serve refund section. Keep the tone plain and specific.
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
 #: src/features/app/components/dialogs/components/plutonium/SelfServeRefundSection.tsx:31
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:72
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:43
 #: src/features/auth/state/NewDeviceMonitoring.tsx:34
@@ -24185,7 +24195,7 @@ msgid "On"
 msgstr "On"
 
 #. Billing confirmation body for moving an active subscription down to the current price. {listPriceEffectiveDate} is a date, and {listPriceCurrentLabel} and {listPriceNewLabel} are currency amounts, all already formatted and localized by code; never write a date or an amount into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:374
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:379
 msgid "On <0>{listPriceEffectiveDate}</0> your subscription moves from {listPriceCurrentLabel} to {listPriceNewLabel}. Nothing is charged today, and the rest of your subscription stays exactly as it is."
 msgstr "On <0>{listPriceEffectiveDate}</0> your subscription moves from {listPriceCurrentLabel} to {listPriceNewLabel}. Nothing is charged today, and the rest of your subscription stays exactly as it is."
 
@@ -24372,7 +24382,7 @@ msgid "Open"
 msgstr "Open"
 
 #. Registration mode option allowing anyone to register.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:152
+#: src/features/app/components/setup/SetupWizardSteps.tsx:151
 msgctxt "registration-policy"
 msgid "Open"
 msgstr "Open"
@@ -24950,7 +24960,7 @@ msgid "Optional arguments"
 msgstr "Optional arguments"
 
 #. Setup wizard optional services step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:264
+#: src/features/app/components/setup/SetupWizardSteps.tsx:263
 msgid "Optional services"
 msgstr "Optional services"
 
@@ -25051,7 +25061,7 @@ msgid "Other devices"
 msgstr "Other devices"
 
 #. Plutonium checkout pre-approval prompt secondary button. Opens the alternative payment methods flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:73
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:75
 msgid "Other methods"
 msgstr "Other methods"
 
@@ -25278,7 +25288,7 @@ msgstr "Passkeys require a signed macOS bundle with a valid application identifi
 
 #. Generic form-field label for a password.
 #. Label for SMTP password input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:972
+#: src/features/app/components/setup/SetupWizardSteps.tsx:971
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:215
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:146
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:183
@@ -25454,12 +25464,12 @@ msgid "Pay once and get a gift link to share. Gifts never renew."
 msgstr "Pay once and get a gift link to share. Gifts never renew."
 
 #. Plutonium subscription payment method picker description for Brazil. Explains Pix recurring vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:38
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:40
 msgid "Pay with {pixPaymentMethod} Automático to authorize recurring charges directly from your Brazilian bank. Or choose \"Use card\" to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "Pay with {pixPaymentMethod} Automático to authorize recurring charges directly from your Brazilian bank. Or choose \"Use card\" to enter a credit card on {paymentProviderName}'s next screen."
 
 #. Plutonium subscription payment method picker description for India. Explains UPI e-mandate vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:48
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:50
 msgid "Pay with {upiPaymentMethod} to set up an RBI-compliant e-mandate from your Indian bank. Or choose \"Use card\" to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "Pay with {upiPaymentMethod} to set up an RBI-compliant e-mandate from your Indian bank. Or choose \"Use card\" to enter a credit card on {paymentProviderName}'s next screen."
 
@@ -25566,7 +25576,7 @@ msgid "Perks"
 msgstr "Perks"
 
 #. Subscription status badge meaning premium is paid but perks are temporarily disabled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:431
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:436
 msgid "Perks paused"
 msgstr "Perks paused"
 
@@ -25767,7 +25777,7 @@ msgid "Pick the 4-digit number after your username"
 msgstr "Pick the 4-digit number after your username"
 
 #. Setup wizard body for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:66
+#: src/features/app/components/setup/SetupWizardSteps.tsx:65
 msgid "Pick the appearance this administrator account should start with."
 msgstr "Pick the appearance this administrator account should start with."
 
@@ -26104,7 +26114,7 @@ msgid "Popup"
 msgstr "Popup"
 
 #. Label for SMTP port input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:970
+#: src/features/app/components/setup/SetupWizardSteps.tsx:969
 msgid "Port"
 msgstr "Port"
 
@@ -26236,7 +26246,7 @@ msgid "Premium grace period nagbar"
 msgstr "Premium grace period nagbar"
 
 #. Summary row label for the premium model in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:355
+#: src/features/app/components/setup/SetupWizardSteps.tsx:354
 msgid "Premium model"
 msgstr "Premium model"
 
@@ -26276,7 +26286,7 @@ msgid "Preparing"
 msgstr "Preparing"
 
 #. Setup wizard title while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:74
+#: src/features/app/components/setup/SetupWizardSteps.tsx:73
 msgid "Preparing setup"
 msgstr "Preparing setup"
 
@@ -26451,7 +26461,7 @@ msgid "Pricing"
 msgstr "Pricing"
 
 #. Error modal body shown when the user clicks a plan before price IDs have loaded.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:174
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:182
 msgid "Pricing is still loading."
 msgstr "Pricing is still loading."
 
@@ -26526,7 +26536,7 @@ msgid "Privacy settings"
 msgstr "Privacy settings"
 
 #. Label for Bluesky OAuth privacy URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1009
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1008
 msgid "Privacy URL"
 msgstr "Privacy URL"
 
@@ -26551,7 +26561,7 @@ msgid "Private details"
 msgstr "Private details"
 
 #. Label for Bluesky OAuth private key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1017
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1016
 msgid "Private key"
 msgstr "Private key"
 
@@ -26576,8 +26586,8 @@ msgstr "Processing"
 
 #. Label for the product name input in the setup wizard.
 #. Summary row label for the product name in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:91
-#: src/features/app/components/setup/SetupWizardSteps.tsx:335
+#: src/features/app/components/setup/SetupWizardSteps.tsx:90
+#: src/features/app/components/setup/SetupWizardSteps.tsx:334
 msgid "Product name"
 msgstr "Product name"
 
@@ -26778,7 +26788,7 @@ msgid "Public community"
 msgstr "Public community"
 
 #. Description for the closed registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:173
+#: src/features/app/components/setup/SetupWizardSteps.tsx:172
 msgid "Public registration is closed."
 msgstr "Public registration is closed."
 
@@ -26848,17 +26858,17 @@ msgid "Purchased gifts"
 msgstr "Purchased gifts"
 
 #. Modal body shown on a self-hosted instance when purchases are disabled for the account.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:144
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:152
 msgid "Purchases are disabled for this account."
 msgstr "Purchases are disabled for this account."
 
 #. Modal body shown when purchases are disabled. Provides the support email for appeals.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:140
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:148
 msgid "Purchases are disabled for this account. Contact {supportEmail} if this looks wrong."
 msgstr "Purchases are disabled for this account. Contact {supportEmail} if this looks wrong."
 
 #. Modal title shown when purchases are disabled on this account (server-side enforcement).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:136
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:144
 msgid "Purchases unavailable"
 msgstr "Purchases unavailable"
 
@@ -27119,7 +27129,7 @@ msgstr "Reactions"
 
 #. Billing button that cancels a scheduled subscription cancellation.
 #. Button label on the premium-expired nagbar. Opens billing so the user can reactivate their subscription.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:762
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:817
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:25
 msgid "Reactivate"
 msgstr "Reactivate"
@@ -27350,8 +27360,8 @@ msgstr "Redeem for yourself"
 
 #. Billing button for entering a premium gift code.
 #. Billing button for entering a premium gift code.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:735
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:306
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:790
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:309
 msgid "Redeem gift code"
 msgstr "Redeem gift code"
 
@@ -27501,7 +27511,7 @@ msgid "Registered passkeys"
 msgstr "Registered passkeys"
 
 #. Summary row label for the registration mode in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:339
+#: src/features/app/components/setup/SetupWizardSteps.tsx:338
 msgid "Registration"
 msgstr "Registration"
 
@@ -28118,16 +28128,16 @@ msgid "Render placeholders"
 msgstr "Render placeholders"
 
 #. Label for attachment decay renewal threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:255
+#: src/features/app/components/setup/SetupWizardSteps.tsx:254
 msgid "Renew threshold (days)"
 msgstr "Renew threshold (days)"
 
 #. Label for attachment decay renewal window.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:259
+#: src/features/app/components/setup/SetupWizardSteps.tsx:258
 msgid "Renew window (days)"
 msgstr "Renew window (days)"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:717
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:762
 msgid "Renews on <0>{renewalDate}.</0>"
 msgstr "Renews on <0>{renewalDate}.</0>"
 
@@ -28137,7 +28147,7 @@ msgstr "Reopen Thread"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that replaces an already uploaded branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:111
+#: src/features/app/components/setup/SetupWizardSteps.tsx:110
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:80
 msgid "Replace"
 msgstr "Replace"
@@ -28896,8 +28906,8 @@ msgstr "Restore window"
 
 #. Billing button for restarting a subscription during the grace period.
 #. Billing button for starting a new subscription after premium expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:754
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:758
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:809
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:813
 msgid "Resubscribe"
 msgstr "Resubscribe"
 
@@ -29031,7 +29041,7 @@ msgid "Review what this app is asking for before you continue."
 msgstr "Review what this app is asking for before you continue."
 
 #. Setup wizard finish step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:331
+#: src/features/app/components/setup/SetupWizardSteps.tsx:330
 msgid "Review your choices below, then finish. This saves the configuration and opens the instance."
 msgstr "Review your choices below, then finish. This saves the configuration and opens the instance."
 
@@ -29287,7 +29297,7 @@ msgid "Run at login"
 msgstr "Run at login"
 
 #. Description for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:190
+#: src/features/app/components/setup/SetupWizardSteps.tsx:189
 msgid "Run the instance as one community instead of many. This can only be enabled now, during setup."
 msgstr "Run the instance as one community instead of many. This can only be enabled now, during setup."
 
@@ -30883,7 +30893,7 @@ msgid "Set the nickname to {nick}"
 msgstr "Set the nickname to {nick}"
 
 #. Setup wizard branding step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:87
+#: src/features/app/components/setup/SetupWizardSteps.tsx:86
 msgid "Set the public product name, theme color, and image assets that clients display."
 msgstr "Set the public product name, theme color, and image assets that clients display."
 
@@ -30945,7 +30955,7 @@ msgid "Set up authenticator app"
 msgstr "Set up authenticator app"
 
 #. Option for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:908
+#: src/features/app/components/setup/SetupWizardSteps.tsx:907
 msgid "Set up later"
 msgstr "Set up later"
 
@@ -31628,7 +31638,7 @@ msgid "Show quick reactions"
 msgstr "Show quick reactions"
 
 #. Description for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:288
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
 msgid "Show rich previews for YouTube links."
 msgstr "Show rich previews for YouTube links."
 
@@ -31871,7 +31881,7 @@ msgid "Signed-in devices"
 msgstr "Signed-in devices"
 
 #. Label for Bluesky OAuth signing key ID input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1013
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1012
 msgid "Signing key ID"
 msgstr "Signing key ID"
 
@@ -31938,12 +31948,12 @@ msgid "Single column"
 msgstr "Single column"
 
 #. Summary row label for the single community choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:343
+#: src/features/app/components/setup/SetupWizardSteps.tsx:342
 msgid "Single community"
 msgstr "Single community"
 
 #. Label for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:186
+#: src/features/app/components/setup/SetupWizardSteps.tsx:185
 msgid "Single community mode"
 msgstr "Single community mode"
 
@@ -32010,7 +32020,7 @@ msgid "Skip the system leave notice — nobody gets pinged."
 msgstr "Skip the system leave notice — nobody gets pinged."
 
 #. Description for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:912
+#: src/features/app/components/setup/SetupWizardSteps.tsx:911
 msgid "Skip this now and configure it from the admin panel."
 msgstr "Skip this now and configure it from the admin panel."
 
@@ -32203,7 +32213,7 @@ msgid "Small button clicked."
 msgstr "Small button clicked."
 
 #. Label for attachment decay minimum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:231
+#: src/features/app/components/setup/SetupWizardSteps.tsx:230
 msgid "Small file threshold (MB)"
 msgstr "Small file threshold (MB)"
 
@@ -32264,17 +32274,17 @@ msgid "SMS verification is unavailable right now. Try again later or contact sup
 msgstr "SMS verification is unavailable right now. Try again later or contact support."
 
 #. Success message after validating SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:981
+#: src/features/app/components/setup/SetupWizardSteps.tsx:980
 msgid "SMTP connection verified."
 msgstr "SMTP connection verified."
 
 #. Label for SMTP host input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:969
+#: src/features/app/components/setup/SetupWizardSteps.tsx:968
 msgid "SMTP host"
 msgstr "SMTP host"
 
 #. Failure message after validating SMTP credentials when the server returns no error detail.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:985
+#: src/features/app/components/setup/SetupWizardSteps.tsx:984
 msgid "SMTP validation failed."
 msgstr "SMTP validation failed."
 
@@ -32381,7 +32391,7 @@ msgstr "Something went wrong while loading the activity log."
 #. Body of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Body of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Body of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:34
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:36
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:18
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:34
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:34
@@ -32421,7 +32431,7 @@ msgid "Something went wrong while sending your verification email. Please try ag
 msgstr "Something went wrong while sending your verification email. Please try again in a moment."
 
 #. Body of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:164
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:172
 msgid "Something went wrong while starting checkout. Please try again in a moment."
 msgstr "Something went wrong while starting checkout. Please try again in a moment."
 
@@ -33503,7 +33513,7 @@ msgid "Subscription"
 msgstr "Subscription"
 
 #. Modal title shown when checkout is blocked because the account already has an active Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:125
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:127
 msgid "Subscription already exists"
 msgstr "Subscription already exists"
 
@@ -33660,12 +33670,12 @@ msgid "Switch device"
 msgstr "Switch device"
 
 #. Button confirming a move of an active subscription down to the current price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:65
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:68
 msgid "Switch price"
 msgstr "Switch price"
 
 #. Billing button that opens confirmation to move the subscription down to the current price. {listPriceNewLabel} is the localized new price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:822
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:877
 msgid "Switch to {listPriceNewLabel}"
 msgstr "Switch to {listPriceNewLabel}"
 
@@ -33689,13 +33699,13 @@ msgstr "Switch to direct input"
 
 #. Billing button that opens confirmation to switch to monthly billing.
 #. Button confirming a change to monthly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:57
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:805
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:60
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:860
 msgid "Switch to monthly"
 msgstr "Switch to monthly"
 
 #. Billing confirmation title for changing an active subscription to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:49
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:52
 msgid "Switch to monthly billing?"
 msgstr "Switch to monthly billing?"
 
@@ -33737,7 +33747,7 @@ msgid "Switch to single column"
 msgstr "Switch to single column"
 
 #. Billing confirmation title for moving an active subscription down to the current price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:61
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:64
 msgid "Switch to the new price?"
 msgstr "Switch to the new price?"
 
@@ -33758,13 +33768,13 @@ msgstr "Switch to two columns"
 
 #. Billing button that opens confirmation to switch to yearly billing.
 #. Button confirming a change to yearly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:53
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:801
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:56
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:856
 msgid "Switch to yearly"
 msgstr "Switch to yearly"
 
 #. Billing confirmation title for changing an active subscription to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:45
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:48
 msgid "Switch to yearly billing?"
 msgstr "Switch to yearly billing?"
 
@@ -33783,7 +33793,7 @@ msgid "Switches"
 msgstr "Switches"
 
 #. Label for the symbol branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:123
+#: src/features/app/components/setup/SetupWizardSteps.tsx:122
 msgid "Symbol"
 msgstr "Symbol"
 
@@ -34036,23 +34046,23 @@ msgstr "Tags help members organize and filter posts in this forum (up to 20)."
 msgid "Tags must be 2 to {maxLength} characters and alphanumeric."
 msgstr "Tags must be 2 to {maxLength} characters and alphanumeric."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:293
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:298
 msgid "Takes effect at your next renewal. We'll apply a {creditLabel} credit from your current monthly payment, so your first yearly charge will be <0>{firstRenewalPriceLabel}</0>. Future yearly renewals will be {renewalPrice}/year."
 msgstr "Takes effect at your next renewal. We'll apply a {creditLabel} credit from your current monthly payment, so your first yearly charge will be <0>{firstRenewalPriceLabel}</0>. Future yearly renewals will be {renewalPrice}/year."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:302
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:307
 msgid "Takes effect at your next renewal. Your subscription stays monthly until then, and your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "Takes effect at your next renewal. Your subscription stays monthly until then, and your next renewal will be <0>{renewalPrice}/year</0>."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:311
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:316
 msgid "Takes effect at your next renewal. Your subscription stays yearly until then, and your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "Takes effect at your next renewal. Your subscription stays yearly until then, and your next renewal will be <0>{renewalPrice}/month</0>."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:330
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:335
 msgid "Takes effect immediately. A prorated adjustment may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "Takes effect immediately. A prorated adjustment may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/month</0>."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:321
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:326
 msgid "Takes effect immediately. A prorated charge may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "Takes effect immediately. A prorated charge may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/year</0>."
 
@@ -34168,7 +34178,7 @@ msgid "Terms of service"
 msgstr "Terms of service"
 
 #. Label for Bluesky OAuth terms URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1005
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1004
 msgid "Terms URL"
 msgstr "Terms URL"
 
@@ -34178,7 +34188,7 @@ msgid "Terrorism or violent extremism"
 msgstr "Terrorism or violent extremism"
 
 #. Button that validates SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:977
+#: src/features/app/components/setup/SetupWizardSteps.tsx:976
 msgid "Test SMTP"
 msgstr "Test SMTP"
 
@@ -34690,7 +34700,7 @@ msgstr "Theme changes sync to all your devices. Off keeps this device on its own
 
 #. Label for the theme color picker in the setup wizard.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:99
+#: src/features/app/components/setup/SetupWizardSteps.tsx:98
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:165
 msgid "Theme color"
 msgstr "Theme color"
@@ -34790,7 +34800,7 @@ msgid "There was an error loading the webhooks. Try again."
 msgstr "There was an error loading the webhooks. Try again."
 
 #. Setup wizard community model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:182
+#: src/features/app/components/setup/SetupWizardSteps.tsx:181
 msgid "These options change how people use the instance. Some can only be chosen during setup."
 msgstr "These options change how people use the instance. Some can only be chosen during setup."
 
@@ -35189,7 +35199,7 @@ msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "This instance currently allows screen sharing up to 720p at 30 FPS."
 
 #. Setup wizard body prompting the operator to register the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:54
+#: src/features/app/components/setup/SetupWizardSteps.tsx:53
 msgid "This instance has no accounts yet. The first account you create automatically becomes the administrator."
 msgstr "This instance has no accounts yet. The first account you create automatically becomes the administrator."
 
@@ -35431,7 +35441,7 @@ msgid "This picker is only available in the desktop app."
 msgstr "This picker is only available in the desktop app."
 
 #. Error modal body shown when the selected Plutonium plan has no price ID configured.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:178
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:186
 msgid "This plan isn't available. Contact support."
 msgstr "This plan isn't available. Contact support."
 
@@ -36434,7 +36444,7 @@ msgid "Turn off device stream"
 msgstr "Turn off device stream"
 
 #. Description for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:210
+#: src/features/app/components/setup/SetupWizardSteps.tsx:209
 msgid "Turn off private messaging and friends across the instance. This can be reversed only once later."
 msgstr "Turn off private messaging and friends across the instance. This can be reversed only once later."
 
@@ -37629,7 +37639,7 @@ msgstr "Upgrade to store up to 15 custom backgrounds and unlock HD video quality
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that opens a file picker to upload a branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:107
+#: src/features/app/components/setup/SetupWizardSteps.tsx:106
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:84
 msgid "Upload"
 msgstr "Upload"
@@ -37857,7 +37867,7 @@ msgid "Use {everyoneMention}/{hereMention} and {rolesMention}"
 msgstr "Use {everyoneMention}/{hereMention} and {rolesMention}"
 
 #. Plutonium subscription payment method picker button. Selects Pix as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:44
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:46
 msgid "Use {pixPaymentMethod}"
 msgstr "Use {pixPaymentMethod}"
 
@@ -37872,7 +37882,7 @@ msgid "Use {query} where the text to translate should be inserted."
 msgstr "Use {query} where the text to translate should be inserted."
 
 #. Plutonium subscription payment method picker button. Selects UPI as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:54
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:56
 msgid "Use {upiPaymentMethod}"
 msgstr "Use {upiPaymentMethod}"
 
@@ -37906,7 +37916,7 @@ msgid "Use actual value"
 msgstr "Use actual value"
 
 #. Plutonium subscription payment method picker button. Selects the alternative (non-card) method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:63
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:65
 msgid "Use alternative method"
 msgstr "Use alternative method"
 
@@ -37947,7 +37957,7 @@ msgid "Use browser locale for time format"
 msgstr "Use browser locale for time format"
 
 #. Modal secondary button to fall back to standard card checkout instead of an alternative payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:212
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:220
 msgid "Use card"
 msgstr "Use card"
 
@@ -38050,32 +38060,32 @@ msgid "Use light theme"
 msgstr "Use light theme"
 
 #. Modal primary button to start the localized card pre-approval verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:208
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:216
 msgid "Use local card"
 msgstr "Use local card"
 
 #. Plutonium checkout pre-approval prompt for Brazil. Explains the card verification flow and the Pix alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:67
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:69
 msgid "Use local card to verify a card issued in Brazil before the paid BRL checkout. Choose other methods if you'd rather try {pixPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "Use local card to verify a card issued in Brazil before the paid BRL checkout. Choose other methods if you'd rather try {pixPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 
 #. Plutonium checkout pre-approval prompt for India. Explains the card verification flow and the UPI alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:77
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:79
 msgid "Use local card to verify a card issued in India before the paid INR checkout. Choose other methods if you'd rather try {upiPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "Use local card to verify a card issued in India before the paid INR checkout. Choose other methods if you'd rather try {upiPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 
 #. Plutonium checkout pre-approval prompt for Poland. Explains that BLIK is not supported for subscriptions; user must continue to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:83
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:85
 msgid "Use local card to verify a card issued in Poland before the paid PLN checkout. {blikPaymentMethod} does not support subscriptions in {paymentProviderName} checkout, so continue only if you want {paymentProviderName2}'s standard payment screen instead."
 msgstr "Use local card to verify a card issued in Poland before the paid PLN checkout. {blikPaymentMethod} does not support subscriptions in {paymentProviderName} checkout, so continue only if you want {paymentProviderName2}'s standard payment screen instead."
 
 #. Plutonium checkout pre-approval prompt for Türkiye. Explains there is no local wallet method; continuing goes to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:94
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:96
 msgid "Use local card to verify a card issued in Türkiye before the paid TRY checkout. There isn't an app-based local subscription method here, so continuing will take you to {paymentProviderName}'s standard payment screen."
 msgstr "Use local card to verify a card issued in Türkiye before the paid TRY checkout. There isn't an app-based local subscription method here, so continuing will take you to {paymentProviderName}'s standard payment screen."
 
 #. Plutonium checkout pre-approval prompt default. Generic description for countries without specific localized payment guidance.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:100
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:102
 msgid "Use local card to verify a card issued in your billing country before the paid checkout. Choose other methods for any other payment method {paymentProviderName} offers on the next screen."
 msgstr "Use local card to verify a card issued in your billing country before the paid checkout. Choose other methods for any other payment method {paymentProviderName} offers on the next screen."
 
@@ -38183,7 +38193,7 @@ msgid "Use this when troubleshooting the client or collecting logs. It may add v
 msgstr "Use this when troubleshooting the client or collecting logs. It may add verbose messages to the browser console for the current client."
 
 #. Label for SMTP TLS toggle.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:973
+#: src/features/app/components/setup/SetupWizardSteps.tsx:972
 msgid "Use TLS"
 msgstr "Use TLS"
 
@@ -38349,7 +38359,7 @@ msgstr "User volume"
 #. Generic form-field label for a username.
 #. Label for SMTP username input.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:971
+#: src/features/app/components/setup/SetupWizardSteps.tsx:970
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:577
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:218
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:56
@@ -38589,7 +38599,7 @@ msgid "Verify"
 msgstr "Verify"
 
 #. Modal title for the mobile checkout confirmation when opening the localized card verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:182
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:190
 msgid "Verify card"
 msgstr "Verify card"
 
@@ -38688,7 +38698,7 @@ msgid "Verify your email before sending friend requests."
 msgstr "Verify your email before sending friend requests."
 
 #. Title of the error modal shown when an unverified account tries to purchase Plutonium.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:106
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:108
 msgid "Verify your email first"
 msgstr "Verify your email first"
 
@@ -38922,7 +38932,7 @@ msgid "View"
 msgstr "View"
 
 #. Button label on the premium onboarding nagbar. Opens premium feature and subscription settings. Preserve {premiumProductName}; it is inserted by code.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:59
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:61
 msgid "View {premiumProductName} features"
 msgstr "View {premiumProductName} features"
 
@@ -39174,7 +39184,7 @@ msgstr "Virginia"
 msgid "Visibility"
 msgstr "Visibility"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:418
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:423
 msgid "Visionary"
 msgstr "Visionary"
 
@@ -39194,7 +39204,7 @@ msgid "Visionary 2FA nagbar"
 msgstr "Visionary 2FA nagbar"
 
 #. Modal body shown when a Visionary user tries to subscribe. Reassures them and points out gift purchases stay available.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:119
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:121
 msgid "Visionary already includes permanent access, so a recurring subscription isn't needed. You can still buy gifts for others."
 msgstr "Visionary already includes permanent access, so a recurring subscription isn't needed. You can still buy gifts for others."
 
@@ -39710,7 +39720,7 @@ msgid "We don't send verification texts to this country. Try a mobile number fro
 msgstr "We don't send verification texts to this country. Try a mobile number from another country, or contact support."
 
 #. Modal body for existing-subscription block. Directs the user to the billing portal and addresses the just-paid race case. Keep plain and reassuring.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:130
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:132
 msgid "We found an existing {premiumProductFullName} subscription for this account. Manage it in the secure billing portal to update payment details or check renewal status. If you just paid, wait a minute and reopen this page."
 msgstr "We found an existing {premiumProductFullName} subscription for this account. Manage it in the secure billing portal to update payment details or check renewal status. If you just paid, wait a minute and reopen this page."
 
@@ -39961,37 +39971,37 @@ msgid "Welcome to {channelDisplayName}"
 msgstr "Welcome to {channelDisplayName}"
 
 #. Premium onboarding nagbar body. {premiumProductFullName} is the full premium product name, such as Fluxer Plutonium. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:24
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:26
 msgid "Welcome to {premiumProductFullName}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Welcome to {premiumProductFullName}. Explore your {premiumProductName} perks and manage your subscription."
 
 #. Premium onboarding nagbar body for lifetime premium users. Visionary is the lifetime premium tier name. {premiumProductFullName} is the full premium product name. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:29
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:31
 msgid "Welcome to {premiumProductFullName}. You have lifetime access as a Visionary. Explore your {premiumProductName} perks."
 msgstr "Welcome to {premiumProductFullName}. You have lifetime access as a Visionary. Explore your {premiumProductName} perks."
 
 #. Premium onboarding nagbar body for a gift subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:53
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:55
 msgid "Welcome to {premiumProductFullName}. Your gift subscription runs until {formattedDate}. Explore your {premiumProductName} perks."
 msgstr "Welcome to {premiumProductFullName}. Your gift subscription runs until {formattedDate}. Explore your {premiumProductName} perks."
 
 #. Premium onboarding nagbar body for a monthly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:41
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:43
 msgid "Welcome to {premiumProductFullName}. Your monthly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Welcome to {premiumProductFullName}. Your monthly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 
 #. Premium onboarding nagbar body for a subscription that will cancel. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:35
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:37
 msgid "Welcome to {premiumProductFullName}. Your subscription is active until {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Welcome to {premiumProductFullName}. Your subscription is active until {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 
 #. Premium onboarding nagbar body for a yearly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:47
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:49
 msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Welcome to {premiumProductFullName}. Your yearly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 
 #. Setup wizard title shown once the operator is signed in as the instance admin.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:41
+#: src/features/app/components/setup/SetupWizardSteps.tsx:40
 msgid "Welcome to {productName}"
 msgstr "Welcome to {productName}"
 
@@ -40094,7 +40104,7 @@ msgid "When a custom threshold date is not set, members without the <0>{readMess
 msgstr "When a custom threshold date is not set, members without the <0>{readMessageHistoryPermissionLabel}</0> permission cannot view any historical messages. They'll only see messages in real time as they arrive, and they'll disappear when they restart their clients."
 
 #. Description for the attachment expiry setup switch.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:227
+#: src/features/app/components/setup/SetupWizardSteps.tsx:226
 msgid "When attachment expiration is disabled, attachments remain available until manually removed."
 msgstr "When attachment expiration is disabled, attachments remain available until manually removed."
 
@@ -40200,7 +40210,7 @@ msgid "Who can friend"
 msgstr "Who can friend"
 
 #. Setup wizard registration step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:144
+#: src/features/app/components/setup/SetupWizardSteps.tsx:143
 msgid "Who can join"
 msgstr "Who can join"
 
@@ -40335,7 +40345,7 @@ msgid "Without this permission, push-to-talk is required."
 msgstr "Without this permission, push-to-talk is required."
 
 #. Label for the wordmark branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:131
+#: src/features/app/components/setup/SetupWizardSteps.tsx:130
 msgid "Wordmark"
 msgstr "Wordmark"
 
@@ -40390,15 +40400,15 @@ msgstr "Yearly {yearlyPrice}"
 msgid "Yearly gift"
 msgstr "Yearly gift"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:634
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:676
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>."
 msgstr "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:619
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:661
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel} after a {pendingCreditPriceLabel} credit. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel} after a {pendingCreditPriceLabel} credit. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:626
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:668
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel}. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel}. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 
@@ -40471,12 +40481,12 @@ msgid "You are now a developer!"
 msgstr "You are now a developer!"
 
 #. Modal body for the mobile checkout confirmation. Explains that the user is leaving the app to pay.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:195
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:203
 msgid "You are now navigating to {paymentProviderName} to complete the payment. Return to {productName} once you've completed it."
 msgstr "You are now navigating to {paymentProviderName} to complete the payment. Return to {productName} once you've completed it."
 
 #. Setup wizard body shown to the signed-in instance administrator.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:45
+#: src/features/app/components/setup/SetupWizardSteps.tsx:44
 msgid "You are signed in as the instance administrator. The next steps configure branding, registration, and core policy for everyone on this instance."
 msgstr "You are signed in as the instance administrator. The next steps configure branding, registration, and core policy for everyone on this instance."
 
@@ -41013,7 +41023,7 @@ msgid "You need to verify your email address before you can start a direct messa
 msgstr "You need to verify your email address before you can start a direct message."
 
 #. Body of the error modal shown when the account email is unverified and the user tries to purchase Plutonium. Product name is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:110
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:112
 msgid "You need to verify your email before you can purchase {premiumProductFullName}."
 msgstr "You need to verify your email before you can purchase {premiumProductFullName}."
 
@@ -41115,7 +41125,7 @@ msgid "You're already friends with this user."
 msgstr "You're already friends with this user."
 
 #. Modal title shown when a lifetime Visionary tier user tries to start a recurring Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:115
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:117
 msgid "You're already Visionary"
 msgstr "You're already Visionary"
 
@@ -41155,7 +41165,7 @@ msgid "You're being rate limited. Wait {duration} before trying again."
 msgstr "You're being rate limited. Wait {duration} before trying again."
 
 #. Error modal body shown when a gift-subscription user tries to start a recurring subscription. Explains the extension/redemption path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:168
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:176
 msgid "You're currently on a gift subscription. It won't renew. You can redeem more gift codes to extend it. Recurring subscriptions can be started after your gift time ends."
 msgstr "You're currently on a gift subscription. It won't renew. You can redeem more gift codes to extend it. Recurring subscriptions can be started after your gift time ends."
 
@@ -41219,12 +41229,12 @@ msgid "You're in the voice channel"
 msgstr "You're in the voice channel"
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price that is no longer offered.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:40
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:43
 msgid "You're on a legacy rate no longer available to new subscribers."
 msgstr "You're on a legacy rate no longer available to new subscribers."
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price; current list price is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:35
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:38
 msgid "You're on a legacy rate. The current price for this plan is {currentSubscriptionListPriceLabel}."
 msgstr "You're on a legacy rate. The current price for this plan is {currentSubscriptionListPriceLabel}."
 
@@ -41337,6 +41347,11 @@ msgstr "You've requested too many verification emails. Please wait a moment and 
 msgid "You've seen all your recent mentions. More will appear here soon."
 msgstr "You've seen all your recent mentions. More will appear here soon."
 
+#. Modal body for existing-subscription block when the subscription was bought in a mobile app store. {storeName} is the store brand name, App Store or Google Play, and must not be translated. {premiumProductFullName} is the full premium product name.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:138
+msgid "Your {premiumProductFullName} subscription is billed through {storeName}. Manage it in your {storeName} account to change your plan or check renewal status."
+msgstr "Your {premiumProductFullName} subscription is billed through {storeName}. Manage it in your {storeName} account to change your plan or check renewal status."
+
 #. Plutonium page hero subtitle when a subscription has ended. premiumProductName is the paid tier name.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:62
 msgid "Your {premiumProductName} perks have ended. Subscribe again to bring them back."
@@ -41351,6 +41366,11 @@ msgstr "Your {premiumProductName} subscription has expired. You have lost all {p
 #: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:41
 msgid "Your {productName} session expired. Sign in again to continue authorizing this application."
 msgstr "Your {productName} session expired. Sign in again to continue authorizing this application."
+
+#. Plutonium subscription card text shown while a failed App Store or Google Play renewal payment is being retried. {storeName} is the store brand name, App Store or Google Play, and must not be translated. {graceDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:476
+msgid "Your {storeName} renewal payment failed but <0/> stay active until <1>{graceDate}</1>. Update your {storeName} payment method before then to keep your subscription."
+msgstr "Your {storeName} renewal payment failed but <0/> stay active until <1>{graceDate}</1>. Update your {storeName} payment method before then to keep your subscription."
 
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:200
 msgid "Your account"
@@ -41652,7 +41672,7 @@ msgid "Your registration needs an extra anti-spam check before you can continue.
 msgstr "Your registration needs an extra anti-spam check before you can continue."
 
 #. Plutonium subscription card text shown while a failed renewal payment is being retried. {graceDate} is a date already formatted and localized by code; never write a date into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:470
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:492
 msgid "Your renewal payment failed but <0/> stay active until <1>{graceDate}</1>. Update your payment method before then to keep your subscription."
 msgstr "Your renewal payment failed but <0/> stay active until <1>{graceDate}</1>. Update your payment method before then to keep your subscription."
 
@@ -41682,7 +41702,7 @@ msgstr "Your subscription"
 msgid "Your subscription can't move to the new price right now."
 msgstr "Your subscription can't move to the new price right now."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:486
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:508
 msgid "Your subscription ended but <0/> stay active until <1>{graceDate}</1>. Resubscribe before then to keep your subscriber history."
 msgstr "Your subscription ended but <0/> stay active until <1>{graceDate}</1>. Resubscribe before then to keep your subscriber history."
 
@@ -41711,7 +41731,7 @@ msgstr "Your subscription has been switched to monthly billing."
 msgid "Your subscription has been switched to yearly billing."
 msgstr "Your subscription has been switched to yearly billing."
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:528
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:570
 msgid "Your subscription is active but perks are temporarily paused."
 msgstr "Your subscription is active but perks are temporarily paused."
 
@@ -41731,7 +41751,7 @@ msgid "Your subscription moves to the new price on {effectiveDate}."
 msgstr "Your subscription moves to the new price on {effectiveDate}."
 
 #. Plutonium subscription card line shown to a subscriber on a legacy price whose subscription is already set to cancel. {cancelDate} is a date and {listPriceNewLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:724
 msgid "Your subscription still ends on <0>{cancelDate}</0>. The current price is now {listPriceNewLabel}. If you reactivate, you can switch to it from here."
 msgstr "Your subscription still ends on <0>{cancelDate}</0>. The current price is now {listPriceNewLabel}. If you reactivate, you can switch to it from here."
 
@@ -41772,12 +41792,12 @@ msgid "Your video encoder stopped encoding frames, so your screen share was stop
 msgstr "Your video encoder stopped encoding frames, so your screen share was stopped. Try sharing again."
 
 #. Label for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:284
+#: src/features/app/components/setup/SetupWizardSteps.tsx:283
 msgid "YouTube enrichment"
 msgstr "YouTube enrichment"
 
 #. Setup wizard title for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:932
+#: src/features/app/components/setup/SetupWizardSteps.tsx:931
 msgid "YouTube previews"
 msgstr "YouTube previews"
 

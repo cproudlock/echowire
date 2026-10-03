@@ -405,6 +405,47 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   upstream ever fills 34, 35, 36 or 38 that is a silent collision of this kind.
   Moving them above upstream's maximum would remove the hazard but is an API, SDK and
   Flutter change together, so it needs deciding rather than doing mid-merge.
+- **A clean merge is not evidence that the clients in the field still work.** The
+  wire-value rule above is about a number meaning two things. This is the same hazard
+  with a path instead of a number: when upstream moves an asset from
+  network-fetched to bundle-included, the change is correct for every client built
+  after it and broken for every client already installed, because an installed client
+  keeps requesting the URL it was built with. No gate here can see it, for the same
+  reason no gate can see a number collision: the stale client is not in this tree.
+
+  The worked example is upstream #3087, which bundled the DeepFilterNet3 wasm and
+  model into the app and deleted `fluxer_static/libs`. Checking that no Dockerfile,
+  Caddyfile or compose in the repo still referenced the path was the right check *for
+  the repo*, and it came back clean, so the slice went green on every gate. The
+  problem was outside the repo: the SPA fetched those assets over the network as
+  `${RuntimeConfig.staticCdnEndpoint}/libs/deepfilternet3`, production's Caddyfile
+  routed `/libs/*` to the static image, and that image served 40.1 MB of them.
+
+  What made it bite is the part the repo cannot tell you: **desktop ships its own
+  renderer bundle, and desktop stable was 2026.825.12857 from 25 August 2026, seven
+  weeks behind.** That build requests `/libs/deepfilternet3` by absolute path.
+  Deploying the deletion would have killed DeepFilter noise suppression for every
+  desktop user on stable, reported as nothing more specific than "noise suppression
+  stopped working". A browser self-heals on the next reload; a desktop install does
+  not.
+
+  So the question to ask is not what the repo references. It is **what the oldest
+  supported client fetches.** Before taking a commit that deletes a served asset or
+  changes an asset URL, check the published desktop stable version and whether its
+  renderer bundles the asset itself. If it does not, keep the served copy as a fork
+  divergence alongside the new in-bundle copy, and say in the comment what retires
+  the duplication, so the next reader does not delete it for looking redundant.
+
+  Mitigated by a gate rather than a note:
+  `fluxer_app/src/features/voice/utils/StaticAssetContract.test.ts` pins the paths
+  deployed clients still fetch, asserts each resolves in `fluxer_static`, asserts the
+  Dockerfile still copies the tree, and separately derives the paths the current voice
+  code constructs so a new network-fetched asset cannot be added without the file.
+  The pinned half **cannot be derived**, and that is the point rather than a
+  shortcoming: the paths an installed client requests live in that client's bundle,
+  not in this repository. So it is enumerated, each row carrying the build that
+  fetches it and the condition that retires it, and a row is retired by the published
+  desktop build catching up, never by the repo no longer needing it.
 - **A clean merge is not evidence that the result compiles.** Git merges text. In a
   language with no type checker between the merge and the build, it will combine the
   fork's old function signatures with upstream's new bodies and report no conflict.

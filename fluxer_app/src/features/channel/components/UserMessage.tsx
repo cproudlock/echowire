@@ -4,6 +4,7 @@ import Accessibility from '@app/features/accessibility/state/Accessibility';
 import {SILENT_MENTION} from '@app/features/app/config/I18nDisplayConstants';
 import {UserTag} from '@app/features/channel/components/ChannelUserTag';
 import {CompactAuthorPrefix, CompactMessageLayout} from '@app/features/channel/components/CompactMessageLayout';
+import {CrosspostPublishNudge} from '@app/features/channel/components/CrosspostPublishNudge';
 import {EditingMessageInput} from '@app/features/channel/components/EditingMessageInput';
 import {isMediaOnlyEmbed} from '@app/features/channel/components/embeds/EmbedRenderUtils';
 import {MessageAttachments} from '@app/features/channel/components/MessageAttachments';
@@ -26,6 +27,7 @@ import * as MessageCommands from '@app/features/messaging/commands/MessageComman
 import {SafeMarkdown} from '@app/features/messaging/components/markdown';
 import {parse} from '@app/features/messaging/components/markdown/renderers';
 import {MarkdownContext} from '@app/features/messaging/components/markdown/renderers/RendererTypes';
+import type {Message} from '@app/features/messaging/models/MessagingMessage';
 import MessageEdit from '@app/features/messaging/state/MessageEdit';
 import {hasStyleableMessageText} from '@app/features/messaging/utils/FailedMessageDisplayUtils';
 import {buildMessageContentCopyText} from '@app/features/messaging/utils/MessageCopyTextUtils';
@@ -48,6 +50,7 @@ import * as DateUtils from '@app/features/user/utils/DateFormatting';
 import * as NicknameUtils from '@app/features/user/utils/NicknameUtils';
 import {FLUXERBOT_ID} from '@fluxer/constants/src/AppConstants';
 import {MessageFlags, MessageStates, MessageTypes} from '@fluxer/constants/src/ChannelConstants';
+import type {I18n} from '@lingui/core';
 import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
 import {ArrowsClockwiseIcon, BellSlashIcon, EyeIcon, WarningCircleIcon} from '@phosphor-icons/react';
@@ -60,6 +63,16 @@ const JUMP_TO_MESSAGE_FROM_SENT_DESCRIPTOR = msg({
 	comment:
 		'Label in the channel and chat user message. Preserve {displayName}, {formattedDate}; they are inserted by code.',
 });
+const SOURCE_DELETED_CONTENT_DESCRIPTOR = msg({
+	message: '[Original message deleted]',
+	comment:
+		'Replaces the text of a copy of a published announcement after the original was deleted in the announcement channel. Keep the square brackets.',
+});
+
+function getDisplayedContent(message: Message, i18n: I18n): string {
+	return message.isCrosspostSourceDeleted ? i18n._(SOURCE_DELETED_CONTENT_DESCRIPTOR) : message.content;
+}
+
 const EDITED_DESCRIPTOR = msg({
 	message: '(edited)',
 	comment: 'Button or menu action label in the channel and chat user message. Keep it concise.',
@@ -214,15 +227,17 @@ export const UserMessage = observer(() => {
 					return;
 				}
 				if (canSubmitEmptyMessageEdit(message)) {
-					finishEditing();
-					void MessageCommands.edit(
-						channel.id,
-						message.id,
-						'',
-						undefined,
-						message._allowedMentions,
-						buildExistingAttachmentEditReferences(message),
-					);
+					MessageCommands.confirmPublishedMessageEdit(i18n, message, () => {
+						finishEditing();
+						void MessageCommands.edit(
+							channel.id,
+							message.id,
+							'',
+							undefined,
+							message._allowedMentions,
+							buildExistingAttachmentEditReferences(message),
+						);
+					});
 					return;
 				}
 				handleDelete();
@@ -231,10 +246,13 @@ export const UserMessage = observer(() => {
 			if (checkCustomEmojiAvailability(content)) {
 				return;
 			}
-			finishEditing();
-			void MessageCommands.edit(channel.id, message.id, content, undefined, message._allowedMentions);
+			MessageCommands.confirmPublishedMessageEdit(i18n, message, () => {
+				finishEditing();
+				void MessageCommands.edit(channel.id, message.id, content, undefined, message._allowedMentions);
+			});
 		},
 		[
+			i18n,
 			channel.id,
 			handleDelete,
 			message,
@@ -296,7 +314,7 @@ export const UserMessage = observer(() => {
 				{...messageContentCopyBlockProps(contentCopyText)}
 			>
 				<SafeMarkdown
-					content={message.content}
+					content={getDisplayedContent(message, i18n)}
 					options={markdownOptions}
 					data-flx="channel.user-message.render-message-content.safe-markdown"
 				/>
@@ -431,7 +449,7 @@ export const UserMessage = observer(() => {
 							{...messageContentCopyBlockProps(contentCopyText)}
 						>
 							<SafeMarkdown
-								content={message.content}
+								content={getDisplayedContent(message, i18n)}
 								options={markdownOptions}
 								data-flx="channel.user-message.safe-markdown"
 							/>
@@ -477,7 +495,7 @@ export const UserMessage = observer(() => {
 	if (messageDisplayCompact) {
 		return (
 			<SpoilerSyncProvider data-flx="channel.user-message.spoiler-sync-provider--2">
-				{message.messageReference && message.messageReference.type === 0 && (
+				{message.messageReference && message.messageReference.type === 0 && !message.isCrosspostCopy && (
 					<ReplyPreview
 						message={message}
 						channelId={channel.id}
@@ -518,7 +536,7 @@ export const UserMessage = observer(() => {
 								{showMetadata && compactAuthorPrefix}
 								{!shouldHideContent && (
 									<SafeMarkdown
-										content={message.content}
+										content={getDisplayedContent(message, i18n)}
 										options={markdownOptions}
 										data-flx="channel.user-message.safe-markdown--2"
 									/>
@@ -548,6 +566,13 @@ export const UserMessage = observer(() => {
 				<div className={styles.container} data-flx="channel.user-message.container--2">
 					<MessageAttachments data-flx="channel.user-message.message-attachments--2" />
 					<MessageThreadLink />
+					{!previewContext && (
+						<CrosspostPublishNudge
+							message={message}
+							channel={channel}
+							data-flx="channel.user-message.crosspost-publish-nudge"
+						/>
+					)}
 					{renderFailedFooter()}
 				</div>
 			</SpoilerSyncProvider>
@@ -555,7 +580,7 @@ export const UserMessage = observer(() => {
 	}
 	return (
 		<SpoilerSyncProvider data-flx="channel.user-message.spoiler-sync-provider--3">
-			{message.messageReference && message.messageReference.type === 0 && (
+			{message.messageReference && message.messageReference.type === 0 && !message.isCrosspostCopy && (
 				<ReplyPreview
 					message={message}
 					channelId={channel.id}
@@ -587,10 +612,11 @@ export const UserMessage = observer(() => {
 										previewName={previewOverrides?.displayName}
 										data-flx="channel.user-message.message-username--2"
 									/>
-									{author.bot && (
+									{(author.bot || message.isCrosspostCopy) && (
 										<UserTag
 											className={styles.userTagOffset}
 											system={author.system}
+											variant={message.isCrosspostCopy ? 'community' : undefined}
 											data-flx="channel.user-message.user-tag-offset--2"
 										/>
 									)}
@@ -686,10 +712,11 @@ export const UserMessage = observer(() => {
 									previewName={previewOverrides?.displayName}
 									data-flx="channel.user-message.message-username--3"
 								/>
-								{author.bot && (
+								{(author.bot || message.isCrosspostCopy) && (
 									<UserTag
 										className={styles.userTagOffset}
 										system={author.system}
+										variant={message.isCrosspostCopy ? 'community' : undefined}
 										data-flx="channel.user-message.user-tag-offset--3"
 									/>
 								)}
@@ -766,6 +793,13 @@ export const UserMessage = observer(() => {
 							</span>
 						</TimestampWithTooltip>
 					))}
+				{!previewContext && (
+					<CrosspostPublishNudge
+						message={message}
+						channel={channel}
+						data-flx="channel.user-message.crosspost-publish-nudge--2"
+					/>
+				)}
 				{renderFailedFooter()}
 			</div>
 		</SpoilerSyncProvider>

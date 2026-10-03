@@ -25,6 +25,11 @@ export const ChannelTypeSchema = createInt32EnumType(
 		[ChannelTypes.GUILD_VOICE, 'GUILD_VOICE', 'A voice channel within a guild'],
 		[ChannelTypes.GROUP_DM, 'GROUP_DM', 'A group direct message between users'],
 		[ChannelTypes.GUILD_CATEGORY, 'GUILD_CATEGORY', 'A category that contains channels'],
+		[
+			ChannelTypes.GUILD_ANNOUNCEMENT,
+			'GUILD_ANNOUNCEMENT',
+			'A guild channel whose messages can be published to channels that follow it',
+		],
 		[ChannelTypes.PUBLIC_THREAD, 'PUBLIC_THREAD', 'A public thread within a text or forum channel'],
 		[ChannelTypes.PRIVATE_THREAD, 'PRIVATE_THREAD', 'A private thread within a text channel'],
 		[ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'A forum channel that contains threads as posts'],

@@ -1,6 +1,10 @@
 // @vitest-environment happy-dom
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {
+	readNoiseSuppressionRuntimeCapabilities,
+	resolveNoiseSuppressionBackend,
+} from '@app/features/voice/utils/noise_suppression/NoiseSuppressionSelection';
 import {DEFAULT_VOICE_PROCESSING_MODE, resolveVoiceProcessing} from '@app/features/voice/utils/VoiceProcessingProfile';
 import {describe, expect, it} from 'vitest';
 
@@ -33,6 +37,26 @@ describe('the echowire voice processing defaults', () => {
 			false,
 		);
 		expect(resolved.contentHint).toBe('');
+	});
+
+	it('defaults to standard browser noise suppression rather than an enhanced backend', () => {
+		// Upstream #3103 moves its own default to rnnoise. The fork keeps standard for the
+		// same reason it keeps the custom profile: enhanced NS over-processes voice over a
+		// long session. A failure here after a merge means re-apply the divergence, not
+		// update the expectation.
+		//
+		// The capability assertions are not incidental. resolveNoiseSuppressionBackend puts
+		// the default through selectUsableNoiseSuppressionBackend, so an enhanced default in
+		// a runtime missing wasm SIMD or AudioWorklet would downgrade to standard and this
+		// test would pass with the divergence already reverted. Asserting the runtime is
+		// capable first makes that case fail instead.
+		(globalThis as {AudioWorkletNode?: unknown}).AudioWorkletNode = class {};
+		const capabilities = readNoiseSuppressionRuntimeCapabilities();
+		expect(capabilities.audioWorklet).toBe(true);
+		expect(capabilities.wasmSimd).toBe(true);
+
+		expect(resolveNoiseSuppressionBackend(undefined)).toBe('standard');
+		expect(resolveNoiseSuppressionBackend('not-a-backend')).toBe('standard');
 	});
 
 	it('keeps the studio profile unprocessed', () => {

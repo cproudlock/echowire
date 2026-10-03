@@ -169,9 +169,6 @@ export interface APIConfig {
 			secure: boolean;
 		};
 	};
-	ipinfo: {
-		apiKey?: string;
-	};
 	blocklistFeeds: {
 		enabled: boolean;
 	};

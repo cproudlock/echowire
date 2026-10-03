@@ -7404,7 +7404,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Only claimed, email-verified non-bot users can create guilds.",
+				"description": "Only claimed, email-verified non-bot users can create guilds. A self-hosted instance can restrict creation to admins and users granted the feature_guild_create limit.",
 				"security": [{"sessionToken": []}],
 				"requestBody": {
 					"required": true,
@@ -23959,7 +23959,7 @@
 						"description": "The sequence number for lifetime premium subscribers"
 					},
 					"premium_grace_ends_at": {
-						"description": "ISO8601 timestamp at which the post-cancel grace period ends. Set when the subscription is fully canceled in Stripe; perks remain active and the original premium_since is restored on resubscribe until this timestamp passes. Null when not in grace.",
+						"description": "ISO8601 timestamp at which grace access ends after premium_until passes: after a failed renewal payment (7 days from the renewal for monthly plans, 14 for yearly), after a subscription ends (3 days), or during an App Store or Google Play grace period. Perks stay active and the original premium_since is kept on resubscribe until this timestamp passes. Null when no grace is recorded, in which case access lasts 3 days after premium_until.",
 						"type": ["string", "null"]
 					},
 					"premium_discriminator": {
@@ -31957,9 +31957,18 @@
 					"direct_messages_disabled": {
 						"type": "boolean",
 						"description": "Whether direct messages and friend requests are disabled instance-wide"
+					},
+					"guild_create_access": {
+						"type": "boolean",
+						"description": "Whether every account can create communities. When false, only admins and accounts granted the feature_guild_create limit can"
 					}
 				},
-				"required": ["single_community", "single_community_guild_id", "direct_messages_disabled"],
+				"required": [
+					"single_community",
+					"single_community_guild_id",
+					"direct_messages_disabled",
+					"guild_create_access"
+				],
 				"additionalProperties": false,
 				"description": "Community topology and direct-message policy for this instance"
 			},

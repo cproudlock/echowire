@@ -14,7 +14,6 @@ import {InstanceConfigCache} from '@app/api/instance/InstanceConfigCache';
 import {normalizeSsoAllowedEmailDomains} from '@app/api/instance/SsoConfigValidation';
 import {Logger} from '@app/api/Logger';
 import {isLimitConfigSnapshot} from '@app/api/limits/LimitConfigValidation';
-import {resolveDeferredPhoneGateEnabled, setCachedDeferredPhoneGateEnabled} from '@app/api/risk/DeferredPhoneGateCache';
 import {
 	getEffectiveBillingConfig,
 	isBillingActive,
@@ -52,19 +51,11 @@ import {
 	StoredBillingConfigSchema,
 } from '@fluxer/schema/src/domains/admin/InstanceBillingSchemas';
 import {
-	type ProfileTimezoneConfig,
-	ProfileTimezoneConfigSchema,
-} from '@fluxer/schema/src/domains/admin/ProfileTimezoneSchemas';
-import {
 	type LegacyPushServiceDeliveryWire,
 	type PushRelayConfig,
 	PushRelayConfigSchema,
 	toLegacyPushServiceDeliveryWire,
 } from '@fluxer/schema/src/domains/admin/PushRelaySchemas';
-import {
-	type VoiceNoiseSuppressionConfig,
-	VoiceNoiseSuppressionConfigSchema,
-} from '@fluxer/schema/src/domains/admin/VoiceNoiseSuppressionSchemas';
 import {
 	type ExperimentDeliveryConfig,
 	ExperimentDeliveryConfigSchema,
@@ -86,11 +77,9 @@ import type {IKVProvider} from '@pkgs/kv_client/src/IKVProvider';
 import {z} from 'zod';
 
 const GATEWAY_ROLLOUT_CONFIG_KEY = 'gateway_rollout_config';
-const VOICE_NOISE_SUPPRESSION_CONFIG_KEY = 'voice_noise_suppression_config';
 const PUSH_RELAY_CONFIG_KEY = 'push_service_delivery_config';
 const DOMAIN_MIGRATION_CONFIG_KEY = 'domain_migration_config';
 const ALTCHA_CAPTCHA_CONFIG_KEY = 'altcha_captcha_config';
-const PROFILE_TIMEZONE_CONFIG_KEY = 'profile_timezone_config';
 const EXPERIMENT_DELIVERY_CONFIG_KEY = 'experiment_delivery_config';
 const REGISTRATION_CONFIG_KEY = 'registration_config';
 const REGISTRATION_URLS_KEY = 'registration_urls';
@@ -188,9 +177,6 @@ export interface InstancePolicyConfig {
 	gif_enabled: boolean | null;
 	youtube_enabled: boolean | null;
 	bluesky_enabled: boolean | null;
-	deferred_phone_gate_enabled: boolean;
-	deferred_phone_gate_window_hours: number;
-	deferred_phone_gate_member_threshold: number;
 }
 
 type InstanceEmailProvider = 'smtp' | 'none';
@@ -447,11 +433,9 @@ function getDefaultAppPublicConfig(): InstanceAppPublicConfig {
 type StoredConfigSection =
 	| 'app public'
 	| 'gateway rollout'
-	| 'voice noise suppression'
 	| 'push relay'
 	| 'domain migration'
 	| 'altcha captcha'
-	| 'profile timezone'
 	| 'experiment delivery'
 	| 'instance policy'
 	| 'integrations'
@@ -587,10 +571,6 @@ function parseStoredGatewayRolloutConfig(raw: string | null): GatewayRolloutConf
 	return decodeGatewayRolloutConfig(parseStoredConfigValue(raw, 'gateway rollout'));
 }
 
-function parseStoredVoiceNoiseSuppressionConfig(raw: string | null): VoiceNoiseSuppressionConfig {
-	return parseStoredConfigOrDefault(VoiceNoiseSuppressionConfigSchema, raw, 'voice noise suppression');
-}
-
 const StoredPushRelayConfigSchema = PushRelayConfigSchema.extend({
 	config_version: z.number().int().min(0).default(0),
 });
@@ -618,10 +598,6 @@ function parseStoredDomainMigrationConfig(raw: string | null): DomainMigrationCo
 
 function parseStoredAltchaCaptchaConfig(raw: string | null): AltchaCaptchaConfig {
 	return parseStoredConfigOrDefault(AltchaCaptchaConfigSchema, raw, 'altcha captcha');
-}
-
-function parseStoredProfileTimezoneConfig(raw: string | null): ProfileTimezoneConfig {
-	return parseStoredConfigOrDefault(ProfileTimezoneConfigSchema, raw, 'profile timezone');
 }
 
 function parseStoredExperimentDeliveryConfig(raw: string | null): ExperimentDeliveryConfig {
@@ -691,7 +667,6 @@ function buildAppPublicConfig(config: z.infer<typeof StoredInstanceAppPublicSche
 
 const InstancePolicyUpdateSchema = InstanceConfigUpdateRequest.shape.policy.unwrap().unwrap();
 const InstancePolicyServiceUpdateSchema = InstancePolicyUpdateSchema.shape.services.unwrap().unwrap();
-const InstancePolicyPhoneGateUpdateSchema = InstancePolicyUpdateSchema.shape.deferred_phone_gate.unwrap().unwrap();
 const StoredSnowflakeStringSchema = z
 	.string()
 	.refine((value) => value.length <= 19 && !/\D/.test(value) && SnowflakeType.safeParse(value).success);
@@ -704,9 +679,6 @@ const StoredInstancePolicySchema = z.object({
 	gif_enabled: InstancePolicyServiceUpdateSchema.shape.gif_enabled.default(null),
 	youtube_enabled: InstancePolicyServiceUpdateSchema.shape.youtube_enabled.default(null),
 	bluesky_enabled: InstancePolicyServiceUpdateSchema.shape.bluesky_enabled.default(null),
-	deferred_phone_gate_enabled: InstancePolicyPhoneGateUpdateSchema.shape.enabled.default(false),
-	deferred_phone_gate_window_hours: InstancePolicyPhoneGateUpdateSchema.shape.window_hours.default(6),
-	deferred_phone_gate_member_threshold: InstancePolicyPhoneGateUpdateSchema.shape.member_threshold.default(50),
 }) satisfies z.ZodType<InstancePolicyConfig>;
 
 function decodeInstancePolicyConfig(value: unknown): InstancePolicyConfig {
@@ -1296,13 +1268,11 @@ export class InstanceConfigRepository {
 		checkStoredConfig('gateway rollout', () =>
 			parseStoredGatewayRolloutConfig(snapshot.get(GATEWAY_ROLLOUT_CONFIG_KEY) ?? null),
 		);
-		parseStoredVoiceNoiseSuppressionConfig(snapshot.get(VOICE_NOISE_SUPPRESSION_CONFIG_KEY) ?? null);
 		parseStoredPushRelayConfig(snapshot.get(PUSH_RELAY_CONFIG_KEY) ?? null);
 		parseStoredDomainMigrationConfig(snapshot.get(DOMAIN_MIGRATION_CONFIG_KEY) ?? null);
 		parseStoredAltchaCaptchaConfig(snapshot.get(ALTCHA_CAPTCHA_CONFIG_KEY) ?? null);
-		parseStoredProfileTimezoneConfig(snapshot.get(PROFILE_TIMEZONE_CONFIG_KEY) ?? null);
 		parseStoredExperimentDeliveryConfig(snapshot.get(EXPERIMENT_DELIVERY_CONFIG_KEY) ?? null);
-		const policy = parseStoredInstancePolicyConfig(snapshot.get(INSTANCE_POLICY_CONFIG_KEY) ?? null);
+		parseStoredInstancePolicyConfig(snapshot.get(INSTANCE_POLICY_CONFIG_KEY) ?? null);
 		checkStoredConfig('registration', () =>
 			parseStoredRegistrationConfig(snapshot.get(REGISTRATION_CONFIG_KEY) ?? null),
 		);
@@ -1330,7 +1300,6 @@ export class InstanceConfigRepository {
 		checkStoredConfig('media', () => parseStoredInstanceMediaConfig(snapshot.get(INSTANCE_MEDIA_CONFIG_KEY) ?? null));
 		setStoredBillingConfig(parseStoredInstanceBillingConfig(snapshot.get(INSTANCE_BILLING_CONFIG_KEY) ?? null));
 		const appPublic = parseStoredAppPublicConfig(snapshot.get(APP_PUBLIC_CONFIG_KEY) ?? null);
-		setCachedDeferredPhoneGateEnabled(resolveDeferredPhoneGateEnabled(policy));
 		setCachedDateOfBirthCollection(appPublic.registration.collect_date_of_birth);
 	}
 
@@ -1374,27 +1343,6 @@ export class InstanceConfigRepository {
 	): Promise<GatewayRolloutConfig> {
 		return this.updateStoredConfig(GATEWAY_ROLLOUT_CONFIG_KEY, (raw) =>
 			decodeGatewayRolloutConfig(update(parseStoredGatewayRolloutConfig(raw))),
-		);
-	}
-
-	async getVoiceNoiseSuppressionConfig(): Promise<VoiceNoiseSuppressionConfig> {
-		const raw = await this.getConfig(VOICE_NOISE_SUPPRESSION_CONFIG_KEY);
-		return parseStoredVoiceNoiseSuppressionConfig(raw);
-	}
-
-	async setVoiceNoiseSuppressionConfig(config: VoiceNoiseSuppressionConfig): Promise<void> {
-		await this.updateVoiceNoiseSuppressionConfig(() => config);
-	}
-
-	updateVoiceNoiseSuppressionConfig(
-		update: (current: VoiceNoiseSuppressionConfig) => VoiceNoiseSuppressionConfig,
-	): Promise<VoiceNoiseSuppressionConfig> {
-		return this.updateStoredConfig(VOICE_NOISE_SUPPRESSION_CONFIG_KEY, (raw) =>
-			validateStoredConfig(
-				VoiceNoiseSuppressionConfigSchema,
-				update(parseStoredVoiceNoiseSuppressionConfig(raw)),
-				'voice noise suppression',
-			),
 		);
 	}
 
@@ -1450,27 +1398,6 @@ export class InstanceConfigRepository {
 	): Promise<AltchaCaptchaConfig> {
 		return this.updateStoredConfig(ALTCHA_CAPTCHA_CONFIG_KEY, (raw) =>
 			validateStoredConfig(AltchaCaptchaConfigSchema, update(parseStoredAltchaCaptchaConfig(raw)), 'altcha captcha'),
-		);
-	}
-
-	async getProfileTimezoneConfig(): Promise<ProfileTimezoneConfig> {
-		const raw = await this.getConfig(PROFILE_TIMEZONE_CONFIG_KEY);
-		return parseStoredProfileTimezoneConfig(raw);
-	}
-
-	async setProfileTimezoneConfig(config: ProfileTimezoneConfig): Promise<void> {
-		await this.updateProfileTimezoneConfig(() => config);
-	}
-
-	updateProfileTimezoneConfig(
-		update: (current: ProfileTimezoneConfig) => ProfileTimezoneConfig,
-	): Promise<ProfileTimezoneConfig> {
-		return this.updateStoredConfig(PROFILE_TIMEZONE_CONFIG_KEY, (raw) =>
-			validateStoredConfig(
-				ProfileTimezoneConfigSchema,
-				update(parseStoredProfileTimezoneConfig(raw)),
-				'profile timezone',
-			),
 		);
 	}
 
@@ -1572,9 +1499,7 @@ export class InstanceConfigRepository {
 
 	async getInstancePolicyConfig(): Promise<InstancePolicyConfig> {
 		const raw = await this.getConfig(INSTANCE_POLICY_CONFIG_KEY);
-		const policy = parseStoredInstancePolicyConfig(raw);
-		setCachedDeferredPhoneGateEnabled(resolveDeferredPhoneGateEnabled(policy));
-		return policy;
+		return parseStoredInstancePolicyConfig(raw);
 	}
 
 	async readStoredInstancePolicyConfig(): Promise<InstancePolicyConfig> {
@@ -1600,7 +1525,6 @@ export class InstanceConfigRepository {
 			return {value: Object.keys(patch).length === 0 ? null : JSON.stringify(config), result: config};
 		});
 		if (written) await this.publishRefresh(cache.sourceId);
-		setCachedDeferredPhoneGateEnabled(resolveDeferredPhoneGateEnabled(next));
 		return next;
 	}
 

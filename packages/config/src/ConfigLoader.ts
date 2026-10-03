@@ -210,9 +210,6 @@ function defaultConfig(): MasterConfig {
 				from_name: 'echowire',
 				app_base_url: '',
 			},
-			sms: {
-				enabled: false,
-			},
 			captcha: {
 				enabled: false,
 				provider: 'none',
@@ -267,12 +264,9 @@ function defaultConfig(): MasterConfig {
 				},
 			},
 			blocklist_feeds: {},
-			tor_exit_list: {},
 			breached_password_check: {},
-			risk_integration: {
-				enabled: false,
-				ipinfo_api_key: '',
-				account_policy_dsl: undefined,
+			ipinfo: {
+				api_key: '',
 			},
 			push: {
 				apns: {
@@ -292,23 +286,6 @@ function defaultConfig(): MasterConfig {
 			},
 			setup: {
 				configured: false,
-			},
-			abuse_policy: {
-				inbound_phone_country_codes: [],
-				phone_flagging: {
-					enabled: true,
-					exempt_country_codes: [],
-				},
-				phone_verification: {
-					inbound_required_prefixes: [],
-				},
-				direct_contact_spam: {
-					enabled: false,
-					country_codes: [],
-					distinct_target_threshold: 25,
-					target_window_ms: 2 * 60 * 60 * 1000,
-					action: 'flag_spammer',
-				},
 			},
 		},
 		dev: {
@@ -606,11 +583,6 @@ function normalizeConfig(config: MasterConfig): MasterConfig {
 	assertOneOf(config.integrations.captcha.provider, ['hcaptcha', 'turnstile', 'none'], 'FLUXER_CAPTCHA_PROVIDER');
 	assertOneOf(config.integrations.search.engine, ['elasticsearch', 'meilisearch'], 'FLUXER_SEARCH_ENGINE');
 	assertOneOf(config.integrations.cache_purge.adapter, CACHE_PURGE_ADAPTER_NAMES, 'FLUXER_CACHE_PURGE_ADAPTER');
-	assertOneOf(
-		config.instance.abuse_policy.direct_contact_spam.action,
-		['flag_spammer', 'suppress_delivery'],
-		'FLUXER_ABUSE_DIRECT_CONTACT_SPAM_ACTION',
-	);
 	validatePostgresConfig(config);
 	validateCaptchaConfig(config);
 	validateApiWorkerConfig(config);
@@ -672,7 +644,7 @@ function applyPublicPort(config: MasterConfig, endpoints: DerivedEndpoints): Mas
 	}
 	const {bluesky, passkeys} = config.auth;
 	const {branding} = config.instance;
-	const {email, sms, voice} = config.integrations;
+	const {email, voice} = config.integrations;
 	return {
 		...config,
 		domain: {
@@ -716,7 +688,6 @@ function applyPublicPort(config: MasterConfig, endpoints: DerivedEndpoints): Mas
 		integrations: {
 			...config.integrations,
 			email: {...email, app_base_url: normalize(email.app_base_url)},
-			sms: {...sms, inbound_webhook_public_url: normalizeOptional(sms.inbound_webhook_public_url)},
 			voice: {...voice, url: normalize(voice.url)},
 		},
 		instance: {

@@ -1724,6 +1724,7 @@ export function TestHarnessController(app: HonoApp) {
 				kvClient: workerDeps.kvClient,
 				userRepository: workerDeps.userRepository,
 				deletionQueueService: workerDeps.deletionQueueService,
+				gatewayService: workerDeps.gatewayService,
 				emailService: workerDeps.emailService,
 				isEmailEnabled: () => workerDeps.instanceConfigRepository.isEmailEnabled(),
 				activityTracker: workerDeps.activityTracker,

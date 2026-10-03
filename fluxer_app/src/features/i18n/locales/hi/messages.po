@@ -2396,7 +2396,7 @@ msgid "7 days"
 msgstr "7 दिन"
 
 #. Required-action error when the API requires a captcha for phone verification.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:581
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:576
 msgid "A browser check is required before phone verification. Try again from the sign-in page or contact support."
 msgstr "फ़ोन वेरिफ़िकेशन से पहले ब्राउज़र जाँच ज़रूरी है। साइन-इन पेज से फिर से कोशिश करें या सहायता से संपर्क करें।"
 
@@ -2874,7 +2874,7 @@ msgid "Activity sharing"
 msgstr "गतिविधि शेयरिंग"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:478
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:473
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:102
 msgid "Activity threshold"
 msgstr "गतिविधि थ्रेशोल्ड"
@@ -3120,7 +3120,7 @@ msgstr "पासकी जोड़ें"
 #. Generic action label that opens the reaction picker for a message.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:527
-#: src/features/input/state/input_keybind/shared.ts:17
+#: src/features/input/state/input_keybind/shared.ts:21
 msgid "Add reaction"
 msgstr "रिएक्शन जोड़ें"
 
@@ -3611,11 +3611,11 @@ msgstr "{everyoneMention} और {hereMention} की अनुमति दे�
 msgid "Allow {PRODUCT_NAME} to access your camera in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 msgstr "{PRODUCT_NAME} को {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME} में अपने कैमरे का उपयोग करने की अनुमति दें।"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:535
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:530
 msgid "Allow {PRODUCT_NAME} to access your microphone in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME}."
 msgstr "{PRODUCT_NAME} को {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME} में अपने माइक्रोफ़ोन का उपयोग करने की अनुमति दें।"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:540
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:535
 msgid "Allow {PRODUCT_NAME} to access your microphone. Check your browser's address bar or settings."
 msgstr "{PRODUCT_NAME} को अपने माइक्रोफ़ोन का इस्तेमाल करने की अनुमति दें। अपने ब्राउज़र के एड्रेस बार या सेटिंग्स में जाँच करें।"
 
@@ -3718,7 +3718,7 @@ msgstr "जिन सदस्यों के पास {readMessageHistoryPerm
 msgid "Allow mentions for this role"
 msgstr "इस रोल के लिए मेंशन की अनुमति दें"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:560
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:555
 msgid "Allow microphone"
 msgstr "माइक्रोफ़ोन का एक्सेस दें"
 
@@ -4203,7 +4203,7 @@ msgid "Another round checkbox"
 msgstr "एक और राउंड चेकबॉक्स"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:213
+#: src/features/input/state/input_keybind/shared.ts:221
 msgid "Answer the incoming call"
 msgstr "इनकमिंग कॉल का जवाब दें"
 
@@ -4767,7 +4767,7 @@ msgid "Audio output"
 msgstr "ऑडियो आउटपुट"
 
 #. Field label in the voice connection status popout. Shows received audio packet loss percentage.
-#: src/features/voice/components/voice_connection_status/shared.ts:107
+#: src/features/voice/components/voice_connection_status/shared.ts:108
 msgid "Audio packet loss:"
 msgstr "ऑडियो पैकेट लॉस:"
 
@@ -4782,32 +4782,32 @@ msgid "Audio preview"
 msgstr "ऑडियो प्रीव्यू"
 
 #. Voice settings modal title for microphone processing options.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:51
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:48
 msgid "Audio processing"
 msgstr "ऑडियो प्रोसेसिंग"
 
 #. Tooltip in the voice status popout. Describes the custom mic processing profile with enhanced (DeepFilterNet3) noise suppression.
-#: src/features/voice/components/voice_connection_status/shared.ts:19
+#: src/features/voice/components/voice_connection_status/shared.ts:20
 msgid "Audio processing (custom, enhanced)"
 msgstr "ऑडियो प्रोसेसिंग (कस्टम, बेहतर)"
 
 #. Tooltip in the voice status popout. Describes the custom mic processing profile with no noise suppression.
-#: src/features/voice/components/voice_connection_status/shared.ts:29
+#: src/features/voice/components/voice_connection_status/shared.ts:30
 msgid "Audio processing (custom, no suppression)"
 msgstr "ऑडियो प्रोसेसिंग (कस्टम, कोई सप्रेशन नहीं)"
 
 #. Tooltip in the voice status popout. Describes the custom mic processing profile with browser-built-in noise suppression.
-#: src/features/voice/components/voice_connection_status/shared.ts:24
+#: src/features/voice/components/voice_connection_status/shared.ts:25
 msgid "Audio processing (custom)"
 msgstr "ऑडियो प्रोसेसिंग (कस्टम)"
 
 #. Tooltip in the voice status popout. Describes the studio / direct-input mic processing profile.
-#: src/features/voice/components/voice_connection_status/shared.ts:11
+#: src/features/voice/components/voice_connection_status/shared.ts:12
 msgid "Audio processing (direct input, raw)"
 msgstr "ऑडियो प्रोसेसिंग (सीधा इनपुट, रॉ)"
 
 #. Tooltip in the voice status popout. Describes the focused-voice mic processing profile.
-#: src/features/voice/components/voice_connection_status/shared.ts:15
+#: src/features/voice/components/voice_connection_status/shared.ts:16
 msgid "Audio processing (focused voice)"
 msgstr "ऑडियो प्रोसेसिंग (फ़ोकस्ड वॉइस)"
 
@@ -4817,12 +4817,12 @@ msgid "Audio progress"
 msgstr "ऑडियो प्रगति"
 
 #. Field label in the voice connection status popout. Shows current inbound audio bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:95
+#: src/features/voice/components/voice_connection_status/shared.ts:96
 msgid "Audio receive:"
 msgstr "ऑडियो रिसीव:"
 
 #. Field label in the voice connection status popout. Shows current outbound audio bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:91
+#: src/features/voice/components/voice_connection_status/shared.ts:92
 msgid "Audio send:"
 msgstr "ऑडियो सेंड:"
 
@@ -4993,7 +4993,7 @@ msgstr "भाषा अपने आप पहचानें"
 
 #. Short label in the voice tab. Keep it concise.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:116
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:465
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:460
 msgid "Auto-set activity threshold"
 msgstr "गतिविधि थ्रेशोल्ड अपने आप सेट करें"
 
@@ -5210,7 +5210,7 @@ msgid "Avatars"
 msgstr "अवतार"
 
 #. Field label in the voice connection status popout. Shows the average RTT in ms over the recent window.
-#: src/features/voice/components/voice_connection_status/shared.ts:50
+#: src/features/voice/components/voice_connection_status/shared.ts:51
 msgid "Average ping:"
 msgstr "औसत पिंग:"
 
@@ -5240,8 +5240,8 @@ msgstr "अभी दूर हूँ"
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:396
 #: src/features/moderation/components/report_modal/IARModal.tsx:86
 #: src/features/moderation/components/report/ReportStepDetails.tsx:312
-#: src/features/user/components/modals/PhoneAddModal.tsx:420
-#: src/features/user/components/modals/PhoneAddModal.tsx:439
+#: src/features/user/components/modals/PhoneAddModal.tsx:417
+#: src/features/user/components/modals/PhoneAddModal.tsx:436
 msgid "Back"
 msgstr "वापस"
 
@@ -5450,7 +5450,7 @@ msgid "Ban this user"
 msgstr "इस यूज़र को बैन करें"
 
 #. Section heading in the voice connection status popout for current media bitrate usage.
-#: src/features/voice/components/voice_connection_status/shared.ts:66
+#: src/features/voice/components/voice_connection_status/shared.ts:67
 msgid "Bandwidth"
 msgstr "बैंडविड्थ"
 
@@ -5775,7 +5775,7 @@ msgstr "बुकमार्क की सीमा पूरी हो गई"
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:531
-#: src/features/input/state/input_keybind/shared.ts:265
+#: src/features/input/state/input_keybind/shared.ts:273
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:66
 msgid "Bookmark message"
 msgstr "मैसेज को बुकमार्क करें"
@@ -6431,7 +6431,7 @@ msgstr "यहां फ़ाइलें अपलोड नहीं की �
 #: src/features/expressions/components/modals/EditGuildStickerModal.tsx:116
 #: src/features/guild/components/modals/TransferOwnershipModal.tsx:91
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:103
-#: src/features/input/state/input_keybind/shared.ts:137
+#: src/features/input/state/input_keybind/shared.ts:145
 #: src/features/invite/components/modals/InviteModal.tsx:552
 #: src/features/messaging/components/modals/AttachmentEditModal.tsx:133
 #: src/features/messaging/components/modals/EditAltTextModal.tsx:190
@@ -6451,7 +6451,7 @@ msgstr "यहां फ़ाइलें अपलोड नहीं की �
 #: src/features/user/components/modals/PasswordChangeModal.tsx:226
 #: src/features/user/components/modals/PasswordChangeModal.tsx:237
 #: src/features/user/components/modals/PasswordChangeModal.tsx:255
-#: src/features/user/components/modals/PhoneAddModal.tsx:401
+#: src/features/user/components/modals/PhoneAddModal.tsx:398
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:174
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:33
 #: src/features/voice/components/modals/CameraPreviewModal.tsx:846
@@ -6501,12 +6501,12 @@ msgstr "निर्धारित स्विच रद्द करें"
 #. Billing button that starts subscription cancellation.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:844
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:140
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:142
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "सदस्यता रद्द करें"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:133
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
 msgid "Cancel subscription?"
 msgstr "सदस्यता रद्द करें?"
 
@@ -7865,7 +7865,7 @@ msgid "Clean link"
 msgstr "लिंक साफ़ करें"
 
 #. Description for the focused-voice option in the voice processing settings radio group.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:34
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:31
 msgid "Cleans up your mic for clear speech."
 msgstr "स्पष्ट बातचीत के लिए आपके माइक को साफ़ करता है।"
 
@@ -7924,7 +7924,7 @@ msgid "Clear custom status"
 msgstr "कस्टम स्टेटस हटाएँ"
 
 #. Body of the confirmation alert shown when clearing every reaction on a message.
-#: src/features/channel/components/MessageActionUtils.tsx:71
+#: src/features/channel/components/MessageActionUtils.tsx:74
 msgid "Clear every reaction from this message?"
 msgstr "इस मैसेज से सभी रिएक्शन हटा दें?"
 
@@ -8294,7 +8294,7 @@ msgstr "कोल थीम"
 #. Label for an inbound phone verification code shown in the required-action modal.
 #: src/features/auth/components/modals/MfaTotpDisableModal.tsx:26
 #: src/features/auth/components/modals/MfaTotpEnableModal.tsx:36
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:466
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:462
 #: src/features/invite/components/InviteListItem.tsx:77
 #: src/features/moderation/components/report/ReportBreadcrumbs.tsx:29
 msgid "Code"
@@ -9013,7 +9013,7 @@ msgstr "कैमरा या वर्चुअल कैप्चर डि�
 msgid "Connect a display, then try again."
 msgstr "एक डिस्प्ले कनेक्ट करें, फिर दोबारा प्रयास करें।"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:545
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:540
 msgid "Connect a microphone and try again."
 msgstr "माइक्रोफ़ोन कनेक्ट करें और फिर से प्रयास करें।"
 
@@ -9058,7 +9058,7 @@ msgid "Connecting..."
 msgstr "कनेक्ट हो रहा है..."
 
 #. Voice connection status while joining or reconnecting.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:46
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:47
 msgctxt "voice-connection-status"
 msgid "Connecting..."
 msgstr "कनेक्ट हो रहा है..."
@@ -9077,7 +9077,7 @@ msgid "Connection failed"
 msgstr "कनेक्शन विफल रहा"
 
 #. Voice connection status when the most recent attempt to join the channel failed.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:56
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:57
 msgctxt "voice-connection-status"
 msgid "Connection failed"
 msgstr "कनेक्शन विफल"
@@ -9464,7 +9464,7 @@ msgstr "चैनल आईडी कॉपी करें"
 
 #. Action that copies a deep link to the selected channel.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:205
+#: src/features/input/state/input_keybind/shared.ts:213
 #: src/features/ui/action_menu/items/ChannelMenuData.tsx:132
 msgid "Copy channel link"
 msgstr "चैनल लिंक कॉपी करें"
@@ -9503,7 +9503,7 @@ msgid "Copy emoji URL"
 msgstr "इमोजी यूआरएल कॉपी करें"
 
 #. Tooltip / button label that copies the voice endpoint hostname to the clipboard.
-#: src/features/voice/components/voice_connection_status/shared.ts:58
+#: src/features/voice/components/voice_connection_status/shared.ts:59
 msgid "Copy endpoint"
 msgstr "एंडपॉइंट कॉपी करें"
 
@@ -9613,7 +9613,7 @@ msgstr "मैसेज कॉपी करें"
 #. Developer-mode action that copies a message snowflake/ID to the clipboard.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:737
-#: src/features/input/state/input_keybind/shared.ts:277
+#: src/features/input/state/input_keybind/shared.ts:285
 msgid "Copy message ID"
 msgstr "मैसेज आईडी कॉपी करें"
 
@@ -9621,7 +9621,7 @@ msgstr "मैसेज आईडी कॉपी करें"
 #. IAR modal: quick-action card title.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:523
-#: src/features/input/state/input_keybind/shared.ts:273
+#: src/features/input/state/input_keybind/shared.ts:281
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:389
 msgid "Copy message link"
 msgstr "मैसेज लिंक कॉपी करें"
@@ -10299,7 +10299,7 @@ msgstr "काउंटडाउन टाइमर"
 #. Form field label for the country selector in the phone verification step.
 #. Short label in the phone add modal. Keep it concise.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:92
-#: src/features/user/components/modals/PhoneAddModal.tsx:59
+#: src/features/user/components/modals/PhoneAddModal.tsx:57
 msgid "Country"
 msgstr "देश"
 
@@ -10460,7 +10460,7 @@ msgstr "नया लिंक बनाएँ"
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Short label in the sidebar navigation add guild button.
 #: src/features/app/components/layout/sidebar_nav/AddGuildButton.tsx:32
-#: src/features/input/state/input_keybind/shared.ts:121
+#: src/features/input/state/input_keybind/shared.ts:129
 msgid "Create or join a community"
 msgstr "कम्युनिटी बनाएँ या उसमें शामिल हों"
 
@@ -10653,7 +10653,7 @@ msgid "Current DM"
 msgstr "मौजूदा DM"
 
 #. Field label in the voice connection status popout. Shows the latest RTT in ms.
-#: src/features/voice/components/voice_connection_status/shared.ts:41
+#: src/features/voice/components/voice_connection_status/shared.ts:42
 msgid "Current ping:"
 msgstr "मौजूदा पिंग:"
 
@@ -10701,7 +10701,7 @@ msgstr "कस्टम"
 #. Voice input processing profile where the user configures processing manually.
 #. Voice input processing profile where the user configures processing manually.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:91
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:42
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:39
 #: src/features/voice/components/VoiceSettingsMenus.tsx:70
 msgctxt "voice-processing-profile"
 msgid "Custom"
@@ -11229,7 +11229,7 @@ msgid "Decide whether replies @mention you by default"
 msgstr "तय करें कि जवाब डिफ़ॉल्ट रूप से आपको @मेंशन करें या नहीं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:217
+#: src/features/input/state/input_keybind/shared.ts:225
 msgid "Decline the incoming call"
 msgstr "इनकमिंग कॉल अस्वीकार करें"
 
@@ -12007,7 +12007,7 @@ msgid "Device volume"
 msgstr "डिवाइस वॉल्यूम"
 
 #. Field label in the voice connection status popout. Shows the connected voice region / device.
-#: src/features/voice/components/voice_connection_status/shared.ts:37
+#: src/features/voice/components/voice_connection_status/shared.ts:38
 msgid "Device:"
 msgstr "डिवाइस:"
 
@@ -12336,7 +12336,7 @@ msgstr "{channel} से डिस्कनेक्ट करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tray menu item. Leaves the current voice call when the channel name is unavailable.
-#: src/features/input/state/input_keybind/shared.ts:317
+#: src/features/input/state/input_keybind/shared.ts:325
 #: src/features/platform/utils/DesktopLocaleBridge.ts:221
 msgid "Disconnect from voice"
 msgstr "वॉइस से डिस्कनेक्ट करें"
@@ -12353,7 +12353,7 @@ msgid "Disconnected"
 msgstr "डिस्कनेक्ट हो गया"
 
 #. Voice connection status when not connected.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:51
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:52
 msgctxt "voice-connection-status"
 msgid "Disconnected"
 msgstr "कनेक्शन कट गया"
@@ -12418,7 +12418,7 @@ msgid "Dismiss"
 msgstr "खारिज करें"
 
 #. Button that dismisses the failed voice connection status banner.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:66
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:67
 msgctxt "voice-connection-status"
 msgid "Dismiss"
 msgstr "खारिज करें"
@@ -12966,7 +12966,7 @@ msgid "Drop images, fonts, or other files here to use them inside your custom CS
 msgstr "अपनी कस्टम CSS में उपयोग करने के लिए इमेज, फ़ॉन्ट या अन्य फ़ाइलें यहाँ ड्रॉप करें।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:133
+#: src/features/input/state/input_keybind/shared.ts:141
 msgid "Drop item"
 msgstr "आइटम छोड़ें"
 
@@ -13014,7 +13014,7 @@ msgid "Duplicate role"
 msgstr "रोल डुप्लिकेट करें"
 
 #. Field label in the voice connection status popout. Shows how long the current voice session has been connected.
-#: src/features/voice/components/voice_connection_status/shared.ts:74
+#: src/features/voice/components/voice_connection_status/shared.ts:75
 msgid "Duration:"
 msgstr "अवधि:"
 
@@ -13256,6 +13256,11 @@ msgstr "बॉट अवतार, टैग, बायो, बैनर और 
 msgid "Edit translation provider"
 msgstr "अनुवाद प्रदाता एडिट करें"
 
+#. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
+#: src/features/input/state/input_keybind/shared.ts:13
+msgid "Edit your messages above or below"
+msgstr "अपने संदेशों को ऊपर या नीचे संपादित करें"
+
 #. Button or menu action label in the my profile tab. Keep it concise.
 #: src/features/user/components/modals/tabs/MyProfileTab.tsx:93
 msgid "Edit your profile appearance and see a live preview"
@@ -13350,7 +13355,7 @@ msgid "Email unavailable"
 msgstr "ईमेल अनुपलब्ध है"
 
 #. Required-action error shown when email update cannot continue.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:522
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:518
 msgid "Email update is unavailable right now. Try again later or contact support."
 msgstr "ईमेल अपडेट अभी अनुपलब्ध है। बाद में फिर से कोशिश करें या सहायता से संपर्क करें।"
 
@@ -13441,12 +13446,12 @@ msgid "Embeds"
 msgstr "एम्बेड"
 
 #. Toast confirmation after hiding link previews and embeds on a message.
-#: src/features/channel/components/MessageActionUtils.tsx:83
+#: src/features/channel/components/MessageActionUtils.tsx:86
 msgid "Embeds suppressed"
 msgstr "एम्बेड छिपाए गए"
 
 #. Toast confirmation after re-enabling link previews and embeds on a message.
-#: src/features/channel/components/MessageActionUtils.tsx:79
+#: src/features/channel/components/MessageActionUtils.tsx:82
 msgid "Embeds unsuppressed"
 msgstr "एम्बेड फिर से दिखाए गए"
 
@@ -13894,11 +13899,11 @@ msgstr "अंतिम तिथि"
 msgid "End grace now"
 msgstr "ग्रेस पीरियड अभी खत्म करें"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:162
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:164
 msgid "End grace period"
 msgstr "ग्रेस पीरियड खत्म करें"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:155
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:157
 msgid "End grace period now?"
 msgstr "ग्रेस पीरियड अभी खत्म करें?"
 
@@ -13930,7 +13935,7 @@ msgid "Endpoint"
 msgstr "एंडपॉइंट"
 
 #. Field label in the voice connection status popout. Shows the voice server endpoint hostname.
-#: src/features/voice/components/voice_connection_status/shared.ts:54
+#: src/features/voice/components/voice_connection_status/shared.ts:55
 msgid "Endpoint:"
 msgstr "एंडपॉइंट:"
 
@@ -13999,7 +14004,7 @@ msgstr "मान्य {theOtherPlatform} टेम्पलेट यूआर
 
 #. Inline validation error on the email step of the DSA report flow when the email is malformed.
 #. Required-action form error for an invalid email address.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:510
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:506
 #: src/features/moderation/components/pages/ReportPage.tsx:59
 msgid "Enter a valid email address."
 msgstr "एक मान्य ईमेल पता डालें।"
@@ -14010,14 +14015,14 @@ msgid "Enter a valid message link."
 msgstr "एक वैध मैसेज लिंक डालें।"
 
 #. Required-action form error for an invalid phone number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:526
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:522
 msgid "Enter a valid mobile phone number."
 msgstr "एक मान्य मोबाइल फ़ोन नंबर डालें।"
 
 #. Form validation error shown when the entered phone number cannot be parsed.
 #. Label in the phone add modal.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:108
-#: src/features/user/components/modals/PhoneAddModal.tsx:47
+#: src/features/user/components/modals/PhoneAddModal.tsx:45
 msgid "Enter a valid phone number"
 msgstr "एक मान्य फ़ोन नंबर डालें"
 
@@ -14101,7 +14106,7 @@ msgid "Enter the {digitCount}-digit code sent to {phoneNumber}."
 msgstr "{phoneNumber} पर भेजे गए {digitCount} अंकों वाला कोड डालें।"
 
 #. placeholder {0}: getE164PhoneNumber(phoneNumber, selectedCountry) ?? formattedPhone
-#: src/features/user/components/modals/PhoneAddModal.tsx:376
+#: src/features/user/components/modals/PhoneAddModal.tsx:373
 msgid "Enter the {MFA_CODE_DIGIT_COUNT}-digit code sent to {0}."
 msgstr "{0} पर भेजे गए {MFA_CODE_DIGIT_COUNT} अंकों वाला कोड डालें।"
 
@@ -14344,7 +14349,7 @@ msgstr "शाम का समय"
 #. Description for the automatic gain control toggle in the voice processing settings.
 #. Description for the automatic gain control toggle in the voice processing settings.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:173
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:63
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:60
 msgid "Evens out your mic volume so you are not too quiet."
 msgstr "यह आपके माइक्रोफ़ोन की आवाज़ को बराबर करता है ताकि आपकी आवाज़ बहुत धीमी न लगे।"
 
@@ -14463,7 +14468,7 @@ msgid "Expand channel topic"
 msgstr "चैनल विषय बड़ा करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:229
+#: src/features/input/state/input_keybind/shared.ts:237
 msgid "Expand or collapse compact call view"
 msgstr "कॉम्पैक्ट कॉल व्यू को बड़ा या छोटा करें"
 
@@ -15385,12 +15390,12 @@ msgid "Focus ring"
 msgstr "फ़ोकस रिंग"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:37
+#: src/features/input/state/input_keybind/shared.ts:45
 msgid "Focus text area"
 msgstr "टेक्स्ट एरिया पर फ़ोकस करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:197
+#: src/features/input/state/input_keybind/shared.ts:205
 msgid "Focus the text area"
 msgstr "टेक्स्ट एरिया पर जाएं"
 
@@ -15686,7 +15691,7 @@ msgstr "मीडिया फ़ॉरवर्ड करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Title of the forward message modal.
-#: src/features/input/state/input_keybind/shared.ts:25
+#: src/features/input/state/input_keybind/shared.ts:33
 #: src/features/messaging/components/modals/ForwardModal.tsx:83
 msgid "Forward message"
 msgstr "मैसेज फ़ॉरवर्ड करें"
@@ -16137,7 +16142,7 @@ msgstr "अपना टैग कस्टमाइज़ करने या �
 
 #. Button in the required-action modal. Requests a new inbound SMS challenge code.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:202
-#: src/features/user/components/modals/PhoneAddModal.tsx:427
+#: src/features/user/components/modals/PhoneAddModal.tsx:424
 msgid "Get new code"
 msgstr "नया कोड पाएँ"
 
@@ -16447,27 +16452,27 @@ msgid "Go to community"
 msgstr "कम्युनिटी पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:81
+#: src/features/input/state/input_keybind/shared.ts:89
 msgid "Go to direct messages"
 msgstr "डायरेक्ट मैसेज पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:113
+#: src/features/input/state/input_keybind/shared.ts:121
 msgid "Go to eighth community"
 msgstr "आठवीं कम्युनिटी पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:101
+#: src/features/input/state/input_keybind/shared.ts:109
 msgid "Go to fifth community"
 msgstr "पांचवीं कम्युनिटी पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:85
+#: src/features/input/state/input_keybind/shared.ts:93
 msgid "Go to first community"
 msgstr "पहली कम्युनिटी पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:97
+#: src/features/input/state/input_keybind/shared.ts:105
 msgid "Go to fourth community"
 msgstr "चौथी कम्युनिटी पर जाएं"
 
@@ -16498,12 +16503,12 @@ msgid "Go to page {pageItem}"
 msgstr "पेज {pageItem} पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:89
+#: src/features/input/state/input_keybind/shared.ts:97
 msgid "Go to second community"
 msgstr "दूसरी कम्युनिटी पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:109
+#: src/features/input/state/input_keybind/shared.ts:117
 msgid "Go to seventh community"
 msgstr "सातवीं कम्युनिटी पर जाएं"
 
@@ -16514,12 +16519,12 @@ msgid "Go to sign-in"
 msgstr "साइन-इन पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:105
+#: src/features/input/state/input_keybind/shared.ts:113
 msgid "Go to sixth community"
 msgstr "छठी कम्युनिटी पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:93
+#: src/features/input/state/input_keybind/shared.ts:101
 msgid "Go to third community"
 msgstr "तीसरी कम्युनिटी पर जाएं"
 
@@ -16839,7 +16844,7 @@ msgid "Hate speech"
 msgstr "नफ़रत फैलाने वाला भाषण"
 
 #. Premium page text shown on an instance where the premium tier cannot be bought, only redeemed. {PREMIUM_PRODUCT_NAME} is the premium tier name.
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:295
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:297
 msgid "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 msgstr "गिफ्ट कोड है? {PREMIUM_PRODUCT_NAME} को अनलॉक करने के लिए इसे रिडीम करें।"
 
@@ -17183,11 +17188,6 @@ msgstr "हाई डायनामिक रेंज"
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabHdrTab.tsx:29
 msgid "High dynamic range display mode"
 msgstr "हाई डायनामिक रेंज डिस्प्ले मोड"
-
-#. Description for the DeepFilterNet3 noise suppression strength slider.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:71
-msgid "Higher values remove more noise but can affect speech texture."
-msgstr "उच्च मान अधिक शोर हटाते हैं, लेकिन इससे बोलने की बनावट प्रभावित हो सकती है।"
 
 #. Short label in the language and locale names. Keep it concise.
 #: src/features/user/utils/LocaleUtils.ts:64
@@ -17809,7 +17809,7 @@ msgstr "चैनल"
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "\"ऑपरेटिंग सिस्टम\" मोड में, ऊपर दी गई डिक्शनरी सिर्फ़ सलाह के तौर पर हैं। सपोर्ट होने पर {PRODUCT_NAME} ये भाषा टैग आपके OS स्पेलचेकर को भेजेगा। जिन टैग को वह नहीं पहचानता, उन्हें अनदेखा कर दिया जाता है।"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:310
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:307
 msgid "In a browser, push-to-talk only works while the {PRODUCT_NAME} tab is focused. Install the desktop app for system-wide push-to-talk."
 msgstr "ब्राउज़र में, पुश-टू-टॉक तभी काम करता है जब {PRODUCT_NAME} टैब फ़ोकस में हो। सिस्टम-वाइड पुश-टू-टॉक के लिए डेस्कटॉप ऐप इंस्टॉल करें।"
 
@@ -17955,7 +17955,7 @@ msgid "Incoming calls: nobody"
 msgstr "इनकमिंग कॉल: कोई नहीं"
 
 #. Field label in the voice connection status popout. Shows WebRTC estimated available incoming bandwidth.
-#: src/features/voice/components/voice_connection_status/shared.ts:123
+#: src/features/voice/components/voice_connection_status/shared.ts:124
 msgid "Incoming capacity:"
 msgstr "इनकमिंग क्षमता:"
 
@@ -18664,7 +18664,7 @@ msgid "Jitter"
 msgstr "जिटर"
 
 #. Field label in the voice connection status popout. Shows audio jitter in milliseconds.
-#: src/features/voice/components/voice_connection_status/shared.ts:115
+#: src/features/voice/components/voice_connection_status/shared.ts:116
 msgid "Jitter:"
 msgstr "जिटर:"
 
@@ -18793,12 +18793,12 @@ msgid "Jump"
 msgstr "जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:57
+#: src/features/input/state/input_keybind/shared.ts:65
 msgid "Jump between unread channels"
 msgstr "अपठित चैनलों के बीच जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:61
+#: src/features/input/state/input_keybind/shared.ts:69
 msgid "Jump between unread channels with mentions"
 msgstr "मेंशन वाले अपठित चैनलों के बीच जाएं"
 
@@ -18807,7 +18807,7 @@ msgid "Jump straight to the app to continue."
 msgstr "जारी रखने के लिए सीधे ऐप पर जाएं।"
 
 #. Tooltip / aria label on a button that jumps to the channel. {channelSourceLabel} is the channel or DM name.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:87
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:88
 msgid "Jump to {channelSourceLabel}"
 msgstr "{channelSourceLabel} पर जाएं"
 
@@ -18869,7 +18869,7 @@ msgid "Jump to previous unread channel with mentions"
 msgstr "मेंशन वाले पिछले अपठित चैनल पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:65
+#: src/features/input/state/input_keybind/shared.ts:73
 msgid "Jump to the current call"
 msgstr "मौजूदा कॉल पर जाएं"
 
@@ -18894,7 +18894,7 @@ msgid "Jump to the message in {labelText}"
 msgstr "{labelText} में मैसेज पर जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:193
+#: src/features/input/state/input_keybind/shared.ts:201
 msgid "Jump to the oldest unread message"
 msgstr "सबसे पुराने अपठित मैसेज पर जाएं"
 
@@ -18942,7 +18942,7 @@ msgstr "एडिट साफ़ करते समय अटैचमें�
 msgid "Keep free and premium tiers. You can customize the tiers, sell premium through Stripe, or hand out gift codes later from the admin panel."
 msgstr "मुफ़्त और प्रीमियम टियर रखें। आप टियर को कस्टमाइज़ कर सकते हैं, स्ट्राइप के ज़रिए प्रीमियम बेच सकते हैं, या बाद में एडमिन पैनल से गिफ्ट कोड दे सकते हैं।"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:164
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:166
 msgid "Keep grace period"
 msgstr "ग्रेस पीरियड रखें"
 
@@ -18956,7 +18956,7 @@ msgstr "Pickles को स्थिर रखें"
 msgid "Keep running"
 msgstr "चालू रखें"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:142
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:144
 msgid "Keep subscription"
 msgstr "सदस्यता रखें"
 
@@ -19129,7 +19129,7 @@ msgid "Latency {latency} milliseconds"
 msgstr "लेटेंसी {latency} मिलीसेकंड"
 
 #. Aria label for the latency graph chart in the voice connection status popout.
-#: src/features/voice/components/voice_connection_status/shared.ts:33
+#: src/features/voice/components/voice_connection_status/shared.ts:34
 msgid "Latency graph"
 msgstr "लेटेंसी ग्राफ़"
 
@@ -19798,7 +19798,7 @@ msgid "Look and feel"
 msgstr "दिखावट और अनुभव"
 
 #. placeholder {0}: externalProcessor.name
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:654
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:649
 msgid "Looks like you're using {0}. Stacking {PRODUCT_NAME}'s processing on top can cause pumping or distortion. Direct input passes your audio through untouched."
 msgstr "लगता है आप {0} का उपयोग कर रहे हैं। {PRODUCT_NAME} की प्रोसेसिंग को इसके ऊपर रखने से पंपिंग या डिस्टॉर्शन हो सकता है। डायरेक्ट इनपुट आपके ऑडियो को बिना किसी बदलाव के पास करता है।"
 
@@ -20055,7 +20055,7 @@ msgstr "सभी DM को पढ़ा गया मार्क करें"
 
 #. Accessible label and tooltip for the mark-all-as-read button in the inbox popout.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:165
+#: src/features/input/state/input_keybind/shared.ts:173
 #: src/features/messaging/components/popouts/InboxPopout.tsx:46
 msgid "Mark all inbox channels as read"
 msgstr "सभी इनबॉक्स चैनलों को पढ़ा गया मार्क करें"
@@ -20087,19 +20087,19 @@ msgstr "स्पॉइलर मार्क करें"
 #. Generic action label that flips a channel back to unread.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:668
-#: src/features/input/state/input_keybind/shared.ts:33
+#: src/features/input/state/input_keybind/shared.ts:41
 msgid "Mark as unread"
 msgstr "अपठित मार्क करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/state/input_keybind/shared.ts:145
+#: src/features/input/state/input_keybind/shared.ts:153
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:58
 msgid "Mark channel as read"
 msgstr "चैनल को पढ़ा गया मार्क करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:141
+#: src/features/input/state/input_keybind/shared.ts:149
 msgid "Mark community as read"
 msgstr "कम्युनिटी को पढ़ा गया मार्क करें"
 
@@ -20126,7 +20126,7 @@ msgid "Mark read"
 msgstr "पढ़ा गया मार्क करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:161
+#: src/features/input/state/input_keybind/shared.ts:169
 msgid "Mark top inbox channel as read"
 msgstr "सबसे ऊपर वाले इनबॉक्स चैनल को पढ़ा गया मार्क करें"
 
@@ -20367,12 +20367,12 @@ msgid "Maybe later"
 msgstr "बाद में करें"
 
 #. Tooltip on the latency badge while voice latency is still being sampled.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:83
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:84
 msgid "Measuring latency..."
 msgstr "लेटेंसी मापी जा रही है..."
 
 #. Placeholder shown while voice latency is still being sampled. Trailing ellipsis indicates ongoing measurement.
-#: src/features/voice/components/voice_connection_status/shared.ts:45
+#: src/features/voice/components/voice_connection_status/shared.ts:46
 msgid "Measuring…"
 msgstr "मापा जा रहा है…"
 
@@ -21475,7 +21475,7 @@ msgid "Mouse forward button"
 msgstr "माउस का आगे जाने वाला बटन"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:129
+#: src/features/input/state/input_keybind/shared.ts:137
 msgid "Move"
 msgstr "ले जाएँ"
 
@@ -21490,7 +21490,7 @@ msgid "Move back through page history"
 msgstr "पेज हिस्ट्री में पीछे जाएं"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:49
+#: src/features/input/state/input_keybind/shared.ts:57
 msgid "Move back through viewed channel history"
 msgstr "देखे गए चैनल की हिस्ट्री में पीछे जाएं"
 
@@ -21507,7 +21507,7 @@ msgid "Move forward through page history"
 msgstr "पेज हिस्ट्री में आगे बढ़ें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:53
+#: src/features/input/state/input_keybind/shared.ts:61
 msgid "Move forward through viewed channel history"
 msgstr "देखे गए चैनल की हिस्ट्री में आगे बढ़ें"
 
@@ -22125,7 +22125,7 @@ msgid "Netherlands"
 msgstr "नीदरलैंड"
 
 #. Section heading in the voice connection status popout for WebRTC network quality stats.
-#: src/features/voice/components/voice_connection_status/shared.ts:70
+#: src/features/voice/components/voice_connection_status/shared.ts:71
 msgid "Network"
 msgstr "नेटवर्क"
 
@@ -22716,7 +22716,7 @@ msgstr "कोई मिलान नहीं मिला"
 msgid "No mentions yet"
 msgstr "अभी तक कोई मेंशन नहीं है"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:530
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:525
 msgid "No microphone found"
 msgstr "कोई माइक्रोफ़ोन नहीं मिला"
 
@@ -23824,7 +23824,7 @@ msgid "Open group details for {groupDMName}"
 msgstr "{groupDMName} के लिए ग्रुप विवरण खोलें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:233
+#: src/features/input/state/input_keybind/shared.ts:241
 msgid "Open help"
 msgstr "सहायता खोलें"
 
@@ -23977,7 +23977,7 @@ msgid "Open the ban dialog for this community."
 msgstr "इस कम्युनिटी के लिए बैन डायलॉग खोलें।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:241
+#: src/features/input/state/input_keybind/shared.ts:249
 msgid "Open the context menu"
 msgstr "कॉन्टेक्स्ट मेन्यू खोलें"
 
@@ -24010,7 +24010,7 @@ msgid "Open the verification email and use the link inside. This window updates 
 msgstr "पुष्टि करने वाला ईमेल खोलें और अंदर दिए गए लिंक का उपयोग करें। लिंक खुलने के बाद यह विंडो अपडेट हो जाएगी।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:249
+#: src/features/input/state/input_keybind/shared.ts:257
 msgid "Open theme studio popout"
 msgstr "थीम स्टूडियो पॉपआउट खोलें"
 
@@ -24054,7 +24054,7 @@ msgid "Open your browser, sign in, then enter the code below to link your accoun
 msgstr "अपना ब्राउज़र खोलें, साइन इन करें, फिर अपना अकाउंट लिंक करने के लिए नीचे दिया गया कोड डालें।"
 
 #. Required-action modal carousel step title for the first inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:450
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:446
 msgid "Open your messages"
 msgstr "अपने मैसेज खोलें"
 
@@ -24062,17 +24062,17 @@ msgstr "अपने मैसेज खोलें"
 msgid "Open your old {PRODUCT_NAME} app and choose Link a new device, then enter the code below."
 msgstr "अपना पुराना {PRODUCT_NAME} ऐप खोलें और \"नया डिवाइस लिंक करें\" चुनें, फिर नीचे दिया गया कोड दर्ज करें।"
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:327
+#: src/features/user/components/modals/PhoneAddModal.tsx:324
 msgid "Open your phone's messaging app and create a new text message."
 msgstr "अपने फ़ोन का मैसेजिंग ऐप खोलें और एक नया टेक्स्ट मैसेज बनाएँ।"
 
 #. Required-action modal body for the first inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:454
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:450
 msgid "Open your phone's messaging app and start a new text message."
 msgstr "अपने फ़ोन के मैसेजिंग ऐप को खोलें और एक नया टेक्स्ट मैसेज शुरू करें।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:245
+#: src/features/input/state/input_keybind/shared.ts:253
 msgid "Open your settings"
 msgstr "अपनी सेटिंग्स खोलें"
 
@@ -24238,7 +24238,7 @@ msgid "OTP"
 msgstr "OTP"
 
 #. Required-action form error when our own phone lookup provider is unavailable and we fail closed. Must blame us, not the number, and must invite retrying the same number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:558
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:554
 msgid "Our phone number check is down right now. This is on us, not your number. Wait a few minutes and try the same number again."
 msgstr "हमारा फ़ोन नंबर चेक अभी डाउन है। यह हमारी गलती है, आपके नंबर की नहीं। कुछ मिनट रुकें और उसी नंबर को फिर से आज़माएँ।"
 
@@ -24248,7 +24248,7 @@ msgid "Our safety team is reviewing it. We'll send you a DM and email once we've
 msgstr "हमारी सुरक्षा टीम इसकी समीक्षा कर रही है। फैसला आने के बाद हम आपको एक DM और ईमेल भेजेंगे।"
 
 #. Field label in the voice connection status popout. Shows WebRTC estimated available outgoing bandwidth.
-#: src/features/voice/components/voice_connection_status/shared.ts:119
+#: src/features/voice/components/voice_connection_status/shared.ts:120
 msgid "Outgoing capacity:"
 msgstr "आउटगोइंग क्षमता:"
 
@@ -24394,7 +24394,7 @@ msgid "Participants"
 msgstr "प्रतिभागी"
 
 #. Field label in the voice connection status popout. Shows the current LiveKit participant count.
-#: src/features/voice/components/voice_connection_status/shared.ts:79
+#: src/features/voice/components/voice_connection_status/shared.ts:80
 msgid "Participants:"
 msgstr "प्रतिभागी:"
 
@@ -24825,21 +24825,21 @@ msgstr "फ़ोन"
 #. Form field label for the phone number input.
 #. Short label in the phone add modal. Keep it concise.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:100
-#: src/features/user/components/modals/PhoneAddModal.tsx:67
+#: src/features/user/components/modals/PhoneAddModal.tsx:65
 msgid "Phone number"
 msgstr "फ़ोन नंबर"
 
 #. Form validation error shown when the phone number field is empty.
 #. Label in the phone add modal.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:116
-#: src/features/user/components/modals/PhoneAddModal.tsx:43
+#: src/features/user/components/modals/PhoneAddModal.tsx:41
 msgid "Phone number is required"
 msgstr "फ़ोन नंबर ज़रूरी है"
 
 #. Toast shown after phone verification succeeds.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:486
-#: src/features/user/components/modals/PhoneAddModal.tsx:180
-#: src/features/user/components/modals/PhoneAddModal.tsx:185
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:482
+#: src/features/user/components/modals/PhoneAddModal.tsx:178
+#: src/features/user/components/modals/PhoneAddModal.tsx:183
 msgid "Phone number verified"
 msgstr "फ़ोन नंबर वेरिफ़ाई हो गया"
 
@@ -24854,7 +24854,7 @@ msgid "Phone step"
 msgstr "फ़ोन स्टेप"
 
 #. Required-action error when the account is not eligible to add phone verification.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:542
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:538
 msgid "Phone verification is not available for this account. Use another method or contact support."
 msgstr "इस अकाउंट के लिए फ़ोन वेरिफ़िकेशन उपलब्ध नहीं है। कोई दूसरा तरीका इस्तेमाल करें या सहायता से संपर्क करें।"
 
@@ -24945,7 +24945,7 @@ msgstr "पिक्चर इन पिक्चर"
 
 #. Confirm button label on the pin message alert.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/channel/components/MessageActionUtils.tsx:63
+#: src/features/channel/components/MessageActionUtils.tsx:66
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:70
 msgid "Pin"
 msgstr "पिन करें"
@@ -24963,9 +24963,9 @@ msgstr "ग्रुप DM पिन करें"
 #. Generic action label that pins a message to the channel pins.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Title of the confirmation alert shown when pinning a message.
-#: src/features/channel/components/MessageActionUtils.tsx:55
+#: src/features/channel/components/MessageActionUtils.tsx:58
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:539
-#: src/features/input/state/input_keybind/shared.ts:13
+#: src/features/input/state/input_keybind/shared.ts:17
 msgid "Pin message"
 msgstr "मैसेज पिन करें"
 
@@ -24990,7 +24990,7 @@ msgid "Pin or unpin any message."
 msgstr "किसी भी मैसेज को पिन या अनपिन करें।"
 
 #. Body of the confirmation alert shown when pinning a message.
-#: src/features/channel/components/MessageActionUtils.tsx:59
+#: src/features/channel/components/MessageActionUtils.tsx:62
 msgid "Pin this message to the channel for everyone to see."
 msgstr "इस मैसेज को चैनल में पिन करें ताकि सभी देख सकें।"
 
@@ -25009,12 +25009,12 @@ msgid "Ping on reply"
 msgstr "रिप्लाई पर पिंग"
 
 #. Compact latency badge on the voice control bar. {currentLatency} is an integer millisecond count.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:79
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:80
 msgid "Ping: {currentLatency}ms"
 msgstr "पिंग: {currentLatency} ms"
 
 #. Compact latency badge variant used in another voice surface. {latency} is an integer millisecond count.
-#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:43
+#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:44
 msgid "Ping: {latency}ms"
 msgstr "पिंग: {latency} ms"
 
@@ -25880,7 +25880,7 @@ msgid "Public registration is closed."
 msgstr "सार्वजनिक रजिस्ट्रेशन बंद है।"
 
 #. Field label in the voice connection status popout. Shows technical WebRTC publisher ICE transport details.
-#: src/features/voice/components/voice_connection_status/shared.ts:127
+#: src/features/voice/components/voice_connection_status/shared.ts:128
 msgid "Publisher transport:"
 msgstr "पब्लिशर ट्रांसपोर्ट:"
 
@@ -25994,21 +25994,21 @@ msgid "Push timeout"
 msgstr "पुश टाइमआउट"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:297
+#: src/features/input/state/input_keybind/shared.ts:305
 msgid "Push to mute"
 msgstr "म्यूट करने के लिए दबाएँ"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/state/input_keybind/shared.ts:289
+#: src/features/input/state/input_keybind/shared.ts:297
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:162
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:86
 msgid "Push to talk"
 msgstr "बोलने के लिए दबाएँ"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:293
+#: src/features/input/state/input_keybind/shared.ts:301
 msgid "Push to talk (priority)"
 msgstr "पुश टू टॉक (प्राथमिकता)"
 
@@ -26024,7 +26024,7 @@ msgstr "पुश टू टॉक कुंजी"
 
 #. Switch label in the voice tab toggling push-to-talk mode. Keep it concise.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:112
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:349
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:346
 #: src/features/voice/components/VoiceSettingsMenus.tsx:419
 msgid "Push-to-talk"
 msgstr "पुश-टू-टॉक"
@@ -26034,7 +26034,7 @@ msgstr "पुश-टू-टॉक"
 msgid "Push-to-talk (limited)"
 msgstr "पुश-टू-टॉक (सीमित)"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:681
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:676
 msgid "Push-to-talk is ignored in direct input. Switch to focused voice or custom to use it."
 msgstr "सीधा इनपुट मोड में पुश-टू-टॉक को अनदेखा किया जाता है। इसे इस्तेमाल करने के लिए फ़ोकस्ड वॉइस या कस्टम पर स्विच करें।"
 
@@ -26201,7 +26201,7 @@ msgid "Read aloud"
 msgstr "बोलकर सुनाएँ"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:29
+#: src/features/input/state/input_keybind/shared.ts:37
 msgid "Read message aloud"
 msgstr "मैसेज ज़ोर से पढ़ें"
 
@@ -26290,7 +26290,7 @@ msgid "Receive notifications when someone mentions you"
 msgstr "जब कोई आपको मेंशन करे, तो नोटिफ़िकेशन पाएँ"
 
 #. Field label in the voice connection status popout. Shows total current inbound media bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:87
+#: src/features/voice/components/voice_connection_status/shared.ts:88
 msgid "Receive:"
 msgstr "प्राप्त:"
 
@@ -26409,7 +26409,7 @@ msgstr "अपने लिए रिडीम करें"
 #. Billing button for entering a premium gift code.
 #. Billing button for entering a premium gift code.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:719
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:305
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:307
 msgid "Redeem gift code"
 msgstr "उपहार कोड रिडीम करें"
 
@@ -26726,7 +26726,7 @@ msgid "Remove {userName} from your friends?"
 msgstr "क्या आप {userName} को अपने दोस्तों से हटाना चाहते हैं?"
 
 #. Confirm button label on the remove-all-reactions alert. Destructive.
-#: src/features/channel/components/MessageActionUtils.tsx:75
+#: src/features/channel/components/MessageActionUtils.tsx:78
 msgid "Remove all"
 msgstr "सभी हटाएँ"
 
@@ -26739,7 +26739,7 @@ msgstr "इस मैसेज से सभी {emojiNameWithColons} रिए�
 #. Message action that removes every reaction from the selected message.
 #. Title of the confirmation alert shown when clearing every reaction on a message.
 #: src/features/channel/components/MessageActionMenu.tsx:78
-#: src/features/channel/components/MessageActionUtils.tsx:67
+#: src/features/channel/components/MessageActionUtils.tsx:70
 #: src/features/ui/action_menu/items/MessageMenuItems.tsx:70
 msgid "Remove all reactions"
 msgstr "सभी रिएक्शन हटाएँ"
@@ -27247,10 +27247,15 @@ msgstr "इस कम्युनिटी के लिए रिप्ला�
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tooltip on the media viewer button that closes the viewer and replies to the message containing the media.
-#: src/features/input/state/input_keybind/shared.ts:21
+#: src/features/input/state/input_keybind/shared.ts:25
 #: src/features/messaging/components/modals/media_modal/shared.ts:105
 msgid "Reply to message"
 msgstr "मैसेज का जवाब दें"
+
+#. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
+#: src/features/input/state/input_keybind/shared.ts:29
+msgid "Reply to messages above or below"
+msgstr "ऊपर या नीचे के संदेशों का जवाब दें"
 
 #. TTS sentence spoken for a reply message. {replyAuthorName} is the original author, {authorName} is the replier, {formatted} is the speakable message body.
 #: src/features/voice/utils/TtsTextFormatter.ts:47
@@ -27334,7 +27339,7 @@ msgid "Reposts: <0>{countLabel}</0>"
 msgstr "रीपोस्ट: <0>{countLabel}</0>"
 
 #. Required-action form error when the user submits before a code exists.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:498
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:494
 msgid "Request a new code first."
 msgstr "पहले नए कोड का अनुरोध करें।"
 
@@ -27683,7 +27688,7 @@ msgstr "डिफ़ॉल्ट पर रीसेट करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Label for controls that reset app zoom to 100%, including the app zoom slider button.
-#: src/features/input/state/input_keybind/shared.ts:261
+#: src/features/input/state/input_keybind/shared.ts:269
 #: src/features/user/components/modals/tabs/appearance_tab/ScalingTab.tsx:38
 msgid "Reset zoom"
 msgstr "ज़ूम रीसेट करें"
@@ -28699,12 +28704,12 @@ msgid "Scroll animation"
 msgstr "स्क्रॉल एनिमेशन"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:189
+#: src/features/input/state/input_keybind/shared.ts:197
 msgid "Scroll chat down"
 msgstr "चैट को नीचे स्क्रॉल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:185
+#: src/features/input/state/input_keybind/shared.ts:193
 msgid "Scroll chat up"
 msgstr "चैट को ऊपर स्क्रॉल करें"
 
@@ -28808,7 +28813,7 @@ msgid "Search communities"
 msgstr "कम्युनिटी खोजें"
 
 #. Button or menu action label in the phone add modal. Keep it concise.
-#: src/features/user/components/modals/PhoneAddModal.tsx:63
+#: src/features/user/components/modals/PhoneAddModal.tsx:61
 msgid "Search countries..."
 msgstr "देश खोजें..."
 
@@ -28891,7 +28896,7 @@ msgstr "भाषाएँ खोजें…"
 #: src/features/channel/components/bottomsheets/ChannelSearchBottomSheet.tsx:137
 #: src/features/channel/components/bottomsheets/ChannelSearchBottomSheet.tsx:480
 #: src/features/channel/components/message_search_bar/MessageSearchBar.tsx:56
-#: src/features/input/state/input_keybind/shared.ts:237
+#: src/features/input/state/input_keybind/shared.ts:245
 msgid "Search messages"
 msgstr "मैसेज खोजें"
 
@@ -29574,17 +29579,17 @@ msgstr "/tts के साथ टेक्स्ट-टू-स्पीच म�
 
 #. placeholder {0}: inboundChallenge.challenge_code
 #. placeholder {1}: inboundChallenge.our_number
-#: src/features/user/components/modals/PhoneAddModal.tsx:335
+#: src/features/user/components/modals/PhoneAddModal.tsx:332
 msgid "Send the code <0>{0}</0> to <1>{1}</1>"
 msgstr "कोड <0>{0}</0> को <1>{1}</1> पर भेजें"
 
 #. Required-action modal body for the second inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:462
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:458
 msgid "Send the code to the phone number below."
 msgstr "नीचे दिए गए फ़ोन नंबर पर कोड भेजें।"
 
 #. Required-action modal carousel step title for the second inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:458
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:454
 msgid "Send this code"
 msgstr "यह कोड भेजें"
 
@@ -29594,7 +29599,7 @@ msgid "Send this pin back in time?"
 msgstr "इस पिन को अतीत में वापस भेज दें?"
 
 #. Label for the destination phone number in an inbound phone verification challenge.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:470
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:466
 msgid "Send to"
 msgstr "इस नंबर पर भेजें"
 
@@ -29612,25 +29617,20 @@ msgstr "वेरिफ़िकेशन कोड भेजें"
 #. Plus menu item that opens the desktop voice message composer to record and send a voice clip.
 #: src/features/channel/components/textarea/TextareaPlusMenu.tsx:35
 #: src/features/channel/components/VoiceMessageRecorder.tsx:69
-#: src/features/input/state/input_keybind/shared.ts:285
+#: src/features/input/state/input_keybind/shared.ts:293
 msgid "Send voice message"
 msgstr "वॉइस मैसेज भेजें"
 
 #. Field label in the voice connection status popout. Shows total current outbound media bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:83
+#: src/features/voice/components/voice_connection_status/shared.ts:84
 msgid "Send:"
 msgstr "भेजा:"
 
-#. Required-action modal explanation for an inbound phone verification challenge due to SMS cost.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:442
-msgid "Sending an SMS to this number is expensive, so we need you to text us instead."
-msgstr "इस नंबर पर SMS भेजना महंगा है, इसलिए हम चाहते हैं कि आप हमें टेक्स्ट करें।"
-
-#: src/features/user/components/modals/PhoneAddModal.tsx:304
+#: src/features/user/components/modals/PhoneAddModal.tsx:301
 msgid "Sending an SMS to this phone number is too expensive for {PRODUCT_NAME}, so we need you to send us an SMS instead. We know this isn't ideal. You can also ask the administrators of this instance to lift this requirement from your account."
 msgstr "{PRODUCT_NAME} के लिए इस फ़ोन नंबर पर SMS भेजना बहुत महंगा है, इसलिए हम चाहते हैं कि आप हमें SMS भेजें। हम जानते हैं कि यह आदर्श नहीं है। आप अपने अकाउंट से इस शर्त को हटवाने के लिए इस इंस्टेंस के एडमिनिस्ट्रेटर से भी कह सकते हैं।"
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:310
+#: src/features/user/components/modals/PhoneAddModal.tsx:307
 msgid "Sending an SMS to this phone number is too expensive for {PRODUCT_NAME}, so we need you to send us an SMS instead. We know this isn't ideal. You can also contact <0>{SUPPORT_EMAIL}</0> to have us lift this requirement from your account."
 msgstr "{PRODUCT_NAME} के लिए इस फ़ोन नंबर पर SMS भेजना बहुत महंगा है, इसलिए हम चाहते हैं कि आप हमें SMS भेजें। हम जानते हैं कि यह आदर्श नहीं है। आप अपने अकाउंट से इस शर्त को हटवाने के लिए <0>{SUPPORT_EMAIL}</0> पर भी संपर्क कर सकते हैं।"
 
@@ -29650,7 +29650,7 @@ msgid "Sends both channels of a stereo microphone. Needs all processing off and 
 msgstr "स्टीरियो माइक्रोफ़ोन के दोनों चैनल भेजता है। इसके लिए सभी प्रोसेसिंग बंद और 128 kbps या उससे अधिक का चैनल चाहिए।"
 
 #. Description for the studio / direct-input option in the voice processing settings radio group.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:38
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:35
 msgid "Sends raw mic audio with no processing."
 msgstr "बिना किसी प्रोसेसिंग के रॉ माइक ऑडियो भेजता है।"
 
@@ -29724,7 +29724,7 @@ msgid "Service incident nagbar"
 msgstr "सेवा घटना नैगबार"
 
 #. Section heading in the voice connection status popout for current call/session debug stats.
-#: src/features/voice/components/voice_connection_status/shared.ts:62
+#: src/features/voice/components/voice_connection_status/shared.ts:63
 msgid "Session"
 msgstr "सेशन"
 
@@ -30174,7 +30174,7 @@ msgstr "शॉर्टकोड"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:121
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:364
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:361
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:38
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:110
 msgid "Shortcut"
@@ -30276,7 +30276,7 @@ msgid "Show attachment expiration indicator"
 msgstr "अटैचमेंट की समय-सीमा खत्म होने का इंडिकेटर दिखाएं"
 
 #. Developer voice status menu option for displaying participant avatars.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:71
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:72
 msgid "Show call avatars"
 msgstr "कॉल अवतार दिखाएं"
 
@@ -30301,7 +30301,7 @@ msgid "Show chat with {count, plural, one {# unread message} other {# unread mes
 msgstr "{count, plural, one {# अपठित मैसेज के साथ चैट दिखाएं} other {# अपठित मैसेज के साथ चैट दिखाएं}}"
 
 #. Developer voice status menu option for displaying the voice connection identifier.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:75
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:76
 msgid "Show connection ID"
 msgstr "कनेक्शन आईडी दिखाएं"
 
@@ -31217,7 +31217,7 @@ msgid "Smoother video"
 msgstr "ज़्यादा स्मूद वीडियो"
 
 #. Required-action error when the SMS provider cannot send or verify a code.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:538
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:534
 msgid "SMS verification is unavailable right now. Try again later or contact support."
 msgstr "SMS वेरिफ़िकेशन अभी उपलब्ध नहीं है। बाद में फिर से कोशिश करें या सहायता से संपर्क करें।"
 
@@ -31412,7 +31412,7 @@ msgstr "कुछ गड़बड़ हो गई। बाद में फि
 #. Inline error in the web deep-link prompt when opening the desktop app fails.
 #. Toast error shown when the mature content check request fails unexpectedly.
 #: src/features/auth/components/modals/MatureContentCheckModal.tsx:18
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:585
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:580
 #: src/features/auth/flow/DesktopDeepLinkPrompt.tsx:31
 msgid "Something went wrong. Try again."
 msgstr "कुछ गड़बड़ हो गई। फिर से कोशिश करें।"
@@ -31752,7 +31752,7 @@ msgid "Staff controls"
 msgstr "स्टाफ़ कंट्रोल"
 
 #. Required-action modal notice for inbound phone verification.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:482
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:478
 msgid "Standard messaging rates from your carrier may apply."
 msgstr "आपके कैरियर से सामान्य मैसेजिंग दरें लागू हो सकती हैं।"
 
@@ -31798,12 +31798,12 @@ msgid "Start {appName} automatically when you sign in."
 msgstr "साइन इन करने पर {appName} को अपने आप शुरू करें।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:221
+#: src/features/input/state/input_keybind/shared.ts:229
 msgid "Start a call in a DM or group"
 msgstr "किसी DM या ग्रुप में कॉल शुरू करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:149
+#: src/features/input/state/input_keybind/shared.ts:157
 msgid "Start a group DM"
 msgstr "ग्रुप DM शुरू करें"
 
@@ -31839,7 +31839,7 @@ msgid "Start date must be earlier than end date."
 msgstr "शुरुआती तारीख, आखिरी तारीख से पहले होनी चाहिए।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:125
+#: src/features/input/state/input_keybind/shared.ts:133
 msgid "Start drag and drop"
 msgstr "खींचकर छोड़ना शुरू करें"
 
@@ -32235,7 +32235,7 @@ msgid "Stopped the member from hearing others in this community"
 msgstr "सदस्य को इस कम्युनिटी में दूसरों को सुनने से रोक दिया"
 
 #. Description for the echo cancellation toggle in the custom voice processing settings.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:59
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:56
 msgid "Stops your speakers from looping back into your mic."
 msgstr "आपके स्पीकर को आपके माइक में वापस लूप होने से रोकता है।"
 
@@ -32388,7 +32388,7 @@ msgid "Submitting"
 msgstr "सबमिट किया जा रहा है"
 
 #. Field label in the voice connection status popout. Shows technical WebRTC subscriber ICE transport details.
-#: src/features/voice/components/voice_connection_status/shared.ts:131
+#: src/features/voice/components/voice_connection_status/shared.ts:132
 msgid "Subscriber transport:"
 msgstr "सब्सक्राइबर ट्रांसपोर्ट:"
 
@@ -32482,11 +32482,6 @@ msgstr "अनप्रिविलेज्ड सेल्फ-मेंशन 
 msgid "Suppression"
 msgstr "सप्रेशन"
 
-#. Label for the DeepFilterNet3 noise suppression strength slider in the custom voice processing settings.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:67
-msgid "Suppression strength"
-msgstr "सप्रेशन की ताकत"
-
 #. Collapsible group heading in the Theme Studio tokens list, for background surface tokens.
 #: src/features/theme_studio/sections/TokenGroups.ts:46
 msgid "Surfaces"
@@ -32532,12 +32527,12 @@ msgid "Switch accounts"
 msgstr "अकाउंट बदलें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:45
+#: src/features/input/state/input_keybind/shared.ts:53
 msgid "Switch between channels"
 msgstr "चैनलों के बीच स्विच करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:41
+#: src/features/input/state/input_keybind/shared.ts:49
 msgid "Switch between communities"
 msgstr "कम्युनिटी के बीच स्विच करें"
 
@@ -32575,7 +32570,7 @@ msgstr "आरामदायक लेआउट पर स्विच कर�
 msgid "Switch to dense layout"
 msgstr "सघन लेआउट पर स्विच करें"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:649
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:644
 msgid "Switch to direct input"
 msgstr "सीधे इनपुट पर स्विच करें"
 
@@ -32602,7 +32597,7 @@ msgid "Switch to next community"
 msgstr "अगली कम्युनिटी पर स्विच करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:77
+#: src/features/input/state/input_keybind/shared.ts:85
 msgid "Switch to next community or DMs"
 msgstr "अगली कम्युनिटी या DM पर स्विच करें"
 
@@ -32617,7 +32612,7 @@ msgid "Switch to previous community"
 msgstr "पिछली कम्युनिटी पर स्विच करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:73
+#: src/features/input/state/input_keybind/shared.ts:81
 msgid "Switch to previous community or DMs"
 msgstr "पिछली कम्युनिटी या DM पर स्विच करें"
 
@@ -32666,7 +32661,7 @@ msgid "Switch to…"
 msgstr "यहां स्विच करें…"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:313
+#: src/features/input/state/input_keybind/shared.ts:321
 msgid "Switch voice channel"
 msgstr "वॉइस चैनल बदलें"
 
@@ -33185,12 +33180,12 @@ msgid "Thank you for helping keep {productName} safe. We'll review your report a
 msgstr "{productName} को सुरक्षित रखने में मदद करने के लिए धन्यवाद। हम जल्द से जल्द आपकी रिपोर्ट की समीक्षा करेंगे।"
 
 #. Required-action form error for an invalid verification code.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:490
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:486
 msgid "That code didn't work. Check it and try again."
 msgstr "वह कोड काम नहीं आया। इसे जांचें और फिर से कोशिश करें।"
 
 #. Required-action form error for an expired verification code.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:494
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:490
 msgid "That code expired. Request a new code."
 msgstr "वह कोड समाप्त हो गया है। नया कोड मांगें।"
 
@@ -33218,7 +33213,7 @@ msgid "That doesn't look like a valid URL."
 msgstr "यह एक मान्य यूआरएल नहीं लग रहा है।"
 
 #. Required-action form error when a new email is already used by another account.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:514
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:510
 msgid "That email is already in use."
 msgstr "वह ईमेल पहले से उपयोग में है।"
 
@@ -34138,8 +34133,8 @@ msgstr "यह आपकी आखिरी पासकी है और पा
 msgid "This is your last passkey. Once it's gone you won't be able to use a passkey as your second factor."
 msgstr "यह आपकी आखिरी पासकी है। इसके मिट जाने के बाद आप पासकी का उपयोग अपने दूसरे कारक के रूप में नहीं कर पाएँगे।"
 
-#. Required-action form error for landline, toll-free, premium, shared-cost, UAN, voicemail and pager lines. Do not name which line type the provider returned.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:570
+#. Required-action form error when the number is not a mobile line. Do not name the line type.
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:566
 msgid "This isn't a mobile number, so it can't receive our text. Try a mobile number, or contact support if you think that's wrong."
 msgstr "यह मोबाइल नंबर नहीं है, इसलिए इस पर हमारा टेक्स्ट नहीं भेजा जा सकता। कोई मोबाइल नंबर आज़माएँ, या अगर आपको लगता है कि यह गलत है तो सहायता से संपर्क करें।"
 
@@ -34220,12 +34215,12 @@ msgid "This nickname will only be visible in this community"
 msgstr "यह निकनेम सिर्फ़ इस कम्युनिटी में दिखेगा"
 
 #. Required-action form error when a number must use the inbound text-in challenge and the current step cannot start one. Do not say why the number was routed there.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:552
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:548
 msgid "This number is verified by texting us instead. Go back and start phone verification again to get the code and the number to text."
 msgstr "यह नंबर हमें टेक्स्ट करके ही वेरिफ़ाई किया जाता है। कोड और वह नंबर पाने के लिए, जिस पर टेक्स्ट करना है, वापस जाएं और फ़ोन वेरिफ़िकेशन फिर से शुरू करें।"
 
 #. Required-action modal explanation for an inbound phone verification challenge.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:446
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:442
 msgid "This number needs text-in verification instead of an SMS from us."
 msgstr "इस नंबर को हमारे SMS के बजाय टेक्स्ट-इन वेरिफ़िकेशन की ज़रूरत है।"
 
@@ -34250,12 +34245,12 @@ msgid "This participant was deafened by moderators"
 msgstr "इस प्रतिभागी को मॉडरेटर ने डीफ़ेन किया है"
 
 #. Required-action form error when the backend rejects a phone number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:530
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:526
 msgid "This phone number cannot be used. Try another mobile number or contact support."
 msgstr "इस फ़ोन नंबर का उपयोग नहीं किया जा सकता है। कोई दूसरा मोबाइल नंबर आज़माएँ या सहायता से संपर्क करें।"
 
 #. Required-action form error when the backend rejects a reused phone number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:534
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:530
 msgid "This phone number has already been used. Try another number or contact support."
 msgstr "यह फ़ोन नंबर पहले ही इस्तेमाल किया जा चुका है। कोई दूसरा नंबर आज़माएँ या सहायता से संपर्क करें।"
 
@@ -34407,7 +34402,7 @@ msgid "This verification session expired. Return to {productName} and start chec
 msgstr "यह वेरिफ़िकेशन सेशन एक्सपायर हो गया है। {productName} पर वापस जाएं और चेकआउट फिर से शुरू करें।"
 
 #. Required-action form error when an email-change ticket or proof is invalid or expired.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:502
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:498
 msgid "This verification session expired. Start again."
 msgstr "यह वेरिफ़िकेशन सेशन एक्सपायर हो गया है। फिर से शुरू करें।"
 
@@ -34505,7 +34500,7 @@ msgid "This will trust all external links and skip the warning for every domain.
 msgstr "इससे सभी बाहरी लिंक पर भरोसा किया जाएगा और हर डोमेन के लिए चेतावनी को छोड़ दिया जाएगा। आपके मौजूदा भरोसेमंद डोमेन बदल दिए जाएँगे। यह कम सुरक्षित है।"
 
 #. Required-action modal body after the user sends an inbound phone verification text.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:478
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:474
 msgid "This window updates automatically after we receive your message."
 msgstr "आपका मैसेज मिलने के बाद यह विंडो अपने आप अपडेट हो जाएगी।"
 
@@ -34679,12 +34674,12 @@ msgid "Today at {timeString}"
 msgstr "आज {timeString} बजे"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:69
+#: src/features/input/state/input_keybind/shared.ts:77
 msgid "Toggle between last community and DMs"
 msgstr "पिछली कम्युनिटी और DM के बीच टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:309
+#: src/features/input/state/input_keybind/shared.ts:317
 msgid "Toggle camera"
 msgstr "कैमरा टॉगल करें"
 
@@ -34704,7 +34699,7 @@ msgid "Toggle developer tools"
 msgstr "डेवलपर टूल टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:269
+#: src/features/input/state/input_keybind/shared.ts:277
 msgid "Toggle embed suppression"
 msgstr "एम्बेड छिपाना टॉगल करें"
 
@@ -34720,23 +34715,23 @@ msgstr "हार्डवेयर एक्सीलरेशन टॉगल 
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/state/input_keybind/shared.ts:209
+#: src/features/input/state/input_keybind/shared.ts:217
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:183
 msgid "Toggle mute"
 msgstr "म्यूट टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:153
+#: src/features/input/state/input_keybind/shared.ts:161
 msgid "Toggle pinned messages"
 msgstr "पिन किए गए मैसेज टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:117
+#: src/features/input/state/input_keybind/shared.ts:125
 msgid "Toggle quick switcher"
 msgstr "क्विक स्विचर टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:281
+#: src/features/input/state/input_keybind/shared.ts:289
 msgid "Toggle saved media"
 msgstr "सेव किया गया मीडिया टॉगल करें"
 
@@ -34745,17 +34740,17 @@ msgid "Toggle switches on and off to see state changes."
 msgstr "स्टेट में बदलाव देखने के लिए स्विच को ऑन और ऑफ़ करें।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:173
+#: src/features/input/state/input_keybind/shared.ts:181
 msgid "Toggle the emoji picker"
 msgstr "इमोजी पिकर टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:177
+#: src/features/input/state/input_keybind/shared.ts:185
 msgid "Toggle the GIF picker"
 msgstr "GIF पिकर टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:157
+#: src/features/input/state/input_keybind/shared.ts:165
 msgid "Toggle the inbox"
 msgstr "इनबॉक्स टॉगल करें"
 
@@ -34765,22 +34760,22 @@ msgid "Toggle the kinds of conversations you want included."
 msgstr "आप जिन बातचीत को शामिल करना चाहते हैं, उनके प्रकार टॉगल करें।"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:169
+#: src/features/input/state/input_keybind/shared.ts:177
 msgid "Toggle the member list or voice chat"
 msgstr "सदस्य सूची या वॉइस चैट टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:225
+#: src/features/input/state/input_keybind/shared.ts:233
 msgid "Toggle the soundboard"
 msgstr "साउंडबोर्ड टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:181
+#: src/features/input/state/input_keybind/shared.ts:189
 msgid "Toggle the sticker picker"
 msgstr "स्टिकर पिकर टॉगल करें"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:305
+#: src/features/input/state/input_keybind/shared.ts:313
 msgid "Toggle voice activity"
 msgstr "वॉइस गतिविधि टॉगल करें"
 
@@ -34812,7 +34807,7 @@ msgid "Tone-map HDR images to standard range, reducing peak brightness."
 msgstr "HDR इमेज को सामान्य रेंज में टोन-मैप करें, जिससे पीक ब्राइटनेस कम हो जाएगी।"
 
 #. Required-action error shown for rate limits.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:506
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:502
 msgid "Too many attempts. Wait a bit, then try again."
 msgstr "बहुत ज़्यादा कोशिशें की गई हैं। थोड़ी देर इंतज़ार करें, फिर से कोशिश करें।"
 
@@ -35076,7 +35071,7 @@ msgid "Try again"
 msgstr "फिर से कोशिश करें"
 
 #. Button that retries connecting to the voice channel after a failed attempt.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:61
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:62
 msgctxt "voice-connection-status"
 msgid "Try again"
 msgstr "फिर से कोशिश करें"
@@ -35167,7 +35162,7 @@ msgid "TTS speed"
 msgstr "TTS स्पीड"
 
 #. Description for the custom option in the voice processing settings radio group.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:47
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:44
 msgid "Tune the processing yourself."
 msgstr "प्रोसेसिंग को खुद ट्यून करें।"
 
@@ -35906,7 +35901,7 @@ msgstr "{premiumProductName} के साथ DM में कस्टम इ�
 msgid "Unlock HD screen share with {premiumProductName}"
 msgstr "{premiumProductName} के साथ HD स्क्रीन शेयर अनलॉक करें"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:215
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:217
 msgid "Unlock higher limits and exclusive features while supporting an independent communication platform."
 msgstr "एक स्वतंत्र संचार प्लेटफ़ॉर्म को सपोर्ट करते हुए ज़्यादा बड़ी सीमाएँ और खास सुविधाएँ अनलॉक करें।"
 
@@ -36052,7 +36047,7 @@ msgid "Unordered"
 msgstr "बिना क्रम के"
 
 #. Confirm button label on the unpin message alert.
-#: src/features/channel/components/MessageActionUtils.tsx:51
+#: src/features/channel/components/MessageActionUtils.tsx:54
 msgid "Unpin"
 msgstr "अनपिन करें"
 
@@ -36077,7 +36072,7 @@ msgid "Unpin message"
 msgstr "मैसेज अनपिन करें"
 
 #. Body of the confirmation alert shown when unpinning a message.
-#: src/features/channel/components/MessageActionUtils.tsx:47
+#: src/features/channel/components/MessageActionUtils.tsx:50
 msgid "Unpin this message?"
 msgstr "इस मैसेज को अनपिन करें?"
 
@@ -36383,7 +36378,7 @@ msgstr "एक कस्टम साउंड अपलोड करें ज�
 #. Card label in the asset source modal for uploading an image from the device. Keep it concise.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/expressions/components/modals/AssetSourceModal.tsx:19
-#: src/features/input/state/input_keybind/shared.ts:201
+#: src/features/input/state/input_keybind/shared.ts:209
 msgid "Upload a file"
 msgstr "फ़ाइल अपलोड करें"
 
@@ -36652,7 +36647,7 @@ msgid "Use an email address you can access. We will send a code there."
 msgstr "ऐसा ईमेल पता इस्तेमाल करें जिस तक आपकी पहुँच हो। हम उस पर एक कोड भेजेंगे।"
 
 #. Required-action form error when the new email matches the current account email.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:518
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:514
 msgid "Use an email that is different from your current one."
 msgstr "ऐसा ईमेल इस्तेमाल करें जो आपके मौजूदा ईमेल से अलग हो।"
 
@@ -37338,17 +37333,17 @@ msgstr "पुष्टि करें कि यह आप ही हैं"
 #. Primary button in the required-action modal. Sends or submits phone verification.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:178
 #: src/features/channel/components/barriers/BarrierComponents.tsx:269
-#: src/features/user/components/modals/PhoneAddModal.tsx:408
+#: src/features/user/components/modals/PhoneAddModal.tsx:405
 msgid "Verify phone"
 msgstr "फ़ोन वेरिफ़ाई करें"
 
 #. Short label in the phone add modal. Keep it concise.
-#: src/features/user/components/modals/PhoneAddModal.tsx:55
+#: src/features/user/components/modals/PhoneAddModal.tsx:53
 msgid "Verify phone number"
 msgstr "फ़ोन नंबर वेरिफ़ाई करें"
 
 #. Label in the phone add modal.
-#: src/features/user/components/modals/PhoneAddModal.tsx:51
+#: src/features/user/components/modals/PhoneAddModal.tsx:49
 msgid "Verify phone number form"
 msgstr "फ़ोन नंबर वेरिफ़ाई करने का फ़ॉर्म"
 
@@ -37544,7 +37539,7 @@ msgid "Video options"
 msgstr "वीडियो विकल्प"
 
 #. Field label in the voice connection status popout. Shows received video packet loss percentage.
-#: src/features/voice/components/voice_connection_status/shared.ts:111
+#: src/features/voice/components/voice_connection_status/shared.ts:112
 msgid "Video packet loss:"
 msgstr "वीडियो पैकेट लॉस:"
 
@@ -37568,7 +37563,7 @@ msgid "Video quality"
 msgstr "वीडियो क्वालिटी"
 
 #. Field label in the voice connection status popout. Shows current inbound video bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:103
+#: src/features/voice/components/voice_connection_status/shared.ts:104
 msgid "Video receive:"
 msgstr "वीडियो रिसीव:"
 
@@ -37578,7 +37573,7 @@ msgid "Video scrubbing"
 msgstr "वीडियो स्क्रबिंग"
 
 #. Field label in the voice connection status popout. Shows current outbound video bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:99
+#: src/features/voice/components/voice_connection_status/shared.ts:100
 msgid "Video send:"
 msgstr "वीडियो सेंड:"
 
@@ -37987,7 +37982,7 @@ msgid "Voice activity on active now"
 msgstr "'अभी सक्रिय' में वॉइस गतिविधि"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:301
+#: src/features/input/state/input_keybind/shared.ts:309
 msgid "Voice activity priority"
 msgstr "वॉइस गतिविधि प्राथमिकता"
 
@@ -38060,7 +38055,7 @@ msgstr "वॉइस चैनल"
 
 #. Voice status popout title (secondary call site for the same surface as VOICE_CONNECTION_DESCRIPTOR).
 #. Voice status popout title.
-#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:47
+#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:48
 #: src/features/voice/components/voice_connection_status/VoiceDetailsPopout.tsx:56
 msgid "Voice connection"
 msgstr "वॉइस कनेक्शन"
@@ -38118,8 +38113,8 @@ msgid "Voice participants"
 msgstr "वॉइस प्रतिभागी"
 
 #. Voice settings radio group label for microphone processing profile.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:644
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:55
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:639
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:52
 msgid "Voice processing"
 msgstr "वॉइस प्रोसेसिंग"
 
@@ -38212,7 +38207,7 @@ msgstr "आवाज़ बढ़ाएँ"
 msgid "Wait a moment before deleting more messages."
 msgstr "और मैसेज डिलीट करने से पहले थोड़ा इंतज़ार करें।"
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:352
+#: src/features/user/components/modals/PhoneAddModal.tsx:349
 msgid "Wait a moment. This window will close automatically once we receive your message."
 msgstr "थोड़ा इंतज़ार करें। आपका मैसेज मिलते ही यह विंडो अपने-आप बंद हो जाएगी।"
 
@@ -38222,7 +38217,7 @@ msgid "Wait between messages. Members with \"{bypassSlowmodePermissionLabel}\" c
 msgstr "मैसेज के बीच इंतज़ार करें। जिन सदस्यों के पास \"{bypassSlowmodePermissionLabel}\" अनुमति है, वे इसे बायपास कर सकते हैं।"
 
 #. Required-action modal carousel step title after the user sends an inbound phone verification text.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:474
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:470
 msgid "Wait here"
 msgstr "यहां इंतज़ार करें"
 
@@ -38388,13 +38383,13 @@ msgstr "हम इस थीम को पढ़ नहीं पाए। ह�
 msgid "We couldn't remove that account. Try again."
 msgstr "हम उस अकाउंट को हटा नहीं पाए। फिर से कोशिश करें।"
 
-#. Required-action form error for phone attempts blocked by a fraud signal. Deliberately non-specific. Never name the signal, the score or the threshold.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:576
+#. Required-action form error when a phone attempt cannot be verified automatically and needs a support review. Keep it non-specific.
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:571
 msgid "We couldn't verify this number automatically. Contact support and a person will review your account."
 msgstr "हम इस नंबर को अपने-आप वेरिफ़ाई नहीं कर सके। सहायता से संपर्क करें, कोई व्यक्ति आपके अकाउंट की समीक्षा करेगा।"
 
 #. Required-action form error when the phone number's country is on the SMS send ban list. Must not imply the number itself is invalid.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:546
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:542
 msgid "We don't send verification texts to this country. Try a mobile number from another country, or contact support."
 msgstr "हम इस देश में वेरिफ़िकेशन टेक्स्ट नहीं भेजते। किसी दूसरे देश का मोबाइल नंबर आज़माएँ, या सहायता से संपर्क करें।"
 
@@ -38489,9 +38484,9 @@ msgstr "आपका पासवर्ड बदलने से पहले �
 msgid "We'll send a verification code to your email before you can view your backup codes."
 msgstr "आपके बैकअप कोड देखने से पहले हम आपके ईमेल पर एक वेरिफ़िकेशन कोड भेजेंगे।"
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:286
-msgid "We'll send an SMS code when available. Your number is not linked to your account. We keep only an encrypted marker, with no user ID, to allow at most {PHONE_VERIFICATION_LIMIT} verifications in about {PHONE_VERIFICATION_WINDOW_DAYS} days."
-msgstr "उपलब्ध होने पर हम एक SMS कोड भेजेंगे। आपका नंबर आपके अकाउंट से लिंक नहीं है। हम केवल एक एन्क्रिप्टेड मार्कर रखते हैं, जिसमें कोई यूज़र ID नहीं होती, ताकि लगभग {PHONE_VERIFICATION_WINDOW_DAYS} दिनों में ज़्यादा से ज़्यादा {PHONE_VERIFICATION_LIMIT} वेरिफ़िकेशन की अनुमति मिल सके।"
+#: src/features/user/components/modals/PhoneAddModal.tsx:284
+msgid "We'll send an SMS code when available. Your number is not linked to your account. We keep only an encrypted marker, with no user ID, for a limited time."
+msgstr "उपलब्ध होने पर हम एक SMS कोड भेजेंगे। आपका नंबर आपके खाते से लिंक नहीं है। हम सीमित समय के लिए, बिना किसी उपयोगकर्ता आईडी के, केवल एक एन्क्रिप्टेड मार्कर रखते हैं।"
 
 #: src/features/user/components/modals/EmailChangeModal.tsx:189
 msgid "We'll verify your current email and then your new email with one-time codes."
@@ -38851,7 +38846,7 @@ msgstr "कौन सी बातचीत"
 msgid "Which rule was broken?"
 msgstr "कौन सा नियम तोड़ा गया?"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:358
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:355
 msgid "While push-to-talk is on, your shortcut controls your microphone, so the mute button is disabled."
 msgstr "जब तक पुश-टू-टॉक चालू है, आपका शॉर्टकट आपके माइक्रोफ़ोन को नियंत्रित करता है, इसलिए म्यूट बटन अक्षम है।"
 
@@ -39542,11 +39537,11 @@ msgstr "आपने अभी तक किसी को ब्लॉक नह
 msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {productName} without a mouse."
 msgstr "आपने अभी Tab दबाया है। कीबोर्ड मोड अब चालू है, ताकि आप माउस के बिना {productName} को नेविगेट कर सकें।"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
 msgid "You keep your perks until your next renewal date, then have a 3-day grace period to resubscribe and keep your subscriber history."
 msgstr "आपके पर्क आपकी अगली रिन्यूअल तारीख तक बने रहेंगे, फिर दोबारा सदस्यता लेने और अपनी सब्सक्राइबर हिस्ट्री बनाए रखने के लिए 3 दिन का ग्रेस पीरियड मिलेगा।"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:157
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:159
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "आप तुरंत सभी {PREMIUM_PRODUCT_NAME} पर्क खो देंगे और आपकी सब्सक्राइबर हिस्ट्री रीसेट हो जाएगी। इसे पूर्ववत नहीं किया जा सकता।"
 
@@ -39996,10 +39991,10 @@ msgstr "आपका {productName} सेशन समाप्त हो गय
 msgid "Your account"
 msgstr "आपका अकाउंट"
 
-#. First line of the set-aside confirmation in the required-action modal. Always shown. Says can rather than will, because whether the check returns depends on account age and instance settings the user cannot see.
+#. First line of the set-aside confirmation in the required-action modal. Always shown. Says can rather than will, because the check may or may not come back.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:316
-msgid "Your account goes back to normal right away and you will not need a phone number now. This is not a permanent exemption. Joining a large or public community can bring this check back."
-msgstr "आपका अकाउंट तुरंत सामान्य हो जाएगा और अभी आपको फ़ोन नंबर की ज़रूरत नहीं होगी। यह कोई स्थायी छूट नहीं है। किसी बड़ी या सार्वजनिक कम्युनिटी में शामिल होने पर यह जाँच फिर से आ सकती है।"
+msgid "Your account goes back to normal right away and you will not need a phone number now. This is not a permanent exemption, and we can ask for this check again later."
+msgstr "आपका खाता तुरंत सामान्य हो जाएगा और अब आपको फ़ोन नंबर की आवश्यकता नहीं होगी। यह एक स्थायी छूट नहीं है, और हम बाद में फिर से यह जाँच माँग सकते हैं।"
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx:29
 msgid "Your account has been linked successfully. You can now close this tab and return to the app."
@@ -40064,7 +40059,7 @@ msgid "Your card is eligible. Redirecting you to the payment page now."
 msgstr "आपका कार्ड योग्य है। आपको अभी भुगतान पेज पर रीडायरेक्ट किया जा रहा है।"
 
 #. Required-action form error when the carrier lookup says the number does not exist. Leaves room for the lookup to be wrong.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:564
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:560
 msgid "Your carrier says this number isn't in service. Check it and try again, or contact support if it's correct."
 msgstr "आपका कैरियर कह रहा है कि यह नंबर सेवा में नहीं है। इसे जाँचें और फिर से कोशिश करें, या अगर यह सही है तो सहायता से संपर्क करें।"
 
@@ -40236,10 +40231,10 @@ msgstr "आपका नया ईमेल"
 msgid "Your new nickname, or leave blank to reset it."
 msgstr "आपका नया उपनाम, या इसे रीसेट करने के लिए खाली छोड़ दें।"
 
-#. Required-action modal privacy note for phone verification. limit and duration are inserted by code.
+#. Required-action modal privacy note for phone verification.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:421
-msgid "Your number is not linked to your account. We keep only an encrypted marker, with no user ID, for at most {limit} verifications in about {duration} days."
-msgstr "आपका नंबर आपके अकाउंट से लिंक नहीं है। हम बिना किसी यूज़र आईडी के, ज़्यादा से ज़्यादा {limit} वेरिफ़िकेशन के लिए, लगभग {duration} दिनों तक सिर्फ़ एक एन्क्रिप्टेड मार्कर रखते हैं।"
+msgid "Your number is not linked to your account. We keep only an encrypted marker, with no user ID, for a limited time."
+msgstr "आपका नंबर आपके खाते से लिंक नहीं है। हम सीमित समय के लिए, बिना किसी उपयोगकर्ता आईडी के, केवल एक एन्क्रिप्टेड मार्कर रखते हैं।"
 
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:152
 msgid "Your payment was canceled. You can now close this tab and return to the app."
@@ -40427,7 +40422,7 @@ msgstr "ज़ूम"
 #. Native View menu item that increases UI zoom level.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:628
-#: src/features/input/state/input_keybind/shared.ts:253
+#: src/features/input/state/input_keybind/shared.ts:261
 #: src/features/platform/utils/DesktopLocaleBridge.ts:113
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:82
 msgid "Zoom in"
@@ -40438,7 +40433,7 @@ msgstr "ज़ूम इन करें"
 #. Native View menu item that decreases UI zoom level.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:624
-#: src/features/input/state/input_keybind/shared.ts:257
+#: src/features/input/state/input_keybind/shared.ts:265
 #: src/features/platform/utils/DesktopLocaleBridge.ts:117
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"

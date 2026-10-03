@@ -38,8 +38,6 @@ import {
 } from '@app/api/middleware/ServiceSingletons';
 import type {IApplicationRepository} from '@app/api/oauth/repositories/IApplicationRepository';
 import type {ReportService} from '@app/api/report/ReportService';
-import type {IRiskHistoryRepository} from '@app/api/risk/HistoricalOutcomeRepository';
-import type {ISuspiciousIpRepository} from '@app/api/risk/SuspiciousIpRepository';
 import type {UserService} from '@app/api/user/services/UserService';
 import type {VoiceRepository} from '@app/api/voice/VoiceRepository';
 import type {SendSystemDmResponse} from '@fluxer/schema/src/domains/admin/AdminSchemas';
@@ -83,10 +81,8 @@ export class AdminService {
 		private readonly bulkMessageDeletionQueue: KVBulkMessageDeletionQueueService,
 		private readonly applicationRepository: IApplicationRepository,
 		private readonly stripe: Stripe | null = null,
-		private readonly riskHistoryRepository: Pick<IRiskHistoryRepository, 'recordOutcomeForUser'>,
 		private readonly jobLedger: IJobLedgerRepository,
 		private readonly ipInfoService: IpInfoService,
-		private readonly suspiciousIpRepository: ISuspiciousIpRepository,
 	) {
 		const {users, gateway, worker, snowflake} = this.apiContext.services;
 		this.auditService = new AdminAuditService(this.adminRepository, snowflake, {
@@ -99,7 +95,6 @@ export class AdminService {
 			adminRepository: this.adminRepository,
 			auditService: this.auditService,
 			ipInfoService: this.ipInfoService,
-			suspiciousIpRepository: this.suspiciousIpRepository,
 		});
 		this.userService = new AdminUserService({
 			apiContext: this.apiContext,
@@ -113,7 +108,6 @@ export class AdminService {
 			kvDeletionQueue: getKVAccountDeletionQueue(),
 			bulkMessageDeletionQueue: this.bulkMessageDeletionQueue,
 			stripe: this.stripe,
-			riskHistoryRepository: this.riskHistoryRepository,
 			reportService: this.reportService,
 		});
 		this.guildServiceAggregate = new AdminGuildService({

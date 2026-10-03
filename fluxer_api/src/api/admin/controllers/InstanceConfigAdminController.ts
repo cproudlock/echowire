@@ -38,9 +38,7 @@ import {
 import {AltchaCaptchaConfigSchema} from '@fluxer/schema/src/domains/admin/AltchaCaptchaSchemas';
 import {DomainMigrationConfigSchema} from '@fluxer/schema/src/domains/admin/DomainMigrationSchemas';
 import {GatewayRolloutConfigSchema} from '@fluxer/schema/src/domains/admin/GatewayRolloutSchemas';
-import {ProfileTimezoneConfigSchema} from '@fluxer/schema/src/domains/admin/ProfileTimezoneSchemas';
 import type {PushRelayConfig, PushRelayConfigUpdateRequest} from '@fluxer/schema/src/domains/admin/PushRelaySchemas';
-import {VoiceNoiseSuppressionConfigSchema} from '@fluxer/schema/src/domains/admin/VoiceNoiseSuppressionSchemas';
 import {UserIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import {ExperimentDeliveryConfigSchema} from '@fluxer/schema/src/domains/experiment/ExperimentSchemas';
 import type {InstanceBranding} from '@fluxer/schema/src/domains/instance/InstanceSchemas';
@@ -67,11 +65,9 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 	const [
 		ssoConfig,
 		gatewayRollout,
-		voiceNoiseSuppression,
 		pushRelay,
 		domainMigration,
 		altchaCaptcha,
-		profileTimezone,
 		experimentDelivery,
 		registrationConfig,
 		registrationUrls,
@@ -79,11 +75,9 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 	] = await Promise.all([
 		instanceConfigRepository.getSsoConfig(),
 		instanceConfigRepository.getGatewayRolloutConfig(),
-		instanceConfigRepository.getVoiceNoiseSuppressionConfig(),
 		instanceConfigRepository.getPushRelayConfig(),
 		instanceConfigRepository.getDomainMigrationConfig(),
 		instanceConfigRepository.getAltchaCaptchaConfig(),
-		instanceConfigRepository.getProfileTimezoneConfig(),
 		instanceConfigRepository.getExperimentDeliveryConfig(),
 		instanceConfigRepository.getRegistrationConfig(),
 		instanceConfigRepository.getRegistrationUrlsForAdmin(),
@@ -115,11 +109,9 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 			redirect_uri: deriveSsoRedirectUri(Config.endpoints.webApp),
 		},
 		gateway_rollout: gatewayRollout,
-		voice_noise_suppression: voiceNoiseSuppression,
 		push_relay: pushRelay,
 		domain_migration: domainMigration,
 		altcha_captcha: altchaCaptcha,
-		profile_timezone: profileTimezone,
 		experiment_delivery: experimentDelivery,
 		registration: {
 			...registrationConfig,
@@ -138,11 +130,6 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 				gif_enabled: policy.gif_enabled,
 				youtube_enabled: policy.youtube_enabled,
 				bluesky_enabled: policy.bluesky_enabled,
-			},
-			deferred_phone_gate: {
-				enabled: policy.deferred_phone_gate_enabled,
-				window_hours: policy.deferred_phone_gate_window_hours,
-				member_threshold: policy.deferred_phone_gate_member_threshold,
 			},
 			services_resolved: resolvedServices,
 			services_available: {
@@ -377,18 +364,6 @@ export function InstanceConfigAdminController(app: HonoApp) {
 				);
 				await getGatewayRolloutConfigPublisher().publish(landed);
 			}
-			if (data.voice_noise_suppression) {
-				const patch = omitUndefinedFields(data.voice_noise_suppression);
-				if (Object.keys(patch).length > 0) {
-					await instanceConfigRepository.updateVoiceNoiseSuppressionConfig((current) =>
-						VoiceNoiseSuppressionConfigSchema.parse({
-							...current,
-							...patch,
-							config_version: current.config_version + 1,
-						}),
-					);
-				}
-			}
 			if (data.push_relay) {
 				const patch = omitUndefinedFields(data.push_relay);
 				if (Object.keys(patch).length > 0) {
@@ -418,18 +393,6 @@ export function InstanceConfigAdminController(app: HonoApp) {
 				if (Object.keys(patch).length > 0) {
 					await instanceConfigRepository.updateAltchaCaptchaConfig((current) =>
 						AltchaCaptchaConfigSchema.parse({
-							...current,
-							...patch,
-							config_version: current.config_version + 1,
-						}),
-					);
-				}
-			}
-			if (data.profile_timezone) {
-				const patch = omitUndefinedFields(data.profile_timezone);
-				if (Object.keys(patch).length > 0) {
-					await instanceConfigRepository.updateProfileTimezoneConfig((current) =>
-						ProfileTimezoneConfigSchema.parse({
 							...current,
 							...patch,
 							config_version: current.config_version + 1,
@@ -893,17 +856,6 @@ function planInstancePolicyPatch(
 		}
 		if (policy.services.bluesky_enabled !== undefined) {
 			patch.bluesky_enabled = policy.services.bluesky_enabled ?? null;
-		}
-	}
-	if (policy.deferred_phone_gate) {
-		if (policy.deferred_phone_gate.enabled !== undefined) {
-			patch.deferred_phone_gate_enabled = policy.deferred_phone_gate.enabled;
-		}
-		if (policy.deferred_phone_gate.window_hours !== undefined) {
-			patch.deferred_phone_gate_window_hours = policy.deferred_phone_gate.window_hours;
-		}
-		if (policy.deferred_phone_gate.member_threshold !== undefined) {
-			patch.deferred_phone_gate_member_threshold = policy.deferred_phone_gate.member_threshold;
 		}
 	}
 	return {patch, enablesSingleCommunity};

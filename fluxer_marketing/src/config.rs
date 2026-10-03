@@ -169,16 +169,16 @@ mod tests {
             "s3://geoip/GeoLite2-City.mmdb?download_path=/tmp/city.mmdb&asn_key=GeoLite2-ASN.mmdb",
             "marketing",
         );
+        // Echowire: upstream #3031 dropped the ASN fields from GeoipSourceConfig::S3.
+        // Nothing in this fork reads an ASN database, so the narrowed type is adopted
+        // rather than kept. The asn_key parameter stays in the input to pin the fact
+        // that an unknown query parameter is ignored instead of failing the parse.
         assert_eq!(
             source,
             GeoipSourceConfig::S3 {
                 maxmind_db_path: "/tmp/fluxer/geoip/marketing/city.mmdb".to_owned(),
-                maxmind_asn_db_path: Some(
-                    "/tmp/fluxer/geoip/marketing/GeoLite2-ASN.mmdb".to_owned()
-                ),
                 s3_bucket: "geoip".to_owned(),
                 s3_key: "GeoLite2-City.mmdb".to_owned(),
-                s3_asn_key: Some("GeoLite2-ASN.mmdb".to_owned()),
             }
         );
     }

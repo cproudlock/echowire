@@ -838,7 +838,16 @@ mod tests {
         assert_eq!(response.status(), StatusCode::OK);
         let served = read_document(response).await;
 
-        assert!(served.contains("<title>Fluxer</title>"));
+        // Echowire: upstream asserted the literal "<title>Fluxer</title>" here. This
+        // test is about serving keeping the shell's metadata rather than about the
+        // brand, so the expected title is taken from the shell itself, which also
+        // means the brand lives in one place. See docs/adr/0002.
+        let shell_title = SHIPPED_APP_SHELL
+            .split_once("<title>")
+            .and_then(|(_, rest)| rest.split_once("</title>"))
+            .map(|(title, _)| title)
+            .expect("the shipped app shell declares a title");
+        assert!(served.contains(&format!("<title>{shell_title}</title>")));
         assert!(served.contains(r#"<meta name="description""#));
     }
 

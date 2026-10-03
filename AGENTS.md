@@ -94,6 +94,40 @@ nothing gates a merge except this. Run it before committing to `echowire`:
     pnpm test                                 # workspace sweep, excludes fluxer_api
     cd fluxer_api && pnpm exec vitest run     # its own vitest project; ~4,500 tests
 
+**Invoke these commands. Do not reimplement them.** A wrapper that paraphrases a
+documented command is a copy that rots silently, and the 2026-10-03 audit found two
+such copies, both of which had been reporting greens they had not earned:
+
+- `pnpm --filter @fluxer/app lint` matched no project at all, because the package is
+  named `fluxer_app` and has no `lint` script. pnpm printed "No projects matched the
+  filters" and **exited 0**. Six slices reported "eslint clean" having never run
+  eslint once. `pnpm --filter` succeeding on an empty match is the perfect example of
+  the hazard: the failure is indistinguishable from success.
+- Running `packages/schema`, `packages/config` and `packages/constants` individually
+  instead of `pnpm test` silently skipped nine workspace packages that have tests:
+  `errors`, `hono`, `i18n`, `ip_utils`, `limits`, `logger`, `openapi`, `snowflake`
+  and `voice_engine_v2`. The last one covers voice, where this fork carries
+  divergences, so the paraphrase skipped exactly the code most in need of a gate.
+
+Note that this is a different failure from a rule being wrong, and it needs a
+different defence. The `.po` rule below was **documentation that was wrong**, and the
+fix was to write a better rule. These two were **documentation that was right, with
+automation that had drifted from it**, and no amount of rule-writing prevents that.
+The only defence is to invoke the documented command rather than an equivalent, and
+to mutation-check any wrapper: inject a fault of the class each gate catches and
+confirm it goes red. A gate that has never been seen to fail is not yet a gate.
+
+Two gates cannot be a bare tool invocation, because running the tool alone cannot
+fail for the property worth gating:
+
+- **`openapi:generate` writes the specs**, so by itself it only fails when generation
+  errors. A committed spec that has drifted passes. Gate on regeneration producing no
+  change: run it, then `git diff --quiet` the two spec files.
+- **The gateway eunit** always fails a fixed set of tests in this container, which
+  cannot build the `guild_member_list_oset_nif` Rust NIF, so its exit status is not
+  pass/fail. Gate on the criterion: the tree compiled fully, no assertion failure, no
+  undefined function other than that NIF.
+
 Plus, depending on what changed:
 
 - **After any upstream merge:** `cargo check -p fluxer_admin` (typecheck does not
@@ -234,6 +268,21 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   This one holds by construction rather than by observation: `git stash` always
   clears the merge state, so the single-parent commit follows every time, not
   sometimes.
+- **A revert whose scope is wider than the change will take the change with it.**
+  This is the stash rule in a different costume, and it bites hardest while
+  mutation-checking, which is now standard practice for every gate and guard. On
+  2026-10-03 a mutation script ended with `git checkout -- <file>` to undo its own
+  injected fault, and silently removed the uncommitted fix in the same file; the
+  commit that followed contained nothing and the fix had to be written twice.
+
+  So: **commit the fix first, then mutate.** That makes the restore point the thing
+  you want to keep, and `git checkout` becomes safe rather than destructive. Prefer
+  reverting the mutation itself, by replacing the mutant string with the original,
+  over restoring a whole file. After any mutation run, check that the thing under
+  test is still present rather than assuming the revert was surgical. The general
+  form holds by construction, like the stash case: `checkout`, `restore`,
+  `reset --hard` and `stash` all operate on a unit larger than the edit, so anything
+  else living in that unit goes too.
 - **A clean merge is not evidence that the result compiles.** Git merges text. In a
   language with no type checker between the merge and the build, it will combine the
   fork's old function signatures with upstream's new bodies and report no conflict.

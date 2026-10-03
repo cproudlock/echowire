@@ -53,12 +53,27 @@ describe('discoverControllerFiles', () => {
 		const route = routes.find((route) => route.path === '/donations/manage');
 		expect(route?.explicitSecurity).toEqual([]);
 	});
-	it('leaves every desktop download redirect undocumented', () => {
+	// Echowire: upstream leaves everything under /dl as an undocumented redirect. This
+	// fork publishes a desktop download API on purpose, declared in DownloadController
+	// and documented in http-api/downloads.mdx, which the docs coverage gate then
+	// requires to exist. Pinning the set keeps the guard: adding or removing an
+	// endpoint fails here until the docs are updated with it.
+	it('documents exactly the desktop download endpoints the fork publishes', () => {
 		const downloads = routes.filter((route) => route.path.startsWith('/dl'));
 		expect(downloads.length).toBeGreaterThan(0);
-		for (const route of downloads) {
-			expect(route.explicitOperationId).toBeFalsy();
-		}
+		const documented = downloads
+			.map((route) => route.explicitOperationId)
+			.filter((operationId): operationId is string => Boolean(operationId))
+			.sort();
+		expect(documented).toEqual([
+			'download_desktop_version',
+			'download_desktop_version_checksum',
+			'download_file',
+			'download_latest_desktop_version',
+			'download_latest_desktop_version_checksum',
+			'get_latest_desktop_version',
+			'list_desktop_versions',
+		]);
 	});
 	it('rejects a bodyless status that is absent from the route response statuses', () => {
 		const route = routes.find((route) => route.path === '/donations/manage');

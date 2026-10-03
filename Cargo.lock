@@ -2062,7 +2062,6 @@ dependencies = [
  "thiserror",
  "tokio",
  "tracing",
- "tracing-subscriber",
  "url",
 ]
 
@@ -2225,6 +2224,7 @@ dependencies = [
  "thiserror",
  "time",
  "tracing",
+ "tracing-subscriber",
  "url",
  "urlencoding",
 ]

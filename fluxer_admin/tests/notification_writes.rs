@@ -6,7 +6,7 @@ use axum::{
     Json, Router,
     body::{Body, to_bytes},
     extract::State,
-    http::{Method, Request, StatusCode, Uri, header},
+    http::{HeaderMap, Method, Request, StatusCode, Uri, header},
     response::{IntoResponse, Response},
 };
 use fluxer_admin::{
@@ -19,92 +19,138 @@ use std::sync::{Arc, Mutex};
 use tokio::net::TcpListener;
 use tower::ServiceExt;
 
-const SECRET_KEY: &str = "voice-restriction-writes-test-secret";
-const REGION_ID: &str = "europe-north";
-const SERVER_ID: &str = "europe-north-server-1";
+const SECRET_KEY: &str = "notification-writes-test-secret";
+const USER_ID: &str = "1500000000000000001";
+const REPORT_ID: &str = "1600000000000000001";
 
-type CapturedBodies = Arc<Mutex<Vec<(String, Value)>>>;
+#[derive(Clone)]
+struct CapturedRequest {
+    route: String,
+    audit_log_reason: Option<String>,
+    body: Value,
+}
 
-#[tokio::test]
-async fn clearing_the_restriction_fields_reaches_the_api_as_empty_lists() {
+type CapturedRequests = Arc<Mutex<Vec<CapturedRequest>>>;
+
+async fn submit(uri: &str, fields: &str) -> CapturedRequest {
     let app = setup().await;
     let csrf_token = csrf_token(&app).await;
-    let status = post_form(
-        &app,
-        "/voice-servers?action=update",
-        &format!(
-            "_csrf={csrf_token}&region_id={REGION_ID}&server_id={SERVER_ID}\
-             &endpoint=wss%3A%2F%2Fvoice.example.com&is_active=true\
-             &required_guild_features=&allowed_guild_ids=&soft_connection_limit="
-        ),
-    )
-    .await;
+    let status = post_form(&app, uri, &format!("_csrf={csrf_token}&{fields}")).await;
     assert_eq!(status, StatusCode::SEE_OTHER);
-
-    let body = captured_body(
-        &app,
-        "PATCH /admin/voice/regions/europe-north/servers/europe-north-server-1",
-    );
-    assert_eq!(body["required_guild_features"], json!([]));
-    assert_eq!(body["allowed_guild_ids"], json!([]));
-    assert_eq!(body["soft_connection_limit"], Value::Null);
-    assert_eq!(body["vip_only"], json!(false));
+    let captured = app.captured.lock().expect("captured requests");
+    assert_eq!(captured.len(), 1, "expected one write request");
+    captured[0].clone()
 }
 
 #[tokio::test]
-async fn activating_a_server_leaves_the_restriction_fields_untouched() {
-    let app = setup().await;
-    let csrf_token = csrf_token(&app).await;
-    let status = post_form(
-        &app,
-        "/voice-servers?action=update",
-        &format!(
-            "_csrf={csrf_token}&region_id={REGION_ID}&server_id={SERVER_ID}\
-             &endpoint=wss%3A%2F%2Fvoice.example.com&is_active=false&vip_only=true"
-        ),
+async fn temp_ban_sends_notify_user_from_the_checkbox() {
+    let uri = format!("/users/{USER_ID}?action=temp_ban&tab=moderation");
+    let checked = submit(
+        &uri,
+        "duration=24&reason=Spam&notify_user_present=1&notify_user=true",
     )
     .await;
-    assert_eq!(status, StatusCode::SEE_OTHER);
-
-    let body = captured_body(
-        &app,
-        "PATCH /admin/voice/regions/europe-north/servers/europe-north-server-1",
-    );
-    let object = body.as_object().expect("object body");
-    assert!(!object.contains_key("required_guild_features"));
-    assert!(!object.contains_key("allowed_guild_ids"));
-    assert_eq!(body["is_active"], json!(false));
-    assert_eq!(body["vip_only"], json!(true));
+    assert_eq!(checked.route, format!("PUT /admin/users/{USER_ID}/ban"));
+    assert_eq!(checked.body["notify_user"], json!(true));
+    let unchecked = submit(&uri, "duration=24&reason=Spam&notify_user_present=1").await;
+    assert_eq!(unchecked.body["notify_user"], json!(false));
+    let stale_form = submit(&uri, "duration=24&reason=Spam").await;
+    assert_eq!(stale_form.body["notify_user"], json!(true));
 }
 
 #[tokio::test]
-async fn clearing_the_region_restriction_fields_reaches_the_api_as_empty_lists() {
-    let app = setup().await;
-    let csrf_token = csrf_token(&app).await;
-    let status = post_form(
-        &app,
-        "/voice-regions?action=update",
-        &format!(
-            "_csrf={csrf_token}&id={REGION_ID}&name=Northern%20Europe&emoji=%F0%9F%87%B8%F0%9F%87%AA\
-             &latitude=59.33&longitude=18.06&required_guild_features=&allowed_guild_ids="
-        ),
+async fn unban_sends_the_public_reason_in_the_body_and_the_private_reason_as_a_header() {
+    let uri = format!("/users/{USER_ID}?action=unban&tab=moderation");
+    let checked = submit(
+        &uri,
+        "public_reason=Appeal%20accepted&private_reason=Private%20staff%20note&notify_user_present=1&notify_user=true",
     )
     .await;
-    assert_eq!(status, StatusCode::SEE_OTHER);
+    assert_eq!(checked.route, format!("DELETE /admin/users/{USER_ID}/ban"));
+    assert_eq!(checked.body["notify_user"], json!(true));
+    assert_eq!(checked.body["public_reason"], json!("Appeal accepted"));
+    assert_eq!(
+        checked.audit_log_reason.as_deref(),
+        Some("Private staff note")
+    );
+    assert!(!checked.body.to_string().contains("Private staff note"));
+    let unchecked = submit(
+        &uri,
+        "private_reason=Private%20staff%20note&notify_user_present=1",
+    )
+    .await;
+    assert_eq!(unchecked.body["notify_user"], json!(false));
+    assert!(!unchecked.body.to_string().contains("Private staff note"));
+    let stale_form = submit(&uri, "").await;
+    assert_eq!(stale_form.body["notify_user"], json!(true));
+}
 
-    let body = captured_body(&app, "PATCH /admin/voice/regions/europe-north");
-    assert_eq!(body["required_guild_features"], json!([]));
-    assert_eq!(body["allowed_guild_ids"], json!([]));
+#[tokio::test]
+async fn schedule_deletion_sends_notify_user_from_the_checkbox() {
+    let uri = format!("/users/{USER_ID}?action=schedule_deletion&tab=moderation");
+    let checked = submit(
+        &uri,
+        "reason_code=3&days_until_deletion=60&notify_user_present=1&notify_user=true",
+    )
+    .await;
+    assert_eq!(
+        checked.route,
+        format!("PUT /admin/users/{USER_ID}/deletion")
+    );
+    assert_eq!(checked.body["notify_user"], json!(true));
+    let unchecked = submit(
+        &uri,
+        "reason_code=3&days_until_deletion=60&notify_user_present=1",
+    )
+    .await;
+    assert_eq!(unchecked.body["notify_user"], json!(false));
+    let stale_form = submit(&uri, "reason_code=3&days_until_deletion=60").await;
+    assert_eq!(stale_form.body["notify_user"], json!(true));
+}
+
+#[tokio::test]
+async fn bulk_schedule_deletion_sends_notify_user_from_the_checkbox() {
+    let uri = "/bulk-actions?action=bulk-schedule-user-deletion";
+    let fields = format!("user_ids={USER_ID}&reason_code=3&days_until_deletion=60");
+    let checked = submit(
+        uri,
+        &format!("{fields}&notify_user_present=1&notify_user=true"),
+    )
+    .await;
+    assert_eq!(checked.route, "POST /admin/bulk-jobs");
+    assert_eq!(checked.body["task"], json!("schedule_user_deletion"));
+    assert_eq!(checked.body["notify_user"], json!(true));
+    let unchecked = submit(uri, &format!("{fields}&notify_user_present=1")).await;
+    assert_eq!(unchecked.body["notify_user"], json!(false));
+    let stale_form = submit(uri, &fields).await;
+    assert_eq!(stale_form.body["notify_user"], json!(true));
+}
+
+#[tokio::test]
+async fn report_resolve_sends_notify_reporter_from_the_checkbox() {
+    let uri = format!("/reports/{REPORT_ID}/resolve");
+    let checked = submit(
+        &uri,
+        "resolution=Handled&notify_reporter_present=1&notify_reporter=true",
+    )
+    .await;
+    assert_eq!(checked.route, format!("PATCH /admin/reports/{REPORT_ID}"));
+    assert_eq!(checked.body["public_comment"], json!("Handled"));
+    assert_eq!(checked.body["notify_reporter"], json!(true));
+    let unchecked = submit(&uri, "resolution=Handled&notify_reporter_present=1").await;
+    assert_eq!(unchecked.body["notify_reporter"], json!(false));
+    let stale_form = submit(&uri, "resolution=Handled").await;
+    assert_eq!(stale_form.body["notify_reporter"], json!(true));
 }
 
 struct TestApp {
     router: Router,
     session_cookie: String,
-    captured: CapturedBodies,
+    captured: CapturedRequests,
 }
 
 async fn setup() -> TestApp {
-    let captured: CapturedBodies = Arc::new(Mutex::new(Vec::new()));
+    let captured: CapturedRequests = Arc::new(Mutex::new(Vec::new()));
     let api_endpoint = spawn_mock_api(Arc::clone(&captured)).await;
     let router = build_router(test_config(api_endpoint));
     let session_value = session::create_session("1500000000000000000", "test-token", SECRET_KEY);
@@ -113,20 +159,6 @@ async fn setup() -> TestApp {
         session_cookie: format!("{}={session_value}", session::SESSION_COOKIE_NAME),
         captured,
     }
-}
-
-fn captured_body(app: &TestApp, route: &str) -> Value {
-    let captured = app.captured.lock().expect("captured bodies");
-    captured
-        .iter()
-        .find(|(seen, _)| seen == route)
-        .map(|(_, body)| body.clone())
-        .unwrap_or_else(|| {
-            panic!(
-                "no request captured for {route}, saw {:?}",
-                captured.iter().map(|(seen, _)| seen).collect::<Vec<_>>()
-            )
-        })
 }
 
 async fn csrf_token(app: &TestApp) -> String {
@@ -184,7 +216,7 @@ async fn post_form(app: &TestApp, uri: &str, body: &str) -> StatusCode {
     response.status()
 }
 
-async fn spawn_mock_api(captured: CapturedBodies) -> String {
+async fn spawn_mock_api(captured: CapturedRequests) -> String {
     let listener = TcpListener::bind(("127.0.0.1", 0)).await.unwrap();
     let addr = listener.local_addr().unwrap();
     tokio::spawn(async move {
@@ -199,31 +231,45 @@ async fn spawn_mock_api(captured: CapturedBodies) -> String {
 }
 
 async fn mock_api(
-    State(captured): State<CapturedBodies>,
+    State(captured): State<CapturedRequests>,
     method: Method,
     uri: Uri,
+    headers: HeaderMap,
     request: Request<Body>,
 ) -> Response {
     let path = uri.path().to_owned();
-    if method == Method::PATCH {
+    if method != Method::GET {
         let bytes = to_bytes(request.into_body(), usize::MAX).await.unwrap();
         let body: Value = serde_json::from_slice(&bytes).unwrap_or(Value::Null);
+        let audit_log_reason = headers
+            .get("x-audit-log-reason")
+            .and_then(|value| value.to_str().ok())
+            .map(ToOwned::to_owned);
         captured
             .lock()
-            .expect("captured bodies")
-            .push((format!("PATCH {path}"), body));
+            .expect("captured requests")
+            .push(CapturedRequest {
+                route: format!("{method} {path}"),
+                audit_log_reason,
+                body,
+            });
     }
     match (method, path.as_str()) {
         (Method::GET, "/admin/users/@me") => Json(json!({ "user": admin_user() })).into_response(),
-        (Method::PATCH, "/admin/voice/regions/europe-north") => {
-            Json(json!({ "region": region() })).into_response()
-        }
-        (Method::PATCH, "/admin/voice/regions/europe-north/servers/europe-north-server-1") => {
-            Json(json!({ "server": server() })).into_response()
-        }
         (Method::GET, "/admin/voice/regions") => {
             Json(json!({ "regions": [region()] })).into_response()
         }
+        (Method::PUT | Method::DELETE, _) if path.starts_with("/admin/users/") => {
+            Json(json!({ "user": admin_user() })).into_response()
+        }
+        (Method::POST, "/admin/bulk-jobs") => Json(json!({ "job_id": "1" })).into_response(),
+        (Method::PATCH, _) if path.starts_with("/admin/reports/") => Json(json!({
+            "report_id": REPORT_ID,
+            "status": 1,
+            "resolved_at": null,
+            "public_comment": null
+        }))
+        .into_response(),
         _ => (
             StatusCode::NOT_FOUND,
             Json(json!({ "message": "not found" })),
@@ -234,30 +280,12 @@ async fn mock_api(
 
 fn region() -> Value {
     json!({
-        "id": REGION_ID,
+        "id": "europe-north",
         "name": "Northern Europe",
         "emoji": "flag",
         "latitude": 59.33,
         "longitude": 18.06,
         "is_default": true,
-        "vip_only": false,
-        "required_guild_features": [],
-        "allowed_guild_ids": [],
-        "allowed_user_ids": [],
-        "created_at": null,
-        "updated_at": null
-    })
-}
-
-fn server() -> Value {
-    json!({
-        "region_id": REGION_ID,
-        "server_id": SERVER_ID,
-        "endpoint": "wss://voice.example.com",
-        "latitude": null,
-        "longitude": null,
-        "is_active": true,
-        "soft_connection_limit": null,
         "vip_only": false,
         "required_guild_features": [],
         "allowed_guild_ids": [],

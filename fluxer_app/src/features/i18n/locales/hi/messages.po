@@ -1572,6 +1572,11 @@ msgstr "{minutes, plural, one {# मिनट} other {# मिनट}} और {s
 msgid "{minutes, plural, one {Your invite link expires in # minute.} other {Your invite link expires in # minutes.}}"
 msgstr "{minutes, plural, one {आपका इनवाइट लिंक # मिनट में समाप्त हो जाएगा।} other {आपका इनवाइट लिंक # मिनट में समाप्त हो जाएगा।}}"
 
+#. Compact monthly price on the Plutonium page hero. Preserve the monthlyPrice placeholder exactly.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:5
+msgid "{monthlyPrice}/mo"
+msgstr "{monthlyPrice}/माह"
+
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:44
 msgid "{months, plural, one {# month} other {# months}}"
@@ -1624,7 +1629,7 @@ msgid "{paymentProviderName} will first verify that your card is eligible for lo
 msgstr "{paymentProviderName} पहले यह सत्यापित करेगा कि आपका कार्ड स्थानीयकृत मूल्य निर्धारण के लिए योग्य है, फिर आपको भुगतान के लिए आगे बढ़ाएगा। इसे पूरा करने के बाद {productName} पर वापस आएं।"
 
 #. Badge label with a date in the user profile badges popout. Preserve {premiumProductFullName}, {premiumSinceFormatted}; they are inserted by code. In English, keep "subscriber since" lowercase. Other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:53
+#: src/features/user/components/popouts/UserProfileBadges.tsx:54
 msgid "{premiumProductFullName} subscriber since {premiumSinceFormatted}"
 msgstr "{premiumProductFullName} के सदस्य हैं {premiumSinceFormatted} से"
 
@@ -1642,6 +1647,11 @@ msgstr "{premiumProductName} अब कम कीमत पर उपलब्�
 #: src/features/premium/config/PriceAnnouncementCampaign.ts:19
 msgid "{premiumProductName} costs less now. Switch from {currentPrice} to {newPrice} a year starting {effectiveDate}, and nothing is charged today."
 msgstr "{premiumProductName} अब कम कीमत पर उपलब्ध है। {effectiveDate} से {currentPrice} प्रति वर्ष के बजाय {newPrice} प्रति वर्ष पर स्विच करें, और आज कोई शुल्क नहीं लिया जाएगा।"
+
+#. Accessible label of the Plutonium page region. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:247
+msgid "{premiumProductName} page"
+msgstr "{premiumProductName} पेज"
 
 #. Link label that opens the premium perks list. premiumProductName is the premium plan name.
 #: src/features/app/components/dialogs/components/PerksButton.tsx:10
@@ -1706,7 +1716,7 @@ msgid "{productName} avoids sending push notifications to your mobile devices wh
 msgstr "जब आप अपने कंप्यूटर पर होते हैं, तब {productName} आपके मोबाइल डिवाइस पर पुश नोटिफ़िकेशन भेजने से बचता है। चुनें कि पुश नोटिफ़िकेशन मिलने से पहले आपको डेस्कटॉप पर कितनी देर निष्क्रिय रहना चाहिए।"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:38
+#: src/features/user/components/popouts/UserProfileBadges.tsx:39
 msgid "{productName} Bug Hunter"
 msgstr "{productName} बग हंटर"
 
@@ -1835,7 +1845,7 @@ msgid "{productName} now lives at {host}. Install it from there."
 msgstr "{productName} अब {host} पर उपलब्ध है। वहां से इसे इंस्टॉल करें।"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:33
+#: src/features/user/components/popouts/UserProfileBadges.tsx:34
 msgid "{productName} Partner"
 msgstr "{productName} पार्टनर"
 
@@ -1860,7 +1870,7 @@ msgid "{productName} spotted a possible raid here. Invites are paused — try ag
 msgstr "{productName} को यहाँ संभावित रेड का पता चला है। इनवाइट रोक दिए गए हैं, बाद में फिर से कोशिश करें।"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:28
+#: src/features/user/components/popouts/UserProfileBadges.tsx:29
 msgid "{productName} Staff"
 msgstr "{productName} स्टाफ़"
 
@@ -1870,12 +1880,12 @@ msgid "{productName} uses push notifications when installed as a mobile PWA. Reg
 msgstr "{productName} मोबाइल PWA के रूप में इंस्टॉल होने पर पुश नोटिफ़िकेशन का उपयोग करता है। रजिस्टर करने से यह सुनिश्चित होता है कि ऐप बैकग्राउंड में होने पर भी गेटवे आपके डिवाइस तक पहुँच सकता है।"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:48
+#: src/features/user/components/popouts/UserProfileBadges.tsx:49
 msgid "{productName} Visionary"
 msgstr "{productName} विजनरी"
 
 #. Badge title with a date in the user profile badges popout. Preserve {productName}, {premiumSinceFormatted}; they are inserted by code. English locales use Title Case for the badge title part; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:43
+#: src/features/user/components/popouts/UserProfileBadges.tsx:44
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} विजनरी, {premiumSinceFormatted} से"
 
@@ -2133,6 +2143,11 @@ msgstr "{username} ने थ्रेड शुरू किया: {threadLink
 msgid "{username} started a thread: {threadName}"
 msgstr "{username} ने थ्रेड शुरू किया: {threadName}"
 
+#. Compact yearly price on the Plutonium page hero. Preserve the yearlyPrice placeholder exactly.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:9
+msgid "{yearlyPrice}/yr"
+msgstr "{yearlyPrice}/वर्ष"
+
 #. Short label in the channel and chat embed you tube. Keep it concise. Preserve {youtubeProviderName}; it is inserted by code.
 #: src/features/channel/components/embeds/media/EmbedYouTube.tsx:37
 msgid "{youtubeProviderName} video"
@@ -2274,8 +2289,10 @@ msgstr "1 मिनट"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Fixed duration label for a one-month interval. Used as a standalone label in duration text or option lists.
+#. Gift purchase dialog option for a one-month gift.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:98
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:40
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:31
 msgid "1 month"
 msgstr "1 महीना"
 
@@ -2310,7 +2327,9 @@ msgid "1 week"
 msgstr "1 हफ़्ता"
 
 #. Duration label component for an elapsed call. Shown when the call lasted about one year.
+#. Gift purchase dialog option for a one-year gift.
 #: src/features/channel/components/CallMessage.tsx:31
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:35
 msgid "1 year"
 msgstr "1 साल"
 
@@ -2656,6 +2675,11 @@ msgstr "नया वेरिफ़िकेशन कोड भेज दि�
 msgid "a poll"
 msgstr "एक पोल"
 
+#. Plutonium page perk card title about profile customization.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:91
+msgid "A profile that stands out"
+msgstr "एक प्रोफ़ाइल जो सबसे अलग दिखे"
+
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
 #: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
 msgid "A redirect_uri is required when the bot scope is not the only scope."
@@ -2669,6 +2693,11 @@ msgstr "खाली स्टेट, गड़बड़ियों और स�
 #: src/features/search/utils/SearchUtils.ts:29
 msgid "a rich embed or link preview (not an uploaded file)"
 msgstr "एक रिच एम्बेड या लिंक प्रीव्यू (अपलोड की गई फ़ाइल नहीं)"
+
+#. Plutonium page comparison row label for per-community profiles.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:173
+msgid "A separate profile for each community"
+msgstr "हर समुदाय के लिए एक अलग प्रोफ़ाइल"
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:166
 msgid "A sign-in request was made for your account. Only approve if you initiated it."
@@ -2759,7 +2788,7 @@ msgstr "स्वीकार करें"
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:94
 msgctxt "incoming-call-action"
 msgid "Accept"
-msgstr "जवाब दें"
+msgstr "स्वीकार करें"
 
 #. Relationship action label for accepting an incoming friend request.
 #: src/features/relationship/utils/RelationshipMessageDescriptors.ts:9
@@ -4193,6 +4222,11 @@ msgstr "इंटरैक्शन पर एनिमेट करें"
 msgid "Animated {avifFormatLabel} not supported"
 msgstr "एनिमेटेड {avifFormatLabel} समर्थित नहीं है"
 
+#. Plutonium page comparison row label for animated avatars and banners.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:225
+msgid "Animated avatar and profile banner"
+msgstr "एनिमेटेड अवतार और प्रोफ़ाइल बैनर"
+
 #: src/features/user/components/modals/tabs/my_profile_tab/AvatarUploader.tsx:192
 msgid "Animated avatars ({ANIMATED_AVATAR_FORMATS}) are exclusively available to {PREMIUM_PRODUCT_NAME} subscribers."
 msgstr "एनिमेटेड अवतार ({ANIMATED_AVATAR_FORMATS}) विशेष रूप से {PREMIUM_PRODUCT_NAME} सब्सक्राइबर के लिए उपलब्ध हैं।"
@@ -5390,6 +5424,8 @@ msgid "AV1 (requires opt-in)"
 msgstr "AV1 (ऑप्ट-इन आवश्यक)"
 
 #. Label for the available desktop version in the Linux update modal.
+#. Screen reader text for a check mark in the Plutonium page comparison table.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:130
 #: src/features/updater/commands/UpdaterModalCommands.tsx:140
 msgid "Available"
 msgstr "उपलब्ध"
@@ -5459,6 +5495,7 @@ msgstr "दूर"
 msgid "Away right now"
 msgstr "अभी दूर हूँ"
 
+#. Accessible label of the back button on the Plutonium page in the mobile layout.
 #. Accessible label on the mobile back button in the channel header. Returns to the previous screen.
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
@@ -5475,6 +5512,7 @@ msgstr "अभी दूर हूँ"
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:398
 #: src/features/moderation/components/report_modal/IARModal.tsx:86
 #: src/features/moderation/components/report/ReportStepDetails.tsx:312
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:251
 #: src/features/user/components/modals/PhoneAddModal.tsx:417
 #: src/features/user/components/modals/PhoneAddModal.tsx:436
 msgid "Back"
@@ -6208,6 +6246,11 @@ msgstr "ब्रांडिंग एसेट का प्रीव्यू
 msgid "Brightness"
 msgstr "ब्राइटनेस"
 
+#. Plutonium page perk card body about global emojis and stickers.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:87
+msgid "Bring custom emojis and stickers from any of your communities into every chat and community you're in."
+msgstr "अपने किसी भी समुदाय के कस्टम इमोजी और स्टिकर को अपने हर चैट और समुदाय में लाएं।"
+
 #. Title of the modal shown when the browser autoplay policy blocks voice audio until the user interacts.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx:8
 msgid "Browser audio required"
@@ -6737,11 +6780,13 @@ msgstr "निर्धारित स्विच रद्द करें"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:860
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "सदस्यता रद्द करें"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
 msgid "Cancel subscription?"
 msgstr "सदस्यता रद्द करें?"
 
@@ -7350,7 +7395,7 @@ msgid "Channel access"
 msgstr "चैनल एक्सेस"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
 msgid "Channel access denied"
 msgstr "चैनल का एक्सेस नहीं है"
 
@@ -7415,7 +7460,7 @@ msgstr "चैनल आईडी क्लिपबोर्ड पर कॉ�
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:87
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "चैनल लिंक"
@@ -7537,6 +7582,11 @@ msgstr "मेरे मॉडरेट किए गए चैनल"
 #: src/features/ui/character_counter/CharacterCountMessages.ts:21
 msgid "Character limit exceeded by {remaining}"
 msgstr "सीमा से {remaining} अक्षर ज़्यादा"
+
+#. Plutonium page comparison row label for the message length limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:189
+msgid "Characters in a single message"
+msgstr "एक संदेश में अक्षर"
 
 #. Advanced settings category tag.
 #. Short heading in the keyboard shortcuts cheatsheet.
@@ -8011,6 +8061,16 @@ msgstr "ईमेल और पासवर्ड जोड़कर अपन�
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:277
 msgid "Claim your account to access security features like two-factor authentication and passkeys."
 msgstr "दो-कारक प्रमाणीकरण और पासकी जैसे सुरक्षा फ़ीचर एक्सेस करने के लिए अपना अकाउंट क्लेम करें।"
+
+#. Plutonium page note under disabled buttons for unclaimed accounts. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:237
+msgid "Claim your account to buy {premiumProductName}."
+msgstr "अपना खाता क्लेम करें {premiumProductName} खरीदने के लिए।"
+
+#. Note in the gift purchase dialog for unclaimed accounts.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:51
+msgid "Claim your account to buy gifts."
+msgstr "अपना खाता क्लेम करें ताकि आप उपहार खरीद सकें।"
 
 #. Tooltip on the channel header voice call button for guest accounts. Prompts account claim.
 #: src/features/channel/components/channel_header_components/CallButtons.tsx:54
@@ -8786,6 +8846,11 @@ msgstr "डिस्कवरी में लिस्ट की गई कम�
 msgid "Communities with over 250 people are forced onto the \"mentions only\" setting. Your original setting is preserved and will be restored if the community drops below 250 members."
 msgstr "250 से ज़्यादा लोगों वाली कम्युनिटी पर \"सिर्फ़ मेंशन\" सेटिंग लागू कर दी जाती है। आपकी मूल सेटिंग सुरक्षित रहती है और कम्युनिटी के सदस्य 250 से कम होने पर वह वापस लागू कर दी जाएगी।"
 
+#. Plutonium page comparison row label for the community limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:185
+msgid "Communities you can join"
+msgstr "आप जिन समुदायों से जुड़ सकते हैं"
+
 #. Audit log target-type filter label. Filters entries to community-level actions.
 #. Community settings sidebar category grouping discovery and the vanity URL.
 #. Developer / debug surface — keep terse and technical. Fallback label used in the IAR preview tool when no community context is supplied.
@@ -9035,6 +9100,11 @@ msgstr "सिर्फ़ आइकॉन वाले कॉम्पैक्
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:304
 msgid "Compact mode"
 msgstr "कॉम्पैक्ट मोड"
+
+#. Heading of the comparison table on the Plutonium page. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:118
+msgid "Compare Free and {premiumProductName}"
+msgstr "मुफ़्त और {premiumProductName} की तुलना करें"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:141
@@ -9338,7 +9408,7 @@ msgstr "कनेक्शन विफल रहा"
 #: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:57
 msgctxt "voice-connection-status"
 msgid "Connection failed"
-msgstr "कनेक्शन विफल"
+msgstr "कनेक्शन विफल रहा"
 
 #. Voice stats field label (mobile lobby). Shows the voice connection identifier. Developer / debug surface.
 #. Voice stats field label (mobile voice lobby). Developer / debug surface.
@@ -9618,7 +9688,7 @@ msgstr "बदलें"
 #: src/features/input/utils/KeybindUtils.ts:108
 msgctxt "keyboard-key-name"
 msgid "Convert"
-msgstr "रूपांतरण"
+msgstr "बदलें"
 
 #. Activity log detail row under an updated channel that was turned from an announcement channel back into a normal text channel. It continues the entry summary, so it has no subject. It is a past tense record of a change the actor in the summary already made, never an instruction to the reader. Do not write it as a command, a button label or in first or second person.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:76
@@ -11201,6 +11271,11 @@ msgstr "कस्टम टैग"
 msgid "Custom themes"
 msgstr "कस्टम थीम"
 
+#. Plutonium page comparison row label for custom themes.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:233
+msgid "Custom themes for the app"
+msgstr "ऐप के लिए कस्टम थीम"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:142
 msgid "Custom title bar"
@@ -11746,7 +11821,7 @@ msgstr "मिटाएँ"
 #: src/features/input/utils/KeybindUtils.ts:88
 msgctxt "keyboard-key-name"
 msgid "Delete"
-msgstr "डिलीट"
+msgstr "मिटाएँ"
 
 #. Confirmation modal body for deleting a custom emoji. emojiName is shown inside shortcode colons.
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:200
@@ -12346,13 +12421,13 @@ msgstr "डेवलपर स्थिति"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "डेवलपर टूल"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "चैनल हेडर में स्टाफ़ बैज से डेवलपर टूल उपलब्ध हैं।"
 
@@ -12498,7 +12573,7 @@ msgstr "डायरेक्ट मैसेज के प्रीव्यू
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:375
-#: src/features/channel/components/direct_message/DirectMessageList.tsx:629
+#: src/features/channel/components/direct_message/DirectMessageList.tsx:630
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
 msgid "Direct messages"
@@ -12757,7 +12832,7 @@ msgstr "डिस्कनेक्ट हो गया"
 #: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:52
 msgctxt "voice-connection-status"
 msgid "Disconnected"
-msgstr "कनेक्शन कट गया"
+msgstr "डिस्कनेक्ट हो गया"
 
 #. Label for a community that anyone can find through discovery. Used in the community badge and as the community subtitle in expression info cards. Keep it concise.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:689
@@ -12765,8 +12840,10 @@ msgid "Discoverable community"
 msgstr "डिस्कवरेबल कम्युनिटी"
 
 #. Join source label on the community members page. Shown when the member found the community via the Discovery surface.
+#. Name of the Discovery page, shown in an inline chat link that opens it.
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx:56
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:328
+#: src/features/navigation/utils/AppPageLinks.ts:26
 msgid "Discovery"
 msgstr "डिस्कवरी"
 
@@ -12854,7 +12931,7 @@ msgstr "डिस्प्ले"
 #: src/features/voice/components/modals/ScreenSharePickerModal.tsx:147
 msgctxt "display-screen"
 msgid "Display"
-msgstr "स्क्रीन"
+msgstr "डिस्प्ले"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts:269
@@ -13120,6 +13197,11 @@ msgstr "चैनल सूची में टाइपिंग इंडि�
 #: src/features/auth/state/NewDeviceMonitoring.tsx:57
 msgid "Don't suggest {deviceName} again"
 msgstr "{deviceName} का सुझाव दोबारा न दें"
+
+#. Link text in the Plutonium page donation hint. Opens the donation page on the website.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:22
+msgid "Donate instead"
+msgstr "इसके बजाय दान करें"
 
 #. Footer button in the IAR modal on the final / success screen. Closes the modal.
 #. Primary button in the favorite GIF import modal after a completed import.
@@ -13452,7 +13534,9 @@ msgid "Each published message allows 3 quick edits, then 1 every 20 minutes. Try
 msgstr "हर प्रकाशित संदेश में 3 त्वरित संपादन की अनुमति है, फिर हर 20 मिनट में 1. बाद में पुनः प्रयास करें।"
 
 #. Feature comparison table perk label. Shown as the row name comparing restricted vs stock limits.
+#. Plutonium page comparison row label for early access.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:75
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:229
 msgid "Early access to new features"
 msgstr "नई सुविधाओं का अर्ली एक्सेस"
 
@@ -14353,10 +14437,12 @@ msgid "End grace now"
 msgstr "ग्रेस पीरियड अभी खत्म करें"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
 msgid "End grace period"
 msgstr "ग्रेस पीरियड खत्म करें"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
 msgid "End grace period now?"
 msgstr "ग्रेस पीरियड अभी खत्म करें?"
 
@@ -15570,7 +15656,9 @@ msgstr "पसंदीदा"
 msgid "Favorites"
 msgstr "पसंदीदा"
 
+#. Column header for perk names in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:172
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:122
 msgid "Feature"
 msgstr "सुविधा"
 
@@ -15985,6 +16073,11 @@ msgstr "फ़ॉन्ट"
 msgid "Food & drink"
 msgstr "खाना और पेय"
 
+#. Screen reader label for the asterisk that jumps to the custom tag footnote on the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:148
+msgid "Footnote about custom tags"
+msgstr "कस्टम टैग के बारे में फ़ुटनोट"
+
 #. Time window preset label phrased as a duration ("For X hours"). Used in option lists for timed actions.
 #: src/features/app/config/TimeWindowPresets.ts:70
 msgid "For {eightHours} hours"
@@ -16251,7 +16344,9 @@ msgstr "30 FPS से ज़्यादा फ़्रेम रेट के 
 msgid "France"
 msgstr "फ़्रांस"
 
+#. Column header for the free tier in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:177
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:126
 msgid "Free"
 msgstr "मुफ़्त"
 
@@ -16670,6 +16765,16 @@ msgstr "अपना टैग कस्टमाइज़ करने के �
 msgid "Get {premiumProductName} to customize your tag or keep it when changing your username"
 msgstr "अपना टैग कस्टमाइज़ करने या यूज़रनेम बदलते समय उसे बनाए रखने के लिए {premiumProductName} पाएँ"
 
+#. Plutonium page perk card body about profile perks. footnote is a clickable asterisk that points to a footnote about tags. Keep it directly after the word for username.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:95
+msgid "Get an animated avatar and banner, a subscriber badge, the four-digit tag you want after your username{footnote}, and a separate profile for each community."
+msgstr "एक एनिमेटेड अवतार और बैनर, एक सब्सक्राइबर बैज, अपने यूज़रनेम के बाद अपना मनचाहा चार अंकों का टैग {footnote}, और हर कम्युनिटी के लिए एक अलग प्रोफ़ाइल पाएं।"
+
+#. Secondary Plutonium page button that starts a monthly subscription checkout.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:30
+msgid "Get monthly"
+msgstr "मासिक पाएं"
+
 #. Button in the required-action modal. Requests a new inbound SMS challenge code.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:202
 #: src/features/user/components/modals/PhoneAddModal.tsx:424
@@ -16700,6 +16805,11 @@ msgstr "डेस्कटॉप ऐप पाएँ"
 #: src/features/app/domain_migration/DomainMovedStepsModal.tsx:18
 msgid "Get the new {productName} app"
 msgstr "नया {productName} ऐप प्राप्त करें"
+
+#. Primary Plutonium page button that starts a yearly subscription checkout.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:26
+msgid "Get yearly"
+msgstr "सालाना पाएं"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Type label for GIF media.
@@ -16761,10 +16871,17 @@ msgstr "GIF लोड नहीं हो पाए"
 msgid "Gift"
 msgstr "उपहार"
 
+#. Plutonium page button that opens the gift purchase dialog. premiumProductName is the paid tier name.
 #. Premium gift purchase section title. premiumProductName is the short paid product name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:38
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:36
 msgid "Gift {premiumProductName}"
 msgstr "{premiumProductName} उपहार में दें"
+
+#. Body of the closing call to action on the Plutonium page for members. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:164
+msgid "Gift {premiumProductName} to a friend for a month or a whole year. Gifts never renew."
+msgstr "अपने दोस्त को {premiumProductName} एक महीने या पूरे साल के लिए उपहार में दें। उपहार कभी भी स्वतः नवीनीकृत नहीं होते हैं।"
 
 #. Title for gift claim or redemption errors when the gift code was already claimed.
 #: src/features/gift/utils/GiftMessageDescriptors.ts:9
@@ -16823,6 +16940,11 @@ msgstr "उपहार इन्वेंट्री फ़्लो"
 #: src/features/devtools/components/NagbarControls.ts:56
 msgid "Gift inventory nagbar"
 msgstr "उपहार इन्वेंट्री नागबार"
+
+#. Accessible label of the gift length options in the gift purchase dialog.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:43
+msgid "Gift length"
+msgstr "गिफ्ट की अवधि"
 
 #. Form field label for a gift redemption URL.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -16905,6 +17027,11 @@ msgstr "<1>{giftEndDate}</1> तक <0/> उपहार में मिला 
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:94
 msgid "Gifts"
 msgstr "उपहार"
+
+#. Message in the gift purchase dialog when gifts cannot be bought.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:47
+msgid "Gifts aren't available right now."
+msgstr "अभी उपहार उपलब्ध नहीं हैं।"
 
 #. Description for the everyone-is-premium model.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:350
@@ -17384,6 +17511,11 @@ msgstr "नफ़रत फैलाने वाला भाषण"
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:296
 msgid "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 msgstr "गिफ्ट कोड है? {PREMIUM_PRODUCT_NAME} को अनलॉक करने के लिए इसे रिडीम करें।"
+
+#. Plutonium page hero text on an instance where the paid tier cannot be bought, only redeemed. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:74
+msgid "Have a gift code? Redeem it to unlock {premiumProductName}."
+msgstr "गिफ्ट कोड है? {premiumProductName} को अनलॉक करने के लिए इसे रिडीम करें।"
 
 #. Friendly tagline shown on a Fluxer-branded button or upsell.
 #: src/features/ui/state/Modal.ts:13
@@ -18902,7 +19034,7 @@ msgstr "आमंत्रित करें"
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx:43
 msgctxt "invite-noun"
 msgid "Invite"
-msgstr "इनवाइट"
+msgstr "आमंत्रित करें"
 
 #. Join source label on the community members page. Shows the invite code the member joined through, in parentheses.
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx:38
@@ -18958,7 +19090,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "शेयर करते समय इनवाइट लिंक छिपा हुआ है:"
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
 msgid "Invite link masked while sharing"
 msgstr "शेयर करते समय इनवाइट लिंक छिपाया गया"
 
@@ -19378,7 +19510,7 @@ msgid "Jump to {displayName}"
 msgstr "{displayName} पर जाएं"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:101
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
 msgid "Jump to {labelText}"
 msgstr "{labelText} पर जाएं"
 
@@ -19435,12 +19567,12 @@ msgid "Jump to the current call"
 msgstr "मौजूदा कॉल पर जाएं"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
 msgid "Jump to the linked channel"
 msgstr "लिंक किए गए चैनल पर जाएं"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:97
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
 msgid "Jump to the linked message"
 msgstr "लिंक किए गए मैसेज पर जाएं"
 
@@ -19450,7 +19582,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "{authorNickname} के मैसेज पर जाएँ"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:92
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
 msgid "Jump to the message in {labelText}"
 msgstr "{labelText} में मैसेज पर जाएं"
 
@@ -19462,6 +19594,11 @@ msgstr "सबसे पुराने अपठित मैसेज पर �
 #: src/features/voice/components/alerts/VoiceConnectionConfirmModal.tsx:82
 msgid "Just join (keep other connections)"
 msgstr "बस शामिल हों (अन्य कनेक्शन रखें)"
+
+#. Hint under the Plutonium page hero buttons. productName is the app name. donateLink is a link whose text is "Donate instead".
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:17
+msgid "Just want to support {productName}'s open source development? {donateLink}."
+msgstr "क्या आप बस {productName} के ओपन-सोर्स डेवलपमेंट में सहायता करना चाहते हैं? {donateLink}."
 
 #: src/features/input/utils/KeybindUtils.ts:110
 msgctxt "keyboard-key-name"
@@ -19504,6 +19641,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "मुफ़्त और प्रीमियम टियर रखें। आप टियर को कस्टमाइज़ कर सकते हैं, स्ट्राइप के ज़रिए प्रीमियम बेच सकते हैं, या बाद में एडमिन पैनल से गिफ्ट कोड दे सकते हैं।"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
 msgid "Keep grace period"
 msgstr "ग्रेस पीरियड रखें"
 
@@ -19518,6 +19656,7 @@ msgid "Keep running"
 msgstr "चालू रखें"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
 msgid "Keep subscription"
 msgstr "सदस्यता रखें"
 
@@ -19666,6 +19805,11 @@ msgstr "बड़ा"
 msgid "Large file threshold (MB)"
 msgstr "बड़ी फ़ाइल सीमा (MB)"
 
+#. Plutonium page comparison row label for the upload size limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:197
+msgid "Largest file you can upload"
+msgstr "अपलोड करने के लिए सबसे बड़ी फ़ाइल"
+
 #. Account switcher metadata showing when a saved account was last used.
 #: src/features/auth/components/accounts/AccountListItem.tsx:65
 msgid "Last active {lastActive}"
@@ -19763,6 +19907,11 @@ msgstr "स्क्रीन शेयर पूर्वावलोकन क
 #: src/features/app/components/layout/app_layout/nagbars/ScheduledMaintenanceNagbar.tsx:49
 msgid "Learn more"
 msgstr "और जानें"
+
+#. Link text in the Plutonium page tag footnote. Opens the Visionary help article.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:144
+msgid "Learn more about Visionary"
+msgstr "Visionary के बारे में ज़्यादा जानें"
 
 #. IAR modal: quick-action card button label.
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:161
@@ -20119,7 +20268,7 @@ msgid "Link styling"
 msgstr "लिंक स्टाइल"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
 msgid "Link unavailable"
 msgstr "लिंक उपलब्ध नहीं है"
 
@@ -20595,6 +20744,8 @@ msgid "Manage roles"
 msgstr "रोल प्रबंधित करें"
 
 #. Billing action that opens subscription management or the customer billing portal.
+#. Plutonium page hero button that scrolls to the subscription management panel.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:46
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:13
 msgid "Manage subscription"
 msgstr "सदस्यता प्रबंधित करें"
@@ -21012,6 +21163,11 @@ msgstr "मीडिया डिस्प्ले"
 msgid "Media filter"
 msgstr "मीडिया फ़िल्टर"
 
+#. Plutonium page comparison row label for the saved media limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:201
+msgid "Media items you can save for later"
+msgstr "बाद में सहेजने के लिए मीडिया आइटम"
+
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:72
 msgid "Media loading state"
@@ -21344,7 +21500,7 @@ msgstr "मैसेज"
 #: src/features/user/components/profile/ProfilePreview.tsx:321
 msgctxt "message-action"
 msgid "Message"
-msgstr "मैसेज भेजें"
+msgstr "मैसेज"
 
 #. Placeholder text in the message textarea of a group DM; groupName is the name of the group.
 #: src/features/channel/components/channel_textarea/shared.ts:22
@@ -21496,7 +21652,7 @@ msgid "Message layout"
 msgstr "मैसेज लेआउट"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:82
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
 msgid "message link"
 msgstr "मैसेज लिंक"
 
@@ -21642,6 +21798,11 @@ msgstr "इन घोषणा चैनलों में प्रकाश�
 #: src/features/guild/components/modals/guild_tabs/GuildWebhooksTab.tsx:197
 msgid "Messages published in these announcement channels are copied into your channels."
 msgstr "इन घोषणा चैनलों में प्रकाशित संदेश आपके चैनलों में कॉपी किए जाते हैं।"
+
+#. Plutonium page comparison row label for the bookmark limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:193
+msgid "Messages you can bookmark"
+msgstr "बुकमार्क करने लायक संदेश"
 
 #: src/features/channel/components/barriers/BarrierComponents.tsx:282
 msgid "Messaging is temporarily paused in this community."
@@ -22249,7 +22410,7 @@ msgstr "म्यूट करें"
 #: src/features/voice/components/modals/MobileVideoViewer.tsx:45
 msgctxt "playback-control-action"
 msgid "Mute"
-msgstr "आवाज़ बंद करें"
+msgstr "म्यूट करें"
 
 #. Mic toggle button label in the mobile direct-call lobby bottom sheet (currently unmuted).
 #. Mic toggle button label in the mobile voice-channel lobby (currently unmuted).
@@ -22265,7 +22426,7 @@ msgstr "आवाज़ बंद करें"
 #: src/features/voice/components/VoiceControlBar.tsx:122
 msgctxt "voice-control-action"
 msgid "Mute"
-msgstr "माइक्रोफ़ोन म्यूट करें"
+msgstr "म्यूट करें"
 
 #. Action that mutes the named target.
 #: src/features/ui/action_menu/items/DMMenuItems.tsx:22
@@ -22426,7 +22587,7 @@ msgstr "म्यूट किया गया"
 #: src/features/voice/components/voice_participant_tile/shared.ts:78
 msgctxt "microphone-state"
 msgid "Muted"
-msgstr "माइक्रोफ़ोन म्यूट है"
+msgstr "म्यूट किया गया"
 
 #. Voice chat status label. A moderator muted the user in this community, so they cannot speak but can still hear others.
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:43
@@ -23036,7 +23197,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "{sendMessagesPermission} की अनुमति नहीं है"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
 msgid "No access"
 msgstr "कोई एक्सेस नहीं"
 
@@ -23756,7 +23917,9 @@ msgid "Not accepted"
 msgstr "स्वीकार नहीं किया गया"
 
 #. Fallback value when a saved billing payment method has no expiration date.
+#. Screen reader text for a cross in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:18
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:134
 msgid "Not available"
 msgstr "उपलब्ध नहीं है"
 
@@ -24239,7 +24402,7 @@ msgstr "खोलें"
 #: src/features/app/components/setup/SetupWizardSteps.tsx:157
 msgctxt "registration-policy"
 msgid "Open"
-msgstr "खुला"
+msgstr "खोलें"
 
 #. Windows jump-list task description (tooltip text) for the Open settings action.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:246
@@ -24266,8 +24429,13 @@ msgstr "Safari में {host} खोलें।"
 msgid "Open {host} in your browser."
 msgstr "अपने ब्राउज़र में {host} खोलें।"
 
+#. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+msgid "Open {labelText}"
+msgstr "{labelText} खोलें"
+
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:109
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
 msgid "Open {labelText} in settings"
 msgstr "सेटिंग्स में {labelText} खोलें"
 
@@ -24280,6 +24448,11 @@ msgstr "{landmarkName} खोलें"
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx:27
 msgid "Open {macosSystemSettingsName} → {macosPrivacyAndSecuritySettingsName} → {macosScreenRecordingPermissionName}, then allow {productName}. If {productName2} is already enabled, fully quit and restart {productName3} so macOS applies the permission."
 msgstr "{macosSystemSettingsName} → {macosPrivacyAndSecuritySettingsName} → {macosScreenRecordingPermissionName} खोलें, फिर {productName} को अनुमति दें। अगर {productName2} पहले से चालू है, तो {productName3} को पूरी तरह बंद करके फिर से खोलें ताकि macOS अनुमति लागू कर सके।"
+
+#. Button on the settings card that opens the Plutonium page. premiumProductFullName is the full paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageLinkCard.tsx:15
+msgid "Open {premiumProductFullName}"
+msgstr "{premiumProductFullName} खोलें"
 
 #. Button label that opens the desktop app. productName is the app name.
 #. Button that hands SSO sign-in back to the mobile app. productName is the app name.
@@ -24813,10 +24986,12 @@ msgstr "वैकल्पिक सेवाएँ"
 msgid "Options"
 msgstr "विकल्प"
 
+#. Compact conjunction between the monthly and yearly price on the Plutonium page hero.
 #. Small separator between alternative shortcut keycaps in the keyboard mode intro modal.
 #: src/features/auth/flow/auth_login_core/AuthLoginPasskeyActions.tsx:15
 #: src/features/connection/components/modals/AddConnectionModal.tsx:318
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:30
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:13
 msgid "or"
 msgstr "या"
 
@@ -25047,6 +25222,11 @@ msgstr "पेज {currentPage} / {totalPages}"
 msgctxt "keyboard-key-name"
 msgid "Page down"
 msgstr "पेज डाउन"
+
+#. Role description announced for an inline chat link pill that opens an app page. Lowercase.
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+msgid "page link"
+msgstr "पेज लिंक"
 
 #: src/features/input/utils/KeybindUtils.ts:77
 msgctxt "keyboard-key-name"
@@ -25294,6 +25474,11 @@ msgstr "इनवाइट रोके गए"
 #: src/features/webhook/components/FollowedChannelListItem.tsx:167
 msgid "Paused. The person who followed this channel can no longer see it. Follow it again to resume."
 msgstr "रुका हुआ है। इस चैनल को फ़ॉलो करने वाला व्यक्ति अब इसे देख नहीं सकता है। फिर से फ़ॉलो करने पर यह फिर से शुरू हो जाएगा।"
+
+#. Description at the top of the gift purchase dialog.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:27
+msgid "Pay once and get a gift link to share. Gifts never renew."
+msgstr "एक बार भुगतान करें और साझा करने के लिए एक उपहार लिंक प्राप्त करें। उपहार कभी भी नवीनीकृत नहीं होते हैं।"
 
 #. Plutonium subscription payment method picker description for Brazil. Explains Pix recurring vs falling back to a card.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:38
@@ -25558,6 +25743,11 @@ msgstr "फ़ोन वेरिफ़िकेशन ज़रूरी है
 msgid "Photo"
 msgstr "फ़ोटो"
 
+#. Body of the closing call to action on the Plutonium page for people without the paid tier.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:156
+msgid "Pick a plan and your perks switch on the moment checkout finishes."
+msgstr "कोई प्लान चुनें और चेकआउट पूरा होते ही आपके फायदे चालू हो जाएँगे।"
+
 #. Title of the picker modal when choosing a reverse image search provider.
 #: src/features/search/components/modals/SearchProviderPickerModal.tsx:19
 msgid "Pick a reverse image search provider"
@@ -25597,6 +25787,11 @@ msgstr "एक या ज़्यादा शब्दकोश चुने�
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:22
 msgid "Pick one to start a post, or write your own."
 msgstr "पोस्ट शुरू करने के लिए कोई चुनें, या अपना लिखें।"
+
+#. Plutonium page comparison row label for the custom username tag perk.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:169
+msgid "Pick the 4-digit number after your username"
+msgstr "अपने यूज़रनेम के बाद 4-अंकीय संख्या चुनें"
 
 #. Setup wizard body for choosing the initial account theme.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:67
@@ -25796,6 +25991,11 @@ msgstr "सादा टेक्स्ट"
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:23
 msgid "Plan"
 msgstr "प्लान"
+
+#. Text on the card in settings that links to the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageLinkCard.tsx:11
+msgid "Plans, perks, gifts and your subscription all live on one page."
+msgstr "योजनाएं, लाभ, उपहार और आपकी सदस्यता - सब एक ही पेज पर उपलब्ध हैं।"
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:174
 msgid "Platform"
@@ -27017,7 +27217,9 @@ msgstr "पढ़ने की स्पीड"
 msgid "Ready to buy a gift?"
 msgstr "उपहार खरीदने के लिए तैयार हैं?"
 
+#. Heading of the closing call to action on the Plutonium page for people without the paid tier.
 #: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:152
 msgid "Ready to upgrade?"
 msgstr "अपग्रेड करने के लिए तैयार हैं?"
 
@@ -27166,6 +27368,11 @@ msgstr "रिडीम करें"
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:10
 msgid "Redeem a gift"
 msgstr "उपहार रिडीम करें"
+
+#. Plutonium page link that opens the gift code redemption settings.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:42
+msgid "Redeem a gift code"
+msgstr "गिफ्ट कोड रिडीम करें"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/GiftInventoryIndex.ts:30
@@ -29182,6 +29389,13 @@ msgstr "सैचुरेशन"
 msgid "Save"
 msgstr "सेव करें"
 
+#. Badge on the one-year option in the gift purchase dialog. percent is a whole number such as 17.
+#. Badge on the yearly Plutonium button. percent is a whole number such as 17.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:39
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:34
+msgid "Save {percent}%"
+msgstr "{percent}% बचाएं"
+
 #. Price badge comparing a one-year gift to monthly gifts.
 #. Price badge comparing yearly billing to monthly billing.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
@@ -30325,6 +30539,11 @@ msgstr "DSA रिपोर्ट भेजें"
 msgid "Send file messages in order"
 msgstr "फ़ाइल मैसेज क्रम में भेजें"
 
+#. Plutonium page perk card title about upload size. size is a formatted size such as 500 MB.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:109
+msgid "Send files up to {size}"
+msgstr "{size} तक की फ़ाइलें भेजें"
+
 #. Button or menu action label in the user profile mobile sheet. Keep it concise.
 #. Button or menu action label in the user profile modal. Keep it concise.
 #. Member actions sheet menu item. Sends a friend request to the target user.
@@ -30804,7 +31023,7 @@ msgid "Settings"
 msgstr "सेटिंग्स"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
 msgid "settings link"
 msgstr "सेटिंग्स लिंक"
 
@@ -30853,6 +31072,11 @@ msgstr "सक्रिय कस्टम थीम शेयर करें"
 msgid "Share active theme"
 msgstr "सक्रिय थीम शेयर करें"
 
+#. Plutonium page perk card body about upload size. freeSize is a formatted size such as 25 MB.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:113
+msgid "Share full-length videos and big files without shrinking them first. Free accounts can send up to {freeSize}."
+msgstr "वीडियो और बड़ी फ़ाइलें बिना छोटा किए भेजें। मुफ़्त खाते {freeSize} तक भेज सकते हैं।"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/GiftInventoryIndex.ts:46
 msgid "Share gift"
@@ -30882,6 +31106,11 @@ msgstr "स्ट्रीम ऑडियो शेयर करें"
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:40
 msgid "Share the {premiumProductName} experience with your friends by purchasing a gift subscription."
 msgstr "अपने दोस्तों के साथ {premiumProductName} का अनुभव शेयर करने के लिए उपहार सदस्यता खरीदें।"
+
+#. Heading of the closing call to action on the Plutonium page for members.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:160
+msgid "Share the perks"
+msgstr "सुविधाएं साझा करें"
 
 #: src/features/theme_studio/sections/ThemeStudioSettingsSection.tsx:348
 msgid "Share theme"
@@ -30913,6 +31142,11 @@ msgstr "अपनी स्क्रीन शेयर करें"
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx:325
 msgid "Share your screen in high definition (1080p), quad HD (1440p), or native source resolution, at up to 60 FPS."
 msgstr "अपनी स्क्रीन को हाई डेफ़िनिशन (1080p), क्वाड HD (1440p) या नेटिव सोर्स रिज़ॉल्यूशन में, 60 FPS तक शेयर करें।"
+
+#. Plutonium page perk card body about stream quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:105
+msgid "Share your screen or camera in up to 4K at 60 frames per second. Free accounts stream in up to 720p at 30."
+msgstr "अपनी स्क्रीन या कैमरा 4K 60fps तक स्ट्रीम करें। मुफ़्त खाते 720p 30fps तक स्ट्रीम करते हैं।"
 
 #. Button or menu action label in the share theme modal. Keep it concise.
 #: src/features/theme/components/modals/ShareThemeModal.tsx:39
@@ -32115,6 +32349,11 @@ msgstr "आप जो फ़ाइलें अपलोड करने की 
 msgid "Some users can't be added"
 msgstr "कुछ यूज़र को जोड़ा नहीं जा सकता"
 
+#. Plutonium page hero subtitle for gifted members. date is a formatted calendar date.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:58
+msgid "Someone gifted you {premiumProductName}. Your perks stay active until {date}."
+msgstr "किसी ने आपको {premiumProductName} गिफ्ट किया है। आपके फायदे {date} तक सक्रिय रहेंगे।"
+
 #. Generic error modal title for an unexpected failure.
 #. Generic error toast title.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:248
@@ -33152,6 +33391,11 @@ msgstr "स्ट्रीम समाप्त हो गई"
 msgid "Stream hidden"
 msgstr "स्ट्रीम छिपी हुई है"
 
+#. Plutonium page perk card title about stream quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:101
+msgid "Stream in 4K at 60 FPS"
+msgstr "60 FPS पर 4K में स्ट्रीम करें"
+
 #. Aria label for the small thumbnail preview on the screen-share hover card.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the user settings voice activity card. Keep it concise.
@@ -33278,6 +33522,11 @@ msgstr "आवेदन जमा करें"
 msgid "Submitting"
 msgstr "सबमिट किया जा रहा है"
 
+#. Plutonium page comparison row label for the subscriber badge.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:177
+msgid "Subscriber badge on your profile"
+msgstr "आपकी प्रोफ़ाइल पर सब्सक्राइबर बैज"
+
 #. Field label in the voice connection status popout. Shows technical WebRTC subscriber ICE transport details.
 #: src/features/voice/components/voice_connection_status/shared.ts:132
 msgid "Subscriber transport:"
@@ -33342,6 +33591,11 @@ msgstr "सुझाव"
 #: src/features/devtools/components/debug/DebugModal.tsx:90
 msgid "Summary"
 msgstr "सारांश"
+
+#. Plutonium page hero subtitle for people without the paid tier.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:70
+msgid "Support an independent communication platform and unlock some sweet perks."
+msgstr "एक स्वतंत्र संचार प्लेटफ़ॉर्म का समर्थन करें और कुछ शानदार लाभ अनलॉक करें।"
 
 #. Switch label in the community notification settings modal. Suppresses @everyone and @here notifications in this community. The two placeholders render the literal @everyone and @here tokens and must not be translated.
 #. Toggle label that suppresses @everyone and @here mentions; placeholders are the localized mention tags.
@@ -35103,7 +35357,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "यह लिंक चैनल वयस्क सामग्री के लिए चिह्नित है और ऐसी सामग्री खोल सकता है जो कुछ यूज़र के लिए अनुपयुक्त हो सकती है।"
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
 msgid "This link is not available for your account."
 msgstr "यह लिंक आपके अकाउंट के लिए उपलब्ध नहीं है।"
 
@@ -36968,7 +37222,7 @@ msgstr "अनम्यूट करें"
 #: src/features/voice/components/modals/MobileVideoViewer.tsx:40
 msgctxt "playback-control-action"
 msgid "Unmute"
-msgstr "आवाज़ चालू करें"
+msgstr "अनम्यूट करें"
 
 #. Mic toggle button label in the mobile direct-call lobby bottom sheet (currently muted).
 #. Mic toggle button label in the mobile voice-channel lobby (currently muted).
@@ -36978,7 +37232,7 @@ msgstr "आवाज़ चालू करें"
 #: src/features/voice/components/VoiceControlBar.tsx:117
 msgctxt "voice-control-action"
 msgid "Unmute"
-msgstr "माइक्रोफ़ोन अनम्यूट करें"
+msgstr "अनम्यूट करें"
 
 #. Action that re-enables notifications for the named target.
 #: src/features/ui/action_menu/items/DMMenuItems.tsx:26
@@ -37300,10 +37554,20 @@ msgstr "अवांछित वयस्क आचरण, टिप्पण�
 msgid "Up to {DISCOVERY_MAX_TAGS} tags help people find your community. They show up in Discovery search."
 msgstr "ज़्यादा से ज़्यादा {DISCOVERY_MAX_TAGS} टैग लोगों को आपकी कम्युनिटी ढूंढने में मदद करते हैं। वे डिस्कवरी सर्च में दिखते हैं।"
 
+#. Plutonium page comparison value for paid video quality. Keep 4K and FPS as written.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:221
+msgid "Up to 4K at 60 FPS"
+msgstr "60 FPS पर 4K तक"
+
 #. Feature comparison table value label. Shown in the restricted or stock column for a text-valued perk. Format includes a resolution token (4K) and a framerate token that should not be translated.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:83
 msgid "Up to 4K/60fps"
 msgstr "4K/60fps तक"
+
+#. Plutonium page comparison value for free video quality. Keep 720p and FPS as written.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:217
+msgid "Up to 720p at 30 FPS"
+msgstr "30 FPS पर 720p तक"
 
 #. Message placeholder shown when the app cannot render a newer message type.
 #: src/features/channel/components/UnknownMessage.tsx:23
@@ -37707,6 +37971,11 @@ msgstr "ऐसा ईमेल इस्तेमाल करें जो आ�
 msgid "Use animated emojis"
 msgstr "एनिमेटेड इमोजी इस्तेमाल करें"
 
+#. Plutonium page comparison row label for animated emoji use.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:205
+msgid "Use animated emojis in messages"
+msgstr "संदेशों में एनिमेटेड इमोजी का उपयोग करें"
+
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Short label for an advanced desktop scrolling toggle.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedAccessibilityControls.tsx:39
@@ -37733,6 +38002,11 @@ msgstr "श्रेणी डिफ़ॉल्ट का उपयोग क�
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx:42
 msgid "Use coal theme (pitch-black surfaces)"
 msgstr "कोल थीम इस्तेमाल करें (पूरी तरह से काले रंग की सतहें)"
+
+#. Plutonium page comparison row label for global emojis and stickers.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:209
+msgid "Use custom emojis and stickers in any community"
+msgstr "किसी भी समुदाय में कस्टम इमोजी और स्टिकर का उपयोग करें"
 
 #. Short label in the avatar uploader. Keep it concise.
 #. Short label in the banner uploader. Keep it concise. Keep the tone plain and specific.
@@ -38465,6 +38739,16 @@ msgstr "पहले अपना ईमेल वेरिफ़ाई कर�
 msgid "Verify your email or phone to continue using {productName}."
 msgstr "{productName} का उपयोग जारी रखने के लिए अपना ईमेल या फ़ोन वेरिफ़ाई करें।"
 
+#. Plutonium page note under disabled buttons for unverified accounts. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:242
+msgid "Verify your email to buy {premiumProductName}."
+msgstr "अपना ईमेल सत्यापित करें {premiumProductName} खरीदने के लिए।"
+
+#. Note in the gift purchase dialog for accounts without a verified email.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:55
+msgid "Verify your email to buy gifts."
+msgstr "उपहार खरीदने के लिए अपना ईमेल सत्यापित करें।"
+
 #. Label in the username section.
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:25
 msgid "Verify your email to change your username"
@@ -38562,6 +38846,16 @@ msgstr "वीडियो"
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:199
 msgid "Video call"
 msgstr "वीडियो कॉल"
+
+#. Plutonium page comparison row label for video quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:213
+msgid "Video call and screen share quality"
+msgstr "वीडियो कॉल और स्क्रीन शेयर की क्वालिटी"
+
+#. Plutonium page comparison row label for saved video call backgrounds.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:181
+msgid "Video call backgrounds you can save"
+msgstr "सहेजे जा सकने वाले वीडियो कॉल बैकग्राउंड"
 
 #. Title of the modal shown when the video call action is blocked.
 #: src/features/channel/components/channel_header_components/CallButtons.tsx:62
@@ -38670,7 +38964,7 @@ msgid "View"
 msgstr "देखें"
 
 #. Button label on the premium onboarding nagbar. Opens premium feature and subscription settings. Preserve {premiumProductName}; it is inserted by code.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:57
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:59
 msgid "View {premiumProductName} features"
 msgstr "{premiumProductName} सुविधाएं देखें"
 
@@ -38957,7 +39251,7 @@ msgid "Visionary badge ID"
 msgstr "विजनरी बैज आईडी"
 
 #. Short label in the user profile badges popout. Keep it concise. Preserve {visionaryIdLabel}; it is inserted by code.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:58
+#: src/features/user/components/popouts/UserProfileBadges.tsx:59
 msgid "Visionary ID {visionaryIdLabel}"
 msgstr "विजनरी आईडी {visionaryIdLabel}"
 
@@ -39373,6 +39667,11 @@ msgstr "वेयलैंड का xdg-desktop-portal पिकर को क�
 msgid "We could not confirm your card right now. Refresh this page or return to {productName} and try again."
 msgstr "हम अभी आपके कार्ड की पुष्टि नहीं कर सके। इस पेज को रीफ़्रेश करें या {productName} पर वापस जाकर फिर से कोशिश करें।"
 
+#. Plutonium page hero subtitle while a failed renewal is in its grace period.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:66
+msgid "We could not renew your subscription. Update your payment method to keep your perks."
+msgstr "हम आपका सब्सक्रिप्शन रिन्यू नहीं कर सके। अपने लाभों को बनाए रखने के लिए अपनी भुगतान विधि अपडेट करें।"
+
 #. Error message in the theme accept modal.
 #. Error message in the theme settings commands.
 #: src/features/theme/commands/ThemeCommands.tsx:18
@@ -39704,32 +40003,32 @@ msgid "Welcome to {channelDisplayName}"
 msgstr "{channelDisplayName} में आपका स्वागत है"
 
 #. Premium onboarding nagbar body. {premiumProductFullName} is the full premium product name, such as Fluxer Plutonium. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:22
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:24
 msgid "Welcome to {premiumProductFullName}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "{premiumProductFullName} में आपका स्वागत है। अपने {premiumProductName} पर्क देखें और अपनी सदस्यता प्रबंधित करें।"
 
 #. Premium onboarding nagbar body for lifetime premium users. Visionary is the lifetime premium tier name. {premiumProductFullName} is the full premium product name. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:27
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:29
 msgid "Welcome to {premiumProductFullName}. You have lifetime access as a Visionary. Explore your {premiumProductName} perks."
 msgstr "{premiumProductFullName} में आपका स्वागत है। विज़नरी के तौर पर आपके पास आजीवन एक्सेस है। अपने {premiumProductName} पर्क देखें।"
 
 #. Premium onboarding nagbar body for a gift subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:51
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:53
 msgid "Welcome to {premiumProductFullName}. Your gift subscription runs until {formattedDate}. Explore your {premiumProductName} perks."
 msgstr "{premiumProductFullName} में आपका स्वागत है। आपकी उपहार सदस्यता {formattedDate} तक चलेगी। अपने {premiumProductName} पर्क देखें।"
 
 #. Premium onboarding nagbar body for a monthly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:39
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:41
 msgid "Welcome to {premiumProductFullName}. Your monthly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "{premiumProductFullName} में आपका स्वागत है। आपकी मासिक सदस्यता {formattedDate} को रिन्यू होगी। अपने {premiumProductName} पर्क देखें और अपनी सदस्यता प्रबंधित करें।"
 
 #. Premium onboarding nagbar body for a subscription that will cancel. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:33
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:35
 msgid "Welcome to {premiumProductFullName}. Your subscription is active until {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "{premiumProductFullName} में आपका स्वागत है। आपकी सदस्यता {formattedDate} तक चालू रहेगी। अपने {premiumProductName} पर्क देखें और अपनी सदस्यता प्रबंधित करें।"
 
 #. Premium onboarding nagbar body for a yearly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:45
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:47
 msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "{premiumProductFullName} में आपका स्वागत है। आपकी सालाना सदस्यता {formattedDate} को रिन्यू होगी। अपने {premiumProductName} पर्क देखें और अपनी सदस्यता प्रबंधित करें।"
 
@@ -40287,6 +40586,11 @@ msgstr "आप केवल {maxTags} टैग तक जोड़ सकते
 msgid "You can only have one custom background on the free tier. Picking a new one will replace your existing background."
 msgstr "मुफ़्त टियर पर आप सिर्फ़ एक कस्टम बैकग्राउंड रख सकते हैं। नया चुनने पर आपका मौजूदा बैकग्राउंड बदल जाएगा।"
 
+#. Footnote on the Plutonium page about custom username tags. Keep Mina#4821, mina#4821 and #0000 unchanged. visionaryLink is a link whose text is "Learn more about Visionary".
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:138
+msgid "You can only pick a tag that nobody else with the same username already has. Usernames aren't case sensitive, so Mina#4821 and mina#4821 count as the same. The #0000 tag is reserved for {productName} Visionary members. {visionaryLink}."
+msgstr "आप केवल वही टैग चुन सकते हैं जो किसी अन्य उपयोगकर्ता के पास समान उपयोगकर्ता नाम के साथ पहले से मौजूद न हो। उपयोगकर्ता नाम केस-संवेदी नहीं होते हैं, इसलिए Mina#4821 और mina#4821 एक ही माने जाते हैं। #0000 टैग {productName} विज़नरी सदस्यों के लिए आरक्षित है। {visionaryLink}."
+
 #: src/features/app/components/dialogs/components/plutonium/SelfServeRefundSection.tsx:189
 msgid "You can refund again after {cooldownEndsOn}. Contact support for billing issues."
 msgstr "आप {cooldownEndsOn} के बाद फिर से रिफंड कर सकते हैं। बिलिंग संबंधी समस्याओं के लिए सहायता से संपर्क करें।"
@@ -40519,7 +40823,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "आपने {PREMIUM_PRODUCT_NAME} पर रहते हुए अपना टैग बदल दिया है। जब आपकी {PREMIUM_PRODUCT_NAME} की अवधि खत्म हो जाएगी, तो यह अपने आप बदल जाएगा, बशर्ते कि इसका रिन्यूअल न हो।"
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
 msgid "You do not have access to the channel where this message was sent."
 msgstr "आपके पास उस चैनल का एक्सेस नहीं है जहाँ यह मैसेज भेजा गया था।"
 
@@ -40624,10 +40928,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "आपने अभी Tab दबाया है। कीबोर्ड मोड अब चालू है, ताकि आप माउस के बिना {productName} को नेविगेट कर सकें।"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "आपके पर्क आपकी अगली रिन्यूअल तारीख तक बने रहेंगे। अपनी सब्सक्राइबर हिस्ट्री बनाए रखने के लिए उससे पहले सदस्यता फिर से सक्रिय करें।"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "आप तुरंत सभी {PREMIUM_PRODUCT_NAME} पर्क खो देंगे और आपकी सब्सक्राइबर हिस्ट्री रीसेट हो जाएगी। इसे पूर्ववत नहीं किया जा सकता।"
 
@@ -40815,6 +41121,16 @@ msgstr "आपको सभी साइन-आउट किए गए डिव
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:55
 msgid "You'll need one of your passkeys to sign in on a new device. If you lose every passkey you can be locked out of your account. Backup codes will be saved for you so you still have a way in."
 msgstr "नए डिवाइस पर साइन इन करने के लिए आपको अपनी पासकी में से कोई एक चाहिए होगी। अगर आप अपनी सभी पासकी खो देते हैं, तो आप अपने अकाउंट से लॉक आउट हो सकते हैं। आपके बैकअप कोड सेव कर दिए जाएँगे, ताकि अंदर आने का एक रास्ता आपके पास बना रहे।"
+
+#. Plutonium page hero subtitle for members. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:50
+msgid "You're a {premiumProductName} member. Thanks for supporting an independent communication platform."
+msgstr "आप {premiumProductName} के सदस्य हैं। एक स्वतंत्र संचार प्लेटफ़ॉर्म का समर्थन करने के लिए धन्यवाद।"
+
+#. Plutonium page hero subtitle for lifetime Visionary members.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:54
+msgid "You're a Visionary. Your perks never expire, and gifts for friends are always available."
+msgstr "आप एक विजनरी हैं। आपके लाभ कभी समाप्त नहीं होते हैं, और दोस्तों के लिए उपहार हमेशा उपलब्ध रहते हैं।"
 
 #. Privacy > Active now: confirmation modal body when turning sharing on.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ActiveNowTab.tsx:41
@@ -41063,6 +41379,11 @@ msgstr "आपने बहुत ज़्यादा वेरिफ़िक
 msgid "You've seen all your recent mentions. More will appear here soon."
 msgstr "आपने अपने सभी हाल के मेंशन देख लिए हैं। जल्द ही यहां और दिखेंगे।"
 
+#. Plutonium page hero subtitle when a subscription has ended. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:62
+msgid "Your {premiumProductName} perks have ended. Subscribe again to bring them back."
+msgstr "आपके {premiumProductName} के फ़ायदे समाप्त हो गए हैं। उन्हें वापस लाने के लिए फिर से सब्सक्राइब करें।"
+
 #. Nagbar body shown when a premium subscription has expired. {premiumProductName} is the premium product name.
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:19
 msgid "Your {premiumProductName} subscription has expired. You have lost all {premiumProductName} perks. Reactivate your subscription to regain access."
@@ -41200,6 +41521,11 @@ msgstr "आपके ईमेल पर मैसेज नहीं पहु�
 #: src/features/auth/components/pages/VerifyEmailPage.tsx:97
 msgid "Your email has been verified. You can now sign in to your account."
 msgstr "आपका ईमेल वेरिफ़ाई हो गया है। अब आप अपने अकाउंट में साइन इन कर सकते हैं।"
+
+#. Plutonium page perk card title about using custom emojis and stickers in every community.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:83
+msgid "Your emojis, everywhere"
+msgstr "आपके इमोजी, हर जगह"
 
 #. Description text in the sounds.
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx:42
@@ -41388,6 +41714,11 @@ msgstr "आपका स्क्रीन शेयर किसी कम्�
 msgid "Your stream is still live"
 msgstr "आपकी स्ट्रीम अभी भी लाइव है"
 
+#. Heading of the subscription management panel on the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:79
+msgid "Your subscription"
+msgstr "आपकी सदस्यता"
+
 #. Toast error shown when the server refuses to move a Plutonium subscription down to the current price, whatever the reason.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:106
 msgid "Your subscription can't move to the new price right now."
@@ -41529,4 +41860,4 @@ msgstr "ज़ूम इन करें"
 #: src/features/platform/utils/DesktopLocaleBridge.ts:117
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
-msgstr "छोटा करें"
+msgstr "ज़ूम आउट करें"

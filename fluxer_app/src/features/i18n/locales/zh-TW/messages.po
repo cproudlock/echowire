@@ -1572,6 +1572,11 @@ msgstr "{minutes, plural, one {# 分鐘} other {# 分鐘}}又{seconds, plural, o
 msgid "{minutes, plural, one {Your invite link expires in # minute.} other {Your invite link expires in # minutes.}}"
 msgstr "{minutes, plural, one {您的邀請連結將於 # 分鐘後過期。} other {您的邀請連結將於 # 分鐘後過期。}}"
 
+#. Compact monthly price on the Plutonium page hero. Preserve the monthlyPrice placeholder exactly.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:5
+msgid "{monthlyPrice}/mo"
+msgstr "{monthlyPrice}/月"
+
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:44
 msgid "{months, plural, one {# month} other {# months}}"
@@ -1624,7 +1629,7 @@ msgid "{paymentProviderName} will first verify that your card is eligible for lo
 msgstr "{paymentProviderName} 會先確認您的卡片是否符合當地定價資格，接著帶您前往付款。完成後請返回 {productName}。"
 
 #. Badge label with a date in the user profile badges popout. Preserve {premiumProductFullName}, {premiumSinceFormatted}; they are inserted by code. In English, keep "subscriber since" lowercase. Other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:53
+#: src/features/user/components/popouts/UserProfileBadges.tsx:54
 msgid "{premiumProductFullName} subscriber since {premiumSinceFormatted}"
 msgstr "自 {premiumSinceFormatted} 起訂閱 {premiumProductFullName}"
 
@@ -1642,6 +1647,11 @@ msgstr "{premiumProductName} 現在更便宜了。可從每月 {currentPrice} �
 #: src/features/premium/config/PriceAnnouncementCampaign.ts:19
 msgid "{premiumProductName} costs less now. Switch from {currentPrice} to {newPrice} a year starting {effectiveDate}, and nothing is charged today."
 msgstr "{premiumProductName} 現在更便宜了。可從每年 {currentPrice} 改為每年 {newPrice}，自 {effectiveDate} 起生效，今天不會收取任何費用。"
+
+#. Accessible label of the Plutonium page region. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:247
+msgid "{premiumProductName} page"
+msgstr "{premiumProductName} 頁面"
 
 #. Link label that opens the premium perks list. premiumProductName is the premium plan name.
 #: src/features/app/components/dialogs/components/PerksButton.tsx:10
@@ -1706,7 +1716,7 @@ msgid "{productName} avoids sending push notifications to your mobile devices wh
 msgstr "{productName} 會在您使用電腦時，避免向您的行動裝置傳送推播通知。請選擇要在桌面端閒置多久之後，才開始接收推播通知。"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:38
+#: src/features/user/components/popouts/UserProfileBadges.tsx:39
 msgid "{productName} Bug Hunter"
 msgstr "{productName} 錯誤獵人"
 
@@ -1835,7 +1845,7 @@ msgid "{productName} now lives at {host}. Install it from there."
 msgstr "{productName} 現在已移至 {host}。請從該處安裝。"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:33
+#: src/features/user/components/popouts/UserProfileBadges.tsx:34
 msgid "{productName} Partner"
 msgstr "{productName} 合作夥伴"
 
@@ -1860,7 +1870,7 @@ msgid "{productName} spotted a possible raid here. Invites are paused — try ag
 msgstr "{productName} 在此偵測到可能的突襲。邀請已暫停，請稍後再試。"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:28
+#: src/features/user/components/popouts/UserProfileBadges.tsx:29
 msgid "{productName} Staff"
 msgstr "{productName} 員工"
 
@@ -1870,12 +1880,12 @@ msgid "{productName} uses push notifications when installed as a mobile PWA. Reg
 msgstr "當以行動 PWA 形式安裝時，{productName} 會使用推播通知。註冊可確保即使應用程式在背景執行，閘道也能連線到您的裝置。"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:48
+#: src/features/user/components/popouts/UserProfileBadges.tsx:49
 msgid "{productName} Visionary"
 msgstr "{productName} 遠見者"
 
 #. Badge title with a date in the user profile badges popout. Preserve {productName}, {premiumSinceFormatted}; they are inserted by code. English locales use Title Case for the badge title part; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:43
+#: src/features/user/components/popouts/UserProfileBadges.tsx:44
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} 遠見者，自 {premiumSinceFormatted} 起"
 
@@ -2133,6 +2143,11 @@ msgstr "{username} 建立了討論串：{threadLink}"
 msgid "{username} started a thread: {threadName}"
 msgstr "{username} 建立了討論串：{threadName}"
 
+#. Compact yearly price on the Plutonium page hero. Preserve the yearlyPrice placeholder exactly.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:9
+msgid "{yearlyPrice}/yr"
+msgstr "{yearlyPrice}/年"
+
 #. Short label in the channel and chat embed you tube. Keep it concise. Preserve {youtubeProviderName}; it is inserted by code.
 #: src/features/channel/components/embeds/media/EmbedYouTube.tsx:37
 msgid "{youtubeProviderName} video"
@@ -2274,8 +2289,10 @@ msgstr "1 分鐘"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Fixed duration label for a one-month interval. Used as a standalone label in duration text or option lists.
+#. Gift purchase dialog option for a one-month gift.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:98
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:40
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:31
 msgid "1 month"
 msgstr "1 個月"
 
@@ -2310,7 +2327,9 @@ msgid "1 week"
 msgstr "1 週"
 
 #. Duration label component for an elapsed call. Shown when the call lasted about one year.
+#. Gift purchase dialog option for a one-year gift.
 #: src/features/channel/components/CallMessage.tsx:31
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:35
 msgid "1 year"
 msgstr "1 年"
 
@@ -2656,6 +2675,11 @@ msgstr "新的驗證碼已寄出。"
 msgid "a poll"
 msgstr "投票"
 
+#. Plutonium page perk card title about profile customization.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:91
+msgid "A profile that stands out"
+msgstr "一個脫穎而出的個人檔案"
+
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
 #: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
 msgid "A redirect_uri is required when the bot scope is not the only scope."
@@ -2669,6 +2693,11 @@ msgstr "用於空白狀態、錯誤和狀態訊息的可重複使用元件。"
 #: src/features/search/utils/SearchUtils.ts:29
 msgid "a rich embed or link preview (not an uploaded file)"
 msgstr "豐富的嵌入內容或連結預覽（非上傳檔案）"
+
+#. Plutonium page comparison row label for per-community profiles.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:173
+msgid "A separate profile for each community"
+msgstr "每個社群的獨立個人檔案"
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:166
 msgid "A sign-in request was made for your account. Only approve if you initiated it."
@@ -2759,7 +2788,7 @@ msgstr "接受"
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:94
 msgctxt "incoming-call-action"
 msgid "Accept"
-msgstr "接聽"
+msgstr "接受"
 
 #. Relationship action label for accepting an incoming friend request.
 #: src/features/relationship/utils/RelationshipMessageDescriptors.ts:9
@@ -4193,6 +4222,11 @@ msgstr "互動時播放動畫"
 msgid "Animated {avifFormatLabel} not supported"
 msgstr "不支援動畫 {avifFormatLabel}"
 
+#. Plutonium page comparison row label for animated avatars and banners.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:225
+msgid "Animated avatar and profile banner"
+msgstr "動畫頭像與個人檔案橫幅"
+
 #: src/features/user/components/modals/tabs/my_profile_tab/AvatarUploader.tsx:192
 msgid "Animated avatars ({ANIMATED_AVATAR_FORMATS}) are exclusively available to {PREMIUM_PRODUCT_NAME} subscribers."
 msgstr "動態頭像（{ANIMATED_AVATAR_FORMATS}）僅供 {PREMIUM_PRODUCT_NAME} 訂閱者使用。"
@@ -5390,6 +5424,8 @@ msgid "AV1 (requires opt-in)"
 msgstr "AV1（需先啟用）"
 
 #. Label for the available desktop version in the Linux update modal.
+#. Screen reader text for a check mark in the Plutonium page comparison table.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:130
 #: src/features/updater/commands/UpdaterModalCommands.tsx:140
 msgid "Available"
 msgstr "可用版本"
@@ -5459,6 +5495,7 @@ msgstr "離開"
 msgid "Away right now"
 msgstr "目前離開中"
 
+#. Accessible label of the back button on the Plutonium page in the mobile layout.
 #. Accessible label on the mobile back button in the channel header. Returns to the previous screen.
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
@@ -5475,6 +5512,7 @@ msgstr "目前離開中"
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:398
 #: src/features/moderation/components/report_modal/IARModal.tsx:86
 #: src/features/moderation/components/report/ReportStepDetails.tsx:312
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:251
 #: src/features/user/components/modals/PhoneAddModal.tsx:417
 #: src/features/user/components/modals/PhoneAddModal.tsx:436
 msgid "Back"
@@ -5869,7 +5907,7 @@ msgstr "封鎖"
 #: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx:31
 msgctxt "sensitive-media-filter-level"
 msgid "Block"
-msgstr "隱藏"
+msgstr "封鎖"
 
 #. Body of the destructive confirmation modal for blocking a user. Explains the consequences. {userName} is the target user.
 #: src/features/relationship/utils/RelationshipActionUtils.tsx:90
@@ -6207,6 +6245,11 @@ msgstr "品牌素材預覽"
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:152
 msgid "Brightness"
 msgstr "亮度"
+
+#. Plutonium page perk card body about global emojis and stickers.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:87
+msgid "Bring custom emojis and stickers from any of your communities into every chat and community you're in."
+msgstr "將你社群中的自訂表情符號和貼圖，帶到你加入的每個聊天和社群中。"
 
 #. Title of the modal shown when the browser autoplay policy blocks voice audio until the user interacts.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx:8
@@ -6737,11 +6780,13 @@ msgstr "取消排定的切換"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:860
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "取消訂閱"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
 msgid "Cancel subscription?"
 msgstr "取消訂閱？"
 
@@ -7350,7 +7395,7 @@ msgid "Channel access"
 msgstr "頻道存取權"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
 msgid "Channel access denied"
 msgstr "頻道存取遭拒"
 
@@ -7415,7 +7460,7 @@ msgstr "頻道 ID 已複製到剪貼簿"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:87
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "頻道連結"
@@ -7537,6 +7582,11 @@ msgstr "我管理的頻道"
 #: src/features/ui/character_counter/CharacterCountMessages.ts:21
 msgid "Character limit exceeded by {remaining}"
 msgstr "已超出字元限制 {remaining} 個字元"
+
+#. Plutonium page comparison row label for the message length limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:189
+msgid "Characters in a single message"
+msgstr "單則訊息中的字元數"
 
 #. Advanced settings category tag.
 #. Short heading in the keyboard shortcuts cheatsheet.
@@ -8011,6 +8061,16 @@ msgstr "請新增電子郵件和密碼來認領您的帳號。完成前我們會
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:277
 msgid "Claim your account to access security features like two-factor authentication and passkeys."
 msgstr "認領您的帳號，即可使用雙重驗證和通行金鑰等安全功能。"
+
+#. Plutonium page note under disabled buttons for unclaimed accounts. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:237
+msgid "Claim your account to buy {premiumProductName}."
+msgstr "領取你的帳號即可購買 {premiumProductName}。"
+
+#. Note in the gift purchase dialog for unclaimed accounts.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:51
+msgid "Claim your account to buy gifts."
+msgstr "領取您的帳號即可購買禮物。"
 
 #. Tooltip on the channel header voice call button for guest accounts. Prompts account claim.
 #: src/features/channel/components/channel_header_components/CallButtons.tsx:54
@@ -8786,6 +8846,11 @@ msgstr "在探索中列出的社群至少需要驗證電子郵件。啟用探索
 msgid "Communities with over 250 people are forced onto the \"mentions only\" setting. Your original setting is preserved and will be restored if the community drops below 250 members."
 msgstr "成員人數超過 250 人的社群會強制套用「只接收提及通知」設定。您原本的設定會保留，若社群成員人數降到 250 人以下就會還原。"
 
+#. Plutonium page comparison row label for the community limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:185
+msgid "Communities you can join"
+msgstr "你可以加入的社群"
+
 #. Audit log target-type filter label. Filters entries to community-level actions.
 #. Community settings sidebar category grouping discovery and the vanity URL.
 #. Developer / debug surface — keep terse and technical. Fallback label used in the IAR preview tool when no community context is supplied.
@@ -9035,6 +9100,11 @@ msgstr "只有圖示的精簡按鈕，最適合用於工具列和動作列。"
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:304
 msgid "Compact mode"
 msgstr "精簡模式"
+
+#. Heading of the comparison table on the Plutonium page. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:118
+msgid "Compare Free and {premiumProductName}"
+msgstr "比較免費版與 {premiumProductName}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:141
@@ -9338,7 +9408,7 @@ msgstr "連結失敗"
 #: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:57
 msgctxt "voice-connection-status"
 msgid "Connection failed"
-msgstr "連線失敗"
+msgstr "連結失敗"
 
 #. Voice stats field label (mobile lobby). Shows the voice connection identifier. Developer / debug surface.
 #. Voice stats field label (mobile voice lobby). Developer / debug surface.
@@ -11201,6 +11271,11 @@ msgstr "自訂標籤"
 msgid "Custom themes"
 msgstr "自訂主題"
 
+#. Plutonium page comparison row label for custom themes.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:233
+msgid "Custom themes for the app"
+msgstr "應用程式的自訂佈景主題"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:142
 msgid "Custom title bar"
@@ -11746,7 +11821,7 @@ msgstr "刪除"
 #: src/features/input/utils/KeybindUtils.ts:88
 msgctxt "keyboard-key-name"
 msgid "Delete"
-msgstr "Delete"
+msgstr "刪除"
 
 #. Confirmation modal body for deleting a custom emoji. emojiName is shown inside shortcode colons.
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:200
@@ -12346,13 +12421,13 @@ msgstr "開發人員狀態"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "開發人員工具"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "開發人員工具可從頻道標題列的員工徽章開啟。"
 
@@ -12498,7 +12573,7 @@ msgstr "私訊預覽"
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:375
-#: src/features/channel/components/direct_message/DirectMessageList.tsx:629
+#: src/features/channel/components/direct_message/DirectMessageList.tsx:630
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
 msgid "Direct messages"
@@ -12765,8 +12840,10 @@ msgid "Discoverable community"
 msgstr "可被探索的社群"
 
 #. Join source label on the community members page. Shown when the member found the community via the Discovery surface.
+#. Name of the Discovery page, shown in an inline chat link that opens it.
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx:56
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:328
+#: src/features/navigation/utils/AppPageLinks.ts:26
 msgid "Discovery"
 msgstr "探索"
 
@@ -12854,7 +12931,7 @@ msgstr "顯示"
 #: src/features/voice/components/modals/ScreenSharePickerModal.tsx:147
 msgctxt "display-screen"
 msgid "Display"
-msgstr "顯示器"
+msgstr "顯示"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts:269
@@ -12918,7 +12995,7 @@ msgstr "DM"
 #: src/features/app/components/layout/FavoritesChannelListContent.tsx:70
 msgctxt "channel-badge"
 msgid "DM"
-msgstr "私訊"
+msgstr "DM"
 
 #. IAR modal: quick-action card title.
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:421
@@ -13120,6 +13197,11 @@ msgstr "不在頻道列表中顯示輸入狀態"
 #: src/features/auth/state/NewDeviceMonitoring.tsx:57
 msgid "Don't suggest {deviceName} again"
 msgstr "不要再推薦「{deviceName}」"
+
+#. Link text in the Plutonium page donation hint. Opens the donation page on the website.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:22
+msgid "Donate instead"
+msgstr "捐款支持"
 
 #. Footer button in the IAR modal on the final / success screen. Closes the modal.
 #. Primary button in the favorite GIF import modal after a completed import.
@@ -13452,7 +13534,9 @@ msgid "Each published message allows 3 quick edits, then 1 every 20 minutes. Try
 msgstr "每則已發佈的訊息可快速編輯 3 次，之後每 20 分鐘編輯 1 次。請稍後再試。"
 
 #. Feature comparison table perk label. Shown as the row name comparing restricted vs stock limits.
+#. Plutonium page comparison row label for early access.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:75
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:229
 msgid "Early access to new features"
 msgstr "搶先體驗新功能"
 
@@ -14353,10 +14437,12 @@ msgid "End grace now"
 msgstr "立即結束寬限期"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
 msgid "End grace period"
 msgstr "結束寬限期"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
 msgid "End grace period now?"
 msgstr "要現在結束寬限期嗎？"
 
@@ -15570,7 +15656,9 @@ msgstr "我的最愛"
 msgid "Favorites"
 msgstr "我的最愛"
 
+#. Column header for perk names in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:172
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:122
 msgid "Feature"
 msgstr "功能"
 
@@ -15985,6 +16073,11 @@ msgstr "字體"
 msgid "Food & drink"
 msgstr "食物與飲料"
 
+#. Screen reader label for the asterisk that jumps to the custom tag footnote on the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:148
+msgid "Footnote about custom tags"
+msgstr "自訂標籤的註腳"
+
 #. Time window preset label phrased as a duration ("For X hours"). Used in option lists for timed actions.
 #: src/features/app/config/TimeWindowPresets.ts:70
 msgid "For {eightHours} hours"
@@ -16251,7 +16344,9 @@ msgstr "高於 30 FPS 的影格速率需要 {premiumProductName}"
 msgid "France"
 msgstr "法國"
 
+#. Column header for the free tier in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:177
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:126
 msgid "Free"
 msgstr "免費"
 
@@ -16670,6 +16765,16 @@ msgstr "取得 {premiumProductName} 以自訂您的標籤"
 msgid "Get {premiumProductName} to customize your tag or keep it when changing your username"
 msgstr "取得 {premiumProductName} 即可自訂您的標籤，或在變更使用者名稱時保留標籤"
 
+#. Plutonium page perk card body about profile perks. footnote is a clickable asterisk that points to a footnote about tags. Keep it directly after the word for username.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:95
+msgid "Get an animated avatar and banner, a subscriber badge, the four-digit tag you want after your username{footnote}, and a separate profile for each community."
+msgstr "取得動畫頭像和橫幅、訂閱者徽章、您想要的四位數標籤（在您的使用者名稱後方{footnote}），以及每個社群的獨立個人檔案。"
+
+#. Secondary Plutonium page button that starts a monthly subscription checkout.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:30
+msgid "Get monthly"
+msgstr "每月訂閱"
+
 #. Button in the required-action modal. Requests a new inbound SMS challenge code.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:202
 #: src/features/user/components/modals/PhoneAddModal.tsx:424
@@ -16700,6 +16805,11 @@ msgstr "取得電腦版應用程式"
 #: src/features/app/domain_migration/DomainMovedStepsModal.tsx:18
 msgid "Get the new {productName} app"
 msgstr "取得新的 {productName} 應用程式"
+
+#. Primary Plutonium page button that starts a yearly subscription checkout.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:26
+msgid "Get yearly"
+msgstr "取得年訂閱"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Type label for GIF media.
@@ -16761,10 +16871,17 @@ msgstr "GIF 無法載入"
 msgid "Gift"
 msgstr "禮物"
 
+#. Plutonium page button that opens the gift purchase dialog. premiumProductName is the paid tier name.
 #. Premium gift purchase section title. premiumProductName is the short paid product name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:38
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:36
 msgid "Gift {premiumProductName}"
 msgstr "贈送 {premiumProductName}"
+
+#. Body of the closing call to action on the Plutonium page for members. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:164
+msgid "Gift {premiumProductName} to a friend for a month or a whole year. Gifts never renew."
+msgstr "贈送 {premiumProductName} 給朋友，可選擇一個月或一整年。禮物不會自動續訂。"
 
 #. Title for gift claim or redemption errors when the gift code was already claimed.
 #: src/features/gift/utils/GiftMessageDescriptors.ts:9
@@ -16823,6 +16940,11 @@ msgstr "禮物庫存流程"
 #: src/features/devtools/components/NagbarControls.ts:56
 msgid "Gift inventory nagbar"
 msgstr "禮物庫存提醒列"
+
+#. Accessible label of the gift length options in the gift purchase dialog.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:43
+msgid "Gift length"
+msgstr "贈送長度"
 
 #. Form field label for a gift redemption URL.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -16905,6 +17027,11 @@ msgstr "已獲贈 <0/>，有效期至 <1>{giftEndDate}</1>。不會自動續訂�
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:94
 msgid "Gifts"
 msgstr "禮物"
+
+#. Message in the gift purchase dialog when gifts cannot be bought.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:47
+msgid "Gifts aren't available right now."
+msgstr "目前無法購買禮物。"
 
 #. Description for the everyone-is-premium model.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:350
@@ -17385,6 +17512,11 @@ msgstr "仇恨言論"
 msgid "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 msgstr "有禮物代碼嗎？兌換它以解鎖 {PREMIUM_PRODUCT_NAME}。"
 
+#. Plutonium page hero text on an instance where the paid tier cannot be bought, only redeemed. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:74
+msgid "Have a gift code? Redeem it to unlock {premiumProductName}."
+msgstr "有禮物代碼嗎？兌換它即可解鎖 {premiumProductName}。"
+
 #. Friendly tagline shown on a Fluxer-branded button or upsell.
 #: src/features/ui/state/Modal.ts:13
 msgid "Having fun?"
@@ -17788,7 +17920,7 @@ msgstr "首頁"
 #: src/features/input/utils/KeybindUtils.ts:85
 msgctxt "keyboard-key-name"
 msgid "Home"
-msgstr "Home"
+msgstr "首頁"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:460
@@ -18958,7 +19090,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "分享時隱藏邀請連結："
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
 msgid "Invite link masked while sharing"
 msgstr "分享時已隱藏邀請連結"
 
@@ -19378,7 +19510,7 @@ msgid "Jump to {displayName}"
 msgstr "跳到「{displayName}」"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:101
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
 msgid "Jump to {labelText}"
 msgstr "跳到「{labelText}」"
 
@@ -19435,12 +19567,12 @@ msgid "Jump to the current call"
 msgstr "跳到目前的通話"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
 msgid "Jump to the linked channel"
 msgstr "跳到連結的頻道"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:97
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
 msgid "Jump to the linked message"
 msgstr "跳到連結的訊息"
 
@@ -19450,7 +19582,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "跳到 {authorNickname} 的訊息"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:92
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
 msgid "Jump to the message in {labelText}"
 msgstr "跳到「{labelText}」中的訊息"
 
@@ -19462,6 +19594,11 @@ msgstr "跳到最舊的未讀訊息"
 #: src/features/voice/components/alerts/VoiceConnectionConfirmModal.tsx:82
 msgid "Just join (keep other connections)"
 msgstr "直接加入（保留其他連線）"
+
+#. Hint under the Plutonium page hero buttons. productName is the app name. donateLink is a link whose text is "Donate instead".
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:17
+msgid "Just want to support {productName}'s open source development? {donateLink}."
+msgstr "只想支持 {productName} 的開源開發嗎？請改為捐款 {donateLink}。"
 
 #: src/features/input/utils/KeybindUtils.ts:110
 msgctxt "keyboard-key-name"
@@ -19504,6 +19641,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "保留免費和進階方案。您可以自訂方案、透過 Stripe 出售進階方案，或稍後從管理面板發放禮物代碼。"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
 msgid "Keep grace period"
 msgstr "保留寬限期"
 
@@ -19518,6 +19656,7 @@ msgid "Keep running"
 msgstr "繼續執行"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
 msgid "Keep subscription"
 msgstr "保留訂閱"
 
@@ -19666,6 +19805,11 @@ msgstr "大"
 msgid "Large file threshold (MB)"
 msgstr "大型檔案臨界值 (MB)"
 
+#. Plutonium page comparison row label for the upload size limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:197
+msgid "Largest file you can upload"
+msgstr "您可上傳的最大檔案"
+
 #. Account switcher metadata showing when a saved account was last used.
 #: src/features/auth/components/accounts/AccountListItem.tsx:65
 msgid "Last active {lastActive}"
@@ -19763,6 +19907,11 @@ msgstr "了解螢幕分享預覽功能"
 #: src/features/app/components/layout/app_layout/nagbars/ScheduledMaintenanceNagbar.tsx:49
 msgid "Learn more"
 msgstr "瞭解詳情"
+
+#. Link text in the Plutonium page tag footnote. Opens the Visionary help article.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:144
+msgid "Learn more about Visionary"
+msgstr "進一步了解 Visionary"
 
 #. IAR modal: quick-action card button label.
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:161
@@ -20119,7 +20268,7 @@ msgid "Link styling"
 msgstr "連結樣式"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
 msgid "Link unavailable"
 msgstr "連結無法使用"
 
@@ -20595,6 +20744,8 @@ msgid "Manage roles"
 msgstr "管理身分組"
 
 #. Billing action that opens subscription management or the customer billing portal.
+#. Plutonium page hero button that scrolls to the subscription management panel.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:46
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:13
 msgid "Manage subscription"
 msgstr "管理訂閱"
@@ -21012,6 +21163,11 @@ msgstr "媒體顯示"
 msgid "Media filter"
 msgstr "媒體篩選"
 
+#. Plutonium page comparison row label for the saved media limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:201
+msgid "Media items you can save for later"
+msgstr "可儲存的媒體項目"
+
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:72
 msgid "Media loading state"
@@ -21344,7 +21500,7 @@ msgstr "訊息"
 #: src/features/user/components/profile/ProfilePreview.tsx:321
 msgctxt "message-action"
 msgid "Message"
-msgstr "傳送訊息"
+msgstr "訊息"
 
 #. Placeholder text in the message textarea of a group DM; groupName is the name of the group.
 #: src/features/channel/components/channel_textarea/shared.ts:22
@@ -21496,7 +21652,7 @@ msgid "Message layout"
 msgstr "訊息版面配置"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:82
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
 msgid "message link"
 msgstr "訊息連結"
 
@@ -21642,6 +21798,11 @@ msgstr "在此公告頻道中發布的訊息會在此處複製。"
 #: src/features/guild/components/modals/guild_tabs/GuildWebhooksTab.tsx:197
 msgid "Messages published in these announcement channels are copied into your channels."
 msgstr "發佈於這些公告頻道的訊息會被複製到你的頻道。"
+
+#. Plutonium page comparison row label for the bookmark limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:193
+msgid "Messages you can bookmark"
+msgstr "可收藏的訊息"
 
 #: src/features/channel/components/barriers/BarrierComponents.tsx:282
 msgid "Messaging is temporarily paused in this community."
@@ -22076,7 +22237,7 @@ msgstr "動態"
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:348
 msgctxt "accessibility-settings-section"
 msgid "Motion"
-msgstr "動態效果"
+msgstr "動態"
 
 #: src/features/input/utils/KeybindUtils.ts:54
 msgctxt "mouse-button-name"
@@ -22249,7 +22410,7 @@ msgstr "靜音"
 #: src/features/voice/components/modals/MobileVideoViewer.tsx:45
 msgctxt "playback-control-action"
 msgid "Mute"
-msgstr "關閉聲音"
+msgstr "靜音"
 
 #. Mic toggle button label in the mobile direct-call lobby bottom sheet (currently unmuted).
 #. Mic toggle button label in the mobile voice-channel lobby (currently unmuted).
@@ -22265,7 +22426,7 @@ msgstr "關閉聲音"
 #: src/features/voice/components/VoiceControlBar.tsx:122
 msgctxt "voice-control-action"
 msgid "Mute"
-msgstr "麥克風靜音"
+msgstr "靜音"
 
 #. Action that mutes the named target.
 #: src/features/ui/action_menu/items/DMMenuItems.tsx:22
@@ -22426,7 +22587,7 @@ msgstr "已靜音"
 #: src/features/voice/components/voice_participant_tile/shared.ts:78
 msgctxt "microphone-state"
 msgid "Muted"
-msgstr "麥克風已靜音"
+msgstr "已靜音"
 
 #. Voice chat status label. A moderator muted the user in this community, so they cannot speak but can still hear others.
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:43
@@ -22793,7 +22954,7 @@ msgstr "新訊息"
 #: src/features/app/components/layout/GuildsLayout.tsx:136
 msgctxt "navigation-badge"
 msgid "New"
-msgstr "新"
+msgstr "新訊息"
 
 #. Compact badge shown beside recently added settings.
 #: src/features/user/components/settings_utils/SettingsStatusBadge.tsx:14
@@ -23036,7 +23197,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "沒有 {sendMessagesPermission} 權限"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
 msgid "No access"
 msgstr "無法存取"
 
@@ -23756,7 +23917,9 @@ msgid "Not accepted"
 msgstr "未接受"
 
 #. Fallback value when a saved billing payment method has no expiration date.
+#. Screen reader text for a cross in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:18
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:134
 msgid "Not available"
 msgstr "不適用"
 
@@ -24239,7 +24402,7 @@ msgstr "開啟"
 #: src/features/app/components/setup/SetupWizardSteps.tsx:157
 msgctxt "registration-policy"
 msgid "Open"
-msgstr "開放"
+msgstr "開啟"
 
 #. Windows jump-list task description (tooltip text) for the Open settings action.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:246
@@ -24266,8 +24429,13 @@ msgstr "在 Safari 中開啟 {host}。"
 msgid "Open {host} in your browser."
 msgstr "在瀏覽器中開啟 {host}。"
 
+#. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+msgid "Open {labelText}"
+msgstr "開啟 {labelText}"
+
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:109
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
 msgid "Open {labelText} in settings"
 msgstr "在設定中開啟 {labelText}"
 
@@ -24280,6 +24448,11 @@ msgstr "開啟{landmarkName}"
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx:27
 msgid "Open {macosSystemSettingsName} → {macosPrivacyAndSecuritySettingsName} → {macosScreenRecordingPermissionName}, then allow {productName}. If {productName2} is already enabled, fully quit and restart {productName3} so macOS applies the permission."
 msgstr "開啟「{macosSystemSettingsName}」，然後前往「{macosPrivacyAndSecuritySettingsName}」→「{macosScreenRecordingPermissionName}」，並允許 {productName}。如果 {productName2} 已啟用，請完全關閉並重新啟動 {productName3}，以便 macOS 套用權限。"
+
+#. Button on the settings card that opens the Plutonium page. premiumProductFullName is the full paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageLinkCard.tsx:15
+msgid "Open {premiumProductFullName}"
+msgstr "開啟 {premiumProductFullName}"
 
 #. Button label that opens the desktop app. productName is the app name.
 #. Button that hands SSO sign-in back to the mobile app. productName is the app name.
@@ -24813,10 +24986,12 @@ msgstr "選用服務"
 msgid "Options"
 msgstr "選項"
 
+#. Compact conjunction between the monthly and yearly price on the Plutonium page hero.
 #. Small separator between alternative shortcut keycaps in the keyboard mode intro modal.
 #: src/features/auth/flow/auth_login_core/AuthLoginPasskeyActions.tsx:15
 #: src/features/connection/components/modals/AddConnectionModal.tsx:318
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:30
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:13
 msgid "or"
 msgstr "或"
 
@@ -25047,6 +25222,11 @@ msgstr "第 {currentPage} 頁，共 {totalPages} 頁"
 msgctxt "keyboard-key-name"
 msgid "Page down"
 msgstr "Page Down"
+
+#. Role description announced for an inline chat link pill that opens an app page. Lowercase.
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+msgid "page link"
+msgstr "頁面連結"
 
 #: src/features/input/utils/KeybindUtils.ts:77
 msgctxt "keyboard-key-name"
@@ -25294,6 +25474,11 @@ msgstr "已暫停邀請"
 #: src/features/webhook/components/FollowedChannelListItem.tsx:167
 msgid "Paused. The person who followed this channel can no longer see it. Follow it again to resume."
 msgstr "已暫停。追蹤此頻道的使用者已無法再看到它。請再次追蹤以繼續。"
+
+#. Description at the top of the gift purchase dialog.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:27
+msgid "Pay once and get a gift link to share. Gifts never renew."
+msgstr "一次付費即可獲得可分享的禮物連結。禮物不會續訂。"
 
 #. Plutonium subscription payment method picker description for Brazil. Explains Pix recurring vs falling back to a card.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:38
@@ -25558,6 +25743,11 @@ msgstr "需要驗證電話號碼"
 msgid "Photo"
 msgstr "相片"
 
+#. Body of the closing call to action on the Plutonium page for people without the paid tier.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:156
+msgid "Pick a plan and your perks switch on the moment checkout finishes."
+msgstr "選擇方案，結帳完成後即可立即啟用你的專屬福利。"
+
 #. Title of the picker modal when choosing a reverse image search provider.
 #: src/features/search/components/modals/SearchProviderPickerModal.tsx:19
 msgid "Pick a reverse image search provider"
@@ -25597,6 +25787,11 @@ msgstr "選擇一個或多個字典。系統會接受任何選定字典中的字
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:22
 msgid "Pick one to start a post, or write your own."
 msgstr "選一個主題開始發文，或自己寫一個。"
+
+#. Plutonium page comparison row label for the custom username tag perk.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:169
+msgid "Pick the 4-digit number after your username"
+msgstr "選擇您名稱後面的 4 位數字"
 
 #. Setup wizard body for choosing the initial account theme.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:67
@@ -25796,6 +25991,11 @@ msgstr "純文字"
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:23
 msgid "Plan"
 msgstr "方案"
+
+#. Text on the card in settings that links to the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageLinkCard.tsx:11
+msgid "Plans, perks, gifts and your subscription all live on one page."
+msgstr "方案、福利、禮物和你的訂閱都在同一個頁面上。"
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:174
 msgid "Platform"
@@ -27017,7 +27217,9 @@ msgstr "閱讀速度"
 msgid "Ready to buy a gift?"
 msgstr "準備好購買禮物了嗎？"
 
+#. Heading of the closing call to action on the Plutonium page for people without the paid tier.
 #: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:152
 msgid "Ready to upgrade?"
 msgstr "準備好升級了嗎？"
 
@@ -27166,6 +27368,11 @@ msgstr "兌換"
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:10
 msgid "Redeem a gift"
 msgstr "兌換禮物"
+
+#. Plutonium page link that opens the gift code redemption settings.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:42
+msgid "Redeem a gift code"
+msgstr "兌換禮物代碼"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/GiftInventoryIndex.ts:30
@@ -29182,6 +29389,13 @@ msgstr "飽和度"
 msgid "Save"
 msgstr "儲存"
 
+#. Badge on the one-year option in the gift purchase dialog. percent is a whole number such as 17.
+#. Badge on the yearly Plutonium button. percent is a whole number such as 17.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:39
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:34
+msgid "Save {percent}%"
+msgstr "節省 {percent}%"
+
 #. Price badge comparing a one-year gift to monthly gifts.
 #. Price badge comparing yearly billing to monthly billing.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
@@ -30325,6 +30539,11 @@ msgstr "送出 DSA 檢舉"
 msgid "Send file messages in order"
 msgstr "依序傳送檔案訊息"
 
+#. Plutonium page perk card title about upload size. size is a formatted size such as 500 MB.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:109
+msgid "Send files up to {size}"
+msgstr "傳送檔案上限為 {size}"
+
 #. Button or menu action label in the user profile mobile sheet. Keep it concise.
 #. Button or menu action label in the user profile modal. Keep it concise.
 #. Member actions sheet menu item. Sends a friend request to the target user.
@@ -30804,7 +31023,7 @@ msgid "Settings"
 msgstr "設定"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
 msgid "settings link"
 msgstr "設定連結"
 
@@ -30853,6 +31072,11 @@ msgstr "分享目前使用中的自訂主題"
 msgid "Share active theme"
 msgstr "分享使用中的主題"
 
+#. Plutonium page perk card body about upload size. freeSize is a formatted size such as 25 MB.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:113
+msgid "Share full-length videos and big files without shrinking them first. Free accounts can send up to {freeSize}."
+msgstr "分享長影片和大型檔案，無需事先壓縮。免費帳戶最多可傳送 {freeSize}。"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/GiftInventoryIndex.ts:46
 msgid "Share gift"
@@ -30882,6 +31106,11 @@ msgstr "分享直播音訊"
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:40
 msgid "Share the {premiumProductName} experience with your friends by purchasing a gift subscription."
 msgstr "購買禮物訂閱，與好友分享 {premiumProductName} 體驗。"
+
+#. Heading of the closing call to action on the Plutonium page for members.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:160
+msgid "Share the perks"
+msgstr "分享福利"
 
 #: src/features/theme_studio/sections/ThemeStudioSettingsSection.tsx:348
 msgid "Share theme"
@@ -30913,6 +31142,11 @@ msgstr "分享您的螢幕"
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx:325
 msgid "Share your screen in high definition (1080p), quad HD (1440p), or native source resolution, at up to 60 FPS."
 msgstr "以高畫質 (1080p)、Quad HD (1440p) 或原始來源解析度分享您的螢幕，最高可達 60 FPS。"
+
+#. Plutonium page perk card body about stream quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:105
+msgid "Share your screen or camera in up to 4K at 60 frames per second. Free accounts stream in up to 720p at 30."
+msgstr "分享你的畫面或鏡頭，最高可達 4K 60fps。免費帳號最高串流 720p 30fps。"
 
 #. Button or menu action label in the share theme modal. Keep it concise.
 #: src/features/theme/components/modals/ShareThemeModal.tsx:39
@@ -32115,6 +32349,11 @@ msgstr "您嘗試上傳的某些檔案超出檔案大小上限，每個檔案不
 msgid "Some users can't be added"
 msgstr "部分使用者無法新增"
 
+#. Plutonium page hero subtitle for gifted members. date is a formatted calendar date.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:58
+msgid "Someone gifted you {premiumProductName}. Your perks stay active until {date}."
+msgstr "有人贈送你 {premiumProductName}。你的權益將於 {date} 前保持啟用。"
+
 #. Generic error modal title for an unexpected failure.
 #. Generic error toast title.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:248
@@ -33152,6 +33391,11 @@ msgstr "直播已結束"
 msgid "Stream hidden"
 msgstr "已隱藏直播"
 
+#. Plutonium page perk card title about stream quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:101
+msgid "Stream in 4K at 60 FPS"
+msgstr "以 60 FPS 串流 4K 畫質"
+
 #. Aria label for the small thumbnail preview on the screen-share hover card.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the user settings voice activity card. Keep it concise.
@@ -33278,6 +33522,11 @@ msgstr "送出申請"
 msgid "Submitting"
 msgstr "正在送出"
 
+#. Plutonium page comparison row label for the subscriber badge.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:177
+msgid "Subscriber badge on your profile"
+msgstr "個人檔案上的訂閱者徽章"
+
 #. Field label in the voice connection status popout. Shows technical WebRTC subscriber ICE transport details.
 #: src/features/voice/components/voice_connection_status/shared.ts:132
 msgid "Subscriber transport:"
@@ -33342,6 +33591,11 @@ msgstr "建議"
 #: src/features/devtools/components/debug/DebugModal.tsx:90
 msgid "Summary"
 msgstr "摘要"
+
+#. Plutonium page hero subtitle for people without the paid tier.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:70
+msgid "Support an independent communication platform and unlock some sweet perks."
+msgstr "支持獨立的通訊平台，並解鎖一些超讚的專屬福利。"
 
 #. Switch label in the community notification settings modal. Suppresses @everyone and @here notifications in this community. The two placeholders render the literal @everyone and @here tokens and must not be translated.
 #. Toggle label that suppresses @everyone and @here mentions; placeholders are the localized mention tags.
@@ -35103,7 +35357,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "此連結頻道已標示為成人內容，可能會開啟不適合部分使用者的內容。"
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
 msgid "This link is not available for your account."
 msgstr "您的帳號無法使用此連結。"
 
@@ -36968,7 +37222,7 @@ msgstr "解除靜音"
 #: src/features/voice/components/modals/MobileVideoViewer.tsx:40
 msgctxt "playback-control-action"
 msgid "Unmute"
-msgstr "開啟聲音"
+msgstr "解除靜音"
 
 #. Mic toggle button label in the mobile direct-call lobby bottom sheet (currently muted).
 #. Mic toggle button label in the mobile voice-channel lobby (currently muted).
@@ -36978,7 +37232,7 @@ msgstr "開啟聲音"
 #: src/features/voice/components/VoiceControlBar.tsx:117
 msgctxt "voice-control-action"
 msgid "Unmute"
-msgstr "解除麥克風靜音"
+msgstr "解除靜音"
 
 #. Action that re-enables notifications for the named target.
 #: src/features/ui/action_menu/items/DMMenuItems.tsx:26
@@ -37300,10 +37554,20 @@ msgstr "不受歡迎的成人行為、言論或要求。"
 msgid "Up to {DISCOVERY_MAX_TAGS} tags help people find your community. They show up in Discovery search."
 msgstr "最多可設定 {DISCOVERY_MAX_TAGS} 個標籤，讓大家更容易找到您的社群。這些標籤會顯示在探索搜尋結果中。"
 
+#. Plutonium page comparison value for paid video quality. Keep 4K and FPS as written.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:221
+msgid "Up to 4K at 60 FPS"
+msgstr "最高 4K 60 FPS"
+
 #. Feature comparison table value label. Shown in the restricted or stock column for a text-valued perk. Format includes a resolution token (4K) and a framerate token that should not be translated.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:83
 msgid "Up to 4K/60fps"
 msgstr "最高 4K/60fps"
+
+#. Plutonium page comparison value for free video quality. Keep 720p and FPS as written.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:217
+msgid "Up to 720p at 30 FPS"
+msgstr "最高 720p 30 FPS"
 
 #. Message placeholder shown when the app cannot render a newer message type.
 #: src/features/channel/components/UnknownMessage.tsx:23
@@ -37707,6 +37971,11 @@ msgstr "請使用與您目前不同的電子郵件地址。"
 msgid "Use animated emojis"
 msgstr "使用動態表情符號"
 
+#. Plutonium page comparison row label for animated emoji use.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:205
+msgid "Use animated emojis in messages"
+msgstr "在訊息中使用動態表情符號"
+
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Short label for an advanced desktop scrolling toggle.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedAccessibilityControls.tsx:39
@@ -37733,6 +38002,11 @@ msgstr "使用類別預設設定"
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx:42
 msgid "Use coal theme (pitch-black surfaces)"
 msgstr "使用煤炭主題（純黑介面）"
+
+#. Plutonium page comparison row label for global emojis and stickers.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:209
+msgid "Use custom emojis and stickers in any community"
+msgstr "在任何社群中使用自訂表情符號和貼圖"
 
 #. Short label in the avatar uploader. Keep it concise.
 #. Short label in the banner uploader. Keep it concise. Keep the tone plain and specific.
@@ -38465,6 +38739,16 @@ msgstr "請先驗證您的電子郵件"
 msgid "Verify your email or phone to continue using {productName}."
 msgstr "請驗證您的電子郵件或電話，以繼續使用 {productName}。"
 
+#. Plutonium page note under disabled buttons for unverified accounts. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:242
+msgid "Verify your email to buy {premiumProductName}."
+msgstr "請驗證您的電子郵件以購買 {premiumProductName}。"
+
+#. Note in the gift purchase dialog for accounts without a verified email.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:55
+msgid "Verify your email to buy gifts."
+msgstr "請驗證您的電子郵件以購買禮物。"
+
 #. Label in the username section.
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:25
 msgid "Verify your email to change your username"
@@ -38562,6 +38846,16 @@ msgstr "視訊"
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:199
 msgid "Video call"
 msgstr "視訊通話"
+
+#. Plutonium page comparison row label for video quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:213
+msgid "Video call and screen share quality"
+msgstr "視訊通話與畫面分享品質"
+
+#. Plutonium page comparison row label for saved video call backgrounds.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:181
+msgid "Video call backgrounds you can save"
+msgstr "可儲存的視訊通話背景"
 
 #. Title of the modal shown when the video call action is blocked.
 #: src/features/channel/components/channel_header_components/CallButtons.tsx:62
@@ -38670,7 +38964,7 @@ msgid "View"
 msgstr "檢視"
 
 #. Button label on the premium onboarding nagbar. Opens premium feature and subscription settings. Preserve {premiumProductName}; it is inserted by code.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:57
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:59
 msgid "View {premiumProductName} features"
 msgstr "查看 {premiumProductName} 功能"
 
@@ -38957,7 +39251,7 @@ msgid "Visionary badge ID"
 msgstr "遠見者徽章 ID"
 
 #. Short label in the user profile badges popout. Keep it concise. Preserve {visionaryIdLabel}; it is inserted by code.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:58
+#: src/features/user/components/popouts/UserProfileBadges.tsx:59
 msgid "Visionary ID {visionaryIdLabel}"
 msgstr "遠見者 ID {visionaryIdLabel}"
 
@@ -39373,6 +39667,11 @@ msgstr "Wayland 的 xdg-desktop-portal 擁有選取器，並會同時顯示所�
 msgid "We could not confirm your card right now. Refresh this page or return to {productName} and try again."
 msgstr "我們目前無法確認您的卡片。請重新整理此頁面，或返回 {productName} 再試一次。"
 
+#. Plutonium page hero subtitle while a failed renewal is in its grace period.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:66
+msgid "We could not renew your subscription. Update your payment method to keep your perks."
+msgstr "我們無法續訂您的訂閱。請更新您的付款方式以保留您的福利。"
+
 #. Error message in the theme accept modal.
 #. Error message in the theme settings commands.
 #: src/features/theme/commands/ThemeCommands.tsx:18
@@ -39704,32 +40003,32 @@ msgid "Welcome to {channelDisplayName}"
 msgstr "歡迎來到「{channelDisplayName}」"
 
 #. Premium onboarding nagbar body. {premiumProductFullName} is the full premium product name, such as Fluxer Plutonium. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:22
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:24
 msgid "Welcome to {premiumProductFullName}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "歡迎來到 {premiumProductFullName}。探索您的 {premiumProductName} 福利，並管理您的訂閱。"
 
 #. Premium onboarding nagbar body for lifetime premium users. Visionary is the lifetime premium tier name. {premiumProductFullName} is the full premium product name. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:27
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:29
 msgid "Welcome to {premiumProductFullName}. You have lifetime access as a Visionary. Explore your {premiumProductName} perks."
 msgstr "歡迎來到 {premiumProductFullName}。您以 Visionary 身分擁有終身使用權。探索您的 {premiumProductName} 福利。"
 
 #. Premium onboarding nagbar body for a gift subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:51
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:53
 msgid "Welcome to {premiumProductFullName}. Your gift subscription runs until {formattedDate}. Explore your {premiumProductName} perks."
 msgstr "歡迎來到 {premiumProductFullName}。您的禮物訂閱將於 {formattedDate} 到期。探索您的 {premiumProductName} 福利。"
 
 #. Premium onboarding nagbar body for a monthly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:39
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:41
 msgid "Welcome to {premiumProductFullName}. Your monthly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "歡迎來到 {premiumProductFullName}。您的每月訂閱將於 {formattedDate} 續訂。探索您的 {premiumProductName} 福利，並管理您的訂閱。"
 
 #. Premium onboarding nagbar body for a subscription that will cancel. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:33
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:35
 msgid "Welcome to {premiumProductFullName}. Your subscription is active until {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "歡迎來到 {premiumProductFullName}。您的訂閱有效期限至 {formattedDate}。探索您的 {premiumProductName} 福利，並管理您的訂閱。"
 
 #. Premium onboarding nagbar body for a yearly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:45
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:47
 msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "歡迎來到 {premiumProductFullName}。您的年度訂閱將於 {formattedDate} 續訂。探索您的 {premiumProductName} 福利，並管理您的訂閱。"
 
@@ -40287,6 +40586,11 @@ msgstr "您最多只能新增 {maxTags} 個標籤。"
 msgid "You can only have one custom background on the free tier. Picking a new one will replace your existing background."
 msgstr "免費版只能擁有一個自訂背景。選擇新的背景會取代您現有的背景。"
 
+#. Footnote on the Plutonium page about custom username tags. Keep Mina#4821, mina#4821 and #0000 unchanged. visionaryLink is a link whose text is "Learn more about Visionary".
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:138
+msgid "You can only pick a tag that nobody else with the same username already has. Usernames aren't case sensitive, so Mina#4821 and mina#4821 count as the same. The #0000 tag is reserved for {productName} Visionary members. {visionaryLink}."
+msgstr "你只能選擇一個沒有其他相同使用者名稱的人已經擁有的標籤。使用者名稱不區分大小寫，所以 Mina#4821 和 mina#4821 算作相同。#0000 標籤保留給 {productName} Visionary 成員。{visionaryLink}。"
+
 #: src/features/app/components/dialogs/components/plutonium/SelfServeRefundSection.tsx:189
 msgid "You can refund again after {cooldownEndsOn}. Contact support for billing issues."
 msgstr "您可以在 {cooldownEndsOn} 後再次退款。如遇帳務問題，請聯絡客服。"
@@ -40519,7 +40823,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "您在訂閱 {PREMIUM_PRODUCT_NAME} 期間變更了標籤。除非續訂，否則您的 {PREMIUM_PRODUCT_NAME} 到期時，標籤將會隨機重新產生。"
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
 msgid "You do not have access to the channel where this message was sent."
 msgstr "您沒有權限存取傳送此訊息的頻道。"
 
@@ -40624,10 +40928,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "您剛才按了 Tab 鍵。鍵盤模式現已開啟，您無需滑鼠即可瀏覽 {productName}。"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "您會保留福利到下一個續訂日期。請在此之前重新啟用訂閱，以保留您的訂閱者歷史記錄。"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "您會立即失去所有 {PREMIUM_PRODUCT_NAME} 福利，且您的訂閱者歷史記錄將會重設。此動作無法復原。"
 
@@ -40815,6 +41121,16 @@ msgstr "您必須在所有已登出的裝置上重新登入"
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:55
 msgid "You'll need one of your passkeys to sign in on a new device. If you lose every passkey you can be locked out of your account. Backup codes will be saved for you so you still have a way in."
 msgstr "在新裝置上登入時，您需要使用其中一個通行金鑰。如果您遺失所有通行金鑰，就可能永久無法存取您的帳號。系統會為您保存備用碼，讓您仍有辦法登入。"
+
+#. Plutonium page hero subtitle for members. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:50
+msgid "You're a {premiumProductName} member. Thanks for supporting an independent communication platform."
+msgstr "你是 {premiumProductName} 會員。感謝你支持獨立的通訊平台。"
+
+#. Plutonium page hero subtitle for lifetime Visionary members.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:54
+msgid "You're a Visionary. Your perks never expire, and gifts for friends are always available."
+msgstr "你是 Visionary。你的福利永不過期，贈送朋友的禮物也隨時可用。"
 
 #. Privacy > Active now: confirmation modal body when turning sharing on.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ActiveNowTab.tsx:41
@@ -41063,6 +41379,11 @@ msgstr "您已要求傳送太多驗證電子郵件。請稍候片刻再試一次
 msgid "You've seen all your recent mentions. More will appear here soon."
 msgstr "您已看過所有最近提及您的訊息。更多訊息將會陸續顯示於此。"
 
+#. Plutonium page hero subtitle when a subscription has ended. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:62
+msgid "Your {premiumProductName} perks have ended. Subscribe again to bring them back."
+msgstr "您的 {premiumProductName} 專屬福利已到期。再次訂閱即可恢復。"
+
 #. Nagbar body shown when a premium subscription has expired. {premiumProductName} is the premium product name.
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:19
 msgid "Your {premiumProductName} subscription has expired. You have lost all {premiumProductName} perks. Reactivate your subscription to regain access."
@@ -41200,6 +41521,11 @@ msgstr "您的電子郵件無法接收訊息。請更新電子郵件，以繼續
 #: src/features/auth/components/pages/VerifyEmailPage.tsx:97
 msgid "Your email has been verified. You can now sign in to your account."
 msgstr "您的電子郵件已驗證。您現在可以登入帳號。"
+
+#. Plutonium page perk card title about using custom emojis and stickers in every community.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:83
+msgid "Your emojis, everywhere"
+msgstr "你的表情符號，隨處可用"
 
 #. Description text in the sounds.
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx:42
@@ -41387,6 +41713,11 @@ msgstr "由於無法使用相容的視訊編解碼器發布您的螢幕畫面，
 #: src/features/voice/components/voice_participant_tile/shared.ts:64
 msgid "Your stream is still live"
 msgstr "您的直播仍在進行中"
+
+#. Heading of the subscription management panel on the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:79
+msgid "Your subscription"
+msgstr "你的訂閱"
 
 #. Toast error shown when the server refuses to move a Plutonium subscription down to the current price, whatever the reason.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:106

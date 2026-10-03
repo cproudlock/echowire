@@ -1572,6 +1572,11 @@ msgstr "{minutes, plural, one {# perc} other {# perc}} és {seconds, plural, one
 msgid "{minutes, plural, one {Your invite link expires in # minute.} other {Your invite link expires in # minutes.}}"
 msgstr "{minutes, plural, one {A meghívólinked # perc múlva jár le.} other {A meghívólinked # perc múlva jár le.}}"
 
+#. Compact monthly price on the Plutonium page hero. Preserve the monthlyPrice placeholder exactly.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:5
+msgid "{monthlyPrice}/mo"
+msgstr "{monthlyPrice}/hó"
+
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:44
 msgid "{months, plural, one {# month} other {# months}}"
@@ -1624,7 +1629,7 @@ msgid "{paymentProviderName} will first verify that your card is eligible for lo
 msgstr "{paymentProviderName} először ellenőrzi, hogy a kártyád alkalmas-e a helyi árakra, majd továbbít a fizetéshez. Ha elkészültél, térj vissza a(z) {productName} alkalmazásba."
 
 #. Badge label with a date in the user profile badges popout. Preserve {premiumProductFullName}, {premiumSinceFormatted}; they are inserted by code. In English, keep "subscriber since" lowercase. Other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:53
+#: src/features/user/components/popouts/UserProfileBadges.tsx:54
 msgid "{premiumProductFullName} subscriber since {premiumSinceFormatted}"
 msgstr "{premiumProductFullName} előfizető {premiumSinceFormatted} óta"
 
@@ -1642,6 +1647,11 @@ msgstr "A(z) {premiumProductName} most kevesebbe kerül. A havi díjad {currentP
 #: src/features/premium/config/PriceAnnouncementCampaign.ts:19
 msgid "{premiumProductName} costs less now. Switch from {currentPrice} to {newPrice} a year starting {effectiveDate}, and nothing is charged today."
 msgstr "A(z) {premiumProductName} most kevesebbe kerül. Az éves díjad {currentPrice} helyett {newPrice} lesz ettől a naptól: {effectiveDate}. A váltásért ma nem számítunk fel díjat."
+
+#. Accessible label of the Plutonium page region. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:247
+msgid "{premiumProductName} page"
+msgstr "{premiumProductName} oldal"
 
 #. Link label that opens the premium perks list. premiumProductName is the premium plan name.
 #: src/features/app/components/dialogs/components/PerksButton.tsx:10
@@ -1706,7 +1716,7 @@ msgid "{productName} avoids sending push notifications to your mobile devices wh
 msgstr "A(z) {productName} nem küld pushértesítéseket a mobileszközeidre, amikor a számítógépednél vagy. Válaszd ki, mennyi ideig kell inaktívnak lenned a számítógépen ahhoz, hogy pushértesítéseket kapj."
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:38
+#: src/features/user/components/popouts/UserProfileBadges.tsx:39
 msgid "{productName} Bug Hunter"
 msgstr "{productName} hibavadász"
 
@@ -1835,7 +1845,7 @@ msgid "{productName} now lives at {host}. Install it from there."
 msgstr "A(z) {productName} mostantól itt érhető el: {host}. Telepítsd onnan."
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:33
+#: src/features/user/components/popouts/UserProfileBadges.tsx:34
 msgid "{productName} Partner"
 msgstr "{productName} partner"
 
@@ -1860,7 +1870,7 @@ msgid "{productName} spotted a possible raid here. Invites are paused — try ag
 msgstr "A(z) {productName} lehetséges összehangolt támadást észlelt itt. A meghívók szünetelnek – próbáld újra később."
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:28
+#: src/features/user/components/popouts/UserProfileBadges.tsx:29
 msgid "{productName} Staff"
 msgstr "{productName} munkatárs"
 
@@ -1870,12 +1880,12 @@ msgid "{productName} uses push notifications when installed as a mobile PWA. Reg
 msgstr "A(z) {productName} pushértesítéseket használ, ha mobil PWA-ként van telepítve. A regisztráció biztosítja, hogy az átjáró elérje az eszközödet akkor is, ha az alkalmazás a háttérben fut."
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:48
+#: src/features/user/components/popouts/UserProfileBadges.tsx:49
 msgid "{productName} Visionary"
 msgstr "{productName} Visionary"
 
 #. Badge title with a date in the user profile badges popout. Preserve {productName}, {premiumSinceFormatted}; they are inserted by code. English locales use Title Case for the badge title part; other locales should use natural local capitalization.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:43
+#: src/features/user/components/popouts/UserProfileBadges.tsx:44
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} Visionary {premiumSinceFormatted} óta"
 
@@ -2133,6 +2143,11 @@ msgstr "{username} szálat indított: {threadLink}"
 msgid "{username} started a thread: {threadName}"
 msgstr "{username} szálat indított: {threadName}"
 
+#. Compact yearly price on the Plutonium page hero. Preserve the yearlyPrice placeholder exactly.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:9
+msgid "{yearlyPrice}/yr"
+msgstr "{yearlyPrice}/év"
+
 #. Short label in the channel and chat embed you tube. Keep it concise. Preserve {youtubeProviderName}; it is inserted by code.
 #: src/features/channel/components/embeds/media/EmbedYouTube.tsx:37
 msgid "{youtubeProviderName} video"
@@ -2274,8 +2289,10 @@ msgstr "1 perc"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Fixed duration label for a one-month interval. Used as a standalone label in duration text or option lists.
+#. Gift purchase dialog option for a one-month gift.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:98
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:40
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:31
 msgid "1 month"
 msgstr "1 hónap"
 
@@ -2310,7 +2327,9 @@ msgid "1 week"
 msgstr "1 hét"
 
 #. Duration label component for an elapsed call. Shown when the call lasted about one year.
+#. Gift purchase dialog option for a one-year gift.
 #: src/features/channel/components/CallMessage.tsx:31
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:35
 msgid "1 year"
 msgstr "1 év"
 
@@ -2656,6 +2675,11 @@ msgstr "Új ellenőrző kódot küldtünk."
 msgid "a poll"
 msgstr "szavazás"
 
+#. Plutonium page perk card title about profile customization.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:91
+msgid "A profile that stands out"
+msgstr "Egy profil, ami kitűnik"
+
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
 #: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
 msgid "A redirect_uri is required when the bot scope is not the only scope."
@@ -2669,6 +2693,11 @@ msgstr "Újrahasználható komponens üres állapotokhoz, hibákhoz és állapot
 #: src/features/search/utils/SearchUtils.ts:29
 msgid "a rich embed or link preview (not an uploaded file)"
 msgstr "formázott beágyazott tartalom vagy linkelőnézet (nem feltöltött fájl)"
+
+#. Plutonium page comparison row label for per-community profiles.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:173
+msgid "A separate profile for each community"
+msgstr "Külön profil minden közösséghez"
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:166
 msgid "A sign-in request was made for your account. Only approve if you initiated it."
@@ -2759,7 +2788,7 @@ msgstr "Elfogadás"
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:94
 msgctxt "incoming-call-action"
 msgid "Accept"
-msgstr "Fogadás"
+msgstr "Elfogadás"
 
 #. Relationship action label for accepting an incoming friend request.
 #: src/features/relationship/utils/RelationshipMessageDescriptors.ts:9
@@ -4193,6 +4222,11 @@ msgstr "Animálás interakciókor"
 msgid "Animated {avifFormatLabel} not supported"
 msgstr "Az animált {avifFormatLabel} nem támogatott"
 
+#. Plutonium page comparison row label for animated avatars and banners.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:225
+msgid "Animated avatar and profile banner"
+msgstr "Animált avatár és profilbanner"
+
 #: src/features/user/components/modals/tabs/my_profile_tab/AvatarUploader.tsx:192
 msgid "Animated avatars ({ANIMATED_AVATAR_FORMATS}) are exclusively available to {PREMIUM_PRODUCT_NAME} subscribers."
 msgstr "Az animált profilképek ({ANIMATED_AVATAR_FORMATS}) kizárólag a(z) {PREMIUM_PRODUCT_NAME} előfizetői számára érhetők el."
@@ -5390,6 +5424,8 @@ msgid "AV1 (requires opt-in)"
 msgstr "AV1 (külön engedélyezést igényel)"
 
 #. Label for the available desktop version in the Linux update modal.
+#. Screen reader text for a check mark in the Plutonium page comparison table.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:130
 #: src/features/updater/commands/UpdaterModalCommands.tsx:140
 msgid "Available"
 msgstr "Elérhető"
@@ -5459,6 +5495,7 @@ msgstr "Távol"
 msgid "Away right now"
 msgstr "Jelenleg távol"
 
+#. Accessible label of the back button on the Plutonium page in the mobile layout.
 #. Accessible label on the mobile back button in the channel header. Returns to the previous screen.
 #. Button that moves to the previous setup wizard step.
 #. Footer button in the IAR modal that returns to the previous step.
@@ -5475,6 +5512,7 @@ msgstr "Jelenleg távol"
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:398
 #: src/features/moderation/components/report_modal/IARModal.tsx:86
 #: src/features/moderation/components/report/ReportStepDetails.tsx:312
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:251
 #: src/features/user/components/modals/PhoneAddModal.tsx:417
 #: src/features/user/components/modals/PhoneAddModal.tsx:436
 msgid "Back"
@@ -6208,6 +6246,11 @@ msgstr "Arculati elem előnézete"
 msgid "Brightness"
 msgstr "Fényerő"
 
+#. Plutonium page perk card body about global emojis and stickers.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:87
+msgid "Bring custom emojis and stickers from any of your communities into every chat and community you're in."
+msgstr "Hozd el a közösségeid egyedi emojijait és matricáit minden csevegésbe és közösségbe, ahol éppen vagy."
+
 #. Title of the modal shown when the browser autoplay policy blocks voice audio until the user interacts.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx:8
 msgid "Browser audio required"
@@ -6737,11 +6780,13 @@ msgstr "Ütemezett váltás visszavonása"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:860
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "Előfizetés lemondása"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
 msgid "Cancel subscription?"
 msgstr "Előfizetés lemondása?"
 
@@ -7350,7 +7395,7 @@ msgid "Channel access"
 msgstr "Csatorna-hozzáférés"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
 msgid "Channel access denied"
 msgstr "Csatorna-hozzáférés megtagadva"
 
@@ -7415,7 +7460,7 @@ msgstr "Csatornaazonosító a vágólapra másolva"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:87
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "csatornalink"
@@ -7537,6 +7582,11 @@ msgstr "Csatornák, amiket moderálok"
 #: src/features/ui/character_counter/CharacterCountMessages.ts:21
 msgid "Character limit exceeded by {remaining}"
 msgstr "{remaining} karakterrel túllépted a karakterkorlátot"
+
+#. Plutonium page comparison row label for the message length limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:189
+msgid "Characters in a single message"
+msgstr "Karakterek egyetlen üzenetben"
 
 #. Advanced settings category tag.
 #. Short heading in the keyboard shortcuts cheatsheet.
@@ -8011,6 +8061,16 @@ msgstr "Fejezd be a fiókod regisztrációját egy e-mail-cím és jelszó megad
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:277
 msgid "Claim your account to access security features like two-factor authentication and passkeys."
 msgstr "Fejezd be a fiókod regisztrációját, hogy hozzáférhess a biztonsági funkciókhoz, például a kétlépcsős azonosításhoz és a jelszókulcsokhoz."
+
+#. Plutonium page note under disabled buttons for unclaimed accounts. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:237
+msgid "Claim your account to buy {premiumProductName}."
+msgstr "Foglald le a fiókodat, hogy megvásárolhasd a {premiumProductName} terméket."
+
+#. Note in the gift purchase dialog for unclaimed accounts.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:51
+msgid "Claim your account to buy gifts."
+msgstr "Foglald le a fiókodat, hogy ajándékokat vásárolhass."
 
 #. Tooltip on the channel header voice call button for guest accounts. Prompts account claim.
 #: src/features/channel/components/channel_header_components/CallButtons.tsx:54
@@ -8786,6 +8846,11 @@ msgstr "A Felfedezésben szereplő közösségekben legalább az e-mail-cím meg
 msgid "Communities with over 250 people are forced onto the \"mentions only\" setting. Your original setting is preserved and will be restored if the community drops below 250 members."
 msgstr "A 250 főnél nagyobb közösségekben kötelező a „Csak említések” beállítás. Az eredeti beállításod megmarad, és visszaáll, ha a közösség létszáma 250 alá csökken."
 
+#. Plutonium page comparison row label for the community limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:185
+msgid "Communities you can join"
+msgstr "Csatlakozható közösségek"
+
 #. Audit log target-type filter label. Filters entries to community-level actions.
 #. Community settings sidebar category grouping discovery and the vanity URL.
 #. Developer / debug surface — keep terse and technical. Fallback label used in the IAR preview tool when no community context is supplied.
@@ -9035,6 +9100,11 @@ msgstr "Kompakt gombok csak ikonnal, tökéletesek eszköztárakhoz és művelet
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:304
 msgid "Compact mode"
 msgstr "Kompakt mód"
+
+#. Heading of the comparison table on the Plutonium page. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:118
+msgid "Compare Free and {premiumProductName}"
+msgstr "Összehasonlítás: Ingyenes és {premiumProductName}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:141
@@ -9338,7 +9408,7 @@ msgstr "Sikertelen csatlakozás"
 #: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:57
 msgctxt "voice-connection-status"
 msgid "Connection failed"
-msgstr "Kapcsolat sikertelen"
+msgstr "Sikertelen csatlakozás"
 
 #. Voice stats field label (mobile lobby). Shows the voice connection identifier. Developer / debug surface.
 #. Voice stats field label (mobile voice lobby). Developer / debug surface.
@@ -9618,7 +9688,7 @@ msgstr "Konvertálás"
 #: src/features/input/utils/KeybindUtils.ts:108
 msgctxt "keyboard-key-name"
 msgid "Convert"
-msgstr "Átalakítás"
+msgstr "Konvertálás"
 
 #. Activity log detail row under an updated channel that was turned from an announcement channel back into a normal text channel. It continues the entry summary, so it has no subject. It is a past tense record of a change the actor in the summary already made, never an instruction to the reader. Do not write it as a command, a button label or in first or second person.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:76
@@ -11201,6 +11271,11 @@ msgstr "Egyéni címkék"
 msgid "Custom themes"
 msgstr "Egyéni témák"
 
+#. Plutonium page comparison row label for custom themes.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:233
+msgid "Custom themes for the app"
+msgstr "Egyéni témák az alkalmazáshoz"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:142
 msgid "Custom title bar"
@@ -11412,7 +11487,7 @@ msgstr "Adatok törlése"
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:280
 msgctxt "privacy-settings-section"
 msgid "Data deletion"
-msgstr "Adattörlés"
+msgstr "Adatok törlése"
 
 #. Short label in the privacy dashboard. Keep it concise.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/PrivacySafetyTabInline.tsx:37
@@ -11746,7 +11821,7 @@ msgstr "Törlés"
 #: src/features/input/utils/KeybindUtils.ts:88
 msgctxt "keyboard-key-name"
 msgid "Delete"
-msgstr "Delete"
+msgstr "Törlés"
 
 #. Confirmation modal body for deleting a custom emoji. emojiName is shown inside shortcode colons.
 #: src/features/emoji/components/emojis/EmojiListItem.tsx:200
@@ -12346,13 +12421,13 @@ msgstr "Fejlesztői állapot"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "Fejlesztői eszközök"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "A fejlesztői eszközök a csatornafejlécben található személyzeti jelvényről érhetők el."
 
@@ -12498,7 +12573,7 @@ msgstr "Közvetlen üzenetek előnézete"
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:375
-#: src/features/channel/components/direct_message/DirectMessageList.tsx:629
+#: src/features/channel/components/direct_message/DirectMessageList.tsx:630
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
 msgid "Direct messages"
@@ -12757,7 +12832,7 @@ msgstr "Kapcsolat megszakadt"
 #: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:52
 msgctxt "voice-connection-status"
 msgid "Disconnected"
-msgstr "Kapcsolat bontva"
+msgstr "Kapcsolat megszakadt"
 
 #. Label for a community that anyone can find through discovery. Used in the community badge and as the community subtitle in expression info cards. Keep it concise.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:689
@@ -12765,8 +12840,10 @@ msgid "Discoverable community"
 msgstr "Felfedezhető közösség"
 
 #. Join source label on the community members page. Shown when the member found the community via the Discovery surface.
+#. Name of the Discovery page, shown in an inline chat link that opens it.
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx:56
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:328
+#: src/features/navigation/utils/AppPageLinks.ts:26
 msgid "Discovery"
 msgstr "Felfedezés"
 
@@ -12854,7 +12931,7 @@ msgstr "Megjelenítés"
 #: src/features/voice/components/modals/ScreenSharePickerModal.tsx:147
 msgctxt "display-screen"
 msgid "Display"
-msgstr "Képernyő"
+msgstr "Megjelenítés"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts:269
@@ -13120,6 +13197,11 @@ msgstr "Ne jelenjenek meg a gépelési jelzők a csatornalistában"
 #: src/features/auth/state/NewDeviceMonitoring.tsx:57
 msgid "Don't suggest {deviceName} again"
 msgstr "Ne javasold újra ezt az eszközt: {deviceName}"
+
+#. Link text in the Plutonium page donation hint. Opens the donation page on the website.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:22
+msgid "Donate instead"
+msgstr "Adományozzon helyette"
 
 #. Footer button in the IAR modal on the final / success screen. Closes the modal.
 #. Primary button in the favorite GIF import modal after a completed import.
@@ -13452,7 +13534,9 @@ msgid "Each published message allows 3 quick edits, then 1 every 20 minutes. Try
 msgstr "Minden közzétett üzenetet 3 gyorsan szerkeszthetsz, utána pedig 20 percenként egyet. Próbáld meg később."
 
 #. Feature comparison table perk label. Shown as the row name comparing restricted vs stock limits.
+#. Plutonium page comparison row label for early access.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:75
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:229
 msgid "Early access to new features"
 msgstr "Korai hozzáférés az új funkciókhoz"
 
@@ -14353,10 +14437,12 @@ msgid "End grace now"
 msgstr "Türelmi időszak befejezése most"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
 msgid "End grace period"
 msgstr "Türelmi időszak befejezése"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
 msgid "End grace period now?"
 msgstr "Befejezed most a türelmi időszakot?"
 
@@ -15570,7 +15656,9 @@ msgstr "Hozzáadva a kedvencekhez"
 msgid "Favorites"
 msgstr "Kedvencek"
 
+#. Column header for perk names in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:172
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:122
 msgid "Feature"
 msgstr "Funkció"
 
@@ -15985,6 +16073,11 @@ msgstr "Betűtípusok"
 msgid "Food & drink"
 msgstr "Étel és ital"
 
+#. Screen reader label for the asterisk that jumps to the custom tag footnote on the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:148
+msgid "Footnote about custom tags"
+msgstr "Egyéni címkékre vonatkozó lábjegyzet"
+
 #. Time window preset label phrased as a duration ("For X hours"). Used in option lists for timed actions.
 #: src/features/app/config/TimeWindowPresets.ts:70
 msgid "For {eightHours} hours"
@@ -16251,7 +16344,9 @@ msgstr "A 30 FPS feletti képkockasebességhez {premiumProductName} szükséges"
 msgid "France"
 msgstr "Franciaország"
 
+#. Column header for the free tier in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:177
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:126
 msgid "Free"
 msgstr "Ingyenes"
 
@@ -16670,6 +16765,16 @@ msgstr "Szerezd be a(z) {premiumProductName} csomagot a címkéd testreszabásá
 msgid "Get {premiumProductName} to customize your tag or keep it when changing your username"
 msgstr "Szerezd be a(z) {premiumProductName} csomagot, hogy testre szabd a címkédet, vagy megtartsd azt a felhasználóneved megváltoztatásakor"
 
+#. Plutonium page perk card body about profile perks. footnote is a clickable asterisk that points to a footnote about tags. Keep it directly after the word for username.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:95
+msgid "Get an animated avatar and banner, a subscriber badge, the four-digit tag you want after your username{footnote}, and a separate profile for each community."
+msgstr "Szerezz animált avatart és bannert, előfizetői jelvényt, a felhasználóneved utáni négyjegyű taget, amit szeretnél{footnote}, és külön profilt minden közösséghez."
+
+#. Secondary Plutonium page button that starts a monthly subscription checkout.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:30
+msgid "Get monthly"
+msgstr "Havi előfizetés"
+
 #. Button in the required-action modal. Requests a new inbound SMS challenge code.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:202
 #: src/features/user/components/modals/PhoneAddModal.tsx:424
@@ -16700,6 +16805,11 @@ msgstr "Töltsd le az asztali alkalmazást"
 #: src/features/app/domain_migration/DomainMovedStepsModal.tsx:18
 msgid "Get the new {productName} app"
 msgstr "Töltsd le az új {productName} alkalmazást"
+
+#. Primary Plutonium page button that starts a yearly subscription checkout.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:26
+msgid "Get yearly"
+msgstr "Éves csomag"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Type label for GIF media.
@@ -16761,10 +16871,17 @@ msgstr "A GIF-ek nem töltődtek be"
 msgid "Gift"
 msgstr "Ajándék"
 
+#. Plutonium page button that opens the gift purchase dialog. premiumProductName is the paid tier name.
 #. Premium gift purchase section title. premiumProductName is the short paid product name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:38
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:36
 msgid "Gift {premiumProductName}"
 msgstr "{premiumProductName} ajándékozása"
+
+#. Body of the closing call to action on the Plutonium page for members. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:164
+msgid "Gift {premiumProductName} to a friend for a month or a whole year. Gifts never renew."
+msgstr "Ajándékozz {premiumProductName} egy hónapra vagy egy egész évre egy barátodnak. Az ajándékok soha nem újulnak meg."
 
 #. Title for gift claim or redemption errors when the gift code was already claimed.
 #: src/features/gift/utils/GiftMessageDescriptors.ts:9
@@ -16823,6 +16940,11 @@ msgstr "Ajándékok kezelésének folyamata"
 #: src/features/devtools/components/NagbarControls.ts:56
 msgid "Gift inventory nagbar"
 msgstr "Ajándékokra figyelmeztető sáv"
+
+#. Accessible label of the gift length options in the gift purchase dialog.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:43
+msgid "Gift length"
+msgstr "Ajándék hossza"
 
 #. Form field label for a gift redemption URL.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -16905,6 +17027,11 @@ msgstr "Ajándékba kapott <0/> eddig: <1>{giftEndDate}</1>. Nem újul meg autom
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:94
 msgid "Gifts"
 msgstr "Ajándékok"
+
+#. Message in the gift purchase dialog when gifts cannot be bought.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:47
+msgid "Gifts aren't available right now."
+msgstr "Jelenleg nem lehet ajándékot vásárolni."
 
 #. Description for the everyone-is-premium model.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:350
@@ -17385,6 +17512,11 @@ msgstr "Gyűlöletbeszéd"
 msgid "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 msgstr "Van ajándékkódod? Váltsd be, hogy feloldd a(z) {PREMIUM_PRODUCT_NAME} funkciót."
 
+#. Plutonium page hero text on an instance where the paid tier cannot be bought, only redeemed. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:74
+msgid "Have a gift code? Redeem it to unlock {premiumProductName}."
+msgstr "Van ajándékkódod? Váltsd be, hogy feloldd a(z) {premiumProductName} funkciót."
+
 #. Friendly tagline shown on a Fluxer-branded button or upsell.
 #: src/features/ui/state/Modal.ts:13
 msgid "Having fun?"
@@ -17788,7 +17920,7 @@ msgstr "Kezdőlap"
 #: src/features/input/utils/KeybindUtils.ts:85
 msgctxt "keyboard-key-name"
 msgid "Home"
-msgstr "Home"
+msgstr "Kezdőlap"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:460
@@ -18902,7 +19034,7 @@ msgstr "Meghívás"
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx:43
 msgctxt "invite-noun"
 msgid "Invite"
-msgstr "Meghívó"
+msgstr "Meghívás"
 
 #. Join source label on the community members page. Shows the invite code the member joined through, in parentheses.
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx:38
@@ -18958,7 +19090,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "A meghívólink megosztás közben rejtve van:"
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
 msgid "Invite link masked while sharing"
 msgstr "Meghívólink elrejtve megosztás közben"
 
@@ -19378,7 +19510,7 @@ msgid "Jump to {displayName}"
 msgstr "Ugrás ide: {displayName}"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:101
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
 msgid "Jump to {labelText}"
 msgstr "Ugrás ide: {labelText}"
 
@@ -19435,12 +19567,12 @@ msgid "Jump to the current call"
 msgstr "Ugrás az aktuális híváshoz"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
 msgid "Jump to the linked channel"
 msgstr "Ugrás a hivatkozott csatornára"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:97
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
 msgid "Jump to the linked message"
 msgstr "Ugrás a hivatkozott üzenetre"
 
@@ -19450,7 +19582,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "Ugrás a {authorNickname} üzenetéhez"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:92
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
 msgid "Jump to the message in {labelText}"
 msgstr "Ugrás az üzenethez itt: {labelText}"
 
@@ -19462,6 +19594,11 @@ msgstr "Ugrás a legrégebbi olvasatlan üzenetre"
 #: src/features/voice/components/alerts/VoiceConnectionConfirmModal.tsx:82
 msgid "Just join (keep other connections)"
 msgstr "Csatlakozás (egyéb kapcsolatok megtartása)"
+
+#. Hint under the Plutonium page hero buttons. productName is the app name. donateLink is a link whose text is "Donate instead".
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:17
+msgid "Just want to support {productName}'s open source development? {donateLink}."
+msgstr "Csak a(z) {productName} nyílt forráskódú fejlesztését szeretnéd támogatni? {donateLink}."
 
 #: src/features/input/utils/KeybindUtils.ts:110
 msgctxt "keyboard-key-name"
@@ -19504,6 +19641,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "Tartsd meg az ingyenes és a prémium szinteket. Testre szabhatod a szinteket, prémiumot adhatsz el a Stripe-on keresztül, vagy később ajándékkódokat osztogathatsz az admin panelből."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
 msgid "Keep grace period"
 msgstr "Türelmi időszak megtartása"
 
@@ -19518,6 +19656,7 @@ msgid "Keep running"
 msgstr "Futtatás folytatása"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
 msgid "Keep subscription"
 msgstr "Előfizetés megtartása"
 
@@ -19666,6 +19805,11 @@ msgstr "Nagy"
 msgid "Large file threshold (MB)"
 msgstr "Nagy fájlok küszöbértéke (MB)"
 
+#. Plutonium page comparison row label for the upload size limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:197
+msgid "Largest file you can upload"
+msgstr "Legnagyobb feltölthető fájl"
+
 #. Account switcher metadata showing when a saved account was last used.
 #: src/features/auth/components/accounts/AccountListItem.tsx:65
 msgid "Last active {lastActive}"
@@ -19763,6 +19907,11 @@ msgstr "További információ a képernyőmegosztás előnézeteiről"
 #: src/features/app/components/layout/app_layout/nagbars/ScheduledMaintenanceNagbar.tsx:49
 msgid "Learn more"
 msgstr "További információ"
+
+#. Link text in the Plutonium page tag footnote. Opens the Visionary help article.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:144
+msgid "Learn more about Visionary"
+msgstr "Tudj meg többet a Visionary-ról"
 
 #. IAR modal: quick-action card button label.
 #: src/features/channel/components/channel_header_components/ThreadMembersButton.tsx:161
@@ -20119,7 +20268,7 @@ msgid "Link styling"
 msgstr "Linkstílus"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
 msgid "Link unavailable"
 msgstr "A hivatkozás nem érhető el"
 
@@ -20595,6 +20744,8 @@ msgid "Manage roles"
 msgstr "Szerepkörök kezelése"
 
 #. Billing action that opens subscription management or the customer billing portal.
+#. Plutonium page hero button that scrolls to the subscription management panel.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:46
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:13
 msgid "Manage subscription"
 msgstr "Előfizetés kezelése"
@@ -21012,6 +21163,11 @@ msgstr "Média megjelenítése"
 msgid "Media filter"
 msgstr "Médiaszűrő"
 
+#. Plutonium page comparison row label for the saved media limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:201
+msgid "Media items you can save for later"
+msgstr "Médiaelemek, amelyeket elmenthetsz későbbre"
+
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:72
 msgid "Media loading state"
@@ -21344,7 +21500,7 @@ msgstr "Üzenet"
 #: src/features/user/components/profile/ProfilePreview.tsx:321
 msgctxt "message-action"
 msgid "Message"
-msgstr "Üzenet küldése"
+msgstr "Üzenet"
 
 #. Placeholder text in the message textarea of a group DM; groupName is the name of the group.
 #: src/features/channel/components/channel_textarea/shared.ts:22
@@ -21496,7 +21652,7 @@ msgid "Message layout"
 msgstr "Üzenetelrendezés"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:82
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
 msgid "message link"
 msgstr "üzenet linkje"
 
@@ -21642,6 +21798,11 @@ msgstr "Az ide közzétett üzenetek ezekből a bejelentési csatornákból ide 
 #: src/features/guild/components/modals/guild_tabs/GuildWebhooksTab.tsx:197
 msgid "Messages published in these announcement channels are copied into your channels."
 msgstr "Az üzenetek, amelyeket ezekben a bejelentési csatornákban tesznek közzé, át lesznek másolva a te csatornádba."
+
+#. Plutonium page comparison row label for the bookmark limit.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:193
+msgid "Messages you can bookmark"
+msgstr "Üzenetek, amelyeket megjelölhetsz"
 
 #: src/features/channel/components/barriers/BarrierComponents.tsx:282
 msgid "Messaging is temporarily paused in this community."
@@ -22249,7 +22410,7 @@ msgstr "Némítás"
 #: src/features/voice/components/modals/MobileVideoViewer.tsx:45
 msgctxt "playback-control-action"
 msgid "Mute"
-msgstr "Hang némítása"
+msgstr "Némítás"
 
 #. Mic toggle button label in the mobile direct-call lobby bottom sheet (currently unmuted).
 #. Mic toggle button label in the mobile voice-channel lobby (currently unmuted).
@@ -22265,7 +22426,7 @@ msgstr "Hang némítása"
 #: src/features/voice/components/VoiceControlBar.tsx:122
 msgctxt "voice-control-action"
 msgid "Mute"
-msgstr "Mikrofon némítása"
+msgstr "Némítás"
 
 #. Action that mutes the named target.
 #: src/features/ui/action_menu/items/DMMenuItems.tsx:22
@@ -22426,7 +22587,7 @@ msgstr "Némítva"
 #: src/features/voice/components/voice_participant_tile/shared.ts:78
 msgctxt "microphone-state"
 msgid "Muted"
-msgstr "Mikrofon némítva"
+msgstr "Némítva"
 
 #. Voice chat status label. A moderator muted the user in this community, so they cannot speak but can still hear others.
 #: src/features/voice/utils/VoiceMessageDescriptors.ts:43
@@ -23036,7 +23197,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "Nincs {sendMessagesPermission} jogosultság"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
 msgid "No access"
 msgstr "Nincs hozzáférés"
 
@@ -23756,7 +23917,9 @@ msgid "Not accepted"
 msgstr "Nem fogadta el"
 
 #. Fallback value when a saved billing payment method has no expiration date.
+#. Screen reader text for a cross in the Plutonium page comparison table.
 #: src/features/app/components/dialogs/components/plutonium/PaymentMethodList.tsx:18
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:134
 msgid "Not available"
 msgstr "Nem elérhető"
 
@@ -24239,7 +24402,7 @@ msgstr "Megnyitás"
 #: src/features/app/components/setup/SetupWizardSteps.tsx:157
 msgctxt "registration-policy"
 msgid "Open"
-msgstr "Nyílt"
+msgstr "Megnyitás"
 
 #. Windows jump-list task description (tooltip text) for the Open settings action.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:246
@@ -24266,8 +24429,13 @@ msgstr "Nyisd meg a(z) {host} webhelyet a Safariban."
 msgid "Open {host} in your browser."
 msgstr "Nyisd meg a(z) {host} webhelyet a böngésződben."
 
+#. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+msgid "Open {labelText}"
+msgstr "Nyissa meg a(z) {labelText} oldalt"
+
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:109
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
 msgid "Open {labelText} in settings"
 msgstr "A(z) {labelText} megnyitása a beállításokban"
 
@@ -24280,6 +24448,11 @@ msgstr "Megnyitás: {landmarkName}"
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx:27
 msgid "Open {macosSystemSettingsName} → {macosPrivacyAndSecuritySettingsName} → {macosScreenRecordingPermissionName}, then allow {productName}. If {productName2} is already enabled, fully quit and restart {productName3} so macOS applies the permission."
 msgstr "Nyisd meg a(z) {macosSystemSettingsName} → {macosPrivacyAndSecuritySettingsName} → {macosScreenRecordingPermissionName} menüpontot, majd engedélyezd a(z) {productName} alkalmazást. Ha a(z) {productName2} már engedélyezve van, teljesen zárd be, majd indítsd újra a(z) {productName3} alkalmazást, hogy a macOS érvényesítse az engedélyt."
+
+#. Button on the settings card that opens the Plutonium page. premiumProductFullName is the full paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageLinkCard.tsx:15
+msgid "Open {premiumProductFullName}"
+msgstr "Nyissa meg a(z) {premiumProductFullName}"
 
 #. Button label that opens the desktop app. productName is the app name.
 #. Button that hands SSO sign-in back to the mobile app. productName is the app name.
@@ -24813,10 +24986,12 @@ msgstr "Opcionális szolgáltatások"
 msgid "Options"
 msgstr "Beállítások"
 
+#. Compact conjunction between the monthly and yearly price on the Plutonium page hero.
 #. Small separator between alternative shortcut keycaps in the keyboard mode intro modal.
 #: src/features/auth/flow/auth_login_core/AuthLoginPasskeyActions.tsx:15
 #: src/features/connection/components/modals/AddConnectionModal.tsx:318
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:30
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:13
 msgid "or"
 msgstr "vagy"
 
@@ -25047,6 +25222,11 @@ msgstr "{currentPage}/{totalPages} oldal"
 msgctxt "keyboard-key-name"
 msgid "Page down"
 msgstr "Page Down"
+
+#. Role description announced for an inline chat link pill that opens an app page. Lowercase.
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+msgid "page link"
+msgstr "oldal hivatkozás"
 
 #: src/features/input/utils/KeybindUtils.ts:77
 msgctxt "keyboard-key-name"
@@ -25294,6 +25474,11 @@ msgstr "Meghívók szüneteltetve"
 #: src/features/webhook/components/FollowedChannelListItem.tsx:167
 msgid "Paused. The person who followed this channel can no longer see it. Follow it again to resume."
 msgstr "Szüneteltetve. A csatornát követő személy már nem láthatja azt. Kövesd újra a folytatáshoz."
+
+#. Description at the top of the gift purchase dialog.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:27
+msgid "Pay once and get a gift link to share. Gifts never renew."
+msgstr "Fizess egyszer, és kapsz egy megosztható ajándék linket. Az ajándékok soha nem újulnak meg."
 
 #. Plutonium subscription payment method picker description for Brazil. Explains Pix recurring vs falling back to a card.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:38
@@ -25558,6 +25743,11 @@ msgstr "Telefonszám-ellenőrzés szükséges"
 msgid "Photo"
 msgstr "Fotó"
 
+#. Body of the closing call to action on the Plutonium page for people without the paid tier.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:156
+msgid "Pick a plan and your perks switch on the moment checkout finishes."
+msgstr "Válassz egy csomagot, és a kedvezmények azonnal aktiválódnak a fizetés befejezése után."
+
 #. Title of the picker modal when choosing a reverse image search provider.
 #: src/features/search/components/modals/SearchProviderPickerModal.tsx:19
 msgid "Pick a reverse image search provider"
@@ -25597,6 +25787,11 @@ msgstr "Válassz egy vagy több szótárat. A kiválasztott szótárak bármelyi
 #: src/features/channel/components/modals/ForumExamplesModal.tsx:22
 msgid "Pick one to start a post, or write your own."
 msgstr "Válassz egy ötletet a bejegyzéshez, vagy írj sajátot."
+
+#. Plutonium page comparison row label for the custom username tag perk.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:169
+msgid "Pick the 4-digit number after your username"
+msgstr "Válaszd ki a 4 számjegyű számot a felhasználóneved után"
 
 #. Setup wizard body for choosing the initial account theme.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:67
@@ -25796,6 +25991,11 @@ msgstr "Egyszerű szöveg"
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:23
 msgid "Plan"
 msgstr "Csomag"
+
+#. Text on the card in settings that links to the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageLinkCard.tsx:11
+msgid "Plans, perks, gifts and your subscription all live on one page."
+msgstr "A csomagok, előnyök, ajándékok és az előfizetésed mind egy helyen találhatók."
 
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:174
 msgid "Platform"
@@ -27017,7 +27217,9 @@ msgstr "Olvasási sebesség"
 msgid "Ready to buy a gift?"
 msgstr "Készen állsz egy ajándék vásárlására?"
 
+#. Heading of the closing call to action on the Plutonium page for people without the paid tier.
 #: src/features/app/components/dialogs/components/plutonium/BottomCTASection.tsx:50
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:152
 msgid "Ready to upgrade?"
 msgstr "Készen állsz a csomagváltásra?"
 
@@ -27166,6 +27368,11 @@ msgstr "Beváltás"
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:10
 msgid "Redeem a gift"
 msgstr "Ajándék beváltása"
+
+#. Plutonium page link that opens the gift code redemption settings.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:42
+msgid "Redeem a gift code"
+msgstr "Ajándékkód beváltása"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/GiftInventoryIndex.ts:30
@@ -29182,6 +29389,13 @@ msgstr "Telítettség"
 msgid "Save"
 msgstr "Mentés"
 
+#. Badge on the one-year option in the gift purchase dialog. percent is a whole number such as 17.
+#. Badge on the yearly Plutonium button. percent is a whole number such as 17.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:39
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:34
+msgid "Save {percent}%"
+msgstr "Mentsd meg a {percent}%-ot"
+
 #. Price badge comparing a one-year gift to monthly gifts.
 #. Price badge comparing yearly billing to monthly billing.
 #. Short label in the Plutonium gift section. Keep the tone plain and specific.
@@ -30325,6 +30539,11 @@ msgstr "DSA-bejelentés küldése"
 msgid "Send file messages in order"
 msgstr "Fájlt tartalmazó üzenetek küldése sorrendben"
 
+#. Plutonium page perk card title about upload size. size is a formatted size such as 500 MB.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:109
+msgid "Send files up to {size}"
+msgstr "Küldj fájlokat ekkoráig: {size}"
+
 #. Button or menu action label in the user profile mobile sheet. Keep it concise.
 #. Button or menu action label in the user profile modal. Keep it concise.
 #. Member actions sheet menu item. Sends a friend request to the target user.
@@ -30804,7 +31023,7 @@ msgid "Settings"
 msgstr "Beállítások"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
 msgid "settings link"
 msgstr "beállítási hivatkozás"
 
@@ -30853,6 +31072,11 @@ msgstr "Aktív egyéni téma megosztása"
 msgid "Share active theme"
 msgstr "Aktív téma megosztása"
 
+#. Plutonium page perk card body about upload size. freeSize is a formatted size such as 25 MB.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:113
+msgid "Share full-length videos and big files without shrinking them first. Free accounts can send up to {freeSize}."
+msgstr "Ossz meg teljes hosszúságú videókat és nagy fájlokat anélkül, hogy előtte összezsugorítanád őket. Az ingyenes fiókokkal legfeljebb {freeSize} méretű fájlokat küldhetsz."
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/GiftInventoryIndex.ts:46
 msgid "Share gift"
@@ -30882,6 +31106,11 @@ msgstr "Stream hangjának megosztása"
 #: src/features/premium/utils/PremiumMessageDescriptors.ts:40
 msgid "Share the {premiumProductName} experience with your friends by purchasing a gift subscription."
 msgstr "Ajándék-előfizetés vásárlásával megoszthatod a(z) {premiumProductName} élményét az ismerőseiddel."
+
+#. Heading of the closing call to action on the Plutonium page for members.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:160
+msgid "Share the perks"
+msgstr "Oszd meg az előnyöket"
 
 #: src/features/theme_studio/sections/ThemeStudioSettingsSection.tsx:348
 msgid "Share theme"
@@ -30913,6 +31142,11 @@ msgstr "Képernyő megosztása"
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx:325
 msgid "Share your screen in high definition (1080p), quad HD (1440p), or native source resolution, at up to 60 FPS."
 msgstr "Képernyőmegosztás nagy felbontásban (1080p), QHD (1440p) vagy natív forrásfelbontásban, akár 60 FPS-sel."
+
+#. Plutonium page perk card body about stream quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:105
+msgid "Share your screen or camera in up to 4K at 60 frames per second. Free accounts stream in up to 720p at 30."
+msgstr "Oszd meg a képernyődet vagy a kamerádat akár 4K felbontásban, 60 képkocka/másodperc sebességgel. Az ingyenes fiókok 720p felbontásban, 30 képkocka/másodperc sebességgel streamelnek."
 
 #. Button or menu action label in the share theme modal. Keep it concise.
 #: src/features/theme/components/modals/ShareThemeModal.tsx:39
@@ -32115,6 +32349,11 @@ msgstr "Néhány fájl, amit fel szeretnél tölteni, meghaladja a fájlonkénti
 msgid "Some users can't be added"
 msgstr "Néhány felhasználó nem adható hozzá"
 
+#. Plutonium page hero subtitle for gifted members. date is a formatted calendar date.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:58
+msgid "Someone gifted you {premiumProductName}. Your perks stay active until {date}."
+msgstr "Valaki megajándékozott téged a(z) {premiumProductName} szolgáltatással. Az előnyeid {date}-ig aktívak maradnak."
+
 #. Generic error modal title for an unexpected failure.
 #. Generic error toast title.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:248
@@ -33152,6 +33391,11 @@ msgstr "Az adás befejeződött"
 msgid "Stream hidden"
 msgstr "Stream elrejtve"
 
+#. Plutonium page perk card title about stream quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:101
+msgid "Stream in 4K at 60 FPS"
+msgstr "Streamelj 4K felbontásban, 60 FPS sebességgel"
+
 #. Aria label for the small thumbnail preview on the screen-share hover card.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the user settings voice activity card. Keep it concise.
@@ -33278,6 +33522,11 @@ msgstr "Jelentkezés beküldése"
 msgid "Submitting"
 msgstr "Küldés folyamatban"
 
+#. Plutonium page comparison row label for the subscriber badge.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:177
+msgid "Subscriber badge on your profile"
+msgstr "Előfizetői jelvény a profilodon"
+
 #. Field label in the voice connection status popout. Shows technical WebRTC subscriber ICE transport details.
 #: src/features/voice/components/voice_connection_status/shared.ts:132
 msgid "Subscriber transport:"
@@ -33342,6 +33591,11 @@ msgstr "Javaslatok"
 #: src/features/devtools/components/debug/DebugModal.tsx:90
 msgid "Summary"
 msgstr "Összefoglalás"
+
+#. Plutonium page hero subtitle for people without the paid tier.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:70
+msgid "Support an independent communication platform and unlock some sweet perks."
+msgstr "Támogass egy független kommunikációs platformot, és szerezz be néhány szuper extrát."
 
 #. Switch label in the community notification settings modal. Suppresses @everyone and @here notifications in this community. The two placeholders render the literal @everyone and @here tokens and must not be translated.
 #. Toggle label that suppresses @everyone and @here mentions; placeholders are the localized mention tags.
@@ -35103,7 +35357,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "Ez a linkcsatorna felnőtt tartalomként van megjelölve, és olyan anyagokat nyithat meg, amelyek egyes felhasználók számára nem megfelelőek."
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
 msgid "This link is not available for your account."
 msgstr "Ez a hivatkozás nem érhető el a fiókod számára."
 
@@ -36968,7 +37222,7 @@ msgstr "Némítás feloldása"
 #: src/features/voice/components/modals/MobileVideoViewer.tsx:40
 msgctxt "playback-control-action"
 msgid "Unmute"
-msgstr "Hang némításának feloldása"
+msgstr "Némítás feloldása"
 
 #. Mic toggle button label in the mobile direct-call lobby bottom sheet (currently muted).
 #. Mic toggle button label in the mobile voice-channel lobby (currently muted).
@@ -36978,7 +37232,7 @@ msgstr "Hang némításának feloldása"
 #: src/features/voice/components/VoiceControlBar.tsx:117
 msgctxt "voice-control-action"
 msgid "Unmute"
-msgstr "Mikrofon némításának feloldása"
+msgstr "Némítás feloldása"
 
 #. Action that re-enables notifications for the named target.
 #: src/features/ui/action_menu/items/DMMenuItems.tsx:26
@@ -37300,10 +37554,20 @@ msgstr "Nem kívánt felnőtt tartalmú viselkedés, megjegyzések vagy kérése
 msgid "Up to {DISCOVERY_MAX_TAGS} tags help people find your community. They show up in Discovery search."
 msgstr "Akár {DISCOVERY_MAX_TAGS} címke is segíthet az embereknek megtalálni a közösségedet. Ezek megjelennek a Felfedezés keresésben."
 
+#. Plutonium page comparison value for paid video quality. Keep 4K and FPS as written.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:221
+msgid "Up to 4K at 60 FPS"
+msgstr "Akár 4K felbontás 60 FPS sebességgel"
+
 #. Feature comparison table value label. Shown in the restricted or stock column for a text-valued perk. Format includes a resolution token (4K) and a framerate token that should not be translated.
 #: src/features/app/components/dialogs/components/FeatureComparisonTable.tsx:83
 msgid "Up to 4K/60fps"
 msgstr "Akár 4K/60fps felbontásig"
+
+#. Plutonium page comparison value for free video quality. Keep 720p and FPS as written.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:217
+msgid "Up to 720p at 30 FPS"
+msgstr "Akár 720p felbontás 30 FPS sebességgel"
 
 #. Message placeholder shown when the app cannot render a newer message type.
 #: src/features/channel/components/UnknownMessage.tsx:23
@@ -37707,6 +37971,11 @@ msgstr "Olyan e-mail-címet használj, amely eltér a jelenlegitől."
 msgid "Use animated emojis"
 msgstr "Animált emojik használata"
 
+#. Plutonium page comparison row label for animated emoji use.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:205
+msgid "Use animated emojis in messages"
+msgstr "Animált emojik használata az üzenetekben"
+
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #. Short label for an advanced desktop scrolling toggle.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedAccessibilityControls.tsx:39
@@ -37733,6 +38002,11 @@ msgstr "Kategória alapértelmezésének használata"
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx:42
 msgid "Use coal theme (pitch-black surfaces)"
 msgstr "Szén téma használata (koromfekete felületek)"
+
+#. Plutonium page comparison row label for global emojis and stickers.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:209
+msgid "Use custom emojis and stickers in any community"
+msgstr "Használj egyéni emojikat és matricákat bármelyik közösségben"
 
 #. Short label in the avatar uploader. Keep it concise.
 #. Short label in the banner uploader. Keep it concise. Keep the tone plain and specific.
@@ -38465,6 +38739,16 @@ msgstr "Előbb erősítsd meg az e-mail-címedet"
 msgid "Verify your email or phone to continue using {productName}."
 msgstr "A(z) {productName} további használatához erősítsd meg az e-mail-címedet, vagy igazold a telefonszámodat."
 
+#. Plutonium page note under disabled buttons for unverified accounts. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:242
+msgid "Verify your email to buy {premiumProductName}."
+msgstr "Erősítsd meg az e-mail címedet, hogy megvásárolhasd a(z) {premiumProductName} terméket."
+
+#. Note in the gift purchase dialog for accounts without a verified email.
+#: src/features/premium/components/modals/GiftPlutoniumModal.tsx:55
+msgid "Verify your email to buy gifts."
+msgstr "Erősítsd meg az e-mail címedet az ajándékok vásárlásához."
+
 #. Label in the username section.
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:25
 msgid "Verify your email to change your username"
@@ -38562,6 +38846,16 @@ msgstr "Videó"
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:199
 msgid "Video call"
 msgstr "Videóhívás"
+
+#. Plutonium page comparison row label for video quality.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:213
+msgid "Video call and screen share quality"
+msgstr "Videohívás és képernyőmegosztás minősége"
+
+#. Plutonium page comparison row label for saved video call backgrounds.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:181
+msgid "Video call backgrounds you can save"
+msgstr "Elmenthető videohívási háttérképek"
 
 #. Title of the modal shown when the video call action is blocked.
 #: src/features/channel/components/channel_header_components/CallButtons.tsx:62
@@ -38670,7 +38964,7 @@ msgid "View"
 msgstr "Megtekintés"
 
 #. Button label on the premium onboarding nagbar. Opens premium feature and subscription settings. Preserve {premiumProductName}; it is inserted by code.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:57
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:59
 msgid "View {premiumProductName} features"
 msgstr "A(z) {premiumProductName} funkcióinak megtekintése"
 
@@ -38957,7 +39251,7 @@ msgid "Visionary badge ID"
 msgstr "Visionary jelvényazonosító"
 
 #. Short label in the user profile badges popout. Keep it concise. Preserve {visionaryIdLabel}; it is inserted by code.
-#: src/features/user/components/popouts/UserProfileBadges.tsx:58
+#: src/features/user/components/popouts/UserProfileBadges.tsx:59
 msgid "Visionary ID {visionaryIdLabel}"
 msgstr "Visionary-azonosító: {visionaryIdLabel}"
 
@@ -38981,7 +39275,7 @@ msgstr "Megjelenítés"
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:323
 msgctxt "accessibility-settings-section"
 msgid "Visual"
-msgstr "Megjelenés"
+msgstr "Megjelenítés"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/IndicatorsTab.tsx:63
 msgid "Visual indicators showing user status, rendered using the same masked status badges as avatars: online, idle, do not disturb, invisible, and offline."
@@ -39373,6 +39667,11 @@ msgstr "Waylanden az xdg-desktop-portal kezeli a választóablakot, és együtt 
 msgid "We could not confirm your card right now. Refresh this page or return to {productName} and try again."
 msgstr "Jelenleg nem sikerült ellenőriznünk a kártyádat. Frissítsd az oldalt, vagy térj vissza a(z) {productName} alkalmazásba, és próbáld újra."
 
+#. Plutonium page hero subtitle while a failed renewal is in its grace period.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:66
+msgid "We could not renew your subscription. Update your payment method to keep your perks."
+msgstr "Nem tudtuk megújítani az előfizetésedet. Frissítsd a fizetési módodat, hogy megtartsd az előnyeidet."
+
 #. Error message in the theme accept modal.
 #. Error message in the theme settings commands.
 #: src/features/theme/commands/ThemeCommands.tsx:18
@@ -39704,32 +40003,32 @@ msgid "Welcome to {channelDisplayName}"
 msgstr "Üdvözlünk a(z) {channelDisplayName} csatornán"
 
 #. Premium onboarding nagbar body. {premiumProductFullName} is the full premium product name, such as Fluxer Plutonium. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:22
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:24
 msgid "Welcome to {premiumProductFullName}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Üdv a(z) {premiumProductFullName} csomagban! Fedezd fel a(z) {premiumProductName} előnyeit, és kezeld az előfizetésedet."
 
 #. Premium onboarding nagbar body for lifetime premium users. Visionary is the lifetime premium tier name. {premiumProductFullName} is the full premium product name. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:27
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:29
 msgid "Welcome to {premiumProductFullName}. You have lifetime access as a Visionary. Explore your {premiumProductName} perks."
 msgstr "Üdv a(z) {premiumProductFullName} csomagban! Visionary-tagként életre szóló hozzáférésed van. Fedezd fel a(z) {premiumProductName} előnyeit."
 
 #. Premium onboarding nagbar body for a gift subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:51
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:53
 msgid "Welcome to {premiumProductFullName}. Your gift subscription runs until {formattedDate}. Explore your {premiumProductName} perks."
 msgstr "Üdv a(z) {premiumProductFullName} csomagban! Az ajándék-előfizetésed lejárata: {formattedDate}. Fedezd fel a(z) {premiumProductName} előnyeit."
 
 #. Premium onboarding nagbar body for a monthly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:39
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:41
 msgid "Welcome to {premiumProductFullName}. Your monthly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Üdv a(z) {premiumProductFullName} csomagban! A havi előfizetésed megújításának dátuma: {formattedDate}. Fedezd fel a(z) {premiumProductName} előnyeit, és kezeld az előfizetésedet."
 
 #. Premium onboarding nagbar body for a subscription that will cancel. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:33
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:35
 msgid "Welcome to {premiumProductFullName}. Your subscription is active until {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Üdv a(z) {premiumProductFullName} csomagban! Az előfizetésed eddig aktív: {formattedDate}. Fedezd fel a(z) {premiumProductName} előnyeit, és kezeld az előfizetésedet."
 
 #. Premium onboarding nagbar body for a yearly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:45
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:47
 msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "Üdv a(z) {premiumProductFullName} csomagban! Az éves előfizetésed megújításának dátuma: {formattedDate}. Fedezd fel a(z) {premiumProductName} előnyeit, és kezeld az előfizetésedet."
 
@@ -40287,6 +40586,11 @@ msgstr "Legfeljebb {maxTags} címkét adhatsz hozzá."
 msgid "You can only have one custom background on the free tier. Picking a new one will replace your existing background."
 msgstr "Az ingyenes csomagban csak egy egyéni hátteret használhatsz. Új háttér kiválasztásakor a meglévő lecserélődik."
 
+#. Footnote on the Plutonium page about custom username tags. Keep Mina#4821, mina#4821 and #0000 unchanged. visionaryLink is a link whose text is "Learn more about Visionary".
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:138
+msgid "You can only pick a tag that nobody else with the same username already has. Usernames aren't case sensitive, so Mina#4821 and mina#4821 count as the same. The #0000 tag is reserved for {productName} Visionary members. {visionaryLink}."
+msgstr "Csak olyan címkét választhatsz, amelyet senki más nem használ már ugyanazzal a felhasználónévvel. A felhasználónevek nem érzékenyek a kis- és nagybetűk megkülönböztetésére, így a Mina#4821 és a mina#4821 ugyanaznak számít. A #0000 címke a {productName} Visionary tagok számára van fenntartva. {visionaryLink}."
+
 #: src/features/app/components/dialogs/components/plutonium/SelfServeRefundSection.tsx:189
 msgid "You can refund again after {cooldownEndsOn}. Contact support for billing issues."
 msgstr "Legközelebb ekkor igényelhetsz visszatérítést: {cooldownEndsOn}. Számlázási problémákkal fordulj az ügyfélszolgálathoz."
@@ -40519,7 +40823,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "A(z) {PREMIUM_PRODUCT_NAME} használata közben megváltoztattad a címkédet. Ha a(z) {PREMIUM_PRODUCT_NAME} nem újul meg, a lejáratakor véletlenszerű új címkét kapsz."
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
 msgid "You do not have access to the channel where this message was sent."
 msgstr "Nincs hozzáférésed ahhoz a csatornához, ahová ezt az üzenetet küldték."
 
@@ -40624,10 +40928,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "Megnyomtad a Tab billentyűt. Bekapcsolt a billentyűzetes mód, így egér nélkül is navigálhatsz a(z) {productName} alkalmazásban."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "Az előnyöket a következő megújítási dátumig megtartod. Ha addig újraaktiválod az előfizetést, megőrzöd az előfizetői előzményeidet."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "Azonnal elveszíted a(z) {PREMIUM_PRODUCT_NAME} összes előnyét, és az előfizetői előzményeid lenullázódnak. Ez nem vonható vissza."
 
@@ -40815,6 +41121,16 @@ msgstr "Újra be kell jelentkezned minden kijelentkezett eszközön"
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:55
 msgid "You'll need one of your passkeys to sign in on a new device. If you lose every passkey you can be locked out of your account. Backup codes will be saved for you so you still have a way in."
 msgstr "Új eszközön való bejelentkezéshez szükséged lesz az egyik jelszókulcsodra. Ha az összes jelszókulcsodat elveszíted, véglegesen kizárhatod magad a fiókodból. Biztonsági kódokat mentünk el neked, így akkor is be tudsz majd jutni."
+
+#. Plutonium page hero subtitle for members. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:50
+msgid "You're a {premiumProductName} member. Thanks for supporting an independent communication platform."
+msgstr "{premiumProductName} taggal rendelkezel. Köszönjük, hogy egy független kommunikációs platformot támogatsz."
+
+#. Plutonium page hero subtitle for lifetime Visionary members.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:54
+msgid "You're a Visionary. Your perks never expire, and gifts for friends are always available."
+msgstr "Látnok vagy. Jutalmaid sosem járnak le, és a barátoknak szánt ajándékok mindig elérhetők."
 
 #. Privacy > Active now: confirmation modal body when turning sharing on.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ActiveNowTab.tsx:41
@@ -41063,6 +41379,11 @@ msgstr "Túl sok ellenőrző e-mailt kértél. Kérjük, várj egy kicsit, majd 
 msgid "You've seen all your recent mentions. More will appear here soon."
 msgstr "Láttad az összes legutóbbi említésedet. Hamarosan újabbak jelennek meg itt."
 
+#. Plutonium page hero subtitle when a subscription has ended. premiumProductName is the paid tier name.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:62
+msgid "Your {premiumProductName} perks have ended. Subscribe again to bring them back."
+msgstr "A(z) {premiumProductName} előnyei lejártak. Iratkozz fel újra, hogy visszakapd őket."
+
 #. Nagbar body shown when a premium subscription has expired. {premiumProductName} is the premium product name.
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:19
 msgid "Your {premiumProductName} subscription has expired. You have lost all {premiumProductName} perks. Reactivate your subscription to regain access."
@@ -41200,6 +41521,11 @@ msgstr "Az e-mail-címed nem tudott üzeneteket fogadni. Frissítsd, hogy továb
 #: src/features/auth/components/pages/VerifyEmailPage.tsx:97
 msgid "Your email has been verified. You can now sign in to your account."
 msgstr "Megerősítettük az e-mail-címedet. Most már bejelentkezhetsz a fiókodba."
+
+#. Plutonium page perk card title about using custom emojis and stickers in every community.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:83
+msgid "Your emojis, everywhere"
+msgstr "Emoji, mindenhol"
 
 #. Description text in the sounds.
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx:42
@@ -41387,6 +41713,11 @@ msgstr "A képernyőmegosztásodat nem sikerült kompatibilis videokodekkel köz
 #: src/features/voice/components/voice_participant_tile/shared.ts:64
 msgid "Your stream is still live"
 msgstr "A streamed továbbra is élőben megy"
+
+#. Heading of the subscription management panel on the Plutonium page.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:79
+msgid "Your subscription"
+msgstr "Előfizetésed"
 
 #. Toast error shown when the server refuses to move a Plutonium subscription down to the current price, whatever the reason.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:106

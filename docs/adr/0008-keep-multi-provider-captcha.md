@@ -75,6 +75,37 @@ A provider whose keys are missing will turn the check **off** rather than fallin
 back to ALTCHA. Falling back would hand an unsolvable challenge to exactly the
 clients this divergence exists to protect.
 
+### Scope boundary: the web client and the CSP stay on upstream's shape
+
+This divergence is **server-side only**. The web app keeps upstream's headless ALTCHA
+solver, and the app proxy CSP keeps upstream's shape, including its test asserting
+that no third-party captcha host is allowed.
+
+Do not "complete" this divergence by restoring the web Turnstile or hCaptcha widgets,
+the captcha modal, `useCaptcha`, the `@marsidev/react-turnstile` or
+`@hcaptcha/react-hcaptcha` dependencies, or the `hcaptcha.com` and
+`challenges.cloudflare.com` CSP hosts. That looks like the missing half of the
+restoration and is not:
+
+- The web app updates on reload, so it is never the client stuck without an ALTCHA
+  solver. Only the published mobile builds are, and they are native, so our CSP does
+  not apply to them.
+- Upstream rewrote the REST interceptor contract in the same release: `RestInterceptor`
+  went from `(reply, retry, reject)` to `(reply, retry)`, per-request `intercept` and
+  `prepareRequest` were removed, and retries now set `skipIntercept`. The modal flow
+  depended on the old three-argument contract and on being re-entered on a second 400.
+  Restoring the modal means reverting that rework, which is a far larger and riskier
+  divergence than the one this ADR accepts.
+- Re-adding the CSP hosts weakens the policy for every web visitor to serve a widget
+  no web visitor needs.
+
+The only client-side change this fork makes is in
+`fluxer_app/src/features/auth/altcha/AltchaSolver.ts`: `readAltchaChallenge` accepts a
+well-formed `altcha_challenge` whatever `captcha_provider` says, because the server
+now names the provider offered to clients that cannot solve ALTCHA while still
+carrying a challenge this app can. Keep that, and keep the rest of the web captcha
+path identical to upstream.
+
 Two mutation-checked tests guard the property that matters, and both were verified to
 fail when that property is broken:
 

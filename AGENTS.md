@@ -272,6 +272,14 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
      saying why, so the next person does not delete it as a leak.
 
   Catalog merges must carry metadata, not only values.
+
+  **Where to be suspicious.** This rule has now been corrected twice in one day, and
+  both times the step order survived while the wrong part was a claim about *which
+  side is right*: first "almost always header stamps, take upstream's", then "keep
+  ours wherever a hunk touches text". So trust the procedure and re-derive the side.
+  If a step tells you a side wins, check whether the string is one the fork renamed
+  or one the fork does not have, because that is the question the rule keeps getting
+  wrong.
 - **Compose anchor changes need a set difference, not a diff read.** When upstream
   reorganises `deploy/self-hosting/docker-compose.yml` or `.env.example`, git
   silently drops fork variables that sit inside a moved region: #3047 dropped 30 of
@@ -312,6 +320,32 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   form holds by construction, like the stash case: `checkout`, `restore`,
   `reset --hard` and `stash` all operate on a unit larger than the edit, so anything
   else living in that unit goes too.
+- **Replace a hand-enumerated set with the thing that derives it.** A list of
+  packages, filters, crates, locales or files silently stops covering whatever is
+  added later, and the gap never announces itself. Five were found on 2026-10-03, and
+  between them they concealed two real pre-existing failures: `pnpm --filter` on a
+  name that matched nothing, per-package test runs covering 4 of 20, three cargo
+  crates named instead of the workspace's 16, the gateway NIF exception, and
+  `MODULE_REGISTRY_TEST_FILES` in `fluxer_api/vitest.config.ts`.
+
+  That last one is the worst-presenting of the family and the one to learn from,
+  because it fails **randomly** rather than silently. The api project runs with
+  `isolate: false`, so a test replacing a module with a `vi.mock` factory leaks it
+  into other files in the pool and the failure appears intermittently in a file the
+  author never touched. A single green run looks like proof.
+
+  It turned out to be derivable: of 588 api test files only seven use a mock factory,
+  and the one that was unlisted replaced `@app/api/Logger`, which 225 source files
+  import, with a Proxy that throws on any property access. So
+  `VitestIsolationCoverage.test.ts` now derives the requirement and fails by name
+  when the list stops covering a file.
+
+  The order to try: **derive the set** if the property is mechanically detectable;
+  failing that, **make the symptom deterministic**, since a check that fails one run
+  in two is worse than one that fails every time; and failing both, keep the
+  enumeration but write down **why each member is there**, as the gateway gate does
+  for the single NIF it cannot build. A deliberate list with a rationale is fine. An
+  inherited one is not.
 - **A clean merge is not evidence that a wire value is still unique.** When upstream
   appends to a numbered or bitmasked set this fork has also appended to, both sides
   add a distinct name, git merges both, nothing conflicts, and every gate stays green

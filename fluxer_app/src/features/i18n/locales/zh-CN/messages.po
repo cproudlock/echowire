@@ -1624,7 +1624,7 @@ msgid "{PAYMENT_PROVIDER_NAME} handles payment securely."
 msgstr "{PAYMENT_PROVIDER_NAME} 安全地处理付款。"
 
 #. Modal body for the mobile card verification confirmation. Explains the two-step flow and the return path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:190
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:198
 msgid "{paymentProviderName} will first verify that your card is eligible for localized pricing, then take you to payment. Return to {productName} once you've completed it."
 msgstr "{paymentProviderName} 会先验证你的银行卡是否符合本地定价条件，然后带你前往付款页面。完成后请返回 {productName}。"
 
@@ -2647,7 +2647,7 @@ msgid "A Linux desktop update is available. Choose the package format for this s
 msgstr "Linux 桌面端有可用更新。请选择适用于此系统的软件包格式，{productName} 会将其保存到本地。"
 
 #. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:700
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:742
 msgid "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
 msgstr "有更低的价格可供选择。切换将在 <0>{listPriceEffectiveDate}</0> 生效，且不会改变其他任何内容。"
 
@@ -2962,7 +2962,7 @@ msgstr "操作"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning the paid subscription is active.
 #. Threads popout tab: threads still open.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:447
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:452
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:37
 #: src/features/channel/components/popouts/ChannelThreadsPopout.tsx:22
 #: src/features/user/components/settings_utils/search_index/DevicesIndex.ts:19
@@ -3110,7 +3110,7 @@ msgid "Add a friend to get started."
 msgstr "添加好友以开始聊天。"
 
 #. Setup wizard body for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:928
+#: src/features/app/components/setup/SetupWizardSteps.tsx:927
 msgid "Add a Klipy API key to enable GIF search at runtime."
 msgstr "添加 Klipy API 密钥，以在运行时启用 GIF 搜索。"
 
@@ -3147,7 +3147,7 @@ msgid "Add a working email"
 msgstr "添加有效的邮箱地址"
 
 #. Setup wizard body for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:936
+#: src/features/app/components/setup/SetupWizardSteps.tsx:935
 msgid "Add a YouTube Data API key to enrich YouTube links."
 msgstr "添加 YouTube Data API 密钥，以丰富 YouTube 链接的信息。"
 
@@ -3193,7 +3193,7 @@ msgid "Add another reaction"
 msgstr "添加其他反应"
 
 #. Setup wizard body for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:952
+#: src/features/app/components/setup/SetupWizardSteps.tsx:951
 msgid "Add Bluesky OAuth client metadata and a signing key."
 msgstr "添加 Bluesky OAuth 客户端元数据和签名密钥。"
 
@@ -3350,7 +3350,7 @@ msgid "Add shortcut"
 msgstr "添加快捷键"
 
 #. Setup wizard body for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:944
+#: src/features/app/components/setup/SetupWizardSteps.tsx:943
 msgid "Add SMTP credentials so the instance can send verification and notification email."
 msgstr "添加 SMTP 凭据，以便实例可以发送验证和通知电子邮件。"
 
@@ -3381,7 +3381,7 @@ msgid "Add tag"
 msgstr "添加标签"
 
 #. Description for configuring an optional setup wizard integration now.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:920
+#: src/features/app/components/setup/SetupWizardSteps.tsx:919
 msgid "Add the credentials during setup."
 msgstr "在设置过程中添加凭据。"
 
@@ -3692,19 +3692,19 @@ msgstr "对齐方式控制仅在宽屏设备上可用"
 msgid "All"
 msgstr "全部"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:540
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:582
 msgid "All <0/> for <1>{effectiveMonthlyPrice}/month</1>."
 msgstr "全部<0/>，<1>{effectiveMonthlyPrice}/月</1>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:562
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:604
 msgid "All <0/> for <1>{effectiveYearlyPrice}/year</1>."
 msgstr "全部<0/>，<1>{effectiveYearlyPrice}/年</1>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:583
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:625
 msgid "All <0/> included with your subscription."
 msgstr "你的订阅已包含全部<0/>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:530
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:572
 msgid "All <0/>, forever. No billing, no renewals."
 msgstr "永久拥有全部<0/>。不再计费，无需续订。"
 
@@ -4492,17 +4492,17 @@ msgid "Anyone can call you, including strangers"
 msgstr "任何人都可以给你打电话，包括陌生人"
 
 #. Description for the open registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:157
+#: src/features/app/components/setup/SetupWizardSteps.tsx:156
 msgid "Anyone can create an account."
 msgstr "任何人都可以创建账号。"
 
 #. Description for the approval registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:165
+#: src/features/app/components/setup/SetupWizardSteps.tsx:164
 msgid "Anyone can request an account, but an administrator must approve it."
 msgstr "任何人都可以申请账号，但需要管理员批准。"
 
 #. Label for an integration API key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:956
+#: src/features/app/components/setup/SetupWizardSteps.tsx:955
 msgid "API key"
 msgstr "API 密钥"
 
@@ -4661,7 +4661,7 @@ msgid "Apply to all communities"
 msgstr "应用于所有社区"
 
 #. Registration mode option requiring admin approval.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:161
+#: src/features/app/components/setup/SetupWizardSteps.tsx:160
 msgid "Approval required"
 msgstr "需要批准"
 
@@ -4905,8 +4905,8 @@ msgstr "附件操作"
 
 #. Setup wizard media expiry step title.
 #. Summary row label for the attachment expiry choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:215
-#: src/features/app/components/setup/SetupWizardSteps.tsx:351
+#: src/features/app/components/setup/SetupWizardSteps.tsx:214
+#: src/features/app/components/setup/SetupWizardSteps.tsx:350
 msgid "Attachment expiration"
 msgstr "附件到期时间"
 
@@ -5827,6 +5827,16 @@ msgstr "桌面应用体验更佳"
 msgid "Between 1 and 32 characters"
 msgstr "1 到 32 个字符"
 
+#. Plutonium subscription card text for an App Store or Google Play subscription. {storeName} is the store brand name, App Store or Google Play, and must not be translated.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:535
+msgid "Billed through {storeName}."
+msgstr "通过 {storeName} 计费。"
+
+#. Plutonium subscription card text for an App Store or Google Play subscription that will not renew. {storeName} is the store brand name, App Store or Google Play, and must not be translated. {endDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:525
+msgid "Billed through {storeName}. Ends on <0>{endDate}</0>."
+msgstr "通过 {storeName} 计费。将于 <0>{endDate}</0> 结束。"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:27
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:202
@@ -5993,12 +6003,12 @@ msgid "Bluesky"
 msgstr "Bluesky"
 
 #. Label for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:292
+#: src/features/app/components/setup/SetupWizardSteps.tsx:291
 msgid "Bluesky connections"
 msgstr "Bluesky 连接"
 
 #. Setup wizard title for Bluesky integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:948
+#: src/features/app/components/setup/SetupWizardSteps.tsx:947
 msgid "Bluesky OAuth"
 msgstr "Bluesky OAuth"
 
@@ -6227,7 +6237,7 @@ msgid "Branding"
 msgstr "品牌"
 
 #. Accessible label for a branding image preview in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:139
+#: src/features/app/components/setup/SetupWizardSteps.tsx:138
 msgid "Branding asset preview"
 msgstr "品牌资源预览"
 
@@ -6747,7 +6757,7 @@ msgid "Cancel import"
 msgstr "取消导入"
 
 #. Billing button that cancels a scheduled move to a lower subscription price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:837
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:892
 msgid "Cancel price change"
 msgstr "取消价格变更"
 
@@ -6762,13 +6772,13 @@ msgid "Cancel request"
 msgstr "取消请求"
 
 #. Billing button that cancels a scheduled billing-cycle change.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:845
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:900
 msgid "Cancel scheduled switch"
 msgstr "取消已安排的切换"
 
 #. Billing button that starts subscription cancellation.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:860
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:915
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
 #: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
@@ -6781,7 +6791,7 @@ msgid "Cancel subscription?"
 msgstr "取消订阅？"
 
 #. Plutonium subscription card hint shown to a subscriber who could move to a lower price but has another billing change already scheduled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:663
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:705
 msgid "Cancel the scheduled change to move to the current price instead."
 msgstr "取消已安排的更改，改用当前价格。"
 
@@ -6791,7 +6801,7 @@ msgid "Cancel upload"
 msgstr "取消上传"
 
 #. Billing button that cancels a scheduled yearly upgrade.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:841
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:896
 msgid "Cancel yearly upgrade"
 msgstr "取消年度升级"
 
@@ -6801,7 +6811,7 @@ msgid "Cancel your friend request to {displayName}?"
 msgstr "取消向 {displayName} 发送的好友请求？"
 
 #. Subscription status badge meaning cancellation is scheduled for the renewal date.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:435
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:440
 msgid "Canceling"
 msgstr "即将取消"
 
@@ -6810,7 +6820,7 @@ msgstr "即将取消"
 msgid "Cancellation"
 msgstr "回声消除"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:517
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:559
 msgid "Cancels on <0>{cancelDate}</0>. <1/> remain active until then."
 msgstr "将于 <0>{cancelDate}</0> 取消。<1/>在此之前仍然有效。"
 
@@ -7080,7 +7090,7 @@ msgid "Change password form"
 msgstr "更改密码表单"
 
 #. Subscription status badge meaning a future billing plan change is scheduled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:439
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:444
 msgid "Change scheduled"
 msgstr "已安排更改"
 
@@ -7681,17 +7691,17 @@ msgid "Checkout"
 msgstr "结账"
 
 #. Modal body for the generic "checkout blocked" state on a self-hosted instance.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:156
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:164
 msgid "Checkout is blocked for this account."
 msgstr "此账户的结账已被阻止。"
 
 #. Modal body for the generic "checkout blocked" state. Provides the support email.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:152
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:160
 msgid "Checkout is blocked for this account. Contact {supportEmail} if you need help."
 msgstr "此账号已被限制结账。如需帮助，请联系 {supportEmail}。"
 
 #. Modal title for the generic "checkout blocked" state when no more specific reason is known.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:148
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:156
 msgid "Checkout unavailable"
 msgstr "无法结账"
 
@@ -7791,7 +7801,7 @@ msgid "Choose a supported audio file and try again."
 msgstr "请选择受支持的音频文件，然后重试。"
 
 #. Setup wizard title for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:62
+#: src/features/app/components/setup/SetupWizardSteps.tsx:61
 msgid "Choose a theme"
 msgstr "选择主题"
 
@@ -7855,7 +7865,7 @@ msgid "Choose how messages are displayed in chat channels."
 msgstr "选择聊天频道中消息的显示方式。"
 
 #. Setup wizard registration step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:148
+#: src/features/app/components/setup/SetupWizardSteps.tsx:147
 msgid "Choose how new accounts are created on this instance."
 msgstr "选择此实例上新账号的创建方式。"
 
@@ -7870,12 +7880,12 @@ msgid "Choose how times are displayed throughout the app"
 msgstr "选择应用中时间的显示方式"
 
 #. Plutonium subscription payment method picker description, generic fallback when no country-specific copy applies.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:58
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:60
 msgid "Choose how you'd like to pay for this subscription."
 msgstr "选择此订阅的付款方式。"
 
 #. Setup wizard community model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:178
+#: src/features/app/components/setup/SetupWizardSteps.tsx:177
 msgid "Choose how your instance works"
 msgstr "选择实例的工作方式"
 
@@ -7889,7 +7899,7 @@ msgid "Choose one verification method. Either method can clear this check."
 msgstr "请选择一种验证方式。任一方式均可完成验证。"
 
 #. Modal title for the payment method picker (local card vs alternative method).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:204
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:212
 msgid "Choose payment method"
 msgstr "选择付款方式"
 
@@ -7903,7 +7913,7 @@ msgid "Choose the category that best describes your community. You can change th
 msgstr "选择最能描述你社区的类别。你可以随时更改。"
 
 #. Setup wizard premium model step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:301
+#: src/features/app/components/setup/SetupWizardSteps.tsx:300
 msgid "Choose the premium model"
 msgstr "选择会员模式"
 
@@ -7963,7 +7973,7 @@ msgid "Choose where its published messages should go. You can unfollow any time 
 msgstr "选择要发布消息的目的地。你随时可以在社区设置 → Webhooks 中取消关注。"
 
 #. Setup wizard media expiry step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:219
+#: src/features/app/components/setup/SetupWizardSteps.tsx:218
 msgid "Choose whether uploaded attachments should expire automatically based on size."
 msgstr "选择上传的附件是否应根据大小自动过期。"
 
@@ -8155,7 +8165,7 @@ msgstr "优化麦克风收音，让语音更清晰。"
 #. Button or menu action label in the theme studio quick css section. Keep it concise.
 #. Button that removes an uploaded branding image.
 #. Inline button in the Recent searches section that wipes the search history list.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:115
+#: src/features/app/components/setup/SetupWizardSteps.tsx:114
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
 #: src/features/input/components/KeybindRecorder.tsx:442
@@ -8388,7 +8398,7 @@ msgid "Client"
 msgstr "客户端"
 
 #. Label for Bluesky OAuth client name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:993
+#: src/features/app/components/setup/SetupWizardSteps.tsx:992
 msgid "Client name"
 msgstr "客户端名称"
 
@@ -8405,7 +8415,7 @@ msgid "Client secret regenerated. Update any code that uses the old secret."
 msgstr "客户端密钥已重新生成。请更新所有使用旧密钥的代码。"
 
 #. Label for Bluesky OAuth client URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:997
+#: src/features/app/components/setup/SetupWizardSteps.tsx:996
 msgid "Client URL"
 msgstr "客户端网址"
 
@@ -8548,7 +8558,7 @@ msgid "Close your DM with {username}? You can reopen it anytime."
 msgstr "要关闭与 {username} 的私信吗？你可以随时重新打开。"
 
 #. Registration mode option that disables public registration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:169
+#: src/features/app/components/setup/SetupWizardSteps.tsx:168
 msgid "Closed"
 msgstr "已关闭"
 
@@ -8974,7 +8984,7 @@ msgstr "社区静音"
 
 #. Label for the single community name input in the setup wizard.
 #. Label of the community name input in the create-community form.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:194
+#: src/features/app/components/setup/SetupWizardSteps.tsx:193
 #: src/features/guild/components/modals/add_guild_modal/shared.ts:120
 msgid "Community name"
 msgstr "社区名称"
@@ -9112,7 +9122,7 @@ msgid "Complete one of the verification paths below to continue using {productNa
 msgstr "请完成以下任一验证路径，以继续使用 {productName}。"
 
 #. Modal title for the mobile checkout confirmation when opening the payment provider in a browser.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:186
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:194
 msgid "Complete payment"
 msgstr "完成支付"
 
@@ -9198,7 +9208,7 @@ msgid "Configure keyboard shortcuts"
 msgstr "配置键盘快捷键"
 
 #. Option for configuring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:916
+#: src/features/app/components/setup/SetupWizardSteps.tsx:915
 msgid "Configure now"
 msgstr "立即配置"
 
@@ -9586,7 +9596,7 @@ msgid "Continue"
 msgstr "继续"
 
 #. Plutonium checkout pre-approval prompt secondary button. Continues straight to the standard checkout screen.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:89
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:91
 msgid "Continue to checkout"
 msgstr "继续结账"
 
@@ -10376,7 +10386,7 @@ msgstr "无法打开搜索结果"
 #. Title of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Title of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Title of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:30
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:32
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:14
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:29
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:29
@@ -10545,7 +10555,7 @@ msgid "Couldn't start {blueskyProviderName} authorization"
 msgstr "无法开始 {blueskyProviderName} 授权"
 
 #. Title of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:160
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:168
 msgid "Couldn't start checkout"
 msgstr "无法开始结账"
 
@@ -10747,7 +10757,7 @@ msgid "Create account to claim gift"
 msgstr "创建账号以领取礼物"
 
 #. Button that opens the registration flow to create the first administrator account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:70
+#: src/features/app/components/setup/SetupWizardSteps.tsx:69
 msgid "Create administrator account"
 msgstr "创建管理员账号"
 
@@ -10873,7 +10883,7 @@ msgid "Create role"
 msgstr "创建身份组"
 
 #. Setup wizard title prompting the operator to create the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:50
+#: src/features/app/components/setup/SetupWizardSteps.tsx:49
 msgid "Create the administrator account"
 msgstr "创建管理员账号"
 
@@ -11315,7 +11325,7 @@ msgstr "自定义…"
 
 #. Billing button that opens the external customer portal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:766
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:821
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:39
 msgid "Customer portal"
 msgstr "客户门户"
@@ -11640,7 +11650,7 @@ msgid "Debug user"
 msgstr "调试用户"
 
 #. Setup wizard premium model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:305
+#: src/features/app/components/setup/SetupWizardSteps.tsx:304
 msgid "Decide how premium limits apply to people on this instance."
 msgstr "决定高级限制如何应用于此实例上的用户。"
 
@@ -12562,7 +12572,7 @@ msgstr "私信预览"
 
 #. Generic section heading / label for the direct messages area.
 #. Summary row label for the direct messages choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:347
+#: src/features/app/components/setup/SetupWizardSteps.tsx:346
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:630
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:223
 #: src/features/user/components/modals/tabs/privacy_safety_tab/ConnectionsTab.tsx:255
@@ -12642,7 +12652,7 @@ msgid "Disable desktop notifications?"
 msgstr "要关闭桌面通知吗？"
 
 #. Label for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:206
+#: src/features/app/components/setup/SetupWizardSteps.tsx:205
 msgid "Disable direct messages and friend requests"
 msgstr "停用私信和好友请求"
 
@@ -12719,7 +12729,7 @@ msgstr "本地停用视频"
 
 #. Status next to a built-in shortcut the user turned off in the keybinds tab.
 #. Summary value when a setup option is disabled.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:363
+#: src/features/app/components/setup/SetupWizardSteps.tsx:362
 #: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:45
 msgid "Disabled"
 msgstr "已禁用"
@@ -13857,7 +13867,7 @@ msgid "Email changed"
 msgstr "邮箱已更改"
 
 #. Setup wizard title for SMTP integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:940
+#: src/features/app/components/setup/SetupWizardSteps.tsx:939
 msgid "Email delivery"
 msgstr "邮件发送"
 
@@ -14148,7 +14158,7 @@ msgid "Enable at least one translator below."
 msgstr "请至少启用一个翻译器。"
 
 #. Label for enabling attachment expiry during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:223
+#: src/features/app/components/setup/SetupWizardSteps.tsx:222
 msgid "Enable attachment expiration"
 msgstr "启用附件到期"
 
@@ -14162,7 +14172,7 @@ msgid "Enable beta feature"
 msgstr "启用测试功能"
 
 #. Label for enabling Bluesky OAuth in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:989
+#: src/features/app/components/setup/SetupWizardSteps.tsx:988
 msgid "Enable Bluesky OAuth"
 msgstr "启用 Bluesky OAuth"
 
@@ -14195,7 +14205,7 @@ msgid "Enable developer mode"
 msgstr "启用开发者模式"
 
 #. Label for enabling SMTP email delivery in setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:957
+#: src/features/app/components/setup/SetupWizardSteps.tsx:956
 msgid "Enable email delivery"
 msgstr "启用邮件发送"
 
@@ -14337,7 +14347,7 @@ msgid "Enable text selection"
 msgstr "启用文本选择"
 
 #. Setup wizard optional services step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:268
+#: src/features/app/components/setup/SetupWizardSteps.tsx:267
 msgid "Enable the integrations whose credentials you have configured. Only available services are shown."
 msgstr "启用你已配置凭据的集成。仅显示可用服务。"
 
@@ -14378,7 +14388,7 @@ msgstr "启用视频进度预览缩略图"
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Summary value when a setup option is enabled.
 #. Toggle item in the textarea spellcheck submenu. Master enable for spellcheck.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:359
+#: src/features/app/components/setup/SetupWizardSteps.tsx:358
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:21
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:66
 msgid "Enabled"
@@ -14422,7 +14432,7 @@ msgid "End date"
 msgstr "结束日期"
 
 #. Billing button that ends premium grace period immediately.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:872
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:927
 msgid "End grace now"
 msgstr "立即结束宽限期"
 
@@ -14502,7 +14512,7 @@ msgid "Enter a code in the format ABCD-1234."
 msgstr "输入格式为 ABCD-1234 的代码。"
 
 #. Validation error for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:202
+#: src/features/app/components/setup/SetupWizardSteps.tsx:201
 msgid "Enter a community name between 1 and 100 characters."
 msgstr "请输入 1 到 100 个字符的社区名称。"
 
@@ -14512,7 +14522,7 @@ msgid "Enter a gift code to redeem {premiumProductName} for your account."
 msgstr "输入礼物码，为你的账号兑换 {premiumProductName}。"
 
 #. Validation error for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:95
+#: src/features/app/components/setup/SetupWizardSteps.tsx:94
 msgid "Enter a product name between 1 and 80 characters."
 msgstr "请输入 1 到 80 个字符的产品名称。"
 
@@ -14900,7 +14910,7 @@ msgid "Everyone"
 msgstr "所有人"
 
 #. Premium model option that gives everyone the highest limits.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:318
+#: src/features/app/components/setup/SetupWizardSteps.tsx:317
 msgid "Everyone is premium"
 msgstr "所有人都是高级用户"
 
@@ -15033,7 +15043,7 @@ msgid "EXPERIMENTAL"
 msgstr "实验性"
 
 #. Label for attachment decay curve.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:251
+#: src/features/app/components/setup/SetupWizardSteps.tsx:250
 msgid "Expiration curve"
 msgstr "到期曲线"
 
@@ -15045,7 +15055,7 @@ msgstr "有效期"
 #. Error message in the invite list item.
 #. Short label in the authentication account row. Keep the tone plain and specific.
 #. Subscription status badge meaning premium access has fully expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:425
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:430
 #: src/features/auth/components/accounts/AccountRow.tsx:19
 #: src/features/invite/components/InviteListItem.tsx:32
 msgid "Expired"
@@ -15081,7 +15091,7 @@ msgstr "{date} 已过期"
 msgid "Expired on {earliest}"
 msgstr "{earliest} 已过期"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:456
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:461
 msgid "Expired on <0>{expiredDate}</0>. <1/> are no longer active. You can resubscribe at any time."
 msgstr "已于 <0>{expiredDate}</0> 到期。<1/> 已失效。你可以随时重新订阅。"
 
@@ -15567,7 +15577,7 @@ msgid "False claims likely to cause real-world harm."
 msgstr "可能在现实中造成伤害的不实信息。"
 
 #. Label for the favicon branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:135
+#: src/features/app/components/setup/SetupWizardSteps.tsx:134
 msgid "Favicon"
 msgstr "网站图标"
 
@@ -15866,7 +15876,7 @@ msgstr "在新标签页中完成。如果已关闭，请再次按“使用通行
 #. Button that saves the configuration and completes the setup wizard.
 #. Setup wizard finish step title.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:85
-#: src/features/app/components/setup/SetupWizardSteps.tsx:327
+#: src/features/app/components/setup/SetupWizardSteps.tsx:326
 msgid "Finish setup"
 msgstr "完成设置"
 
@@ -16511,12 +16521,12 @@ msgid "from <0>{0}</0>"
 msgstr "来自 <0>{0}</0>"
 
 #. Label for SMTP from email input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:961
+#: src/features/app/components/setup/SetupWizardSteps.tsx:960
 msgid "From email"
 msgstr "发件人邮箱"
 
 #. Label for SMTP from name input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:965
+#: src/features/app/components/setup/SetupWizardSteps.tsx:964
 msgid "From name"
 msgstr "发件人名称"
 
@@ -16829,7 +16839,7 @@ msgid "GIF preview"
 msgstr "GIF 预览"
 
 #. Setup wizard title for GIF integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:924
+#: src/features/app/components/setup/SetupWizardSteps.tsx:923
 msgid "GIF search"
 msgstr "GIF 搜索"
 
@@ -16850,7 +16860,7 @@ msgstr "GIF 无法加载"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subscription status badge meaning premium access came from a gift.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:445
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:450
 #: src/features/expressions/components/modals/GiftAcceptModal.tsx:294
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:79
 msgid "Gift"
@@ -17002,7 +17012,7 @@ msgstr "赠送：即将到期"
 msgid "Gift: grace period (still have access)"
 msgstr "赠送：宽限期（仍可访问）"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:502
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:544
 msgid "Gifted <0/> until <1>{giftEndDate}</1>. Does not renew automatically. Redeem more gift codes to extend."
 msgstr "赠送的 <0/> 有效期至 <1>{giftEndDate}</1>。不会自动续订。兑换更多礼品码可延长有效期。"
 
@@ -17019,7 +17029,7 @@ msgid "Gifts aren't available right now."
 msgstr "暂时无法购买礼物。"
 
 #. Description for the everyone-is-premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:322
+#: src/features/app/components/setup/SetupWizardSteps.tsx:321
 msgid "Give everyone on this instance the highest premium limits."
 msgstr "让本实例上的所有人都享有最高的高级版上限。"
 
@@ -17188,7 +17198,7 @@ msgid "Got it!"
 msgstr "知道了！"
 
 #. Subscription status badge meaning access remains briefly after subscription end.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:427
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:432
 msgid "Grace period"
 msgstr "宽限期"
 
@@ -17493,7 +17503,7 @@ msgid "Hate speech"
 msgstr "仇恨言论"
 
 #. Premium page text shown on an instance where the premium tier cannot be bought, only redeemed. {PREMIUM_PRODUCT_NAME} is the premium tier name.
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:296
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:299
 msgid "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 msgstr "有兑换码？兑换它以解锁 {PREMIUM_PRODUCT_NAME}。"
 
@@ -18049,7 +18059,7 @@ msgstr "我知道了"
 
 #. Label for the icon branding asset.
 #. Short label in the guild icon upload field. Keep it concise.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:119
+#: src/features/app/components/setup/SetupWizardSteps.tsx:118
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:27
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:89
 msgid "Icon"
@@ -18269,7 +18279,7 @@ msgid "Image"
 msgstr "图片"
 
 #. Label for the branding image asset uploaders in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:103
+#: src/features/app/components/setup/SetupWizardSteps.tsx:102
 msgid "Image assets"
 msgstr "图片素材"
 
@@ -19621,7 +19631,7 @@ msgid "Keep attachments when clearing an edit"
 msgstr "清除编辑时保留附件"
 
 #. Description for the mirror premium model.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:313
+#: src/features/app/components/setup/SetupWizardSteps.tsx:312
 msgid "Keep free and premium tiers. You can customize the tiers, sell premium through Stripe, or hand out gift codes later from the admin panel."
 msgstr "保留免费和高级套餐。您可以自定义套餐，通过 Stripe 出售高级服务，或稍后从管理面板发放礼品码。"
 
@@ -19750,7 +19760,7 @@ msgid "Kicked {targetUserTag} from the community"
 msgstr "已将 {targetUserTag} 踢出社区"
 
 #. Label for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:276
+#: src/features/app/components/setup/SetupWizardSteps.tsx:275
 msgid "Klipy GIFs"
 msgstr "Klipy GIF"
 
@@ -19762,7 +19772,7 @@ msgstr "韩语"
 #. Label for the setup wizard language selector.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. User settings tab for language, locale, and time display preferences.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:58
+#: src/features/app/components/setup/SetupWizardSteps.tsx:57
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:6
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:132
 msgid "Language"
@@ -19786,7 +19796,7 @@ msgid "Large"
 msgstr "大"
 
 #. Label for attachment decay maximum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:235
+#: src/features/app/components/setup/SetupWizardSteps.tsx:234
 msgid "Large file threshold (MB)"
 msgstr "大文件阈值（MB）"
 
@@ -20009,8 +20019,8 @@ msgstr "鼠标左键"
 msgid "Left tooltip"
 msgstr "左侧工具提示"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:555
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:577
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:597
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:619
 msgid "Legacy rate"
 msgstr "旧版费率"
 
@@ -20043,12 +20053,12 @@ msgid "Let others clone your stickers"
 msgstr "允许他人克隆你的贴纸"
 
 #. Description for the Bluesky connections service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:296
+#: src/features/app/components/setup/SetupWizardSteps.tsx:295
 msgid "Let people link their Bluesky account to their profile."
 msgstr "允许用户将自己的 Bluesky 账号关联到个人资料。"
 
 #. Description for the Klipy GIF service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:280
+#: src/features/app/components/setup/SetupWizardSteps.tsx:279
 msgid "Let people search and send GIFs powered by Klipy."
 msgstr "允许用户通过 Klipy 搜索和发送 GIF。"
 
@@ -20102,7 +20112,7 @@ msgstr "库：{count}/{max}"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #. Subscription status badge meaning permanent premium access.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:443
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:448
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:22
 msgid "Lifetime"
 msgstr "永久"
@@ -20398,7 +20408,7 @@ msgid "Loading states"
 msgstr "加载状态"
 
 #. Setup wizard body while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:78
+#: src/features/app/components/setup/SetupWizardSteps.tsx:77
 msgid "Loading the current instance configuration."
 msgstr "正在加载当前实例配置。"
 
@@ -20448,7 +20458,7 @@ msgid "Localization"
 msgstr "本地化"
 
 #. Error modal body shown when the localized card pre-approval session cannot be started.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:200
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:208
 msgid "Localized card verification is not available right now. Try again later."
 msgstr "本地银行卡验证目前不可用。请稍后重试。"
 
@@ -20474,12 +20484,12 @@ msgid "Login"
 msgstr "登录"
 
 #. Label for the logo branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:127
+#: src/features/app/components/setup/SetupWizardSteps.tsx:126
 msgid "Logo"
 msgstr "Logo"
 
 #. Label for Bluesky OAuth logo URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1001
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1000
 msgid "Logo URL"
 msgstr "Logo 网址"
 
@@ -20604,7 +20614,7 @@ msgid "Make group owner"
 msgstr "设为群主"
 
 #. Setup wizard branding step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:83
+#: src/features/app/components/setup/SetupWizardSteps.tsx:82
 msgid "Make the instance yours"
 msgstr "个性化你的实例"
 
@@ -21058,12 +21068,12 @@ msgid "Maximizes visible messages with minimal spacing."
 msgstr "以最小间距显示更多消息。"
 
 #. Label for attachment decay maximum eligible size.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:239
+#: src/features/app/components/setup/SetupWizardSteps.tsx:238
 msgid "Maximum eligible size (MB)"
 msgstr "符合条件的最大大小（MB）"
 
 #. Label for attachment decay maximum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:247
+#: src/features/app/components/setup/SetupWizardSteps.tsx:246
 msgid "Maximum lifetime (days)"
 msgstr "最大保留天数"
 
@@ -21904,7 +21914,7 @@ msgid "Minimize window"
 msgstr "最小化窗口"
 
 #. Label for attachment decay minimum lifetime.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:243
+#: src/features/app/components/setup/SetupWizardSteps.tsx:242
 msgid "Minimum lifetime (days)"
 msgstr "最短保留天数"
 
@@ -21933,7 +21943,7 @@ msgid "Mirror of the Appearance tab toggle for light/dark/coal preference. Disab
 msgstr "外观选项卡中浅色/深色/煤炭偏好设置的镜像开关。禁用后可为每台设备单独设置基础主题。"
 
 #. Premium model option that mirrors free and premium tiers.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:309
+#: src/features/app/components/setup/SetupWizardSteps.tsx:308
 msgid "Mirror tiers"
 msgstr "镜像层级"
 
@@ -22111,11 +22121,11 @@ msgstr "每月"
 msgid "Monthly {monthlyPrice}"
 msgstr "每月 {monthlyPrice}"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:647
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:689
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>."
 msgstr "按月计费将于<0>{pendingChangeDate}</0>开始。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:640
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682
 msgid "Monthly billing starts on <0>{pendingChangeDate}</0>. First monthly charge: {pendingInitialPriceLabel}. Future monthly renewals: {pendingRecurringPriceLabel}/month."
 msgstr "按月计费将于<0>{pendingChangeDate}</0>开始。首次月度费用：{pendingInitialPriceLabel}。后续每月续订：{pendingRecurringPriceLabel}/月。"
 
@@ -22670,7 +22680,7 @@ msgid "My category"
 msgstr "我的类别"
 
 #. Placeholder for the single community name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:198
+#: src/features/app/components/setup/SetupWizardSteps.tsx:197
 msgid "My community"
 msgstr "我的社区"
 
@@ -23056,12 +23066,12 @@ msgid "New posts in this forum start at the forum's slowmode."
 msgstr "New posts in this forum start at the forum's slowmode."
 
 #. Plutonium subscription card line shown when a move to a lower price is scheduled but the new amount is unknown. {pendingChangeDate} is a date already formatted and localized by code; never write a date into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:611
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:653
 msgid "New price scheduled for <0>{pendingChangeDate}</0>."
 msgstr "新价格定于 <0>{pendingChangeDate}</0> 生效。"
 
 #. Plutonium subscription card line shown when a move to a lower price is scheduled. {pendingChangeDate} is a date and {pendingTargetPriceLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:605
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:647
 msgid "New price scheduled for <0>{pendingChangeDate}</0>. Renewals will be {pendingTargetPriceLabel} from then on."
 msgstr "新价格定于 <0>{pendingChangeDate}</0> 生效。此后续订价格为 {pendingTargetPriceLabel}。"
 
@@ -23529,7 +23539,7 @@ msgid "No one can add you to group chats without asking"
 msgstr "没有人可以未经询问将你添加到群聊"
 
 #. Message shown when no optional services are available in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:272
+#: src/features/app/components/setup/SetupWizardSteps.tsx:271
 msgid "No optional services are available on this instance. You can skip this step."
 msgstr "此实例没有可选服务。你可以跳过此步骤。"
 
@@ -23920,7 +23930,7 @@ msgstr "页面未找到"
 #. Short label in the Plutonium self serve refund section. Keep the tone plain and specific.
 #. Short label in the authentication new device monitoring. Keep the tone plain and specific.
 #: src/features/app/components/dialogs/components/plutonium/SelfServeRefundSection.tsx:31
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:69
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:72
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:35
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:43
 #: src/features/auth/state/NewDeviceMonitoring.tsx:34
@@ -24185,7 +24195,7 @@ msgid "On"
 msgstr "开"
 
 #. Billing confirmation body for moving an active subscription down to the current price. {listPriceEffectiveDate} is a date, and {listPriceCurrentLabel} and {listPriceNewLabel} are currency amounts, all already formatted and localized by code; never write a date or an amount into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:374
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:379
 msgid "On <0>{listPriceEffectiveDate}</0> your subscription moves from {listPriceCurrentLabel} to {listPriceNewLabel}. Nothing is charged today, and the rest of your subscription stays exactly as it is."
 msgstr "在 <0>{listPriceEffectiveDate}</0>，你的订阅将从 {listPriceCurrentLabel} 变更为 {listPriceNewLabel}。今天不会扣费，你的订阅其余部分保持不变。"
 
@@ -24372,7 +24382,7 @@ msgid "Open"
 msgstr "打开"
 
 #. Registration mode option allowing anyone to register.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:152
+#: src/features/app/components/setup/SetupWizardSteps.tsx:151
 msgctxt "registration-policy"
 msgid "Open"
 msgstr "打开"
@@ -24950,7 +24960,7 @@ msgid "Optional arguments"
 msgstr "可选参数"
 
 #. Setup wizard optional services step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:264
+#: src/features/app/components/setup/SetupWizardSteps.tsx:263
 msgid "Optional services"
 msgstr "可选服务"
 
@@ -25051,7 +25061,7 @@ msgid "Other devices"
 msgstr "其他设备"
 
 #. Plutonium checkout pre-approval prompt secondary button. Opens the alternative payment methods flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:73
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:75
 msgid "Other methods"
 msgstr "其他方式"
 
@@ -25278,7 +25288,7 @@ msgstr "通行密钥需要带有有效应用标识符的已签名 macOS 软件�
 
 #. Generic form-field label for a password.
 #. Label for SMTP password input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:972
+#: src/features/app/components/setup/SetupWizardSteps.tsx:971
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:215
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:146
 #: src/features/user/components/modals/tabs/account_security_tab/AccountTab.tsx:183
@@ -25454,12 +25464,12 @@ msgid "Pay once and get a gift link to share. Gifts never renew."
 msgstr "一次性付款即可获得一个可分享的礼品链接。礼物永不续订。"
 
 #. Plutonium subscription payment method picker description for Brazil. Explains Pix recurring vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:38
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:40
 msgid "Pay with {pixPaymentMethod} Automático to authorize recurring charges directly from your Brazilian bank. Or choose \"Use card\" to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "使用 {pixPaymentMethod} Automático 直接从你的巴西银行授权定期扣款。或选择“使用银行卡”，在 {paymentProviderName} 的下一步页面输入信用卡信息。"
 
 #. Plutonium subscription payment method picker description for India. Explains UPI e-mandate vs falling back to a card.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:48
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:50
 msgid "Pay with {upiPaymentMethod} to set up an RBI-compliant e-mandate from your Indian bank. Or choose \"Use card\" to enter a credit card on {paymentProviderName}'s next screen."
 msgstr "使用 {upiPaymentMethod} 从你的印度银行设置符合印度储备银行 (RBI) 规定的电子授权。或选择“使用银行卡”，在 {paymentProviderName} 的下一步页面输入信用卡信息。"
 
@@ -25566,7 +25576,7 @@ msgid "Perks"
 msgstr "福利"
 
 #. Subscription status badge meaning premium is paid but perks are temporarily disabled.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:431
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:436
 msgid "Perks paused"
 msgstr "福利已暂停"
 
@@ -25767,7 +25777,7 @@ msgid "Pick the 4-digit number after your username"
 msgstr "选择你用户名后的四位数字"
 
 #. Setup wizard body for choosing the initial account theme.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:66
+#: src/features/app/components/setup/SetupWizardSteps.tsx:65
 msgid "Pick the appearance this administrator account should start with."
 msgstr "选择此管理员账号的初始外观。"
 
@@ -26104,7 +26114,7 @@ msgid "Popup"
 msgstr "弹窗"
 
 #. Label for SMTP port input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:970
+#: src/features/app/components/setup/SetupWizardSteps.tsx:969
 msgid "Port"
 msgstr "端口"
 
@@ -26236,7 +26246,7 @@ msgid "Premium grace period nagbar"
 msgstr "会员宽限期提示栏"
 
 #. Summary row label for the premium model in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:355
+#: src/features/app/components/setup/SetupWizardSteps.tsx:354
 msgid "Premium model"
 msgstr "会员模式"
 
@@ -26276,7 +26286,7 @@ msgid "Preparing"
 msgstr "准备中"
 
 #. Setup wizard title while the instance configuration loads.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:74
+#: src/features/app/components/setup/SetupWizardSteps.tsx:73
 msgid "Preparing setup"
 msgstr "正在准备设置"
 
@@ -26451,7 +26461,7 @@ msgid "Pricing"
 msgstr "定价"
 
 #. Error modal body shown when the user clicks a plan before price IDs have loaded.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:174
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:182
 msgid "Pricing is still loading."
 msgstr "价格仍在加载中。"
 
@@ -26526,7 +26536,7 @@ msgid "Privacy settings"
 msgstr "隐私设置"
 
 #. Label for Bluesky OAuth privacy URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1009
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1008
 msgid "Privacy URL"
 msgstr "隐私网址"
 
@@ -26551,7 +26561,7 @@ msgid "Private details"
 msgstr "个人信息"
 
 #. Label for Bluesky OAuth private key input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1017
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1016
 msgid "Private key"
 msgstr "私钥"
 
@@ -26576,8 +26586,8 @@ msgstr "处理中"
 
 #. Label for the product name input in the setup wizard.
 #. Summary row label for the product name in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:91
-#: src/features/app/components/setup/SetupWizardSteps.tsx:335
+#: src/features/app/components/setup/SetupWizardSteps.tsx:90
+#: src/features/app/components/setup/SetupWizardSteps.tsx:334
 msgid "Product name"
 msgstr "产品名称"
 
@@ -26778,7 +26788,7 @@ msgid "Public community"
 msgstr "公开社区"
 
 #. Description for the closed registration mode.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:173
+#: src/features/app/components/setup/SetupWizardSteps.tsx:172
 msgid "Public registration is closed."
 msgstr "公开注册已关闭。"
 
@@ -26848,17 +26858,17 @@ msgid "Purchased gifts"
 msgstr "已购礼物"
 
 #. Modal body shown on a self-hosted instance when purchases are disabled for the account.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:144
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:152
 msgid "Purchases are disabled for this account."
 msgstr "此账户已禁用购买。"
 
 #. Modal body shown when purchases are disabled. Provides the support email for appeals.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:140
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:148
 msgid "Purchases are disabled for this account. Contact {supportEmail} if this looks wrong."
 msgstr "此账号已禁用购买功能。如果此情况有误，请联系 {supportEmail}。"
 
 #. Modal title shown when purchases are disabled on this account (server-side enforcement).
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:136
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:144
 msgid "Purchases unavailable"
 msgstr "无法购买"
 
@@ -27119,7 +27129,7 @@ msgstr "反应"
 
 #. Billing button that cancels a scheduled subscription cancellation.
 #. Button label on the premium-expired nagbar. Opens billing so the user can reactivate their subscription.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:762
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:817
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:25
 msgid "Reactivate"
 msgstr "重新激活"
@@ -27350,8 +27360,8 @@ msgstr "为自己兑换"
 
 #. Billing button for entering a premium gift code.
 #. Billing button for entering a premium gift code.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:735
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:306
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:790
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:309
 msgid "Redeem gift code"
 msgstr "兑换礼品码"
 
@@ -27501,7 +27511,7 @@ msgid "Registered passkeys"
 msgstr "已注册通行密钥"
 
 #. Summary row label for the registration mode in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:339
+#: src/features/app/components/setup/SetupWizardSteps.tsx:338
 msgid "Registration"
 msgstr "注册"
 
@@ -28118,16 +28128,16 @@ msgid "Render placeholders"
 msgstr "渲染占位符"
 
 #. Label for attachment decay renewal threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:255
+#: src/features/app/components/setup/SetupWizardSteps.tsx:254
 msgid "Renew threshold (days)"
 msgstr "续期阈值（天）"
 
 #. Label for attachment decay renewal window.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:259
+#: src/features/app/components/setup/SetupWizardSteps.tsx:258
 msgid "Renew window (days)"
 msgstr "续期窗口（天）"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:717
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:762
 msgid "Renews on <0>{renewalDate}.</0>"
 msgstr "续订日期：<0>{renewalDate}</0>。"
 
@@ -28137,7 +28147,7 @@ msgstr "重新打开子区"
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that replaces an already uploaded branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:111
+#: src/features/app/components/setup/SetupWizardSteps.tsx:110
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:80
 msgid "Replace"
 msgstr "替换"
@@ -28896,8 +28906,8 @@ msgstr "恢复窗口"
 
 #. Billing button for restarting a subscription during the grace period.
 #. Billing button for starting a new subscription after premium expired.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:754
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:758
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:809
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:813
 msgid "Resubscribe"
 msgstr "重新订阅"
 
@@ -29031,7 +29041,7 @@ msgid "Review what this app is asking for before you continue."
 msgstr "继续前请查看此应用请求的权限。"
 
 #. Setup wizard finish step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:331
+#: src/features/app/components/setup/SetupWizardSteps.tsx:330
 msgid "Review your choices below, then finish. This saves the configuration and opens the instance."
 msgstr "在下方查看你的选择，然后完成。这将保存配置并打开实例。"
 
@@ -29287,7 +29297,7 @@ msgid "Run at login"
 msgstr "登录时运行"
 
 #. Description for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:190
+#: src/features/app/components/setup/SetupWizardSteps.tsx:189
 msgid "Run the instance as one community instead of many. This can only be enabled now, during setup."
 msgstr "将实例作为一个社区运行，而不是多个。此选项只能在当前的初始设置过程中启用。"
 
@@ -30883,7 +30893,7 @@ msgid "Set the nickname to {nick}"
 msgstr "将昵称设置为 {nick}"
 
 #. Setup wizard branding step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:87
+#: src/features/app/components/setup/SetupWizardSteps.tsx:86
 msgid "Set the public product name, theme color, and image assets that clients display."
 msgstr "设置客户端显示的公开产品名称、主题颜色和图片资源。"
 
@@ -30945,7 +30955,7 @@ msgid "Set up authenticator app"
 msgstr "设置身份验证器应用"
 
 #. Option for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:908
+#: src/features/app/components/setup/SetupWizardSteps.tsx:907
 msgid "Set up later"
 msgstr "稍后设置"
 
@@ -31628,7 +31638,7 @@ msgid "Show quick reactions"
 msgstr "显示快捷回应"
 
 #. Description for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:288
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
 msgid "Show rich previews for YouTube links."
 msgstr "为 YouTube 链接显示丰富的预览内容。"
 
@@ -31871,7 +31881,7 @@ msgid "Signed-in devices"
 msgstr "已登录的设备"
 
 #. Label for Bluesky OAuth signing key ID input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1013
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1012
 msgid "Signing key ID"
 msgstr "签名密钥 ID"
 
@@ -31938,12 +31948,12 @@ msgid "Single column"
 msgstr "单列"
 
 #. Summary row label for the single community choice in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:343
+#: src/features/app/components/setup/SetupWizardSteps.tsx:342
 msgid "Single community"
 msgstr "单个社区"
 
 #. Label for the single community toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:186
+#: src/features/app/components/setup/SetupWizardSteps.tsx:185
 msgid "Single community mode"
 msgstr "单社区模式"
 
@@ -32010,7 +32020,7 @@ msgid "Skip the system leave notice — nobody gets pinged."
 msgstr "不发送系统退群通知，也不会有人收到提醒。"
 
 #. Description for deferring an optional setup wizard integration.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:912
+#: src/features/app/components/setup/SetupWizardSteps.tsx:911
 msgid "Skip this now and configure it from the admin panel."
 msgstr "现在跳过，稍后从管理面板配置。"
 
@@ -32203,7 +32213,7 @@ msgid "Small button clicked."
 msgstr "已点击小按钮。"
 
 #. Label for attachment decay minimum size threshold.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:231
+#: src/features/app/components/setup/SetupWizardSteps.tsx:230
 msgid "Small file threshold (MB)"
 msgstr "小文件阈值（MB）"
 
@@ -32264,17 +32274,17 @@ msgid "SMS verification is unavailable right now. Try again later or contact sup
 msgstr "短信验证暂时不可用。请稍后重试或联系支持团队。"
 
 #. Success message after validating SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:981
+#: src/features/app/components/setup/SetupWizardSteps.tsx:980
 msgid "SMTP connection verified."
 msgstr "SMTP 连接已验证。"
 
 #. Label for SMTP host input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:969
+#: src/features/app/components/setup/SetupWizardSteps.tsx:968
 msgid "SMTP host"
 msgstr "SMTP 主机"
 
 #. Failure message after validating SMTP credentials when the server returns no error detail.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:985
+#: src/features/app/components/setup/SetupWizardSteps.tsx:984
 msgid "SMTP validation failed."
 msgstr "SMTP 验证失败。"
 
@@ -32381,7 +32391,7 @@ msgstr "加载活动日志时出错了。"
 #. Body of the error modal shown when opening the billing customer portal from the grace-period nagbar fails.
 #. Body of the error modal shown when opening the billing customer portal from the premium-expired nagbar fails.
 #. Body of the generic fallback error modal shown when opening the billing customer portal fails.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:34
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:36
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts:18
 #: src/features/app/components/layout/app_layout/nagbars/PremiumExpiredNagbar.tsx:34
 #: src/features/app/components/layout/app_layout/nagbars/PremiumGracePeriodNagbar.tsx:34
@@ -32421,7 +32431,7 @@ msgid "Something went wrong while sending your verification email. Please try ag
 msgstr "发送验证邮件时出错了。请稍后重试。"
 
 #. Body of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:164
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:172
 msgid "Something went wrong while starting checkout. Please try again in a moment."
 msgstr "启动结账时出错了。请稍后重试。"
 
@@ -33503,7 +33513,7 @@ msgid "Subscription"
 msgstr "订阅"
 
 #. Modal title shown when checkout is blocked because the account already has an active Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:125
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:127
 msgid "Subscription already exists"
 msgstr "订阅已存在"
 
@@ -33660,12 +33670,12 @@ msgid "Switch device"
 msgstr "切换设备"
 
 #. Button confirming a move of an active subscription down to the current price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:65
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:68
 msgid "Switch price"
 msgstr "切换价格"
 
 #. Billing button that opens confirmation to move the subscription down to the current price. {listPriceNewLabel} is the localized new price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:822
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:877
 msgid "Switch to {listPriceNewLabel}"
 msgstr "切换到 {listPriceNewLabel}"
 
@@ -33689,13 +33699,13 @@ msgstr "切换到直接输入"
 
 #. Billing button that opens confirmation to switch to monthly billing.
 #. Button confirming a change to monthly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:57
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:805
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:60
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:860
 msgid "Switch to monthly"
 msgstr "切换为按月付费"
 
 #. Billing confirmation title for changing an active subscription to monthly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:49
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:52
 msgid "Switch to monthly billing?"
 msgstr "切换为按月计费？"
 
@@ -33737,7 +33747,7 @@ msgid "Switch to single column"
 msgstr "切换为单列"
 
 #. Billing confirmation title for moving an active subscription down to the current price.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:61
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:64
 msgid "Switch to the new price?"
 msgstr "切换到新价格？"
 
@@ -33758,13 +33768,13 @@ msgstr "切换为双列"
 
 #. Billing button that opens confirmation to switch to yearly billing.
 #. Button confirming a change to yearly subscription billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:53
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:801
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:56
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:856
 msgid "Switch to yearly"
 msgstr "切换为按年付费"
 
 #. Billing confirmation title for changing an active subscription to yearly billing.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:45
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:48
 msgid "Switch to yearly billing?"
 msgstr "切换为按年计费？"
 
@@ -33783,7 +33793,7 @@ msgid "Switches"
 msgstr "开关"
 
 #. Label for the symbol branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:123
+#: src/features/app/components/setup/SetupWizardSteps.tsx:122
 msgid "Symbol"
 msgstr "符号"
 
@@ -34036,23 +34046,23 @@ msgstr "标签可帮助成员整理和筛选此论坛中的帖子（最多 20 �
 msgid "Tags must be 2 to {maxLength} characters and alphanumeric."
 msgstr "标签必须为 2 到 {maxLength} 个字符，且只能包含字母和数字。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:293
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:298
 msgid "Takes effect at your next renewal. We'll apply a {creditLabel} credit from your current monthly payment, so your first yearly charge will be <0>{firstRenewalPriceLabel}</0>. Future yearly renewals will be {renewalPrice}/year."
 msgstr "将在你下次续订时生效。我们会把你当前月付款项中的 {creditLabel} 作为抵扣，因此首次年费为 <0>{firstRenewalPriceLabel}</0>。此后每年续订费用为 {renewalPrice}/年。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:302
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:307
 msgid "Takes effect at your next renewal. Your subscription stays monthly until then, and your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "将在你下次续订时生效。在此之前，订阅仍按月计费，下次续订为 <0>{renewalPrice}/年</0>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:311
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:316
 msgid "Takes effect at your next renewal. Your subscription stays yearly until then, and your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "将在你下次续订时生效。在此之前，订阅仍按年计费，下次续订为 <0>{renewalPrice}/月</0>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:330
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:335
 msgid "Takes effect immediately. A prorated adjustment may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/month</0>."
 msgstr "立即生效。{PAYMENT_PROVIDER_NAME} 可能会按比例调整费用。你的下次续订为 <0>{renewalPrice}/月</0>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:321
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:326
 msgid "Takes effect immediately. A prorated charge may apply via {PAYMENT_PROVIDER_NAME}. Your next renewal will be <0>{renewalPrice}/year</0>."
 msgstr "立即生效。{PAYMENT_PROVIDER_NAME} 可能会按比例收取费用。你的下次续订为 <0>{renewalPrice}/年</0>。"
 
@@ -34168,7 +34178,7 @@ msgid "Terms of service"
 msgstr "服务条款"
 
 #. Label for Bluesky OAuth terms URL input.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:1005
+#: src/features/app/components/setup/SetupWizardSteps.tsx:1004
 msgid "Terms URL"
 msgstr "条款网址"
 
@@ -34178,7 +34188,7 @@ msgid "Terrorism or violent extremism"
 msgstr "恐怖主义或暴力极端主义"
 
 #. Button that validates SMTP credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:977
+#: src/features/app/components/setup/SetupWizardSteps.tsx:976
 msgid "Test SMTP"
 msgstr "测试 SMTP"
 
@@ -34690,7 +34700,7 @@ msgstr "主题更改会同步到你的所有设备。关闭后，此设备将使
 
 #. Label for the theme color picker in the setup wizard.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:99
+#: src/features/app/components/setup/SetupWizardSteps.tsx:98
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:165
 msgid "Theme color"
 msgstr "主题颜色"
@@ -34790,7 +34800,7 @@ msgid "There was an error loading the webhooks. Try again."
 msgstr "加载 Webhook 时出错。请重试。"
 
 #. Setup wizard community model step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:182
+#: src/features/app/components/setup/SetupWizardSteps.tsx:181
 msgid "These options change how people use the instance. Some can only be chosen during setup."
 msgstr "这些选项会改变人们使用实例的方式。有些选项只能在设置期间选择。"
 
@@ -35189,7 +35199,7 @@ msgid "This instance currently allows screen sharing up to 720p at 30 FPS."
 msgstr "此实例目前支持最高 720p、30 FPS 的屏幕共享。"
 
 #. Setup wizard body prompting the operator to register the first account.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:54
+#: src/features/app/components/setup/SetupWizardSteps.tsx:53
 msgid "This instance has no accounts yet. The first account you create automatically becomes the administrator."
 msgstr "此实例尚无任何账号。你创建的第一个账号将自动成为管理员。"
 
@@ -35431,7 +35441,7 @@ msgid "This picker is only available in the desktop app."
 msgstr "此选择器仅在桌面应用中可用。"
 
 #. Error modal body shown when the selected Plutonium plan has no price ID configured.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:178
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:186
 msgid "This plan isn't available. Contact support."
 msgstr "此套餐不可用。请联系支持团队。"
 
@@ -36434,7 +36444,7 @@ msgid "Turn off device stream"
 msgstr "关闭设备直播"
 
 #. Description for the toggle that disables direct messages and friend requests.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:210
+#: src/features/app/components/setup/SetupWizardSteps.tsx:209
 msgid "Turn off private messaging and friends across the instance. This can be reversed only once later."
 msgstr "关闭实例上的私信和好友请求。此设置之后只能撤销一次。"
 
@@ -37629,7 +37639,7 @@ msgstr "升级后可存储多达 15 个自定义背景，并解锁高清视频�
 
 #. Button or menu action label in the background image gallery modal. Keep it concise.
 #. Button that opens a file picker to upload a branding image.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:107
+#: src/features/app/components/setup/SetupWizardSteps.tsx:106
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx:84
 msgid "Upload"
 msgstr "上传"
@@ -37857,7 +37867,7 @@ msgid "Use {everyoneMention}/{hereMention} and {rolesMention}"
 msgstr "使用 {everyoneMention}/{hereMention} 和 {rolesMention}"
 
 #. Plutonium subscription payment method picker button. Selects Pix as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:44
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:46
 msgid "Use {pixPaymentMethod}"
 msgstr "使用 {pixPaymentMethod}"
 
@@ -37872,7 +37882,7 @@ msgid "Use {query} where the text to translate should be inserted."
 msgstr "使用 {query} 插入要翻译的文本。"
 
 #. Plutonium subscription payment method picker button. Selects UPI as the payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:54
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:56
 msgid "Use {upiPaymentMethod}"
 msgstr "使用 {upiPaymentMethod}"
 
@@ -37906,7 +37916,7 @@ msgid "Use actual value"
 msgstr "使用实际值"
 
 #. Plutonium subscription payment method picker button. Selects the alternative (non-card) method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:63
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:65
 msgid "Use alternative method"
 msgstr "使用其他方式"
 
@@ -37947,7 +37957,7 @@ msgid "Use browser locale for time format"
 msgstr "使用浏览器区域设置的时间格式"
 
 #. Modal secondary button to fall back to standard card checkout instead of an alternative payment method.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:212
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:220
 msgid "Use card"
 msgstr "使用银行卡"
 
@@ -38050,32 +38060,32 @@ msgid "Use light theme"
 msgstr "使用浅色主题"
 
 #. Modal primary button to start the localized card pre-approval verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:208
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:216
 msgid "Use local card"
 msgstr "使用本地银行卡"
 
 #. Plutonium checkout pre-approval prompt for Brazil. Explains the card verification flow and the Pix alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:67
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:69
 msgid "Use local card to verify a card issued in Brazil before the paid BRL checkout. Choose other methods if you'd rather try {pixPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "在付费 BRL 结账前，请使用本地银行卡验证在巴西发行的银行卡。如果你想尝试 {pixPaymentMethod} 或 {paymentProviderName} 在下一屏幕提供的其他付款方式，请选择其他方式。"
 
 #. Plutonium checkout pre-approval prompt for India. Explains the card verification flow and the UPI alternative.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:77
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:79
 msgid "Use local card to verify a card issued in India before the paid INR checkout. Choose other methods if you'd rather try {upiPaymentMethod} or another payment method {paymentProviderName} offers on the next screen."
 msgstr "在付费 INR 结账前，请使用本地银行卡验证在印度发行的银行卡。如果你想尝试 {upiPaymentMethod} 或 {paymentProviderName} 在下一屏幕提供的其他付款方式，请选择其他方式。"
 
 #. Plutonium checkout pre-approval prompt for Poland. Explains that BLIK is not supported for subscriptions; user must continue to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:83
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:85
 msgid "Use local card to verify a card issued in Poland before the paid PLN checkout. {blikPaymentMethod} does not support subscriptions in {paymentProviderName} checkout, so continue only if you want {paymentProviderName2}'s standard payment screen instead."
 msgstr "在付费 PLN 结账前，请使用本地银行卡验证在波兰发行的银行卡。{blikPaymentMethod} 不支持在 {paymentProviderName} 结账中订阅，因此只有在你希望改用 {paymentProviderName2} 的标准支付界面时才继续。"
 
 #. Plutonium checkout pre-approval prompt for Türkiye. Explains there is no local wallet method; continuing goes to the standard checkout.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:94
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:96
 msgid "Use local card to verify a card issued in Türkiye before the paid TRY checkout. There isn't an app-based local subscription method here, so continuing will take you to {paymentProviderName}'s standard payment screen."
 msgstr "在付费 TRY 结账前，请使用本地银行卡验证在土耳其发行的银行卡。这里没有基于应用的本地订阅方式，因此继续操作将跳转到 {paymentProviderName} 的标准支付界面。"
 
 #. Plutonium checkout pre-approval prompt default. Generic description for countries without specific localized payment guidance.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:100
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:102
 msgid "Use local card to verify a card issued in your billing country before the paid checkout. Choose other methods for any other payment method {paymentProviderName} offers on the next screen."
 msgstr "在付费结账前，请使用本地银行卡验证在你账单所属国家/地区发行的银行卡。如需使用 {paymentProviderName} 在下一屏幕提供的其他付款方式，请选择其他方式。"
 
@@ -38183,7 +38193,7 @@ msgid "Use this when troubleshooting the client or collecting logs. It may add v
 msgstr "在排查客户端问题或收集日志时使用此选项。它可能会在当前客户端的浏览器控制台中输出详细消息。"
 
 #. Label for SMTP TLS toggle.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:973
+#: src/features/app/components/setup/SetupWizardSteps.tsx:972
 msgid "Use TLS"
 msgstr "使用 TLS"
 
@@ -38349,7 +38359,7 @@ msgstr "用户音量"
 #. Generic form-field label for a username.
 #. Label for SMTP username input.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:971
+#: src/features/app/components/setup/SetupWizardSteps.tsx:970
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:577
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx:218
 #: src/features/user/components/modals/tabs/my_profile_tab/MyProfileTabUsernameSection.tsx:56
@@ -38589,7 +38599,7 @@ msgid "Verify"
 msgstr "验证"
 
 #. Modal title for the mobile checkout confirmation when opening the localized card verification flow.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:182
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:190
 msgid "Verify card"
 msgstr "验证银行卡"
 
@@ -38688,7 +38698,7 @@ msgid "Verify your email before sending friend requests."
 msgstr "请先验证你的邮箱，然后才能发送好友请求。"
 
 #. Title of the error modal shown when an unverified account tries to purchase Plutonium.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:106
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:108
 msgid "Verify your email first"
 msgstr "请先验证你的邮箱"
 
@@ -38922,7 +38932,7 @@ msgid "View"
 msgstr "查看"
 
 #. Button label on the premium onboarding nagbar. Opens premium feature and subscription settings. Preserve {premiumProductName}; it is inserted by code.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:59
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:61
 msgid "View {premiumProductName} features"
 msgstr "查看 {premiumProductName} 功能"
 
@@ -39174,7 +39184,7 @@ msgstr "弗吉尼亚州"
 msgid "Visibility"
 msgstr "可见性"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:418
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:423
 msgid "Visionary"
 msgstr "Visionary"
 
@@ -39194,7 +39204,7 @@ msgid "Visionary 2FA nagbar"
 msgstr "Visionary 双重认证提示栏"
 
 #. Modal body shown when a Visionary user tries to subscribe. Reassures them and points out gift purchases stay available.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:119
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:121
 msgid "Visionary already includes permanent access, so a recurring subscription isn't needed. You can still buy gifts for others."
 msgstr "Visionary 已包含永久访问权限，因此无需周期性订阅。你仍然可以为他人购买礼物。"
 
@@ -39710,7 +39720,7 @@ msgid "We don't send verification texts to this country. Try a mobile number fro
 msgstr "我们不向该国家发送验证短信。请尝试使用其他国家的手机号码，或联系支持团队。"
 
 #. Modal body for existing-subscription block. Directs the user to the billing portal and addresses the just-paid race case. Keep plain and reassuring.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:130
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:132
 msgid "We found an existing {premiumProductFullName} subscription for this account. Manage it in the secure billing portal to update payment details or check renewal status. If you just paid, wait a minute and reopen this page."
 msgstr "我们发现此账号已有一个 {premiumProductFullName} 订阅。请在安全账单门户中管理该订阅，以更新付款信息或查看续订状态。如果你刚刚付款，请稍等片刻，然后重新打开此页面。"
 
@@ -39961,37 +39971,37 @@ msgid "Welcome to {channelDisplayName}"
 msgstr "欢迎来到 {channelDisplayName}"
 
 #. Premium onboarding nagbar body. {premiumProductFullName} is the full premium product name, such as Fluxer Plutonium. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:24
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:26
 msgid "Welcome to {premiumProductFullName}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "欢迎使用 {premiumProductFullName}。探索你的 {premiumProductName} 福利并管理你的订阅。"
 
 #. Premium onboarding nagbar body for lifetime premium users. Visionary is the lifetime premium tier name. {premiumProductFullName} is the full premium product name. {premiumProductName} is the short product name.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:29
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:31
 msgid "Welcome to {premiumProductFullName}. You have lifetime access as a Visionary. Explore your {premiumProductName} perks."
 msgstr "欢迎使用 {premiumProductFullName}。作为 Visionary，你拥有终身使用权。探索你的 {premiumProductName} 福利。"
 
 #. Premium onboarding nagbar body for a gift subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:53
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:55
 msgid "Welcome to {premiumProductFullName}. Your gift subscription runs until {formattedDate}. Explore your {premiumProductName} perks."
 msgstr "欢迎使用 {premiumProductFullName}。你的礼品订阅有效期至 {formattedDate}。探索你的 {premiumProductName} 福利。"
 
 #. Premium onboarding nagbar body for a monthly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:41
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:43
 msgid "Welcome to {premiumProductFullName}. Your monthly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "欢迎使用 {premiumProductFullName}。你的月度订阅将于 {formattedDate} 续订。探索你的 {premiumProductName} 福利并管理你的订阅。"
 
 #. Premium onboarding nagbar body for a subscription that will cancel. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:35
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:37
 msgid "Welcome to {premiumProductFullName}. Your subscription is active until {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "欢迎使用 {premiumProductFullName}。你的订阅有效期至 {formattedDate}。探索你的 {premiumProductName} 福利并管理你的订阅。"
 
 #. Premium onboarding nagbar body for a yearly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
-#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:47
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx:49
 msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {formattedDate}. Explore your {premiumProductName} perks and manage your subscription."
 msgstr "欢迎使用 {premiumProductFullName}。你的年度订阅将于 {formattedDate} 续订。探索你的 {premiumProductName} 福利并管理你的订阅。"
 
 #. Setup wizard title shown once the operator is signed in as the instance admin.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:41
+#: src/features/app/components/setup/SetupWizardSteps.tsx:40
 msgid "Welcome to {productName}"
 msgstr "欢迎使用 {productName}"
 
@@ -40094,7 +40104,7 @@ msgid "When a custom threshold date is not set, members without the <0>{readMess
 msgstr "如果未设置自定义阈值日期，则没有 <0>{readMessageHistoryPermissionLabel}</0> 权限的成员无法查看任何历史消息。他们只能实时查看收到的消息，并且这些消息会在他们重启客户端后消失。"
 
 #. Description for the attachment expiry setup switch.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:227
+#: src/features/app/components/setup/SetupWizardSteps.tsx:226
 msgid "When attachment expiration is disabled, attachments remain available until manually removed."
 msgstr "禁用附件到期功能后，附件会一直保留，直到被手动移除。"
 
@@ -40200,7 +40210,7 @@ msgid "Who can friend"
 msgstr "谁可以加我为好友"
 
 #. Setup wizard registration step title.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:144
+#: src/features/app/components/setup/SetupWizardSteps.tsx:143
 msgid "Who can join"
 msgstr "谁可以加入"
 
@@ -40335,7 +40345,7 @@ msgid "Without this permission, push-to-talk is required."
 msgstr "没有此权限时，必须使用按住说话。"
 
 #. Label for the wordmark branding asset.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:131
+#: src/features/app/components/setup/SetupWizardSteps.tsx:130
 msgid "Wordmark"
 msgstr "文字标志"
 
@@ -40390,15 +40400,15 @@ msgstr "每年 {yearlyPrice}"
 msgid "Yearly gift"
 msgstr "每年礼物"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:634
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:676
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>."
 msgstr "年度升级已安排在<0>{pendingChangeDate}</0>。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:619
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:661
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel} after a {pendingCreditPriceLabel} credit. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "年度升级已安排在<0>{pendingChangeDate}</0>。首次年度费用：扣除 {pendingCreditPriceLabel} 抵扣后为 {pendingInitialPriceLabel}。后续年度续订：{pendingRecurringPriceLabel}/年。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:626
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:668
 msgid "Yearly upgrade scheduled for <0>{pendingChangeDate}</0>. First yearly charge: {pendingInitialPriceLabel}. Future yearly renewals: {pendingRecurringPriceLabel}/year."
 msgstr "年度升级已安排在<0>{pendingChangeDate}</0>。首次年度费用：{pendingInitialPriceLabel}。后续年度续订：{pendingRecurringPriceLabel}/年。"
 
@@ -40471,12 +40481,12 @@ msgid "You are now a developer!"
 msgstr "你现在是开发者了！"
 
 #. Modal body for the mobile checkout confirmation. Explains that the user is leaving the app to pay.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:195
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:203
 msgid "You are now navigating to {paymentProviderName} to complete the payment. Return to {productName} once you've completed it."
 msgstr "你即将前往 {paymentProviderName} 完成支付。完成后请返回 {productName}。"
 
 #. Setup wizard body shown to the signed-in instance administrator.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:45
+#: src/features/app/components/setup/SetupWizardSteps.tsx:44
 msgid "You are signed in as the instance administrator. The next steps configure branding, registration, and core policy for everyone on this instance."
 msgstr "你已作为实例管理员登录。接下来将为本实例的所有人配置品牌、注册和核心策略。"
 
@@ -41013,7 +41023,7 @@ msgid "You need to verify your email address before you can start a direct messa
 msgstr "你需要先验证邮箱地址，才能发起私信。"
 
 #. Body of the error modal shown when the account email is unverified and the user tries to purchase Plutonium. Product name is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:110
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:112
 msgid "You need to verify your email before you can purchase {premiumProductFullName}."
 msgstr "你需要先验证邮箱，才能购买 {premiumProductFullName}。"
 
@@ -41115,7 +41125,7 @@ msgid "You're already friends with this user."
 msgstr "你和对方已经是好友。"
 
 #. Modal title shown when a lifetime Visionary tier user tries to start a recurring Plutonium subscription.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:115
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:117
 msgid "You're already Visionary"
 msgstr "你已经是 Visionary"
 
@@ -41155,7 +41165,7 @@ msgid "You're being rate limited. Wait {duration} before trying again."
 msgstr "你的操作过于频繁。请在 {duration} 后重试。"
 
 #. Error modal body shown when a gift-subscription user tries to start a recurring subscription. Explains the extension/redemption path.
-#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:168
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:176
 msgid "You're currently on a gift subscription. It won't renew. You can redeem more gift codes to extend it. Recurring subscriptions can be started after your gift time ends."
 msgstr "你目前使用的是赠送订阅，它不会自动续订。你可以兑换更多礼品码来延长订阅时长。赠送时长结束后，你可以开通自动续订的订阅。"
 
@@ -41219,12 +41229,12 @@ msgid "You're in the voice channel"
 msgstr "你正在语音频道中"
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price that is no longer offered.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:40
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:43
 msgid "You're on a legacy rate no longer available to new subscribers."
 msgstr "你使用的是旧价格，新订阅者已无法使用此价格。"
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price; current list price is interpolated.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:35
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:38
 msgid "You're on a legacy rate. The current price for this plan is {currentSubscriptionListPriceLabel}."
 msgstr "你使用的是旧价格。此套餐的当前价格为 {currentSubscriptionListPriceLabel}。"
 
@@ -41337,6 +41347,11 @@ msgstr "你请求的验证邮件过多。请稍候片刻，然后重试。"
 msgid "You've seen all your recent mentions. More will appear here soon."
 msgstr "你已查看所有近期提及。新提及会很快显示在这里。"
 
+#. Modal body for existing-subscription block when the subscription was bought in a mobile app store. {storeName} is the store brand name, App Store or Google Play, and must not be translated. {premiumProductFullName} is the full premium product name.
+#: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx:138
+msgid "Your {premiumProductFullName} subscription is billed through {storeName}. Manage it in your {storeName} account to change your plan or check renewal status."
+msgstr "你的 {premiumProductFullName} 订阅通过 {storeName} 计费。请在你的 {storeName} 账号中管理该订阅，以更改方案或查看续订状态。"
+
 #. Plutonium page hero subtitle when a subscription has ended. premiumProductName is the paid tier name.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:62
 msgid "Your {premiumProductName} perks have ended. Subscribe again to bring them back."
@@ -41351,6 +41366,11 @@ msgstr "你的 {premiumProductName} 订阅已过期。你已失去所有 {premiu
 #: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:41
 msgid "Your {productName} session expired. Sign in again to continue authorizing this application."
 msgstr "你的 {productName} 会话已过期。请重新登录以继续授权此应用。"
+
+#. Plutonium subscription card text shown while a failed App Store or Google Play renewal payment is being retried. {storeName} is the store brand name, App Store or Google Play, and must not be translated. {graceDate} is a date already formatted and localized by code; never write a date into the translation.
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:476
+msgid "Your {storeName} renewal payment failed but <0/> stay active until <1>{graceDate}</1>. Update your {storeName} payment method before then to keep your subscription."
+msgstr "你的 {storeName} 续订付款失败，但<0/>在 <1>{graceDate}</1> 之前仍然有效。请在此之前更新 {storeName} 付款方式，以保留你的订阅。"
 
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:200
 msgid "Your account"
@@ -41652,7 +41672,7 @@ msgid "Your registration needs an extra anti-spam check before you can continue.
 msgstr "你的注册需要先完成一项额外的反垃圾信息检查，然后才能继续。"
 
 #. Plutonium subscription card text shown while a failed renewal payment is being retried. {graceDate} is a date already formatted and localized by code; never write a date into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:470
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:492
 msgid "Your renewal payment failed but <0/> stay active until <1>{graceDate}</1>. Update your payment method before then to keep your subscription."
 msgstr "你的续订付款失败，但<0/>在 <1>{graceDate}</1> 之前仍然有效。请在此之前更新付款方式，以保留你的订阅。"
 
@@ -41682,7 +41702,7 @@ msgstr "你的订阅"
 msgid "Your subscription can't move to the new price right now."
 msgstr "你的订阅暂时无法切换到新价格。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:486
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:508
 msgid "Your subscription ended but <0/> stay active until <1>{graceDate}</1>. Resubscribe before then to keep your subscriber history."
 msgstr "你的订阅已结束，但<0/>在 <1>{graceDate}</1> 之前仍然有效。请在此之前重新订阅，以保留你的订阅历史。"
 
@@ -41711,7 +41731,7 @@ msgstr "你的订阅已切换为按月计费。"
 msgid "Your subscription has been switched to yearly billing."
 msgstr "你的订阅已切换为按年计费。"
 
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:528
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:570
 msgid "Your subscription is active but perks are temporarily paused."
 msgstr "你的订阅仍然有效，但福利已暂时停用。"
 
@@ -41731,7 +41751,7 @@ msgid "Your subscription moves to the new price on {effectiveDate}."
 msgstr "你的订阅将于 {effectiveDate} 起使用新价格。"
 
 #. Plutonium subscription card line shown to a subscriber on a legacy price whose subscription is already set to cancel. {cancelDate} is a date and {listPriceNewLabel} is a currency amount, both already formatted and localized by code; never write a date or an amount into the translation.
-#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:682
+#: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:724
 msgid "Your subscription still ends on <0>{cancelDate}</0>. The current price is now {listPriceNewLabel}. If you reactivate, you can switch to it from here."
 msgstr "你的订阅仍将于 <0>{cancelDate}</0> 结束。当前价格为 {listPriceNewLabel}。如果你重新激活，可以在此处切换到该价格。"
 
@@ -41772,12 +41792,12 @@ msgid "Your video encoder stopped encoding frames, so your screen share was stop
 msgstr "你的视频编码器已停止编码帧，因此屏幕共享已停止。请重新共享。"
 
 #. Label for the YouTube enrichment service toggle in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:284
+#: src/features/app/components/setup/SetupWizardSteps.tsx:283
 msgid "YouTube enrichment"
 msgstr "YouTube 增强功能"
 
 #. Setup wizard title for YouTube integration credentials.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:932
+#: src/features/app/components/setup/SetupWizardSteps.tsx:931
 msgid "YouTube previews"
 msgstr "YouTube 预览"
 

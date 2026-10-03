@@ -79,6 +79,76 @@ describe('user-visible text never names the upstream brand', () => {
 		expect(leaks.sort()).toEqual([]);
 	});
 
+	it('never capitalises the brand in display text', () => {
+		// The brand rule: lowercase echowire everywhere a user reads it, including at the start
+		// of a sentence. Reverb and EchoTag keep their casing, and identifiers, env names and
+		// `org.echowire.*` ids are not display text, which is why this looks only at message
+		// bodies and t`...` templates.
+		const leaks: Array<string> = [];
+		for (const file of sourceFiles(APP_SRC)) {
+			const text = readFileSync(file, 'utf8');
+			if (!text.includes('Echowire')) continue;
+			const where = relative(REPO_ROOT, file).split('\\').join('/');
+			for (const pattern of [MESSAGE_BODY, T_TEMPLATE]) {
+				pattern.lastIndex = 0;
+				for (const match of text.matchAll(pattern)) {
+					const body = (match[2] ?? match[1]).trim();
+					if (/\bEchowire\b/.test(body)) leaks.push(`${where}: ${body.slice(0, 120)}`);
+				}
+			}
+		}
+		expect(leaks.sort()).toEqual([]);
+	});
+
+	it('has no fork-renamed string translated back to the upstream name', () => {
+		// The .po procedure's step 6, asked per entry rather than per file. Counting
+		// occurrences of /\bNeko\b/ across a catalog gives a false positive, because it also
+		// matches Croatian and Bosnian words; the real question is whether a *Pickles* msgid
+		// has a *Neko* value, which only makes sense entry by entry.
+		const RENAMES: ReadonlyArray<readonly [string, string]> = [
+			['Pickles', 'Neko'],
+			['Reverb', 'Plutonium'],
+			['EchoTag', 'FluxerTag'],
+			['echowire', 'Fluxer'],
+		];
+		const localesDir = join(APP_SRC, 'features', 'i18n', 'locales');
+		const leaks: Array<string> = [];
+		let catalogsScanned = 0;
+		let entriesScanned = 0;
+
+		for (const locale of readdirSync(localesDir)) {
+			const catalog = join(localesDir, locale, 'messages.po');
+			if (!statSync(localesDir).isDirectory()) continue;
+			let text: string;
+			try {
+				text = readFileSync(catalog, 'utf8');
+			} catch {
+				continue; // not a locale directory
+			}
+			catalogsScanned += 1;
+			for (const block of text.split('\n\n').slice(1)) {
+				const id = /^msgid "((?:\\.|[^"\\])*)"/m.exec(block)?.[1];
+				const value = /^msgstr "((?:\\.|[^"\\])*)"/m.exec(block)?.[1];
+				if (!id || !value) continue;
+				entriesScanned += 1;
+				for (const [fork, upstream] of RENAMES) {
+					const forkInId = new RegExp(`\\b${fork}\\b`).test(id);
+					const upstreamInValue = new RegExp(`\\b${upstream}\\b`).test(value);
+					// The one deliberate exception: msgid "Fluxer" is itself translated to the
+					// fork brand, so it is the inverse of a leak rather than one.
+					if (forkInId && upstreamInValue && id !== upstream) {
+						leaks.push(`${locale}: ${id.slice(0, 60)} -> ${value.slice(0, 60)}`);
+					}
+				}
+			}
+		}
+		// Say how much was looked at, so a broken walk fails here instead of reporting a
+		// clean sweep of nothing. 34 locales is the shipped set; raise this when one is added.
+		expect(catalogsScanned).toBe(34);
+		expect(entriesScanned).toBeGreaterThan(200_000);
+		expect(leaks.sort()).toEqual([]);
+	});
+
 	it('keeps the brand out of the catalogs entirely', () => {
 		// The placeholder approach only pays off if no msgid carries the brand, since a msgid
 		// is what a translator sees and what a keep-theirs resolution would restore.

@@ -31,7 +31,8 @@ codebase to confuse it with: the old TypeScript monolith is no longer live.
 The brand is all lowercase, `echowire`, in every user-visible string, default,
 title, email, catalog value and artifact name (desktop files are `echowire-*`),
 even at the start of a sentence. A capitalized `Echowire` in display text is a
-leak to fix. `Reverb` (premium, upstream's Plutonium) and `EchoTag` (upstream's
+leak to fix, and inside `fluxer_app` that is now asserted rather than remembered:
+`fluxer_app/src/features/i18n/BrandInUserVisibleText.test.ts`. `Reverb` (premium, upstream's Plutonium) and `EchoTag` (upstream's
 FluxerTag) keep their casing. Code identifiers, env var names, `org.echowire.*`
 ids and the `// Echowire:` divergence markers are not display text and stay as
 they are. Download and updater matching must stay tolerant of old `Echowire-*`
@@ -291,12 +292,17 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
      `pnpm --filter fluxer_app lingui:compile`, which fails on any locale still
      missing one, and check the extract summary reports 0 missing.
   6. Account for the result: distinct fork source strings, messages per locale and
-     missing count from the extract summary, and zero fork strings translated to
-     the upstream name. Count the leak, not the occurrences: ask whether any
-     *Pickles* msgid has a Neko translation, since `\bNeko\b` also matches
-     Croatian and Bosnian words. A deliberately kept upstream-name msgid, such as
-     the `Neko` settings-search synonym, belongs in the catalog with a comment
-     saying why, so the next person does not delete it as a leak.
+     missing count from the extract summary.
+
+     The leak question itself is no longer yours to remember.
+     `BrandInUserVisibleText.test.ts` asks it per entry across all 34 catalogs,
+     which is the only way it can be asked correctly, since `\bNeko\b` also
+     matches Croatian and Bosnian words and counting occurrences over a file gives
+     a false positive. It also asserts how many catalogs and entries it scanned,
+     so a broken walk fails instead of reporting a clean sweep of nothing. A
+     deliberately kept upstream-name msgid, such as the `Neko` settings-search
+     synonym, goes in that test's `ALLOWED` list with its reason, not in a comment
+     someone has to find.
 
   Catalog merges must carry metadata, not only values.
 
@@ -514,8 +520,24 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   the fork removed on purpose.
 - **Branding leaks through generated files and defaults:** regenerate
   `fluxer_api/src/api/openapi/openapi.json` and `fluxer_admin/openapi-admin.json`
-  with `pnpm openapi:generate` rather than taking upstream's. Grep for `Fluxer`
-  outside `fluxer_*` names and for capitalized `Echowire` in display text.
+  with `pnpm openapi:generate` rather than taking upstream's.
+
+  The general "grep for `Fluxer`" instruction that used to live here is gone,
+  because `BrandInUserVisibleText.test.ts` now asserts it for `fluxer_app` display
+  strings and all 34 catalogs, and a rule duplicating a gate is what people trust
+  when the gate is inconvenient. What that gate does **not** cover, and so is
+  still yours to check:
+
+  - the generated specs above, where `Plutonium` in a `.describe()` string is
+    deliberate and matches upstream on purpose,
+  - `fluxer_admin`'s Maud templates, which are Rust and operator-facing. The
+    pattern there is upstream's own: take the configured
+    `branding.premium_product_name` rather than a literal, as
+    `premium_mode_form` and `plutonium_page_section` both do, and assert it.
+  - every package other than `fluxer_app`.
+
+  Extending the gate is better than re-adding the grep. If you find a leak in one
+  of those three, the fix is a case in the test, not a line here.
 - **Desktop updater:** `fluxer_desktop/src/main/UpdaterDownloads.ts` carries four
   fork values: the `/api`-suffixed update endpoint, the Windows
   `DESKTOP_BUILD_VARIANT` segment, the echowire.org download page, and the

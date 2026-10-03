@@ -11,7 +11,9 @@ interface IpBannedErrorOptions {
 	expiresAt?: Date | null;
 }
 
-const SUPPORT_EMAIL = 'support@fluxer.app';
+// Echowire: the appeal address for a global IP ban. Upstream's is support@fluxer.app;
+// this fork answers at its own domain, matching permissions.global_ip_banned.
+const SUPPORT_EMAIL = 'support@echowire.org';
 
 export class IpBannedError extends ForbiddenError {
 	constructor(options: IpBannedErrorOptions) {

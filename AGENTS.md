@@ -124,6 +124,16 @@ rewriting it, **drifted automation** only by invoking the documented command rat
 than an equivalent, and an **incomplete list** only by adding the gate to the list
 the moment you notice you had to go looking for it.
 
+One deliberate exception to "invoke these commands", and it is the only one. An
+automated runner should spell the docs gate `cd fluxer_docs && pnpm verify` rather
+than `pnpm --filter fluxer_docs verify`, because `--filter` is the construct the
+eslint finding above condemns: it exits 0 when it matches nothing, so a rename of
+either the package or the script would turn the gate green instead of red. The
+directory form cannot pass vacuously. This is not licence to paraphrase the rest.
+It is a narrower claim: where the documented spelling can succeed without running,
+the runner should use the spelling that cannot, and say which line it departs from
+and why.
+
 Note that this is a different failure from a rule being wrong, and it needs a
 different defence. The `.po` rule below was **documentation that was wrong**, and the
 fix was to write a better rule. These two were **documentation that was right, with

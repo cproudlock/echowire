@@ -83,7 +83,7 @@ export class AdminThreadService {
 	}): Promise<ListChannelThreadsResponse> {
 		const {channelRepository, auditService} = this.deps;
 		const parent = await channelRepository.findUnique(createChannelID(data.channel_id));
-		if (!parent || !parent.guildId) {
+		if (!parent?.guildId) {
 			throw new UnknownChannelError();
 		}
 		if (!canParentThreads(parent)) {

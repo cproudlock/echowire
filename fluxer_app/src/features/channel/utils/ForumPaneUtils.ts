@@ -56,7 +56,7 @@ export function resolveForumPaneState<T extends ForumPaneChannelLike>(
 		return {mode: ForumPaneMode.LIST, forum: null, post: null};
 	}
 	const parent = getChannel(selected.parentId) ?? null;
-	if (!parent || !parent.isForum()) {
+	if (!parent?.isForum()) {
 		return {mode: ForumPaneMode.LIST, forum: null, post: null};
 	}
 	return {mode: fullView || narrow ? ForumPaneMode.FULL : ForumPaneMode.SPLIT, forum: parent, post: selected};
@@ -75,7 +75,7 @@ export interface OriginalPosterInput {
 export function isOriginalPoster(input: OriginalPosterInput): boolean {
 	const {thread, authorId, system = false, webhook = false} = input;
 	if (system || webhook) return false;
-	if (!thread || !thread.isThread()) return false;
+	if (!thread?.isThread()) return false;
 	if (!thread.ownerId || !authorId) return false;
 	return thread.ownerId === authorId;
 }
@@ -133,7 +133,7 @@ export function canAddToPost(input: AddToPostInput): boolean {
 	const {post, parentIsForum, currentUserId, hasImageAttachment, postAlreadyHasMedia, isStarterMessage, canManage} =
 		input;
 	if (!parentIsForum || !hasImageAttachment || postAlreadyHasMedia || isStarterMessage) return false;
-	if (!post || !post.isThread()) return false;
+	if (!post?.isThread()) return false;
 	if (canManage) return true;
 	if (!currentUserId || !post.ownerId) return false;
 	return post.ownerId === currentUserId;

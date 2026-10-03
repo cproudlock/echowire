@@ -55,6 +55,7 @@ import {
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import StreamerMode from '@app/features/streamer_mode/state/StreamerMode';
 import * as ThemeCommands from '@app/features/theme/commands/ThemeCommands';
+import linkRendererStyles from '@app/features/theme/styles/LinkRenderer.module.css';
 import markupStyles from '@app/features/theme/styles/Markup.module.css';
 import * as ThemeUtils from '@app/features/theme/utils/ThemeUtils';
 import TrustedDomain from '@app/features/trusted_domain/state/TrustedDomain';
@@ -66,6 +67,8 @@ import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
 import * as TextCopyCommands from '@app/features/ui/commands/TextCopyCommands';
 import FocusRing from '@app/features/ui/focus_ring/FocusRing';
+import MobileLayout from '@app/features/ui/state/MobileLayout';
+import {Tooltip} from '@app/features/ui/tooltip/Tooltip';
 import {APP_PROTOCOL_PREFIX, APP_PROTOCOL_SCHEME, isAppProtocolUrl} from '@app/features/ui/utils/AppProtocol';
 import {openExternalUrl} from '@app/features/ui/utils/NativeUtils';
 import {
@@ -81,7 +84,7 @@ import {isProbablyAValidSnowflake} from '@fluxer/snowflake/src/SnowflakeUtils';
 import type {I18n} from '@lingui/core';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react';
-import {CaretRightIcon, ChatTeardropIcon, LockIcon} from '@phosphor-icons/react';
+import {CaretRightIcon, ChatTeardropIcon, LockIcon, WarningIcon} from '@phosphor-icons/react';
 import {clsx} from 'clsx';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
@@ -995,6 +998,8 @@ export const LinkRenderer = observer(function LinkRenderer({
 	const shouldShowAccessDeniedModal = Boolean(jumpTarget && !jumpChannel);
 	let isInternal = false;
 	let handleClick: ((e: React.MouseEvent) => void) | undefined;
+	let isExternalDestination = false;
+	let isTrustedExternalDestination = false;
 	if (userProfileId) {
 		handleClick = (event) => {
 			event.preventDefault();
@@ -1150,6 +1155,8 @@ export const LinkRenderer = observer(function LinkRenderer({
 			}
 			if (!isInternal && !inviteCode) {
 				const isTrusted = TrustedDomain.isTrustedDomain(parsed.hostname);
+				isExternalDestination = true;
+				isTrustedExternalDestination = isTrusted;
 				if (!isTrusted) {
 					handleClick = (e) => {
 						e.preventDefault();
@@ -1170,7 +1177,8 @@ export const LinkRenderer = observer(function LinkRenderer({
 	}
 	const href = AttachmentUrlRefresher.fresh(url);
 	const warmAttachmentUrl = () => AttachmentUrlRefresher.warm(url);
-	return (
+	const showDestinationTooltip = isExternalDestination && text != null;
+	const linkElement = (
 		<FocusRing key={id} offset={-2} data-flx="messaging.markdown.renderers.link-renderer.focus-ring--2">
 			<a
 				href={href}
@@ -1203,5 +1211,23 @@ export const LinkRenderer = observer(function LinkRenderer({
 				{content}
 			</a>
 		</FocusRing>
+	);
+	if (!showDestinationTooltip) {
+		return linkElement;
+	}
+	const destinationTooltipText = MobileLayout.enabled
+		? url
+		: () => (
+				<span className={linkRendererStyles.destination}>
+					{!isTrustedExternalDestination && (
+						<WarningIcon size={16} weight="fill" className={linkRendererStyles.destinationWarningIcon} />
+					)}
+					<span>{url}</span>
+				</span>
+			);
+	return (
+		<Tooltip text={destinationTooltipText} type="normal" position="bottom" maxWidth="xl">
+			{linkElement}
+		</Tooltip>
 	);
 });

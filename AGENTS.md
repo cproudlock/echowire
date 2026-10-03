@@ -415,6 +415,25 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   their green instead. Mutation-check every gate and every guard: inject the fault it
   exists to catch, confirm red, revert. A check that has never been seen to fail is
   not yet a check.
+- **Re-run before theorising.** When a test fails and the code under test looks
+  correct, the cheapest next move is another run, not a hypothesis. The second
+  failure's *identity* is the diagnostic: the same test twice is a defect, a
+  different test in the same pool is shared state, and a clean run is a flake whose
+  cause is still worth a minute.
+
+  This is not a counsel of patience, it names a specific trap. On 2026-10-03 a fork
+  thread test failed right after a merge, and instrumenting it showed the code doing
+  exactly what the assertion asked: first run writes, second run skips. From a single
+  failure the tempting reading is that the instrumentation is wrong, and the next hour
+  goes into the subject under test. What settled it was re-running, which failed a
+  *different* test in the same non-isolated pool, and two unrelated failures in one
+  shared pool is shared mutable state rather than a bug in either. Upstream's very
+  next commit was the fix.
+
+  So when instrumentation says the code is healthy, believe the measurement and widen
+  the question instead of doubting it. Ask whether the failure moves between runs,
+  whether the file passes alone, and whether upstream has already fixed it, before
+  forming any theory about the code. One data point does not have a shape.
 - **`fluxer_marketing`** conflicts as a gitlink every time. Keep the vendored tree.
 - **Deliberate divergence** is marked `// Echowire:` (or `%% Echowire:`). Keep
   ours there; where upstream reshapes an API, take its structure and carry our

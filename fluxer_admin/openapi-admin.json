@@ -15662,6 +15662,7 @@
 				"type": "object",
 				"properties": {
 					"enabled": {"type": "boolean"},
+					"provider": {"nullable": true, "allOf": [{"$ref": "#/components/schemas/CaptchaProviderSchema"}]},
 					"cost": {"type": "integer", "minimum": 1000, "maximum": 20000},
 					"max_counter": {"type": "integer", "minimum": 100, "maximum": 20000}
 				}
@@ -15707,6 +15708,7 @@
 					"voice_e2ee_scope": {"type": "string", "enum": ["guild_feature_only", "platform_wide"]}
 				}
 			},
+			"CaptchaProviderSchema": {"type": "string", "enum": ["altcha", "hcaptcha", "turnstile"]},
 			"BillingLegacyPricesSchema": {
 				"type": "object",
 				"additionalProperties": {
@@ -15799,10 +15801,15 @@
 				"type": "object",
 				"properties": {
 					"enabled": {"default": true, "type": "boolean"},
+					"provider": {
+						"default": null,
+						"nullable": true,
+						"allOf": [{"$ref": "#/components/schemas/CaptchaProviderSchema"}]
+					},
 					"cost": {"default": 5000, "type": "integer", "minimum": 1000, "maximum": 20000},
 					"max_counter": {"default": 1000, "type": "integer", "minimum": 100, "maximum": 20000}
 				},
-				"required": ["enabled", "cost", "max_counter"],
+				"required": ["enabled", "provider", "cost", "max_counter"],
 				"additionalProperties": false
 			},
 			"DomainMigrationConfigResponse": {

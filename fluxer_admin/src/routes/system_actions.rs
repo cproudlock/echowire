@@ -613,6 +613,7 @@ fn build_captcha_update(form: &MultiValueForm) -> Result<InstanceConfigUpdateReq
     Ok(InstanceConfigUpdateRequest {
         captcha: Some(CaptchaConfigUpdateRequest {
             enabled: Some(form.bool_value("captcha_enabled")),
+            provider: Some(form.clean("captcha_provider")),
             cost: parse_form_number(
                 form,
                 "captcha_cost",
@@ -1398,10 +1399,24 @@ mod tests {
     fn build_captcha_update_turns_the_check_off_when_the_box_is_unchecked() {
         let form = MultiValueForm::parse(b"_csrf=token");
         let request = build_captcha_update(&form).expect("valid form");
+        // Echowire: an empty provider select sends null, which clears the override
+        // back to FLUXER_CAPTCHA_PROVIDER. See docs/adr/0008.
         assert_eq!(
             serde_json::to_value(request).expect("serializable update"),
-            serde_json::json!({"captcha": {"enabled": false}})
+            serde_json::json!({"captcha": {"enabled": false, "provider": null}})
         );
+    }
+
+    #[test]
+    fn build_captcha_update_pins_the_provider_the_form_selected() {
+        // Echowire: production selects Turnstile, because the published mobile
+        // clients cannot solve an ALTCHA challenge. See docs/adr/0008.
+        let form = MultiValueForm::parse(b"_csrf=token&captcha_provider=turnstile");
+        let update = build_captcha_update(&form)
+            .expect("valid form")
+            .captcha
+            .expect("captcha update");
+        assert_eq!(update.provider, Some(Some("turnstile".to_string())));
     }
 
     #[test]

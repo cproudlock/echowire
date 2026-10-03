@@ -760,7 +760,16 @@ Only `api` and `worker` build the mail service, so recreating those two is enoug
 
 ## CAPTCHA
 
-[ALTCHA](/topics/captcha/) proof-of-work is on by default. Turn it off or tune it under Instance Config, Bot protection in the admin panel. No environment variables configure it.
+[ALTCHA](/topics/captcha/) proof-of-work is on by default and needs no keys. An instance can instead offer hCaptcha or Cloudflare Turnstile to clients that cannot solve an ALTCHA challenge. All of these are optional.
+
+| Variable | Value in `.env.example` | Controls |
+| --- | --- | --- |
+| FLUXER_CAPTCHA_ENABLED | `false` | Whether the environment selects a [CAPTCHA](/topics/captcha/) provider. Startup fails if that provider's keys are missing |
+| FLUXER_CAPTCHA_PROVIDER | `none` | The provider offered to clients that cannot solve ALTCHA. One of `altcha`, `hcaptcha`, `turnstile`, `none` |
+
+`FLUXER_CAPTCHA_HCAPTCHA_SITE_KEY`, `FLUXER_CAPTCHA_HCAPTCHA_SECRET_KEY`, `FLUXER_CAPTCHA_TURNSTILE_SITE_KEY`, and `FLUXER_CAPTCHA_TURNSTILE_SECRET_KEY` ship empty in `.env.example` and the shipped Compose file forwards them all. Set the pair the selected provider needs; ALTCHA needs neither. Any other provider name fails startup.
+
+Unlike the rest of Runtime Integrations, these keys are read from the environment alone and are never stored in the instance database. The admin dashboard's Instance Config, Bot protection panel selects the provider and overrides `FLUXER_CAPTCHA_PROVIDER`, and clearing that selection returns to the environment value. Selecting a provider whose keys are missing turns the check off rather than serving a challenge no client can answer.
 
 ## Single sign-on and passkeys
 
@@ -1672,7 +1681,7 @@ Registration mode of `open`, `approval`, or `closed`, admin-issued registration 
 
 #### Instance Config, Bot protection
 
-The [ALTCHA](/topics/captcha/) proof-of-work check on sign-up, login, password recovery, and a few other gated operations. It is on by default. Turn it off here, or change its cost and maximum counter.
+The CAPTCHA on sign-up, login, password recovery, and a few other gated operations. It is on by default, using [ALTCHA](/topics/captcha/) proof-of-work. Turn it off here, choose the provider, or change the ALTCHA cost and maximum counter.
 
 #### Instance Config, Community & Policy
 

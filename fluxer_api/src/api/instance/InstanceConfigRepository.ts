@@ -37,6 +37,7 @@ import {
 	type CaptchaConfig,
 	CaptchaConfigSchema,
 	type CaptchaConfigUpdateRequest,
+	type CaptchaProvider,
 } from '@fluxer/schema/src/domains/admin/CaptchaSchemas';
 import {
 	type DomainMigrationConfig,
@@ -569,6 +570,36 @@ function parseStoredDomainMigrationConfig(raw: string | null): DomainMigrationCo
 
 function parseStoredCaptchaConfig(raw: string | null): CaptchaConfig {
 	return parseStoredConfigOrDefault(CaptchaConfigSchema, raw, 'captcha');
+}
+
+// Echowire: upstream #3035 left ALTCHA as the only captcha. This fork keeps the
+// provider dimension, because the mobile clients on the stores cannot solve ALTCHA.
+// An instance that has not chosen a provider through the admin surface inherits the
+// one FLUXER_CAPTCHA_PROVIDER names, so upgrading from the environment-configured
+// build keeps serving the captcha its own shipped clients can answer, and a fresh
+// self-hosted instance that configures nothing still gets ALTCHA the way upstream
+// intends. See docs/adr/0008.
+function envCaptchaProvider(): CaptchaProvider {
+	if (!Config.captcha.enabled) return 'altcha';
+	const provider = Config.captcha.provider;
+	return provider === 'hcaptcha' || provider === 'turnstile' ? provider : 'altcha';
+}
+
+function captchaProviderHasKeys(provider: CaptchaProvider): boolean {
+	if (provider === 'altcha') return true;
+	const keys = provider === 'hcaptcha' ? Config.captcha.hcaptcha : Config.captcha.turnstile;
+	return Boolean(keys?.siteKey) && Boolean(keys?.secretKey);
+}
+
+// A provider whose keys are missing turns the captcha off rather than quietly
+// falling back to ALTCHA. Falling back would hand an unsolvable challenge to every
+// client that cannot solve one, which is the outage this divergence exists to avoid.
+function resolveCaptchaConfig(stored: CaptchaConfig): CaptchaConfig {
+	const provider = stored.provider ?? envCaptchaProvider();
+	if (!captchaProviderHasKeys(provider)) {
+		return {...stored, provider, enabled: false};
+	}
+	return {...stored, provider};
 }
 
 function parseStoredExperimentDeliveryConfig(raw: string | null): ExperimentDeliveryConfig {
@@ -1348,7 +1379,7 @@ export class InstanceConfigRepository {
 
 	async getCaptchaConfig(): Promise<CaptchaConfig> {
 		const raw = await this.getConfig(CAPTCHA_CONFIG_KEY);
-		return parseStoredCaptchaConfig(raw);
+		return resolveCaptchaConfig(parseStoredCaptchaConfig(raw));
 	}
 
 	updateCaptchaConfig(patch: CaptchaConfigUpdateRequest): Promise<CaptchaConfig> {

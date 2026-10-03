@@ -498,6 +498,10 @@ pub struct DomainMigrationConfigUpdateRequest {
 #[serde(default)]
 pub struct CaptchaConfigResponse {
     pub enabled: bool,
+    // Echowire: upstream #3035 left ALTCHA as the only captcha. This fork keeps the
+    // provider, because the published mobile clients cannot solve an ALTCHA
+    // challenge. None means inherit FLUXER_CAPTCHA_PROVIDER. See docs/adr/0008.
+    pub provider: Option<String>,
     pub cost: u32,
     pub max_counter: u32,
 }
@@ -506,6 +510,7 @@ impl Default for CaptchaConfigResponse {
     fn default() -> Self {
         Self {
             enabled: true,
+            provider: None,
             cost: 5_000,
             max_counter: 1_000,
         }
@@ -516,6 +521,10 @@ impl Default for CaptchaConfigResponse {
 pub struct CaptchaConfigUpdateRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub enabled: Option<bool>,
+    // Echowire: the outer None omits the field, Some(None) sends null to clear the
+    // override back to the environment, and Some(Some(name)) pins a provider.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub provider: Option<Option<String>>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub cost: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]

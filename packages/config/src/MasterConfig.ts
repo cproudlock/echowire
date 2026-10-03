@@ -219,6 +219,21 @@ export interface MasterConfig {
 				secure: boolean;
 			};
 		};
+		// Echowire: upstream #3035 removed this block when it made ALTCHA the only
+		// captcha. This fork keeps the multi-provider shape because the mobile clients
+		// on the stores cannot solve ALTCHA. See docs/adr/0008.
+		captcha: {
+			enabled: boolean;
+			provider: 'altcha' | 'hcaptcha' | 'turnstile' | 'none';
+			hcaptcha?: {
+				site_key: string;
+				secret_key: string;
+			};
+			turnstile?: {
+				site_key: string;
+				secret_key: string;
+			};
+		};
 		voice: {
 			enabled: boolean;
 			api_key: string;

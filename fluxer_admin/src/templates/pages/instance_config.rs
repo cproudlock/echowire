@@ -1208,6 +1208,15 @@ fn captcha_section(base: &str, csrf_token: &str, captcha: &CaptchaConfigResponse
                         p class="text-xs text-neutral-500" {
                             "On by default. Turning it off removes the check from every request."
                         }
+                        (select_input("captcha_provider", "Provider", &[
+                            ("", "Inherit from environment"),
+                            ("altcha", "ALTCHA proof of work"),
+                            ("turnstile", "Cloudflare Turnstile"),
+                            ("hcaptcha", "hCaptcha"),
+                        ], captcha.provider.as_deref().unwrap_or("")))
+                        p class="text-xs text-neutral-500" {
+                            "ALTCHA needs no keys. hCaptcha and Turnstile read their site and                              secret keys from the environment, and selecting one whose keys are                              missing turns the check off rather than serving a challenge no                              client can answer. Clients that cannot solve ALTCHA, including                              published mobile builds, are offered this provider."
+                        }
                         (number_field(
                             "captcha_cost",
                             "Cost (PBKDF2 iterations per try)",

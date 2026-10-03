@@ -60,8 +60,19 @@ function buildDiscoveryStaticInput(
 			gift: Config.endpoints.gift,
 			webapp: Config.endpoints.webApp,
 		},
+		// Echowire: upstream #3035 reduced this to altcha or none. The mobile clients on
+		// the stores read the provider and its site key from here to render the widget
+		// they implement, so both have to stay. See docs/adr/0008.
 		captcha: {
-			provider: runtime.captcha.enabled ? 'altcha' : 'none',
+			provider: runtime.captcha.enabled ? (runtime.captcha.provider ?? 'altcha') : 'none',
+			hcaptcha_site_key:
+				runtime.captcha.enabled && runtime.captcha.provider === 'hcaptcha'
+					? (Config.captcha.hcaptcha?.siteKey ?? null)
+					: null,
+			turnstile_site_key:
+				runtime.captcha.enabled && runtime.captcha.provider === 'turnstile'
+					? (Config.captcha.turnstile?.siteKey ?? null)
+					: null,
 		},
 		features: {
 			voice_enabled: Config.voice.enabled,

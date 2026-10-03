@@ -155,7 +155,12 @@ describe('InstanceConfigRepository', () => {
 		setCassandraQueryExecutorForTesting(new CountingInMemoryCassandraQueryExecutor());
 		const repository = createRepository(new MockKVProvider());
 
-		await expect(repository.getCaptchaConfig()).resolves.toEqual({enabled: true, cost: 5000, max_counter: 1000});
+		await expect(repository.getCaptchaConfig()).resolves.toEqual({
+			enabled: true,
+			provider: 'altcha',
+			cost: 5000,
+			max_counter: 1000,
+		});
 	});
 
 	it('ignores a legacy altcha captcha row that turned the experiment off', async () => {
@@ -167,7 +172,12 @@ describe('InstanceConfigRepository', () => {
 			JSON.stringify({enabled: false, config_version: 4, cost: 5000, max_counter: 10000}),
 		);
 
-		await expect(repository.getCaptchaConfig()).resolves.toEqual({enabled: true, cost: 5000, max_counter: 1000});
+		await expect(repository.getCaptchaConfig()).resolves.toEqual({
+			enabled: true,
+			provider: 'altcha',
+			cost: 5000,
+			max_counter: 1000,
+		});
 	});
 
 	it('merges a partial captcha update onto the stored config', async () => {
@@ -177,7 +187,12 @@ describe('InstanceConfigRepository', () => {
 		await repository.updateCaptchaConfig({cost: 2000});
 		await repository.updateCaptchaConfig({enabled: false});
 
-		await expect(repository.getCaptchaConfig()).resolves.toEqual({enabled: false, cost: 2000, max_counter: 1000});
+		await expect(repository.getCaptchaConfig()).resolves.toEqual({
+			enabled: false,
+			provider: 'altcha',
+			cost: 2000,
+			max_counter: 1000,
+		});
 	});
 
 	it('drops a legacy captcha integration, secrets included, on the next integrations write', async () => {

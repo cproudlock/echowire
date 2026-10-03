@@ -152,7 +152,7 @@ describe('Captcha challenge', () => {
 			.patch('/admin/instance/config')
 			.body({captcha: {enabled: false}})
 			.execute();
-		expect(updated.captcha).toEqual({enabled: false, cost: 1000, max_counter: 100});
+		expect(updated.captcha).toEqual({enabled: false, provider: 'altcha', cost: 1000, max_counter: 100});
 
 		await forgot(harness).expect(HTTP_STATUS.NO_CONTENT).execute();
 	});

@@ -196,6 +196,20 @@ export interface APIConfig {
 	breachedPasswordCheck: {
 		enabled: boolean;
 	};
+	// Echowire: restored after upstream #3035 removed the multi-provider captcha.
+	// See docs/adr/0008.
+	captcha: {
+		enabled: boolean;
+		provider: 'altcha' | 'hcaptcha' | 'turnstile' | 'none';
+		hcaptcha?: {
+			siteKey: string;
+			secretKey: string;
+		};
+		turnstile?: {
+			siteKey: string;
+			secretKey: string;
+		};
+	};
 	contentModeration: {
 		nsfwThreshold: number;
 	};

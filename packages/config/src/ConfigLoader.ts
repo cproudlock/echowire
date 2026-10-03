@@ -210,6 +210,10 @@ function defaultConfig(): MasterConfig {
 				from_name: 'echowire',
 				app_base_url: '',
 			},
+			captcha: {
+				enabled: false,
+				provider: 'none',
+			},
 			voice: {
 				enabled: false,
 				api_key: '',
@@ -437,6 +441,29 @@ function validatePostgresConfig(config: MasterConfig): void {
 	}
 }
 
+// Echowire: restored with upstream #3035 reverted, widened so that altcha needs
+// no keys. ALTCHA is keyless proof of work; hCaptcha and Turnstile are not.
+function validateCaptchaConfig(config: MasterConfig): void {
+	const captcha = config.integrations.captcha;
+	if (!captcha.enabled) {
+		return;
+	}
+	if (captcha.provider === 'altcha') {
+		return;
+	}
+	if (captcha.provider === 'hcaptcha') {
+		requireString(captcha.hcaptcha?.site_key, 'FLUXER_CAPTCHA_HCAPTCHA_SITE_KEY');
+		requireString(captcha.hcaptcha?.secret_key, 'FLUXER_CAPTCHA_HCAPTCHA_SECRET_KEY');
+		return;
+	}
+	if (captcha.provider === 'turnstile') {
+		requireString(captcha.turnstile?.site_key, 'FLUXER_CAPTCHA_TURNSTILE_SITE_KEY');
+		requireString(captcha.turnstile?.secret_key, 'FLUXER_CAPTCHA_TURNSTILE_SECRET_KEY');
+		return;
+	}
+	throw new Error('FLUXER_CAPTCHA_PROVIDER must be altcha, hcaptcha or turnstile when FLUXER_CAPTCHA_ENABLED is true');
+}
+
 function validateApiWorkerConfig(config: MasterConfig): void {
 	const worker = config.services.api?.worker;
 	if (!worker) {
@@ -558,9 +585,15 @@ function normalizeConfig(config: MasterConfig): MasterConfig {
 	assertOneOf(config.internal.kv_provider, ['redis'], 'FLUXER_KV_PROVIDER');
 	assertOneOf(config.internal.kv_mode, ['standalone', 'cluster'], 'FLUXER_KV_MODE');
 	assertOneOf(config.integrations.email.provider, ['smtp', 'none'], 'FLUXER_EMAIL_PROVIDER');
+	assertOneOf(
+		config.integrations.captcha.provider,
+		['altcha', 'hcaptcha', 'turnstile', 'none'],
+		'FLUXER_CAPTCHA_PROVIDER',
+	);
 	assertOneOf(config.integrations.search.engine, ['elasticsearch', 'meilisearch'], 'FLUXER_SEARCH_ENGINE');
 	assertOneOf(config.integrations.cache_purge.adapter, CACHE_PURGE_ADAPTER_NAMES, 'FLUXER_CACHE_PURGE_ADAPTER');
 	validatePostgresConfig(config);
+	validateCaptchaConfig(config);
 	validateApiWorkerConfig(config);
 	validateStorageChangeFeedConfig(config);
 	validateCachePurgeConfig(config);

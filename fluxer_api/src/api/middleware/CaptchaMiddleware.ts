@@ -11,8 +11,12 @@ import {extractEmailDomain} from '@app/api/utils/EmailDomainUtils';
 import {Headers} from '@fluxer/constants/src/Headers';
 import {UserFlags} from '@fluxer/constants/src/UserConstants';
 import {CaptchaRequiredError, InvalidCaptchaError} from '@fluxer/errors/src/CaptchaErrors';
-import type {CaptchaConfig} from '@fluxer/schema/src/domains/admin/CaptchaSchemas';
+import {extractClientIp} from '@fluxer/ip_utils/src/ClientIp';
+import type {CaptchaConfig, CaptchaProvider} from '@fluxer/schema/src/domains/admin/CaptchaSchemas';
+import type {ICaptchaProvider} from '@pkgs/captcha/src/ICaptchaProvider';
 import {AltchaProvider} from '@pkgs/captcha/src/providers/AltchaProvider';
+import {HcaptchaProvider} from '@pkgs/captcha/src/providers/HcaptchaProvider';
+import {TurnstileProvider} from '@pkgs/captcha/src/providers/TurnstileProvider';
 import type {Context} from 'hono';
 import {createMiddleware} from 'hono/factory';
 
@@ -35,8 +39,38 @@ function createAltchaProvider(config: CaptchaConfig): AltchaProvider {
 	});
 }
 
-async function altchaChallengeData(altcha: AltchaProvider): Promise<Record<string, unknown>> {
-	return {captcha_provider: 'altcha', altcha_challenge: await altcha.createChallenge()};
+// Echowire: the provider offered to a client that cannot solve ALTCHA. A null
+// provider means nobody chose one, which is ALTCHA, the upstream default.
+function offeredProvider(config: CaptchaConfig): CaptchaProvider {
+	return config.provider ?? 'altcha';
+}
+
+// Echowire: hCaptcha and Turnstile secrets live in the environment only, never in
+// the database. See docs/adr/0008.
+function createHttpProvider(provider: 'hcaptcha' | 'turnstile'): ICaptchaProvider | null {
+	const keys = provider === 'hcaptcha' ? Config.captcha.hcaptcha : Config.captcha.turnstile;
+	const secretKey = keys?.secretKey;
+	if (!secretKey) {
+		Logger.error({provider}, 'Captcha provider is configured but its secret key is missing');
+		return null;
+	}
+	const options = {secretKey, logger: Logger};
+	return provider === 'hcaptcha' ? new HcaptchaProvider(options) : new TurnstileProvider(options);
+}
+
+// Echowire: every challenge carries the ALTCHA challenge alongside the provider
+// name, so one response serves both client families. The web app solves the ALTCHA
+// challenge and retries with X-Captcha-Type: altcha; a mobile client already on the
+// stores reads captcha_provider and renders the widget it implements. Naming the
+// offered provider here is what keeps those clients able to log in, because they
+// fall back to hCaptcha for any provider string they do not recognise.
+async function challengeData(provider: CaptchaProvider, altcha: AltchaProvider): Promise<Record<string, unknown>> {
+	return {captcha_provider: provider, altcha_challenge: await altcha.createChallenge()};
+}
+
+function requestedProvider(ctx: Context<HonoEnv>): CaptchaProvider | null {
+	const requested = ctx.req.header(Headers.X_CAPTCHA_TYPE);
+	return requested === 'altcha' || requested === 'hcaptcha' || requested === 'turnstile' ? requested : null;
 }
 
 export async function verifyCaptchaToken(ctx: Context<HonoEnv>): Promise<boolean> {
@@ -48,12 +82,29 @@ export async function verifyCaptchaToken(ctx: Context<HonoEnv>): Promise<boolean
 	if (userHasCaptchaExemptFlag(user)) return false;
 	if (await requestUserHasCaptchaExemptFlag(ctx)) return false;
 	const altcha = createAltchaProvider(config);
+	const offered = offeredProvider(config);
 	const token = ctx.req.header(Headers.X_CAPTCHA_TOKEN);
 	if (!token) {
-		throw new CaptchaRequiredError(await altchaChallengeData(altcha));
+		throw new CaptchaRequiredError(await challengeData(offered, altcha));
 	}
-	if (!(await altcha.verify({token}))) {
-		throw new InvalidCaptchaError(await altchaChallengeData(altcha));
+	const resolved = requestedProvider(ctx) ?? offered;
+	if (resolved === 'altcha') {
+		if (!(await altcha.verify({token}))) {
+			throw new InvalidCaptchaError(await challengeData(offered, altcha));
+		}
+		return true;
+	}
+	const provider = createHttpProvider(resolved);
+	if (!provider) {
+		throw new InvalidCaptchaError(await challengeData(offered, altcha));
+	}
+	const remoteIp =
+		extractClientIp(ctx.req.raw, {
+			trustClientIpHeader: Config.proxy.trust_client_ip_header,
+			clientIpHeaderName: Config.proxy.client_ip_header,
+		}) ?? undefined;
+	if (!(await provider.verify({token, remoteIp}))) {
+		throw new InvalidCaptchaError(await challengeData(offered, altcha));
 	}
 	return true;
 }

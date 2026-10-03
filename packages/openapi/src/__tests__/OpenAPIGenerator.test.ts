@@ -71,9 +71,19 @@ describe('OpenAPI generation from API controllers', () => {
 		expect(responses).not.toHaveProperty('204');
 	});
 
-	it('keeps every desktop download redirect out of the published document', () => {
-		const published = Object.keys(document.paths).filter((path) => path.startsWith('/dl'));
-		expect(published).toEqual([]);
+	// Echowire: see the matching note in RouteDiscovery.test.ts. The fork publishes a
+	// desktop download API, so the assertion pins which /dl paths reach the document
+	// rather than requiring that none do.
+	it('publishes exactly the desktop download paths the fork documents', () => {
+		const published = Object.keys(document.paths)
+			.filter((path) => path.startsWith('/dl'))
+			.sort();
+		expect(published).toEqual([
+			'/dl/desktop/{channel}/{plat}/{arch}/latest',
+			'/dl/desktop/{channel}/{plat}/{arch}/latest/{format}',
+			'/dl/desktop/{channel}/{plat}/{arch}/versions',
+			'/dl/desktop/{channel}/{plat}/{arch}/{version}/{format}',
+		]);
 	});
 
 	it('publishes stream preview images as binary responses', () => {

@@ -2396,7 +2396,7 @@ msgid "7 days"
 msgstr "7 dienos"
 
 #. Required-action error when the API requires a captcha for phone verification.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:581
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:576
 msgid "A browser check is required before phone verification. Try again from the sign-in page or contact support."
 msgstr "Prieš patvirtinant telefono numerį, reikalingas naršyklės patikrinimas. Bandykite dar kartą prisijungimo puslapyje arba susisiekite su palaikymo komanda."
 
@@ -2874,7 +2874,7 @@ msgid "Activity sharing"
 msgstr "Dalijimasis veikla"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:478
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:473
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:102
 msgid "Activity threshold"
 msgstr "Aktyvumo slenkstis"
@@ -3120,7 +3120,7 @@ msgstr "Pridėti prieigos raktą"
 #. Generic action label that opens the reaction picker for a message.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:527
-#: src/features/input/state/input_keybind/shared.ts:17
+#: src/features/input/state/input_keybind/shared.ts:21
 msgid "Add reaction"
 msgstr "Pridėti reakciją"
 
@@ -3611,11 +3611,11 @@ msgstr "Leisti {everyoneMention} ir {hereMention}"
 msgid "Allow {PRODUCT_NAME} to access your camera in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 msgstr "Leiskite {PRODUCT_NAME} pasiekti jūsų kamerą: {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:535
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:530
 msgid "Allow {PRODUCT_NAME} to access your microphone in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME}."
 msgstr "Leiskite {PRODUCT_NAME} pasiekti jūsų mikrofoną: {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME}."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:540
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:535
 msgid "Allow {PRODUCT_NAME} to access your microphone. Check your browser's address bar or settings."
 msgstr "Leiskite {PRODUCT_NAME} pasiekti jūsų mikrofoną. Patikrinkite naršyklės adreso juostą arba nustatymus."
 
@@ -3718,7 +3718,7 @@ msgstr "Leisti nariams be leidimo „{readMessageHistoryPermissionLabel}“ maty
 msgid "Allow mentions for this role"
 msgstr "Leisti paminėti šį vaidmenį"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:560
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:555
 msgid "Allow microphone"
 msgstr "Leisti naudoti mikrofoną"
 
@@ -4203,7 +4203,7 @@ msgid "Another round checkbox"
 msgstr "Dar vienas apvalus žymimasis langelis"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:213
+#: src/features/input/state/input_keybind/shared.ts:221
 msgid "Answer the incoming call"
 msgstr "Atsiliepti į gaunamą skambutį"
 
@@ -4767,7 +4767,7 @@ msgid "Audio output"
 msgstr "Garso išvestis"
 
 #. Field label in the voice connection status popout. Shows received audio packet loss percentage.
-#: src/features/voice/components/voice_connection_status/shared.ts:107
+#: src/features/voice/components/voice_connection_status/shared.ts:108
 msgid "Audio packet loss:"
 msgstr "Garso paketų praradimas:"
 
@@ -4782,32 +4782,32 @@ msgid "Audio preview"
 msgstr "Garso peržiūra"
 
 #. Voice settings modal title for microphone processing options.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:51
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:48
 msgid "Audio processing"
 msgstr "Garso apdorojimas"
 
 #. Tooltip in the voice status popout. Describes the custom mic processing profile with enhanced (DeepFilterNet3) noise suppression.
-#: src/features/voice/components/voice_connection_status/shared.ts:19
+#: src/features/voice/components/voice_connection_status/shared.ts:20
 msgid "Audio processing (custom, enhanced)"
 msgstr "Garso apdorojimas (pasirinktinis, patobulintas)"
 
 #. Tooltip in the voice status popout. Describes the custom mic processing profile with no noise suppression.
-#: src/features/voice/components/voice_connection_status/shared.ts:29
+#: src/features/voice/components/voice_connection_status/shared.ts:30
 msgid "Audio processing (custom, no suppression)"
 msgstr "Garso apdorojimas (pasirinktinis, be slopinimo)"
 
 #. Tooltip in the voice status popout. Describes the custom mic processing profile with browser-built-in noise suppression.
-#: src/features/voice/components/voice_connection_status/shared.ts:24
+#: src/features/voice/components/voice_connection_status/shared.ts:25
 msgid "Audio processing (custom)"
 msgstr "Garso apdorojimas (pasirinktinis)"
 
 #. Tooltip in the voice status popout. Describes the studio / direct-input mic processing profile.
-#: src/features/voice/components/voice_connection_status/shared.ts:11
+#: src/features/voice/components/voice_connection_status/shared.ts:12
 msgid "Audio processing (direct input, raw)"
 msgstr "Garso apdorojimas (tiesioginė įvestis, be apdorojimo)"
 
 #. Tooltip in the voice status popout. Describes the focused-voice mic processing profile.
-#: src/features/voice/components/voice_connection_status/shared.ts:15
+#: src/features/voice/components/voice_connection_status/shared.ts:16
 msgid "Audio processing (focused voice)"
 msgstr "Garso apdorojimas (fokusuotas balsas)"
 
@@ -4817,12 +4817,12 @@ msgid "Audio progress"
 msgstr "Garso įrašo eiga"
 
 #. Field label in the voice connection status popout. Shows current inbound audio bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:95
+#: src/features/voice/components/voice_connection_status/shared.ts:96
 msgid "Audio receive:"
 msgstr "Garso priėmimas:"
 
 #. Field label in the voice connection status popout. Shows current outbound audio bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:91
+#: src/features/voice/components/voice_connection_status/shared.ts:92
 msgid "Audio send:"
 msgstr "Garso siuntimas:"
 
@@ -4993,7 +4993,7 @@ msgstr "Automatiškai aptikti kalbą"
 
 #. Short label in the voice tab. Keep it concise.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:116
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:465
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:460
 msgid "Auto-set activity threshold"
 msgstr "Automatiškai nustatyti aktyvumo slenkstį"
 
@@ -5210,7 +5210,7 @@ msgid "Avatars"
 msgstr "Avatarai"
 
 #. Field label in the voice connection status popout. Shows the average RTT in ms over the recent window.
-#: src/features/voice/components/voice_connection_status/shared.ts:50
+#: src/features/voice/components/voice_connection_status/shared.ts:51
 msgid "Average ping:"
 msgstr "Vidutinis pingas:"
 
@@ -5240,8 +5240,8 @@ msgstr "Šiuo metu nesu prie kompiuterio"
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:396
 #: src/features/moderation/components/report_modal/IARModal.tsx:86
 #: src/features/moderation/components/report/ReportStepDetails.tsx:312
-#: src/features/user/components/modals/PhoneAddModal.tsx:420
-#: src/features/user/components/modals/PhoneAddModal.tsx:439
+#: src/features/user/components/modals/PhoneAddModal.tsx:417
+#: src/features/user/components/modals/PhoneAddModal.tsx:436
 msgid "Back"
 msgstr "Atgal"
 
@@ -5450,7 +5450,7 @@ msgid "Ban this user"
 msgstr "Užblokuoti šį naudotoją"
 
 #. Section heading in the voice connection status popout for current media bitrate usage.
-#: src/features/voice/components/voice_connection_status/shared.ts:66
+#: src/features/voice/components/voice_connection_status/shared.ts:67
 msgid "Bandwidth"
 msgstr "Pralaidumas"
 
@@ -5775,7 +5775,7 @@ msgstr "Pasiektas žymių limitas"
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:531
-#: src/features/input/state/input_keybind/shared.ts:265
+#: src/features/input/state/input_keybind/shared.ts:273
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:66
 msgid "Bookmark message"
 msgstr "Pažymėti žinutę"
@@ -6431,7 +6431,7 @@ msgstr "Čia negalima įkelti failų"
 #: src/features/expressions/components/modals/EditGuildStickerModal.tsx:116
 #: src/features/guild/components/modals/TransferOwnershipModal.tsx:91
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:103
-#: src/features/input/state/input_keybind/shared.ts:137
+#: src/features/input/state/input_keybind/shared.ts:145
 #: src/features/invite/components/modals/InviteModal.tsx:552
 #: src/features/messaging/components/modals/AttachmentEditModal.tsx:133
 #: src/features/messaging/components/modals/EditAltTextModal.tsx:190
@@ -6451,7 +6451,7 @@ msgstr "Čia negalima įkelti failų"
 #: src/features/user/components/modals/PasswordChangeModal.tsx:226
 #: src/features/user/components/modals/PasswordChangeModal.tsx:237
 #: src/features/user/components/modals/PasswordChangeModal.tsx:255
-#: src/features/user/components/modals/PhoneAddModal.tsx:401
+#: src/features/user/components/modals/PhoneAddModal.tsx:398
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:174
 #: src/features/voice/components/EntranceSoundTrimmerModal.tsx:33
 #: src/features/voice/components/modals/CameraPreviewModal.tsx:846
@@ -6501,12 +6501,12 @@ msgstr "Atšaukti suplanuotą keitimą"
 #. Billing button that starts subscription cancellation.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:844
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:140
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:142
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "Atšaukti prenumeratą"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:133
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
 msgid "Cancel subscription?"
 msgstr "Atšaukti prenumeratą?"
 
@@ -7865,7 +7865,7 @@ msgid "Clean link"
 msgstr "nuorodų valymas"
 
 #. Description for the focused-voice option in the voice processing settings radio group.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:34
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:31
 msgid "Cleans up your mic for clear speech."
 msgstr "Išvalo mikrofono garsą, kad kalba būtų aiški."
 
@@ -7924,7 +7924,7 @@ msgid "Clear custom status"
 msgstr "Išvalyti pasirinktinę būseną"
 
 #. Body of the confirmation alert shown when clearing every reaction on a message.
-#: src/features/channel/components/MessageActionUtils.tsx:71
+#: src/features/channel/components/MessageActionUtils.tsx:74
 msgid "Clear every reaction from this message?"
 msgstr "Išvalyti visas reakcijas iš šios žinutės?"
 
@@ -8294,7 +8294,7 @@ msgstr "Anglies tema"
 #. Label for an inbound phone verification code shown in the required-action modal.
 #: src/features/auth/components/modals/MfaTotpDisableModal.tsx:26
 #: src/features/auth/components/modals/MfaTotpEnableModal.tsx:36
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:466
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:462
 #: src/features/invite/components/InviteListItem.tsx:77
 #: src/features/moderation/components/report/ReportBreadcrumbs.tsx:29
 msgid "Code"
@@ -9013,7 +9013,7 @@ msgstr "Prijunkite kamerą arba virtualų fiksavimo įrenginį ir bandykite dar 
 msgid "Connect a display, then try again."
 msgstr "Prijunkite ekraną ir bandykite dar kartą."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:545
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:540
 msgid "Connect a microphone and try again."
 msgstr "Prijunkite mikrofoną ir bandykite dar kartą."
 
@@ -9058,7 +9058,7 @@ msgid "Connecting..."
 msgstr "Jungiamasi..."
 
 #. Voice connection status while joining or reconnecting.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:46
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:47
 msgctxt "voice-connection-status"
 msgid "Connecting..."
 msgstr "Jungiamasi..."
@@ -9077,7 +9077,7 @@ msgid "Connection failed"
 msgstr "Nepavyko prisijungti"
 
 #. Voice connection status when the most recent attempt to join the channel failed.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:56
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:57
 msgctxt "voice-connection-status"
 msgid "Connection failed"
 msgstr "Nepavyko prisijungti"
@@ -9464,7 +9464,7 @@ msgstr "Kopijuoti kanalo ID"
 
 #. Action that copies a deep link to the selected channel.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:205
+#: src/features/input/state/input_keybind/shared.ts:213
 #: src/features/ui/action_menu/items/ChannelMenuData.tsx:132
 msgid "Copy channel link"
 msgstr "Kopijuoti kanalo nuorodą"
@@ -9503,7 +9503,7 @@ msgid "Copy emoji URL"
 msgstr "Kopijuoti jaustuko URL"
 
 #. Tooltip / button label that copies the voice endpoint hostname to the clipboard.
-#: src/features/voice/components/voice_connection_status/shared.ts:58
+#: src/features/voice/components/voice_connection_status/shared.ts:59
 msgid "Copy endpoint"
 msgstr "Kopijuoti galinį tašką"
 
@@ -9613,7 +9613,7 @@ msgstr "Kopijuoti žinutę"
 #. Developer-mode action that copies a message snowflake/ID to the clipboard.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:737
-#: src/features/input/state/input_keybind/shared.ts:277
+#: src/features/input/state/input_keybind/shared.ts:285
 msgid "Copy message ID"
 msgstr "Kopijuoti žinutės ID"
 
@@ -9621,7 +9621,7 @@ msgstr "Kopijuoti žinutės ID"
 #. IAR modal: quick-action card title.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:523
-#: src/features/input/state/input_keybind/shared.ts:273
+#: src/features/input/state/input_keybind/shared.ts:281
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:389
 msgid "Copy message link"
 msgstr "Kopijuoti žinutės nuorodą"
@@ -10299,7 +10299,7 @@ msgstr "Atgalinės atskaitos laikmatis"
 #. Form field label for the country selector in the phone verification step.
 #. Short label in the phone add modal. Keep it concise.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:92
-#: src/features/user/components/modals/PhoneAddModal.tsx:59
+#: src/features/user/components/modals/PhoneAddModal.tsx:57
 msgid "Country"
 msgstr "Šalis"
 
@@ -10460,7 +10460,7 @@ msgstr "Kurti naują nuorodą"
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Short label in the sidebar navigation add guild button.
 #: src/features/app/components/layout/sidebar_nav/AddGuildButton.tsx:32
-#: src/features/input/state/input_keybind/shared.ts:121
+#: src/features/input/state/input_keybind/shared.ts:129
 msgid "Create or join a community"
 msgstr "Sukurti bendruomenę arba prie jos prisijungti"
 
@@ -10653,7 +10653,7 @@ msgid "Current DM"
 msgstr "Šis DM pokalbis"
 
 #. Field label in the voice connection status popout. Shows the latest RTT in ms.
-#: src/features/voice/components/voice_connection_status/shared.ts:41
+#: src/features/voice/components/voice_connection_status/shared.ts:42
 msgid "Current ping:"
 msgstr "Dabartinis ping:"
 
@@ -10701,7 +10701,7 @@ msgstr "Pasirinktinis šaltinis"
 #. Voice input processing profile where the user configures processing manually.
 #. Voice input processing profile where the user configures processing manually.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:91
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:42
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:39
 #: src/features/voice/components/VoiceSettingsMenus.tsx:70
 msgctxt "voice-processing-profile"
 msgid "Custom"
@@ -11229,7 +11229,7 @@ msgid "Decide whether replies @mention you by default"
 msgstr "Nustatykite, ar atsakymai pagal numatytuosius nustatymus jus @pamini"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:217
+#: src/features/input/state/input_keybind/shared.ts:225
 msgid "Decline the incoming call"
 msgstr "Atmesti gaunamą skambutį"
 
@@ -12007,7 +12007,7 @@ msgid "Device volume"
 msgstr "Įrenginio garsumas"
 
 #. Field label in the voice connection status popout. Shows the connected voice region / device.
-#: src/features/voice/components/voice_connection_status/shared.ts:37
+#: src/features/voice/components/voice_connection_status/shared.ts:38
 msgid "Device:"
 msgstr "Įrenginys:"
 
@@ -12336,7 +12336,7 @@ msgstr "Atsijungti nuo „{channel}“"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tray menu item. Leaves the current voice call when the channel name is unavailable.
-#: src/features/input/state/input_keybind/shared.ts:317
+#: src/features/input/state/input_keybind/shared.ts:325
 #: src/features/platform/utils/DesktopLocaleBridge.ts:221
 msgid "Disconnect from voice"
 msgstr "Atsijungti nuo balso pokalbio"
@@ -12353,7 +12353,7 @@ msgid "Disconnected"
 msgstr "Atjungta"
 
 #. Voice connection status when not connected.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:51
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:52
 msgctxt "voice-connection-status"
 msgid "Disconnected"
 msgstr "Atjungta"
@@ -12418,7 +12418,7 @@ msgid "Dismiss"
 msgstr "Atmesti"
 
 #. Button that dismisses the failed voice connection status banner.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:66
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:67
 msgctxt "voice-connection-status"
 msgid "Dismiss"
 msgstr "Atmesti"
@@ -12966,7 +12966,7 @@ msgid "Drop images, fonts, or other files here to use them inside your custom CS
 msgstr "Nuvilkite vaizdus, šriftus ar kitus failus čia, kad galėtumėte juos naudoti savo tinkintame CSS."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:133
+#: src/features/input/state/input_keybind/shared.ts:141
 msgid "Drop item"
 msgstr "Numesti elementą"
 
@@ -13014,7 +13014,7 @@ msgid "Duplicate role"
 msgstr "Dubliuoti vaidmenį"
 
 #. Field label in the voice connection status popout. Shows how long the current voice session has been connected.
-#: src/features/voice/components/voice_connection_status/shared.ts:74
+#: src/features/voice/components/voice_connection_status/shared.ts:75
 msgid "Duration:"
 msgstr "Trukmė:"
 
@@ -13256,6 +13256,11 @@ msgstr "Redaguoti boto avatarą, žymą, biografiją, reklamjuostę ir draugyst�
 msgid "Edit translation provider"
 msgstr "Redaguoti vertimo teikėją"
 
+#. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
+#: src/features/input/state/input_keybind/shared.ts:13
+msgid "Edit your messages above or below"
+msgstr "Redaguoti savo žinutes aukščiau arba žemiau"
+
 #. Button or menu action label in the my profile tab. Keep it concise.
 #: src/features/user/components/modals/tabs/MyProfileTab.tsx:93
 msgid "Edit your profile appearance and see a live preview"
@@ -13350,7 +13355,7 @@ msgid "Email unavailable"
 msgstr "El. paštas nepasiekiamas"
 
 #. Required-action error shown when email update cannot continue.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:522
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:518
 msgid "Email update is unavailable right now. Try again later or contact support."
 msgstr "El. pašto atnaujinimas šiuo metu nepasiekiamas. Bandykite dar kartą vėliau arba susisiekite su palaikymo komanda."
 
@@ -13441,12 +13446,12 @@ msgid "Embeds"
 msgstr "Įterptieji elementai"
 
 #. Toast confirmation after hiding link previews and embeds on a message.
-#: src/features/channel/components/MessageActionUtils.tsx:83
+#: src/features/channel/components/MessageActionUtils.tsx:86
 msgid "Embeds suppressed"
 msgstr "Įterptieji elementai paslėpti"
 
 #. Toast confirmation after re-enabling link previews and embeds on a message.
-#: src/features/channel/components/MessageActionUtils.tsx:79
+#: src/features/channel/components/MessageActionUtils.tsx:82
 msgid "Embeds unsuppressed"
 msgstr "Įterptieji elementai vėl rodomi"
 
@@ -13894,11 +13899,11 @@ msgstr "Pabaigos data"
 msgid "End grace now"
 msgstr "Baigti lengvatinį laikotarpį dabar"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:162
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:164
 msgid "End grace period"
 msgstr "Baigti lengvatinį laikotarpį"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:155
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:157
 msgid "End grace period now?"
 msgstr "Baigti lengvatinį laikotarpį dabar?"
 
@@ -13930,7 +13935,7 @@ msgid "Endpoint"
 msgstr "Galinis taškas"
 
 #. Field label in the voice connection status popout. Shows the voice server endpoint hostname.
-#: src/features/voice/components/voice_connection_status/shared.ts:54
+#: src/features/voice/components/voice_connection_status/shared.ts:55
 msgid "Endpoint:"
 msgstr "Galinis taškas:"
 
@@ -13999,7 +14004,7 @@ msgstr "Įveskite tinkamą „{theOtherPlatform}“ šablono URL arba kodą."
 
 #. Inline validation error on the email step of the DSA report flow when the email is malformed.
 #. Required-action form error for an invalid email address.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:510
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:506
 #: src/features/moderation/components/pages/ReportPage.tsx:59
 msgid "Enter a valid email address."
 msgstr "Įveskite galiojantį el. pašto adresą."
@@ -14010,14 +14015,14 @@ msgid "Enter a valid message link."
 msgstr "Įveskite galiojančią žinutės nuorodą."
 
 #. Required-action form error for an invalid phone number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:526
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:522
 msgid "Enter a valid mobile phone number."
 msgstr "Įveskite galiojantį mobiliojo telefono numerį."
 
 #. Form validation error shown when the entered phone number cannot be parsed.
 #. Label in the phone add modal.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:108
-#: src/features/user/components/modals/PhoneAddModal.tsx:47
+#: src/features/user/components/modals/PhoneAddModal.tsx:45
 msgid "Enter a valid phone number"
 msgstr "Įveskite galiojantį telefono numerį"
 
@@ -14101,7 +14106,7 @@ msgid "Enter the {digitCount}-digit code sent to {phoneNumber}."
 msgstr "Įveskite {digitCount} skaitmenų kodą, išsiųstą į {phoneNumber}."
 
 #. placeholder {0}: getE164PhoneNumber(phoneNumber, selectedCountry) ?? formattedPhone
-#: src/features/user/components/modals/PhoneAddModal.tsx:376
+#: src/features/user/components/modals/PhoneAddModal.tsx:373
 msgid "Enter the {MFA_CODE_DIGIT_COUNT}-digit code sent to {0}."
 msgstr "Įveskite {MFA_CODE_DIGIT_COUNT} skaitmenų kodą, išsiųstą į {0}."
 
@@ -14344,7 +14349,7 @@ msgstr "Vakaras"
 #. Description for the automatic gain control toggle in the voice processing settings.
 #. Description for the automatic gain control toggle in the voice processing settings.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:173
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:63
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:60
 msgid "Evens out your mic volume so you are not too quiet."
 msgstr "Sulygina mikrofono garsumą, kad jūsų balsas nebūtų per tylus."
 
@@ -14463,7 +14468,7 @@ msgid "Expand channel topic"
 msgstr "Išskleisti kanalo temą"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:229
+#: src/features/input/state/input_keybind/shared.ts:237
 msgid "Expand or collapse compact call view"
 msgstr "Išskleisti arba sutraukti kompaktišką skambučio rodinį"
 
@@ -15385,12 +15390,12 @@ msgid "Focus ring"
 msgstr "Fokusavimo žiedas"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:37
+#: src/features/input/state/input_keybind/shared.ts:45
 msgid "Focus text area"
 msgstr "Fokusuoti teksto sritį"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:197
+#: src/features/input/state/input_keybind/shared.ts:205
 msgid "Focus the text area"
 msgstr "Fokusuoti teksto lauką"
 
@@ -15686,7 +15691,7 @@ msgstr "Persiųsti mediją"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Title of the forward message modal.
-#: src/features/input/state/input_keybind/shared.ts:25
+#: src/features/input/state/input_keybind/shared.ts:33
 #: src/features/messaging/components/modals/ForwardModal.tsx:83
 msgid "Forward message"
 msgstr "Persiųsti žinutę"
@@ -16137,7 +16142,7 @@ msgstr "Gaukite {premiumProductName}, kad tinkintumėte savo žymą arba ją iš
 
 #. Button in the required-action modal. Requests a new inbound SMS challenge code.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:202
-#: src/features/user/components/modals/PhoneAddModal.tsx:427
+#: src/features/user/components/modals/PhoneAddModal.tsx:424
 msgid "Get new code"
 msgstr "Gauti naują kodą"
 
@@ -16447,27 +16452,27 @@ msgid "Go to community"
 msgstr "Eiti į bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:81
+#: src/features/input/state/input_keybind/shared.ts:89
 msgid "Go to direct messages"
 msgstr "Eiti į tiesiogines žinutes"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:113
+#: src/features/input/state/input_keybind/shared.ts:121
 msgid "Go to eighth community"
 msgstr "Eiti į aštuntą bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:101
+#: src/features/input/state/input_keybind/shared.ts:109
 msgid "Go to fifth community"
 msgstr "Eiti į penktą bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:85
+#: src/features/input/state/input_keybind/shared.ts:93
 msgid "Go to first community"
 msgstr "Eiti į pirmą bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:97
+#: src/features/input/state/input_keybind/shared.ts:105
 msgid "Go to fourth community"
 msgstr "Eiti į ketvirtą bendruomenę"
 
@@ -16498,12 +16503,12 @@ msgid "Go to page {pageItem}"
 msgstr "Eiti į puslapį {pageItem}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:89
+#: src/features/input/state/input_keybind/shared.ts:97
 msgid "Go to second community"
 msgstr "Eiti į antrą bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:109
+#: src/features/input/state/input_keybind/shared.ts:117
 msgid "Go to seventh community"
 msgstr "Eiti į septintą bendruomenę"
 
@@ -16514,12 +16519,12 @@ msgid "Go to sign-in"
 msgstr "Eiti į prisijungimą"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:105
+#: src/features/input/state/input_keybind/shared.ts:113
 msgid "Go to sixth community"
 msgstr "Eiti į šeštą bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:93
+#: src/features/input/state/input_keybind/shared.ts:101
 msgid "Go to third community"
 msgstr "Eiti į trečią bendruomenę"
 
@@ -16839,7 +16844,7 @@ msgid "Hate speech"
 msgstr "Neapykantos kalba"
 
 #. Premium page text shown on an instance where the premium tier cannot be bought, only redeemed. {PREMIUM_PRODUCT_NAME} is the premium tier name.
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:295
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:297
 msgid "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
 msgstr "Turite dovanų kodą? Aktyvuokite jį, kad atrakintumėte {PREMIUM_PRODUCT_NAME}."
 
@@ -17183,11 +17188,6 @@ msgstr "Didelis dinaminis diapazonas"
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabHdrTab.tsx:29
 msgid "High dynamic range display mode"
 msgstr "Didelio dinaminio diapazono ekrano režimas"
-
-#. Description for the DeepFilterNet3 noise suppression strength slider.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:71
-msgid "Higher values remove more noise but can affect speech texture."
-msgstr "Didesnės reikšmės pašalina daugiau triukšmo, bet gali paveikti balso skambesį."
 
 #. Short label in the language and locale names. Keep it concise.
 #: src/features/user/utils/LocaleUtils.ts:64
@@ -17809,7 +17809,7 @@ msgstr "Kanale"
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "Režimu „Operacinė sistema“ aukščiau išvardyti žodynai yra tik patariamieji. {PRODUCT_NAME} perduos šias kalbų žymas jūsų OS rašybos tikrintuvui, kai tai bus palaikoma. Žymų, kurių jis neatpažįsta, bus nepaisoma."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:310
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:307
 msgid "In a browser, push-to-talk only works while the {PRODUCT_NAME} tab is focused. Install the desktop app for system-wide push-to-talk."
 msgstr "Naršyklėje funkcija „Kalbėti paspaudus“ veikia tik tada, kai {PRODUCT_NAME} skirtukas yra aktyvus. Įdiekite darbalaukio programą, kad ji veiktų visoje sistemoje."
 
@@ -17955,7 +17955,7 @@ msgid "Incoming calls: nobody"
 msgstr "Gaunamieji skambučiai: niekas"
 
 #. Field label in the voice connection status popout. Shows WebRTC estimated available incoming bandwidth.
-#: src/features/voice/components/voice_connection_status/shared.ts:123
+#: src/features/voice/components/voice_connection_status/shared.ts:124
 msgid "Incoming capacity:"
 msgstr "Gaunamas pralaidumas:"
 
@@ -18664,7 +18664,7 @@ msgid "Jitter"
 msgstr "Delsos svyravimas"
 
 #. Field label in the voice connection status popout. Shows audio jitter in milliseconds.
-#: src/features/voice/components/voice_connection_status/shared.ts:115
+#: src/features/voice/components/voice_connection_status/shared.ts:116
 msgid "Jitter:"
 msgstr "Delsos svyravimas:"
 
@@ -18793,12 +18793,12 @@ msgid "Jump"
 msgstr "Pereiti"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:57
+#: src/features/input/state/input_keybind/shared.ts:65
 msgid "Jump between unread channels"
 msgstr "Pereiti tarp neskaitytų kanalų"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:61
+#: src/features/input/state/input_keybind/shared.ts:69
 msgid "Jump between unread channels with mentions"
 msgstr "Pereiti tarp neskaitytų kanalų su paminėjimais"
 
@@ -18807,7 +18807,7 @@ msgid "Jump straight to the app to continue."
 msgstr "Pereikite tiesiai į programėlę, kad tęstumėte."
 
 #. Tooltip / aria label on a button that jumps to the channel. {channelSourceLabel} is the channel or DM name.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:87
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:88
 msgid "Jump to {channelSourceLabel}"
 msgstr "Pereiti į „{channelSourceLabel}“"
 
@@ -18869,7 +18869,7 @@ msgid "Jump to previous unread channel with mentions"
 msgstr "Pereiti į ankstesnį neskaitytą kanalą su paminėjimais"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:65
+#: src/features/input/state/input_keybind/shared.ts:73
 msgid "Jump to the current call"
 msgstr "Pereiti prie dabartinio skambučio"
 
@@ -18894,7 +18894,7 @@ msgid "Jump to the message in {labelText}"
 msgstr "Pereiti prie žinutės iš „{labelText}“"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:193
+#: src/features/input/state/input_keybind/shared.ts:201
 msgid "Jump to the oldest unread message"
 msgstr "Pereiti prie seniausios neperskaitytos žinutės"
 
@@ -18942,7 +18942,7 @@ msgstr "Išsaugoti priedus išvalius redagavimą"
 msgid "Keep free and premium tiers. You can customize the tiers, sell premium through Stripe, or hand out gift codes later from the admin panel."
 msgstr "Pasilikite nemokamą ir mokamą lygius. Vėliau galėsite tinkinti lygius, parduoti mokamą turinį per „Stripe“ arba dalyti dovanų kodus iš administratoriaus skydelio."
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:164
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:166
 msgid "Keep grace period"
 msgstr "Palikti lengvatinį laikotarpį"
 
@@ -18956,7 +18956,7 @@ msgstr "Laikyti Pickles nejudantį"
 msgid "Keep running"
 msgstr "Palikti veikti"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:142
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:144
 msgid "Keep subscription"
 msgstr "Palikti prenumeratą"
 
@@ -19129,7 +19129,7 @@ msgid "Latency {latency} milliseconds"
 msgstr "Delsa {latency} milisekundžių"
 
 #. Aria label for the latency graph chart in the voice connection status popout.
-#: src/features/voice/components/voice_connection_status/shared.ts:33
+#: src/features/voice/components/voice_connection_status/shared.ts:34
 msgid "Latency graph"
 msgstr "Delsos grafikas"
 
@@ -19798,7 +19798,7 @@ msgid "Look and feel"
 msgstr "Išvaizda ir stilius"
 
 #. placeholder {0}: externalProcessor.name
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:654
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:649
 msgid "Looks like you're using {0}. Stacking {PRODUCT_NAME}'s processing on top can cause pumping or distortion. Direct input passes your audio through untouched."
 msgstr "Panašu, kad naudojate „{0}“. Papildomas „{PRODUCT_NAME}“ apdorojimas gali sukelti garso pulsavimą arba iškraipymus. Tiesioginė įvestis perduoda jūsų garsą nepakeistą."
 
@@ -20055,7 +20055,7 @@ msgstr "Pažymėti visus DM kaip perskaitytus"
 
 #. Accessible label and tooltip for the mark-all-as-read button in the inbox popout.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:165
+#: src/features/input/state/input_keybind/shared.ts:173
 #: src/features/messaging/components/popouts/InboxPopout.tsx:46
 msgid "Mark all inbox channels as read"
 msgstr "Pažymėti visus gautųjų kanalus kaip perskaitytus"
@@ -20087,19 +20087,19 @@ msgstr "Pažymėti kaip spoilerį"
 #. Generic action label that flips a channel back to unread.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:668
-#: src/features/input/state/input_keybind/shared.ts:33
+#: src/features/input/state/input_keybind/shared.ts:41
 msgid "Mark as unread"
 msgstr "Pažymėti kaip neperskaitytą"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/state/input_keybind/shared.ts:145
+#: src/features/input/state/input_keybind/shared.ts:153
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:58
 msgid "Mark channel as read"
 msgstr "Pažymėti kanalą kaip perskaitytą"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:141
+#: src/features/input/state/input_keybind/shared.ts:149
 msgid "Mark community as read"
 msgstr "Pažymėti bendruomenę kaip perskaitytą"
 
@@ -20126,7 +20126,7 @@ msgid "Mark read"
 msgstr "Pažymėti kaip perskaitytą"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:161
+#: src/features/input/state/input_keybind/shared.ts:169
 msgid "Mark top inbox channel as read"
 msgstr "Pažymėti viršutinį gautųjų kanalą kaip perskaitytą"
 
@@ -20367,12 +20367,12 @@ msgid "Maybe later"
 msgstr "Galbūt vėliau"
 
 #. Tooltip on the latency badge while voice latency is still being sampled.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:83
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:84
 msgid "Measuring latency..."
 msgstr "Matuojamas delsos laikas..."
 
 #. Placeholder shown while voice latency is still being sampled. Trailing ellipsis indicates ongoing measurement.
-#: src/features/voice/components/voice_connection_status/shared.ts:45
+#: src/features/voice/components/voice_connection_status/shared.ts:46
 msgid "Measuring…"
 msgstr "Matuojama…"
 
@@ -21475,7 +21475,7 @@ msgid "Mouse forward button"
 msgstr "Pelės mygtukas „Pirmyn“"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:129
+#: src/features/input/state/input_keybind/shared.ts:137
 msgid "Move"
 msgstr "Perkelti"
 
@@ -21490,7 +21490,7 @@ msgid "Move back through page history"
 msgstr "Grįžti atgal puslapių istorijoje"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:49
+#: src/features/input/state/input_keybind/shared.ts:57
 msgid "Move back through viewed channel history"
 msgstr "Grįžti atgal peržiūrėtų kanalų istorijoje"
 
@@ -21507,7 +21507,7 @@ msgid "Move forward through page history"
 msgstr "Eiti pirmyn puslapių istorijoje"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:53
+#: src/features/input/state/input_keybind/shared.ts:61
 msgid "Move forward through viewed channel history"
 msgstr "Eiti pirmyn peržiūrėtų kanalų istorijoje"
 
@@ -22125,7 +22125,7 @@ msgid "Netherlands"
 msgstr "Nyderlandai"
 
 #. Section heading in the voice connection status popout for WebRTC network quality stats.
-#: src/features/voice/components/voice_connection_status/shared.ts:70
+#: src/features/voice/components/voice_connection_status/shared.ts:71
 msgid "Network"
 msgstr "Tinklas"
 
@@ -22716,7 +22716,7 @@ msgstr "Nieko nerasta"
 msgid "No mentions yet"
 msgstr "Kol kas nėra paminėjimų"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:530
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:525
 msgid "No microphone found"
 msgstr "Mikrofonas nerastas"
 
@@ -23824,7 +23824,7 @@ msgid "Open group details for {groupDMName}"
 msgstr "Atidaryti grupės „{groupDMName}“ išsamią informaciją"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:233
+#: src/features/input/state/input_keybind/shared.ts:241
 msgid "Open help"
 msgstr "Atidaryti žinyną"
 
@@ -23977,7 +23977,7 @@ msgid "Open the ban dialog for this community."
 msgstr "Atidaryti užblokavimo dialogo langą šioje bendruomenėje."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:241
+#: src/features/input/state/input_keybind/shared.ts:249
 msgid "Open the context menu"
 msgstr "Atidaryti kontekstinį meniu"
 
@@ -24010,7 +24010,7 @@ msgid "Open the verification email and use the link inside. This window updates 
 msgstr "Atidarykite patvirtinimo el. laišką ir pasinaudokite jame esančia nuoroda. Šis langas atsinaujins atidarius nuorodą."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:249
+#: src/features/input/state/input_keybind/shared.ts:257
 msgid "Open theme studio popout"
 msgstr "Atidaryti temų studijos iššokantįjį langą"
 
@@ -24054,7 +24054,7 @@ msgid "Open your browser, sign in, then enter the code below to link your accoun
 msgstr "Atidarykite naršyklę, prisijunkite, tada įveskite toliau pateiktą kodą, kad susietumėte paskyrą."
 
 #. Required-action modal carousel step title for the first inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:450
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:446
 msgid "Open your messages"
 msgstr "Atidarykite savo žinutes"
 
@@ -24062,17 +24062,17 @@ msgstr "Atidarykite savo žinutes"
 msgid "Open your old {PRODUCT_NAME} app and choose Link a new device, then enter the code below."
 msgstr "Atidarykite savo senąją „{PRODUCT_NAME}“ programėlę ir pasirinkite „Susieti naują įrenginį“, tada įveskite žemiau pateiktą kodą."
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:327
+#: src/features/user/components/modals/PhoneAddModal.tsx:324
 msgid "Open your phone's messaging app and create a new text message."
 msgstr "Atidarykite telefono žinučių programėlę ir sukurkite naują tekstinę žinutę."
 
 #. Required-action modal body for the first inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:454
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:450
 msgid "Open your phone's messaging app and start a new text message."
 msgstr "Atidarykite telefono žinučių programėlę ir pradėkite naują tekstinę žinutę."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:245
+#: src/features/input/state/input_keybind/shared.ts:253
 msgid "Open your settings"
 msgstr "Atidaryti savo nustatymus"
 
@@ -24238,7 +24238,7 @@ msgid "OTP"
 msgstr "OTP"
 
 #. Required-action form error when our own phone lookup provider is unavailable and we fail closed. Must blame us, not the number, and must invite retrying the same number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:558
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:554
 msgid "Our phone number check is down right now. This is on us, not your number. Wait a few minutes and try the same number again."
 msgstr "Šiuo metu mūsų telefono numerio patikra neveikia. Tai mūsų klaida, ne jūsų numerio. Palaukite kelias minutes ir bandykite dar kartą su tuo pačiu numeriu."
 
@@ -24248,7 +24248,7 @@ msgid "Our safety team is reviewing it. We'll send you a DM and email once we've
 msgstr "Mūsų saugos komanda peržiūri pranešimą. Kai priimsime sprendimą, atsiųsime jums tiesioginę žinutę ir el. laišką."
 
 #. Field label in the voice connection status popout. Shows WebRTC estimated available outgoing bandwidth.
-#: src/features/voice/components/voice_connection_status/shared.ts:119
+#: src/features/voice/components/voice_connection_status/shared.ts:120
 msgid "Outgoing capacity:"
 msgstr "Išeinantis pralaidumas:"
 
@@ -24394,7 +24394,7 @@ msgid "Participants"
 msgstr "Dalyviai"
 
 #. Field label in the voice connection status popout. Shows the current LiveKit participant count.
-#: src/features/voice/components/voice_connection_status/shared.ts:79
+#: src/features/voice/components/voice_connection_status/shared.ts:80
 msgid "Participants:"
 msgstr "Dalyviai:"
 
@@ -24825,21 +24825,21 @@ msgstr "Telefonas"
 #. Form field label for the phone number input.
 #. Short label in the phone add modal. Keep it concise.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:100
-#: src/features/user/components/modals/PhoneAddModal.tsx:67
+#: src/features/user/components/modals/PhoneAddModal.tsx:65
 msgid "Phone number"
 msgstr "Telefono numeris"
 
 #. Form validation error shown when the phone number field is empty.
 #. Label in the phone add modal.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:116
-#: src/features/user/components/modals/PhoneAddModal.tsx:43
+#: src/features/user/components/modals/PhoneAddModal.tsx:41
 msgid "Phone number is required"
 msgstr "Reikalingas telefono numeris"
 
 #. Toast shown after phone verification succeeds.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:486
-#: src/features/user/components/modals/PhoneAddModal.tsx:180
-#: src/features/user/components/modals/PhoneAddModal.tsx:185
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:482
+#: src/features/user/components/modals/PhoneAddModal.tsx:178
+#: src/features/user/components/modals/PhoneAddModal.tsx:183
 msgid "Phone number verified"
 msgstr "Telefono numeris patvirtintas"
 
@@ -24854,7 +24854,7 @@ msgid "Phone step"
 msgstr "Telefono žingsnis"
 
 #. Required-action error when the account is not eligible to add phone verification.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:542
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:538
 msgid "Phone verification is not available for this account. Use another method or contact support."
 msgstr "Telefono numerio patvirtinimas šiai paskyrai negalimas. Naudokite kitą metodą arba susisiekite su palaikymo komanda."
 
@@ -24945,7 +24945,7 @@ msgstr "Vaizdas vaizde"
 
 #. Confirm button label on the pin message alert.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/channel/components/MessageActionUtils.tsx:63
+#: src/features/channel/components/MessageActionUtils.tsx:66
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:70
 msgid "Pin"
 msgstr "Prisegti"
@@ -24963,9 +24963,9 @@ msgstr "Prisegti grupės DM"
 #. Generic action label that pins a message to the channel pins.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Title of the confirmation alert shown when pinning a message.
-#: src/features/channel/components/MessageActionUtils.tsx:55
+#: src/features/channel/components/MessageActionUtils.tsx:58
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:539
-#: src/features/input/state/input_keybind/shared.ts:13
+#: src/features/input/state/input_keybind/shared.ts:17
 msgid "Pin message"
 msgstr "Prisegti žinutę"
 
@@ -24990,7 +24990,7 @@ msgid "Pin or unpin any message."
 msgstr "Prisegti arba atsegti bet kurią žinutę."
 
 #. Body of the confirmation alert shown when pinning a message.
-#: src/features/channel/components/MessageActionUtils.tsx:59
+#: src/features/channel/components/MessageActionUtils.tsx:62
 msgid "Pin this message to the channel for everyone to see."
 msgstr "Prisegti šią žinutę prie kanalo, kad visi matytų."
 
@@ -25009,12 +25009,12 @@ msgid "Ping on reply"
 msgstr "Pranešti apie atsakymą"
 
 #. Compact latency badge on the voice control bar. {currentLatency} is an integer millisecond count.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:79
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:80
 msgid "Ping: {currentLatency}ms"
 msgstr "Ping: {currentLatency} ms"
 
 #. Compact latency badge variant used in another voice surface. {latency} is an integer millisecond count.
-#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:43
+#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:44
 msgid "Ping: {latency}ms"
 msgstr "Ping: {latency} ms"
 
@@ -25880,7 +25880,7 @@ msgid "Public registration is closed."
 msgstr "Vieša registracija uždaryta."
 
 #. Field label in the voice connection status popout. Shows technical WebRTC publisher ICE transport details.
-#: src/features/voice/components/voice_connection_status/shared.ts:127
+#: src/features/voice/components/voice_connection_status/shared.ts:128
 msgid "Publisher transport:"
 msgstr "Siuntėjo transportas:"
 
@@ -25994,21 +25994,21 @@ msgid "Push timeout"
 msgstr "Pranešimų delsos laikas"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:297
+#: src/features/input/state/input_keybind/shared.ts:305
 msgid "Push to mute"
 msgstr "Nutildyti paspaudus"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/state/input_keybind/shared.ts:289
+#: src/features/input/state/input_keybind/shared.ts:297
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:162
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:86
 msgid "Push to talk"
 msgstr "Kalbėti paspaudus"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:293
+#: src/features/input/state/input_keybind/shared.ts:301
 msgid "Push to talk (priority)"
 msgstr "Kalbėti paspaudus (prioritetinis)"
 
@@ -26024,7 +26024,7 @@ msgstr "Kalbėjimo paspaudus klavišas"
 
 #. Switch label in the voice tab toggling push-to-talk mode. Keep it concise.
 #: src/features/user/components/modals/tabs/UserVoiceTab.tsx:112
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:349
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:346
 #: src/features/voice/components/VoiceSettingsMenus.tsx:419
 msgid "Push-to-talk"
 msgstr "Kalbėjimas paspaudus"
@@ -26034,7 +26034,7 @@ msgstr "Kalbėjimas paspaudus"
 msgid "Push-to-talk (limited)"
 msgstr "Kalbėjimas paspaudus (ribotas)"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:681
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:676
 msgid "Push-to-talk is ignored in direct input. Switch to focused voice or custom to use it."
 msgstr "Kalbėjimas paspaudus tiesioginėje įvestyje ignoruojamas. Norėdami jį naudoti, perjunkite į fokusuotą balsą arba pasirinktinį."
 
@@ -26201,7 +26201,7 @@ msgid "Read aloud"
 msgstr "Skaityti balsu"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:29
+#: src/features/input/state/input_keybind/shared.ts:37
 msgid "Read message aloud"
 msgstr "Skaityti žinutę balsu"
 
@@ -26290,7 +26290,7 @@ msgid "Receive notifications when someone mentions you"
 msgstr "Gauti pranešimus, kai kas nors jus pamini"
 
 #. Field label in the voice connection status popout. Shows total current inbound media bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:87
+#: src/features/voice/components/voice_connection_status/shared.ts:88
 msgid "Receive:"
 msgstr "Gauti:"
 
@@ -26409,7 +26409,7 @@ msgstr "Išpirkti sau"
 #. Billing button for entering a premium gift code.
 #. Billing button for entering a premium gift code.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:719
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:305
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:307
 msgid "Redeem gift code"
 msgstr "Išpirkti dovanos kodą"
 
@@ -26726,7 +26726,7 @@ msgid "Remove {userName} from your friends?"
 msgstr "Pašalinti „{userName}“ iš draugų?"
 
 #. Confirm button label on the remove-all-reactions alert. Destructive.
-#: src/features/channel/components/MessageActionUtils.tsx:75
+#: src/features/channel/components/MessageActionUtils.tsx:78
 msgid "Remove all"
 msgstr "Pašalinti visas"
 
@@ -26739,7 +26739,7 @@ msgstr "Pašalinti visas {emojiNameWithColons} reakcijas iš šios žinutės?"
 #. Message action that removes every reaction from the selected message.
 #. Title of the confirmation alert shown when clearing every reaction on a message.
 #: src/features/channel/components/MessageActionMenu.tsx:78
-#: src/features/channel/components/MessageActionUtils.tsx:67
+#: src/features/channel/components/MessageActionUtils.tsx:70
 #: src/features/ui/action_menu/items/MessageMenuItems.tsx:70
 msgid "Remove all reactions"
 msgstr "Pašalinti visas reakcijas"
@@ -27247,10 +27247,15 @@ msgstr "Atsakymo paminėjimo nuostata šiai bendruomenei"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Tooltip on the media viewer button that closes the viewer and replies to the message containing the media.
-#: src/features/input/state/input_keybind/shared.ts:21
+#: src/features/input/state/input_keybind/shared.ts:25
 #: src/features/messaging/components/modals/media_modal/shared.ts:105
 msgid "Reply to message"
 msgstr "Atsakyti į žinutę"
+
+#. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
+#: src/features/input/state/input_keybind/shared.ts:29
+msgid "Reply to messages above or below"
+msgstr "Atsakyti į žinutes aukščiau arba žemiau"
 
 #. TTS sentence spoken for a reply message. {replyAuthorName} is the original author, {authorName} is the replier, {formatted} is the speakable message body.
 #: src/features/voice/utils/TtsTextFormatter.ts:47
@@ -27334,7 +27339,7 @@ msgid "Reposts: <0>{countLabel}</0>"
 msgstr "Pakartotiniai bendrinimai: <0>{countLabel}</0>"
 
 #. Required-action form error when the user submits before a code exists.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:498
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:494
 msgid "Request a new code first."
 msgstr "Pirmiausia paprašykite naujo kodo."
 
@@ -27683,7 +27688,7 @@ msgstr "Atkurti numatytuosius nustatymus"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Label for controls that reset app zoom to 100%, including the app zoom slider button.
-#: src/features/input/state/input_keybind/shared.ts:261
+#: src/features/input/state/input_keybind/shared.ts:269
 #: src/features/user/components/modals/tabs/appearance_tab/ScalingTab.tsx:38
 msgid "Reset zoom"
 msgstr "Atkurti mastelį"
@@ -28699,12 +28704,12 @@ msgid "Scroll animation"
 msgstr "Slinkties animacija"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:189
+#: src/features/input/state/input_keybind/shared.ts:197
 msgid "Scroll chat down"
 msgstr "Slinkti pokalbį žemyn"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:185
+#: src/features/input/state/input_keybind/shared.ts:193
 msgid "Scroll chat up"
 msgstr "Slinkti pokalbį aukštyn"
 
@@ -28808,7 +28813,7 @@ msgid "Search communities"
 msgstr "Ieškoti bendruomenių"
 
 #. Button or menu action label in the phone add modal. Keep it concise.
-#: src/features/user/components/modals/PhoneAddModal.tsx:63
+#: src/features/user/components/modals/PhoneAddModal.tsx:61
 msgid "Search countries..."
 msgstr "Ieškoti šalių..."
 
@@ -28891,7 +28896,7 @@ msgstr "Ieškoti kalbų…"
 #: src/features/channel/components/bottomsheets/ChannelSearchBottomSheet.tsx:137
 #: src/features/channel/components/bottomsheets/ChannelSearchBottomSheet.tsx:480
 #: src/features/channel/components/message_search_bar/MessageSearchBar.tsx:56
-#: src/features/input/state/input_keybind/shared.ts:237
+#: src/features/input/state/input_keybind/shared.ts:245
 msgid "Search messages"
 msgstr "Ieškoti žinučių"
 
@@ -29574,17 +29579,17 @@ msgstr "Siųsti teksto į kalbą žinutes komanda /tts. Nariai, įjungę teksto 
 
 #. placeholder {0}: inboundChallenge.challenge_code
 #. placeholder {1}: inboundChallenge.our_number
-#: src/features/user/components/modals/PhoneAddModal.tsx:335
+#: src/features/user/components/modals/PhoneAddModal.tsx:332
 msgid "Send the code <0>{0}</0> to <1>{1}</1>"
 msgstr "Siųskite kodą <0>{0}</0> numeriu <1>{1}</1>"
 
 #. Required-action modal body for the second inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:462
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:458
 msgid "Send the code to the phone number below."
 msgstr "Išsiųskite kodą toliau nurodytu telefono numeriu."
 
 #. Required-action modal carousel step title for the second inbound phone verification instruction.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:458
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:454
 msgid "Send this code"
 msgstr "Siųsti šį kodą"
 
@@ -29594,7 +29599,7 @@ msgid "Send this pin back in time?"
 msgstr "Išsiųsti šį prisegimą atgal į praeitį?"
 
 #. Label for the destination phone number in an inbound phone verification challenge.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:470
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:466
 msgid "Send to"
 msgstr "Siųsti į"
 
@@ -29612,25 +29617,20 @@ msgstr "Siųsti patvirtinimo kodą"
 #. Plus menu item that opens the desktop voice message composer to record and send a voice clip.
 #: src/features/channel/components/textarea/TextareaPlusMenu.tsx:35
 #: src/features/channel/components/VoiceMessageRecorder.tsx:69
-#: src/features/input/state/input_keybind/shared.ts:285
+#: src/features/input/state/input_keybind/shared.ts:293
 msgid "Send voice message"
 msgstr "Siųsti balso žinutę"
 
 #. Field label in the voice connection status popout. Shows total current outbound media bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:83
+#: src/features/voice/components/voice_connection_status/shared.ts:84
 msgid "Send:"
 msgstr "Siųsti:"
 
-#. Required-action modal explanation for an inbound phone verification challenge due to SMS cost.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:442
-msgid "Sending an SMS to this number is expensive, so we need you to text us instead."
-msgstr "SMS siuntimas šiuo numeriu yra brangus, todėl prašome vietoj to parašyti mums."
-
-#: src/features/user/components/modals/PhoneAddModal.tsx:304
+#: src/features/user/components/modals/PhoneAddModal.tsx:301
 msgid "Sending an SMS to this phone number is too expensive for {PRODUCT_NAME}, so we need you to send us an SMS instead. We know this isn't ideal. You can also ask the administrators of this instance to lift this requirement from your account."
 msgstr "SMS siuntimas šiuo telefono numeriu „{PRODUCT_NAME}“ yra per brangus, todėl prašome vietoj to atsiųsti SMS mums. Žinome, kad tai nėra idealu. Taip pat galite paprašyti šios instancijos administratorių panaikinti šį reikalavimą jūsų paskyrai."
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:310
+#: src/features/user/components/modals/PhoneAddModal.tsx:307
 msgid "Sending an SMS to this phone number is too expensive for {PRODUCT_NAME}, so we need you to send us an SMS instead. We know this isn't ideal. You can also contact <0>{SUPPORT_EMAIL}</0> to have us lift this requirement from your account."
 msgstr "SMS siuntimas šiuo telefono numeriu „{PRODUCT_NAME}“ yra per brangus, todėl prašome vietoj to atsiųsti SMS mums. Žinome, kad tai nėra idealu. Taip pat galite kreiptis adresu <0>{SUPPORT_EMAIL}</0>, kad panaikintume šį reikalavimą jūsų paskyrai."
 
@@ -29650,7 +29650,7 @@ msgid "Sends both channels of a stereo microphone. Needs all processing off and 
 msgstr "Siunčia abu stereo mikrofono kanalus. Reikia išjungti visą apdorojimą ir naudoti 128 kbps ar didesnį kanalo bitų dažnį."
 
 #. Description for the studio / direct-input option in the voice processing settings radio group.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:38
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:35
 msgid "Sends raw mic audio with no processing."
 msgstr "Siunčia neapdorotą mikrofono garsą be apdorojimo."
 
@@ -29724,7 +29724,7 @@ msgid "Service incident nagbar"
 msgstr "Pranešimo apie incidentą juosta"
 
 #. Section heading in the voice connection status popout for current call/session debug stats.
-#: src/features/voice/components/voice_connection_status/shared.ts:62
+#: src/features/voice/components/voice_connection_status/shared.ts:63
 msgid "Session"
 msgstr "Seansas"
 
@@ -30174,7 +30174,7 @@ msgstr "Trumpieji kodai"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:121
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:364
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:361
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:38
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:110
 msgid "Shortcut"
@@ -30276,7 +30276,7 @@ msgid "Show attachment expiration indicator"
 msgstr "Rodyti priedo galiojimo pabaigos indikatorių"
 
 #. Developer voice status menu option for displaying participant avatars.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:71
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:72
 msgid "Show call avatars"
 msgstr "Rodyti skambučio avatarus"
 
@@ -30301,7 +30301,7 @@ msgid "Show chat with {count, plural, one {# unread message} other {# unread mes
 msgstr "Rodyti pokalbį (yra {count, plural, one {# neperskaityta žinutė} few {# neperskaitytos žinutės} other {# neperskaitytų žinučių}})"
 
 #. Developer voice status menu option for displaying the voice connection identifier.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:75
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:76
 msgid "Show connection ID"
 msgstr "Rodyti ryšio ID"
 
@@ -31217,7 +31217,7 @@ msgid "Smoother video"
 msgstr "Sklandesnis vaizdas"
 
 #. Required-action error when the SMS provider cannot send or verify a code.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:538
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:534
 msgid "SMS verification is unavailable right now. Try again later or contact support."
 msgstr "Šiuo metu SMS patvirtinimas nepasiekiamas. Bandykite dar kartą vėliau arba susisiekite su palaikymo komanda."
 
@@ -31412,7 +31412,7 @@ msgstr "Kažkas nepavyko. Bandykite dar kartą vėliau."
 #. Inline error in the web deep-link prompt when opening the desktop app fails.
 #. Toast error shown when the mature content check request fails unexpectedly.
 #: src/features/auth/components/modals/MatureContentCheckModal.tsx:18
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:585
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:580
 #: src/features/auth/flow/DesktopDeepLinkPrompt.tsx:31
 msgid "Something went wrong. Try again."
 msgstr "Kažkas nepavyko. Bandykite dar kartą."
@@ -31752,7 +31752,7 @@ msgid "Staff controls"
 msgstr "Darbuotojo valdikliai"
 
 #. Required-action modal notice for inbound phone verification.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:482
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:478
 msgid "Standard messaging rates from your carrier may apply."
 msgstr "Gali būti taikomi standartiniai jūsų operatoriaus pranešimų siuntimo tarifai."
 
@@ -31798,12 +31798,12 @@ msgid "Start {appName} automatically when you sign in."
 msgstr "Automatiškai paleisti {appName} prisijungus."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:221
+#: src/features/input/state/input_keybind/shared.ts:229
 msgid "Start a call in a DM or group"
 msgstr "Pradėti skambutį tiesioginiame pokalbyje arba grupėje"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:149
+#: src/features/input/state/input_keybind/shared.ts:157
 msgid "Start a group DM"
 msgstr "Pradėti grupės DM"
 
@@ -31839,7 +31839,7 @@ msgid "Start date must be earlier than end date."
 msgstr "Pradžios data turi būti ankstesnė už pabaigos datą."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:125
+#: src/features/input/state/input_keybind/shared.ts:133
 msgid "Start drag and drop"
 msgstr "Pradėti vilkti ir mesti"
 
@@ -32235,7 +32235,7 @@ msgid "Stopped the member from hearing others in this community"
 msgstr "Sustabdytas nario gebėjimas girdėti kitus šioje bendruomenėje"
 
 #. Description for the echo cancellation toggle in the custom voice processing settings.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:59
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:56
 msgid "Stops your speakers from looping back into your mic."
 msgstr "Neleidžia garsiakalbių garsui grįžti atgal į mikrofoną."
 
@@ -32388,7 +32388,7 @@ msgid "Submitting"
 msgstr "Pateikiama"
 
 #. Field label in the voice connection status popout. Shows technical WebRTC subscriber ICE transport details.
-#: src/features/voice/components/voice_connection_status/shared.ts:131
+#: src/features/voice/components/voice_connection_status/shared.ts:132
 msgid "Subscriber transport:"
 msgstr "Prenumeratoriaus transportas:"
 
@@ -32482,11 +32482,6 @@ msgstr "Slėpti neprivilegijuotus savęs paminėjimus"
 msgid "Suppression"
 msgstr "Slopinimas"
 
-#. Label for the DeepFilterNet3 noise suppression strength slider in the custom voice processing settings.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:67
-msgid "Suppression strength"
-msgstr "Slopinimo stiprumas"
-
 #. Collapsible group heading in the Theme Studio tokens list, for background surface tokens.
 #: src/features/theme_studio/sections/TokenGroups.ts:46
 msgid "Surfaces"
@@ -32532,12 +32527,12 @@ msgid "Switch accounts"
 msgstr "Keisti paskyras"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:45
+#: src/features/input/state/input_keybind/shared.ts:53
 msgid "Switch between channels"
 msgstr "Perjungti kanalus"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:41
+#: src/features/input/state/input_keybind/shared.ts:49
 msgid "Switch between communities"
 msgstr "Perjungti bendruomenes"
 
@@ -32575,7 +32570,7 @@ msgstr "Perjungti į patogų išdėstymą"
 msgid "Switch to dense layout"
 msgstr "Perjungti į tankų išdėstymą"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:649
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:644
 msgid "Switch to direct input"
 msgstr "Perjungti į tiesioginį įvedimą"
 
@@ -32602,7 +32597,7 @@ msgid "Switch to next community"
 msgstr "Perjungti į kitą bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:77
+#: src/features/input/state/input_keybind/shared.ts:85
 msgid "Switch to next community or DMs"
 msgstr "Perjungti į kitą bendruomenę arba tiesiogines žinutes"
 
@@ -32617,7 +32612,7 @@ msgid "Switch to previous community"
 msgstr "Perjungti į ankstesnę bendruomenę"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:73
+#: src/features/input/state/input_keybind/shared.ts:81
 msgid "Switch to previous community or DMs"
 msgstr "Perjungti į ankstesnę bendruomenę arba tiesiogines žinutes"
 
@@ -32666,7 +32661,7 @@ msgid "Switch to…"
 msgstr "Perjungti į…"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:313
+#: src/features/input/state/input_keybind/shared.ts:321
 msgid "Switch voice channel"
 msgstr "Perjungti balso kanalą"
 
@@ -33185,12 +33180,12 @@ msgid "Thank you for helping keep {productName} safe. We'll review your report a
 msgstr "Dėkojame, kad padedate užtikrinti „{productName}“ saugumą. Jūsų pranešimą peržiūrėsime kuo greičiau."
 
 #. Required-action form error for an invalid verification code.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:490
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:486
 msgid "That code didn't work. Check it and try again."
 msgstr "Šis kodas netiko. Patikrinkite jį ir bandykite dar kartą."
 
 #. Required-action form error for an expired verification code.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:494
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:490
 msgid "That code expired. Request a new code."
 msgstr "Šis kodas nebegalioja. Prašykite naujo kodo."
 
@@ -33218,7 +33213,7 @@ msgid "That doesn't look like a valid URL."
 msgstr "Atrodo, tai nėra tinkamas URL."
 
 #. Required-action form error when a new email is already used by another account.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:514
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:510
 msgid "That email is already in use."
 msgstr "Šis el. paštas jau naudojamas."
 
@@ -34138,8 +34133,8 @@ msgstr "Tai paskutinis jūsų prieigos raktas, o prieigos raktai yra jūsų antr
 msgid "This is your last passkey. Once it's gone you won't be able to use a passkey as your second factor."
 msgstr "Tai paskutinis jūsų prieigos raktas. Kai jo nebeliks, negalėsite naudoti prieigos rakto kaip antrojo veiksnio."
 
-#. Required-action form error for landline, toll-free, premium, shared-cost, UAN, voicemail and pager lines. Do not name which line type the provider returned.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:570
+#. Required-action form error when the number is not a mobile line. Do not name the line type.
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:566
 msgid "This isn't a mobile number, so it can't receive our text. Try a mobile number, or contact support if you think that's wrong."
 msgstr "Tai nėra mobiliojo telefono numeris, todėl jis negali gauti mūsų SMS žinučių. Pabandykite įvesti mobiliojo telefono numerį arba susisiekite su palaikymo tarnyba, jei manote, kad tai klaida."
 
@@ -34220,12 +34215,12 @@ msgid "This nickname will only be visible in this community"
 msgstr "Šis slapyvardis bus matomas tik šioje bendruomenėje"
 
 #. Required-action form error when a number must use the inbound text-in challenge and the current step cannot start one. Do not say why the number was routed there.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:552
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:548
 msgid "This number is verified by texting us instead. Go back and start phone verification again to get the code and the number to text."
 msgstr "Šis numeris patvirtinamas siunčiant mums SMS. Grįžkite ir dar kartą pradėkite telefono patvirtinimą, kad gautumėte kodą ir numerį, kuriuo reikia siųsti SMS."
 
 #. Required-action modal explanation for an inbound phone verification challenge.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:446
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:442
 msgid "This number needs text-in verification instead of an SMS from us."
 msgstr "Šiam numeriui reikia patvirtinimo išsiunčiant mums SMS, o ne gaunant SMS iš mūsų."
 
@@ -34250,12 +34245,12 @@ msgid "This participant was deafened by moderators"
 msgstr "Šiam dalyviui garsą išjungė moderatoriai"
 
 #. Required-action form error when the backend rejects a phone number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:530
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:526
 msgid "This phone number cannot be used. Try another mobile number or contact support."
 msgstr "Šio telefono numerio negalima naudoti. Bandykite kitą mobiliojo telefono numerį arba susisiekite su palaikymo komanda."
 
 #. Required-action form error when the backend rejects a reused phone number.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:534
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:530
 msgid "This phone number has already been used. Try another number or contact support."
 msgstr "Šis telefono numeris jau buvo naudotas. Bandykite kitą numerį arba susisiekite su palaikymo komanda."
 
@@ -34407,7 +34402,7 @@ msgid "This verification session expired. Return to {productName} and start chec
 msgstr "Šis patvirtinimo seansas baigėsi. Grįžkite į „{productName}“ ir pradėkite atsiskaitymą iš naujo."
 
 #. Required-action form error when an email-change ticket or proof is invalid or expired.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:502
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:498
 msgid "This verification session expired. Start again."
 msgstr "Šis patvirtinimo seansas baigėsi. Pradėkite iš naujo."
 
@@ -34505,7 +34500,7 @@ msgid "This will trust all external links and skip the warning for every domain.
 msgstr "Visos išorinės nuorodos bus laikomos patikimomis ir įspėjimas nebebus rodomas nė vienam domenui. Esami patikimi domenai bus pakeisti. Tai mažiau saugu."
 
 #. Required-action modal body after the user sends an inbound phone verification text.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:478
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:474
 msgid "This window updates automatically after we receive your message."
 msgstr "Šis langas atnaujinamas automatiškai, kai tik gausime jūsų žinutę."
 
@@ -34679,12 +34674,12 @@ msgid "Today at {timeString}"
 msgstr "Šiandien, {timeString}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:69
+#: src/features/input/state/input_keybind/shared.ts:77
 msgid "Toggle between last community and DMs"
 msgstr "Perjungti tarp paskutinės bendruomenės ir tiesioginių žinučių"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:309
+#: src/features/input/state/input_keybind/shared.ts:317
 msgid "Toggle camera"
 msgstr "Perjungti kamerą"
 
@@ -34704,7 +34699,7 @@ msgid "Toggle developer tools"
 msgstr "Perjungti kūrėjo įrankius"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:269
+#: src/features/input/state/input_keybind/shared.ts:277
 msgid "Toggle embed suppression"
 msgstr "Perjungti įterptųjų elementų slopinimą"
 
@@ -34720,23 +34715,23 @@ msgstr "Perjungti aparatinės įrangos spartinimą"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/state/input_keybind/shared.ts:209
+#: src/features/input/state/input_keybind/shared.ts:217
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:183
 msgid "Toggle mute"
 msgstr "Perjungti nutildymą"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:153
+#: src/features/input/state/input_keybind/shared.ts:161
 msgid "Toggle pinned messages"
 msgstr "Perjungti prisegtas žinutes"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:117
+#: src/features/input/state/input_keybind/shared.ts:125
 msgid "Toggle quick switcher"
 msgstr "Perjungti greitąjį perjungiklį"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:281
+#: src/features/input/state/input_keybind/shared.ts:289
 msgid "Toggle saved media"
 msgstr "Perjungti išsaugotą mediją"
 
@@ -34745,17 +34740,17 @@ msgid "Toggle switches on and off to see state changes."
 msgstr "Įjunkite ir išjunkite jungiklius, kad pamatytumėte būsenos pokyčius."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:173
+#: src/features/input/state/input_keybind/shared.ts:181
 msgid "Toggle the emoji picker"
 msgstr "Įjungti / išjungti jaustukų parinkiklį"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:177
+#: src/features/input/state/input_keybind/shared.ts:185
 msgid "Toggle the GIF picker"
 msgstr "Perjungti GIF parinkiklį"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:157
+#: src/features/input/state/input_keybind/shared.ts:165
 msgid "Toggle the inbox"
 msgstr "Perjungti gautuosius"
 
@@ -34765,22 +34760,22 @@ msgid "Toggle the kinds of conversations you want included."
 msgstr "Nurodykite, kokius pokalbius norite įtraukti."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:169
+#: src/features/input/state/input_keybind/shared.ts:177
 msgid "Toggle the member list or voice chat"
 msgstr "Perjungti narių sąrašą arba balso pokalbį"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:225
+#: src/features/input/state/input_keybind/shared.ts:233
 msgid "Toggle the soundboard"
 msgstr "Įjungti / išjungti garsų skydelį"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:181
+#: src/features/input/state/input_keybind/shared.ts:189
 msgid "Toggle the sticker picker"
 msgstr "Perjungti lipdukų parinkiklį"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:305
+#: src/features/input/state/input_keybind/shared.ts:313
 msgid "Toggle voice activity"
 msgstr "Perjungti balso aktyvumą"
 
@@ -34812,7 +34807,7 @@ msgid "Tone-map HDR images to standard range, reducing peak brightness."
 msgstr "Tonuoti HDR vaizdus į standartinį diapazoną, sumažinant didžiausią ryškumą."
 
 #. Required-action error shown for rate limits.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:506
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:502
 msgid "Too many attempts. Wait a bit, then try again."
 msgstr "Per daug bandymų. Šiek tiek palaukite ir bandykite dar kartą."
 
@@ -35076,7 +35071,7 @@ msgid "Try again"
 msgstr "Bandyti dar kartą"
 
 #. Button that retries connecting to the voice channel after a failed attempt.
-#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:61
+#: src/features/voice/components/voice_connection_status/VoiceConnectionStatusInner.tsx:62
 msgctxt "voice-connection-status"
 msgid "Try again"
 msgstr "Bandyti dar kartą"
@@ -35167,7 +35162,7 @@ msgid "TTS speed"
 msgstr "TTS greitis"
 
 #. Description for the custom option in the voice processing settings radio group.
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:47
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:44
 msgid "Tune the processing yourself."
 msgstr "Sureguliuokite apdorojimą patys."
 
@@ -35906,7 +35901,7 @@ msgstr "Atrakinkite pasirinktinius jaustukus DM pokalbiuose su „{premiumProduc
 msgid "Unlock HD screen share with {premiumProductName}"
 msgstr "Atrakinkite HD ekrano bendrinimą su „{premiumProductName}“"
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:215
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:217
 msgid "Unlock higher limits and exclusive features while supporting an independent communication platform."
 msgstr "Atrakinkite didesnius limitus ir išskirtines funkcijas, kartu palaikydami nepriklausomą komunikacijos platformą."
 
@@ -36052,7 +36047,7 @@ msgid "Unordered"
 msgstr "Nenumeruotas sąrašas"
 
 #. Confirm button label on the unpin message alert.
-#: src/features/channel/components/MessageActionUtils.tsx:51
+#: src/features/channel/components/MessageActionUtils.tsx:54
 msgid "Unpin"
 msgstr "Atsegti"
 
@@ -36077,7 +36072,7 @@ msgid "Unpin message"
 msgstr "Atsegti žinutę"
 
 #. Body of the confirmation alert shown when unpinning a message.
-#: src/features/channel/components/MessageActionUtils.tsx:47
+#: src/features/channel/components/MessageActionUtils.tsx:50
 msgid "Unpin this message?"
 msgstr "Atsegti šią žinutę?"
 
@@ -36383,7 +36378,7 @@ msgstr "Įkelkite pasirinktinį garsą, kuris automatiškai leidžiamas, kai pri
 #. Card label in the asset source modal for uploading an image from the device. Keep it concise.
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/expressions/components/modals/AssetSourceModal.tsx:19
-#: src/features/input/state/input_keybind/shared.ts:201
+#: src/features/input/state/input_keybind/shared.ts:209
 msgid "Upload a file"
 msgstr "Įkelti failą"
 
@@ -36652,7 +36647,7 @@ msgid "Use an email address you can access. We will send a code there."
 msgstr "Naudokite el. pašto adresą, kurį galite pasiekti. Ten atsiųsime kodą."
 
 #. Required-action form error when the new email matches the current account email.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:518
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:514
 msgid "Use an email that is different from your current one."
 msgstr "Naudokite kitą el. pašto adresą nei dabartinis."
 
@@ -37338,17 +37333,17 @@ msgstr "Patvirtinkite, kad tai jūs"
 #. Primary button in the required-action modal. Sends or submits phone verification.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:178
 #: src/features/channel/components/barriers/BarrierComponents.tsx:269
-#: src/features/user/components/modals/PhoneAddModal.tsx:408
+#: src/features/user/components/modals/PhoneAddModal.tsx:405
 msgid "Verify phone"
 msgstr "Patvirtinti telefono numerį"
 
 #. Short label in the phone add modal. Keep it concise.
-#: src/features/user/components/modals/PhoneAddModal.tsx:55
+#: src/features/user/components/modals/PhoneAddModal.tsx:53
 msgid "Verify phone number"
 msgstr "Patvirtinti telefono numerį"
 
 #. Label in the phone add modal.
-#: src/features/user/components/modals/PhoneAddModal.tsx:51
+#: src/features/user/components/modals/PhoneAddModal.tsx:49
 msgid "Verify phone number form"
 msgstr "Telefono numerio patvirtinimo forma"
 
@@ -37544,7 +37539,7 @@ msgid "Video options"
 msgstr "Vaizdo įrašo parinktys"
 
 #. Field label in the voice connection status popout. Shows received video packet loss percentage.
-#: src/features/voice/components/voice_connection_status/shared.ts:111
+#: src/features/voice/components/voice_connection_status/shared.ts:112
 msgid "Video packet loss:"
 msgstr "Vaizdo paketų praradimas:"
 
@@ -37568,7 +37563,7 @@ msgid "Video quality"
 msgstr "Vaizdo kokybė"
 
 #. Field label in the voice connection status popout. Shows current inbound video bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:103
+#: src/features/voice/components/voice_connection_status/shared.ts:104
 msgid "Video receive:"
 msgstr "Vaizdo priėmimas:"
 
@@ -37578,7 +37573,7 @@ msgid "Video scrubbing"
 msgstr "Vaizdo prasukimas"
 
 #. Field label in the voice connection status popout. Shows current outbound video bitrate.
-#: src/features/voice/components/voice_connection_status/shared.ts:99
+#: src/features/voice/components/voice_connection_status/shared.ts:100
 msgid "Video send:"
 msgstr "Vaizdo siuntimas:"
 
@@ -37987,7 +37982,7 @@ msgid "Voice activity on active now"
 msgstr "Balso aktyvumas skiltyje „Aktyvūs dabar“"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
-#: src/features/input/state/input_keybind/shared.ts:301
+#: src/features/input/state/input_keybind/shared.ts:309
 msgid "Voice activity priority"
 msgstr "Balso aktyvumo prioritetas"
 
@@ -38060,7 +38055,7 @@ msgstr "Balso kanalai"
 
 #. Voice status popout title (secondary call site for the same surface as VOICE_CONNECTION_DESCRIPTOR).
 #. Voice status popout title.
-#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:47
+#: src/features/voice/components/voice_connection_status/MockedVoiceConnectionStatus.tsx:48
 #: src/features/voice/components/voice_connection_status/VoiceDetailsPopout.tsx:56
 msgid "Voice connection"
 msgstr "Balso ryšys"
@@ -38118,8 +38113,8 @@ msgid "Voice participants"
 msgstr "Balso pokalbio dalyviai"
 
 #. Voice settings radio group label for microphone processing profile.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:644
-#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:55
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:639
+#: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:52
 msgid "Voice processing"
 msgstr "Balso apdorojimas"
 
@@ -38212,7 +38207,7 @@ msgstr "Didinti garsumą"
 msgid "Wait a moment before deleting more messages."
 msgstr "Palaukite akimirką, prieš trindami daugiau žinučių."
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:352
+#: src/features/user/components/modals/PhoneAddModal.tsx:349
 msgid "Wait a moment. This window will close automatically once we receive your message."
 msgstr "Palaukite. Šis langas automatiškai užsidarys, kai tik gausime jūsų žinutę."
 
@@ -38222,7 +38217,7 @@ msgid "Wait between messages. Members with \"{bypassSlowmodePermissionLabel}\" c
 msgstr "Laikas tarp žinučių. Nariai, turintys leidimą „{bypassSlowmodePermissionLabel}“, gali jį apeiti."
 
 #. Required-action modal carousel step title after the user sends an inbound phone verification text.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:474
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:470
 msgid "Wait here"
 msgstr "Palaukite čia"
 
@@ -38388,13 +38383,13 @@ msgstr "Nepavyko nuskaityti šios temos. Ji gali būti sugadinta arba netinkama.
 msgid "We couldn't remove that account. Try again."
 msgstr "Nepavyko pašalinti paskyros. Bandykite dar kartą."
 
-#. Required-action form error for phone attempts blocked by a fraud signal. Deliberately non-specific. Never name the signal, the score or the threshold.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:576
+#. Required-action form error when a phone attempt cannot be verified automatically and needs a support review. Keep it non-specific.
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:571
 msgid "We couldn't verify this number automatically. Contact support and a person will review your account."
 msgstr "Nepavyko automatiškai patvirtinti šio numerio. Susisiekite su palaikymo tarnyba ir jūsų paskyrą peržiūrės žmogus."
 
 #. Required-action form error when the phone number's country is on the SMS send ban list. Must not imply the number itself is invalid.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:546
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:542
 msgid "We don't send verification texts to this country. Try a mobile number from another country, or contact support."
 msgstr "Mes nesiunčiame patvirtinimo SMS į šią šalį. Pabandykite naudoti kitoje šalyje esantį mobiliojo telefono numerį arba susisiekite su palaikymo tarnyba."
 
@@ -38489,9 +38484,9 @@ msgstr "Kad galėtumėte pakeisti slaptažodį, atsiųsime patvirtinimo kodą į
 msgid "We'll send a verification code to your email before you can view your backup codes."
 msgstr "Kad galėtumėte peržiūrėti atsarginius kodus, atsiųsime patvirtinimo kodą į jūsų el. paštą."
 
-#: src/features/user/components/modals/PhoneAddModal.tsx:286
-msgid "We'll send an SMS code when available. Your number is not linked to your account. We keep only an encrypted marker, with no user ID, to allow at most {PHONE_VERIFICATION_LIMIT} verifications in about {PHONE_VERIFICATION_WINDOW_DAYS} days."
-msgstr "Kai bus galima, atsiųsime SMS kodą. Jūsų numeris nesusietas su paskyra. Saugome tik užšifruotą žymeklį be naudotojo ID, kad per maždaug {PHONE_VERIFICATION_WINDOW_DAYS} dienas būtų galima atlikti ne daugiau kaip {PHONE_VERIFICATION_LIMIT} patvirtinimų."
+#: src/features/user/components/modals/PhoneAddModal.tsx:284
+msgid "We'll send an SMS code when available. Your number is not linked to your account. We keep only an encrypted marker, with no user ID, for a limited time."
+msgstr "Atsiųsime SMS kodą, kai tik jis bus pasiekiamas. Jūsų numeris nebus susietas su paskyra. Mes saugome tik užšifruotą žymę be vartotojo ID, ribotą laiką."
 
 #: src/features/user/components/modals/EmailChangeModal.tsx:189
 msgid "We'll verify your current email and then your new email with one-time codes."
@@ -38851,7 +38846,7 @@ msgstr "Kurie pokalbiai"
 msgid "Which rule was broken?"
 msgstr "Kokia taisyklė buvo pažeista?"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:358
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:355
 msgid "While push-to-talk is on, your shortcut controls your microphone, so the mute button is disabled."
 msgstr "Kai įjungtas kalbėjimas paspaudus, mikrofoną valdo jūsų spartusis klavišas, todėl nutildymo mygtukas išjungtas."
 
@@ -39544,11 +39539,11 @@ msgstr "Dar nieko neužblokavote."
 msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {productName} without a mouse."
 msgstr "Ką tik paspaudėte „Tab“. Įjungtas klaviatūros režimas, kad galėtumėte naršyti {productName} be pelės."
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
 msgid "You keep your perks until your next renewal date, then have a 3-day grace period to resubscribe and keep your subscriber history."
 msgstr "Privilegijas išsaugosite iki kito atnaujinimo datos, o tada turėsite 3 dienų pereinamąjį laikotarpį, kad vėl užsiprenumeruotumėte ir išsaugotumėte prenumeratos istoriją."
 
-#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:157
+#: src/features/app/components/dialogs/components/PlutoniumContent.tsx:159
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "Iškart prarasite visas „{PREMIUM_PRODUCT_NAME}“ privilegijas, o jūsų prenumeratos istorija bus nustatyta iš naujo. Šio veiksmo anuliuoti negalima."
 
@@ -39998,10 +39993,10 @@ msgstr "Jūsų „{productName}“ seanso laikas baigėsi. Prisijunkite iš nauj
 msgid "Your account"
 msgstr "Jūsų paskyra"
 
-#. First line of the set-aside confirmation in the required-action modal. Always shown. Says can rather than will, because whether the check returns depends on account age and instance settings the user cannot see.
+#. First line of the set-aside confirmation in the required-action modal. Always shown. Says can rather than will, because the check may or may not come back.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:316
-msgid "Your account goes back to normal right away and you will not need a phone number now. This is not a permanent exemption. Joining a large or public community can bring this check back."
-msgstr "Jūsų paskyra iškart grįš į įprastą būseną ir jums nereikės telefono numerio. Tai nėra nuolatinė išimtis. Prisijungus prie didelės ar viešos bendruomenės šis patikrinimas gali grįžti."
+msgid "Your account goes back to normal right away and you will not need a phone number now. This is not a permanent exemption, and we can ask for this check again later."
+msgstr "Jūsų paskyra iškart grįš į įprastą būseną ir jums nereikės telefono numerio. Tai nėra nuolatinė išimtis, ir mes galime paprašyti šio patikrinimo vėliau."
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx:29
 msgid "Your account has been linked successfully. You can now close this tab and return to the app."
@@ -40066,7 +40061,7 @@ msgid "Your card is eligible. Redirecting you to the payment page now."
 msgstr "Jūsų kortelė tinkama. Dabar būsite nukreipti į mokėjimo puslapį."
 
 #. Required-action form error when the carrier lookup says the number does not exist. Leaves room for the lookup to be wrong.
-#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:564
+#: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:560
 msgid "Your carrier says this number isn't in service. Check it and try again, or contact support if it's correct."
 msgstr "Jūsų operatorius teigia, kad šis numeris nebenaudojamas. Patikrinkite jį ir bandykite dar kartą arba susisiekite su palaikymo tarnyba, jei numeris teisingas."
 
@@ -40238,10 +40233,10 @@ msgstr "jūsų naujas el. pašto adresas"
 msgid "Your new nickname, or leave blank to reset it."
 msgstr "Jūsų naujas slapyvardis arba palikite tuščią, kad jį atstatytumėte."
 
-#. Required-action modal privacy note for phone verification. limit and duration are inserted by code.
+#. Required-action modal privacy note for phone verification.
 #: src/features/auth/components/modals/required_action/RequiredActionDescriptors.ts:421
-msgid "Your number is not linked to your account. We keep only an encrypted marker, with no user ID, for at most {limit} verifications in about {duration} days."
-msgstr "Jūsų numeris nesusietas su paskyra. Saugome tik užšifruotą žymeklį be naudotojo ID, daugiausia {limit} patvirtinimų per maždaug {duration} dienas."
+msgid "Your number is not linked to your account. We keep only an encrypted marker, with no user ID, for a limited time."
+msgstr "Jūsų numeris nesusietas su paskyra. Mes saugome tik užšifruotą žymeklį be vartotojo ID, ribotą laiką."
 
 #: src/features/premium/components/pages/PremiumCallbackPage.tsx:152
 msgid "Your payment was canceled. You can now close this tab and return to the app."
@@ -40429,7 +40424,7 @@ msgstr "Padidinti"
 #. Native View menu item that increases UI zoom level.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:628
-#: src/features/input/state/input_keybind/shared.ts:253
+#: src/features/input/state/input_keybind/shared.ts:261
 #: src/features/platform/utils/DesktopLocaleBridge.ts:113
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:82
 msgid "Zoom in"
@@ -40440,7 +40435,7 @@ msgstr "Didinti"
 #. Native View menu item that decreases UI zoom level.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:624
-#: src/features/input/state/input_keybind/shared.ts:257
+#: src/features/input/state/input_keybind/shared.ts:265
 #: src/features/platform/utils/DesktopLocaleBridge.ts:117
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"

@@ -73,9 +73,9 @@ import {
 	timeRpcStepSync,
 } from '@app/api/rpc/RpcTimings';
 import type {IUserRepository} from '@app/api/user/IUserRepository';
-import {PaymentRepository} from '@app/api/user/repositories/PaymentRepository';
 import {CustomStatusValidator} from '@app/api/user/services/CustomStatusValidator';
 import {getCachedUserPartialResponse} from '@app/api/user/UserCacheHelpers';
+import {isSignInRefused} from '@app/api/user/UserHelpers';
 import {
 	mapRelationshipToResponse,
 	mapUserGuildSettingsToResponse,
@@ -277,7 +277,6 @@ export class RpcService {
 			userCacheService: this.userCacheService,
 			gatewayService: this.gatewayService,
 			discriminatorService: this.discriminatorService,
-			paymentRepository: new PaymentRepository(),
 		});
 	}
 
@@ -637,6 +636,16 @@ export class RpcService {
 					data: {channel},
 				};
 			}
+			case 'get_read_state': {
+				const readState = await this.readStateService.getReadState(
+					createUserID(request.user_id),
+					createChannelID(request.channel_id),
+				);
+				return {
+					type: 'get_read_state',
+					data: {last_message_id: readState?.lastMessageId?.toString() ?? null},
+				};
+			}
 			case 'get_gateway_rollout_config': {
 				const rolloutConfig = await this.instanceConfigRepository.getGatewayRolloutConfig();
 				return {
@@ -983,6 +992,10 @@ export class RpcService {
 				},
 				'RPC session user lookup failed',
 			);
+			throw new UnauthorizedError();
+		}
+		if (tokenType === 'user' && isSignInRefused(userData.user)) {
+			Logger.warn({tokenType, tokenHashPrefix, userId: userId.toString()}, 'RPC session rejected by account standing');
 			throw new UnauthorizedError();
 		}
 		let user = userData.user;
@@ -2006,7 +2019,7 @@ export class RpcService {
 							channelId,
 							messageId: createMessageID(messageId),
 							mentionCount: 0,
-							silent: true,
+							implicit: {unreadThrough: createMessageID(messageId)},
 						})
 						.catch((error) => {
 							Logger.error(

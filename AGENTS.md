@@ -268,6 +268,21 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   This one holds by construction rather than by observation: `git stash` always
   clears the merge state, so the single-parent commit follows every time, not
   sometimes.
+- **A revert whose scope is wider than the change will take the change with it.**
+  This is the stash rule in a different costume, and it bites hardest while
+  mutation-checking, which is now standard practice for every gate and guard. On
+  2026-10-03 a mutation script ended with `git checkout -- <file>` to undo its own
+  injected fault, and silently removed the uncommitted fix in the same file; the
+  commit that followed contained nothing and the fix had to be written twice.
+
+  So: **commit the fix first, then mutate.** That makes the restore point the thing
+  you want to keep, and `git checkout` becomes safe rather than destructive. Prefer
+  reverting the mutation itself, by replacing the mutant string with the original,
+  over restoring a whole file. After any mutation run, check that the thing under
+  test is still present rather than assuming the revert was surgical. The general
+  form holds by construction, like the stash case: `checkout`, `restore`,
+  `reset --hard` and `stash` all operate on a unit larger than the edit, so anything
+  else living in that unit goes too.
 - **A clean merge is not evidence that the result compiles.** Git merges text. In a
   language with no type checker between the merge and the build, it will combine the
   fork's old function signatures with upstream's new bodies and report no conflict.

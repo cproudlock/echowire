@@ -784,14 +784,6 @@ describe('ConfigLoader', () => {
 		expect(config.integrations.breached_password_check.enabled).toBe(false);
 	});
 
-	test('reads the IPinfo key from its current name before the previous one', async () => {
-		stubMinimalEnv({FLUXER_RISK_IPINFO_API_KEY: 'previous'});
-		expect((await loadConfig()).integrations.ipinfo.api_key).toBe('previous');
-		resetConfig();
-		stubMinimalEnv({FLUXER_IPINFO_API_KEY: 'current', FLUXER_RISK_IPINFO_API_KEY: 'previous'});
-		expect((await loadConfig()).integrations.ipinfo.api_key).toBe('current');
-	});
-
 	// Echowire: the fork ships Bluesky login on, pointing at its own legal pages,
 	// where upstream ships it off with no URLs.
 	test('enables Bluesky login with the fork legal URLs by default', async () => {

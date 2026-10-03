@@ -458,6 +458,9 @@
         "msgid": "Download"
       },
       {
+        "msgid": "Download app"
+      },
+      {
         "msgid": "Download {productName}"
       },
       {
@@ -1903,6 +1906,12 @@
         "msgid": "Domain moved nagbar"
       },
       {
+        "msgid": "Download app"
+      },
+      {
+        "msgid": "Download app button in the sidebar"
+      },
+      {
         "msgid": "Drag members between voice channels they can access, and disconnect them from voice."
       },
       {
@@ -2033,6 +2042,9 @@
       },
       {
         "msgid": "Have a gift code? Redeem it to unlock {PREMIUM_PRODUCT_NAME}."
+      },
+      {
+        "msgid": "Help button"
       },
       {
         "msgid": "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."

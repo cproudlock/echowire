@@ -33,7 +33,7 @@ msgid "(only visible to you)"
 msgstr "(visibile solo a te)"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:27
 msgid "(unassigned)"
 msgstr "(non assegnato)"
 
@@ -2440,7 +2440,7 @@ msgstr "2FA"
 msgid "2FA backup"
 msgstr "Codici di backup 2FA"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:460
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:469
 msgid "2FA requirement"
 msgstr "Requisito 2FA"
 
@@ -3164,7 +3164,7 @@ msgid "Add an extra layer of security to your account"
 msgstr "Aggiungi un ulteriore livello di sicurezza al tuo account"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:40
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:41
 msgid "Add another custom shortcut"
 msgstr "Aggiungi un'altra scorciatoia personalizzata"
 
@@ -3326,7 +3326,7 @@ msgstr "Aggiungi ruolo"
 msgid "Add search engine"
 msgstr "Aggiungi motore di ricerca"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:155
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:160
 msgid "Add shortcut"
 msgstr "Aggiungi scorciatoia"
 
@@ -5334,7 +5334,7 @@ msgstr "Rimuovi automaticamente i parametri di tracciamento (come utm_source, fb
 msgid "Automatically remove tracking parameters from URLs in messages you send"
 msgstr "Rimuovi automaticamente i parametri di tracciamento dagli URL nei messaggi che invii"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:346
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:355
 msgid "Automatically screen messages for explicit content in channels not marked for mature content."
 msgstr "Controlla automaticamente la presenza di contenuti sessualmente espliciti nei messaggi dei canali non contrassegnati per contenuti per adulti."
 
@@ -7542,9 +7542,9 @@ msgstr "Limite di caratteri superato di {remaining}"
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
 #. User settings tab for chat message, media, and input behavior.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:41
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:42
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingsCategories.ts:15
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:40
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:115
 msgid "Chat"
 msgstr "Chat"
@@ -7891,7 +7891,7 @@ msgstr "Scegli cosa può fare {clientLabel} nella tua community. Deseleziona le 
 msgid "Choose what friends see in their active now panel"
 msgstr "Scegli cosa vedono i tuoi amici nel pannello \"Attivi ora\""
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:306
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:311
 msgid "Choose what members must have before they can post or DM community members."
 msgstr "Scegli cosa devono avere i membri prima di poter pubblicare messaggi o inviare messaggi diretti ai membri della community."
 
@@ -8458,13 +8458,13 @@ msgstr "Vuoi chiudere questo DM di gruppo? Puoi riaprirlo in qualsiasi momento."
 msgid "Close Thread"
 msgstr "Chiudi discussione"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
 msgid "Close to menu bar"
 msgstr "Chiudi sulla barra dei menu"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Close to tray"
 msgstr "Chiudi nell’area di notifica"
 
@@ -8774,11 +8774,11 @@ msgstr "Community"
 msgid "Communities and channels where you can't manage webhooks are hidden."
 msgstr "Le community e i canali in cui non puoi gestire gli webhook sono nascosti."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:356
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:365
 msgid "Communities listed in Discovery are required to scan messages from all members. This setting cannot be changed while Discovery is enabled."
 msgstr "Le community elencate in Scopri devono controllare i messaggi di tutti i membri. Questa impostazione non può essere modificata mentre Scopri è attivo."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:315
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:320
 msgid "Communities listed in Discovery require at least email verification. None cannot be selected while Discovery is enabled."
 msgstr "Le community elencate in Scopri devono richiedere almeno la verifica dell’email. Non è possibile selezionare \"Nessuno\" mentre Scopri è attivo."
 
@@ -9006,7 +9006,7 @@ msgstr "Livello badge non letti della community"
 #. Audit log entry label. Past-tense action describing that the community settings were changed.
 #. Short label in the guild overview tab utils helper. Keep it concise.
 #: src/features/app/config/AuditLogConstants.ts:8
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:213
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:215
 #: src/features/guild/utils/guild_tabs/GuildOverviewTabUtils.tsx:35
 msgid "Community updated"
 msgstr "Community aggiornata"
@@ -9468,7 +9468,7 @@ msgstr "Creatore di contenuti"
 msgid "Content filter"
 msgstr "Filtro contenuti"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:340
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:349
 msgid "Content filtering"
 msgstr "Filtro contenuti"
 
@@ -11164,7 +11164,7 @@ msgstr "Opzioni scorciatoie personalizzate"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:51
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:102
 msgid "Custom shortcuts"
 msgstr "Scorciatoie personalizzate"
@@ -11239,7 +11239,7 @@ msgstr "Elaborazione vocale personalizzata"
 #. Channel overview settings tab label, control, or validation message (name, topic, slowmode, voice region, mature content gate).
 #. Textarea label in the community moderation settings tab for the custom content warning shown to members.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:45
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:148
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:149
 msgid "Custom warning text"
 msgstr "Testo di avviso personalizzato"
 
@@ -11669,8 +11669,8 @@ msgstr "Motore di ricerca predefinito"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:25
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:23
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:24
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:130
 msgid "Default shortcuts"
 msgstr "Scorciatoie predefinite"
@@ -12557,7 +12557,7 @@ msgid "Disable backend premium perks"
 msgstr "Disabilita i vantaggi premium del backend"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:32
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:33
 msgid "Disable built-in shortcut"
 msgstr "Disabilita scorciatoia integrata"
 
@@ -12567,7 +12567,7 @@ msgid "Disable built-in shortcuts"
 msgstr "Disattiva scorciatoie integrate"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:42
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:43
 msgid "Disable built-ins"
 msgstr "Disattiva le scorciatoie integrate"
 
@@ -12652,8 +12652,10 @@ msgstr "Modulo per disattivare l’autenticazione a due fattori"
 msgid "Disable video locally"
 msgstr "Disattiva video in locale"
 
+#. Status next to a built-in shortcut the user turned off in the keybinds tab.
 #. Summary value when a setup option is disabled.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:403
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:45
 msgid "Disabled"
 msgstr "Disabilitato"
 
@@ -13290,8 +13292,8 @@ msgstr "Bozza"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:37
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:35
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:38
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:36
 msgid "Drag and drop"
 msgstr "Trascina e rilascia"
 
@@ -13692,6 +13694,16 @@ msgstr "Modifica discussione"
 msgid "Edit translation provider"
 msgstr "Modifica provider di traduzione"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:74
+msgid "Edit your message above"
+msgstr "Modifica il tuo messaggio sopra"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:78
+msgid "Edit your message below"
+msgstr "Modifica il tuo messaggio sotto"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:13
 msgid "Edit your messages above or below"
@@ -14042,7 +14054,7 @@ msgid "Enable /tts speech playback"
 msgstr "Abilita la riproduzione vocale /tts"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the owner has not enabled 2FA on their own account.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:42
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:43
 msgid "Enable 2FA on your account to change this setting"
 msgstr "Abilita l'autenticazione a due fattori sul tuo account per modificare questa impostazione"
 
@@ -14859,7 +14871,7 @@ msgstr "escludi parte di un nome file allegato"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:39
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
 msgid "Exit"
 msgstr "Esci"
 
@@ -15031,7 +15043,7 @@ msgid "Expires:"
 msgstr "Scade:"
 
 #. Accessible label for the explicit content filter radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:127
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:128
 msgid "Explicit content filter setting"
 msgstr "Impostazione del filtro per contenuti sessualmente espliciti"
 
@@ -15710,14 +15722,14 @@ msgstr "Filtra per utente"
 
 #. Activity log value for the explicit content filter setting that filters messages from every member.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from every member regardless of role.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:117
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:118
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:82
 msgid "Filter everyone"
 msgstr "Filtra tutti"
 
 #. Activity log value for the explicit content filter setting that filters messages from members who have no roles.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from members who have no roles assigned.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:107
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:108
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:77
 msgid "Filter members without roles"
 msgstr "Filtra membri senza ruoli"
@@ -16933,7 +16945,7 @@ msgstr "Profilo globale"
 
 #. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:81
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:57
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:63
 msgid "Global shortcut"
 msgstr "Scorciatoia globale"
 
@@ -17668,7 +17680,7 @@ msgid "Hide preview thumbnail"
 msgstr "Nascondi miniatura di anteprima"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
 msgid "Hide the window when minimized and reopen from the tray"
 msgstr "Nascondi la finestra quando è ridotta a icona e riaprila dall’area di notifica"
 
@@ -17702,7 +17714,7 @@ msgstr "Nascondere la tua condivisione schermo?"
 
 #. Activity log value naming the high member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:74
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:75
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:65
 msgid "High"
 msgstr "Alta"
@@ -19463,7 +19475,7 @@ msgid "Kansas"
 msgstr "Kansas"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:226
 msgid "Keep {productName} running when the window is closed"
 msgstr "Mantieni {productName} in esecuzione quando la finestra è chiusa"
 
@@ -19501,7 +19513,7 @@ msgid "Keep Pickles still"
 msgstr "Mantieni Pickles fermo"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
 msgid "Keep running"
 msgstr "Continua l’esecuzione"
 
@@ -19574,7 +19586,7 @@ msgstr "Suggerimenti per le scorciatoie da tastiera nei tooltip"
 #. Modal title for the keyboard shortcuts cheatsheet.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:21
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:22
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:14
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:376
 msgid "Keyboard shortcuts"
@@ -19922,7 +19934,7 @@ msgid "Let screen readers announce new messages as they arrive in the open chann
 msgstr "Consenti ai lettori schermo di annunciare i nuovi messaggi non appena arrivano nel canale aperto. I suoni di notifica non saranno influenzati."
 
 #. Helper text for the "Off" explicit content filter option in the community moderation settings tab. Means leave moderation to members.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:102
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:103
 msgid "Let the community self-moderate"
 msgstr "Consenti alla community di auto-moderarsi"
 
@@ -20389,7 +20401,7 @@ msgstr "Louisiana"
 
 #. Activity log value naming the low member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:56
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:57
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:57
 msgid "Low"
 msgstr "Basso"
@@ -20413,7 +20425,7 @@ msgstr "macOS (predefinito)"
 #. Title for the central macOS permissions modal.
 #: src/features/permissions/system/components/MacPermissionsSettingsRow.tsx:12
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:32
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:204
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:220
 msgid "macOS permissions"
 msgstr "Autorizzazioni macOS"
 
@@ -20808,13 +20820,13 @@ msgstr "Community per adulti"
 #. Select label in the community moderation settings tab. Sensitive setting; keep neutral tone.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:90
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:131
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:132
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:296
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:180
 msgid "Mature content"
 msgstr "Contenuti per adulti"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:399
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:408
 msgid "Mature content & content warnings"
 msgstr "Contenuti per adulti e avvisi sui contenuti"
 
@@ -20925,7 +20937,7 @@ msgid "Maximum lifetime (days)"
 msgstr "Durata massima (giorni)"
 
 #. Helper text under the "Filter everyone" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:122
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:123
 msgid "Maximum protection for family-friendly spaces"
 msgstr "Massima protezione per gli spazi adatti alle famiglie"
 
@@ -21050,7 +21062,7 @@ msgstr "Interrompi riproduzione"
 #. Activity log value naming the medium member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
 #. Short label in the selections tab. Keep it concise.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:65
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:66
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:61
 #: src/features/user/components/modals/tabs/component_gallery_tab/SelectionsTab.tsx:49
 msgid "Medium"
@@ -21135,12 +21147,12 @@ msgstr "Ban del membro revocato"
 msgid "Member updated"
 msgstr "Membro aggiornato"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:299
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:304
 msgid "Member verification"
 msgstr "Verifica membri"
 
 #. Accessible label for the member verification level radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:93
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:94
 msgid "Member verification level"
 msgstr "Livello di verifica membri"
 
@@ -21180,7 +21192,7 @@ msgstr "Members can add others"
 msgid "Members with \"{pinMessagesPermissionLabel}\" can pin messages for everyone."
 msgstr "I membri con il permesso \"{pinMessagesPermissionLabel}\" possono fissare messaggi per tutti."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:309
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:314
 msgid "Members with roles can bypass these checks. For public spaces, we recommend enabling verification."
 msgstr "I membri con ruoli possono ignorare questi controlli. Per gli spazi pubblici, consigliamo di abilitare la verifica."
 
@@ -21581,11 +21593,11 @@ msgstr "Messaggio rimosso dai messaggi fissati"
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/channel/components/ChannelChatLayout.tsx:10
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:312
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:29
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:30
 #: src/features/theme_studio/sections/TokenGroups.ts:86
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabInline.tsx:31
 #: src/features/user/components/modals/tabs/AppearanceTab.tsx:39
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:27
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:28
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:18
 msgid "Messages"
 msgstr "Messaggi"
@@ -21735,12 +21747,12 @@ msgstr "Formato 24 ore"
 msgid "Minimize"
 msgstr "Riduci a icona"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 msgid "Minimize to menu bar"
 msgstr "Riduci a icona nella barra dei menu"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:182
 msgid "Minimize to tray"
 msgstr "Riduci a icona nell’area di notifica"
@@ -21786,8 +21798,8 @@ msgstr "Duplica livelli"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:49
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:47
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:48
 msgid "Miscellaneous"
 msgstr "Varie"
 
@@ -22021,7 +22033,7 @@ msgid "More options"
 msgstr "Altre opzioni"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:53
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:59
 msgid "More shortcut options"
 msgstr "Altre opzioni scorciatoia"
 
@@ -22681,8 +22693,8 @@ msgstr "Naviga tra messaggi e azioni nella chat."
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:33
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:31
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:32
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:30
 msgid "Navigation"
 msgstr "Navigazione"
@@ -23202,11 +23214,11 @@ msgstr "Nessun banner della community"
 msgid "No connections yet"
 msgstr "Nessuna connessione ancora"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:184
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:189
 msgid "No custom shortcuts match that search."
 msgstr "Nessuna scorciatoia personalizzata corrisponde alla ricerca."
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:180
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:185
 msgid "No custom shortcuts yet."
 msgstr "Nessuna scorciatoia personalizzata ancora."
 
@@ -23523,7 +23535,7 @@ msgstr "Nessuna impostazione trovata"
 msgid "No shortcut set"
 msgstr "Nessuna scorciatoia impostata"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:94
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:95
 msgid "No shortcuts match that search."
 msgstr "Nessuna scorciatoia corrisponde alla ricerca."
 
@@ -23626,7 +23638,7 @@ msgid "No users found"
 msgstr "Nessun utente trovato"
 
 #. Helper text for the "None" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:52
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:53
 msgid "No verification is required."
 msgstr "Nessuna verifica richiesta."
 
@@ -23686,7 +23698,7 @@ msgstr "Nessuna conversione"
 #. Short label in the visual tab. Keep it concise.
 #. Summary row value on the confirm step when no items in the category were selected.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:41
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:47
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:48
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:52
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
@@ -23982,8 +23994,8 @@ msgstr "Oggetti"
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/SlowmodeControl.tsx:24
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:42
 #: src/features/channel/components/modals/EditPostModal.tsx:54
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:97
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:139
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:98
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:140
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:73
 msgid "Off"
 msgstr "Disattivato"
@@ -24032,7 +24044,7 @@ msgstr "Dal meno recente"
 #. On state suffix appended to the reply bar mention toggle label.
 #: src/features/channel/components/ChannelReplyBar.tsx:58
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:22
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:135
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:136
 msgid "On"
 msgstr "Attivato"
 
@@ -24169,7 +24181,7 @@ msgid "Only speakers"
 msgstr "Solo altoparlanti"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the viewer is not the owner. Plain explanatory tone.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:37
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:38
 msgid "Only the community owner can change this setting"
 msgstr "Solo il proprietario della community può modificare questa impostazione"
 
@@ -24971,7 +24983,7 @@ msgstr "Gruppi di avatar sovrapposti che mostrano più utenti, con conteggio aut
 msgid "Overlays & menus"
 msgstr "Overlay e menu"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:37
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:38
 msgid "Overridden"
 msgstr "Sovrascritta"
 
@@ -26862,7 +26874,7 @@ msgid "Quiet"
 msgstr "Silenzioso"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:222
 msgid "Quit"
 msgstr "Esci"
 
@@ -26903,6 +26915,11 @@ msgstr "Limite di frequenza raggiunto"
 #: src/features/user/components/modals/tabs/EmbedDebuggerTab.tsx:292
 msgid "Raw embed JSON"
 msgstr "JSON grezzo del contenuto incorporato"
+
+#. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:50
+msgid "Re-enable built-in shortcut"
+msgstr "Riabilita scorciatoia integrata"
 
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:73
@@ -27413,7 +27430,7 @@ msgstr "Ricorda questa preferenza"
 msgid "Remember window"
 msgstr "Ricorda finestra"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:166
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:182
 msgid "Remember window size and position"
 msgstr "Ricorda dimensioni e posizione della finestra"
 
@@ -28016,6 +28033,16 @@ msgstr "Preferenza menzioni nelle risposte per questa community"
 msgid "Reply to message"
 msgstr "Rispondi al messaggio"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:66
+msgid "Reply to message above"
+msgstr "Rispondi al messaggio sopra"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:70
+msgid "Reply to message below"
+msgstr "Rispondi al messaggio sotto"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:29
 msgid "Reply to messages above or below"
@@ -28131,7 +28158,7 @@ msgid "Requests"
 msgstr "Richieste"
 
 #. Switch label in the community moderation settings tab. Requires moderators to have two-factor auth enabled before they can ban, kick, time out, or delete messages. Security-sensitive; keep tone plain.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:156
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:157
 msgid "Require 2FA for moderation actions"
 msgstr "Richiedi 2FA per le azioni di moderazione"
 
@@ -28165,7 +28192,7 @@ msgstr "Richiedi il flusso OAuth2 con codice di autorizzazione"
 msgid "Require passkey"
 msgstr "Richiedi passkey"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:466
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:475
 msgid "Require two-factor authentication for moderators before they can ban, kick, time out, or remove messages."
 msgstr "Richiedi l’autenticazione a due fattori per i moderatori prima che possano bannare, espellere o mettere in timeout i membri, oppure eliminare messaggi."
 
@@ -28230,22 +28257,22 @@ msgid "Requires a redirect URI and an authorization code when inviting this bot.
 msgstr "Richiede un URI di reindirizzamento e un codice di autorizzazione quando si invita questo bot."
 
 #. Helper text for the "Medium" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:70
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:71
 msgid "Requires a verified email address and an account that's at least 5 minutes old."
 msgstr "Richiede un indirizzo email verificato e un account creato da almeno 5 minuti."
 
 #. Helper text for the "Low" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:61
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:62
 msgid "Requires a verified email address."
 msgstr "Richiede un indirizzo email verificato."
 
 #. Helper text for the "Very high" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:89
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:90
 msgid "Requires a verified phone number."
 msgstr "Richiede un numero di telefono verificato."
 
 #. Helper text for the "High" member verification level option in the community moderation settings tab. "Medium" refers to the matching level option.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:79
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:80
 msgid "Requires everything in medium, plus being a member of the community for at least 10 minutes."
 msgstr "Richiede tutti i requisiti del livello medio e l’appartenenza alla community da almeno 10 minuti."
 
@@ -28312,7 +28339,7 @@ msgid "Reset"
 msgstr "Reimposta"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:44
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:45
 msgid "Reset \"{label}\" to built-in"
 msgstr "Ripristina il valore predefinito di \"{label}\""
 
@@ -28340,7 +28367,7 @@ msgid "Reset all overrides"
 msgstr "Ripristina tutte le modifiche"
 
 #. Confirmation prompt in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:30
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:31
 msgid "Reset all shortcuts?"
 msgstr "Reimpostare tutte le scorciatoie?"
 
@@ -28433,7 +28460,7 @@ msgid "Reset to actual values"
 msgstr "Ripristina i valori effettivi"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:36
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:37
 msgid "Reset to built-in"
 msgstr "Ripristina i valori predefiniti"
 
@@ -28450,8 +28477,8 @@ msgstr "Ripristina volume predefinito"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:38
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:138
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:143
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:110
 msgid "Reset to defaults"
 msgstr "Ripristina i valori predefiniti"
@@ -30560,12 +30587,12 @@ msgid "Set by the {preset} preset. Picking a value here switches to Custom."
 msgstr "Impostato dalla preselezione {preset}. La scelta di un valore qui passa a Personalizzato."
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:28
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:29
 msgid "Set custom shortcut"
 msgstr "Imposta scorciatoia personalizzata"
 
 #. Label in the keybinds tab. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:49
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:55
 msgid "Set custom shortcut for \"{label}\""
 msgstr "Imposta scorciatoia personalizzata per \"{label}\""
 
@@ -31008,7 +31035,7 @@ msgid "Shortcuts"
 msgstr "Scorciatoie"
 
 #. Short helper text in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:54
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:55
 msgid "Shortcuts are paused while recording."
 msgstr "Le scorciatoie sono sospese durante la registrazione."
 
@@ -31044,7 +31071,7 @@ msgid "Show a {productName} icon in the system tray or menu bar"
 msgstr "Mostra un’icona di {productName} nell’area di notifica o nella barra dei menu"
 
 #. Switch label in the community moderation settings tab. Toggles a consent prompt before entering any channel.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:143
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:144
 msgid "Show a content warning"
 msgstr "Mostra un avviso sui contenuti"
 
@@ -31291,7 +31318,7 @@ msgstr "Mostra informazioni media"
 msgid "Show members"
 msgstr "Mostra membri"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show menu bar icon"
 msgstr "Mostra icona barra dei menu"
 
@@ -31449,7 +31476,7 @@ msgstr "Mostra il testo barrato in Markdown con un colore leggermente attenuato.
 msgid "Show suppress embeds button"
 msgstr "Mostra il pulsante \"Nascondi anteprime\""
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show system tray icon"
 msgstr "Mostra icona nell’area di notifica"
 
@@ -32681,9 +32708,20 @@ msgstr "La data di inizio deve essere precedente alla data di fine."
 msgid "Start drag and drop"
 msgstr "Avvia trascinamento"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+msgid "Start in the tray instead of opening the window when launched at login"
+msgstr "Avvia nella barra delle applicazioni invece di aprire la finestra all'avvio"
+
 #: src/features/user/components/modals/tabs/components/MicTestSection.tsx:15
 msgid "Start mic test"
 msgstr "Avvia test del microfono"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:165
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+msgid "Start minimized"
+msgstr "Avvia ridotto a icona"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx:326
 #: src/features/moderation/components/report/ReportStepEmail.tsx:97
@@ -33284,7 +33322,7 @@ msgid "Suggest an improvement"
 msgstr "Proponi un miglioramento"
 
 #. Helper text under the "Filter members without roles" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:112
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:113
 msgid "Suggested for most communities"
 msgstr "Consigliato per la maggior parte delle community"
 
@@ -33588,7 +33626,7 @@ msgstr "Sincronizza le impostazioni di riduzione del movimento con il sistema"
 
 #. Label in the keybinds tab.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:47
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:118
 msgid "Sync shortcuts"
 msgstr "Sincronizza scorciatoie"
@@ -34807,7 +34845,7 @@ msgstr "Questa connessione non è stata verificata."
 #. Label in the content warning utils helper. Keep the tone plain and specific.
 #. Placeholder example shown in the custom content warning textarea in the community moderation settings tab.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:30
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:152
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:153
 #: src/features/messaging/utils/ContentWarningUtils.ts:11
 msgid "This contains sensitive content."
 msgstr "Contenuto sensibile."
@@ -35218,7 +35256,7 @@ msgid "This removes all trusted domains. You will see the external link warning 
 msgstr "Questo rimuove tutti i domini attendibili. Visualizzerai di nuovo l'avviso per i link esterni per tutti i domini."
 
 #. Error message in the keybinds tab. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:35
 msgid "This removes every custom shortcut and re-enables all built-in shortcuts. This cannot be undone."
 msgstr "Verranno rimosse tutte le scorciatoie personalizzate e riattivate quelle predefinite. Questa azione non può essere annullata."
 
@@ -36518,7 +36556,7 @@ msgstr "Ripristina discussione"
 
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:12
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:18
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:19
 msgid "Unassigned"
 msgstr "Non assegnato"
 
@@ -38482,7 +38520,7 @@ msgstr "Versione"
 
 #. Activity log value naming the highest member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:84
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:85
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:69
 msgid "Very high"
 msgstr "Molto alta"
@@ -39010,8 +39048,8 @@ msgstr "Condivisione attività vocale aggiornata"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:45
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:43
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:44
 msgid "Voice and video"
 msgstr "Chiamate vocali e video"
 
@@ -39807,6 +39845,14 @@ msgstr "Quando la scadenza degli allegati è disattivata, gli allegati rimangono
 #: src/features/channel/components/active_now/ActiveNowSidebar.tsx:21
 msgid "When friends are active in voice channels, their activity will appear here."
 msgstr "Quando gli amici sono attivi nei canali vocali, la loro attività apparirà qui."
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:168
+msgid "When launched at login, start in the menu bar instead of opening the window"
+msgstr "All'avvio al login, avvia nel menu in alto invece di aprire la finestra"
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:170
+msgid "When launched at login, start in the system tray instead of opening the window"
+msgstr "All'avvio al login, avvia nella barra di sistema invece di aprire la finestra"
 
 #. Label in the display tab.
 #: src/features/user/components/modals/tabs/chat_settings_tab/DisplayTab.tsx:51

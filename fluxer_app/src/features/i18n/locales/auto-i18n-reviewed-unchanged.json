@@ -1993,6 +1993,12 @@
         "msgid": "Edit published message?"
       },
       {
+        "msgid": "Edit your message above"
+      },
+      {
+        "msgid": "Edit your message below"
+      },
+      {
         "msgid": "Edit your messages above or below"
       },
       {
@@ -2686,6 +2692,12 @@
         "msgid": "Renamed the community from {oldName} to {newName}."
       },
       {
+        "msgid": "Reply to message above"
+      },
+      {
+        "msgid": "Reply to message below"
+      },
+      {
         "msgid": "Reply to messages above or below"
       },
       {
@@ -3086,6 +3098,9 @@
       },
       {
         "msgid": "Something went wrong while publishing. Try again in a moment."
+      },
+      {
+        "msgid": "Start in the tray instead of opening the window when launched at login"
       },
       {
         "msgid": "Started displaying members with this role separately."
@@ -3517,6 +3532,12 @@
       },
       {
         "msgid": "What you're sharing isn't updating"
+      },
+      {
+        "msgid": "When launched at login, start in the menu bar instead of opening the window"
+      },
+      {
+        "msgid": "When launched at login, start in the system tray instead of opening the window"
       },
       {
         "msgid": "Who can join"
@@ -4233,10 +4254,10 @@
         "msgid": "{renderedOnlineCount} online"
       },
       {
-        "msgid": "{username} followed {name} into this channel. Messages published there will appear here."
+        "msgid": "{requestedLabel} could not start. Using {effectiveLabel} instead."
       },
       {
-        "msgid": "{requestedLabel} could not start. Using {effectiveLabel} instead."
+        "msgid": "{username} followed {name} into this channel. Messages published there will appear here."
       },
       {
         "msgctxt": "audit-log-member-profile",

@@ -33,7 +33,7 @@ msgid "(only visible to you)"
 msgstr "(ορατό μόνο σε εσάς)"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:27
 msgid "(unassigned)"
 msgstr "(χωρίς ανάθεση)"
 
@@ -2440,7 +2440,7 @@ msgstr "2FA"
 msgid "2FA backup"
 msgstr "εφεδρικοί κωδικοί 2FA"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:460
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:469
 msgid "2FA requirement"
 msgstr "Απαίτηση 2FA"
 
@@ -3164,7 +3164,7 @@ msgid "Add an extra layer of security to your account"
 msgstr "Πρόσθεσε ένα επιπλέον επίπεδο ασφαλείας στον λογαριασμό σου"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:40
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:41
 msgid "Add another custom shortcut"
 msgstr "Προσθήκη άλλης προσαρμοσμένης συντόμευσης"
 
@@ -3326,7 +3326,7 @@ msgstr "Προσθήκη ρόλου"
 msgid "Add search engine"
 msgstr "Προσθήκη μηχανής αναζήτησης"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:155
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:160
 msgid "Add shortcut"
 msgstr "Προσθήκη συντόμευσης"
 
@@ -5334,7 +5334,7 @@ msgstr "Αυτόματη αφαίρεση παραμέτρων παρακολο�
 msgid "Automatically remove tracking parameters from URLs in messages you send"
 msgstr "Αυτόματη αφαίρεση παραμέτρων παρακολούθησης από URL στα μηνύματα που στέλνετε"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:346
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:355
 msgid "Automatically screen messages for explicit content in channels not marked for mature content."
 msgstr "Αυτόματος έλεγχος των μηνυμάτων για ακατάλληλο περιεχόμενο σε κανάλια που δεν έχουν επισημανθεί για περιεχόμενο ενηλίκων."
 
@@ -7542,9 +7542,9 @@ msgstr "Έχετε υπερβεί το όριο χαρακτήρων κατά {r
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
 #. User settings tab for chat message, media, and input behavior.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:41
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:42
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingsCategories.ts:15
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:40
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:115
 msgid "Chat"
 msgstr "Συνομιλία"
@@ -7891,7 +7891,7 @@ msgstr "Επίλεξε τι μπορεί να κάνει το {clientLabel} στ
 msgid "Choose what friends see in their active now panel"
 msgstr "Επιλέξτε τι βλέπουν οι φίλοι στην ενότητα «Ενεργοί τώρα»"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:306
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:311
 msgid "Choose what members must have before they can post or DM community members."
 msgstr "Επιλέξτε τι πρέπει να έχουν τα μέλη πριν δημοσιεύσουν ή στείλουν DM σε μέλη της κοινότητας."
 
@@ -8458,13 +8458,13 @@ msgstr "Να κλείσει αυτή η ομαδική συνομιλία; Μπ�
 msgid "Close Thread"
 msgstr "Κλείσιμο νήματος"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
 msgid "Close to menu bar"
 msgstr "Κλείσιμο στη γραμμή μενού"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Close to tray"
 msgstr "Κλείσιμο στο tray"
 
@@ -8774,11 +8774,11 @@ msgstr "Κοινότητες"
 msgid "Communities and channels where you can't manage webhooks are hidden."
 msgstr "Οι κοινότητες και τα κανάλια όπου δεν μπορείτε να διαχειριστείτε webhooks είναι κρυφά."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:356
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:365
 msgid "Communities listed in Discovery are required to scan messages from all members. This setting cannot be changed while Discovery is enabled."
 msgstr "Οι κοινότητες που εμφανίζονται στην Ανακάλυψη πρέπει να σαρώνουν τα μηνύματα από όλα τα μέλη. Αυτή η ρύθμιση δεν μπορεί να αλλάξει όσο είναι ενεργοποιημένη η Ανακάλυψη."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:315
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:320
 msgid "Communities listed in Discovery require at least email verification. None cannot be selected while Discovery is enabled."
 msgstr "Οι κοινότητες που εμφανίζονται στην Ανακάλυψη απαιτούν τουλάχιστον επαληθευμένο email. Η επιλογή \"Καμία\" δεν είναι διαθέσιμη όσο η Ανακάλυψη είναι ενεργοποιημένη."
 
@@ -9006,7 +9006,7 @@ msgstr "Επίπεδο σημάτων μη αναγνωσμένων κοινότ
 #. Audit log entry label. Past-tense action describing that the community settings were changed.
 #. Short label in the guild overview tab utils helper. Keep it concise.
 #: src/features/app/config/AuditLogConstants.ts:8
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:213
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:215
 #: src/features/guild/utils/guild_tabs/GuildOverviewTabUtils.tsx:35
 msgid "Community updated"
 msgstr "Η κοινότητα ενημερώθηκε"
@@ -9468,7 +9468,7 @@ msgstr "Δημιουργός περιεχομένου"
 msgid "Content filter"
 msgstr "Φίλτρο περιεχομένου"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:340
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:349
 msgid "Content filtering"
 msgstr "Φιλτράρισμα περιεχομένου"
 
@@ -11164,7 +11164,7 @@ msgstr "Επιλογές προσαρμοσμένης συντόμευσης"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:51
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:102
 msgid "Custom shortcuts"
 msgstr "Προσαρμοσμένες συντομεύσεις"
@@ -11239,7 +11239,7 @@ msgstr "Προσαρμοσμένη επεξεργασία φωνής"
 #. Channel overview settings tab label, control, or validation message (name, topic, slowmode, voice region, mature content gate).
 #. Textarea label in the community moderation settings tab for the custom content warning shown to members.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:45
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:148
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:149
 msgid "Custom warning text"
 msgstr "Προσαρμοσμένο κείμενο προειδοποίησης"
 
@@ -11669,8 +11669,8 @@ msgstr "Προεπιλεγμένη μηχανή αναζήτησης"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:25
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:23
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:24
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:130
 msgid "Default shortcuts"
 msgstr "Προεπιλεγμένες συντομεύσεις"
@@ -12557,7 +12557,7 @@ msgid "Disable backend premium perks"
 msgstr "Απενεργοποίηση premium παροχών του backend"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:32
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:33
 msgid "Disable built-in shortcut"
 msgstr "Απενεργοποίηση ενσωματωμένης συντόμευσης"
 
@@ -12567,7 +12567,7 @@ msgid "Disable built-in shortcuts"
 msgstr "Απενεργοποίηση ενσωματωμένων συντομεύσεων"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:42
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:43
 msgid "Disable built-ins"
 msgstr "Απενεργοποίηση ενσωματωμένων συντομεύσεων"
 
@@ -12652,8 +12652,10 @@ msgstr "Φόρμα απενεργοποίησης ελέγχου ταυτότη�
 msgid "Disable video locally"
 msgstr "Απενεργοποίηση βίντεο τοπικά"
 
+#. Status next to a built-in shortcut the user turned off in the keybinds tab.
 #. Summary value when a setup option is disabled.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:403
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:45
 msgid "Disabled"
 msgstr "Απενεργοποιημένο"
 
@@ -13290,8 +13292,8 @@ msgstr "Πρόχειρο"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:37
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:35
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:38
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:36
 msgid "Drag and drop"
 msgstr "Μεταφορά και απόθεση"
 
@@ -13692,6 +13694,16 @@ msgstr "Επεξεργασία νήματος"
 msgid "Edit translation provider"
 msgstr "Επεξεργασία παρόχου μετάφρασης"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:74
+msgid "Edit your message above"
+msgstr "Επεξεργασία του μηνύματός σας από πάνω"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:78
+msgid "Edit your message below"
+msgstr "Επεξεργασία του μηνύματός σας από κάτω"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:13
 msgid "Edit your messages above or below"
@@ -14042,7 +14054,7 @@ msgid "Enable /tts speech playback"
 msgstr "Ενεργοποίηση αναπαραγωγής ομιλίας /tts"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the owner has not enabled 2FA on their own account.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:42
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:43
 msgid "Enable 2FA on your account to change this setting"
 msgstr "Ενεργοποιήστε το 2FA στον λογαριασμό σας για να αλλάξετε αυτήν τη ρύθμιση"
 
@@ -14859,7 +14871,7 @@ msgstr "εξαίρεση μέρους ονόματος αρχείου συνημ
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:39
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
 msgid "Exit"
 msgstr "Έξοδος"
 
@@ -15031,7 +15043,7 @@ msgid "Expires:"
 msgstr "Λήγει:"
 
 #. Accessible label for the explicit content filter radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:127
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:128
 msgid "Explicit content filter setting"
 msgstr "Ρύθμιση φίλτρου ακατάλληλου περιεχομένου"
 
@@ -15710,14 +15722,14 @@ msgstr "Φιλτράρισμα κατά χρήστη"
 
 #. Activity log value for the explicit content filter setting that filters messages from every member.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from every member regardless of role.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:117
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:118
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:82
 msgid "Filter everyone"
 msgstr "Φιλτράρισμα όλων"
 
 #. Activity log value for the explicit content filter setting that filters messages from members who have no roles.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from members who have no roles assigned.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:107
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:108
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:77
 msgid "Filter members without roles"
 msgstr "Φιλτράρισμα μελών χωρίς ρόλους"
@@ -16933,7 +16945,7 @@ msgstr "Γενικό προφίλ"
 
 #. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:81
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:57
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:63
 msgid "Global shortcut"
 msgstr "Καθολική συντόμευση"
 
@@ -17668,7 +17680,7 @@ msgid "Hide preview thumbnail"
 msgstr "Απόκρυψη μικρογραφίας προεπισκόπησης"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
 msgid "Hide the window when minimized and reopen from the tray"
 msgstr "Απόκρυψη του παραθύρου κατά την ελαχιστοποίηση και άνοιγμα ξανά από την περιοχή ειδοποιήσεων"
 
@@ -17702,7 +17714,7 @@ msgstr "Να αποκρύψετε τη δική σας κοινή χρήση ο�
 
 #. Activity log value naming the high member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:74
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:75
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:65
 msgid "High"
 msgstr "Υψηλό"
@@ -19463,7 +19475,7 @@ msgid "Kansas"
 msgstr "Κάνσας"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:226
 msgid "Keep {productName} running when the window is closed"
 msgstr "Να παραμένει το {productName} σε λειτουργία όταν το παράθυρο είναι κλειστό"
 
@@ -19501,7 +19513,7 @@ msgid "Keep Pickles still"
 msgstr "Κράτα το Pickles ακίνητο"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
 msgid "Keep running"
 msgstr "Παραμονή σε λειτουργία"
 
@@ -19574,7 +19586,7 @@ msgstr "Υποδείξεις συντομεύσεων πληκτρολογίου
 #. Modal title for the keyboard shortcuts cheatsheet.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:21
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:22
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:14
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:376
 msgid "Keyboard shortcuts"
@@ -19922,7 +19934,7 @@ msgid "Let screen readers announce new messages as they arrive in the open chann
 msgstr "Τα προγράμματα ανάγνωσης οθόνης ανακοινώνουν τα νέα μηνύματα καθώς φτάνουν στο ανοιχτό κανάλι. Οι ήχοι ειδοποιήσεων δεν επηρεάζονται."
 
 #. Helper text for the "Off" explicit content filter option in the community moderation settings tab. Means leave moderation to members.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:102
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:103
 msgid "Let the community self-moderate"
 msgstr "Άσε την κοινότητα να συντονίζεται μόνη της"
 
@@ -20389,7 +20401,7 @@ msgstr "Λουιζιάνα"
 
 #. Activity log value naming the low member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:56
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:57
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:57
 msgid "Low"
 msgstr "Χαμηλό"
@@ -20413,7 +20425,7 @@ msgstr "Προεπιλεγμένη συσκευή macOS"
 #. Title for the central macOS permissions modal.
 #: src/features/permissions/system/components/MacPermissionsSettingsRow.tsx:12
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:32
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:204
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:220
 msgid "macOS permissions"
 msgstr "Δικαιώματα macOS"
 
@@ -20808,13 +20820,13 @@ msgstr "Κοινότητα ενηλίκων"
 #. Select label in the community moderation settings tab. Sensitive setting; keep neutral tone.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:90
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:131
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:132
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:296
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:180
 msgid "Mature content"
 msgstr "Περιεχόμενο για ενήλικες"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:399
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:408
 msgid "Mature content & content warnings"
 msgstr "Περιεχόμενο για ενήλικες και προειδοποιήσεις περιεχομένου"
 
@@ -20925,7 +20937,7 @@ msgid "Maximum lifetime (days)"
 msgstr "Μέγιστη διάρκεια ζωής (ημέρες)"
 
 #. Helper text under the "Filter everyone" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:122
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:123
 msgid "Maximum protection for family-friendly spaces"
 msgstr "Μέγιστη προστασία για χώρους φιλικούς προς την οικογένεια"
 
@@ -21050,7 +21062,7 @@ msgstr "Διακοπή αναπαραγωγής"
 #. Activity log value naming the medium member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
 #. Short label in the selections tab. Keep it concise.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:65
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:66
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:61
 #: src/features/user/components/modals/tabs/component_gallery_tab/SelectionsTab.tsx:49
 msgid "Medium"
@@ -21135,12 +21147,12 @@ msgstr "Ο αποκλεισμός του μέλους καταργήθηκε"
 msgid "Member updated"
 msgstr "Το μέλος ενημερώθηκε"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:299
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:304
 msgid "Member verification"
 msgstr "Επαλήθευση μέλους"
 
 #. Accessible label for the member verification level radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:93
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:94
 msgid "Member verification level"
 msgstr "Επίπεδο επαλήθευσης μέλους"
 
@@ -21180,7 +21192,7 @@ msgstr "Members can add others"
 msgid "Members with \"{pinMessagesPermissionLabel}\" can pin messages for everyone."
 msgstr "Τα μέλη με το δικαίωμα \"{pinMessagesPermissionLabel}\" μπορούν να καρφιτσώνουν μηνύματα για όλους."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:309
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:314
 msgid "Members with roles can bypass these checks. For public spaces, we recommend enabling verification."
 msgstr "Τα μέλη με ρόλους μπορούν να παρακάμψουν αυτούς τους ελέγχους. Για δημόσιους χώρους, συνιστούμε την ενεργοποίηση της επαλήθευσης."
 
@@ -21581,11 +21593,11 @@ msgstr "Το μήνυμα αποκαρφιτσώθηκε"
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/channel/components/ChannelChatLayout.tsx:10
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:312
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:29
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:30
 #: src/features/theme_studio/sections/TokenGroups.ts:86
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabInline.tsx:31
 #: src/features/user/components/modals/tabs/AppearanceTab.tsx:39
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:27
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:28
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:18
 msgid "Messages"
 msgstr "Μηνύματα"
@@ -21735,12 +21747,12 @@ msgstr "24ωρη μορφή ώρας"
 msgid "Minimize"
 msgstr "Ελαχιστοποίηση"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 msgid "Minimize to menu bar"
 msgstr "Ελαχιστοποίηση στη γραμμή μενού"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:182
 msgid "Minimize to tray"
 msgstr "Ελαχιστοποίηση στην περιοχή ειδοποιήσεων"
@@ -21786,8 +21798,8 @@ msgstr "Αντιγραφή βαθμίδων"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:49
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:47
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:48
 msgid "Miscellaneous"
 msgstr "Διάφορα"
 
@@ -22021,7 +22033,7 @@ msgid "More options"
 msgstr "Περισσότερες επιλογές"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:53
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:59
 msgid "More shortcut options"
 msgstr "Περισσότερες επιλογές συντομεύσεων"
 
@@ -22681,8 +22693,8 @@ msgstr "Πλοήγηση σε μηνύματα και ενέργειες στη 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:33
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:31
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:32
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:30
 msgid "Navigation"
 msgstr "Πλοήγηση"
@@ -23202,11 +23214,11 @@ msgstr "Δεν υπάρχει banner κοινότητας"
 msgid "No connections yet"
 msgstr "Δεν υπάρχουν συνδέσεις ακόμα"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:184
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:189
 msgid "No custom shortcuts match that search."
 msgstr "Δεν υπάρχουν προσαρμοσμένες συντομεύσεις που να ταιριάζουν με αυτήν την αναζήτηση."
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:180
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:185
 msgid "No custom shortcuts yet."
 msgstr "Δεν υπάρχουν ακόμα προσαρμοσμένες συντομεύσεις."
 
@@ -23523,7 +23535,7 @@ msgstr "Δεν βρέθηκαν ρυθμίσεις"
 msgid "No shortcut set"
 msgstr "Δεν έχει οριστεί συντόμευση"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:94
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:95
 msgid "No shortcuts match that search."
 msgstr "Δεν βρέθηκαν συντομεύσεις που να ταιριάζουν με την αναζήτηση."
 
@@ -23626,7 +23638,7 @@ msgid "No users found"
 msgstr "Δεν βρέθηκαν χρήστες"
 
 #. Helper text for the "None" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:52
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:53
 msgid "No verification is required."
 msgstr "Δεν απαιτείται επαλήθευση."
 
@@ -23686,7 +23698,7 @@ msgstr "Χωρίς μετατροπή"
 #. Short label in the visual tab. Keep it concise.
 #. Summary row value on the confirm step when no items in the category were selected.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:41
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:47
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:48
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:52
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
@@ -23982,8 +23994,8 @@ msgstr "Αντικείμενα"
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/SlowmodeControl.tsx:24
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:42
 #: src/features/channel/components/modals/EditPostModal.tsx:54
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:97
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:139
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:98
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:140
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:73
 msgid "Off"
 msgstr "Ανενεργό"
@@ -24032,7 +24044,7 @@ msgstr "Παλαιότερα πρώτα"
 #. On state suffix appended to the reply bar mention toggle label.
 #: src/features/channel/components/ChannelReplyBar.tsx:58
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:22
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:135
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:136
 msgid "On"
 msgstr "Ενεργό"
 
@@ -24169,7 +24181,7 @@ msgid "Only speakers"
 msgstr "Μόνο ηχεία"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the viewer is not the owner. Plain explanatory tone.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:37
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:38
 msgid "Only the community owner can change this setting"
 msgstr "Μόνο ο κάτοχος της κοινότητας μπορεί να αλλάξει αυτήν τη ρύθμιση"
 
@@ -24971,7 +24983,7 @@ msgstr "Ομάδες avatar που επικαλύπτονται, εμφανίζ�
 msgid "Overlays & menus"
 msgstr "Επικαλύψεις και μενού"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:37
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:38
 msgid "Overridden"
 msgstr "Παρακάμφθηκε"
 
@@ -26862,7 +26874,7 @@ msgid "Quiet"
 msgstr "Αθόρυβη λειτουργία"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:222
 msgid "Quit"
 msgstr "Έξοδος"
 
@@ -26903,6 +26915,11 @@ msgstr "Υπέρβαση ορίου αιτημάτων"
 #: src/features/user/components/modals/tabs/EmbedDebuggerTab.tsx:292
 msgid "Raw embed JSON"
 msgstr "Ακατέργαστο JSON ενσωμάτωσης"
+
+#. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:50
+msgid "Re-enable built-in shortcut"
+msgstr "Επανενεργοποίηση ενσωματωμένης συντόμευσης"
 
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:73
@@ -27413,7 +27430,7 @@ msgstr "Απομνημόνευση αυτής της προτίμησης"
 msgid "Remember window"
 msgstr "Απομνημόνευση παραθύρου"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:166
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:182
 msgid "Remember window size and position"
 msgstr "Απομνημόνευση μεγέθους και θέσης παραθύρου"
 
@@ -28016,6 +28033,16 @@ msgstr "Προτίμηση αναφοράς σε απάντηση για αυτ�
 msgid "Reply to message"
 msgstr "Απάντηση σε μήνυμα"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:66
+msgid "Reply to message above"
+msgstr "Απάντηση στο μήνυμα από πάνω"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:70
+msgid "Reply to message below"
+msgstr "Απάντηση στο μήνυμα από κάτω"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:29
 msgid "Reply to messages above or below"
@@ -28131,7 +28158,7 @@ msgid "Requests"
 msgstr "Αιτήματα"
 
 #. Switch label in the community moderation settings tab. Requires moderators to have two-factor auth enabled before they can ban, kick, time out, or delete messages. Security-sensitive; keep tone plain.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:156
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:157
 msgid "Require 2FA for moderation actions"
 msgstr "Απαίτηση 2FA για ενέργειες συντονισμού"
 
@@ -28165,7 +28192,7 @@ msgstr "Απαίτηση εκχώρησης κωδικού OAuth2"
 msgid "Require passkey"
 msgstr "Απαίτηση κλειδιού πρόσβασης"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:466
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:475
 msgid "Require two-factor authentication for moderators before they can ban, kick, time out, or remove messages."
 msgstr "Να απαιτείται έλεγχος ταυτότητας δύο παραγόντων για τους συντονιστές, προτού μπορέσουν να αποκλείσουν, να αποβάλουν, να θέσουν σε προσωρινό περιορισμό ή να διαγράψουν μηνύματα."
 
@@ -28230,22 +28257,22 @@ msgid "Requires a redirect URI and an authorization code when inviting this bot.
 msgstr "Απαιτεί URI ανακατεύθυνσης και κωδικό εξουσιοδότησης κατά την πρόσκληση αυτού του bot."
 
 #. Helper text for the "Medium" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:70
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:71
 msgid "Requires a verified email address and an account that's at least 5 minutes old."
 msgstr "Απαιτείται επαληθευμένη διεύθυνση email και λογαριασμός που να έχει δημιουργηθεί τουλάχιστον 5 λεπτά πριν."
 
 #. Helper text for the "Low" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:61
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:62
 msgid "Requires a verified email address."
 msgstr "Απαιτείται επαληθευμένη διεύθυνση email."
 
 #. Helper text for the "Very high" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:89
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:90
 msgid "Requires a verified phone number."
 msgstr "Απαιτείται επαληθευμένος αριθμός τηλεφώνου."
 
 #. Helper text for the "High" member verification level option in the community moderation settings tab. "Medium" refers to the matching level option.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:79
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:80
 msgid "Requires everything in medium, plus being a member of the community for at least 10 minutes."
 msgstr "Απαιτούνται όλα όσα και στο επίπεδο \"Μέτρια\", καθώς και συμμετοχή στην κοινότητα για τουλάχιστον 10 λεπτά."
 
@@ -28312,7 +28339,7 @@ msgid "Reset"
 msgstr "Επαναφορά"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:44
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:45
 msgid "Reset \"{label}\" to built-in"
 msgstr "Επαναφορά \"{label}\" στην προεπιλογή"
 
@@ -28340,7 +28367,7 @@ msgid "Reset all overrides"
 msgstr "Επαναφορά όλων των παρακάμψεων"
 
 #. Confirmation prompt in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:30
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:31
 msgid "Reset all shortcuts?"
 msgstr "Επαναφορά όλων των συντομεύσεων;"
 
@@ -28433,7 +28460,7 @@ msgid "Reset to actual values"
 msgstr "Επαναφορά στις πραγματικές τιμές"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:36
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:37
 msgid "Reset to built-in"
 msgstr "Επαναφορά στην προεπιλογή"
 
@@ -28450,8 +28477,8 @@ msgstr "Επαναφορά στην προεπιλεγμένη ένταση"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:38
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:138
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:143
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:110
 msgid "Reset to defaults"
 msgstr "Επαναφορά στις προεπιλογές"
@@ -30560,12 +30587,12 @@ msgid "Set by the {preset} preset. Picking a value here switches to Custom."
 msgstr "Ορίζεται από την προεπιλογή {preset}. Η επιλογή μιας τιμής εδώ θα αλλάξει σε Προσαρμοσμένη."
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:28
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:29
 msgid "Set custom shortcut"
 msgstr "Ορισμός προσαρμοσμένης συντόμευσης"
 
 #. Label in the keybinds tab. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:49
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:55
 msgid "Set custom shortcut for \"{label}\""
 msgstr "Ορισμός προσαρμοσμένης συντόμευσης για «{label}»"
 
@@ -31008,7 +31035,7 @@ msgid "Shortcuts"
 msgstr "Συντομεύσεις"
 
 #. Short helper text in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:54
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:55
 msgid "Shortcuts are paused while recording."
 msgstr "Οι συντομεύσεις απενεργοποιούνται προσωρινά κατά την καταγραφή."
 
@@ -31044,7 +31071,7 @@ msgid "Show a {productName} icon in the system tray or menu bar"
 msgstr "Εμφάνιση εικονιδίου {productName} στην περιοχή ειδοποιήσεων ή στη γραμμή μενού"
 
 #. Switch label in the community moderation settings tab. Toggles a consent prompt before entering any channel.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:143
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:144
 msgid "Show a content warning"
 msgstr "Εμφάνιση προειδοποίησης περιεχομένου"
 
@@ -31291,7 +31318,7 @@ msgstr "Εμφάνιση πληροφοριών πολυμέσων"
 msgid "Show members"
 msgstr "Εμφάνιση μελών"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show menu bar icon"
 msgstr "Εμφάνιση εικονιδίου γραμμής μενού"
 
@@ -31449,7 +31476,7 @@ msgstr "Εμφάνιση του διαγραμμένου κειμένου Markdo
 msgid "Show suppress embeds button"
 msgstr "Εμφάνιση κουμπιού απόκρυψης ενσωματώσεων"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show system tray icon"
 msgstr "Εμφάνιση εικονιδίου στην περιοχή ειδοποιήσεων"
 
@@ -32681,9 +32708,20 @@ msgstr "Η ημερομηνία έναρξης πρέπει να είναι νω
 msgid "Start drag and drop"
 msgstr "Έναρξη μεταφοράς και απόθεσης"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+msgid "Start in the tray instead of opening the window when launched at login"
+msgstr "Εκκίνηση στο δίσκο συστήματος αντί για άνοιγμα παραθύρου κατά την εκκίνηση με τον υπολογιστή"
+
 #: src/features/user/components/modals/tabs/components/MicTestSection.tsx:15
 msgid "Start mic test"
 msgstr "Έναρξη δοκιμής μικροφώνου"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:165
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+msgid "Start minimized"
+msgstr "Έναρξη ελαχιστοποιημένο"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx:326
 #: src/features/moderation/components/report/ReportStepEmail.tsx:97
@@ -33284,7 +33322,7 @@ msgid "Suggest an improvement"
 msgstr "Προτείνετε μια βελτίωση"
 
 #. Helper text under the "Filter members without roles" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:112
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:113
 msgid "Suggested for most communities"
 msgstr "Προτείνεται για τις περισσότερες κοινότητες"
 
@@ -33588,7 +33626,7 @@ msgstr "Συγχρονισμός ρύθμισης μειωμένης κίνησ�
 
 #. Label in the keybinds tab.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:47
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:118
 msgid "Sync shortcuts"
 msgstr "Συγχρονισμός συντομεύσεων"
@@ -34807,7 +34845,7 @@ msgstr "Αυτή η σύνδεση δεν έχει επαληθευτεί."
 #. Label in the content warning utils helper. Keep the tone plain and specific.
 #. Placeholder example shown in the custom content warning textarea in the community moderation settings tab.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:30
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:152
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:153
 #: src/features/messaging/utils/ContentWarningUtils.ts:11
 msgid "This contains sensitive content."
 msgstr "Περιέχει ευαίσθητο περιεχόμενο."
@@ -35218,7 +35256,7 @@ msgid "This removes all trusted domains. You will see the external link warning 
 msgstr "Αυτό καταργεί όλα τα αξιόπιστα domain. Θα βλέπετε ξανά την προειδοποίηση εξωτερικού συνδέσμου για όλα τα domain."
 
 #. Error message in the keybinds tab. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:35
 msgid "This removes every custom shortcut and re-enables all built-in shortcuts. This cannot be undone."
 msgstr "Αυτό καταργεί κάθε προσαρμοσμένη συντόμευση και ενεργοποιεί ξανά όλες τις ενσωματωμένες συντομεύσεις. Αυτό δεν μπορεί να αναιρεθεί."
 
@@ -36518,7 +36556,7 @@ msgstr "Κατάργηση αρχειοθέτησης νήματος"
 
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:12
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:18
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:19
 msgid "Unassigned"
 msgstr "Χωρίς ανάθεση"
 
@@ -38482,7 +38520,7 @@ msgstr "Έκδοση"
 
 #. Activity log value naming the highest member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:84
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:85
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:69
 msgid "Very high"
 msgstr "Πολύ υψηλό"
@@ -39010,8 +39048,8 @@ msgstr "Η κοινοποίηση φωνητικής δραστηριότητα�
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:45
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:43
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:44
 msgid "Voice and video"
 msgstr "Φωνή και βίντεο"
 
@@ -39807,6 +39845,14 @@ msgstr "Όταν η λήξη συνημμένων είναι απενεργοπ�
 #: src/features/channel/components/active_now/ActiveNowSidebar.tsx:21
 msgid "When friends are active in voice channels, their activity will appear here."
 msgstr "Όταν οι φίλοι σου είναι ενεργοί σε φωνητικά κανάλια, η δραστηριότητά τους θα εμφανίζεται εδώ."
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:168
+msgid "When launched at login, start in the menu bar instead of opening the window"
+msgstr "Όταν ξεκινά κατά τη σύνδεση, εμφάνιση στη γραμμή μενού αντί να ανοίξει το παράθυρο"
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:170
+msgid "When launched at login, start in the system tray instead of opening the window"
+msgstr "Όταν ξεκινά κατά τη σύνδεση, ξεκίνα στη γραμμή συστήματος αντί να ανοίξεις το παράθυρο"
 
 #. Label in the display tab.
 #: src/features/user/components/modals/tabs/chat_settings_tab/DisplayTab.tsx:51

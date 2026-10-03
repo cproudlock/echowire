@@ -33,7 +33,7 @@ msgid "(only visible to you)"
 msgstr "（僅您可見）"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:27
 msgid "(unassigned)"
 msgstr "（未設定）"
 
@@ -2440,7 +2440,7 @@ msgstr "2FA"
 msgid "2FA backup"
 msgstr "雙重驗證備份"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:460
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:469
 msgid "2FA requirement"
 msgstr "雙重驗證要求"
 
@@ -3164,7 +3164,7 @@ msgid "Add an extra layer of security to your account"
 msgstr "為您的帳號多加一層安全防護"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:40
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:41
 msgid "Add another custom shortcut"
 msgstr "再新增一個自訂快速鍵"
 
@@ -3326,7 +3326,7 @@ msgstr "新增身分組"
 msgid "Add search engine"
 msgstr "新增搜尋引擎"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:155
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:160
 msgid "Add shortcut"
 msgstr "新增快速鍵"
 
@@ -5334,7 +5334,7 @@ msgstr "自動移除您傳送訊息中網址的追蹤參數（例如 utm_source�
 msgid "Automatically remove tracking parameters from URLs in messages you send"
 msgstr "自動移除您傳送訊息中網址的追蹤參數"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:346
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:355
 msgid "Automatically screen messages for explicit content in channels not marked for mature content."
 msgstr "自動篩選未標示為成人內容的頻道中，含有露骨內容的訊息。"
 
@@ -7542,9 +7542,9 @@ msgstr "已超出字元限制 {remaining} 個字元"
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
 #. User settings tab for chat message, media, and input behavior.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:41
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:42
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingsCategories.ts:15
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:40
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:115
 msgid "Chat"
 msgstr "聊天"
@@ -7891,7 +7891,7 @@ msgstr "選擇「{clientLabel}」可以在您的社群中執行哪些操作。�
 msgid "Choose what friends see in their active now panel"
 msgstr "選擇好友在「目前在線上」面板中會看到什麼"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:306
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:311
 msgid "Choose what members must have before they can post or DM community members."
 msgstr "選擇成員發文或傳送私訊給社群成員前，必須具備的條件。"
 
@@ -8458,13 +8458,13 @@ msgstr "要關閉這個群組私訊嗎？您可以隨時重新開啟。"
 msgid "Close Thread"
 msgstr "關閉討論串"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
 msgid "Close to menu bar"
 msgstr "關閉至選單列"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Close to tray"
 msgstr "關閉至系統匣"
 
@@ -8774,11 +8774,11 @@ msgstr "社群"
 msgid "Communities and channels where you can't manage webhooks are hidden."
 msgstr "無法管理網頁掛鉤的社群和頻道將會隱藏。"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:356
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:365
 msgid "Communities listed in Discovery are required to scan messages from all members. This setting cannot be changed while Discovery is enabled."
 msgstr "在探索中列出的社群必須掃描所有成員的訊息。啟用探索時無法變更此設定。"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:315
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:320
 msgid "Communities listed in Discovery require at least email verification. None cannot be selected while Discovery is enabled."
 msgstr "在探索中列出的社群至少需要驗證電子郵件。啟用探索時，無法選擇「無」。"
 
@@ -9006,7 +9006,7 @@ msgstr "社群未讀標記等級"
 #. Audit log entry label. Past-tense action describing that the community settings were changed.
 #. Short label in the guild overview tab utils helper. Keep it concise.
 #: src/features/app/config/AuditLogConstants.ts:8
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:213
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:215
 #: src/features/guild/utils/guild_tabs/GuildOverviewTabUtils.tsx:35
 msgid "Community updated"
 msgstr "社群已更新"
@@ -9468,7 +9468,7 @@ msgstr "內容創作者"
 msgid "Content filter"
 msgstr "內容篩選"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:340
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:349
 msgid "Content filtering"
 msgstr "內容篩選"
 
@@ -11164,7 +11164,7 @@ msgstr "自訂快速鍵選項"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:51
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:102
 msgid "Custom shortcuts"
 msgstr "自訂快速鍵"
@@ -11239,7 +11239,7 @@ msgstr "自訂語音處理"
 #. Channel overview settings tab label, control, or validation message (name, topic, slowmode, voice region, mature content gate).
 #. Textarea label in the community moderation settings tab for the custom content warning shown to members.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:45
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:148
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:149
 msgid "Custom warning text"
 msgstr "自訂警告文字"
 
@@ -11669,8 +11669,8 @@ msgstr "預設搜尋引擎"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:25
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:23
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:24
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:130
 msgid "Default shortcuts"
 msgstr "預設快速鍵"
@@ -12557,7 +12557,7 @@ msgid "Disable backend premium perks"
 msgstr "停用後端加值福利"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:32
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:33
 msgid "Disable built-in shortcut"
 msgstr "停用內建快速鍵"
 
@@ -12567,7 +12567,7 @@ msgid "Disable built-in shortcuts"
 msgstr "停用內建快速鍵"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:42
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:43
 msgid "Disable built-ins"
 msgstr "停用內建快速鍵"
 
@@ -12652,8 +12652,10 @@ msgstr "停用雙重驗證表單"
 msgid "Disable video locally"
 msgstr "在本機停用視訊"
 
+#. Status next to a built-in shortcut the user turned off in the keybinds tab.
 #. Summary value when a setup option is disabled.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:403
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:45
 msgid "Disabled"
 msgstr "已停用"
 
@@ -13290,8 +13292,8 @@ msgstr "草稿"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:37
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:35
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:38
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:36
 msgid "Drag and drop"
 msgstr "拖放"
 
@@ -13692,6 +13694,16 @@ msgstr "編輯討論串"
 msgid "Edit translation provider"
 msgstr "編輯翻譯服務供應商"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:74
+msgid "Edit your message above"
+msgstr "編輯上方的訊息"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:78
+msgid "Edit your message below"
+msgstr "編輯下方的訊息"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:13
 msgid "Edit your messages above or below"
@@ -14042,7 +14054,7 @@ msgid "Enable /tts speech playback"
 msgstr "啟用 /tts 語音播放"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the owner has not enabled 2FA on their own account.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:42
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:43
 msgid "Enable 2FA on your account to change this setting"
 msgstr "請先為您的帳號啟用雙重驗證，才能變更此設定"
 
@@ -14859,7 +14871,7 @@ msgstr "排除附件檔名的一部分"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:39
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
 msgid "Exit"
 msgstr "離開"
 
@@ -15031,7 +15043,7 @@ msgid "Expires:"
 msgstr "到期時間："
 
 #. Accessible label for the explicit content filter radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:127
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:128
 msgid "Explicit content filter setting"
 msgstr "露骨內容篩選設定"
 
@@ -15710,14 +15722,14 @@ msgstr "依使用者篩選"
 
 #. Activity log value for the explicit content filter setting that filters messages from every member.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from every member regardless of role.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:117
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:118
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:82
 msgid "Filter everyone"
 msgstr "篩選所有人"
 
 #. Activity log value for the explicit content filter setting that filters messages from members who have no roles.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from members who have no roles assigned.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:107
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:108
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:77
 msgid "Filter members without roles"
 msgstr "篩選沒有身分組的成員"
@@ -16933,7 +16945,7 @@ msgstr "全域個人檔案"
 
 #. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:81
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:57
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:63
 msgid "Global shortcut"
 msgstr "全域快捷鍵"
 
@@ -17668,7 +17680,7 @@ msgid "Hide preview thumbnail"
 msgstr "隱藏預覽縮圖"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
 msgid "Hide the window when minimized and reopen from the tray"
 msgstr "視窗最小化時隱藏，並可從系統匣重新開啟"
 
@@ -17702,7 +17714,7 @@ msgstr "要隱藏自己的螢幕分享嗎？"
 
 #. Activity log value naming the high member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:74
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:75
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:65
 msgid "High"
 msgstr "高"
@@ -19463,7 +19475,7 @@ msgid "Kansas"
 msgstr "堪薩斯州"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:226
 msgid "Keep {productName} running when the window is closed"
 msgstr "關閉視窗時，讓 {productName} 保持執行"
 
@@ -19501,7 +19513,7 @@ msgid "Keep Pickles still"
 msgstr "讓 Pickles 保持不動"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
 msgid "Keep running"
 msgstr "繼續執行"
 
@@ -19574,7 +19586,7 @@ msgstr "工具提示中的鍵盤快速鍵提示"
 #. Modal title for the keyboard shortcuts cheatsheet.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:21
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:22
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:14
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:376
 msgid "Keyboard shortcuts"
@@ -19922,7 +19934,7 @@ msgid "Let screen readers announce new messages as they arrive in the open chann
 msgstr "讓螢幕閱讀器在開啟的頻道中收到新訊息時，即時朗讀訊息內容。通知音效不受影響。"
 
 #. Helper text for the "Off" explicit content filter option in the community moderation settings tab. Means leave moderation to members.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:102
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:103
 msgid "Let the community self-moderate"
 msgstr "讓社群自行管理"
 
@@ -20389,7 +20401,7 @@ msgstr "路易斯安那州"
 
 #. Activity log value naming the low member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:56
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:57
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:57
 msgid "Low"
 msgstr "低"
@@ -20413,7 +20425,7 @@ msgstr "macOS 預設值"
 #. Title for the central macOS permissions modal.
 #: src/features/permissions/system/components/MacPermissionsSettingsRow.tsx:12
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:32
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:204
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:220
 msgid "macOS permissions"
 msgstr "macOS 權限"
 
@@ -20808,13 +20820,13 @@ msgstr "成人社群"
 #. Select label in the community moderation settings tab. Sensitive setting; keep neutral tone.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:90
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:131
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:132
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:296
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:180
 msgid "Mature content"
 msgstr "成人內容"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:399
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:408
 msgid "Mature content & content warnings"
 msgstr "成人內容與內容警告"
 
@@ -20925,7 +20937,7 @@ msgid "Maximum lifetime (days)"
 msgstr "附件最長保留期限（天）"
 
 #. Helper text under the "Filter everyone" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:122
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:123
 msgid "Maximum protection for family-friendly spaces"
 msgstr "為闔家適宜的空間提供最高等級的保護"
 
@@ -21050,7 +21062,7 @@ msgstr "停止播放"
 #. Activity log value naming the medium member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
 #. Short label in the selections tab. Keep it concise.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:65
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:66
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:61
 #: src/features/user/components/modals/tabs/component_gallery_tab/SelectionsTab.tsx:49
 msgid "Medium"
@@ -21135,12 +21147,12 @@ msgstr "成員已解除停權"
 msgid "Member updated"
 msgstr "成員已更新"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:299
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:304
 msgid "Member verification"
 msgstr "成員驗證"
 
 #. Accessible label for the member verification level radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:93
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:94
 msgid "Member verification level"
 msgstr "成員驗證等級"
 
@@ -21180,7 +21192,7 @@ msgstr "Members can add others"
 msgid "Members with \"{pinMessagesPermissionLabel}\" can pin messages for everyone."
 msgstr "擁有「{pinMessagesPermissionLabel}」權限的成員可以為所有人釘選訊息。"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:309
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:314
 msgid "Members with roles can bypass these checks. For public spaces, we recommend enabling verification."
 msgstr "擁有身分組的成員可以略過這些檢查。對於公開空間，我們建議啟用驗證。"
 
@@ -21581,11 +21593,11 @@ msgstr "訊息已解除釘選"
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/channel/components/ChannelChatLayout.tsx:10
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:312
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:29
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:30
 #: src/features/theme_studio/sections/TokenGroups.ts:86
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabInline.tsx:31
 #: src/features/user/components/modals/tabs/AppearanceTab.tsx:39
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:27
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:28
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:18
 msgid "Messages"
 msgstr "訊息"
@@ -21735,12 +21747,12 @@ msgstr "24 小時制"
 msgid "Minimize"
 msgstr "最小化"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 msgid "Minimize to menu bar"
 msgstr "最小化到選單列"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:182
 msgid "Minimize to tray"
 msgstr "最小化到系統匣"
@@ -21786,8 +21798,8 @@ msgstr "鏡像方案"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:49
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:47
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:48
 msgid "Miscellaneous"
 msgstr "其他"
 
@@ -22021,7 +22033,7 @@ msgid "More options"
 msgstr "更多選項"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:53
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:59
 msgid "More shortcut options"
 msgstr "更多快速鍵選項"
 
@@ -22681,8 +22693,8 @@ msgstr "在聊天中瀏覽訊息與動作。"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:33
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:31
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:32
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:30
 msgid "Navigation"
 msgstr "導覽"
@@ -23202,11 +23214,11 @@ msgstr "沒有社群橫幅"
 msgid "No connections yet"
 msgstr "尚未連結任何帳號"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:184
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:189
 msgid "No custom shortcuts match that search."
 msgstr "沒有符合搜尋條件的自訂快速鍵。"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:180
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:185
 msgid "No custom shortcuts yet."
 msgstr "尚未設定自訂快速鍵。"
 
@@ -23523,7 +23535,7 @@ msgstr "找不到設定"
 msgid "No shortcut set"
 msgstr "未設定快速鍵"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:94
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:95
 msgid "No shortcuts match that search."
 msgstr "沒有符合搜尋條件的快速鍵。"
 
@@ -23626,7 +23638,7 @@ msgid "No users found"
 msgstr "找不到使用者"
 
 #. Helper text for the "None" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:52
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:53
 msgid "No verification is required."
 msgstr "不需要驗證。"
 
@@ -23686,7 +23698,7 @@ msgstr "無轉換"
 #. Short label in the visual tab. Keep it concise.
 #. Summary row value on the confirm step when no items in the category were selected.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:41
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:47
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:48
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:52
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
@@ -23982,8 +23994,8 @@ msgstr "物品"
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/SlowmodeControl.tsx:24
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:42
 #: src/features/channel/components/modals/EditPostModal.tsx:54
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:97
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:139
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:98
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:140
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:73
 msgid "Off"
 msgstr "關閉"
@@ -24032,7 +24044,7 @@ msgstr "最舊優先"
 #. On state suffix appended to the reply bar mention toggle label.
 #: src/features/channel/components/ChannelReplyBar.tsx:58
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:22
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:135
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:136
 msgid "On"
 msgstr "開啟"
 
@@ -24169,7 +24181,7 @@ msgid "Only speakers"
 msgstr "僅限揚聲器"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the viewer is not the owner. Plain explanatory tone.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:37
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:38
 msgid "Only the community owner can change this setting"
 msgstr "只有社群擁有者可以變更此設定"
 
@@ -24971,7 +24983,7 @@ msgstr "重疊的頭像群組，顯示多位使用者並自動顯示超出的人
 msgid "Overlays & menus"
 msgstr "浮層與選單"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:37
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:38
 msgid "Overridden"
 msgstr "已覆寫"
 
@@ -26862,7 +26874,7 @@ msgid "Quiet"
 msgstr "安靜"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:222
 msgid "Quit"
 msgstr "結束"
 
@@ -26903,6 +26915,11 @@ msgstr "頻率限制"
 #: src/features/user/components/modals/tabs/EmbedDebuggerTab.tsx:292
 msgid "Raw embed JSON"
 msgstr "原始嵌入 JSON"
+
+#. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:50
+msgid "Re-enable built-in shortcut"
+msgstr "重新啟用內建快速鍵"
 
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:73
@@ -27413,7 +27430,7 @@ msgstr "記住此偏好設定"
 msgid "Remember window"
 msgstr "記住視窗"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:166
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:182
 msgid "Remember window size and position"
 msgstr "記住視窗大小和位置"
 
@@ -28016,6 +28033,16 @@ msgstr "此社群的回覆提及偏好設定"
 msgid "Reply to message"
 msgstr "回覆訊息"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:66
+msgid "Reply to message above"
+msgstr "回覆上方的訊息"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:70
+msgid "Reply to message below"
+msgstr "回覆下方的訊息"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:29
 msgid "Reply to messages above or below"
@@ -28131,7 +28158,7 @@ msgid "Requests"
 msgstr "邀請"
 
 #. Switch label in the community moderation settings tab. Requires moderators to have two-factor auth enabled before they can ban, kick, time out, or delete messages. Security-sensitive; keep tone plain.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:156
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:157
 msgid "Require 2FA for moderation actions"
 msgstr "管理動作需要雙重驗證"
 
@@ -28165,7 +28192,7 @@ msgstr "需要 OAuth2 授權碼授予"
 msgid "Require passkey"
 msgstr "要求通行金鑰"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:466
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:475
 msgid "Require two-factor authentication for moderators before they can ban, kick, time out, or remove messages."
 msgstr "管理員必須啟用雙重驗證，才能執行停權、踢出、禁言或移除訊息等操作。"
 
@@ -28230,22 +28257,22 @@ msgid "Requires a redirect URI and an authorization code when inviting this bot.
 msgstr "邀請此機器人時，需要重新導向 URI 和授權碼。"
 
 #. Helper text for the "Medium" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:70
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:71
 msgid "Requires a verified email address and an account that's at least 5 minutes old."
 msgstr "需要驗證電子郵件地址，且帳號建立時間至少滿 5 分鐘。"
 
 #. Helper text for the "Low" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:61
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:62
 msgid "Requires a verified email address."
 msgstr "需要驗證電子郵件地址。"
 
 #. Helper text for the "Very high" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:89
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:90
 msgid "Requires a verified phone number."
 msgstr "需要已驗證的電話號碼。"
 
 #. Helper text for the "High" member verification level option in the community moderation settings tab. "Medium" refers to the matching level option.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:79
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:80
 msgid "Requires everything in medium, plus being a member of the community for at least 10 minutes."
 msgstr "除了中等安全等級的所有要求外，還必須成為社群成員至少 10 分鐘。"
 
@@ -28312,7 +28339,7 @@ msgid "Reset"
 msgstr "重設"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:44
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:45
 msgid "Reset \"{label}\" to built-in"
 msgstr "將「{label}」重設為內建設定"
 
@@ -28340,7 +28367,7 @@ msgid "Reset all overrides"
 msgstr "重設所有覆寫設定"
 
 #. Confirmation prompt in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:30
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:31
 msgid "Reset all shortcuts?"
 msgstr "要重設所有快速鍵嗎？"
 
@@ -28433,7 +28460,7 @@ msgid "Reset to actual values"
 msgstr "重設為實際值"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:36
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:37
 msgid "Reset to built-in"
 msgstr "重設為內建"
 
@@ -28450,8 +28477,8 @@ msgstr "重設為預設音量"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:38
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:138
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:143
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:110
 msgid "Reset to defaults"
 msgstr "重設為預設值"
@@ -30560,12 +30587,12 @@ msgid "Set by the {preset} preset. Picking a value here switches to Custom."
 msgstr "由 {preset} 預設值決定。選擇此處的值將切換至「自訂」。"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:28
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:29
 msgid "Set custom shortcut"
 msgstr "設定自訂快速鍵"
 
 #. Label in the keybinds tab. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:49
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:55
 msgid "Set custom shortcut for \"{label}\""
 msgstr "為「{label}」設定自訂快速鍵"
 
@@ -31008,7 +31035,7 @@ msgid "Shortcuts"
 msgstr "快速鍵"
 
 #. Short helper text in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:54
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:55
 msgid "Shortcuts are paused while recording."
 msgstr "錄製期間快速鍵會暫停作用。"
 
@@ -31044,7 +31071,7 @@ msgid "Show a {productName} icon in the system tray or menu bar"
 msgstr "在系統匣或選單列中顯示 {productName} 圖示"
 
 #. Switch label in the community moderation settings tab. Toggles a consent prompt before entering any channel.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:143
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:144
 msgid "Show a content warning"
 msgstr "顯示內容警示"
 
@@ -31291,7 +31318,7 @@ msgstr "顯示媒體資訊"
 msgid "Show members"
 msgstr "顯示成員"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show menu bar icon"
 msgstr "顯示選單列圖示"
 
@@ -31449,7 +31476,7 @@ msgstr "以稍微柔和的顏色顯示刪除線 Markdown 文字。"
 msgid "Show suppress embeds button"
 msgstr "顯示「隱藏嵌入內容」按鈕"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show system tray icon"
 msgstr "顯示系統匣圖示"
 
@@ -32681,9 +32708,20 @@ msgstr "開始日期必須早於結束日期。"
 msgid "Start drag and drop"
 msgstr "開始拖放"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+msgid "Start in the tray instead of opening the window when launched at login"
+msgstr "登入時啟動，改為在系統匣中啟動，而非開啟視窗"
+
 #: src/features/user/components/modals/tabs/components/MicTestSection.tsx:15
 msgid "Start mic test"
 msgstr "開始麥克風測試"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:165
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+msgid "Start minimized"
+msgstr "最小化啟動"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx:326
 #: src/features/moderation/components/report/ReportStepEmail.tsx:97
@@ -33284,7 +33322,7 @@ msgid "Suggest an improvement"
 msgstr "提出改進建議"
 
 #. Helper text under the "Filter members without roles" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:112
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:113
 msgid "Suggested for most communities"
 msgstr "建議用於大多數社群"
 
@@ -33588,7 +33626,7 @@ msgstr "與系統同步減少動態效果設定"
 
 #. Label in the keybinds tab.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:47
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:118
 msgid "Sync shortcuts"
 msgstr "同步快速鍵"
@@ -34807,7 +34845,7 @@ msgstr "此連結帳號尚未驗證。"
 #. Label in the content warning utils helper. Keep the tone plain and specific.
 #. Placeholder example shown in the custom content warning textarea in the community moderation settings tab.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:30
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:152
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:153
 #: src/features/messaging/utils/ContentWarningUtils.ts:11
 msgid "This contains sensitive content."
 msgstr "此內容含有敏感資訊。"
@@ -35218,7 +35256,7 @@ msgid "This removes all trusted domains. You will see the external link warning 
 msgstr "這會移除所有信任的網域。您將會再次看到所有網域的外部連結警告。"
 
 #. Error message in the keybinds tab. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:35
 msgid "This removes every custom shortcut and re-enables all built-in shortcuts. This cannot be undone."
 msgstr "這會移除所有自訂快速鍵，並重新啟用所有內建快速鍵。此動作無法復原。"
 
@@ -36518,7 +36556,7 @@ msgstr "取消封存討論串"
 
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:12
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:18
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:19
 msgid "Unassigned"
 msgstr "未指定"
 
@@ -38482,7 +38520,7 @@ msgstr "版本"
 
 #. Activity log value naming the highest member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:84
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:85
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:69
 msgid "Very high"
 msgstr "非常高"
@@ -39010,8 +39048,8 @@ msgstr "語音活動分享已更新"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:45
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:43
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:44
 msgid "Voice and video"
 msgstr "語音與視訊"
 
@@ -39807,6 +39845,14 @@ msgstr "停用附件到期功能後，附件會保留，直到手動移除。"
 #: src/features/channel/components/active_now/ActiveNowSidebar.tsx:21
 msgid "When friends are active in voice channels, their activity will appear here."
 msgstr "當好友在語音頻道中活動時，他們的動態會顯示在這裡。"
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:168
+msgid "When launched at login, start in the menu bar instead of opening the window"
+msgstr "登入時啟動，改為在選單列中啟動，而非開啟視窗"
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:170
+msgid "When launched at login, start in the system tray instead of opening the window"
+msgstr "登入時啟動，改為從系統匣啟動，而非開啟視窗"
 
 #. Label in the display tab.
 #: src/features/user/components/modals/tabs/chat_settings_tab/DisplayTab.tsx:51

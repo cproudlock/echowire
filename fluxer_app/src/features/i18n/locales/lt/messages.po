@@ -33,7 +33,7 @@ msgid "(only visible to you)"
 msgstr "(matoma tik jums)"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:27
 msgid "(unassigned)"
 msgstr "(nepriskirta)"
 
@@ -2440,7 +2440,7 @@ msgstr "2FA"
 msgid "2FA backup"
 msgstr "2FA atsarginė kopija"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:460
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:469
 msgid "2FA requirement"
 msgstr "2FA reikalavimas"
 
@@ -3164,7 +3164,7 @@ msgid "Add an extra layer of security to your account"
 msgstr "Pridėkite papildomą saugumo lygį savo paskyrai"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:40
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:41
 msgid "Add another custom shortcut"
 msgstr "Pridėti kitą pasirinktinį spartųjį klavišą"
 
@@ -3326,7 +3326,7 @@ msgstr "Pridėti vaidmenį"
 msgid "Add search engine"
 msgstr "Pridėti paieškos variklį"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:155
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:160
 msgid "Add shortcut"
 msgstr "Pridėti spartųjį klavišą"
 
@@ -5334,7 +5334,7 @@ msgstr "Automatiškai pašalinti sekimo parametrus (pvz., utm_source, fbclid, gc
 msgid "Automatically remove tracking parameters from URLs in messages you send"
 msgstr "Automatiškai pašalinti sekimo parametrus iš URL nuorodų siunčiamose žinutėse"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:346
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:355
 msgid "Automatically screen messages for explicit content in channels not marked for mature content."
 msgstr "Automatiškai tikrinti žinutes dėl nepadoraus turinio kanaluose, kurie nepažymėti kaip skirti brandžiam turiniui."
 
@@ -7542,9 +7542,9 @@ msgstr "Viršytas simbolių limitas: {remaining}"
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
 #. User settings tab for chat message, media, and input behavior.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:41
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:42
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingsCategories.ts:15
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:40
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:115
 msgid "Chat"
 msgstr "Pokalbis"
@@ -7891,7 +7891,7 @@ msgstr "Pasirinkite, ką „{clientLabel}“ gali daryti jūsų bendruomenėje. 
 msgid "Choose what friends see in their active now panel"
 msgstr "Pasirinkite, ką draugai mato savo aktyvumo skydelyje"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:306
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:311
 msgid "Choose what members must have before they can post or DM community members."
 msgstr "Pasirinkite, ką nariai turi turėti, kad galėtų rašyti žinutes ar siųsti tiesiogines žinutes bendruomenės nariams."
 
@@ -8458,13 +8458,13 @@ msgstr "Uždaryti šį grupės DM? Jį galite bet kada vėl atidaryti."
 msgid "Close Thread"
 msgstr "Uždaryti giją"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
 msgid "Close to menu bar"
 msgstr "Uždaryti į meniu juostą"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Close to tray"
 msgstr "Uždaryti į dėklą"
 
@@ -8774,11 +8774,11 @@ msgstr "Bendruomenės"
 msgid "Communities and channels where you can't manage webhooks are hidden."
 msgstr "Bendruomenės ir kanalai, kuriuose negalite tvarkyti webhookų, yra paslėpti."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:356
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:365
 msgid "Communities listed in Discovery are required to scan messages from all members. This setting cannot be changed while Discovery is enabled."
 msgstr "Į Atradimą įtrauktos bendruomenės privalo tikrinti visų narių žinutes. Šio nustatymo negalima keisti, kol įjungtas Atradimas."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:315
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:320
 msgid "Communities listed in Discovery require at least email verification. None cannot be selected while Discovery is enabled."
 msgstr "Į Atradimą įtrauktoms bendruomenėms būtinas bent el. pašto patvirtinimas. Kol įjungtas Atradimas, negalima pasirinkti „Nėra“."
 
@@ -9006,7 +9006,7 @@ msgstr "Bendruomenės neskaitytų pranešimų ženkliukų lygis"
 #. Audit log entry label. Past-tense action describing that the community settings were changed.
 #. Short label in the guild overview tab utils helper. Keep it concise.
 #: src/features/app/config/AuditLogConstants.ts:8
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:213
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:215
 #: src/features/guild/utils/guild_tabs/GuildOverviewTabUtils.tsx:35
 msgid "Community updated"
 msgstr "Bendruomenė atnaujinta"
@@ -9468,7 +9468,7 @@ msgstr "Turinio kūrėjas"
 msgid "Content filter"
 msgstr "Turinio filtras"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:340
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:349
 msgid "Content filtering"
 msgstr "Turinio filtravimas"
 
@@ -11164,7 +11164,7 @@ msgstr "Pasirinktinio sparčiojo klavišo parinktys"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:51
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:102
 msgid "Custom shortcuts"
 msgstr "Pasirinktiniai spartieji klavišai"
@@ -11239,7 +11239,7 @@ msgstr "Pasirinktinis balso apdorojimas"
 #. Channel overview settings tab label, control, or validation message (name, topic, slowmode, voice region, mature content gate).
 #. Textarea label in the community moderation settings tab for the custom content warning shown to members.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:45
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:148
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:149
 msgid "Custom warning text"
 msgstr "Pasirinktinis įspėjimo tekstas"
 
@@ -11669,8 +11669,8 @@ msgstr "Numatytoji paieškos sistema"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:25
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:23
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:24
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:130
 msgid "Default shortcuts"
 msgstr "Numatytieji spartieji klavišai"
@@ -12557,7 +12557,7 @@ msgid "Disable backend premium perks"
 msgstr "Išjungti premium privilegijas serveryje"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:32
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:33
 msgid "Disable built-in shortcut"
 msgstr "Išjungti integruotą spartųjį klavišą"
 
@@ -12567,7 +12567,7 @@ msgid "Disable built-in shortcuts"
 msgstr "Išjungti integruotus sparčiuosius klavišus"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:42
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:43
 msgid "Disable built-ins"
 msgstr "Išjungti integruotus"
 
@@ -12652,8 +12652,10 @@ msgstr "Išjungti dviejų veiksnių autentifikavimo formą"
 msgid "Disable video locally"
 msgstr "Išjungti vaizdą lokaliai"
 
+#. Status next to a built-in shortcut the user turned off in the keybinds tab.
 #. Summary value when a setup option is disabled.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:403
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:45
 msgid "Disabled"
 msgstr "Išjungta"
 
@@ -13290,8 +13292,8 @@ msgstr "Juodraštis"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:37
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:35
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:38
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:36
 msgid "Drag and drop"
 msgstr "Vilkimas ir numetimas"
 
@@ -13692,6 +13694,16 @@ msgstr "Redaguoti giją"
 msgid "Edit translation provider"
 msgstr "Redaguoti vertimo teikėją"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:74
+msgid "Edit your message above"
+msgstr "Redaguoti savo žinutę aukščiau"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:78
+msgid "Edit your message below"
+msgstr "Redaguoti savo žinutę žemiau"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:13
 msgid "Edit your messages above or below"
@@ -14042,7 +14054,7 @@ msgid "Enable /tts speech playback"
 msgstr "Įjungti /tts kalbos atkūrimą"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the owner has not enabled 2FA on their own account.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:42
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:43
 msgid "Enable 2FA on your account to change this setting"
 msgstr "Norėdami pakeisti šį nustatymą, įjunkite dviejų veiksnių autentifikavimą savo paskyroje"
 
@@ -14859,7 +14871,7 @@ msgstr "neįtraukti priedo failo pavadinimo dalies"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:39
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
 msgid "Exit"
 msgstr "Išeiti"
 
@@ -15031,7 +15043,7 @@ msgid "Expires:"
 msgstr "Baigiasi:"
 
 #. Accessible label for the explicit content filter radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:127
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:128
 msgid "Explicit content filter setting"
 msgstr "Nepadoraus turinio filtro nustatymas"
 
@@ -15710,14 +15722,14 @@ msgstr "Filtruoti pagal naudotoją"
 
 #. Activity log value for the explicit content filter setting that filters messages from every member.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from every member regardless of role.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:117
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:118
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:82
 msgid "Filter everyone"
 msgstr "Filtruoti visus"
 
 #. Activity log value for the explicit content filter setting that filters messages from members who have no roles.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from members who have no roles assigned.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:107
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:108
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:77
 msgid "Filter members without roles"
 msgstr "Filtruoti narius be vaidmenų"
@@ -16933,7 +16945,7 @@ msgstr "Visuotinis profilis"
 
 #. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:81
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:57
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:63
 msgid "Global shortcut"
 msgstr "Visuotinis spartusis klavišas"
 
@@ -17669,7 +17681,7 @@ msgid "Hide preview thumbnail"
 msgstr "Slėpti peržiūros miniatiūrą"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
 msgid "Hide the window when minimized and reopen from the tray"
 msgstr "Slėpti langą sumažinus ir atidaryti iš dėklo"
 
@@ -17703,7 +17715,7 @@ msgstr "Slėpti savo ekrano bendrinimą?"
 
 #. Activity log value naming the high member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:74
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:75
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:65
 msgid "High"
 msgstr "Aukštas"
@@ -19464,7 +19476,7 @@ msgid "Kansas"
 msgstr "Kanzasas"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:226
 msgid "Keep {productName} running when the window is closed"
 msgstr "Palikti „{productName}“ veikti uždarius langą"
 
@@ -19502,7 +19514,7 @@ msgid "Keep Pickles still"
 msgstr "Laikyti Pickles nejudantį"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
 msgid "Keep running"
 msgstr "Palikti veikti"
 
@@ -19575,7 +19587,7 @@ msgstr "Sparčiųjų klavišų užuominos patarimuose"
 #. Modal title for the keyboard shortcuts cheatsheet.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:21
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:22
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:14
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:376
 msgid "Keyboard shortcuts"
@@ -19923,7 +19935,7 @@ msgid "Let screen readers announce new messages as they arrive in the open chann
 msgstr "Leisti ekrano skaitytuvams pranešti apie naujas žinutes, kai jos gaunamos atidarytame kanale. Pranešimų garsai nepaveikiami."
 
 #. Helper text for the "Off" explicit content filter option in the community moderation settings tab. Means leave moderation to members.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:102
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:103
 msgid "Let the community self-moderate"
 msgstr "Leisti bendruomenei moderuoti save"
 
@@ -20390,7 +20402,7 @@ msgstr "Luiziana"
 
 #. Activity log value naming the low member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:56
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:57
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:57
 msgid "Low"
 msgstr "Žemas"
@@ -20414,7 +20426,7 @@ msgstr "„macOS“ numatytasis įrenginys"
 #. Title for the central macOS permissions modal.
 #: src/features/permissions/system/components/MacPermissionsSettingsRow.tsx:12
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:32
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:204
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:220
 msgid "macOS permissions"
 msgstr "„macOS“ leidimai"
 
@@ -20809,13 +20821,13 @@ msgstr "Brandaus turinio bendruomenė"
 #. Select label in the community moderation settings tab. Sensitive setting; keep neutral tone.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:90
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:131
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:132
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:296
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:180
 msgid "Mature content"
 msgstr "Brandus turinys"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:399
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:408
 msgid "Mature content & content warnings"
 msgstr "Brandus turinys ir įspėjimai apie turinį"
 
@@ -20926,7 +20938,7 @@ msgid "Maximum lifetime (days)"
 msgstr "Didžiausias galiojimo laikas (dienos)"
 
 #. Helper text under the "Filter everyone" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:122
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:123
 msgid "Maximum protection for family-friendly spaces"
 msgstr "Didžiausia apsauga šeimai tinkamoms erdvėms"
 
@@ -21051,7 +21063,7 @@ msgstr "Stabdyti atkūrimą"
 #. Activity log value naming the medium member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
 #. Short label in the selections tab. Keep it concise.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:65
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:66
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:61
 #: src/features/user/components/modals/tabs/component_gallery_tab/SelectionsTab.tsx:49
 msgid "Medium"
@@ -21136,12 +21148,12 @@ msgstr "Nario užblokavimas panaikintas"
 msgid "Member updated"
 msgstr "Narys atnaujintas"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:299
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:304
 msgid "Member verification"
 msgstr "Narių patvirtinimas"
 
 #. Accessible label for the member verification level radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:93
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:94
 msgid "Member verification level"
 msgstr "Narių patvirtinimo lygis"
 
@@ -21181,7 +21193,7 @@ msgstr "Members can add others"
 msgid "Members with \"{pinMessagesPermissionLabel}\" can pin messages for everyone."
 msgstr "Nariai, turintys leidimą „{pinMessagesPermissionLabel}“, gali prisegti žinutes visiems."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:309
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:314
 msgid "Members with roles can bypass these checks. For public spaces, we recommend enabling verification."
 msgstr "Nariai, turintys vaidmenis, gali apeiti šiuos patikrinimus. Viešosioms erdvėms rekomenduojame įjungti patvirtinimą."
 
@@ -21582,11 +21594,11 @@ msgstr "Žinutė atsegta"
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/channel/components/ChannelChatLayout.tsx:10
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:312
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:29
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:30
 #: src/features/theme_studio/sections/TokenGroups.ts:86
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabInline.tsx:31
 #: src/features/user/components/modals/tabs/AppearanceTab.tsx:39
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:27
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:28
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:18
 msgid "Messages"
 msgstr "Žinutės"
@@ -21736,12 +21748,12 @@ msgstr "24 valandų laikas"
 msgid "Minimize"
 msgstr "Sumažinti"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 msgid "Minimize to menu bar"
 msgstr "Mažinti į meniu juostą"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:182
 msgid "Minimize to tray"
 msgstr "Mažinti į sistemos dėklą"
@@ -21787,8 +21799,8 @@ msgstr "Atkartoti lygius"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:49
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:47
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:48
 msgid "Miscellaneous"
 msgstr "Įvairūs"
 
@@ -22022,7 +22034,7 @@ msgid "More options"
 msgstr "Daugiau parinkčių"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:53
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:59
 msgid "More shortcut options"
 msgstr "Daugiau sparčiųjų klavišų parinkčių"
 
@@ -22682,8 +22694,8 @@ msgstr "Naršykite žinutes ir veiksmus pokalbyje."
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:33
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:31
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:32
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:30
 msgid "Navigation"
 msgstr "Naršymas"
@@ -23203,11 +23215,11 @@ msgstr "Nėra bendruomenės reklamjuostės"
 msgid "No connections yet"
 msgstr "Kol kas nėra ryšių"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:184
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:189
 msgid "No custom shortcuts match that search."
 msgstr "Nėra pasirinktinių sparčiųjų klavišų, atitinkančių paiešką."
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:180
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:185
 msgid "No custom shortcuts yet."
 msgstr "Dar nėra pasirinktinių sparčiųjų klavišų."
 
@@ -23524,7 +23536,7 @@ msgstr "Nustatymų nerasta"
 msgid "No shortcut set"
 msgstr "Spartusis klavišas nenustatytas"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:94
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:95
 msgid "No shortcuts match that search."
 msgstr "Nėra sparčiųjų klavišų, atitinkančių paiešką."
 
@@ -23627,7 +23639,7 @@ msgid "No users found"
 msgstr "Naudotojų nerasta"
 
 #. Helper text for the "None" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:52
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:53
 msgid "No verification is required."
 msgstr "Patvirtinimas nereikalingas."
 
@@ -23687,7 +23699,7 @@ msgstr "Non-convert"
 #. Short label in the visual tab. Keep it concise.
 #. Summary row value on the confirm step when no items in the category were selected.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:41
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:47
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:48
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:52
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
@@ -23983,8 +23995,8 @@ msgstr "Objektai"
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/SlowmodeControl.tsx:24
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:42
 #: src/features/channel/components/modals/EditPostModal.tsx:54
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:97
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:139
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:98
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:140
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:73
 msgid "Off"
 msgstr "Išjungta"
@@ -24033,7 +24045,7 @@ msgstr "Pirmiausia seniausi"
 #. On state suffix appended to the reply bar mention toggle label.
 #: src/features/channel/components/ChannelReplyBar.tsx:58
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:22
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:135
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:136
 msgid "On"
 msgstr "Įjungta"
 
@@ -24170,7 +24182,7 @@ msgid "Only speakers"
 msgstr "Tik garsiakalbiai"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the viewer is not the owner. Plain explanatory tone.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:37
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:38
 msgid "Only the community owner can change this setting"
 msgstr "Šį nustatymą gali keisti tik bendruomenės savininkas"
 
@@ -24972,7 +24984,7 @@ msgstr "Persidengiančios avatarų grupės, rodančios kelis naudotojus su autom
 msgid "Overlays & menus"
 msgstr "Perdangos ir meniu"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:37
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:38
 msgid "Overridden"
 msgstr "Pakeista"
 
@@ -26863,7 +26875,7 @@ msgid "Quiet"
 msgstr "Tyliai"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:222
 msgid "Quit"
 msgstr "Išeiti"
 
@@ -26904,6 +26916,11 @@ msgstr "Apribotas dažnis"
 #: src/features/user/components/modals/tabs/EmbedDebuggerTab.tsx:292
 msgid "Raw embed JSON"
 msgstr "Neapdorotas įterptojo elemento JSON"
+
+#. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:50
+msgid "Re-enable built-in shortcut"
+msgstr "Vėl įjungti integruotą spartųjį klavišą"
 
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:73
@@ -27414,7 +27431,7 @@ msgstr "Prisiminti šį pasirinkimą"
 msgid "Remember window"
 msgstr "Prisiminti langą"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:166
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:182
 msgid "Remember window size and position"
 msgstr "Prisiminti lango dydį ir padėtį"
 
@@ -28017,6 +28034,16 @@ msgstr "Atsakymo paminėjimo nuostata šiai bendruomenei"
 msgid "Reply to message"
 msgstr "Atsakyti į žinutę"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:66
+msgid "Reply to message above"
+msgstr "Atsakyti į žinutę aukščiau"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:70
+msgid "Reply to message below"
+msgstr "Atsakyti į žinutę žemiau"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:29
 msgid "Reply to messages above or below"
@@ -28132,7 +28159,7 @@ msgid "Requests"
 msgstr "Užklausos"
 
 #. Switch label in the community moderation settings tab. Requires moderators to have two-factor auth enabled before they can ban, kick, time out, or delete messages. Security-sensitive; keep tone plain.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:156
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:157
 msgid "Require 2FA for moderation actions"
 msgstr "Reikalauti 2FA moderavimo veiksmams"
 
@@ -28166,7 +28193,7 @@ msgstr "Reikalauti „OAuth2“ kodo suteikimo"
 msgid "Require passkey"
 msgstr "Reikalauti prieigos rakto"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:466
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:475
 msgid "Require two-factor authentication for moderators before they can ban, kick, time out, or remove messages."
 msgstr "Reikalauti iš moderatorių dviejų veiksnių autentifikavimo, kad jie galėtų užblokuoti ar išmesti narius, laikinai juos apriboti arba trinti žinutes."
 
@@ -28231,22 +28258,22 @@ msgid "Requires a redirect URI and an authorization code when inviting this bot.
 msgstr "Kviečiant šį botą, reikalingas nukreipimo URI ir autorizacijos kodas."
 
 #. Helper text for the "Medium" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:70
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:71
 msgid "Requires a verified email address and an account that's at least 5 minutes old."
 msgstr "Reikalingas patvirtintas el. pašto adresas ir bent 5 minučių senumo paskyra."
 
 #. Helper text for the "Low" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:61
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:62
 msgid "Requires a verified email address."
 msgstr "Reikalingas patvirtintas el. pašto adresas."
 
 #. Helper text for the "Very high" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:89
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:90
 msgid "Requires a verified phone number."
 msgstr "Reikalingas patvirtintas telefono numeris."
 
 #. Helper text for the "High" member verification level option in the community moderation settings tab. "Medium" refers to the matching level option.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:79
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:80
 msgid "Requires everything in medium, plus being a member of the community for at least 10 minutes."
 msgstr "Reikalingi visi vidutinio lygio reikalavimai ir narystė bendruomenėje bent 10 minučių."
 
@@ -28313,7 +28340,7 @@ msgid "Reset"
 msgstr "Atkurti"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:44
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:45
 msgid "Reset \"{label}\" to built-in"
 msgstr "Atkurti „{label}“ numatytuosius nustatymus"
 
@@ -28341,7 +28368,7 @@ msgid "Reset all overrides"
 msgstr "Atkurti visus pakeitimus"
 
 #. Confirmation prompt in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:30
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:31
 msgid "Reset all shortcuts?"
 msgstr "Atkurti visus sparčiuosius klavišus?"
 
@@ -28434,7 +28461,7 @@ msgid "Reset to actual values"
 msgstr "Atkurti tikrąsias reikšmes"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:36
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:37
 msgid "Reset to built-in"
 msgstr "Atkurti numatytuosius"
 
@@ -28451,8 +28478,8 @@ msgstr "Atkurti numatytąjį garsumą"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:38
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:138
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:143
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:110
 msgid "Reset to defaults"
 msgstr "Atkurti numatytuosius nustatymus"
@@ -30561,12 +30588,12 @@ msgid "Set by the {preset} preset. Picking a value here switches to Custom."
 msgstr "Nustatyta pagal {preset} iš anksto nustatytą parinktį. Pasirinkus reikšmę čia, bus pereita prie pasirinktinio nustatymo."
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:28
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:29
 msgid "Set custom shortcut"
 msgstr "Nustatyti pasirinktinį spartųjį klavišą"
 
 #. Label in the keybinds tab. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:49
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:55
 msgid "Set custom shortcut for \"{label}\""
 msgstr "Nustatyti pasirinktinį spartųjį klavišą, skirtą „{label}“"
 
@@ -31009,7 +31036,7 @@ msgid "Shortcuts"
 msgstr "Spartieji klavišai"
 
 #. Short helper text in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:54
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:55
 msgid "Shortcuts are paused while recording."
 msgstr "Įrašant spartieji klavišai laikinai neveikia."
 
@@ -31045,7 +31072,7 @@ msgid "Show a {productName} icon in the system tray or menu bar"
 msgstr "Rodyti „{productName}“ piktogramą sistemos dėkle arba meniu juostoje"
 
 #. Switch label in the community moderation settings tab. Toggles a consent prompt before entering any channel.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:143
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:144
 msgid "Show a content warning"
 msgstr "Rodyti įspėjimą apie turinį"
 
@@ -31292,7 +31319,7 @@ msgstr "Rodyti medijos informaciją"
 msgid "Show members"
 msgstr "Rodyti narius"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show menu bar icon"
 msgstr "Rodyti meniu juostos piktogramą"
 
@@ -31450,7 +31477,7 @@ msgstr "Rodyti perbrauktą Markdown tekstą šiek tiek prislopinta spalva."
 msgid "Show suppress embeds button"
 msgstr "Rodyti mygtuką „Slėpti įterptąjį turinį“"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show system tray icon"
 msgstr "Rodyti sistemos dėklo piktogramą"
 
@@ -32682,9 +32709,20 @@ msgstr "Pradžios data turi būti ankstesnė už pabaigos datą."
 msgid "Start drag and drop"
 msgstr "Pradėti vilkti ir mesti"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+msgid "Start in the tray instead of opening the window when launched at login"
+msgstr "Paleidžiant prisijungus, pradėti dėkle, o ne atidaryti langą"
+
 #: src/features/user/components/modals/tabs/components/MicTestSection.tsx:15
 msgid "Start mic test"
 msgstr "Pradėti mikrofono testą"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:165
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+msgid "Start minimized"
+msgstr "Pradėti sumažintą"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx:326
 #: src/features/moderation/components/report/ReportStepEmail.tsx:97
@@ -33285,7 +33323,7 @@ msgid "Suggest an improvement"
 msgstr "Pasiūlykite patobulinimą"
 
 #. Helper text under the "Filter members without roles" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:112
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:113
 msgid "Suggested for most communities"
 msgstr "Rekomenduojama daugumai bendruomenių"
 
@@ -33589,7 +33627,7 @@ msgstr "Sinchronizuoti sumažinto judesio nustatymą su sistema"
 
 #. Label in the keybinds tab.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:47
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:118
 msgid "Sync shortcuts"
 msgstr "Sinchronizuoti sparčiuosius klavišus"
@@ -34808,7 +34846,7 @@ msgstr "Šis ryšys nepatvirtintas."
 #. Label in the content warning utils helper. Keep the tone plain and specific.
 #. Placeholder example shown in the custom content warning textarea in the community moderation settings tab.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:30
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:152
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:153
 #: src/features/messaging/utils/ContentWarningUtils.ts:11
 msgid "This contains sensitive content."
 msgstr "Čia yra jautraus turinio."
@@ -35219,7 +35257,7 @@ msgid "This removes all trusted domains. You will see the external link warning 
 msgstr "Tai pašalina visus patikimus domenus. Vėl matysite išorinės nuorodos įspėjimą visiems domenams."
 
 #. Error message in the keybinds tab. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:35
 msgid "This removes every custom shortcut and re-enables all built-in shortcuts. This cannot be undone."
 msgstr "Tai pašalina visus pasirinktinius sparčiuosius klavišus ir iš naujo įgalina visus integruotus sparčiuosius klavišus. Šio veiksmo anuliuoti negalima."
 
@@ -36519,7 +36557,7 @@ msgstr "Grąžinti giją iš archyvo"
 
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:12
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:18
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:19
 msgid "Unassigned"
 msgstr "Nepriskirta"
 
@@ -38483,7 +38521,7 @@ msgstr "Versija"
 
 #. Activity log value naming the highest member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:84
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:85
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:69
 msgid "Very high"
 msgstr "Labai aukštas"
@@ -39011,8 +39049,8 @@ msgstr "Balso aktyvumo bendrinimas atnaujintas"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:45
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:43
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:44
 msgid "Voice and video"
 msgstr "Balso ir vaizdo skambučiai"
 
@@ -39808,6 +39846,14 @@ msgstr "Kai priedų galiojimo laikas neribojamas, priedai lieka pasiekiami, kol 
 #: src/features/channel/components/active_now/ActiveNowSidebar.tsx:21
 msgid "When friends are active in voice channels, their activity will appear here."
 msgstr "Kai draugai bus aktyvūs balso kanaluose, jų veikla bus rodoma čia."
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:168
+msgid "When launched at login, start in the menu bar instead of opening the window"
+msgstr "Paleidžiant prisijungus, pradėti meniu juostoje, o ne atidarant langą"
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:170
+msgid "When launched at login, start in the system tray instead of opening the window"
+msgstr "Paleidžiant prisijungus, pradėti sistemos dėkle, o ne atidarant langą"
 
 #. Label in the display tab.
 #: src/features/user/components/modals/tabs/chat_settings_tab/DisplayTab.tsx:51

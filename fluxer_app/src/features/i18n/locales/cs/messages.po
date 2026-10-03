@@ -33,7 +33,7 @@ msgid "(only visible to you)"
 msgstr "(viditelné jen vám)"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:27
 msgid "(unassigned)"
 msgstr "(nepřiřazeno)"
 
@@ -2440,7 +2440,7 @@ msgstr "2FA"
 msgid "2FA backup"
 msgstr "Záložní kódy 2FA"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:460
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:469
 msgid "2FA requirement"
 msgstr "Požadavek na 2FA"
 
@@ -3164,7 +3164,7 @@ msgid "Add an extra layer of security to your account"
 msgstr "Přidejte ke svému účtu další vrstvu zabezpečení"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:40
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:41
 msgid "Add another custom shortcut"
 msgstr "Přidat další vlastní zkratku"
 
@@ -3326,7 +3326,7 @@ msgstr "Přidat roli"
 msgid "Add search engine"
 msgstr "Přidat vyhledávač"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:155
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:160
 msgid "Add shortcut"
 msgstr "Přidat zkratku"
 
@@ -5334,7 +5334,7 @@ msgstr "Automaticky odstranit parametry sledování (jako utm_source, fbclid, gc
 msgid "Automatically remove tracking parameters from URLs in messages you send"
 msgstr "Automaticky odstraňovat sledovací parametry z URL v odesílaných zprávách"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:346
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:355
 msgid "Automatically screen messages for explicit content in channels not marked for mature content."
 msgstr "Automaticky kontrolovat zprávy na explicitní obsah v kanálech, které nejsou označeny jako určené pro dospělé."
 
@@ -7542,9 +7542,9 @@ msgstr "Překročen limit znaků o {remaining}"
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
 #. User settings tab for chat message, media, and input behavior.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:41
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:42
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedSettingsCategories.ts:15
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:40
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:115
 msgid "Chat"
 msgstr "Chat"
@@ -7891,7 +7891,7 @@ msgstr "Vyberte, co může {clientLabel} dělat ve vaší komunitě. Zrušte za�
 msgid "Choose what friends see in their active now panel"
 msgstr "Vyberte, co přátelé uvidí na panelu „Právě aktivní“"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:306
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:311
 msgid "Choose what members must have before they can post or DM community members."
 msgstr "Zvolte, co musí mít členové, než budou moct přispívat nebo posílat přímé zprávy členům komunity."
 
@@ -8458,13 +8458,13 @@ msgstr "Zavřít tuto skupinovou konverzaci? Můžete ji kdykoli znovu otevřít
 msgid "Close Thread"
 msgstr "Zavřít vlákno"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
 msgid "Close to menu bar"
 msgstr "Zavřít do panelu nabídek"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:192
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:208
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
 msgid "Close to tray"
 msgstr "Zavřít do oznamovací oblasti"
 
@@ -8774,11 +8774,11 @@ msgstr "Komunity"
 msgid "Communities and channels where you can't manage webhooks are hidden."
 msgstr "Komunity a kanály, kde nemůžete spravovat webhooky, jsou skryté."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:356
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:365
 msgid "Communities listed in Discovery are required to scan messages from all members. This setting cannot be changed while Discovery is enabled."
 msgstr "Komunity uvedené v Objevování musí kontrolovat zprávy všech členů. Toto nastavení nelze změnit, dokud je Objevování zapnuté."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:315
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:320
 msgid "Communities listed in Discovery require at least email verification. None cannot be selected while Discovery is enabled."
 msgstr "Komunity uvedené v Objevování vyžadují alespoň ověření e-mailu. Pokud je Objevování zapnuté, nelze vybrat možnost „Žádné“."
 
@@ -9006,7 +9006,7 @@ msgstr "Úroveň odznaků nepřečtených zpráv komunity"
 #. Audit log entry label. Past-tense action describing that the community settings were changed.
 #. Short label in the guild overview tab utils helper. Keep it concise.
 #: src/features/app/config/AuditLogConstants.ts:8
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:213
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:215
 #: src/features/guild/utils/guild_tabs/GuildOverviewTabUtils.tsx:35
 msgid "Community updated"
 msgstr "Komunita aktualizována"
@@ -9468,7 +9468,7 @@ msgstr "Tvůrce obsahu"
 msgid "Content filter"
 msgstr "Filtr obsahu"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:340
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:349
 msgid "Content filtering"
 msgstr "Filtrování obsahu"
 
@@ -11164,7 +11164,7 @@ msgstr "Možnosti vlastních zkratek"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:51
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:102
 msgid "Custom shortcuts"
 msgstr "Vlastní zkratky"
@@ -11239,7 +11239,7 @@ msgstr "Vlastní zpracování zvuku"
 #. Channel overview settings tab label, control, or validation message (name, topic, slowmode, voice region, mature content gate).
 #. Textarea label in the community moderation settings tab for the custom content warning shown to members.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:45
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:148
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:149
 msgid "Custom warning text"
 msgstr "Vlastní text upozornění"
 
@@ -11669,8 +11669,8 @@ msgstr "Výchozí vyhledávač"
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:25
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:23
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:24
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:130
 msgid "Default shortcuts"
 msgstr "Výchozí zkratky"
@@ -12557,7 +12557,7 @@ msgid "Disable backend premium perks"
 msgstr "Vypnout prémiové výhody na backendu"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:32
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:33
 msgid "Disable built-in shortcut"
 msgstr "Vypnout vestavěnou zkratku"
 
@@ -12567,7 +12567,7 @@ msgid "Disable built-in shortcuts"
 msgstr "Vypnout vestavěné zkratky"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:42
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:43
 msgid "Disable built-ins"
 msgstr "Vypnout vestavěné zkratky"
 
@@ -12652,8 +12652,10 @@ msgstr "Formulář pro vypnutí dvoufaktorového ověřování"
 msgid "Disable video locally"
 msgstr "Vypnout video lokálně"
 
+#. Status next to a built-in shortcut the user turned off in the keybinds tab.
 #. Summary value when a setup option is disabled.
 #: src/features/app/components/setup/SetupWizardSteps.tsx:403
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:45
 msgid "Disabled"
 msgstr "Vypnuto"
 
@@ -13290,8 +13292,8 @@ msgstr "Koncept"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:37
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:35
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:38
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:36
 msgid "Drag and drop"
 msgstr "Přetáhnout"
 
@@ -13692,6 +13694,16 @@ msgstr "Upravit vlákno"
 msgid "Edit translation provider"
 msgstr "Upravit poskytovatele překladu"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:74
+msgid "Edit your message above"
+msgstr "Upravit svou zprávu výše"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:78
+msgid "Edit your message below"
+msgstr "Upravit svou zprávu níže"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:13
 msgid "Edit your messages above or below"
@@ -14042,7 +14054,7 @@ msgid "Enable /tts speech playback"
 msgstr "Povolit přehrávání řeči /tts"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the owner has not enabled 2FA on their own account.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:42
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:43
 msgid "Enable 2FA on your account to change this setting"
 msgstr "Pro změnu tohoto nastavení zapněte na svém účtu dvoufaktorové ověřování"
 
@@ -14859,7 +14871,7 @@ msgstr "vyloučit část názvu souboru přílohy"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Windows / Linux File menu item that quits the desktop app. Imperative verb, no app name. Matches the platform wording for leaving an application.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:39
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:210
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
 msgid "Exit"
 msgstr "Odejít"
 
@@ -15031,7 +15043,7 @@ msgid "Expires:"
 msgstr "Vyprší:"
 
 #. Accessible label for the explicit content filter radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:127
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:128
 msgid "Explicit content filter setting"
 msgstr "Nastavení filtru explicitního obsahu"
 
@@ -15710,14 +15722,14 @@ msgstr "Filtrovat podle uživatele"
 
 #. Activity log value for the explicit content filter setting that filters messages from every member.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from every member regardless of role.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:117
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:118
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:82
 msgid "Filter everyone"
 msgstr "Filtrovat zprávy všech členů"
 
 #. Activity log value for the explicit content filter setting that filters messages from members who have no roles.
 #. Explicit content filter option in the community moderation settings tab. Filters messages from members who have no roles assigned.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:107
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:108
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:77
 msgid "Filter members without roles"
 msgstr "Filtrovat zprávy členů bez rolí"
@@ -16933,7 +16945,7 @@ msgstr "Globální profil"
 
 #. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:81
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:57
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:63
 msgid "Global shortcut"
 msgstr "Globální klávesová zkratka"
 
@@ -17668,7 +17680,7 @@ msgid "Hide preview thumbnail"
 msgstr "Skrýt miniaturu náhledu"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
 msgid "Hide the window when minimized and reopen from the tray"
 msgstr "Po minimalizaci skrýt okno a znovu ho otevřít z oznamovací oblasti"
 
@@ -17702,7 +17714,7 @@ msgstr "Skrýt vlastní sdílení obrazovky?"
 
 #. Activity log value naming the high member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:74
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:75
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:65
 msgid "High"
 msgstr "Vysoká"
@@ -19463,7 +19475,7 @@ msgid "Kansas"
 msgstr "Kansas"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:218
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:226
 msgid "Keep {productName} running when the window is closed"
 msgstr "Ponechat aplikaci {productName} spuštěnou i po zavření okna"
 
@@ -19501,7 +19513,7 @@ msgid "Keep Pickles still"
 msgstr "Ponechat Pickles na místě"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:206
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
 msgid "Keep running"
 msgstr "Pokračovat v běhu"
 
@@ -19574,7 +19586,7 @@ msgstr "Nápověda klávesových zkratek v popiscích"
 #. Modal title for the keyboard shortcuts cheatsheet.
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:21
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:22
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:14
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts:376
 msgid "Keyboard shortcuts"
@@ -19922,7 +19934,7 @@ msgid "Let screen readers announce new messages as they arrive in the open chann
 msgstr "Povolit čtečkám obrazovky oznamovat nové zprávy, jakmile dorazí do otevřeného kanálu. Zvuky oznámení zůstanou beze změny."
 
 #. Helper text for the "Off" explicit content filter option in the community moderation settings tab. Means leave moderation to members.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:102
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:103
 msgid "Let the community self-moderate"
 msgstr "Nechte komunitu, ať se moderuje sama"
 
@@ -20389,7 +20401,7 @@ msgstr "Louisiana"
 
 #. Activity log value naming the low member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:56
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:57
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:57
 msgid "Low"
 msgstr "Nízká"
@@ -20413,7 +20425,7 @@ msgstr "Výchozí zařízení v macOS"
 #. Title for the central macOS permissions modal.
 #: src/features/permissions/system/components/MacPermissionsSettingsRow.tsx:12
 #: src/features/permissions/system/components/modals/MacPermissionsModal.tsx:32
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:204
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:220
 msgid "macOS permissions"
 msgstr "Oprávnění systému macOS"
 
@@ -20808,13 +20820,13 @@ msgstr "Komunita pro dospělé"
 #. Select label in the community moderation settings tab. Sensitive setting; keep neutral tone.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts:90
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:131
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:132
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:296
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:180
 msgid "Mature content"
 msgstr "Obsah pro dospělé"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:399
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:408
 msgid "Mature content & content warnings"
 msgstr "Obsah pro dospělé a upozornění na obsah"
 
@@ -20925,7 +20937,7 @@ msgid "Maximum lifetime (days)"
 msgstr "Maximální doba platnosti (dny)"
 
 #. Helper text under the "Filter everyone" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:122
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:123
 msgid "Maximum protection for family-friendly spaces"
 msgstr "Maximální ochrana pro prostory vhodné pro rodiny"
 
@@ -21050,7 +21062,7 @@ msgstr "Zastavit přehrávání"
 #. Activity log value naming the medium member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
 #. Short label in the selections tab. Keep it concise.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:65
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:66
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:61
 #: src/features/user/components/modals/tabs/component_gallery_tab/SelectionsTab.tsx:49
 msgid "Medium"
@@ -21135,12 +21147,12 @@ msgstr "Ban člena zrušen"
 msgid "Member updated"
 msgstr "Člen upraven"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:299
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:304
 msgid "Member verification"
 msgstr "Ověření členů"
 
 #. Accessible label for the member verification level radio group in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:93
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:94
 msgid "Member verification level"
 msgstr "Úroveň ověření členů"
 
@@ -21180,7 +21192,7 @@ msgstr "Members can add others"
 msgid "Members with \"{pinMessagesPermissionLabel}\" can pin messages for everyone."
 msgstr "Členové s oprávněním „{pinMessagesPermissionLabel}“ mohou připínat zprávy pro všechny."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:309
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:314
 msgid "Members with roles can bypass these checks. For public spaces, we recommend enabling verification."
 msgstr "Členové s rolemi mohou tyto kontroly obejít. Pro veřejné prostory doporučujeme povolit ověření."
 
@@ -21581,11 +21593,11 @@ msgstr "Zpráva odepnuta"
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/channel/components/ChannelChatLayout.tsx:10
 #: src/features/channel/components/direct_message/DirectMessageList.tsx:312
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:29
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:30
 #: src/features/theme_studio/sections/TokenGroups.ts:86
 #: src/features/user/components/modals/tabs/appearance_tab/AppearanceTabInline.tsx:31
 #: src/features/user/components/modals/tabs/AppearanceTab.tsx:39
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:27
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:28
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:18
 msgid "Messages"
 msgstr "Zprávy"
@@ -21735,12 +21747,12 @@ msgstr "24hodinový formát"
 msgid "Minimize"
 msgstr "Minimalizovat"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 msgid "Minimize to menu bar"
 msgstr "Minimalizovat do panelu nabídek"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:185
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:201
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:182
 msgid "Minimize to tray"
 msgstr "Minimalizovat do oznamovací oblasti"
@@ -21786,8 +21798,8 @@ msgstr "Zrcadlit úrovně"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:49
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:47
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:48
 msgid "Miscellaneous"
 msgstr "Různé"
 
@@ -22021,7 +22033,7 @@ msgid "More options"
 msgstr "Další možnosti"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:53
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:59
 msgid "More shortcut options"
 msgstr "Další možnosti zkratek"
 
@@ -22681,8 +22693,8 @@ msgstr "Procházejte zprávy a akce v chatu."
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:33
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:31
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:32
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:30
 msgid "Navigation"
 msgstr "Navigace"
@@ -23202,11 +23214,11 @@ msgstr "Žádný banner komunity"
 msgid "No connections yet"
 msgstr "Zatím žádná propojení"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:184
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:189
 msgid "No custom shortcuts match that search."
 msgstr "Žádné vlastní zkratky neodpovídají tomuto hledání."
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:180
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:185
 msgid "No custom shortcuts yet."
 msgstr "Zatím žádné vlastní zkratky."
 
@@ -23523,7 +23535,7 @@ msgstr "Nenalezena žádná nastavení"
 msgid "No shortcut set"
 msgstr "Zkratka nenastavena"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:94
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:95
 msgid "No shortcuts match that search."
 msgstr "Žádné zkratky neodpovídají tomuto hledání."
 
@@ -23626,7 +23638,7 @@ msgid "No users found"
 msgstr "Žádní uživatelé nenalezeni"
 
 #. Helper text for the "None" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:52
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:53
 msgid "No verification is required."
 msgstr "Ověření není vyžadováno."
 
@@ -23686,7 +23698,7 @@ msgstr "Bez převodu"
 #. Short label in the visual tab. Keep it concise.
 #. Summary row value on the confirm step when no items in the category were selected.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:41
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:47
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:48
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:52
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
@@ -23982,8 +23994,8 @@ msgstr "Předměty"
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/SlowmodeControl.tsx:24
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:42
 #: src/features/channel/components/modals/EditPostModal.tsx:54
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:97
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:139
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:98
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:140
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:73
 msgid "Off"
 msgstr "Vypnuto"
@@ -24032,7 +24044,7 @@ msgstr "Nejstarší napřed"
 #. On state suffix appended to the reply bar mention toggle label.
 #: src/features/channel/components/ChannelReplyBar.tsx:58
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:22
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:135
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:136
 msgid "On"
 msgstr "Zapnuto"
 
@@ -24169,7 +24181,7 @@ msgid "Only speakers"
 msgstr "Pouze reproduktory"
 
 #. Tooltip on the 2FA-for-moderation switch in the community moderation settings tab when the viewer is not the owner. Plain explanatory tone.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:37
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:38
 msgid "Only the community owner can change this setting"
 msgstr "Toto nastavení může změnit pouze vlastník komunity"
 
@@ -24971,7 +24983,7 @@ msgstr "Překrývající se skupiny avatarů zobrazující více uživatelů s a
 msgid "Overlays & menus"
 msgstr "Překryvy a nabídky"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:37
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:38
 msgid "Overridden"
 msgstr "Přepsáno"
 
@@ -26862,7 +26874,7 @@ msgid "Quiet"
 msgstr "Tichý"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:214
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:222
 msgid "Quit"
 msgstr "Ukončit"
 
@@ -26903,6 +26915,11 @@ msgstr "Překročen limit požadavků"
 #: src/features/user/components/modals/tabs/EmbedDebuggerTab.tsx:292
 msgid "Raw embed JSON"
 msgstr "Nezpracovaný JSON vloženého obsahu"
+
+#. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:50
+msgid "Re-enable built-in shortcut"
+msgstr "Znovu zapnout vestavěnou zkratku"
 
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx:73
@@ -27413,7 +27430,7 @@ msgstr "Zapamatovat si tuto předvolbu"
 msgid "Remember window"
 msgstr "Zapamatovat si okno"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:166
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:182
 msgid "Remember window size and position"
 msgstr "Pamatovat si velikost a pozici okna"
 
@@ -28016,6 +28033,16 @@ msgstr "Předvolby zmínek v odpovědích pro tuto komunitu"
 msgid "Reply to message"
 msgstr "Odpovědět na zprávu"
 
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:66
+msgid "Reply to message above"
+msgstr "Odpovědět na zprávu výše"
+
+#. Label in the keybinds tab action dropdown. Distinguishes above from below.
+#: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:70
+msgid "Reply to message below"
+msgstr "Odpovědět na zprávu níže"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:29
 msgid "Reply to messages above or below"
@@ -28131,7 +28158,7 @@ msgid "Requests"
 msgstr "Žádosti"
 
 #. Switch label in the community moderation settings tab. Requires moderators to have two-factor auth enabled before they can ban, kick, time out, or delete messages. Security-sensitive; keep tone plain.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:156
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:157
 msgid "Require 2FA for moderation actions"
 msgstr "Vyžadovat dvoufaktorové ověřování pro moderátorské zásahy"
 
@@ -28165,7 +28192,7 @@ msgstr "Vyžadovat autorizační tok OAuth2 s kódem"
 msgid "Require passkey"
 msgstr "Vyžadovat přístupový klíč"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:466
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:475
 msgid "Require two-factor authentication for moderators before they can ban, kick, time out, or remove messages."
 msgstr "Vyžadovat dvoufaktorové ověřování, než budou moderátoři moci banovat, vyhazovat nebo dočasně omezovat členy či mazat zprávy."
 
@@ -28230,22 +28257,22 @@ msgid "Requires a redirect URI and an authorization code when inviting this bot.
 msgstr "Při pozvání tohoto bota vyžaduje URI přesměrování a autorizační kód."
 
 #. Helper text for the "Medium" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:70
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:71
 msgid "Requires a verified email address and an account that's at least 5 minutes old."
 msgstr "Vyžaduje ověřenou e-mailovou adresu a účet starý alespoň 5 minut."
 
 #. Helper text for the "Low" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:61
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:62
 msgid "Requires a verified email address."
 msgstr "Vyžaduje ověřenou e-mailovou adresu."
 
 #. Helper text for the "Very high" member verification level option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:89
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:90
 msgid "Requires a verified phone number."
 msgstr "Vyžaduje ověřené telefonní číslo."
 
 #. Helper text for the "High" member verification level option in the community moderation settings tab. "Medium" refers to the matching level option.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:79
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:80
 msgid "Requires everything in medium, plus being a member of the community for at least 10 minutes."
 msgstr "Vyžaduje vše ze střední úrovně a navíc členství v komunitě po dobu alespoň 10 minut."
 
@@ -28312,7 +28339,7 @@ msgid "Reset"
 msgstr "Resetovat"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:44
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:45
 msgid "Reset \"{label}\" to built-in"
 msgstr "Obnovit \"{label}\" na výchozí"
 
@@ -28340,7 +28367,7 @@ msgid "Reset all overrides"
 msgstr "Obnovit všechna vlastní nastavení"
 
 #. Confirmation prompt in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:30
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:31
 msgid "Reset all shortcuts?"
 msgstr "Resetovat všechny zkratky?"
 
@@ -28433,7 +28460,7 @@ msgid "Reset to actual values"
 msgstr "Obnovit na skutečné hodnoty"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:36
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:37
 msgid "Reset to built-in"
 msgstr "Obnovit výchozí"
 
@@ -28450,8 +28477,8 @@ msgstr "Obnovit výchozí hlasitost"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:38
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:138
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:39
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:143
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:110
 msgid "Reset to defaults"
 msgstr "Obnovit výchozí"
@@ -30560,12 +30587,12 @@ msgid "Set by the {preset} preset. Picking a value here switches to Custom."
 msgstr "Nastaveno předvolbou {preset}. Výběr hodnoty zde přepne na Vlastní."
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:28
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:29
 msgid "Set custom shortcut"
 msgstr "Nastavit vlastní zkratku"
 
 #. Label in the keybinds tab. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:49
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:55
 msgid "Set custom shortcut for \"{label}\""
 msgstr "Nastavit vlastní zkratku pro \"{label}\""
 
@@ -31008,7 +31035,7 @@ msgid "Shortcuts"
 msgstr "Zkratky"
 
 #. Short helper text in the keybinds tab.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:54
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:55
 msgid "Shortcuts are paused while recording."
 msgstr "Během zaznamenávání jsou klávesové zkratky pozastavené."
 
@@ -31044,7 +31071,7 @@ msgid "Show a {productName} icon in the system tray or menu bar"
 msgstr "Zobrazit ikonu {productName} v oznamovací oblasti nebo v řádku nabídek"
 
 #. Switch label in the community moderation settings tab. Toggles a consent prompt before entering any channel.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:143
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:144
 msgid "Show a content warning"
 msgstr "Zobrazit upozornění na obsah"
 
@@ -31291,7 +31318,7 @@ msgstr "Zobrazit informace o médiu"
 msgid "Show members"
 msgstr "Zobrazit členy"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show menu bar icon"
 msgstr "Zobrazit ikonu na liště nabídek"
 
@@ -31449,7 +31476,7 @@ msgstr "Zobrazit přeškrtnutý text Markdownu v mírně tlumené barvě."
 msgid "Show suppress embeds button"
 msgstr "Zobrazit tlačítko pro skrytí vloženého obsahu"
 
-#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:173
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:189
 msgid "Show system tray icon"
 msgstr "Zobrazit ikonu v oznamovací oblasti"
 
@@ -32681,9 +32708,20 @@ msgstr "Počáteční datum musí být dřívější než koncové datum."
 msgid "Start drag and drop"
 msgstr "Spustit přetažení"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:202
+msgid "Start in the tray instead of opening the window when launched at login"
+msgstr "Spustit v oznamovací oblasti místo otevření okna při spuštění po přihlášení"
+
 #: src/features/user/components/modals/tabs/components/MicTestSection.tsx:15
 msgid "Start mic test"
 msgstr "Spustit test mikrofonu"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:165
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts:198
+msgid "Start minimized"
+msgstr "Začít minimalizováno"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx:326
 #: src/features/moderation/components/report/ReportStepEmail.tsx:97
@@ -33284,7 +33322,7 @@ msgid "Suggest an improvement"
 msgstr "Navrhnout zlepšení"
 
 #. Helper text under the "Filter members without roles" explicit content filter option in the community moderation settings tab.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:112
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:113
 msgid "Suggested for most communities"
 msgstr "Doporučeno pro většinu komunit"
 
@@ -33588,7 +33626,7 @@ msgstr "Synchronizovat nastavení omezení pohybu se systémem"
 
 #. Label in the keybinds tab.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:47
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:118
 msgid "Sync shortcuts"
 msgstr "Synchronizovat zkratky"
@@ -34807,7 +34845,7 @@ msgstr "Toto propojení nebylo ověřeno."
 #. Label in the content warning utils helper. Keep the tone plain and specific.
 #. Placeholder example shown in the custom content warning textarea in the community moderation settings tab.
 #: src/features/channel/components/modals/channel_tabs/channel_overview_tab/MatureContentSection.tsx:30
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:152
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:153
 #: src/features/messaging/utils/ContentWarningUtils.ts:11
 msgid "This contains sensitive content."
 msgstr "Obsahuje citlivý obsah."
@@ -35218,7 +35256,7 @@ msgid "This removes all trusted domains. You will see the external link warning 
 msgstr "Tím se odstraní všechny důvěryhodné domény. Znovu se vám bude zobrazovat upozornění na externí odkazy pro všechny domény."
 
 #. Error message in the keybinds tab. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx:35
 msgid "This removes every custom shortcut and re-enables all built-in shortcuts. This cannot be undone."
 msgstr "Tímto se odstraní všechny vlastní zkratky a znovu se povolí všechny vestavěné zkratky. Tuto akci nelze vrátit zpět."
 
@@ -36518,7 +36556,7 @@ msgstr "Vrátit vlákno z archivu"
 
 #. Short label in the keybinds tab. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts:12
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:18
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutChipList.tsx:19
 msgid "Unassigned"
 msgstr "Nepřiřazeno"
 
@@ -38482,7 +38520,7 @@ msgstr "Verze"
 
 #. Activity log value naming the highest member verification level of a community.
 #. Member verification level option in the community moderation settings tab. Short standalone severity label.
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:84
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:85
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogSharedMessages.ts:69
 msgid "Very high"
 msgstr "Velmi vysoká"
@@ -39010,8 +39048,8 @@ msgstr "Sdílení hlasové aktivity aktualizováno"
 
 #. Short heading in the keyboard shortcuts cheatsheet.
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:45
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:43
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx:46
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx:44
 msgid "Voice and video"
 msgstr "Zvuk a video"
 
@@ -39807,6 +39845,14 @@ msgstr "Když je automatické vypršení platnosti příloh vypnuté, přílohy 
 #: src/features/channel/components/active_now/ActiveNowSidebar.tsx:21
 msgid "When friends are active in voice channels, their activity will appear here."
 msgstr "Když jsou přátelé aktivní v hlasových kanálech, jejich aktivita se zobrazí zde."
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:168
+msgid "When launched at login, start in the menu bar instead of opening the window"
+msgstr "Po spuštění při přihlášení se zobrazí v panelu nabídek místo otevření okna"
+
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx:170
+msgid "When launched at login, start in the system tray instead of opening the window"
+msgstr "Po spuštění při přihlášení se zobrazí v oznamovací oblasti místo otevření okna"
 
 #. Label in the display tab.
 #: src/features/user/components/modals/tabs/chat_settings_tab/DisplayTab.tsx:51

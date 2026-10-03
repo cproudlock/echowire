@@ -93,6 +93,7 @@ nothing gates a merge except this. Run it before committing to `echowire`:
     pnpm knip
     pnpm test                                 # workspace sweep, excludes fluxer_api
     cd fluxer_api && pnpm exec vitest run     # its own vitest project; ~4,500 tests
+    pnpm --filter fluxer_docs verify          # sidebar, coverage, schemas, style
 
 **Invoke these commands. Do not reimplement them.** A wrapper that paraphrases a
 documented command is a copy that rots silently, and the 2026-10-03 audit found two
@@ -108,6 +109,20 @@ such copies, both of which had been reporting greens they had not earned:
   `errors`, `hono`, `i18n`, `ip_utils`, `limits`, `logger`, `openapi`, `snowflake`
   and `voice_engine_v2`. The last one covers voice, where this fork carries
   divergences, so the paraphrase skipped exactly the code most in need of a gate.
+
+A third variant is an **incomplete list**. On 2026-10-03 the docs check was missing
+from the list above, and someone reaching for it invented `pnpm docs:verify`, which
+does not exist. That failed loudly, which is the good outcome, but the invention was
+caused by the omission: a list that looks complete and is not invites exactly this.
+The real command, now listed, is `pnpm --filter fluxer_docs verify`, a four-part
+check over sidebar, coverage, schemas and style. It also prints a handful of
+pre-existing optionality advisories in the admin blocklists and discovery pages
+without failing, so advisories in its output are not a regression.
+
+So the three variants, each with its own defence: a **wrong rule** is fixed by
+rewriting it, **drifted automation** only by invoking the documented command rather
+than an equivalent, and an **incomplete list** only by adding the gate to the list
+the moment you notice you had to go looking for it.
 
 Note that this is a different failure from a rule being wrong, and it needs a
 different defence. The `.po` rule below was **documentation that was wrong**, and the
@@ -283,6 +298,38 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   form holds by construction, like the stash case: `checkout`, `restore`,
   `reset --hard` and `stash` all operate on a unit larger than the edit, so anything
   else living in that unit goes too.
+- **A clean merge is not evidence that a wire value is still unique.** When upstream
+  appends to a numbered or bitmasked set this fork has also appended to, both sides
+  add a distinct name, git merges both, nothing conflicts, and every gate stays green
+  while one number means two things. The collision is in the meaning, not the syntax,
+  so no compiler and no test can see it.
+
+  The blast radius is worse than a web bug. `ChannelTypes` 11, 12 and 15 (threads and
+  forums) exist only in `cproudlock/dart_sdk` branch `echowire`, so a collision
+  silently reinterprets channel types on mobile clients already in the field, which a
+  deploy cannot fix. Whichever side moves has to move in the API, the SDK and the
+  Flutter client together, so a renumbering is never a merge-time decision: stop and
+  escalate.
+
+  Before resolving a merge that touches `packages/constants`, diff the sets by
+  **value**, not by name: `ChannelTypes`, `MessageTypes`, `MessageFlags`,
+  `Permissions`, the channel and attachment flags, and the guild feature strings.
+
+  **Why this keeps coming out clean, and when it would not.** Both sides take
+  Discord's numbering, so two independently added Discord-compatible features land on
+  different numbers by construction rather than by luck. #3090 is the worked example:
+  upstream took `GUILD_ANNOUNCEMENT: 5` and `CHANNEL_FOLLOW_ADD: 12`, clear of the
+  fork's 11, 12 and 15 channel types and its `THREAD_CREATED: 18`. The residual risk
+  is an **invented** value with no Discord counterpart, which is why upstream parks
+  its own at 998 and 999. So the check stays necessary, but expect it to pass, and
+  treat a fork-invented number as the case that needs real care.
+
+  One standing risk, recorded rather than acted on: the fork's four thread
+  permissions sit at bits 34, 35, 36 and 38, gaps **below** upstream's high-water mark
+  of 54, deliberately skipping 37 where upstream holds `USE_EXTERNAL_STICKERS`. If
+  upstream ever fills 34, 35, 36 or 38 that is a silent collision of this kind.
+  Moving them above upstream's maximum would remove the hazard but is an API, SDK and
+  Flutter change together, so it needs deciding rather than doing mid-merge.
 - **A clean merge is not evidence that the result compiles.** Git merges text. In a
   language with no type checker between the merge and the build, it will combine the
   fork's old function signatures with upstream's new bodies and report no conflict.

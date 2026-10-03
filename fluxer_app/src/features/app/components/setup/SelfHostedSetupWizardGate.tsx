@@ -30,7 +30,6 @@ import {
 	MediaExpiryStep,
 	type PremiumMode,
 	PremiumStep,
-	PushRelayConsentStep,
 	type RegistrationMode,
 	RegistrationStep,
 	type ServiceAvailability,
@@ -646,7 +645,6 @@ export const SelfHostedSetupWizardGate = observer(() => {
 		if (step === 'branding') return !productNameError;
 		if (step === 'community') return !singleCommunityNameError;
 		if (step === 'media_expiry') return isMediaExpiryStepValid(mediaExpiryDraft);
-		if (step === 'push_relay_consent') return true;
 		const integrationKind = wizardStepToIntegrationKind(step);
 		if (integrationKind) return isIntegrationStepValid(integrationKind, integrationDraft);
 		return true;
@@ -947,14 +945,6 @@ export const SelfHostedSetupWizardGate = observer(() => {
 											data-flx="app.setup.self-hosted-setup-wizard-gate.integration-step"
 										/>
 									)}
-									{step === 'push_relay_consent' && (
-										<PushRelayConsentStep
-											accepted={pushRelayConsentAccepted}
-											disabled={submitting}
-											onChange={setPushRelayConsentAccepted}
-											data-flx="app.setup.self-hosted-setup-wizard-gate.push-relay-consent-step"
-										/>
-									)}
 									{step === 'services' && (
 										<ServicesStep
 											available={serviceAvailability}
@@ -979,7 +969,6 @@ export const SelfHostedSetupWizardGate = observer(() => {
 											singleCommunityEnabled={singleCommunityEnabled}
 											directMessagesDisabled={directMessagesDisabled}
 											attachmentExpiryEnabled={mediaExpiryDraft.enabled}
-											pushRelayConsentAccepted={pushRelayConsentAccepted}
 											premiumMode={premiumMode}
 											submitError={submitError}
 											data-flx="app.setup.self-hosted-setup-wizard-gate.finish-step"

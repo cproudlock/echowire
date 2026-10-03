@@ -297,7 +297,17 @@ export abstract class BaseChannelAuthService {
 	}): Promise<boolean> {
 		const guildView = guildResponseToContentWarningView(guild);
 		if (!isThreadChannel(channel) || !channel.parentId) {
-			const parentCategory = await this.getParentCategoryContentWarningView({channel, parentChannel});
+			// Echowire: when this channel inherits, read the category from the channel store
+			// rather than the gateway auth context, whose cached guild channel list can still
+			// show a category as not adult-only just after it was switched. Without this, a
+			// channel under that category is ungated while a thread under the same channel is
+			// gated, because the thread path below always reads fresh. An explicit
+			// nsfw_override never consults the category, so that case keeps using the context
+			// and costs nothing.
+			const parentCategory = await this.getParentCategoryContentWarningView({
+				channel,
+				parentChannel: channel.nsfwOverride === null ? null : parentChannel,
+			});
 			return computeEffectiveChannelNsfw(channelToContentWarningView(channel), parentCategory, guildView);
 		}
 		const parent = await this.channelRepository.channelData.findUnique(channel.parentId);

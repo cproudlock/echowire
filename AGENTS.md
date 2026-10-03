@@ -94,6 +94,40 @@ nothing gates a merge except this. Run it before committing to `echowire`:
     pnpm test                                 # workspace sweep, excludes fluxer_api
     cd fluxer_api && pnpm exec vitest run     # its own vitest project; ~4,500 tests
 
+**Invoke these commands. Do not reimplement them.** A wrapper that paraphrases a
+documented command is a copy that rots silently, and the 2026-10-03 audit found two
+such copies, both of which had been reporting greens they had not earned:
+
+- `pnpm --filter @fluxer/app lint` matched no project at all, because the package is
+  named `fluxer_app` and has no `lint` script. pnpm printed "No projects matched the
+  filters" and **exited 0**. Six slices reported "eslint clean" having never run
+  eslint once. `pnpm --filter` succeeding on an empty match is the perfect example of
+  the hazard: the failure is indistinguishable from success.
+- Running `packages/schema`, `packages/config` and `packages/constants` individually
+  instead of `pnpm test` silently skipped nine workspace packages that have tests:
+  `errors`, `hono`, `i18n`, `ip_utils`, `limits`, `logger`, `openapi`, `snowflake`
+  and `voice_engine_v2`. The last one covers voice, where this fork carries
+  divergences, so the paraphrase skipped exactly the code most in need of a gate.
+
+Note that this is a different failure from a rule being wrong, and it needs a
+different defence. The `.po` rule below was **documentation that was wrong**, and the
+fix was to write a better rule. These two were **documentation that was right, with
+automation that had drifted from it**, and no amount of rule-writing prevents that.
+The only defence is to invoke the documented command rather than an equivalent, and
+to mutation-check any wrapper: inject a fault of the class each gate catches and
+confirm it goes red. A gate that has never been seen to fail is not yet a gate.
+
+Two gates cannot be a bare tool invocation, because running the tool alone cannot
+fail for the property worth gating:
+
+- **`openapi:generate` writes the specs**, so by itself it only fails when generation
+  errors. A committed spec that has drifted passes. Gate on regeneration producing no
+  change: run it, then `git diff --quiet` the two spec files.
+- **The gateway eunit** always fails a fixed set of tests in this container, which
+  cannot build the `guild_member_list_oset_nif` Rust NIF, so its exit status is not
+  pass/fail. Gate on the criterion: the tree compiled fully, no assertion failure, no
+  undefined function other than that NIF.
+
 Plus, depending on what changed:
 
 - **After any upstream merge:** `cargo check -p fluxer_admin` (typecheck does not

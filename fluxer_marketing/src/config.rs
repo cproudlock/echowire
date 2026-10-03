@@ -82,11 +82,8 @@ impl MarketingConfig {
             geoip_db_path,
             geoip_source,
             geoip_s3_config,
-            trust_client_ip_header: cfg::read_bool_env(
-                &["FLUXER_TRUST_CLIENT_IP_HEADER", "TRUST_CLIENT_IP_HEADER"],
-                false,
-            ),
-            linux_repo_enabled: cfg::read_bool_env(&["FLUXER_MARKETING_LINUX_REPO_ENABLED"], false),
+            trust_client_ip_header: cfg::read_bool_env("FLUXER_TRUST_CLIENT_IP_HEADER", false),
+            linux_repo_enabled: cfg::read_bool_env("FLUXER_MARKETING_LINUX_REPO_ENABLED", false),
             client_ip_header_name: cfg::read_first_env(
                 &[
                     "FLUXER_CLIENT_IP_HEADER_NAME",
@@ -98,11 +95,11 @@ impl MarketingConfig {
             )
             .trim()
             .to_ascii_lowercase(),
-            release_channel: ReleaseChannel::from_env_value(&cfg::read_env_preferred(
+            release_channel: ReleaseChannel::from_env_value(&cfg::read_first_env(
                 &["RELEASE_CHANNEL", "FLUXER_RELEASE_CHANNEL"],
                 "stable",
             )),
-            build_version: cfg::read_env_preferred(
+            build_version: cfg::read_first_env(
                 &["BUILD_VERSION", "FLUXER_BUILD_VERSION"],
                 env!("CARGO_PKG_VERSION"),
             ),

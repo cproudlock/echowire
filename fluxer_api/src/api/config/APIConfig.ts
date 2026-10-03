@@ -5,7 +5,7 @@ import type {CachePurgeAdapterName, StoreProductSlotName} from '@fluxer/config/s
 import type {ResolvedDownloadsProvider} from '@fluxer/config/src/S3DownloadsProvider';
 
 export type APIWorkerMode = 'all_lanes' | 'single_lane' | 'single_task';
-export type APIWorkerLaneName = 'realtime' | 'unfurl' | 'lifecycle' | 'batch';
+export type APIWorkerLaneName = 'realtime' | 'unfurl' | 'lifecycle' | 'batch' | 'crosspost';
 export type PushProviderEnvironment = 'production' | 'development';
 
 export interface PushProviderAppConfig {
@@ -362,6 +362,7 @@ export interface APIConfig {
 			unfurl?: number;
 			lifecycle?: number;
 			batch?: number;
+			crosspost?: number;
 		};
 	};
 	ncmec: {

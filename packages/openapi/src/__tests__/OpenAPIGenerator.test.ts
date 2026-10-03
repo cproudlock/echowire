@@ -17,11 +17,17 @@ describe('OpenAPI generation from API controllers', () => {
 			content: {'application/json': {schema: {$ref: '#/components/schemas/ChannelUpdateRequestBody'}}},
 		});
 		const options = document.components.schemas.ChannelUpdateRequestBody.anyOf;
-		// Echowire: six, not upstream's five, because this fork adds the forum
-		// channel variant with its tag and auto-archive fields.
-		expect(options).toHaveLength(6);
+		// Echowire: seven, where upstream has six. Upstream counts text, announcement and
+		// the shared variants; this fork adds the forum channel variant with its tag and
+		// auto-archive fields. Both sides of the #3090 merge asserted six, each correct
+		// for its own tree and wrong for the merged one.
+		expect(options).toHaveLength(7);
+		const withType = (options ?? []).filter((option) => option.properties && 'type' in option.properties);
+		expect(withType).toHaveLength(2);
+		for (const option of withType) {
+			expect(option.properties?.type).toMatchObject({anyOf: [{const: 0}, {const: 5}]});
+		}
 		for (const option of options ?? []) {
-			expect(option.properties).not.toHaveProperty('type');
 			expect(option.required).toBeUndefined();
 		}
 	});

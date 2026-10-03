@@ -93,6 +93,7 @@ nothing gates a merge except this. Run it before committing to `echowire`:
     pnpm knip
     pnpm test                                 # workspace sweep, excludes fluxer_api
     cd fluxer_api && pnpm exec vitest run     # its own vitest project; ~4,500 tests
+    pnpm --filter fluxer_docs verify          # sidebar, coverage, schemas, style
 
 **Invoke these commands. Do not reimplement them.** A wrapper that paraphrases a
 documented command is a copy that rots silently, and the 2026-10-03 audit found two
@@ -108,6 +109,20 @@ such copies, both of which had been reporting greens they had not earned:
   `errors`, `hono`, `i18n`, `ip_utils`, `limits`, `logger`, `openapi`, `snowflake`
   and `voice_engine_v2`. The last one covers voice, where this fork carries
   divergences, so the paraphrase skipped exactly the code most in need of a gate.
+
+A third variant is an **incomplete list**. On 2026-10-03 the docs check was missing
+from the list above, and someone reaching for it invented `pnpm docs:verify`, which
+does not exist. That failed loudly, which is the good outcome, but the invention was
+caused by the omission: a list that looks complete and is not invites exactly this.
+The real command, now listed, is `pnpm --filter fluxer_docs verify`, a four-part
+check over sidebar, coverage, schemas and style. It also prints a handful of
+pre-existing optionality advisories in the admin blocklists and discovery pages
+without failing, so advisories in its output are not a regression.
+
+So the three variants, each with its own defence: a **wrong rule** is fixed by
+rewriting it, **drifted automation** only by invoking the documented command rather
+than an equivalent, and an **incomplete list** only by adding the gate to the list
+the moment you notice you had to go looking for it.
 
 Note that this is a different failure from a rule being wrong, and it needs a
 different defence. The `.po` rule below was **documentation that was wrong**, and the
@@ -229,12 +244,26 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
      look for a line starting `msgid` or `msgstr`.
   2. **Fail closed.** A file whose hunks touch either one is left conflicted and
      reported, not resolved. Only header-stamp-only files may take upstream's.
-  3. Where a hunk does touch them, keep the fork side. These are brand divergences
-     (Pickles, Reverb, echowire), not translation updates.
+  3. Where a hunk does touch them, keep the fork side **for a renamed string**.
+     These are brand divergences (Pickles, Reverb, echowire), not translation
+     updates.
   4. The kept side then carries stale `#:` source references. Fix them by
      re-extracting with `pnpm --filter fluxer_app i18n:extract`, the project's own
      flow, rather than hand-editing hunks.
-  5. Account for the result: distinct fork source strings, messages per locale and
+  5. **Then backfill, because keeping ours is only half the rule.** Keeping the fork
+     side discards upstream's side wholesale, including its translations for msgids
+     that are genuinely *new* rather than renamed. Re-extracting re-adds those msgids
+     from the merged source with empty values, and `lingui compile --strict` refuses
+     to build with a missing translation, so on #3090 this left 9 missing per locale,
+     297 in total. Copy those in from upstream's own catalogs, filling **only**
+     entries that are empty here and translated there, so a fork translation can
+     never be overwritten.
+
+     The asymmetry is the durable part: **ours wins for a string the fork renamed,
+     theirs wins for a string the fork does not have.** Confirm with
+     `pnpm --filter fluxer_app lingui:compile`, which fails on any locale still
+     missing one, and check the extract summary reports 0 missing.
+  6. Account for the result: distinct fork source strings, messages per locale and
      missing count from the extract summary, and zero fork strings translated to
      the upstream name. Count the leak, not the occurrences: ask whether any
      *Pickles* msgid has a Neko translation, since `\bNeko\b` also matches
@@ -243,6 +272,14 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
      saying why, so the next person does not delete it as a leak.
 
   Catalog merges must carry metadata, not only values.
+
+  **Where to be suspicious.** This rule has now been corrected twice in one day, and
+  both times the step order survived while the wrong part was a claim about *which
+  side is right*: first "almost always header stamps, take upstream's", then "keep
+  ours wherever a hunk touches text". So trust the procedure and re-derive the side.
+  If a step tells you a side wins, check whether the string is one the fork renamed
+  or one the fork does not have, because that is the question the rule keeps getting
+  wrong.
 - **Compose anchor changes need a set difference, not a diff read.** When upstream
   reorganises `deploy/self-hosting/docker-compose.yml` or `.env.example`, git
   silently drops fork variables that sit inside a moved region: #3047 dropped 30 of
@@ -283,6 +320,64 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   form holds by construction, like the stash case: `checkout`, `restore`,
   `reset --hard` and `stash` all operate on a unit larger than the edit, so anything
   else living in that unit goes too.
+- **Replace a hand-enumerated set with the thing that derives it.** A list of
+  packages, filters, crates, locales or files silently stops covering whatever is
+  added later, and the gap never announces itself. Five were found on 2026-10-03, and
+  between them they concealed two real pre-existing failures: `pnpm --filter` on a
+  name that matched nothing, per-package test runs covering 4 of 20, three cargo
+  crates named instead of the workspace's 16, the gateway NIF exception, and
+  `MODULE_REGISTRY_TEST_FILES` in `fluxer_api/vitest.config.ts`.
+
+  That last one is the worst-presenting of the family and the one to learn from,
+  because it fails **randomly** rather than silently. The api project runs with
+  `isolate: false`, so a test replacing a module with a `vi.mock` factory leaks it
+  into other files in the pool and the failure appears intermittently in a file the
+  author never touched. A single green run looks like proof.
+
+  It turned out to be derivable: of 588 api test files only seven use a mock factory,
+  and the one that was unlisted replaced `@app/api/Logger`, which 225 source files
+  import, with a Proxy that throws on any property access. So
+  `VitestIsolationCoverage.test.ts` now derives the requirement and fails by name
+  when the list stops covering a file.
+
+  The order to try: **derive the set** if the property is mechanically detectable;
+  failing that, **make the symptom deterministic**, since a check that fails one run
+  in two is worse than one that fails every time; and failing both, keep the
+  enumeration but write down **why each member is there**, as the gateway gate does
+  for the single NIF it cannot build. A deliberate list with a rationale is fine. An
+  inherited one is not.
+- **A clean merge is not evidence that a wire value is still unique.** When upstream
+  appends to a numbered or bitmasked set this fork has also appended to, both sides
+  add a distinct name, git merges both, nothing conflicts, and every gate stays green
+  while one number means two things. The collision is in the meaning, not the syntax,
+  so no compiler and no test can see it.
+
+  The blast radius is worse than a web bug. `ChannelTypes` 11, 12 and 15 (threads and
+  forums) exist only in `cproudlock/dart_sdk` branch `echowire`, so a collision
+  silently reinterprets channel types on mobile clients already in the field, which a
+  deploy cannot fix. Whichever side moves has to move in the API, the SDK and the
+  Flutter client together, so a renumbering is never a merge-time decision: stop and
+  escalate.
+
+  Before resolving a merge that touches `packages/constants`, diff the sets by
+  **value**, not by name: `ChannelTypes`, `MessageTypes`, `MessageFlags`,
+  `Permissions`, the channel and attachment flags, and the guild feature strings.
+
+  **Why this keeps coming out clean, and when it would not.** Both sides take
+  Discord's numbering, so two independently added Discord-compatible features land on
+  different numbers by construction rather than by luck. #3090 is the worked example:
+  upstream took `GUILD_ANNOUNCEMENT: 5` and `CHANNEL_FOLLOW_ADD: 12`, clear of the
+  fork's 11, 12 and 15 channel types and its `THREAD_CREATED: 18`. The residual risk
+  is an **invented** value with no Discord counterpart, which is why upstream parks
+  its own at 998 and 999. So the check stays necessary, but expect it to pass, and
+  treat a fork-invented number as the case that needs real care.
+
+  One standing risk, recorded rather than acted on: the fork's four thread
+  permissions sit at bits 34, 35, 36 and 38, gaps **below** upstream's high-water mark
+  of 54, deliberately skipping 37 where upstream holds `USE_EXTERNAL_STICKERS`. If
+  upstream ever fills 34, 35, 36 or 38 that is a silent collision of this kind.
+  Moving them above upstream's maximum would remove the hazard but is an API, SDK and
+  Flutter change together, so it needs deciding rather than doing mid-merge.
 - **A clean merge is not evidence that the result compiles.** Git merges text. In a
   language with no type checker between the merge and the build, it will combine the
   fork's old function signatures with upstream's new bodies and report no conflict.
@@ -320,6 +415,25 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   their green instead. Mutation-check every gate and every guard: inject the fault it
   exists to catch, confirm red, revert. A check that has never been seen to fail is
   not yet a check.
+- **Re-run before theorising.** When a test fails and the code under test looks
+  correct, the cheapest next move is another run, not a hypothesis. The second
+  failure's *identity* is the diagnostic: the same test twice is a defect, a
+  different test in the same pool is shared state, and a clean run is a flake whose
+  cause is still worth a minute.
+
+  This is not a counsel of patience, it names a specific trap. On 2026-10-03 a fork
+  thread test failed right after a merge, and instrumenting it showed the code doing
+  exactly what the assertion asked: first run writes, second run skips. From a single
+  failure the tempting reading is that the instrumentation is wrong, and the next hour
+  goes into the subject under test. What settled it was re-running, which failed a
+  *different* test in the same non-isolated pool, and two unrelated failures in one
+  shared pool is shared mutable state rather than a bug in either. Upstream's very
+  next commit was the fix.
+
+  So when instrumentation says the code is healthy, believe the measurement and widen
+  the question instead of doubting it. Ask whether the failure moves between runs,
+  whether the file passes alone, and whether upstream has already fixed it, before
+  forming any theory about the code. One data point does not have a shape.
 - **`fluxer_marketing`** conflicts as a gitlink every time. Keep the vendored tree.
 - **Deliberate divergence** is marked `// Echowire:` (or `%% Echowire:`). Keep
   ours there; where upstream reshapes an API, take its structure and carry our

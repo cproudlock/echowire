@@ -120,6 +120,11 @@ const REMOVED_SOMEONE_FROM_THE_GROUP_DESCRIPTOR = msg({
 	message: '{username} removed someone from the group.',
 	comment: 'System message in a group DM when a member removes someone whose user record is not resolvable locally.',
 });
+const ADDED_FOLLOWED_CHANNEL_DESCRIPTOR = msg({
+	message: '{username} followed {name} into this channel. Messages published there will appear here.',
+	comment:
+		'Plain-text system message used in previews and screen readers when someone makes this channel follow an announcement channel. name is the follower webhook name, usually the source community and channel.',
+});
 const CHANGED_THE_CHANNEL_NAME_TO_DESCRIPTOR = msg({
 	message: '{username} changed the channel name to {newName}.',
 	comment: 'System message in a group DM when a member renames the channel. newName is the new channel name.',
@@ -236,6 +241,8 @@ export const SystemMessageUtils = {
 				return i18n._(CHANGED_THE_CHANNEL_ICON_DESCRIPTOR, {username});
 			case MessageTypes.CALL:
 				return i18n._(STARTED_A_CALL_DESCRIPTOR, {username});
+			case MessageTypes.CHANNEL_FOLLOW_ADD:
+				return i18n._(ADDED_FOLLOWED_CHANNEL_DESCRIPTOR, {username, name: message.content});
 			case MessageTypes.THREAD_CREATED: {
 				const threadName = (message.content ? Channels.getChannel(message.content)?.name : null) ?? '';
 				return i18n._(STARTED_A_THREAD_DESCRIPTOR, {username, threadName});

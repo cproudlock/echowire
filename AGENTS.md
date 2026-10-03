@@ -91,9 +91,26 @@ nothing gates a merge except this. Run it before committing to `echowire`:
     pnpm exec biome ci .
     pnpm exec eslint . --max-warnings 0
     pnpm knip
-    pnpm test                                 # workspace sweep, excludes fluxer_api
-    cd fluxer_api && pnpm exec vitest run     # its own vitest project; ~4,500 tests
+    pnpm test                                 # the whole sweep; see below for what that means
+    cd fluxer_api && pnpm exec vitest run     # fluxer_api alone, for iterating
     pnpm --filter fluxer_docs verify          # sidebar, coverage, schemas, style
+
+`pnpm test` is `cargo run -p fluxer-dev -- test`, and `tools/dev/src/tasks.rs` is the
+only answer to what it covers: a recursive `--if-present test` over the workspace
+excluding `fluxer_desktop`, then `fluxer_desktop`, then `fluxer_api`. So it already
+includes both of the suites that look like they need a separate run, and on
+2026-10-03 the slice gate ran the fluxer_api suite twice for identical results, 590
+files and 5547 tests both times. Line 2 above is for iterating on api tests alone,
+not a gate the sweep leaves out.
+
+That annotation previously read "excludes fluxer_api", which was simply false, and
+it is worth seeing it as the mirror image of the `voice_engine_v2` finding rather
+than as a separate slip. There, the gate list claimed *more* coverage than it had,
+which wasted nothing and hid real defects. Here it claimed *less*, which hid nothing
+and wasted six minutes a slice. Both came from describing a gate from memory instead
+of reading what it runs, so the defence is the same either way: when you want to know
+what a gate covers, read the task that defines it, and count the suites in its own
+output.
 
 **Invoke these commands. Do not reimplement them.** A wrapper that paraphrases a
 documented command is a copy that rots silently, and the 2026-10-03 audit found two

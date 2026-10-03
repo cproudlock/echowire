@@ -25,6 +25,20 @@ COPY --chown=65532:65532 fluxer_static/badges /srv/fluxer-static/badges
 COPY --chown=65532:65532 fluxer_static/desktop /srv/fluxer-static/desktop
 COPY --chown=65532:65532 fluxer_static/embeds /srv/fluxer-static/embeds
 COPY --chown=65532:65532 fluxer_static/emoji /srv/fluxer-static/emoji
+# Echowire: upstream #3087 moved the DeepFilterNet3 wasm and model into the app bundle and
+# deleted these files. Keep serving them anyway. The desktop client ships its own renderer
+# bundle, so an installed desktop build keeps requesting /libs/deepfilternet3/v{2,3}/... by
+# absolute path from the static host for as long as that build is in the field, and desktop
+# stable is 2026.825.12857 from 25 August 2026, built before #3087. Deleting these files
+# would break DeepFilter noise suppression for every one of those users with no error that
+# anyone reports, and unlike a browser a desktop install does not self-heal on reload.
+#
+# Retire this when, and only when, desktop stable ships a build whose renderer bundles the
+# wasm itself, and the oldest desktop build still in support is that one or newer. Then drop
+# this COPY, the fluxer_static/libs tree, its THIRD_PARTY_LICENSES row, and the guard in
+# fluxer_app/src/features/voice/utils/StaticAssetContract.test.ts together. The duplication
+# with the in-bundle copy is deliberate and temporary, not an oversight.
+COPY --chown=65532:65532 fluxer_static/libs /srv/fluxer-static/libs
 # Echowire: the marketing pages and the flatpak metainfo both link screenshots under
 # /marketing, and nothing served them, so every one of those images was a 404.
 COPY --chown=65532:65532 fluxer_static/marketing /srv/fluxer-static/marketing

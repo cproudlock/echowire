@@ -16,6 +16,10 @@ export type WizardStep =
 	| 'integration_youtube'
 	| 'integration_email'
 	| 'integration_bluesky'
+	// Echowire: kept in the type but deliberately absent from CONFIGURE_STEPS below. The
+	// push relay consent cannot gate delivery in this fork, so the step asked the operator
+	// to accept a third party's privacy notice for a relay we never call. Put it back in
+	// CONFIGURE_STEPS if this fork ever adopts relay registration.
 	| 'push_relay_consent'
 	| 'services'
 	| 'premium'
@@ -35,7 +39,6 @@ export const CONFIGURE_STEPS: ReadonlyArray<WizardStep> = [
 	'integration_youtube',
 	'integration_email',
 	'integration_bluesky',
-	'push_relay_consent',
 	'services',
 	'premium',
 	'finish',

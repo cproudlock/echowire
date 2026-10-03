@@ -1482,7 +1482,7 @@ msgstr "Soubor {label} je příliš velký. Vyberte soubor menší než {maxSize
 msgid "{label} images cannot be animated. Use a static image."
 msgstr "Obrázky {label} nemohou být animované. Použijte statický obrázek."
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:36
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:35
 msgid "{languageName} flag"
 msgstr "Vlajka: {languageName}"
 
@@ -2389,7 +2389,7 @@ msgid "12 months (1 year)"
 msgstr "12 měsíců (1 rok)"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:54
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:53
 msgid "12-hour"
 msgstr "12hodinový"
 
@@ -2438,7 +2438,7 @@ msgid "24 hours"
 msgstr "24 hodin"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:58
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:57
 msgid "24-hour"
 msgstr "24hodinový"
 
@@ -3076,7 +3076,7 @@ msgstr "Skutečná velikost"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:599
 #: src/features/relationship/components/modals/AddFriendsToGroupModal.tsx:79
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:100
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:586
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:574
 msgid "Add"
 msgstr "Přidat"
 
@@ -3137,7 +3137,7 @@ msgid "Add a topic to this channel"
 msgstr "Přidat téma k tomuto kanálu"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:140
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:139
 msgid "Add a word…"
 msgstr "Přidat slovo…"
 
@@ -4144,7 +4144,7 @@ msgid "Always underline links"
 msgstr "Vždy podtrhávat odkazy"
 
 #. Description for the in-app dictionary spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation. Hunspell is the spellcheck engine name; keep it as a product/protocol term.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:105
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:104
 msgid "Always use {productName}'s Hunspell dictionaries, downloaded on demand."
 msgstr "Vždy používat slovníky Hunspell pro {productName}, stažené na vyžádání."
 
@@ -4522,7 +4522,7 @@ msgid "App icon badge"
 msgstr "Označení ikony aplikace"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:46
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:45
 msgid "App language: {format}"
 msgstr "Čas podle jazyka aplikace: {format}"
 
@@ -4624,8 +4624,8 @@ msgstr "Aplikace byla úspěšně aktualizována"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings section label for developer application list.
 #. Tab label in the screen-share picker. Lists shareable app windows.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:129
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:85
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:124
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:27
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
@@ -5226,7 +5226,7 @@ msgid "Authorized on {authorizedOn}"
 msgstr "Autorizováno dne {authorizedOn}"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:50
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:49
 msgid "Auto"
 msgstr "Automaticky"
 
@@ -6282,7 +6282,7 @@ msgid "Browser home"
 msgstr "Prohlížeč: domovská stránka"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:42
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:41
 msgid "Browser locale: {format}"
 msgstr "Čas podle nastavení prohlížeče: {format}"
 
@@ -7644,7 +7644,7 @@ msgstr "Podívejte se na můj vlastní motiv!"
 
 #. Error-state description in the channel and chat gif picker view.
 #: src/features/channel/components/pickers/gif/GifPickerView.tsx:44
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:96
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:91
 msgid "Check your connection and try again."
 msgstr "Zkontrolujte připojení a zkuste to znovu."
 
@@ -8083,7 +8083,7 @@ msgid "Claim your account to change your username"
 msgstr "Pro změnu uživatelského jména dokončete registraci účtu"
 
 #. Description text in the index.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:29
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:28
 msgid "Claim your account to create applications."
 msgstr "Dokončete registraci účtu, abyste mohli vytvářet aplikace."
 
@@ -10777,8 +10777,8 @@ msgstr "Vytvářejte a spravujte aplikace a boty pro svůj účet"
 #. Button or menu action label in the application create modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationCreateModal.tsx:20
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:146
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:157
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:141
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:152
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:24
 msgid "Create application"
 msgstr "Vytvořit aplikaci"
@@ -12388,7 +12388,7 @@ msgstr "Podrobnosti"
 #. Item in the textarea spellcheck language submenu that detects draft message language and switches dictionaries as the user types.
 #. Spellcheck language mode label in the language tab. The app detects the draft message language and switches dictionaries as the user types.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:83
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:126
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:125
 msgid "Detect while typing"
 msgstr "Zjišťovat při psaní"
 
@@ -14333,7 +14333,7 @@ msgid "Enable shortcut"
 msgstr "Zapnout zkratku"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:86
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:85
 msgid "Enable spellcheck"
 msgstr "Zapnout kontrolu pravopisu"
 
@@ -16118,7 +16118,7 @@ msgstr "Na {threeHours} hodiny"
 msgid "For {twentyFourHours} hours"
 msgstr "Na {twentyFourHours} hodin"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:255
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:254
 msgid "For British eyes only..."
 msgstr "Pouze pro britské oči..."
 
@@ -17604,10 +17604,6 @@ msgstr "Centrum nápovědy"
 msgid "Help center button in the sidebar"
 msgstr "Centrum nápovědy"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "Pomozte přeložit {PRODUCT_NAME} do vašeho jazyka na <0>{I18N_WEBLATE_DOMAIN}</0>."
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
@@ -18481,7 +18477,7 @@ msgstr "Importování… Zpracováno: {processedCount, number} / {totalCount, nu
 msgid "In"
 msgstr "V"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:547
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:535
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "V režimu „Operační systém“ slouží výše uvedené slovníky pouze jako doporučení. Aplikace {PRODUCT_NAME} předá tyto jazykové značky systémové kontrole pravopisu, pokud to podporuje. Značky, které nerozpozná, ignoruje."
 
@@ -18533,7 +18529,7 @@ msgstr "V hlasovém hovoru"
 #. Spellcheck engine option in the language tab. Uses the bundled in-app Hunspell dictionaries. Keep it concise.
 #. Spellcheck engine option in the textarea spellcheck submenu. The bundled in-app hunspell engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:75
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:100
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:99
 msgid "In-app dictionaries"
 msgstr "Slovníky v aplikaci"
 
@@ -18912,7 +18908,7 @@ msgstr "Rozhraní"
 
 #. Settings section label for interface language selection.
 #. Settings section title in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:82
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:81
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:42
 msgid "Interface language"
 msgstr "Jazyk rozhraní"
@@ -19786,7 +19782,7 @@ msgstr "Nastavení jazyka"
 #. Submenu label in the textarea spellcheck submenu listing manual language overrides.
 #. Subsection title for spellcheck language settings. Keep it concise.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:88
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:122
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:121
 msgid "Languages"
 msgstr "Jazyky"
 
@@ -23567,7 +23563,7 @@ msgstr "Žádné čekající žádosti neodpovídají hledání"
 msgid "No permissions found"
 msgstr "Nenalezena žádná oprávnění"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:594
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:582
 msgid "No personal words yet."
 msgstr "Zatím žádná vlastní slova."
 
@@ -24921,7 +24917,7 @@ msgstr "Otevře stránku Členové. Stisknutím mezerníku nebo Enter otevřete.
 #. Spellcheck engine option in the textarea spellcheck submenu. Uses the host operating system spellchecker.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:184
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:79
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:110
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:109
 msgid "Operating system"
 msgstr "Operační systém"
 
@@ -25643,7 +25639,7 @@ msgstr "Oprávnění pro {0}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title for personal dictionary settings. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:131
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:130
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:94
 msgid "Personal dictionary"
 msgstr "Osobní slovník"
@@ -25762,7 +25758,7 @@ msgid "Pick at least one kind of conversation to include."
 msgstr "Vyberte alespoň jeden typ konverzace, který chcete zahrnout."
 
 #. Help text above the manual spellcheck dictionary picker in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:135
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:134
 msgid "Pick one or more dictionaries. Words from any selected dictionary are accepted, which is useful for multilingual chats."
 msgstr "Vyberte jeden nebo více slovníků. Slova z libovolného vybraného slovníku jsou přijata, což je užitečné pro vícejazyčné chaty."
 
@@ -27176,11 +27172,6 @@ msgstr "Číst zprávy odeslané v tomto kanálu před jeho otevřením. Bez toh
 msgid "Read the community's activity log of changes and moderation actions."
 msgstr "Číst protokol aktivit komunity se změnami a moderátorskými zásahy."
 
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "Přečtěte si dokumentaci ({domain})"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -27276,7 +27267,7 @@ msgstr "Příjemci budou přesměrováni na {0} <0>{1}</0>"
 #. Spellcheck engine option in the language tab. Lets the app choose the best available spellcheck engine.
 #. Spellcheck engine option in the textarea spellcheck submenu. Lets the app choose the best available engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:70
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:90
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:89
 msgid "Recommended"
 msgstr "Doporučeno"
 
@@ -27563,7 +27554,7 @@ msgstr "Relevantní"
 msgid "Reload"
 msgstr "Znovu načíst"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:459
 msgid "Reload {PRODUCT_NAME} to fully apply the engine change. Switching between in-app and system spellcheck requires a renderer reload because Electron can't swap providers while running."
 msgstr "Aby se změna nástroje pro kontrolu pravopisu plně projevila, znovu načtěte aplikaci {PRODUCT_NAME}. Přepínání mezi kontrolou pravopisu v aplikaci a systémovou kontrolou vyžaduje opětovné načtení vykreslovacího procesu, protože Electron nemůže měnit poskytovatele za běhu."
 
@@ -27582,7 +27573,7 @@ msgstr "Znovu načtěte aplikaci {productName}, aby se použila aktualizace webo
 msgid "Reload app"
 msgstr "Znovu načíst aplikaci"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:483
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
 msgid "Reload now"
 msgstr "Znovu načíst"
 
@@ -27645,7 +27636,7 @@ msgid "Remove"
 msgstr "Odebrat"
 
 #. Button or menu action label in the language tab. Keep it concise. Preserve {word}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:144
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:143
 msgid "Remove \"{word}\" from dictionary"
 msgstr "Odebrat \"{word}\" ze slovníku"
 
@@ -29877,7 +29868,7 @@ msgid "Search language code…"
 msgstr "Hledat kód jazyka…"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:74
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:73
 msgid "Search languages…"
 msgstr "Hledat jazyky…"
 
@@ -30309,7 +30300,7 @@ msgid "Select GIF {title}"
 msgstr "Vyberte GIF {title}"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:78
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:77
 msgid "Select interface language"
 msgstr "Vyberte jazyk rozhraní"
 
@@ -32737,8 +32728,8 @@ msgstr "Rychlost"
 #. Settings section label for spellcheck settings.
 #. Submenu label in the textarea right-click context menu for spellcheck preferences.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:62
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:401
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:443
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:389
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:431
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:74
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:78
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:50
@@ -32746,7 +32737,7 @@ msgid "Spellcheck"
 msgstr "Kontrola pravopisu"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:118
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:117
 msgid "Spellcheck engine"
 msgstr "Nástroj pro kontrolu pravopisu"
 
@@ -33920,7 +33911,7 @@ msgid "System DMs cannot host voice calls."
 msgstr "V systémových konverzacích nelze zahájit hlasový hovor."
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:38
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:37
 msgid "System locale: {format}"
 msgstr "Čas podle nastavení systému: {format}"
 
@@ -35785,14 +35776,14 @@ msgstr "Čas"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for app time display format.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:361
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:349
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:26
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:38
 msgid "Time format"
 msgstr "Formát času"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:62
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:61
 msgid "Time format selection"
 msgstr "Výběr formátu času"
 
@@ -36700,7 +36691,7 @@ msgstr "Ukrajinština"
 msgid "Unable to load activity logs"
 msgstr "Nelze načíst protokoly aktivit"
 
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:95
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
 msgid "Unable to load applications"
 msgstr "Nepodařilo se načíst aplikace"
 
@@ -37952,7 +37943,7 @@ msgid "Use autoscrolling"
 msgstr "Používat automatické posouvání"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:70
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:69
 msgid "Use browser locale for time format"
 msgstr "Použít pro formát času národní nastavení prohlížeče"
 
@@ -38142,7 +38133,7 @@ msgid "Use stickers from other communities."
 msgstr "Používat samolepky z jiných komunit."
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:66
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:65
 msgid "Use system locale for time format"
 msgstr "Použít systémové nastavení pro formát času"
 
@@ -38157,7 +38148,7 @@ msgid "Use the operating system's window chrome"
 msgstr "Použít rám a záhlaví okna operačního systému"
 
 #. Description for the operating-system spellcheck engine option in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:114
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:113
 msgid "Use the spellchecker built into your operating system."
 msgstr "Použít kontrolu pravopisu integrovanou v operačním systému."
 
@@ -38208,7 +38199,7 @@ msgid "Use voice activity"
 msgstr "Používat hlasovou aktivitu"
 
 #. Description for the recommended spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:94
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:93
 msgid "Use your operating system's spellchecker when available. Otherwise, use {productName}'s in-app dictionaries."
 msgstr "Použijte kontrolu pravopisu vašeho operačního systému, pokud je k dispozici. Jinak použijte vestavěné slovníky {productName}."
 

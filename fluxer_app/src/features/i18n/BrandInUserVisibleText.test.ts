@@ -26,6 +26,20 @@ const T_TEMPLATE = /\bt`((?:\\.|[^`\\])*)`/gs;
 const UPSTREAM_BRANDS = /\b(Fluxer|Plutonium|Neko)\b/;
 
 /**
+ * Upstream hostnames and the addresses at them, as a pattern separate from the brand words.
+ * A lowercase host never matches the brand pattern above, which is exactly why
+ * support@fluxer.app, weblate.fluxer.tools, fluxer.dev, irc.fluxer.com and @fluxer.app sat
+ * in this app's own constants through every previous brand sweep, three of them as live
+ * links sending our users to upstream's property.
+ *
+ * Deliberately no \b in it. The 2026-10-03 catalog work established that word-boundary
+ * assumptions betray you in this kind of check, and a dotted host is the clearest case: a
+ * boundary falls between a letter and a dot, so a trailing \b would reject "fluxer.app"
+ * inside "fluxer.app/download" precisely when it matters most.
+ */
+const UPSTREAM_HOST = /(?:[A-Za-z0-9._+-]*@)?(?:[A-Za-z0-9-]+\.)*fluxer\.(?:app|com|dev|tools)/i;
+
+/**
  * Deliberate exceptions, each with the reason it is not a leak. Keep this list at zero
  * growth: a new entry means a new upstream brand name is on screen, which needs a decision
  * rather than an entry.
@@ -146,6 +160,57 @@ describe('user-visible text never names the upstream brand', () => {
 		// clean sweep of nothing. 34 locales is the shipped set; raise this when one is added.
 		expect(catalogsScanned).toBe(34);
 		expect(entriesScanned).toBeGreaterThan(200_000);
+		expect(leaks.sort()).toEqual([]);
+	});
+
+	it('puts no upstream host in a display string', () => {
+		// A host never matches the brand pattern above, which is why support@fluxer.app and
+		// weblate.fluxer.tools survived every brand sweep before this one.
+		const leaks: Array<string> = [];
+		for (const file of sourceFiles(APP_SRC)) {
+			const text = readFileSync(file, 'utf8');
+			if (!/fluxer\./i.test(text)) continue;
+			const where = relative(REPO_ROOT, file).split('\\').join('/');
+			for (const pattern of [MESSAGE_BODY, T_TEMPLATE]) {
+				pattern.lastIndex = 0;
+				for (const match of text.matchAll(pattern)) {
+					const body = (match[2] ?? match[1]).trim();
+					const found = UPSTREAM_HOST.exec(body);
+					if (found) leaks.push(`${where}: ${found[0]}`);
+				}
+			}
+		}
+		expect(leaks.sort()).toEqual([]);
+	});
+
+	it('points no user-facing constant at an upstream host', () => {
+		// Every one of the six leaks found on 2026-10-03 lived in this one file: SUPPORT_EMAIL,
+		// I18N_EMAIL, I18N_WEBLATE_DOMAIN, FLUXER_DOCS_DOMAIN, FLUXER_BLUESKY_HANDLE and
+		// SPLASH_IRC_SERVER. It is the file of user-facing constants by definition, so it is the
+		// right place to assert, and narrow enough that no exception list is needed.
+		//
+		// Deliberately NOT asserted over the whole app: the link-recognition allowlists in
+		// InviteUtils, GiftCodeUtils, DeepLinkUtils, ThemeUtils, WorkerAssetUrl, Updater and
+		// DomainMigrationCore hold upstream hosts in order to recognise URLs a user pastes, and
+		// deleting those breaks link handling instead of fixing a leak. TrustedDomain's
+		// BUILT_IN_TRUST_PATTERNS is a separate open question, since it auto-trusts upstream's
+		// domains for link navigation and names none of ours.
+		const constants = join(APP_SRC, 'features', 'app', 'config', 'I18nDisplayConstants.ts');
+		const leaks: Array<string> = [];
+		let linesScanned = 0;
+		for (const [index, line] of readFileSync(constants, 'utf8').split('\n').entries()) {
+			linesScanned += 1;
+			// A comment may cite upstream's host to record what the divergence replaced.
+			if (/^\s*(?:\/\/|\*|\/\*)/.test(line)) continue;
+			const found = UPSTREAM_HOST.exec(line);
+			if (found) leaks.push(`I18nDisplayConstants.ts:${index + 1}: ${found[0]}`);
+		}
+
+		// Coverage, asserted: this file existing but being empty would otherwise pass.
+		expect(linesScanned).toBeGreaterThan(80);
+
+		// If this fails, a user-facing constant points at a host this fork does not run.
+		// Repoint it at an address already established here, or remove the affordance it feeds.
 		expect(leaks.sort()).toEqual([]);
 	});
 

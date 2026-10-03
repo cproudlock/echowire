@@ -1,24 +1,5 @@
 /* SPDX-License-Identifier: AGPL-3.0-or-later */
 
-.notice {
-	border: 0.0625rem solid var(--background-modifier-accent);
-	border-radius: 0.375rem;
-	padding: var(--spacing-3);
-	background: var(--background-secondary-alt);
-}
-
-.noticeText {
-	margin: 0;
-	color: var(--text-primary-muted);
-	font-size: 0.875rem;
-	line-height: 1.35;
-}
-
-.link {
-	color: var(--text-link);
-	text-decoration: underline;
-}
-
 .languageSelect {
 	width: 100%;
 }

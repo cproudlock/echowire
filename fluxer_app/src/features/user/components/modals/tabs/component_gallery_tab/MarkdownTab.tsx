@@ -187,10 +187,12 @@ export const MarkdownTab: React.FC = observer(() => {
 			{
 				title: i18n._(LINKS_DESCRIPTOR),
 				items: [
-					{label: '[text](url)', content: '[Masked link](https://fluxer.app)'},
-					{label: '<url>', content: '<https://fluxer.app>'},
-					{label: 'url', content: 'https://fluxer.app'},
-					{label: '<email>', content: '<contact@fluxer.app>'},
+					// Echowire: these render as live examples in the markdown gallery, so they showed
+					// upstream's domain and a contact address at it to our users.
+					{label: '[text](url)', content: '[Masked link](https://echowire.org)'},
+					{label: '<url>', content: '<https://echowire.org>'},
+					{label: 'url', content: 'https://echowire.org'},
+					{label: '<email>', content: '<support@echowire.org>'},
 				],
 			},
 			{

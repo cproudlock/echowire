@@ -1482,7 +1482,7 @@ msgstr "{label} फ़ाइल बहुत बड़ी है। {maxSizeLabe
 msgid "{label} images cannot be animated. Use a static image."
 msgstr "{label} इमेज को एनिमेट नहीं किया जा सकता। स्थिर इमेज का इस्तेमाल करें।"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:36
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:35
 msgid "{languageName} flag"
 msgstr "{languageName} का झंडा"
 
@@ -2389,7 +2389,7 @@ msgid "12 months (1 year)"
 msgstr "12 महीने (1 साल)"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:54
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:53
 msgid "12-hour"
 msgstr "12 घंटे"
 
@@ -2438,7 +2438,7 @@ msgid "24 hours"
 msgstr "24 घंटे"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:58
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:57
 msgid "24-hour"
 msgstr "24 घंटे"
 
@@ -3076,7 +3076,7 @@ msgstr "वास्तविक आकार"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:599
 #: src/features/relationship/components/modals/AddFriendsToGroupModal.tsx:79
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:100
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:586
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:574
 msgid "Add"
 msgstr "जोड़ें"
 
@@ -3137,7 +3137,7 @@ msgid "Add a topic to this channel"
 msgstr "इस चैनल में कोई विषय जोड़ें"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:140
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:139
 msgid "Add a word…"
 msgstr "कोई शब्द जोड़ें…"
 
@@ -4144,7 +4144,7 @@ msgid "Always underline links"
 msgstr "लिंक को हमेशा रेखांकित करें"
 
 #. Description for the in-app dictionary spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation. Hunspell is the spellcheck engine name; keep it as a product/protocol term.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:105
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:104
 msgid "Always use {productName}'s Hunspell dictionaries, downloaded on demand."
 msgstr "{productName} की Hunspell डिक्शनरी का हमेशा इस्तेमाल करें, जो ज़रूरत पड़ने पर डाउनलोड हो जाती हैं।"
 
@@ -4522,7 +4522,7 @@ msgid "App icon badge"
 msgstr "ऐप आइकॉन बैज"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:46
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:45
 msgid "App language: {format}"
 msgstr "ऐप की भाषा के अनुसार समय प्रारूप: {format}"
 
@@ -4624,8 +4624,8 @@ msgstr "ऐप्लिकेशन सफलतापूर्वक अपड�
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings section label for developer application list.
 #. Tab label in the screen-share picker. Lists shareable app windows.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:129
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:85
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:124
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:27
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
@@ -5226,7 +5226,7 @@ msgid "Authorized on {authorizedOn}"
 msgstr "{authorizedOn} को अधिकृत किया गया"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:50
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:49
 msgid "Auto"
 msgstr "ऑटो"
 
@@ -6282,7 +6282,7 @@ msgid "Browser home"
 msgstr "ब्राउज़र: होम पेज"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:42
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:41
 msgid "Browser locale: {format}"
 msgstr "ब्राउज़र का समय प्रारूप: {format}"
 
@@ -7644,7 +7644,7 @@ msgstr "मेरी कस्टम थीम देखें!"
 
 #. Error-state description in the channel and chat gif picker view.
 #: src/features/channel/components/pickers/gif/GifPickerView.tsx:44
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:96
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:91
 msgid "Check your connection and try again."
 msgstr "अपना कनेक्शन जाँचें और फिर से कोशिश करें।"
 
@@ -8083,7 +8083,7 @@ msgid "Claim your account to change your username"
 msgstr "अपना यूज़रनेम बदलने के लिए अपना अकाउंट क्लेम करें"
 
 #. Description text in the index.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:29
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:28
 msgid "Claim your account to create applications."
 msgstr "ऐप्लिकेशन बनाने के लिए अपना अकाउंट क्लेम करें।"
 
@@ -10777,8 +10777,8 @@ msgstr "अपने अकाउंट के लिए ऐप्लिके�
 #. Button or menu action label in the application create modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationCreateModal.tsx:20
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:146
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:157
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:141
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:152
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:24
 msgid "Create application"
 msgstr "ऐप्लिकेशन बनाएँ"
@@ -12388,7 +12388,7 @@ msgstr "विवरण"
 #. Item in the textarea spellcheck language submenu that detects draft message language and switches dictionaries as the user types.
 #. Spellcheck language mode label in the language tab. The app detects the draft message language and switches dictionaries as the user types.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:83
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:126
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:125
 msgid "Detect while typing"
 msgstr "टाइप करते समय पता लगाएं"
 
@@ -14333,7 +14333,7 @@ msgid "Enable shortcut"
 msgstr "शॉर्टकट चालू करें"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:86
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:85
 msgid "Enable spellcheck"
 msgstr "वर्तनी जांच चालू करें"
 
@@ -16118,7 +16118,7 @@ msgstr "{threeHours} घंटों के लिए"
 msgid "For {twentyFourHours} hours"
 msgstr "{twentyFourHours} घंटों के लिए"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:255
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:254
 msgid "For British eyes only..."
 msgstr "केवल ब्रिटिश लोगों के लिए..."
 
@@ -17604,10 +17604,6 @@ msgstr "सहायता केंद्र"
 msgid "Help center button in the sidebar"
 msgstr "सहायता केंद्र बटन साइडबार में"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "<0>{I18N_WEBLATE_DOMAIN}</0> पर {PRODUCT_NAME} का अपनी भाषा में अनुवाद करने में मदद करें।"
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
@@ -18481,7 +18477,7 @@ msgstr "इंपोर्ट हो रहा है… {processedCount, number
 msgid "In"
 msgstr "चैनल"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:547
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:535
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "\"ऑपरेटिंग सिस्टम\" मोड में, ऊपर दी गई डिक्शनरी सिर्फ़ सलाह के तौर पर हैं। सपोर्ट होने पर {PRODUCT_NAME} ये भाषा टैग आपके OS स्पेलचेकर को भेजेगा। जिन टैग को वह नहीं पहचानता, उन्हें अनदेखा कर दिया जाता है।"
 
@@ -18533,7 +18529,7 @@ msgstr "वॉइस चैट में"
 #. Spellcheck engine option in the language tab. Uses the bundled in-app Hunspell dictionaries. Keep it concise.
 #. Spellcheck engine option in the textarea spellcheck submenu. The bundled in-app hunspell engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:75
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:100
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:99
 msgid "In-app dictionaries"
 msgstr "इन-ऐप शब्दकोश"
 
@@ -18912,7 +18908,7 @@ msgstr "इंटरफ़ेस"
 
 #. Settings section label for interface language selection.
 #. Settings section title in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:82
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:81
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:42
 msgid "Interface language"
 msgstr "इंटरफ़ेस भाषा"
@@ -19786,7 +19782,7 @@ msgstr "भाषा सेटिंग्स"
 #. Submenu label in the textarea spellcheck submenu listing manual language overrides.
 #. Subsection title for spellcheck language settings. Keep it concise.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:88
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:122
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:121
 msgid "Languages"
 msgstr "भाषाएँ"
 
@@ -23567,7 +23563,7 @@ msgstr "इस खोज से कोई लंबित रिक्वेस�
 msgid "No permissions found"
 msgstr "कोई अनुमति नहीं मिली"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:594
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:582
 msgid "No personal words yet."
 msgstr "अभी तक कोई निजी शब्द नहीं हैं।"
 
@@ -24921,7 +24917,7 @@ msgstr "सदस्य पेज खोलता है। खोलने क�
 #. Spellcheck engine option in the textarea spellcheck submenu. Uses the host operating system spellchecker.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:184
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:79
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:110
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:109
 msgid "Operating system"
 msgstr "ऑपरेटिंग सिस्टम"
 
@@ -25643,7 +25639,7 @@ msgstr "{0} के लिए अनुमतियाँ"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title for personal dictionary settings. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:131
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:130
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:94
 msgid "Personal dictionary"
 msgstr "व्यक्तिगत शब्दकोश"
@@ -25762,7 +25758,7 @@ msgid "Pick at least one kind of conversation to include."
 msgstr "शामिल करने के लिए कम से कम एक तरह की बातचीत चुनें।"
 
 #. Help text above the manual spellcheck dictionary picker in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:135
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:134
 msgid "Pick one or more dictionaries. Words from any selected dictionary are accepted, which is useful for multilingual chats."
 msgstr "एक या ज़्यादा शब्दकोश चुनें। किसी भी चुने गए शब्दकोश के शब्द स्वीकार किए जाते हैं, जो बहुभाषी चैट के लिए उपयोगी है।"
 
@@ -27176,11 +27172,6 @@ msgstr "इस चैनल को खोलने से पहले इसम
 msgid "Read the community's activity log of changes and moderation actions."
 msgstr "कम्युनिटी के बदलावों और मॉडरेशन कार्रवाइयों का गतिविधि लॉग पढ़ें।"
 
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "डॉक्यूमेंटेशन पढ़ें ({domain})"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -27276,7 +27267,7 @@ msgstr "प्राप्तकर्ताओं को {0} <0>{1}</0> पर 
 #. Spellcheck engine option in the language tab. Lets the app choose the best available spellcheck engine.
 #. Spellcheck engine option in the textarea spellcheck submenu. Lets the app choose the best available engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:70
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:90
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:89
 msgid "Recommended"
 msgstr "सुझाया गया"
 
@@ -27563,7 +27554,7 @@ msgstr "प्रासंगिक"
 msgid "Reload"
 msgstr "फिर से लोड करें"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:459
 msgid "Reload {PRODUCT_NAME} to fully apply the engine change. Switching between in-app and system spellcheck requires a renderer reload because Electron can't swap providers while running."
 msgstr "इंजन बदलाव को पूरी तरह लागू करने के लिए {PRODUCT_NAME} को रीलोड करें। इन-ऐप और सिस्टम स्पेलचेक के बीच स्विच करने पर रेंडरर रीलोड ज़रूरी है, क्योंकि Electron चलते हुए प्रोवाइडर स्वैप नहीं कर सकता।"
 
@@ -27582,7 +27573,7 @@ msgstr "{productName} को रीलोड करें ताकि वेब
 msgid "Reload app"
 msgstr "ऐप फिर से लोड करें"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:483
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
 msgid "Reload now"
 msgstr "अभी रीलोड करें"
 
@@ -27645,7 +27636,7 @@ msgid "Remove"
 msgstr "हटाएँ"
 
 #. Button or menu action label in the language tab. Keep it concise. Preserve {word}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:144
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:143
 msgid "Remove \"{word}\" from dictionary"
 msgstr "शब्दकोश से \"{word}\" हटाएँ"
 
@@ -29877,7 +29868,7 @@ msgid "Search language code…"
 msgstr "भाषा कोड खोजें…"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:74
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:73
 msgid "Search languages…"
 msgstr "भाषाएँ खोजें…"
 
@@ -30309,7 +30300,7 @@ msgid "Select GIF {title}"
 msgstr "GIF {title} चुनें"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:78
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:77
 msgid "Select interface language"
 msgstr "इंटरफ़ेस भाषा चुनें"
 
@@ -32737,8 +32728,8 @@ msgstr "स्पीड"
 #. Settings section label for spellcheck settings.
 #. Submenu label in the textarea right-click context menu for spellcheck preferences.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:62
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:401
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:443
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:389
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:431
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:74
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:78
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:50
@@ -32746,7 +32737,7 @@ msgid "Spellcheck"
 msgstr "वर्तनी जांच"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:118
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:117
 msgid "Spellcheck engine"
 msgstr "वर्तनी जांच इंजन"
 
@@ -33920,7 +33911,7 @@ msgid "System DMs cannot host voice calls."
 msgstr "सिस्टम DM पर वॉइस कॉल नहीं हो सकतीं।"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:38
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:37
 msgid "System locale: {format}"
 msgstr "सिस्टम का समय प्रारूप: {format}"
 
@@ -35785,14 +35776,14 @@ msgstr "समय"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for app time display format.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:361
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:349
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:26
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:38
 msgid "Time format"
 msgstr "समय फ़ॉर्मैट"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:62
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:61
 msgid "Time format selection"
 msgstr "समय फ़ॉर्मैट चुनें"
 
@@ -36700,7 +36691,7 @@ msgstr "यूक्रेनी"
 msgid "Unable to load activity logs"
 msgstr "गतिविधि लॉग लोड नहीं हो पाए"
 
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:95
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
 msgid "Unable to load applications"
 msgstr "ऐप्लिकेशन लोड नहीं हो पा रहे हैं"
 
@@ -37952,7 +37943,7 @@ msgid "Use autoscrolling"
 msgstr "ऑटो-स्क्रॉलिंग का उपयोग करें"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:70
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:69
 msgid "Use browser locale for time format"
 msgstr "समय फ़ॉर्मैट के लिए ब्राउज़र का लोकेल इस्तेमाल करें"
 
@@ -38142,7 +38133,7 @@ msgid "Use stickers from other communities."
 msgstr "अन्य कम्युनिटी के स्टिकर इस्तेमाल करें।"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:66
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:65
 msgid "Use system locale for time format"
 msgstr "समय फ़ॉर्मैट के लिए सिस्टम का लोकेल इस्तेमाल करें"
 
@@ -38157,7 +38148,7 @@ msgid "Use the operating system's window chrome"
 msgstr "ऑपरेटिंग सिस्टम के विंडो फ़्रेम का उपयोग करें"
 
 #. Description for the operating-system spellcheck engine option in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:114
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:113
 msgid "Use the spellchecker built into your operating system."
 msgstr "अपने ऑपरेटिंग सिस्टम में बने स्पेलचेकर का इस्तेमाल करें।"
 
@@ -38208,7 +38199,7 @@ msgid "Use voice activity"
 msgstr "वॉइस गतिविधि का इस्तेमाल करें"
 
 #. Description for the recommended spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:94
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:93
 msgid "Use your operating system's spellchecker when available. Otherwise, use {productName}'s in-app dictionaries."
 msgstr "उपलब्ध होने पर अपने ऑपरेटिंग सिस्टम के स्पेलचेकर का उपयोग करें। अन्यथा, {productName} की इन-ऐप डिक्शनरी का उपयोग करें।"
 

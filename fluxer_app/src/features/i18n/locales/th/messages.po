@@ -1482,7 +1482,7 @@ msgstr "ไฟล์ {label} มีขนาดใหญ่เกินไป �
 msgid "{label} images cannot be animated. Use a static image."
 msgstr "{label} ไม่สามารถเป็นภาพเคลื่อนไหวได้ ใช้ภาพนิ่ง"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:36
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:35
 msgid "{languageName} flag"
 msgstr "ธงของ {languageName}"
 
@@ -2389,7 +2389,7 @@ msgid "12 months (1 year)"
 msgstr "12 เดือน (1 ปี)"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:54
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:53
 msgid "12-hour"
 msgstr "12 ชั่วโมง"
 
@@ -2438,7 +2438,7 @@ msgid "24 hours"
 msgstr "24 ชั่วโมง"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:58
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:57
 msgid "24-hour"
 msgstr "24 ชั่วโมง"
 
@@ -3076,7 +3076,7 @@ msgstr "ขนาดจริง"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:599
 #: src/features/relationship/components/modals/AddFriendsToGroupModal.tsx:79
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:100
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:586
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:574
 msgid "Add"
 msgstr "เพิ่ม"
 
@@ -3137,7 +3137,7 @@ msgid "Add a topic to this channel"
 msgstr "เพิ่มหัวข้อในช่องนี้"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:140
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:139
 msgid "Add a word…"
 msgstr "เพิ่มคำ…"
 
@@ -4144,7 +4144,7 @@ msgid "Always underline links"
 msgstr "ขีดเส้นใต้ลิงก์เสมอ"
 
 #. Description for the in-app dictionary spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation. Hunspell is the spellcheck engine name; keep it as a product/protocol term.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:105
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:104
 msgid "Always use {productName}'s Hunspell dictionaries, downloaded on demand."
 msgstr "ใช้พจนานุกรม Hunspell ของ {productName} เสมอ ซึ่งจะดาวน์โหลดเมื่อมีการเรียกใช้"
 
@@ -4522,7 +4522,7 @@ msgid "App icon badge"
 msgstr "ป้ายไอคอนแอป"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:46
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:45
 msgid "App language: {format}"
 msgstr "รูปแบบเวลาตามภาษาของแอป: {format}"
 
@@ -4624,8 +4624,8 @@ msgstr "อัปเดตแอปพลิเคชันแล้ว"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings section label for developer application list.
 #. Tab label in the screen-share picker. Lists shareable app windows.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:129
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:85
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:124
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:27
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
@@ -5226,7 +5226,7 @@ msgid "Authorized on {authorizedOn}"
 msgstr "อนุญาตเมื่อ {authorizedOn}"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:50
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:49
 msgid "Auto"
 msgstr "อัตโนมัติ"
 
@@ -6282,7 +6282,7 @@ msgid "Browser home"
 msgstr "เบราว์เซอร์: หน้าแรก"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:42
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:41
 msgid "Browser locale: {format}"
 msgstr "รูปแบบเวลาตามเบราว์เซอร์: {format}"
 
@@ -7644,7 +7644,7 @@ msgstr "มาดูธีมที่ฉันปรับแต่งสิ!"
 
 #. Error-state description in the channel and chat gif picker view.
 #: src/features/channel/components/pickers/gif/GifPickerView.tsx:44
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:96
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:91
 msgid "Check your connection and try again."
 msgstr "ตรวจสอบการเชื่อมต่อของคุณแล้วลองอีกครั้ง"
 
@@ -8083,7 +8083,7 @@ msgid "Claim your account to change your username"
 msgstr "ยืนยันบัญชีเพื่อเปลี่ยนชื่อผู้ใช้"
 
 #. Description text in the index.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:29
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:28
 msgid "Claim your account to create applications."
 msgstr "ยืนยันบัญชีของคุณเพื่อสร้างแอปพลิเคชัน"
 
@@ -10777,8 +10777,8 @@ msgstr "สร้างและจัดการแอปพลิเคชั
 #. Button or menu action label in the application create modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationCreateModal.tsx:20
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:146
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:157
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:141
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:152
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:24
 msgid "Create application"
 msgstr "สร้างแอปพลิเคชัน"
@@ -12388,7 +12388,7 @@ msgstr "รายละเอียด"
 #. Item in the textarea spellcheck language submenu that detects draft message language and switches dictionaries as the user types.
 #. Spellcheck language mode label in the language tab. The app detects the draft message language and switches dictionaries as the user types.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:83
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:126
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:125
 msgid "Detect while typing"
 msgstr "ตรวจจับขณะพิมพ์"
 
@@ -14333,7 +14333,7 @@ msgid "Enable shortcut"
 msgstr "เปิดใช้ปุ่มลัด"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:86
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:85
 msgid "Enable spellcheck"
 msgstr "เปิดใช้งานการตรวจสอบการสะกดคำ"
 
@@ -16118,7 +16118,7 @@ msgstr "เป็นเวลา {threeHours} ชั่วโมง"
 msgid "For {twentyFourHours} hours"
 msgstr "เป็นเวลา {twentyFourHours} ชั่วโมง"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:255
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:254
 msgid "For British eyes only..."
 msgstr "สำหรับชาวอังกฤษเท่านั้น..."
 
@@ -17604,10 +17604,6 @@ msgstr "ศูนย์ช่วยเหลือ"
 msgid "Help center button in the sidebar"
 msgstr "ศูนย์ช่วยเหลือ"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "ช่วยแปล {PRODUCT_NAME} เป็นภาษาของคุณบน <0>{I18N_WEBLATE_DOMAIN}</0>"
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
@@ -18481,7 +18477,7 @@ msgstr "กำลังนำเข้า… ดำเนินการแล�
 msgid "In"
 msgstr "ใน"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:547
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:535
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "ในโหมด \"ระบบปฏิบัติการ\" พจนานุกรมที่แสดงด้านบนเป็นเพียงคำแนะนำ {PRODUCT_NAME} จะส่งแท็กภาษาเหล่านี้ไปยังโปรแกรมตรวจการสะกดของระบบปฏิบัติการของคุณ หากระบบปฏิบัติการรองรับ แท็กที่ระบบไม่รู้จักจะถูกละเว้น"
 
@@ -18533,7 +18529,7 @@ msgstr "อยู่ในแชทเสียง"
 #. Spellcheck engine option in the language tab. Uses the bundled in-app Hunspell dictionaries. Keep it concise.
 #. Spellcheck engine option in the textarea spellcheck submenu. The bundled in-app hunspell engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:75
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:100
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:99
 msgid "In-app dictionaries"
 msgstr "พจนานุกรมในแอป"
 
@@ -18912,7 +18908,7 @@ msgstr "อินเทอร์เฟซ"
 
 #. Settings section label for interface language selection.
 #. Settings section title in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:82
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:81
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:42
 msgid "Interface language"
 msgstr "ภาษาของแอป"
@@ -19786,7 +19782,7 @@ msgstr "การตั้งค่าภาษา"
 #. Submenu label in the textarea spellcheck submenu listing manual language overrides.
 #. Subsection title for spellcheck language settings. Keep it concise.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:88
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:122
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:121
 msgid "Languages"
 msgstr "ภาษา"
 
@@ -23567,7 +23563,7 @@ msgstr "ไม่มีคำขอที่รอดำเนินการต
 msgid "No permissions found"
 msgstr "ไม่พบสิทธิ์"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:594
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:582
 msgid "No personal words yet."
 msgstr "ยังไม่มีคำส่วนตัว"
 
@@ -24921,7 +24917,7 @@ msgstr "เปิดหน้าสมาชิก กด Space หรือ Ent
 #. Spellcheck engine option in the textarea spellcheck submenu. Uses the host operating system spellchecker.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:184
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:79
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:110
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:109
 msgid "Operating system"
 msgstr "ระบบปฏิบัติการ"
 
@@ -25643,7 +25639,7 @@ msgstr "สิทธิ์สำหรับ {0}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title for personal dictionary settings. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:131
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:130
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:94
 msgid "Personal dictionary"
 msgstr "พจนานุกรมส่วนตัว"
@@ -25762,7 +25758,7 @@ msgid "Pick at least one kind of conversation to include."
 msgstr "เลือกประเภทการสนทนาที่จะรวมอย่างน้อยหนึ่งประเภท"
 
 #. Help text above the manual spellcheck dictionary picker in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:135
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:134
 msgid "Pick one or more dictionaries. Words from any selected dictionary are accepted, which is useful for multilingual chats."
 msgstr "เลือกพจนานุกรมอย่างน้อยหนึ่งรายการ คำจากพจนานุกรมที่เลือกจะได้รับการยอมรับ ซึ่งมีประโยชน์สำหรับการแชทหลายภาษา"
 
@@ -27176,11 +27172,6 @@ msgstr "อ่านข้อความที่ส่งในช่องน
 msgid "Read the community's activity log of changes and moderation actions."
 msgstr "อ่านบันทึกกิจกรรมของคอมมูนิตี้เกี่ยวกับการเปลี่ยนแปลงและการดำเนินการดูแล"
 
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "อ่านเอกสารประกอบ ({domain})"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -27276,7 +27267,7 @@ msgstr "ผู้รับจะถูกนำไปที่ {0} <0>{1}</0>"
 #. Spellcheck engine option in the language tab. Lets the app choose the best available spellcheck engine.
 #. Spellcheck engine option in the textarea spellcheck submenu. Lets the app choose the best available engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:70
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:90
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:89
 msgid "Recommended"
 msgstr "แนะนำ"
 
@@ -27563,7 +27554,7 @@ msgstr "เกี่ยวข้อง"
 msgid "Reload"
 msgstr "โหลดใหม่"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:459
 msgid "Reload {PRODUCT_NAME} to fully apply the engine change. Switching between in-app and system spellcheck requires a renderer reload because Electron can't swap providers while running."
 msgstr "โหลด {PRODUCT_NAME} ใหม่เพื่อใช้การเปลี่ยนแปลงเอ็นจินอย่างสมบูรณ์ การสลับระหว่างการตรวจสอบการสะกดในแอปกับของระบบต้องโหลดตัวเรนเดอร์ใหม่ เนื่องจาก Electron ไม่สามารถสลับผู้ให้บริการขณะทำงานอยู่ได้"
 
@@ -27582,7 +27573,7 @@ msgstr "โหลด {productName} ใหม่เพื่อใช้การ
 msgid "Reload app"
 msgstr "โหลดแอปใหม่"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:483
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
 msgid "Reload now"
 msgstr "โหลดใหม่ตอนนี้"
 
@@ -27645,7 +27636,7 @@ msgid "Remove"
 msgstr "ลบ"
 
 #. Button or menu action label in the language tab. Keep it concise. Preserve {word}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:144
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:143
 msgid "Remove \"{word}\" from dictionary"
 msgstr "ลบ \"{word}\" ออกจากพจนานุกรม"
 
@@ -29877,7 +29868,7 @@ msgid "Search language code…"
 msgstr "ค้นหารหัสภาษา…"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:74
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:73
 msgid "Search languages…"
 msgstr "ค้นหาภาษา…"
 
@@ -30309,7 +30300,7 @@ msgid "Select GIF {title}"
 msgstr "เลือก GIF {title}"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:78
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:77
 msgid "Select interface language"
 msgstr "เลือกภาษาของแอป"
 
@@ -32737,8 +32728,8 @@ msgstr "ความเร็ว"
 #. Settings section label for spellcheck settings.
 #. Submenu label in the textarea right-click context menu for spellcheck preferences.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:62
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:401
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:443
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:389
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:431
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:74
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:78
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:50
@@ -32746,7 +32737,7 @@ msgid "Spellcheck"
 msgstr "ตรวจการสะกด"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:118
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:117
 msgid "Spellcheck engine"
 msgstr "เครื่องมือตรวจการสะกด"
 
@@ -33920,7 +33911,7 @@ msgid "System DMs cannot host voice calls."
 msgstr "ข้อความส่วนตัวของระบบไม่สามารถโทรด้วยเสียงได้"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:38
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:37
 msgid "System locale: {format}"
 msgstr "รูปแบบเวลาตามระบบ: {format}"
 
@@ -35785,14 +35776,14 @@ msgstr "เวลา"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for app time display format.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:361
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:349
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:26
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:38
 msgid "Time format"
 msgstr "รูปแบบเวลา"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:62
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:61
 msgid "Time format selection"
 msgstr "การเลือกรูปแบบเวลา"
 
@@ -36700,7 +36691,7 @@ msgstr "ยูเครน"
 msgid "Unable to load activity logs"
 msgstr "ไม่สามารถโหลดบันทึกกิจกรรมได้"
 
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:95
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
 msgid "Unable to load applications"
 msgstr "ไม่สามารถโหลดแอปพลิเคชันได้"
 
@@ -37952,7 +37943,7 @@ msgid "Use autoscrolling"
 msgstr "ใช้การเลื่อนอัตโนมัติ"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:70
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:69
 msgid "Use browser locale for time format"
 msgstr "ใช้รูปแบบเวลาตามภาษาของเบราว์เซอร์"
 
@@ -38142,7 +38133,7 @@ msgid "Use stickers from other communities."
 msgstr "ใช้สติกเกอร์จากคอมมูนิตี้อื่น"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:66
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:65
 msgid "Use system locale for time format"
 msgstr "ใช้รูปแบบเวลาตามภาษาของระบบ"
 
@@ -38157,7 +38148,7 @@ msgid "Use the operating system's window chrome"
 msgstr "ใช้กรอบหน้าต่างของระบบปฏิบัติการ"
 
 #. Description for the operating-system spellcheck engine option in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:114
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:113
 msgid "Use the spellchecker built into your operating system."
 msgstr "ใช้เครื่องมือตรวจการสะกดที่มาพร้อมกับระบบปฏิบัติการของคุณ"
 
@@ -38208,7 +38199,7 @@ msgid "Use voice activity"
 msgstr "ใช้การตรวจจับเสียงพูด"
 
 #. Description for the recommended spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:94
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:93
 msgid "Use your operating system's spellchecker when available. Otherwise, use {productName}'s in-app dictionaries."
 msgstr "ใช้เครื่องมือตรวจการสะกดของระบบปฏิบัติการของคุณเมื่อพร้อมใช้งาน หากไม่พร้อมใช้งาน ให้ใช้พจนานุกรมในแอปของ {productName}"
 

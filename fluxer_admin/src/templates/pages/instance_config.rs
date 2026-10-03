@@ -182,7 +182,12 @@ pub fn instance_config_page(
                     html! {
                         (gateway_rollout_section(base, csrf_token, &instance_config.gateway_rollout))
                         (domain_migration_section(base, csrf_token, &instance_config.domain_migration))
-                        (plutonium_page_section(base, csrf_token, &instance_config.plutonium_page))
+                        (plutonium_page_section(
+                            base,
+                            csrf_token,
+                            &instance_config.plutonium_page,
+                            &instance_config.app_public.branding.premium_product_name,
+                        ))
                         (experiment_delivery_section(base, csrf_token, &instance_config.experiment_delivery))
                         @if let Some(limit_config) = limit_config {
                             (limit_config_section(base, limit_config))
@@ -1209,10 +1214,17 @@ fn domain_migration_section(
     )
 }
 
+// Echowire: the premium tier is Reverb, not upstream Plutonium, so every operator-visible
+// string in this section reads the configured premium product name. Upstream hard-codes the
+// word here while reading the configured name in premium_mode_form just below; this threads
+// the same value one section further. Identifiers keep upstream's names on purpose: the form
+// fields are plutonium_page_*, the action is update_plutonium_page, and the response type is
+// PlutoniumPageConfigResponse, because those are wire and route names rather than display text.
 fn plutonium_page_section(
     base: &str,
     csrf_token: &str,
     plutonium_page: &PlutoniumPageConfigResponse,
+    premium_name: &str,
 ) -> Markup {
     let status = if plutonium_page.enabled {
         ("Live", BadgeVariant::Success)
@@ -1221,10 +1233,25 @@ fn plutonium_page_section(
     };
     let included_user_ids = plutonium_page.included_user_ids.join("\n");
     let excluded_user_ids = plutonium_page.excluded_user_ids.join("\n");
+    let section_title = format!("{premium_name} page");
+    let section_description = format!(
+        "Replaces the {premium_name} settings tab with a full {premium_name} page, makes app \
+         pages linkable in chat, and uses a minimal gift purchase modal."
+    );
+    let enable_label = format!("Serve the {premium_name} page to the selected users");
+    let kill_switch_hint = format!(
+        "Off is the safe state and the kill switch. With this unchecked every client keeps the \
+         {premium_name} settings tab, so the rollout and targeting fields below have no effect \
+         at all."
+    );
+    let rollout_hint = format!(
+        "Share of users bucketed into the {premium_name} page, in basis points: 0 is nobody, \
+         100 is 1%, 10000 is everybody."
+    );
+    let save_label = format!("Save {premium_name} Page Configuration");
     section_card_with_description(
-        "Plutonium page",
-        "Replaces the Plutonium settings tab with a full Plutonium page, makes app pages linkable \
-         in chat, and uses a minimal gift purchase modal.",
+        &section_title,
+        &section_description,
         html! {
             form method="post" action={(base) "/instance-config?action=update_plutonium_page"} {
                 (csrf_input(csrf_token))
@@ -1239,15 +1266,11 @@ fn plutonium_page_section(
                     (checkbox(
                         "plutonium_page_enabled",
                         "true",
-                        "Serve the Plutonium page to the selected users",
+                        &enable_label,
                         plutonium_page.enabled,
                         true,
                     ))
-                    p class="text-xs text-neutral-500" {
-                        "Off is the safe state and the kill switch. With this unchecked every \
-                         client keeps the Plutonium settings tab, so the rollout and targeting \
-                         fields below have no effect at all."
-                    }
+                    p class="text-xs text-neutral-500" { (kill_switch_hint) }
 
                     h3 class="text-sm font-semibold text-neutral-900" { "Rollout" }
                     (number_field(
@@ -1255,7 +1278,7 @@ fn plutonium_page_section(
                         "Rollout (basis points)",
                         &plutonium_page.rollout_basis_points.to_string(),
                         Some(0), Some(10000), "1",
-                        Some("Share of users bucketed into the Plutonium page, in basis points: 0 is nobody, 100 is 1%, 10000 is everybody."),
+                        Some(rollout_hint.as_str()),
                     ))
                     div class="flex flex-col gap-2" {
                         (text_input(
@@ -1342,7 +1365,7 @@ fn plutonium_page_section(
                     }
 
                     (form_actions(html! {
-                        (submit_button("Save Plutonium Page Configuration"))
+                        (submit_button(&save_label))
                     }))
                 }
             }
@@ -2093,8 +2116,9 @@ mod tests {
             ],
             ..PlutoniumPageConfigResponse::default()
         };
-        let markup = plutonium_page_section("/admin", "csrf", &plutonium_page).into_string();
-        assert!(markup.contains("Plutonium page"));
+        let markup =
+            plutonium_page_section("/admin", "csrf", &plutonium_page, "Gold").into_string();
+        assert!(markup.contains("Gold page"));
         assert!(markup.contains("action=update_plutonium_page"));
         assert!(markup.contains("name=\"plutonium_page_enabled\""));
         assert!(markup.contains("name=\"plutonium_page_rollout_basis_points\""));
@@ -2106,6 +2130,44 @@ mod tests {
         assert!(markup.contains("2 of 1000 stored"));
         assert!(!markup.contains("anonymous_rollout_basis_points"));
         assert!(!markup.contains("standalone_forwarding"));
+    }
+
+    // Echowire: the premium tier is Reverb, not upstream Plutonium. If this test fails after a
+    // merge, upstream has added or reworded an operator-visible string in this section and the
+    // divergence needs re-applying. Do not update the expectation to match upstream's wording.
+    // The identifiers are deliberately excluded: plutonium_page_* field names, the
+    // update_plutonium_page action and PlutoniumPageConfigResponse all keep upstream's names,
+    // so this asserts over display text only.
+    #[test]
+    fn plutonium_page_section_names_the_configured_premium_tier_everywhere() {
+        let markup = plutonium_page_section(
+            "/admin",
+            "csrf",
+            &PlutoniumPageConfigResponse::default(),
+            "Reverb",
+        )
+        .into_string();
+
+        for expected in [
+            "Reverb page",
+            "Replaces the Reverb settings tab with a full Reverb page",
+            "Serve the Reverb page to the selected users",
+            "client keeps the Reverb settings tab",
+            "Share of users bucketed into the Reverb page",
+            "Save Reverb Page Configuration",
+        ] {
+            assert!(
+                markup.contains(expected),
+                "operator-visible string lost the configured premium name: {expected}"
+            );
+        }
+
+        // The display text must never name upstream's tier, while the identifiers still must.
+        assert!(!markup.contains("Plutonium page"));
+        assert!(!markup.contains("Plutonium settings tab"));
+        assert!(!markup.contains("Save Plutonium"));
+        assert!(markup.contains("name=\"plutonium_page_enabled\""));
+        assert!(markup.contains("action=update_plutonium_page"));
     }
 
     #[test]

@@ -26,6 +26,9 @@ export const Headers = {
 	X_FLUXER_SUDO_MODE_JWT: 'X-Fluxer-Sudo-Mode-JWT',
 	X_FLUXER_VERSION: 'X-Fluxer-Version',
 	X_CAPTCHA_TOKEN: 'X-Captcha-Token',
+	// Echowire: restored after upstream #3035 deleted it. Names the provider that
+	// produced the solution, so one instance can verify ALTCHA from the web app and
+	// Turnstile from a shipped mobile client. See docs/adr/0008.
 	X_CAPTCHA_TYPE: 'X-Captcha-Type',
 	X_AUDIT_LOG_REASON: 'X-Audit-Log-Reason',
 	X_INTERNAL_API_KEY: 'X-Internal-API-Key',

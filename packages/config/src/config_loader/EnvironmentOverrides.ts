@@ -249,6 +249,8 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_EMAIL_SMTP_USERNAME: {path: ['integrations', 'email', 'smtp', 'username']},
 	FLUXER_EMAIL_SMTP_PASSWORD: {path: ['integrations', 'email', 'smtp', 'password']},
 	FLUXER_EMAIL_SMTP_SECURE: {path: ['integrations', 'email', 'smtp', 'secure'], parse: parseBoolean},
+	// Echowire: restored after upstream #3035 deleted them. Production configures its
+	// Turnstile captcha through these. See docs/adr/0008.
 	FLUXER_CAPTCHA_ENABLED: {path: ['integrations', 'captcha', 'enabled'], parse: parseBoolean},
 	FLUXER_CAPTCHA_PROVIDER: {path: ['integrations', 'captcha', 'provider']},
 	FLUXER_CAPTCHA_HCAPTCHA_SITE_KEY: {path: ['integrations', 'captcha', 'hcaptcha', 'site_key']},

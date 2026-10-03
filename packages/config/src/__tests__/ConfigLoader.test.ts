@@ -523,7 +523,7 @@ describe('ConfigLoader', () => {
 	test('rejects an enabled captcha with no provider', async () => {
 		stubMinimalEnv({FLUXER_CAPTCHA_ENABLED: 'true'});
 		await expect(loadConfig()).rejects.toThrow(
-			'FLUXER_CAPTCHA_PROVIDER must be hcaptcha or turnstile when FLUXER_CAPTCHA_ENABLED is true',
+			'FLUXER_CAPTCHA_PROVIDER must be altcha, hcaptcha or turnstile when FLUXER_CAPTCHA_ENABLED is true',
 		);
 	});
 
@@ -539,6 +539,34 @@ describe('ConfigLoader', () => {
 
 		expect(config.integrations.captcha.enabled).toBe(true);
 		expect(config.integrations.captcha.hcaptcha?.secret_key).toBe('hcaptcha-secret-key');
+	});
+
+	test('accepts an enabled altcha captcha with no keys at all', async () => {
+		// Echowire: ALTCHA is keyless proof of work, so the key requirement that applies
+		// to hCaptcha and Turnstile must not apply to it.
+		stubMinimalEnv({FLUXER_CAPTCHA_ENABLED: 'true', FLUXER_CAPTCHA_PROVIDER: 'altcha'});
+
+		const config = await loadConfig();
+
+		expect(config.integrations.captcha.provider).toBe('altcha');
+		expect(config.integrations.captcha.enabled).toBe(true);
+	});
+
+	test('reads the production turnstile captcha out of the environment', async () => {
+		// Echowire: this is the configuration the deployed instance actually runs. If it
+		// ever stops loading, every shipped mobile client loses login. See docs/adr/0008.
+		stubMinimalEnv({
+			FLUXER_CAPTCHA_ENABLED: 'true',
+			FLUXER_CAPTCHA_PROVIDER: 'turnstile',
+			FLUXER_CAPTCHA_TURNSTILE_SITE_KEY: 'turnstile-site-key',
+			FLUXER_CAPTCHA_TURNSTILE_SECRET_KEY: 'turnstile-secret-key',
+		});
+
+		const config = await loadConfig();
+
+		expect(config.integrations.captcha.provider).toBe('turnstile');
+		expect(config.integrations.captcha.turnstile?.site_key).toBe('turnstile-site-key');
+		expect(config.integrations.captcha.turnstile?.secret_key).toBe('turnstile-secret-key');
 	});
 
 	test('leaves a disabled captcha unvalidated', async () => {

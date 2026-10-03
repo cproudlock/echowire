@@ -74,8 +74,10 @@ export const InstanceAppPublicSchema = z.object({
 });
 export type InstanceAppPublic = z.infer<typeof InstanceAppPublicSchema>;
 
-export const InstanceCaptchaProviderSchema = z.enum(['hcaptcha', 'turnstile', 'none']);
-export type InstanceCaptchaProvider = z.infer<typeof InstanceCaptchaProviderSchema>;
+// Echowire: upstream #3035 narrowed this to altcha or none. This fork keeps
+// hcaptcha and turnstile, which the shipped mobile clients implement and ALTCHA
+// is not a substitute for. See docs/adr/0008.
+export const InstanceCaptchaProviderSchema = z.enum(['altcha', 'hcaptcha', 'turnstile', 'none']);
 
 export const InstanceEndpointsSchema = z
 	.object({
@@ -96,7 +98,7 @@ export type InstanceEndpoints = z.infer<typeof InstanceEndpointsSchema>;
 
 export const InstanceCaptchaSchema = z
 	.object({
-		provider: InstanceCaptchaProviderSchema.describe('Captcha provider name (hcaptcha, turnstile, none)'),
+		provider: InstanceCaptchaProviderSchema.describe('Captcha provider name (altcha, hcaptcha, turnstile, none)'),
 		hcaptcha_site_key: z.string().nullable().describe('hCaptcha site key if using hCaptcha'),
 		turnstile_site_key: z.string().nullable().describe('Cloudflare Turnstile site key if using Turnstile'),
 	})

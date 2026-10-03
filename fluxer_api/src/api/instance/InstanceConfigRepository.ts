@@ -34,9 +34,11 @@ import {
 	type RegistrationUrlResponse,
 } from '@fluxer/schema/src/domains/admin/AdminSchemas';
 import {
-	type AltchaCaptchaConfig,
-	AltchaCaptchaConfigSchema,
-} from '@fluxer/schema/src/domains/admin/AltchaCaptchaSchemas';
+	type CaptchaConfig,
+	CaptchaConfigSchema,
+	type CaptchaConfigUpdateRequest,
+	type CaptchaProvider,
+} from '@fluxer/schema/src/domains/admin/CaptchaSchemas';
 import {
 	type DomainMigrationConfig,
 	DomainMigrationConfigSchema,
@@ -64,8 +66,6 @@ import {
 	type InstanceAppPublic,
 	InstanceAppPublicSchema,
 	type InstanceBranding,
-	type InstanceCaptchaProvider,
-	InstanceCaptchaProviderSchema,
 	type InstanceCommunity,
 	type InstanceRegistration,
 	InstanceRegistrationSchema,
@@ -79,7 +79,7 @@ import {z} from 'zod';
 const GATEWAY_ROLLOUT_CONFIG_KEY = 'gateway_rollout_config';
 const PUSH_RELAY_CONFIG_KEY = 'push_service_delivery_config';
 const DOMAIN_MIGRATION_CONFIG_KEY = 'domain_migration_config';
-const ALTCHA_CAPTCHA_CONFIG_KEY = 'altcha_captcha_config';
+const CAPTCHA_CONFIG_KEY = 'captcha_config';
 const EXPERIMENT_DELIVERY_CONFIG_KEY = 'experiment_delivery_config';
 const REGISTRATION_CONFIG_KEY = 'registration_config';
 const REGISTRATION_URLS_KEY = 'registration_urls';
@@ -189,14 +189,6 @@ interface InstanceYoutubeIntegrationConfig {
 	api_key: string | null;
 }
 
-interface InstanceCaptchaIntegrationConfig {
-	provider: InstanceCaptchaProvider | null;
-	hcaptcha_site_key: string | null;
-	hcaptcha_secret_key: string | null;
-	turnstile_site_key: string | null;
-	turnstile_secret_key: string | null;
-}
-
 interface InstanceEmailSmtpIntegrationConfig {
 	host: string | null;
 	port: number | null;
@@ -232,7 +224,6 @@ interface InstanceBlueskyIntegrationConfig {
 interface InstanceIntegrationsConfig {
 	gif: InstanceGifIntegrationConfig;
 	youtube: InstanceYoutubeIntegrationConfig;
-	captcha: InstanceCaptchaIntegrationConfig;
 	email: InstanceEmailIntegrationConfig;
 	bluesky: InstanceBlueskyIntegrationConfig;
 }
@@ -243,15 +234,6 @@ interface InstanceGifEffectiveConfig {
 	available: boolean;
 }
 
-export interface InstanceCaptchaEffectiveConfig {
-	enabled: boolean;
-	provider: InstanceCaptchaProvider;
-	hcaptcha_site_key: string | null;
-	hcaptcha_secret_key: string | null;
-	turnstile_site_key: string | null;
-	turnstile_secret_key: string | null;
-}
-
 interface InstanceIntegrationsAdminConfig {
 	gif: {
 		klipy_api_key_set: boolean;
@@ -260,15 +242,6 @@ interface InstanceIntegrationsAdminConfig {
 	youtube: {
 		api_key_set: boolean;
 		effective_available: boolean;
-	};
-	captcha: {
-		provider: InstanceCaptchaProvider | null;
-		effective_provider: InstanceCaptchaProvider;
-		hcaptcha_site_key: string | null;
-		hcaptcha_secret_key_set: boolean;
-		turnstile_site_key: string | null;
-		turnstile_secret_key_set: boolean;
-		effective_enabled: boolean;
 	};
 	email: {
 		enabled: boolean | null;
@@ -336,7 +309,6 @@ interface InstanceMediaAdminConfig {
 interface InstanceIntegrationsConfigPatch {
 	gif?: Partial<InstanceGifIntegrationConfig>;
 	youtube?: Partial<InstanceYoutubeIntegrationConfig>;
-	captcha?: Partial<InstanceCaptchaIntegrationConfig>;
 	email?: Partial<Omit<InstanceEmailIntegrationConfig, 'smtp'>> & {
 		smtp?: Partial<InstanceEmailSmtpIntegrationConfig>;
 	};
@@ -435,7 +407,7 @@ type StoredConfigSection =
 	| 'gateway rollout'
 	| 'push relay'
 	| 'domain migration'
-	| 'altcha captcha'
+	| 'captcha'
 	| 'experiment delivery'
 	| 'instance policy'
 	| 'integrations'
@@ -596,8 +568,38 @@ function parseStoredDomainMigrationConfig(raw: string | null): DomainMigrationCo
 	return parseStoredConfigOrDefault(DomainMigrationConfigSchema, raw, 'domain migration');
 }
 
-function parseStoredAltchaCaptchaConfig(raw: string | null): AltchaCaptchaConfig {
-	return parseStoredConfigOrDefault(AltchaCaptchaConfigSchema, raw, 'altcha captcha');
+function parseStoredCaptchaConfig(raw: string | null): CaptchaConfig {
+	return parseStoredConfigOrDefault(CaptchaConfigSchema, raw, 'captcha');
+}
+
+// Echowire: upstream #3035 left ALTCHA as the only captcha. This fork keeps the
+// provider dimension, because the mobile clients on the stores cannot solve ALTCHA.
+// An instance that has not chosen a provider through the admin surface inherits the
+// one FLUXER_CAPTCHA_PROVIDER names, so upgrading from the environment-configured
+// build keeps serving the captcha its own shipped clients can answer, and a fresh
+// self-hosted instance that configures nothing still gets ALTCHA the way upstream
+// intends. See docs/adr/0008.
+function envCaptchaProvider(): CaptchaProvider {
+	if (!Config.captcha.enabled) return 'altcha';
+	const provider = Config.captcha.provider;
+	return provider === 'hcaptcha' || provider === 'turnstile' ? provider : 'altcha';
+}
+
+function captchaProviderHasKeys(provider: CaptchaProvider): boolean {
+	if (provider === 'altcha') return true;
+	const keys = provider === 'hcaptcha' ? Config.captcha.hcaptcha : Config.captcha.turnstile;
+	return Boolean(keys?.siteKey) && Boolean(keys?.secretKey);
+}
+
+// A provider whose keys are missing turns the captcha off rather than quietly
+// falling back to ALTCHA. Falling back would hand an unsolvable challenge to every
+// client that cannot solve one, which is the outage this divergence exists to avoid.
+function resolveCaptchaConfig(stored: CaptchaConfig): CaptchaConfig {
+	const provider = stored.provider ?? envCaptchaProvider();
+	if (!captchaProviderHasKeys(provider)) {
+		return {...stored, provider, enabled: false};
+	}
+	return {...stored, provider};
 }
 
 function parseStoredExperimentDeliveryConfig(raw: string | null): ExperimentDeliveryConfig {
@@ -718,15 +720,6 @@ const StoredBlueskyKeysSchema = z
 const StoredInstanceIntegrationsSchema = z.object({
 	gif: z.object({klipy_api_key: StoredIntegrationStringSchema}).prefault({}),
 	youtube: z.object({api_key: StoredIntegrationStringSchema}).prefault({}),
-	captcha: z
-		.object({
-			provider: InstanceCaptchaProviderSchema.nullable().default(null),
-			hcaptcha_site_key: StoredIntegrationStringSchema,
-			hcaptcha_secret_key: StoredIntegrationStringSchema,
-			turnstile_site_key: StoredIntegrationStringSchema,
-			turnstile_secret_key: StoredIntegrationStringSchema,
-		})
-		.prefault({}),
 	email: z
 		.object({
 			enabled: StoredNullableBooleanSchema,
@@ -1270,7 +1263,7 @@ export class InstanceConfigRepository {
 		);
 		parseStoredPushRelayConfig(snapshot.get(PUSH_RELAY_CONFIG_KEY) ?? null);
 		parseStoredDomainMigrationConfig(snapshot.get(DOMAIN_MIGRATION_CONFIG_KEY) ?? null);
-		parseStoredAltchaCaptchaConfig(snapshot.get(ALTCHA_CAPTCHA_CONFIG_KEY) ?? null);
+		parseStoredCaptchaConfig(snapshot.get(CAPTCHA_CONFIG_KEY) ?? null);
 		parseStoredExperimentDeliveryConfig(snapshot.get(EXPERIMENT_DELIVERY_CONFIG_KEY) ?? null);
 		parseStoredInstancePolicyConfig(snapshot.get(INSTANCE_POLICY_CONFIG_KEY) ?? null);
 		checkStoredConfig('registration', () =>
@@ -1384,20 +1377,14 @@ export class InstanceConfigRepository {
 		);
 	}
 
-	async getAltchaCaptchaConfig(): Promise<AltchaCaptchaConfig> {
-		const raw = await this.getConfig(ALTCHA_CAPTCHA_CONFIG_KEY);
-		return parseStoredAltchaCaptchaConfig(raw);
+	async getCaptchaConfig(): Promise<CaptchaConfig> {
+		const raw = await this.getConfig(CAPTCHA_CONFIG_KEY);
+		return resolveCaptchaConfig(parseStoredCaptchaConfig(raw));
 	}
 
-	async setAltchaCaptchaConfig(config: AltchaCaptchaConfig): Promise<void> {
-		await this.updateAltchaCaptchaConfig(() => config);
-	}
-
-	updateAltchaCaptchaConfig(
-		update: (current: AltchaCaptchaConfig) => AltchaCaptchaConfig,
-	): Promise<AltchaCaptchaConfig> {
-		return this.updateStoredConfig(ALTCHA_CAPTCHA_CONFIG_KEY, (raw) =>
-			validateStoredConfig(AltchaCaptchaConfigSchema, update(parseStoredAltchaCaptchaConfig(raw)), 'altcha captcha'),
+	updateCaptchaConfig(patch: CaptchaConfigUpdateRequest): Promise<CaptchaConfig> {
+		return this.updateStoredConfig(CAPTCHA_CONFIG_KEY, (raw) =>
+			validateStoredConfig(CaptchaConfigSchema, {...parseStoredCaptchaConfig(raw), ...patch}, 'captcha'),
 		);
 	}
 
@@ -1545,10 +1532,6 @@ export class InstanceConfigRepository {
 					...current.youtube,
 					...(config.youtube ?? {}),
 				},
-				captcha: {
-					...current.captcha,
-					...(config.captcha ?? {}),
-				},
 				email: {
 					...current.email,
 					...(config.email ?? {}),
@@ -1642,33 +1625,6 @@ export class InstanceConfigRepository {
 		return integrations.youtube.api_key ?? normalizeOptionalString(Config.youtube.apiKey);
 	}
 
-	async getEffectiveCaptchaConfig(): Promise<InstanceCaptchaEffectiveConfig> {
-		const integrations = await this.getInstanceIntegrationsConfig();
-		const provider = integrations.captcha.provider ?? (Config.captcha.enabled ? Config.captcha.provider : 'none');
-		const hcaptchaSiteKey =
-			integrations.captcha.hcaptcha_site_key ?? normalizeOptionalString(Config.captcha.hcaptcha?.siteKey);
-		const hcaptchaSecretKey =
-			integrations.captcha.hcaptcha_secret_key ?? normalizeOptionalString(Config.captcha.hcaptcha?.secretKey);
-		const turnstileSiteKey =
-			integrations.captcha.turnstile_site_key ?? normalizeOptionalString(Config.captcha.turnstile?.siteKey);
-		const turnstileSecretKey =
-			integrations.captcha.turnstile_secret_key ?? normalizeOptionalString(Config.captcha.turnstile?.secretKey);
-		const providerReady =
-			provider === 'hcaptcha'
-				? Boolean(hcaptchaSiteKey && hcaptchaSecretKey)
-				: provider === 'turnstile'
-					? Boolean(turnstileSiteKey && turnstileSecretKey)
-					: false;
-		return {
-			enabled: providerReady,
-			provider: providerReady ? provider : 'none',
-			hcaptcha_site_key: hcaptchaSiteKey,
-			hcaptcha_secret_key: hcaptchaSecretKey,
-			turnstile_site_key: turnstileSiteKey,
-			turnstile_secret_key: turnstileSecretKey,
-		};
-	}
-
 	async getEffectiveEmailConfig(): Promise<APIConfig['email']> {
 		const integrations = await this.getInstanceIntegrationsConfig();
 		const provider = integrations.email.provider ?? Config.email.provider;
@@ -1731,11 +1687,10 @@ export class InstanceConfigRepository {
 	}
 
 	async getInstanceIntegrationsAdminConfig(): Promise<InstanceIntegrationsAdminConfig> {
-		const [integrations, gif, youtubeApiKey, captcha, email, bluesky] = await Promise.all([
+		const [integrations, gif, youtubeApiKey, email, bluesky] = await Promise.all([
 			this.getInstanceIntegrationsConfig(),
 			this.getEffectiveGifConfig(),
 			this.getEffectiveYoutubeApiKey(),
-			this.getEffectiveCaptchaConfig(),
 			this.getEffectiveEmailConfig(),
 			this.getEffectiveBlueskyConfig(),
 		]);
@@ -1747,17 +1702,6 @@ export class InstanceConfigRepository {
 			youtube: {
 				api_key_set: secretIsSet(integrations.youtube.api_key) || secretIsSet(Config.youtube.apiKey),
 				effective_available: Boolean(youtubeApiKey),
-			},
-			captcha: {
-				provider: integrations.captcha.provider,
-				effective_provider: captcha.provider,
-				hcaptcha_site_key: captcha.hcaptcha_site_key,
-				hcaptcha_secret_key_set:
-					secretIsSet(integrations.captcha.hcaptcha_secret_key) || secretIsSet(Config.captcha.hcaptcha?.secretKey),
-				turnstile_site_key: captcha.turnstile_site_key,
-				turnstile_secret_key_set:
-					secretIsSet(integrations.captcha.turnstile_secret_key) || secretIsSet(Config.captcha.turnstile?.secretKey),
-				effective_enabled: captcha.enabled,
 			},
 			email: {
 				enabled: integrations.email.enabled,

@@ -24,6 +24,11 @@ const configuredMaxConcurrency = parseParallelInteger(process.env.API_TEST_MAX_C
 
 const MODULE_REGISTRY_TEST_FILES = [
 	'src/api/channel/tests/MessageCrosspostFanout.test.ts',
+	// Echowire: found by VitestIsolationCoverage.test.ts. This replaces
+	// @app/api/Logger, which 225 api source files import, with a Proxy that throws on
+	// any property access. In the shared pool that leaks into unrelated files as
+	// "Logger has not been initialized". Unlisted since it arrived in upstream #2118.
+	'src/api/database/PostgresKvLoggerSafety.test.ts',
 	// Echowire: this fork test replaces the ThreadMemberRepository module, so it needs
 	// its own registry for the same reason #3091 isolated the two crosspost files.
 	'src/api/channel/tests/ThreadSweepScan.test.ts',

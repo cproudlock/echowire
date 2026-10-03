@@ -244,12 +244,26 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
      look for a line starting `msgid` or `msgstr`.
   2. **Fail closed.** A file whose hunks touch either one is left conflicted and
      reported, not resolved. Only header-stamp-only files may take upstream's.
-  3. Where a hunk does touch them, keep the fork side. These are brand divergences
-     (Pickles, Reverb, echowire), not translation updates.
+  3. Where a hunk does touch them, keep the fork side **for a renamed string**.
+     These are brand divergences (Pickles, Reverb, echowire), not translation
+     updates.
   4. The kept side then carries stale `#:` source references. Fix them by
      re-extracting with `pnpm --filter fluxer_app i18n:extract`, the project's own
      flow, rather than hand-editing hunks.
-  5. Account for the result: distinct fork source strings, messages per locale and
+  5. **Then backfill, because keeping ours is only half the rule.** Keeping the fork
+     side discards upstream's side wholesale, including its translations for msgids
+     that are genuinely *new* rather than renamed. Re-extracting re-adds those msgids
+     from the merged source with empty values, and `lingui compile --strict` refuses
+     to build with a missing translation, so on #3090 this left 9 missing per locale,
+     297 in total. Copy those in from upstream's own catalogs, filling **only**
+     entries that are empty here and translated there, so a fork translation can
+     never be overwritten.
+
+     The asymmetry is the durable part: **ours wins for a string the fork renamed,
+     theirs wins for a string the fork does not have.** Confirm with
+     `pnpm --filter fluxer_app lingui:compile`, which fails on any locale still
+     missing one, and check the extract summary reports 0 missing.
+  6. Account for the result: distinct fork source strings, messages per locale and
      missing count from the extract summary, and zero fork strings translated to
      the upstream name. Count the leak, not the occurrences: ask whether any
      *Pickles* msgid has a Neko translation, since `\bNeko\b` also matches

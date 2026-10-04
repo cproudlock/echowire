@@ -113,6 +113,29 @@ of reading what it runs, so the defence is the same either way: when you want to
 what a gate covers, read the task that defines it, and count the suites in its own
 output.
 
+**The local gate above is NOT the whole of CI, and that gap went unnoticed for
+five consecutive pushes on 2026-10-03.** `tests.yaml` runs on every push to
+`echowire` and was red from 20:56 onward while the local gate reported green,
+because the local gate ran none of these:
+
+    cargo deny --locked check -D warnings
+    cargo run -p fluxer-ci -- ci --step gateway_fmt
+    cargo run -p fluxer-ci -- ci --step gateway_compile
+    cargo run -p fluxer-ci -- ci --step gateway_dialyzer
+
+The two that were actually failing are the two that are cheapest to forget.
+`cargo deny` fails on **unmatched-skip** whenever the dependency graph moves
+under a merge, because `-D warnings` promotes it: a skip naming a version no
+longer in the graph is an error, not a tidy-up. And `gateway_fmt` catches
+formatting in any Erlang module a merge touched, which no other step sees.
+
+So after any upstream merge, run those four as well, and **read the CI result
+for the push** rather than treating the local gate as the last word. A local
+gate that covers less than CI is a gate that reports green on a red tree, which
+is the same defect as a gate that cannot fail, arrived at from the other side.
+`rebar3` is not in this container; the gateway steps need the `erlang:28` image
+or the `fluxer_gateway` image build.
+
 **Invoke these commands. Do not reimplement them.** A wrapper that paraphrases a
 documented command is a copy that rots silently, and the 2026-10-03 audit found two
 such copies, both of which had been reporting greens they had not earned:

@@ -269,6 +269,24 @@ fail for the property worth gating:
   with a standing exemption needs its exemption re-tested on a schedule, not
   inherited. An exemption is a claim about the world, and claims rot.
 
+  **The suite has one known order-dependent flake, and the answer is not to restore
+  a filter.** Within an hour of the carve-out coming off, a full run failed
+  `guild_subscription_handler:update_member_subscriptions_matches_reference_test/0`
+  while 3203 others passed. The same module alone passed 27 of 27, and the next full
+  run passed 3204 of 3204. So it is a flake, and its mechanism is known rather than
+  mysterious: the test calls `ensure_started/2` on the globally named `presence_bus`
+  and `presence_cache`, so it inherits whatever earlier tests left in them, and it
+  compares `drain_mailbox/1` output, so a stray dispatch from any other test using
+  the same named bus lands in its mailbox and the expected/actual dispatch lists
+  diverge. It is the Erlang twin of the `isolate: false` api pool problem recorded
+  below, named processes instead of module mocks.
+
+  The temptation on seeing a real gate go red intermittently is to filter that test
+  out, which is how the carve-out that just came off was born. Don't. Re-run, and if
+  it passes, record the run rather than the exemption. The actual fix is to give
+  those tests unique process names or to stop them sharing a bus, which is a change
+  to the tests rather than to the gate.
+
 Plus, depending on what changed:
 
 - **After any upstream merge:** `cargo check -p fluxer_admin` (typecheck does not

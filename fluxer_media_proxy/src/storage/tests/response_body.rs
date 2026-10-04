@@ -346,3 +346,40 @@ async fn response_reader_accepts_transport_chunks_of_any_size_within_the_length(
         Err(StorageError::ObjectStorage(_))
     ));
 }
+
+// Echowire: deliberately redundant with the upstream test above, and kept under its
+// original name on purpose. The code divergence this guarded is retired because
+// upstream #3144 adopted the same empty-chunk accounting, but retiring a divergence
+// is not a reason to retire the assertion that proves it is still honoured: upstream
+// could move this default back at any time, and the thing that would notice is a test
+// named after the property rather than after their commit. It is also what a later
+// merge of #3144 will conflict against, which is the point. If this ever fails, the
+// every-frame accounting is back and every Cloudflare R2 read is broken again.
+#[tokio::test]
+async fn buffered_read_accepts_small_transport_chunks_and_bounds_empty_ones() {
+    // Cloudflare R2 answers a small object in many more, and much smaller, frames
+    // than the bundled SeaweedFS does. Counting every frame against the chunk
+    // allowance rejected every R2 read; only frames carrying no bytes may spend it,
+    // which is what the streaming path has always done.
+    const CHUNK_BYTES: usize = 64;
+    const BODY_BYTES: usize = 4 * 1024;
+    let budget = ByteBudget::new(4 << 20);
+    let chunks: Vec<Result<Bytes, std::io::Error>> = (0..BODY_BYTES / CHUNK_BYTES)
+        .map(|_| Ok(Bytes::from(vec![7u8; CHUNK_BYTES])))
+        .collect();
+    assert!(
+        chunks.len() as u64 > response_body_limit::response_body_chunk_limit(BODY_BYTES as u64)
+    );
+    let data = read_response_bytes(provider_chunked_response(chunks), BODY_BYTES, &budget)
+        .await
+        .expect("small transport chunks");
+    assert_eq!(data.as_ref().len(), BODY_BYTES);
+
+    let mut flood: Vec<Result<Bytes, std::io::Error>> =
+        (0..4096).map(|_| Ok(Bytes::new())).collect();
+    flood.push(Ok(Bytes::from_static(b"abcd")));
+    assert!(matches!(
+        read_response_bytes(provider_chunked_response(flood), 4, &budget).await,
+        Err(StorageError::ObjectStorage(_))
+    ));
+}

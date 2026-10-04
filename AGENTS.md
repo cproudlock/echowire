@@ -113,14 +113,29 @@ of reading what it runs, so the defence is the same either way: when you want to
 what a gate covers, read the task that defines it, and count the suites in its own
 output.
 
-**The local gate above is NOT the whole of CI, and CI has been red far longer
-than anyone noticed.** `tests.yaml` runs on every push to `echowire`, and across
-the last 40 runs, oldest 2026-09-16, **not one has passed**. Measured on
-2026-10-04; an earlier version of this note said "five consecutive pushes",
-which was counted from one session's own pushes and was badly wrong. The
-breakage is inherited, not introduced by any recent merge, and it persisted
-because the local gate was the only gate being read. The local gate ran none of
-these:
+**The local gate above is NOT the whole of CI, and CI had been red far longer
+than anyone noticed.** `tests.yaml` runs on every push to `echowire`, and when
+this was measured on 2026-10-04 the last 40 runs, oldest 2026-09-16, contained
+**not one pass**. (An earlier version of this note said "five consecutive
+pushes", counted from one session's own pushes; that was badly wrong.) The
+breakage was inherited rather than introduced by any recent merge, and it
+persisted because the local gate was the only gate being read.
+
+**It is green again as of `a37d5142e`** (run 37173653281, all nine jobs, zero
+failed steps), the first pass in at least 41 runs. The entire backlog was four
+things, and nothing was hiding behind the last of them:
+
+1. `cargo deny` — three unmatched skips left behind as merges moved the graph.
+2. `gateway_fmt` — nine merge-touched Erlang modules.
+3. `cargo fmt` — three `tools/ci` modules. CI runs THREE formatting scopes:
+   `--all`, libfluxwebp by its own manifest, and 31 desktop native workspaces.
+4. `clippy` — five dead `desktop_release_*` helpers in `release.rs`, plus twelve
+   items after the test module in `common.rs`.
+
+Each fix only revealed the next, because CI stops at the first failing step. So
+a green local gate plus a red CI means walking the steps in order rather than
+expecting one fix, and "I fixed the failure" is never the same claim as "CI
+passes". The local gate ran none of these:
 
     cargo deny --locked check -D warnings
     cargo run -p fluxer-ci -- ci --step gateway_fmt

@@ -228,6 +228,11 @@ x-fluxer-env: &fluxer-env
   FLUXER_PASSKEY_RP_NAME: ${FLUXER_PASSKEY_RP_NAME:-echowire}
   FLUXER_PASSKEY_ADDITIONAL_ALLOWED_ORIGINS: ${FLUXER_PASSKEY_ADDITIONAL_ALLOWED_ORIGINS:-${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}}
   FLUXER_GATEWAY_RPC_AUTH_TOKEN: ${FLUXER_GATEWAY_RPC_AUTH_TOKEN:?set FLUXER_GATEWAY_RPC_AUTH_TOKEN in .env}
+  # Echowire: upstream #3107 reads this in fluxer_gateway_config.erl with a default of
+  # TRUE and does not plumb it through the compose, so gateway NATS RPC is on with no way
+  # to disable it short of editing this file mid-incident. Passed through empty so the
+  # application still decides the default, while leaving an operator a lever in .env.
+  FLUXER_GATEWAY_NATS_RPC_ENABLED: ${FLUXER_GATEWAY_NATS_RPC_ENABLED:-}
   FLUXER_MEDIA_PROXY_SECRET_KEY: ${FLUXER_MEDIA_PROXY_SECRET_KEY:?set FLUXER_MEDIA_PROXY_SECRET_KEY in .env}
   FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64: ${FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64:?set FLUXER_MEDIA_PROXY_UPLOAD_RELAY_SECRET_BASE64 in .env}
   FLUXER_MEDIA_PROXY_ATTACHMENT_URL_SECRETS_BASE64: ${FLUXER_MEDIA_PROXY_ATTACHMENT_URL_SECRETS_BASE64:-}

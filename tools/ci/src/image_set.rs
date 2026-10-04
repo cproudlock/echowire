@@ -859,6 +859,55 @@ mod tests {
             .strip_suffix(':')
     }
 
+    // Echowire: COMPONENTS is the canonical component list, and the test below already
+    // gates it against the self-hosting compose. Nothing tied either of them to the
+    // workflow that actually PUBLISHES the images, and they drifted. `fluxer-push`
+    // reached COMPONENTS, the compose and `build-images-local.sh`, and never reached
+    // `build-all-fork.yaml`, so ghcr held no `fluxer-push` package at all while the
+    // compose required that service unconditionally. A self-hoster following our own
+    // `.env.example` (`FLUXER_REGISTRY_OWNER=cproudlock`, `FLUXER_IMAGE_TAG=v1`) got a
+    // stack that could not start, and nothing here failed. Found 2026-10-04 by asking
+    // the registry anonymously rather than by reading any file in this repo.
+    //
+    // Two components are deliberately not published by this fork, each for a reason:
+    //   fluxer-app-proxy  upstream's variant; this fork ships the -self-hosted one
+    //   fluxer-docs       the docs site is vendored in-tree but not deployed here
+    #[test]
+    fn the_fork_publish_workflow_builds_every_component_it_ships() {
+        const NOT_PUBLISHED_BY_THE_FORK: &[&str] = &["fluxer-app-proxy", "fluxer-docs"];
+
+        let canonical: BTreeSet<&str> = COMPONENTS.iter().map(|c| c.image).collect();
+        for skipped in NOT_PUBLISHED_BY_THE_FORK {
+            assert!(
+                canonical.contains(skipped),
+                "{skipped} is excluded from the fork publish workflow but is not a component; \
+                 drop the stale exclusion"
+            );
+        }
+
+        let workflow = include_str!("../../../.github/workflows/build-all-fork.yaml");
+        let published: BTreeSet<&str> = workflow
+            .lines()
+            .filter_map(|line| line.split("{\"image\":\"").nth(1))
+            .filter_map(|rest| rest.split('"').next())
+            .collect();
+        assert!(
+            !published.is_empty(),
+            "parsed no images out of build-all-fork.yaml; the matrix format changed and this \
+             check is now vacuous"
+        );
+
+        let expected: BTreeSet<&str> = canonical
+            .iter()
+            .copied()
+            .filter(|image| !NOT_PUBLISHED_BY_THE_FORK.contains(image))
+            .collect();
+        assert_eq!(
+            published, expected,
+            "build-all-fork.yaml does not publish the component set this fork ships"
+        );
+    }
+
     #[test]
     fn components_cover_every_self_hosting_service() {
         let compose = include_str!("../../../deploy/self-hosting/docker-compose.yml");

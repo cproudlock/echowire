@@ -60,7 +60,7 @@ import {
 	SnowflakeType,
 	withOpenApiType,
 } from '@fluxer/schema/src/primitives/SchemaPrimitives';
-import {EmailType} from '@fluxer/schema/src/primitives/UserValidators';
+import {EmailBlocklistEntryType} from '@fluxer/schema/src/primitives/UserValidators';
 import {schemaMetadata} from '@fluxer/schema/src/SchemaMetadata';
 import {z} from 'zod';
 
@@ -299,7 +299,9 @@ export const BanIpRequest = z.object({
 export type BanIpRequest = z.infer<typeof BanIpRequest>;
 
 export const BanEmailRequest = z.object({
-	email: EmailType.describe('Email address to ban'),
+	email: EmailBlocklistEntryType.describe(
+		'Email address to ban, or a domain written as @example.com to ban every address at it and its subdomains',
+	),
 });
 
 export type BanEmailRequest = z.infer<typeof BanEmailRequest>;
@@ -1133,6 +1135,9 @@ export type ReloadAllGuildsResponse = z.infer<typeof ReloadAllGuildsResponse>;
 export const NodeStatsResponse = z.object({
 	status: createStringType(1, 256),
 	sessions: Int32Type,
+	session_resumes_total: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER),
+	websocket_dispatches_total: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER),
+	websocket_dispatch_drops_total: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER),
 	guilds: Int32Type,
 	presences: Int32Type,
 	calls: Int32Type,
@@ -1151,6 +1156,9 @@ export const NodeStatsResponse = z.object({
 				node_id: createStringType(1, 256),
 				status: createStringType(1, 256),
 				sessions: Int32Type,
+				session_resumes_total: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER).nullable(),
+				websocket_dispatches_total: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER).nullable(),
+				websocket_dispatch_drops_total: z.number().int().min(0).max(Number.MAX_SAFE_INTEGER).nullable(),
 				guilds: Int32Type,
 				presences: Int32Type,
 				calls: Int32Type,

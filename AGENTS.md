@@ -706,9 +706,46 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   fork values: the `/api`-suffixed update endpoint, the Windows
   `DESKTOP_BUILD_VARIANT` segment, the echowire.org download page, and the
   artifact product name that `DownloadService` matches on.
-- **Media proxy:** `fluxer_media_proxy/src/storage/response_body.rs` counts only
-  empty frames against the chunk limit. Upstream's version breaks every
-  Cloudflare R2 read. Keep it and its regression test.
+- **Media proxy: this divergence is RETIRED as of 2026-10-04, upstream adopted it.**
+  The entry used to say that `fluxer_media_proxy/src/storage/response_body.rs` counts
+  only empty frames against the chunk limit, that upstream's version breaks every
+  Cloudflare R2 read, and to keep it and its regression test. Upstream #3144
+  (`db9ec0605`) arrived at the same fix independently: same `empty_chunks_remaining`
+  accounting, same `checked_sub`, same early `continue`. So there is nothing left to
+  carry, and the fork now tracks upstream here.
+
+  Upstream went two steps further than the fork had, which is why taking theirs was
+  the better resolution rather than merely the cheaper one:
+
+  1. They **also dropped the per-chunk byte ceiling** (`chunk.len() >
+     RESPONSE_BODY_TRANSPORT_CHUNK_BYTES_MAX` rejecting the read). The fork kept that
+     check, and it is the same class of false rejection the fork fixed by hand: total
+     size is already bounded against `expected_length`, so a per-frame ceiling only
+     rejects a legitimate transfer that happens to hand over one big frame.
+  2. They **fixed two sites the fork never did**, both in
+     `fluxer_media_proxy/src/server/external/fetch.rs` (`external_body_prefix` and
+     `buffer_external_response`). Those were still counting every frame. The fork had
+     only patched the storage path, so external media fetches still carried the bug
+     that was diagnosed and fixed for R2 reads nine days earlier.
+
+  The lesson worth keeping is (2), not (1). The fork fixed the site where the symptom
+  was observed and the divergence note recorded exactly that site, which then read as
+  a complete description of the problem. It was a complete description of the
+  *incident*. When a fix is for a general mechanism, grep for the mechanism rather
+  than noting the file, or the note itself becomes the reason nobody looks further.
+
+  `RESPONSE_BODY_TRANSPORT_CHUNK_BYTES_MAX` still exists and is still used for
+  capacity reservation and headroom in `state.rs`, `storage/mod.rs` and
+  `response_body.rs`; only the comparisons that rejected a read are gone.
+
+  Verifying any change here needs the container's one real blind spot worked around:
+  `fluxer-media-proxy` cannot build in dev-personal (`libheif >= 1.19` and FFmpeg
+  >= 8.0), so `cargo clippy` and `cargo test` are run with `--exclude
+  fluxer-media-proxy` and prove nothing about this crate. The crate's own Dockerfile
+  builder stage runs `cargo test -p fluxer-media-proxy`, so
+  `docker buildx build --target builder -f fluxer_media_proxy/Dockerfile .` is how to
+  actually test it locally; the `native` stage that compiles libheif is usually a
+  cache hit.
 - **Tests that assert upstream identity** (`Fluxer-*.dmg` fixtures, platform
   strings, passkey origins, OpenAPI variant counts) need the fork's values, not
   a revert of fork code.

@@ -113,10 +113,14 @@ of reading what it runs, so the defence is the same either way: when you want to
 what a gate covers, read the task that defines it, and count the suites in its own
 output.
 
-**The local gate above is NOT the whole of CI, and that gap went unnoticed for
-five consecutive pushes on 2026-10-03.** `tests.yaml` runs on every push to
-`echowire` and was red from 20:56 onward while the local gate reported green,
-because the local gate ran none of these:
+**The local gate above is NOT the whole of CI, and CI has been red far longer
+than anyone noticed.** `tests.yaml` runs on every push to `echowire`, and across
+the last 40 runs, oldest 2026-09-16, **not one has passed**. Measured on
+2026-10-04; an earlier version of this note said "five consecutive pushes",
+which was counted from one session's own pushes and was badly wrong. The
+breakage is inherited, not introduced by any recent merge, and it persisted
+because the local gate was the only gate being read. The local gate ran none of
+these:
 
     cargo deny --locked check -D warnings
     cargo run -p fluxer-ci -- ci --step gateway_fmt

@@ -83,6 +83,22 @@ exist" errors. That is not a code error:
 The container has an 18 GiB memory cap. Do not run a full api vitest run, the
 13-image docker build and a Flutter release build at the same time.
 
+**Do not run `cargo test` concurrently with a docker build either, and it is not
+memory that bites.** `fluxer-svc`'s `postgres_kv_schema` tests start throwaway
+`postgres:16-alpine` containers bound to a port they pick themselves, so a parallel
+docker workload can take the port first and the test fails as
+`Bind for 127.0.0.1:<port> failed: port is already allocated`. On 2026-10-04 that
+failed `boot_survives_a_peer_that_creates_the_table_without_the_schema_lock` in a
+slice whose diff touched no Rust at all, and it passed 3/3 on a serial re-run.
+
+Two things make it worth writing down. It presents as a **code failure in an
+unrelated crate**, so the obvious reading is that the merge broke something, and the
+cheap disproof is the diff: if the slice touched no `fluxer_svc`, the failure is
+environmental. And a failed run can **leave the container behind** in `Created`
+state, still holding the port, so the next run fails the same way and the flake looks
+deterministic: check `docker ps -a --filter name=fluxer-kvschema` and remove strays
+before concluding anything.
+
 ## The local gate
 
 GitHub Actions is not used (the account will not be paid for; see ADR 0001), so
@@ -224,25 +240,34 @@ fail for the property worth gating:
 - **`openapi:generate` writes the specs**, so by itself it only fails when generation
   errors. A committed spec that has drifted passes. Gate on regeneration producing no
   change: run it, then `git diff --quiet` the two spec files.
-- **The gateway eunit** has always failed a fixed set of tests in this container for
-  want of the `guild_member_list_oset_nif` Rust NIF, so its exit status is not
-  pass/fail. Gate on the criterion: the tree compiled fully, no assertion failure, no
-  undefined function other than that NIF.
+- **The gateway eunit is now a plain pass/fail gate. The carve-out is deleted.** It
+  used to read: the suite always fails a fixed set of tests here for want of the
+  `guild_member_list_oset_nif` Rust NIF, so exit status is not pass/fail, gate on the
+  criterion instead (tree compiled, no assertion failure, no undefined function other
+  than that NIF). All of that rested on a false premise.
 
-  **But the NIF premise is now known false, and it was a missing mount rather than a
-  container limitation.** On 2026-10-04 both gateway NIFs, `guild_member_list_oset_nif`
-  included, built on the first attempt inside `erlang:28` once the host Rust toolchain
-  was mounted in (recipe under **Gateway** below). The image has no cargo of its own,
-  so the hook failed with `Failed to run cargo / No such file or directory`, and that
-  was read for weeks as "this container cannot build the NIF". It can.
+  The premise was a **missing mount**, not a container limitation. On 2026-10-04 both
+  gateway NIFs, `guild_member_list_oset_nif` included, built on the first attempt
+  inside `erlang:28` once the host Rust toolchain was mounted (recipe under
+  **Gateway** below). The image has no cargo of its own, the hook failed with
+  `Failed to run cargo / No such file or directory`, and that was read for weeks as
+  "this container cannot build the NIF".
 
-  What follows is that the eunit exception above is probably retirable, but **that is
-  unverified**: the NIF building is not the same claim as the eunit suite passing with
-  it present, and nobody has yet run eunit with the NIF in `priv/`. Run it before
-  deleting the exception, and if it goes green, delete the exception rather than
-  leaving a carve-out that no longer describes anything. This is the enumerated-set
-  rule turned on its own rationale: a list member kept "because the container cannot"
-  needs its reason re-checked, not inherited.
+  Then the suite was actually run with the NIFs present: **3126 tests, 0 failures,
+  rc=0**, in 219 seconds. So there is no permitted-failure set, and `rebar3 as test
+  eunit` returning non-zero is now simply a failure. Run it after any merge touching
+  Erlang:
+
+      cargo run -p fluxer-ci -- ci --step gateway_eunit   # or the docker recipe below
+
+  Two things are worth taking from this beyond the gate itself. First, the carve-out
+  made the gate **quietly weaker than anyone believed** for as long as it stood: a
+  filtered gate reports green while a real regression hides inside the filter, and
+  nobody re-reads the filter's justification because the green is reassuring. Second,
+  the justification was wrong for a dull reason, a missing `-v`, and nobody checked
+  because the error message named cargo rather than the mount. So the rule is: a gate
+  with a standing exemption needs its exemption re-tested on a schedule, not
+  inherited. An exemption is a claim about the world, and claims rot.
 
 Plus, depending on what changed:
 
@@ -280,10 +305,24 @@ Plus, depending on what changed:
   include lib`, with no occurrence of the word "error", so grepping for `/error/`
   hides a completely failed compile: assert the emitted `.beam` count equals the
   `.erl` count instead. The second trap used to read "this container cannot build the
-  `guild_member_list_oset_nif` Rust NIF"; see the correction above, it builds fine
-  once cargo is mounted in. Until someone runs eunit with the NIF present, still gate
-  on the criterion: the tree compiled fully, no assertion failure, and no undefined
-  function other than that NIF.
+  `guild_member_list_oset_nif` Rust NIF", and it is gone: it builds fine once cargo is
+  mounted, eunit then runs clean at 3126 tests and 0 failures, and the carve-out that
+  rested on it is deleted. See the gateway eunit entry above.
+
+  **The eunit recipe**, same mounts as compile because the NIFs are what made the
+  difference:
+
+      docker run --rm \
+        -v "$PWD:/repo" -v "$HOME/.cargo:/hostcargo:ro" -v "$HOME/.rustup:/hostrustup:ro" \
+        -w /repo/fluxer_gateway \
+        -e FLUXER_CI_BIN=/repo/target/debug/fluxer-ci \
+        -e CARGO_HOME=/hostcargo -e RUSTUP_HOME=/hostrustup \
+        -e REBAR_CACHE_DIR=/tmp/rc \
+        -e PATH=/hostcargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+        erlang:28 rebar3 as test eunit
+
+  It takes about four minutes and includes the member-list benchmarks, so expect
+  throughput numbers in the output rather than only dots.
 
   **The `gateway_fmt` and `gateway_compile` recipes that work**, both verified on
   2026-10-04 against a 33-commit slice that touched ten Erlang modules:
@@ -364,6 +403,45 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
 
 ## Upstream merges: rules and traps
 
+- **Merge to a sha. Never cherry-pick a backlog, however tempting the batching.**
+  A cherry-pick copies the content and leaves the merge base where it was, so the
+  commit never becomes an ancestor. Three things follow, and the third is the one that
+  costs real time:
+
+  1. **The backlog becomes unmeasurable.** `git rev-list --count echowire..upstream/main`
+     does not move, so nobody can say how close to caught-up the fork is, which is
+     usually the actual question being asked.
+  2. **Every future merge re-presents the work**, now conflicting against the copies
+     already in the tree, which is a strictly worse merge than the original and
+     arrives every time until someone does it properly.
+  3. **Where a resolution differed from upstream, a later merge silently reverts it.**
+     If our side is unchanged relative to the merge base, as it is for any commit we
+     recorded as empty or resolved toward our own content, git takes upstream's side
+     without a conflict. On 2026-10-04 that applied to the #3166 no-op: the
+     `attachment_url_signature` expect wording will be overwritten the moment #3158
+     lands, and the only reason that is known is that someone went looking.
+
+  On 2026-10-04 a 77-commit backlog was worked as three cherry-picked tiers, 44
+  commits, and the count stayed at 77 throughout. The fix is not a dedicated
+  reconciliation merge: **check first whether a contiguous landed prefix even exists**,
+  because if the first unlanded commit is near the start of the range, as it was
+  there (the very first), then no sha has a fully-applied ancestry and no mechanism
+  records the base truthfully. `-s ours` to the tip would have been catastrophic: it
+  marks everything as merged, including 33 commits whose content was never applied,
+  and they are then skipped forever.
+
+  What works instead is to **merge in upstream order to successive boundary shas**, so
+  the prefix advances. Already-applied commits are absorbed for free as the prefix
+  sweeps past them, mostly as unconflicted three-way merges because our side already
+  equals theirs. The first such slice moved the count 77 to 74 and the base from
+  `21cb7ba69` to `4e6f9b539`.
+
+  Corollary, and the reason the batching was tempting: **a triage that excludes a
+  commit breaks the prefix at that commit.** A deliberately-rejected upstream commit
+  should be **taken for ancestry and then re-diverged** in the same slice, with a
+  guard test asserting the fork's position, rather than skipped. See #3103, where the
+  default was kept and the migration neutralised inside upstream's own shape. Skipping
+  it would have parked the base at commit 3 of 77 indefinitely.
 - **`.po` conflicts: script the check, fail closed, never take upstream's on
   faith.** This rule used to read "almost always header stamps, confirm then take
   upstream's". That is known wrong: on 2026-10-03 all 34 catalogs conflicted on
@@ -404,6 +482,27 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
      theirs wins for a string the fork does not have.** Confirm with
      `pnpm --filter fluxer_app lingui:compile`, which fails on any locale still
      missing one, and check the extract summary reports 0 missing.
+
+     **There is a third possibility the asymmetry does not cover: neither side is a
+     rename, and the answer is a union.** The asymmetry assumes both sides are the
+     same entry seen twice. Sometimes both sides have simply *added a different new
+     entry* at the same position, and git has aligned two unrelated additions against
+     each other. Then every side-choosing rule above is wrong, because either choice
+     deletes a real string from 34 locales at once.
+
+     The test is the merge base: if the msgid on **neither** side exists at the merge
+     base, nobody renamed anything and both entries are new. Keep both. Observed on
+     2026-10-04 merging #3099, where the fork's `msgid "Unlock"` (thread unlock,
+     `ThreadPostMenu.tsx:143`) collided with upstream's brand-new `msgid "Unlink"`
+     (Theme Studio, `LibrarySection.tsx:681`). Taking theirs would have dropped a fork
+     feature's button label in every language; taking ours would have left upstream's
+     new string untranslated and failed `lingui compile --strict`.
+
+     A union also makes step 5 unnecessary, which is the clue that it is the better
+     move where it applies: backfill exists to repair the translations that discarding
+     upstream's side destroys, and a union never destroys them. #3090 needed 297
+     backfilled entries because it chose a side; the #3099 union needed none and came
+     out at 7892 per locale with 0 missing.
   6. Account for the result: distinct fork source strings, messages per locale and
      missing count from the extract summary.
 
@@ -491,6 +590,42 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   pairs, especially `fix(ci)` landing just after a `chore`/`feat` that changes what CI
   measures. Treat a commit that *loosens* a check as guilty until its partner is
   identified, since that is the direction in which a wrong split is silent.
+- **A fork divergence that patches a bug class may have patched only one call path.**
+  When the fork fixes a bug, check whether **every** site with that bug class was
+  fixed, because a divergence note names the file where the symptom was seen and then
+  reads, to everyone afterwards, as a description of the problem. It is a description
+  of the incident.
+
+  The worked example is the media-proxy chunk limit. The divergence entry said
+  `storage/response_body.rs` counts only empty frames against the limit and that
+  upstream's version breaks every Cloudflare R2 read. True, and incomplete: the same
+  every-frame counting sat in `server/external/fetch.rs` in both
+  `external_body_prefix` and `buffer_external_response`, unfixed, for the nine days
+  between the fork diagnosing the bug and upstream's #3144 fixing all four sites. The
+  fork had been describing that divergence as protection when it was a partial fix,
+  and the entry's precision about which file was involved is what made it read as
+  complete.
+
+  So when a fix is for a mechanism rather than for a line, grep for the mechanism
+  before writing the note, and have the note say which sites were checked rather than
+  only which were changed. "We fixed the frame counting in the storage path" and "the
+  frame counting is correct everywhere" are different claims, and only the second is
+  worth calling a divergence.
+- **`git rerere` covers conflicts, not divergences.** It replays a recorded resolution
+  only where the same conflict recurs. A fork divergence that upstream later touches
+  as a **clean addition** produces no conflict, so rerere has nothing to replay and
+  says nothing, and its report of having resolved the merge is silent about it.
+
+  Observed on #3103. The fork's noise-suppression default conflicted, rerere restored
+  it, and that worked. The same commit also adds
+  `applyDeepFilterDefaultRetiredMigrationV1`, which clears a stored `deep_filter`
+  preference, to a function the fork had never touched. No conflict, no replay, no
+  mention, and it would have shipped a change that silently discards users' saved
+  choices. It was caught by reading the file the commit touched, not by the tooling.
+
+  The trap is that rerere makes a merge *look* handled. Treat "rerere resolved N
+  files" as covering exactly those N files and nothing else, and for any commit that
+  lands near a divergence, read what it added as well as what it conflicted on.
 - **Never `git stash` mid-merge.** It destroys `MERGE_HEAD`, so the next commit is a
   single-parent commit that orphans the upstream commits from the ancestry and
   leaves them listed as unmerged forever. It also strands the stashed work, which

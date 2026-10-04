@@ -21,7 +21,7 @@ msgstr "... تشغيل الوضع المكثف. رائع!"
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-#: src/features/channel/components/MessageAttachments.tsx:392
+#: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
@@ -843,12 +843,12 @@ msgid "{appCount, plural, one {# app selected for access revocation} other {# ap
 msgstr "{appCount, plural, zero {# تطبيق محدد لإلغاء الوصول} one {تطبيق واحد محدد لإلغاء الوصول} two {تطبيقان محددان لإلغاء الوصول} few {# تطبيقات محددة لإلغاء الوصول} many {# تطبيقًا محددًا لإلغاء الوصول} other {# تطبيق محدد لإلغاء الوصول}}"
 
 #. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+#: src/features/platform/utils/DesktopLocaleBridge.ts:308
 msgid "{appName} can't reach its servers. It will keep trying in the background."
 msgstr "لا يمكن لـ {appName} الوصول إلى خوادمه. سيستمر في المحاولة في الخلفية."
 
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:285
+#: src/features/platform/utils/DesktopLocaleBridge.ts:298
 msgid "{appName} failed to start"
 msgstr "تعذّر بدء تشغيل {appName}"
 
@@ -1041,7 +1041,7 @@ msgstr "{count, plural, zero {# مجتمع مشترك} one {مجتمع مشتر�
 msgid "{count, plural, one {# other} other {# others}}"
 msgstr "{count, plural, zero {# آخر} one {شخص آخر} two {شخصان آخران} few {# آخرين} many {# آخر} other {# آخر}}"
 
-#: src/features/voice/components/VoiceCallView.tsx:507
+#: src/features/voice/components/VoiceCallView.tsx:474
 msgid "{count, plural, one {# participant in call} other {# participants in call}}"
 msgstr "{count, plural, zero {# مشارك في المكالمة} one {مشارك واحد في المكالمة} two {مشاركان في المكالمة} few {# مشاركين في المكالمة} many {# مشاركًا في المكالمة} other {# مشارك في المكالمة}}"
 
@@ -1984,7 +1984,7 @@ msgid "{seconds, plural, one {Your invite link expires in # second.} other {Your
 msgstr "{seconds, plural, zero {تنتهي صلاحية رابط الدعوة خلال # ثانية.} one {تنتهي صلاحية رابط الدعوة خلال ثانية واحدة.} two {تنتهي صلاحية رابط الدعوة خلال ثانيتين.} few {تنتهي صلاحية رابط الدعوة خلال # ثوانٍ.} many {تنتهي صلاحية رابط الدعوة خلال # ثانية.} other {تنتهي صلاحية رابط الدعوة خلال # ثانية.}}"
 
 #. Generic multi-select summary label. selectedCount is the number of selected options.
-#: src/features/ui/components/form/FormCombobox.tsx:79
+#: src/features/ui/components/form/FormCombobox.tsx:80
 msgid "{selectedCount} selected"
 msgstr "تم تحديد {selectedCount}"
 
@@ -2013,7 +2013,7 @@ msgid "{textChannelCount, plural, one {# text channel} other {# text channels}},
 msgstr "{textChannelCount, plural, zero {# قناة نصية} one {قناة نصية واحدة} two {قناتان نصيتان} few {# قنوات نصية} many {# قناة نصية} other {# قناة نصية}}، {voiceChannelCount, plural, zero {# قناة صوتية} one {قناة صوتية واحدة} two {قناتان صوتيتان} few {# قنوات صوتية} many {# قناة صوتية} other {# قناة صوتية}}، {categoryCount, plural, zero {# فئة} one {فئة واحدة} two {فئتان} few {# فئات} many {# فئة} other {# فئة}}، {roleCount, plural, zero {# دور} one {دور واحد} two {دوران} few {# أدوار} many {# دورًا} other {# دور}}"
 
 #. Name given to the copy created by the Duplicate button in the Theme Studio theme library. {themeName} is the name of the theme being duplicated.
-#: src/features/theme/state/ThemeLibrary.ts:32
+#: src/features/theme/state/ThemeLibrary.ts:34
 msgid "{themeName} Copy"
 msgstr "نسخة من {themeName}"
 
@@ -2241,8 +2241,8 @@ msgstr "لا يزال <0>{username}</0> في المجموعة. حاول مرة �
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-#: src/features/channel/components/MessageAttachments.tsx:243
-#: src/features/channel/components/MessageAttachments.tsx:299
+#: src/features/channel/components/MessageAttachments.tsx:214
+#: src/features/channel/components/MessageAttachments.tsx:270
 msgid "<0>Forwarded from</0>{sourceInfo}"
 msgstr "<0>مُعاد توجيهها من</0>{sourceInfo}"
 
@@ -2681,7 +2681,7 @@ msgid "A profile that stands out"
 msgstr "ملف شخصي مميز"
 
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:55
 msgid "A redirect_uri is required when the bot scope is not the only scope."
 msgstr "يلزم توفير redirect_uri عندما لا يكون نطاق bot هو النطاق الوحيد."
 
@@ -5097,7 +5097,7 @@ msgid "Audio settings"
 msgstr "إعدادات الصوت"
 
 #. Toggle / summary row label in the Linux audio source picker. {summaryLabel} is one of the audio-source summary labels.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:45
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:47
 msgid "Audio sources: {summaryLabel}"
 msgstr "مصادر الصوت: {summaryLabel}"
 
@@ -5142,7 +5142,7 @@ msgid "Authenticator code"
 msgstr "رمز المصادقة"
 
 #. Short label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:109
+#: src/features/theme_studio/sections/LibrarySection.tsx:112
 msgid "Author"
 msgstr "المؤلف"
 
@@ -5162,7 +5162,7 @@ msgid "Authorization failed"
 msgstr "فشل التفويض"
 
 #. OAuth authorize page generic error toast shown when the authorize request fails unexpectedly.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:75
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:76
 msgid "Authorization failed. Try again."
 msgstr "فشل التفويض. حاول مرة أخرى."
 
@@ -5560,7 +5560,7 @@ msgid "Back to sticker"
 msgstr "العودة إلى الملصق"
 
 #. Tooltip / aria label on the back button that returns from the call view to the voice channel view.
-#: src/features/voice/components/VoiceCallView.tsx:115
+#: src/features/voice/components/VoiceCallView.tsx:111
 msgid "Back to voice channel"
 msgstr "العودة إلى القناة الصوتية"
 
@@ -6158,13 +6158,13 @@ msgid "Bot invite (no external redirect)"
 msgstr "دعوة بوت (دون إعادة توجيه خارجية)"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:162
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:163
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:104
 msgid "Bot permissions"
 msgstr "أذونات البوت"
 
 #. OAuth authorize page error shown when the permissions query parameter is a negative integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:67
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:68
 msgid "Bot permissions cannot be negative."
 msgstr "لا يمكن أن تكون أذونات البوت سالبة."
 
@@ -6661,14 +6661,24 @@ msgid "Can't access that email?"
 msgstr "لا يمكنك الوصول إلى هذا البريد الإلكتروني؟"
 
 #. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+#: src/features/platform/utils/DesktopLocaleBridge.ts:303
 msgid "Can't connect"
 msgstr "تعذر الاتصال"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file was moved or deleted. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:166
+msgid "Can't find {path}. Using the last loaded version."
+msgstr "تعذر العثور على {path}. جارٍ استخدام آخر إصدار تم تحميله."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
 msgid "Can't paste image here"
 msgstr "لا يمكن لصق الصورة هنا"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file exists but cannot be read, for example because it is too large or access was removed. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:171
+msgid "Can't read {path}. Using the last loaded version."
+msgstr "تعذر قراءة {path}. جارٍ استخدام آخر إصدار تم تحميله."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:16
@@ -6835,7 +6845,7 @@ msgid "Cannot delete account"
 msgstr "لا يمكن حذف الحساب"
 
 #. Section header in the Linux audio source picker. Lists capture-target options (entire system / specific apps).
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:50
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:52
 msgid "Capture"
 msgstr "التقاط"
 
@@ -7395,7 +7405,7 @@ msgid "Channel access"
 msgstr "الوصول إلى القناة"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:140
 msgid "Channel access denied"
 msgstr "لا يمكن الوصول إلى القناة"
 
@@ -7460,7 +7470,7 @@ msgstr "تم نسخ معرف القناة إلى الحافظة"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:100
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "رابط القناة"
@@ -7840,7 +7850,7 @@ msgid "Choose background"
 msgstr "اختيار الخلفية"
 
 #. OAuth authorize page error shown when a bot invite request provides both guild_id and channel_id. Keep the parameter names literal.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:87
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:88
 msgid "Choose either guild_id or channel_id, not both."
 msgstr "اختر guild_id أو channel_id، وليس كليهما."
 
@@ -8041,7 +8051,7 @@ msgstr "استلام الهدية"
 #. Title shown when an unclaimed account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:32
 #: src/features/auth/components/modals/ClaimAccountModal.tsx:41
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:62
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
 #: src/features/channel/utils/CreateDMModalUtils.tsx:43
 #: src/features/guild/components/modals/add_guild_modal/GuildCreateForm.tsx:213
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:441
@@ -8123,7 +8133,7 @@ msgstr "طالب بحسابك لاسترداد هذه الهدية."
 #. Description text in the channel and chat dm welcome section.
 #. Description text in the user profile modal.
 #. Tooltip shown when an unclaimed account tries to send a friend request.
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:64
 #: src/features/channel/components/direct_message/DMWelcomeSection.tsx:37
 #: src/features/ui/action_menu/items/RelationshipMenuItems.tsx:40
 #: src/features/user/components/modals/UserProfileModal.tsx:122
@@ -8268,7 +8278,7 @@ msgstr "مسح حقل البحث"
 #. Accessible label for the combobox clear button.
 #. Button or menu action label in the authorized apps tab. Keep it concise.
 #. Button or menu action label in the devices tab. Keep it concise.
-#: src/features/ui/components/form/FormCombobox.tsx:91
+#: src/features/ui/components/form/FormCombobox.tsx:92
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:46
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:61
 msgid "Clear selection"
@@ -8783,7 +8793,7 @@ msgid "Coming soon"
 msgstr "قريبًا"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:121
+#: src/features/theme_studio/sections/LibrarySection.tsx:124
 msgid "comma, separated"
 msgstr "مفصولة بفواصل"
 
@@ -9381,7 +9391,7 @@ msgstr "كونيتيكت"
 #. Action label state in the DM channel header pill while the join request is in flight. Trailing ASCII ellipsis is intentional.
 #. Overlay status in the voice call view while joining. Trailing ellipsis indicates in-progress.
 #: src/features/channel/components/channel_view/dm_channel_view/shared.ts:129
-#: src/features/voice/components/VoiceCallView.tsx:94
+#: src/features/voice/components/VoiceCallView.tsx:90
 msgid "Connecting..."
 msgstr "جارٍ الاتصال..."
 
@@ -9442,7 +9452,7 @@ msgid "Connection removed"
 msgstr "تمت إزالة الاتصال"
 
 #. Tooltip / aria label on the connection-stats button in the voice call header. Opens the voice connection status popout.
-#: src/features/voice/components/VoiceCallView.tsx:119
+#: src/features/voice/components/VoiceCallView.tsx:115
 msgid "Connection stats"
 msgstr "إحصائيات الاتصال"
 
@@ -9752,7 +9762,7 @@ msgstr "تم نسخ الرابط إلى الحافظة"
 #: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:80
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:230
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx:59
 msgid "Copy"
 msgstr "نسخ"
@@ -11038,6 +11048,11 @@ msgstr "جاري قص {percent}%"
 msgid "CSS"
 msgstr "CSS"
 
+#. Name of the file type filter in the native theme file picker, shown next to the *.css pattern.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+msgid "CSS files"
+msgstr "ملفات CSS"
+
 #. Keyboard keycap label for Control on non-Mac platforms. Keep it short.
 #. Keyboard shortcut keycap label for Control on non-Mac platforms. Keep it short.
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:18
@@ -11808,7 +11823,7 @@ msgstr "ديلاوير"
 #: src/features/messaging/commands/MessageCommands.tsx:83
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/platform/utils/DesktopLocaleBridge.ts:77
-#: src/features/theme_studio/sections/LibrarySection.tsx:514
+#: src/features/theme_studio/sections/LibrarySection.tsx:645
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:290
@@ -12046,12 +12061,12 @@ msgid "Delete the category \"{categoryName}\"? Can't be undone."
 msgstr "هل تريد حذف الفئة \"{categoryName}\"؟ لا يمكن التراجع عن هذا الإجراء."
 
 #. Button or menu action label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:59
+#: src/features/theme_studio/sections/LibrarySection.tsx:62
 msgid "Delete theme"
 msgstr "حذف السمة"
 
 #. Confirmation prompt in the theme studio library section. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:51
+#: src/features/theme_studio/sections/LibrarySection.tsx:54
 msgid "Delete theme?"
 msgstr "حذف السمة؟"
 
@@ -12421,13 +12436,13 @@ msgstr "حالة المطور"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:152
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "أدوات المطور"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:156
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "أدوات المطور متاحة من شارة الموظف في رأس القناة."
 
@@ -12824,7 +12839,7 @@ msgstr "قطع اتصال المقبس"
 #. Overlay status in the voice call view when not connected.
 #. Overlay status text in the compact / floating voice call tile when not connected.
 #: src/features/voice/components/compact_voice_call_view/shared.ts:15
-#: src/features/voice/components/VoiceCallView.tsx:103
+#: src/features/voice/components/VoiceCallView.tsx:99
 msgid "Disconnected"
 msgstr "غير متصل"
 
@@ -13353,7 +13368,7 @@ msgid "Downloading desktop update: {percent}% ({formatBytes} / {formatBytes2} at
 msgstr "جارٍ تنزيل تحديث تطبيق سطح المكتب: {percent}% ({formatBytes} / {formatBytes2} بسرعة {formatBytes3}/ث)"
 
 #. Short desktop updater status label.
-#: src/features/app/state/Updater.ts:46
+#: src/features/app/state/Updater.ts:48
 msgid "Downloading desktop update…"
 msgstr "جارٍ تنزيل تحديث تطبيق سطح المكتب…"
 
@@ -13491,7 +13506,7 @@ msgstr "نظرًا لقوانين المحتوى للبالغين في {regionNa
 msgid "Due to mature content laws in {regionName}, this media is not available from your current region."
 msgstr "نظرًا لقوانين المحتوى للبالغين في {regionName}، فإن هذه الوسائط غير متاحة في منطقتك الحالية."
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:503
+#: src/features/theme_studio/sections/LibrarySection.tsx:634
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:220
 msgid "Duplicate"
 msgstr "تكرار"
@@ -14128,7 +14143,7 @@ msgid "Enable {permissionName} permission"
 msgstr "تمكين إذن {permissionName}"
 
 #. Accessible label for the switch that enables a saved theme file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:101
+#: src/features/theme_studio/sections/LibrarySection.tsx:104
 msgid "Enable {themeName}"
 msgstr "تمكين {themeName}"
 
@@ -14585,7 +14600,7 @@ msgstr "أدخل الرمز"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (not in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:28
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:18
-#: src/features/voice/components/VoiceCallView.tsx:111
+#: src/features/voice/components/VoiceCallView.tsx:107
 msgid "Enter fullscreen"
 msgstr "دخول وضع ملء الشاشة"
 
@@ -14767,7 +14782,7 @@ msgstr "الشاشة بأكملها"
 msgid "Entire system"
 msgstr "النظام بأكمله"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:260
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:257
 msgid "Entire system audio"
 msgstr "صوت النظام بالكامل"
 
@@ -14945,7 +14960,7 @@ msgid "exclude a user"
 msgstr "استبعاد مستخدم"
 
 #. Section header in the Linux audio source picker for apps excluded from the system mix.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:59
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:61
 msgid "Exclude from system"
 msgstr "استبعاد من صوت النظام"
 
@@ -14970,7 +14985,7 @@ msgstr "إنهاء العرض الكامل"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (currently in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:24
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:14
-#: src/features/voice/components/VoiceCallView.tsx:107
+#: src/features/voice/components/VoiceCallView.tsx:103
 msgid "Exit fullscreen"
 msgstr "الخروج من وضع ملء الشاشة"
 
@@ -15144,7 +15159,7 @@ msgid "Explore communities"
 msgstr "استكشاف المجتمعات"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/theme_studio/sections/LibrarySection.tsx:494
+#: src/features/theme_studio/sections/LibrarySection.tsx:625
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:208
 msgid "Export"
 msgstr "تصدير"
@@ -15159,7 +15174,7 @@ msgstr "تصدير كل رسالة أرسلتها على الإطلاق، بال
 msgid "Export GIF URLs"
 msgstr "تصدير روابط GIF"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:376
+#: src/features/theme_studio/sections/LibrarySection.tsx:459
 msgid "Export library"
 msgstr "تصدير المكتبة"
 
@@ -16298,7 +16313,7 @@ msgstr "إعادة توجيه الوسائط"
 msgid "Forward message"
 msgstr "إعادة توجيه الرسالة"
 
-#: src/features/channel/components/MessageAttachments.tsx:362
+#: src/features/channel/components/MessageAttachments.tsx:333
 msgid "Forwarded"
 msgstr "مُعاد توجيهها"
 
@@ -18374,7 +18389,7 @@ msgid "Import {theOtherPlatform} template"
 msgstr "استيراد قالب {theOtherPlatform}"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:97
+#: src/features/theme_studio/sections/LibrarySection.tsx:100
 msgid "Import a .css file to get started, or paste your own CSS in Quick CSS."
 msgstr "استورد ملف ‎.css للبدء، أو الصق CSS الخاص بك في CSS السريع."
 
@@ -18388,7 +18403,9 @@ msgstr "اكتمل الاستيراد. تمت إضافة {importedCount, plural,
 msgid "Import complete. Added {importedCount, plural, one {# GIF} other {# GIFs}}."
 msgstr "اكتمل الاستيراد. تمت إضافة {importedCount, plural, zero {# صورة GIF} one {صورة GIF واحدة} two {صورتا GIF} few {# صور GIF} many {# صورة GIF} other {# صورة GIF}}."
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:337
+#. Title of the native file picker that imports CSS theme files on the desktop app. Imported files stay linked and update live when saved.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/theme_studio/sections/LibrarySection.tsx:420
 #: src/features/theme_studio/sections/QuickCssSection.tsx:190
 msgid "Import CSS"
 msgstr "استيراد CSS"
@@ -18400,7 +18417,7 @@ msgstr "استيراد صور GIF المفضلة"
 
 #. Title of the native folder picker that imports a directory of theme files.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:271
-#: src/features/theme_studio/sections/LibrarySection.tsx:349
+#: src/features/theme_studio/sections/LibrarySection.tsx:432
 msgid "Import folder"
 msgstr "استيراد مجلد"
 
@@ -18409,7 +18426,7 @@ msgstr "استيراد مجلد"
 msgid "Import GIFs"
 msgstr "استيراد صور GIF"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:361
+#: src/features/theme_studio/sections/LibrarySection.tsx:444
 msgid "Import library"
 msgstr "استيراد مكتبة"
 
@@ -18452,13 +18469,13 @@ msgstr "معلومات هامة:"
 
 #. Toast after importing one or more CSS files from a local theme folder.
 #. Toast after importing one or more CSS files into the theme library.
-#: src/features/theme_studio/sections/LibrarySection.tsx:64
-#: src/features/theme_studio/sections/LibrarySection.tsx:68
+#: src/features/theme_studio/sections/LibrarySection.tsx:67
+#: src/features/theme_studio/sections/LibrarySection.tsx:71
 msgid "Imported {length, plural, one {# theme file} other {# theme files}}."
 msgstr "تم استيراد {length, plural, zero {# ملف سمة} one {ملف سمة واحد} two {ملفا سمة} few {# ملفات سمات} many {# ملف سمة} other {# ملف سمة}}."
 
 #. Toast after importing a Theme Studio library export file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:72
+#: src/features/theme_studio/sections/LibrarySection.tsx:75
 msgid "Imported {themes, plural, one {# theme} other {# themes}} and {assets, plural, one {# asset} other {# assets}}."
 msgstr "تم استيراد {themes, plural, zero {# سمة} one {سمة واحدة} two {سمتان} few {# سمات} many {# سمة} other {# سمة}} و{assets, plural, zero {# أصل} one {أصل واحد} two {أصلان} few {# أصول} many {# أصلًا} other {# أصل}}."
 
@@ -18587,7 +18604,7 @@ msgid "Include all except selected"
 msgstr "تضمين الكل باستثناء المحدد"
 
 #. Section header in the Linux audio source picker for the per-app inclusion list.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:55
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:57
 msgid "Include apps"
 msgstr "تضمين التطبيقات"
 
@@ -18866,12 +18883,12 @@ msgid "Installing desktop update…"
 msgstr "جارٍ تثبيت تحديث سطح المكتب…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:305
+#: src/features/platform/utils/DesktopLocaleBridge.ts:318
 msgid "Instant messaging and VoIP"
 msgstr "مراسلة فورية واتصال صوتي عبر الإنترنت"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:300
+#: src/features/platform/utils/DesktopLocaleBridge.ts:313
 msgid "Instant Messenger"
 msgstr "مراسلة فورية"
 
@@ -18936,7 +18953,7 @@ msgid "Invalid authorization request"
 msgstr "طلب تفويض غير صالح"
 
 #. OAuth authorize page error shown when the permissions query parameter is not a valid integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:63
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:64
 msgid "Invalid bot permissions."
 msgstr "أذونات البوت غير صالحة."
 
@@ -18977,7 +18994,7 @@ msgid "Invalid or expired code. Try again."
 msgstr "الرمز غير صالح أو انتهت صلاحيته. حاول مرة أخرى."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:79
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:80
 msgid "Invalid redirect_uri"
 msgstr "قيمة redirect_uri غير صالحة"
 
@@ -19081,7 +19098,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "رابط الدعوة مخفي أثناء المشاركة:"
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:168
 msgid "Invite link masked while sharing"
 msgstr "تم إخفاء رابط الدعوة أثناء المشاركة"
 
@@ -19501,7 +19518,7 @@ msgid "Jump to {displayName}"
 msgstr "الانتقال إلى {displayName}"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
 msgid "Jump to {labelText}"
 msgstr "الانتقال إلى {labelText}"
 
@@ -19558,12 +19575,12 @@ msgid "Jump to the current call"
 msgstr "الانتقال إلى المكالمة الحالية"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
 msgid "Jump to the linked channel"
 msgstr "الانتقال إلى القناة المرتبطة"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:110
 msgid "Jump to the linked message"
 msgstr "الانتقال إلى الرسالة المرتبطة"
 
@@ -19573,7 +19590,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "الانتقال إلى الرسالة من {authorNickname}"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
 msgid "Jump to the message in {labelText}"
 msgstr "الانتقال إلى الرسالة في {labelText}"
 
@@ -20217,6 +20234,13 @@ msgstr "اربط حسابات ونطاقات خارجية بملفك الشخص�
 msgid "Link external accounts and domains to your profile"
 msgstr "ربط الحسابات والنطاقات الخارجية بملفك الشخصي"
 
+#. Button in the Theme Studio library that links an existing theme to a CSS file on disk so saved changes to the file apply live.
+#. Title of the native file picker that links an existing theme to a CSS file on disk.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/theme_studio/sections/LibrarySection.tsx:607
+msgid "Link file"
+msgstr "ربط ملف"
+
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
@@ -20254,7 +20278,7 @@ msgid "Link styling"
 msgstr "تنسيق الروابط"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:160
 msgid "Link unavailable"
 msgstr "الرابط غير متاح"
 
@@ -20279,6 +20303,11 @@ msgstr "اربط حسابك على {BLUESKY_PROVIDER_NAME} أو تحقق من م
 msgid "Linked"
 msgstr "مرتبط"
 
+#. Toast after importing CSS files or a folder on the desktop app. The themes stay linked to the files on disk and update when the file is saved.
+#: src/features/theme_studio/sections/LibrarySection.tsx:140
+msgid "Linked {length, plural, one {# theme file} other {# theme files}}. Changes you save to them apply right away."
+msgstr "ملفات الثيمات المرتبطة {length, plural, one {# ملف ثيم} other {# ملف ثيم}}. التغييرات التي تحفظها عليها تُطبّق فورًا."
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:12
 msgid "Linked accounts"
@@ -20290,6 +20319,26 @@ msgstr "الحسابات المرتبطة"
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:159
 msgid "Linked devices"
 msgstr "الأجهزة المرتبطة"
+
+#. Accessible label for the warning icon next to a linked theme in the Theme Studio library when its CSS file is missing or cannot be read.
+#: src/features/theme_studio/sections/LibrarySection.tsx:151
+msgid "Linked file unavailable"
+msgstr "الملف المرتبط غير متاح"
+
+#. Banner above a linked theme in the Theme Studio library while the app is still checking its CSS file, or when this version of the desktop app cannot follow file changes. {path} is the full path of the CSS file on disk.
+#: src/features/theme_studio/sections/LibrarySection.tsx:161
+msgid "Linked to {path}."
+msgstr "مرتبط بـ {path}."
+
+#. Banner above a linked theme in the Theme Studio library. {path} is the full path of the CSS file on disk. The theme cannot be edited in the studio while linked.
+#: src/features/theme_studio/sections/LibrarySection.tsx:156
+msgid "Linked to {path}. Edit the file in any editor and saved changes apply here right away."
+msgstr "مرتبط بـ {path}. قم بتحرير الملف في أي محرر وستطبق التغييرات المحفوظة هنا على الفور."
+
+#. Accessible label for the icon next to a theme in the Theme Studio library that is linked to a CSS file on disk and updates live.
+#: src/features/theme_studio/sections/LibrarySection.tsx:146
+msgid "Linked to a file"
+msgstr "مرتبط بملف"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the markdown tab. Keep it concise.
@@ -20418,7 +20467,7 @@ msgid "Loading..."
 msgstr "جارٍ التحميل..."
 
 #. Combobox popup status shown while options are loading.
-#: src/features/ui/components/form/FormCombobox.tsx:87
+#: src/features/ui/components/form/FormCombobox.tsx:88
 #: src/features/ui/components/Spinner.tsx:22
 msgid "Loading…"
 msgstr "جارٍ التحميل…"
@@ -21638,7 +21687,7 @@ msgid "Message layout"
 msgstr "تخطيط الرسائل"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:95
 msgid "message link"
 msgstr "رابط الرسالة"
 
@@ -21951,7 +22000,7 @@ msgid "Miscellaneous"
 msgstr "متفرقات"
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:37
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:38
 msgid "Missing client_id"
 msgstr "client_id مفقود"
 
@@ -22740,7 +22789,7 @@ msgstr "تجاوزات شريط التنبيه"
 #: src/features/expressions/components/modals/meme_form/MemeFormFields.tsx:24
 #: src/features/expressions/components/modals/sticker_form/StickerFormFields.tsx:28
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/BrandingSection.tsx:27
-#: src/features/theme_studio/sections/LibrarySection.tsx:105
+#: src/features/theme_studio/sections/LibrarySection.tsx:108
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:76
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:57
 #: src/features/webhook/components/FollowedChannelListItem.tsx:33
@@ -23181,7 +23230,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "لا يوجد إذن {sendMessagesPermission}"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:148
 msgid "No access"
 msgstr "لا يمكن الوصول"
 
@@ -23629,7 +23678,7 @@ msgstr "لا توجد نتائج"
 #. Empty state shown when a combobox search returns no matches.
 #. Empty state shown when a combobox search returns no matches.
 #: src/features/channel/components/embeds/attachments/TextualAttachmentLanguageCombobox.tsx:30
-#: src/features/ui/components/form/FormCombobox.tsx:83
+#: src/features/ui/components/form/FormCombobox.tsx:84
 msgid "No results found"
 msgstr "لم يتم العثور على نتائج"
 
@@ -23731,17 +23780,17 @@ msgid "no text content"
 msgstr "لا يوجد محتوى نصي"
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:129
+#: src/features/theme_studio/sections/LibrarySection.tsx:132
 msgid "No theme selected."
 msgstr "لم يتم تحديد سمة."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:85
+#: src/features/theme_studio/sections/LibrarySection.tsx:88
 msgid "No themes match your search."
 msgstr "لا توجد سمات مطابقة لبحثك."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:89
+#: src/features/theme_studio/sections/LibrarySection.tsx:92
 msgid "No themes saved yet."
 msgstr "لم يتم حفظ أي سمات بعد."
 
@@ -23848,7 +23897,7 @@ msgstr "عدم التحويل"
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:220
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:268
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:265
 msgid "None"
 msgstr "لا شيء"
 
@@ -24409,12 +24458,12 @@ msgid "Open {host} in your browser."
 msgstr "افتح {host} في متصفحك."
 
 #. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:127
 msgid "Open {labelText}"
 msgstr "افتح {labelText}"
 
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
 msgid "Open {labelText} in settings"
 msgstr "فتح {labelText} في الإعدادات"
 
@@ -24734,7 +24783,7 @@ msgid "Open overlay"
 msgstr "فتح التراكب"
 
 #. Accessible label for the combobox popup trigger button.
-#: src/features/ui/components/form/FormCombobox.tsx:95
+#: src/features/ui/components/form/FormCombobox.tsx:96
 msgid "Open popup"
 msgstr "فتح القائمة المنسدلة"
 
@@ -25203,7 +25252,7 @@ msgid "Page down"
 msgstr "صفحة لأسفل"
 
 #. Role description announced for an inline chat link pill that opens an app page. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:132
 msgid "page link"
 msgstr "رابط صفحة"
 
@@ -25733,7 +25782,7 @@ msgid "Pick a reverse image search provider"
 msgstr "اختر مزود البحث العكسي عن الصور"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:133
+#: src/features/theme_studio/sections/LibrarySection.tsx:136
 msgid "Pick a theme on the left to edit its name, metadata, and CSS. Or import a new one."
 msgstr "اختر سمة من اليسار لتعديل اسمها وبياناتها الوصفية وCSS الخاص بها. أو استورد سمة جديدة."
 
@@ -26080,7 +26129,7 @@ msgid "Pop back in"
 msgstr "العودة إلى النافذة الرئيسية"
 
 #. Tooltip / aria label on the voice call footer button that opens the call in a separate window.
-#: src/features/voice/components/VoiceCallCornerControls.tsx:12
+#: src/features/voice/components/VoiceCallCornerControls.tsx:11
 msgid "Pop out call"
 msgstr "فتح المكالمة في نافذة منفصلة"
 
@@ -27287,7 +27336,7 @@ msgid "Reconnect succeeded. Pick a screen again if you want to resume your previ
 msgstr "أُعيد الاتصال بنجاح. اختر شاشة مرة أخرى إذا أردت استئناف بثك السابق."
 
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
-#: src/features/voice/components/VoiceCallView.tsx:98
+#: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Reconnecting..."
 msgstr "جارٍ إعادة الاتصال..."
 
@@ -27427,7 +27476,7 @@ msgstr "تم نسخ المرجع."
 msgid "Referral parameters"
 msgstr "معلمات الإحالة"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:312
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:309
 msgid "Refresh audio sources"
 msgstr "تحديث مصادر الصوت"
 
@@ -27766,7 +27815,7 @@ msgstr "Remove from thread"
 
 #. Button label in a popped-out voice window titlebar that unpins the window from staying above others.
 #. Button label in the Theme Studio popout titlebar that unpins the window from staying above others.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:37
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:39
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:18
 msgid "Remove from top"
 msgstr "إلغاء إبقاء النافذة في المقدمة"
@@ -29420,7 +29469,7 @@ msgstr "حفظ الأيقونة"
 msgid "Save some media from messages to get started!"
 msgstr "احفظ بعض الوسائط من الرسائل لتبدأ!"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:574
+#: src/features/theme_studio/sections/LibrarySection.tsx:754
 msgid "Save theme"
 msgstr "حفظ السمة"
 
@@ -30008,7 +30057,7 @@ msgid "Search the web"
 msgstr "البحث في الويب"
 
 #. Button or menu action label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:81
+#: src/features/theme_studio/sections/LibrarySection.tsx:84
 msgid "Search themes…"
 msgstr "البحث عن السمات…"
 
@@ -30335,7 +30384,7 @@ msgid "Select your country of residence."
 msgstr "اختر بلد إقامتك."
 
 #. Generic combobox control placeholder.
-#: src/features/ui/components/form/FormCombobox.tsx:75
+#: src/features/ui/components/form/FormCombobox.tsx:76
 msgid "Select…"
 msgstr "اختر…"
 
@@ -30987,7 +31036,7 @@ msgid "Settings"
 msgstr "الإعدادات"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:136
 msgid "settings link"
 msgstr "رابط الإعدادات"
 
@@ -31137,7 +31186,7 @@ msgid "Shared window"
 msgstr "النافذة المشتركة"
 
 #. Capture option in the Linux audio source picker on a window share. Captures only the audio of the window being shared.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:40
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:42
 msgid "Shared window audio"
 msgstr "صوت النافذة المشتركة"
 
@@ -33025,7 +33074,7 @@ msgstr "إبقاء التطبيق تفاعليًا بالكامل عند فقد�
 
 #. Button label in a popped-out voice window titlebar that pins the window above other windows.
 #. Button label in the Theme Studio popout titlebar that pins the window above other windows.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:33
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:35
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:14
 msgid "Stay on top"
 msgstr "إبقاء النافذة في المقدمة"
@@ -34002,7 +34051,7 @@ msgstr "اسم العلامة"
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:221
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:34
 #: src/features/channel/components/modals/EditPostModal.tsx:154
-#: src/features/theme_studio/sections/LibrarySection.tsx:117
+#: src/features/theme_studio/sections/LibrarySection.tsx:120
 msgid "Tags"
 msgstr "الوسوم"
 
@@ -34603,12 +34652,12 @@ msgid "The phone check is set aside. One email step is left."
 msgstr "تم تأجيل التحقق من الهاتف. تبقّت خطوة واحدة للبريد الإلكتروني."
 
 #. OAuth authorize page error shown when the redirect_uri is not registered for this OAuth app.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:59
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:60
 msgid "The provided redirect_uri is not registered for this application."
 msgstr "عنوان redirect_uri المقدّم غير مسجّل لهذا التطبيق."
 
 #. Body text in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:50
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:51
 msgid "The provided redirect_uri must use HTTP or HTTPS."
 msgstr "يجب أن يستخدم عنوان redirect_uri المقدّم بروتوكول HTTP أو HTTPS."
 
@@ -34697,7 +34746,7 @@ msgid "Theme color"
 msgstr "لون السمة"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:125
+#: src/features/theme_studio/sections/LibrarySection.tsx:128
 msgid "Theme CSS"
 msgstr "CSS السمة"
 
@@ -34717,7 +34766,7 @@ msgid "Theme not found"
 msgstr "السمة غير موجودة"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:47
+#: src/features/theme_studio/sections/LibrarySection.tsx:50
 msgid "Theme saved."
 msgstr "تم حفظ السمة."
 
@@ -34841,7 +34890,7 @@ msgid "This animation is too long or too large to crop. Try a shorter or smaller
 msgstr "هذه الرسوم المتحركة طويلة جدًا أو كبيرة جدًا بحيث لا يمكن قصها. جرب ملفًا أقصر أو أصغر."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:83
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:84
 msgid "This application"
 msgstr "هذا التطبيق"
 
@@ -34851,7 +34900,7 @@ msgid "This attachment has expired"
 msgstr "انتهت صلاحية هذا المرفق"
 
 #. OAuth authorize page error shown when a private bot cannot be added by non-owners.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:71
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:72
 msgid "This bot is not public and cannot be added by other users."
 msgstr "هذا البوت ليس عامًا ولا يمكن للمستخدمين الآخرين إضافته."
 
@@ -35316,7 +35365,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "قناة الرابط هذه مصنفة للمحتوى للبالغين وقد تفتح مواد غير مناسبة لبعض المستخدمين."
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:164
 msgid "This link is not available for your account."
 msgstr "هذا الرابط غير متاح لحسابك."
 
@@ -35449,7 +35498,7 @@ msgid "This refunds your most recent invoice and cancels any associated subscrip
 msgstr "سيؤدي هذا إلى استرداد فاتورتك الأخيرة وإلغاء أي اشتراك مرتبط بها. لن تتمكن من استرداد المبلغ بنفسك مرة أخرى لمدة 30 يومًا."
 
 #. Confirmation text before deleting a saved local theme from Theme Studio.
-#: src/features/theme_studio/sections/LibrarySection.tsx:55
+#: src/features/theme_studio/sections/LibrarySection.tsx:58
 msgid "This removes \"{themeName}\" from this device."
 msgstr "سيؤدي هذا إلى إزالة \"{themeName}\" من هذا الجهاز."
 
@@ -36249,7 +36298,7 @@ msgid "Trusted domains cleared."
 msgstr "تم مسح النطاقات الموثوقة."
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:93
+#: src/features/theme_studio/sections/LibrarySection.tsx:96
 msgid "Try a different name or clear the search."
 msgstr "جرّب اسمًا مختلفًا أو امسح البحث."
 
@@ -36987,7 +37036,7 @@ msgid "Unknown"
 msgstr "غير معروف"
 
 #. OAuth authorize page error shown when the application, session, or request is invalid.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:46
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:47
 msgid "Unknown application, expired session, or invalid authorization request."
 msgstr "تطبيق غير معروف، أو جلسة منتهية الصلاحية، أو طلب تفويض غير صالح."
 
@@ -37121,6 +37170,11 @@ msgstr "unknown-mention"
 #: src/features/messaging/utils/markdown/Plaintext.ts:76
 msgid "unknown-role"
 msgstr "unknown-role"
+
+#. Button in the Theme Studio library that stops a theme following its CSS file on disk and turns it back into an editable copy.
+#: src/features/theme_studio/sections/LibrarySection.tsx:681
+msgid "Unlink"
+msgstr "إلغاء الربط"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:143
 msgid "Unlock"
@@ -37427,12 +37481,12 @@ msgid "Unread message badge"
 msgstr "شارة الرسائل غير المقروءة"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/platform/utils/DesktopLocaleBridge.ts:288
 msgid "Unread messages"
 msgstr "رسائل غير مقروءة"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/platform/utils/DesktopLocaleBridge.ts:293
 msgid "Unread messages: {count}"
 msgstr "رسائل غير مقروءة: {count}"
 
@@ -37441,7 +37495,7 @@ msgstr "رسائل غير مقروءة: {count}"
 msgid "Unreads"
 msgstr "غير المقروءة"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:578
+#: src/features/theme_studio/sections/LibrarySection.tsx:758
 msgid "Unsaved changes"
 msgstr "تغييرات غير محفوظة"
 
@@ -38638,7 +38692,7 @@ msgstr "نموذج التحقق من رقم الهاتف"
 #. Title of the error modal shown when an unverified account tries to start a DM.
 #. Title shown when an unverified account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:40
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:79
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
 #: src/features/channel/utils/CreateDMModalUtils.tsx:51
 #: src/features/moderation/components/report/ReportStepEmail.tsx:43
 msgid "Verify your email"
@@ -38757,7 +38811,7 @@ msgid "Vermont"
 msgstr "فيرمونت"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:113
+#: src/features/theme_studio/sections/LibrarySection.tsx:116
 msgid "Version"
 msgstr "الإصدار"
 
@@ -38994,7 +39048,7 @@ msgid "View call"
 msgstr "عرض المكالمة"
 
 #. Aria label for the show-controls trigger when the call toolbar is auto-hidden.
-#: src/features/voice/components/VoiceCallView.tsx:124
+#: src/features/voice/components/VoiceCallView.tsx:120
 msgid "View call controls"
 msgstr "عرض عناصر التحكم في المكالمة"
 
@@ -39673,7 +39727,7 @@ msgid "We couldn't forward the message at this time."
 msgstr "تعذر إعادة توجيه الرسالة في الوقت الحالي."
 
 #. Error message in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:77
+#: src/features/theme_studio/sections/LibrarySection.tsx:80
 msgid "We couldn't import that theme library file."
 msgstr "تعذر استيراد ملف مكتبة السمات هذا."
 
@@ -40782,7 +40836,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "لقد غيرت علامتك أثناء استخدامك لـ {PREMIUM_PRODUCT_NAME}. ستتغير عشوائيًا عند انتهاء صلاحية {PREMIUM_PRODUCT_NAME} الخاص بك، ما لم يتم تجديده."
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:144
 msgid "You do not have access to the channel where this message was sent."
 msgstr "ليس لديك صلاحية الوصول إلى القناة التي أُرسلت فيها هذه الرسالة."
 
@@ -41004,7 +41058,7 @@ msgstr "يجب عليك التحقق من رقم الهاتف لإرسال ال�
 msgid "You need to verify your email address before you can create a community."
 msgstr "يجب عليك التحقق من عنوان بريدك الإلكتروني قبل أن تتمكن من إنشاء مجتمع."
 
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:81
 msgid "You need to verify your email address before you can send friend requests."
 msgstr "يجب عليك التحقق من عنوان بريدك الإلكتروني قبل أن تتمكن من إرسال طلبات الصداقة."
 
@@ -41354,7 +41408,7 @@ msgid "Your {premiumProductName} subscription has expired. You have lost all {pr
 msgstr "انتهت صلاحية اشتراكك في {premiumProductName}. لقد فقدت جميع مزايا {premiumProductName}. أعد تفعيل اشتراكك لاستعادة الوصول."
 
 #. OAuth authorize page error shown when the session expired mid-authorization. Keep plain. Preserve {productName}; it is inserted by code.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:41
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:42
 msgid "Your {productName} session expired. Sign in again to continue authorizing this application."
 msgstr "انتهت صلاحية جلسة {productName} الخاصة بك. سجّل الدخول مرة أخرى لمتابعة تفويض هذا التطبيق."
 

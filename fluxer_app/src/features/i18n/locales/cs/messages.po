@@ -21,7 +21,7 @@ msgstr "... zapnout zhuštěný režim. Super!"
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-#: src/features/channel/components/MessageAttachments.tsx:392
+#: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
@@ -843,12 +843,12 @@ msgid "{appCount, plural, one {# app selected for access revocation} other {# ap
 msgstr "{appCount, plural, one {# aplikace vybraná ke zrušení přístupu} few {# aplikace vybrané ke zrušení přístupu} many {# aplikace vybrané ke zrušení přístupu} other {# aplikací vybraných ke zrušení přístupu}}"
 
 #. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+#: src/features/platform/utils/DesktopLocaleBridge.ts:308
 msgid "{appName} can't reach its servers. It will keep trying in the background."
 msgstr "{appName} se nemůže připojit ke svým serverům. Bude se dál pokoušet na pozadí."
 
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:285
+#: src/features/platform/utils/DesktopLocaleBridge.ts:298
 msgid "{appName} failed to start"
 msgstr "Aplikaci {appName} se nepodařilo spustit"
 
@@ -1041,7 +1041,7 @@ msgstr "{count, plural, one {# společná komunita} few {# společné komunity} 
 msgid "{count, plural, one {# other} other {# others}}"
 msgstr "{count, plural, one {# další} few {# další} many {# dalšího} other {# dalších}}"
 
-#: src/features/voice/components/VoiceCallView.tsx:507
+#: src/features/voice/components/VoiceCallView.tsx:474
 msgid "{count, plural, one {# participant in call} other {# participants in call}}"
 msgstr "{count, plural, one {# účastník hovoru} few {# účastníci hovoru} many {# účastníka hovoru} other {# účastníků hovoru}}"
 
@@ -1984,7 +1984,7 @@ msgid "{seconds, plural, one {Your invite link expires in # second.} other {Your
 msgstr "{seconds, plural, one {Váš odkaz na pozvánku vyprší za # sekundu.} few {Váš odkaz na pozvánku vyprší za # sekundy.} many {Váš odkaz na pozvánku vyprší za # sekundy.} other {Váš odkaz na pozvánku vyprší za # sekund.}}"
 
 #. Generic multi-select summary label. selectedCount is the number of selected options.
-#: src/features/ui/components/form/FormCombobox.tsx:79
+#: src/features/ui/components/form/FormCombobox.tsx:80
 msgid "{selectedCount} selected"
 msgstr "Vybráno: {selectedCount}"
 
@@ -2013,7 +2013,7 @@ msgid "{textChannelCount, plural, one {# text channel} other {# text channels}},
 msgstr "{textChannelCount, plural, one {# textový kanál} few {# textové kanály} many {# textového kanálu} other {# textových kanálů}}, {voiceChannelCount, plural, one {# hlasový kanál} few {# hlasové kanály} many {# hlasového kanálu} other {# hlasových kanálů}}, {categoryCount, plural, one {# kategorie} few {# kategorie} many {# kategorie} other {# kategorií}}, {roleCount, plural, one {# role} few {# role} many {# role} other {# rolí}}"
 
 #. Name given to the copy created by the Duplicate button in the Theme Studio theme library. {themeName} is the name of the theme being duplicated.
-#: src/features/theme/state/ThemeLibrary.ts:32
+#: src/features/theme/state/ThemeLibrary.ts:34
 msgid "{themeName} Copy"
 msgstr "{themeName} (kopie)"
 
@@ -2241,8 +2241,8 @@ msgstr "<0>{username}</0> je stále ve skupině. Zkuste to znovu za chvíli."
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-#: src/features/channel/components/MessageAttachments.tsx:243
-#: src/features/channel/components/MessageAttachments.tsx:299
+#: src/features/channel/components/MessageAttachments.tsx:214
+#: src/features/channel/components/MessageAttachments.tsx:270
 msgid "<0>Forwarded from</0>{sourceInfo}"
 msgstr "<0>Přeposláno z</0>{sourceInfo}"
 
@@ -2681,7 +2681,7 @@ msgid "A profile that stands out"
 msgstr "Profil, který vynikne"
 
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:55
 msgid "A redirect_uri is required when the bot scope is not the only scope."
 msgstr "Parametr redirect_uri je povinný, pokud „bot“ není jediným rozsahem oprávnění."
 
@@ -5097,7 +5097,7 @@ msgid "Audio settings"
 msgstr "Nastavení zvuku"
 
 #. Toggle / summary row label in the Linux audio source picker. {summaryLabel} is one of the audio-source summary labels.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:45
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:47
 msgid "Audio sources: {summaryLabel}"
 msgstr "Zvukové zdroje: {summaryLabel}"
 
@@ -5142,7 +5142,7 @@ msgid "Authenticator code"
 msgstr "Kód z ověřovací aplikace"
 
 #. Short label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:109
+#: src/features/theme_studio/sections/LibrarySection.tsx:112
 msgid "Author"
 msgstr "Autor"
 
@@ -5162,7 +5162,7 @@ msgid "Authorization failed"
 msgstr "Autorizace se nezdařila"
 
 #. OAuth authorize page generic error toast shown when the authorize request fails unexpectedly.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:75
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:76
 msgid "Authorization failed. Try again."
 msgstr "Autorizace se nezdařila. Zkuste to znovu."
 
@@ -5560,7 +5560,7 @@ msgid "Back to sticker"
 msgstr "Zpět na samolepku"
 
 #. Tooltip / aria label on the back button that returns from the call view to the voice channel view.
-#: src/features/voice/components/VoiceCallView.tsx:115
+#: src/features/voice/components/VoiceCallView.tsx:111
 msgid "Back to voice channel"
 msgstr "Zpět do hlasového kanálu"
 
@@ -6158,13 +6158,13 @@ msgid "Bot invite (no external redirect)"
 msgstr "Pozvánka bota (bez externího přesměrování)"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:162
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:163
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:104
 msgid "Bot permissions"
 msgstr "Oprávnění bota"
 
 #. OAuth authorize page error shown when the permissions query parameter is a negative integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:67
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:68
 msgid "Bot permissions cannot be negative."
 msgstr "Oprávnění bota nemohou být záporná."
 
@@ -6661,14 +6661,24 @@ msgid "Can't access that email?"
 msgstr "Nemáte přístup k e-mailu?"
 
 #. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+#: src/features/platform/utils/DesktopLocaleBridge.ts:303
 msgid "Can't connect"
 msgstr "Nelze se připojit"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file was moved or deleted. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:166
+msgid "Can't find {path}. Using the last loaded version."
+msgstr "Nelze najít {path}. Používá se poslední načtená verze."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
 msgid "Can't paste image here"
 msgstr "Sem nelze vložit obrázek"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file exists but cannot be read, for example because it is too large or access was removed. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:171
+msgid "Can't read {path}. Using the last loaded version."
+msgstr "Nelze přečíst {path}. Používá se poslední načtená verze."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:16
@@ -6835,7 +6845,7 @@ msgid "Cannot delete account"
 msgstr "Účet nelze smazat"
 
 #. Section header in the Linux audio source picker. Lists capture-target options (entire system / specific apps).
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:50
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:52
 msgid "Capture"
 msgstr "Zachytávání"
 
@@ -7395,7 +7405,7 @@ msgid "Channel access"
 msgstr "Přístup k kanálu"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:140
 msgid "Channel access denied"
 msgstr "Přístup k tomuto kanálu odepřen"
 
@@ -7460,7 +7470,7 @@ msgstr "ID kanálu zkopírováno do schránky"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:100
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "odkaz na kanál"
@@ -7840,7 +7850,7 @@ msgid "Choose background"
 msgstr "Vybrat pozadí"
 
 #. OAuth authorize page error shown when a bot invite request provides both guild_id and channel_id. Keep the parameter names literal.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:87
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:88
 msgid "Choose either guild_id or channel_id, not both."
 msgstr "Zvolte buď guild_id, nebo channel_id, ne obojí."
 
@@ -8041,7 +8051,7 @@ msgstr "Převzít dárek"
 #. Title shown when an unclaimed account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:32
 #: src/features/auth/components/modals/ClaimAccountModal.tsx:41
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:62
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
 #: src/features/channel/utils/CreateDMModalUtils.tsx:43
 #: src/features/guild/components/modals/add_guild_modal/GuildCreateForm.tsx:213
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:441
@@ -8123,7 +8133,7 @@ msgstr "Pro uplatnění tohoto dárku dokončete registraci účtu."
 #. Description text in the channel and chat dm welcome section.
 #. Description text in the user profile modal.
 #. Tooltip shown when an unclaimed account tries to send a friend request.
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:64
 #: src/features/channel/components/direct_message/DMWelcomeSection.tsx:37
 #: src/features/ui/action_menu/items/RelationshipMenuItems.tsx:40
 #: src/features/user/components/modals/UserProfileModal.tsx:122
@@ -8268,7 +8278,7 @@ msgstr "Vymazat vyhledávací pole"
 #. Accessible label for the combobox clear button.
 #. Button or menu action label in the authorized apps tab. Keep it concise.
 #. Button or menu action label in the devices tab. Keep it concise.
-#: src/features/ui/components/form/FormCombobox.tsx:91
+#: src/features/ui/components/form/FormCombobox.tsx:92
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:46
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:61
 msgid "Clear selection"
@@ -8783,7 +8793,7 @@ msgid "Coming soon"
 msgstr "Již brzy"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:121
+#: src/features/theme_studio/sections/LibrarySection.tsx:124
 msgid "comma, separated"
 msgstr "oddělené čárkou"
 
@@ -9381,7 +9391,7 @@ msgstr "Connecticut"
 #. Action label state in the DM channel header pill while the join request is in flight. Trailing ASCII ellipsis is intentional.
 #. Overlay status in the voice call view while joining. Trailing ellipsis indicates in-progress.
 #: src/features/channel/components/channel_view/dm_channel_view/shared.ts:129
-#: src/features/voice/components/VoiceCallView.tsx:94
+#: src/features/voice/components/VoiceCallView.tsx:90
 msgid "Connecting..."
 msgstr "Připojování..."
 
@@ -9442,7 +9452,7 @@ msgid "Connection removed"
 msgstr "Propojení odebráno"
 
 #. Tooltip / aria label on the connection-stats button in the voice call header. Opens the voice connection status popout.
-#: src/features/voice/components/VoiceCallView.tsx:119
+#: src/features/voice/components/VoiceCallView.tsx:115
 msgid "Connection stats"
 msgstr "Statistiky připojení"
 
@@ -9752,7 +9762,7 @@ msgstr "Adresa URL zkopírována do schránky"
 #: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:80
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:230
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx:59
 msgid "Copy"
 msgstr "Kopírovat"
@@ -11038,6 +11048,11 @@ msgstr "Ořezávání {percent}%"
 msgid "CSS"
 msgstr "CSS"
 
+#. Name of the file type filter in the native theme file picker, shown next to the *.css pattern.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+msgid "CSS files"
+msgstr "Soubory CSS"
+
 #. Keyboard keycap label for Control on non-Mac platforms. Keep it short.
 #. Keyboard shortcut keycap label for Control on non-Mac platforms. Keep it short.
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:18
@@ -11808,7 +11823,7 @@ msgstr "Delaware"
 #: src/features/messaging/commands/MessageCommands.tsx:83
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/platform/utils/DesktopLocaleBridge.ts:77
-#: src/features/theme_studio/sections/LibrarySection.tsx:514
+#: src/features/theme_studio/sections/LibrarySection.tsx:645
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:290
@@ -12046,12 +12061,12 @@ msgid "Delete the category \"{categoryName}\"? Can't be undone."
 msgstr "Smazat kategorii „{categoryName}“? Tuto akci nelze vrátit zpět."
 
 #. Button or menu action label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:59
+#: src/features/theme_studio/sections/LibrarySection.tsx:62
 msgid "Delete theme"
 msgstr "Smazat motiv"
 
 #. Confirmation prompt in the theme studio library section. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:51
+#: src/features/theme_studio/sections/LibrarySection.tsx:54
 msgid "Delete theme?"
 msgstr "Smazat motiv?"
 
@@ -12421,13 +12436,13 @@ msgstr "Stav pro vývojáře"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:152
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "Nástroje pro vývojáře"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:156
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "Nástroje pro vývojáře jsou dostupné z odznaku pro zaměstnance v záhlaví kanálu."
 
@@ -12824,7 +12839,7 @@ msgstr "Odpojit socket"
 #. Overlay status in the voice call view when not connected.
 #. Overlay status text in the compact / floating voice call tile when not connected.
 #: src/features/voice/components/compact_voice_call_view/shared.ts:15
-#: src/features/voice/components/VoiceCallView.tsx:103
+#: src/features/voice/components/VoiceCallView.tsx:99
 msgid "Disconnected"
 msgstr "Odpojeno"
 
@@ -13353,7 +13368,7 @@ msgid "Downloading desktop update: {percent}% ({formatBytes} / {formatBytes2} at
 msgstr "Stahování aktualizace desktopové aplikace: {percent} % ({formatBytes} / {formatBytes2} rychlostí {formatBytes3}/s)"
 
 #. Short desktop updater status label.
-#: src/features/app/state/Updater.ts:46
+#: src/features/app/state/Updater.ts:48
 msgid "Downloading desktop update…"
 msgstr "Stahování aktualizace desktopové aplikace…"
 
@@ -13491,7 +13506,7 @@ msgstr "Kvůli zákonům o obsahu pro dospělé v oblasti {regionName} zde tento
 msgid "Due to mature content laws in {regionName}, this media is not available from your current region."
 msgstr "Vzhledem k zákonům o obsahu pro dospělé v oblasti {regionName} není toto médium z vašeho aktuálního regionu dostupné."
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:503
+#: src/features/theme_studio/sections/LibrarySection.tsx:634
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:220
 msgid "Duplicate"
 msgstr "Duplikovat"
@@ -14128,7 +14143,7 @@ msgid "Enable {permissionName} permission"
 msgstr "Povolit oprávnění {permissionName}"
 
 #. Accessible label for the switch that enables a saved theme file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:101
+#: src/features/theme_studio/sections/LibrarySection.tsx:104
 msgid "Enable {themeName}"
 msgstr "Zapnout {themeName}"
 
@@ -14585,7 +14600,7 @@ msgstr "Zadejte kód"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (not in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:28
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:18
-#: src/features/voice/components/VoiceCallView.tsx:111
+#: src/features/voice/components/VoiceCallView.tsx:107
 msgid "Enter fullscreen"
 msgstr "Přejít na celou obrazovku"
 
@@ -14767,7 +14782,7 @@ msgstr "Celá obrazovka"
 msgid "Entire system"
 msgstr "Celý systém"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:260
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:257
 msgid "Entire system audio"
 msgstr "Veškerý zvuk systému"
 
@@ -14945,7 +14960,7 @@ msgid "exclude a user"
 msgstr "vyloučit uživatele"
 
 #. Section header in the Linux audio source picker for apps excluded from the system mix.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:59
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:61
 msgid "Exclude from system"
 msgstr "Vyloučit ze systému"
 
@@ -14970,7 +14985,7 @@ msgstr "Zavřít plné zobrazení"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (currently in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:24
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:14
-#: src/features/voice/components/VoiceCallView.tsx:107
+#: src/features/voice/components/VoiceCallView.tsx:103
 msgid "Exit fullscreen"
 msgstr "Ukončit režim celé obrazovky"
 
@@ -15144,7 +15159,7 @@ msgid "Explore communities"
 msgstr "Prozkoumat komunity"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/theme_studio/sections/LibrarySection.tsx:494
+#: src/features/theme_studio/sections/LibrarySection.tsx:625
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:208
 msgid "Export"
 msgstr "Exportovat"
@@ -15159,7 +15174,7 @@ msgstr "Exportujte každou zprávu, kterou jste kdy odeslali, a k tomu všechna 
 msgid "Export GIF URLs"
 msgstr "Exportovat adresy URL GIFů"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:376
+#: src/features/theme_studio/sections/LibrarySection.tsx:459
 msgid "Export library"
 msgstr "Exportovat knihovnu"
 
@@ -16298,7 +16313,7 @@ msgstr "Přeposlat médium"
 msgid "Forward message"
 msgstr "Přeposlat zprávu"
 
-#: src/features/channel/components/MessageAttachments.tsx:362
+#: src/features/channel/components/MessageAttachments.tsx:333
 msgid "Forwarded"
 msgstr "Přeposláno"
 
@@ -18374,7 +18389,7 @@ msgid "Import {theOtherPlatform} template"
 msgstr "Importovat šablonu {theOtherPlatform}"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:97
+#: src/features/theme_studio/sections/LibrarySection.tsx:100
 msgid "Import a .css file to get started, or paste your own CSS in Quick CSS."
 msgstr "Začněte importováním souboru .css, nebo vložte vlastní CSS do Rychlého CSS."
 
@@ -18388,7 +18403,9 @@ msgstr "Import dokončen. {importedCount, plural, one {Byl přidán # GIF} few {
 msgid "Import complete. Added {importedCount, plural, one {# GIF} other {# GIFs}}."
 msgstr "Import dokončen. {importedCount, plural, one {Byl přidán # GIF.} few {Byly přidány # GIFy.} many {Bylo přidáno # GIFu.} other {Bylo přidáno # GIFů.}}"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:337
+#. Title of the native file picker that imports CSS theme files on the desktop app. Imported files stay linked and update live when saved.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/theme_studio/sections/LibrarySection.tsx:420
 #: src/features/theme_studio/sections/QuickCssSection.tsx:190
 msgid "Import CSS"
 msgstr "Importovat CSS"
@@ -18400,7 +18417,7 @@ msgstr "Importovat oblíbené GIFy"
 
 #. Title of the native folder picker that imports a directory of theme files.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:271
-#: src/features/theme_studio/sections/LibrarySection.tsx:349
+#: src/features/theme_studio/sections/LibrarySection.tsx:432
 msgid "Import folder"
 msgstr "Importovat složku"
 
@@ -18409,7 +18426,7 @@ msgstr "Importovat složku"
 msgid "Import GIFs"
 msgstr "Importovat GIFy"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:361
+#: src/features/theme_studio/sections/LibrarySection.tsx:444
 msgid "Import library"
 msgstr "Importovat knihovnu"
 
@@ -18452,13 +18469,13 @@ msgstr "Důležité informace:"
 
 #. Toast after importing one or more CSS files from a local theme folder.
 #. Toast after importing one or more CSS files into the theme library.
-#: src/features/theme_studio/sections/LibrarySection.tsx:64
-#: src/features/theme_studio/sections/LibrarySection.tsx:68
+#: src/features/theme_studio/sections/LibrarySection.tsx:67
+#: src/features/theme_studio/sections/LibrarySection.tsx:71
 msgid "Imported {length, plural, one {# theme file} other {# theme files}}."
 msgstr "{length, plural, one {Byl importován # soubor motivu.} few {Byly importovány # soubory motivů.} many {Bylo importováno # souboru motivů.} other {Bylo importováno # souborů motivů.}}"
 
 #. Toast after importing a Theme Studio library export file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:72
+#: src/features/theme_studio/sections/LibrarySection.tsx:75
 msgid "Imported {themes, plural, one {# theme} other {# themes}} and {assets, plural, one {# asset} other {# assets}}."
 msgstr "Importováno: {themes, plural, one {# motiv} few {# motivy} many {# motivu} other {# motivů}} a {assets, plural, one {# soubor} few {# soubory} many {# souboru} other {# souborů}}."
 
@@ -18587,7 +18604,7 @@ msgid "Include all except selected"
 msgstr "Zahrnout vše kromě vybraných"
 
 #. Section header in the Linux audio source picker for the per-app inclusion list.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:55
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:57
 msgid "Include apps"
 msgstr "Zahrnout aplikace"
 
@@ -18866,12 +18883,12 @@ msgid "Installing desktop update…"
 msgstr "Instaluje se aktualizace desktopové aplikace…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:305
+#: src/features/platform/utils/DesktopLocaleBridge.ts:318
 msgid "Instant messaging and VoIP"
 msgstr "Rychlé zprávy a internetové hovory (VoIP)"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:300
+#: src/features/platform/utils/DesktopLocaleBridge.ts:313
 msgid "Instant Messenger"
 msgstr "Internetový komunikátor"
 
@@ -18936,7 +18953,7 @@ msgid "Invalid authorization request"
 msgstr "Neplatný požadavek na autorizaci"
 
 #. OAuth authorize page error shown when the permissions query parameter is not a valid integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:63
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:64
 msgid "Invalid bot permissions."
 msgstr "Neplatná oprávnění bota."
 
@@ -18977,7 +18994,7 @@ msgid "Invalid or expired code. Try again."
 msgstr "Kód je neplatný nebo jeho platnost vypršela. Zkuste to znovu."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:79
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:80
 msgid "Invalid redirect_uri"
 msgstr "Neplatný parametr redirect_uri"
 
@@ -19081,7 +19098,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "Odkaz na pozvánku je skrytý, když sdílíte:"
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:168
 msgid "Invite link masked while sharing"
 msgstr "Odkaz na pozvánku je při sdílení maskován"
 
@@ -19501,7 +19518,7 @@ msgid "Jump to {displayName}"
 msgstr "Přejít na {displayName}"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
 msgid "Jump to {labelText}"
 msgstr "Přejít na {labelText}"
 
@@ -19558,12 +19575,12 @@ msgid "Jump to the current call"
 msgstr "Přejít na aktuální hovor"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
 msgid "Jump to the linked channel"
 msgstr "Přejít na odkazovaný kanál"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:110
 msgid "Jump to the linked message"
 msgstr "Přejít na odkazovanou zprávu"
 
@@ -19573,7 +19590,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "Přejít ke zprávě od {authorNickname}"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
 msgid "Jump to the message in {labelText}"
 msgstr "Přejít na zprávu v {labelText}"
 
@@ -20217,6 +20234,13 @@ msgstr "Propojte externí účty a domény se svým profilem {PRODUCT_NAME}. Ov�
 msgid "Link external accounts and domains to your profile"
 msgstr "Propojte externí účty a domény se svým profilem"
 
+#. Button in the Theme Studio library that links an existing theme to a CSS file on disk so saved changes to the file apply live.
+#. Title of the native file picker that links an existing theme to a CSS file on disk.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/theme_studio/sections/LibrarySection.tsx:607
+msgid "Link file"
+msgstr "Propojit soubor"
+
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
@@ -20254,7 +20278,7 @@ msgid "Link styling"
 msgstr "Styl odkazů"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:160
 msgid "Link unavailable"
 msgstr "Odkaz není k dispozici"
 
@@ -20279,6 +20303,11 @@ msgstr "Propojte svůj účet {BLUESKY_PROVIDER_NAME} nebo ověřte vlastnictví
 msgid "Linked"
 msgstr "Propojeno"
 
+#. Toast after importing CSS files or a folder on the desktop app. The themes stay linked to the files on disk and update when the file is saved.
+#: src/features/theme_studio/sections/LibrarySection.tsx:140
+msgid "Linked {length, plural, one {# theme file} other {# theme files}}. Changes you save to them apply right away."
+msgstr "Propojený soubor {length, plural, one {# motiv} other {# motivů}}. Změny, které do nich uložíte, se projeví okamžitě."
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:12
 msgid "Linked accounts"
@@ -20290,6 +20319,26 @@ msgstr "Propojené účty"
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:159
 msgid "Linked devices"
 msgstr "Propojená zařízení"
+
+#. Accessible label for the warning icon next to a linked theme in the Theme Studio library when its CSS file is missing or cannot be read.
+#: src/features/theme_studio/sections/LibrarySection.tsx:151
+msgid "Linked file unavailable"
+msgstr "Propojený soubor není k dispozici"
+
+#. Banner above a linked theme in the Theme Studio library while the app is still checking its CSS file, or when this version of the desktop app cannot follow file changes. {path} is the full path of the CSS file on disk.
+#: src/features/theme_studio/sections/LibrarySection.tsx:161
+msgid "Linked to {path}."
+msgstr "Propojeno s {path}."
+
+#. Banner above a linked theme in the Theme Studio library. {path} is the full path of the CSS file on disk. The theme cannot be edited in the studio while linked.
+#: src/features/theme_studio/sections/LibrarySection.tsx:156
+msgid "Linked to {path}. Edit the file in any editor and saved changes apply here right away."
+msgstr "Propojeno s {path}. Soubor upravte v libovolném editoru a uložené změny se zde okamžitě projeví."
+
+#. Accessible label for the icon next to a theme in the Theme Studio library that is linked to a CSS file on disk and updates live.
+#: src/features/theme_studio/sections/LibrarySection.tsx:146
+msgid "Linked to a file"
+msgstr "Propojeno se souborem"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the markdown tab. Keep it concise.
@@ -20418,7 +20467,7 @@ msgid "Loading..."
 msgstr "Načítání..."
 
 #. Combobox popup status shown while options are loading.
-#: src/features/ui/components/form/FormCombobox.tsx:87
+#: src/features/ui/components/form/FormCombobox.tsx:88
 #: src/features/ui/components/Spinner.tsx:22
 msgid "Loading…"
 msgstr "Načítání…"
@@ -21638,7 +21687,7 @@ msgid "Message layout"
 msgstr "Rozložení zpráv"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:95
 msgid "message link"
 msgstr "odkaz na zprávu"
 
@@ -21951,7 +22000,7 @@ msgid "Miscellaneous"
 msgstr "Různé"
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:37
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:38
 msgid "Missing client_id"
 msgstr "Chybí client_id"
 
@@ -22740,7 +22789,7 @@ msgstr "Přepsání lišty oznámení"
 #: src/features/expressions/components/modals/meme_form/MemeFormFields.tsx:24
 #: src/features/expressions/components/modals/sticker_form/StickerFormFields.tsx:28
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/BrandingSection.tsx:27
-#: src/features/theme_studio/sections/LibrarySection.tsx:105
+#: src/features/theme_studio/sections/LibrarySection.tsx:108
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:76
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:57
 #: src/features/webhook/components/FollowedChannelListItem.tsx:33
@@ -23181,7 +23230,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "Chybí oprávnění {sendMessagesPermission}"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:148
 msgid "No access"
 msgstr "Bez přístupu"
 
@@ -23629,7 +23678,7 @@ msgstr "Žádné výsledky"
 #. Empty state shown when a combobox search returns no matches.
 #. Empty state shown when a combobox search returns no matches.
 #: src/features/channel/components/embeds/attachments/TextualAttachmentLanguageCombobox.tsx:30
-#: src/features/ui/components/form/FormCombobox.tsx:83
+#: src/features/ui/components/form/FormCombobox.tsx:84
 msgid "No results found"
 msgstr "Nebyly nalezeny žádné výsledky"
 
@@ -23731,17 +23780,17 @@ msgid "no text content"
 msgstr "žádný textový obsah"
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:129
+#: src/features/theme_studio/sections/LibrarySection.tsx:132
 msgid "No theme selected."
 msgstr "Není vybrán žádný motiv."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:85
+#: src/features/theme_studio/sections/LibrarySection.tsx:88
 msgid "No themes match your search."
 msgstr "Žádné motivy neodpovídají vašemu hledání."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:89
+#: src/features/theme_studio/sections/LibrarySection.tsx:92
 msgid "No themes saved yet."
 msgstr "Zatím žádné uložené motivy."
 
@@ -23848,7 +23897,7 @@ msgstr "Bez převodu"
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:220
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:268
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:265
 msgid "None"
 msgstr "Žádné"
 
@@ -24409,12 +24458,12 @@ msgid "Open {host} in your browser."
 msgstr "Otevřete {host} ve svém prohlížeči."
 
 #. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:127
 msgid "Open {labelText}"
 msgstr "Otevřít {labelText}"
 
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
 msgid "Open {labelText} in settings"
 msgstr "Otevřít {labelText} v nastavení"
 
@@ -24734,7 +24783,7 @@ msgid "Open overlay"
 msgstr "Otevřít překrytí"
 
 #. Accessible label for the combobox popup trigger button.
-#: src/features/ui/components/form/FormCombobox.tsx:95
+#: src/features/ui/components/form/FormCombobox.tsx:96
 msgid "Open popup"
 msgstr "Otevřít vyskakovací okno"
 
@@ -25203,7 +25252,7 @@ msgid "Page down"
 msgstr "Page Down"
 
 #. Role description announced for an inline chat link pill that opens an app page. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:132
 msgid "page link"
 msgstr "odkaz na stránku"
 
@@ -25733,7 +25782,7 @@ msgid "Pick a reverse image search provider"
 msgstr "Vyberte poskytovatele vyhledávání podle obrázku"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:133
+#: src/features/theme_studio/sections/LibrarySection.tsx:136
 msgid "Pick a theme on the left to edit its name, metadata, and CSS. Or import a new one."
 msgstr "Vyberte vlevo motiv a upravte jeho název, metadata a CSS. Nebo importujte nový."
 
@@ -26080,7 +26129,7 @@ msgid "Pop back in"
 msgstr "Vrátit zpět do okna"
 
 #. Tooltip / aria label on the voice call footer button that opens the call in a separate window.
-#: src/features/voice/components/VoiceCallCornerControls.tsx:12
+#: src/features/voice/components/VoiceCallCornerControls.tsx:11
 msgid "Pop out call"
 msgstr "Otevřít hovor v samostatném okně"
 
@@ -27287,7 +27336,7 @@ msgid "Reconnect succeeded. Pick a screen again if you want to resume your previ
 msgstr "Opětovné připojení proběhlo úspěšně. Pokud chcete pokračovat v předchozím streamu, vyberte obrazovku znovu."
 
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
-#: src/features/voice/components/VoiceCallView.tsx:98
+#: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Reconnecting..."
 msgstr "Opětovné připojování..."
 
@@ -27427,7 +27476,7 @@ msgstr "Odkaz zkopírován."
 msgid "Referral parameters"
 msgstr "Parametry doporučení"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:312
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:309
 msgid "Refresh audio sources"
 msgstr "Obnovit zdroje zvuku"
 
@@ -27766,7 +27815,7 @@ msgstr "Remove from thread"
 
 #. Button label in a popped-out voice window titlebar that unpins the window from staying above others.
 #. Button label in the Theme Studio popout titlebar that unpins the window from staying above others.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:37
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:39
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:18
 msgid "Remove from top"
 msgstr "Odebrat ze seznamu oken nahoře"
@@ -29420,7 +29469,7 @@ msgstr "Uložit ikonu"
 msgid "Save some media from messages to get started!"
 msgstr "Pokud chcete začít, uložte si nějaká média ze zpráv!"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:574
+#: src/features/theme_studio/sections/LibrarySection.tsx:754
 msgid "Save theme"
 msgstr "Uložit motiv"
 
@@ -30008,7 +30057,7 @@ msgid "Search the web"
 msgstr "Hledat na webu"
 
 #. Button or menu action label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:81
+#: src/features/theme_studio/sections/LibrarySection.tsx:84
 msgid "Search themes…"
 msgstr "Hledat motivy…"
 
@@ -30335,7 +30384,7 @@ msgid "Select your country of residence."
 msgstr "Vyberte zemi svého pobytu."
 
 #. Generic combobox control placeholder.
-#: src/features/ui/components/form/FormCombobox.tsx:75
+#: src/features/ui/components/form/FormCombobox.tsx:76
 msgid "Select…"
 msgstr "Vybrat…"
 
@@ -30987,7 +31036,7 @@ msgid "Settings"
 msgstr "Nastavení"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:136
 msgid "settings link"
 msgstr "odkaz na nastavení"
 
@@ -31137,7 +31186,7 @@ msgid "Shared window"
 msgstr "Sdílené okno"
 
 #. Capture option in the Linux audio source picker on a window share. Captures only the audio of the window being shared.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:40
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:42
 msgid "Shared window audio"
 msgstr "Zvuk sdíleného okna"
 
@@ -33025,7 +33074,7 @@ msgstr "Zůstat plně interaktivní, i když není okno aktivní"
 
 #. Button label in a popped-out voice window titlebar that pins the window above other windows.
 #. Button label in the Theme Studio popout titlebar that pins the window above other windows.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:33
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:35
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:14
 msgid "Stay on top"
 msgstr "Zobrazovat nad ostatními okny"
@@ -34002,7 +34051,7 @@ msgstr "Název štítku"
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:221
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:34
 #: src/features/channel/components/modals/EditPostModal.tsx:154
-#: src/features/theme_studio/sections/LibrarySection.tsx:117
+#: src/features/theme_studio/sections/LibrarySection.tsx:120
 msgid "Tags"
 msgstr "Štítky"
 
@@ -34603,12 +34652,12 @@ msgid "The phone check is set aside. One email step is left."
 msgstr "Ověření telefonu je odložené. Zbývá jeden krok s e-mailem."
 
 #. OAuth authorize page error shown when the redirect_uri is not registered for this OAuth app.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:59
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:60
 msgid "The provided redirect_uri is not registered for this application."
 msgstr "Zadané redirect_uri není pro tuto aplikaci zaregistrováno."
 
 #. Body text in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:50
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:51
 msgid "The provided redirect_uri must use HTTP or HTTPS."
 msgstr "Zadané redirect_uri musí používat HTTP nebo HTTPS."
 
@@ -34697,7 +34746,7 @@ msgid "Theme color"
 msgstr "Barva motivu"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:125
+#: src/features/theme_studio/sections/LibrarySection.tsx:128
 msgid "Theme CSS"
 msgstr "CSS motivu"
 
@@ -34717,7 +34766,7 @@ msgid "Theme not found"
 msgstr "Motiv nebyl nalezen"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:47
+#: src/features/theme_studio/sections/LibrarySection.tsx:50
 msgid "Theme saved."
 msgstr "Motiv uložen."
 
@@ -34841,7 +34890,7 @@ msgid "This animation is too long or too large to crop. Try a shorter or smaller
 msgstr "Tato animace je příliš dlouhá nebo příliš velká na oříznutí. Zkuste kratší nebo menší soubor."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:83
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:84
 msgid "This application"
 msgstr "Tato aplikace"
 
@@ -34851,7 +34900,7 @@ msgid "This attachment has expired"
 msgstr "Tato příloha vypršela"
 
 #. OAuth authorize page error shown when a private bot cannot be added by non-owners.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:71
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:72
 msgid "This bot is not public and cannot be added by other users."
 msgstr "Tento bot není veřejný a ostatní uživatelé ho nemohou přidat."
 
@@ -35316,7 +35365,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "Tento kanál s odkazem je označen jako kanál pro dospělé a může otevřít materiál, který nemusí být vhodný pro některé uživatele."
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:164
 msgid "This link is not available for your account."
 msgstr "Tento odkaz není pro váš účet dostupný."
 
@@ -35449,7 +35498,7 @@ msgid "This refunds your most recent invoice and cancels any associated subscrip
 msgstr "Vrátí se vám peníze za poslední fakturu a zruší se případné související předplatné. Další samoobslužné vrácení peněz bude možné až za 30 dní."
 
 #. Confirmation text before deleting a saved local theme from Theme Studio.
-#: src/features/theme_studio/sections/LibrarySection.tsx:55
+#: src/features/theme_studio/sections/LibrarySection.tsx:58
 msgid "This removes \"{themeName}\" from this device."
 msgstr "Tímto se \"{themeName}\" odstraní z tohoto zařízení."
 
@@ -36249,7 +36298,7 @@ msgid "Trusted domains cleared."
 msgstr "Důvěryhodné domény vymazány."
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:93
+#: src/features/theme_studio/sections/LibrarySection.tsx:96
 msgid "Try a different name or clear the search."
 msgstr "Zkuste jiný název nebo vymažte hledání."
 
@@ -36987,7 +37036,7 @@ msgid "Unknown"
 msgstr "Neznámý"
 
 #. OAuth authorize page error shown when the application, session, or request is invalid.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:46
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:47
 msgid "Unknown application, expired session, or invalid authorization request."
 msgstr "Neznámá aplikace, vypršená relace nebo neplatný požadavek na autorizaci."
 
@@ -37121,6 +37170,11 @@ msgstr "neznámá-zmínka"
 #: src/features/messaging/utils/markdown/Plaintext.ts:76
 msgid "unknown-role"
 msgstr "neznámá-role"
+
+#. Button in the Theme Studio library that stops a theme following its CSS file on disk and turns it back into an editable copy.
+#: src/features/theme_studio/sections/LibrarySection.tsx:681
+msgid "Unlink"
+msgstr "Odpojit"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:143
 msgid "Unlock"
@@ -37427,12 +37481,12 @@ msgid "Unread message badge"
 msgstr "Označení nepřečtených zpráv"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/platform/utils/DesktopLocaleBridge.ts:288
 msgid "Unread messages"
 msgstr "Nepřečtené zprávy"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/platform/utils/DesktopLocaleBridge.ts:293
 msgid "Unread messages: {count}"
 msgstr "Nepřečtené zprávy: {count}"
 
@@ -37441,7 +37495,7 @@ msgstr "Nepřečtené zprávy: {count}"
 msgid "Unreads"
 msgstr "Nepřečtené"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:578
+#: src/features/theme_studio/sections/LibrarySection.tsx:758
 msgid "Unsaved changes"
 msgstr "Neuložené změny"
 
@@ -38638,7 +38692,7 @@ msgstr "Formulář pro ověření telefonního čísla"
 #. Title of the error modal shown when an unverified account tries to start a DM.
 #. Title shown when an unverified account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:40
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:79
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
 #: src/features/channel/utils/CreateDMModalUtils.tsx:51
 #: src/features/moderation/components/report/ReportStepEmail.tsx:43
 msgid "Verify your email"
@@ -38757,7 +38811,7 @@ msgid "Vermont"
 msgstr "Vermont"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:113
+#: src/features/theme_studio/sections/LibrarySection.tsx:116
 msgid "Version"
 msgstr "Verze"
 
@@ -38994,7 +39048,7 @@ msgid "View call"
 msgstr "Zobrazit hovor"
 
 #. Aria label for the show-controls trigger when the call toolbar is auto-hidden.
-#: src/features/voice/components/VoiceCallView.tsx:124
+#: src/features/voice/components/VoiceCallView.tsx:120
 msgid "View call controls"
 msgstr "Zobrazit ovládání hovoru"
 
@@ -39673,7 +39727,7 @@ msgid "We couldn't forward the message at this time."
 msgstr "Zprávu se momentálně nepodařilo přeposlat."
 
 #. Error message in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:77
+#: src/features/theme_studio/sections/LibrarySection.tsx:80
 msgid "We couldn't import that theme library file."
 msgstr "Soubor knihovny motivů se nepodařilo importovat."
 
@@ -40782,7 +40836,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "Změnili jste si uživatelskou značku, když jste měli {PREMIUM_PRODUCT_NAME}. Náhodně se změní, až vaše předplatné {PREMIUM_PRODUCT_NAME} vyprší, pokud se neobnoví."
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:144
 msgid "You do not have access to the channel where this message was sent."
 msgstr "Nemáte přístup ke kanálu, ve kterém byla tato zpráva odeslána."
 
@@ -41004,7 +41058,7 @@ msgstr "Abyste mohli v této komunitě posílat zprávy, musíte si ověřit tel
 msgid "You need to verify your email address before you can create a community."
 msgstr "Než budete moct vytvořit komunitu, musíte si ověřit e-mailovou adresu."
 
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:81
 msgid "You need to verify your email address before you can send friend requests."
 msgstr "Než budete moct posílat žádosti o přátelství, musíte si ověřit svou e-mailovou adresu."
 
@@ -41354,7 +41408,7 @@ msgid "Your {premiumProductName} subscription has expired. You have lost all {pr
 msgstr "Vaše předplatné {premiumProductName} vypršelo. Ztratili jste všechny výhody {premiumProductName}. Znovu aktivujte své předplatné, abyste získali přístup."
 
 #. OAuth authorize page error shown when the session expired mid-authorization. Keep plain. Preserve {productName}; it is inserted by code.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:41
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:42
 msgid "Your {productName} session expired. Sign in again to continue authorizing this application."
 msgstr "Vaše relace {productName} vypršela. Přihlaste se znovu a pokračujte v autorizaci této aplikace."
 

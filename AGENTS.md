@@ -184,6 +184,22 @@ rewriting it, **drifted automation** only by invoking the documented command rat
 than an equivalent, and an **incomplete list** only by adding the gate to the list
 the moment you notice you had to go looking for it.
 
+A fourth variant is a **stale script of the same name**, and the container home is
+full of the conditions for it: roughly 150 ad-hoc `~/*.sh` files accumulated over a
+month, many named for the generic thing they did once (`gate.sh`, `commit.sh`,
+`merge.sh`, `depcheck.sh`). On 2026-10-04 a `depcheck.sh` written for this session
+was copied over an unrelated `depcheck.sh` from 2026-10-02, the copy silently failed,
+and the two-day-old script ran instead and printed a confident report about Dart
+`pubspec` dependencies. It was only caught because the output was about the wrong
+subject entirely; had the stale script been a slightly older version of the same
+check, it would have passed for the real thing.
+
+The defence is naming, not care: write session scripts into a dated directory
+(`~/sess-<date>/`) rather than `~`, and verify the file you are about to run is the
+file you wrote, by comparing a hash or at minimum its byte size, before trusting its
+output. Note that `incus file push` onto an existing path owned by another user fails
+without a usable error, so "the push succeeded" is not an assumption to make either.
+
 One deliberate exception to "invoke these commands", and it is the only one. An
 automated runner should spell the docs gate `cd fluxer_docs && pnpm verify` rather
 than `pnpm --filter fluxer_docs verify`, because `--filter` is the construct the
@@ -208,10 +224,25 @@ fail for the property worth gating:
 - **`openapi:generate` writes the specs**, so by itself it only fails when generation
   errors. A committed spec that has drifted passes. Gate on regeneration producing no
   change: run it, then `git diff --quiet` the two spec files.
-- **The gateway eunit** always fails a fixed set of tests in this container, which
-  cannot build the `guild_member_list_oset_nif` Rust NIF, so its exit status is not
+- **The gateway eunit** has always failed a fixed set of tests in this container for
+  want of the `guild_member_list_oset_nif` Rust NIF, so its exit status is not
   pass/fail. Gate on the criterion: the tree compiled fully, no assertion failure, no
   undefined function other than that NIF.
+
+  **But the NIF premise is now known false, and it was a missing mount rather than a
+  container limitation.** On 2026-10-04 both gateway NIFs, `guild_member_list_oset_nif`
+  included, built on the first attempt inside `erlang:28` once the host Rust toolchain
+  was mounted in (recipe under **Gateway** below). The image has no cargo of its own,
+  so the hook failed with `Failed to run cargo / No such file or directory`, and that
+  was read for weeks as "this container cannot build the NIF". It can.
+
+  What follows is that the eunit exception above is probably retirable, but **that is
+  unverified**: the NIF building is not the same claim as the eunit suite passing with
+  it present, and nobody has yet run eunit with the NIF in `priv/`. Run it before
+  deleting the exception, and if it goes green, delete the exception rather than
+  leaving a carve-out that no longer describes anything. This is the enumerated-set
+  rule turned on its own rationale: a list member kept "because the container cannot"
+  needs its reason re-checked, not inherited.
 
 Plus, depending on what changed:
 
@@ -248,11 +279,51 @@ Plus, depending on what changed:
   Two traps when reading the output. `erlc` reports a bad include as `can't find
   include lib`, with no occurrence of the word "error", so grepping for `/error/`
   hides a completely failed compile: assert the emitted `.beam` count equals the
-  `.erl` count instead. And this container cannot build the
-  `guild_member_list_oset_nif` Rust NIF, so a fixed set of tests always fails
-  `undef`; raw eunit exit status is therefore useless as pass/fail. Gate on the
-  criterion instead: the tree compiled fully, no assertion failure, and no undefined
+  `.erl` count instead. The second trap used to read "this container cannot build the
+  `guild_member_list_oset_nif` Rust NIF"; see the correction above, it builds fine
+  once cargo is mounted in. Until someone runs eunit with the NIF present, still gate
+  on the criterion: the tree compiled fully, no assertion failure, and no undefined
   function other than that NIF.
+
+  **The `gateway_fmt` and `gateway_compile` recipes that work**, both verified on
+  2026-10-04 against a 33-commit slice that touched ten Erlang modules:
+
+      # gateway_fmt: mounting fluxer_gateway alone is enough
+      docker run --rm -v "$PWD/fluxer_gateway:/gw" -w /gw \
+        -e REBAR_CACHE_DIR=/tmp/rc erlang:28 rebar3 fmt --check
+
+      # gateway_compile: needs the WHOLE repo and a cargo
+      docker run --rm \
+        -v "$PWD:/repo" -v "$HOME/.cargo:/hostcargo:ro" -v "$HOME/.rustup:/hostrustup:ro" \
+        -w /repo/fluxer_gateway \
+        -e FLUXER_CI_BIN=/repo/target/debug/fluxer-ci \
+        -e CARGO_HOME=/hostcargo -e RUSTUP_HOME=/hostrustup \
+        -e REBAR_CACHE_DIR=/tmp/rc \
+        -e PATH=/hostcargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
+        erlang:28 rebar3 compile
+
+  Three things make compile different from fmt, and each produced a distinct failure
+  before it worked:
+
+  1. **Mount the whole repo, not just `fluxer_gateway`.** `rebar.config` has
+     `{pre_hooks, [{compile, "../tools/ci/run.sh build-gateway-nifs --gateway-dir ."}]}`,
+     so `..` has to resolve. This is the already-documented reason fmt-only mounts
+     do not compile; the recipe above is what to do about it.
+  2. **Set `FLUXER_CI_BIN` to a prebuilt `fluxer-ci`.** `tools/ci/run.sh` execs
+     `$FLUXER_CI_BIN` when it is executable and otherwise falls back to
+     `cargo run --manifest-path .../tools/ci/Cargo.toml`, which would rebuild the
+     249 MB debug binary inside the image on every run. Build it on the host first
+     with `cargo build -p fluxer-ci`.
+  3. **Mount cargo and rustup anyway.** `FLUXER_CI_BIN` only removes the cargo needed
+     to run `fluxer-ci` itself; `build-gateway-nifs` then shells out to
+     `cargo build --release` per NIF regardless. Without the toolchain mounts the hook
+     dies `Failed to run cargo`, which is the error that was long misread as the NIF
+     being unbuildable here.
+
+  Then apply the count check: `find src -name '*.erl' | wc -l` against
+  `find _build/default/lib/fluxer_gateway/ebin -name '*.beam' | wc -l`. A full tree is
+  **344 and 344**. `rebar3 compile` returning 0 is a stronger signal than `erlc`
+  managed, but #3072 compiled 235 of 344 and still looked healthy, so count anyway.
 
 Bare text nodes beside elements in JSX fail both biome and eslint
 (`no-conditional-text-nodes-with-siblings`) because Chrome page translation
@@ -388,6 +459,38 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   Observed once, on #3047. The mechanism is general, git aligning a moved region
   against unrelated text, but the frequency is not established: treat the set
   difference as cheap insurance rather than as a known-frequent failure.
+- **Triaging a backlog by divergence area does not produce an independently
+  applicable slice.** When the backlog is large enough to batch, the natural split is
+  "commits touching no fork divergence" against "commits touching one", and that split
+  is sound as far as it goes: it answers *does this commit need careful review*. It
+  does not answer *can this commit be applied on its own*, and those are different
+  questions. On 2026-10-04 a 35-commit clean tier contained four commits that could
+  not be applied without a divergence-tier commit, in two distinct flavours:
+
+  1. **A file dependency.** #3115 modifies `fluxer_app_proxy/src/routes/client_geoip.rs`,
+     a file created by #3112 (divergence tier). Cherry-picking #3115 alone gives a
+     modify/delete conflict, which reads at first glance like the fork deliberately
+     deleted the file. It had not; the file simply did not exist here yet.
+     Same shape for #3186 and #3188, both of which modify files created by #3185.
+  2. **A paired semantic dependency, which no file-level check can see.** #3174
+     relaxes the image-label assertion in `tools/ci/src/ci_workflow.rs` from nine
+     required labels to eight, because #3173 gives `fluxer_static` a *compound*
+     license label. Taken alone, #3174 drops a live assertion to accommodate a
+     condition that has not arrived, which is a gate quietly weakened for no reason.
+     Nothing conflicts and nothing fails. The tell is only in the subject lines:
+     #3174 is the CI half of #3173.
+
+  Flavour 1 is mechanically derivable, so derive it rather than discovering it one
+  conflict at a time. For each commit in the slice and each path it modifies or
+  deletes, require that the path exists at the slice base or is added by an earlier
+  commit in the same slice; anything else names the excluded commit that creates it.
+  That check found all three of flavour 1 up front.
+
+  Flavour 2 is not derivable and should not be faked. The cheap defence is to read
+  the backlog's subject lines as a sequence before slicing and look for follow-up
+  pairs, especially `fix(ci)` landing just after a `chore`/`feat` that changes what CI
+  measures. Treat a commit that *loosens* a check as guilty until its partner is
+  identified, since that is the direction in which a wrong split is silent.
 - **Never `git stash` mid-merge.** It destroys `MERGE_HEAD`, so the next commit is a
   single-parent commit that orphans the upstream commits from the ancestry and
   leaves them listed as unmerged forever. It also strands the stashed work, which

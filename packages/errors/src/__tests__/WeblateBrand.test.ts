@@ -122,6 +122,38 @@ describe('the error catalogs never point at upstream', () => {
 		expect(leaks.sort()).toEqual([]);
 	});
 
+	it('keeps every source message present in every locale catalog', () => {
+		// This is the property whose absence hid a live break. Until 2026-10-03 the fork's seven
+		// thread and forum error keys were in the English source and in no locale catalog, and
+		// the integrity checks all passed because the weblate JSON and the compiled modules were
+		// missing them equally. Nothing disagreed, so nothing failed, while a user over the
+		// thread limit in Japanese was shown the literal string
+		// "channels_and_guilds.max_active_threads_reached": a locale with no `one` plural
+		// category cannot compile the English template, so the runtime fell back to the key.
+		//
+		// An untranslated key is a translation gap and is tolerable. An absent key is a rendering
+		// failure in any locale whose plural categories differ from English, which is not.
+		const source = Object.keys(values(SOURCE)).sort();
+		const gaps: Array<string> = [];
+		let localesScanned = 0;
+
+		for (const {name, entries} of catalogs()) {
+			if (name === 'messages.json') continue;
+			localesScanned += 1;
+			for (const key of source) {
+				if (!(key in entries)) gaps.push(`${name} is missing ${key}`);
+			}
+		}
+
+		expect(localesScanned).toBe(33);
+
+		// If this fails, run the project's own sync so the key reaches every locale, and reduce
+		// any plural to the categories that locale actually has. Do not invent a translation:
+		// seeding the English wording and listing the key in the integrity test's
+		// FORK_KEYS_AWAITING_TRANSLATION is the honest interim state.
+		expect(gaps.sort()).toEqual([]);
+	});
+
 	it('keeps every translation keyed to a source message', () => {
 		// A key that exists only in a translation is a string no source review ever sees, which
 		// is where a leak can sit indefinitely. Upstream's own tooling should prevent it; this

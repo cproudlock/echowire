@@ -81,7 +81,9 @@ channel_mute_active(ChannelOverride, MessageData, ChannelOverrides) ->
 %% once its end_time has passed, the same rule the channel's own mute follows.
 -spec parent_mute_active(map(), map()) -> boolean().
 parent_mute_active(MessageData, ChannelOverrides) ->
-    case snowflake_id:parse_optional(maps:get(<<"thread_parent_id">>, MessageData, undefined)) of
+    case
+        snowflake_id:parse_optional(maps:get(<<"thread_parent_id">>, MessageData, undefined))
+    of
         ParentId when is_integer(ParentId) ->
             is_mute_active(channel_override(ParentId, ChannelOverrides, #{}));
         _ ->
@@ -333,7 +335,9 @@ muted_forum_suppresses_push_for_its_posts_test() ->
     PostMessage = #{<<"channel_type">> => 11, <<"thread_parent_id">> => <<"200">>},
     ?assertEqual(
         false,
-        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{}, undefined)
+        check_muted_and_notifications(
+            100, 300, PostMessage, 0, #{}, Settings, 1, #{}, undefined
+        )
     ).
 
 post_override_beats_muted_forum_test() ->
@@ -346,7 +350,9 @@ post_override_beats_muted_forum_test() ->
     PostMessage = #{<<"channel_type">> => 11, <<"thread_parent_id">> => <<"200">>},
     ?assertEqual(
         true,
-        check_muted_and_notifications(100, 300, PostMessage, 0, #{}, Settings, 1, #{}, undefined)
+        check_muted_and_notifications(
+            100, 300, PostMessage, 0, #{}, Settings, 1, #{}, undefined
+        )
     ).
 
 expired_forum_mute_no_longer_suppresses_its_posts_test() ->

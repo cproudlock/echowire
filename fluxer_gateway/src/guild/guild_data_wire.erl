@@ -214,7 +214,12 @@ fast_payload_drops_thread_member_ids_test() ->
     Private = #{<<"id">> => 21, <<"type">> => 12, <<"thread_member_ids">> => [<<"77">>]},
     Public = #{<<"id">> => 22, <<"type">> => 11, thread_member_ids => [78]},
     ?assertEqual(
-        #{<<"channels">> => [#{<<"id">> => <<"21">>, <<"type">> => 12}, #{<<"id">> => <<"22">>, <<"type">> => 11}]},
+        #{
+            <<"channels">> => [
+                #{<<"id">> => <<"21">>, <<"type">> => 12},
+                #{<<"id">> => <<"22">>, <<"type">> => 11}
+            ]
+        },
         payload(#{<<"channels">> => [Private, Public]})
     ).
 

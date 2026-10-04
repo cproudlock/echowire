@@ -151,7 +151,8 @@ viewable_by_map_or_live(ChId, ViewableMap, UserId, State) ->
     case guild_sessions:is_thread_channel(ChId, State) of
         true ->
             Member = guild_permissions:find_member_by_user_id(UserId, State),
-            Member =/= undefined andalso guild_permissions:can_view_channel(UserId, ChId, Member, State);
+            Member =/= undefined andalso
+                guild_permissions:can_view_channel(UserId, ChId, Member, State);
         false ->
             maps:is_key(ChId, ViewableMap)
     end.

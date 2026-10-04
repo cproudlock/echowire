@@ -287,7 +287,8 @@ thread_event_channel_id_test() ->
     ?assertEqual(20, extract_channel_id(thread_update, #{<<"id">> => <<"20">>})),
     ?assertEqual(20, extract_channel_id(thread_members_update, #{<<"id">> => <<"20">>})),
     ?assertEqual(
-        10, extract_channel_id(thread_delete, #{<<"id">> => <<"20">>, <<"parent_id">> => <<"10">>})
+        10,
+        extract_channel_id(thread_delete, #{<<"id">> => <<"20">>, <<"parent_id">> => <<"10">>})
     ),
     ?assertEqual(
         20, extract_channel_id(thread_delete, #{<<"id">> => <<"20">>, <<"parent_id">> => null})
@@ -386,8 +387,16 @@ audit_log_test_fixture() ->
 thread_delete_state() ->
     View = constants:view_channel_permission(),
     Manage = constants:manage_channels_permission(),
-    Everyone = #{<<"id">> => <<"42">>, <<"name">> => <<"@everyone">>, <<"permissions">> => integer_to_binary(View)},
-    Mods = #{<<"id">> => <<"77">>, <<"name">> => <<"mods">>, <<"permissions">> => integer_to_binary(View bor Manage)},
+    Everyone = #{
+        <<"id">> => <<"42">>,
+        <<"name">> => <<"@everyone">>,
+        <<"permissions">> => integer_to_binary(View)
+    },
+    Mods = #{
+        <<"id">> => <<"77">>,
+        <<"name">> => <<"mods">>,
+        <<"permissions">> => integer_to_binary(View bor Manage)
+    },
     Parent = #{<<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => []},
     Member = fun(Id, Roles) ->
         #{<<"user">> => #{<<"id">> => Id, <<"username">> => Id}, <<"roles">> => Roles}
@@ -399,7 +408,9 @@ thread_delete_state() ->
             <<"guild">> => #{<<"id">> => <<"42">>, <<"owner_id">> => <<"9999">>},
             <<"roles">> => [Everyone, Mods],
             <<"channels">> => [Parent],
-            <<"members">> => [Member(<<"10">>, []), Member(<<"11">>, []), Member(<<"12">>, [<<"77">>])]
+            <<"members">> => [
+                Member(<<"10">>, []), Member(<<"11">>, []), Member(<<"12">>, [<<"77">>])
+            ]
         })
     }.
 
@@ -417,12 +428,18 @@ private_thread_delete_reaches_members_and_managers_only_test() ->
         <<"type">> => 12,
         <<"thread_member_ids">> => [<<"10">>]
     },
-    Result = filter_sessions_for_event(thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()),
+    Result = filter_sessions_for_event(
+        thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()
+    ),
     ?assertEqual([<<"manager">>, <<"member">>], lists:sort([Sid || {Sid, _} <- Result])).
 
 public_thread_delete_reaches_parent_viewers_test() ->
     Data = #{<<"id">> => <<"201">>, <<"parent_id">> => <<"100">>, <<"type">> => 11},
-    Result = filter_sessions_for_event(thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()),
-    ?assertEqual([<<"manager">>, <<"member">>, <<"outsider">>], lists:sort([Sid || {Sid, _} <- Result])).
+    Result = filter_sessions_for_event(
+        thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()
+    ),
+    ?assertEqual(
+        [<<"manager">>, <<"member">>, <<"outsider">>], lists:sort([Sid || {Sid, _} <- Result])
+    ).
 
 -endif.

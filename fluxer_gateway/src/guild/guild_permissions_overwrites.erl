@@ -81,7 +81,9 @@ maybe_apply_channel_overwrites(Permissions, UserId, MemberRoles, ChannelId, Guil
         orphan_thread ->
             permission_bits:remove(Permissions, constants:view_channel_permission());
         not_thread ->
-            apply_non_thread_overwrites(Permissions, UserId, MemberRoles, ChannelId, GuildId, State)
+            apply_non_thread_overwrites(
+                Permissions, UserId, MemberRoles, ChannelId, GuildId, State
+            )
     end;
 maybe_apply_channel_overwrites(
     Permissions, _UserId, _MemberRoles, _ChannelId, _GuildId, _State
@@ -118,7 +120,8 @@ classify_thread(Channel) ->
             case snowflake_id:parse_maybe(maps:get(<<"parent_id">>, Channel, undefined)) of
                 ParentId when is_integer(ParentId) ->
                     {thread, Type, ParentId, thread_member_ids(Channel)};
-                _ -> orphan_thread
+                _ ->
+                    orphan_thread
             end;
         _ ->
             not_thread
@@ -134,7 +137,8 @@ channel_type(Channel) ->
             catch
                 error:badarg -> undefined
             end;
-        _ -> undefined
+        _ ->
+            undefined
     end.
 
 -spec thread_member_ids(channel()) -> [term()].

@@ -103,7 +103,8 @@ handle_thread_members_update(EventData, Data) ->
             end
     end.
 
--spec maybe_update_private_members(guild_data(), integer(), map(), event_data()) -> guild_data().
+-spec maybe_update_private_members(guild_data(), integer(), map(), event_data()) ->
+    guild_data().
 maybe_update_private_members(Data, ThreadId, Channel, EventData) ->
     case is_private_thread(Channel) of
         false ->

@@ -462,9 +462,12 @@ memo_session_can_view_channel(SessionData, ChannelId, State, Memo) ->
     %% check_member_channel_access, so the answer is still live, and it is keyed per user within one
     %% pass over one channel, which is what keeps large guilds responsive under a flood.
     case is_thread_channel(ChannelId, State) of
-        true when is_integer(UserId) -> memo_member_channel_access(UserId, ChannelId, State, Memo);
-        true -> {false, Memo};
-        false -> session_can_view_non_thread_channel(UserId, SessionData, ChannelId, State, Memo)
+        true when is_integer(UserId) ->
+            memo_member_channel_access(UserId, ChannelId, State, Memo);
+        true ->
+            {false, Memo};
+        false ->
+            session_can_view_non_thread_channel(UserId, SessionData, ChannelId, State, Memo)
     end.
 
 -spec session_can_view_non_thread_channel(
@@ -507,8 +510,10 @@ check_member_channel_access(UserId, ChannelId, State) ->
 -spec is_thread_channel(channel_id(), guild_state()) -> boolean().
 is_thread_channel(ChannelId, State) when is_integer(ChannelId) ->
     case guild_permissions:find_channel_by_id(ChannelId, State) of
-        Channel when is_map(Channel) -> lists:member(channel_type(Channel), ?THREAD_CHANNEL_TYPES);
-        _ -> false
+        Channel when is_map(Channel) ->
+            lists:member(channel_type(Channel), ?THREAD_CHANNEL_TYPES);
+        _ ->
+            false
     end;
 is_thread_channel(_ChannelId, _State) ->
     false.
@@ -523,7 +528,8 @@ channel_type(Channel) ->
             catch
                 error:badarg -> undefined
             end;
-        _ -> undefined
+        _ ->
+            undefined
     end.
 
 %% Echowire: drop thread ids from a channel id list before it is cached or shared.
@@ -880,8 +886,14 @@ thread_visibility_state(ThreadMemberIds) ->
 
 thread_visibility_state(ThreadMemberIds, ParentOverwrites) ->
     View = constants:view_channel_permission(),
-    Everyone = #{<<"id">> => <<"42">>, <<"name">> => <<"@everyone">>, <<"permissions">> => integer_to_binary(View)},
-    Parent = #{<<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => ParentOverwrites},
+    Everyone = #{
+        <<"id">> => <<"42">>,
+        <<"name">> => <<"@everyone">>,
+        <<"permissions">> => integer_to_binary(View)
+    },
+    Parent = #{
+        <<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => ParentOverwrites
+    },
     Private = #{
         <<"id">> => <<"200">>,
         <<"type">> => 12,
@@ -930,7 +942,9 @@ private_thread_filters_out_member_who_left_test() ->
 
 public_thread_visible_without_map_entry_test() ->
     State = thread_visibility_state([]),
-    Sessions = #{<<"s">> => #{user_id => 11, pid => self(), viewable_channels => #{100 => true}}},
+    Sessions = #{
+        <<"s">> => #{user_id => 11, pid => self(), viewable_channels => #{100 => true}}
+    },
     Pairs = filter_sessions_for_channel(Sessions, 201, undefined, State),
     ?assertEqual([<<"s">>], [Sid || {Sid, _} <- Pairs]).
 

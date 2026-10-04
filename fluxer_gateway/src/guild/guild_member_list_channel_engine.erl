@@ -369,7 +369,9 @@ memoised_can_view(UserId, ChannelId, Member, SortedRoleIds, State, Memo) ->
 memoisable_channel(ChannelId, Data) ->
     case maps:get(ChannelId, guild_data_index:channel_index(Data), undefined) of
         Channel when is_map(Channel) ->
-            not lists:member(maps:get(<<"type">>, Channel, undefined), [4, 11, 12, <<"11">>, <<"12">>]);
+            not lists:member(maps:get(<<"type">>, Channel, undefined), [
+                4, 11, 12, <<"11">>, <<"12">>
+            ]);
         _ ->
             false
     end.

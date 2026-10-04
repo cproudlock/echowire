@@ -1482,7 +1482,7 @@ msgstr "{label} 文件过大。请选择小于 {maxSizeLabel} 的文件。"
 msgid "{label} images cannot be animated. Use a static image."
 msgstr "{label} 图片不支持动图。请使用静态图片。"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:36
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:35
 msgid "{languageName} flag"
 msgstr "{languageName} 旗帜"
 
@@ -2389,7 +2389,7 @@ msgid "12 months (1 year)"
 msgstr "12 个月（1 年）"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:54
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:53
 msgid "12-hour"
 msgstr "12 小时制"
 
@@ -2438,7 +2438,7 @@ msgid "24 hours"
 msgstr "24 小时"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:58
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:57
 msgid "24-hour"
 msgstr "24 小时制"
 
@@ -3076,7 +3076,7 @@ msgstr "实际大小"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:599
 #: src/features/relationship/components/modals/AddFriendsToGroupModal.tsx:79
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:100
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:586
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:574
 msgid "Add"
 msgstr "添加"
 
@@ -3137,7 +3137,7 @@ msgid "Add a topic to this channel"
 msgstr "为此频道添加话题"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:140
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:139
 msgid "Add a word…"
 msgstr "添加字词…"
 
@@ -4144,7 +4144,7 @@ msgid "Always underline links"
 msgstr "始终显示链接下划线"
 
 #. Description for the in-app dictionary spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation. Hunspell is the spellcheck engine name; keep it as a product/protocol term.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:105
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:104
 msgid "Always use {productName}'s Hunspell dictionaries, downloaded on demand."
 msgstr "始终使用 {productName} 的 Hunspell 词典，按需下载。"
 
@@ -4522,7 +4522,7 @@ msgid "App icon badge"
 msgstr "应用图标角标"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:46
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:45
 msgid "App language: {format}"
 msgstr "应用语言的时间格式：{format}"
 
@@ -4624,8 +4624,8 @@ msgstr "应用更新成功"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings section label for developer application list.
 #. Tab label in the screen-share picker. Lists shareable app windows.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:129
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:85
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:124
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:27
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
@@ -5226,7 +5226,7 @@ msgid "Authorized on {authorizedOn}"
 msgstr "授权于 {authorizedOn}"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:50
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:49
 msgid "Auto"
 msgstr "自动"
 
@@ -6282,7 +6282,7 @@ msgid "Browser home"
 msgstr "浏览器：主页"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:42
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:41
 msgid "Browser locale: {format}"
 msgstr "浏览器时间格式：{format}"
 
@@ -7644,7 +7644,7 @@ msgstr "快来看看我的自定义主题！"
 
 #. Error-state description in the channel and chat gif picker view.
 #: src/features/channel/components/pickers/gif/GifPickerView.tsx:44
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:96
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:91
 msgid "Check your connection and try again."
 msgstr "请检查你的网络连接，然后重试。"
 
@@ -8083,7 +8083,7 @@ msgid "Claim your account to change your username"
 msgstr "认领账号后即可修改用户名"
 
 #. Description text in the index.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:29
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:28
 msgid "Claim your account to create applications."
 msgstr "认领你的账号以创建应用。"
 
@@ -10777,8 +10777,8 @@ msgstr "创建和管理你账号下的应用和机器人"
 #. Button or menu action label in the application create modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationCreateModal.tsx:20
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:146
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:157
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:141
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:152
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:24
 msgid "Create application"
 msgstr "创建应用"
@@ -12388,7 +12388,7 @@ msgstr "详情"
 #. Item in the textarea spellcheck language submenu that detects draft message language and switches dictionaries as the user types.
 #. Spellcheck language mode label in the language tab. The app detects the draft message language and switches dictionaries as the user types.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:83
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:126
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:125
 msgid "Detect while typing"
 msgstr "输入时检测"
 
@@ -14333,7 +14333,7 @@ msgid "Enable shortcut"
 msgstr "启用快捷方式"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:86
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:85
 msgid "Enable spellcheck"
 msgstr "启用拼写检查"
 
@@ -16118,7 +16118,7 @@ msgstr "持续 {threeHours} 小时"
 msgid "For {twentyFourHours} hours"
 msgstr "持续 {twentyFourHours} 小时"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:255
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:254
 msgid "For British eyes only..."
 msgstr "英国用户专属…"
 
@@ -17604,10 +17604,6 @@ msgstr "帮助中心"
 msgid "Help center button in the sidebar"
 msgstr "帮助中心按钮"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "在 <0>{I18N_WEBLATE_DOMAIN}</0> 上帮助我们把 {PRODUCT_NAME} 翻译成你的语言。"
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
@@ -18481,7 +18477,7 @@ msgstr "正在导入…已处理 {processedCount, number} / {totalCount, number}
 msgid "In"
 msgstr "在"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:547
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:535
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "在“操作系统”模式下，上方列出的词典仅供参考。如果支持，{PRODUCT_NAME} 会将这些语言标签传递给你的操作系统拼写检查器。无法识别的标签将被忽略。"
 
@@ -18533,7 +18529,7 @@ msgstr "在语音聊天中"
 #. Spellcheck engine option in the language tab. Uses the bundled in-app Hunspell dictionaries. Keep it concise.
 #. Spellcheck engine option in the textarea spellcheck submenu. The bundled in-app hunspell engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:75
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:100
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:99
 msgid "In-app dictionaries"
 msgstr "应用内词典"
 
@@ -18912,7 +18908,7 @@ msgstr "界面"
 
 #. Settings section label for interface language selection.
 #. Settings section title in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:82
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:81
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:42
 msgid "Interface language"
 msgstr "界面语言"
@@ -19786,7 +19782,7 @@ msgstr "语言设置"
 #. Submenu label in the textarea spellcheck submenu listing manual language overrides.
 #. Subsection title for spellcheck language settings. Keep it concise.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:88
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:122
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:121
 msgid "Languages"
 msgstr "语言"
 
@@ -23567,7 +23563,7 @@ msgstr "没有符合该搜索条件的待处理请求"
 msgid "No permissions found"
 msgstr "未找到权限"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:594
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:582
 msgid "No personal words yet."
 msgstr "暂无个人词条。"
 
@@ -24921,7 +24917,7 @@ msgstr "打开成员页面。按空格键或回车键打开。"
 #. Spellcheck engine option in the textarea spellcheck submenu. Uses the host operating system spellchecker.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:184
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:79
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:110
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:109
 msgid "Operating system"
 msgstr "操作系统"
 
@@ -25643,7 +25639,7 @@ msgstr "{0} 的权限"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title for personal dictionary settings. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:131
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:130
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:94
 msgid "Personal dictionary"
 msgstr "个人词典"
@@ -25762,7 +25758,7 @@ msgid "Pick at least one kind of conversation to include."
 msgstr "请至少选择一种对话类型。"
 
 #. Help text above the manual spellcheck dictionary picker in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:135
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:134
 msgid "Pick one or more dictionaries. Words from any selected dictionary are accepted, which is useful for multilingual chats."
 msgstr "选择一个或多个词典。任一所选词典中的词语都会被视为正确，这在多语言聊天中很实用。"
 
@@ -27176,11 +27172,6 @@ msgstr "查看打开此频道之前发送的消息。没有此权限，成员只
 msgid "Read the community's activity log of changes and moderation actions."
 msgstr "查看社区的活动日志，包括更改和管理操作。"
 
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "阅读文档（{domain}）"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -27276,7 +27267,7 @@ msgstr "接收者将进入 {0} <0>{1}</0>"
 #. Spellcheck engine option in the language tab. Lets the app choose the best available spellcheck engine.
 #. Spellcheck engine option in the textarea spellcheck submenu. Lets the app choose the best available engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:70
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:90
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:89
 msgid "Recommended"
 msgstr "推荐"
 
@@ -27563,7 +27554,7 @@ msgstr "相关"
 msgid "Reload"
 msgstr "重新加载"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:459
 msgid "Reload {PRODUCT_NAME} to fully apply the engine change. Switching between in-app and system spellcheck requires a renderer reload because Electron can't swap providers while running."
 msgstr "重新加载 {PRODUCT_NAME} 以完全应用引擎更改。在应用内拼写检查和系统拼写检查之间切换需要重新加载渲染器，因为 Electron 无法在运行时切换提供程序。"
 
@@ -27582,7 +27573,7 @@ msgstr "重新加载 {productName} 以使用网页版更新 {version}"
 msgid "Reload app"
 msgstr "重新加载应用"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:483
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
 msgid "Reload now"
 msgstr "立即重新加载"
 
@@ -27645,7 +27636,7 @@ msgid "Remove"
 msgstr "移除"
 
 #. Button or menu action label in the language tab. Keep it concise. Preserve {word}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:144
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:143
 msgid "Remove \"{word}\" from dictionary"
 msgstr "从词典中删除“{word}”"
 
@@ -29877,7 +29868,7 @@ msgid "Search language code…"
 msgstr "搜索语言代码…"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:74
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:73
 msgid "Search languages…"
 msgstr "搜索语言…"
 
@@ -30309,7 +30300,7 @@ msgid "Select GIF {title}"
 msgstr "选择 GIF {title}"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:78
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:77
 msgid "Select interface language"
 msgstr "选择界面语言"
 
@@ -32737,8 +32728,8 @@ msgstr "速度"
 #. Settings section label for spellcheck settings.
 #. Submenu label in the textarea right-click context menu for spellcheck preferences.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:62
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:401
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:443
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:389
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:431
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:74
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:78
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:50
@@ -32746,7 +32737,7 @@ msgid "Spellcheck"
 msgstr "拼写检查"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:118
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:117
 msgid "Spellcheck engine"
 msgstr "拼写检查引擎"
 
@@ -33920,7 +33911,7 @@ msgid "System DMs cannot host voice calls."
 msgstr "系统私信无法发起语音通话。"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:38
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:37
 msgid "System locale: {format}"
 msgstr "系统时间格式：{format}"
 
@@ -35785,14 +35776,14 @@ msgstr "时间"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for app time display format.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:361
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:349
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:26
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:38
 msgid "Time format"
 msgstr "时间格式"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:62
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:61
 msgid "Time format selection"
 msgstr "时间格式选择"
 
@@ -36700,7 +36691,7 @@ msgstr "乌克兰语"
 msgid "Unable to load activity logs"
 msgstr "无法加载活动日志"
 
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:95
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
 msgid "Unable to load applications"
 msgstr "无法加载应用"
 
@@ -37952,7 +37943,7 @@ msgid "Use autoscrolling"
 msgstr "使用自动滚动"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:70
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:69
 msgid "Use browser locale for time format"
 msgstr "使用浏览器区域设置的时间格式"
 
@@ -38142,7 +38133,7 @@ msgid "Use stickers from other communities."
 msgstr "使用其他社区的贴纸。"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:66
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:65
 msgid "Use system locale for time format"
 msgstr "使用系统区域设置的时间格式"
 
@@ -38157,7 +38148,7 @@ msgid "Use the operating system's window chrome"
 msgstr "使用操作系统的窗口边框"
 
 #. Description for the operating-system spellcheck engine option in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:114
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:113
 msgid "Use the spellchecker built into your operating system."
 msgstr "使用操作系统内置的拼写检查器。"
 
@@ -38208,7 +38199,7 @@ msgid "Use voice activity"
 msgstr "使用语音活动"
 
 #. Description for the recommended spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:94
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:93
 msgid "Use your operating system's spellchecker when available. Otherwise, use {productName}'s in-app dictionaries."
 msgstr "使用操作系统自带的拼写检查器（如果可用）。否则，使用 {productName} 的应用内词典。"
 

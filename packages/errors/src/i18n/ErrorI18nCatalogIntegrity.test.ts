@@ -17,13 +17,37 @@ const COMPILE_COMMAND = 'pnpm i18n:compile';
 
 const ENGLISH_VARIANT_LOCALES = new Set<string>(['en-GB']);
 
-const ENGLISH_IS_THE_ADJUDICATED_TRANSLATION = new Set<string>(['nl:http.conflict', 'ro:http.conflict']);
-
 type FlatCatalog = Record<string, string>;
 
 const SOURCE_CATALOG = ERROR_I18N_MESSAGES as FlatCatalog;
 const COMPILED_LOCALE_CATALOGS = ERROR_I18N_LOCALE_MESSAGES as Record<string, FlatCatalog>;
 const STATIC_LOCALES = Object.keys(COMPILED_LOCALE_CATALOGS).sort();
+
+// Echowire: the fork's thread, forum and post-starter errors have no translations yet. They
+// ship the English wording in every locale, which is the honest interim state and strictly
+// better than what it replaced: before 2026-10-03 these keys were absent from the locale
+// catalogs entirely, and in a locale with no `one` plural category the English template could
+// not compile, so getErrorMessage returned the raw key. A user over the thread limit in
+// Japanese was shown "channels_and_guilds.max_active_threads_reached".
+//
+// Derived from the key list rather than written out, because 7 keys across 33 locales is 210
+// pairs and a hand-enumerated set is what this fork keeps finding rotted. Delete a key from
+// this list the moment it is translated; the test then demands a real translation for it.
+const FORK_KEYS_AWAITING_TRANSLATION = [
+	'channels_and_guilds.forum_tag_invalid',
+	'channels_and_guilds.forum_tag_required',
+	'channels_and_guilds.max_active_threads_reached',
+	'channels_and_guilds.max_thread_members_reached',
+	'channels_and_guilds.starter_attachment_already_present',
+	'channels_and_guilds.starter_attachment_limit_reached',
+	'channels_and_guilds.starter_attachment_source_invalid',
+] as const;
+
+const ENGLISH_IS_THE_ADJUDICATED_TRANSLATION = new Set<string>([
+	'nl:http.conflict',
+	'ro:http.conflict',
+	...STATIC_LOCALES.flatMap((locale) => FORK_KEYS_AWAITING_TRANSLATION.map((key) => `${locale}:${key}`)),
+]);
 
 type ErrorMessageProbe = (
 	key: string,

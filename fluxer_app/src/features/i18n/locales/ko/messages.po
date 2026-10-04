@@ -1482,7 +1482,7 @@ msgstr "{label} 파일이 너무 큽니다. {maxSizeLabel}보다 작은 파일�
 msgid "{label} images cannot be animated. Use a static image."
 msgstr "{label} 이미지는 애니메이션을 사용할 수 없습니다. 정지된 이미지를 사용하세요."
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:36
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:35
 msgid "{languageName} flag"
 msgstr "{languageName} 국기"
 
@@ -2389,7 +2389,7 @@ msgid "12 months (1 year)"
 msgstr "12개월 (1년)"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:54
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:53
 msgid "12-hour"
 msgstr "12시간제"
 
@@ -2438,7 +2438,7 @@ msgid "24 hours"
 msgstr "24시간"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:58
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:57
 msgid "24-hour"
 msgstr "24시간제"
 
@@ -3076,7 +3076,7 @@ msgstr "실제 크기"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:599
 #: src/features/relationship/components/modals/AddFriendsToGroupModal.tsx:79
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:100
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:586
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:574
 msgid "Add"
 msgstr "추가"
 
@@ -3137,7 +3137,7 @@ msgid "Add a topic to this channel"
 msgstr "이 채널에 주제 추가"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:140
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:139
 msgid "Add a word…"
 msgstr "단어 추가…"
 
@@ -4144,7 +4144,7 @@ msgid "Always underline links"
 msgstr "링크 항상 밑줄 표시"
 
 #. Description for the in-app dictionary spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation. Hunspell is the spellcheck engine name; keep it as a product/protocol term.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:105
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:104
 msgid "Always use {productName}'s Hunspell dictionaries, downloaded on demand."
 msgstr "{productName}의 Hunspell 사전을 항상 사용하고 필요할 때 다운로드합니다."
 
@@ -4522,7 +4522,7 @@ msgid "App icon badge"
 msgstr "앱 아이콘 배지"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:46
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:45
 msgid "App language: {format}"
 msgstr "앱 언어 시간 형식: {format}"
 
@@ -4624,8 +4624,8 @@ msgstr "애플리케이션이 업데이트되었습니다"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings section label for developer application list.
 #. Tab label in the screen-share picker. Lists shareable app windows.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:129
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:85
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:124
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:27
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
@@ -5226,7 +5226,7 @@ msgid "Authorized on {authorizedOn}"
 msgstr "{authorizedOn}에 승인됨"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:50
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:49
 msgid "Auto"
 msgstr "자동"
 
@@ -6282,7 +6282,7 @@ msgid "Browser home"
 msgstr "브라우저: 홈"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:42
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:41
 msgid "Browser locale: {format}"
 msgstr "브라우저 시간 형식: {format}"
 
@@ -7644,7 +7644,7 @@ msgstr "내 맞춤 테마를 확인해 보세요!"
 
 #. Error-state description in the channel and chat gif picker view.
 #: src/features/channel/components/pickers/gif/GifPickerView.tsx:44
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:96
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:91
 msgid "Check your connection and try again."
 msgstr "연결 상태를 확인하고 다시 시도해 주세요."
 
@@ -8083,7 +8083,7 @@ msgid "Claim your account to change your username"
 msgstr "계정을 등록해야 사용자 이름을 변경할 수 있습니다"
 
 #. Description text in the index.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:29
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:28
 msgid "Claim your account to create applications."
 msgstr "계정을 등록해야 애플리케이션을 만들 수 있습니다."
 
@@ -10777,8 +10777,8 @@ msgstr "계정의 애플리케이션 및 봇을 만들고 관리합니다"
 #. Button or menu action label in the application create modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationCreateModal.tsx:20
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:146
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:157
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:141
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:152
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:24
 msgid "Create application"
 msgstr "애플리케이션 만들기"
@@ -12388,7 +12388,7 @@ msgstr "세부 정보"
 #. Item in the textarea spellcheck language submenu that detects draft message language and switches dictionaries as the user types.
 #. Spellcheck language mode label in the language tab. The app detects the draft message language and switches dictionaries as the user types.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:83
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:126
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:125
 msgid "Detect while typing"
 msgstr "입력하는 동안 감지"
 
@@ -14333,7 +14333,7 @@ msgid "Enable shortcut"
 msgstr "단축키 사용"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:86
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:85
 msgid "Enable spellcheck"
 msgstr "맞춤법 검사 사용"
 
@@ -16118,7 +16118,7 @@ msgstr "{threeHours}시간 동안"
 msgid "For {twentyFourHours} hours"
 msgstr "{twentyFourHours}시간 동안"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:255
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:254
 msgid "For British eyes only..."
 msgstr "영국인 전용입니다..."
 
@@ -17604,10 +17604,6 @@ msgstr "고객센터"
 msgid "Help center button in the sidebar"
 msgstr "도움말 센터 버튼"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "<0>{I18N_WEBLATE_DOMAIN}</0>에서 {PRODUCT_NAME}을(를) 여러분의 언어로 번역하는 데 참여해 보세요."
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
@@ -18481,7 +18477,7 @@ msgstr "가져오는 중… {processedCount, number}/{totalCount, number}개 처
 msgid "In"
 msgstr "채널 내"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:547
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:535
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "\"운영체제\" 모드에서는 위에 나열된 사전이 권장 사항입니다. {PRODUCT_NAME}은 지원되는 경우 이러한 언어 태그를 OS 맞춤법 검사기에 전달합니다. 인식하지 못하는 태그는 무시됩니다."
 
@@ -18533,7 +18529,7 @@ msgstr "음성 채팅 중"
 #. Spellcheck engine option in the language tab. Uses the bundled in-app Hunspell dictionaries. Keep it concise.
 #. Spellcheck engine option in the textarea spellcheck submenu. The bundled in-app hunspell engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:75
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:100
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:99
 msgid "In-app dictionaries"
 msgstr "앱 내 사전"
 
@@ -18912,7 +18908,7 @@ msgstr "인터페이스"
 
 #. Settings section label for interface language selection.
 #. Settings section title in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:82
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:81
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:42
 msgid "Interface language"
 msgstr "인터페이스 언어"
@@ -19786,7 +19782,7 @@ msgstr "언어 설정"
 #. Submenu label in the textarea spellcheck submenu listing manual language overrides.
 #. Subsection title for spellcheck language settings. Keep it concise.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:88
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:122
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:121
 msgid "Languages"
 msgstr "언어"
 
@@ -23567,7 +23563,7 @@ msgstr "검색 결과와 일치하는 대기 중인 요청이 없습니다"
 msgid "No permissions found"
 msgstr "일치하는 권한이 없습니다"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:594
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:582
 msgid "No personal words yet."
 msgstr "아직 추가한 단어가 없어요."
 
@@ -24921,7 +24917,7 @@ msgstr "멤버 페이지를 엽니다. 열려면 스페이스바 또는 Enter �
 #. Spellcheck engine option in the textarea spellcheck submenu. Uses the host operating system spellchecker.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:184
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:79
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:110
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:109
 msgid "Operating system"
 msgstr "운영체제"
 
@@ -25643,7 +25639,7 @@ msgstr "{0}에 대한 권한"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title for personal dictionary settings. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:131
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:130
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:94
 msgid "Personal dictionary"
 msgstr "개인 사전"
@@ -25762,7 +25758,7 @@ msgid "Pick at least one kind of conversation to include."
 msgstr "포함할 대화 유형을 하나 이상 선택하세요."
 
 #. Help text above the manual spellcheck dictionary picker in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:135
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:134
 msgid "Pick one or more dictionaries. Words from any selected dictionary are accepted, which is useful for multilingual chats."
 msgstr "사전 하나 이상을 선택하세요. 선택된 사전의 단어는 모두 허용되므로 여러 언어를 사용하는 채팅에 유용합니다."
 
@@ -27176,11 +27172,6 @@ msgstr "이 채널을 열기 전에 보낸 메시지를 읽습니다. 이 권한
 msgid "Read the community's activity log of changes and moderation actions."
 msgstr "커뮤니티의 변경 사항과 모더레이션 작업이 기록된 활동 로그를 봅니다."
 
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "문서 읽기({domain})"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -27276,7 +27267,7 @@ msgstr "받는 사람은 {0} <0>{1}</0>(으)로 이동합니다"
 #. Spellcheck engine option in the language tab. Lets the app choose the best available spellcheck engine.
 #. Spellcheck engine option in the textarea spellcheck submenu. Lets the app choose the best available engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:70
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:90
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:89
 msgid "Recommended"
 msgstr "권장"
 
@@ -27563,7 +27554,7 @@ msgstr "관련도순"
 msgid "Reload"
 msgstr "새로고침"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:459
 msgid "Reload {PRODUCT_NAME} to fully apply the engine change. Switching between in-app and system spellcheck requires a renderer reload because Electron can't swap providers while running."
 msgstr "{PRODUCT_NAME}을(를) 다시 로드하여 엔진 변경 사항을 완전히 적용하세요. Electron은 실행 중에 공급자를 교체할 수 없으므로, 앱 내 맞춤법 검사와 시스템 맞춤법 검사를 전환하려면 렌더러를 다시 로드해야 합니다."
 
@@ -27582,7 +27573,7 @@ msgstr "{version} 웹 업데이트를 적용하려면 {productName}을(를) 다�
 msgid "Reload app"
 msgstr "앱 새로고침"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:483
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
 msgid "Reload now"
 msgstr "지금 다시 로드"
 
@@ -27645,7 +27636,7 @@ msgid "Remove"
 msgstr "제거"
 
 #. Button or menu action label in the language tab. Keep it concise. Preserve {word}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:144
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:143
 msgid "Remove \"{word}\" from dictionary"
 msgstr "사전에서 \"{word}\" 삭제"
 
@@ -29877,7 +29868,7 @@ msgid "Search language code…"
 msgstr "언어 코드 검색…"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:74
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:73
 msgid "Search languages…"
 msgstr "언어 검색…"
 
@@ -30309,7 +30300,7 @@ msgid "Select GIF {title}"
 msgstr "{title} GIF 선택"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:78
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:77
 msgid "Select interface language"
 msgstr "인터페이스 언어 선택"
 
@@ -32737,8 +32728,8 @@ msgstr "속도"
 #. Settings section label for spellcheck settings.
 #. Submenu label in the textarea right-click context menu for spellcheck preferences.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:62
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:401
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:443
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:389
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:431
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:74
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:78
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:50
@@ -32746,7 +32737,7 @@ msgid "Spellcheck"
 msgstr "맞춤법 검사"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:118
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:117
 msgid "Spellcheck engine"
 msgstr "맞춤법 검사 엔진"
 
@@ -33920,7 +33911,7 @@ msgid "System DMs cannot host voice calls."
 msgstr "시스템 DM에서는 음성 통화를 할 수 없습니다."
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:38
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:37
 msgid "System locale: {format}"
 msgstr "시스템 시간 형식: {format}"
 
@@ -35785,14 +35776,14 @@ msgstr "시간"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for app time display format.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:361
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:349
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:26
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:38
 msgid "Time format"
 msgstr "시간 형식"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:62
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:61
 msgid "Time format selection"
 msgstr "시간 형식 선택"
 
@@ -36700,7 +36691,7 @@ msgstr "우크라이나어"
 msgid "Unable to load activity logs"
 msgstr "활동 로그를 불러올 수 없습니다"
 
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:95
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
 msgid "Unable to load applications"
 msgstr "앱을 불러올 수 없습니다"
 
@@ -37952,7 +37943,7 @@ msgid "Use autoscrolling"
 msgstr "자동 스크롤 사용"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:70
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:69
 msgid "Use browser locale for time format"
 msgstr "시간 형식에 브라우저 로캘 사용"
 
@@ -38142,7 +38133,7 @@ msgid "Use stickers from other communities."
 msgstr "다른 커뮤니티의 스티커를 사용합니다."
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:66
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:65
 msgid "Use system locale for time format"
 msgstr "시간 형식에 시스템 로캘 사용"
 
@@ -38157,7 +38148,7 @@ msgid "Use the operating system's window chrome"
 msgstr "운영체제 창 테두리 사용"
 
 #. Description for the operating-system spellcheck engine option in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:114
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:113
 msgid "Use the spellchecker built into your operating system."
 msgstr "운영체제에 내장된 맞춤법 검사기를 사용합니다."
 
@@ -38208,7 +38199,7 @@ msgid "Use voice activity"
 msgstr "음성 자동 감지 사용"
 
 #. Description for the recommended spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:94
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:93
 msgid "Use your operating system's spellchecker when available. Otherwise, use {productName}'s in-app dictionaries."
 msgstr "사용 가능한 경우 운영체제의 맞춤법 검사기를 사용하고, 그렇지 않으면 {productName}의 인앱 사전을 사용합니다."
 

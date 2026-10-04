@@ -23,12 +23,14 @@ export const MACOS_SCREEN_RECORDING_PERMISSION_NAME = 'Screen Recording';
 export const PIX_PAYMENT_METHOD = 'Pix';
 export const UPI_PAYMENT_METHOD = 'UPI';
 export const BLIK_PAYMENT_METHOD = 'BLIK';
-export const SUPPORT_EMAIL = 'support@fluxer.app';
+// Echowire: upstream's is support@fluxer.app. This matches the address the errors
+// package already answers at, so the app and the API agree on where to send people.
+export const SUPPORT_EMAIL = 'support@echowire.org';
 export const SUPPORT_EMAIL_MAILTO = `mailto:${SUPPORT_EMAIL}`;
-export const I18N_EMAIL = 'i18n@fluxer.app';
-export const I18N_EMAIL_MAILTO = `mailto:${I18N_EMAIL}`;
-export const I18N_WEBLATE_DOMAIN = 'weblate.fluxer.tools';
-export const I18N_WEBLATE_URL = `https://${I18N_WEBLATE_DOMAIN}`;
+// Echowire: the Weblate constants and the i18n contact address are gone with the "help
+// translate" link they fed. This fork has no translation server; its catalogs are in-repo
+// and re-extracted during merges, so the link invited users to translate upstream's
+// product. I18N_EMAIL and its mailto had no consumer at all.
 export const EXAMPLE_DOMAIN = 'example.com';
 export const EXAMPLE_URL = `https://${EXAMPLE_DOMAIN}`;
 export const EXAMPLE_CALLBACK_URL = `${EXAMPLE_URL}/callback`;
@@ -51,16 +53,25 @@ export const VISIONARY_LIFETIME_BADGE_LABEL = 'Visionary #42';
 export const FLUXER_TAG_MIN_WITH_ZERO_LABEL = '#0000';
 export const FLUXER_TAG_MIN_STANDARD_LABEL = '#0001';
 export const FLUXER_TAG_MAX_LABEL = '#9999';
-export const LINK_PREVIEW_EXAMPLE_URL = 'https://fluxer.app';
+// Echowire: a cosmetic example of how a link renders, in the accessibility tab and as
+// the report form's message-link placeholder. It showed upstream's domain to our users.
+export const LINK_PREVIEW_EXAMPLE_URL = 'https://echowire.org';
 export const EXAMPLE_MESSAGE_LINK = `${LINK_PREVIEW_EXAMPLE_URL}/channels/...`;
 export const EXAMPLE_GIF_URLS = `${EXAMPLE_URL}/gif1.gif\n${EXAMPLE_URL}/gif2.gif`;
 export const THE_OTHER_PLATFORM_TEMPLATE_EXAMPLE_URL = `https://${THE_OTHER_PLATFORM.toLowerCase()}.new/abcd1234`;
 export const DESKTOP_DOWNLOAD_URL =
 	Config.PUBLIC_RELEASE_CHANNEL === 'canary' ? 'https://canary.echowire.org/download' : 'https://echowire.org/download';
-export const FLUXER_DOCS_DOMAIN = 'fluxer.dev';
-export const FLUXER_DOCS_URL = `https://${FLUXER_DOCS_DOMAIN}`;
-export const FLUXER_BLUESKY_HANDLE = '@fluxer.app';
-export const SPLASH_IRC_SERVER = 'irc.fluxer.com:6667';
+// Echowire: the docs constants are gone with the applications tab's "read the
+// documentation" link. This fork vendors fluxer_docs but does not deploy it, so the link
+// pointed at upstream's site. Restoring it is these two constants and the <a> in
+// applications_tab/index.tsx, which is worth knowing because deploying the docs is a real
+// possibility rather than a hypothetical.
+// Echowire: the handle shown on the startup failure screen, beside a link to
+// ExternalUrls.BLUESKY. That URL is already https://bsky.app/profile/echowire.org, so the
+// link went to our account while the text named upstream's. A Bluesky profile URL is its
+// handle, so this is derived from the URL rather than invented.
+export const FLUXER_BLUESKY_HANDLE = '@echowire.org';
+// Echowire: SPLASH_IRC_SERVER deleted. It named upstream's IRC host and had no consumer.
 export const YOUTUBE_PROVIDER_NAME = 'YouTube';
 export const EVERYONE_MENTION = '@everyone';
 export const HERE_MENTION = '@here';

@@ -25,25 +25,6 @@
 	box-shadow: 0 0 0 0.125rem var(--border-color, var(--background-modifier-accent));
 }
 
-.documentationLink {
-	color: var(--text-link);
-	display: inline-flex;
-	align-items: center;
-	gap: var(--spacing-1);
-	font-weight: 600;
-	text-decoration: none;
-	line-height: 1.25;
-}
-
-.documentationLink:hover {
-	text-decoration: underline;
-}
-
-.documentationIcon {
-	color: var(--text-link);
-	display: block;
-}
-
 .modalButtons {
 	display: flex;
 	gap: var(--spacing-2);

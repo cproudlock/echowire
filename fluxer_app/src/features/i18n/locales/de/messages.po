@@ -1482,7 +1482,7 @@ msgstr "Die Datei \"{label}\" ist zu groß. Wähle eine Datei, die kleiner als {
 msgid "{label} images cannot be animated. Use a static image."
 msgstr "{label}-Bilder dürfen nicht animiert sein. Verwende ein statisches Bild."
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:36
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:35
 msgid "{languageName} flag"
 msgstr "Flagge: {languageName}"
 
@@ -2389,7 +2389,7 @@ msgid "12 months (1 year)"
 msgstr "12 Monate (1 Jahr)"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:54
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:53
 msgid "12-hour"
 msgstr "12-Stunden-Format"
 
@@ -2438,7 +2438,7 @@ msgid "24 hours"
 msgstr "24 Stunden"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:58
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:57
 msgid "24-hour"
 msgstr "24-Stunden-Format"
 
@@ -3076,7 +3076,7 @@ msgstr "Tatsächliche Größe"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx:599
 #: src/features/relationship/components/modals/AddFriendsToGroupModal.tsx:79
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:100
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:586
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:574
 msgid "Add"
 msgstr "Hinzufügen"
 
@@ -3137,7 +3137,7 @@ msgid "Add a topic to this channel"
 msgstr "Thema zu diesem Kanal hinzufügen"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:140
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:139
 msgid "Add a word…"
 msgstr "Wort hinzufügen …"
 
@@ -4144,7 +4144,7 @@ msgid "Always underline links"
 msgstr "Links immer unterstreichen"
 
 #. Description for the in-app dictionary spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation. Hunspell is the spellcheck engine name; keep it as a product/protocol term.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:105
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:104
 msgid "Always use {productName}'s Hunspell dictionaries, downloaded on demand."
 msgstr "Immer die Hunspell-Wörterbücher von {productName} verwenden, die bei Bedarf heruntergeladen werden."
 
@@ -4522,7 +4522,7 @@ msgid "App icon badge"
 msgstr "Benachrichtigungsmarkierung am App-Symbol"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:46
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:45
 msgid "App language: {format}"
 msgstr "Zeitformat der App-Sprache: {format}"
 
@@ -4624,8 +4624,8 @@ msgstr "Anwendung erfolgreich aktualisiert"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings section label for developer application list.
 #. Tab label in the screen-share picker. Lists shareable app windows.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:129
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:85
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:124
 #: src/features/user/components/settings_utils/search_index/SharedDescriptors.ts:27
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:66
 #: src/features/user/components/settings_utils/SettingsConstants.tsx:65
@@ -5226,7 +5226,7 @@ msgid "Authorized on {authorizedOn}"
 msgstr "Autorisiert am {authorizedOn}"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:50
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:49
 msgid "Auto"
 msgstr "Automatisch"
 
@@ -6282,7 +6282,7 @@ msgid "Browser home"
 msgstr "Browser: Startseite"
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:42
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:41
 msgid "Browser locale: {format}"
 msgstr "Zeitformat des Browsers: {format}"
 
@@ -7644,7 +7644,7 @@ msgstr "Sieh dir mein individuelles Design an!"
 
 #. Error-state description in the channel and chat gif picker view.
 #: src/features/channel/components/pickers/gif/GifPickerView.tsx:44
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:96
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:91
 msgid "Check your connection and try again."
 msgstr "Überprüfe deine Verbindung und versuche es erneut."
 
@@ -8083,7 +8083,7 @@ msgid "Claim your account to change your username"
 msgstr "Beanspruche deinen Account, um deinen Benutzernamen zu ändern"
 
 #. Description text in the index.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:29
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:28
 msgid "Claim your account to create applications."
 msgstr "Beanspruche deinen Account, um Anwendungen zu erstellen."
 
@@ -10777,8 +10777,8 @@ msgstr "Anwendungen und Bots für deinen Account erstellen und verwalten"
 #. Button or menu action label in the application create modal. Keep it concise.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationCreateModal.tsx:20
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:146
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:157
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:141
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:152
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:24
 msgid "Create application"
 msgstr "Anwendung erstellen"
@@ -12388,7 +12388,7 @@ msgstr "Details"
 #. Item in the textarea spellcheck language submenu that detects draft message language and switches dictionaries as the user types.
 #. Spellcheck language mode label in the language tab. The app detects the draft message language and switches dictionaries as the user types.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:83
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:126
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:125
 msgid "Detect while typing"
 msgstr "Beim Tippen erkennen"
 
@@ -14333,7 +14333,7 @@ msgid "Enable shortcut"
 msgstr "Tastenkombination aktivieren"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:86
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:85
 msgid "Enable spellcheck"
 msgstr "Rechtschreibprüfung aktivieren"
 
@@ -16118,7 +16118,7 @@ msgstr "Für {threeHours} Stunden"
 msgid "For {twentyFourHours} hours"
 msgstr "Für {twentyFourHours} Stunden"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:255
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:254
 msgid "For British eyes only..."
 msgstr "Nur für britische Augen ..."
 
@@ -17604,10 +17604,6 @@ msgstr "Hilfebereich"
 msgid "Help center button in the sidebar"
 msgstr "Hilfe-Center-Schaltfläche in der Seitenleiste"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "Hilf auf <0>{I18N_WEBLATE_DOMAIN}</0> mit, {PRODUCT_NAME} in deine Sprache zu übersetzen."
-
 #. Settings search synonym. Codec name; keep literal. Used to match this term in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts:104
 msgid "HEVC"
@@ -18481,7 +18477,7 @@ msgstr "Importiere… {processedCount, number} / {totalCount, number} verarbeite
 msgid "In"
 msgstr "In"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:547
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:535
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "Im Modus „Betriebssystem“ dienen die oben aufgeführten Wörterbücher als Empfehlungen. {PRODUCT_NAME} übergibt diese Sprach-Tags, sofern unterstützt, an die Rechtschreibprüfung deines Betriebssystems. Nicht erkannte Tags werden ignoriert."
 
@@ -18533,7 +18529,7 @@ msgstr "Im Sprachchat"
 #. Spellcheck engine option in the language tab. Uses the bundled in-app Hunspell dictionaries. Keep it concise.
 #. Spellcheck engine option in the textarea spellcheck submenu. The bundled in-app hunspell engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:75
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:100
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:99
 msgid "In-app dictionaries"
 msgstr "In-App-Wörterbücher"
 
@@ -18912,7 +18908,7 @@ msgstr "Oberfläche"
 
 #. Settings section label for interface language selection.
 #. Settings section title in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:82
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:81
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:42
 msgid "Interface language"
 msgstr "Sprache der Benutzeroberfläche"
@@ -19786,7 +19782,7 @@ msgstr "Spracheinstellungen"
 #. Submenu label in the textarea spellcheck submenu listing manual language overrides.
 #. Subsection title for spellcheck language settings. Keep it concise.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:88
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:122
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:121
 msgid "Languages"
 msgstr "Sprachen"
 
@@ -23567,7 +23563,7 @@ msgstr "Keine ausstehenden Anfragen stimmen mit der Suche überein"
 msgid "No permissions found"
 msgstr "Keine Berechtigungen gefunden"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:594
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:582
 msgid "No personal words yet."
 msgstr "Noch keine persönlichen Wörter."
 
@@ -24921,7 +24917,7 @@ msgstr "Öffnet die Mitgliederseite. Drücke Leertaste oder Eingabetaste zum Öf
 #. Spellcheck engine option in the textarea spellcheck submenu. Uses the host operating system spellchecker.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx:184
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:79
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:110
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:109
 msgid "Operating system"
 msgstr "Betriebssystem"
 
@@ -25643,7 +25639,7 @@ msgstr "Berechtigungen für {0}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title for personal dictionary settings. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:131
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:130
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:94
 msgid "Personal dictionary"
 msgstr "Persönliches Wörterbuch"
@@ -25762,7 +25758,7 @@ msgid "Pick at least one kind of conversation to include."
 msgstr "Wähle mindestens eine Konversationsart aus, die einbezogen werden soll."
 
 #. Help text above the manual spellcheck dictionary picker in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:135
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:134
 msgid "Pick one or more dictionaries. Words from any selected dictionary are accepted, which is useful for multilingual chats."
 msgstr "Wähle ein oder mehrere Wörterbücher aus. Wörter aus jedem ausgewählten Wörterbuch werden akzeptiert, was für mehrsprachige Chats nützlich ist."
 
@@ -27176,11 +27172,6 @@ msgstr "Nachrichten lesen, die vor dem Öffnen dieses Kanals darin gesendet wurd
 msgid "Read the community's activity log of changes and moderation actions."
 msgstr "Das Aktivitätsprotokoll der Community mit Änderungen und Moderationsaktionen lesen."
 
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "Dokumentation lesen ({domain})"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccessibilitySections.ts:163
 msgid "Reading speed"
@@ -27276,7 +27267,7 @@ msgstr "Empfänger werden zu {0} <0>{1}</0> weitergeleitet"
 #. Spellcheck engine option in the language tab. Lets the app choose the best available spellcheck engine.
 #. Spellcheck engine option in the textarea spellcheck submenu. Lets the app choose the best available engine.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:70
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:90
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:89
 msgid "Recommended"
 msgstr "Empfohlen"
 
@@ -27563,7 +27554,7 @@ msgstr "Relevanz"
 msgid "Reload"
 msgstr "Neu laden"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:459
 msgid "Reload {PRODUCT_NAME} to fully apply the engine change. Switching between in-app and system spellcheck requires a renderer reload because Electron can't swap providers while running."
 msgstr "{PRODUCT_NAME} neu laden, um die Engine-Änderung vollständig zu übernehmen. (Das Wechseln zwischen In-App- und System-Rechtschreibprüfung erfordert einen Renderer-Neustart, da Electron Anbieter nicht während des Betriebs austauschen kann.)"
 
@@ -27582,7 +27573,7 @@ msgstr "Lade {productName} neu, um das Web-Update {version} zu nutzen"
 msgid "Reload app"
 msgstr "App neu laden"
 
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:483
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:471
 msgid "Reload now"
 msgstr "Jetzt neu laden"
 
@@ -27645,7 +27636,7 @@ msgid "Remove"
 msgstr "Entfernen"
 
 #. Button or menu action label in the language tab. Keep it concise. Preserve {word}; it is inserted by code. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:144
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:143
 msgid "Remove \"{word}\" from dictionary"
 msgstr "„{word}“ aus dem Wörterbuch entfernen"
 
@@ -29877,7 +29868,7 @@ msgid "Search language code…"
 msgstr "Sprachcode suchen…"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:74
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:73
 msgid "Search languages…"
 msgstr "Sprachen suchen…"
 
@@ -30309,7 +30300,7 @@ msgid "Select GIF {title}"
 msgstr "GIF {title} auswählen"
 
 #. Button or menu action label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:78
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:77
 msgid "Select interface language"
 msgstr "Oberflächensprache auswählen"
 
@@ -32737,8 +32728,8 @@ msgstr "Geschwindigkeit"
 #. Settings section label for spellcheck settings.
 #. Submenu label in the textarea right-click context menu for spellcheck preferences.
 #: src/features/channel/components/textarea/TextareaContextMenu.tsx:62
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:401
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:443
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:389
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:431
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:74
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:78
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:50
@@ -32746,7 +32737,7 @@ msgid "Spellcheck"
 msgstr "Rechtschreibprüfung"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:118
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:117
 msgid "Spellcheck engine"
 msgstr "Engine für die Rechtschreibprüfung"
 
@@ -33920,7 +33911,7 @@ msgid "System DMs cannot host voice calls."
 msgstr "In System-DMs sind keine Sprachanrufe möglich."
 
 #. Label in the language tab. Preserve {format}.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:38
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:37
 msgid "System locale: {format}"
 msgstr "Zeitformat des Systems: {format}"
 
@@ -35785,14 +35776,14 @@ msgstr "Uhrzeit"
 
 #. Settings search entry label. Also used as a search synonym in the settings search bar.
 #. Settings section label for app time display format.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:361
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:349
 #: src/features/user/components/settings_utils/search_index/LanguageIndex.ts:26
 #: src/features/user/components/settings_utils/section_registry/GeneralSettingsSections.ts:38
 msgid "Time format"
 msgstr "Zeitformat"
 
 #. Short label in the language tab. Keep it concise.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:62
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:61
 msgid "Time format selection"
 msgstr "Zeitanzeige auswählen"
 
@@ -36700,7 +36691,7 @@ msgstr "Ukrainisch"
 msgid "Unable to load activity logs"
 msgstr "Aktivitätsprotokolle können nicht geladen werden"
 
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:95
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:90
 msgid "Unable to load applications"
 msgstr "Anwendungen konnten nicht geladen werden"
 
@@ -37952,7 +37943,7 @@ msgid "Use autoscrolling"
 msgstr "Autoscrolling verwenden"
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:70
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:69
 msgid "Use browser locale for time format"
 msgstr "Browser-Gebietsschema für Zeitformat verwenden"
 
@@ -38142,7 +38133,7 @@ msgid "Use stickers from other communities."
 msgstr "Sticker aus anderen Communitys verwenden."
 
 #. Label in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:66
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:65
 msgid "Use system locale for time format"
 msgstr "Systemeinstellungen für das Zeitformat verwenden"
 
@@ -38157,7 +38148,7 @@ msgid "Use the operating system's window chrome"
 msgstr "Fensterrahmen des Betriebssystems verwenden"
 
 #. Description for the operating-system spellcheck engine option in the language tab.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:114
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:113
 msgid "Use the spellchecker built into your operating system."
 msgstr "Die in deinem Betriebssystem integrierte Rechtschreibprüfung verwenden."
 
@@ -38208,7 +38199,7 @@ msgid "Use voice activity"
 msgstr "Sprachaktivierung nutzen"
 
 #. Description for the recommended spellcheck engine option in the language tab. Preserve {productName}; it is inserted by code and must appear verbatim in the translation.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:94
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:93
 msgid "Use your operating system's spellchecker when available. Otherwise, use {productName}'s in-app dictionaries."
 msgstr "Nutze die Rechtschreibprüfung deines Betriebssystems, falls verfügbar. Andernfalls nutze die In-App-Wörterbücher von {productName}."
 

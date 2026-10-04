@@ -306,6 +306,25 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
 
   Catalog merges must carry metadata, not only values.
 
+  **Never assume ASCII word boundaries in catalog work.** A brand or term in 34
+  languages is not a standalone ASCII word, and `\b` quietly stops matching in at
+  least three ways. On 2026-10-03 a substitution using `/\bFluxer\b/` missed four
+  values in two locales from opposite directions: Japanese `によりFluxer APIから`,
+  where Python's `\w` is Unicode-aware so kana count as word characters and there is
+  no boundary on either side, and Swedish `Fluxers API`, where the genitive *s*
+  breaks the trailing boundary. A dotted host is the third: a boundary falls between
+  a letter and a dot, so a trailing `\b` rejects `fluxer.app` inside
+  `fluxer.app/download` exactly when it matters. Substitute without boundaries and
+  protect the longer tokens explicitly, the way `Fluxer(?!Tag)` does.
+
+  Worth knowing that `\b` is not even consistent across the two languages in this
+  repo: Python's is Unicode-aware, JavaScript's is ASCII-only. That is what caught
+  the mistake. The Python fixer skipped the Japanese value while the gate's
+  JavaScript regex flagged it, and the disagreement surfaced as the mutation
+  harness reporting `clean run: FAIL` before injecting anything. If a fixer and its
+  gate disagree about the same file, the gate is usually right, because it was
+  written to describe the property rather than to perform the edit.
+
   **Where to be suspicious.** This rule has now been corrected twice in one day, and
   both times the step order survived while the wrong part was a claim about *which
   side is right*: first "almost always header stamps, take upstream's", then "keep

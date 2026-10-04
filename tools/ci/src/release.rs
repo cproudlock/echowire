@@ -1328,8 +1328,7 @@ mod tests {
 
     #[test]
     fn a_release_that_omits_macos_entirely_validates() {
-        let descriptor =
-            sample_descriptor_covering(&BTreeSet::from(["win32", "linux"]));
+        let descriptor = sample_descriptor_covering(&BTreeSet::from(["win32", "linux"]));
 
         validate_sample(&descriptor).unwrap();
         assert!(
@@ -1344,11 +1343,11 @@ mod tests {
     #[test]
     fn a_release_that_omits_only_half_of_windows_is_refused() {
         let mut descriptor = sample_descriptor_covering(&BTreeSet::from(["win32", "linux"]));
-        descriptor
-            .assets
-            .retain(|asset| !asset.storage_key.starts_with(&format!(
-                "desktop/{SAMPLE_CHANNEL}/win32/arm64/"
-            )));
+        descriptor.assets.retain(|asset| {
+            !asset
+                .storage_key
+                .starts_with(&format!("desktop/{SAMPLE_CHANNEL}/win32/arm64/"))
+        });
 
         let error = validate_sample(&descriptor).unwrap_err().to_string();
         assert!(

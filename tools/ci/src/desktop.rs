@@ -4888,7 +4888,8 @@ mod tests {
 
     #[test]
     fn release_coordinates_cover_every_published_platform_and_arch() {
-        let coordinates = payload_coordinates(&selected_platforms(&matrix_args()).unwrap()).unwrap();
+        let coordinates =
+            payload_coordinates(&selected_platforms(&matrix_args()).unwrap()).unwrap();
 
         assert_eq!(
             coordinates,

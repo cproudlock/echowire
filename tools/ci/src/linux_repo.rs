@@ -245,7 +245,10 @@ async fn collect_channel_packages(
         for path in local_debs.iter().chain(local_rpms.iter()) {
             ensure!(path.is_file(), "{} is not a file", path.display());
         }
-        println!("Using {} local packages for the {channel} channel", local_debs.len() + local_rpms.len());
+        println!(
+            "Using {} local packages for the {channel} channel",
+            local_debs.len() + local_rpms.len()
+        );
         return Ok(ChannelPackages {
             channel: channel.to_string(),
             debs: local_debs.to_vec(),
@@ -275,9 +278,9 @@ async fn collect_channel_packages(
         let file = response.files.get(format).with_context(|| {
             format!("Release {version} of the {channel} channel publishes no {format}")
         })?;
-        let target = downloads.join(channel).join(format!(
-            "echowire-{channel}-{version}-linux.{extension}"
-        ));
+        let target = downloads
+            .join(channel)
+            .join(format!("echowire-{channel}-{version}-linux.{extension}"));
         fetch_verified(&file.url, &file.sha256, &target).await?;
         if format == "deb" {
             debs.push(target);
@@ -508,9 +511,17 @@ fn deb_fields(path: &Path) -> Result<DebFields> {
     let mut values = Vec::new();
     for field in ["Package", "Version", "Architecture"] {
         let value = String::from_utf8(output_bytes(
-            CommandSpec::new("dpkg-deb").arg("--field").arg(path).arg(field),
+            CommandSpec::new("dpkg-deb")
+                .arg("--field")
+                .arg(path)
+                .arg(field),
         )?)
-        .with_context(|| format!("dpkg-deb returned a non-utf8 {field} for {}", path.display()))?
+        .with_context(|| {
+            format!(
+                "dpkg-deb returned a non-utf8 {field} for {}",
+                path.display()
+            )
+        })?
         .trim()
         .to_string();
         ensure!(
@@ -727,27 +738,20 @@ impl SigningContext {
             fs::create_dir_all(parent)
                 .with_context(|| format!("Failed to create {}", parent.display()))?;
         }
-        let exported = output_bytes(
-            self.gpg()
-                .args(["--armor", "--export"])
-                .arg(&self.key_id),
-        )
-        .context("Failed to export the public signing key")?;
+        let exported = output_bytes(self.gpg().args(["--armor", "--export"]).arg(&self.key_id))
+            .context("Failed to export the public signing key")?;
         ensure!(
             !exported.is_empty(),
             "gpg exported an empty public key for {}",
             self.key_id
         );
-        fs::write(target, exported)
-            .with_context(|| format!("Failed to write {}", target.display()))
+        fs::write(target, exported).with_context(|| format!("Failed to write {}", target.display()))
     }
 }
 
 fn sole_secret_key_id(context: &SigningContext) -> Result<String> {
     let listing = String::from_utf8(output_bytes(
-        context
-            .gpg()
-            .args(["--list-secret-keys", "--with-colons"]),
+        context.gpg().args(["--list-secret-keys", "--with-colons"]),
     )?)
     .context("gpg returned a non-utf8 key listing")?;
     let fingerprints = secret_key_fingerprints(&listing);
@@ -945,7 +949,9 @@ fn repo_content_type_for_key(key: &str) -> Option<&'static str> {
         }
         _ => {}
     }
-    if filename.ends_with(".asc") || filename == RPM_REPO_FILENAME || filename == APT_SOURCES_FILENAME
+    if filename.ends_with(".asc")
+        || filename == RPM_REPO_FILENAME
+        || filename == APT_SOURCES_FILENAME
     {
         return Some("text/plain; charset=utf-8");
     }

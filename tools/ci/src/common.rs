@@ -1057,6 +1057,14 @@ pub(crate) fn title_case(value: &str) -> String {
     }
 }
 
+// Echowire: twelve items sit AFTER this module (the S3 helpers from
+// s3_directory_prefix onward), which clippy's items_after_test_module flags because
+// code past a test module is easy to miss when reading. The layout is pre-existing and
+// the lint is stylistic, so it is suppressed here rather than reordered: moving either
+// the module or 270 lines of helpers would be a large mechanical diff across a file
+// every CI step imports. Worth doing properly when this file is next restructured; if
+// you add a NEW item, put it above this module rather than extending the tail.
+#[allow(clippy::items_after_test_module)]
 #[cfg(test)]
 mod tests {
     use super::*;

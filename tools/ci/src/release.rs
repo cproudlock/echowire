@@ -58,6 +58,13 @@ const DESKTOP_RELEASE_PLATFORMS: [DesktopReleasePlatform; 3] = [
     },
 ];
 
+// Echowire: these three are reachable only from `mod tests`. Validation reads
+// DESKTOP_RELEASE_PLATFORMS directly (see desktop_release_coordinate_routes), so the
+// accessor layer has no production caller, which `-D warnings` turns into a build
+// failure rather than a lint. Two sibling accessors for shipped_formats and
+// update_payload_suffix had no caller at all and were removed; re-adding either is one
+// line over the same table if a caller ever appears.
+#[allow(dead_code)]
 fn desktop_release_platform(platform: &str) -> Result<&'static DesktopReleasePlatform> {
     DESKTOP_RELEASE_PLATFORMS
         .iter()
@@ -65,6 +72,7 @@ fn desktop_release_platform(platform: &str) -> Result<&'static DesktopReleasePla
         .ok_or_else(|| anyhow!("Unsupported desktop release platform {platform:?}"))
 }
 
+#[allow(dead_code)]
 pub(crate) fn desktop_release_coordinates() -> Vec<(&'static str, &'static str)> {
     DESKTOP_RELEASE_PLATFORMS
         .iter()
@@ -76,18 +84,9 @@ pub(crate) fn desktop_release_coordinates() -> Vec<(&'static str, &'static str)>
         .collect()
 }
 
-pub(crate) fn desktop_release_shipped_formats(platform: &str) -> Result<&'static [&'static str]> {
-    Ok(desktop_release_platform(platform)?.shipped_formats)
-}
-
+#[allow(dead_code)]
 pub(crate) fn desktop_release_updater_feeds(platform: &str) -> Result<&'static [&'static str]> {
     Ok(desktop_release_platform(platform)?.updater_feeds)
-}
-
-pub(crate) fn desktop_release_update_payload_suffix(
-    platform: &str,
-) -> Result<Option<&'static str>> {
-    Ok(desktop_release_platform(platform)?.update_payload_suffix)
 }
 
 fn desktop_release_coordinate_routes(entry: &DesktopReleasePlatform) -> usize {

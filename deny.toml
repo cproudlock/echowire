@@ -116,8 +116,6 @@ skip = [
     { crate = "rand_core@0.9.5", reason = "transitive dependency requires the prior randomness API" },
     { crate = "sha1@0.10.7", reason = "transitive dependency requires the older digest API" },
     { crate = "sha2@0.10.9", reason = "transitive dependency requires the older digest API" },
-    { crate = "socket2@0.5.10", reason = "transitive dependency requires the older socket API" },
-    { crate = "syn@2.0.117", reason = "transitive dependency requires the prior proc-macro API" },
     { crate = "string_cache@0.9.0", reason = "transitive dependency requires the older release line" },
     { crate = "string_cache_codegen@0.6.1", reason = "transitive dependency requires the older release line" },
     { crate = "syn@2.0.119", reason = "transitive dependency requires the older release line" },
@@ -125,7 +123,6 @@ skip = [
     { crate = "wasi@0.11.1+wasi-snapshot-preview1", reason = "transitive dependency requires the legacy WASI API" },
     { crate = "web_atoms@0.2.6", reason = "transitive dependency requires the older release line" },
     { crate = "windows-sys@0.52.0", reason = "transitive dependency requires the older Windows API" },
-    { crate = "wit-bindgen@0.51.0", reason = "transitive dependency requires the older WASI binding API" },
 ]
 skip-tree = []
 

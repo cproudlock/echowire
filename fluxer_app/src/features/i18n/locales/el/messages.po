@@ -21,7 +21,7 @@ msgstr "...ενεργοποιήσεις την πυκνή λειτουργία. 
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-#: src/features/channel/components/MessageAttachments.tsx:392
+#: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
@@ -843,12 +843,12 @@ msgid "{appCount, plural, one {# app selected for access revocation} other {# ap
 msgstr "{appCount, plural, one {# εφαρμογή επιλέχθηκε για ανάκληση πρόσβασης} other {# εφαρμογές επιλέχθηκαν για ανάκληση πρόσβασης}}"
 
 #. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+#: src/features/platform/utils/DesktopLocaleBridge.ts:308
 msgid "{appName} can't reach its servers. It will keep trying in the background."
 msgstr "Το {appName} δεν μπορεί να συνδεθεί στους διακομιστές του. Θα συνεχίσει να προσπαθεί στο παρασκήνιο."
 
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:285
+#: src/features/platform/utils/DesktopLocaleBridge.ts:298
 msgid "{appName} failed to start"
 msgstr "Το {appName} δεν μπόρεσε να ξεκινήσει"
 
@@ -1041,7 +1041,7 @@ msgstr "{count, plural, one {# κοινή κοινότητα} other {# κοιν�
 msgid "{count, plural, one {# other} other {# others}}"
 msgstr "{count, plural, one {# άλλος} other {# άλλοι}}"
 
-#: src/features/voice/components/VoiceCallView.tsx:507
+#: src/features/voice/components/VoiceCallView.tsx:474
 msgid "{count, plural, one {# participant in call} other {# participants in call}}"
 msgstr "{count, plural, one {# συμμετέχων στην κλήση} other {# συμμετέχοντες στην κλήση}}"
 
@@ -1984,7 +1984,7 @@ msgid "{seconds, plural, one {Your invite link expires in # second.} other {Your
 msgstr "{seconds, plural, one {Ο σύνδεσμος πρόσκλησής σας λήγει σε # δευτερόλεπτο.} other {Ο σύνδεσμος πρόσκλησής σας λήγει σε # δευτερόλεπτα.}}"
 
 #. Generic multi-select summary label. selectedCount is the number of selected options.
-#: src/features/ui/components/form/FormCombobox.tsx:79
+#: src/features/ui/components/form/FormCombobox.tsx:80
 msgid "{selectedCount} selected"
 msgstr "{selectedCount} επιλεγμένα"
 
@@ -2013,7 +2013,7 @@ msgid "{textChannelCount, plural, one {# text channel} other {# text channels}},
 msgstr "{textChannelCount, plural, one {# κανάλι κειμένου} other {# κανάλια κειμένου}}, {voiceChannelCount, plural, one {# κανάλι φωνής} other {# κανάλια φωνής}}, {categoryCount, plural, one {# κατηγορία} other {# κατηγορίες}}, {roleCount, plural, one {# ρόλος} other {# ρόλοι}}"
 
 #. Name given to the copy created by the Duplicate button in the Theme Studio theme library. {themeName} is the name of the theme being duplicated.
-#: src/features/theme/state/ThemeLibrary.ts:32
+#: src/features/theme/state/ThemeLibrary.ts:34
 msgid "{themeName} Copy"
 msgstr "{themeName} αντίγραφο"
 
@@ -2241,8 +2241,8 @@ msgstr "Το άτομο <0>{username}</0> είναι ακόμα στην ομά�
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-#: src/features/channel/components/MessageAttachments.tsx:243
-#: src/features/channel/components/MessageAttachments.tsx:299
+#: src/features/channel/components/MessageAttachments.tsx:214
+#: src/features/channel/components/MessageAttachments.tsx:270
 msgid "<0>Forwarded from</0>{sourceInfo}"
 msgstr "<0>Προωθήθηκε από</0>{sourceInfo}"
 
@@ -2681,7 +2681,7 @@ msgid "A profile that stands out"
 msgstr "Ένα προφίλ που ξεχωρίζει"
 
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:55
 msgid "A redirect_uri is required when the bot scope is not the only scope."
 msgstr "Απαιτείται ένα redirect_uri όταν το πεδίο εφαρμογής bot δεν είναι το μόνο πεδίο εφαρμογής."
 
@@ -5097,7 +5097,7 @@ msgid "Audio settings"
 msgstr "Ρυθμίσεις ήχου"
 
 #. Toggle / summary row label in the Linux audio source picker. {summaryLabel} is one of the audio-source summary labels.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:45
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:47
 msgid "Audio sources: {summaryLabel}"
 msgstr "Πηγές ήχου: {summaryLabel}"
 
@@ -5142,7 +5142,7 @@ msgid "Authenticator code"
 msgstr "Κωδικός ελέγχου ταυτότητας"
 
 #. Short label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:109
+#: src/features/theme_studio/sections/LibrarySection.tsx:112
 msgid "Author"
 msgstr "Δημιουργός"
 
@@ -5162,7 +5162,7 @@ msgid "Authorization failed"
 msgstr "Η εξουσιοδότηση απέτυχε"
 
 #. OAuth authorize page generic error toast shown when the authorize request fails unexpectedly.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:75
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:76
 msgid "Authorization failed. Try again."
 msgstr "Η εξουσιοδότηση απέτυχε. Δοκιμάστε ξανά."
 
@@ -5560,7 +5560,7 @@ msgid "Back to sticker"
 msgstr "Επιστροφή στο αυτοκόλλητο"
 
 #. Tooltip / aria label on the back button that returns from the call view to the voice channel view.
-#: src/features/voice/components/VoiceCallView.tsx:115
+#: src/features/voice/components/VoiceCallView.tsx:111
 msgid "Back to voice channel"
 msgstr "Επιστροφή στο φωνητικό κανάλι"
 
@@ -6158,13 +6158,13 @@ msgid "Bot invite (no external redirect)"
 msgstr "Πρόσκληση bot (χωρίς εξωτερική ανακατεύθυνση)"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:162
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:163
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:104
 msgid "Bot permissions"
 msgstr "Δικαιώματα bot"
 
 #. OAuth authorize page error shown when the permissions query parameter is a negative integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:67
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:68
 msgid "Bot permissions cannot be negative."
 msgstr "Τα δικαιώματα bot δεν μπορούν να είναι αρνητικά."
 
@@ -6661,14 +6661,24 @@ msgid "Can't access that email?"
 msgstr "Δεν έχετε πρόσβαση σε αυτό το email;"
 
 #. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+#: src/features/platform/utils/DesktopLocaleBridge.ts:303
 msgid "Can't connect"
 msgstr "Δεν είναι δυνατή η σύνδεση"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file was moved or deleted. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:166
+msgid "Can't find {path}. Using the last loaded version."
+msgstr "Δεν βρέθηκε το {path}. Χρησιμοποιείται η τελευταία ληφθείσα έκδοση."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
 msgid "Can't paste image here"
 msgstr "Δεν είναι δυνατή η επικόλληση εικόνας εδώ"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file exists but cannot be read, for example because it is too large or access was removed. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:171
+msgid "Can't read {path}. Using the last loaded version."
+msgstr "Δεν είναι δυνατή η ανάγνωση του {path}. Χρησιμοποιείται η τελευταία φορτωμένη έκδοση."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:16
@@ -6835,7 +6845,7 @@ msgid "Cannot delete account"
 msgstr "Δεν είναι δυνατή η διαγραφή λογαριασμού"
 
 #. Section header in the Linux audio source picker. Lists capture-target options (entire system / specific apps).
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:50
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:52
 msgid "Capture"
 msgstr "Λήψη"
 
@@ -7395,7 +7405,7 @@ msgid "Channel access"
 msgstr "Πρόσβαση σε κανάλι"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:140
 msgid "Channel access denied"
 msgstr "Δεν επιτρέπεται η πρόσβαση στο κανάλι"
 
@@ -7460,7 +7470,7 @@ msgstr "Το αναγνωριστικό καναλιού αντιγράφηκε 
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:100
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "σύνδεσμος καναλιού"
@@ -7840,7 +7850,7 @@ msgid "Choose background"
 msgstr "Επιλέξτε φόντο"
 
 #. OAuth authorize page error shown when a bot invite request provides both guild_id and channel_id. Keep the parameter names literal.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:87
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:88
 msgid "Choose either guild_id or channel_id, not both."
 msgstr "Επιλέξτε είτε guild_id είτε channel_id, όχι και τα δύο."
 
@@ -8041,7 +8051,7 @@ msgstr "Παραλαβή δώρου"
 #. Title shown when an unclaimed account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:32
 #: src/features/auth/components/modals/ClaimAccountModal.tsx:41
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:62
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
 #: src/features/channel/utils/CreateDMModalUtils.tsx:43
 #: src/features/guild/components/modals/add_guild_modal/GuildCreateForm.tsx:213
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:441
@@ -8123,7 +8133,7 @@ msgstr "Διεκδικήστε τον λογαριασμό σας για να ε
 #. Description text in the channel and chat dm welcome section.
 #. Description text in the user profile modal.
 #. Tooltip shown when an unclaimed account tries to send a friend request.
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:64
 #: src/features/channel/components/direct_message/DMWelcomeSection.tsx:37
 #: src/features/ui/action_menu/items/RelationshipMenuItems.tsx:40
 #: src/features/user/components/modals/UserProfileModal.tsx:122
@@ -8268,7 +8278,7 @@ msgstr "Εκκαθάριση πεδίου αναζήτησης"
 #. Accessible label for the combobox clear button.
 #. Button or menu action label in the authorized apps tab. Keep it concise.
 #. Button or menu action label in the devices tab. Keep it concise.
-#: src/features/ui/components/form/FormCombobox.tsx:91
+#: src/features/ui/components/form/FormCombobox.tsx:92
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:46
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:61
 msgid "Clear selection"
@@ -8783,7 +8793,7 @@ msgid "Coming soon"
 msgstr "Σύντομα"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:121
+#: src/features/theme_studio/sections/LibrarySection.tsx:124
 msgid "comma, separated"
 msgstr "διαχωρισμένα με κόμμα"
 
@@ -9381,7 +9391,7 @@ msgstr "Κονέκτικατ"
 #. Action label state in the DM channel header pill while the join request is in flight. Trailing ASCII ellipsis is intentional.
 #. Overlay status in the voice call view while joining. Trailing ellipsis indicates in-progress.
 #: src/features/channel/components/channel_view/dm_channel_view/shared.ts:129
-#: src/features/voice/components/VoiceCallView.tsx:94
+#: src/features/voice/components/VoiceCallView.tsx:90
 msgid "Connecting..."
 msgstr "Σύνδεση..."
 
@@ -9442,7 +9452,7 @@ msgid "Connection removed"
 msgstr "Η σύνδεση καταργήθηκε"
 
 #. Tooltip / aria label on the connection-stats button in the voice call header. Opens the voice connection status popout.
-#: src/features/voice/components/VoiceCallView.tsx:119
+#: src/features/voice/components/VoiceCallView.tsx:115
 msgid "Connection stats"
 msgstr "Στατιστικά σύνδεσης"
 
@@ -9752,7 +9762,7 @@ msgstr "Αντιγράφηκε η διεύθυνση URL στο πρόχειρο
 #: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:80
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:230
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx:59
 msgid "Copy"
 msgstr "Αντιγραφή"
@@ -11038,6 +11048,11 @@ msgstr "Κοπή {percent}%"
 msgid "CSS"
 msgstr "CSS"
 
+#. Name of the file type filter in the native theme file picker, shown next to the *.css pattern.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+msgid "CSS files"
+msgstr "Αρχεία CSS"
+
 #. Keyboard keycap label for Control on non-Mac platforms. Keep it short.
 #. Keyboard shortcut keycap label for Control on non-Mac platforms. Keep it short.
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:18
@@ -11808,7 +11823,7 @@ msgstr "Ντέλαγουερ"
 #: src/features/messaging/commands/MessageCommands.tsx:83
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/platform/utils/DesktopLocaleBridge.ts:77
-#: src/features/theme_studio/sections/LibrarySection.tsx:514
+#: src/features/theme_studio/sections/LibrarySection.tsx:645
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:290
@@ -12046,12 +12061,12 @@ msgid "Delete the category \"{categoryName}\"? Can't be undone."
 msgstr "Διαγραφή της κατηγορίας \"{categoryName}\"; Δεν μπορεί να αναιρεθεί."
 
 #. Button or menu action label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:59
+#: src/features/theme_studio/sections/LibrarySection.tsx:62
 msgid "Delete theme"
 msgstr "Διαγραφή θέματος"
 
 #. Confirmation prompt in the theme studio library section. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:51
+#: src/features/theme_studio/sections/LibrarySection.tsx:54
 msgid "Delete theme?"
 msgstr "Διαγραφή θέματος;"
 
@@ -12421,13 +12436,13 @@ msgstr "Κατάσταση προγραμματιστή"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:152
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "Εργαλεία προγραμματιστή"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:156
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "Τα εργαλεία προγραμματιστή είναι διαθέσιμα από το σήμα προσωπικού στην κεφαλίδα του καναλιού."
 
@@ -12824,7 +12839,7 @@ msgstr "Αποσύνδεση socket"
 #. Overlay status in the voice call view when not connected.
 #. Overlay status text in the compact / floating voice call tile when not connected.
 #: src/features/voice/components/compact_voice_call_view/shared.ts:15
-#: src/features/voice/components/VoiceCallView.tsx:103
+#: src/features/voice/components/VoiceCallView.tsx:99
 msgid "Disconnected"
 msgstr "Αποσυνδέθηκε"
 
@@ -13353,7 +13368,7 @@ msgid "Downloading desktop update: {percent}% ({formatBytes} / {formatBytes2} at
 msgstr "Λήψη ενημέρωσης για υπολογιστή: {percent}% ({formatBytes} / {formatBytes2} με {formatBytes3}/δευτ.)"
 
 #. Short desktop updater status label.
-#: src/features/app/state/Updater.ts:46
+#: src/features/app/state/Updater.ts:48
 msgid "Downloading desktop update…"
 msgstr "Λήψη ενημέρωσης για υπολογιστή…"
 
@@ -13491,7 +13506,7 @@ msgstr "Λόγω των νόμων περί περιεχομένου ενηλί�
 msgid "Due to mature content laws in {regionName}, this media is not available from your current region."
 msgstr "Λόγω των νόμων περί περιεχομένου ενηλίκων στην περιοχή {regionName}, αυτό το αρχείο πολυμέσων δεν είναι διαθέσιμο από την τρέχουσα περιοχή σας."
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:503
+#: src/features/theme_studio/sections/LibrarySection.tsx:634
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:220
 msgid "Duplicate"
 msgstr "Αντιγραφή"
@@ -14128,7 +14143,7 @@ msgid "Enable {permissionName} permission"
 msgstr "Ενεργοποίηση άδειας {permissionName}"
 
 #. Accessible label for the switch that enables a saved theme file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:101
+#: src/features/theme_studio/sections/LibrarySection.tsx:104
 msgid "Enable {themeName}"
 msgstr "Ενεργοποίηση {themeName}"
 
@@ -14585,7 +14600,7 @@ msgstr "Εισαγωγή κωδικού"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (not in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:28
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:18
-#: src/features/voice/components/VoiceCallView.tsx:111
+#: src/features/voice/components/VoiceCallView.tsx:107
 msgid "Enter fullscreen"
 msgstr "Πλήρης οθόνη"
 
@@ -14767,7 +14782,7 @@ msgstr "Ολόκληρη η οθόνη"
 msgid "Entire system"
 msgstr "Ολόκληρο το σύστημα"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:260
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:257
 msgid "Entire system audio"
 msgstr "Ήχος ολόκληρου του συστήματος"
 
@@ -14945,7 +14960,7 @@ msgid "exclude a user"
 msgstr "εξαίρεση χρήστη"
 
 #. Section header in the Linux audio source picker for apps excluded from the system mix.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:59
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:61
 msgid "Exclude from system"
 msgstr "Εξαίρεση από το σύστημα"
 
@@ -14970,7 +14985,7 @@ msgstr "Έξοδος από πλήρη προβολή"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (currently in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:24
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:14
-#: src/features/voice/components/VoiceCallView.tsx:107
+#: src/features/voice/components/VoiceCallView.tsx:103
 msgid "Exit fullscreen"
 msgstr "Έξοδος από πλήρη οθόνη"
 
@@ -15144,7 +15159,7 @@ msgid "Explore communities"
 msgstr "Εξερεύνηση κοινοτήτων"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/theme_studio/sections/LibrarySection.tsx:494
+#: src/features/theme_studio/sections/LibrarySection.tsx:625
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:208
 msgid "Export"
 msgstr "Εξαγωγή"
@@ -15159,7 +15174,7 @@ msgstr "Εξαγωγή κάθε μηνύματος που έχετε στείλ�
 msgid "Export GIF URLs"
 msgstr "Εξαγωγή URL GIF"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:376
+#: src/features/theme_studio/sections/LibrarySection.tsx:459
 msgid "Export library"
 msgstr "Εξαγωγή βιβλιοθήκης"
 
@@ -16298,7 +16313,7 @@ msgstr "Προώθηση πολυμέσων"
 msgid "Forward message"
 msgstr "Προώθηση μηνύματος"
 
-#: src/features/channel/components/MessageAttachments.tsx:362
+#: src/features/channel/components/MessageAttachments.tsx:333
 msgid "Forwarded"
 msgstr "Προωθημένο"
 
@@ -18374,7 +18389,7 @@ msgid "Import {theOtherPlatform} template"
 msgstr "Εισαγωγή προτύπου από {theOtherPlatform}"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:97
+#: src/features/theme_studio/sections/LibrarySection.tsx:100
 msgid "Import a .css file to get started, or paste your own CSS in Quick CSS."
 msgstr "Εισαγάγετε ένα αρχείο .css για να ξεκινήσετε ή επικολλήστε το δικό σας CSS στο Γρήγορο CSS."
 
@@ -18388,7 +18403,9 @@ msgstr "Η εισαγωγή ολοκληρώθηκε. Προστέθηκαν {im
 msgid "Import complete. Added {importedCount, plural, one {# GIF} other {# GIFs}}."
 msgstr "Η εισαγωγή ολοκληρώθηκε. Προστέθηκαν {importedCount, plural, one {# GIF} other {# GIF}}."
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:337
+#. Title of the native file picker that imports CSS theme files on the desktop app. Imported files stay linked and update live when saved.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/theme_studio/sections/LibrarySection.tsx:420
 #: src/features/theme_studio/sections/QuickCssSection.tsx:190
 msgid "Import CSS"
 msgstr "Εισαγωγή CSS"
@@ -18400,7 +18417,7 @@ msgstr "Εισαγωγή αγαπημένων GIF"
 
 #. Title of the native folder picker that imports a directory of theme files.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:271
-#: src/features/theme_studio/sections/LibrarySection.tsx:349
+#: src/features/theme_studio/sections/LibrarySection.tsx:432
 msgid "Import folder"
 msgstr "Εισαγωγή φακέλου"
 
@@ -18409,7 +18426,7 @@ msgstr "Εισαγωγή φακέλου"
 msgid "Import GIFs"
 msgstr "Εισαγωγή GIF"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:361
+#: src/features/theme_studio/sections/LibrarySection.tsx:444
 msgid "Import library"
 msgstr "Εισαγωγή βιβλιοθήκης"
 
@@ -18452,13 +18469,13 @@ msgstr "Σημαντικές πληροφορίες:"
 
 #. Toast after importing one or more CSS files from a local theme folder.
 #. Toast after importing one or more CSS files into the theme library.
-#: src/features/theme_studio/sections/LibrarySection.tsx:64
-#: src/features/theme_studio/sections/LibrarySection.tsx:68
+#: src/features/theme_studio/sections/LibrarySection.tsx:67
+#: src/features/theme_studio/sections/LibrarySection.tsx:71
 msgid "Imported {length, plural, one {# theme file} other {# theme files}}."
 msgstr "Εισήχθησαν {length, plural, one {# αρχείο θέματος} other {# αρχεία θέματος}}."
 
 #. Toast after importing a Theme Studio library export file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:72
+#: src/features/theme_studio/sections/LibrarySection.tsx:75
 msgid "Imported {themes, plural, one {# theme} other {# themes}} and {assets, plural, one {# asset} other {# assets}}."
 msgstr "Εισήχθησαν {themes, plural, one {# θέμα} other {# θέματα}} και {assets, plural, one {# στοιχείο} other {# στοιχεία}}."
 
@@ -18587,7 +18604,7 @@ msgid "Include all except selected"
 msgstr "Να συμπεριληφθούν όλα εκτός από τα επιλεγμένα"
 
 #. Section header in the Linux audio source picker for the per-app inclusion list.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:55
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:57
 msgid "Include apps"
 msgstr "Συμπερίληψη εφαρμογών"
 
@@ -18866,12 +18883,12 @@ msgid "Installing desktop update…"
 msgstr "Εγκατάσταση ενημέρωσης για υπολογιστή…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:305
+#: src/features/platform/utils/DesktopLocaleBridge.ts:318
 msgid "Instant messaging and VoIP"
 msgstr "Άμεσα μηνύματα και VoIP"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:300
+#: src/features/platform/utils/DesktopLocaleBridge.ts:313
 msgid "Instant Messenger"
 msgstr "Εφαρμογή άμεσων μηνυμάτων"
 
@@ -18936,7 +18953,7 @@ msgid "Invalid authorization request"
 msgstr "Μη έγκυρο αίτημα εξουσιοδότησης"
 
 #. OAuth authorize page error shown when the permissions query parameter is not a valid integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:63
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:64
 msgid "Invalid bot permissions."
 msgstr "Μη έγκυρα δικαιώματα bot."
 
@@ -18977,7 +18994,7 @@ msgid "Invalid or expired code. Try again."
 msgstr "Μη έγκυρος ή ληγμένος κωδικός. Δοκιμάστε ξανά."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:79
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:80
 msgid "Invalid redirect_uri"
 msgstr "Μη έγκυρο redirect_uri"
 
@@ -19081,7 +19098,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "Ο σύνδεσμος πρόσκλησης είναι κρυφός κατά την κοινή χρήση:"
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:168
 msgid "Invite link masked while sharing"
 msgstr "Ο σύνδεσμος πρόσκλησης αποκρύφτηκε κατά την κοινή χρήση"
 
@@ -19501,7 +19518,7 @@ msgid "Jump to {displayName}"
 msgstr "Μετάβαση σε {displayName}"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
 msgid "Jump to {labelText}"
 msgstr "Μετάβαση σε {labelText}"
 
@@ -19558,12 +19575,12 @@ msgid "Jump to the current call"
 msgstr "Μετάβαση στην τρέχουσα κλήση"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
 msgid "Jump to the linked channel"
 msgstr "Μετάβαση στο συνδεδεμένο κανάλι"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:110
 msgid "Jump to the linked message"
 msgstr "Μετάβαση στο μήνυμα του συνδέσμου"
 
@@ -19573,7 +19590,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "Μετάβαση στο μήνυμα του/της {authorNickname}"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
 msgid "Jump to the message in {labelText}"
 msgstr "Μετάβαση στο μήνυμα στο {labelText}"
 
@@ -20217,6 +20234,13 @@ msgstr "Συνδέστε εξωτερικούς λογαριασμούς και 
 msgid "Link external accounts and domains to your profile"
 msgstr "Σύνδεση εξωτερικών λογαριασμών και τομέων στο προφίλ σας"
 
+#. Button in the Theme Studio library that links an existing theme to a CSS file on disk so saved changes to the file apply live.
+#. Title of the native file picker that links an existing theme to a CSS file on disk.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/theme_studio/sections/LibrarySection.tsx:607
+msgid "Link file"
+msgstr "Σύνδεση αρχείου"
+
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
@@ -20254,7 +20278,7 @@ msgid "Link styling"
 msgstr "Στιλ συνδέσμου"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:160
 msgid "Link unavailable"
 msgstr "Ο σύνδεσμος δεν είναι διαθέσιμος"
 
@@ -20279,6 +20303,11 @@ msgstr "Συνδέστε τον λογαριασμό σας στο {BLUESKY_PROV
 msgid "Linked"
 msgstr "Συνδεδεμένο"
 
+#. Toast after importing CSS files or a folder on the desktop app. The themes stay linked to the files on disk and update when the file is saved.
+#: src/features/theme_studio/sections/LibrarySection.tsx:140
+msgid "Linked {length, plural, one {# theme file} other {# theme files}}. Changes you save to them apply right away."
+msgstr "Συνδεδεμένα {length, plural, one {# αρχείο θέματος} other {# αρχεία θεμάτων}}. Οι αλλαγές που αποθηκεύετε εφαρμόζονται αμέσως."
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:12
 msgid "Linked accounts"
@@ -20290,6 +20319,26 @@ msgstr "Συνδεδεμένοι λογαριασμοί"
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:159
 msgid "Linked devices"
 msgstr "Συνδεδεμένες συσκευές"
+
+#. Accessible label for the warning icon next to a linked theme in the Theme Studio library when its CSS file is missing or cannot be read.
+#: src/features/theme_studio/sections/LibrarySection.tsx:151
+msgid "Linked file unavailable"
+msgstr "Το συνδεδεμένο αρχείο δεν είναι διαθέσιμο"
+
+#. Banner above a linked theme in the Theme Studio library while the app is still checking its CSS file, or when this version of the desktop app cannot follow file changes. {path} is the full path of the CSS file on disk.
+#: src/features/theme_studio/sections/LibrarySection.tsx:161
+msgid "Linked to {path}."
+msgstr "Συνδέθηκε με το {path}."
+
+#. Banner above a linked theme in the Theme Studio library. {path} is the full path of the CSS file on disk. The theme cannot be edited in the studio while linked.
+#: src/features/theme_studio/sections/LibrarySection.tsx:156
+msgid "Linked to {path}. Edit the file in any editor and saved changes apply here right away."
+msgstr "Συνδέθηκε με το {path}. Επεξεργαστείτε το αρχείο σε οποιονδήποτε επεξεργαστή και οι αποθηκευμένες αλλαγές εφαρμόζονται εδώ αμέσως."
+
+#. Accessible label for the icon next to a theme in the Theme Studio library that is linked to a CSS file on disk and updates live.
+#: src/features/theme_studio/sections/LibrarySection.tsx:146
+msgid "Linked to a file"
+msgstr "Συνδέεται με ένα αρχείο"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the markdown tab. Keep it concise.
@@ -20418,7 +20467,7 @@ msgid "Loading..."
 msgstr "Φόρτωση..."
 
 #. Combobox popup status shown while options are loading.
-#: src/features/ui/components/form/FormCombobox.tsx:87
+#: src/features/ui/components/form/FormCombobox.tsx:88
 #: src/features/ui/components/Spinner.tsx:22
 msgid "Loading…"
 msgstr "Φόρτωση…"
@@ -21638,7 +21687,7 @@ msgid "Message layout"
 msgstr "Διάταξη μηνυμάτων"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:95
 msgid "message link"
 msgstr "σύνδεσμος μηνύματος"
 
@@ -21951,7 +22000,7 @@ msgid "Miscellaneous"
 msgstr "Διάφορα"
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:37
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:38
 msgid "Missing client_id"
 msgstr "Λείπει το client_id"
 
@@ -22740,7 +22789,7 @@ msgstr "Παρακάμψεις γραμμών ειδοποιήσεων"
 #: src/features/expressions/components/modals/meme_form/MemeFormFields.tsx:24
 #: src/features/expressions/components/modals/sticker_form/StickerFormFields.tsx:28
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/BrandingSection.tsx:27
-#: src/features/theme_studio/sections/LibrarySection.tsx:105
+#: src/features/theme_studio/sections/LibrarySection.tsx:108
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:76
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:57
 #: src/features/webhook/components/FollowedChannelListItem.tsx:33
@@ -23181,7 +23230,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "Δεν υπάρχει δικαίωμα {sendMessagesPermission}"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:148
 msgid "No access"
 msgstr "Δεν υπάρχει πρόσβαση"
 
@@ -23629,7 +23678,7 @@ msgstr "Κανένα αποτέλεσμα"
 #. Empty state shown when a combobox search returns no matches.
 #. Empty state shown when a combobox search returns no matches.
 #: src/features/channel/components/embeds/attachments/TextualAttachmentLanguageCombobox.tsx:30
-#: src/features/ui/components/form/FormCombobox.tsx:83
+#: src/features/ui/components/form/FormCombobox.tsx:84
 msgid "No results found"
 msgstr "Δεν βρέθηκαν αποτελέσματα"
 
@@ -23731,17 +23780,17 @@ msgid "no text content"
 msgstr "χωρίς περιεχόμενο κειμένου"
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:129
+#: src/features/theme_studio/sections/LibrarySection.tsx:132
 msgid "No theme selected."
 msgstr "Δεν έχει επιλεγεί θέμα."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:85
+#: src/features/theme_studio/sections/LibrarySection.tsx:88
 msgid "No themes match your search."
 msgstr "Δεν βρέθηκαν θέματα που να ταιριάζουν με την αναζήτησή σας."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:89
+#: src/features/theme_studio/sections/LibrarySection.tsx:92
 msgid "No themes saved yet."
 msgstr "Δεν έχουν αποθηκευτεί θέματα ακόμα."
 
@@ -23848,7 +23897,7 @@ msgstr "Χωρίς μετατροπή"
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:220
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:268
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:265
 msgid "None"
 msgstr "Καμία"
 
@@ -24409,12 +24458,12 @@ msgid "Open {host} in your browser."
 msgstr "Ανοίξτε το {host} στο πρόγραμμα περιήγησής σας."
 
 #. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:127
 msgid "Open {labelText}"
 msgstr "Άνοιγμα {labelText}"
 
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
 msgid "Open {labelText} in settings"
 msgstr "Άνοιγμα {labelText} στις ρυθμίσεις"
 
@@ -24734,7 +24783,7 @@ msgid "Open overlay"
 msgstr "Άνοιγμα επικάλυψης"
 
 #. Accessible label for the combobox popup trigger button.
-#: src/features/ui/components/form/FormCombobox.tsx:95
+#: src/features/ui/components/form/FormCombobox.tsx:96
 msgid "Open popup"
 msgstr "Άνοιγμα αναπτυσσόμενου πλαισίου"
 
@@ -25203,7 +25252,7 @@ msgid "Page down"
 msgstr "Page Down"
 
 #. Role description announced for an inline chat link pill that opens an app page. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:132
 msgid "page link"
 msgstr "σύνδεσμος σελίδας"
 
@@ -25733,7 +25782,7 @@ msgid "Pick a reverse image search provider"
 msgstr "Επιλέξτε πάροχο αντίστροφης αναζήτησης εικόνων"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:133
+#: src/features/theme_studio/sections/LibrarySection.tsx:136
 msgid "Pick a theme on the left to edit its name, metadata, and CSS. Or import a new one."
 msgstr "Επιλέξτε ένα θέμα στα αριστερά για να επεξεργαστείτε το όνομα, τα μεταδεδομένα και το CSS του. Ή εισαγάγετε ένα νέο."
 
@@ -26080,7 +26129,7 @@ msgid "Pop back in"
 msgstr "Επαναφορά στο κύριο παράθυρο"
 
 #. Tooltip / aria label on the voice call footer button that opens the call in a separate window.
-#: src/features/voice/components/VoiceCallCornerControls.tsx:12
+#: src/features/voice/components/VoiceCallCornerControls.tsx:11
 msgid "Pop out call"
 msgstr "Άνοιγμα κλήσης σε ξεχωριστό παράθυρο"
 
@@ -27287,7 +27336,7 @@ msgid "Reconnect succeeded. Pick a screen again if you want to resume your previ
 msgstr "Η επανασύνδεση ήταν επιτυχής. Επιλέξτε ξανά μια οθόνη, αν θέλετε να συνεχίσετε την προηγούμενη ροή σας."
 
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
-#: src/features/voice/components/VoiceCallView.tsx:98
+#: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Reconnecting..."
 msgstr "Επανασύνδεση..."
 
@@ -27427,7 +27476,7 @@ msgstr "Αντιγράφηκε η αναφορά."
 msgid "Referral parameters"
 msgstr "Παράμετροι παραπομπής"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:312
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:309
 msgid "Refresh audio sources"
 msgstr "Ανανέωση πηγών ήχου"
 
@@ -27766,7 +27815,7 @@ msgstr "Remove from thread"
 
 #. Button label in a popped-out voice window titlebar that unpins the window from staying above others.
 #. Button label in the Theme Studio popout titlebar that unpins the window from staying above others.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:37
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:39
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:18
 msgid "Remove from top"
 msgstr "Αφαίρεση από την κορυφή"
@@ -29420,7 +29469,7 @@ msgstr "Αποθήκευση εικονιδίου"
 msgid "Save some media from messages to get started!"
 msgstr "Αποθηκεύστε μερικά πολυμέσα από μηνύματα για να ξεκινήσετε!"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:574
+#: src/features/theme_studio/sections/LibrarySection.tsx:754
 msgid "Save theme"
 msgstr "Αποθήκευση θέματος"
 
@@ -30008,7 +30057,7 @@ msgid "Search the web"
 msgstr "Αναζήτηση στο διαδίκτυο"
 
 #. Button or menu action label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:81
+#: src/features/theme_studio/sections/LibrarySection.tsx:84
 msgid "Search themes…"
 msgstr "Αναζήτηση θεμάτων…"
 
@@ -30335,7 +30384,7 @@ msgid "Select your country of residence."
 msgstr "Επιλέξτε τη χώρα διαμονής σας."
 
 #. Generic combobox control placeholder.
-#: src/features/ui/components/form/FormCombobox.tsx:75
+#: src/features/ui/components/form/FormCombobox.tsx:76
 msgid "Select…"
 msgstr "Επιλογή…"
 
@@ -30987,7 +31036,7 @@ msgid "Settings"
 msgstr "Ρυθμίσεις"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:136
 msgid "settings link"
 msgstr "σύνδεσμος ρυθμίσεων"
 
@@ -31137,7 +31186,7 @@ msgid "Shared window"
 msgstr "Κοινόχρηστο παράθυρο"
 
 #. Capture option in the Linux audio source picker on a window share. Captures only the audio of the window being shared.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:40
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:42
 msgid "Shared window audio"
 msgstr "Ήχος κοινόχρηστου παραθύρου"
 
@@ -33025,7 +33074,7 @@ msgstr "Να παραμένει πλήρως διαδραστικό όταν δ�
 
 #. Button label in a popped-out voice window titlebar that pins the window above other windows.
 #. Button label in the Theme Studio popout titlebar that pins the window above other windows.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:33
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:35
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:14
 msgid "Stay on top"
 msgstr "Πάντα σε πρώτο πλάνο"
@@ -34002,7 +34051,7 @@ msgstr "Όνομα ετικέτας"
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:221
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:34
 #: src/features/channel/components/modals/EditPostModal.tsx:154
-#: src/features/theme_studio/sections/LibrarySection.tsx:117
+#: src/features/theme_studio/sections/LibrarySection.tsx:120
 msgid "Tags"
 msgstr "Ετικέτες"
 
@@ -34603,12 +34652,12 @@ msgid "The phone check is set aside. One email step is left."
 msgstr "Αφήσαμε στην άκρη τον τηλεφωνικό έλεγχο. Απομένει ένα βήμα με το email."
 
 #. OAuth authorize page error shown when the redirect_uri is not registered for this OAuth app.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:59
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:60
 msgid "The provided redirect_uri is not registered for this application."
 msgstr "Το redirect_uri που δόθηκε δεν είναι καταχωρισμένο για αυτήν την εφαρμογή."
 
 #. Body text in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:50
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:51
 msgid "The provided redirect_uri must use HTTP or HTTPS."
 msgstr "Το redirect_uri που δόθηκε πρέπει να χρησιμοποιεί HTTP ή HTTPS."
 
@@ -34697,7 +34746,7 @@ msgid "Theme color"
 msgstr "Χρώμα θέματος"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:125
+#: src/features/theme_studio/sections/LibrarySection.tsx:128
 msgid "Theme CSS"
 msgstr "CSS θέματος"
 
@@ -34717,7 +34766,7 @@ msgid "Theme not found"
 msgstr "Το θέμα δεν βρέθηκε"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:47
+#: src/features/theme_studio/sections/LibrarySection.tsx:50
 msgid "Theme saved."
 msgstr "Το θέμα αποθηκεύτηκε."
 
@@ -34841,7 +34890,7 @@ msgid "This animation is too long or too large to crop. Try a shorter or smaller
 msgstr "Αυτό το κινούμενο σχέδιο είναι πολύ μεγάλο ή έχει πάρα πολλά καρέ για να γίνει περικοπή. Δοκιμάστε ένα μικρότερο αρχείο."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:83
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:84
 msgid "This application"
 msgstr "Αυτή η εφαρμογή"
 
@@ -34851,7 +34900,7 @@ msgid "This attachment has expired"
 msgstr "Αυτό το συνημμένο έχει λήξει"
 
 #. OAuth authorize page error shown when a private bot cannot be added by non-owners.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:71
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:72
 msgid "This bot is not public and cannot be added by other users."
 msgstr "Αυτό το bot δεν είναι δημόσιο και δεν μπορεί να προστεθεί από άλλους χρήστες."
 
@@ -35316,7 +35365,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "Αυτό το κανάλι συνδέσμου έχει επισημανθεί για περιεχόμενο ενηλίκων και ενδέχεται να ανοίξει υλικό που μπορεί να είναι ακατάλληλο για ορισμένους χρήστες."
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:164
 msgid "This link is not available for your account."
 msgstr "Αυτός ο σύνδεσμος δεν είναι διαθέσιμος για τον λογαριασμό σας."
 
@@ -35449,7 +35498,7 @@ msgid "This refunds your most recent invoice and cancels any associated subscrip
 msgstr "Αυτό επιστρέφει τα χρήματα του πιο πρόσφατου τιμολογίου σας και ακυρώνει τυχόν σχετική συνδρομή. Δεν θα μπορείτε να κάνετε ξανά επιστροφή χρημάτων μόνοι σας για 30 ημέρες."
 
 #. Confirmation text before deleting a saved local theme from Theme Studio.
-#: src/features/theme_studio/sections/LibrarySection.tsx:55
+#: src/features/theme_studio/sections/LibrarySection.tsx:58
 msgid "This removes \"{themeName}\" from this device."
 msgstr "Αυτό καταργεί το \"{themeName}\" από αυτήν τη συσκευή."
 
@@ -36249,7 +36298,7 @@ msgid "Trusted domains cleared."
 msgstr "Οι αξιόπιστοι τομείς διαγράφηκαν."
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:93
+#: src/features/theme_studio/sections/LibrarySection.tsx:96
 msgid "Try a different name or clear the search."
 msgstr "Δοκιμάστε ένα διαφορετικό όνομα ή διαγράψτε την αναζήτηση."
 
@@ -36987,7 +37036,7 @@ msgid "Unknown"
 msgstr "Άγνωστο"
 
 #. OAuth authorize page error shown when the application, session, or request is invalid.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:46
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:47
 msgid "Unknown application, expired session, or invalid authorization request."
 msgstr "Άγνωστη εφαρμογή, ληγμένη συνεδρία ή μη έγκυρο αίτημα εξουσιοδότησης."
 
@@ -37121,6 +37170,11 @@ msgstr "unknown-mention"
 #: src/features/messaging/utils/markdown/Plaintext.ts:76
 msgid "unknown-role"
 msgstr "unknown-role"
+
+#. Button in the Theme Studio library that stops a theme following its CSS file on disk and turns it back into an editable copy.
+#: src/features/theme_studio/sections/LibrarySection.tsx:681
+msgid "Unlink"
+msgstr "Αποσύνδεση"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:143
 msgid "Unlock"
@@ -37427,12 +37481,12 @@ msgid "Unread message badge"
 msgstr "Σήμα μη αναγνωσμένων μηνυμάτων"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/platform/utils/DesktopLocaleBridge.ts:288
 msgid "Unread messages"
 msgstr "Μη αναγνωσμένα μηνύματα"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/platform/utils/DesktopLocaleBridge.ts:293
 msgid "Unread messages: {count}"
 msgstr "Μη αναγνωσμένα μηνύματα: {count}"
 
@@ -37441,7 +37495,7 @@ msgstr "Μη αναγνωσμένα μηνύματα: {count}"
 msgid "Unreads"
 msgstr "Μη αναγνωσμένα"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:578
+#: src/features/theme_studio/sections/LibrarySection.tsx:758
 msgid "Unsaved changes"
 msgstr "Μη αποθηκευμένες αλλαγές"
 
@@ -38638,7 +38692,7 @@ msgstr "Φόρμα επαλήθευσης αριθμού τηλεφώνου"
 #. Title of the error modal shown when an unverified account tries to start a DM.
 #. Title shown when an unverified account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:40
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:79
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
 #: src/features/channel/utils/CreateDMModalUtils.tsx:51
 #: src/features/moderation/components/report/ReportStepEmail.tsx:43
 msgid "Verify your email"
@@ -38757,7 +38811,7 @@ msgid "Vermont"
 msgstr "Βερμόντ"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:113
+#: src/features/theme_studio/sections/LibrarySection.tsx:116
 msgid "Version"
 msgstr "Έκδοση"
 
@@ -38994,7 +39048,7 @@ msgid "View call"
 msgstr "Προβολή κλήσης"
 
 #. Aria label for the show-controls trigger when the call toolbar is auto-hidden.
-#: src/features/voice/components/VoiceCallView.tsx:124
+#: src/features/voice/components/VoiceCallView.tsx:120
 msgid "View call controls"
 msgstr "Προβολή στοιχείων ελέγχου κλήσης"
 
@@ -39673,7 +39727,7 @@ msgid "We couldn't forward the message at this time."
 msgstr "Δεν ήταν δυνατή η προώθηση του μηνύματος αυτή τη στιγμή."
 
 #. Error message in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:77
+#: src/features/theme_studio/sections/LibrarySection.tsx:80
 msgid "We couldn't import that theme library file."
 msgstr "Δεν ήταν δυνατή η εισαγωγή του αρχείου βιβλιοθήκης θέματος."
 
@@ -40782,7 +40836,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "Αλλάξατε την ετικέτα σας ενώ είχατε {PREMIUM_PRODUCT_NAME}. Θα αλλάξει τυχαία όταν λήξει το {PREMIUM_PRODUCT_NAME} σας, εκτός αν ανανεωθεί."
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:144
 msgid "You do not have access to the channel where this message was sent."
 msgstr "Δεν έχετε πρόσβαση στο κανάλι όπου στάλθηκε αυτό το μήνυμα."
 
@@ -41004,7 +41058,7 @@ msgstr "Πρέπει να επαληθεύσετε έναν αριθμό τηλ�
 msgid "You need to verify your email address before you can create a community."
 msgstr "Πρέπει να επαληθεύσετε τη διεύθυνση email σας πριν δημιουργήσετε μια κοινότητα."
 
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:81
 msgid "You need to verify your email address before you can send friend requests."
 msgstr "Πρέπει να επαληθεύσετε τη διεύθυνση email σας πριν στείλετε αιτήματα φιλίας."
 
@@ -41354,7 +41408,7 @@ msgid "Your {premiumProductName} subscription has expired. You have lost all {pr
 msgstr "Η συνδρομή σας στο {premiumProductName} έληξε. Έχετε χάσει όλα τα προνόμια του {premiumProductName}. Ενεργοποιήστε ξανά τη συνδρομή σας για να αποκτήσετε ξανά πρόσβαση."
 
 #. OAuth authorize page error shown when the session expired mid-authorization. Keep plain. Preserve {productName}; it is inserted by code.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:41
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:42
 msgid "Your {productName} session expired. Sign in again to continue authorizing this application."
 msgstr "Η περίοδος λειτουργίας σας στο {productName} έληξε. Συνδεθείτε ξανά για να συνεχίσετε την εξουσιοδότηση αυτής της εφαρμογής."
 

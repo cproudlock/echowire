@@ -21,7 +21,7 @@ msgstr "…开启紧凑模式。赞！"
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-#: src/features/channel/components/MessageAttachments.tsx:392
+#: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
@@ -843,12 +843,12 @@ msgid "{appCount, plural, one {# app selected for access revocation} other {# ap
 msgstr "已选择 {appCount, plural, other {# 个应用}}，将撤销其访问权限"
 
 #. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+#: src/features/platform/utils/DesktopLocaleBridge.ts:308
 msgid "{appName} can't reach its servers. It will keep trying in the background."
 msgstr "{appName} 无法连接到服务器。它将在后台继续尝试。"
 
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:285
+#: src/features/platform/utils/DesktopLocaleBridge.ts:298
 msgid "{appName} failed to start"
 msgstr "{appName} 启动失败"
 
@@ -1041,7 +1041,7 @@ msgstr "{count, plural, other {# 个共同社区}}"
 msgid "{count, plural, one {# other} other {# others}}"
 msgstr "{count, plural, other {# 位其他用户}}"
 
-#: src/features/voice/components/VoiceCallView.tsx:507
+#: src/features/voice/components/VoiceCallView.tsx:474
 msgid "{count, plural, one {# participant in call} other {# participants in call}}"
 msgstr "{count, plural, other {# 位参与者正在通话中}}"
 
@@ -1984,7 +1984,7 @@ msgid "{seconds, plural, one {Your invite link expires in # second.} other {Your
 msgstr "{seconds, plural, other {你的邀请链接将在 # 秒后过期。}}"
 
 #. Generic multi-select summary label. selectedCount is the number of selected options.
-#: src/features/ui/components/form/FormCombobox.tsx:79
+#: src/features/ui/components/form/FormCombobox.tsx:80
 msgid "{selectedCount} selected"
 msgstr "已选择 {selectedCount} 项"
 
@@ -2013,7 +2013,7 @@ msgid "{textChannelCount, plural, one {# text channel} other {# text channels}},
 msgstr "{textChannelCount, plural, other {# 个文字频道}}，{voiceChannelCount, plural, other {# 个语音频道}}，{categoryCount, plural, other {# 个类别}}，{roleCount, plural, other {# 个身份组}}"
 
 #. Name given to the copy created by the Duplicate button in the Theme Studio theme library. {themeName} is the name of the theme being duplicated.
-#: src/features/theme/state/ThemeLibrary.ts:32
+#: src/features/theme/state/ThemeLibrary.ts:34
 msgid "{themeName} Copy"
 msgstr "{themeName} 副本"
 
@@ -2241,8 +2241,8 @@ msgstr "<0>{username}</0> 仍在群聊中。请稍后重试。"
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-#: src/features/channel/components/MessageAttachments.tsx:243
-#: src/features/channel/components/MessageAttachments.tsx:299
+#: src/features/channel/components/MessageAttachments.tsx:214
+#: src/features/channel/components/MessageAttachments.tsx:270
 msgid "<0>Forwarded from</0>{sourceInfo}"
 msgstr "<0>转发自</0>{sourceInfo}"
 
@@ -2681,7 +2681,7 @@ msgid "A profile that stands out"
 msgstr "一个脱颖而出的个人资料"
 
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:55
 msgid "A redirect_uri is required when the bot scope is not the only scope."
 msgstr "当 bot 范围不是唯一范围时，需要一个 redirect_uri。"
 
@@ -5097,7 +5097,7 @@ msgid "Audio settings"
 msgstr "音频设置"
 
 #. Toggle / summary row label in the Linux audio source picker. {summaryLabel} is one of the audio-source summary labels.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:45
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:47
 msgid "Audio sources: {summaryLabel}"
 msgstr "音频来源：{summaryLabel}"
 
@@ -5142,7 +5142,7 @@ msgid "Authenticator code"
 msgstr "身份验证器验证码"
 
 #. Short label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:109
+#: src/features/theme_studio/sections/LibrarySection.tsx:112
 msgid "Author"
 msgstr "作者"
 
@@ -5162,7 +5162,7 @@ msgid "Authorization failed"
 msgstr "授权失败"
 
 #. OAuth authorize page generic error toast shown when the authorize request fails unexpectedly.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:75
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:76
 msgid "Authorization failed. Try again."
 msgstr "授权失败。请重试。"
 
@@ -5560,7 +5560,7 @@ msgid "Back to sticker"
 msgstr "返回贴纸"
 
 #. Tooltip / aria label on the back button that returns from the call view to the voice channel view.
-#: src/features/voice/components/VoiceCallView.tsx:115
+#: src/features/voice/components/VoiceCallView.tsx:111
 msgid "Back to voice channel"
 msgstr "返回语音频道"
 
@@ -6158,13 +6158,13 @@ msgid "Bot invite (no external redirect)"
 msgstr "机器人邀请（无外部重定向）"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:162
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:163
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:104
 msgid "Bot permissions"
 msgstr "机器人权限"
 
 #. OAuth authorize page error shown when the permissions query parameter is a negative integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:67
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:68
 msgid "Bot permissions cannot be negative."
 msgstr "机器人权限不能为负数。"
 
@@ -6661,14 +6661,24 @@ msgid "Can't access that email?"
 msgstr "无法访问该邮箱？"
 
 #. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+#: src/features/platform/utils/DesktopLocaleBridge.ts:303
 msgid "Can't connect"
 msgstr "无法连接"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file was moved or deleted. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:166
+msgid "Can't find {path}. Using the last loaded version."
+msgstr "找不到 {path}。正在使用上次加载的版本。"
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
 msgid "Can't paste image here"
 msgstr "无法在此处粘贴图片"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file exists but cannot be read, for example because it is too large or access was removed. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:171
+msgid "Can't read {path}. Using the last loaded version."
+msgstr "无法读取 {path}。正在使用上次加载的版本。"
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:16
@@ -6835,7 +6845,7 @@ msgid "Cannot delete account"
 msgstr "无法删除账号"
 
 #. Section header in the Linux audio source picker. Lists capture-target options (entire system / specific apps).
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:50
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:52
 msgid "Capture"
 msgstr "捕获"
 
@@ -7395,7 +7405,7 @@ msgid "Channel access"
 msgstr "频道访问"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:140
 msgid "Channel access denied"
 msgstr "无法访问频道"
 
@@ -7460,7 +7470,7 @@ msgstr "频道 ID 已复制到剪贴板"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:100
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "频道链接"
@@ -7840,7 +7850,7 @@ msgid "Choose background"
 msgstr "选择背景"
 
 #. OAuth authorize page error shown when a bot invite request provides both guild_id and channel_id. Keep the parameter names literal.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:87
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:88
 msgid "Choose either guild_id or channel_id, not both."
 msgstr "请选择 guild_id 或 channel_id，不能同时选择两者。"
 
@@ -8041,7 +8051,7 @@ msgstr "领取礼物"
 #. Title shown when an unclaimed account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:32
 #: src/features/auth/components/modals/ClaimAccountModal.tsx:41
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:62
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
 #: src/features/channel/utils/CreateDMModalUtils.tsx:43
 #: src/features/guild/components/modals/add_guild_modal/GuildCreateForm.tsx:213
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:441
@@ -8123,7 +8133,7 @@ msgstr "请先认领账号，然后才能领取此礼物。"
 #. Description text in the channel and chat dm welcome section.
 #. Description text in the user profile modal.
 #. Tooltip shown when an unclaimed account tries to send a friend request.
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:64
 #: src/features/channel/components/direct_message/DMWelcomeSection.tsx:37
 #: src/features/ui/action_menu/items/RelationshipMenuItems.tsx:40
 #: src/features/user/components/modals/UserProfileModal.tsx:122
@@ -8268,7 +8278,7 @@ msgstr "清除搜索输入"
 #. Accessible label for the combobox clear button.
 #. Button or menu action label in the authorized apps tab. Keep it concise.
 #. Button or menu action label in the devices tab. Keep it concise.
-#: src/features/ui/components/form/FormCombobox.tsx:91
+#: src/features/ui/components/form/FormCombobox.tsx:92
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:46
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:61
 msgid "Clear selection"
@@ -8783,7 +8793,7 @@ msgid "Coming soon"
 msgstr "即将推出"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:121
+#: src/features/theme_studio/sections/LibrarySection.tsx:124
 msgid "comma, separated"
 msgstr "逗号分隔"
 
@@ -9381,7 +9391,7 @@ msgstr "康涅狄格州"
 #. Action label state in the DM channel header pill while the join request is in flight. Trailing ASCII ellipsis is intentional.
 #. Overlay status in the voice call view while joining. Trailing ellipsis indicates in-progress.
 #: src/features/channel/components/channel_view/dm_channel_view/shared.ts:129
-#: src/features/voice/components/VoiceCallView.tsx:94
+#: src/features/voice/components/VoiceCallView.tsx:90
 msgid "Connecting..."
 msgstr "正在连接..."
 
@@ -9442,7 +9452,7 @@ msgid "Connection removed"
 msgstr "连接已移除"
 
 #. Tooltip / aria label on the connection-stats button in the voice call header. Opens the voice connection status popout.
-#: src/features/voice/components/VoiceCallView.tsx:119
+#: src/features/voice/components/VoiceCallView.tsx:115
 msgid "Connection stats"
 msgstr "连接统计"
 
@@ -9752,7 +9762,7 @@ msgstr "已将网址复制到剪贴板"
 #: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:80
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:230
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx:59
 msgid "Copy"
 msgstr "复制"
@@ -11038,6 +11048,11 @@ msgstr "正在裁剪 {percent}%"
 msgid "CSS"
 msgstr "CSS"
 
+#. Name of the file type filter in the native theme file picker, shown next to the *.css pattern.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+msgid "CSS files"
+msgstr "CSS 文件"
+
 #. Keyboard keycap label for Control on non-Mac platforms. Keep it short.
 #. Keyboard shortcut keycap label for Control on non-Mac platforms. Keep it short.
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:18
@@ -11808,7 +11823,7 @@ msgstr "特拉华州"
 #: src/features/messaging/commands/MessageCommands.tsx:83
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/platform/utils/DesktopLocaleBridge.ts:77
-#: src/features/theme_studio/sections/LibrarySection.tsx:514
+#: src/features/theme_studio/sections/LibrarySection.tsx:645
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:290
@@ -12046,12 +12061,12 @@ msgid "Delete the category \"{categoryName}\"? Can't be undone."
 msgstr "删除类别\"{categoryName}\"？此操作无法撤销。"
 
 #. Button or menu action label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:59
+#: src/features/theme_studio/sections/LibrarySection.tsx:62
 msgid "Delete theme"
 msgstr "删除主题"
 
 #. Confirmation prompt in the theme studio library section. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:51
+#: src/features/theme_studio/sections/LibrarySection.tsx:54
 msgid "Delete theme?"
 msgstr "删除主题？"
 
@@ -12421,13 +12436,13 @@ msgstr "开发者状态"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:152
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "开发者工具"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:156
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "在频道标题栏中点击员工徽章即可使用开发者工具。"
 
@@ -12824,7 +12839,7 @@ msgstr "断开 socket 连接"
 #. Overlay status in the voice call view when not connected.
 #. Overlay status text in the compact / floating voice call tile when not connected.
 #: src/features/voice/components/compact_voice_call_view/shared.ts:15
-#: src/features/voice/components/VoiceCallView.tsx:103
+#: src/features/voice/components/VoiceCallView.tsx:99
 msgid "Disconnected"
 msgstr "已断开连接"
 
@@ -13353,7 +13368,7 @@ msgid "Downloading desktop update: {percent}% ({formatBytes} / {formatBytes2} at
 msgstr "正在下载桌面版更新：{percent}%（{formatBytes} / {formatBytes2}，速度 {formatBytes3}/秒）"
 
 #. Short desktop updater status label.
-#: src/features/app/state/Updater.ts:46
+#: src/features/app/state/Updater.ts:48
 msgid "Downloading desktop update…"
 msgstr "正在下载桌面版更新…"
 
@@ -13491,7 +13506,7 @@ msgstr "由于{regionName}的成人内容法律，此内容无法在此处查看
 msgid "Due to mature content laws in {regionName}, this media is not available from your current region."
 msgstr "由于{regionName}的成人内容法律，此媒体在你当前所在地区不可用。"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:503
+#: src/features/theme_studio/sections/LibrarySection.tsx:634
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:220
 msgid "Duplicate"
 msgstr "复制"
@@ -14128,7 +14143,7 @@ msgid "Enable {permissionName} permission"
 msgstr "启用“{permissionName}”权限"
 
 #. Accessible label for the switch that enables a saved theme file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:101
+#: src/features/theme_studio/sections/LibrarySection.tsx:104
 msgid "Enable {themeName}"
 msgstr "启用 {themeName}"
 
@@ -14585,7 +14600,7 @@ msgstr "输入代码"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (not in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:28
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:18
-#: src/features/voice/components/VoiceCallView.tsx:111
+#: src/features/voice/components/VoiceCallView.tsx:107
 msgid "Enter fullscreen"
 msgstr "进入全屏"
 
@@ -14767,7 +14782,7 @@ msgstr "整个屏幕"
 msgid "Entire system"
 msgstr "整个系统"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:260
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:257
 msgid "Entire system audio"
 msgstr "整个系统音频"
 
@@ -14945,7 +14960,7 @@ msgid "exclude a user"
 msgstr "排除某个用户"
 
 #. Section header in the Linux audio source picker for apps excluded from the system mix.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:59
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:61
 msgid "Exclude from system"
 msgstr "从系统音频中排除"
 
@@ -14970,7 +14985,7 @@ msgstr "退出全屏视图"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (currently in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:24
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:14
-#: src/features/voice/components/VoiceCallView.tsx:107
+#: src/features/voice/components/VoiceCallView.tsx:103
 msgid "Exit fullscreen"
 msgstr "退出全屏"
 
@@ -15144,7 +15159,7 @@ msgid "Explore communities"
 msgstr "探索社区"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/theme_studio/sections/LibrarySection.tsx:494
+#: src/features/theme_studio/sections/LibrarySection.tsx:625
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:208
 msgid "Export"
 msgstr "导出"
@@ -15159,7 +15174,7 @@ msgstr "导出你发送过的所有消息，以及你的全部账号设置、成
 msgid "Export GIF URLs"
 msgstr "导出 GIF 链接"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:376
+#: src/features/theme_studio/sections/LibrarySection.tsx:459
 msgid "Export library"
 msgstr "导出主题库"
 
@@ -16298,7 +16313,7 @@ msgstr "转发媒体"
 msgid "Forward message"
 msgstr "转发消息"
 
-#: src/features/channel/components/MessageAttachments.tsx:362
+#: src/features/channel/components/MessageAttachments.tsx:333
 msgid "Forwarded"
 msgstr "已转发"
 
@@ -18374,7 +18389,7 @@ msgid "Import {theOtherPlatform} template"
 msgstr "导入 {theOtherPlatform} 模板"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:97
+#: src/features/theme_studio/sections/LibrarySection.tsx:100
 msgid "Import a .css file to get started, or paste your own CSS in Quick CSS."
 msgstr "导入 .css 文件即可开始，或在“快速 CSS”中粘贴你自己的 CSS。"
 
@@ -18388,7 +18403,9 @@ msgstr "导入完成。已添加 {importedCount, plural, other {# 张 GIF}}，�
 msgid "Import complete. Added {importedCount, plural, one {# GIF} other {# GIFs}}."
 msgstr "导入完成。已添加 {importedCount, plural, other {# 张 GIF}}。"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:337
+#. Title of the native file picker that imports CSS theme files on the desktop app. Imported files stay linked and update live when saved.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/theme_studio/sections/LibrarySection.tsx:420
 #: src/features/theme_studio/sections/QuickCssSection.tsx:190
 msgid "Import CSS"
 msgstr "导入 CSS"
@@ -18400,7 +18417,7 @@ msgstr "导入收藏的 GIF"
 
 #. Title of the native folder picker that imports a directory of theme files.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:271
-#: src/features/theme_studio/sections/LibrarySection.tsx:349
+#: src/features/theme_studio/sections/LibrarySection.tsx:432
 msgid "Import folder"
 msgstr "导入文件夹"
 
@@ -18409,7 +18426,7 @@ msgstr "导入文件夹"
 msgid "Import GIFs"
 msgstr "导入 GIF"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:361
+#: src/features/theme_studio/sections/LibrarySection.tsx:444
 msgid "Import library"
 msgstr "导入主题库"
 
@@ -18452,13 +18469,13 @@ msgstr "重要信息："
 
 #. Toast after importing one or more CSS files from a local theme folder.
 #. Toast after importing one or more CSS files into the theme library.
-#: src/features/theme_studio/sections/LibrarySection.tsx:64
-#: src/features/theme_studio/sections/LibrarySection.tsx:68
+#: src/features/theme_studio/sections/LibrarySection.tsx:67
+#: src/features/theme_studio/sections/LibrarySection.tsx:71
 msgid "Imported {length, plural, one {# theme file} other {# theme files}}."
 msgstr "已导入 {length, plural, other {# 个主题文件}}。"
 
 #. Toast after importing a Theme Studio library export file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:72
+#: src/features/theme_studio/sections/LibrarySection.tsx:75
 msgid "Imported {themes, plural, one {# theme} other {# themes}} and {assets, plural, one {# asset} other {# assets}}."
 msgstr "已导入 {themes, plural, other {# 个主题}} 和 {assets, plural, other {# 个素材}}。"
 
@@ -18587,7 +18604,7 @@ msgid "Include all except selected"
 msgstr "排除所选"
 
 #. Section header in the Linux audio source picker for the per-app inclusion list.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:55
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:57
 msgid "Include apps"
 msgstr "包含的应用"
 
@@ -18866,12 +18883,12 @@ msgid "Installing desktop update…"
 msgstr "正在安装桌面版更新…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:305
+#: src/features/platform/utils/DesktopLocaleBridge.ts:318
 msgid "Instant messaging and VoIP"
 msgstr "即时通讯与 VoIP"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:300
+#: src/features/platform/utils/DesktopLocaleBridge.ts:313
 msgid "Instant Messenger"
 msgstr "即时通讯软件"
 
@@ -18936,7 +18953,7 @@ msgid "Invalid authorization request"
 msgstr "授权请求无效"
 
 #. OAuth authorize page error shown when the permissions query parameter is not a valid integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:63
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:64
 msgid "Invalid bot permissions."
 msgstr "机器人权限无效。"
 
@@ -18977,7 +18994,7 @@ msgid "Invalid or expired code. Try again."
 msgstr "配对码无效或已过期。请重试。"
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:79
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:80
 msgid "Invalid redirect_uri"
 msgstr "无效的 redirect_uri"
 
@@ -19081,7 +19098,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "共享时已隐藏邀请链接："
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:168
 msgid "Invite link masked while sharing"
 msgstr "共享时已隐藏邀请链接"
 
@@ -19501,7 +19518,7 @@ msgid "Jump to {displayName}"
 msgstr "跳转到 {displayName}"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
 msgid "Jump to {labelText}"
 msgstr "跳转到“{labelText}”"
 
@@ -19558,12 +19575,12 @@ msgid "Jump to the current call"
 msgstr "跳转到当前通话"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
 msgid "Jump to the linked channel"
 msgstr "跳转到链接的频道"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:110
 msgid "Jump to the linked message"
 msgstr "跳转到链接的消息"
 
@@ -19573,7 +19590,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "跳转到 {authorNickname} 发送的消息"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
 msgid "Jump to the message in {labelText}"
 msgstr "跳转到“{labelText}”中的消息"
 
@@ -20217,6 +20234,13 @@ msgstr "将外部账号和域名关联到你的 {PRODUCT_NAME} 个人资料。�
 msgid "Link external accounts and domains to your profile"
 msgstr "关联外部账号和域名到你的个人资料"
 
+#. Button in the Theme Studio library that links an existing theme to a CSS file on disk so saved changes to the file apply live.
+#. Title of the native file picker that links an existing theme to a CSS file on disk.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/theme_studio/sections/LibrarySection.tsx:607
+msgid "Link file"
+msgstr "链接文件"
+
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
@@ -20254,7 +20278,7 @@ msgid "Link styling"
 msgstr "链接样式"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:160
 msgid "Link unavailable"
 msgstr "链接无法打开"
 
@@ -20279,6 +20303,11 @@ msgstr "关联你的 {BLUESKY_PROVIDER_NAME} 账号或验证域名所有权，�
 msgid "Linked"
 msgstr "已关联"
 
+#. Toast after importing CSS files or a folder on the desktop app. The themes stay linked to the files on disk and update when the file is saved.
+#: src/features/theme_studio/sections/LibrarySection.tsx:140
+msgid "Linked {length, plural, one {# theme file} other {# theme files}}. Changes you save to them apply right away."
+msgstr "已链接 {length, plural, one {# 个主题文件} other {# 个主题文件}}。对它们的更改会立即生效。"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:12
 msgid "Linked accounts"
@@ -20290,6 +20319,26 @@ msgstr "关联账号"
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:159
 msgid "Linked devices"
 msgstr "已关联设备"
+
+#. Accessible label for the warning icon next to a linked theme in the Theme Studio library when its CSS file is missing or cannot be read.
+#: src/features/theme_studio/sections/LibrarySection.tsx:151
+msgid "Linked file unavailable"
+msgstr "链接文件不可用"
+
+#. Banner above a linked theme in the Theme Studio library while the app is still checking its CSS file, or when this version of the desktop app cannot follow file changes. {path} is the full path of the CSS file on disk.
+#: src/features/theme_studio/sections/LibrarySection.tsx:161
+msgid "Linked to {path}."
+msgstr "已链接到 {path}。"
+
+#. Banner above a linked theme in the Theme Studio library. {path} is the full path of the CSS file on disk. The theme cannot be edited in the studio while linked.
+#: src/features/theme_studio/sections/LibrarySection.tsx:156
+msgid "Linked to {path}. Edit the file in any editor and saved changes apply here right away."
+msgstr "已链接到 {path}。在任何编辑器中编辑文件，保存的更改会立即在此处生效。"
+
+#. Accessible label for the icon next to a theme in the Theme Studio library that is linked to a CSS file on disk and updates live.
+#: src/features/theme_studio/sections/LibrarySection.tsx:146
+msgid "Linked to a file"
+msgstr "链接到文件"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the markdown tab. Keep it concise.
@@ -20418,7 +20467,7 @@ msgid "Loading..."
 msgstr "正在加载…"
 
 #. Combobox popup status shown while options are loading.
-#: src/features/ui/components/form/FormCombobox.tsx:87
+#: src/features/ui/components/form/FormCombobox.tsx:88
 #: src/features/ui/components/Spinner.tsx:22
 msgid "Loading…"
 msgstr "加载中…"
@@ -21638,7 +21687,7 @@ msgid "Message layout"
 msgstr "消息布局"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:95
 msgid "message link"
 msgstr "消息链接"
 
@@ -21951,7 +22000,7 @@ msgid "Miscellaneous"
 msgstr "其他"
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:37
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:38
 msgid "Missing client_id"
 msgstr "缺少 client_id"
 
@@ -22740,7 +22789,7 @@ msgstr "提示栏覆盖"
 #: src/features/expressions/components/modals/meme_form/MemeFormFields.tsx:24
 #: src/features/expressions/components/modals/sticker_form/StickerFormFields.tsx:28
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/BrandingSection.tsx:27
-#: src/features/theme_studio/sections/LibrarySection.tsx:105
+#: src/features/theme_studio/sections/LibrarySection.tsx:108
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:76
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:57
 #: src/features/webhook/components/FollowedChannelListItem.tsx:33
@@ -23181,7 +23230,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "无 {sendMessagesPermission} 权限"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:148
 msgid "No access"
 msgstr "无法访问"
 
@@ -23629,7 +23678,7 @@ msgstr "无结果"
 #. Empty state shown when a combobox search returns no matches.
 #. Empty state shown when a combobox search returns no matches.
 #: src/features/channel/components/embeds/attachments/TextualAttachmentLanguageCombobox.tsx:30
-#: src/features/ui/components/form/FormCombobox.tsx:83
+#: src/features/ui/components/form/FormCombobox.tsx:84
 msgid "No results found"
 msgstr "未找到结果"
 
@@ -23731,17 +23780,17 @@ msgid "no text content"
 msgstr "无文本内容"
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:129
+#: src/features/theme_studio/sections/LibrarySection.tsx:132
 msgid "No theme selected."
 msgstr "未选择主题。"
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:85
+#: src/features/theme_studio/sections/LibrarySection.tsx:88
 msgid "No themes match your search."
 msgstr "没有符合你搜索条件的主题。"
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:89
+#: src/features/theme_studio/sections/LibrarySection.tsx:92
 msgid "No themes saved yet."
 msgstr "暂未保存主题。"
 
@@ -23848,7 +23897,7 @@ msgstr "无转换"
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:220
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:268
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:265
 msgid "None"
 msgstr "无"
 
@@ -24409,12 +24458,12 @@ msgid "Open {host} in your browser."
 msgstr "在浏览器中打开 {host}。"
 
 #. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:127
 msgid "Open {labelText}"
 msgstr "打开 {labelText}"
 
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
 msgid "Open {labelText} in settings"
 msgstr "在设置中打开 {labelText}"
 
@@ -24734,7 +24783,7 @@ msgid "Open overlay"
 msgstr "打开浮层"
 
 #. Accessible label for the combobox popup trigger button.
-#: src/features/ui/components/form/FormCombobox.tsx:95
+#: src/features/ui/components/form/FormCombobox.tsx:96
 msgid "Open popup"
 msgstr "打开弹出窗口"
 
@@ -25203,7 +25252,7 @@ msgid "Page down"
 msgstr "下翻页"
 
 #. Role description announced for an inline chat link pill that opens an app page. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:132
 msgid "page link"
 msgstr "页面链接"
 
@@ -25733,7 +25782,7 @@ msgid "Pick a reverse image search provider"
 msgstr "选择反向图片搜索提供方"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:133
+#: src/features/theme_studio/sections/LibrarySection.tsx:136
 msgid "Pick a theme on the left to edit its name, metadata, and CSS. Or import a new one."
 msgstr "在左侧选择一个主题，编辑其名称、元数据和 CSS。或导入新主题。"
 
@@ -26080,7 +26129,7 @@ msgid "Pop back in"
 msgstr "收回窗口"
 
 #. Tooltip / aria label on the voice call footer button that opens the call in a separate window.
-#: src/features/voice/components/VoiceCallCornerControls.tsx:12
+#: src/features/voice/components/VoiceCallCornerControls.tsx:11
 msgid "Pop out call"
 msgstr "弹出通话窗口"
 
@@ -27287,7 +27336,7 @@ msgid "Reconnect succeeded. Pick a screen again if you want to resume your previ
 msgstr "重新连接成功。如需恢复之前的屏幕共享，请重新选择屏幕。"
 
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
-#: src/features/voice/components/VoiceCallView.tsx:98
+#: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Reconnecting..."
 msgstr "正在重新连接..."
 
@@ -27427,7 +27476,7 @@ msgstr "引用已复制。"
 msgid "Referral parameters"
 msgstr "引荐参数"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:312
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:309
 msgid "Refresh audio sources"
 msgstr "刷新音频来源"
 
@@ -27766,7 +27815,7 @@ msgstr "Remove from thread"
 
 #. Button label in a popped-out voice window titlebar that unpins the window from staying above others.
 #. Button label in the Theme Studio popout titlebar that unpins the window from staying above others.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:37
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:39
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:18
 msgid "Remove from top"
 msgstr "取消置顶"
@@ -29420,7 +29469,7 @@ msgstr "保存图标"
 msgid "Save some media from messages to get started!"
 msgstr "从消息中保存一些媒体，即可开始使用！"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:574
+#: src/features/theme_studio/sections/LibrarySection.tsx:754
 msgid "Save theme"
 msgstr "保存主题"
 
@@ -30008,7 +30057,7 @@ msgid "Search the web"
 msgstr "网页搜索"
 
 #. Button or menu action label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:81
+#: src/features/theme_studio/sections/LibrarySection.tsx:84
 msgid "Search themes…"
 msgstr "搜索主题…"
 
@@ -30335,7 +30384,7 @@ msgid "Select your country of residence."
 msgstr "选择你居住的国家/地区。"
 
 #. Generic combobox control placeholder.
-#: src/features/ui/components/form/FormCombobox.tsx:75
+#: src/features/ui/components/form/FormCombobox.tsx:76
 msgid "Select…"
 msgstr "选择…"
 
@@ -30987,7 +31036,7 @@ msgid "Settings"
 msgstr "设置"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:136
 msgid "settings link"
 msgstr "设置链接"
 
@@ -31137,7 +31186,7 @@ msgid "Shared window"
 msgstr "共享窗口"
 
 #. Capture option in the Linux audio source picker on a window share. Captures only the audio of the window being shared.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:40
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:42
 msgid "Shared window audio"
 msgstr "共享窗口音频"
 
@@ -33025,7 +33074,7 @@ msgstr "失去焦点时仍可完全交互"
 
 #. Button label in a popped-out voice window titlebar that pins the window above other windows.
 #. Button label in the Theme Studio popout titlebar that pins the window above other windows.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:33
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:35
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:14
 msgid "Stay on top"
 msgstr "置顶"
@@ -34002,7 +34051,7 @@ msgstr "标签名称"
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:221
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:34
 #: src/features/channel/components/modals/EditPostModal.tsx:154
-#: src/features/theme_studio/sections/LibrarySection.tsx:117
+#: src/features/theme_studio/sections/LibrarySection.tsx:120
 msgid "Tags"
 msgstr "标签"
 
@@ -34603,12 +34652,12 @@ msgid "The phone check is set aside. One email step is left."
 msgstr "手机验证已暂缓。还剩一个邮箱验证步骤。"
 
 #. OAuth authorize page error shown when the redirect_uri is not registered for this OAuth app.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:59
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:60
 msgid "The provided redirect_uri is not registered for this application."
 msgstr "提供的 redirect_uri 未在此应用中注册。"
 
 #. Body text in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:50
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:51
 msgid "The provided redirect_uri must use HTTP or HTTPS."
 msgstr "提供的 redirect_uri 必须使用 HTTP 或 HTTPS。"
 
@@ -34697,7 +34746,7 @@ msgid "Theme color"
 msgstr "主题颜色"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:125
+#: src/features/theme_studio/sections/LibrarySection.tsx:128
 msgid "Theme CSS"
 msgstr "主题 CSS"
 
@@ -34717,7 +34766,7 @@ msgid "Theme not found"
 msgstr "未找到主题"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:47
+#: src/features/theme_studio/sections/LibrarySection.tsx:50
 msgid "Theme saved."
 msgstr "主题已保存。"
 
@@ -34841,7 +34890,7 @@ msgid "This animation is too long or too large to crop. Try a shorter or smaller
 msgstr "此动画过长或过大，无法裁剪。请尝试使用更短或更小的文件。"
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:83
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:84
 msgid "This application"
 msgstr "此应用"
 
@@ -34851,7 +34900,7 @@ msgid "This attachment has expired"
 msgstr "此附件已过期"
 
 #. OAuth authorize page error shown when a private bot cannot be added by non-owners.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:71
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:72
 msgid "This bot is not public and cannot be added by other users."
 msgstr "此机器人未公开，其他用户无法添加。"
 
@@ -35316,7 +35365,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "此链接频道标记为成人内容，打开的内容可能不适合某些用户。"
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:164
 msgid "This link is not available for your account."
 msgstr "你的账号无法使用此链接。"
 
@@ -35449,7 +35498,7 @@ msgid "This refunds your most recent invoice and cancels any associated subscrip
 msgstr "此操作将退还你最近一笔账单的款项，并取消相关订阅。30 天内你将无法再次自助退款。"
 
 #. Confirmation text before deleting a saved local theme from Theme Studio.
-#: src/features/theme_studio/sections/LibrarySection.tsx:55
+#: src/features/theme_studio/sections/LibrarySection.tsx:58
 msgid "This removes \"{themeName}\" from this device."
 msgstr "这会从本设备中移除“{themeName}”。"
 
@@ -36249,7 +36298,7 @@ msgid "Trusted domains cleared."
 msgstr "已清除受信任域名。"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:93
+#: src/features/theme_studio/sections/LibrarySection.tsx:96
 msgid "Try a different name or clear the search."
 msgstr "尝试其他名称或清除搜索。"
 
@@ -36987,7 +37036,7 @@ msgid "Unknown"
 msgstr "未知"
 
 #. OAuth authorize page error shown when the application, session, or request is invalid.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:46
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:47
 msgid "Unknown application, expired session, or invalid authorization request."
 msgstr "未知应用、会话过期或授权请求无效。"
 
@@ -37121,6 +37170,11 @@ msgstr "unknown-mention"
 #: src/features/messaging/utils/markdown/Plaintext.ts:76
 msgid "unknown-role"
 msgstr "unknown-role"
+
+#. Button in the Theme Studio library that stops a theme following its CSS file on disk and turns it back into an editable copy.
+#: src/features/theme_studio/sections/LibrarySection.tsx:681
+msgid "Unlink"
+msgstr "取消链接"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:143
 msgid "Unlock"
@@ -37427,12 +37481,12 @@ msgid "Unread message badge"
 msgstr "未读消息角标"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/platform/utils/DesktopLocaleBridge.ts:288
 msgid "Unread messages"
 msgstr "未读消息"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/platform/utils/DesktopLocaleBridge.ts:293
 msgid "Unread messages: {count}"
 msgstr "未读消息：{count}"
 
@@ -37441,7 +37495,7 @@ msgstr "未读消息：{count}"
 msgid "Unreads"
 msgstr "未读消息"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:578
+#: src/features/theme_studio/sections/LibrarySection.tsx:758
 msgid "Unsaved changes"
 msgstr "未保存的更改"
 
@@ -38638,7 +38692,7 @@ msgstr "验证手机号表单"
 #. Title of the error modal shown when an unverified account tries to start a DM.
 #. Title shown when an unverified account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:40
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:79
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
 #: src/features/channel/utils/CreateDMModalUtils.tsx:51
 #: src/features/moderation/components/report/ReportStepEmail.tsx:43
 msgid "Verify your email"
@@ -38757,7 +38811,7 @@ msgid "Vermont"
 msgstr "佛蒙特州"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:113
+#: src/features/theme_studio/sections/LibrarySection.tsx:116
 msgid "Version"
 msgstr "版本"
 
@@ -38994,7 +39048,7 @@ msgid "View call"
 msgstr "查看通话"
 
 #. Aria label for the show-controls trigger when the call toolbar is auto-hidden.
-#: src/features/voice/components/VoiceCallView.tsx:124
+#: src/features/voice/components/VoiceCallView.tsx:120
 msgid "View call controls"
 msgstr "查看通话控件"
 
@@ -39673,7 +39727,7 @@ msgid "We couldn't forward the message at this time."
 msgstr "暂时无法转发消息。"
 
 #. Error message in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:77
+#: src/features/theme_studio/sections/LibrarySection.tsx:80
 msgid "We couldn't import that theme library file."
 msgstr "无法导入该主题库文件。"
 
@@ -40782,7 +40836,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "你在 {PREMIUM_PRODUCT_NAME} 期间更改了标签。除非续订，否则你的 {PREMIUM_PRODUCT_NAME} 到期后，标签将随机重新生成。"
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:144
 msgid "You do not have access to the channel where this message was sent."
 msgstr "你无权访问发送此消息的频道。"
 
@@ -41004,7 +41058,7 @@ msgstr "你需要验证手机号才能在此社区中发送消息。"
 msgid "You need to verify your email address before you can create a community."
 msgstr "你需要先验证邮箱地址，才能创建社区。"
 
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:81
 msgid "You need to verify your email address before you can send friend requests."
 msgstr "你需要先验证邮箱地址，才能发送好友请求。"
 
@@ -41354,7 +41408,7 @@ msgid "Your {premiumProductName} subscription has expired. You have lost all {pr
 msgstr "你的 {premiumProductName} 订阅已过期。你已失去所有 {premiumProductName} 福利。请重新激活订阅以恢复访问权限。"
 
 #. OAuth authorize page error shown when the session expired mid-authorization. Keep plain. Preserve {productName}; it is inserted by code.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:41
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:42
 msgid "Your {productName} session expired. Sign in again to continue authorizing this application."
 msgstr "你的 {productName} 会话已过期。请重新登录以继续授权此应用。"
 

@@ -21,7 +21,7 @@ msgstr "... 좁게 모드를 켜 보세요. 좋아요!"
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-#: src/features/channel/components/MessageAttachments.tsx:392
+#: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
@@ -843,12 +843,12 @@ msgid "{appCount, plural, one {# app selected for access revocation} other {# ap
 msgstr "{appCount, plural, one {액세스 권한을 취소할 앱 #개를 선택했습니다} other {액세스 권한을 취소할 앱 #개를 선택했습니다}}"
 
 #. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:295
+#: src/features/platform/utils/DesktopLocaleBridge.ts:308
 msgid "{appName} can't reach its servers. It will keep trying in the background."
 msgstr "{appName} 서버에 연결할 수 없습니다. 백그라운드에서 계속 시도합니다."
 
 #. Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).
-#: src/features/platform/utils/DesktopLocaleBridge.ts:285
+#: src/features/platform/utils/DesktopLocaleBridge.ts:298
 msgid "{appName} failed to start"
 msgstr "{appName}을(를) 시작하지 못했습니다"
 
@@ -1041,7 +1041,7 @@ msgstr "{count, plural, one {#개의 공통 커뮤니티} other {#개의 공통 
 msgid "{count, plural, one {# other} other {# others}}"
 msgstr "{count, plural, one {다른 #명} other {다른 #명}}"
 
-#: src/features/voice/components/VoiceCallView.tsx:507
+#: src/features/voice/components/VoiceCallView.tsx:474
 msgid "{count, plural, one {# participant in call} other {# participants in call}}"
 msgstr "{count, plural, one {#명 통화 중} other {#명 통화 중}}"
 
@@ -1984,7 +1984,7 @@ msgid "{seconds, plural, one {Your invite link expires in # second.} other {Your
 msgstr "{seconds, plural, one {초대 링크는 #초 후에 만료됩니다.} other {초대 링크는 #초 후에 만료됩니다.}}"
 
 #. Generic multi-select summary label. selectedCount is the number of selected options.
-#: src/features/ui/components/form/FormCombobox.tsx:79
+#: src/features/ui/components/form/FormCombobox.tsx:80
 msgid "{selectedCount} selected"
 msgstr "{selectedCount}개 선택됨"
 
@@ -2013,7 +2013,7 @@ msgid "{textChannelCount, plural, one {# text channel} other {# text channels}},
 msgstr "{textChannelCount, plural, other {텍스트 채널 #개}}, {voiceChannelCount, plural, other {음성 채널 #개}}, {categoryCount, plural, other {카테고리 #개}}, {roleCount, plural, other {역할 #개}}"
 
 #. Name given to the copy created by the Duplicate button in the Theme Studio theme library. {themeName} is the name of the theme being duplicated.
-#: src/features/theme/state/ThemeLibrary.ts:32
+#: src/features/theme/state/ThemeLibrary.ts:34
 msgid "{themeName} Copy"
 msgstr "{themeName} 복사본"
 
@@ -2241,8 +2241,8 @@ msgstr "<0>{username}</0>님이 아직 그룹에 있습니다. 잠시 후에 다
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-#: src/features/channel/components/MessageAttachments.tsx:243
-#: src/features/channel/components/MessageAttachments.tsx:299
+#: src/features/channel/components/MessageAttachments.tsx:214
+#: src/features/channel/components/MessageAttachments.tsx:270
 msgid "<0>Forwarded from</0>{sourceInfo}"
 msgstr "{sourceInfo}<0>에서 전달됨</0>"
 
@@ -2681,7 +2681,7 @@ msgid "A profile that stands out"
 msgstr "눈에 띄는 프로필"
 
 #. OAuth authorize page error shown when the bot scope requires a redirect_uri that is missing. Technical message; keep "redirect_uri" and "bot" untranslated.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:54
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:55
 msgid "A redirect_uri is required when the bot scope is not the only scope."
 msgstr "봇 스코프가 유일한 스코프가 아닌 경우 redirect_uri가 필요합니다."
 
@@ -5097,7 +5097,7 @@ msgid "Audio settings"
 msgstr "오디오 설정"
 
 #. Toggle / summary row label in the Linux audio source picker. {summaryLabel} is one of the audio-source summary labels.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:45
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:47
 msgid "Audio sources: {summaryLabel}"
 msgstr "오디오 소스: {summaryLabel}"
 
@@ -5142,7 +5142,7 @@ msgid "Authenticator code"
 msgstr "인증 코드"
 
 #. Short label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:109
+#: src/features/theme_studio/sections/LibrarySection.tsx:112
 msgid "Author"
 msgstr "제작자"
 
@@ -5162,7 +5162,7 @@ msgid "Authorization failed"
 msgstr "승인 실패"
 
 #. OAuth authorize page generic error toast shown when the authorize request fails unexpectedly.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:75
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:76
 msgid "Authorization failed. Try again."
 msgstr "승인에 실패했습니다. 다시 시도해 주세요."
 
@@ -5560,7 +5560,7 @@ msgid "Back to sticker"
 msgstr "스티커로 돌아가기"
 
 #. Tooltip / aria label on the back button that returns from the call view to the voice channel view.
-#: src/features/voice/components/VoiceCallView.tsx:115
+#: src/features/voice/components/VoiceCallView.tsx:111
 msgid "Back to voice channel"
 msgstr "음성 채널로 돌아가기"
 
@@ -6158,13 +6158,13 @@ msgid "Bot invite (no external redirect)"
 msgstr "봇 초대 (외부 리디렉션 없음)"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:162
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:163
 #: src/features/user/components/settings_utils/search_index/ApplicationsIndex.ts:104
 msgid "Bot permissions"
 msgstr "봇 권한"
 
 #. OAuth authorize page error shown when the permissions query parameter is a negative integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:67
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:68
 msgid "Bot permissions cannot be negative."
 msgstr "봇 권한은 음수일 수 없습니다."
 
@@ -6661,14 +6661,24 @@ msgid "Can't access that email?"
 msgstr "이메일에 접근할 수 없나요?"
 
 #. Title of the native dialog shown when the desktop app has repeatedly failed to load because it cannot reach the servers.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:290
+#: src/features/platform/utils/DesktopLocaleBridge.ts:303
 msgid "Can't connect"
 msgstr "연결할 수 없음"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file was moved or deleted. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:166
+msgid "Can't find {path}. Using the last loaded version."
+msgstr "{path}을(를) 찾을 수 없습니다. 마지막으로 로드된 버전을 사용합니다."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:12
 msgid "Can't paste image here"
 msgstr "여기에 이미지를 붙여넣을 수 없습니다"
+
+#. Banner above a linked theme in the Theme Studio library when its CSS file exists but cannot be read, for example because it is too large or access was removed. {path} is the full path of the CSS file.
+#: src/features/theme_studio/sections/LibrarySection.tsx:171
+msgid "Can't read {path}. Using the last loaded version."
+msgstr "{path}을(를) 읽을 수 없습니다. 마지막으로 로드된 버전을 사용합니다."
 
 #. Error message in the attachment permission denied modal. Keep the tone plain and specific.
 #: src/features/messaging/components/alerts/AttachmentPermissionDeniedModal.tsx:16
@@ -6835,7 +6845,7 @@ msgid "Cannot delete account"
 msgstr "계정을 삭제할 수 없습니다"
 
 #. Section header in the Linux audio source picker. Lists capture-target options (entire system / specific apps).
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:50
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:52
 msgid "Capture"
 msgstr "캡처"
 
@@ -7395,7 +7405,7 @@ msgid "Channel access"
 msgstr "채널 접근"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:134
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:140
 msgid "Channel access denied"
 msgstr "채널 접근이 거부되었습니다"
 
@@ -7460,7 +7470,7 @@ msgstr "채널 ID가 클립보드에 복사되었습니다"
 
 #. Short label in the messaging mention renderer. Keep it concise.
 #. Type chip suffix in tooltips for inline rendered channel mentions. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:94
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:100
 #: src/features/messaging/components/markdown/renderers/MentionRenderer.tsx:39
 msgid "channel link"
 msgstr "채널 링크"
@@ -7840,7 +7850,7 @@ msgid "Choose background"
 msgstr "배경 선택"
 
 #. OAuth authorize page error shown when a bot invite request provides both guild_id and channel_id. Keep the parameter names literal.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:87
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:88
 msgid "Choose either guild_id or channel_id, not both."
 msgstr "guild_id 또는 channel_id 중 하나를 선택하세요. 둘 다 선택할 수 없습니다."
 
@@ -8041,7 +8051,7 @@ msgstr "선물 받기"
 #. Title shown when an unclaimed account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:32
 #: src/features/auth/components/modals/ClaimAccountModal.tsx:41
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:62
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
 #: src/features/channel/utils/CreateDMModalUtils.tsx:43
 #: src/features/guild/components/modals/add_guild_modal/GuildCreateForm.tsx:213
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx:441
@@ -8123,7 +8133,7 @@ msgstr "선물을 받으려면 계정을 등록하세요."
 #. Description text in the channel and chat dm welcome section.
 #. Description text in the user profile modal.
 #. Tooltip shown when an unclaimed account tries to send a friend request.
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:63
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:64
 #: src/features/channel/components/direct_message/DMWelcomeSection.tsx:37
 #: src/features/ui/action_menu/items/RelationshipMenuItems.tsx:40
 #: src/features/user/components/modals/UserProfileModal.tsx:122
@@ -8268,7 +8278,7 @@ msgstr "검색어 지우기"
 #. Accessible label for the combobox clear button.
 #. Button or menu action label in the authorized apps tab. Keep it concise.
 #. Button or menu action label in the devices tab. Keep it concise.
-#: src/features/ui/components/form/FormCombobox.tsx:91
+#: src/features/ui/components/form/FormCombobox.tsx:92
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx:46
 #: src/features/user/components/modals/tabs/DevicesTab.tsx:61
 msgid "Clear selection"
@@ -8783,7 +8793,7 @@ msgid "Coming soon"
 msgstr "출시 예정"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:121
+#: src/features/theme_studio/sections/LibrarySection.tsx:124
 msgid "comma, separated"
 msgstr "쉼표로 구분"
 
@@ -9381,7 +9391,7 @@ msgstr "코네티컷"
 #. Action label state in the DM channel header pill while the join request is in flight. Trailing ASCII ellipsis is intentional.
 #. Overlay status in the voice call view while joining. Trailing ellipsis indicates in-progress.
 #: src/features/channel/components/channel_view/dm_channel_view/shared.ts:129
-#: src/features/voice/components/VoiceCallView.tsx:94
+#: src/features/voice/components/VoiceCallView.tsx:90
 msgid "Connecting..."
 msgstr "연결 중..."
 
@@ -9442,7 +9452,7 @@ msgid "Connection removed"
 msgstr "연결 삭제됨"
 
 #. Tooltip / aria label on the connection-stats button in the voice call header. Opens the voice connection status popout.
-#: src/features/voice/components/VoiceCallView.tsx:119
+#: src/features/voice/components/VoiceCallView.tsx:115
 msgid "Connection stats"
 msgstr "연결 통계"
 
@@ -9752,7 +9762,7 @@ msgstr "URL이 클립보드에 복사되었습니다"
 #: src/features/platform/utils/DesktopLocaleBridge.ts:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:214
 #: src/features/ui/action_menu/MessageContextMenu.tsx:80
-#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:228
+#: src/features/user/components/modals/tabs/applications_tab/application_detail/OAuthBuilderSection.tsx:230
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx:59
 msgid "Copy"
 msgstr "복사"
@@ -11038,6 +11048,11 @@ msgstr "{percent}% 잘라내는 중"
 msgid "CSS"
 msgstr "CSS"
 
+#. Name of the file type filter in the native theme file picker, shown next to the *.css pattern.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:284
+msgid "CSS files"
+msgstr "CSS 파일"
+
 #. Keyboard keycap label for Control on non-Mac platforms. Keep it short.
 #. Keyboard shortcut keycap label for Control on non-Mac platforms. Keep it short.
 #: src/features/input/components/modals/KeyboardModeIntroModal.tsx:18
@@ -11808,7 +11823,7 @@ msgstr "델라웨어"
 #: src/features/messaging/commands/MessageCommands.tsx:83
 #: src/features/moderation/components/report_modal/IARModalCopy.ts:109
 #: src/features/platform/utils/DesktopLocaleBridge.ts:77
-#: src/features/theme_studio/sections/LibrarySection.tsx:514
+#: src/features/theme_studio/sections/LibrarySection.tsx:645
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:517
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:117
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx:290
@@ -12046,12 +12061,12 @@ msgid "Delete the category \"{categoryName}\"? Can't be undone."
 msgstr "카테고리 \"{categoryName}\"을(를) 삭제하시겠어요? 이 작업은 되돌릴 수 없습니다."
 
 #. Button or menu action label in the theme studio library section. Keep it concise. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:59
+#: src/features/theme_studio/sections/LibrarySection.tsx:62
 msgid "Delete theme"
 msgstr "테마 삭제"
 
 #. Confirmation prompt in the theme studio library section. Keep the tone plain and specific.
-#: src/features/theme_studio/sections/LibrarySection.tsx:51
+#: src/features/theme_studio/sections/LibrarySection.tsx:54
 msgid "Delete theme?"
 msgstr "테마를 삭제할까요?"
 
@@ -12421,13 +12436,13 @@ msgstr "개발자 상태"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx:20
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:146
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:152
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx:13
 msgid "Developer tools"
 msgstr "개발자 도구"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:150
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:156
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "채널 헤더의 스태프 배지에서 개발자 도구를 사용할 수 있습니다."
 
@@ -12824,7 +12839,7 @@ msgstr "소켓 연결 해제"
 #. Overlay status in the voice call view when not connected.
 #. Overlay status text in the compact / floating voice call tile when not connected.
 #: src/features/voice/components/compact_voice_call_view/shared.ts:15
-#: src/features/voice/components/VoiceCallView.tsx:103
+#: src/features/voice/components/VoiceCallView.tsx:99
 msgid "Disconnected"
 msgstr "연결 끊김"
 
@@ -13353,7 +13368,7 @@ msgid "Downloading desktop update: {percent}% ({formatBytes} / {formatBytes2} at
 msgstr "데스크톱 업데이트 다운로드 중: {percent}% ({formatBytes} / {formatBytes2}, {formatBytes3}/초)"
 
 #. Short desktop updater status label.
-#: src/features/app/state/Updater.ts:46
+#: src/features/app/state/Updater.ts:48
 msgid "Downloading desktop update…"
 msgstr "데스크톱 업데이트 다운로드 중…"
 
@@ -13491,7 +13506,7 @@ msgstr "{regionName}의 성인 콘텐츠 관련 법규로 인해 이 콘텐츠�
 msgid "Due to mature content laws in {regionName}, this media is not available from your current region."
 msgstr "{regionName}의 성인 콘텐츠 관련 법규에 따라 현재 지역에서는 이 미디어를 이용할 수 없습니다."
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:503
+#: src/features/theme_studio/sections/LibrarySection.tsx:634
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx:220
 msgid "Duplicate"
 msgstr "복제"
@@ -14128,7 +14143,7 @@ msgid "Enable {permissionName} permission"
 msgstr "{permissionName} 권한 허용"
 
 #. Accessible label for the switch that enables a saved theme file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:101
+#: src/features/theme_studio/sections/LibrarySection.tsx:104
 msgid "Enable {themeName}"
 msgstr "{themeName} 활성화"
 
@@ -14585,7 +14600,7 @@ msgstr "코드 입력"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (not in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:28
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:18
-#: src/features/voice/components/VoiceCallView.tsx:111
+#: src/features/voice/components/VoiceCallView.tsx:107
 msgid "Enter fullscreen"
 msgstr "전체 화면으로 보기"
 
@@ -14767,7 +14782,7 @@ msgstr "전체 화면"
 msgid "Entire system"
 msgstr "시스템 전체"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:260
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:257
 msgid "Entire system audio"
 msgstr "시스템 오디오 전체"
 
@@ -14945,7 +14960,7 @@ msgid "exclude a user"
 msgstr "사용자 제외"
 
 #. Section header in the Linux audio source picker for apps excluded from the system mix.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:59
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:61
 msgid "Exclude from system"
 msgstr "시스템에서 제외"
 
@@ -14970,7 +14985,7 @@ msgstr "전체 보기 종료"
 #. Tooltip / aria label on the fullscreen toggle in the voice call view (currently in fullscreen).
 #: src/features/voice/components/compact_voice_call_view/shared.ts:24
 #: src/features/voice/components/media_player/components/MediaFullscreenButton.tsx:14
-#: src/features/voice/components/VoiceCallView.tsx:107
+#: src/features/voice/components/VoiceCallView.tsx:103
 msgid "Exit fullscreen"
 msgstr "전체 화면 종료"
 
@@ -15144,7 +15159,7 @@ msgid "Explore communities"
 msgstr "커뮤니티 둘러보기"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/theme_studio/sections/LibrarySection.tsx:494
+#: src/features/theme_studio/sections/LibrarySection.tsx:625
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts:208
 msgid "Export"
 msgstr "내보내기"
@@ -15159,7 +15174,7 @@ msgstr "지금까지 보낸 모든 메시지, 계정 설정, 멤버십, 메타�
 msgid "Export GIF URLs"
 msgstr "GIF URL 내보내기"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:376
+#: src/features/theme_studio/sections/LibrarySection.tsx:459
 msgid "Export library"
 msgstr "라이브러리 내보내기"
 
@@ -16298,7 +16313,7 @@ msgstr "미디어 전달"
 msgid "Forward message"
 msgstr "메시지 전달"
 
-#: src/features/channel/components/MessageAttachments.tsx:362
+#: src/features/channel/components/MessageAttachments.tsx:333
 msgid "Forwarded"
 msgstr "전달됨"
 
@@ -18374,7 +18389,7 @@ msgid "Import {theOtherPlatform} template"
 msgstr "{theOtherPlatform} 템플릿 가져오기"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:97
+#: src/features/theme_studio/sections/LibrarySection.tsx:100
 msgid "Import a .css file to get started, or paste your own CSS in Quick CSS."
 msgstr ".css 파일을 가져오거나 빠른 CSS에 직접 CSS를 붙여넣어 시작하세요."
 
@@ -18388,7 +18403,9 @@ msgstr "가져오기 완료. GIF {importedCount, plural, one {#개} other {#개}
 msgid "Import complete. Added {importedCount, plural, one {# GIF} other {# GIFs}}."
 msgstr "가져오기 완료. GIF {importedCount, plural, one {#개} other {#개}}를 추가했습니다."
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:337
+#. Title of the native file picker that imports CSS theme files on the desktop app. Imported files stay linked and update live when saved.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/theme_studio/sections/LibrarySection.tsx:420
 #: src/features/theme_studio/sections/QuickCssSection.tsx:190
 msgid "Import CSS"
 msgstr "CSS 가져오기"
@@ -18400,7 +18417,7 @@ msgstr "즐겨찾는 GIF 가져오기"
 
 #. Title of the native folder picker that imports a directory of theme files.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:271
-#: src/features/theme_studio/sections/LibrarySection.tsx:349
+#: src/features/theme_studio/sections/LibrarySection.tsx:432
 msgid "Import folder"
 msgstr "폴더 가져오기"
 
@@ -18409,7 +18426,7 @@ msgstr "폴더 가져오기"
 msgid "Import GIFs"
 msgstr "GIF 가져오기"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:361
+#: src/features/theme_studio/sections/LibrarySection.tsx:444
 msgid "Import library"
 msgstr "라이브러리 가져오기"
 
@@ -18452,13 +18469,13 @@ msgstr "중요 안내:"
 
 #. Toast after importing one or more CSS files from a local theme folder.
 #. Toast after importing one or more CSS files into the theme library.
-#: src/features/theme_studio/sections/LibrarySection.tsx:64
-#: src/features/theme_studio/sections/LibrarySection.tsx:68
+#: src/features/theme_studio/sections/LibrarySection.tsx:67
+#: src/features/theme_studio/sections/LibrarySection.tsx:71
 msgid "Imported {length, plural, one {# theme file} other {# theme files}}."
 msgstr "테마 파일 {length, plural, one {#개} other {#개}}를 가져왔습니다."
 
 #. Toast after importing a Theme Studio library export file.
-#: src/features/theme_studio/sections/LibrarySection.tsx:72
+#: src/features/theme_studio/sections/LibrarySection.tsx:75
 msgid "Imported {themes, plural, one {# theme} other {# themes}} and {assets, plural, one {# asset} other {# assets}}."
 msgstr "테마 {themes, plural, one {#개} other {#개}}와 에셋 {assets, plural, one {#개} other {#개}}를 가져왔습니다."
 
@@ -18587,7 +18604,7 @@ msgid "Include all except selected"
 msgstr "선택된 항목 제외 모두 포함"
 
 #. Section header in the Linux audio source picker for the per-app inclusion list.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:55
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:57
 msgid "Include apps"
 msgstr "앱 포함"
 
@@ -18866,12 +18883,12 @@ msgid "Installing desktop update…"
 msgstr "데스크톱 업데이트 설치 중…"
 
 #. Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:305
+#: src/features/platform/utils/DesktopLocaleBridge.ts:318
 msgid "Instant messaging and VoIP"
 msgstr "인스턴트 메시징 및 VoIP"
 
 #. GenericName of the Linux .desktop entry. The category of app shown next to the name in GNOME Activities, KDE Kickoff and software centres. Use the generic term for a chat app in your language.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:300
+#: src/features/platform/utils/DesktopLocaleBridge.ts:313
 msgid "Instant Messenger"
 msgstr "인스턴트 메신저"
 
@@ -18936,7 +18953,7 @@ msgid "Invalid authorization request"
 msgstr "유효하지 않은 승인 요청입니다"
 
 #. OAuth authorize page error shown when the permissions query parameter is not a valid integer.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:63
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:64
 msgid "Invalid bot permissions."
 msgstr "봇 권한이 유효하지 않습니다."
 
@@ -18977,7 +18994,7 @@ msgid "Invalid or expired code. Try again."
 msgstr "코드가 유효하지 않거나 만료되었습니다. 다시 시도해 주세요."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:79
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:80
 msgid "Invalid redirect_uri"
 msgstr "잘못된 redirect_uri입니다"
 
@@ -19081,7 +19098,7 @@ msgid "Invite link is hidden while sharing:"
 msgstr "공유 중에는 초대 링크가 숨겨집니다:"
 
 #. Inline replacement text shown for invite links while streaming privacy is active.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:162
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:168
 msgid "Invite link masked while sharing"
 msgstr "공유 중에는 초대 링크가 가려집니다"
 
@@ -19501,7 +19518,7 @@ msgid "Jump to {displayName}"
 msgstr "{displayName}(으)로 이동"
 
 #. Accessible label for an inline channel mention link. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:108
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:114
 msgid "Jump to {labelText}"
 msgstr "{labelText}(으)로 이동"
 
@@ -19558,12 +19575,12 @@ msgid "Jump to the current call"
 msgstr "현재 통화로 이동"
 
 #. Fallback accessible label for an inline channel mention when the target name is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:112
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:118
 msgid "Jump to the linked channel"
 msgstr "연결된 채널로 이동"
 
 #. Fallback accessible label for an inline message link when the target channel is not known.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:104
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:110
 msgid "Jump to the linked message"
 msgstr "연결된 메시지로 이동"
 
@@ -19573,7 +19590,7 @@ msgid "Jump to the message from {authorNickname}"
 msgstr "{authorNickname}의 메시지로 이동"
 
 #. Accessible label for an inline message link that jumps to a specific message in a channel. labelText is the channel display name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:99
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:105
 msgid "Jump to the message in {labelText}"
 msgstr "{labelText}에서 메시지로 이동"
 
@@ -20217,6 +20234,13 @@ msgstr "외부 계정 및 도메인을 {PRODUCT_NAME} 프로필에 연결하세�
 msgid "Link external accounts and domains to your profile"
 msgstr "외부 계정 및 도메인을 프로필에 연결"
 
+#. Button in the Theme Studio library that links an existing theme to a CSS file on disk so saved changes to the file apply live.
+#. Title of the native file picker that links an existing theme to a CSS file on disk.
+#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/theme_studio/sections/LibrarySection.tsx:607
+msgid "Link file"
+msgstr "파일 연결"
+
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
 #. Replacement text for an invite URL while streaming privacy is active.
@@ -20254,7 +20278,7 @@ msgid "Link styling"
 msgstr "링크 스타일"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:154
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:160
 msgid "Link unavailable"
 msgstr "링크를 사용할 수 없습니다"
 
@@ -20279,6 +20303,11 @@ msgstr "프로필에 표시하려면 {BLUESKY_PROVIDER_NAME} 계정을 연결하
 msgid "Linked"
 msgstr "연결됨"
 
+#. Toast after importing CSS files or a folder on the desktop app. The themes stay linked to the files on disk and update when the file is saved.
+#: src/features/theme_studio/sections/LibrarySection.tsx:140
+msgid "Linked {length, plural, one {# theme file} other {# theme files}}. Changes you save to them apply right away."
+msgstr "테마 파일 {length, plural, one {#개} other {#개}}를 연결했습니다. 파일에 저장한 변경 사항이 바로 적용됩니다."
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts:12
 msgid "Linked accounts"
@@ -20290,6 +20319,26 @@ msgstr "연결된 계정"
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts:159
 msgid "Linked devices"
 msgstr "연결된 기기"
+
+#. Accessible label for the warning icon next to a linked theme in the Theme Studio library when its CSS file is missing or cannot be read.
+#: src/features/theme_studio/sections/LibrarySection.tsx:151
+msgid "Linked file unavailable"
+msgstr "연결된 파일을 사용할 수 없습니다"
+
+#. Banner above a linked theme in the Theme Studio library while the app is still checking its CSS file, or when this version of the desktop app cannot follow file changes. {path} is the full path of the CSS file on disk.
+#: src/features/theme_studio/sections/LibrarySection.tsx:161
+msgid "Linked to {path}."
+msgstr "{path}에 연결됨."
+
+#. Banner above a linked theme in the Theme Studio library. {path} is the full path of the CSS file on disk. The theme cannot be edited in the studio while linked.
+#: src/features/theme_studio/sections/LibrarySection.tsx:156
+msgid "Linked to {path}. Edit the file in any editor and saved changes apply here right away."
+msgstr "{path}에 연결됨. 모든 편집기에서 파일을 편집하고 저장하면 변경 사항이 즉시 적용됩니다."
+
+#. Accessible label for the icon next to a theme in the Theme Studio library that is linked to a CSS file on disk and updates live.
+#: src/features/theme_studio/sections/LibrarySection.tsx:146
+msgid "Linked to a file"
+msgstr "파일에 연결됨"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the markdown tab. Keep it concise.
@@ -20418,7 +20467,7 @@ msgid "Loading..."
 msgstr "불러오는 중..."
 
 #. Combobox popup status shown while options are loading.
-#: src/features/ui/components/form/FormCombobox.tsx:87
+#: src/features/ui/components/form/FormCombobox.tsx:88
 #: src/features/ui/components/Spinner.tsx:22
 msgid "Loading…"
 msgstr "불러오는 중…"
@@ -21638,7 +21687,7 @@ msgid "Message layout"
 msgstr "메시지 레이아웃"
 
 #. Type chip suffix in tooltips for inline rendered message links. Lowercase because it follows the channel name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:89
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:95
 msgid "message link"
 msgstr "메시지 링크"
 
@@ -21951,7 +22000,7 @@ msgid "Miscellaneous"
 msgstr "기타"
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:37
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:38
 msgid "Missing client_id"
 msgstr "client_id가 누락되었습니다"
 
@@ -22740,7 +22789,7 @@ msgstr "알림 표시줄 재정의"
 #: src/features/expressions/components/modals/meme_form/MemeFormFields.tsx:24
 #: src/features/expressions/components/modals/sticker_form/StickerFormFields.tsx:28
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/BrandingSection.tsx:27
-#: src/features/theme_studio/sections/LibrarySection.tsx:105
+#: src/features/theme_studio/sections/LibrarySection.tsx:108
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx:76
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts:57
 #: src/features/webhook/components/FollowedChannelListItem.tsx:33
@@ -23181,7 +23230,7 @@ msgid "No {sendMessagesPermission} permission"
 msgstr "{sendMessagesPermission} 권한 없음"
 
 #. Inline text shown inside a custom message link pill when the linked message cannot be accessed.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:142
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:148
 msgid "No access"
 msgstr "액세스 권한 없음"
 
@@ -23629,7 +23678,7 @@ msgstr "결과 없음"
 #. Empty state shown when a combobox search returns no matches.
 #. Empty state shown when a combobox search returns no matches.
 #: src/features/channel/components/embeds/attachments/TextualAttachmentLanguageCombobox.tsx:30
-#: src/features/ui/components/form/FormCombobox.tsx:83
+#: src/features/ui/components/form/FormCombobox.tsx:84
 msgid "No results found"
 msgstr "검색 결과 없음"
 
@@ -23731,17 +23780,17 @@ msgid "no text content"
 msgstr "텍스트 내용 없음"
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:129
+#: src/features/theme_studio/sections/LibrarySection.tsx:132
 msgid "No theme selected."
 msgstr "선택된 테마가 없습니다."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:85
+#: src/features/theme_studio/sections/LibrarySection.tsx:88
 msgid "No themes match your search."
 msgstr "검색과 일치하는 테마가 없습니다."
 
 #. Empty-state text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:89
+#: src/features/theme_studio/sections/LibrarySection.tsx:92
 msgid "No themes saved yet."
 msgstr "저장된 테마가 아직 없습니다."
 
@@ -23848,7 +23897,7 @@ msgstr "무변환"
 #: src/features/user/components/modals/tabs/accessibility_tab/VisualTab.tsx:37
 #: src/features/user/components/modals/tabs/components/EntranceSoundSection.tsx:146
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:220
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:268
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:265
 msgid "None"
 msgstr "없음"
 
@@ -24409,12 +24458,12 @@ msgid "Open {host} in your browser."
 msgstr "{host}을(를) 브라우저에서 열어주세요."
 
 #. Accessible label for an inline chat link pill that opens an app page such as Discovery. labelText is the page name.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:121
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:127
 msgid "Open {labelText}"
 msgstr "{labelText} 열기"
 
 #. Accessible label for an inline settings deep-link pill. labelText is the resolved settings tab and section breadcrumb.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:116
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:122
 msgid "Open {labelText} in settings"
 msgstr "설정에서 {labelText} 열기"
 
@@ -24734,7 +24783,7 @@ msgid "Open overlay"
 msgstr "오버레이 열기"
 
 #. Accessible label for the combobox popup trigger button.
-#: src/features/ui/components/form/FormCombobox.tsx:95
+#: src/features/ui/components/form/FormCombobox.tsx:96
 msgid "Open popup"
 msgstr "팝업 열기"
 
@@ -25203,7 +25252,7 @@ msgid "Page down"
 msgstr "Page Down"
 
 #. Role description announced for an inline chat link pill that opens an app page. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:126
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:132
 msgid "page link"
 msgstr "페이지 링크"
 
@@ -25733,7 +25782,7 @@ msgid "Pick a reverse image search provider"
 msgstr "역방향 이미지 검색 공급자 선택"
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:133
+#: src/features/theme_studio/sections/LibrarySection.tsx:136
 msgid "Pick a theme on the left to edit its name, metadata, and CSS. Or import a new one."
 msgstr "왼쪽에서 테마를 선택하여 이름, 메타데이터, CSS를 편집하거나 새 테마를 가져오세요."
 
@@ -26080,7 +26129,7 @@ msgid "Pop back in"
 msgstr "앱으로 되돌리기"
 
 #. Tooltip / aria label on the voice call footer button that opens the call in a separate window.
-#: src/features/voice/components/VoiceCallCornerControls.tsx:12
+#: src/features/voice/components/VoiceCallCornerControls.tsx:11
 msgid "Pop out call"
 msgstr "통화 팝아웃"
 
@@ -27287,7 +27336,7 @@ msgid "Reconnect succeeded. Pick a screen again if you want to resume your previ
 msgstr "재연결되었습니다. 이전 스트림을 다시 시작하려면 화면을 다시 선택하세요."
 
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
-#: src/features/voice/components/VoiceCallView.tsx:98
+#: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Reconnecting..."
 msgstr "다시 연결 중..."
 
@@ -27427,7 +27476,7 @@ msgstr "참조가 복사되었습니다."
 msgid "Referral parameters"
 msgstr "추천 매개변수"
 
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:312
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:309
 msgid "Refresh audio sources"
 msgstr "오디오 소스 새로고침"
 
@@ -27766,7 +27815,7 @@ msgstr "Remove from thread"
 
 #. Button label in a popped-out voice window titlebar that unpins the window from staying above others.
 #. Button label in the Theme Studio popout titlebar that unpins the window from staying above others.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:37
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:39
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:18
 msgid "Remove from top"
 msgstr "항상 위에 표시 해제"
@@ -29420,7 +29469,7 @@ msgstr "아이콘 저장"
 msgid "Save some media from messages to get started!"
 msgstr "메시지에서 미디어를 저장해 보세요!"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:574
+#: src/features/theme_studio/sections/LibrarySection.tsx:754
 msgid "Save theme"
 msgstr "테마 저장"
 
@@ -30008,7 +30057,7 @@ msgid "Search the web"
 msgstr "웹 검색"
 
 #. Button or menu action label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:81
+#: src/features/theme_studio/sections/LibrarySection.tsx:84
 msgid "Search themes…"
 msgstr "테마 검색…"
 
@@ -30335,7 +30384,7 @@ msgid "Select your country of residence."
 msgstr "거주 국가를 선택하세요."
 
 #. Generic combobox control placeholder.
-#: src/features/ui/components/form/FormCombobox.tsx:75
+#: src/features/ui/components/form/FormCombobox.tsx:76
 msgid "Select…"
 msgstr "선택…"
 
@@ -30987,7 +31036,7 @@ msgid "Settings"
 msgstr "설정"
 
 #. Type chip suffix in tooltips for inline rendered fluxer://settings/user deep links. Lowercase.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:130
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:136
 msgid "settings link"
 msgstr "설정 링크"
 
@@ -31137,7 +31186,7 @@ msgid "Shared window"
 msgstr "공유된 창"
 
 #. Capture option in the Linux audio source picker on a window share. Captures only the audio of the window being shared.
-#: src/features/voice/components/AudioSourcePickerLinux.tsx:40
+#: src/features/voice/components/AudioSourcePickerLinux.tsx:42
 msgid "Shared window audio"
 msgstr "공유된 창 오디오"
 
@@ -33025,7 +33074,7 @@ msgstr "포커스 해제 시에도 계속 상호작용"
 
 #. Button label in a popped-out voice window titlebar that pins the window above other windows.
 #. Button label in the Theme Studio popout titlebar that pins the window above other windows.
-#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:33
+#: src/features/theme_studio/ThemeStudioStandaloneApp.tsx:35
 #: src/features/voice/components/popout/PopoutTitlebar.tsx:14
 msgid "Stay on top"
 msgstr "항상 위에 표시"
@@ -34002,7 +34051,7 @@ msgstr "태그 이름"
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:221
 #: src/features/channel/components/modals/CreateForumPostModal.tsx:34
 #: src/features/channel/components/modals/EditPostModal.tsx:154
-#: src/features/theme_studio/sections/LibrarySection.tsx:117
+#: src/features/theme_studio/sections/LibrarySection.tsx:120
 msgid "Tags"
 msgstr "태그"
 
@@ -34603,12 +34652,12 @@ msgid "The phone check is set aside. One email step is left."
 msgstr "휴대폰 인증은 보류되었습니다. 이메일 인증 단계가 하나 남았습니다."
 
 #. OAuth authorize page error shown when the redirect_uri is not registered for this OAuth app.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:59
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:60
 msgid "The provided redirect_uri is not registered for this application."
 msgstr "제공된 redirect_uri가 이 애플리케이션에 등록되지 않았습니다."
 
 #. Body text in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:50
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:51
 msgid "The provided redirect_uri must use HTTP or HTTPS."
 msgstr "제공된 redirect_uri는 HTTP 또는 HTTPS를 사용해야 합니다."
 
@@ -34697,7 +34746,7 @@ msgid "Theme color"
 msgstr "테마 색상"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:125
+#: src/features/theme_studio/sections/LibrarySection.tsx:128
 msgid "Theme CSS"
 msgstr "테마 CSS"
 
@@ -34717,7 +34766,7 @@ msgid "Theme not found"
 msgstr "테마를 찾을 수 없습니다"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:47
+#: src/features/theme_studio/sections/LibrarySection.tsx:50
 msgid "Theme saved."
 msgstr "테마가 저장되었습니다."
 
@@ -34841,7 +34890,7 @@ msgid "This animation is too long or too large to crop. Try a shorter or smaller
 msgstr "이 애니메이션은 너무 길거나 커서 자를 수 없습니다. 더 짧거나 작은 파일을 사용해 보세요."
 
 #. Short label in the authentication authorize flow. Keep the tone plain and specific.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:83
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:84
 msgid "This application"
 msgstr "이 애플리케이션"
 
@@ -34851,7 +34900,7 @@ msgid "This attachment has expired"
 msgstr "만료된 첨부파일입니다"
 
 #. OAuth authorize page error shown when a private bot cannot be added by non-owners.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:71
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:72
 msgid "This bot is not public and cannot be added by other users."
 msgstr "이 봇은 비공개이며 다른 사용자가 추가할 수 없습니다."
 
@@ -35316,7 +35365,7 @@ msgid "This link channel is marked for mature content and may open material that
 msgstr "이 링크 채널은 성인 콘텐츠로 표시되어 있으며 일부 사용자에게 부적절할 수 있는 자료가 열릴 수 있습니다."
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:158
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:164
 msgid "This link is not available for your account."
 msgstr "회원님의 계정에서는 이 링크를 사용할 수 없습니다."
 
@@ -35449,7 +35498,7 @@ msgid "This refunds your most recent invoice and cancels any associated subscrip
 msgstr "가장 최근 청구서가 환불되고 관련 구독이 취소됩니다. 30일 동안은 직접 환불할 수 없습니다."
 
 #. Confirmation text before deleting a saved local theme from Theme Studio.
-#: src/features/theme_studio/sections/LibrarySection.tsx:55
+#: src/features/theme_studio/sections/LibrarySection.tsx:58
 msgid "This removes \"{themeName}\" from this device."
 msgstr "이 기기에서 \"{themeName}\" 테마를 삭제합니다."
 
@@ -36249,7 +36298,7 @@ msgid "Trusted domains cleared."
 msgstr "신뢰하는 도메인이 삭제되었습니다."
 
 #. Description text in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:93
+#: src/features/theme_studio/sections/LibrarySection.tsx:96
 msgid "Try a different name or clear the search."
 msgstr "다른 이름을 시도하거나 검색을 지우세요."
 
@@ -36987,7 +37036,7 @@ msgid "Unknown"
 msgstr "알 수 없음"
 
 #. OAuth authorize page error shown when the application, session, or request is invalid.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:46
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:47
 msgid "Unknown application, expired session, or invalid authorization request."
 msgstr "알 수 없는 앱, 만료된 세션 또는 유효하지 않은 인증 요청입니다."
 
@@ -37121,6 +37170,11 @@ msgstr "unknown-mention"
 #: src/features/messaging/utils/markdown/Plaintext.ts:76
 msgid "unknown-role"
 msgstr "unknown-role"
+
+#. Button in the Theme Studio library that stops a theme following its CSS file on disk and turns it back into an editable copy.
+#: src/features/theme_studio/sections/LibrarySection.tsx:681
+msgid "Unlink"
+msgstr "연결 해제"
 
 #: src/features/channel/components/menus/ThreadPostMenu.tsx:143
 msgid "Unlock"
@@ -37427,12 +37481,12 @@ msgid "Unread message badge"
 msgstr "읽지 않은 메시지 배지"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers, when there are unread messages but no exact count to show.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:275
+#: src/features/platform/utils/DesktopLocaleBridge.ts:288
 msgid "Unread messages"
 msgstr "읽지 않은 메시지"
 
 #. Accessibility description of the Windows taskbar overlay badge, read by screen readers. {count} is the number of unread messages, already formatted for the locale.
-#: src/features/platform/utils/DesktopLocaleBridge.ts:280
+#: src/features/platform/utils/DesktopLocaleBridge.ts:293
 msgid "Unread messages: {count}"
 msgstr "읽지 않은 메시지: {count}개"
 
@@ -37441,7 +37495,7 @@ msgstr "읽지 않은 메시지: {count}개"
 msgid "Unreads"
 msgstr "안 읽음"
 
-#: src/features/theme_studio/sections/LibrarySection.tsx:578
+#: src/features/theme_studio/sections/LibrarySection.tsx:758
 msgid "Unsaved changes"
 msgstr "저장되지 않은 변경사항"
 
@@ -38638,7 +38692,7 @@ msgstr "전화번호 인증 양식"
 #. Title of the error modal shown when an unverified account tries to start a DM.
 #. Title shown when an unverified account cannot start a DM or group DM.
 #: src/features/app/components/alerts/DmActionErrorModal.tsx:40
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:79
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
 #: src/features/channel/utils/CreateDMModalUtils.tsx:51
 #: src/features/moderation/components/report/ReportStepEmail.tsx:43
 msgid "Verify your email"
@@ -38757,7 +38811,7 @@ msgid "Vermont"
 msgstr "버몬트"
 
 #. Short label in the theme studio library section. Keep it concise.
-#: src/features/theme_studio/sections/LibrarySection.tsx:113
+#: src/features/theme_studio/sections/LibrarySection.tsx:116
 msgid "Version"
 msgstr "버전"
 
@@ -38994,7 +39048,7 @@ msgid "View call"
 msgstr "통화 보기"
 
 #. Aria label for the show-controls trigger when the call toolbar is auto-hidden.
-#: src/features/voice/components/VoiceCallView.tsx:124
+#: src/features/voice/components/VoiceCallView.tsx:120
 msgid "View call controls"
 msgstr "통화 제어 보기"
 
@@ -39673,7 +39727,7 @@ msgid "We couldn't forward the message at this time."
 msgstr "지금은 메시지를 전달할 수 없습니다."
 
 #. Error message in the theme studio library section.
-#: src/features/theme_studio/sections/LibrarySection.tsx:77
+#: src/features/theme_studio/sections/LibrarySection.tsx:80
 msgid "We couldn't import that theme library file."
 msgstr "테마 라이브러리 파일을 가져올 수 없습니다."
 
@@ -40782,7 +40836,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "{PREMIUM_PRODUCT_NAME} 사용 중에 태그를 변경했습니다. 구독이 갱신되지 않고 {PREMIUM_PRODUCT_NAME}이(가) 만료되면 태그가 무작위로 다시 지정됩니다."
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:138
+#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx:144
 msgid "You do not have access to the channel where this message was sent."
 msgstr "이 메시지가 전송된 채널에 접근할 수 없습니다."
 
@@ -41004,7 +41058,7 @@ msgstr "이 커뮤니티에서 메시지를 보내려면 전화번호 인증이 
 msgid "You need to verify your email address before you can create a community."
 msgstr "커뮤니티를 만들려면 먼저 이메일 주소를 인증해야 합니다."
 
-#: src/features/channel/components/direct_message/AddFriendForm.tsx:80
+#: src/features/channel/components/direct_message/AddFriendForm.tsx:81
 msgid "You need to verify your email address before you can send friend requests."
 msgstr "친구 요청을 보내려면 먼저 이메일 주소를 인증해야 합니다."
 
@@ -41354,7 +41408,7 @@ msgid "Your {premiumProductName} subscription has expired. You have lost all {pr
 msgstr "{premiumProductName} 구독이 만료되었습니다. 모든 {premiumProductName} 혜택이 사라졌습니다. 구독을 다시 활성화하면 혜택을 다시 이용할 수 있습니다."
 
 #. OAuth authorize page error shown when the session expired mid-authorization. Keep plain. Preserve {productName}; it is inserted by code.
-#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:41
+#: src/features/auth/components/pages/oauth_authorize_page/state/useAuthorizeFlow.ts:42
 msgid "Your {productName} session expired. Sign in again to continue authorizing this application."
 msgstr "{productName} 세션이 만료되었습니다. 이 애플리케이션의 인증을 계속하려면 다시 로그인하세요."
 

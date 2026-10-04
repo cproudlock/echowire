@@ -24,10 +24,17 @@ export const ThreadStarterMessage = observer(({channel}: {channel: Channel}) => 
 	const {i18n} = useLingui();
 	const parentId = channel.parentId;
 	const messageId = channel.id;
+	// Echowire: read what the effect needs off the channel HERE, so the effect depends on
+	// primitives rather than the Channel object. This fork keeps lastMessageId in Channel
+	// equality on purpose, so the object identity changes on every message posted, and
+	// depending on it re-ran this fetch once per message: four identical 404s for one
+	// starterless thread, observed in production on 2026-10-04. The starter of a thread
+	// cannot change, so once per thread is the correct frequency.
+	const isThread = channel.isThread();
 	const [message, setMessage] = useState<Message | null>(null);
 
 	useEffect(() => {
-		if (!channel.isThread() || !parentId) {
+		if (!isThread || !parentId) {
 			return;
 		}
 		let cancelled = false;
@@ -45,9 +52,9 @@ export const ThreadStarterMessage = observer(({channel}: {channel: Channel}) => 
 		return () => {
 			cancelled = true;
 		};
-	}, [channel, parentId, messageId]);
+	}, [isThread, parentId, messageId]);
 
-	if (!channel.isThread() || !parentId || !message) {
+	if (!isThread || !parentId || !message) {
 		return null;
 	}
 	const author = message.author;

@@ -21,15 +21,15 @@ msgstr "... 좁게 모드를 켜 보세요. 좋아요!"
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
-=======
 #: src/features/channel/components/MessageAttachments.tsx:390
 #: src/features/channel/components/UserMessage.tsx:75
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "(수정됨)"
 
 #: src/features/app/components/pages/YouPage.tsx:189
@@ -2246,14 +2246,14 @@ msgstr "<0>{username}</0>님이 아직 그룹에 있습니다. 잠시 후에 다
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:214
 #: src/features/channel/components/MessageAttachments.tsx:270
-=======
 #: src/features/channel/components/MessageAttachments.tsx:241
 #: src/features/channel/components/MessageAttachments.tsx:297
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "<0>Forwarded from</0>{sourceInfo}"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "{sourceInfo}<0>에서 전달됨</0>"
 
 #: src/features/user/components/modals/tabs/appearance_tab/InterfaceTab.tsx:63
@@ -16143,12 +16143,12 @@ msgstr "미디어 전달"
 msgid "Forward message"
 msgstr "메시지 전달"
 
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:333
-=======
 #: src/features/channel/components/MessageAttachments.tsx:360
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "Forwarded"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "전달됨"
 
 #. Notification body shown when a forwarded message has no other previewable content.
@@ -41153,3 +41153,92 @@ msgstr "확대"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "축소"
+
+#. Label for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+msgid "Accept the push relay supplemental privacy notice"
+msgstr "푸시 릴레이 추가 개인정보처리방침에 동의"
+
+#. Summary value when the operator accepted the push relay notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:391
+msgid "Accepted"
+msgstr "수락됨"
+
+#. Placeholder for the product name input in the setup wizard.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:96
+msgid "Fluxer"
+msgstr "Fluxer"
+
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
+msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
+msgstr "<0>{I18N_WEBLATE_DOMAIN}</0>에서 {PRODUCT_NAME}을(를) 여러분의 언어로 번역하는 데 참여해 보세요."
+
+#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:54
+msgid "Keep Neko still"
+msgstr "네코 고정하기"
+
+#. Description for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
+msgstr "이 설정을 끄면 릴레이가 사용되지 않고 공식 모바일 앱으로 알림이 전송되지 않습니다. 나중에 관리자 패널에서 설정을 변경할 수 있습니다."
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:66
+msgid "Neko cat that chases your cursor"
+msgstr "커서를 따라다니는 네코 고양이"
+
+#. Summary value when the operator left the push relay notice unaccepted.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:395
+msgid "Not accepted"
+msgstr "수락되지 않음"
+
+#. Voice screen share menu preference that pauses the local stream preview while the app is unfocused.
+#: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:28
+msgid "Pause preview when Fluxer isn’t focused"
+msgstr "Fluxer가 포커스되지 않았을 때 미리보기 일시 중지"
+
+#. Summary row label for the push relay consent on the setup wizard finish step.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:383
+msgid "Push relay notice"
+msgstr "푸시 릴레이 알림"
+
+#. Developer applications link label. domain is the documentation domain.
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
+msgid "Read the documentation ({domain})"
+msgstr "문서 읽기({domain})"
+
+#. Link to the push relay supplemental privacy notice shown during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
+msgid "Read the supplemental privacy notice"
+msgstr "추가 개인정보처리방침 읽기"
+
+#. Body shown when a failed screen share could not be fully stopped.
+#: src/features/voice/components/alerts/ScreenShareRollbackIncompleteModal.tsx:12
+msgid "Screen sharing failed, but Fluxer could not confirm that every capture path stopped. Stop sharing or disconnect from the call before continuing."
+msgstr "화면 공유에 실패했지만, 모든 캡처 경로가 중지되었는지 Fluxer가 확인할 수 없습니다. 계속하기 전에 공유를 중지하거나 통화 연결을 끊으세요."
+
+#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:50
+msgid "Show Neko"
+msgstr "네코 표시"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:78
+msgid "Static Neko"
+msgstr "움직이지 않는 네코"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:74
+msgid "Still Neko"
+msgstr "네코 정지"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:70
+msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
+msgstr "네코가 커서를 따라다니지 않도록 하면서도 드래그와 상호작용은 유지합니다."
+
+#. Setup wizard push relay consent step body.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:273
+msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
+msgstr "Fluxer 공식 모바일 앱은 Fluxer의 푸시 릴레이를 통해 알림을 수신하며, 이는 Apple 및 Google로 전달됩니다. 자체 호스팅된 UnifiedPush 및 ntfy 엔드포인트는 릴레이에 도달하지 않으며 별도의 동의가 필요하지 않습니다."

@@ -21,15 +21,15 @@ msgstr "... bật chế độ dày đặc. Tuyệt!"
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
-=======
 #: src/features/channel/components/MessageAttachments.tsx:390
 #: src/features/channel/components/UserMessage.tsx:75
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "(đã chỉnh sửa)"
 
 #: src/features/app/components/pages/YouPage.tsx:189
@@ -2246,14 +2246,14 @@ msgstr "<0>{username}</0> vẫn còn trong nhóm. Hãy thử lại sau giây lá
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:214
 #: src/features/channel/components/MessageAttachments.tsx:270
-=======
 #: src/features/channel/components/MessageAttachments.tsx:241
 #: src/features/channel/components/MessageAttachments.tsx:297
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "<0>Forwarded from</0>{sourceInfo}"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "<0>Đã chuyển tiếp từ</0>{sourceInfo}"
 
 #: src/features/user/components/modals/tabs/appearance_tab/InterfaceTab.tsx:63
@@ -16143,12 +16143,12 @@ msgstr "Chuyển tiếp phương tiện"
 msgid "Forward message"
 msgstr "Chuyển tiếp tin nhắn"
 
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:333
-=======
 #: src/features/channel/components/MessageAttachments.tsx:360
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "Forwarded"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "Đã chuyển tiếp"
 
 #. Notification body shown when a forwarded message has no other previewable content.
@@ -41153,3 +41153,92 @@ msgstr "Phóng to"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "Thu nhỏ"
+
+#. Label for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+msgid "Accept the push relay supplemental privacy notice"
+msgstr "Chấp nhận thông báo bổ sung về quyền riêng tư của dịch vụ chuyển tiếp đẩy"
+
+#. Summary value when the operator accepted the push relay notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:391
+msgid "Accepted"
+msgstr "Đã chấp nhận"
+
+#. Placeholder for the product name input in the setup wizard.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:96
+msgid "Fluxer"
+msgstr "Fluxer"
+
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
+msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
+msgstr "Giúp dịch {PRODUCT_NAME} sang ngôn ngữ của bạn trên <0>{I18N_WEBLATE_DOMAIN}</0>."
+
+#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:54
+msgid "Keep Neko still"
+msgstr "Giữ Neko đứng yên"
+
+#. Description for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
+msgstr "Nếu để tắt tùy chọn này, relay sẽ không được sử dụng và các ứng dụng di động chính thức sẽ không nhận được thông báo. Bạn có thể chấp nhận sau trong bảng quản trị."
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:66
+msgid "Neko cat that chases your cursor"
+msgstr "Mèo Neko đuổi theo con trỏ chuột của bạn"
+
+#. Summary value when the operator left the push relay notice unaccepted.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:395
+msgid "Not accepted"
+msgstr "Không chấp nhận"
+
+#. Voice screen share menu preference that pauses the local stream preview while the app is unfocused.
+#: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:28
+msgid "Pause preview when Fluxer isn’t focused"
+msgstr "Tạm dừng xem trước khi Fluxer không được lấy nét"
+
+#. Summary row label for the push relay consent on the setup wizard finish step.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:383
+msgid "Push relay notice"
+msgstr "Thông báo chuyển tiếp đẩy"
+
+#. Developer applications link label. domain is the documentation domain.
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
+msgid "Read the documentation ({domain})"
+msgstr "Đọc tài liệu ({domain})"
+
+#. Link to the push relay supplemental privacy notice shown during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
+msgid "Read the supplemental privacy notice"
+msgstr "Đọc thông báo quyền riêng tư bổ sung"
+
+#. Body shown when a failed screen share could not be fully stopped.
+#: src/features/voice/components/alerts/ScreenShareRollbackIncompleteModal.tsx:12
+msgid "Screen sharing failed, but Fluxer could not confirm that every capture path stopped. Stop sharing or disconnect from the call before continuing."
+msgstr "Chia sẻ màn hình thất bại, nhưng Fluxer không thể xác nhận mọi luồng chụp đã dừng. Hãy dừng chia sẻ hoặc ngắt kết nối khỏi cuộc gọi trước khi tiếp tục."
+
+#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:50
+msgid "Show Neko"
+msgstr "Hiện Neko"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:78
+msgid "Static Neko"
+msgstr "Neko tĩnh"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:74
+msgid "Still Neko"
+msgstr "Neko đứng yên"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:70
+msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
+msgstr "Ngăn Neko đuổi theo con trỏ chuột nhưng vẫn có thể kéo và tương tác."
+
+#. Setup wizard push relay consent step body.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:273
+msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
+msgstr "Các ứng dụng di động Fluxer chính thức nhận thông báo qua dịch vụ chuyển tiếp đẩy của Fluxer, dịch vụ này sẽ chuyển chúng đến Apple và Google. Các điểm cuối UnifiedPush và ntfy tự lưu trữ không bao giờ tiếp cận dịch vụ chuyển tiếp và không cần thỏa thuận."

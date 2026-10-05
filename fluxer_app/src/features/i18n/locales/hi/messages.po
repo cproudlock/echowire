@@ -21,15 +21,15 @@ msgstr "... सघन मोड चालू करें। बढ़िया!
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
-=======
 #: src/features/channel/components/MessageAttachments.tsx:390
 #: src/features/channel/components/UserMessage.tsx:75
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "(संपादित)"
 
 #: src/features/app/components/pages/YouPage.tsx:189
@@ -2246,14 +2246,14 @@ msgstr "<0>{username}</0> अभी भी ग्रुप में है। �
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:214
 #: src/features/channel/components/MessageAttachments.tsx:270
-=======
 #: src/features/channel/components/MessageAttachments.tsx:241
 #: src/features/channel/components/MessageAttachments.tsx:297
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "<0>Forwarded from</0>{sourceInfo}"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "{sourceInfo}<0>से फ़ॉरवर्ड किया गया</0>"
 
 #: src/features/user/components/modals/tabs/appearance_tab/InterfaceTab.tsx:63
@@ -16143,12 +16143,12 @@ msgstr "मीडिया फ़ॉरवर्ड करें"
 msgid "Forward message"
 msgstr "मैसेज फ़ॉरवर्ड करें"
 
-<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:333
-=======
 #: src/features/channel/components/MessageAttachments.tsx:360
->>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "Forwarded"
+<<<<<<< HEAD
+=======
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgstr "फ़ॉरवर्ड किया गया"
 
 #. Notification body shown when a forwarded message has no other previewable content.
@@ -41153,3 +41153,92 @@ msgstr "ज़ूम इन करें"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "ज़ूम आउट करें"
+
+#. Label for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:278
+msgid "Accept the push relay supplemental privacy notice"
+msgstr "पुश रिले की अतिरिक्त गोपनीयता सूचना स्वीकार करें"
+
+#. Summary value when the operator accepted the push relay notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:391
+msgid "Accepted"
+msgstr "स्वीकार किया"
+
+#. Placeholder for the product name input in the setup wizard.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:96
+msgid "Fluxer"
+msgstr "Fluxer"
+
+#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
+msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
+msgstr "<0>{I18N_WEBLATE_DOMAIN}</0> पर {PRODUCT_NAME} का अपनी भाषा में अनुवाद करने में मदद करें।"
+
+#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:54
+msgid "Keep Neko still"
+msgstr "नेको को स्थिर रखें"
+
+#. Description for the push relay consent switch during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:282
+msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
+msgstr "इसे बंद रखने से रिले का उपयोग नहीं होगा और सूचनाएं आधिकारिक मोबाइल ऐप्स पर नहीं पहुंचेंगी। आप इसे बाद में एडमिन पैनल में स्वीकार कर सकते हैं।"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:66
+msgid "Neko cat that chases your cursor"
+msgstr "आपके कर्सर का पीछा करने वाली नेको बिल्ली"
+
+#. Summary value when the operator left the push relay notice unaccepted.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:395
+msgid "Not accepted"
+msgstr "स्वीकार नहीं किया गया"
+
+#. Voice screen share menu preference that pauses the local stream preview while the app is unfocused.
+#: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:28
+msgid "Pause preview when Fluxer isn’t focused"
+msgstr "जब Fluxer फ़ोकस में न हो तो प्रीव्यू रोकें"
+
+#. Summary row label for the push relay consent on the setup wizard finish step.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:383
+msgid "Push relay notice"
+msgstr "पुश रिले सूचना"
+
+#. Developer applications link label. domain is the documentation domain.
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
+msgid "Read the documentation ({domain})"
+msgstr "डॉक्यूमेंटेशन पढ़ें ({domain})"
+
+#. Link to the push relay supplemental privacy notice shown during setup.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:287
+msgid "Read the supplemental privacy notice"
+msgstr "पूरक गोपनीयता सूचना पढ़ें"
+
+#. Body shown when a failed screen share could not be fully stopped.
+#: src/features/voice/components/alerts/ScreenShareRollbackIncompleteModal.tsx:12
+msgid "Screen sharing failed, but Fluxer could not confirm that every capture path stopped. Stop sharing or disconnect from the call before continuing."
+msgstr "स्क्रीन शेयरिंग विफल रही, लेकिन Fluxer यह पुष्टि नहीं कर सका कि हर कैप्चर पाथ बंद हो गया है। जारी रखने से पहले शेयरिंग रोकें या कॉल से डिस्कनेक्ट करें।"
+
+#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:50
+msgid "Show Neko"
+msgstr "नेको दिखाएं"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:78
+msgid "Static Neko"
+msgstr "स्टैटिक नेको"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:74
+msgid "Still Neko"
+msgstr "स्थिर नेको"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:70
+msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
+msgstr "नेको को आपके कर्सर का पीछा करने से रोकें, लेकिन वह ड्रैग करने लायक और इंटरैक्टिव बना रहे।"
+
+#. Setup wizard push relay consent step body.
+#: src/features/app/components/setup/SetupWizardSteps.tsx:273
+msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
+msgstr "Fluxer के आधिकारिक मोबाइल ऐप, Fluxer के पुश रिले के ज़रिए सूचनाएं प्राप्त करते हैं, जो उन्हें Apple और Google को सौंपता है। सेल्फ-होस्टेड UnifiedPush और ntfy एंडपॉइंट कभी भी रिले तक नहीं पहुँचते और उन्हें किसी समझौते की आवश्यकता नहीं होती।"

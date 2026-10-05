@@ -101,6 +101,14 @@ def parse(text: str) -> tuple[list[str], dict[tuple, Entry], int]:
         if i == 0 and ids and _joined([ids[0]]) == "":
             header = lines
             continue
+        # Obsolete blocks (#~ msgid ...) carry their directives behind a comment marker,
+        # so the comment branch below would swallow the msgid and every such block would
+        # key on (None, "") - colliding and silently overwriting one another. They are
+        # commented-out history; the extract regenerates them. Skip the block entirely.
+        if all(ln.startswith("#") for ln in lines) or any(
+            ln.startswith("#~") for ln in lines
+        ):
+            continue
         e = Entry()
         mode = None
         idl: list[str] = []
@@ -148,8 +156,13 @@ def resolve(path: str) -> tuple[str, dict]:
         o, t, b = ours.get(key), theirs.get(key), base.get(key)
         if o is not None and t is None:
             # upstream does not have it: a fork-only string, or upstream deleted it.
-            # Keeping ours is right for the first and harmless pending an extract for
-            # the second, which will drop genuinely dead entries.
+            # Keeping ours is right for the first, and safe for the second ONLY because
+            # the extract afterwards drops entries no source string references. Note the
+            # deeper trap, which bites any format without an extract step: the merge base
+            # is an UPSTREAM commit, so a fork-branded value differs from base BY
+            # CONSTRUCTION. Key existence and value wording are therefore separate
+            # questions, and conflating them keeps fork-branded entries whose upstream key
+            # is deliberately gone.
             out.append(o); stats["ours_only"] += 1; continue
         if o is None and t is not None:
             out.append(t); stats["theirs_only"] += 1; continue
@@ -169,7 +182,32 @@ def resolve(path: str) -> tuple[str, dict]:
     if stats["conflict"]:
         return "conflict", {**stats, "entries": conflicts[:8]}
 
-    # Take THEIR header: it is generated, and ours differs only by stamps.
+    # The header is generated and ours normally differs from theirs only in stamp
+    # fields, so theirs is taken. That was measured true for all 34 catalogs, but it is
+    # an assumption, so assert it rather than trust it: if ours carries anything beyond
+    # the known stamps, block the file instead of discarding a fork header field.
+    STAMPS = (
+        "PO-Revision-Date", "POT-Creation-Date", "Last-Translator",
+        "X-Generator", "Language-Team", "Report-Msgid-Bugs-To",
+    )
+    def significant(lines: list[str]) -> list[str]:
+        keep = []
+        for ln in lines:
+            if ln.startswith("#") or ln.strip() in ('msgid ""', 'msgstr ""'):
+                continue
+            if any(f'"{k}:' in ln for k in STAMPS):
+                continue
+            keep.append(ln.strip())
+        return sorted(keep)
+
+    if significant(ohdr) != significant(thdr):
+        only_ours = [x for x in significant(ohdr) if x not in significant(thdr)]
+        return "conflict", {
+            **stats,
+            "conflict": 1,
+            "entries": [f"header differs beyond stamps: {only_ours[:2]}"],
+        }
+
     body = "\n\n".join([("\n".join(thdr or ohdr))] + [e.text() for e in out])
     return "resolved", {**stats, "text": body + "\n"}
 

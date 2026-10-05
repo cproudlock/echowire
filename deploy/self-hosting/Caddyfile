@@ -54,6 +54,14 @@
 		reverse_proxy static-proxy:8080
 	}
 
+	# Echowire: the vendored docs site, which upstream builds but never deploys.
+	@docs path /docs /docs/*
+	handle @docs {
+		reverse_proxy docs:8080 {
+			header_up X-Forwarded-For {client_ip}
+		}
+	}
+
 	# Echowire: keep the vendored rebranded marketing service (upstream #2486 dropped it).
 	@marketing path /static/* /help /help/* /download /terms /privacy /guidelines /security /company-information /blog /blog/* /reverb /donate /donate/* /careers /careers/* /partners /press /press/* /en /en/*
 	handle @marketing {

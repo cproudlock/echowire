@@ -18,8 +18,12 @@ const DEFAULT_MOVING_TAGS: &str = "v1,latest";
 const DEFAULT_FROM_TAG: &str = "v1";
 const DEFAULT_OUT_DIR: &str = "release-out";
 const RELEASE_COMPONENT: &str = "fluxer-release";
+// Echowire: mirrors the compose literally, so it must move whenever the compose's
+// registry fallback does. The fallback is this fork's owner rather than upstream's,
+// because an unset FLUXER_REGISTRY_OWNER silently pulling upstream images gives a
+// self-hoster a stack with no forums and no obvious reason why.
 const COMPOSE_IMAGE_PREFIX: &str =
-    "${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}";
+    "${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}";
 const OCI_INDEX_MEDIA_TYPE: &str = "application/vnd.oci.image.index.v1+json";
 const DOCKER_MANIFEST_LIST_MEDIA_TYPE: &str =
     "application/vnd.docker.distribution.manifest.list.v2+json";
@@ -50,7 +54,7 @@ const COMPONENTS: &[Component] = &[
     },
     Component {
         image: "fluxer-docs",
-        services: &[],
+        services: &["docs"],
     },
     Component {
         image: "fluxer-gateway",
@@ -871,10 +875,12 @@ mod tests {
     //
     // Two components are deliberately not published by this fork, each for a reason:
     //   fluxer-app-proxy  upstream's variant; this fork ships the -self-hosted one
-    //   fluxer-docs       the docs site is vendored in-tree but not deployed here
+    // (fluxer-docs was excluded here until 2026-10-04, when it was deployed and added
+    // to the publish matrix. The exclusion list is asserted against COMPONENTS above, so a
+    // stale entry fails rather than silently widening the gap.)
     #[test]
     fn the_fork_publish_workflow_builds_every_component_it_ships() {
-        const NOT_PUBLISHED_BY_THE_FORK: &[&str] = &["fluxer-app-proxy", "fluxer-docs"];
+        const NOT_PUBLISHED_BY_THE_FORK: &[&str] = &["fluxer-app-proxy"];
 
         let canonical: BTreeSet<&str> = COMPONENTS.iter().map(|c| c.image).collect();
         for skipped in NOT_PUBLISHED_BY_THE_FORK {
@@ -971,7 +977,7 @@ mod tests {
             .collect();
         let unique: BTreeSet<&str> = services.iter().copied().collect();
         assert_eq!(services.len(), unique.len());
-        assert_eq!(services.len(), 19);
+        assert_eq!(services.len(), 20);
     }
 
     #[test]
@@ -1075,7 +1081,7 @@ mod tests {
                 .lines()
                 .filter(|line| line.starts_with("    image: "))
                 .count(),
-            19
+            20
         );
 
         let api = manifest
@@ -1105,7 +1111,23 @@ mod tests {
             )),
             "{rendered}"
         );
-        assert!(!rendered.contains("fluxer-docs"), "{rendered}");
+        // Echowire: this asserted the OPPOSITE until 2026-10-04, because fluxer-docs
+        // declared no services and so never appeared in a release override. The docs site
+        // is deployed now, so it must be pinned by digest like everything else - an
+        // unpinned service in a release override is how a "pinned" release ships a moving
+        // tag for one component.
+        let docs = manifest
+            .components
+            .iter()
+            .find(|entry| entry.component == "fluxer-docs")
+            .unwrap();
+        assert!(
+            rendered.contains(&format!(
+                "  docs:\n    image: {COMPOSE_IMAGE_PREFIX}/fluxer-docs@${{FLUXER_DOCS_IMAGE_DIGEST:-{}}}\n",
+                docs.digest
+            )),
+            "{rendered}"
+        );
         assert!(
             rendered.starts_with(
                 "# fluxer-release@2026.901.120000 image set\n# docker compose -f docker-compose.yml -f fluxer-release-2026.901.120000.yml up -d\nservices:\n"
@@ -1127,7 +1149,7 @@ mod tests {
         let mut sorted = services.clone();
         sorted.sort_unstable();
         assert_eq!(services, sorted);
-        assert_eq!(services.len(), 19);
+        assert_eq!(services.len(), 20);
     }
 
     #[test]

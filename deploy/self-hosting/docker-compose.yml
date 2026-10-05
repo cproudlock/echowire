@@ -502,7 +502,7 @@ services:
 
   api:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-api:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-api:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -536,7 +536,7 @@ services:
 
   worker:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-api:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-api:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -566,7 +566,7 @@ services:
 
   gateway:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-gateway:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-gateway:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -606,7 +606,7 @@ services:
 
   media-proxy:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-media-proxy:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-media-proxy:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -649,7 +649,7 @@ services:
 
   push:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-push:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-push:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -682,7 +682,7 @@ services:
 
   static-proxy:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-static:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-static:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -695,7 +695,7 @@ services:
 
   app-proxy:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-app-proxy-self-hosted:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-app-proxy-self-hosted:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -744,7 +744,7 @@ services:
     # service from the compose, but the fork still builds fluxer-marketing and serves
     # /help, /blog, /terms, /reverb, etc. through it (routed by the edge Caddyfile).
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-marketing:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-marketing:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -763,9 +763,23 @@ services:
       # deploy/LINUX-PACKAGE-REPOSITORIES.md.
       FLUXER_MARKETING_LINUX_REPO_ENABLED: ${FLUXER_MARKETING_LINUX_REPO_ENABLED:-false}
 
+  docs:
+    # Echowire: upstream vendors fluxer_docs and never deploys it, so a self-hoster has
+    # no documentation of their own instance to read and the in-app docs link has nowhere
+    # to point. Routed at /docs by the edge Caddyfile. The image serves on 8080 and ships
+    # its own healthcheck.
+    <<: *fluxer-service
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-docs:${FLUXER_IMAGE_TAG:-v1}
+    deploy:
+      resources:
+        limits:
+          memory: ${FLUXER_DOCS_MEMORY_LIMIT:-256mb}
+    environment:
+      <<: *fluxer-env
+
   snowflakes:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-snowflakes:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-snowflakes:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -780,7 +794,7 @@ services:
 
   snowflakes-shard:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-snowflakes:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-snowflakes:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -796,7 +810,7 @@ services:
 
   users:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-users:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-users:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -811,7 +825,7 @@ services:
 
   users-shard:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-users:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-users:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -829,7 +843,7 @@ services:
 
   gifs:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-gifs:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-gifs:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -844,7 +858,7 @@ services:
 
   gifs-shard:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-gifs:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-gifs:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -861,7 +875,7 @@ services:
 
   messages:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-messages:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-messages:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -876,7 +890,7 @@ services:
 
   messages-shard:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-messages:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-messages:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -894,7 +908,7 @@ services:
 
   unfurl:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-unfurl:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-unfurl:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -909,7 +923,7 @@ services:
 
   unfurl-shard:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-unfurl:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-unfurl:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:
@@ -928,7 +942,7 @@ services:
 
   admin:
     <<: *fluxer-service
-    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-fluxerapp}}/fluxer-admin:${FLUXER_IMAGE_TAG:-v1}
+    image: ${FLUXER_REGISTRY:-ghcr.io/${FLUXER_REGISTRY_OWNER:-cproudlock}}/fluxer-admin:${FLUXER_IMAGE_TAG:-v1}
     deploy:
       resources:
         limits:

@@ -493,7 +493,7 @@ const ERROR_I18N_HR_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Dosegnut je maksimum od {count, plural, one {# webhooka} few {# webhooka} other {# webhookova}} po kanalu.",
 	"webhooks.max_webhooks_per_guild_reached": "Dosegnut je maksimum od {count, plural, one {# webhooka} few {# webhooka} other {# webhookova}} po zajednici.",
 	"webhooks.unknown_webhook": "Nepoznat webhook.",
-	"webhooks.webhook_name_length_invalid": "Naziv webhooka mora biti između {min} i {max} znakova.",
+	"webhooks.webhook_name_length_invalid": "Naziv webhooka mora biti između {min} i {max} znakova."
 });
 
 export default ERROR_I18N_HR_MESSAGES;

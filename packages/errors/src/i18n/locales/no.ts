@@ -493,7 +493,7 @@ const ERROR_I18N_NO_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Du har nådd grensen på {count, plural, one {# webhook} other {# webhooks}} per kanal.",
 	"webhooks.max_webhooks_per_guild_reached": "Du har nådd grensen på {count, plural, one {# webhook} other {# webhooks}} per fellesskap.",
 	"webhooks.unknown_webhook": "Ukjent webhook.",
-	"webhooks.webhook_name_length_invalid": "Webhook-navnet må inneholde mellom {min} og {max} tegn.",
+	"webhooks.webhook_name_length_invalid": "Webhook-navnet må inneholde mellom {min} og {max} tegn."
 });
 
 export default ERROR_I18N_NO_MESSAGES;

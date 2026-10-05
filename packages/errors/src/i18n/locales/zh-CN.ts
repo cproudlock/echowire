@@ -493,7 +493,7 @@ const ERROR_I18N_ZH_CN_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "你已达到每个频道 {count, plural, other {# 个 webhook}}的上限。",
 	"webhooks.max_webhooks_per_guild_reached": "你已达到每个社区 {count, plural, other {# 个 webhook}}的上限。",
 	"webhooks.unknown_webhook": "未知 webhook。",
-	"webhooks.webhook_name_length_invalid": "Webhook 名称长度必须在 {min} 到 {max} 个字符之间。",
+	"webhooks.webhook_name_length_invalid": "Webhook 名称长度必须在 {min} 到 {max} 个字符之间。"
 });
 
 export default ERROR_I18N_ZH_CN_MESSAGES;

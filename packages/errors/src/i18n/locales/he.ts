@@ -493,7 +493,7 @@ const ERROR_I18N_HE_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "הגעת למספר המרבי של {count} {count, plural, one {webhook} other {webhooks}} לערוץ.",
 	"webhooks.max_webhooks_per_guild_reached": "הגעת למספר המרבי של {count} {count, plural, one {webhook} other {webhooks}} לקהילה.",
 	"webhooks.unknown_webhook": "webhook לא ידוע.",
-	"webhooks.webhook_name_length_invalid": "שם ה-webhook חייב להיות באורך של {min} עד {max} תווים.",
+	"webhooks.webhook_name_length_invalid": "שם ה-webhook חייב להיות באורך של {min} עד {max} תווים."
 });
 
 export default ERROR_I18N_HE_MESSAGES;

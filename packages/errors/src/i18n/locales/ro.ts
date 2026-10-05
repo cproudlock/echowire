@@ -493,7 +493,7 @@ const ERROR_I18N_RO_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Ai atins numărul maxim de {count, plural, one {# webhook} few {# webhook-uri} other {# de webhook-uri}} pe canal.",
 	"webhooks.max_webhooks_per_guild_reached": "Ai atins numărul maxim de {count, plural, one {# webhook} few {# webhook-uri} other {# de webhook-uri}} pe comunitate.",
 	"webhooks.unknown_webhook": "Webhook necunoscut.",
-	"webhooks.webhook_name_length_invalid": "Numele webhook-ului trebuie să aibă între {min} și {max} caractere.",
+	"webhooks.webhook_name_length_invalid": "Numele webhook-ului trebuie să aibă între {min} și {max} caractere."
 });
 
 export default ERROR_I18N_RO_MESSAGES;

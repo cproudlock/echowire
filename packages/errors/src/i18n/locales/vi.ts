@@ -493,7 +493,7 @@ const ERROR_I18N_VI_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Bạn đã đạt tối đa {count} {count, plural, other {webhook}} cho mỗi kênh.",
 	"webhooks.max_webhooks_per_guild_reached": "Bạn đã đạt tối đa {count} {count, plural, other {webhook}} cho mỗi cộng đồng.",
 	"webhooks.unknown_webhook": "Webhook không xác định.",
-	"webhooks.webhook_name_length_invalid": "Tên webhook phải có độ dài từ {min} đến {max} ký tự.",
+	"webhooks.webhook_name_length_invalid": "Tên webhook phải có độ dài từ {min} đến {max} ký tự."
 });
 
 export default ERROR_I18N_VI_MESSAGES;

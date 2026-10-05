@@ -493,7 +493,7 @@ const ERROR_I18N_HI_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "आप एक चैनल के लिए अधिकतम {count} {count, plural, one {वेबहुक} other {वेबहुक}} तक पहुँच गए हैं।",
 	"webhooks.max_webhooks_per_guild_reached": "आप एक कम्युनिटी के लिए अधिकतम {count} {count, plural, one {वेबहुक} other {वेबहुक}} तक पहुँच गए हैं।",
 	"webhooks.unknown_webhook": "अज्ञात वेबहुक।",
-	"webhooks.webhook_name_length_invalid": "वेबहुक नेम {min} और {max} कैरेक्टर के बीच होना चाहिए।",
+	"webhooks.webhook_name_length_invalid": "वेबहुक नेम {min} और {max} कैरेक्टर के बीच होना चाहिए।"
 });
 
 export default ERROR_I18N_HI_MESSAGES;

@@ -493,7 +493,7 @@ const ERROR_I18N_ID_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Kamu telah mencapai batas maksimal {count} {count, plural, other {webhook}} per saluran.",
 	"webhooks.max_webhooks_per_guild_reached": "Kamu telah mencapai batas maksimal {count} {count, plural, other {webhook}} per komunitas.",
 	"webhooks.unknown_webhook": "Webhook tidak dikenal.",
-	"webhooks.webhook_name_length_invalid": "Nama webhook harus antara {min} dan {max} karakter.",
+	"webhooks.webhook_name_length_invalid": "Nama webhook harus antara {min} dan {max} karakter."
 });
 
 export default ERROR_I18N_ID_MESSAGES;

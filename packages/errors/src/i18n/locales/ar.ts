@@ -493,7 +493,7 @@ const ERROR_I18N_AR_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "لقد وصلت إلى الحد الأقصى وهو {count, plural, zero {# ويب هوك} one {ويب هوك واحد} two {# ويب هوك} few {# ويب هوك} many {# ويب هوك} other {# ويب هوك}} لكل قناة.",
 	"webhooks.max_webhooks_per_guild_reached": "لقد وصلت إلى الحد الأقصى وهو {count, plural, zero {# ويب هوك} one {ويب هوك واحد} two {# ويب هوك} few {# ويب هوك} many {# ويب هوك} other {# ويب هوك}} لكل مجتمع.",
 	"webhooks.unknown_webhook": "ويب هوك غير معروف.",
-	"webhooks.webhook_name_length_invalid": "يجب أن يكون اسم الويب هوك بين {min} و{max} حرفًا.",
+	"webhooks.webhook_name_length_invalid": "يجب أن يكون اسم الويب هوك بين {min} و{max} حرفًا."
 });
 
 export default ERROR_I18N_AR_MESSAGES;

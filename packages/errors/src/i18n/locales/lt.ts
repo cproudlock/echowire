@@ -493,7 +493,7 @@ const ERROR_I18N_LT_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Pasiekei {count, plural, one {# webhooko} few {# webhookų} many {# webhooko} other {# webhookų}} ribą viename kanale.",
 	"webhooks.max_webhooks_per_guild_reached": "Pasiekei {count, plural, one {# webhooko} few {# webhookų} many {# webhooko} other {# webhookų}} ribą vienoje bendruomenėje.",
 	"webhooks.unknown_webhook": "Nežinomas webhookas.",
-	"webhooks.webhook_name_length_invalid": "Webhooko pavadinimas turi būti {min}–{max} simbolių.",
+	"webhooks.webhook_name_length_invalid": "Webhooko pavadinimas turi būti {min}–{max} simbolių."
 });
 
 export default ERROR_I18N_LT_MESSAGES;

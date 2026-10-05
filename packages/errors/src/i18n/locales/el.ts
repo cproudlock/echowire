@@ -493,7 +493,7 @@ const ERROR_I18N_EL_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Έχεις φτάσει το μέγιστο των {count} {count, plural, one {webhook} other {webhook}} ανά κανάλι.",
 	"webhooks.max_webhooks_per_guild_reached": "Έχεις φτάσει το μέγιστο των {count} {count, plural, one {webhook} other {webhook}} ανά κοινότητα.",
 	"webhooks.unknown_webhook": "Άγνωστο webhook.",
-	"webhooks.webhook_name_length_invalid": "Το όνομα webhook πρέπει να είναι μεταξύ {min} και {max} χαρακτήρων.",
+	"webhooks.webhook_name_length_invalid": "Το όνομα webhook πρέπει να είναι μεταξύ {min} και {max} χαρακτήρων."
 });
 
 export default ERROR_I18N_EL_MESSAGES;

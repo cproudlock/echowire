@@ -493,7 +493,7 @@ const ERROR_I18N_HU_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Elérted a csatornánként megengedett webhookok számát ({count, plural, one {#} other {#}}).",
 	"webhooks.max_webhooks_per_guild_reached": "Elérted a közösségenként megengedett webhookok számát ({count, plural, one {#} other {#}}).",
 	"webhooks.unknown_webhook": "Ismeretlen webhook.",
-	"webhooks.webhook_name_length_invalid": "A webhook neve {min}–{max} karakter hosszú lehet.",
+	"webhooks.webhook_name_length_invalid": "A webhook neve {min}–{max} karakter hosszú lehet."
 });
 
 export default ERROR_I18N_HU_MESSAGES;

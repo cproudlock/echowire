@@ -493,7 +493,7 @@ const ERROR_I18N_CS_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Dosáhli jste limitu {count, plural, one {# webhooku} few {# webhooků} many {# webhooku} other {# webhooků}} na kanál.",
 	"webhooks.max_webhooks_per_guild_reached": "Dosáhli jste limitu {count, plural, one {# webhooku} few {# webhooků} many {# webhooku} other {# webhooků}} na komunitu.",
 	"webhooks.unknown_webhook": "Neznámý webhook.",
-	"webhooks.webhook_name_length_invalid": "Název webhooku musí být dlouhý {min} až {max} znaků.",
+	"webhooks.webhook_name_length_invalid": "Název webhooku musí být dlouhý {min} až {max} znaků."
 });
 
 export default ERROR_I18N_CS_MESSAGES;

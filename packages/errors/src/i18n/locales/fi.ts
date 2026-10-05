@@ -493,7 +493,7 @@ const ERROR_I18N_FI_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Kanavan webhookien enimmäismäärä on saavutettu: {count, plural, one {# webhook} other {# webhookia}}.",
 	"webhooks.max_webhooks_per_guild_reached": "Yhteisön webhookien enimmäismäärä on saavutettu: {count, plural, one {# webhook} other {# webhookia}}.",
 	"webhooks.unknown_webhook": "Tuntematon webhook.",
-	"webhooks.webhook_name_length_invalid": "Webhookin nimen on oltava {min}–{max} merkkiä pitkä.",
+	"webhooks.webhook_name_length_invalid": "Webhookin nimen on oltava {min}–{max} merkkiä pitkä."
 });
 
 export default ERROR_I18N_FI_MESSAGES;

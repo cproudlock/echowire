@@ -493,7 +493,7 @@ const ERROR_I18N_KO_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "채널당 최대 {count, plural, other {#개}}의 웹훅을 만들 수 있어요.",
 	"webhooks.max_webhooks_per_guild_reached": "커뮤니티당 최대 {count, plural, other {#개}}의 웹훅을 만들 수 있어요.",
 	"webhooks.unknown_webhook": "알 수 없는 웹훅이에요.",
-	"webhooks.webhook_name_length_invalid": "웹훅 이름은 {min}자에서 {max}자 사이여야 해요.",
+	"webhooks.webhook_name_length_invalid": "웹훅 이름은 {min}자에서 {max}자 사이여야 해요."
 });
 
 export default ERROR_I18N_KO_MESSAGES;

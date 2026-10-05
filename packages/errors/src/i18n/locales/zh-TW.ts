@@ -493,7 +493,7 @@ const ERROR_I18N_ZH_TW_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "你已達到每個頻道最多 {count, plural, other {# 個}} Webhook 的上限。",
 	"webhooks.max_webhooks_per_guild_reached": "你已達到每個社群最多 {count, plural, other {# 個}} Webhook 的上限。",
 	"webhooks.unknown_webhook": "未知的 Webhook。",
-	"webhooks.webhook_name_length_invalid": "Webhook 名稱必須介於 {min} 到 {max} 個字元之間。",
+	"webhooks.webhook_name_length_invalid": "Webhook 名稱必須介於 {min} 到 {max} 個字元之間。"
 });
 
 export default ERROR_I18N_ZH_TW_MESSAGES;

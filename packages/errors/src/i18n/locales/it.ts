@@ -493,7 +493,7 @@ const ERROR_I18N_IT_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Hai raggiunto il limite di {count, plural, one {# webhook} other {# webhook}} per canale.",
 	"webhooks.max_webhooks_per_guild_reached": "Hai raggiunto il limite di {count, plural, one {# webhook} other {# webhook}} per community.",
 	"webhooks.unknown_webhook": "Webhook sconosciuto.",
-	"webhooks.webhook_name_length_invalid": "Il nome del webhook deve contenere da {min} a {max} caratteri.",
+	"webhooks.webhook_name_length_invalid": "Il nome del webhook deve contenere da {min} a {max} caratteri."
 });
 
 export default ERROR_I18N_IT_MESSAGES;

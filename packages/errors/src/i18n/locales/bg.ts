@@ -493,7 +493,7 @@ const ERROR_I18N_BG_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Достигна максимума от {count} {count, plural, one {уебхук} other {уебхука}} за канал.",
 	"webhooks.max_webhooks_per_guild_reached": "Достигна максимума от {count} {count, plural, one {уебхук} other {уебхука}} за общност.",
 	"webhooks.unknown_webhook": "Неизвестен уебхук.",
-	"webhooks.webhook_name_length_invalid": "Името на уебхука трябва да е между {min} и {max} знака.",
+	"webhooks.webhook_name_length_invalid": "Името на уебхука трябва да е между {min} и {max} знака."
 });
 
 export default ERROR_I18N_BG_MESSAGES;

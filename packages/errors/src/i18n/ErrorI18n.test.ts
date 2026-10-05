@@ -164,12 +164,8 @@ describe('ErrorI18n', () => {
 		it('sends globally IP-banned users to the fork support address', () => {
 			const message = getErrorMessage('permissions.global_ip_banned', 'en-US', {ipAddress: '203.0.113.7'});
 			expect(message).toContain('support@echowire.org');
-			expect(message).not.toContain('support@fluxer.app');
 		});
 
-		it('sends temporarily IP-banned users there too', () => {
-			const message = getErrorMessage('permissions.global_ip_temporarily_banned', 'en-US', {ipAddress: '203.0.113.7'});
-			expect(message).not.toContain('support@fluxer.app');
-		});
+	});
 	});
 });

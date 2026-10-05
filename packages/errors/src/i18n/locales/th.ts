@@ -493,7 +493,7 @@ const ERROR_I18N_TH_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "คุณมี webhook ครบ {count} {count, plural, other {รายการ}} ต่อช่องแล้ว",
 	"webhooks.max_webhooks_per_guild_reached": "คุณมี webhook ครบ {count} {count, plural, other {รายการ}} ต่อคอมมูนิตี้แล้ว",
 	"webhooks.unknown_webhook": "ไม่พบ webhook",
-	"webhooks.webhook_name_length_invalid": "ชื่อ webhook ต้องมีความยาวระหว่าง {min} ถึง {max} ตัวอักษร",
+	"webhooks.webhook_name_length_invalid": "ชื่อ webhook ต้องมีความยาวระหว่าง {min} ถึง {max} ตัวอักษร"
 });
 
 export default ERROR_I18N_TH_MESSAGES;

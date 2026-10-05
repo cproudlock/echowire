@@ -493,7 +493,7 @@ const ERROR_I18N_JA_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "このチャンネルでは、ウェブフックの上限{count, plural, other {#個}}に達しました。",
 	"webhooks.max_webhooks_per_guild_reached": "このコミュニティでは、ウェブフックの上限{count, plural, other {#個}}に達しました。",
 	"webhooks.unknown_webhook": "不明なウェブフックです。",
-	"webhooks.webhook_name_length_invalid": "ウェブフック名は{min}～{max}文字である必要があります。",
+	"webhooks.webhook_name_length_invalid": "ウェブフック名は{min}～{max}文字である必要があります。"
 });
 
 export default ERROR_I18N_JA_MESSAGES;

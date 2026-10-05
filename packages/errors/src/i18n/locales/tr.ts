@@ -493,7 +493,7 @@ const ERROR_I18N_TR_MESSAGES = defineErrorI18nLocaleMessages({
 	"webhooks.max_webhooks_per_channel_reached": "Kanal başına en fazla {count, plural, one {# webhook} other {# webhook}} sınırına ulaştın.",
 	"webhooks.max_webhooks_per_guild_reached": "Topluluk başına en fazla {count, plural, one {# webhook} other {# webhook}} sınırına ulaştın.",
 	"webhooks.unknown_webhook": "Bilinmeyen webhook.",
-	"webhooks.webhook_name_length_invalid": "Webhook adı {min} ile {max} karakter arasında olmalı.",
+	"webhooks.webhook_name_length_invalid": "Webhook adı {min} ile {max} karakter arasında olmalı."
 });
 
 export default ERROR_I18N_TR_MESSAGES;

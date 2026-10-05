@@ -35,7 +35,7 @@ IMAGES=(
 	"fluxer-users|fluxer_users/Dockerfile|"
 	"fluxer-marketing|fluxer_marketing/Dockerfile|"
 	"fluxer-push|fluxer_push/Dockerfile|"
-	"fluxer-docs|fluxer_docs/Dockerfile|"
+	"fluxer-docs|fluxer_docs/Dockerfile|--build-arg FLUXER_DOCS_ENDPOINT=https://${DOCS_DOMAIN:-echowire.org}/docs"
 	"fluxer-app-proxy-self-hosted|fluxer_app_proxy/Dockerfile|"
 )
 

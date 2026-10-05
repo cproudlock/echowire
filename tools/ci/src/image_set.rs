@@ -1390,7 +1390,7 @@ mod tests {
         ] {
             assert!(
                 workflow.contains(entry),
-                "release-image-set.yaml must carry {entry}"
+                "release-image-set.yaml must contain {entry}"
             );
         }
         assert!(

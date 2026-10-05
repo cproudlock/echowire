@@ -1366,7 +1366,7 @@ mod tests {
     }
 
     #[test]
-    fn a_release_carrying_an_extra_route_is_refused() {
+    fn a_release_with_an_extra_route_is_refused() {
         let mut descriptor = sample_descriptor();
         let storage_filename = "latest-linux.yml";
         let extra = DesktopReleaseAsset {

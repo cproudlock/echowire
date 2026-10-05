@@ -388,7 +388,7 @@ const ERROR_I18N_FI_MESSAGES = defineErrorI18nLocaleMessages({
 	"moderation_and_reports.user_is_not_banned": "Tällä käyttäjällä ei ole porttikieltoa.",
 	"names_and_normalization.name_empty_after_normalization": "Normalisoinnin jälkeen nimi ei voi olla tyhjä.",
 	"permissions.global_ip_banned": "Alustan ylläpitäjät ovat estäneet IP-osoitteelta {ipAddress} pääsyn echowire API -rajapintaan pysyvästi. Jos uskot tämän olevan virhe, lähetä valitus osoitteeseen support@echowire.org. Liitä tämä IP-osoite valitukseesi.",
-	"permissions.global_ip_temporarily_banned": "IP-osoitteeltasi {ipAddress} on estetty pääsy echowire API -rajapintaan 24 tunniksi väärinkäytön tai epätavallisten käyttötapojen vuoksi. Emme yleensä käsittele väliaikaisia API-estoja koskevia valituksia. Vaihda IP-osoitetta tai odota eston päättymistä ja tarkista, miten asiakasohjelmasi käyttää echowire API -rajapintaa.",
+	"permissions.global_ip_temporarily_banned": "IP-osoitteeltasi {ipAddress} on estetty väliaikaisesti pääsy echowire API -rajapintaan. Esto poistuu automaattisesti, kun sen voimassaolo päättyy. Jos uskot tämän olevan virhe, ota yhteyttä osoitteeseen support@echowire.org ja mainitse tämä IP-osoite.",
 	"permissions.missing_access": "Ei oikeutta tähän resurssiin tai ominaisuuteen.",
 	"permissions.missing_permissions": "Ei tarvittavia oikeuksia tämän toiminnon tekemiseen.",
 	"permissions.user_banned_from_guild": "Tällä käyttäjällä on porttikielto tähän yhteisöön.",

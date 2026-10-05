@@ -266,6 +266,8 @@ pub enum FlashLevel {
 pub struct BanCheckResult {
     pub banned: bool,
     #[serde(default)]
+    pub expires_at: Option<String>,
+    #[serde(default)]
     pub entries: Vec<serde_json::Value>,
 }
 

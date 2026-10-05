@@ -384,7 +384,7 @@
 	"moderation_and_reports.user_is_not_banned": "Denne bruger er ikke udelukket.",
 	"names_and_normalization.name_empty_after_normalization": "Navnet må ikke være tomt efter normalisering.",
 	"permissions.global_ip_banned": "Din IP-adresse {ipAddress} er permanent blokeret fra echowire API af platformadministratorer. Hvis du mener, at dette er en fejl, kan du kontakte support@echowire.org for at klage. Medtag denne IP-adresse i klagen.",
-	"permissions.global_ip_temporarily_banned": "Din IP-adresse {ipAddress} er midlertidigt blokeret fra echowire API i 24 timer på grund af misbrug eller usædvanlige adgangsmønstre. Vi behandler normalt ikke klager over midlertidige API-blokeringer. Skift IP-adresse, eller vent på, at blokeringen udløber, og gennemgå din klients adgangsmønstre til echowire API.",
+	"permissions.global_ip_temporarily_banned": "Din IP-adresse {ipAddress} er midlertidigt blokeret fra echowire API. Blokeringen ophæves automatisk, når den udløber. Hvis du mener, at dette er en fejl, kan du kontakte support@echowire.org og oplyse denne IP-adresse.",
 	"permissions.missing_access": "Du har ikke adgang til denne ressource eller funktion.",
 	"permissions.missing_permissions": "Du har ikke de nødvendige tilladelser til at udføre denne handling.",
 	"permissions.user_banned_from_guild": "Denne bruger er udelukket fra dette fællesskab.",

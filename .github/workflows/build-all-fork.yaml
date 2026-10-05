@@ -57,6 +57,7 @@ jobs:
             {"image":"fluxer-users","dockerfile":"fluxer_users/Dockerfile","build_args":""},
             {"image":"fluxer-marketing","dockerfile":"fluxer_marketing/Dockerfile","build_args":""},
             {"image":"fluxer-push","dockerfile":"fluxer_push/Dockerfile","build_args":""},
+            {"image":"fluxer-docs","dockerfile":"fluxer_docs/Dockerfile","build_args":""},
             {"image":"fluxer-app-proxy-self-hosted","dockerfile":"fluxer_app_proxy/Dockerfile","build_args":""}
           ]
           JSON

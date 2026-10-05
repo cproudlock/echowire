@@ -165,7 +165,5 @@ describe('ErrorI18n', () => {
 			const message = getErrorMessage('permissions.global_ip_banned', 'en-US', {ipAddress: '203.0.113.7'});
 			expect(message).toContain('support@echowire.org');
 		});
-
-	});
 	});
 });

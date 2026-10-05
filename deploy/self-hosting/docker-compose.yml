@@ -775,6 +775,7 @@ services:
           memory: ${FLUXER_DOCS_MEMORY_LIMIT:-256mb}
     environment:
       <<: *fluxer-env
+      FLUXER_DOCS_ENDPOINT: ${FLUXER_DOCS_ENDPOINT:-${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}/docs}
 
   snowflakes:
     <<: *fluxer-service

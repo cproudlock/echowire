@@ -19,6 +19,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY . .
 
+ARG FLUXER_DOCS_ENDPOINT=""
+ENV FLUXER_DOCS_ENDPOINT=${FLUXER_DOCS_ENDPOINT}
 RUN pnpm install --frozen-lockfile
 RUN pnpm --filter fluxer_docs run build
 RUN pnpm deploy --legacy --filter=fluxer_docs --prod --config.allow-unused-patches=true /out

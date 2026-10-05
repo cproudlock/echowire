@@ -2421,7 +2421,7 @@ msgid "2 members (typing)"
 msgstr "2 thành viên (đang nhập)"
 
 #. Ban duration option in the destructive ban-member modal for a two-week temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:50
+#: src/features/moderation/components/modals/BanMemberModal.tsx:51
 msgid "2 weeks"
 msgstr "2 tuần"
 
@@ -2468,7 +2468,7 @@ msgstr "Yêu cầu 2FA"
 #. Ban duration option in the destructive ban-member modal for a three-day temporary ban.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:38
 #: src/features/channel/components/modals/EditPostModal.tsx:48
-#: src/features/moderation/components/modals/BanMemberModal.tsx:42
+#: src/features/moderation/components/modals/BanMemberModal.tsx:43
 msgid "3 days"
 msgstr "3 ngày"
 
@@ -2510,7 +2510,7 @@ msgid "40px, 3 members"
 msgstr "40px, 3 thành viên"
 
 #. Ban duration option in the destructive ban-member modal for a five-day temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:46
+#: src/features/moderation/components/modals/BanMemberModal.tsx:47
 msgid "5 days"
 msgstr "5 ngày"
 
@@ -4457,7 +4457,7 @@ msgid "Any uploaded attachment"
 msgstr "Bất kỳ tệp đính kèm nào đã tải lên"
 
 #. Helper text under the custom ban duration input. Both placeholders are integer numbers of seconds bounding the allowed range.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:72
+#: src/features/moderation/components/modals/BanMemberModal.tsx:73
 msgid "Any value from {minTempBanDurationSeconds} to {maxTempBanDurationSeconds} seconds."
 msgstr "Bất kỳ giá trị nào từ {minTempBanDurationSeconds} đến {maxTempBanDurationSeconds} giây."
 
@@ -5646,7 +5646,7 @@ msgid "Ban"
 msgstr "Cấm"
 
 #. Title of the destructive ban-member modal. {tag} is the target user tag (username#tag). Destructive moderation action; keep tone direct.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:54
+#: src/features/moderation/components/modals/BanMemberModal.tsx:55
 msgid "Ban {tag}"
 msgstr "Cấm {tag}"
 
@@ -5661,14 +5661,14 @@ msgid "Ban details"
 msgstr "Chi tiết lệnh cấm"
 
 #. Label above the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:59
+#: src/features/moderation/components/modals/BanMemberModal.tsx:60
 msgid "Ban duration"
 msgstr "Thời hạn cấm"
 
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:274
+#: src/features/moderation/components/modals/BanMemberModal.tsx:270
 #: src/features/ui/action_menu/GuildMemberContextMenu.tsx:66
 #: src/features/ui/action_menu/items/GuildMemberMenuItems.tsx:51
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:127
@@ -6705,7 +6705,7 @@ msgstr "Không thể tải tệp lên ở đây"
 #: src/features/messaging/components/modals/ForwardModal.tsx:603
 #: src/features/messaging/components/modals/ImageCropModal.tsx:1025
 #: src/features/messaging/components/modals/MessageHistoryThresholdModal.tsx:107
-#: src/features/moderation/components/modals/BanMemberModal.tsx:266
+#: src/features/moderation/components/modals/BanMemberModal.tsx:262
 #: src/features/moderation/components/modals/RemoveTimeoutModal.tsx:70
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:126
 #: src/features/theme/components/modals/ThemeAcceptModal.tsx:173
@@ -6768,13 +6768,13 @@ msgstr "Hủy chuyển đổi đã lên lịch"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:915
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:248
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "Hủy gói đăng ký"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:242
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
 msgid "Cancel subscription?"
 msgstr "Hủy gói đăng ký?"
 
@@ -11074,7 +11074,7 @@ msgid "Custom"
 msgstr "Tùy chỉnh"
 
 #. Label of the numeric input shown after choosing "Custom..." in the ban duration dropdown. The unit is seconds.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:67
+#: src/features/moderation/components/modals/BanMemberModal.tsx:68
 msgid "Custom ban duration (seconds)"
 msgstr "Thời lượng cấm tùy chỉnh (giây)"
 
@@ -11892,8 +11892,8 @@ msgid "Delete message"
 msgstr "Xóa tin nhắn"
 
 #. Section heading and accessible label for the message-history-deletion radio group in the destructive ban-member modal. Destructive option group.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:77
-#: src/features/moderation/components/modals/BanMemberModal.tsx:233
+#: src/features/moderation/components/modals/BanMemberModal.tsx:78
+#: src/features/moderation/components/modals/BanMemberModal.tsx:229
 msgid "Delete message history"
 msgstr "Xóa lịch sử tin nhắn"
 
@@ -14350,12 +14350,12 @@ msgid "End grace now"
 msgstr "Kết thúc thời gian ân hạn ngay"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:270
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
 msgid "End grace period"
 msgstr "Kết thúc thời gian ân hạn"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:263
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
 msgid "End grace period now?"
 msgstr "Kết thúc thời gian ân hạn ngay bây giờ?"
 
@@ -14440,7 +14440,7 @@ msgid "Enter a product name between 1 and 80 characters."
 msgstr "Nhập tên sản phẩm có độ dài từ 1 đến 80 ký tự."
 
 #. Placeholder in the optional reason input in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:87
+#: src/features/moderation/components/modals/BanMemberModal.tsx:88
 msgid "Enter a reason for the ban"
 msgstr "Nhập lý do cấm"
 
@@ -17790,7 +17790,7 @@ msgid "How about:"
 msgstr "Bạn có thể thử:"
 
 #. Helper text under the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:63
+#: src/features/moderation/components/modals/BanMemberModal.tsx:64
 msgid "How long they stay banned."
 msgstr "Thời gian họ bị cấm."
 
@@ -19455,7 +19455,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "Giữ nguyên các gói miễn phí và cao cấp. Bạn có thể tùy chỉnh các gói, bán gói cao cấp qua Stripe hoặc phát mã quà tặng sau từ bảng quản trị."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:272
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
 msgid "Keep grace period"
 msgstr "Giữ thời gian ân hạn"
 
@@ -19470,7 +19470,7 @@ msgid "Keep running"
 msgstr "Tiếp tục chạy"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:250
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
 msgid "Keep subscription"
 msgstr "Giữ gói đăng ký"
 
@@ -25390,7 +25390,7 @@ msgid "Perks paused"
 msgstr "Đặc quyền bị tạm dừng"
 
 #. Ban duration option in the destructive ban-member modal meaning the ban never expires. Short standalone label.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:37
+#: src/features/moderation/components/modals/BanMemberModal.tsx:38
 msgid "Permanent"
 msgstr "Vĩnh viễn"
 
@@ -26949,7 +26949,7 @@ msgstr "Lý do"
 
 #. Label of the optional reason input in the destructive ban-member modal. Reason is recorded in the activity log.
 #. Label of the optional reason textarea in the timeout-member modal. The reason is recorded in the activity log.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:82
+#: src/features/moderation/components/modals/BanMemberModal.tsx:83
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:36
 msgid "Reason (optional)"
 msgstr "Lý do (không bắt buộc)"
@@ -40275,12 +40275,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "Bạn vừa nhấn phím Tab. Chế độ bàn phím hiện đã bật để bạn có thể điều hướng {productName} mà không cần chuột."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:244
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "Bạn giữ các đặc quyền của mình cho đến ngày gia hạn tiếp theo. Hãy kích hoạt lại gói đăng ký trước ngày đó để giữ lịch sử đăng ký của mình."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:265
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "Bạn sẽ mất tất cả các đặc quyền của {PREMIUM_PRODUCT_NAME} ngay lập tức và lịch sử đăng ký của bạn sẽ được đặt lại. Thao tác này không thể hoàn tác."
 

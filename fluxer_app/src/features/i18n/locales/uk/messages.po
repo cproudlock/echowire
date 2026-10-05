@@ -2421,7 +2421,7 @@ msgid "2 members (typing)"
 msgstr "2 учасники (друкують)"
 
 #. Ban duration option in the destructive ban-member modal for a two-week temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:50
+#: src/features/moderation/components/modals/BanMemberModal.tsx:51
 msgid "2 weeks"
 msgstr "2 тижні"
 
@@ -2468,7 +2468,7 @@ msgstr "Вимога 2FA"
 #. Ban duration option in the destructive ban-member modal for a three-day temporary ban.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:38
 #: src/features/channel/components/modals/EditPostModal.tsx:48
-#: src/features/moderation/components/modals/BanMemberModal.tsx:42
+#: src/features/moderation/components/modals/BanMemberModal.tsx:43
 msgid "3 days"
 msgstr "3 дні"
 
@@ -2510,7 +2510,7 @@ msgid "40px, 3 members"
 msgstr "40 пікс., 3 учасники"
 
 #. Ban duration option in the destructive ban-member modal for a five-day temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:46
+#: src/features/moderation/components/modals/BanMemberModal.tsx:47
 msgid "5 days"
 msgstr "5 днів"
 
@@ -4457,7 +4457,7 @@ msgid "Any uploaded attachment"
 msgstr "Будь-яке завантажене вкладення"
 
 #. Helper text under the custom ban duration input. Both placeholders are integer numbers of seconds bounding the allowed range.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:72
+#: src/features/moderation/components/modals/BanMemberModal.tsx:73
 msgid "Any value from {minTempBanDurationSeconds} to {maxTempBanDurationSeconds} seconds."
 msgstr "Будь-яке значення від {minTempBanDurationSeconds} до {maxTempBanDurationSeconds} секунд."
 
@@ -5646,7 +5646,7 @@ msgid "Ban"
 msgstr "Заблокувати"
 
 #. Title of the destructive ban-member modal. {tag} is the target user tag (username#tag). Destructive moderation action; keep tone direct.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:54
+#: src/features/moderation/components/modals/BanMemberModal.tsx:55
 msgid "Ban {tag}"
 msgstr "Заблокувати {tag}"
 
@@ -5661,14 +5661,14 @@ msgid "Ban details"
 msgstr "Деталі блокування"
 
 #. Label above the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:59
+#: src/features/moderation/components/modals/BanMemberModal.tsx:60
 msgid "Ban duration"
 msgstr "Тривалість блокування"
 
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:274
+#: src/features/moderation/components/modals/BanMemberModal.tsx:270
 #: src/features/ui/action_menu/GuildMemberContextMenu.tsx:66
 #: src/features/ui/action_menu/items/GuildMemberMenuItems.tsx:51
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:127
@@ -6705,7 +6705,7 @@ msgstr "Сюди не можна завантажити файли"
 #: src/features/messaging/components/modals/ForwardModal.tsx:603
 #: src/features/messaging/components/modals/ImageCropModal.tsx:1025
 #: src/features/messaging/components/modals/MessageHistoryThresholdModal.tsx:107
-#: src/features/moderation/components/modals/BanMemberModal.tsx:266
+#: src/features/moderation/components/modals/BanMemberModal.tsx:262
 #: src/features/moderation/components/modals/RemoveTimeoutModal.tsx:70
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:126
 #: src/features/theme/components/modals/ThemeAcceptModal.tsx:173
@@ -6768,13 +6768,13 @@ msgstr "Скасувати заплановану зміну"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:915
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:248
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "Скасувати підписку"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:242
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
 msgid "Cancel subscription?"
 msgstr "Скасувати підписку?"
 
@@ -11074,7 +11074,7 @@ msgid "Custom"
 msgstr "Власне"
 
 #. Label of the numeric input shown after choosing "Custom..." in the ban duration dropdown. The unit is seconds.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:67
+#: src/features/moderation/components/modals/BanMemberModal.tsx:68
 msgid "Custom ban duration (seconds)"
 msgstr "Власна тривалість блокування (секунди)"
 
@@ -11892,8 +11892,8 @@ msgid "Delete message"
 msgstr "Видалити повідомлення"
 
 #. Section heading and accessible label for the message-history-deletion radio group in the destructive ban-member modal. Destructive option group.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:77
-#: src/features/moderation/components/modals/BanMemberModal.tsx:233
+#: src/features/moderation/components/modals/BanMemberModal.tsx:78
+#: src/features/moderation/components/modals/BanMemberModal.tsx:229
 msgid "Delete message history"
 msgstr "Видалити історію повідомлень"
 
@@ -14350,12 +14350,12 @@ msgid "End grace now"
 msgstr "Завершити пільговий період зараз"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:270
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
 msgid "End grace period"
 msgstr "Завершити пільговий період"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:263
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
 msgid "End grace period now?"
 msgstr "Завершити пільговий період зараз?"
 
@@ -14440,7 +14440,7 @@ msgid "Enter a product name between 1 and 80 characters."
 msgstr "Введіть назву продукту довжиною від 1 до 80 символів."
 
 #. Placeholder in the optional reason input in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:87
+#: src/features/moderation/components/modals/BanMemberModal.tsx:88
 msgid "Enter a reason for the ban"
 msgstr "Введіть причину блокування"
 
@@ -17790,7 +17790,7 @@ msgid "How about:"
 msgstr "Можливо:"
 
 #. Helper text under the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:63
+#: src/features/moderation/components/modals/BanMemberModal.tsx:64
 msgid "How long they stay banned."
 msgstr "Як довго триватиме блокування."
 
@@ -19455,7 +19455,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "Зберігайте безкоштовний і преміум-рівні. Ви можете налаштувати рівні, продавати преміум через Stripe або роздавати подарункові коди пізніше з панелі адміністратора."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:272
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
 msgid "Keep grace period"
 msgstr "Залишити пільговий період"
 
@@ -19470,7 +19470,7 @@ msgid "Keep running"
 msgstr "Працювати у фоні"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:250
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
 msgid "Keep subscription"
 msgstr "Залишити підписку"
 
@@ -25390,7 +25390,7 @@ msgid "Perks paused"
 msgstr "Переваги призупинено"
 
 #. Ban duration option in the destructive ban-member modal meaning the ban never expires. Short standalone label.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:37
+#: src/features/moderation/components/modals/BanMemberModal.tsx:38
 msgid "Permanent"
 msgstr "Назавжди"
 
@@ -26949,7 +26949,7 @@ msgstr "Причина"
 
 #. Label of the optional reason input in the destructive ban-member modal. Reason is recorded in the activity log.
 #. Label of the optional reason textarea in the timeout-member modal. The reason is recorded in the activity log.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:82
+#: src/features/moderation/components/modals/BanMemberModal.tsx:83
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:36
 msgid "Reason (optional)"
 msgstr "Причина (необов'язково)"
@@ -40275,12 +40275,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "Ви щойно натиснули Tab. Режим клавіатури ввімкнено, тож ви можете переміщатися в {productName} без миші."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:244
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "Ви зберігаєте свої переваги до наступної дати поновлення. Поновіть підписку до цієї дати, щоб зберегти історію підписок."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:265
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "Ви одразу втратите всі переваги {PREMIUM_PRODUCT_NAME}, а історію підписок буде скинуто. Це неможливо скасувати."
 

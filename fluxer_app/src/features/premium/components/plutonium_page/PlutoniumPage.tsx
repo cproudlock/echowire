@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+// Echowire: upstream #3173 hotlinks this media from fluxer.app (hostedImageUrl); we keep the bundled local files. Keep this file at the fork version when merging.
 
 import '@app/app/fonts/radio_canada_big/radio-canada-big.css';
 import {Routes} from '@app/app/Routes';
@@ -30,7 +31,6 @@ import {
 	resolveUploadSizes,
 } from '@app/features/premium/components/plutonium_page/PlutoniumPageComparison';
 import {PlutoniumPageIcon} from '@app/features/premium/components/plutonium_page/PlutoniumPageIcons';
-import {CROWN_AVIF, CROWN_WEBP} from '@app/features/premium/components/plutonium_page/PlutoniumPageMedia';
 import {
 	BACK_DESCRIPTOR,
 	CLOSING_BODY_DESCRIPTOR,
@@ -75,6 +75,8 @@ import FocusRing from '@app/features/ui/focus_ring/FocusRing';
 import MobileLayout from '@app/features/ui/state/MobileLayout';
 import Users from '@app/features/user/state/Users';
 import * as LocaleUtils from '@app/features/user/utils/LocaleUtils';
+import crownAvif from '@app/media/images/plutonium/plutonium-crown.avif';
+import crownWebp from '@app/media/images/plutonium/plutonium-crown.webp';
 import {GuildFeatures} from '@fluxer/constants/src/GuildConstants';
 import {getFormattedLongDate} from '@fluxer/date_utils/src/DateFormatting';
 import {Trans, useLingui} from '@lingui/react/macro';
@@ -450,24 +452,22 @@ export const PlutoniumPage = observer(function PlutoniumPage() {
 				)}
 				<section className={styles.hero} data-flx="premium.plutonium-page.hero">
 					<div className={styles.heroInner}>
-						{!RuntimeConfig.isSelfHosted() && (
-							<div className={styles.crownWrap}>
-								<picture>
-									<source type="image/avif" srcSet={CROWN_AVIF} />
-									<img
-										draggable={false}
-										className={styles.crown}
-										src={CROWN_WEBP}
-										width={480}
-										height={395}
-										alt=""
-										decoding="sync"
-										fetchPriority="high"
-										data-flx="premium.plutonium-page.hero.crown"
-									/>
-								</picture>
-							</div>
-						)}
+						<div className={styles.crownWrap}>
+							<picture>
+								<source type="image/avif" srcSet={crownAvif} />
+								<img
+									draggable={false}
+									className={styles.crown}
+									src={crownWebp}
+									width={480}
+									height={395}
+									alt=""
+									decoding="sync"
+									fetchPriority="high"
+									data-flx="premium.plutonium-page.hero.crown"
+								/>
+							</picture>
+						</div>
 						<h1 className={styles.displayHeading} data-flx="premium.plutonium-page.hero.title">
 							{PREMIUM_PRODUCT_FULL_NAME}
 						</h1>

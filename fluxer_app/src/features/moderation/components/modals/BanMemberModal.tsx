@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+// Echowire: upstream #3173 hotlinks this media from fluxer.app (hostedImageUrl); we keep the bundled local files. Keep this file at the fork version when merging.
 
 import Accessibility from '@app/features/accessibility/state/Accessibility';
 import * as Modal from '@app/features/app/components/dialogs/Modal';
 import {useAnimatedMediaVideoPlayback} from '@app/features/app/hooks/useAnimatedMediaPlayback';
 import {useSaveData} from '@app/features/app/hooks/useSaveData';
-import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import * as GuildCommands from '@app/features/guild/commands/GuildCommands';
 import {
 	CUSTOM_ELLIPSIS_DESCRIPTOR,
@@ -17,7 +17,6 @@ import {
 import {showModerationErrorModal} from '@app/features/moderation/components/alerts/ModerationErrorModalUtils';
 import styles from '@app/features/moderation/components/modals/BanMemberModal.module.css';
 import {BAN_DELETE_MESSAGE_OPTIONS} from '@app/features/moderation/constants/BanDeleteMessageOptions';
-import {BANNED_MP4, BANNED_POSTER, BANNED_WEBM} from '@app/features/moderation/constants/BanModalMedia';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
@@ -27,6 +26,9 @@ import {Input} from '@app/features/ui/components/form/FormInput';
 import {RadioGroup} from '@app/features/ui/radio_group/RadioGroup';
 import type {User} from '@app/features/user/models/User';
 import * as DisplayNameUtils from '@app/features/user/utils/DisplayNameUtils';
+import bannedMp4 from '@app/media/videos/banned.mp4';
+import bannedWebm from '@app/media/videos/banned.webm';
+import bannedPoster from '@app/media/videos/banned.webp';
 import {MAX_TEMP_BAN_DURATION_SECONDS, MIN_TEMP_BAN_DURATION_SECONDS} from '@fluxer/constants/src/LimitConstants';
 import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
@@ -100,8 +102,7 @@ export const BanMemberModal: React.FC<{guildId: string; targetUser: User}> = obs
 	const {i18n} = useLingui();
 	const videoRef = useRef<HTMLVideoElement>(null);
 	const dataSaverOn = useSaveData();
-	const showArtwork = !RuntimeConfig.isSelfHosted();
-	const motionArtworkAllowed = showArtwork && !Accessibility.useReducedMotion && !dataSaverOn;
+	const motionArtworkAllowed = !Accessibility.useReducedMotion && !dataSaverOn;
 	const videoPlaybackAllowed = useAnimatedMediaVideoPlayback(videoRef, {enabled: motionArtworkAllowed});
 	const [reason, setReason] = useState('');
 	const [deleteMessageSeconds, setDeleteMessageSeconds] = useState<number>(60 * 60 * 24);
@@ -160,26 +161,22 @@ export const BanMemberModal: React.FC<{guildId: string; targetUser: User}> = obs
 							loop
 							muted
 							playsInline
-							poster={BANNED_POSTER}
-							width={480}
-							height={240}
+							poster={bannedPoster}
 							className={styles.video}
 							data-flx="moderation.ban-member-modal.video"
 						>
-							<source src={BANNED_WEBM} type="video/webm" data-flx="moderation.ban-member-modal.source.video-webm" />
-							<source src={BANNED_MP4} type="video/mp4" data-flx="moderation.ban-member-modal.source.video-mp4" />
+							<source src={bannedWebm} type="video/webm" data-flx="moderation.ban-member-modal.source.video-webm" />
+							<source src={bannedMp4} type="video/mp4" data-flx="moderation.ban-member-modal.source.video-mp4" />
 						</video>
-					) : showArtwork ? (
+					) : (
 						<img
-							src={BANNED_POSTER}
+							src={bannedPoster}
 							alt=""
-							width={480}
-							height={240}
 							aria-hidden={true}
 							className={styles.video}
 							data-flx="moderation.ban-member-modal.video-still"
 						/>
-					) : null}
+					)}
 					<div data-flx="moderation.ban-member-modal.div">
 						<FormCombobox<number>
 							label={i18n._(BAN_DURATION_DESCRIPTOR)}

@@ -2421,7 +2421,7 @@ msgid "2 members (typing)"
 msgstr "2 anggota (mengetik)"
 
 #. Ban duration option in the destructive ban-member modal for a two-week temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:50
+#: src/features/moderation/components/modals/BanMemberModal.tsx:51
 msgid "2 weeks"
 msgstr "2 minggu"
 
@@ -2468,7 +2468,7 @@ msgstr "Wajib 2FA"
 #. Ban duration option in the destructive ban-member modal for a three-day temporary ban.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:38
 #: src/features/channel/components/modals/EditPostModal.tsx:48
-#: src/features/moderation/components/modals/BanMemberModal.tsx:42
+#: src/features/moderation/components/modals/BanMemberModal.tsx:43
 msgid "3 days"
 msgstr "3 hari"
 
@@ -2510,7 +2510,7 @@ msgid "40px, 3 members"
 msgstr "40px, 3 anggota"
 
 #. Ban duration option in the destructive ban-member modal for a five-day temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:46
+#: src/features/moderation/components/modals/BanMemberModal.tsx:47
 msgid "5 days"
 msgstr "5 hari"
 
@@ -4457,7 +4457,7 @@ msgid "Any uploaded attachment"
 msgstr "Lampiran apa pun yang diunggah"
 
 #. Helper text under the custom ban duration input. Both placeholders are integer numbers of seconds bounding the allowed range.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:72
+#: src/features/moderation/components/modals/BanMemberModal.tsx:73
 msgid "Any value from {minTempBanDurationSeconds} to {maxTempBanDurationSeconds} seconds."
 msgstr "Nilai apa pun dari {minTempBanDurationSeconds} hingga {maxTempBanDurationSeconds} detik."
 
@@ -5646,7 +5646,7 @@ msgid "Ban"
 msgstr "Blokir"
 
 #. Title of the destructive ban-member modal. {tag} is the target user tag (username#tag). Destructive moderation action; keep tone direct.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:54
+#: src/features/moderation/components/modals/BanMemberModal.tsx:55
 msgid "Ban {tag}"
 msgstr "Blokir {tag}"
 
@@ -5661,14 +5661,14 @@ msgid "Ban details"
 msgstr "Detail pemblokiran"
 
 #. Label above the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:59
+#: src/features/moderation/components/modals/BanMemberModal.tsx:60
 msgid "Ban duration"
 msgstr "Durasi pemblokiran"
 
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:274
+#: src/features/moderation/components/modals/BanMemberModal.tsx:270
 #: src/features/ui/action_menu/GuildMemberContextMenu.tsx:66
 #: src/features/ui/action_menu/items/GuildMemberMenuItems.tsx:51
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:127
@@ -6705,7 +6705,7 @@ msgstr "Tidak bisa mengunggah file di sini"
 #: src/features/messaging/components/modals/ForwardModal.tsx:603
 #: src/features/messaging/components/modals/ImageCropModal.tsx:1025
 #: src/features/messaging/components/modals/MessageHistoryThresholdModal.tsx:107
-#: src/features/moderation/components/modals/BanMemberModal.tsx:266
+#: src/features/moderation/components/modals/BanMemberModal.tsx:262
 #: src/features/moderation/components/modals/RemoveTimeoutModal.tsx:70
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:126
 #: src/features/theme/components/modals/ThemeAcceptModal.tsx:173
@@ -6768,13 +6768,13 @@ msgstr "Batalkan perubahan terjadwal"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:915
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:248
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "Batalkan langganan"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:242
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
 msgid "Cancel subscription?"
 msgstr "Batalkan langganan?"
 
@@ -11074,7 +11074,7 @@ msgid "Custom"
 msgstr "Kustom"
 
 #. Label of the numeric input shown after choosing "Custom..." in the ban duration dropdown. The unit is seconds.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:67
+#: src/features/moderation/components/modals/BanMemberModal.tsx:68
 msgid "Custom ban duration (seconds)"
 msgstr "Durasi pemblokiran kustom (detik)"
 
@@ -11892,8 +11892,8 @@ msgid "Delete message"
 msgstr "Hapus pesan"
 
 #. Section heading and accessible label for the message-history-deletion radio group in the destructive ban-member modal. Destructive option group.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:77
-#: src/features/moderation/components/modals/BanMemberModal.tsx:233
+#: src/features/moderation/components/modals/BanMemberModal.tsx:78
+#: src/features/moderation/components/modals/BanMemberModal.tsx:229
 msgid "Delete message history"
 msgstr "Hapus riwayat pesan"
 
@@ -14350,12 +14350,12 @@ msgid "End grace now"
 msgstr "Akhiri masa tenggang sekarang"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:270
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
 msgid "End grace period"
 msgstr "Akhiri masa tenggang"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:263
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
 msgid "End grace period now?"
 msgstr "Akhiri masa tenggang sekarang?"
 
@@ -14440,7 +14440,7 @@ msgid "Enter a product name between 1 and 80 characters."
 msgstr "Masukkan nama produk antara 1 dan 80 karakter."
 
 #. Placeholder in the optional reason input in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:87
+#: src/features/moderation/components/modals/BanMemberModal.tsx:88
 msgid "Enter a reason for the ban"
 msgstr "Masukkan alasan pemblokiran"
 
@@ -17790,7 +17790,7 @@ msgid "How about:"
 msgstr "Bagaimana kalau:"
 
 #. Helper text under the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:63
+#: src/features/moderation/components/modals/BanMemberModal.tsx:64
 msgid "How long they stay banned."
 msgstr "Berapa lama mereka diblokir."
 
@@ -19455,7 +19455,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "Pertahankan tingkatan gratis dan premium. Anda dapat menyesuaikan tingkatan, menjual premium melalui Stripe, atau membagikan kode hadiah nanti dari panel admin."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:272
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
 msgid "Keep grace period"
 msgstr "Pertahankan masa tenggang"
 
@@ -19470,7 +19470,7 @@ msgid "Keep running"
 msgstr "Tetap berjalan"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:250
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
 msgid "Keep subscription"
 msgstr "Tetap berlangganan"
 
@@ -25390,7 +25390,7 @@ msgid "Perks paused"
 msgstr "Keuntungan dijeda"
 
 #. Ban duration option in the destructive ban-member modal meaning the ban never expires. Short standalone label.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:37
+#: src/features/moderation/components/modals/BanMemberModal.tsx:38
 msgid "Permanent"
 msgstr "Permanen"
 
@@ -26949,7 +26949,7 @@ msgstr "Alasan"
 
 #. Label of the optional reason input in the destructive ban-member modal. Reason is recorded in the activity log.
 #. Label of the optional reason textarea in the timeout-member modal. The reason is recorded in the activity log.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:82
+#: src/features/moderation/components/modals/BanMemberModal.tsx:83
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:36
 msgid "Reason (optional)"
 msgstr "Alasan (opsional)"
@@ -40275,12 +40275,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "Kamu baru saja menekan Tab. Mode keyboard kini aktif sehingga kamu bisa menavigasi {productName} tanpa mouse."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:244
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "Kamu tetap mendapat semua keuntungan hingga tanggal perpanjangan berikutnya. Aktifkan lagi langgananmu sebelum tanggal itu untuk mempertahankan riwayat langgananmu."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:265
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "Kamu langsung kehilangan semua keuntungan {PREMIUM_PRODUCT_NAME} dan riwayat langgananmu diatur ulang. Ini tidak dapat dibatalkan."
 

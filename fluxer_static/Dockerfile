@@ -24,6 +24,9 @@ COPY --chown=65532:65532 fluxer_static/LICENSE fluxer_static/THIRD_PARTY_LICENSE
 COPY --chown=65532:65532 fluxer_static/avatars /srv/fluxer-static/avatars
 COPY --chown=65532:65532 fluxer_static/badges /srv/fluxer-static/badges
 COPY --chown=65532:65532 fluxer_static/desktop /srv/fluxer-static/desktop
+# Echowire: upstream #3173 dropped this COPY when it moved the embed icons out; we keep serving
+# fluxer_static/embeds (hn.webp), and the Caddyfile still routes /embeds/*.
+COPY --chown=65532:65532 fluxer_static/embeds /srv/fluxer-static/embeds
 COPY --chown=65532:65532 fluxer_static/emoji /srv/fluxer-static/emoji
 # Echowire: upstream #3087 moved the DeepFilterNet3 wasm and model into the app bundle and
 # deleted these files. Keep serving them anyway. The desktop client ships its own renderer

@@ -8,6 +8,9 @@ Third-party assets keep their upstream licenses and attribution requirements.
 | --- | --- | --- |
 | `desktop/spellcheck/dictionaries/` | Hunspell dictionaries packaged as exact `dictionary-*` npm package versions | Varies by language; each dictionary directory includes its own `LICENSE`, and the package summary is in `desktop/spellcheck/dictionaries/NOTICE.md`. |
 | `emoji/` | Twemoji graphics from `jdecked/twemoji`. Copyright 2014-2021 Twitter, Inc and other contributors, 2022-present Jason Sofonia, Justine De Caires and other contributors | CC-BY-4.0. See `emoji/LICENSE` and `emoji/NOTICE.md`. |
+| `marketing/flags/` | Twemoji flag graphics from `jdecked/twemoji` | CC-BY-4.0; see `marketing/flags/LICENSE` and `marketing/flags/NOTICE.md`. |
+| `libs/deepfilternet3/` | DeepFilterNet3 WASM/model assets | MIT or Apache-2.0; see the license files and `libs/deepfilternet3/NOTICE.md`. |
+| `embeds/icons/hn.webp` | Hacker News brand icon | Third-party brand asset; see `embeds/icons/NOTICE.md`. |
 
 `fluxer_app` also bundles this third-party artwork outside this directory:
 

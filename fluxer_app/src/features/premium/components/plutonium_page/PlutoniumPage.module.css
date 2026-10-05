@@ -778,11 +778,6 @@
 	.perkRowFlipped {
 		grid-template-columns: 5fr 7fr;
 	}
-
-	.perkRowTextOnly {
-		grid-template-columns: minmax(0, 1fr);
-		padding-block: 2.5rem;
-	}
 }
 
 .perkArtColumn {

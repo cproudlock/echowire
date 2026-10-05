@@ -281,7 +281,6 @@ export interface APIConfig {
 	};
 	instance: {
 		selfHosted: boolean;
-		phoneVerificationEnabled: boolean;
 		autoJoinInviteCode?: string;
 		visionariesGuildId?: string;
 		visionariesGuildVisionaryRoleId?: string;

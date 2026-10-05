@@ -107,14 +107,6 @@ const OUT_OF_BAND_CREDENTIAL = new Map<string, OutOfBandRoute>([
 		},
 	],
 	[
-		'POST /webhooks/twilio/sms',
-		{
-			reason:
-				'a provider callback that is forwarded untouched to the internal event bus and answers 500 while that bus is unavailable',
-			documentedIn: null,
-		},
-	],
-	[
 		'POST /webhooks/livekit',
 		{
 			reason: 'a LiveKit-signed callback whose shipped target is the internal address http://api:8080/webhooks/livekit',
@@ -196,7 +188,7 @@ const EXEMPTION_RULES: ReadonlyArray<ExemptionRule> = [
 		name: 'out-of-band credential',
 		justification:
 			'no ordinary client holds the credential. Each entry states its guard, and five are covered in prose',
-		anchors: [{file: 'fluxer_api/src/api/app/ControllerRegistry.ts', anchor: 'installSmsWebhookForwarder(routes'}],
+		anchors: [{file: 'fluxer_api/src/api/app/ControllerRegistry.ts', anchor: 'InternalRpcController(routes);'}],
 		covers: (shape) => OUT_OF_BAND_CREDENTIAL.has(shape),
 	},
 ];
@@ -1969,7 +1961,7 @@ console.log('bot capability flag (from the middleware chain)');
 		if (documented == null) {
 			continue;
 		}
-		const anyLogin = route.hasLoginRequired || route.hasLoginRequiredAllowSuspicious;
+		const anyLogin = route.hasLoginRequired;
 		const sourceAcceptsBot = anyLogin && !route.hasDefaultUserOnly;
 		const exemption = BOT_EXEMPT.get(key);
 		if (exemption != null) {
@@ -2029,7 +2021,7 @@ console.log('unauthenticated capability flag (from the middleware chain)');
 		if (documented == null) {
 			continue;
 		}
-		const anyLogin = route.hasLoginRequired || route.hasLoginRequiredAllowSuspicious;
+		const anyLogin = route.hasLoginRequired;
 		const sourceIsOpen = !anyLogin && !route.middlewares.some((name) => /OAuth2Scope/u.test(name));
 		const exemption = UNAUTHENTICATED_EXEMPT.get(key);
 		if (exemption != null) {
@@ -2085,7 +2077,7 @@ console.log('spec security field against the middleware chain');
 		}
 		const declaredSchemes = declaredSecurity.schemes;
 		compared += 1;
-		const anyLogin = route.hasLoginRequired || route.hasLoginRequiredAllowSuspicious;
+		const anyLogin = route.hasLoginRequired;
 		const acceptsBot = anyLogin && !route.hasDefaultUserOnly;
 		const requiresAuthentication =
 			anyLogin ||

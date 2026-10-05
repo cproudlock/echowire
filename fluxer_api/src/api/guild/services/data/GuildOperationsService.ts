@@ -1,16 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {
-	type ChannelID,
-	createChannelID,
-	createGuildID,
-	createRoleID,
-	type GuildID,
-	guildIdToRoleId,
-	type RoleID,
-	type UserID,
-} from '@app/api/BrandedTypes';
-import {Config} from '@app/api/Config';
+import type {ChannelID, GuildID, RoleID, UserID} from '@app/api/BrandedTypes';
+import {createChannelID, createGuildID, createRoleID, guildIdToRoleId} from '@app/api/BrandedTypes';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {
@@ -491,17 +482,6 @@ export class GuildOperationsService {
 				'verification_level',
 				ValidationErrorCodes.DISCOVERABLE_GUILD_VERIFICATION_LEVEL_TOO_LOW,
 			);
-		}
-		if (
-			data.verification_level === GuildVerificationLevel.VERY_HIGH &&
-			data.verification_level !== currentGuild.verificationLevel &&
-			!Config.instance.phoneVerificationEnabled
-		) {
-			throw InputValidationError.fromCode('verification_level', ValidationErrorCodes.VALUE_MUST_BE_INTEGER_IN_RANGE, {
-				name: 'verification_level',
-				minValue: GuildVerificationLevel.NONE,
-				maxValue: GuildVerificationLevel.HIGH,
-			});
 		}
 		const isMfaLevelChange = data.mfa_level !== undefined && data.mfa_level !== currentGuild.mfaLevel;
 		if (isMfaLevelChange) {
@@ -1205,7 +1185,7 @@ export class GuildOperationsService {
 			verificationLevel: this.clampTemplateSetting(
 				template?.verification_level,
 				GuildVerificationLevel.NONE,
-				Config.instance.phoneVerificationEnabled ? GuildVerificationLevel.VERY_HIGH : GuildVerificationLevel.HIGH,
+				GuildVerificationLevel.HIGH,
 				GuildVerificationLevel.NONE,
 			),
 			explicitContentFilter: this.clampTemplateSetting(template?.explicit_content_filter, 0, 2, 0),

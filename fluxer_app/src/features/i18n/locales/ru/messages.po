@@ -21,8 +21,13 @@ msgstr "...включите плотный режим. Отлично!"
 
 #. Button or menu action label in the channel and chat user message. Keep it concise.
 #. Suffix after the message text in the forward modal preview when the forwarded message was edited.
+<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:363
 #: src/features/channel/components/UserMessage.tsx:76
+=======
+#: src/features/channel/components/MessageAttachments.tsx:390
+#: src/features/channel/components/UserMessage.tsx:75
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx:26
 msgid "(edited)"
 msgstr "(изменено)"
@@ -1051,7 +1056,7 @@ msgid "{count, plural, one {# potential spammer message} other {# potential spam
 msgstr "{count, plural, one {# потенциальное спам-сообщение} few {# потенциальных спам-сообщения} many {# потенциальных спам-сообщений} other {# потенциальных спам-сообщений}}"
 
 #: src/features/app/components/shared/MessageReactionsContent.tsx:56
-#: src/features/channel/components/MessageReactions.tsx:146
+#: src/features/channel/components/MessageReactions.tsx:143
 msgid "{count, plural, one {# reaction} other {# reactions}}"
 msgstr "{count, plural, one {# реакция} few {# реакции} many {# реакций} other {# реакций}}"
 
@@ -1341,12 +1346,12 @@ msgid "{emojiName}, {reactionCountText}"
 msgstr "{emojiName}, {reactionCountText}"
 
 #. Short label in the channel and chat message reactions. Keep it concise. Preserve {emojiName}, {reactionCountText}; they are inserted by code.
-#: src/features/channel/components/MessageReactions.tsx:50
+#: src/features/channel/components/MessageReactions.tsx:48
 msgid "{emojiName}: {reactionCountText}"
 msgstr "{emojiName}: {reactionCountText}"
 
 #. Short label in the channel and chat message reactions. Keep it concise. Preserve {emojiName}, {reactionCountText}, {actionText}; they are inserted by code.
-#: src/features/channel/components/MessageReactions.tsx:55
+#: src/features/channel/components/MessageReactions.tsx:53
 msgid "{emojiName}: {reactionCountText}, {actionText}"
 msgstr "{emojiName}: {reactionCountText}, {actionText}"
 
@@ -2241,8 +2246,13 @@ msgstr "<0>{username}</0> всё ещё в группе. Попробуйте е
 
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the community and channel the message came from.
 #. Attribution line on a forwarded message, above the forwarded content. sourceInfo is the icon and name of the conversation the message came from.
+<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:214
 #: src/features/channel/components/MessageAttachments.tsx:270
+=======
+#: src/features/channel/components/MessageAttachments.tsx:241
+#: src/features/channel/components/MessageAttachments.tsx:297
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "<0>Forwarded from</0>{sourceInfo}"
 msgstr "<0>Переслано из</0>{sourceInfo}"
 
@@ -7917,9 +7927,9 @@ msgstr "Выберите, что {clientLabel} сможет делать в ва
 msgid "Choose what friends see in their active now panel"
 msgstr "Выберите, что друзья видят на панели «Сейчас онлайн»"
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:292
-msgid "Choose what members must have before they can post or DM community members."
-msgstr "Выберите, что должны иметь участники, прежде чем они смогут публиковать сообщения или писать личные сообщения другим участникам сообщества."
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:291
+msgid "Choose what members must have before they can post or DM community members. Members with roles can bypass these checks. For public spaces, we recommend enabling verification."
+msgstr "Выберите, что должны иметь участники, прежде чем они смогут публиковать сообщения или отправлять личные сообщения участникам сообщества. Участники с ролями могут обойти эти проверки. Для публичных пространств мы рекомендуем включить верификацию."
 
 #. Scope option (radio) that lets the user pick conversation kinds and exclude specific communities.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx:71
@@ -8812,7 +8822,7 @@ msgstr "Сообщества и каналы, где вы не можете уп
 msgid "Communities listed in Discovery are required to scan messages from all members. This setting cannot be changed while Discovery is enabled."
 msgstr "Сообщества в каталоге обязаны проверять сообщения всех участников. Пока сообщество размещено в каталоге, этот параметр изменить нельзя."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:301
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:302
 msgid "Communities listed in Discovery require at least email verification. None cannot be selected while Discovery is enabled."
 msgstr "Сообщества в каталоге должны требовать как минимум подтвержденный адрес электронной почты. Пока сообщество размещено в каталоге, выбрать «Нет» нельзя."
 
@@ -16133,7 +16143,11 @@ msgstr "Переслать медиафайл"
 msgid "Forward message"
 msgstr "Переслать сообщение"
 
+<<<<<<< HEAD
 #: src/features/channel/components/MessageAttachments.tsx:333
+=======
+#: src/features/channel/components/MessageAttachments.tsx:360
+>>>>>>> 597116a0b4bf3a212789bdebe7f284babc33b445
 msgid "Forwarded"
 msgstr "Переслано"
 
@@ -21179,10 +21193,6 @@ msgstr "Members can add others"
 msgid "Members with \"{pinMessagesPermissionLabel}\" can pin messages for everyone."
 msgstr "Участники с разрешением «{pinMessagesPermissionLabel}» могут закреплять сообщения для всех."
 
-#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:295
-msgid "Members with roles can bypass these checks. For public spaces, we recommend enabling verification."
-msgstr "Участники с ролями могут обходить эти проверки. Для открытых сообществ рекомендуем включить верификацию."
-
 #. Helper text under the Allow mentions switch in the role editor. {mentionEveryonePermissionLabel} is the localized name of the Mention Everyone permission and should match its label exactly.
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleEditor.tsx:47
 msgid "Members with the \"{mentionEveryonePermissionLabel}\" permission can always mention roles, regardless of this setting."
@@ -26074,12 +26084,12 @@ msgid "Press Continue to use your passkey."
 msgstr "Нажмите «Продолжить», чтобы использовать ключ доступа."
 
 #. Label in the channel and chat message reactions.
-#: src/features/channel/components/MessageReactions.tsx:46
+#: src/features/channel/components/MessageReactions.tsx:44
 msgid "press to add reaction"
 msgstr "нажмите, чтобы добавить реакцию"
 
 #. Label in the channel and chat message reactions. Keep the tone plain and specific.
-#: src/features/channel/components/MessageReactions.tsx:42
+#: src/features/channel/components/MessageReactions.tsx:40
 msgid "press to remove reaction"
 msgstr "нажмите, чтобы удалить реакцию"
 

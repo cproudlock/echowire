@@ -745,6 +745,7 @@ voice_guild_state_keys() ->
         virtual_channel_access_pending,
         virtual_channel_access_preserve,
         virtual_channel_access_move_pending,
+        virtual_channel_access_view_only,
         test_perm_fun,
         test_force_disconnect_fun,
         test_livekit_fun,
@@ -828,7 +829,8 @@ voice_guild_state_pins_projected_key_set_test() ->
                 virtual_channel_access,
                 virtual_channel_access_pending,
                 virtual_channel_access_preserve,
-                virtual_channel_access_move_pending
+                virtual_channel_access_move_pending,
+                virtual_channel_access_view_only
             ]),
             lists:sort(maps:keys(Projected))
         ),
@@ -1097,6 +1099,7 @@ voice_projection_state(Tab) ->
         virtual_channel_access_pending => #{},
         virtual_channel_access_preserve => #{},
         virtual_channel_access_move_pending => #{},
+        virtual_channel_access_view_only => #{},
         presence_subscriptions => #{},
         member_list_subscriptions => #{},
         connected_user_ids => sets:new(),

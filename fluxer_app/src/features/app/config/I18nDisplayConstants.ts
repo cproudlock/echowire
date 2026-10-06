@@ -9,6 +9,10 @@ export {PREMIUM_PRODUCT_FULL_NAME, PREMIUM_PRODUCT_NAME, PRODUCT_NAME};
 export const PRODUCT_API_NAME = `${PRODUCT_NAME} API`;
 export const PRODUCT_HQ_COMMUNITY_NAME = `${PRODUCT_NAME} HQ`;
 export const CANARY_RELEASE_CHANNEL_NAME = `${PRODUCT_NAME} Canary`;
+// Echowire: these name the app in the OS shortcut settings, so they must equal the desktop entry Name
+// (DESKTOP_APP_NAME in fluxer_desktop DesktopIdentity.ts), which is lowercase.
+export const DESKTOP_ENTRY_NAME = 'echowire';
+export const CANARY_DESKTOP_ENTRY_NAME = 'echowire canary';
 export const VOICE_PROVIDER_NAME = 'LiveKit';
 export const PAYMENT_PROVIDER_NAME = 'Stripe';
 export const BLUESKY_PROVIDER_NAME = 'Bluesky';

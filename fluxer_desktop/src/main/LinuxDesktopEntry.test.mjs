@@ -132,10 +132,7 @@ describe('ensureLinuxDesktopEntry', () => {
 		fs.mkdirSync(systemDir(), {recursive: true});
 		fs.writeFileSync(path.join(systemDir(), 'echowire.desktop'), '[Desktop Entry]\n');
 		fs.mkdirSync(userDir(), {recursive: true});
-		fs.writeFileSync(
-			path.join(userDir(), 'echowire.desktop'),
-			desktopEntry.buildDesktopFileContents(EXEC_PATH, false),
-		);
+		fs.writeFileSync(path.join(userDir(), 'echowire.desktop'), desktopEntry.buildDesktopFileContents(EXEC_PATH, false));
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), true);
 		assert.equal(fs.existsSync(path.join(userDir(), 'echowire.desktop')), false);
 	});

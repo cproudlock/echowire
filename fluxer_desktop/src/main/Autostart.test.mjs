@@ -42,10 +42,7 @@ const LEGACY = [
 describe('rewriteLegacyLinuxAutostartContents', () => {
 	test('keeps user edits and only rewrites the window class when the command still exists', () => {
 		const rewritten = autostart.rewriteLegacyLinuxAutostartContents(LEGACY, '/opt/Fluxer/fluxer', false);
-		assert.equal(
-			rewritten,
-			LEGACY.replace('StartupWMClass=fluxer\nX-GNOME', 'StartupWMClass=echowire\nX-GNOME'),
-		);
+		assert.equal(rewritten, LEGACY.replace('StartupWMClass=fluxer\nX-GNOME', 'StartupWMClass=echowire\nX-GNOME'));
 	});
 
 	test('repoints Exec and TryExec when the old command is gone', () => {

@@ -78,6 +78,10 @@ Hard or unhappy:
   casting. It is deliberately not part of this change because it alters routing
   for every push cache, and it is only needed when a second gateway exists. Until
   then `unread_cap_not_owner` shows how much leaks.
+- The iOS icon badge count travels inside each push. A suppressed message sends no
+  push, so the badge can lag behind the real unread count until the next push or
+  until the app is opened. We accept this for now. A silent badge-only update for
+  suppressed messages is the follow-up if it proves confusing.
 - A user who ignores a channel for a day gets three notifications from it, not
   one. This matches Discord.
 - The cap is global, not per user setting.

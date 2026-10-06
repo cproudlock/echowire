@@ -7,28 +7,35 @@
 clear_channel_notifications_are_enabled_by_default_test() ->
     {Truncates, Casts} = capture_clear(undefined, #{}),
     ?assertEqual([{1, 2, 3}], Truncates),
-    ?assertEqual([{clear_channel_notifications, 1, 2, 3}], Casts).
+    ?assertEqual([{clear_channel_notifications, 1, 2, 3}], without_resets(Casts)).
 
 the_clear_env_switch_turns_off_the_clear_cast_test() ->
     {Truncates, Casts} = capture_clear(undefined, #{
         push_enrolled_clear_notifications_enabled => false
     }),
     ?assertEqual([{1, 2, 3}], Truncates),
-    ?assertEqual([], Casts).
+    ?assertEqual([], without_resets(Casts)).
 
 the_clear_operator_switch_turns_off_the_clear_cast_test() ->
     {Truncates, Casts} = capture_clear(false, #{
         push_enrolled_clear_notifications_enabled => true
     }),
     ?assertEqual([{1, 2, 3}], Truncates),
-    ?assertEqual([], Casts).
+    ?assertEqual([], without_resets(Casts)).
 
 the_clear_operator_switch_turns_on_the_clear_cast_test() ->
     {Truncates, Casts} = capture_clear(true, #{
         push_enrolled_clear_notifications_enabled => false
     }),
     ?assertEqual([{1, 2, 3}], Truncates),
-    ?assertEqual([{clear_channel_notifications, 1, 2, 3}], Casts).
+    ?assertEqual([{clear_channel_notifications, 1, 2, 3}], without_resets(Casts)).
+
+a_read_always_resets_the_unread_cap_on_the_owner_test() ->
+    {_, Casts} = capture_clear(false, #{push_enrolled_clear_notifications_enabled => false}),
+    ?assertEqual([{reset_unread_cap, 1, 2}], Casts).
+
+without_resets(Casts) ->
+    [Cast || Cast <- Casts, element(1, Cast) =/= reset_unread_cap].
 
 clears_do_nothing_while_push_is_disabled_test() ->
     {Truncates, Casts} = capture_clear(undefined, #{push_enabled => false}),

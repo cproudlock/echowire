@@ -281,13 +281,12 @@ const ACCEPTED_TABLE_FINDINGS = new Map<string, Readonly<Partial<Record<TableRul
 	['gateway/opcodes-and-close-codes.md', {'table-cell': 1}],
 	['gateway/overview.md', {'table-cell': 1}],
 	['http-api/authentication.mdx', {'table-identifier': 1}],
-	['http-api/billing.mdx', {'table-identifier': 5}],
+	['http-api/billing.mdx', {'table-identifier': 4}],
 	['http-api/calls.mdx', {'table-fit': 1, 'table-cell': 3}],
 	// Echowire: default_auto_archive_duration? is a live schema field name, so the
 	// identifier cannot be shortened without breaking the schema check.
 	['http-api/channels.mdx', {'table-cell': 6, 'table-identifier': 1}],
 	['http-api/connections.mdx', {'table-cell': 2}],
-	['http-api/deployment-availability.md', {'table-fit': 1}],
 	['http-api/discovery.mdx', {'table-cell': 2}],
 	['http-api/donations.mdx', {'table-cell': 1}],
 	['http-api/entrance-sounds.mdx', {'table-cell': 3, 'table-parallel': 1}],

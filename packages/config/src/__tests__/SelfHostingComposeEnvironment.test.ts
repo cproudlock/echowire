@@ -31,6 +31,7 @@ const API_SETTINGS_NOT_FORWARDED: Record<string, string> = {
 	FLUXER_API_PRESIGNED_DOWNLOADS_ENABLED: 'set on this instance, not through the shipped stack',
 	FLUXER_API_ADDITIONAL_CORS_ORIGINS: 'set on this instance, not through the shipped stack',
 	FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES: 'set on this instance, not through the shipped stack',
+	FLUXER_API_AUTOMATED_MESSAGE_DELETION_DELAY_DAYS: 'automated account actions run only on the hosted service',
 	...Object.fromEntries(
 		['MONTHLY', 'YEARLY', 'GIFT_1_MONTH', 'GIFT_1_YEAR'].flatMap((slot) =>
 			['USD', 'EUR', 'BRL', 'DKK', 'INR', 'NOK', 'PLN', 'SEK', 'TRY'].map((currency) => [

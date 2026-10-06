@@ -12,6 +12,7 @@ import {
 	throwIfArchiveTerminallyFailed,
 } from '@app/api/archive/ArchiveTask';
 import {makeDataPackageAttachmentCdnUrl} from '@app/api/attachment/AttachmentUrls';
+import {findRecoveryKitCreatedAt} from '@app/api/auth/AuthRecoveryKit';
 import {
 	type ChannelID,
 	createAttachmentID,
@@ -144,6 +145,7 @@ interface UserDataJsonParams {
 	pushSubscriptions: Array<PushSubscription>;
 	webAuthnCredentials: Array<WebAuthnCredential>;
 	mfaBackupCodes: Array<MfaBackupCode>;
+	recoveryKitCreatedAt: Date | null;
 	createdGiftCodes: Array<GiftCode>;
 	payments: Array<Payment>;
 	storePurchases: Array<StorePurchaseRow>;
@@ -473,6 +475,7 @@ export function buildUserDataJson(params: UserDataJsonParams) {
 		pushSubscriptions,
 		webAuthnCredentials,
 		mfaBackupCodes,
+		recoveryKitCreatedAt,
 		createdGiftCodes,
 		payments,
 		storePurchases,
@@ -675,6 +678,7 @@ export function buildUserDataJson(params: UserDataJsonParams) {
 			consumed_count: mfaBackupCodes.filter((code) => code.consumed).length,
 			remaining_count: mfaBackupCodes.filter((code) => !code.consumed).length,
 		},
+		...(recoveryKitCreatedAt ? {recovery_kit: {created_at: recoveryKitCreatedAt.toISOString()}} : {}),
 		gift_codes_created: createdGiftCodes.map((gift) => ({
 			code: gift.code,
 			duration_months: gift.durationMonths,
@@ -902,6 +906,7 @@ const harvestUserData: ArchiveTaskHandler = async (payload, helpers, attempt) =>
 			pushSubscriptions,
 			webAuthnCredentials,
 			mfaBackupCodes,
+			recoveryKitCreatedAt,
 			createdGiftCodes,
 			payments,
 			storePurchases,
@@ -922,6 +927,7 @@ const harvestUserData: ArchiveTaskHandler = async (payload, helpers, attempt) =>
 			userRepository.listPushSubscriptions(userId),
 			userRepository.listWebAuthnCredentials(userId),
 			userRepository.listMfaBackupCodes(userId),
+			findRecoveryKitCreatedAt(userId),
 			userRepository.findGiftCodesByCreator(userId),
 			paymentRepository.findPaymentsByUserId(userId),
 			storeEntitlementService.listStorePurchases(userId),
@@ -964,6 +970,7 @@ const harvestUserData: ArchiveTaskHandler = async (payload, helpers, attempt) =>
 			pushSubscriptions,
 			webAuthnCredentials,
 			mfaBackupCodes,
+			recoveryKitCreatedAt,
 			createdGiftCodes,
 			payments,
 			storePurchases,

@@ -993,7 +993,7 @@ msgstr "{count, plural, one {# kanal følger} other {# kanaler følger}} denne k
 msgid "{count, plural, one {# community found} other {# communities found}}"
 msgstr "{count, plural, one {# fellesskap funnet} other {# fellesskap funnet}}"
 
-#: src/features/app/components/layout/GuildsLayout.tsx:1955
+#: src/features/app/components/layout/GuildsLayout.tsx:1954
 msgid "{count, plural, one {# community is temporarily unavailable due to a flux capacitor malfunction.} other {# communities are temporarily unavailable due to a flux capacitor malfunction.}}"
 msgstr "{count, plural, one {# fellesskap er midlertidig utilgjengelig på grunn av en feil i flukskondensatoren.} other {# fellesskap er midlertidig utilgjengelige på grunn av en feil i flukskondensatoren.}}"
 
@@ -1720,6 +1720,31 @@ msgstr "{productName} unngår å sende push-varsler til mobilenhetene dine når 
 msgid "{productName} Bug Hunter"
 msgstr "{productName}-feilfinner"
 
+#. Linux settings text before system-wide shortcuts are set up. The desktop environment owns the keys. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:28
+msgid "{productName} can ask your desktop to run its shortcuts while {productName} is not focused. Your desktop asks you to confirm and lets you pick the keys."
+msgstr "{productName} kan be skrivebordsmiljøet ditt om å kjøre snarveiene når {productName} ikke er i fokus. Skrivebordsmiljøet ber deg bekrefte og lar deg velge tastene."
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, on an X11 session. The app now listens for shortcuts through the X11 display server itself. Keep "X11" as written. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:177
+msgid "{productName} can no longer read your keyboard, so it listens for shortcuts through X11 instead."
+msgstr "{productName} kan ikke lenger lese tastaturet ditt, så det lytter etter snarveier via X11 i stedet."
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, for example after a restart removed the access. The app already falls back to the shortcuts the desktop runs. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:172
+msgid "{productName} can no longer read your keyboard, so your desktop's shortcuts are used instead."
+msgstr "{productName} kan ikke lenger lese tastaturet ditt, så snarveiene i skrivebordsmiljøet brukes i stedet."
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read and nothing else runs system-wide shortcuts. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:182
+msgid "{productName} can no longer read your keyboard. Shortcuts only work while {productName} is focused."
+msgstr "{productName} kan ikke lenger lese tastaturet ditt. Snarveier fungerer bare mens {productName} er i fokus."
+
+#. Linux settings text before system-wide shortcuts are set up on the Hyprland desktop. Hyprland shows no dialog. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:34
+msgid "{productName} can register its shortcuts with Hyprland so they run while {productName} is not focused. You then bind the keys in your Hyprland config."
+msgstr "{productName} kan registrere snarveiene sine hos Hyprland slik at de kjører når {productName} ikke er i fokus. Deretter binder du tastene i Hyprland-konfigurasjonen din."
+
 #. Inline notice body on Windows. Explains that desktop audio is disabled because productName cannot exclude its own WebRTC/call playback on this OS build.
 #. Inline notice body on macOS. Explains that desktop audio is disabled because productName cannot exclude its own WebRTC/call playback on this OS build.
 #: src/features/voice/components/modals/screen_share_picker_modal/PerWindowAudioNotice.tsx:23
@@ -1825,7 +1850,7 @@ msgid "{productName} needs camera access to list your devices."
 msgstr "{productName} trenger tilgang til kameraet for å vise enhetene dine."
 
 #. Voice settings notice shown when microphone permission has not been granted.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:141
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:143
 msgid "{productName} needs microphone access to list your devices."
 msgstr "{productName} trenger mikrofontilgang for å vise enhetene dine."
 
@@ -1848,6 +1873,11 @@ msgstr "{productName} holder nå til på {host}. Installer det derfra."
 #: src/features/user/components/popouts/UserProfileBadges.tsx:34
 msgid "{productName} Partner"
 msgstr "{productName}-partner"
+
+#. Subtitle for system-wide shortcuts on the Hyprland desktop after setup. Hyprland shows no list of assigned keys. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:58
+msgid "{productName} registered its shortcuts with Hyprland. Bind them in your Hyprland config to use them while {productName} is not focused."
+msgstr "{productName} har registrert snarveiene sine hos Hyprland. Bind dem i Hyprland-konfigurasjonen din for å bruke dem når {productName} ikke er i fokus."
 
 #. Nagbar shown after the app restarts while the user was connected to a community voice channel. {productName} is Fluxer, {channelName} is the voice channel name, and {communityName} is the community name.
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:24
@@ -2421,7 +2451,7 @@ msgid "2 members (typing)"
 msgstr "2 medlemmer (skriver)"
 
 #. Ban duration option in the destructive ban-member modal for a two-week temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:51
+#: src/features/moderation/components/modals/BanMemberModal.tsx:52
 msgid "2 weeks"
 msgstr "2 uker"
 
@@ -2468,7 +2498,7 @@ msgstr "2FA-krav"
 #. Ban duration option in the destructive ban-member modal for a three-day temporary ban.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:38
 #: src/features/channel/components/modals/EditPostModal.tsx:48
-#: src/features/moderation/components/modals/BanMemberModal.tsx:43
+#: src/features/moderation/components/modals/BanMemberModal.tsx:44
 msgid "3 days"
 msgstr "3 dager"
 
@@ -2510,7 +2540,7 @@ msgid "40px, 3 members"
 msgstr "40 piksler, 3 medlemmer"
 
 #. Ban duration option in the destructive ban-member modal for a five-day temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:47
+#: src/features/moderation/components/modals/BanMemberModal.tsx:48
 msgid "5 days"
 msgstr "5 dager"
 
@@ -2932,7 +2962,7 @@ msgstr "Bare i alle åpne direktemeldingssamtaler"
 msgid "Across every community you're in"
 msgstr "I alle fellesskapene du er med i"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:110
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:112
 msgid "Action"
 msgstr "Handling"
 
@@ -3049,7 +3079,7 @@ msgid "Activity sharing"
 msgstr "Aktivitetsdeling"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:488
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:495
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:102
 msgid "Activity threshold"
 msgstr "Aktivitetsterskel"
@@ -3178,7 +3208,7 @@ msgid "Add an extra layer of security to your account"
 msgstr "Legg til et ekstra sikkerhetslag på kontoen din"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:41
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:43
 msgid "Add another custom shortcut"
 msgstr "Legg til en ny egendefinert snarvei"
 
@@ -3530,7 +3560,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #. Description for the custom profile option in the voice tab.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:99
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:101
 msgid "Adjust each setting yourself: noise suppression, echo cancellation, and gain."
 msgstr "Juster hver innstilling selv: støydemping, ekkodemping og forsterkning."
 
@@ -3801,11 +3831,11 @@ msgstr "Tillat {everyoneMention} og {hereMention}"
 msgid "Allow {PRODUCT_NAME} to access your camera in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 msgstr "Tillat {PRODUCT_NAME} å få tilgang til kameraet ditt i {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:546
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:553
 msgid "Allow {PRODUCT_NAME} to access your microphone in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME}."
 msgstr "Gi {PRODUCT_NAME} tilgang til mikrofonen din i {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME}."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:551
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:558
 msgid "Allow {PRODUCT_NAME} to access your microphone. Check your browser's address bar or settings."
 msgstr "Tillat {PRODUCT_NAME} å få tilgang til mikrofonen din. Sjekk nettleserens adressefelt eller innstillinger."
 
@@ -3908,7 +3938,7 @@ msgstr "Tillat medlemmer uten tillatelsen {readMessageHistoryPermissionLabel} å
 msgid "Allow mentions for this role"
 msgstr "Tillat omtaler for denne rollen"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:571
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:578
 msgid "Allow microphone"
 msgstr "Tillat mikrofontilgang"
 
@@ -4457,7 +4487,7 @@ msgid "Any uploaded attachment"
 msgstr "Et hvilket som helst opplastet vedlegg"
 
 #. Helper text under the custom ban duration input. Both placeholders are integer numbers of seconds bounding the allowed range.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:73
+#: src/features/moderation/components/modals/BanMemberModal.tsx:74
 msgid "Any value from {minTempBanDurationSeconds} to {maxTempBanDurationSeconds} seconds."
 msgstr "En verdi fra {minTempBanDurationSeconds} til {maxTempBanDurationSeconds} sekunder."
 
@@ -5236,8 +5266,8 @@ msgid "Auto-detect language"
 msgstr "Gjenkjenn språk automatisk"
 
 #. Short label in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:119
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:475
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:121
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:482
 msgid "Auto-set activity threshold"
 msgstr "Angi aktivitetsterskel automatisk"
 
@@ -5646,7 +5676,7 @@ msgid "Ban"
 msgstr "Utesteng"
 
 #. Title of the destructive ban-member modal. {tag} is the target user tag (username#tag). Destructive moderation action; keep tone direct.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:55
+#: src/features/moderation/components/modals/BanMemberModal.tsx:56
 msgid "Ban {tag}"
 msgstr "Utesteng {tag}"
 
@@ -5661,14 +5691,14 @@ msgid "Ban details"
 msgstr "Detaljer om utestengelse"
 
 #. Label above the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:60
+#: src/features/moderation/components/modals/BanMemberModal.tsx:61
 msgid "Ban duration"
 msgstr "Varighet for utestengelse"
 
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:270
+#: src/features/moderation/components/modals/BanMemberModal.tsx:271
 #: src/features/ui/action_menu/GuildMemberContextMenu.tsx:66
 #: src/features/ui/action_menu/items/GuildMemberMenuItems.tsx:51
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:127
@@ -5705,7 +5735,7 @@ msgstr "Båndbredde"
 msgid "Banned"
 msgstr "Utestengt"
 
-#: src/features/moderation/components/modals/BanMemberModal.tsx:134
+#: src/features/moderation/components/modals/BanMemberModal.tsx:135
 msgid "Banned {targetUserTag} from the community"
 msgstr "Utestengte {targetUserTag} fra fellesskapet"
 
@@ -6705,7 +6735,7 @@ msgstr "Kan ikke laste opp filer her"
 #: src/features/messaging/components/modals/ForwardModal.tsx:603
 #: src/features/messaging/components/modals/ImageCropModal.tsx:1025
 #: src/features/messaging/components/modals/MessageHistoryThresholdModal.tsx:107
-#: src/features/moderation/components/modals/BanMemberModal.tsx:262
+#: src/features/moderation/components/modals/BanMemberModal.tsx:263
 #: src/features/moderation/components/modals/RemoveTimeoutModal.tsx:70
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:126
 #: src/features/theme/components/modals/ThemeAcceptModal.tsx:173
@@ -6768,13 +6798,13 @@ msgstr "Avbryt planlagt bytte"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:915
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:250
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "Si opp abonnement"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:244
 msgid "Cancel subscription?"
 msgstr "Si opp abonnementet?"
 
@@ -7022,6 +7052,11 @@ msgstr "Endre kallenavn i gruppen"
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:35
 msgid "Change icon"
 msgstr "Endre ikon"
+
+#. Button that opens the Linux desktop dialog for changing the keys of system-wide shortcuts.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:83
+msgid "Change in system settings"
+msgstr "Endre i systeminnstillinger"
 
 #. Title of the modal where the user picks a community invite background source. Keep it concise. Keep the tone plain and specific.
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildInviteSplashUploadField.tsx:37
@@ -7616,6 +7651,11 @@ msgstr "chatfelt"
 msgid "Chat shortcuts"
 msgstr "Chatsnarveier"
 
+#. Button on Linux that checks again whether the desktop offers system-wide shortcuts, for example after the desktop service started. Keep it short.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:139
+msgid "Check again"
+msgstr "Sjekk igjen"
+
 #. Tray menu item. Triggers the auto-updater to look for a new desktop build.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:225
 msgid "Check for updates"
@@ -7799,7 +7839,7 @@ msgstr "Velg et vindu i systemvelgeren din"
 msgid "Choose an account"
 msgstr "Velg en konto"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:152
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:154
 msgid "Choose an action."
 msgstr "Velg en handling."
 
@@ -8144,7 +8184,7 @@ msgstr "Renser mikrofonlyden for tydelig tale."
 #: src/features/app/components/setup/SetupWizardSteps.tsx:114
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
-#: src/features/input/components/KeybindRecorder.tsx:442
+#: src/features/input/components/KeybindRecorder.tsx:482
 #: src/features/theme_studio/sections/QuickCssSection.tsx:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:241
 msgid "Clear"
@@ -8350,7 +8390,7 @@ msgstr "Klikk for å åpne fargevelgeren og velge en ny farge."
 msgid "Click to react"
 msgstr "Klikk for å reagere"
 
-#: src/features/input/components/KeybindRecorder.tsx:411
+#: src/features/input/components/KeybindRecorder.tsx:451
 msgid "Click to record"
 msgstr "Klikk for å registrere en snarvei"
 
@@ -9284,7 +9324,7 @@ msgstr "Bekreftelse"
 msgid "Confirmation or double-click for community voice joins"
 msgstr "Bekreftelse eller dobbeltklikk for å bli med i talekanaler i fellesskap"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:169
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:176
 msgid "Conflicts with {conflictLabel}"
 msgstr "I konflikt med {conflictLabel}"
 
@@ -9301,7 +9341,7 @@ msgstr "Koble til et kamera eller en virtuell opptaksenhet, og prøv deretter p�
 msgid "Connect a display, then try again."
 msgstr "Koble til en skjerm, og prøv igjen."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:556
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:563
 msgid "Connect a microphone and try again."
 msgstr "Koble til en mikrofon og prøv igjen."
 
@@ -9873,6 +9913,21 @@ msgstr "Kopier invitasjonslenke"
 #: src/features/channel/components/modals/channel_tabs/ChannelInvitesTab.tsx:49
 msgid "Copy invite URL"
 msgstr "Kopier invitasjonslenke"
+
+#. Button that copies Hyprland config lines to the clipboard.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:120
+msgid "Copy lines"
+msgstr "Kopier linjer"
+
+#. Screen reader name of the button that copies Hyprland config lines in the older hyprlang format. Starts with the visible button text "Copy lines". Keep "hyprland.conf" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:129
+msgid "Copy lines for hyprland.conf"
+msgstr "Kopier linjer for hyprland.conf"
+
+#. Screen reader name of the button that copies Hyprland config lines in the Lua format. Starts with the visible button text "Copy lines". Keep "hyprland.lua" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:124
+msgid "Copy lines for hyprland.lua"
+msgstr "Kopier linjer for hyprland.lua"
 
 #. Generic action label that copies a URL to the clipboard.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:750
@@ -11066,7 +11121,7 @@ msgstr "Egendefinert"
 #. Voice input processing profile where the user configures processing manually.
 #. Voice input processing profile where the user configures processing manually.
 #. Voice input processing profile where the user configures processing manually.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:94
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:96
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:42
 #: src/features/voice/components/VoiceSettingsMenus.tsx:70
 msgctxt "voice-processing-profile"
@@ -11074,7 +11129,7 @@ msgid "Custom"
 msgstr "Egendefinert"
 
 #. Label of the numeric input shown after choosing "Custom..." in the ban duration dropdown. The unit is seconds.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:68
+#: src/features/moderation/components/modals/BanMemberModal.tsx:69
 msgid "Custom ban duration (seconds)"
 msgstr "Egendefinert varighet for utestengelse (sekunder)"
 
@@ -11169,12 +11224,12 @@ msgid "Custom selection"
 msgstr "Egendefinert utvalg"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:42
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:44
 msgid "Custom shortcut action"
 msgstr "Egendefinert snarveishandling"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:38
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:40
 msgid "Custom shortcut options"
 msgstr "Alternativer for egendefinert snarvei"
 
@@ -11705,7 +11760,7 @@ msgstr "Standardsortering"
 msgid "Default translator"
 msgstr "Standard oversetter"
 
-#: src/features/input/components/KeybindRecorder.tsx:419
+#: src/features/input/components/KeybindRecorder.tsx:459
 msgid "Default:"
 msgstr "Standard:"
 
@@ -11892,8 +11947,8 @@ msgid "Delete message"
 msgstr "Slett melding"
 
 #. Section heading and accessible label for the message-history-deletion radio group in the destructive ban-member modal. Destructive option group.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:78
-#: src/features/moderation/components/modals/BanMemberModal.tsx:229
+#: src/features/moderation/components/modals/BanMemberModal.tsx:79
+#: src/features/moderation/components/modals/BanMemberModal.tsx:230
 msgid "Delete message history"
 msgstr "Slett meldingshistorikk"
 
@@ -11963,7 +12018,7 @@ msgid "Delete saved media"
 msgstr "Slett lagrede medier"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:36
 msgid "Delete shortcut"
 msgstr "Slett snarvei"
 
@@ -12573,7 +12628,7 @@ msgid "Disable backend premium perks"
 msgstr "Deaktiver premiumfordeler på serversiden"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:33
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:35
 msgid "Disable built-in shortcut"
 msgstr "Deaktiver innebygd snarvei"
 
@@ -12637,7 +12692,7 @@ msgid "Disable screen share picture-in-picture popouts?"
 msgstr "Deaktivere bilde-i-bilde-vinduer for skjermdeling?"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:28
 msgid "Disable shortcut"
 msgstr "Deaktiver snarvei"
 
@@ -13148,7 +13203,7 @@ msgstr "Doner i stedet"
 #. Primary button in the favorite GIF import modal after a completed import.
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthSuccessState.tsx:44
 #: src/features/channel/components/pickers/gif/ImportFavoriteGifsModal.tsx:54
-#: src/features/input/components/KeybindRecorder.tsx:470
+#: src/features/input/components/KeybindRecorder.tsx:510
 #: src/features/moderation/components/report_modal/IARModal.tsx:94
 #: src/features/moderation/components/report/ReportBreadcrumbs.tsx:31
 #: src/features/search/components/search/ChannelFilterSheet.tsx:165
@@ -13211,7 +13266,7 @@ msgid "Download button"
 msgstr "Last ned-knapp"
 
 #. Button or menu action label in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:107
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:109
 msgid "Download desktop app"
 msgstr "Last ned skrivebordsappen"
 
@@ -13464,6 +13519,11 @@ msgstr "Nederlandsk"
 msgid "e.g., YubiKey, iPhone, work computer"
 msgstr "f.eks. YubiKey, iPhone, jobb-PC"
 
+#. Note under the list of system-wide shortcuts on Linux. The desktop cannot assign one key to two actions.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:75
+msgid "Each key can run only one system-wide shortcut."
+msgstr "Hver tast kan bare kjøre én systemomfattende snarvei."
+
 #. Body of the alert shown when a published announcement message hit its editing limit. {duration} is a localized short duration such as "12 minutes".
 #: src/features/messaging/components/alerts/PublishedMessageEditLimitModal.tsx:12
 msgid "Each published message allows 3 quick edits, then 1 every 20 minutes. Try again in {duration}."
@@ -13610,7 +13670,7 @@ msgid "Edit invite link"
 msgstr "Rediger invitasjonslenke"
 
 #. Button or menu action label in the keyboard shortcuts keybind recorder. Keep it concise.
-#: src/features/input/components/KeybindRecorder.tsx:32
+#: src/features/input/components/KeybindRecorder.tsx:40
 msgid "Edit keyboard shortcut"
 msgstr "Rediger tastatursnarvei"
 
@@ -13690,7 +13750,7 @@ msgstr "Skjema for å redigere lagrede medier"
 msgid "Edit search engine"
 msgstr "Rediger søkemotor"
 
-#: src/features/input/components/KeybindRecorder.tsx:378
+#: src/features/input/components/KeybindRecorder.tsx:418
 msgid "Edit shortcut"
 msgstr "Rediger snarvei"
 
@@ -14023,20 +14083,16 @@ msgstr "Tom redigering"
 msgid "Empty favorites"
 msgstr "Tom favorittliste"
 
-#. Button label in the Linux Wayland input-access nagbar.
-#. Button label in the keybind settings system-wide shortcuts section.
 #. Button or menu action label in the invites disable invites button. Keep it concise.
 #. Primary button label in the enable-invites confirmation modal.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:32
 #: src/features/app/components/layout/GuildLayout.tsx:55
 #: src/features/invite/components/DisableInvitesButton.tsx:27
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:360
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:23
 msgid "Enable"
 msgstr "Aktiver"
 
 #. Voice settings CTA label for opening a platform permission prompt.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:127
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:129
 msgid "Enable {permissionName} permission"
 msgstr "Aktiver tillatelsen {permissionName}"
 
@@ -14146,11 +14202,6 @@ msgstr "Aktiver maskinvareakselerasjon og start på nytt"
 msgid "Enable hardware acceleration?"
 msgstr "Aktivere maskinvareakselerasjon?"
 
-#. Description for a Linux Wayland input-access nagbar. {productName} is the app name.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:16
-msgid "Enable input access to use system-wide shortcuts on Wayland. After changing input access, fully quit and restart {productName} so shortcuts can use it."
-msgstr "Aktiver inndatatilgang for å bruke systemomfattende snarveier på Wayland. Etter at du har endret tilgangen, må du avslutte {productName} helt og starte appen på nytt slik at snarveiene får tilgang."
-
 #. Button label that re-enables invite links for a community.
 #: src/features/invite/components/DisableInvitesButton.tsx:40
 msgid "Enable invites"
@@ -14241,7 +14292,7 @@ msgid "Enable Shift to expand"
 msgstr "Aktiver Shift for å utvide"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:30
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:32
 msgid "Enable shortcut"
 msgstr "Aktiver snarvei"
 
@@ -14350,12 +14401,12 @@ msgid "End grace now"
 msgstr "Avslutt respittperiode nå"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:272
 msgid "End grace period"
 msgstr "Avslutt respittperiode"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:265
 msgid "End grace period now?"
 msgstr "Avslutte respittperioden nå?"
 
@@ -14440,7 +14491,7 @@ msgid "Enter a product name between 1 and 80 characters."
 msgstr "Skriv inn et produktnavn mellom 1 og 80 tegn."
 
 #. Placeholder in the optional reason input in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:88
+#: src/features/moderation/components/modals/BanMemberModal.tsx:89
 msgid "Enter a reason for the ban"
 msgstr "Skriv inn en grunn for utestengelsen"
 
@@ -14627,7 +14678,7 @@ msgstr "All systemlyd"
 #. Voice menu submenu label that contains per-user entrance sound mute and volume controls.
 #: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx:181
 #: src/features/ui/action_menu/items/VoiceParticipantMenuItems.tsx:310
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:192
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:194
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:150
 msgid "Entrance sound"
 msgstr "Ankomstlyd"
@@ -14737,7 +14788,7 @@ msgstr "Kveldstid"
 
 #. Description for the automatic gain control toggle in the voice processing settings.
 #. Description for the automatic gain control toggle in the voice processing settings.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:176
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:178
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:63
 msgid "Evens out your mic volume so you are not too quiet."
 msgstr "Jevner ut mikrofonvolumet ditt slik at du ikke er for stille."
@@ -15098,7 +15149,7 @@ msgstr "Simuler feil ved innlasting av meldinger"
 msgid "Fail message sends"
 msgstr "Simuler feil ved sending av meldinger"
 
-#: src/features/moderation/components/modals/BanMemberModal.tsx:141
+#: src/features/moderation/components/modals/BanMemberModal.tsx:142
 msgid "Failed to ban member. Try again."
 msgstr "Kunne ikke utestenge medlemmet. Prøv igjen."
 
@@ -15966,6 +16017,26 @@ msgstr "Kun for britiske øyne ..."
 #: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:26
 msgid "For me"
 msgstr "For meg"
+
+#. Warning on GNOME when the push-to-mute shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone muted.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:204
+msgid "For push-to-mute, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay muted."
+msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for «Trykk for å dempe». Med en kombinasjon må du slippe hovedtasten først, ellers kan mikrofonen forbli dempet."
+
+#. Warning on GNOME when the push-to-talk shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone on.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:198
+msgid "For push-to-talk, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay on."
+msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for «Trykk for å snakke». Med en kombinasjon må du slippe hovedtasten først, ellers kan mikrofonen forbli på."
+
+#. Warning on GNOME when a hold shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the shortcut active.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:216
+msgid "For this shortcut, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the shortcut can stay active."
+msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for denne snarveien. Med en kombinasjon må du slippe hovedtasten først, ellers kan snarveien forbli aktiv."
+
+#. Warning on GNOME when the voice activity priority shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave priority speaking on. "Voice activity priority" is the shortcut name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:210
+msgid "For voice activity priority, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or priority can stay on."
+msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for «Taleaktivitet (prioritet)». Med en kombinasjon må du slippe hovedtasten først, ellers kan prioriteten forbli på."
 
 #: src/features/auth/components/modals/SudoVerificationModal.tsx:268
 msgid "For your security, please confirm it's you to continue."
@@ -16895,8 +16966,8 @@ msgid "Global profile"
 msgstr "Global profil"
 
 #. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:81
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:63
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:83
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:65
 msgid "Global shortcut"
 msgstr "Global snarvei"
 
@@ -17736,6 +17807,11 @@ msgstr "Hold nede Shift og trykk på X for å velge apper. Trykk på {selectAllS
 msgid "Hold to record. Drag up to lock, or release to send."
 msgstr "Hold inne for å ta opp. Dra opp for å låse, eller slipp for å sende."
 
+#. Hint under a system-wide hold shortcut such as push-to-talk on Linux. The desktop ignores the key while other modifier keys are held.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:39
+msgid "Holding Shift, Ctrl or Alt blocks this shortcut. Add alternates in your system settings."
+msgstr "Når du holder inne Shift, Ctrl eller Alt, blokkeres denne snarveien. Legg til alternativer i systeminnstillingene dine."
+
 #. Action label in quick switcher for navigating to the Home tab.
 #: src/features/app/components/layout/MobileBottomNav.tsx:110
 #: src/features/search/state/QuickSwitcherCandidateBuilder.ts:47
@@ -17790,7 +17866,7 @@ msgid "How about:"
 msgstr "Hva med:"
 
 #. Helper text under the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:64
+#: src/features/moderation/components/modals/BanMemberModal.tsx:65
 msgid "How long they stay banned."
 msgstr "Hvor lenge de er utestengt."
 
@@ -17839,6 +17915,26 @@ msgstr "Hurra! Varsler er aktivert"
 msgid "Hyperlink"
 msgstr "Hyperkobling"
 
+#. Instructions for the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:97
+msgid "Hyprland has no shortcut dialog. Add the lines for your Hyprland version to your Hyprland config and replace KEY with the key you want."
+msgstr "Hyprland har ingen snarveidialog. Legg til linjene for din Hyprland-versjon i din Hyprland-konfigurasjon og erstatt KEY med tasten du ønsker."
+
+#. Instructions for the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:103
+msgid "Hyprland has no shortcut dialog. Bind the keys in your Hyprland config."
+msgstr "Hyprland har ingen snarveidialog. Bind tastene i Hyprland-konfigurasjonen din."
+
+#. Label above Hyprland config lines in the older hyprlang format. Keep "hyprland.conf" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:116
+msgid "hyprland.conf (before Hyprland 0.55)"
+msgstr "hyprland.conf (før Hyprland 0.55)"
+
+#. Label above Hyprland config lines in the Lua format. Keep "hyprland.lua" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:112
+msgid "hyprland.lua (Hyprland 0.55 and later)"
+msgstr "hyprland.lua (Hyprland 0.55 og senere)"
+
 #: src/features/auth/flow/RegistrationLegalConsent.tsx:83
 msgid "I agree to the <0>Privacy policy</0>"
 msgstr "Jeg godtar <0>personvernreglene</0>"
@@ -17878,7 +17974,7 @@ msgstr "Jeg ombestemte meg"
 
 #. Short label in the voice tab. Keep it concise.
 #: src/features/channel/components/MatureContentChannelGate.tsx:207
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:111
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:113
 msgid "I understand"
 msgstr "Jeg forstår"
 
@@ -18302,7 +18398,7 @@ msgstr "I"
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "I modusen «Operativsystem» er ordbøkene ovenfor veiledende. {PRODUCT_NAME} sender disse språkkodene til operativsystemets stavekontroll når det støttes. Koder som ikke gjenkjennes, blir ignorert."
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:322
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:324
 msgid "In a browser, push-to-talk only works while the {PRODUCT_NAME} tab is focused. Install the desktop app for system-wide push-to-talk."
 msgstr "I en nettleser fungerer «Trykk for å snakke» bare når {PRODUCT_NAME}-fanen er i fokus. Installer skrivebordsappen for å bruke «Trykk for å snakke» i hele systemet."
 
@@ -18570,30 +18666,8 @@ msgctxt "chat-settings-section"
 msgid "Input"
 msgstr "Inndata"
 
-#. Status text after Linux input access setup failed. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:35
-msgid "Input access could not be enabled automatically. Change it manually, then fully quit and restart {productName} so shortcuts can use it."
-msgstr "Inndatatilgang kunne ikke aktiveres automatisk. Endre tilgangen manuelt, avslutt deretter {productName} helt og start appen på nytt slik at snarveiene får tilgang."
-
-#. Description for a Linux Wayland input-access nagbar after automatic permission setup failed. {settingsMenuName} is the shared user settings tab label for shortcuts and {productName} is the app name.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:26
-msgid "Input access could not be enabled. Try again from {settingsMenuName} settings, then fully quit and restart {productName}."
-msgstr "Inndatatilgang kunne ikke aktiveres. Prøv igjen fra innstillingene for {settingsMenuName}, avslutt deretter {productName} helt og start appen på nytt."
-
-#. Settings warning for Linux Wayland system-wide shortcuts. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:18
-msgid "Input access is required for system-wide keyboard and mouse shortcuts on Wayland. After changing input access, fully quit and restart {productName} so shortcuts can use it."
-msgstr "Inndatatilgang kreves for systemomfattende tastatur- og musesnarveier på Wayland. Etter at du har endret tilgangen, må du avslutte {productName} helt og starte appen på nytt slik at snarveiene får tilgang."
-
-#. Description for a Linux Wayland input-access nagbar after access was changed. {productName} is the app name.
-#. Status text after Linux input access was changed. {productName} is the app name.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:21
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:31
-msgid "Input access was changed. Fully quit and restart {productName} so system-wide shortcuts can use it."
-msgstr "Inndatatilgangen er endret. Avslutt {productName} helt og start appen på nytt slik at systemomfattende snarveier får tilgang."
-
 #. Subsection title in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:180
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:182
 msgid "Input and output"
 msgstr "Lyd inn og ut"
 
@@ -19455,7 +19529,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "Behold gratis- og premiumnivåer. Du kan tilpasse nivåene, selge premium via Stripe, eller dele ut gavekoder senere fra administrasjonspanelet."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:274
 msgid "Keep grace period"
 msgstr "Behold respittperioden"
 
@@ -19470,7 +19544,7 @@ msgid "Keep running"
 msgstr "Fortsett å kjøre"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:252
 msgid "Keep subscription"
 msgstr "Behold abonnementet"
 
@@ -19480,7 +19554,7 @@ msgid "Keep these safe. Regenerating will break existing integrations."
 msgstr "Oppbevar disse trygt. Hvis du genererer dem på nytt, vil eksisterende integrasjoner slutte å fungere."
 
 #. Description for push-to-talk release delay.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:82
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:84
 msgid "Keep transmitting briefly after release."
 msgstr "Fortsett å sende lyd en kort stund etter at du slipper knappen."
 
@@ -19516,6 +19590,11 @@ msgstr "Tastatur"
 msgctxt "accessibility-settings-section"
 msgid "Keyboard"
 msgstr "Tastatur"
+
+#. Linux warning when direct input device access is on but reading the keyboard failed. Not related to the "Direct input" voice processing profile. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:193
+msgid "Keyboard access couldn't start. Shortcuts only work while {productName} is focused."
+msgstr "Tastaturtilgang kunne ikke startes. Snarveier fungerer bare mens {productName} er i fokus."
 
 #. Toggle label and settings search entry for controlling tooltip keyboard shortcut hints.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:46
@@ -19890,6 +19969,16 @@ msgstr "La fellesskapet moderere seg selv"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts:280
 msgid "Let the member hear others in this community again"
 msgstr "Lot medlemmet høre andre i dette fellesskapet igjen"
+
+#. Description for the Linux direct input device access switch while it is on, on a desktop that can also run system-wide shortcuts itself (KDE, GNOME, Hyprland). {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:166
+msgid "Lets {productName} read your keyboard directly. Turn this off to set up shortcuts through your desktop instead."
+msgstr "Lar {productName} lese tastaturet ditt direkte. Slå av dette for å sette opp snarveier via skrivebordsmiljøet ditt i stedet."
+
+#. Description for the Linux direct input device access switch. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:162
+msgid "Lets {productName} read your keyboard directly. Your system already allows this."
+msgstr "Lar {productName} lese tastaturet ditt direkte. Systemet ditt tillater dette allerede."
 
 #: src/features/theme_studio/sections/ThemeStudioSettingsSection.tsx:259
 msgid "Lets custom CSS reveal transparent window regions after restarting the desktop app."
@@ -20360,7 +20449,7 @@ msgid "Look and feel"
 msgstr "Utseende og følelse"
 
 #. placeholder {0}: externalProcessor.name
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:671
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:678
 msgid "Looks like you're using {0}. Stacking {PRODUCT_NAME}'s processing on top can cause pumping or distortion. Direct input passes your audio through untouched."
 msgstr "Det ser ut som du bruker {0}. Hvis du legger til lydbehandlingen fra {PRODUCT_NAME} i tillegg, kan det føre til pumping eller forvrengning. Direkte inndata sender lyden din uendret gjennom."
 
@@ -21667,7 +21756,7 @@ msgstr "Mikrofon"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:188
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:190
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:142
 msgid "Mic test"
 msgstr "Mikrofontest"
@@ -22029,7 +22118,7 @@ msgid "More options"
 msgstr "Flere alternativer"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:59
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:61
 msgid "More shortcut options"
 msgstr "Flere snarveialternativer"
 
@@ -23367,7 +23456,7 @@ msgstr "Ingen medlemmer ennå"
 msgid "No mentions yet"
 msgstr "Ingen omtaler ennå"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:541
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:548
 msgid "No microphone found"
 msgstr "Ingen mikrofon funnet"
 
@@ -23522,7 +23611,7 @@ msgid "No settings found"
 msgstr "Ingen innstillinger funnet"
 
 #. Empty-state text in the keyboard shortcuts keybind recorder.
-#: src/features/input/components/KeybindRecorder.tsx:36
+#: src/features/input/components/KeybindRecorder.tsx:44
 msgid "No shortcut set"
 msgstr "Ingen snarvei angitt"
 
@@ -23740,6 +23829,11 @@ msgstr "Ikke et tall"
 #: src/features/lexical/composer/nodes/SlashSlotNode.ts:73
 msgid "Not a whole number"
 msgstr "Ikke et heltall"
+
+#. Shown instead of a key when the desktop has no key assigned to a system-wide shortcut.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:79
+msgid "Not assigned"
+msgstr "Ikke tilordnet"
 
 #. Fallback value when a saved billing payment method has no expiration date.
 #. Screen reader text for a cross in the Plutonium page comparison table.
@@ -25390,7 +25484,7 @@ msgid "Perks paused"
 msgstr "Fordeler satt på pause"
 
 #. Ban duration option in the destructive ban-member modal meaning the ban never expires. Short standalone label.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:38
+#: src/features/moderation/components/modals/BanMemberModal.tsx:39
 msgid "Permanent"
 msgstr "Permanent"
 
@@ -26056,11 +26150,11 @@ msgstr "Tilstedeværelse"
 msgid "Press {shortcut} to react"
 msgstr "Trykk {shortcut} for å reagere"
 
-#: src/features/input/components/KeybindRecorder.tsx:381
+#: src/features/input/components/KeybindRecorder.tsx:421
 msgid "Press a key, mouse button, or gamepad button to bind. Escape cancels."
 msgstr "Trykk en tast, museknapp eller gamepad-knapp for å tilordne. Esc avbryter."
 
-#: src/features/input/components/KeybindRecorder.tsx:407
+#: src/features/input/components/KeybindRecorder.tsx:447
 msgid "Press a shortcut…"
 msgstr "Trykk en snarvei …"
 
@@ -26713,18 +26807,33 @@ msgid "Push to talk key"
 msgstr "Tast for trykk for å snakke"
 
 #. Switch label in the voice tab toggling push-to-talk mode. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:115
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:361
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:117
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:360
 #: src/features/voice/components/VoiceSettingsMenus.tsx:419
 msgid "Push-to-talk"
 msgstr "Trykk for å snakke"
 
 #. Short label in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:103
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:105
 msgid "Push-to-talk (limited)"
 msgstr "Trykk for å snakke (begrenset)"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:701
+#. Voice settings warning on GNOME when the desktop has no key assigned to push-to-talk. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:243
+msgid "Push-to-talk has no system-wide key yet. To set one, go to Settings > Apps > {productName}."
+msgstr "«Trykk for å snakke» har ingen systemomfattende tast ennå. Gå til Innstillinger > Apper > {productName} for å angi en."
+
+#. Voice settings warning on KDE Plasma when the desktop has no key assigned to push-to-talk. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:237
+msgid "Push-to-talk has no system-wide key yet. To set one, go to System Settings > Keyboard > Shortcuts > {productName}."
+msgstr "«Trykk for å snakke» har ingen systemomfattende tast ennå. Gå til Systeminnstillinger > Tastatur > Snarveier > {productName} for å angi en."
+
+#. Voice settings warning on an unrecognized Linux desktop when the desktop has no key assigned to push-to-talk.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:248
+msgid "Push-to-talk has no system-wide key yet. To set one, open your desktop's keyboard shortcut settings."
+msgstr "«Trykk for å snakke» har ingen systemomfattende tast ennå. Åpne innstillingene for tastatursnarveier i skrivebordsmiljøet ditt for å angi en."
+
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:708
 msgid "Push-to-talk is ignored in direct input. Switch to focused voice or custom to use it."
 msgstr "Trykk for å snakke ignoreres med «Direkte inndata». Bytt til «Tale i fokus» eller «Egendefinert» for å bruke det."
 
@@ -26733,20 +26842,50 @@ msgstr "Trykk for å snakke ignoreres med «Direkte inndata». Bytt til «Tale i
 msgid "Push-to-talk is on. Hold {pushToTalkHint} to speak."
 msgstr "Trykk for å snakke er på. Hold inne {pushToTalkHint} for å snakke."
 
+#. Tooltip and screen reader label on the mic button when push-to-talk is on but the key has no name to show, for example when the Linux desktop assigns it.
+#: src/features/input/utils/PushToTalkHint.ts:11
+msgid "Push-to-talk is on. Hold your push-to-talk key to speak."
+msgstr "«Trykk for å snakke» er på. Hold inne tasten din for å snakke."
+
+#. Voice settings warning on Linux when the desktop dialog for system-wide shortcuts was dismissed or failed. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:226
+msgid "Push-to-talk only works while {productName} is focused because your desktop didn't set up system-wide shortcuts."
+msgstr "«Trykk for å snakke» fungerer bare når {productName} er i fokus fordi skrivebordsmiljøet ditt ikke satte opp systemomfattende snarveier."
+
 #. Voice settings warning shown when macOS Input Monitoring is required for system-wide push-to-talk. {productName} is the app name and {permissionName} is the macOS permission name.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:135
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:137
 msgid "Push-to-talk only works while {productName} is focused until {permissionName} is enabled. After changing the permission, fully quit and restart {productName} so system-wide hotkeys can use it."
 msgstr "Trykk for å snakke fungerer bare når {productName} er i fokus, til {permissionName} er aktivert. Etter at du har endret tillatelsen, må du avslutte {productName} helt og starte appen på nytt slik at hurtigtaster kan brukes i hele systemet."
 
+#. Voice settings warning on Linux before system-wide shortcuts are set up. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:222
+msgid "Push-to-talk only works while {productName} is focused until you set up system-wide shortcuts."
+msgstr "«Trykk for å snakke» fungerer bare når {productName} er i fokus, til du setter opp systemomfattende snarveier."
+
 #. Voice settings warning shown when push-to-talk is enabled in a browser.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:131
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:133
 msgid "Push-to-talk only works while the browser tab is focused."
 msgstr "Trykk for å snakke fungerer bare når nettleserfanen er aktiv."
+
+#. Linux warning next to the direct input device access switch when push-to-talk only has a key assigned by the desktop. With direct input on, only the push-to-talk key set in the app works, and without one the microphone sends whenever you speak. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:187
+msgid "Push-to-talk will use the key you set in {productName}. Set one first, or your microphone will use voice activity."
+msgstr "«Trykk for å snakke» bruker tasten du angir i {productName}. Angi en først, ellers bruker mikrofonen taleaktivitet."
 
 #. Modal description shown when a push-to-talk shortcut is pressed while the user is self-deafened.
 #: src/features/app/keybindings/keybind_manager/shared.ts:22
 msgid "Push-to-talk won't unmute your microphone while you're deafened. Undeafen yourself to talk."
 msgstr "Trykk for å snakke slår ikke på mikrofonen mens du har slått av lyden. Slå på lyden igjen for å snakke."
+
+#. Voice settings note on the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:259
+msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config."
+msgstr "«Trykk for å snakke» fungerer utenfor {productName} først når du har bundet det i Hyprland-konfigurasjonen din."
+
+#. Voice settings note on the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:253
+msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config. Add the line for your Hyprland version and replace KEY with the key you want."
+msgstr "«Trykk for å snakke» fungerer utenfor {productName} først når du har bundet det i Hyprland-konfigurasjonen din. Legg til linjen for Hyprland-versjonen din og erstatt KEY med tasten du ønsker."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the theme studio. Keep it concise.
@@ -26846,7 +26985,7 @@ msgid "Raw embed JSON"
 msgstr "Rå JSON for innebygd innhold"
 
 #. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:52
 msgid "Re-enable built-in shortcut"
 msgstr "Aktiver innebygd snarvei igjen"
 
@@ -26949,7 +27088,7 @@ msgstr "Årsak"
 
 #. Label of the optional reason input in the destructive ban-member modal. Reason is recorded in the activity log.
 #. Label of the optional reason textarea in the timeout-member modal. The reason is recorded in the activity log.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:83
+#: src/features/moderation/components/modals/BanMemberModal.tsx:84
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:36
 msgid "Reason (optional)"
 msgstr "Årsak (valgfritt)"
@@ -27006,13 +27145,6 @@ msgstr "Nylige søk"
 msgid "Recently Active"
 msgstr "Nylig aktive"
 
-#. Button label in the Linux Wayland input-access nagbar after the user changes OS permissions.
-#. Button label in the keybind settings system-wide shortcuts section.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:36
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:27
-msgid "Recheck"
-msgstr "Sjekk på nytt"
-
 #. placeholder {0}: ChannelUtils.getIcon(channel, {size: 16, className: styles.channelIcon})
 #. placeholder {1}: channel.name
 #: src/features/invite/components/modals/InviteModal.tsx:360
@@ -27027,7 +27159,7 @@ msgid "Recommended"
 msgstr "Anbefalt"
 
 #. Description for the focused voice profile option in the voice tab.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:86
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:88
 msgid "Recommended. Cleans up your mic for clear speech."
 msgstr "Anbefalt. Renser mikrofonlyden for tydelig tale."
 
@@ -27041,6 +27173,11 @@ msgstr "Koble til på nytt"
 msgid "Reconnect succeeded. Pick a screen again if you want to resume your previous stream."
 msgstr "Tilkoblingen er gjenopprettet. Velg en skjerm på nytt hvis du vil fortsette den forrige strømmen din."
 
+#. Status text on Linux while the app reconnects to the desktop service that runs system-wide shortcuts, for example after it restarted.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:48
+msgid "Reconnecting to your desktop…"
+msgstr "Kobler til skrivebordsmiljøet på nytt…"
+
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
 #: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Reconnecting..."
@@ -27052,7 +27189,7 @@ msgid "Reconnecting…"
 msgstr "Kobler til på nytt …"
 
 #. Short label in the keyboard shortcuts keybind recorder. Keep it concise.
-#: src/features/input/components/KeybindRecorder.tsx:28
+#: src/features/input/components/KeybindRecorder.tsx:36
 msgid "Record shortcut"
 msgstr "Ta opp snarvei"
 
@@ -27292,7 +27429,7 @@ msgstr "Relativ"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label for push-to-talk release delay.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:78
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:80
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:94
 msgid "Release delay"
 msgstr "Forsinkelse ved tastslipp"
@@ -28193,13 +28330,13 @@ msgstr "Sendt på nytt"
 
 #: src/features/app/components/dialogs/shared/UnsavedChangesBannerContent.tsx:51
 #: src/features/app/components/floating/ColorPickerPopover.tsx:190
-#: src/features/input/components/KeybindRecorder.tsx:459
+#: src/features/input/components/KeybindRecorder.tsx:499
 #: src/features/messaging/components/modals/ImageCropModal.tsx:1022
 msgid "Reset"
 msgstr "Tilbakestill"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:45
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:47
 msgid "Reset \"{label}\" to built-in"
 msgstr "Tilbakestill «{label}» til innebygd snarvei"
 
@@ -28320,7 +28457,7 @@ msgid "Reset to actual values"
 msgstr "Tilbakestill til faktiske verdier"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:37
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:39
 msgid "Reset to built-in"
 msgstr "Tilbakestill til innebygd snarvei"
 
@@ -29985,7 +30122,7 @@ msgid "Select the account you want to sign in with on your new device."
 msgstr "Velg kontoen du vil logge på med på den nye enheten din."
 
 #. Aria label for the voice processing radio group in the voice settings tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:123
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:125
 msgid "Select voice processing mode"
 msgstr "Velg modus for talebehandling"
 
@@ -30300,7 +30437,7 @@ msgid "Sends raw mic audio with no processing."
 msgstr "Sender rå mikrofonlyd uten behandling."
 
 #. Description for the direct input profile option in the voice tab.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:90
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:92
 msgid "Sends your audio untouched. Best if you're using external audio software."
 msgstr "Sender lyden din uendret. Best hvis du bruker ekstern lydprogramvare."
 
@@ -30399,12 +30536,12 @@ msgid "Set by the {preset} preset. Picking a value here switches to Custom."
 msgstr "Angitt av {preset}-forhåndsinnstillingen. Å velge en verdi her bytter til Egendefinert."
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:29
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:31
 msgid "Set custom shortcut"
 msgstr "Angi egendefinert snarvei"
 
 #. Label in the keybinds tab. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:55
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:57
 msgid "Set custom shortcut for \"{label}\""
 msgstr "Angi egendefinert snarvei for «{label}»"
 
@@ -30551,6 +30688,11 @@ msgstr "Satte taleregionen til {region}"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:315
 msgid "Set the voice region to automatic"
 msgstr "Satte taleregionen til automatisk"
+
+#. Button that asks the Linux desktop to register system-wide shortcuts for the app. Keep it short.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:40
+msgid "Set up"
+msgstr "Sett opp"
 
 #. Title for the self-host setup wizard modal.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
@@ -30821,8 +30963,8 @@ msgstr "Emojikoder"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:121
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:376
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:123
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:375
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:38
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:110
 msgid "Shortcut"
@@ -33285,7 +33427,7 @@ msgstr "Bytt til romslig oppsett"
 msgid "Switch to dense layout"
 msgstr "Bytt til kompakt oppsett"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:666
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:673
 msgid "Switch to direct input"
 msgstr "Bytt til direkte inndata"
 
@@ -33553,9 +33695,24 @@ msgid "System-managed install"
 msgstr "Systemadministrert installasjon"
 
 #. Settings subsection title for keyboard and mouse shortcuts that work outside the app.
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:14
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:24
 msgid "System-wide shortcuts"
 msgstr "Systemomfattende snarveier"
+
+#. Linux settings text when setting up system-wide shortcuts failed.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:148
+msgid "System-wide shortcuts could not be set up."
+msgstr "Systemomfattende snarveier kunne ikke settes opp."
+
+#. Hint under a shortcut on Linux showing the key the desktop assigned. {trigger} is the key, as named by the desktop.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:30
+msgid "System-wide: {trigger}"
+msgstr "Systemomfattende: {trigger}"
+
+#. Hint under a shortcut on Linux when the desktop has no key assigned for it system-wide.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:35
+msgid "System-wide: Not assigned"
+msgstr "Systemomfattende: ikke tilordnet"
 
 #. Description text in the theme tab content.
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx:58
@@ -34638,6 +34795,16 @@ msgstr "Denne samtalen er ikke lenger tilgjengelig."
 msgid "This desktop build cannot install updates inside {productName}. Download the latest desktop installer instead."
 msgstr "Denne skrivebordsversjonen kan ikke installere oppdateringer i {productName}. Last ned den nyeste installasjonspakken for skrivebordsappen i stedet."
 
+#. Voice settings warning on Linux desktops without system-wide shortcut support. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:232
+msgid "This desktop doesn't offer system-wide shortcuts. Push-to-talk only works while {productName} is focused."
+msgstr "Dette skrivebordsmiljøet tilbyr ikke systemomfattende snarveier. «Trykk for å snakke» fungerer bare når {productName} er i fokus."
+
+#. Linux settings text when the desktop has no system-wide shortcut support. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:144
+msgid "This desktop doesn't offer system-wide shortcuts. Shortcuts still work while {productName} is focused."
+msgstr "Dette skrivebordsmiljøet tilbyr ikke systemomfattende snarveier. Snarveier fungerer fortsatt når {productName} er i fokus."
+
 #. Desktop updater modal body for development or unpackaged builds.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:65
 msgid "This development build cannot update itself. Download a desktop installer to test the update flow."
@@ -34850,6 +35017,11 @@ msgstr "Dette er din siste passnøkkel, og passnøkler er din andre faktor. Hvis
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:243
 msgid "This is your last passkey. Once it's gone you won't be able to use a passkey as your second factor."
 msgstr "Dette er din siste passnøkkel. Når den er borte, kan du ikke lenger bruke en passnøkkel som din andre faktor."
+
+#. Hint under the push-to-talk key recorder in voice settings on Linux when the desktop owns system-wide shortcuts. {settingsTabName} is the name of the settings tab with keyboard shortcuts and {sectionName} the title of its system-wide shortcuts section, both filled in by the app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:24
+msgid "This key works while {productName} is focused. Your desktop sets the system-wide key, under {settingsTabName} > {sectionName}."
+msgstr "Denne tasten fungerer når {productName} er i fokus. Skrivebordsmiljøet ditt angir den systemomfattende tasten, under {settingsTabName} > {sectionName}."
 
 #. Extra file-too-large alert sentence shown when premium upload-limit upgrades are unavailable.
 #: src/features/messaging/components/alerts/FileSizeTooLargeModal.tsx:39
@@ -35388,6 +35560,21 @@ msgstr "Tittellinje"
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:252
 msgid "Title bar platform"
 msgstr "Plattform for tittellinje"
+
+#. Instructions for GNOME. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:92
+msgid "To change the keys, go to Settings > Apps > {productName}."
+msgstr "Gå til Innstillinger > Apper > {productName} for å endre tastene."
+
+#. Instructions for KDE Plasma. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:87
+msgid "To change the keys, go to System Settings > Keyboard > Shortcuts > {productName}."
+msgstr "Gå til Systeminnstillinger > Tastatur > Snarveier > {productName} for å endre tastene."
+
+#. Instructions for changing system-wide shortcut keys on an unrecognized Linux desktop.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:108
+msgid "To change the keys, open your desktop's keyboard shortcut settings."
+msgstr "Åpne innstillingene for tastatursnarveier i skrivebordsmiljøet ditt for å endre tastene."
 
 #: src/features/guild/components/modals/guild_tabs/GuildWebhooksTab.tsx:125
 msgid "To create a webhook, open <0>{channelWebhooksSettingsPath}</0>. You can still edit and organize all existing webhooks here."
@@ -37044,6 +37231,11 @@ msgstr "Opptil 4K/60fps"
 msgid "Up to 720p at 30 FPS"
 msgstr "Opptil 720p med 30 FPS"
 
+#. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:152
+msgid "Update {productName} to use system-wide shortcuts on Wayland."
+msgstr "Oppdater {productName} for å bruke systemomfattende snarveier på Wayland."
+
 #. Message placeholder shown when the app cannot render a newer message type.
 #: src/features/channel/components/UnknownMessage.tsx:23
 msgid "Update {productName} to view this message."
@@ -37484,6 +37676,11 @@ msgstr "Bruk mørkt tema i hele appen"
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:45
 msgid "Use default"
 msgstr "Bruk standard"
+
+#. Switch label on Linux. When on, the app reads keyboard devices directly for system-wide shortcuts. Not related to the "Direct input" voice processing profile.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:157
+msgid "Use direct input device access"
+msgstr "Bruk direkte tilgang til inndataenheter"
 
 #. Permission description in the channel-scoped permissions editor for the Use External Emoji permission. "Other communities" means custom emoji uploaded in a different Fluxer community.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:260
@@ -38857,7 +39054,7 @@ msgid "Voice participants"
 msgstr "Taledeltakere"
 
 #. Voice settings radio group label for microphone processing profile.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:661
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:668
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:55
 msgid "Voice processing"
 msgstr "Talebehandling"
@@ -38903,7 +39100,7 @@ msgstr "Lyden slått på"
 msgid "Voice unmute"
 msgstr "Mikrofonen slått på"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:590
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:597
 msgid "Voice uses your system output device in this browser. Change it in your system settings."
 msgstr "Tale bruker systemets utdataenhet i denne nettleseren. Endre den i systeminnstillingene."
 
@@ -38917,7 +39114,7 @@ msgstr "Annullert"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title in the voice tab. Keep it concise.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:383
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:184
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:186
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:86
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:197
 msgid "Volume"
@@ -38983,6 +39180,11 @@ msgstr "Venter på at sakte modus skal utløpe i én eller flere valgte kanaler.
 #: src/features/user/components/modals/tabs/appearance_tab/MessagesTab.tsx:48
 msgid "Waiting for you to..."
 msgstr "Venter på at du skal ..."
+
+#. Status text while the Linux desktop shows its own dialog for confirming system-wide shortcuts.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:44
+msgid "Waiting for your desktop…"
+msgstr "Venter på skrivebordsmiljøet…"
 
 #: src/features/input/utils/KeybindUtils.ts:107
 msgctxt "keyboard-key-name"
@@ -39570,7 +39772,7 @@ msgstr "Hvilke samtaler"
 msgid "Which rule was broken?"
 msgstr "Hvilken regel ble brutt?"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:370
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:369
 msgid "While push-to-talk is on, your shortcut controls your microphone, so the mute button is disabled."
 msgstr "Når «Trykk for å snakke» er på, styrer snarveien mikrofonen din, så dempeknappen er deaktivert."
 
@@ -39737,6 +39939,11 @@ msgstr "Uten denne tillatelsen må «Trykk for å snakke» brukes."
 #: src/features/app/components/setup/SetupWizardSteps.tsx:130
 msgid "Wordmark"
 msgstr "Ordmerke"
+
+#. Hint under a shortcut on Linux when the desktop owns system-wide shortcuts. The key shown here only works inside the app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:19
+msgid "Works while {productName} is focused"
+msgstr "Fungerer når {productName} er i fokus"
 
 #. Short label in the channel and chat textual attachment preview bottom sheet. Keep it concise.
 #. Short label in the channel and chat textual preview context menu. Keep it concise.
@@ -40275,12 +40482,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "Du trykket nettopp på Tab. Tastaturmodus er nå på, slik at du kan navigere i {productName} uten mus."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:246
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "Du beholder fordelene dine frem til neste fornyelsesdato. Reaktiver før den tid for å beholde abonnementshistorikken din."
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:267
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "Du mister alle {PREMIUM_PRODUCT_NAME}-fordeler umiddelbart, og abonnementshistorikken din nullstilles. Dette kan ikke angres."
 
@@ -40801,6 +41008,26 @@ msgstr "Fellesskapet ditt må ha minst {minMemberCount, plural, one {# medlem} o
 msgid "Your credit card has been checked. If the card is valid, mature content will unlock shortly. You can close this tab and return to the app."
 msgstr "Kredittkortet ditt er sjekket. Hvis kortet er gyldig, vil voksent innhold låses opp om kort tid. Du kan lukke denne fanen og gå tilbake til appen."
 
+#. Linux settings text when the desktop dialog for system-wide shortcuts was dismissed or failed. Neutral wording, the user may not have declined anything.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:134
+msgid "Your desktop didn't set up system-wide shortcuts."
+msgstr "Skrivebordsmiljøet ditt satte ikke opp systemomfattende snarveier."
+
+#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME). A key assigned here stops reaching every other app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:64
+msgid "Your desktop keeps these keys for {productName}, so other apps can't use them."
+msgstr "Skrivebordsmiljøet ditt reserverer disse tastene for {productName}, slik at andre apper ikke kan bruke dem."
+
+#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME), shown when the "Use direct input device access" switch is offered below it. A key assigned here stops reaching every other app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:69
+msgid "Your desktop keeps these keys for {productName}, so other apps can't use them. To use the same key in other apps, turn on direct input device access below."
+msgstr "Skrivebordsmiljøet ditt reserverer disse tastene for {productName}, slik at andre apper ikke kan bruke dem. Slå på direkte tilgang til inndataenheter nedenfor for å bruke samme tast i andre apper."
+
+#. Subtitle above the list of system-wide shortcuts assigned by the Linux desktop. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:53
+msgid "Your desktop runs these shortcuts even while {productName} is not focused."
+msgstr "Skrivebordsmiljøet ditt kjører disse snarveiene også når {productName} ikke er i fokus."
+
 #. Body of the modal that asks the user to save an updated passkey. name is the name the user gave the passkey. Keep plain.
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:28
 msgid "Your device will ask you to save an updated passkey for {name}. It replaces the old one."
@@ -41139,357 +41366,3 @@ msgstr "Zoom inn"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "Zoom ut"
-
-#. Linux settings text before system-wide shortcuts are set up. The desktop environment owns the keys. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:28
-msgid "{productName} can ask your desktop to run its shortcuts while {productName} is not focused. Your desktop asks you to confirm and lets you pick the keys."
-msgstr "{productName} kan be skrivebordsmiljøet ditt om å kjøre snarveiene når {productName} ikke er i fokus. Skrivebordsmiljøet ber deg bekrefte og lar deg velge tastene."
-
-#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, on an X11 session. The app now listens for shortcuts through the X11 display server itself. Keep "X11" as written. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:177
-msgid "{productName} can no longer read your keyboard, so it listens for shortcuts through X11 instead."
-msgstr "{productName} kan ikke lenger lese tastaturet ditt, så det lytter etter snarveier via X11 i stedet."
-
-#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, for example after a restart removed the access. The app already falls back to the shortcuts the desktop runs. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:172
-msgid "{productName} can no longer read your keyboard, so your desktop's shortcuts are used instead."
-msgstr "{productName} kan ikke lenger lese tastaturet ditt, så snarveiene i skrivebordsmiljøet brukes i stedet."
-
-#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read and nothing else runs system-wide shortcuts. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:182
-msgid "{productName} can no longer read your keyboard. Shortcuts only work while {productName} is focused."
-msgstr "{productName} kan ikke lenger lese tastaturet ditt. Snarveier fungerer bare mens {productName} er i fokus."
-
-#. Linux settings text before system-wide shortcuts are set up on the Hyprland desktop. Hyprland shows no dialog. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:34
-msgid "{productName} can register its shortcuts with Hyprland so they run while {productName} is not focused. You then bind the keys in your Hyprland config."
-msgstr "{productName} kan registrere snarveiene sine hos Hyprland slik at de kjører når {productName} ikke er i fokus. Deretter binder du tastene i Hyprland-konfigurasjonen din."
-
-#. Subtitle for system-wide shortcuts on the Hyprland desktop after setup. Hyprland shows no list of assigned keys. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:58
-msgid "{productName} registered its shortcuts with Hyprland. Bind them in your Hyprland config to use them while {productName} is not focused."
-msgstr "{productName} har registrert snarveiene sine hos Hyprland. Bind dem i Hyprland-konfigurasjonen din for å bruke dem når {productName} ikke er i fokus."
-
-#. Label for the push relay consent switch during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:278
-msgid "Accept the push relay supplemental privacy notice"
-msgstr "Godta det supplerende personverndeklarasjonen for push-videresending"
-
-#. Summary value when the operator accepted the push relay notice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:391
-msgid "Accepted"
-msgstr "Godtatt"
-
-#. Button that opens the Linux desktop dialog for changing the keys of system-wide shortcuts.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:83
-msgid "Change in system settings"
-msgstr "Endre i systeminnstillinger"
-
-#. Button on Linux that checks again whether the desktop offers system-wide shortcuts, for example after the desktop service started. Keep it short.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:139
-msgid "Check again"
-msgstr "Sjekk igjen"
-
-#. Button that copies Hyprland config lines to the clipboard.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:120
-msgid "Copy lines"
-msgstr "Kopier linjer"
-
-#. Screen reader name of the button that copies Hyprland config lines in the older hyprlang format. Starts with the visible button text "Copy lines". Keep "hyprland.conf" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:129
-msgid "Copy lines for hyprland.conf"
-msgstr "Kopier linjer for hyprland.conf"
-
-#. Screen reader name of the button that copies Hyprland config lines in the Lua format. Starts with the visible button text "Copy lines". Keep "hyprland.lua" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:124
-msgid "Copy lines for hyprland.lua"
-msgstr "Kopier linjer for hyprland.lua"
-
-#. Note under the list of system-wide shortcuts on Linux. The desktop cannot assign one key to two actions.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:75
-msgid "Each key can run only one system-wide shortcut."
-msgstr "Hver tast kan bare kjøre én systemomfattende snarvei."
-
-#. Placeholder for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:96
-msgid "Fluxer"
-msgstr "Fluxer"
-
-#. Warning on GNOME when the push-to-mute shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone muted.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:204
-msgid "For push-to-mute, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay muted."
-msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for «Trykk for å dempe». Med en kombinasjon må du slippe hovedtasten først, ellers kan mikrofonen forbli dempet."
-
-#. Warning on GNOME when the push-to-talk shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone on.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:198
-msgid "For push-to-talk, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay on."
-msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for «Trykk for å snakke». Med en kombinasjon må du slippe hovedtasten først, ellers kan mikrofonen forbli på."
-
-#. Warning on GNOME when a hold shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the shortcut active.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:216
-msgid "For this shortcut, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the shortcut can stay active."
-msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for denne snarveien. Med en kombinasjon må du slippe hovedtasten først, ellers kan snarveien forbli aktiv."
-
-#. Warning on GNOME when the voice activity priority shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave priority speaking on. "Voice activity priority" is the shortcut name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:210
-msgid "For voice activity priority, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or priority can stay on."
-msgstr "Bruk én enkelt tast uten Ctrl, Alt eller Shift for «Taleaktivitet (prioritet)». Med en kombinasjon må du slippe hovedtasten først, ellers kan prioriteten forbli på."
-
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "Hjelp til med å oversette {PRODUCT_NAME} til ditt språk på <0>{I18N_WEBLATE_DOMAIN}</0>."
-
-#. Hint under a system-wide hold shortcut such as push-to-talk on Linux. The desktop ignores the key while other modifier keys are held.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:39
-msgid "Holding Shift, Ctrl or Alt blocks this shortcut. Add alternates in your system settings."
-msgstr "Når du holder inne Shift, Ctrl eller Alt, blokkeres denne snarveien. Legg til alternativer i systeminnstillingene dine."
-
-#. Instructions for the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:97
-msgid "Hyprland has no shortcut dialog. Add the lines for your Hyprland version to your Hyprland config and replace KEY with the key you want."
-msgstr "Hyprland har ingen snarveidialog. Legg til linjene for din Hyprland-versjon i din Hyprland-konfigurasjon og erstatt KEY med tasten du ønsker."
-
-#. Instructions for the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:103
-msgid "Hyprland has no shortcut dialog. Bind the keys in your Hyprland config."
-msgstr "Hyprland har ingen snarveidialog. Bind tastene i Hyprland-konfigurasjonen din."
-
-#. Label above Hyprland config lines in the older hyprlang format. Keep "hyprland.conf" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:116
-msgid "hyprland.conf (before Hyprland 0.55)"
-msgstr "hyprland.conf (før Hyprland 0.55)"
-
-#. Label above Hyprland config lines in the Lua format. Keep "hyprland.lua" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:112
-msgid "hyprland.lua (Hyprland 0.55 and later)"
-msgstr "hyprland.lua (Hyprland 0.55 og senere)"
-
-#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:54
-msgid "Keep Neko still"
-msgstr "Hold Neko stille"
-
-#. Linux warning when direct input device access is on but reading the keyboard failed. Not related to the "Direct input" voice processing profile. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:193
-msgid "Keyboard access couldn't start. Shortcuts only work while {productName} is focused."
-msgstr "Tastaturtilgang kunne ikke startes. Snarveier fungerer bare mens {productName} er i fokus."
-
-#. Description for the push relay consent switch during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:282
-msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
-msgstr "Hvis du lar dette være av, brukes ikke reléet, og de offisielle mobilappene mottar ingen varsler. Du kan godta det senere i administrasjonspanelet."
-
-#. Description for the Linux direct input device access switch while it is on, on a desktop that can also run system-wide shortcuts itself (KDE, GNOME, Hyprland). {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:166
-msgid "Lets {productName} read your keyboard directly. Turn this off to set up shortcuts through your desktop instead."
-msgstr "Lar {productName} lese tastaturet ditt direkte. Slå av dette for å sette opp snarveier via skrivebordsmiljøet ditt i stedet."
-
-#. Description for the Linux direct input device access switch. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:162
-msgid "Lets {productName} read your keyboard directly. Your system already allows this."
-msgstr "Lar {productName} lese tastaturet ditt direkte. Systemet ditt tillater dette allerede."
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:66
-msgid "Neko cat that chases your cursor"
-msgstr "Neko-katt som jager musepekeren din"
-
-#. Summary value when the operator left the push relay notice unaccepted.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:395
-msgid "Not accepted"
-msgstr "Ikke akseptert"
-
-#. Shown instead of a key when the desktop has no key assigned to a system-wide shortcut.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:79
-msgid "Not assigned"
-msgstr "Ikke tilordnet"
-
-#. Voice screen share menu preference that pauses the local stream preview while the app is unfocused.
-#: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:28
-msgid "Pause preview when Fluxer isn’t focused"
-msgstr "Sett forhåndsvisningen på pause når Fluxer ikke er i fokus"
-
-#. Summary row label for the push relay consent on the setup wizard finish step.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:383
-msgid "Push relay notice"
-msgstr "Varsel om push-videresending"
-
-#. Voice settings warning on GNOME when the desktop has no key assigned to push-to-talk. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:243
-msgid "Push-to-talk has no system-wide key yet. To set one, go to Settings > Apps > {productName}."
-msgstr "«Trykk for å snakke» har ingen systemomfattende tast ennå. Gå til Innstillinger > Apper > {productName} for å angi en."
-
-#. Voice settings warning on KDE Plasma when the desktop has no key assigned to push-to-talk. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:237
-msgid "Push-to-talk has no system-wide key yet. To set one, go to System Settings > Keyboard > Shortcuts > {productName}."
-msgstr "«Trykk for å snakke» har ingen systemomfattende tast ennå. Gå til Systeminnstillinger > Tastatur > Snarveier > {productName} for å angi en."
-
-#. Voice settings warning on an unrecognized Linux desktop when the desktop has no key assigned to push-to-talk.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:248
-msgid "Push-to-talk has no system-wide key yet. To set one, open your desktop's keyboard shortcut settings."
-msgstr "«Trykk for å snakke» har ingen systemomfattende tast ennå. Åpne innstillingene for tastatursnarveier i skrivebordsmiljøet ditt for å angi en."
-
-#. Tooltip and screen reader label on the mic button when push-to-talk is on but the key has no name to show, for example when the Linux desktop assigns it.
-#: src/features/input/utils/PushToTalkHint.ts:11
-msgid "Push-to-talk is on. Hold your push-to-talk key to speak."
-msgstr "«Trykk for å snakke» er på. Hold inne tasten din for å snakke."
-
-#. Voice settings warning on Linux when the desktop dialog for system-wide shortcuts was dismissed or failed. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:226
-msgid "Push-to-talk only works while {productName} is focused because your desktop didn't set up system-wide shortcuts."
-msgstr "«Trykk for å snakke» fungerer bare når {productName} er i fokus fordi skrivebordsmiljøet ditt ikke satte opp systemomfattende snarveier."
-
-#. Voice settings warning on Linux before system-wide shortcuts are set up. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:222
-msgid "Push-to-talk only works while {productName} is focused until you set up system-wide shortcuts."
-msgstr "«Trykk for å snakke» fungerer bare når {productName} er i fokus, til du setter opp systemomfattende snarveier."
-
-#. Linux warning next to the direct input device access switch when push-to-talk only has a key assigned by the desktop. With direct input on, only the push-to-talk key set in the app works, and without one the microphone sends whenever you speak. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:187
-msgid "Push-to-talk will use the key you set in {productName}. Set one first, or your microphone will use voice activity."
-msgstr "«Trykk for å snakke» bruker tasten du angir i {productName}. Angi en først, ellers bruker mikrofonen taleaktivitet."
-
-#. Voice settings note on the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:259
-msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config."
-msgstr "«Trykk for å snakke» fungerer utenfor {productName} først når du har bundet det i Hyprland-konfigurasjonen din."
-
-#. Voice settings note on the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:253
-msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config. Add the line for your Hyprland version and replace KEY with the key you want."
-msgstr "«Trykk for å snakke» fungerer utenfor {productName} først når du har bundet det i Hyprland-konfigurasjonen din. Legg til linjen for Hyprland-versjonen din og erstatt KEY med tasten du ønsker."
-
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "Les dokumentasjonen ({domain})"
-
-#. Link to the push relay supplemental privacy notice shown during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:287
-msgid "Read the supplemental privacy notice"
-msgstr "Les det supplerende personverndokumentet"
-
-#. Status text on Linux while the app reconnects to the desktop service that runs system-wide shortcuts, for example after it restarted.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:48
-msgid "Reconnecting to your desktop…"
-msgstr "Kobler til skrivebordsmiljøet på nytt…"
-
-#. Body shown when a failed screen share could not be fully stopped.
-#: src/features/voice/components/alerts/ScreenShareRollbackIncompleteModal.tsx:12
-msgid "Screen sharing failed, but Fluxer could not confirm that every capture path stopped. Stop sharing or disconnect from the call before continuing."
-msgstr "Skjermdeling mislyktes, men Fluxer kunne ikke bekrefte at alle opptaksløp ble stoppet. Bruk Stopp deling eller koble fra samtalen før du fortsetter."
-
-#. Button that asks the Linux desktop to register system-wide shortcuts for the app. Keep it short.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:40
-msgid "Set up"
-msgstr "Sett opp"
-
-#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:50
-msgid "Show Neko"
-msgstr "Vis Neko"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:78
-msgid "Static Neko"
-msgstr "Statisk Neko"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:74
-msgid "Still Neko"
-msgstr "Stillestående Neko"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:70
-msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
-msgstr "Stopp Neko fra å jage musepekeren din. Du kan fortsatt dra i den og samhandle med den."
-
-#. Linux settings text when setting up system-wide shortcuts failed.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:148
-msgid "System-wide shortcuts could not be set up."
-msgstr "Systemomfattende snarveier kunne ikke settes opp."
-
-#. Hint under a shortcut on Linux showing the key the desktop assigned. {trigger} is the key, as named by the desktop.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:30
-msgid "System-wide: {trigger}"
-msgstr "Systemomfattende: {trigger}"
-
-#. Hint under a shortcut on Linux when the desktop has no key assigned for it system-wide.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:35
-msgid "System-wide: Not assigned"
-msgstr "Systemomfattende: ikke tilordnet"
-
-#. Setup wizard push relay consent step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:273
-msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
-msgstr "De offisielle Fluxer-mobilappene mottar varsler via Fluxers push-relé, som sender dem videre til Apple og Google. Selv-hostede UnifiedPush- og ntfy-endepunkter når aldri reléet og krever ingen avtale."
-
-#. Voice settings warning on Linux desktops without system-wide shortcut support. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:232
-msgid "This desktop doesn't offer system-wide shortcuts. Push-to-talk only works while {productName} is focused."
-msgstr "Dette skrivebordsmiljøet tilbyr ikke systemomfattende snarveier. «Trykk for å snakke» fungerer bare når {productName} er i fokus."
-
-#. Linux settings text when the desktop has no system-wide shortcut support. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:144
-msgid "This desktop doesn't offer system-wide shortcuts. Shortcuts still work while {productName} is focused."
-msgstr "Dette skrivebordsmiljøet tilbyr ikke systemomfattende snarveier. Snarveier fungerer fortsatt når {productName} er i fokus."
-
-#. Hint under the push-to-talk key recorder in voice settings on Linux when the desktop owns system-wide shortcuts. {settingsTabName} is the name of the settings tab with keyboard shortcuts and {sectionName} the title of its system-wide shortcuts section, both filled in by the app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:24
-msgid "This key works while {productName} is focused. Your desktop sets the system-wide key, under {settingsTabName} > {sectionName}."
-msgstr "Denne tasten fungerer når {productName} er i fokus. Skrivebordsmiljøet ditt angir den systemomfattende tasten, under {settingsTabName} > {sectionName}."
-
-#. Instructions for GNOME. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:92
-msgid "To change the keys, go to Settings > Apps > {productName}."
-msgstr "Gå til Innstillinger > Apper > {productName} for å endre tastene."
-
-#. Instructions for KDE Plasma. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:87
-msgid "To change the keys, go to System Settings > Keyboard > Shortcuts > {productName}."
-msgstr "Gå til Systeminnstillinger > Tastatur > Snarveier > {productName} for å endre tastene."
-
-#. Instructions for changing system-wide shortcut keys on an unrecognized Linux desktop.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:108
-msgid "To change the keys, open your desktop's keyboard shortcut settings."
-msgstr "Åpne innstillingene for tastatursnarveier i skrivebordsmiljøet ditt for å endre tastene."
-
-#. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:152
-msgid "Update {productName} to use system-wide shortcuts on Wayland."
-msgstr "Oppdater {productName} for å bruke systemomfattende snarveier på Wayland."
-
-#. Switch label on Linux. When on, the app reads keyboard devices directly for system-wide shortcuts. Not related to the "Direct input" voice processing profile.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:157
-msgid "Use direct input device access"
-msgstr "Bruk direkte tilgang til inndataenheter"
-
-#. Status text while the Linux desktop shows its own dialog for confirming system-wide shortcuts.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:44
-msgid "Waiting for your desktop…"
-msgstr "Venter på skrivebordsmiljøet…"
-
-#. Hint under a shortcut on Linux when the desktop owns system-wide shortcuts. The key shown here only works inside the app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:19
-msgid "Works while {productName} is focused"
-msgstr "Fungerer når {productName} er i fokus"
-
-#. Linux settings text when the desktop dialog for system-wide shortcuts was dismissed or failed. Neutral wording, the user may not have declined anything.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:134
-msgid "Your desktop didn't set up system-wide shortcuts."
-msgstr "Skrivebordsmiljøet ditt satte ikke opp systemomfattende snarveier."
-
-#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME). A key assigned here stops reaching every other app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:64
-msgid "Your desktop keeps these keys for {productName}, so other apps can't use them."
-msgstr "Skrivebordsmiljøet ditt reserverer disse tastene for {productName}, slik at andre apper ikke kan bruke dem."
-
-#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME), shown when the "Use direct input device access" switch is offered below it. A key assigned here stops reaching every other app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:69
-msgid "Your desktop keeps these keys for {productName}, so other apps can't use them. To use the same key in other apps, turn on direct input device access below."
-msgstr "Skrivebordsmiljøet ditt reserverer disse tastene for {productName}, slik at andre apper ikke kan bruke dem. Slå på direkte tilgang til inndataenheter nedenfor for å bruke samme tast i andre apper."
-
-#. Subtitle above the list of system-wide shortcuts assigned by the Linux desktop. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:53
-msgid "Your desktop runs these shortcuts even while {productName} is not focused."
-msgstr "Skrivebordsmiljøet ditt kjører disse snarveiene også når {productName} ikke er i fokus."

@@ -993,7 +993,7 @@ msgstr "{count, plural, one {# チャンネルがフォローしています} ot
 msgid "{count, plural, one {# community found} other {# communities found}}"
 msgstr "{count, plural, one {#件のコミュニティが見つかりました} other {#件のコミュニティが見つかりました}}"
 
-#: src/features/app/components/layout/GuildsLayout.tsx:1955
+#: src/features/app/components/layout/GuildsLayout.tsx:1954
 msgid "{count, plural, one {# community is temporarily unavailable due to a flux capacitor malfunction.} other {# communities are temporarily unavailable due to a flux capacitor malfunction.}}"
 msgstr "{count, plural, one {#件のコミュニティがフラックスキャパシタの不具合により一時的に利用できません。} other {#件のコミュニティがフラックスキャパシタの不具合により一時的に利用できません。}}"
 
@@ -1720,6 +1720,31 @@ msgstr "{productName}は、パソコンを使用中はモバイルデバイス�
 msgid "{productName} Bug Hunter"
 msgstr "{productName}バグハンター"
 
+#. Linux settings text before system-wide shortcuts are set up. The desktop environment owns the keys. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:28
+msgid "{productName} can ask your desktop to run its shortcuts while {productName} is not focused. Your desktop asks you to confirm and lets you pick the keys."
+msgstr "{productName}は、{productName}がフォーカスされていない間もショートカットを実行するようデスクトップに依頼できます。デスクトップで確認が求められ、キーを選択できます。"
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, on an X11 session. The app now listens for shortcuts through the X11 display server itself. Keep "X11" as written. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:177
+msgid "{productName} can no longer read your keyboard, so it listens for shortcuts through X11 instead."
+msgstr "{productName}がキーボードを読み取れなくなったため、代わりにX11経由でショートカットを受け付けます。"
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, for example after a restart removed the access. The app already falls back to the shortcuts the desktop runs. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:172
+msgid "{productName} can no longer read your keyboard, so your desktop's shortcuts are used instead."
+msgstr "{productName}がキーボードを読み取れなくなったため、代わりにデスクトップのショートカットが使用されます。"
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read and nothing else runs system-wide shortcuts. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:182
+msgid "{productName} can no longer read your keyboard. Shortcuts only work while {productName} is focused."
+msgstr "{productName}がキーボードを読み取れなくなりました。ショートカットは{productName}がフォーカスされている間のみ機能します。"
+
+#. Linux settings text before system-wide shortcuts are set up on the Hyprland desktop. Hyprland shows no dialog. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:34
+msgid "{productName} can register its shortcuts with Hyprland so they run while {productName} is not focused. You then bind the keys in your Hyprland config."
+msgstr "{productName}がフォーカスされていない間もショートカットが動作するよう、{productName}はショートカットをHyprlandに登録できます。登録後、Hyprlandの設定でキーをバインドしてください。"
+
 #. Inline notice body on Windows. Explains that desktop audio is disabled because productName cannot exclude its own WebRTC/call playback on this OS build.
 #. Inline notice body on macOS. Explains that desktop audio is disabled because productName cannot exclude its own WebRTC/call playback on this OS build.
 #: src/features/voice/components/modals/screen_share_picker_modal/PerWindowAudioNotice.tsx:23
@@ -1825,7 +1850,7 @@ msgid "{productName} needs camera access to list your devices."
 msgstr "{productName}がデバイスを一覧表示するには、カメラへのアクセスが必要です。"
 
 #. Voice settings notice shown when microphone permission has not been granted.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:141
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:143
 msgid "{productName} needs microphone access to list your devices."
 msgstr "{productName}がデバイスを一覧表示するには、マイクへのアクセスが必要です。"
 
@@ -1848,6 +1873,11 @@ msgstr "{productName}は{host}に移動しました。そちらからインス�
 #: src/features/user/components/popouts/UserProfileBadges.tsx:34
 msgid "{productName} Partner"
 msgstr "{productName}パートナー"
+
+#. Subtitle for system-wide shortcuts on the Hyprland desktop after setup. Hyprland shows no list of assigned keys. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:58
+msgid "{productName} registered its shortcuts with Hyprland. Bind them in your Hyprland config to use them while {productName} is not focused."
+msgstr "{productName}はショートカットをHyprlandに登録しました。{productName}がフォーカスされていない間も使うには、Hyprlandの設定でバインドしてください。"
 
 #. Nagbar shown after the app restarts while the user was connected to a community voice channel. {productName} is Fluxer, {channelName} is the voice channel name, and {communityName} is the community name.
 #: src/features/app/components/layout/app_layout/nagbars/VoiceSessionRestoreNagbar.tsx:24
@@ -2421,7 +2451,7 @@ msgid "2 members (typing)"
 msgstr "2人のメンバー（入力中）"
 
 #. Ban duration option in the destructive ban-member modal for a two-week temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:51
+#: src/features/moderation/components/modals/BanMemberModal.tsx:52
 msgid "2 weeks"
 msgstr "2週間"
 
@@ -2468,7 +2498,7 @@ msgstr "2段階認証の必須化"
 #. Ban duration option in the destructive ban-member modal for a three-day temporary ban.
 #: src/features/channel/components/modals/channel_tabs/ChannelTagsTab.tsx:38
 #: src/features/channel/components/modals/EditPostModal.tsx:48
-#: src/features/moderation/components/modals/BanMemberModal.tsx:43
+#: src/features/moderation/components/modals/BanMemberModal.tsx:44
 msgid "3 days"
 msgstr "3日間"
 
@@ -2510,7 +2540,7 @@ msgid "40px, 3 members"
 msgstr "40px、メンバー3人"
 
 #. Ban duration option in the destructive ban-member modal for a five-day temporary ban.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:47
+#: src/features/moderation/components/modals/BanMemberModal.tsx:48
 msgid "5 days"
 msgstr "5日間"
 
@@ -2932,7 +2962,7 @@ msgstr "開いているすべてのDMのみ"
 msgid "Across every community you're in"
 msgstr "参加しているすべてのコミュニティ"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:110
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:112
 msgid "Action"
 msgstr "アクション"
 
@@ -3049,7 +3079,7 @@ msgid "Activity sharing"
 msgstr "アクティビティの共有"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:488
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:495
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:102
 msgid "Activity threshold"
 msgstr "アクティビティしきい値"
@@ -3178,7 +3208,7 @@ msgid "Add an extra layer of security to your account"
 msgstr "アカウントのセキュリティをさらに強化します"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:41
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:43
 msgid "Add another custom shortcut"
 msgstr "カスタムショートカットをもう1つ追加"
 
@@ -3530,7 +3560,7 @@ msgid "Address"
 msgstr "アドレス"
 
 #. Description for the custom profile option in the voice tab.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:99
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:101
 msgid "Adjust each setting yourself: noise suppression, echo cancellation, and gain."
 msgstr "ノイズ抑制、エコーキャンセル、ゲインを自分で調整します。"
 
@@ -3801,11 +3831,11 @@ msgstr "{everyoneMention}と{hereMention}を許可する"
 msgid "Allow {PRODUCT_NAME} to access your camera in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME}."
 msgstr "{MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_CAMERA_PERMISSION_NAME} で、{PRODUCT_NAME}がカメラにアクセスすることを許可してください。"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:546
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:553
 msgid "Allow {PRODUCT_NAME} to access your microphone in {MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME}."
 msgstr "{PRODUCT_NAME}がマイクにアクセスできるようにするには、{MACOS_SYSTEM_SETTINGS_NAME} → {MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME} → {MACOS_MICROPHONE_PERMISSION_NAME}で設定してください。"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:551
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:558
 msgid "Allow {PRODUCT_NAME} to access your microphone. Check your browser's address bar or settings."
 msgstr "{PRODUCT_NAME}がマイクにアクセスすることを許可してください。ブラウザのアドレスバーまたは設定を確認してください。"
 
@@ -3908,7 +3938,7 @@ msgstr "「{readMessageHistoryPermissionLabel}」権限がないメンバーが�
 msgid "Allow mentions for this role"
 msgstr "このロールへのメンションを許可"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:571
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:578
 msgid "Allow microphone"
 msgstr "マイクを許可"
 
@@ -4457,7 +4487,7 @@ msgid "Any uploaded attachment"
 msgstr "すべての添付ファイル"
 
 #. Helper text under the custom ban duration input. Both placeholders are integer numbers of seconds bounding the allowed range.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:73
+#: src/features/moderation/components/modals/BanMemberModal.tsx:74
 msgid "Any value from {minTempBanDurationSeconds} to {maxTempBanDurationSeconds} seconds."
 msgstr "{minTempBanDurationSeconds}秒から{maxTempBanDurationSeconds}秒までの値を入力してください。"
 
@@ -5236,8 +5266,8 @@ msgid "Auto-detect language"
 msgstr "言語を自動検出"
 
 #. Short label in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:119
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:475
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:121
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:482
 msgid "Auto-set activity threshold"
 msgstr "アクティビティしきい値を自動設定"
 
@@ -5646,7 +5676,7 @@ msgid "Ban"
 msgstr "BAN"
 
 #. Title of the destructive ban-member modal. {tag} is the target user tag (username#tag). Destructive moderation action; keep tone direct.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:55
+#: src/features/moderation/components/modals/BanMemberModal.tsx:56
 msgid "Ban {tag}"
 msgstr "{tag}をBANする"
 
@@ -5661,14 +5691,14 @@ msgid "Ban details"
 msgstr "BANの詳細"
 
 #. Label above the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:60
+#: src/features/moderation/components/modals/BanMemberModal.tsx:61
 msgid "Ban duration"
 msgstr "BANの期間"
 
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
 #. Moderation action that bans the selected member from the community.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:270
+#: src/features/moderation/components/modals/BanMemberModal.tsx:271
 #: src/features/ui/action_menu/GuildMemberContextMenu.tsx:66
 #: src/features/ui/action_menu/items/GuildMemberMenuItems.tsx:51
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:127
@@ -5705,7 +5735,7 @@ msgstr "帯域幅"
 msgid "Banned"
 msgstr "BAN済み"
 
-#: src/features/moderation/components/modals/BanMemberModal.tsx:134
+#: src/features/moderation/components/modals/BanMemberModal.tsx:135
 msgid "Banned {targetUserTag} from the community"
 msgstr "{targetUserTag}さんをコミュニティからBANしました"
 
@@ -6705,7 +6735,7 @@ msgstr "ここにファイルをアップロードできません"
 #: src/features/messaging/components/modals/ForwardModal.tsx:603
 #: src/features/messaging/components/modals/ImageCropModal.tsx:1025
 #: src/features/messaging/components/modals/MessageHistoryThresholdModal.tsx:107
-#: src/features/moderation/components/modals/BanMemberModal.tsx:262
+#: src/features/moderation/components/modals/BanMemberModal.tsx:263
 #: src/features/moderation/components/modals/RemoveTimeoutModal.tsx:70
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:126
 #: src/features/theme/components/modals/ThemeAcceptModal.tsx:173
@@ -6768,13 +6798,13 @@ msgstr "予約済みの切り替えをキャンセル"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx:915
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:141
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:249
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:250
 #: src/features/user/components/settings_utils/search_index/PlutoniumIndex.ts:31
 msgid "Cancel subscription"
 msgstr "サブスクリプションをキャンセル"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:135
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:243
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:244
 msgid "Cancel subscription?"
 msgstr "サブスクリプションをキャンセルしますか？"
 
@@ -7022,6 +7052,11 @@ msgstr "グループニックネームを変更"
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildIconUploadField.tsx:35
 msgid "Change icon"
 msgstr "アイコンを変更"
+
+#. Button that opens the Linux desktop dialog for changing the keys of system-wide shortcuts.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:83
+msgid "Change in system settings"
+msgstr "システム設定で変更"
 
 #. Title of the modal where the user picks a community invite background source. Keep it concise. Keep the tone plain and specific.
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildInviteSplashUploadField.tsx:37
@@ -7616,6 +7651,11 @@ msgstr "チャット入力"
 msgid "Chat shortcuts"
 msgstr "チャットショートカット"
 
+#. Button on Linux that checks again whether the desktop offers system-wide shortcuts, for example after the desktop service started. Keep it short.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:139
+msgid "Check again"
+msgstr "再確認"
+
 #. Tray menu item. Triggers the auto-updater to look for a new desktop build.
 #: src/features/platform/utils/DesktopLocaleBridge.ts:225
 msgid "Check for updates"
@@ -7799,7 +7839,7 @@ msgstr "システムピッカーでウィンドウを選択"
 msgid "Choose an account"
 msgstr "アカウントを選択"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:152
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:154
 msgid "Choose an action."
 msgstr "アクションを選択してください。"
 
@@ -8144,7 +8184,7 @@ msgstr "マイクの音声をクリアにします。"
 #: src/features/app/components/setup/SetupWizardSteps.tsx:114
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:24
 #: src/features/guild/components/modals/guild_tabs/GuildMembersDateRangeModal.tsx:74
-#: src/features/input/components/KeybindRecorder.tsx:442
+#: src/features/input/components/KeybindRecorder.tsx:482
 #: src/features/theme_studio/sections/QuickCssSection.tsx:64
 #: src/features/theme_studio/sections/QuickCssSection.tsx:241
 msgid "Clear"
@@ -8350,7 +8390,7 @@ msgstr "クリックしてカラーピッカーを開き、新しい色を選択
 msgid "Click to react"
 msgstr "クリックしてリアクション"
 
-#: src/features/input/components/KeybindRecorder.tsx:411
+#: src/features/input/components/KeybindRecorder.tsx:451
 msgid "Click to record"
 msgstr "クリックして録音"
 
@@ -9284,7 +9324,7 @@ msgstr "確認"
 msgid "Confirmation or double-click for community voice joins"
 msgstr "コミュニティボイスへの参加時の確認またはダブルクリック"
 
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:169
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:176
 msgid "Conflicts with {conflictLabel}"
 msgstr "{conflictLabel}と競合しています"
 
@@ -9301,7 +9341,7 @@ msgstr "カメラまたは仮想キャプチャデバイスを接続してから
 msgid "Connect a display, then try again."
 msgstr "ディスプレイを接続してから、もう一度お試しください。"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:556
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:563
 msgid "Connect a microphone and try again."
 msgstr "マイクを接続して、もう一度お試しください。"
 
@@ -9873,6 +9913,21 @@ msgstr "招待リンクをコピー"
 #: src/features/channel/components/modals/channel_tabs/ChannelInvitesTab.tsx:49
 msgid "Copy invite URL"
 msgstr "招待URLをコピー"
+
+#. Button that copies Hyprland config lines to the clipboard.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:120
+msgid "Copy lines"
+msgstr "行をコピー"
+
+#. Screen reader name of the button that copies Hyprland config lines in the older hyprlang format. Starts with the visible button text "Copy lines". Keep "hyprland.conf" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:129
+msgid "Copy lines for hyprland.conf"
+msgstr "行をコピー（hyprland.conf用）"
+
+#. Screen reader name of the button that copies Hyprland config lines in the Lua format. Starts with the visible button text "Copy lines". Keep "hyprland.lua" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:124
+msgid "Copy lines for hyprland.lua"
+msgstr "行をコピー（hyprland.lua用）"
 
 #. Generic action label that copies a URL to the clipboard.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:750
@@ -11066,7 +11121,7 @@ msgstr "カスタム"
 #. Voice input processing profile where the user configures processing manually.
 #. Voice input processing profile where the user configures processing manually.
 #. Voice input processing profile where the user configures processing manually.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:94
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:96
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:42
 #: src/features/voice/components/VoiceSettingsMenus.tsx:70
 msgctxt "voice-processing-profile"
@@ -11074,7 +11129,7 @@ msgid "Custom"
 msgstr "カスタム"
 
 #. Label of the numeric input shown after choosing "Custom..." in the ban duration dropdown. The unit is seconds.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:68
+#: src/features/moderation/components/modals/BanMemberModal.tsx:69
 msgid "Custom ban duration (seconds)"
 msgstr "カスタムBAN期間（秒）"
 
@@ -11169,12 +11224,12 @@ msgid "Custom selection"
 msgstr "カスタム選択"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:42
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:44
 msgid "Custom shortcut action"
 msgstr "カスタムショートカットアクション"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:38
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:40
 msgid "Custom shortcut options"
 msgstr "カスタムショートカットオプション"
 
@@ -11705,7 +11760,7 @@ msgstr "デフォルトの並び順"
 msgid "Default translator"
 msgstr "デフォルトの翻訳ツール"
 
-#: src/features/input/components/KeybindRecorder.tsx:419
+#: src/features/input/components/KeybindRecorder.tsx:459
 msgid "Default:"
 msgstr "デフォルト:"
 
@@ -11892,8 +11947,8 @@ msgid "Delete message"
 msgstr "メッセージを削除"
 
 #. Section heading and accessible label for the message-history-deletion radio group in the destructive ban-member modal. Destructive option group.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:78
-#: src/features/moderation/components/modals/BanMemberModal.tsx:229
+#: src/features/moderation/components/modals/BanMemberModal.tsx:79
+#: src/features/moderation/components/modals/BanMemberModal.tsx:230
 msgid "Delete message history"
 msgstr "メッセージ履歴を削除"
 
@@ -11963,7 +12018,7 @@ msgid "Delete saved media"
 msgstr "保存済みメディアを削除"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Keep the tone plain and specific.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:34
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:36
 msgid "Delete shortcut"
 msgstr "ショートカットを削除"
 
@@ -12573,7 +12628,7 @@ msgid "Disable backend premium perks"
 msgstr "バックエンドのプレミアム特典を無効にする"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:33
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:35
 msgid "Disable built-in shortcut"
 msgstr "組み込みのショートカットを無効にする"
 
@@ -12637,7 +12692,7 @@ msgid "Disable screen share picture-in-picture popouts?"
 msgstr "画面共有のピクチャーインピクチャーポップアウトを無効にしますか？"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:26
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:28
 msgid "Disable shortcut"
 msgstr "ショートカットを無効にする"
 
@@ -13148,7 +13203,7 @@ msgstr "代わりに寄付する"
 #. Primary button in the favorite GIF import modal after a completed import.
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthSuccessState.tsx:44
 #: src/features/channel/components/pickers/gif/ImportFavoriteGifsModal.tsx:54
-#: src/features/input/components/KeybindRecorder.tsx:470
+#: src/features/input/components/KeybindRecorder.tsx:510
 #: src/features/moderation/components/report_modal/IARModal.tsx:94
 #: src/features/moderation/components/report/ReportBreadcrumbs.tsx:31
 #: src/features/search/components/search/ChannelFilterSheet.tsx:165
@@ -13211,7 +13266,7 @@ msgid "Download button"
 msgstr "ダウンロードボタン"
 
 #. Button or menu action label in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:107
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:109
 msgid "Download desktop app"
 msgstr "デスクトップ版アプリをダウンロード"
 
@@ -13464,6 +13519,11 @@ msgstr "オランダ語"
 msgid "e.g., YubiKey, iPhone, work computer"
 msgstr "例: YubiKey、iPhone、会社のPC"
 
+#. Note under the list of system-wide shortcuts on Linux. The desktop cannot assign one key to two actions.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:75
+msgid "Each key can run only one system-wide shortcut."
+msgstr "各キーで実行できるシステム全体のショートカットは1つだけです。"
+
 #. Body of the alert shown when a published announcement message hit its editing limit. {duration} is a localized short duration such as "12 minutes".
 #: src/features/messaging/components/alerts/PublishedMessageEditLimitModal.tsx:12
 msgid "Each published message allows 3 quick edits, then 1 every 20 minutes. Try again in {duration}."
@@ -13610,7 +13670,7 @@ msgid "Edit invite link"
 msgstr "招待リンクを編集"
 
 #. Button or menu action label in the keyboard shortcuts keybind recorder. Keep it concise.
-#: src/features/input/components/KeybindRecorder.tsx:32
+#: src/features/input/components/KeybindRecorder.tsx:40
 msgid "Edit keyboard shortcut"
 msgstr "キーボードショートカットを編集"
 
@@ -13690,7 +13750,7 @@ msgstr "保存済みメディア編集フォーム"
 msgid "Edit search engine"
 msgstr "検索エンジンを編集"
 
-#: src/features/input/components/KeybindRecorder.tsx:378
+#: src/features/input/components/KeybindRecorder.tsx:418
 msgid "Edit shortcut"
 msgstr "ショートカットを編集"
 
@@ -14023,20 +14083,16 @@ msgstr "空の編集"
 msgid "Empty favorites"
 msgstr "お気に入りはありません"
 
-#. Button label in the Linux Wayland input-access nagbar.
-#. Button label in the keybind settings system-wide shortcuts section.
 #. Button or menu action label in the invites disable invites button. Keep it concise.
 #. Primary button label in the enable-invites confirmation modal.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:32
 #: src/features/app/components/layout/GuildLayout.tsx:55
 #: src/features/invite/components/DisableInvitesButton.tsx:27
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:360
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:23
 msgid "Enable"
 msgstr "有効にする"
 
 #. Voice settings CTA label for opening a platform permission prompt.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:127
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:129
 msgid "Enable {permissionName} permission"
 msgstr "{permissionName}の権限を有効にする"
 
@@ -14146,11 +14202,6 @@ msgstr "ハードウェアアクセラレーションを有効にして再起動
 msgid "Enable hardware acceleration?"
 msgstr "ハードウェアアクセラレーションを有効にしますか？"
 
-#. Description for a Linux Wayland input-access nagbar. {productName} is the app name.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:16
-msgid "Enable input access to use system-wide shortcuts on Wayland. After changing input access, fully quit and restart {productName} so shortcuts can use it."
-msgstr "Waylandでシステム全体のショートカットを使用するには、入力アクセスを有効にしてください。入力アクセスを変更した後、ショートカットが使用できるように{productName}を完全に終了して再起動してください。"
-
 #. Button label that re-enables invite links for a community.
 #: src/features/invite/components/DisableInvitesButton.tsx:40
 msgid "Enable invites"
@@ -14241,7 +14292,7 @@ msgid "Enable Shift to expand"
 msgstr "Shiftキーで展開"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:30
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:32
 msgid "Enable shortcut"
 msgstr "ショートカットを有効にする"
 
@@ -14350,12 +14401,12 @@ msgid "End grace now"
 msgstr "猶予期間を終了"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:163
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:271
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:272
 msgid "End grace period"
 msgstr "猶予期間を終了"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:156
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:264
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:265
 msgid "End grace period now?"
 msgstr "猶予期間を今すぐ終了しますか？"
 
@@ -14440,7 +14491,7 @@ msgid "Enter a product name between 1 and 80 characters."
 msgstr "製品名は1～80文字で入力してください。"
 
 #. Placeholder in the optional reason input in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:88
+#: src/features/moderation/components/modals/BanMemberModal.tsx:89
 msgid "Enter a reason for the ban"
 msgstr "BANの理由を入力"
 
@@ -14627,7 +14678,7 @@ msgstr "システム全体の音声"
 #. Voice menu submenu label that contains per-user entrance sound mute and volume controls.
 #: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx:181
 #: src/features/ui/action_menu/items/VoiceParticipantMenuItems.tsx:310
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:192
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:194
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:150
 msgid "Entrance sound"
 msgstr "入室サウンド"
@@ -14737,7 +14788,7 @@ msgstr "夜"
 
 #. Description for the automatic gain control toggle in the voice processing settings.
 #. Description for the automatic gain control toggle in the voice processing settings.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:176
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:178
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:63
 msgid "Evens out your mic volume so you are not too quiet."
 msgstr "マイクの音量を均一にして、小さくなりすぎないようにします。"
@@ -15098,7 +15149,7 @@ msgstr "メッセージの読み込みを失敗させる"
 msgid "Fail message sends"
 msgstr "メッセージ送信を失敗させる"
 
-#: src/features/moderation/components/modals/BanMemberModal.tsx:141
+#: src/features/moderation/components/modals/BanMemberModal.tsx:142
 msgid "Failed to ban member. Try again."
 msgstr "メンバーをBANできませんでした。もう一度お試しください。"
 
@@ -15966,6 +16017,26 @@ msgstr "英国の方だけのお楽しみ…"
 #: src/features/app/components/dialogs/components/plutonium/PricingSection.tsx:26
 msgid "For me"
 msgstr "自分用"
+
+#. Warning on GNOME when the push-to-mute shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone muted.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:204
+msgid "For push-to-mute, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay muted."
+msgstr "プッシュトゥミュートには、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないとマイクがミュートのままになることがあります。"
+
+#. Warning on GNOME when the push-to-talk shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone on.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:198
+msgid "For push-to-talk, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay on."
+msgstr "プッシュトゥトークには、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないとマイクがオンのままになることがあります。"
+
+#. Warning on GNOME when a hold shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the shortcut active.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:216
+msgid "For this shortcut, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the shortcut can stay active."
+msgstr "このショートカットには、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないとショートカットが有効なままになることがあります。"
+
+#. Warning on GNOME when the voice activity priority shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave priority speaking on. "Voice activity priority" is the shortcut name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:210
+msgid "For voice activity priority, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or priority can stay on."
+msgstr "音声検出の優先には、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないと優先がオンのままになることがあります。"
 
 #: src/features/auth/components/modals/SudoVerificationModal.tsx:268
 msgid "For your security, please confirm it's you to continue."
@@ -16895,8 +16966,8 @@ msgid "Global profile"
 msgstr "グローバルプロフィール"
 
 #. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:81
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:63
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:83
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:65
 msgid "Global shortcut"
 msgstr "グローバルショートカット"
 
@@ -17736,6 +17807,11 @@ msgstr "Shiftキーを押しながらXキーを押すとアプリを選択でき
 msgid "Hold to record. Drag up to lock, or release to send."
 msgstr "長押しで録音。上にドラッグしてロック、指を離して送信。"
 
+#. Hint under a system-wide hold shortcut such as push-to-talk on Linux. The desktop ignores the key while other modifier keys are held.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:39
+msgid "Holding Shift, Ctrl or Alt blocks this shortcut. Add alternates in your system settings."
+msgstr "Shift、Ctrl、Altを押している間は、このショートカットは反応しません。システム設定で代替キーを追加してください。"
+
 #. Action label in quick switcher for navigating to the Home tab.
 #: src/features/app/components/layout/MobileBottomNav.tsx:110
 #: src/features/search/state/QuickSwitcherCandidateBuilder.ts:47
@@ -17790,7 +17866,7 @@ msgid "How about:"
 msgstr "こちらはいかがですか:"
 
 #. Helper text under the ban duration dropdown in the destructive ban-member modal.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:64
+#: src/features/moderation/components/modals/BanMemberModal.tsx:65
 msgid "How long they stay banned."
 msgstr "BANが継続する期間です。"
 
@@ -17839,6 +17915,26 @@ msgstr "やったー！通知が有効になりました"
 msgid "Hyperlink"
 msgstr "ハイパーリンク"
 
+#. Instructions for the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:97
+msgid "Hyprland has no shortcut dialog. Add the lines for your Hyprland version to your Hyprland config and replace KEY with the key you want."
+msgstr "Hyprlandにはショートカットのダイアログがありません。お使いのHyprlandのバージョンに合った行をHyprlandの設定に追加し、KEYを使いたいキーに置き換えてください。"
+
+#. Instructions for the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:103
+msgid "Hyprland has no shortcut dialog. Bind the keys in your Hyprland config."
+msgstr "Hyprlandにはショートカットのダイアログがありません。Hyprlandの設定でキーをバインドしてください。"
+
+#. Label above Hyprland config lines in the older hyprlang format. Keep "hyprland.conf" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:116
+msgid "hyprland.conf (before Hyprland 0.55)"
+msgstr "hyprland.conf（Hyprland 0.55より前）"
+
+#. Label above Hyprland config lines in the Lua format. Keep "hyprland.lua" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:112
+msgid "hyprland.lua (Hyprland 0.55 and later)"
+msgstr "hyprland.lua（Hyprland 0.55以降）"
+
 #: src/features/auth/flow/RegistrationLegalConsent.tsx:83
 msgid "I agree to the <0>Privacy policy</0>"
 msgstr "<0>プライバシーポリシー</0>に同意します"
@@ -17878,7 +17974,7 @@ msgstr "やっぱりやめます"
 
 #. Short label in the voice tab. Keep it concise.
 #: src/features/channel/components/MatureContentChannelGate.tsx:207
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:111
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:113
 msgid "I understand"
 msgstr "内容を理解しました"
 
@@ -18302,7 +18398,7 @@ msgstr "チャンネル内"
 msgid "In \"Operating system\" mode, dictionaries listed above are advisory. {PRODUCT_NAME} will pass these language tags to your OS spellchecker when supported. Tags it doesn't recognize are ignored."
 msgstr "「OS」モードでは、上記の辞書は参考として扱われます。{PRODUCT_NAME}は、サポートされている場合、これらの言語タグをOSのスペルチェッカーに渡します。認識されないタグは無視されます。"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:322
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:324
 msgid "In a browser, push-to-talk only works while the {PRODUCT_NAME} tab is focused. Install the desktop app for system-wide push-to-talk."
 msgstr "ブラウザでは、プッシュトゥトークは{PRODUCT_NAME}タブがフォーカスされている間のみ機能します。システム全体でプッシュトゥトークを使用するには、デスクトップアプリをインストールしてください。"
 
@@ -18570,30 +18666,8 @@ msgctxt "chat-settings-section"
 msgid "Input"
 msgstr "入力"
 
-#. Status text after Linux input access setup failed. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:35
-msgid "Input access could not be enabled automatically. Change it manually, then fully quit and restart {productName} so shortcuts can use it."
-msgstr "入力アクセスを自動的に有効にできませんでした。手動で変更してから、ショートカットが使用できるように{productName}を完全に終了して再起動してください。"
-
-#. Description for a Linux Wayland input-access nagbar after automatic permission setup failed. {settingsMenuName} is the shared user settings tab label for shortcuts and {productName} is the app name.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:26
-msgid "Input access could not be enabled. Try again from {settingsMenuName} settings, then fully quit and restart {productName}."
-msgstr "入力アクセスを有効にできませんでした。{settingsMenuName}設定からもう一度お試しください。その後、{productName}を完全に終了して再起動してください。"
-
-#. Settings warning for Linux Wayland system-wide shortcuts. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:18
-msgid "Input access is required for system-wide keyboard and mouse shortcuts on Wayland. After changing input access, fully quit and restart {productName} so shortcuts can use it."
-msgstr "Waylandでシステム全体のキーボードとマウスのショートカットを使用するには、入力アクセスが必要です。入力アクセスを変更した後、ショートカットが使用できるように{productName}を完全に終了して再起動してください。"
-
-#. Description for a Linux Wayland input-access nagbar after access was changed. {productName} is the app name.
-#. Status text after Linux input access was changed. {productName} is the app name.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:21
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:31
-msgid "Input access was changed. Fully quit and restart {productName} so system-wide shortcuts can use it."
-msgstr "入力アクセスが変更されました。システム全体のショートカットが使用できるように、{productName}を完全に終了して再起動してください。"
-
 #. Subsection title in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:180
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:182
 msgid "Input and output"
 msgstr "入力と出力"
 
@@ -19455,7 +19529,7 @@ msgid "Keep free and premium tiers. You can customize the tiers, sell premium th
 msgstr "無料版とプレミアム版を残します。ティアをカスタマイズしたり、Stripe で"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:165
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:273
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:274
 msgid "Keep grace period"
 msgstr "猶予期間を保持"
 
@@ -19470,7 +19544,7 @@ msgid "Keep running"
 msgstr "常駐"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:143
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:251
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:252
 msgid "Keep subscription"
 msgstr "サブスクリプションを継続"
 
@@ -19480,7 +19554,7 @@ msgid "Keep these safe. Regenerating will break existing integrations."
 msgstr "これらは安全に保管してください。再生成すると、既存の連携が動作しなくなります。"
 
 #. Description for push-to-talk release delay.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:82
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:84
 msgid "Keep transmitting briefly after release."
 msgstr "ボタンを離した後も、しばらく送信し続けます。"
 
@@ -19516,6 +19590,11 @@ msgstr "キーボード"
 msgctxt "accessibility-settings-section"
 msgid "Keyboard"
 msgstr "キーボード"
+
+#. Linux warning when direct input device access is on but reading the keyboard failed. Not related to the "Direct input" voice processing profile. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:193
+msgid "Keyboard access couldn't start. Shortcuts only work while {productName} is focused."
+msgstr "キーボードへのアクセスを開始できませんでした。ショートカットは{productName}がフォーカスされている間のみ機能します。"
 
 #. Toggle label and settings search entry for controlling tooltip keyboard shortcut hints.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:46
@@ -19890,6 +19969,16 @@ msgstr "コミュニティに自主的なモデレーションを許可する"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts:280
 msgid "Let the member hear others in this community again"
 msgstr "このコミュニティで再び他のメンバーの声が聞こえるようにしました"
+
+#. Description for the Linux direct input device access switch while it is on, on a desktop that can also run system-wide shortcuts itself (KDE, GNOME, Hyprland). {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:166
+msgid "Lets {productName} read your keyboard directly. Turn this off to set up shortcuts through your desktop instead."
+msgstr "{productName}がキーボードを直接読み取れるようにします。デスクトップ経由でショートカットを設定する場合は、オフにしてください。"
+
+#. Description for the Linux direct input device access switch. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:162
+msgid "Lets {productName} read your keyboard directly. Your system already allows this."
+msgstr "{productName}がキーボードを直接読み取れるようにします。システムでは既に許可されています。"
 
 #: src/features/theme_studio/sections/ThemeStudioSettingsSection.tsx:259
 msgid "Lets custom CSS reveal transparent window regions after restarting the desktop app."
@@ -20360,7 +20449,7 @@ msgid "Look and feel"
 msgstr "見た目と操作感"
 
 #. placeholder {0}: externalProcessor.name
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:671
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:678
 msgid "Looks like you're using {0}. Stacking {PRODUCT_NAME}'s processing on top can cause pumping or distortion. Direct input passes your audio through untouched."
 msgstr "{0}をお使いのようです。その上に{PRODUCT_NAME}の処理を重ねると、ポンピングや歪みが発生する可能性があります。ダイレクト入力では、オーディオはそのまま通過します。"
 
@@ -21667,7 +21756,7 @@ msgstr "マイク"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:188
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:190
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:142
 msgid "Mic test"
 msgstr "マイクテスト"
@@ -22029,7 +22118,7 @@ msgid "More options"
 msgstr "その他のオプション"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:59
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:61
 msgid "More shortcut options"
 msgstr "その他のショートカットオプション"
 
@@ -23367,7 +23456,7 @@ msgstr "メンバーはまだいません"
 msgid "No mentions yet"
 msgstr "メンションはまだありません"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:541
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:548
 msgid "No microphone found"
 msgstr "マイクが見つかりません"
 
@@ -23522,7 +23611,7 @@ msgid "No settings found"
 msgstr "設定が見つかりませんでした"
 
 #. Empty-state text in the keyboard shortcuts keybind recorder.
-#: src/features/input/components/KeybindRecorder.tsx:36
+#: src/features/input/components/KeybindRecorder.tsx:44
 msgid "No shortcut set"
 msgstr "ショートカットは設定されていません"
 
@@ -23740,6 +23829,11 @@ msgstr "数値ではありません"
 #: src/features/lexical/composer/nodes/SlashSlotNode.ts:73
 msgid "Not a whole number"
 msgstr "整数ではありません"
+
+#. Shown instead of a key when the desktop has no key assigned to a system-wide shortcut.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:79
+msgid "Not assigned"
+msgstr "未割り当て"
 
 #. Fallback value when a saved billing payment method has no expiration date.
 #. Screen reader text for a cross in the Plutonium page comparison table.
@@ -25390,7 +25484,7 @@ msgid "Perks paused"
 msgstr "特典は一時停止中"
 
 #. Ban duration option in the destructive ban-member modal meaning the ban never expires. Short standalone label.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:38
+#: src/features/moderation/components/modals/BanMemberModal.tsx:39
 msgid "Permanent"
 msgstr "永久"
 
@@ -26056,11 +26150,11 @@ msgstr "プレゼンス"
 msgid "Press {shortcut} to react"
 msgstr "リアクションするには{shortcut}を押す"
 
-#: src/features/input/components/KeybindRecorder.tsx:381
+#: src/features/input/components/KeybindRecorder.tsx:421
 msgid "Press a key, mouse button, or gamepad button to bind. Escape cancels."
 msgstr "キー、マウスボタン、またはゲームパッドボタンを押して割り当ててください。Escでキャンセルします。"
 
-#: src/features/input/components/KeybindRecorder.tsx:407
+#: src/features/input/components/KeybindRecorder.tsx:447
 msgid "Press a shortcut…"
 msgstr "ショートカットを入力…"
 
@@ -26713,18 +26807,33 @@ msgid "Push to talk key"
 msgstr "プッシュトゥトークキー"
 
 #. Switch label in the voice tab toggling push-to-talk mode. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:115
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:361
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:117
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:360
 #: src/features/voice/components/VoiceSettingsMenus.tsx:419
 msgid "Push-to-talk"
 msgstr "プッシュトゥトーク"
 
 #. Short label in the voice tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:103
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:105
 msgid "Push-to-talk (limited)"
 msgstr "プッシュトゥトーク（制限あり）"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:701
+#. Voice settings warning on GNOME when the desktop has no key assigned to push-to-talk. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:243
+msgid "Push-to-talk has no system-wide key yet. To set one, go to Settings > Apps > {productName}."
+msgstr "プッシュトゥトークにシステム全体のキーがまだ割り当てられていません。設定するには、「設定」>「アプリ」>「{productName}」を開いてください。"
+
+#. Voice settings warning on KDE Plasma when the desktop has no key assigned to push-to-talk. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:237
+msgid "Push-to-talk has no system-wide key yet. To set one, go to System Settings > Keyboard > Shortcuts > {productName}."
+msgstr "プッシュトゥトークにシステム全体のキーがまだ割り当てられていません。設定するには、「システム設定」>「キーボード」>「ショートカット」>「{productName}」を開いてください。"
+
+#. Voice settings warning on an unrecognized Linux desktop when the desktop has no key assigned to push-to-talk.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:248
+msgid "Push-to-talk has no system-wide key yet. To set one, open your desktop's keyboard shortcut settings."
+msgstr "プッシュトゥトークにシステム全体のキーがまだ割り当てられていません。設定するには、デスクトップのキーボードショートカット設定を開いてください。"
+
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:708
 msgid "Push-to-talk is ignored in direct input. Switch to focused voice or custom to use it."
 msgstr "ダイレクト入力ではプッシュトゥトークは無視されます。使用するには「音声にフォーカス」または「カスタム」に切り替えてください。"
 
@@ -26733,20 +26842,50 @@ msgstr "ダイレクト入力ではプッシュトゥトークは無視されま
 msgid "Push-to-talk is on. Hold {pushToTalkHint} to speak."
 msgstr "プッシュトゥトークがオンです。{pushToTalkHint}を押している間は話せます。"
 
+#. Tooltip and screen reader label on the mic button when push-to-talk is on but the key has no name to show, for example when the Linux desktop assigns it.
+#: src/features/input/utils/PushToTalkHint.ts:11
+msgid "Push-to-talk is on. Hold your push-to-talk key to speak."
+msgstr "プッシュトゥトークがオンです。話すにはプッシュトゥトークのキーを押し続けてください。"
+
+#. Voice settings warning on Linux when the desktop dialog for system-wide shortcuts was dismissed or failed. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:226
+msgid "Push-to-talk only works while {productName} is focused because your desktop didn't set up system-wide shortcuts."
+msgstr "デスクトップでシステム全体のショートカットが設定されなかったため、プッシュトゥトークは{productName}がフォーカスされている間のみ機能します。"
+
 #. Voice settings warning shown when macOS Input Monitoring is required for system-wide push-to-talk. {productName} is the app name and {permissionName} is the macOS permission name.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:135
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:137
 msgid "Push-to-talk only works while {productName} is focused until {permissionName} is enabled. After changing the permission, fully quit and restart {productName} so system-wide hotkeys can use it."
 msgstr "{permissionName}を有効にするまで、{productName}はフォーカスされている間のみプッシュトゥトークが機能します。権限を変更した後、システム全体のホットキーを使用できるように、{productName}を完全に終了して再起動してください。"
 
+#. Voice settings warning on Linux before system-wide shortcuts are set up. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:222
+msgid "Push-to-talk only works while {productName} is focused until you set up system-wide shortcuts."
+msgstr "システム全体のショートカットを設定するまで、プッシュトゥトークは{productName}がフォーカスされている間のみ機能します。"
+
 #. Voice settings warning shown when push-to-talk is enabled in a browser.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:131
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:133
 msgid "Push-to-talk only works while the browser tab is focused."
 msgstr "プッシュトゥトークは、ブラウザのタブがアクティブな場合にのみ機能します。"
+
+#. Linux warning next to the direct input device access switch when push-to-talk only has a key assigned by the desktop. With direct input on, only the push-to-talk key set in the app works, and without one the microphone sends whenever you speak. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:187
+msgid "Push-to-talk will use the key you set in {productName}. Set one first, or your microphone will use voice activity."
+msgstr "プッシュトゥトークには{productName}で設定したキーが使われます。先にキーを設定してください。設定しないと、マイクは音声アクティビティで動作します。"
 
 #. Modal description shown when a push-to-talk shortcut is pressed while the user is self-deafened.
 #: src/features/app/keybindings/keybind_manager/shared.ts:22
 msgid "Push-to-talk won't unmute your microphone while you're deafened. Undeafen yourself to talk."
 msgstr "プッシュトゥトークでは、スピーカーミュート中にマイクのミュートは解除されません。話すにはスピーカーミュートを解除してください。"
+
+#. Voice settings note on the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:259
+msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config."
+msgstr "プッシュトゥトークを{productName}の外で使うには、Hyprlandの設定でバインドする必要があります。"
+
+#. Voice settings note on the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:253
+msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config. Add the line for your Hyprland version and replace KEY with the key you want."
+msgstr "プッシュトゥトークを{productName}の外で使うには、Hyprlandの設定でバインドする必要があります。お使いのHyprlandのバージョンに合った行を追加し、KEYを使いたいキーに置き換えてください。"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the theme studio. Keep it concise.
@@ -26846,7 +26985,7 @@ msgid "Raw embed JSON"
 msgstr "生の埋め込みJSON"
 
 #. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:50
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:52
 msgid "Re-enable built-in shortcut"
 msgstr "組み込みのショートカットを再度有効にする"
 
@@ -26949,7 +27088,7 @@ msgstr "理由"
 
 #. Label of the optional reason input in the destructive ban-member modal. Reason is recorded in the activity log.
 #. Label of the optional reason textarea in the timeout-member modal. The reason is recorded in the activity log.
-#: src/features/moderation/components/modals/BanMemberModal.tsx:83
+#: src/features/moderation/components/modals/BanMemberModal.tsx:84
 #: src/features/moderation/components/modals/TimeoutMemberModal.tsx:36
 msgid "Reason (optional)"
 msgstr "理由（任意）"
@@ -27006,13 +27145,6 @@ msgstr "最近の検索"
 msgid "Recently Active"
 msgstr "最近のアクティビティ"
 
-#. Button label in the Linux Wayland input-access nagbar after the user changes OS permissions.
-#. Button label in the keybind settings system-wide shortcuts section.
-#: src/features/app/components/layout/app_layout/nagbars/LinuxInputAccessNagbar.tsx:36
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:27
-msgid "Recheck"
-msgstr "再確認"
-
 #. placeholder {0}: ChannelUtils.getIcon(channel, {size: 16, className: styles.channelIcon})
 #. placeholder {1}: channel.name
 #: src/features/invite/components/modals/InviteModal.tsx:360
@@ -27027,7 +27159,7 @@ msgid "Recommended"
 msgstr "おすすめ"
 
 #. Description for the focused voice profile option in the voice tab.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:86
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:88
 msgid "Recommended. Cleans up your mic for clear speech."
 msgstr "おすすめ。マイクの音声をクリアにして、聞き取りやすくします。"
 
@@ -27041,6 +27173,11 @@ msgstr "再接続"
 msgid "Reconnect succeeded. Pick a screen again if you want to resume your previous stream."
 msgstr "再接続しました。以前のストリームを再開したい場合は、もう一度画面を選択してください。"
 
+#. Status text on Linux while the app reconnects to the desktop service that runs system-wide shortcuts, for example after it restarted.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:48
+msgid "Reconnecting to your desktop…"
+msgstr "デスクトップに再接続しています…"
+
 #. Overlay status in the voice call view while reconnecting after a drop. Trailing ellipsis indicates in-progress.
 #: src/features/voice/components/VoiceCallView.tsx:94
 msgid "Reconnecting..."
@@ -27052,7 +27189,7 @@ msgid "Reconnecting…"
 msgstr "再接続中…"
 
 #. Short label in the keyboard shortcuts keybind recorder. Keep it concise.
-#: src/features/input/components/KeybindRecorder.tsx:28
+#: src/features/input/components/KeybindRecorder.tsx:36
 msgid "Record shortcut"
 msgstr "ショートカットを記録"
 
@@ -27292,7 +27429,7 @@ msgstr "相対"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label for push-to-talk release delay.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:78
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:80
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:94
 msgid "Release delay"
 msgstr "離した後の遅延"
@@ -28193,13 +28330,13 @@ msgstr "再送しました"
 
 #: src/features/app/components/dialogs/shared/UnsavedChangesBannerContent.tsx:51
 #: src/features/app/components/floating/ColorPickerPopover.tsx:190
-#: src/features/input/components/KeybindRecorder.tsx:459
+#: src/features/input/components/KeybindRecorder.tsx:499
 #: src/features/messaging/components/modals/ImageCropModal.tsx:1022
 msgid "Reset"
 msgstr "リセット"
 
 #. Button or menu action label in the keybinds tab. Keep it concise. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:45
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:47
 msgid "Reset \"{label}\" to built-in"
 msgstr "「{label}」を組み込み設定にリセット"
 
@@ -28320,7 +28457,7 @@ msgid "Reset to actual values"
 msgstr "実際の値にリセット"
 
 #. Button or menu action label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:37
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:39
 msgid "Reset to built-in"
 msgstr "組み込み設定にリセット"
 
@@ -29985,7 +30122,7 @@ msgid "Select the account you want to sign in with on your new device."
 msgstr "新しいデバイスでサインインするアカウントを選択してください。"
 
 #. Aria label for the voice processing radio group in the voice settings tab. Keep it concise.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:123
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:125
 msgid "Select voice processing mode"
 msgstr "音声処理モードを選択"
 
@@ -30300,7 +30437,7 @@ msgid "Sends raw mic audio with no processing."
 msgstr "マイク音声を処理せずにそのまま送信します。"
 
 #. Description for the direct input profile option in the voice tab.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:90
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:92
 msgid "Sends your audio untouched. Best if you're using external audio software."
 msgstr "音声を加工せずに送信します。外部のオーディオソフトウェアを使用している場合に最適です。"
 
@@ -30399,12 +30536,12 @@ msgid "Set by the {preset} preset. Picking a value here switches to Custom."
 msgstr "{preset} プリセットによって設定されています。ここで値を選択すると、カスタムに切り替わります。"
 
 #. Short label in the keybinds tab. Keep it concise.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:29
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:31
 msgid "Set custom shortcut"
 msgstr "カスタムショートカットを設定"
 
 #. Label in the keybinds tab. Preserve {label}; it is inserted by code.
-#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:55
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx:57
 msgid "Set custom shortcut for \"{label}\""
 msgstr "「{label}」のカスタムショートカットを設定"
 
@@ -30551,6 +30688,11 @@ msgstr "ボイスリージョンを{region}に設定しました"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts:315
 msgid "Set the voice region to automatic"
 msgstr "ボイスリージョンを自動に設定しました"
+
+#. Button that asks the Linux desktop to register system-wide shortcuts for the app. Keep it short.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:40
+msgid "Set up"
+msgstr "設定する"
 
 #. Title for the self-host setup wizard modal.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx:73
@@ -30821,8 +30963,8 @@ msgstr "ショートコード"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:121
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:376
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx:123
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:375
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:38
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts:110
 msgid "Shortcut"
@@ -33285,7 +33427,7 @@ msgstr "ゆったり表示に切り替える"
 msgid "Switch to dense layout"
 msgstr "コンパクト表示に切り替える"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:666
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:673
 msgid "Switch to direct input"
 msgstr "直接入力に切り替える"
 
@@ -33553,9 +33695,24 @@ msgid "System-managed install"
 msgstr "システム管理のインストール"
 
 #. Settings subsection title for keyboard and mouse shortcuts that work outside the app.
-#: src/features/user/components/modals/tabs/components/LinuxInputAccessSection.tsx:14
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:24
 msgid "System-wide shortcuts"
 msgstr "システム全体のショートカット"
+
+#. Linux settings text when setting up system-wide shortcuts failed.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:148
+msgid "System-wide shortcuts could not be set up."
+msgstr "システム全体のショートカットを設定できませんでした。"
+
+#. Hint under a shortcut on Linux showing the key the desktop assigned. {trigger} is the key, as named by the desktop.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:30
+msgid "System-wide: {trigger}"
+msgstr "システム全体: {trigger}"
+
+#. Hint under a shortcut on Linux when the desktop has no key assigned for it system-wide.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:35
+msgid "System-wide: Not assigned"
+msgstr "システム全体: 未割り当て"
 
 #. Description text in the theme tab content.
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx:58
@@ -34638,6 +34795,16 @@ msgstr "この会話は利用できません。"
 msgid "This desktop build cannot install updates inside {productName}. Download the latest desktop installer instead."
 msgstr "このデスクトップ版では、{productName} 内にアップデートをインストールできません。代わりに最新のデスクトップインストーラーをダウンロードしてください。"
 
+#. Voice settings warning on Linux desktops without system-wide shortcut support. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:232
+msgid "This desktop doesn't offer system-wide shortcuts. Push-to-talk only works while {productName} is focused."
+msgstr "このデスクトップはシステム全体のショートカットに対応していません。プッシュトゥトークは{productName}がフォーカスされている間のみ機能します。"
+
+#. Linux settings text when the desktop has no system-wide shortcut support. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:144
+msgid "This desktop doesn't offer system-wide shortcuts. Shortcuts still work while {productName} is focused."
+msgstr "このデスクトップはシステム全体のショートカットに対応していません。ショートカットは{productName}がフォーカスされている間は引き続き機能します。"
+
 #. Desktop updater modal body for development or unpackaged builds.
 #: src/features/updater/commands/UpdaterModalCommands.tsx:65
 msgid "This development build cannot update itself. Download a desktop installer to test the update flow."
@@ -34850,6 +35017,11 @@ msgstr "これは最後のパスキーであり、パスキーはこのアカウ
 #: src/features/user/components/modals/tabs/account_security_tab/SecurityTab.tsx:243
 msgid "This is your last passkey. Once it's gone you won't be able to use a passkey as your second factor."
 msgstr "これは最後のパスキーです。これを削除すると、パスキーを2つ目の認証要素として使用できなくなります。"
+
+#. Hint under the push-to-talk key recorder in voice settings on Linux when the desktop owns system-wide shortcuts. {settingsTabName} is the name of the settings tab with keyboard shortcuts and {sectionName} the title of its system-wide shortcuts section, both filled in by the app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:24
+msgid "This key works while {productName} is focused. Your desktop sets the system-wide key, under {settingsTabName} > {sectionName}."
+msgstr "このキーは{productName}がフォーカスされている間に機能します。システム全体のキーはデスクトップが設定し、{settingsTabName} > {sectionName}で確認できます。"
 
 #. Extra file-too-large alert sentence shown when premium upload-limit upgrades are unavailable.
 #: src/features/messaging/components/alerts/FileSizeTooLargeModal.tsx:39
@@ -35388,6 +35560,21 @@ msgstr "タイトルバー"
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts:252
 msgid "Title bar platform"
 msgstr "タイトルバープラットフォーム"
+
+#. Instructions for GNOME. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:92
+msgid "To change the keys, go to Settings > Apps > {productName}."
+msgstr "キーを変更するには、「設定」>「アプリ」>「{productName}」を開いてください。"
+
+#. Instructions for KDE Plasma. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:87
+msgid "To change the keys, go to System Settings > Keyboard > Shortcuts > {productName}."
+msgstr "キーを変更するには、「システム設定」>「キーボード」>「ショートカット」>「{productName}」を開いてください。"
+
+#. Instructions for changing system-wide shortcut keys on an unrecognized Linux desktop.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:108
+msgid "To change the keys, open your desktop's keyboard shortcut settings."
+msgstr "キーを変更するには、デスクトップのキーボードショートカット設定を開いてください。"
 
 #: src/features/guild/components/modals/guild_tabs/GuildWebhooksTab.tsx:125
 msgid "To create a webhook, open <0>{channelWebhooksSettingsPath}</0>. You can still edit and organize all existing webhooks here."
@@ -37044,6 +37231,11 @@ msgstr "最大4K/60fps"
 msgid "Up to 720p at 30 FPS"
 msgstr "最大720p、30FPS"
 
+#. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:152
+msgid "Update {productName} to use system-wide shortcuts on Wayland."
+msgstr "Waylandでシステム全体のショートカットを使うには、{productName}をアップデートしてください。"
+
 #. Message placeholder shown when the app cannot render a newer message type.
 #: src/features/channel/components/UnknownMessage.tsx:23
 msgid "Update {productName} to view this message."
@@ -37484,6 +37676,11 @@ msgstr "アプリ全体でダークテーマを使用"
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperToolsShared.ts:45
 msgid "Use default"
 msgstr "デフォルトを使用"
+
+#. Switch label on Linux. When on, the app reads keyboard devices directly for system-wide shortcuts. Not related to the "Direct input" voice processing profile.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:157
+msgid "Use direct input device access"
+msgstr "入力デバイスへの直接アクセスを使用"
 
 #. Permission description in the channel-scoped permissions editor for the Use External Emoji permission. "Other communities" means custom emoji uploaded in a different Fluxer community.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts:260
@@ -38857,7 +39054,7 @@ msgid "Voice participants"
 msgstr "通話の参加者"
 
 #. Voice settings radio group label for microphone processing profile.
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:661
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:668
 #: src/features/voice/components/voice_connection_status/AudioProcessingModal.tsx:55
 msgid "Voice processing"
 msgstr "音声処理"
@@ -38903,7 +39100,7 @@ msgstr "スピーカーミュート解除"
 msgid "Voice unmute"
 msgstr "音声ミュート解除"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:590
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:597
 msgid "Voice uses your system output device in this browser. Change it in your system settings."
 msgstr "このブラウザでは、ボイスはシステムの出力デバイスを使用します。システム設定で変更してください。"
 
@@ -38917,7 +39114,7 @@ msgstr "無効"
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Subsection title in the voice tab. Keep it concise.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts:383
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:184
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:186
 #: src/features/user/components/settings_utils/search_index/NotificationsIndex.ts:86
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:197
 msgid "Volume"
@@ -38983,6 +39180,11 @@ msgstr "選択したチャンネルのいずれかでスローモードが解除
 #: src/features/user/components/modals/tabs/appearance_tab/MessagesTab.tsx:48
 msgid "Waiting for you to..."
 msgstr "そろそろ…"
+
+#. Status text while the Linux desktop shows its own dialog for confirming system-wide shortcuts.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:44
+msgid "Waiting for your desktop…"
+msgstr "デスクトップからの応答を待っています…"
 
 #: src/features/input/utils/KeybindUtils.ts:107
 msgctxt "keyboard-key-name"
@@ -39570,7 +39772,7 @@ msgstr "会話の種類"
 msgid "Which rule was broken?"
 msgstr "違反しているルールはどれですか？"
 
-#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:370
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx:369
 msgid "While push-to-talk is on, your shortcut controls your microphone, so the mute button is disabled."
 msgstr "プッシュトゥトークがオンの場合、ショートカットでマイクを操作するため、ミュートボタンは無効になります。"
 
@@ -39737,6 +39939,11 @@ msgstr "この権限がない場合、プッシュトゥトークが必要です
 #: src/features/app/components/setup/SetupWizardSteps.tsx:130
 msgid "Wordmark"
 msgstr "ワードマーク"
+
+#. Hint under a shortcut on Linux when the desktop owns system-wide shortcuts. The key shown here only works inside the app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:19
+msgid "Works while {productName} is focused"
+msgstr "{productName}がフォーカスされている間に機能"
 
 #. Short label in the channel and chat textual attachment preview bottom sheet. Keep it concise.
 #. Short label in the channel and chat textual preview context menu. Keep it concise.
@@ -40275,12 +40482,12 @@ msgid "You just pressed Tab. Keyboard mode is now on so you can navigate {produc
 msgstr "Tabキーを押しましたね。キーボードモードがオンになり、マウスなしで{productName}を操作できます。"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:137
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:245
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:246
 msgid "You keep your perks until your next renewal date. Reactivate before then to keep your subscriber history."
 msgstr "特典は次回の更新日まで保持されます。サブスクリプション履歴を引き継ぐには、それまでに再開してください。"
 
 #: src/features/app/components/dialogs/components/PlutoniumContent.tsx:158
-#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:266
+#: src/features/premium/components/plutonium_page/PlutoniumPage.tsx:267
 msgid "You lose all {PREMIUM_PRODUCT_NAME} perks immediately and your subscriber history resets. This cannot be undone."
 msgstr "{PREMIUM_PRODUCT_NAME}のすべての特典が直ちに失われ、サブスクリプション履歴がリセットされます。この操作は元に戻せません。"
 
@@ -40801,6 +41008,26 @@ msgstr "コミュニティを「見つける」に掲載するには、メンバ
 msgid "Your credit card has been checked. If the card is valid, mature content will unlock shortly. You can close this tab and return to the app."
 msgstr "クレジットカードの確認が完了しました。カードが有効な場合、まもなく成人向けコンテンツが利用可能になります。このタブを閉じてアプリに戻ることができます。"
 
+#. Linux settings text when the desktop dialog for system-wide shortcuts was dismissed or failed. Neutral wording, the user may not have declined anything.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:134
+msgid "Your desktop didn't set up system-wide shortcuts."
+msgstr "デスクトップでシステム全体のショートカットが設定されませんでした。"
+
+#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME). A key assigned here stops reaching every other app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:64
+msgid "Your desktop keeps these keys for {productName}, so other apps can't use them."
+msgstr "デスクトップがこれらのキーを{productName}用に確保するため、他のアプリでは使用できません。"
+
+#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME), shown when the "Use direct input device access" switch is offered below it. A key assigned here stops reaching every other app. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:69
+msgid "Your desktop keeps these keys for {productName}, so other apps can't use them. To use the same key in other apps, turn on direct input device access below."
+msgstr "デスクトップがこれらのキーを{productName}用に確保するため、他のアプリでは使用できません。他のアプリでも同じキーを使用するには、下の「入力デバイスへの直接アクセス」をオンにしてください。"
+
+#. Subtitle above the list of system-wide shortcuts assigned by the Linux desktop. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:53
+msgid "Your desktop runs these shortcuts even while {productName} is not focused."
+msgstr "これらのショートカットは、{productName}がフォーカスされていなくてもデスクトップが実行します。"
+
 #. Body of the modal that asks the user to save an updated passkey. name is the name the user gave the passkey. Keep plain.
 #: src/features/auth/passkey_migration/PasskeyUpdateModal.tsx:28
 msgid "Your device will ask you to save an updated passkey for {name}. It replaces the old one."
@@ -41139,357 +41366,3 @@ msgstr "拡大"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts:86
 msgid "Zoom out"
 msgstr "縮小"
-
-#. Linux settings text before system-wide shortcuts are set up. The desktop environment owns the keys. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:28
-msgid "{productName} can ask your desktop to run its shortcuts while {productName} is not focused. Your desktop asks you to confirm and lets you pick the keys."
-msgstr "{productName}は、{productName}がフォーカスされていない間もショートカットを実行するようデスクトップに依頼できます。デスクトップで確認が求められ、キーを選択できます。"
-
-#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, on an X11 session. The app now listens for shortcuts through the X11 display server itself. Keep "X11" as written. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:177
-msgid "{productName} can no longer read your keyboard, so it listens for shortcuts through X11 instead."
-msgstr "{productName}がキーボードを読み取れなくなったため、代わりにX11経由でショートカットを受け付けます。"
-
-#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, for example after a restart removed the access. The app already falls back to the shortcuts the desktop runs. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:172
-msgid "{productName} can no longer read your keyboard, so your desktop's shortcuts are used instead."
-msgstr "{productName}がキーボードを読み取れなくなったため、代わりにデスクトップのショートカットが使用されます。"
-
-#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read and nothing else runs system-wide shortcuts. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:182
-msgid "{productName} can no longer read your keyboard. Shortcuts only work while {productName} is focused."
-msgstr "{productName}がキーボードを読み取れなくなりました。ショートカットは{productName}がフォーカスされている間のみ機能します。"
-
-#. Linux settings text before system-wide shortcuts are set up on the Hyprland desktop. Hyprland shows no dialog. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:34
-msgid "{productName} can register its shortcuts with Hyprland so they run while {productName} is not focused. You then bind the keys in your Hyprland config."
-msgstr "{productName}がフォーカスされていない間もショートカットが動作するよう、{productName}はショートカットをHyprlandに登録できます。登録後、Hyprlandの設定でキーをバインドしてください。"
-
-#. Subtitle for system-wide shortcuts on the Hyprland desktop after setup. Hyprland shows no list of assigned keys. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:58
-msgid "{productName} registered its shortcuts with Hyprland. Bind them in your Hyprland config to use them while {productName} is not focused."
-msgstr "{productName}はショートカットをHyprlandに登録しました。{productName}がフォーカスされていない間も使うには、Hyprlandの設定でバインドしてください。"
-
-#. Label for the push relay consent switch during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:278
-msgid "Accept the push relay supplemental privacy notice"
-msgstr "プッシュリレーの補足プライバシー通知を承認する"
-
-#. Summary value when the operator accepted the push relay notice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:391
-msgid "Accepted"
-msgstr "承諾済み"
-
-#. Button that opens the Linux desktop dialog for changing the keys of system-wide shortcuts.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:83
-msgid "Change in system settings"
-msgstr "システム設定で変更"
-
-#. Button on Linux that checks again whether the desktop offers system-wide shortcuts, for example after the desktop service started. Keep it short.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:139
-msgid "Check again"
-msgstr "再確認"
-
-#. Button that copies Hyprland config lines to the clipboard.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:120
-msgid "Copy lines"
-msgstr "行をコピー"
-
-#. Screen reader name of the button that copies Hyprland config lines in the older hyprlang format. Starts with the visible button text "Copy lines". Keep "hyprland.conf" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:129
-msgid "Copy lines for hyprland.conf"
-msgstr "行をコピー（hyprland.conf用）"
-
-#. Screen reader name of the button that copies Hyprland config lines in the Lua format. Starts with the visible button text "Copy lines". Keep "hyprland.lua" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:124
-msgid "Copy lines for hyprland.lua"
-msgstr "行をコピー（hyprland.lua用）"
-
-#. Note under the list of system-wide shortcuts on Linux. The desktop cannot assign one key to two actions.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:75
-msgid "Each key can run only one system-wide shortcut."
-msgstr "各キーで実行できるシステム全体のショートカットは1つだけです。"
-
-#. Placeholder for the product name input in the setup wizard.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:96
-msgid "Fluxer"
-msgstr "Fluxer"
-
-#. Warning on GNOME when the push-to-mute shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone muted.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:204
-msgid "For push-to-mute, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay muted."
-msgstr "プッシュトゥミュートには、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないとマイクがミュートのままになることがあります。"
-
-#. Warning on GNOME when the push-to-talk shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the microphone on.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:198
-msgid "For push-to-talk, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the microphone can stay on."
-msgstr "プッシュトゥトークには、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないとマイクがオンのままになることがあります。"
-
-#. Warning on GNOME when a hold shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the shortcut active.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:216
-msgid "For this shortcut, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the shortcut can stay active."
-msgstr "このショートカットには、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないとショートカットが有効なままになることがあります。"
-
-#. Warning on GNOME when the voice activity priority shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave priority speaking on. "Voice activity priority" is the shortcut name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:210
-msgid "For voice activity priority, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or priority can stay on."
-msgstr "音声検出の優先には、Ctrl、Alt、Shiftを含まない単一のキーを使用してください。組み合わせキーの場合は、先にメインキーを離さないと優先がオンのままになることがあります。"
-
-#: src/features/user/components/modals/tabs/LanguageTab.tsx:348
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "<0>{I18N_WEBLATE_DOMAIN}</0>で{PRODUCT_NAME}をあなたの言語に翻訳するお手伝いをしてください。"
-
-#. Hint under a system-wide hold shortcut such as push-to-talk on Linux. The desktop ignores the key while other modifier keys are held.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:39
-msgid "Holding Shift, Ctrl or Alt blocks this shortcut. Add alternates in your system settings."
-msgstr "Shift、Ctrl、Altを押している間は、このショートカットは反応しません。システム設定で代替キーを追加してください。"
-
-#. Instructions for the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:97
-msgid "Hyprland has no shortcut dialog. Add the lines for your Hyprland version to your Hyprland config and replace KEY with the key you want."
-msgstr "Hyprlandにはショートカットのダイアログがありません。お使いのHyprlandのバージョンに合った行をHyprlandの設定に追加し、KEYを使いたいキーに置き換えてください。"
-
-#. Instructions for the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:103
-msgid "Hyprland has no shortcut dialog. Bind the keys in your Hyprland config."
-msgstr "Hyprlandにはショートカットのダイアログがありません。Hyprlandの設定でキーをバインドしてください。"
-
-#. Label above Hyprland config lines in the older hyprlang format. Keep "hyprland.conf" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:116
-msgid "hyprland.conf (before Hyprland 0.55)"
-msgstr "hyprland.conf（Hyprland 0.55より前）"
-
-#. Label above Hyprland config lines in the Lua format. Keep "hyprland.lua" exactly as written.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:112
-msgid "hyprland.lua (Hyprland 0.55 and later)"
-msgstr "hyprland.lua（Hyprland 0.55以降）"
-
-#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:54
-msgid "Keep Neko still"
-msgstr "ネコを固定する"
-
-#. Linux warning when direct input device access is on but reading the keyboard failed. Not related to the "Direct input" voice processing profile. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:193
-msgid "Keyboard access couldn't start. Shortcuts only work while {productName} is focused."
-msgstr "キーボードへのアクセスを開始できませんでした。ショートカットは{productName}がフォーカスされている間のみ機能します。"
-
-#. Description for the push relay consent switch during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:282
-msgid "Leaving this off keeps the relay unused and drops notifications to the official mobile apps. You can accept it later in the admin panel."
-msgstr "これをオフにするとリレーが使用されなくなり、公式モバイルアプリへの通知がドロップされます。後で管理パネルで受け入れることができます。"
-
-#. Description for the Linux direct input device access switch while it is on, on a desktop that can also run system-wide shortcuts itself (KDE, GNOME, Hyprland). {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:166
-msgid "Lets {productName} read your keyboard directly. Turn this off to set up shortcuts through your desktop instead."
-msgstr "{productName}がキーボードを直接読み取れるようにします。デスクトップ経由でショートカットを設定する場合は、オフにしてください。"
-
-#. Description for the Linux direct input device access switch. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:162
-msgid "Lets {productName} read your keyboard directly. Your system already allows this."
-msgstr "{productName}がキーボードを直接読み取れるようにします。システムでは既に許可されています。"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:66
-msgid "Neko cat that chases your cursor"
-msgstr "カーソルを追いかける猫"
-
-#. Summary value when the operator left the push relay notice unaccepted.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:395
-msgid "Not accepted"
-msgstr "未承認"
-
-#. Shown instead of a key when the desktop has no key assigned to a system-wide shortcut.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:79
-msgid "Not assigned"
-msgstr "未割り当て"
-
-#. Voice screen share menu preference that pauses the local stream preview while the app is unfocused.
-#: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts:28
-msgid "Pause preview when Fluxer isn’t focused"
-msgstr "Fluxerがフォーカスされていないときはプレビューを一時停止"
-
-#. Summary row label for the push relay consent on the setup wizard finish step.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:383
-msgid "Push relay notice"
-msgstr "プッシュリレー通知"
-
-#. Voice settings warning on GNOME when the desktop has no key assigned to push-to-talk. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:243
-msgid "Push-to-talk has no system-wide key yet. To set one, go to Settings > Apps > {productName}."
-msgstr "プッシュトゥトークにシステム全体のキーがまだ割り当てられていません。設定するには、「設定」>「アプリ」>「{productName}」を開いてください。"
-
-#. Voice settings warning on KDE Plasma when the desktop has no key assigned to push-to-talk. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:237
-msgid "Push-to-talk has no system-wide key yet. To set one, go to System Settings > Keyboard > Shortcuts > {productName}."
-msgstr "プッシュトゥトークにシステム全体のキーがまだ割り当てられていません。設定するには、「システム設定」>「キーボード」>「ショートカット」>「{productName}」を開いてください。"
-
-#. Voice settings warning on an unrecognized Linux desktop when the desktop has no key assigned to push-to-talk.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:248
-msgid "Push-to-talk has no system-wide key yet. To set one, open your desktop's keyboard shortcut settings."
-msgstr "プッシュトゥトークにシステム全体のキーがまだ割り当てられていません。設定するには、デスクトップのキーボードショートカット設定を開いてください。"
-
-#. Tooltip and screen reader label on the mic button when push-to-talk is on but the key has no name to show, for example when the Linux desktop assigns it.
-#: src/features/input/utils/PushToTalkHint.ts:11
-msgid "Push-to-talk is on. Hold your push-to-talk key to speak."
-msgstr "プッシュトゥトークがオンです。話すにはプッシュトゥトークのキーを押し続けてください。"
-
-#. Voice settings warning on Linux when the desktop dialog for system-wide shortcuts was dismissed or failed. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:226
-msgid "Push-to-talk only works while {productName} is focused because your desktop didn't set up system-wide shortcuts."
-msgstr "デスクトップでシステム全体のショートカットが設定されなかったため、プッシュトゥトークは{productName}がフォーカスされている間のみ機能します。"
-
-#. Voice settings warning on Linux before system-wide shortcuts are set up. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:222
-msgid "Push-to-talk only works while {productName} is focused until you set up system-wide shortcuts."
-msgstr "システム全体のショートカットを設定するまで、プッシュトゥトークは{productName}がフォーカスされている間のみ機能します。"
-
-#. Linux warning next to the direct input device access switch when push-to-talk only has a key assigned by the desktop. With direct input on, only the push-to-talk key set in the app works, and without one the microphone sends whenever you speak. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:187
-msgid "Push-to-talk will use the key you set in {productName}. Set one first, or your microphone will use voice activity."
-msgstr "プッシュトゥトークには{productName}で設定したキーが使われます。先にキーを設定してください。設定しないと、マイクは音声アクティビティで動作します。"
-
-#. Voice settings note on the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:259
-msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config."
-msgstr "プッシュトゥトークを{productName}の外で使うには、Hyprlandの設定でバインドする必要があります。"
-
-#. Voice settings note on the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:253
-msgid "Push-to-talk works outside {productName} only after you bind it in your Hyprland config. Add the line for your Hyprland version and replace KEY with the key you want."
-msgstr "プッシュトゥトークを{productName}の外で使うには、Hyprlandの設定でバインドする必要があります。お使いのHyprlandのバージョンに合った行を追加し、KEYを使いたいキーに置き換えてください。"
-
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx:33
-msgid "Read the documentation ({domain})"
-msgstr "ドキュメントを読む（{domain}）"
-
-#. Link to the push relay supplemental privacy notice shown during setup.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:287
-msgid "Read the supplemental privacy notice"
-msgstr "補足プライバシーポリシーを読む"
-
-#. Status text on Linux while the app reconnects to the desktop service that runs system-wide shortcuts, for example after it restarted.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:48
-msgid "Reconnecting to your desktop…"
-msgstr "デスクトップに再接続しています…"
-
-#. Body shown when a failed screen share could not be fully stopped.
-#: src/features/voice/components/alerts/ScreenShareRollbackIncompleteModal.tsx:12
-msgid "Screen sharing failed, but Fluxer could not confirm that every capture path stopped. Stop sharing or disconnect from the call before continuing."
-msgstr "画面共有に失敗しましたが、すべてのキャプチャパスが停止したことを確認できませんでした。続行する前に、共有を停止するか通話から切断してください。"
-
-#. Button that asks the Linux desktop to register system-wide shortcuts for the app. Keep it short.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:40
-msgid "Set up"
-msgstr "設定する"
-
-#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts:50
-msgid "Show Neko"
-msgstr "ネコを表示"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:78
-msgid "Static Neko"
-msgstr "静止したネコ"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:74
-msgid "Still Neko"
-msgstr "ネコを静止"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts:70
-msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
-msgstr "ネコをドラッグしたり操作したりできる状態のまま、カーソルを追いかけないようにします。"
-
-#. Linux settings text when setting up system-wide shortcuts failed.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:148
-msgid "System-wide shortcuts could not be set up."
-msgstr "システム全体のショートカットを設定できませんでした。"
-
-#. Hint under a shortcut on Linux showing the key the desktop assigned. {trigger} is the key, as named by the desktop.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:30
-msgid "System-wide: {trigger}"
-msgstr "システム全体: {trigger}"
-
-#. Hint under a shortcut on Linux when the desktop has no key assigned for it system-wide.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:35
-msgid "System-wide: Not assigned"
-msgstr "システム全体: 未割り当て"
-
-#. Setup wizard push relay consent step body.
-#: src/features/app/components/setup/SetupWizardSteps.tsx:273
-msgid "The official Fluxer mobile apps receive notifications through Fluxer's push relay, which hands them to Apple and Google. Self-hosted UnifiedPush and ntfy endpoints never reach the relay and need no agreement."
-msgstr "Fluxer公式モバイルアプリは、Fluxerのプッシュリレーを通じて通知を受け取ります。これはAppleおよびGoogleに通知を渡します。セルフホスト型のUnifiedPushおよびntfyエンドポイントは、リレーに到達せず、同意も不要です。"
-
-#. Voice settings warning on Linux desktops without system-wide shortcut support. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:232
-msgid "This desktop doesn't offer system-wide shortcuts. Push-to-talk only works while {productName} is focused."
-msgstr "このデスクトップはシステム全体のショートカットに対応していません。プッシュトゥトークは{productName}がフォーカスされている間のみ機能します。"
-
-#. Linux settings text when the desktop has no system-wide shortcut support. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:144
-msgid "This desktop doesn't offer system-wide shortcuts. Shortcuts still work while {productName} is focused."
-msgstr "このデスクトップはシステム全体のショートカットに対応していません。ショートカットは{productName}がフォーカスされている間は引き続き機能します。"
-
-#. Hint under the push-to-talk key recorder in voice settings on Linux when the desktop owns system-wide shortcuts. {settingsTabName} is the name of the settings tab with keyboard shortcuts and {sectionName} the title of its system-wide shortcuts section, both filled in by the app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:24
-msgid "This key works while {productName} is focused. Your desktop sets the system-wide key, under {settingsTabName} > {sectionName}."
-msgstr "このキーは{productName}がフォーカスされている間に機能します。システム全体のキーはデスクトップが設定し、{settingsTabName} > {sectionName}で確認できます。"
-
-#. Instructions for GNOME. Keep "Settings" and "Apps" as the GNOME menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:92
-msgid "To change the keys, go to Settings > Apps > {productName}."
-msgstr "キーを変更するには、「設定」>「アプリ」>「{productName}」を開いてください。"
-
-#. Instructions for KDE Plasma. Keep "System Settings", "Keyboard" and "Shortcuts" as the KDE menu names in your language. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:87
-msgid "To change the keys, go to System Settings > Keyboard > Shortcuts > {productName}."
-msgstr "キーを変更するには、「システム設定」>「キーボード」>「ショートカット」>「{productName}」を開いてください。"
-
-#. Instructions for changing system-wide shortcut keys on an unrecognized Linux desktop.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:108
-msgid "To change the keys, open your desktop's keyboard shortcut settings."
-msgstr "キーを変更するには、デスクトップのキーボードショートカット設定を開いてください。"
-
-#. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:152
-msgid "Update {productName} to use system-wide shortcuts on Wayland."
-msgstr "Waylandでシステム全体のショートカットを使うには、{productName}をアップデートしてください。"
-
-#. Switch label on Linux. When on, the app reads keyboard devices directly for system-wide shortcuts. Not related to the "Direct input" voice processing profile.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:157
-msgid "Use direct input device access"
-msgstr "入力デバイスへの直接アクセスを使用"
-
-#. Status text while the Linux desktop shows its own dialog for confirming system-wide shortcuts.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:44
-msgid "Waiting for your desktop…"
-msgstr "デスクトップからの応答を待っています…"
-
-#. Hint under a shortcut on Linux when the desktop owns system-wide shortcuts. The key shown here only works inside the app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx:19
-msgid "Works while {productName} is focused"
-msgstr "{productName}がフォーカスされている間に機能"
-
-#. Linux settings text when the desktop dialog for system-wide shortcuts was dismissed or failed. Neutral wording, the user may not have declined anything.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:134
-msgid "Your desktop didn't set up system-wide shortcuts."
-msgstr "デスクトップでシステム全体のショートカットが設定されませんでした。"
-
-#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME). A key assigned here stops reaching every other app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:64
-msgid "Your desktop keeps these keys for {productName}, so other apps can't use them."
-msgstr "デスクトップがこれらのキーを{productName}用に確保するため、他のアプリでは使用できません。"
-
-#. Linux settings note under the list of system-wide shortcuts the desktop runs (KDE, GNOME), shown when the "Use direct input device access" switch is offered below it. A key assigned here stops reaching every other app. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:69
-msgid "Your desktop keeps these keys for {productName}, so other apps can't use them. To use the same key in other apps, turn on direct input device access below."
-msgstr "デスクトップがこれらのキーを{productName}用に確保するため、他のアプリでは使用できません。他のアプリでも同じキーを使用するには、下の「入力デバイスへの直接アクセス」をオンにしてください。"
-
-#. Subtitle above the list of system-wide shortcuts assigned by the Linux desktop. {productName} is the app name.
-#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx:53
-msgid "Your desktop runs these shortcuts even while {productName} is not focused."
-msgstr "これらのショートカットは、{productName}がフォーカスされていなくてもデスクトップが実行します。"

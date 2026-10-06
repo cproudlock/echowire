@@ -44,10 +44,10 @@ function parseMainGroup(contents) {
 }
 
 describe('LinuxDesktopEntry contents', () => {
-	test('uses the reverse-DNS desktop id for window matching and keeps the packaged icon name', () => {
+	test('uses the echowire desktop id for window matching and keeps the packaged icon name', () => {
 		const entry = parseMainGroup(desktopEntry.buildDesktopFileContents(EXEC_PATH, false));
-		assert.equal(entry.get('StartupWMClass'), 'app.fluxer.FluxerDesktop');
-		assert.equal(entry.get('Icon'), 'fluxer');
+		assert.equal(entry.get('StartupWMClass'), 'echowire');
+		assert.equal(entry.get('Icon'), 'echowire');
 		assert.equal(entry.get('Exec'), `"${EXEC_PATH}" %U`);
 		assert.equal(entry.get('TryExec'), EXEC_PATH);
 		assert.equal(entry.get('MimeType'), 'x-scheme-handler/fluxer;');
@@ -112,7 +112,7 @@ describe('ensureLinuxDesktopEntry', () => {
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), true);
 		assert.equal(fs.existsSync(path.join(userDir(), 'fluxer.desktop')), false);
 		assert.equal(fs.existsSync(path.join(userDir(), 'fluxer-canary.desktop')), true);
-		const written = fs.readFileSync(path.join(userDir(), 'app.fluxer.FluxerDesktop.desktop'), 'utf8');
+		const written = fs.readFileSync(path.join(userDir(), 'echowire.desktop'), 'utf8');
 		assert.equal(written, desktopEntry.buildDesktopFileContents(EXEC_PATH, false));
 		assert.deepEqual(
 			fs.readdirSync(userDir()).filter((name) => name.endsWith('.tmp')),
@@ -130,21 +130,21 @@ describe('ensureLinuxDesktopEntry', () => {
 
 	test('a system entry wins and removes a generated user copy', () => {
 		fs.mkdirSync(systemDir(), {recursive: true});
-		fs.writeFileSync(path.join(systemDir(), 'app.fluxer.FluxerDesktop.desktop'), '[Desktop Entry]\n');
+		fs.writeFileSync(path.join(systemDir(), 'echowire.desktop'), '[Desktop Entry]\n');
 		fs.mkdirSync(userDir(), {recursive: true});
 		fs.writeFileSync(
-			path.join(userDir(), 'app.fluxer.FluxerDesktop.desktop'),
+			path.join(userDir(), 'echowire.desktop'),
 			desktopEntry.buildDesktopFileContents(EXEC_PATH, false),
 		);
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), true);
-		assert.equal(fs.existsSync(path.join(userDir(), 'app.fluxer.FluxerDesktop.desktop')), false);
+		assert.equal(fs.existsSync(path.join(userDir(), 'echowire.desktop')), false);
 	});
 
 	test('a system entry under the previous desktop id keeps the new user entry out of menus', () => {
 		fs.mkdirSync(systemDir(), {recursive: true});
 		fs.writeFileSync(path.join(systemDir(), 'fluxer.desktop'), '[Desktop Entry]\nExec=/usr/bin/fluxer\n');
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), true);
-		const written = fs.readFileSync(path.join(userDir(), 'app.fluxer.FluxerDesktop.desktop'), 'utf8');
+		const written = fs.readFileSync(path.join(userDir(), 'echowire.desktop'), 'utf8');
 		assert.equal(written, desktopEntry.buildDesktopFileContents(EXEC_PATH, true));
 		assert.equal(fs.existsSync(path.join(systemDir(), 'fluxer.desktop')), true);
 	});
@@ -155,14 +155,14 @@ describe('ensureLinuxDesktopEntry', () => {
 		fs.writeFileSync(path.join(userDir(), 'fluxer.desktop'), `[Desktop Entry]\n${desktopEntry.GENERATED_MARKER}\n`);
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), false);
 		assert.equal(fs.existsSync(path.join(userDir(), 'fluxer.desktop')), true);
-		assert.equal(fs.existsSync(path.join(userDir(), 'app.fluxer.FluxerDesktop.desktop')), false);
+		assert.equal(fs.existsSync(path.join(userDir(), 'echowire.desktop')), false);
 		assert.deepEqual(protocolRegistrations, []);
 	});
 
 	test('FLUXER_DISABLE_DESKTOP_FILE still reports an entry the user installed', () => {
 		process.env.FLUXER_DISABLE_DESKTOP_FILE = '1';
 		fs.mkdirSync(userDir(), {recursive: true});
-		fs.writeFileSync(path.join(userDir(), 'app.fluxer.FluxerDesktop.desktop'), '[Desktop Entry]\n');
+		fs.writeFileSync(path.join(userDir(), 'echowire.desktop'), '[Desktop Entry]\n');
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), true);
 		assert.deepEqual(protocolRegistrations, []);
 	});
@@ -170,7 +170,7 @@ describe('ensureLinuxDesktopEntry', () => {
 	test('FLUXER_DISABLE_DESKTOP_FILE still points the scheme handler at a packaged entry', () => {
 		process.env.FLUXER_DISABLE_DESKTOP_FILE = '1';
 		fs.mkdirSync(systemDir(), {recursive: true});
-		fs.writeFileSync(path.join(systemDir(), 'app.fluxer.FluxerDesktop.desktop'), '[Desktop Entry]\n');
+		fs.writeFileSync(path.join(systemDir(), 'echowire.desktop'), '[Desktop Entry]\n');
 		fs.mkdirSync(userDir(), {recursive: true});
 		fs.writeFileSync(path.join(userDir(), 'fluxer.desktop'), `[Desktop Entry]\n${desktopEntry.GENERATED_MARKER}\n`);
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), true);

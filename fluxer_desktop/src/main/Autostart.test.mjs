@@ -44,7 +44,7 @@ describe('rewriteLegacyLinuxAutostartContents', () => {
 		const rewritten = autostart.rewriteLegacyLinuxAutostartContents(LEGACY, '/opt/Fluxer/fluxer', false);
 		assert.equal(
 			rewritten,
-			LEGACY.replace('StartupWMClass=fluxer\nX-GNOME', 'StartupWMClass=app.fluxer.FluxerDesktop\nX-GNOME'),
+			LEGACY.replace('StartupWMClass=fluxer\nX-GNOME', 'StartupWMClass=echowire\nX-GNOME'),
 		);
 	});
 
@@ -109,7 +109,7 @@ describe('Linux autostart with an entry left under the previous desktop id', () 
 				'',
 			].join('\n'),
 		);
-		fs.mkdirSync(path.join(dir, `app.fluxer.FluxerDesktop.desktop.${process.pid}.tmp`, 'blocker'), {recursive: true});
+		fs.mkdirSync(path.join(dir, `echowire.desktop.${process.pid}.tmp`, 'blocker'), {recursive: true});
 		const {module, handlers} = loadLinuxAutostart();
 		module.registerAutostartHandlers();
 		await new Promise((resolve) => setTimeout(resolve, 50));

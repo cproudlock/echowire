@@ -88,7 +88,7 @@ function createHarness({
 		},
 		desktop,
 		plasma5,
-		portalAppId: 'app.fluxer.FluxerDesktop',
+		portalAppId: 'echowire',
 		getConsent: () => harness.consent,
 		setConsent: (next) => {
 			harness.consent = next;

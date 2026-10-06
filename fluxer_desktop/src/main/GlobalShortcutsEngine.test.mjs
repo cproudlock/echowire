@@ -132,7 +132,7 @@ function createEngine({
 					},
 					desktop: 'gnome',
 					plasma5: false,
-					portalAppId: 'app.fluxer.FluxerDesktop',
+					portalAppId: 'echowire',
 					getConsent: () => harness.consent,
 					setConsent: (consent) => {
 						harness.consent = consent;

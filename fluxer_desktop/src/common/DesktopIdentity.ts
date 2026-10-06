@@ -11,10 +11,14 @@ export const MACOS_BUNDLE_ID = BUILD_CHANNEL === 'canary' ? 'org.echowire.canary
 // the system entry the .deb installed ('echowire.desktop') and writes a SECOND user-local
 // entry ('fluxer.desktop', same Name), producing a duplicate "Echowire (Echowire)" launcher.
 // It also feeds StartupWMClass + the freedesktop notification desktop-entry hint, so it has
-// to line up with the installed file. Was left as the upstream 'fluxer' id during the rebrand.
+// to line up with the installed file. Upstream #3185 moved to app.fluxer.FluxerDesktop; we do not.
 export const LINUX_DESKTOP_ENTRY_ID = BUILD_CHANNEL === 'canary' ? 'echowire-canary' : 'echowire';
-// Old ids previous builds wrote; used to clean up stale user-local duplicates on upgrade.
-export const LINUX_LEGACY_DESKTOP_ENTRY_IDS = BUILD_CHANNEL === 'canary' ? ['fluxer-canary'] : ['fluxer'];
+export const LINUX_PORTAL_SESSION_TOKEN =
+	BUILD_CHANNEL === 'canary' ? 'echowire_canary_global_shortcuts' : 'echowire_global_shortcuts';
+// Old id previous builds wrote; used to clean up stale user-local duplicates on upgrade.
+export const LEGACY_LINUX_DESKTOP_ENTRY_ID = BUILD_CHANNEL === 'canary' ? 'fluxer-canary' : 'fluxer';
+// Echowire: the hicolor icons are installed under the entry id, as before.
+export const LINUX_ICON_NAME = LINUX_DESKTOP_ENTRY_ID;
 export const WINDOWS_SHORTCUT_AUTHOR = 'echowire';
 export const WINDOWS_VELOPACK_ID = BUILD_CHANNEL === 'canary' ? 'fluxer_desktop_canary' : 'fluxer_desktop';
 // Echowire: the directory older Squirrel-based installs used, kept at upstream's value because it

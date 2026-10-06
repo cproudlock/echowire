@@ -29,6 +29,10 @@ const linuxPackageName = isCanary ? 'echowire-canary' : 'echowire';
 // renamed package cleanly supersedes it (apt/dnf remove the old, install the new) instead of
 // leaving two installs side by side.
 const legacyLinuxPackageName = isCanary ? 'fluxer-canary' : 'fluxer';
+// Echowire: upstream #3185 splits the desktop id from the package name (app.fluxer.FluxerDesktop).
+// We keep them equal: the packaged .desktop, StartupWMClass and the runtime entry id must all be
+// 'echowire', or the app writes a second user-local launcher (see DesktopIdentity.ts).
+const linuxDesktopId = linuxPackageName;
 const linuxDesktopActionIds = ['open-settings', 'new-dm'];
 const linuxDesktopActionList = `${linuxDesktopActionIds.join(';')};`;
 const linuxGlibcBaseline = Object.freeze({major: 2, minor: 35, patch: 0, name: 'GLIBC_2.35'});
@@ -354,7 +358,7 @@ const linuxDesktopEntry = {
 	Comment: isCanary ? 'Canary build of echowire' : 'Instant messaging and VoIP',
 	Keywords: 'chat;im;messaging;messenger;voip;voice;video;call;',
 	Categories: 'Network;InstantMessaging;Chat;',
-	StartupWMClass: linuxPackageName,
+	StartupWMClass: linuxDesktopId,
 	StartupNotify: 'true',
 	SingleMainWindow: 'true',
 	MimeType: 'x-scheme-handler/fluxer;',
@@ -1509,7 +1513,7 @@ module.exports = {
 		main: 'dist/main/index.js',
 		name: metadataName,
 		...(process.env.VERSION ? {version: process.env.VERSION} : {}),
-		...(targetPlatform === 'linux' ? {desktopName: `${linuxPackageName}.desktop`} : {}),
+		...(targetPlatform === 'linux' ? {desktopName: `${linuxDesktopId}.desktop`} : {}),
 	},
 	extraResources: [
 		{

@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+// Echowire: upstream #3173 hotlinks this media from fluxer.app (hostedImageUrl); we keep the bundled local files. Keep this file at the fork version when merging.
 
+import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import styles from '@app/features/premium/components/plutonium_page/PlutoniumPage.module.css';
 import {
 	SHOWCASE_EXPRESSIONS_BODY_DESCRIPTOR,
 	SHOWCASE_EXPRESSIONS_TITLE_DESCRIPTOR,
 	SHOWCASE_PROFILE_BODY_DESCRIPTOR,
+	SHOWCASE_PROFILE_BODY_WITHOUT_TAG_DESCRIPTOR,
 	SHOWCASE_PROFILE_TITLE_DESCRIPTOR,
 	SHOWCASE_STREAM_BODY_DESCRIPTOR,
 	SHOWCASE_STREAM_TITLE_DESCRIPTOR,
@@ -243,14 +246,16 @@ export function PlutoniumPageShowcase({
 			{PERK_CARDS.map((card, index) => {
 				const flipped = index % 2 === 1;
 				const body =
-					card.id === 'profile'
-						? renderProfileBody(
-								i18n._(card.body, {footnote: '\u0000'}),
-								footnoteId,
-								onFootnoteClick,
-								i18n._(TAG_FOOTNOTE_MARKER_DESCRIPTOR),
-							)
-						: i18n._(card.body, {freeSize: freeUploadSize});
+					card.id === 'profile' && RuntimeConfig.usesUniqueUsernames
+						? i18n._(SHOWCASE_PROFILE_BODY_WITHOUT_TAG_DESCRIPTOR)
+						: card.id === 'profile'
+							? renderProfileBody(
+									i18n._(card.body, {footnote: '\u0000'}),
+									footnoteId,
+									onFootnoteClick,
+									i18n._(TAG_FOOTNOTE_MARKER_DESCRIPTOR),
+								)
+							: i18n._(card.body, {freeSize: freeUploadSize});
 				return (
 					<article
 						key={card.id}

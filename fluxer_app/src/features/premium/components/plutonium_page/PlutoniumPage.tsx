@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+// Echowire: upstream #3173 hotlinks this media from fluxer.app (hostedImageUrl); we keep the bundled local files. Keep this file at the fork version when merging.
 
 import '@app/app/fonts/radio_canada_big/radio-canada-big.css';
 import {Routes} from '@app/app/Routes';
@@ -609,21 +610,23 @@ export const PlutoniumPage = observer(function PlutoniumPage() {
 							</div>
 						</section>
 					)}
-					<p id={FOOTNOTE_ID} className={styles.footnote} data-flx="premium.plutonium-page.footnote">
-						<span>{`* ${footnoteBefore}`}</span>
-						<FocusRing offset={-2}>
-							<a
-								className={styles.inlineLink}
-								href={Routes.helpArticle('visionary')}
-								target="_blank"
-								rel="noopener noreferrer"
-								data-flx="premium.plutonium-page.footnote.visionary-link"
-							>
-								{i18n._(TAG_FOOTNOTE_LINK_DESCRIPTOR)}
-							</a>
-						</FocusRing>
-						<span>{footnoteAfter}</span>
-					</p>
+					{!RuntimeConfig.usesUniqueUsernames && (
+						<p id={FOOTNOTE_ID} className={styles.footnote} data-flx="premium.plutonium-page.footnote">
+							<span>{`* ${footnoteBefore}`}</span>
+							<FocusRing offset={-2}>
+								<a
+									className={styles.inlineLink}
+									href={Routes.helpArticle('visionary')}
+									target="_blank"
+									rel="noopener noreferrer"
+									data-flx="premium.plutonium-page.footnote.visionary-link"
+								>
+									{i18n._(TAG_FOOTNOTE_LINK_DESCRIPTOR)}
+								</a>
+							</FocusRing>
+							<span>{footnoteAfter}</span>
+						</p>
+					)}
 				</div>
 			</div>
 		</div>

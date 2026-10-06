@@ -179,6 +179,7 @@ rebalance() ->
     init(),
     _ = rebalance_table(?USER_GUILD_SETTINGS, fun user_id_from_user_guild_key/1),
     _ = rebalance_table(?BLOCKED_IDS, fun user_id_from_key/1),
+    _ = push_unread_cap:rebalance(),
     ok.
 
 -spec cache_stats() -> map().

@@ -59,6 +59,7 @@ start_link() ->
 init([]) ->
     erlang:process_flag(fullsweep_after, 10),
     push_ets_cache:init(),
+    push_unread_cap:init(),
     init_worker_counter(),
     maybe_schedule_eviction(env_boolean(push_enabled)),
     {ok, #{max_entries => ?DEFAULT_MAX_ENTRIES}}.
@@ -95,6 +96,11 @@ handle_cast({clear_channel_notifications, UserId, ChannelId, MessageId}, State) 
     is_integer(UserId), is_integer(ChannelId), is_integer(MessageId)
 ->
     handle_clear_channel_notifications(UserId, ChannelId, MessageId, State);
+handle_cast({reset_unread_cap, UserId, ChannelId}, State) when
+    is_integer(UserId), is_integer(ChannelId)
+->
+    ok = push_unread_cap:reset(UserId, ChannelId),
+    {noreply, State};
 handle_cast(_Msg, State) ->
     {noreply, State}.
 
@@ -105,6 +111,7 @@ handle_info(evict_caches, State) ->
         user_guild_settings => MaxEntries,
         blocked_ids => MaxEntries
     }),
+    push_unread_cap:evict(),
     schedule_eviction(),
     {noreply, State};
 handle_info(_Info, State) ->
@@ -198,6 +205,7 @@ clear_channel_notifications(UserId, ChannelId, MessageId) ->
     case is_push_active() of
         true ->
             ok = push_outbox:truncate_read(UserId, ChannelId, MessageId),
+            cast_to_push_owner(UserId, {reset_unread_cap, UserId, ChannelId}),
             cast_clear_if_enabled(
                 clear_notifications_enabled(), UserId, ChannelId, MessageId
             );
@@ -580,7 +588,11 @@ filter_eligible_users(
         end,
         Candidates
     ),
-    drop_blocked_recipients(EligibleUsers, AuthorId, fetch_missing_blocked_ids(EligibleUsers)).
+    Allowed = drop_blocked_recipients(
+        EligibleUsers, AuthorId, fetch_missing_blocked_ids(EligibleUsers)
+    ),
+    %% Echowire: last step, so only users who would really be notified use up the cap.
+    push_unread_cap:filter(Allowed, GuildId, ChannelId, MessageData).
 
 -spec resolve_large_guild_metadata(integer(), map() | undefined) -> map() | undefined.
 resolve_large_guild_metadata(0, _SuppliedMetadata) ->
@@ -811,7 +823,7 @@ log_worker_pool_drop(false, MessageId, ChannelId) ->
 -spec cache_stats_with_counters() -> map().
 cache_stats_with_counters() ->
     Base = maps:merge(push_ets_cache:cache_stats(), blocked_ids_counters()),
-    maps:merge(Base, push_loss_counters()).
+    maps:merge(maps:merge(Base, push_unread_cap:stats()), push_loss_counters()).
 
 -spec push_loss_counters() -> map().
 push_loss_counters() ->

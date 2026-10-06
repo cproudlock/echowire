@@ -81,6 +81,10 @@ env_gateway_base_config() ->
         <<"push_outbox_request_timeout_ms">> => env_int(
             "FLUXER_GATEWAY_PUSH_OUTBOX_REQUEST_TIMEOUT_MS", 100000
         ),
+        <<"push_unread_cap">> => env_int("FLUXER_GATEWAY_PUSH_UNREAD_CAP", 3),
+        <<"push_unread_cap_ttl_seconds">> => env_int(
+            "FLUXER_GATEWAY_PUSH_UNREAD_CAP_TTL_SECONDS", 86400
+        ),
         <<"logger_level">> => env_optional_binary("FLUXER_GATEWAY_LOGGER_LEVEL"),
         <<"api_rpc_endpoint">> => env_optional_binary("FLUXER_GATEWAY_API_RPC_ENDPOINT"),
         <<"cluster_enabled">> => env_bool("FLUXER_GATEWAY_CLUSTER_ENABLED", false),
@@ -185,6 +189,10 @@ build_push_config(Service, Public) ->
         ),
         push_enrolled_clear_notifications_enabled => get_bool(
             Service, <<"push_enrolled_clear_notifications_enabled">>, true
+        ),
+        push_unread_cap => get_int(Service, <<"push_unread_cap">>, 3),
+        push_unread_cap_ttl_seconds => get_int(
+            Service, <<"push_unread_cap_ttl_seconds">>, 86400
         ),
         push_outbox_max_queue => get_int(Service, <<"push_outbox_max_queue">>, 10000),
         push_outbox_max_inflight => get_int(Service, <<"push_outbox_max_inflight">>, 64),

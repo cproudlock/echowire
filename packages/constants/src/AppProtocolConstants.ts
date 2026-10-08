@@ -9,8 +9,6 @@
 // process does not import from the workspace packages. Change both together.
 export const APP_PROTOCOLS = ['echowire', 'fluxer'] as const;
 
-export type AppProtocolName = (typeof APP_PROTOCOLS)[number];
-
 // "echowire:" and "fluxer:", the form URL.protocol reports.
 export const APP_PROTOCOL_SCHEMES: ReadonlyArray<string> = APP_PROTOCOLS.map((name) => `${name}:`);
 

@@ -4,7 +4,6 @@
 // another instance (federation) still opens this app. Keep in step with
 // packages/constants/src/AppProtocolConstants.ts, which the Electron main process cannot import.
 export const APP_PROTOCOLS = ['echowire', 'fluxer'];
-export const APP_PROTOCOL = APP_PROTOCOLS[0];
 export const STABLE_APP_URL = 'https://echowire.org';
 // Canary loads the same origin as stable on purpose. The SPA's REST transport
 // withholds Authorization (and the sudo + features headers) whenever the API is

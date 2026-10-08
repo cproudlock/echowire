@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {appProtocolSchemeLengthAt} from '@fluxer/constants/src/AppProtocolConstants';
+
 const HTTP_PREFIX = 'http://';
 const HTTPS_PREFIX = 'https://';
-const APP_PROTOCOL_SCHEME = 'fluxer:';
-const APP_PROTOCOL_PREFIX = 'fluxer://';
 const WORD_CHARS = new Set('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_');
 const ESCAPABLE_CHARS = new Set('[]()\\*_~`@#-|:<>');
 const URL_TERMINATION_CHARS = new Set(' \t\n\r)"');
@@ -47,12 +47,13 @@ export function startsWithUrl(text: string): boolean {
 		const prefixEnd = 8;
 		return !text.substring(0, prefixEnd).includes('"') && !text.substring(0, prefixEnd).includes("'");
 	}
-	if (text.startsWith(APP_PROTOCOL_PREFIX)) {
-		const prefixEnd = APP_PROTOCOL_PREFIX.length;
-		return !text.substring(0, prefixEnd).includes('"') && !text.substring(0, prefixEnd).includes("'");
-	}
-	if (text.startsWith(APP_PROTOCOL_SCHEME)) {
-		const nextChar = text[APP_PROTOCOL_SCHEME.length] ?? '';
+	const schemeLength = appProtocolSchemeLengthAt(text);
+	if (schemeLength > 0) {
+		if (text.startsWith('//', schemeLength)) {
+			const prefixEnd = schemeLength + 2;
+			return !text.substring(0, prefixEnd).includes('"') && !text.substring(0, prefixEnd).includes("'");
+		}
+		const nextChar = text[schemeLength] ?? '';
 		return nextChar === '/' || /[A-Za-z0-9_-]/.test(nextChar);
 	}
 	return false;

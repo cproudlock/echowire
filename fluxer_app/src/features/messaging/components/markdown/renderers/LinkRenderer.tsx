@@ -69,7 +69,7 @@ import * as TextCopyCommands from '@app/features/ui/commands/TextCopyCommands';
 import FocusRing from '@app/features/ui/focus_ring/FocusRing';
 import MobileLayout from '@app/features/ui/state/MobileLayout';
 import {Tooltip} from '@app/features/ui/tooltip/Tooltip';
-import {APP_PROTOCOL_PREFIX, APP_PROTOCOL_SCHEME, isAppProtocolUrl} from '@app/features/ui/utils/AppProtocol';
+import {isAppProtocolUrl} from '@app/features/ui/utils/AppProtocol';
 import {openExternalUrl} from '@app/features/ui/utils/NativeUtils';
 import {
 	getUserSettingsSectionLabel,
@@ -80,6 +80,7 @@ import type {UserSettingsDeepLinkTarget} from '@app/features/user/components/set
 import * as AvatarUtils from '@app/features/user/utils/AvatarUtils';
 import * as StringUtils from '@app/lib/strings';
 import {ME} from '@fluxer/constants/src/AppConstants';
+import {APP_PROTOCOLS} from '@fluxer/constants/src/AppProtocolConstants';
 import {isProbablyAValidSnowflake} from '@fluxer/snowflake/src/SnowflakeUtils';
 import type {I18n} from '@lingui/core';
 import {msg} from '@lingui/core/macro';
@@ -1014,7 +1015,7 @@ export const LinkRenderer = observer(function LinkRenderer({
 			showChannelAccessDeniedModal(i18n);
 		};
 		isInternal = true;
-	} else if (url === `${APP_PROTOCOL_PREFIX}dev` || url === `${APP_PROTOCOL_SCHEME}dev`) {
+	} else if (APP_PROTOCOLS.some((name) => url === `${name}://dev` || url === `${name}:dev`)) {
 		handleClick = (e) => {
 			e.preventDefault();
 			if (DeveloperMode.isDeveloper) {

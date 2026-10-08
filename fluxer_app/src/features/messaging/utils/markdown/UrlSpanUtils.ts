@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {appProtocolSchemeLengthAt} from '@fluxer/constants/src/AppProtocolConstants';
+
 const HTTP_PREFIX = 'http://';
 const HTTPS_PREFIX = 'https://';
-const APP_PROTOCOL_SCHEME = 'fluxer:';
 const TRIMMED_AUTOLINK_PUNCTUATION = new Set(['.', ',', ';', ':', '!', '?']);
 
 export interface TextSpan {
@@ -14,10 +15,11 @@ export function isUrlStart(content: string, index: number): boolean {
 	if (content.startsWith(HTTP_PREFIX, index) || content.startsWith(HTTPS_PREFIX, index)) {
 		return true;
 	}
-	if (!content.startsWith(APP_PROTOCOL_SCHEME, index)) {
+	const schemeLength = appProtocolSchemeLengthAt(content, index);
+	if (schemeLength === 0) {
 		return false;
 	}
-	const nextCharValue = content[index + APP_PROTOCOL_SCHEME.length];
+	const nextCharValue = content[index + schemeLength];
 	const nextChar = nextCharValue === undefined ? '' : nextCharValue;
 	return nextChar === '/' || /[A-Za-z0-9_-]/u.test(nextChar);
 }

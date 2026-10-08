@@ -4,7 +4,7 @@ import child_process from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {APP_PROTOCOL} from '@electron/common/Constants';
+import {APP_PROTOCOLS} from '@electron/common/Constants';
 import {
 	DESKTOP_APP_NAME,
 	LEGACY_LINUX_DESKTOP_ENTRY_ID,
@@ -151,7 +151,7 @@ export function buildDesktopFileContents(execPath: string, hidden: boolean): str
 		`Icon=${escapeDesktopValue(LINUX_ICON_NAME)}`,
 		'Terminal=false',
 		'Categories=Network;InstantMessaging;Chat;',
-		`MimeType=x-scheme-handler/${APP_PROTOCOL};`,
+		`MimeType=${APP_PROTOCOLS.map((name) => `x-scheme-handler/${name};`).join('')}`,
 		`StartupWMClass=${WM_CLASS}`,
 		'SingleMainWindow=true',
 		'StartupNotify=true',
@@ -206,7 +206,9 @@ function runUpdateDesktopDatabase(applicationsDir: string): void {
 
 function registerProtocolClient(): void {
 	try {
-		app.setAsDefaultProtocolClient(APP_PROTOCOL);
+		for (const protocol of APP_PROTOCOLS) {
+			app.setAsDefaultProtocolClient(protocol);
+		}
 	} catch (error) {
 		logger.warn('Failed to register protocol client', {error});
 	}

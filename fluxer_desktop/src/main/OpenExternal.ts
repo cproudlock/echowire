@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {APP_PROTOCOL} from '@electron/common/Constants';
+import {APP_PROTOCOLS} from '@electron/common/Constants';
 import {shell} from 'electron';
 
 const DEDUPE_WINDOW_MS = 500;
@@ -10,7 +10,7 @@ const ALLOWED_EXTERNAL_URL_PROTOCOLS = new Set([
 	'mailto:',
 	'tel:',
 	'appstream:',
-	`${APP_PROTOCOL}:`,
+	...APP_PROTOCOLS.map((name) => `${name}:`),
 ]);
 const recentOpens = new Map<string, number>();
 

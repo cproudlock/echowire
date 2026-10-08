@@ -9,7 +9,7 @@ import {isInternalChannelHost} from '@app/features/navigation/utils/DeepLinkUtil
 import * as PlutoniumPageCommands from '@app/features/premium/commands/PlutoniumPageCommands';
 import PlutoniumPageRollout from '@app/features/premium/state/PlutoniumPageRollout';
 import {shouldShowPremiumFeatures} from '@app/features/premium/utils/PremiumUtils';
-import {APP_PROTOCOL_SCHEME, isAppProtocolUrl} from '@app/features/ui/utils/AppProtocol';
+import {isAppProtocolUrl} from '@app/features/ui/utils/AppProtocol';
 import type {I18n} from '@lingui/core';
 import {msg} from '@lingui/core/macro';
 import {ChatsCircleIcon, CompassIcon, CrownIcon, type Icon, StarIcon} from '@phosphor-icons/react';
@@ -82,7 +82,6 @@ export function parseAppPageLink(rawUrl: string): AppPageId | null {
 		return null;
 	}
 	if (isAppProtocolUrl(rawUrl)) {
-		if (parsed.protocol.toLowerCase() !== APP_PROTOCOL_SCHEME) return null;
 		const host = parsed.hostname;
 		const path = host && host !== '-' ? `/${host}${parsed.pathname}` : parsed.pathname;
 		return findPageByPath(path.startsWith('/') ? path : `/${path}`)?.id ?? null;

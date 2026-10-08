@@ -50,7 +50,7 @@ describe('LinuxDesktopEntry contents', () => {
 		assert.equal(entry.get('Icon'), 'echowire');
 		assert.equal(entry.get('Exec'), `"${EXEC_PATH}" %U`);
 		assert.equal(entry.get('TryExec'), EXEC_PATH);
-		assert.equal(entry.get('MimeType'), 'x-scheme-handler/fluxer;');
+		assert.equal(entry.get('MimeType'), 'x-scheme-handler/echowire;x-scheme-handler/fluxer;');
 		assert.equal(entry.has('Hidden'), false);
 		assert.equal(entry.has('NoDisplay'), false);
 	});
@@ -118,7 +118,7 @@ describe('ensureLinuxDesktopEntry', () => {
 			fs.readdirSync(userDir()).filter((name) => name.endsWith('.tmp')),
 			[],
 		);
-		assert.deepEqual(protocolRegistrations, ['fluxer']);
+		assert.deepEqual(protocolRegistrations, ['echowire', 'fluxer']);
 	});
 
 	test('leaves a hand-written legacy entry alone', () => {
@@ -172,6 +172,6 @@ describe('ensureLinuxDesktopEntry', () => {
 		fs.writeFileSync(path.join(userDir(), 'fluxer.desktop'), `[Desktop Entry]\n${desktopEntry.GENERATED_MARKER}\n`);
 		assert.equal(desktopEntry.ensureLinuxDesktopEntry(), true);
 		assert.equal(fs.existsSync(path.join(userDir(), 'fluxer.desktop')), true);
-		assert.deepEqual(protocolRegistrations, ['fluxer']);
+		assert.deepEqual(protocolRegistrations, ['echowire', 'fluxer']);
 	});
 });

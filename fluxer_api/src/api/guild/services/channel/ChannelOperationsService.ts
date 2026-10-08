@@ -623,7 +623,7 @@ export class ChannelOperationsService {
 			}
 			const canAccess =
 				thread.type !== ChannelTypes.PRIVATE_THREAD ||
-				hasPermissionBits(permissions, Permissions.MANAGE_CHANNELS) ||
+				canModerateThreads(permissions) ||
 				membershipByThread.has(thread.id);
 			if (canAccess) {
 				visible.push(thread);

@@ -2,6 +2,7 @@
 
 import {LexicalChannelTextareaContent} from '@app/features/channel/components/LexicalChannelTextareaContent';
 import type {Channel} from '@app/features/channel/models/Channel';
+import {isThreadComposerLocked} from '@app/features/channel/utils/ThreadActions';
 import DeveloperOptions from '@app/features/devtools/state/DeveloperOptions';
 import GuildMembers from '@app/features/member/state/GuildMembers';
 import Drafts from '@app/features/messaging/state/MessagingDrafts';
@@ -29,6 +30,10 @@ export const ChannelTextarea = observer(({channel, inputSuppressed = false}: Cha
 			channel.guildId == null ? null : channel.guildId,
 			Users.currentUser == null ? null : Users.currentUser.id,
 		);
+	}
+	// Echowire: see isThreadComposerLocked. Read live, so a lock from another user takes effect at once.
+	if (isThreadComposerLocked(channel)) {
+		disabled = true;
 	}
 	return (
 		<LexicalChannelTextareaContent

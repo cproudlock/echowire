@@ -183,6 +183,35 @@ describe('Thread permission bits', () => {
 			.execute();
 		expect(locked.thread_metadata?.locked).toBe(true);
 	});
+
+	test('a moderator holding only manage threads sees private threads in the guild active list', async () => {
+		const {owner, members, guild, systemChannel} = await setupTestGuildWithMembers(harness, 2);
+		const [author, moderator] = members;
+		const privateRole = await createRole(harness, owner.token, guild.id, {
+			name: 'Private threads',
+			permissions: Permissions.CREATE_PRIVATE_THREADS.toString(),
+		});
+		await addMemberRole(harness, owner.token, guild.id, author!.userId, privateRole.id);
+		const secret = await createThread(harness, author!.token, systemChannel.id, {
+			name: 'quiet room',
+			type: ChannelTypes.PRIVATE_THREAD,
+		});
+		const activeIds = async () =>
+			(
+				await createBuilder<{threads: Array<ChannelResponse>}>(harness, moderator!.token)
+					.get(`/guilds/${guild.id}/threads/active`)
+					.execute()
+			).threads.map((thread) => thread.id);
+
+		expect(await activeIds()).not.toContain(secret.id);
+
+		const modRole = await createRole(harness, owner.token, guild.id, {
+			name: 'Thread mods',
+			permissions: Permissions.MANAGE_THREADS.toString(),
+		});
+		await addMemberRole(harness, owner.token, guild.id, moderator!.userId, modRole.id);
+		expect(await activeIds()).toContain(secret.id);
+	});
 });
 
 describe('Thread membership routes', () => {

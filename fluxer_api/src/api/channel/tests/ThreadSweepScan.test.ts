@@ -8,7 +8,10 @@
 import {type ChannelID, createChannelID, createGuildID, createUserID, type GuildID} from '@app/api/BrandedTypes';
 import {scanGuildThreads} from '@app/api/channel/services/ThreadSweepScan';
 import {Channel} from '@app/api/models/Channel';
-import archiveInactiveThreads, {isThreadInactive} from '@app/api/worker/tasks/ArchiveInactiveThreads';
+import archiveInactiveThreads, {
+	isThreadInactive,
+	MAX_ARCHIVES_PER_RUN,
+} from '@app/api/worker/tasks/ArchiveInactiveThreads';
 import backfillThreadMembersByUser from '@app/api/worker/tasks/BackfillThreadMembersByUser';
 import purgeOrphanedThreads, {isOrphanedThread} from '@app/api/worker/tasks/PurgeOrphanedThreads';
 import {clearWorkerDependencies, setWorkerDependenciesForTest} from '@app/api/worker/WorkerContext';
@@ -192,6 +195,65 @@ describe('archiveInactiveThreads', () => {
 		expect(patchThreadFields.mock.calls[0][1]).toMatchObject({thread_archived: true});
 		expect(dispatchGuild).toHaveBeenCalledTimes(1);
 		expect(dispatchGuild.mock.calls[0][0]).toMatchObject({event: 'THREAD_UPDATE'});
+	});
+
+	test('never archives a pinned thread', async () => {
+		const pinned = thread(2n, 1n, {thread_pinned: true, thread_create_timestamp: new Date('2020-01-01T00:00:00.000Z')});
+		const patchThreadFields = vi.fn();
+		setWorkerDependenciesForTest({
+			guildRepository: guildSource([100n]) as never,
+			channelRepository: {
+				channelData: {listGuildChannels: async () => [pinned], patchThreadFields},
+				findUnique: async () => pinned,
+			} as never,
+			gatewayService: {dispatchGuild: vi.fn()} as never,
+			userCacheService: {} as never,
+		});
+		await archiveInactiveThreads({}, helpers());
+		expect(patchThreadFields).not.toHaveBeenCalled();
+	});
+
+	test('stops at the per-run cap and archives the most overdue threads first', async () => {
+		const oldest = thread(2n, 1n, {thread_create_timestamp: new Date('2019-01-01T00:00:00.000Z')});
+		const older = thread(3n, 1n, {thread_create_timestamp: new Date('2020-01-01T00:00:00.000Z')});
+		const recent = thread(4n, 1n, {thread_create_timestamp: new Date('2021-01-01T00:00:00.000Z')});
+		const byId = new Map([oldest, older, recent].map((t) => [String(t.id), t]));
+		const patchThreadFields = vi.fn().mockResolvedValue(undefined);
+		setWorkerDependenciesForTest({
+			guildRepository: guildSource([100n]) as never,
+			channelRepository: {
+				channelData: {listGuildChannels: async () => [recent, oldest, older], patchThreadFields},
+				findUnique: async (id: ChannelID) => byId.get(String(id)) ?? null,
+			} as never,
+			gatewayService: {dispatchGuild: vi.fn().mockResolvedValue(undefined)} as never,
+			userCacheService: {getUsers: async () => [], getUser: async () => null} as never,
+		});
+		const taskHelpers = helpers();
+		await archiveInactiveThreads({maxArchives: 2}, taskHelpers);
+		expect(patchThreadFields.mock.calls.map((call) => String(call[0]))).toEqual(['2', '3']);
+		expect(taskHelpers.logger.info).toHaveBeenCalledWith(
+			expect.objectContaining({archivedCount: 2, limit: 2}),
+			expect.stringContaining('per-run cap'),
+		);
+	});
+
+	test('the payload can lower the cap but not raise it above the maximum', async () => {
+		const many = Array.from({length: MAX_ARCHIVES_PER_RUN + 5}, (_, i) =>
+			thread(BigInt(10 + i), 1n, {thread_create_timestamp: new Date('2020-01-01T00:00:00.000Z')}),
+		);
+		const byId = new Map(many.map((t) => [String(t.id), t]));
+		const patchThreadFields = vi.fn().mockResolvedValue(undefined);
+		setWorkerDependenciesForTest({
+			guildRepository: guildSource([100n]) as never,
+			channelRepository: {
+				channelData: {listGuildChannels: async () => many, patchThreadFields},
+				findUnique: async (id: ChannelID) => byId.get(String(id)) ?? null,
+			} as never,
+			gatewayService: {dispatchGuild: vi.fn().mockResolvedValue(undefined)} as never,
+			userCacheService: {getUsers: async () => [], getUser: async () => null} as never,
+		});
+		await archiveInactiveThreads({maxArchives: 1_000_000}, helpers());
+		expect(patchThreadFields).toHaveBeenCalledTimes(MAX_ARCHIVES_PER_RUN);
 	});
 
 	test('leaves an already archived thread alone', async () => {

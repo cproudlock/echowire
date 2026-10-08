@@ -57,6 +57,32 @@ export function canSendInThreads(context: ThreadPermissionContext): boolean {
 	return isLegacyMask(mask) && has(mask, Permissions.SEND_MESSAGES);
 }
 
+// Echowire: a locked thread accepts messages only from moderators (the server answers THREAD_LOCKED
+// to anyone else), so the composer is disabled for everyone else instead of letting them type and
+// get a rejection. Archived is deliberately not here: sending reopens an archived thread.
+export function resolveThreadComposerLocked({
+	isThread,
+	locked,
+	canManage,
+}: {
+	isThread: boolean;
+	locked: boolean;
+	canManage: boolean;
+}): boolean {
+	return isThread && locked && !canManage;
+}
+
+export function isThreadComposerLocked(thread: Channel): boolean {
+	if (!thread.isThread() || thread.threadMetadata?.locked !== true) {
+		return false;
+	}
+	return resolveThreadComposerLocked({
+		isThread: true,
+		locked: true,
+		canManage: canModerateThreads({channelId: thread.parentId ?? thread.id, guildId: thread.guildId ?? undefined}),
+	});
+}
+
 export interface ThreadActionInput {
 	isOwner: boolean;
 	canManage: boolean;

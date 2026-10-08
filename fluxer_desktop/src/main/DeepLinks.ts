@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {APP_PROTOCOL} from '@electron/common/Constants';
+import {APP_PROTOCOLS} from '@electron/common/Constants';
 import {parseJumpListTaskFromArgv} from '@electron/main/JumpList';
 import {recordRecentDeepLink} from '@electron/main/RecentDocuments';
 import {getMainWindow, showWindow} from '@electron/main/Window';
@@ -9,7 +9,7 @@ import {app, ipcMain} from 'electron';
 let initialDeepLink: string | null = null;
 
 const DUPLICATE_URL_SUPPRESS_MS = 1500;
-const APP_PROTOCOL_SCHEME = `${APP_PROTOCOL}:`;
+const APP_PROTOCOL_SCHEMES = APP_PROTOCOLS.map((name) => `${name}:`);
 const DEEP_LINK_RENDERER_PAYLOAD_BLOCKLIST = /["'<>\\|\t\r\n]/;
 
 let lastDispatchedUrl: string | null = null;
@@ -26,11 +26,11 @@ function shouldSuppressAsDuplicate(url: string): boolean {
 }
 
 function isAppProtocolUrl(value: string): boolean {
-	if (value.length <= APP_PROTOCOL_SCHEME.length) return false;
 	try {
-		return new URL(value).protocol.toLowerCase() === APP_PROTOCOL_SCHEME;
+		return APP_PROTOCOL_SCHEMES.includes(new URL(value).protocol.toLowerCase());
 	} catch {
-		return value.toLowerCase().startsWith(APP_PROTOCOL_SCHEME);
+		const lower = value.toLowerCase();
+		return APP_PROTOCOL_SCHEMES.some((scheme) => lower.length > scheme.length && lower.startsWith(scheme));
 	}
 }
 
@@ -48,7 +48,7 @@ function extractDeepLinkFromArgv(argv: ReadonlyArray<string>): string | null {
 function normalizeDeepLinkForRenderer(rawUrl: string): string | null {
 	try {
 		const parsed = new URL(rawUrl);
-		if (parsed.protocol.toLowerCase() !== APP_PROTOCOL_SCHEME) {
+		if (!APP_PROTOCOL_SCHEMES.includes(parsed.protocol.toLowerCase())) {
 			return null;
 		}
 		const host = parsed.hostname;
@@ -67,10 +67,14 @@ export function initializeDeepLinks(): void {
 	}
 	if (process.defaultApp) {
 		if (process.argv.length >= 2) {
-			app.setAsDefaultProtocolClient(APP_PROTOCOL, process.execPath, [process.argv[1]]);
+			for (const protocol of APP_PROTOCOLS) {
+				app.setAsDefaultProtocolClient(protocol, process.execPath, [process.argv[1]]);
+			}
 		}
 	} else {
-		app.setAsDefaultProtocolClient(APP_PROTOCOL);
+		for (const protocol of APP_PROTOCOLS) {
+			app.setAsDefaultProtocolClient(protocol);
+		}
 	}
 	registerInitialDeepLinkHandler();
 }

@@ -88,7 +88,7 @@ package() {
 		Categories=Network;InstantMessaging;Chat;
 		StartupNotify=true
 		SingleMainWindow=true
-		MimeType=x-scheme-handler/fluxer;
+		MimeType=x-scheme-handler/echowire;x-scheme-handler/fluxer;
 		X-GNOME-UsesNotifications=true
 		Actions=open-settings;new-dm;
 

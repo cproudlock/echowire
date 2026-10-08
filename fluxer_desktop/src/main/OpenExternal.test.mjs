@@ -33,7 +33,7 @@ function loadOpenExternal() {
 		URL,
 		require: (specifier) => {
 			if (specifier === '@electron/common/Constants') {
-				return {APP_PROTOCOL: 'fluxer'};
+				return {APP_PROTOCOLS: ['echowire', 'fluxer']};
 			}
 			if (specifier === 'electron') {
 				return {
@@ -60,6 +60,7 @@ describe('OpenExternal URL validation', () => {
 		assert.equal(shouldOpenExternalUrl('mailto:support@fluxer.app'), true);
 		assert.equal(shouldOpenExternalUrl('tel:+15551234567'), true);
 		assert.equal(shouldOpenExternalUrl('fluxer://invite/test'), true);
+		assert.equal(shouldOpenExternalUrl('echowire://invite/test'), true);
 	});
 
 	test('blocks dangerous or malformed external URLs', () => {

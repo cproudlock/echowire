@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {appProtocolSchemeLengthAt, isAppProtocolScheme} from '@fluxer/constants/src/AppProtocolConstants';
 import * as idna from 'idna-uts46-hx';
 
 const HTTP_PROTOCOL = 'http:';
@@ -7,7 +8,6 @@ const HTTPS_PROTOCOL = 'https:';
 const MAILTO_PROTOCOL = 'mailto:';
 const TEL_PROTOCOL = 'tel:';
 const SMS_PROTOCOL = 'sms:';
-const APP_PROTOCOL = 'fluxer:';
 const EMAIL_REGEX =
 	/^[a-zA-Z0-9._%+-]+@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 const PHONE_REGEX = /^\+[1-9][\d\s\-()]+$/;
@@ -65,7 +65,8 @@ function idnaEncodeURL(url: string): string {
 
 export function convertToAsciiUrl(url: string): string {
 	if (SPECIAL_PROTOCOLS_REGEX.test(url)) return url;
-	if (url.startsWith(`${APP_PROTOCOL}//`)) return url;
+	const schemeLength = appProtocolSchemeLengthAt(url);
+	if (schemeLength > 0 && url.startsWith('//', schemeLength)) return url;
 	const urlObj = createUrlObject(url);
 	return urlObj ? idnaEncodeURL(url) : url;
 }
@@ -82,6 +83,6 @@ export function isValidUrl(urlStr: string): boolean {
 		protocol === MAILTO_PROTOCOL ||
 		protocol === TEL_PROTOCOL ||
 		protocol === SMS_PROTOCOL ||
-		protocol === APP_PROTOCOL
+		isAppProtocolScheme(protocol)
 	);
 }

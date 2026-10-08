@@ -10,7 +10,16 @@ use crate::text::{
     is_digit, is_digit_only, is_whitespace, starts_with, trim,
 };
 
-const APP_PROTOCOL_SCHEME: &str = "fluxer:";
+// Echowire: echowire:// is ours; fluxer:// stays accepted so a link from another instance still
+// renders as a link. Keep in step with packages/constants/src/AppProtocolConstants.ts.
+const APP_PROTOCOL_SCHEMES: [&str; 2] = ["echowire:", "fluxer:"];
+
+fn app_protocol_scheme_len(text: &str) -> Option<usize> {
+    APP_PROTOCOL_SCHEMES
+        .iter()
+        .find(|scheme| starts_with(text, scheme))
+        .map(|scheme| scheme.len())
+}
 
 #[derive(Clone, Debug)]
 struct BracketResult<'a> {
@@ -461,7 +470,7 @@ pub fn parse_url_segment(text: &str, flags: u32) -> Option<ParserResult> {
     } else if starts_with(text, "http://") {
         7
     } else if starts_with_app_protocol_url(text) {
-        APP_PROTOCOL_SCHEME.len()
+        app_protocol_scheme_len(text).unwrap_or(0)
     } else {
         return None;
     };
@@ -539,7 +548,7 @@ pub fn parse_autolink(text: &str, flags: u32) -> Option<ParserResult> {
     } else if starts_with(url, "http://") {
         7
     } else if starts_with_app_protocol_url(url) {
-        APP_PROTOCOL_SCHEME.len()
+        app_protocol_scheme_len(url).unwrap_or(0)
     } else {
         return None;
     };
@@ -653,11 +662,14 @@ pub fn starts_with_url(text: &str) -> bool {
 }
 
 fn starts_with_app_protocol_url(text: &str) -> bool {
-    if !starts_with(text, APP_PROTOCOL_SCHEME) || text.len() <= APP_PROTOCOL_SCHEME.len() {
+    let Some(scheme_len) = app_protocol_scheme_len(text) else {
+        return false;
+    };
+    if text.len() <= scheme_len {
         return false;
     }
     matches!(
-        byte_at(text, APP_PROTOCOL_SCHEME.len()),
+        byte_at(text, scheme_len),
         b'/' | b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'_' | b'-'
     )
 }
@@ -929,12 +941,14 @@ fn looks_like_valid_app_protocol_url(url: &str) -> bool {
     if !starts_with_app_protocol_url(url) {
         return false;
     }
-    url[APP_PROTOCOL_SCHEME.len()..].bytes().all(|char| {
-        !matches!(
-            char,
-            b'"' | b'\'' | b'<' | b'>' | b'\\' | b'|' | b' ' | b'\t' | b'\r' | b'\n'
-        )
-    })
+    url[app_protocol_scheme_len(url).unwrap_or(0)..]
+        .bytes()
+        .all(|char| {
+            !matches!(
+                char,
+                b'"' | b'\'' | b'<' | b'>' | b'\\' | b'|' | b' ' | b'\t' | b'\r' | b'\n'
+            )
+        })
 }
 
 pub fn is_url_termination_char(char: u8) -> bool {

@@ -361,7 +361,7 @@ const linuxDesktopEntry = {
 	StartupWMClass: linuxDesktopId,
 	StartupNotify: 'true',
 	SingleMainWindow: 'true',
-	MimeType: 'x-scheme-handler/fluxer;',
+	MimeType: 'x-scheme-handler/echowire;x-scheme-handler/fluxer;',
 	'X-GNOME-UsesNotifications': 'true',
 };
 const linuxDesktopEntryWithActions = {
@@ -1605,7 +1605,7 @@ module.exports = {
 		{
 			name: appId,
 			role: 'Viewer',
-			schemes: ['fluxer'],
+			schemes: ['echowire', 'fluxer'],
 		},
 	],
 	beforePack: verifyNativePackageInputs,

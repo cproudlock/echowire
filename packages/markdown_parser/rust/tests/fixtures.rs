@@ -272,6 +272,44 @@ fn native_parser_unescapes_word_and_sentence_dots() {
 }
 
 #[test]
+fn native_parser_allows_echowire_app_protocol_links() {
+    let flags = ParserFlags::ALLOW_AUTOLINKS | ParserFlags::ALLOW_MASKED_LINKS;
+    assert_eq!(
+        parse(
+            "echowire://invite/abc echowire:/channels/123/456 [Open gift](echowire:gift/xyz)",
+            flags,
+            ""
+        ),
+        json!({"nodes":[
+            {
+                "type":"Link",
+                "url":"echowire://invite/abc",
+                "escaped":false,
+                "rawUrl":"echowire://invite/abc",
+                "source":"echowire://invite/abc"
+            },
+            {"type":"Text","content":" "},
+            {
+                "type":"Link",
+                "url":"echowire:/channels/123/456",
+                "escaped":false,
+                "rawUrl":"echowire:/channels/123/456",
+                "source":"echowire:/channels/123/456"
+            },
+            {"type":"Text","content":" "},
+            {
+                "type":"Link",
+                "text":{"type":"Text","content":"Open gift"},
+                "url":"echowire:gift/xyz",
+                "escaped":false,
+                "rawUrl":"echowire:gift/xyz",
+                "source":"[Open gift](echowire:gift/xyz)"
+            }
+        ]})
+    );
+}
+
+#[test]
 fn native_parser_allows_app_protocol_links() {
     let flags = ParserFlags::ALLOW_AUTOLINKS | ParserFlags::ALLOW_MASKED_LINKS;
     assert_eq!(

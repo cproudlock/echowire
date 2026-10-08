@@ -1,20 +1,21 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import UnicodeEmojis from '@app/features/expressions/utils/UnicodeEmojis';
+import {appProtocolSchemeLengthAt} from '@fluxer/constants/src/AppProtocolConstants';
 
 const HTTP_PREFIX = 'http://';
 const HTTPS_PREFIX = 'https://';
-const APP_PROTOCOL_SCHEME = 'fluxer:';
 const TRIMMED_AUTOLINK_PUNCTUATION = new Set(['.', ',', ';', ':', '!', '?']);
 
 function isUrlStart(content: string, index: number): boolean {
 	if (content.startsWith(HTTP_PREFIX, index) || content.startsWith(HTTPS_PREFIX, index)) {
 		return true;
 	}
-	if (!content.startsWith(APP_PROTOCOL_SCHEME, index)) {
+	const schemeLength = appProtocolSchemeLengthAt(content, index);
+	if (schemeLength === 0) {
 		return false;
 	}
-	const nextChar = content[index + APP_PROTOCOL_SCHEME.length] ?? '';
+	const nextChar = content[index + schemeLength] ?? '';
 	return nextChar === '/' || /[A-Za-z0-9_-]/u.test(nextChar);
 }
 

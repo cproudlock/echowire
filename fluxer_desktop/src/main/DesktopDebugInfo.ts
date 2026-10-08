@@ -180,8 +180,8 @@ function getLogFilePath(): string | null {
 }
 
 function sanitizeLaunchArg(arg: string): string {
-	if (/^fluxer:\/\//i.test(arg)) {
-		return 'fluxer://<redacted>';
+	if (/^(?:echowire|fluxer):\/\//i.test(arg)) {
+		return `${arg.slice(0, arg.indexOf(':'))}://<redacted>`;
 	}
 	if (arg.startsWith('--fluxer-app-url=')) {
 		return `--fluxer-app-url=${sanitizeUrlForDiagnostics(arg.slice('--fluxer-app-url='.length))}`;

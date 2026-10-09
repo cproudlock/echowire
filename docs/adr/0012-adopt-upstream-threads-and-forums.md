@@ -43,8 +43,29 @@ Facts that drive the plan (all from reading code, none from running it):
 ## Decision
 
 We will make upstream's implementation the base for threads and forums, retire ours, and
-re-implement the extras of ours that users would miss on top of it. We will do it as a
+re-implement on top of it only the extras that match Discord's behaviour, kept as separate as
+we can so that merging upstream stays cheap. We will do it as a
 phased, reversible project, in this order, and we will not skip a phase gate.
+
+### The rule: upstream by default, Discord for additions
+
+The goal is to stay as close to upstream's implementation as possible and to add our own
+behaviour only where it matches Discord's. That gives every later choice a test:
+
+1. Upstream's behaviour wins by default, including where ours was different (permissions,
+   notification defaults, error codes, route shapes). We change it only if Discord does
+   something else AND the maintainer decides we want that.
+2. An addition needs a Discord reference. Acceptable evidence is a screenshot or the Discord
+   documentation the maintainer supplied (the forum FAQ and screenshots from 2026-09-13, which
+   our parity notes were built from). An addition we cannot point to a Discord reference for is
+   dropped, not carried.
+3. An addition must be cheap to merge around. It lives in its own files and components, wired
+   in at the fewest points upstream's files allow (a prop, a hook, a registered row), marked
+   `// Echowire:`, with its own tests. Editing the body of an upstream function is a last
+   resort and needs a reason in the review.
+4. Every addition is listed in `docs/upstream-divergence.md`: what it is, the Discord
+   behaviour it matches, the files it touches, the upstream files it hooks into, and its
+   tests. Each upstream sync reads that file first, so a merge cannot silently drop one.
 
 ### Phase 0. Decisions and measurement (no code)
 
@@ -52,14 +73,21 @@ Exit criteria, all required:
 
 1. Count what exists in production: thread rows by type, forum channels, forum posts, thread
    members, and guilds with any of them. This sizes the migration and is the main unknown.
-2. The maintainer decides each behaviour change in the Context list: private-thread
-   moderators (accept MANAGE_THREADS-only, or add a MANAGE_CHANNELS carve-out), the seeding
-   job (run it, or pre-set `guild_thread_state.perms_seeded_at` and write our own seeding),
-   whether thread members keep getting every message, and the default for @everyone
-   CREATE_PRIVATE_THREADS.
-3. The extras to keep are chosen from this list: the "N New" forum pill, participant avatars
-   on post cards, "Add to Post", the OP badge in ordinary threads, the "Closed posts" toggle,
-   the forum examples modal, the mobile post header actions, and the mobile add-member UI.
+2. Each behaviour change in the Context list takes upstream's behaviour unless the maintainer
+   names a Discord reference for doing otherwise: private-thread moderators
+   (MANAGE_THREADS or administrator, no MANAGE_CHANNELS carve-out), the seeding job (run it, or
+   pre-set `guild_thread_state.perms_seeded_at` and seed ourselves), thread members' default
+   notification level, and the @everyone CREATE_PRIVATE_THREADS default. The seeding job is the
+   one where a decision is required either way, because it rewrites overwrites.
+3. Each extra of ours is sorted by the rule above. From our notes, these came from the
+   Discord forum parity work and are candidates to keep, each needing its reference confirmed:
+   the "N New" forum pill, "Add to Post", participant avatars on post cards, the OP badge
+   (upstream shows it in forum posts only; ours also in ordinary threads, which needs a
+   Discord reference), and the mobile post header actions and add-member UI. These have no
+   Discord reference in our notes and are dropped unless one is supplied: the "Closed posts"
+   toggle and the forum examples modal. Upstream already has React to Post, Follow, moderated
+   tags, THREAD_LIST_SYNC, the add-member endpoint and the thread permission bits, so those
+   are no longer ours to carry.
 4. A way to read a copy of the production database is agreed, kept on the dev container only
    and deleted after the project.
 
@@ -126,7 +154,8 @@ nothing.
 ### Phase 4. The web client
 
 Take upstream's thread and forum UI, delete ours (about 43 files), then re-add the chosen
-extras on top, with translation keys and the lowercase-brand test. The desktop app loads the
+extras as separate components wired in at the fewest points, each entered in
+`docs/upstream-divergence.md`, with translation keys and the lowercase-brand test. The desktop app loads the
 web client from the server, so it follows the deploy. Exit: app gates pass and a manual pass
 through the QA matrix below on the scratch stack.
 
@@ -134,7 +163,8 @@ through the QA matrix below on the scratch stack.
 
 Take upstream's thread work and the matching SDK, move our cached thread columns onto
 upstream's names (their schema step is additive), point the SDK guard test at `flags`, and
-re-add the chosen extras. The client must work against BOTH server shapes during the rollout:
+re-add the chosen extras under the same rule (separate files, few hook points, listed in the
+divergence ledger). The client must work against BOTH server shapes during the rollout:
 it sends the `CHANNEL_THREADS` flag, and treats threads as enabled when the guild carries the
 `threads` list or the old shape. Fix or consciously accept upstream's drift-stream providers
 under the widget-test invariant. Release it and wait for adoption before the cutover. Exit:
@@ -176,7 +206,10 @@ Hard or unhappy:
   chooses a carve-out; guilds' overwrites change when seeding runs.
 - Thread members stop receiving every message by default, which is a notification change
   users will feel.
-- We keep chasing upstream either way; this just moves the work to merge time.
+- We keep chasing upstream either way; this just moves the work to merge time. The rule above
+  and the divergence ledger are what keep that work small.
+- Some things users have today go away if they have no Discord reference. That is deliberate,
+  and the list is shown to the maintainer in Phase 0 before anything is removed.
 
 ## Risks and checks
 

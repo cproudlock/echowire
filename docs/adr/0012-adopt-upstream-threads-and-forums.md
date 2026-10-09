@@ -85,6 +85,11 @@ Exit criteria, all required:
    (upstream: forum posts; ours: any thread). Separately the permission seeding job needs a
    decision either way, because it rewrites overwrites: run it, or pre-set
    `guild_thread_state.perms_seeded_at` and seed ourselves.
+   Decided 2026-10-08 (maintainer): take upstream's behaviour for three of the six. Thread
+   members' default notification level follows the parent or guild level, with per-member
+   flags. Creating a forum post requires a title and a starter message in the request. The
+   thread-created system message is deletable like any other message. Still open: private-thread
+   moderators, who may create a forum post, and the OP badge scope.
 3. The extras to carry are everything we have that upstream lacks: the "N New" forum pill,
    "Add to Post", participant avatars on post cards, the "Closed posts" toggle, the forum
    examples modal, the mobile post header actions, and the mobile add-member UI. Upstream

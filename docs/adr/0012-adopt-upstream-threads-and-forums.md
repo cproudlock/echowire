@@ -55,10 +55,10 @@ behaviour only where it matches Discord's. That gives every later choice a test:
 1. Upstream's behaviour wins by default, including where ours was different (permissions,
    notification defaults, error codes, route shapes). We change it only if Discord does
    something else AND the maintainer decides we want that.
-2. An addition needs a Discord reference. Acceptable evidence is a screenshot or the Discord
-   documentation the maintainer supplied (the forum FAQ and screenshots from 2026-09-13, which
-   our parity notes were built from). An addition we cannot point to a Discord reference for is
-   dropped, not carried.
+2. Our current threads and forums were built to match Discord (maintainer, 2026-10-08, from the
+   forum FAQ and screenshots of 2026-09-13), so every feature we have that upstream lacks is
+   kept as an addition. Nothing of ours is dropped for lacking a separate reference. A NEW
+   addition, one we do not have today, does need a Discord reference.
 3. An addition must be cheap to merge around. It lives in its own files and components, wired
    in at the fewest points upstream's files allow (a prop, a hook, a registered row), marked
    `// Echowire:`, with its own tests. Editing the body of an upstream function is a last
@@ -73,21 +73,24 @@ Exit criteria, all required:
 
 1. Count what exists in production: thread rows by type, forum channels, forum posts, thread
    members, and guilds with any of them. This sizes the migration and is the main unknown.
-2. Each behaviour change in the Context list takes upstream's behaviour unless the maintainer
-   names a Discord reference for doing otherwise: private-thread moderators
-   (MANAGE_THREADS or administrator, no MANAGE_CHANNELS carve-out), the seeding job (run it, or
-   pre-set `guild_thread_state.perms_seeded_at` and seed ourselves), thread members' default
-   notification level, and the @everyone CREATE_PRIVATE_THREADS default. The seeding job is the
-   one where a decision is required either way, because it rewrites overwrites.
-3. Each extra of ours is sorted by the rule above. From our notes, these came from the
-   Discord forum parity work and are candidates to keep, each needing its reference confirmed:
-   the "N New" forum pill, "Add to Post", participant avatars on post cards, the OP badge
-   (upstream shows it in forum posts only; ours also in ordinary threads, which needs a
-   Discord reference), and the mobile post header actions and add-member UI. These have no
-   Discord reference in our notes and are dropped unless one is supplied: the "Closed posts"
-   toggle and the forum examples modal. Upstream already has React to Post, Follow, moderated
-   tags, THREAD_LIST_SYNC, the add-member endpoint and the thread permission bits, so those
-   are no longer ours to carry.
+2. Where upstream and ours BEHAVE differently (as opposed to ours having something upstream
+   lacks), the maintainer picks one per item. The default is upstream, because that is what
+   keeps the merge small, and ours wins only where the maintainer says ours is the Discord
+   behaviour. The items: private-thread moderators (upstream: MANAGE_THREADS or administrator;
+   ours also MANAGE_CHANNELS), thread members' default notification level (upstream follows the
+   parent or guild level with per-member flags; ours: every message), creating a forum post
+   (upstream: SEND_MESSAGES; ours: CREATE_PUBLIC_THREADS), a forum post requiring a starter
+   message in the request (upstream yes; ours no), who may delete the thread-created system
+   message (upstream: like any message; ours: moderators only), and the OP badge scope
+   (upstream: forum posts; ours: any thread). Separately the permission seeding job needs a
+   decision either way, because it rewrites overwrites: run it, or pre-set
+   `guild_thread_state.perms_seeded_at` and seed ourselves.
+3. The extras to carry are everything we have that upstream lacks: the "N New" forum pill,
+   "Add to Post", participant avatars on post cards, the "Closed posts" toggle, the forum
+   examples modal, the mobile post header actions, and the mobile add-member UI. Upstream
+   already has React to Post, Follow, moderated tags, THREAD_LIST_SYNC, the add-member
+   endpoint and the thread permission bits, so those are no longer ours to carry; their
+   behaviour is compared in item 2 where it differs.
 4. A way to read a copy of the production database is agreed, kept on the dev container only
    and deleted after the project.
 
@@ -208,8 +211,9 @@ Hard or unhappy:
   users will feel.
 - We keep chasing upstream either way; this just moves the work to merge time. The rule above
   and the divergence ledger are what keep that work small.
-- Some things users have today go away if they have no Discord reference. That is deliberate,
-  and the list is shown to the maintainer in Phase 0 before anything is removed.
+- Where upstream behaves differently from ours (the Phase 0 item 2 list), choosing upstream
+  changes something users have today, and choosing ours keeps a divergence to maintain. Each
+  such choice is made on purpose, one at a time, and recorded in the divergence ledger.
 
 ## Risks and checks
 

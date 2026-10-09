@@ -21,6 +21,8 @@ const EXPECTED_CALL_SITES: Readonly<Record<string, number>> = {
 	'channel/services/message/MessageEditService.ts': 1,
 	'channel/services/message/MessageRetrievalService.ts': 4,
 	'channel/services/message/MessageSendService.ts': 5,
+	// Echowire: the Add to Post route (docs/upstream-divergence.md); it passes the caller viewer.
+	'channel/services/thread/StarterAttachmentService.ts': 1,
 	'channel/services/thread/ThreadCreationService.ts': 3,
 	'channel/services/thread/ThreadForumService.ts': 1,
 	'channel/services/thread/ThreadListService.ts': 1,

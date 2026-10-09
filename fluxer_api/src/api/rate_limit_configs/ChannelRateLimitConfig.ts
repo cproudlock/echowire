@@ -172,6 +172,11 @@ export const ChannelRateLimitConfigs = {
 		bucket: 'channel:post_data::channel_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},
 	} as RouteRateLimitConfig,
+	// Echowire: add to post, see docs/upstream-divergence.md.
+	CHANNEL_STARTER_ATTACHMENT: {
+		bucket: 'channel:starter_attachment::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
 	CHANNEL_FORUM_TAGS: {
 		bucket: 'channel:forum_tags::channel_id',
 		config: {limit: 10, windowMs: ms('10 seconds')},

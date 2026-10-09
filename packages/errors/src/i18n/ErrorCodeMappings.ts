@@ -562,6 +562,10 @@ export const ErrorCodeToI18nKey = {
 	[ValidationErrorCodes.ROWS_IS_REQUIRED]: 'limits.rows_required',
 	[ValidationErrorCodes.SNOWFLAKE_OUT_OF_RANGE]: 'misc.invalid_snowflake',
 	[ValidationErrorCodes.STRING_LENGTH_EXACT]: 'limits.string_length_exact',
+	// Echowire: "add to post", see docs/upstream-divergence.md.
+	[ValidationErrorCodes.STARTER_ATTACHMENT_ALREADY_PRESENT]: 'threads.starter_attachment_already_present',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_LIMIT_REACHED]: 'threads.starter_attachment_limit_reached',
+	[ValidationErrorCodes.STARTER_ATTACHMENT_SOURCE_INVALID]: 'threads.starter_attachment_source_invalid',
 	[ValidationErrorCodes.TICKET_ALREADY_COMPLETED]: 'tickets.ticket_already_completed',
 	[ValidationErrorCodes.TIMEOUT_CANNOT_EXCEED_365_DAYS]: 'limits.timeout_cannot_exceed_365_days',
 	[ValidationErrorCodes.VALUE_MUST_BE_INTEGER_IN_RANGE]: 'limits.value_must_be_integer_in_range',

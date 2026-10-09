@@ -359,6 +359,58 @@ Returns the owner and first message of each requested post in a forum or media c
 
 20 requests per 10 seconds for each authenticated user and channel ID, on the `channel:post_data::channel_id` bucket.
 
+## Add an attachment to a post
+
+<RouteHeader method="POST" path="/v1/channels/{channel_id}/starter-message/attachments" bot />
+
+Appends an attachment that already exists on a message in a forum or media post to the first message of the post, where it becomes the post thumbnail. Nothing is uploaded. The attachment keeps its stored file, so the reply that carried it and the first message both show it. Requires the caller to own the post or hold `MANAGE_THREADS` on the forum or media channel.
+
+### Path parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| channel_id | snowflake | The ID of the post |
+
+### JSON body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| message_id | snowflake | The ID of a message in the post that carries the attachment |
+| attachment_id | snowflake | The ID of the attachment to append |
+
+### Behaviour
+
+The response is the updated first message of the post.
+
+
+The attachment is appended after the attachments the first message already has. The first message holds at most the resolved [`max_attachments_per_message`](/http-api/instance/#limit-keys) attachments, like any message.
+
+When [attachment decay](/http-api/instance/) is enabled, the decay record of the attachment is re-pointed at the first message, so the stored file lives as long as the post and not as long as the reply. The expiry does not change.
+
+Fluxer emits [Message Update](/gateway/events/#message-update) for the first message. It also emits [Thread Update](/gateway/threads/#thread-update) when the first message had no attachment before, because the post card then gains a thumbnail. Appending a second attachment changes no card and emits no Thread Update.
+
+### Response
+
+The three `STARTER_ATTACHMENT_*` codes are field codes in the `errors` array of a 400 `INVALID_FORM_BODY` response.
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | [message](/http-api/messages/#message-object) object | The attachment was appended |
+| 400 | [error response](/http-api/#error-response) | Channel is not a post of a forum or media channel and the request returns `INVALID_CHANNEL_TYPE` |
+| 400 | [error response](/http-api/#error-response) | `message_id` is the first message and `message_id` has the code `STARTER_ATTACHMENT_SOURCE_INVALID` |
+| 400 | [error response](/http-api/#error-response) | First message has the attachment and `attachment_id` has the code `STARTER_ATTACHMENT_ALREADY_PRESENT` |
+| 400 | [error response](/http-api/#error-response) | First message is at its limit and `attachment_id` has the code `STARTER_ATTACHMENT_LIMIT_REACHED` |
+| 400 | [error response](/http-api/#error-response) | Post is archived and the request returns `THREAD_ARCHIVED` |
+| 400 | [error response](/http-api/#error-response) | Post is locked, the caller is not a thread moderator, and the request returns `THREAD_LOCKED` |
+| 403 | [error response](/http-api/#error-response) | Caller neither owns the post nor holds `MANAGE_THREADS` and the request returns `MISSING_PERMISSIONS` |
+| 403 | [error response](/http-api/#error-response) | Caller cannot view the post and the request returns `MISSING_ACCESS` or `MISSING_PERMISSIONS` |
+| 404 | [error response](/http-api/#error-response) | Channel does not exist or is not a thread, and the request returns `UNKNOWN_CHANNEL` |
+| 404 | [error response](/http-api/#error-response) | Message is not in the post or lacks the attachment, and the request returns `UNKNOWN_MESSAGE` |
+
+### Rate limit
+
+10 requests per 10 seconds for each authenticated user and channel ID, on the `channel:starter_attachment::channel_id` bucket.
+
 ## Webhooks in forums
 
 A webhook whose channel is a forum or media channel creates a post, or posts into an existing one. [Execute webhook](/http-api/webhooks/#execute-webhook) lists the `thread_id`, `thread_name`, and `applied_tags` fields and their error codes.

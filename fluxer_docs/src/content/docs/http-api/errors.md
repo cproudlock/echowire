@@ -2055,6 +2055,18 @@ SSO test code is missing the email payload
 
 We couldn't allocate a discriminator for your SSO account
 
+### `STARTER_ATTACHMENT_ALREADY_PRESENT`
+
+This attachment is already on the post
+
+### `STARTER_ATTACHMENT_LIMIT_REACHED`
+
+The post has reached its attachment limit
+
+### `STARTER_ATTACHMENT_SOURCE_INVALID`
+
+The source message can't be the post's own first message
+
 ### `STRING_LENGTH_EXACT`
 
 String must be exactly {length} characters

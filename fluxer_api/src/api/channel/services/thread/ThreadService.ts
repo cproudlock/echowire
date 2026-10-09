@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {StarterAttachmentService} from '@app/api/channel/services/thread/StarterAttachmentService'; // Echowire: add to post
 import {ThreadCreationService} from '@app/api/channel/services/thread/ThreadCreationService';
 import {ThreadDeletionService} from '@app/api/channel/services/thread/ThreadDeletionService';
 import {ThreadForumService} from '@app/api/channel/services/thread/ThreadForumService';
@@ -15,6 +16,7 @@ export class ThreadService {
 	readonly lists: ThreadListService;
 	readonly deletion: ThreadDeletionService;
 	readonly forum: ThreadForumService;
+	readonly starterAttachments: StarterAttachmentService; // Echowire: add to post
 
 	constructor(deps: ThreadServiceDeps) {
 		const context = new ThreadServiceContext(deps);
@@ -24,5 +26,6 @@ export class ThreadService {
 		this.lists = new ThreadListService(context);
 		this.deletion = new ThreadDeletionService(context);
 		this.forum = new ThreadForumService(context);
+		this.starterAttachments = new StarterAttachmentService(context); // Echowire: add to post
 	}
 }

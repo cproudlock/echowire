@@ -297,3 +297,56 @@ we ship. The fallback is ADR 0010's holding position.
   are tied to their server shape.
 - Freeze on upstream's current thread code and stop merging: avoids the chase but forks us
   from their fixes, the opposite of the goal.
+
+## Progress log
+
+### 2026-10-09: decisions
+
+- Seeding: run upstream's `SeedThreadPermissions` as is. `@everyone` gains Create Private Threads
+  (upstream's default), as in every other community on upstream. The measured production data shows
+  nothing is erased: no role or overwrite carries an explicit thread bit.
+- Phase 1 exit revised. The scratch environment is a throwaway Postgres holding only the
+  channel, guild, role and thread-member rows (267 rows), not a full copy of production, because a
+  full copy carries credentials and message content the migration never reads. The stack cannot log
+  in on that copy, so the exit is: the copy loads, the Phase 0 counts reproduce (they do), and the
+  Phase 3 job runs against it.
+- Premium tier name: upstream made it instance branding. The client fallback is `Reverb`; the server
+  default stays upstream's (`Premium` self-hosted, `Plutonium` hosted), so the live instance must set
+  `premium_product_name` to `Reverb` in its branding at cutover.
+
+### 2026-10-09: Phase 2 outcome (branch feat/adopt-upstream-threads)
+
+Upstream/main was merged whole (102 commits, merge commit a2d855d20), not cherry-picked. 222 paths
+conflicted; 66 were catalogs, regenerated or resolved with `tools/upstream/resolve_po.py`
+(`PREFER_THEIRS=1` was added for this adoption: both sides had translated the same new thread strings).
+Method that worked: classify every file the fork changed by hunk (all thread-related, so take
+upstream's whole file; mixed, so review), delete the fork-built thread modules, then let the type
+checker find what still dangled. Clean textual merges were wrong in several places and were caught
+by gates, not by git: fork thread glue left inside upstream-shaped files (api services, gateway
+modules, docs pages, admin templates), the app proxy losing its discovery cache wiring, a voice
+codec helper left unused, upstream's `Plutonium` defaults, and a keep-both resolution that dropped a
+closing brace in `InstanceConfigRepository.ts`.
+
+Gates at the end of Phase 4 on the server side: api tsc 0 errors and vitest 6780 passing plus one expected fail; app tsc 0 and vitest 1500; gateway
+eunit 3391 tests 0 failures (including the unread cap); cargo fmt, clippy `-D warnings`, deny and
+tests clean; biome ci, eslint, knip, docs verify and build, strict lingui compile, desktop main tests
+1419 pass 4 skipped.
+
+Decisions taken during the merge: the upstream-only `verify_windows_arm64` job was dropped from
+`build-desktop.yaml` because it downloads Actions artifacts and this fork uploads through the S3
+handoff, so it verified nothing while adding a runner dependency.
+
+### 2026-10-09: Phases 3 and 4 outcome, and what is left
+
+- Phase 3: `fluxer_api/scripts/MigrateForkThreads.ts` (modes dry-run, apply, delta, verify, cleanup-legacy, with
+  `--pre-cutover`). On the scratch copy it wrote 132 rows, `--verify` passed 328 checks, and a second apply wrote
+  nothing. It leaves the old columns and tables alone and refuses non-loopback hosts without `--allow-remote`.
+- Phase 4: the N New pill, participant avatars and forum examples are re-added as separate components; Add to Post
+  is carried as a server route (`StarterAttachmentService`); the Closed posts toggle is not carried, upstream lists
+  closed posts under Older posts. The ledger is `docs/upstream-divergence.md`.
+- Leak regression: 39 tests port the September assertions onto upstream's code, each shown to fail under a planted
+  violation. One finding to take to upstream: acking a private thread you cannot see writes a read-state row (no
+  content, only confirms the id is a thread); it is pinned by an expected-fail test. A seventh behaviour
+  difference: upstream adds a mentioned member to an invitable private thread.
+- Left: mobile (Phase 5), then cutover (Phase 6): backup, `--apply --pre-cutover` while the old image is live, deploy,
+  `--delta`, run seeding, set `premium_product_name` to `Reverb`, verify, then `--cleanup-legacy` later.

@@ -241,6 +241,7 @@ An RTC region names one voice routing target the deployment operates. Its identi
 | id | string | The ID of the RTC region |
 | name | string | The name shown for the region in a client |
 | emoji | string | The emoji the operator configured for the region |
+| ping_endpoint | ?string | The URL a client pings to measure its latency to the region, or null when the region has none |
 
 ### Example
 
@@ -248,7 +249,8 @@ An RTC region names one voice routing target the deployment operates. Its identi
 {
   "id": "eu-central",
   "name": "Frankfurt",
-  "emoji": "🇩🇪"
+  "emoji": "🇩🇪",
+  "ping_endpoint": "https://eu-central.example.com/ping"
 }
 ```
 

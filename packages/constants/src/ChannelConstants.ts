@@ -9,18 +9,16 @@ export const ChannelTypes = {
 	GROUP_DM: 3,
 	GUILD_CATEGORY: 4,
 	GUILD_ANNOUNCEMENT: 5,
-	// Echowire: Threads + Forum channels (re-ported from the old fork; absent upstream).
+	ANNOUNCEMENT_THREAD: 10,
 	PUBLIC_THREAD: 11,
 	PRIVATE_THREAD: 12,
 	GUILD_FORUM: 15,
+	GUILD_MEDIA: 16,
 	GUILD_LINK: 998,
 	DM_PERSONAL_NOTES: 999,
 } as const;
 
 export type ChannelType = ValueOf<typeof ChannelTypes>;
-
-// Echowire: thread channel types (live as sub-channels of a text/forum parent).
-export const THREAD_CHANNEL_TYPES = new Set<number>([ChannelTypes.PUBLIC_THREAD, ChannelTypes.PRIVATE_THREAD]);
 
 export const GUILD_TEXT_BASED_CHANNEL_TYPES = new Set<number>([
 	ChannelTypes.GUILD_TEXT,
@@ -29,7 +27,6 @@ export const GUILD_TEXT_BASED_CHANNEL_TYPES = new Set<number>([
 ]);
 export const TEXT_BASED_CHANNEL_TYPES = new Set<number>([
 	...GUILD_TEXT_BASED_CHANNEL_TYPES,
-	...THREAD_CHANNEL_TYPES,
 	ChannelTypes.DM,
 	ChannelTypes.DM_PERSONAL_NOTES,
 	ChannelTypes.GROUP_DM,
@@ -69,6 +66,7 @@ export const MessageTypes = {
 	CHANNEL_FOLLOW_ADD: 12,
 	THREAD_CREATED: 18,
 	REPLY: 19,
+	THREAD_STARTER_MESSAGE: 21,
 	CLIENT_SYSTEM: 99,
 } as const;
 
@@ -80,26 +78,18 @@ const MESSAGE_TYPE_DELETABLE = {
 	[MessageTypes.CHANNEL_PINNED_MESSAGE]: true,
 	[MessageTypes.USER_JOIN]: true,
 	[MessageTypes.CHANNEL_FOLLOW_ADD]: true,
+	[MessageTypes.THREAD_CREATED]: true,
+	[MessageTypes.THREAD_STARTER_MESSAGE]: false,
 	[MessageTypes.RECIPIENT_ADD]: false,
 	[MessageTypes.RECIPIENT_REMOVE]: false,
 	[MessageTypes.CALL]: false,
 	[MessageTypes.CHANNEL_NAME_CHANGE]: false,
 	[MessageTypes.CHANNEL_ICON_CHANGE]: false,
-	[MessageTypes.THREAD_CREATED]: false,
 	[MessageTypes.CLIENT_SYSTEM]: false,
 } as const satisfies Record<MessageTypeValue, boolean>;
 
 export function isMessageTypeDeletable(type: number): boolean {
 	return type in MESSAGE_TYPE_DELETABLE ? MESSAGE_TYPE_DELETABLE[type as MessageTypeValue] : false;
-}
-
-// Echowire: system messages are not deletable by their subject, but a moderator has to be able to
-// clear the "started a thread" notice: it is the only system message that outlives what it
-// announces, since the thread it points at can be deleted while the notice stays in the parent.
-const MODERATOR_DELETABLE_MESSAGE_TYPES: ReadonlySet<number> = new Set([MessageTypes.THREAD_CREATED]);
-
-export function isMessageTypeDeletableByModerator(type: number): boolean {
-	return MODERATOR_DELETABLE_MESSAGE_TYPES.has(type);
 }
 
 export const MessageReferenceTypes = {
@@ -141,8 +131,6 @@ export const MessageFlagsDescriptions: Record<keyof typeof MessageFlags, string>
 };
 export const SENDABLE_MESSAGE_FLAGS =
 	MessageFlags.SUPPRESS_EMBEDS | MessageFlags.SUPPRESS_NOTIFICATIONS | MessageFlags.VOICE_MESSAGE;
-export const CROSSPOST_SERVER_FLAGS =
-	MessageFlags.CROSSPOSTED | MessageFlags.IS_CROSSPOST | MessageFlags.SOURCE_MESSAGE_DELETED;
 export const MessageAttachmentFlags = {
 	IS_SPOILER: 1 << 3,
 	CONTAINS_EXPLICIT_MEDIA: 1 << 4,
@@ -212,13 +200,7 @@ export const Permissions = {
 	MANAGE_ROLES: 1n << 28n,
 	MANAGE_WEBHOOKS: 1n << 29n,
 	MANAGE_EXPRESSIONS: 1n << 30n,
-	// Echowire: threads and forum posts are a fork feature, but the bits keep Discord's own
-	// positions so a permission integer means the same thing on both platforms.
-	MANAGE_THREADS: 1n << 34n,
-	CREATE_PUBLIC_THREADS: 1n << 35n,
-	CREATE_PRIVATE_THREADS: 1n << 36n,
 	USE_EXTERNAL_STICKERS: 1n << 37n,
-	SEND_MESSAGES_IN_THREADS: 1n << 38n,
 	MODERATE_MEMBERS: 1n << 40n,
 	CREATE_EXPRESSIONS: 1n << 43n,
 	PIN_MESSAGES: 1n << 51n,
@@ -257,11 +239,7 @@ export const PermissionsDescriptions: Record<keyof typeof Permissions, string> =
 	MANAGE_ROLES: 'Allows management and editing of roles',
 	MANAGE_WEBHOOKS: 'Allows management and editing of webhooks',
 	MANAGE_EXPRESSIONS: 'Allows management of guild expressions',
-	MANAGE_THREADS: 'Allows managing threads and forum posts others started',
-	CREATE_PUBLIC_THREADS: 'Allows creating threads and forum posts',
-	CREATE_PRIVATE_THREADS: 'Allows creating private threads',
 	USE_EXTERNAL_STICKERS: 'Allows using stickers from other guilds',
-	SEND_MESSAGES_IN_THREADS: 'Allows sending messages in threads and forum posts',
 	MODERATE_MEMBERS: 'Allows timing out users',
 	CREATE_EXPRESSIONS: 'Allows creating guild expressions',
 	PIN_MESSAGES: 'Allows pinning messages',
@@ -276,8 +254,6 @@ export const DEFAULT_PERMISSIONS =
 	Permissions.STREAM |
 	Permissions.VIEW_CHANNEL |
 	Permissions.SEND_MESSAGES |
-	Permissions.CREATE_PUBLIC_THREADS |
-	Permissions.SEND_MESSAGES_IN_THREADS |
 	Permissions.EMBED_LINKS |
 	Permissions.ATTACH_FILES |
 	Permissions.READ_MESSAGE_HISTORY |
@@ -288,14 +264,6 @@ export const DEFAULT_PERMISSIONS =
 	Permissions.CHANGE_NICKNAME |
 	Permissions.USE_EXTERNAL_STICKERS |
 	Permissions.VIEW_CHANNEL_MEMBERS;
-// Echowire: the four thread permissions. A resolved mask carrying none of them belongs to a role
-// set written before the bits existed, which is what lets the legacy fallback in ThreadAccess.ts
-// recognise an un-migrated guild.
-export const THREAD_PERMISSION_BITS =
-	Permissions.MANAGE_THREADS |
-	Permissions.CREATE_PUBLIC_THREADS |
-	Permissions.CREATE_PRIVATE_THREADS |
-	Permissions.SEND_MESSAGES_IN_THREADS;
 export const ElevatedPermissions =
 	Permissions.KICK_MEMBERS |
 	Permissions.BAN_MEMBERS |
@@ -306,6 +274,5 @@ export const ElevatedPermissions =
 	Permissions.MANAGE_MESSAGES |
 	Permissions.MANAGE_WEBHOOKS |
 	Permissions.MANAGE_EXPRESSIONS |
-	Permissions.MANAGE_THREADS |
 	Permissions.MODERATE_MEMBERS;
 export const CHANNEL_REINDEX_AFTER_TIMESTAMP = 1779557400;

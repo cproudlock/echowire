@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {ConfirmModal} from '@app/features/app/components/dialogs/ConfirmModal';
+import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import {
 	openOAuthAuthorizeModalFromUrl,
 	parseOAuthAuthorizeModalUrl,
@@ -30,8 +31,9 @@ import {
 	type RendererProps,
 } from '@app/features/messaging/components/markdown/renderers/RendererTypes';
 import {ExternalLinkWarningModal} from '@app/features/messaging/components/modals/ExternalLinkWarningModal';
+import {useOpenInBrowserOnMiddleClick} from '@app/features/messaging/hooks/useOpenInBrowserOnMiddleClick';
 import AttachmentUrlRefresher from '@app/features/messaging/state/AttachmentUrlRefresher';
-import {openExternalUrlWithWarning} from '@app/features/messaging/utils/ExternalLinkUtils';
+import {MIDDLE_MOUSE_BUTTON} from '@app/features/messaging/utils/ExternalLinkUtils';
 import {goToMessage} from '@app/features/messaging/utils/MessageNavigator';
 import type {LinkNode} from '@app/features/messaging/utils/markdown/parser/Nodes';
 import * as NavigationCommands from '@app/features/navigation/commands/NavigationCommands';
@@ -52,6 +54,7 @@ import {
 	parseUserProfileUrl,
 	parseUserSettingsDeepLink,
 } from '@app/features/navigation/utils/DeepLinkUtils';
+import {currentInstanceTarget} from '@app/features/platform/transport/InstanceHTTP';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import StreamerMode from '@app/features/streamer_mode/state/StreamerMode';
 import * as ThemeCommands from '@app/features/theme/commands/ThemeCommands';
@@ -204,6 +207,19 @@ function promptForJumpGate(channel: Channel, scope: string | null | undefined, o
 	});
 }
 
+function useJumpLinkAuxClick(url: string, interactive: boolean) {
+	return useCallback(
+		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
+			if (!interactive) return;
+			if (event.button !== MIDDLE_MOUSE_BUTTON) return;
+			event.preventDefault();
+			event.stopPropagation();
+			if (url) void openExternalUrl(url);
+		},
+		[interactive, url],
+	);
+}
+
 type CompactGuildMentionIconStyle = React.CSSProperties & {
 	'--jump-link-guild-icon-image'?: string;
 };
@@ -323,16 +339,7 @@ const JumpLinkMention = observer(function JumpLinkMention({
 		},
 		[channel, guild?.id, interactive, navigateToJumpTarget],
 	);
-	const handleAuxClick = useCallback(
-		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
-			if (!interactive) return;
-			if (event.button !== 1) return;
-			event.preventDefault();
-			event.stopPropagation();
-			if (url) void openExternalUrl(url);
-		},
-		[interactive, url],
-	);
+	const handleAuxClick = useJumpLinkAuxClick(url, interactive);
 	const handleContextMenu = useCallback(
 		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
 			if (!interactive) return;
@@ -468,16 +475,7 @@ function InaccessibleJumpLinkMention({url, i18n, interactive = true}: Inaccessib
 		},
 		[i18n, interactive],
 	);
-	const handleAuxClick = useCallback(
-		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
-			if (!interactive) return;
-			if (event.button !== 1) return;
-			event.preventDefault();
-			event.stopPropagation();
-			if (url) void openExternalUrl(url);
-		},
-		[interactive, url],
-	);
+	const handleAuxClick = useJumpLinkAuxClick(url, interactive);
 	const handleContextMenu = useCallback(
 		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
 			if (!interactive) return;
@@ -554,16 +552,7 @@ const DiscoverableJumpLinkMention = observer(function DiscoverableJumpLinkMentio
 		},
 		[channelId, guildId, interactive, joining, messageId],
 	);
-	const handleAuxClick = useCallback(
-		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
-			if (!interactive) return;
-			if (event.button !== 1) return;
-			event.preventDefault();
-			event.stopPropagation();
-			void openExternalUrl(url);
-		},
-		[interactive, url],
-	);
+	const handleAuxClick = useJumpLinkAuxClick(url, interactive);
 	const handleContextMenu = useCallback(
 		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
 			if (!interactive) return;
@@ -704,16 +693,7 @@ function SettingsJumpLinkMention({target, url, i18n, interactive = true}: Settin
 		},
 		[interactive, url],
 	);
-	const handleAuxClick = useCallback(
-		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
-			if (!interactive) return;
-			if (event.button !== 1) return;
-			event.preventDefault();
-			event.stopPropagation();
-			if (url) void openExternalUrl(url);
-		},
-		[interactive, url],
-	);
+	const handleAuxClick = useJumpLinkAuxClick(url, interactive);
 	const handleContextMenu = useCallback(
 		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
 			if (!interactive) return;
@@ -807,16 +787,7 @@ function AppPageJumpLinkMention({page, url, i18n, interactive = true}: AppPageJu
 		},
 		[interactive, page],
 	);
-	const handleAuxClick = useCallback(
-		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
-			if (!interactive) return;
-			if (event.button !== 1) return;
-			event.preventDefault();
-			event.stopPropagation();
-			void openExternalUrl(url);
-		},
-		[interactive, url],
-	);
+	const handleAuxClick = useJumpLinkAuxClick(url, interactive);
 	const handleContextMenu = useCallback(
 		(event: React.MouseEvent<HTMLButtonElement | HTMLSpanElement>) => {
 			if (!interactive) return;
@@ -875,6 +846,7 @@ export const LinkRenderer = observer(function LinkRenderer({
 }: RendererProps<LinkNode>): React.ReactElement {
 	const i18n = options.i18n!;
 	const {url, text} = node;
+	const openInBrowser = useOpenInBrowserOnMiddleClick(url);
 	const content = text ? renderChildren([text], LINK_CONTENT_OPTION_OVERRIDES) : url;
 	const inviteCode = InviteUtils.findInvite(url);
 	const themeCode = ThemeUtils.findTheme(url);
@@ -1098,13 +1070,13 @@ export const LinkRenderer = observer(function LinkRenderer({
 			if (!handleClick && inviteCode) {
 				handleClick = (e) => {
 					e.preventDefault();
-					void InviteCommands.openAcceptModal(inviteCode);
+					void InviteCommands.openAcceptModal(inviteCode, currentInstanceTarget());
 				};
 				isInternal = true;
 			} else if (!handleClick && themeCode) {
 				handleClick = (e) => {
 					e.preventDefault();
-					ThemeCommands.openAcceptModal(themeCode, i18n);
+					ThemeCommands.openAcceptModal(themeCode, i18n, RuntimeConfig.getSnapshot());
 				};
 				isInternal = true;
 			} else if (!handleClick && isInternal) {
@@ -1198,14 +1170,7 @@ export const LinkRenderer = observer(function LinkRenderer({
 						void openExternalUrl(url);
 					}
 				}}
-				onAuxClick={(e) => {
-					if (e.button !== 1 || isInternal) {
-						return;
-					}
-					e.preventDefault();
-					e.stopPropagation();
-					openExternalUrlWithWarning(url);
-				}}
+				onAuxClick={isInternal ? undefined : openInBrowser.onAuxClick}
 				className={markupStyles.link}
 				data-flx="messaging.markdown.renderers.link-renderer.a"
 			>
@@ -1219,15 +1184,26 @@ export const LinkRenderer = observer(function LinkRenderer({
 	const destinationTooltipText = MobileLayout.enabled
 		? url
 		: () => (
-				<span className={linkRendererStyles.destination}>
+				<span className={linkRendererStyles.destination} data-flx="messaging.markdown.renderers.link-renderer.span">
 					{!isTrustedExternalDestination && (
-						<WarningIcon size={16} weight="fill" className={linkRendererStyles.destinationWarningIcon} />
+						<WarningIcon
+							size={16}
+							weight="fill"
+							className={linkRendererStyles.destinationWarningIcon}
+							data-flx="messaging.markdown.renderers.link-renderer.warning-icon"
+						/>
 					)}
-					<span>{url}</span>
+					<span data-flx="messaging.markdown.renderers.link-renderer.span--2">{url}</span>
 				</span>
 			);
 	return (
-		<Tooltip text={destinationTooltipText} type="normal" position="bottom" maxWidth="xl">
+		<Tooltip
+			text={destinationTooltipText}
+			type="normal"
+			position="bottom"
+			maxWidth="xl"
+			data-flx="messaging.markdown.renderers.link-renderer.tooltip.normal"
+		>
 			{linkElement}
 		</Tooltip>
 	);

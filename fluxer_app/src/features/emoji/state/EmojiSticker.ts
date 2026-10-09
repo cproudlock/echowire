@@ -31,10 +31,6 @@ class Sticker {
 		return this.guildStickers.get(guildId)?.stickers ?? [];
 	}
 
-	getSticker(guildId: string, stickerId: string): GuildSticker | null {
-		return this.guildStickers.get(guildId)?.stickers.find((s) => s.id === stickerId) ?? null;
-	}
-
 	getStickerById(stickerId: string): GuildSticker | null {
 		return this.stickerById.get(stickerId) ?? null;
 	}
@@ -102,6 +98,25 @@ class Sticker {
 				for (const sticker of sortedStickers) {
 					this.stickerById.set(sticker.id, sticker);
 				}
+			}
+		}
+		ComponentBus.dispatch('STICKER_PICKER_RERENDER');
+	}
+
+	hydrateFromSnapshot(
+		guildStickers: ReadonlyArray<{guildId: string; stickers: ReadonlyArray<WireGuildSticker>}>,
+	): void {
+		this.guildStickers.clear();
+		this.stickerById.clear();
+		for (const {guildId, stickers} of guildStickers) {
+			if (stickers.length === 0) {
+				continue;
+			}
+			const stickerRecords = stickers.map((sticker) => new GuildSticker(guildId, sticker));
+			const sortedStickers = sortBySnowflakeDesc(stickerRecords);
+			this.guildStickers.set(guildId, {stickers: sortedStickers});
+			for (const sticker of sortedStickers) {
+				this.stickerById.set(sticker.id, sticker);
 			}
 		}
 		ComponentBus.dispatch('STICKER_PICKER_RERENDER');

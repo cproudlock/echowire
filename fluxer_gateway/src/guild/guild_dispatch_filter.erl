@@ -38,11 +38,6 @@ filter_sessions_for_event(Event, FinalData, SessionIdOpt, Sessions, UpdatedState
 -spec filter_channel_scoped(
     event(), event_data(), session_id() | undefined, map(), guild_state()
 ) -> [session_pair()].
-filter_channel_scoped(thread_delete, FinalData, SessionIdOpt, Sessions, UpdatedState) ->
-    ParentViewers = guild_sessions:filter_sessions_for_channel(
-        Sessions, extract_channel_id(thread_delete, FinalData), SessionIdOpt, UpdatedState
-    ),
-    restrict_private_thread_delete(FinalData, ParentViewers, UpdatedState);
 filter_channel_scoped(Event, FinalData, SessionIdOpt, Sessions, UpdatedState) ->
     ChannelId = extract_channel_id(Event, FinalData),
     case is_message_access_filtered_event(Event) of
@@ -55,40 +50,6 @@ filter_channel_scoped(Event, FinalData, SessionIdOpt, Sessions, UpdatedState) ->
             guild_sessions:filter_sessions_for_channel(
                 Sessions, ChannelId, SessionIdOpt, UpdatedState
             )
-    end.
-
-%% Echowire: a deleted private thread is announced only to its members and to sessions that can
-%% manage its parent. The API sends the member ids with the event, since the thread (and its
-%% membership) is already gone from state; the wire layer strips them before delivery.
--spec restrict_private_thread_delete(event_data(), [session_pair()], guild_state()) ->
-    [session_pair()].
-restrict_private_thread_delete(FinalData, ParentViewers, State) ->
-    case is_private_thread_type(maps:get(<<"type">>, FinalData, undefined)) of
-        false ->
-            ParentViewers;
-        true ->
-            MemberIds = maps:get(<<"thread_member_ids">>, FinalData, []),
-            ParentId = extract_channel_id(thread_delete, FinalData),
-            [
-                Pair
-             || {_Sid, Session} = Pair <- ParentViewers,
-                private_thread_delete_recipient(Session, MemberIds, ParentId, State)
-            ]
-    end.
-
--spec is_private_thread_type(term()) -> boolean().
-is_private_thread_type(12) -> true;
-is_private_thread_type(<<"12">>) -> true;
-is_private_thread_type(_) -> false.
-
--spec private_thread_delete_recipient(map(), term(), channel_id(), guild_state()) -> boolean().
-private_thread_delete_recipient(Session, MemberIds, ParentId, State) ->
-    case maps:get(user_id, Session, undefined) of
-        UserId when is_integer(UserId) ->
-            (is_list(MemberIds) andalso snowflake_id:member(UserId, MemberIds)) orelse
-                guild_permissions:can_manage_channel(UserId, ParentId, State);
-        _ ->
-            false
     end.
 
 -spec filter_non_channel_scoped(
@@ -145,11 +106,6 @@ is_channel_scoped_event(message_reaction_remove_emoji) -> true;
 is_channel_scoped_event(typing_start) -> true;
 is_channel_scoped_event(channel_pins_update) -> true;
 is_channel_scoped_event(webhooks_update) -> true;
-%% Echowire: thread events reach only sessions that can view the thread.
-is_channel_scoped_event(thread_create) -> true;
-is_channel_scoped_event(thread_update) -> true;
-is_channel_scoped_event(thread_delete) -> true;
-is_channel_scoped_event(thread_members_update) -> true;
 is_channel_scoped_event(_) -> false.
 
 -spec is_invite_event(event()) -> boolean().
@@ -248,22 +204,6 @@ extract_channel_id(Event, FinalData) when
 ->
     ChannelIdBin = maps:get(<<"id">>, FinalData, undefined),
     guild_dispatch_decorate:require_snowflake(<<"id">>, ChannelIdBin);
-extract_channel_id(Event, FinalData) when
-    Event =:= thread_create; Event =:= thread_update; Event =:= thread_members_update
-->
-    ThreadIdBin = maps:get(<<"id">>, FinalData, undefined),
-    guild_dispatch_decorate:require_snowflake(<<"id">>, ThreadIdBin);
-%% Echowire: the thread is already gone from state when its delete is filtered, so scope the
-%% event to the parent channel.
-extract_channel_id(thread_delete, FinalData) ->
-    case maps:get(<<"parent_id">>, FinalData, null) of
-        ParentIdBin when ParentIdBin =/= null, ParentIdBin =/= undefined ->
-            guild_dispatch_decorate:require_snowflake(<<"parent_id">>, ParentIdBin);
-        _ ->
-            guild_dispatch_decorate:require_snowflake(
-                <<"id">>, maps:get(<<"id">>, FinalData, undefined)
-            )
-    end;
 extract_channel_id(_, FinalData) ->
     ChannelIdBin = maps:get(<<"channel_id">>, FinalData, undefined),
     guild_dispatch_decorate:require_snowflake(<<"channel_id">>, ChannelIdBin).
@@ -276,23 +216,7 @@ is_channel_scoped_event_test() ->
     ?assertEqual(true, is_channel_scoped_event(channel_update)),
     ?assertEqual(true, is_channel_scoped_event(typing_start)),
     ?assertEqual(false, is_channel_scoped_event(guild_update)),
-    ?assertEqual(false, is_channel_scoped_event(guild_member_add)),
-    ?assertEqual(true, is_channel_scoped_event(thread_create)),
-    ?assertEqual(true, is_channel_scoped_event(thread_update)),
-    ?assertEqual(true, is_channel_scoped_event(thread_delete)),
-    ?assertEqual(true, is_channel_scoped_event(thread_members_update)).
-
-thread_event_channel_id_test() ->
-    ?assertEqual(20, extract_channel_id(thread_create, #{<<"id">> => <<"20">>})),
-    ?assertEqual(20, extract_channel_id(thread_update, #{<<"id">> => <<"20">>})),
-    ?assertEqual(20, extract_channel_id(thread_members_update, #{<<"id">> => <<"20">>})),
-    ?assertEqual(
-        10,
-        extract_channel_id(thread_delete, #{<<"id">> => <<"20">>, <<"parent_id">> => <<"10">>})
-    ),
-    ?assertEqual(
-        20, extract_channel_id(thread_delete, #{<<"id">> => <<"20">>, <<"parent_id">> => null})
-    ).
+    ?assertEqual(false, is_channel_scoped_event(guild_member_add)).
 
 is_invite_event_test() ->
     ?assertEqual(true, is_invite_event(invite_create)),
@@ -382,64 +306,5 @@ audit_log_test_fixture() ->
         }
     },
     {Sessions, State, Allowed}.
-
-%% Echowire: THREAD_DELETE for a private thread reaches only its members and parent managers.
-thread_delete_state() ->
-    View = constants:view_channel_permission(),
-    Manage = constants:manage_channels_permission(),
-    Everyone = #{
-        <<"id">> => <<"42">>,
-        <<"name">> => <<"@everyone">>,
-        <<"permissions">> => integer_to_binary(View)
-    },
-    Mods = #{
-        <<"id">> => <<"77">>,
-        <<"name">> => <<"mods">>,
-        <<"permissions">> => integer_to_binary(View bor Manage)
-    },
-    Parent = #{<<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => []},
-    Member = fun(Id, Roles) ->
-        #{<<"user">> => #{<<"id">> => Id, <<"username">> => Id}, <<"roles">> => Roles}
-    end,
-    #{
-        id => 42,
-        data => guild_data_index:normalize_data(#{
-            <<"id">> => <<"42">>,
-            <<"guild">> => #{<<"id">> => <<"42">>, <<"owner_id">> => <<"9999">>},
-            <<"roles">> => [Everyone, Mods],
-            <<"channels">> => [Parent],
-            <<"members">> => [
-                Member(<<"10">>, []), Member(<<"11">>, []), Member(<<"12">>, [<<"77">>])
-            ]
-        })
-    }.
-
-thread_delete_sessions() ->
-    #{
-        <<"member">> => #{user_id => 10, pid => self(), viewable_channels => #{100 => true}},
-        <<"outsider">> => #{user_id => 11, pid => self(), viewable_channels => #{100 => true}},
-        <<"manager">> => #{user_id => 12, pid => self(), viewable_channels => #{100 => true}}
-    }.
-
-private_thread_delete_reaches_members_and_managers_only_test() ->
-    Data = #{
-        <<"id">> => <<"200">>,
-        <<"parent_id">> => <<"100">>,
-        <<"type">> => 12,
-        <<"thread_member_ids">> => [<<"10">>]
-    },
-    Result = filter_sessions_for_event(
-        thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()
-    ),
-    ?assertEqual([<<"manager">>, <<"member">>], lists:sort([Sid || {Sid, _} <- Result])).
-
-public_thread_delete_reaches_parent_viewers_test() ->
-    Data = #{<<"id">> => <<"201">>, <<"parent_id">> => <<"100">>, <<"type">> => 11},
-    Result = filter_sessions_for_event(
-        thread_delete, Data, undefined, thread_delete_sessions(), thread_delete_state()
-    ),
-    ?assertEqual(
-        [<<"manager">>, <<"member">>, <<"outsider">>], lists:sort([Sid || {Sid, _} <- Result])
-    ).
 
 -endif.

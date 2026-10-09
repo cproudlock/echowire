@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {Routes} from '@app/app/Routes';
+import {UserSettingsModal} from '@app/features/app/components/dialogs/LoadableSettingsModals';
 import * as Modal from '@app/features/app/components/dialogs/Modal';
 import {ExternalLink} from '@app/features/app/components/shared/ExternalLink';
 import {
 	AVATAR_RECOMMENDED_SIZE_LABEL,
 	IMAGE_MAX_SIZE_BYTES,
-	PRODUCT_NAME,
 	STATIC_IMAGE_FORMATS,
 } from '@app/features/app/config/I18nDisplayConstants';
 import {useFormSubmit} from '@app/features/app/hooks/useFormSubmit';
+import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import {openClaimAccountModal} from '@app/features/auth/components/modals/ClaimAccountModal';
 import {AssetCropModal, AssetType} from '@app/features/expressions/components/modals/AssetCropModal';
 import {openAssetSourceModal} from '@app/features/expressions/components/modals/AssetSourceModal';
@@ -29,7 +30,11 @@ import {
 	ICON_FILE_IS_TOO_LARGE_PLEASE_CHOOSE_A_DESCRIPTOR,
 	ModalFooterContext,
 } from '@app/features/guild/components/modals/add_guild_modal/shared';
-import {getGuildIconDisplayInitials, getInitialsLength} from '@app/features/guild/utils/GuildInitialsUtils';
+import {
+	getGuildIconDisplayInitials,
+	getGuildInitialsFitStyle,
+	getInitialsLength,
+} from '@app/features/guild/utils/GuildInitialsUtils';
 import {
 	CREATE_COMMUNITY_DESCRIPTOR,
 	FAILED_TO_PROCESS_CROPPED_IMAGE_DESCRIPTOR,
@@ -45,11 +50,10 @@ import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
 import {Form} from '@app/features/ui/components/form/Form';
 import {Input} from '@app/features/ui/components/form/FormInput';
-import {UserSettingsModal} from '@app/features/user/components/modals/UserSettingsModal';
 import Users from '@app/features/user/state/Users';
 import * as AvatarUtils from '@app/features/user/utils/AvatarUtils';
 import * as StringUtils from '@app/lib/strings';
-import {msg} from '@lingui/core/macro';
+import {msg, ph} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
 import {EnvelopeSimpleIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
@@ -68,6 +72,7 @@ const CHANGE_ICON_DESCRIPTOR = msg({
 
 export const GuildCreateForm = observer(() => {
 	const {i18n} = useLingui();
+	const guidelinesUrl = Routes.guidelines();
 	const [previewIconUrl, setPreviewIconUrl] = useState<string | null>(null);
 	const form = useForm<GuildCreateFormInputs>({defaultValues: {name: ''}});
 	const modalFooterContext = useContext(ModalFooterContext);
@@ -75,13 +80,12 @@ export const GuildCreateForm = observer(() => {
 	const currentUser = Users.currentUser;
 	const shouldRequireClaimedAccount = currentUser != null && !currentUser.isClaimed();
 	const nameValue = form.watch('name');
-	const rawInitials = useMemo(() => {
+	const initials = useMemo(() => {
 		const raw = (nameValue || '').trim();
 		if (!raw) return '';
-		return StringUtils.getInitialsFromName(raw);
+		return getGuildIconDisplayInitials(StringUtils.getInitialsFromName(raw));
 	}, [nameValue]);
-	const initials = useMemo(() => getGuildIconDisplayInitials(rawInitials), [rawInitials]);
-	const initialsLength = useMemo(() => (rawInitials ? getInitialsLength(rawInitials) : null), [rawInitials]);
+	const initialsLength = initials ? getInitialsLength(initials) : null;
 	const showIconUploadErrorModal = useCallback(
 		(message: string) => {
 			showGuildErrorModal({
@@ -234,12 +238,15 @@ export const GuildCreateForm = observer(() => {
 					<Button
 						onClick={() =>
 							ModalCommands.push(
-								modal(() => (
-									<UserSettingsModal
-										initialTab="account_security"
-										data-flx="guild.add-guild-modal.guild-create-form.user-settings-modal"
-									/>
-								)),
+								modal(
+									() => (
+										<UserSettingsModal
+											initialTab="account_security"
+											data-flx="guild.add-guild-modal.guild-create-form.user-settings-modal"
+										/>
+									),
+									'user-settings',
+								),
 							)
 						}
 						data-flx="guild.add-guild-modal.guild-create-form.button.push"
@@ -286,6 +293,7 @@ export const GuildCreateForm = observer(() => {
 									{initials ? (
 										<span
 											className={styles.iconInitials}
+											style={getGuildInitialsFitStyle(initials)}
 											data-flx="guild.add-guild-modal.guild-create-form.icon-initials"
 										>
 											{initials}
@@ -334,19 +342,21 @@ export const GuildCreateForm = observer(() => {
 						required={true}
 						type="text"
 					/>
-					<p className={styles.guidelines} data-flx="guild.add-guild-modal.guild-create-form.guidelines">
-						<Trans>
-							By creating a community, you agree to follow and uphold the{' '}
-							<ExternalLink
-								href={Routes.guidelines()}
-								className={styles.guidelinesLink}
-								data-flx="guild.add-guild-modal.guild-create-form.guidelines-link"
-							>
-								{PRODUCT_NAME} community guidelines
-							</ExternalLink>
-							.
-						</Trans>
-					</p>
+					{guidelinesUrl && (
+						<p className={styles.guidelines} data-flx="guild.add-guild-modal.guild-create-form.guidelines">
+							<Trans>
+								By creating a community, you agree to follow and uphold the{' '}
+								<ExternalLink
+									href={guidelinesUrl}
+									className={styles.guidelinesLink}
+									data-flx="guild.add-guild-modal.guild-create-form.guidelines-link"
+								>
+									{ph({PRODUCT_NAME: RuntimeConfig.productName})} community guidelines
+								</ExternalLink>
+								.
+							</Trans>
+						</p>
+					)}
 				</div>
 			</Form>
 		</div>

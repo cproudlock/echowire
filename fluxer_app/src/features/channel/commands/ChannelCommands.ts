@@ -3,6 +3,7 @@
 import {Endpoints} from '@app/features/app/constants/Endpoints';
 import Channels from '@app/features/channel/state/Channels';
 import Invites from '@app/features/invite/state/Invites';
+import {currentInstanceTarget} from '@app/features/platform/transport/InstanceHTTP';
 import {http} from '@app/features/platform/transport/RestTransport';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import Slowmode from '@app/features/slowmode/state/Slowmode';
@@ -16,28 +17,12 @@ const logger = new Logger('Channels');
 const MAX_CONCURRENT_SLOWMODE_STATE_REQUESTS = 32;
 const SLOWMODE_STATE_REQUEST_TIMEOUT_MS = 15_000;
 
-// Echowire: fetch one channel by id. A session's channel list carries the guild's open channels
-// and open threads, not every archived thread, so a link straight to an archived thread lands on
-// an id the store has never seen. This resolves that id instead of bouncing the reader elsewhere.
-// Returns null when the channel is gone or the reader may not view it.
-export async function fetchChannel(channelId: string): Promise<Channel | null> {
-	try {
-		const response = await http.get<Channel>(Endpoints.CHANNEL(channelId));
-		const channel = response.body;
-		Channels.handleChannelCreate({channel});
-		return channel;
-	} catch (error) {
-		logger.info(`Channel ${channelId} could not be fetched:`, error);
-		return null;
-	}
-}
-
 export interface ChannelRtcRegion {
 	id: string;
 	name: string;
 	emoji: string;
 	// Echowire: CORS `/ping` URL derived from the region's voice host, used to show
-	// per-region latency in the settings voice-region picker (matches the in-call one).
+	// per-region latency in the settings voice-region picker.
 	ping_endpoint: string | null;
 }
 
@@ -65,18 +50,7 @@ type ChannelUpdateParams = Partial<
 		| 'owner_id'
 		| 'rtc_region'
 	>
-> & {
-	// Echowire forum settings (input shape: new tags may omit id, the server assigns one).
-	available_tags?: Array<{id?: string; name: string; emoji_name?: string | null}>;
-	default_reaction_emoji?: {emoji_id?: string | null; emoji_name?: string | null} | null;
-	default_sort_order?: number | null;
-	default_auto_archive_duration?: number | null;
-	require_tag?: boolean;
-	rate_limit_per_user?: number;
-	default_forum_layout?: number | null;
-	default_thread_rate_limit_per_user?: number | null;
-	type?: number;
-};
+>;
 
 interface PermissionOverwritePatch {
 	id: string;
@@ -266,7 +240,7 @@ export async function fetchChannelInvites(channelId: string): Promise<Array<Invi
 		Invites.handleChannelInvitesFetchPending(channelId);
 		const response = await http.get<Array<Invite>>(Endpoints.CHANNEL_INVITES(channelId));
 		const data = response.body ?? [];
-		Invites.handleChannelInvitesFetchSuccess(channelId, data);
+		Invites.handleChannelInvitesFetchSuccess(channelId, data, currentInstanceTarget());
 		return data;
 	} catch (error) {
 		logger.error(`Failed to fetch invites for channel ${channelId}:`, error);

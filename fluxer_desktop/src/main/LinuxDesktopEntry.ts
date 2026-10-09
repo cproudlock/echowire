@@ -38,6 +38,7 @@ const DESKTOP_ACTIONS = [
 	},
 ] as const;
 const HICOLOR_ICON_SIZES = [16, 24, 32, 48, 64, 128, 256, 512] as const;
+const PROTOCOL_REGISTRATION_TIMEOUT_MS = 5000;
 
 function getXdgDataHome(): string {
 	const override = process.env.XDG_DATA_HOME;
@@ -204,7 +205,16 @@ function runUpdateDesktopDatabase(applicationsDir: string): void {
 	});
 }
 
-function registerProtocolClient(): void {
+function isDefaultProtocolClient(): boolean {
+	try {
+		return APP_PROTOCOLS.every((protocol) => app.isDefaultProtocolClient(protocol));
+	} catch (error) {
+		logger.debug('Failed to read the protocol client registration', {error});
+		return false;
+	}
+}
+
+function registerProtocolClientInProcess(): void {
 	try {
 		for (const protocol of APP_PROTOCOLS) {
 			app.setAsDefaultProtocolClient(protocol);
@@ -212,6 +222,27 @@ function registerProtocolClient(): void {
 	} catch (error) {
 		logger.warn('Failed to register protocol client', {error});
 	}
+}
+
+function registerProtocolClient(): void {
+	if (isDefaultProtocolClient()) return;
+	const desktopName = process.env.CHROME_DESKTOP;
+	if (!desktopName) {
+		logger.debug('Skipping protocol client registration because the desktop name is not set');
+		return;
+	}
+	child_process.execFile(
+		'xdg-mime',
+		['default', desktopName, ...APP_PROTOCOLS.map((protocol) => `x-scheme-handler/${protocol}`)],
+		{timeout: PROTOCOL_REGISTRATION_TIMEOUT_MS},
+		(error) => {
+			if (!error) return;
+			logger.debug('xdg-mime could not register the protocol client, registering in process', {
+				message: error.message,
+			});
+			registerProtocolClientInProcess();
+		},
+	);
 }
 
 function removeFile(filePath: string, reason: string): boolean {
@@ -283,6 +314,10 @@ function desktopEntryResolves(): boolean {
 
 export function ensureLinuxDesktopEntry(): boolean {
 	if (process.platform !== 'linux') return false;
+	if (!app.isPackaged) {
+		logger.debug('Skipping .desktop entry management for an unpackaged run');
+		return false;
+	}
 	if (isFlatpakRuntime()) {
 		logger.debug('Skipping .desktop entry creation in Flatpak; package export owns launcher/protocol integration');
 		registerProtocolClient();

@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {AppStorageKey} from '@app/features/platform/state/AppStorageKeys';
+import AppStorage from '@app/features/platform/state/PersistentStorage';
 import {Logger} from '@app/features/platform/utils/AppLogger';
+import {randomUuid} from '@app/features/platform/utils/RandomUuid';
 import {
 	assetToExportDataUrl,
 	parseThemeMetadata,
@@ -37,9 +40,9 @@ const DUPLICATE_THEME_NAME_DESCRIPTOR = msg({
 		'Name given to the copy created by the Duplicate button in the Theme Studio theme library. {themeName} is the name of the theme being duplicated.',
 });
 
-export type ThemeLibraryThemeSource = 'quick_css' | 'css_file' | 'desktop_directory' | 'shared_theme' | 'import';
+type ThemeLibraryThemeSource = 'quick_css' | 'css_file' | 'desktop_directory' | 'shared_theme' | 'import';
 
-export type ThemeLinkedFileStatus = 'live' | ThemeLinkedFileError;
+type ThemeLinkedFileStatus = 'live' | ThemeLinkedFileError;
 
 export interface ThemeLibraryTheme {
 	id: string;
@@ -77,18 +80,14 @@ export interface ThemeLibraryLocalFileReference {
 	updatedAt: number;
 }
 
-export interface ThemeDirectoryCssFile {
+interface ThemeDirectoryCssFile {
 	fileName: string;
 	path: string;
 	css: string;
 }
 
 function createThemeLibraryId(prefix: string): string {
-	const cryptoApi = globalThis.crypto;
-	if (cryptoApi?.randomUUID) {
-		return `${prefix}-${cryptoApi.randomUUID()}`;
-	}
-	return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+	return `${prefix}-${randomUuid()}`;
 }
 
 function sanitizeFileName(name: string): string {
@@ -127,6 +126,12 @@ async function dataUrlToBlob(dataUrl: string): Promise<Blob> {
 	return await response.blob();
 }
 
+const THEME_LIBRARY_STORAGE_KEYS: ReadonlySet<string> = new Set([
+	AppStorageKey.THEME_LIBRARY_THEMES,
+	AppStorageKey.THEME_LIBRARY_LOCAL_FILES,
+	AppStorageKey.THEME_LIBRARY_ENABLED_IDS,
+]);
+
 function themeSortValue(theme: ThemeLibraryTheme): string {
 	return `${theme.name.toLowerCase()}\u0000${theme.updatedAt}`;
 }
@@ -143,13 +148,15 @@ class ThemeLibrary {
 	linkedFileStatus = new Map<string, ThemeLinkedFileStatus>();
 	focusedThemeId: string | null = null;
 	private initPromise: Promise<void> | null = null;
+	private loadGeneration = 0;
+	private storageSyncStarted = false;
 	private linkedFileCss = new Map<string, string>();
 	private linkedThemesChanged: (() => void) | null = null;
 
 	constructor() {
-		makeAutoObservable<this, 'linkedFileCss' | 'linkedThemesChanged'>(
+		makeAutoObservable<this, 'linkedFileCss' | 'linkedThemesChanged' | 'loadGeneration' | 'storageSyncStarted'>(
 			this,
-			{linkedFileCss: false, linkedThemesChanged: false},
+			{linkedFileCss: false, linkedThemesChanged: false, loadGeneration: false, storageSyncStarted: false},
 			{autoBind: true},
 		);
 	}
@@ -201,7 +208,22 @@ class ThemeLibrary {
 		return nextLoad;
 	}
 
+	private followExternalStorageChanges(): void {
+		if (this.storageSyncStarted) return;
+		this.storageSyncStarted = true;
+		AppStorage.subscribe(
+			(event) => {
+				if (event.key === null || THEME_LIBRARY_STORAGE_KEYS.has(event.key)) {
+					void this.reload();
+				}
+			},
+			{source: 'external'},
+		);
+	}
+
 	private async load(): Promise<void> {
+		this.followExternalStorageChanges();
+		const generation = ++this.loadGeneration;
 		try {
 			const [themes, assets, localFiles, enabledThemeIds] = await Promise.all([
 				listThemeLibraryThemes(),
@@ -209,6 +231,9 @@ class ThemeLibrary {
 				listThemeLibraryLocalFiles(),
 				getEnabledThemeIds(),
 			]);
+			if (generation !== this.loadGeneration) {
+				return;
+			}
 			runInAction(() => {
 				this.themes = themes.sort((a, b) => themeSortValue(a).localeCompare(themeSortValue(b)));
 				this.assets = assets.sort((a, b) => a.name.localeCompare(b.name));
@@ -220,6 +245,9 @@ class ThemeLibrary {
 			});
 			this.refreshLinkedThemes();
 		} catch (error) {
+			if (generation !== this.loadGeneration) {
+				return;
+			}
 			logger.error('Failed to hydrate theme library', error);
 			runInAction(() => {
 				this.loadFailed = true;
@@ -281,16 +309,6 @@ class ThemeLibrary {
 				this.themes.sort((a, b) => themeSortValue(a).localeCompare(themeSortValue(b)));
 			});
 		});
-	}
-
-	async saveCssAsTheme(css: string, name: string): Promise<ThemeLibraryTheme> {
-		const fileName = `${sanitizeFileName(name || 'quick-css').replace(/\.css$/i, '')}.css`;
-		const theme = {
-			...this.createThemeFromCss(css, fileName, 'quick_css'),
-			name: name.trim() || 'Quick CSS',
-		};
-		await this.saveTheme(theme);
-		return theme;
 	}
 
 	async importCssFiles(files: ReadonlyArray<File>): Promise<Array<ThemeLibraryTheme>> {
@@ -568,15 +586,6 @@ class ThemeLibrary {
 			await setEnabledThemeIds(next);
 			runInAction(() => {
 				this.enabledThemeIds = next;
-			});
-		});
-	}
-
-	async clearEnabledThemes(): Promise<void> {
-		await this.mutate(async () => {
-			await setEnabledThemeIds([]);
-			runInAction(() => {
-				this.enabledThemeIds = [];
 			});
 		});
 	}

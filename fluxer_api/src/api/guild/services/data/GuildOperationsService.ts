@@ -3,17 +3,16 @@
 import type {ChannelID, GuildID, RoleID, UserID} from '@app/api/BrandedTypes';
 import {createChannelID, createGuildID, createRoleID, guildIdToRoleId} from '@app/api/BrandedTypes';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
-import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
 import {
 	type ChannelFollowerRemovalCopyMode,
 	scheduleDeletedChannelFollowerRemoval,
 } from '@app/api/channel/services/ChannelFollowers';
 import type {ChannelService} from '@app/api/channel/services/ChannelService';
-import {removeThreadMembershipsForChannels} from '@app/api/channel/services/ThreadPurge';
 import {getContentMessage} from '@app/api/content_i18n/ContentI18n';
 import {BatchBuilder} from '@app/api/database/CassandraQueryExecution';
 import type {PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
 import type {GuildRow} from '@app/api/database/types/GuildTypes';
+import {guildActive, isTainted} from '@app/api/experiment/ChannelThreadsGate';
 import {mapGuildToGuildResponse, mapGuildToPartialResponse} from '@app/api/guild/GuildModel';
 import type {IGuildDiscoveryRepository} from '@app/api/guild/repositories/GuildDiscoveryRepository';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
@@ -28,15 +27,18 @@ import type {LimitConfigService} from '@app/api/limits/LimitConfigService';
 import {resolveLimitSafe} from '@app/api/limits/LimitConfigUtils';
 import {createLimitMatchContext} from '@app/api/limits/LimitMatchContextBuilder';
 import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
+import {getKVThreadAutoArchiveQueue} from '@app/api/middleware/ServiceSingletons';
 import {Guild} from '@app/api/models/Guild';
 import type {User} from '@app/api/models/User';
 import {getGuildSearchService} from '@app/api/SearchFactory';
 import type {GuildDiscoveryContext} from '@app/api/search/guild/GuildSearchSerializer';
 import {deleteChannelMessageSearchDocuments} from '@app/api/search/MessageSearchIndexCleanup';
+import {deleteThreadSearchDocuments} from '@app/api/search/thread/ThreadSearchService';
 import {Channels, ChannelsByGuild, GuildMembers, GuildMembersByUserId, GuildRoles, Guilds} from '@app/api/Tables';
 import type {IUserRepository} from '@app/api/user/IUserRepository';
 import {mapUserSettingsToResponse} from '@app/api/user/UserMappers';
 import {addGuildToUncategorizedFolder, removeGuildFromUserFolders} from '@app/api/user/utils/GuildFolderUtils';
+import {mapWithConcurrency} from '@app/api/utils/ConcurrencyUtils';
 import type {IWebhookRepository} from '@app/api/webhook/IWebhookRepository';
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
 import {ALL_PERMISSIONS, ChannelTypes, DEFAULT_PERMISSIONS, Permissions} from '@fluxer/constants/src/ChannelConstants';
@@ -58,6 +60,11 @@ import {
 	VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT,
 	VOICE_CHANNEL_USER_LIMIT_MAX,
 } from '@fluxer/constants/src/LimitConstants';
+import {
+	DEFAULT_THREAD_PERMISSIONS,
+	THREAD_AWARE_ALL_PERMISSIONS,
+	THREAD_PERMISSIONS,
+} from '@fluxer/constants/src/ThreadPermissionUtils';
 import {DEFAULT_GUILD_FOLDER_ICON} from '@fluxer/constants/src/UserConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {AccessDeniedError} from '@fluxer/errors/src/domains/core/AccessDeniedError';
@@ -168,6 +175,7 @@ function setsEqual(a: ReadonlySet<string>, b: ReadonlySet<string>): boolean {
 }
 
 const TEMPLATE_AFK_TIMEOUT_MIN_SECONDS = 60;
+const THREAD_PURGE_CONCURRENCY = 8;
 const TEMPLATE_AFK_TIMEOUT_MAX_SECONDS = 3600;
 const THE_OTHER_PLATFORM_GUILD_STAGE_VOICE_CHANNEL_TYPE = 13;
 
@@ -415,6 +423,9 @@ export class GuildOperationsService {
 		);
 		batch.addPrepared(GuildMembersByUserId.insert({user_id: user.id, guild_id: guildId}));
 		await batch.execute();
+		if (guildActive(guildId)) {
+			await this.channelRepository.threads.ensureGuildMarker(guildId, {permsSeededAt: new Date()});
+		}
 		const guild = new Guild(guildData);
 		await this.gatewayService.startGuild(guildId);
 		await this.gatewayService.joinGuild({userId: user.id, guildId});
@@ -757,7 +768,7 @@ export class GuildOperationsService {
 		if (!guild) {
 			throw new UnknownGuildError();
 		}
-		const channels = await this.channelRepository.listGuildChannels(guildId);
+		const channels = await this.channelRepository.listGuildChannels(guildId, 'complete');
 		for (const channel of channels) {
 			await scheduleDeletedChannelFollowerRemoval({channel, crossposts: this.channelRepository.crossposts, copyMode});
 		}
@@ -790,6 +801,7 @@ export class GuildOperationsService {
 		await Promise.all(invites.map((invite) => this.inviteRepository.delete(invite.code)));
 		const webhooks = await this.webhookRepository.listByGuild(guildId);
 		await Promise.all(webhooks.map((webhook) => this.webhookRepository.delete(webhook.id)));
+		const threadIds = await this.channelRepository.threads.listGuildThreadIds(guildId, {parents: channels});
 		for (const channel of channels) {
 			await this.channelService.attachments.purgeChannelAttachments(channel);
 		}
@@ -797,12 +809,27 @@ export class GuildOperationsService {
 		await Promise.all(
 			channels.map((channel) => deleteChannelMessageSearchDocuments(channel.id, {context: {source: 'guild_delete'}})),
 		);
-		// Echowire: thread membership rows are partitioned by thread, so deleting the guild's channels
-		// leaves them orphaned unless they go with the threads they belong to.
-		await removeThreadMembershipsForChannels(channels, new ThreadMemberRepository());
 		const discoveryRow = await this.discoveryRepository.findByGuildId(guildId);
 		if (discoveryRow) {
 			await this.discoveryRepository.deleteByGuildId(guildId, discoveryRow.status, discoveryRow.applied_at);
+		}
+		if (threadIds.length > 0) {
+			const threadChannels = new Map(
+				(await this.channelRepository.listChannels(threadIds)).map((channel) => [channel.id, channel]),
+			);
+			await mapWithConcurrency(threadIds, THREAD_PURGE_CONCURRENCY, async (threadId) => {
+				const thread = threadChannels.get(threadId);
+				if (thread) {
+					await deleteChannelMessageSearchDocuments(threadId, {context: {source: 'guild_delete'}});
+					await this.channelService.attachments.purgeChannelAttachments(thread);
+				}
+				await this.channelRepository.threads.purgeThread(threadId);
+			});
+			await deleteThreadSearchDocuments(threadIds);
+		}
+		if (await isTainted(guildId, {fresh: true})) {
+			await this.channelRepository.threads.purgeGuild(guildId);
+			await getKVThreadAutoArchiveQueue().removeGuild(guildId);
 		}
 		await this.guildRepository.delete(guildId, guild.ownerId);
 		await this.gatewayService.stopGuild(guildId);
@@ -904,7 +931,7 @@ export class GuildOperationsService {
 				guild_id: guildId,
 				role_id: guildIdToRoleId(guildId),
 				name: '@everyone',
-				permissions: DEFAULT_PERMISSIONS,
+				permissions: guildActive(guildId) ? DEFAULT_PERMISSIONS | DEFAULT_THREAD_PERMISSIONS : DEFAULT_PERMISSIONS,
 				position: 0,
 				hoist_position: null,
 				color: 0,
@@ -980,9 +1007,19 @@ export class GuildOperationsService {
 				'[GuildOperationsService] Template import skipped unsupported channel types',
 			);
 		}
+		const threadsActive = guildActive(guildId);
+		const permissionMask = threadsActive ? THREAD_AWARE_ALL_PERMISSIONS : ALL_PERMISSIONS;
+		const templateEveryonePermissions =
+			this.parseTemplatePermissionBitfield(
+				everyoneRole?.permissions_new ?? everyoneRole?.permissions,
+				permissionMask,
+			) || DEFAULT_PERMISSIONS;
 		const everyonePermissions =
-			this.parseTemplatePermissionBitfield(everyoneRole?.permissions_new ?? everyoneRole?.permissions) ||
-			DEFAULT_PERMISSIONS;
+			threadsActive &&
+			(templateEveryonePermissions & THREAD_PERMISSIONS) === 0n &&
+			(templateEveryonePermissions & Permissions.SEND_MESSAGES) !== 0n
+				? templateEveryonePermissions | DEFAULT_THREAD_PERMISSIONS
+				: templateEveryonePermissions;
 		batch.addPrepared(
 			GuildRoles.insert({
 				guild_id: guildId,
@@ -1010,7 +1047,7 @@ export class GuildOperationsService {
 					guild_id: guildId,
 					role_id: roleId,
 					name: role.name,
-					permissions: this.parseTemplatePermissionBitfield(role.permissions_new ?? role.permissions),
+					permissions: this.parseTemplatePermissionBitfield(role.permissions_new ?? role.permissions, permissionMask),
 					position: nextRolePosition,
 					hoist_position: null,
 					color: role.color ?? 0,
@@ -1038,8 +1075,8 @@ export class GuildOperationsService {
 					if (overwrite.type !== 0) continue;
 					const mappedRoleId = roleIdMap.get(this.getTemplateEntityKey(overwrite.id));
 					if (!mappedRoleId) continue;
-					const allow = this.parseTemplatePermissionBitfield(overwrite.allow);
-					const deny = this.parseTemplatePermissionBitfield(overwrite.deny);
+					const allow = this.parseTemplatePermissionBitfield(overwrite.allow, permissionMask);
+					const deny = this.parseTemplatePermissionBitfield(overwrite.deny, permissionMask);
 					permissionOverwrites.set(mappedRoleId, {
 						type: overwrite.type,
 						allow_: allow,
@@ -1145,10 +1182,10 @@ export class GuildOperationsService {
 		return {systemChannelId};
 	}
 
-	private parseTemplatePermissionBitfield(value: string | number | undefined): bigint {
+	private parseTemplatePermissionBitfield(value: string | number | undefined, mask: bigint): bigint {
 		const valueToParse = value ?? '0';
 		try {
-			return BigInt(valueToParse) & ALL_PERMISSIONS;
+			return BigInt(valueToParse) & mask;
 		} catch {
 			throw new GuildTemplateInvalidError();
 		}

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {Endpoints} from '@app/features/app/constants/Endpoints';
+import {wrapDesktopLocalUploadURL} from '@app/features/messaging/utils/DesktopResourceUrl';
 import {http} from '@app/features/platform/transport/RestTransport';
 import {HttpError} from '@app/features/platform/types/EndpointError';
 import {observeResize} from '@app/features/platform/utils/SharedResizeObserver';
@@ -64,7 +65,7 @@ import {useContext, useEffect, useMemo, useRef, useState} from 'react';
 const SCREEN_SHARE_SOURCE = VoiceTrackSource.ScreenShare as Track.Source;
 const SCREEN_SHARE_AUDIO_SOURCE = VoiceTrackSource.ScreenShareAudio as Track.Source;
 const VOICE_ENGINE_V2_SCREEN_SOURCE = 'screen';
-export const VIDEO_UNSUBSCRIBE_GRACE_MS = 2000;
+const VIDEO_UNSUBSCRIBE_GRACE_MS = 2000;
 
 export class UnsubscribeGraceGate {
 	private timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -715,8 +716,9 @@ export function useScreensharePreviewUploader(
 					return false;
 				}
 				try {
-					const response = await http.put(uploadUrlResponse.upload_url, {
+					const response = await http.put(wrapDesktopLocalUploadURL(uploadUrlResponse.upload_url), {
 						body,
+						auth: 'none',
 						headers: {'Content-Type': contentType},
 					});
 					if (!isUploadActive()) return false;

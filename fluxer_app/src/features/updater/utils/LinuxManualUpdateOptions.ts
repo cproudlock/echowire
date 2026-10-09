@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {CANARY_RELEASE_CHANNEL_NAME, PRODUCT_NAME} from '@app/features/app/config/I18nDisplayConstants';
+import {PRODUCT_NAME} from '@app/features/app/config/ProductConstants';
 import type {UpdaterDownloadFormat, UpdaterDownloadOption} from '@app/features/platform/types/Electron';
 
 type LinuxManualDownloadFormat = Extract<UpdaterDownloadFormat, 'appimage' | 'deb' | 'rpm' | 'tar_gz'>;
@@ -161,7 +161,9 @@ function buildLinuxDownloadUrl(params: {
 }
 
 function getModernProductName(channel: DesktopDownloadChannel): string {
-	return channel === 'canary' ? CANARY_RELEASE_CHANNEL_NAME : PRODUCT_NAME;
+	// Echowire: artifact names are built from the fork's fixed product name, not the instance
+	// branding, which can be anything on a federated instance.
+	return channel === 'canary' ? `${PRODUCT_NAME} Canary` : PRODUCT_NAME;
 }
 
 function getSuggestedName(

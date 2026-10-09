@@ -6,11 +6,7 @@ import {useSubscriptionActions} from '@app/features/app/components/dialogs/compo
 import type {GracePeriodInfo} from '@app/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionStatus';
 import statusStyles from '@app/features/app/components/dialogs/components/plutonium/PurchaseHistoryStatus.module.css';
 import styles from '@app/features/app/components/dialogs/components/plutonium/SubscriptionCard.module.css';
-import {
-	PAYMENT_PROVIDER_NAME,
-	PREMIUM_PRODUCT_FULL_NAME,
-	PREMIUM_PRODUCT_NAME,
-} from '@app/features/app/config/I18nDisplayConstants';
+import {PAYMENT_PROVIDER_NAME} from '@app/features/app/config/I18nDisplayConstants';
 import {JOIN_COMMUNITY_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import PremiumState from '@app/features/premium/state/PremiumState';
 import {
@@ -18,7 +14,7 @@ import {
 	MANAGE_SUBSCRIPTION_DESCRIPTOR,
 	PREMIUM_SUBSCRIPTION_DESCRIPTOR,
 } from '@app/features/premium/utils/PremiumMessageDescriptors';
-import {getStoreName} from '@app/features/premium/utils/PremiumUtils';
+import {getPremiumProductFullName, getPremiumProductName, getStoreName} from '@app/features/premium/utils/PremiumUtils';
 import {formatMinorUnitPrice} from '@app/features/premium/utils/PricingUtils';
 import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
@@ -79,6 +75,8 @@ interface SubscriptionCardProps {
 	isVisionary: boolean;
 	perksDisabled: boolean;
 	isGiftSubscription: boolean;
+	isGiftGrace: boolean;
+	canSubscribe: boolean;
 	storeSubscription: PremiumStoreSubscriptionState | null;
 	premiumUntil: Date | null;
 	billingCycle: string | null;
@@ -108,6 +106,7 @@ interface SubscriptionCardProps {
 	loadingRejoinCommunity: boolean;
 	scrollToPerks: () => void;
 	navigateToRedeemGift: () => void;
+	handleStartSubscription: () => void;
 	handleOpenCustomerPortal: () => void;
 	handleReactivateSubscription: () => void;
 	handleCancelSubscription: () => void;
@@ -148,6 +147,8 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = observer(
 		isVisionary,
 		perksDisabled,
 		isGiftSubscription,
+		isGiftGrace,
+		canSubscribe,
 		storeSubscription,
 		premiumUntil,
 		billingCycle,
@@ -177,6 +178,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = observer(
 		loadingRejoinCommunity,
 		scrollToPerks,
 		navigateToRedeemGift,
+		handleStartSubscription,
 		handleOpenCustomerPortal,
 		handleReactivateSubscription,
 		handleCancelSubscription,
@@ -195,7 +197,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = observer(
 			purchaseDisabledTooltip != null
 				? () => purchaseDisabledTooltip
 				: i18n._(CLAIM_ACCOUNT_TO_PURCHASE_OR_REDEEM_PREMIUM_DESCRIPTOR, {
-						premiumProductFullName: PREMIUM_PRODUCT_FULL_NAME,
+						premiumProductFullName: getPremiumProductFullName(),
 					});
 		const targetBillingCycle = billingCycle === 'monthly' ? 'yearly' : billingCycle === 'yearly' ? 'monthly' : null;
 		const effectiveMonthlyPrice =
@@ -422,7 +424,7 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = observer(
 								{isVisionary ? (
 									<Trans>Visionary</Trans>
 								) : (
-									i18n._(PREMIUM_SUBSCRIPTION_DESCRIPTOR, {premiumProductName: PREMIUM_PRODUCT_NAME})
+									i18n._(PREMIUM_SUBSCRIPTION_DESCRIPTOR, {premiumProductName: getPremiumProductName()})
 								)}
 							</h3>
 							<span className={badgeClass} data-flx="app.plutonium.subscription-card.badge">
@@ -498,6 +500,22 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = observer(
 											stay active until{' '}
 											<strong data-flx="app.plutonium.subscription-card.strong--16">{graceDate}</strong>. Update your
 											payment method before then to keep your subscription.
+										</Trans>
+									);
+								})()
+							) : isGiftGrace ? (
+								(() => {
+									const graceDate = graceEndDate ? getFormattedLongDate(graceEndDate, locale) : undefined;
+									return (
+										<Trans comment="Plutonium subscription card text shown in the short grace period after gifted premium time ends. {graceDate} is a date already formatted and localized by code; never write a date into the translation.">
+											Your gift time ended but{' '}
+											<PerksButton
+												onClick={scrollToPerks}
+												data-flx="app.plutonium.subscription-card.perks-button.scroll-to-perks--11"
+											/>{' '}
+											stay active until{' '}
+											<strong data-flx="app.plutonium.subscription-card.strong--19">{graceDate}</strong>. Subscribe
+											before then to keep them.
 										</Trans>
 									);
 								})()
@@ -777,55 +795,102 @@ export const SubscriptionCard: React.FC<SubscriptionCardProps> = observer(
 							>
 								{i18n._(MANAGE_SUBSCRIPTION_DESCRIPTOR)}
 							</Button>
-						) : isGiftSubscription || billingUnavailable ? (
-							wrapIfDisabled(
-								<Button
-									variant="primary"
-									onClick={navigateToRedeemGift}
-									small
-									className={styles.actionButton}
-									disabled={purchaseDisabled}
-									data-flx="app.plutonium.subscription-card.action-button.navigate-to-redeem-gift"
-								>
-									<Trans comment="Billing button for entering a premium gift code.">Redeem gift code</Trans>
-								</Button>,
-								'redeem-gift',
-								purchaseDisabled,
-							)
-						) : (
+						) : isGiftSubscription || isGiftGrace || billingUnavailable ? (
 							<>
-								{hasEverPurchased &&
+								{canSubscribe &&
+									!billingUnavailable &&
 									wrapIfDisabled(
 										<Button
-											variant={isFullyExpired || isInGracePeriod || premiumWillCancel ? 'primary' : 'secondary'}
-											onClick={shouldUseReactivateQuickAction ? handleReactivateSubscription : handleOpenCustomerPortal}
-											submitting={shouldUseReactivateQuickAction ? loadingReactivate : loadingPortal}
+											variant="primary"
+											onClick={handleStartSubscription}
 											small
 											className={styles.actionButton}
-											disabled={purchaseDisabled && shouldUseReactivateQuickAction}
-											data-flx="app.plutonium.subscription-card.action-button.reactivate-subscription"
+											disabled={purchaseDisabled}
+											data-flx="app.plutonium.subscription-card.action-button.start-subscription"
 										>
-											{isFullyExpired ? (
-												<Trans comment="Billing button for starting a new subscription after premium expired.">
-													Resubscribe
-												</Trans>
-											) : isInGracePeriod ? (
-												<Trans comment="Billing button for restarting a subscription during the grace period.">
-													Resubscribe
-												</Trans>
-											) : premiumWillCancel ? (
-												<Trans comment="Billing button that cancels a scheduled subscription cancellation.">
-													Reactivate
-												</Trans>
-											) : isVisionary ? (
-												<Trans comment="Billing button that opens the external customer portal.">Customer portal</Trans>
-											) : (
-												i18n._(MANAGE_SUBSCRIPTION_DESCRIPTOR)
-											)}
+											<Trans comment="Billing button that starts a recurring subscription for someone on gifted premium time.">
+												Subscribe
+											</Trans>
 										</Button>,
-										'manage-reactivate',
-										purchaseDisabled && shouldUseReactivateQuickAction,
+										'start-subscription',
+										purchaseDisabled,
 									)}
+								{wrapIfDisabled(
+									<Button
+										variant={canSubscribe && !billingUnavailable ? 'secondary' : 'primary'}
+										onClick={navigateToRedeemGift}
+										small
+										className={styles.actionButton}
+										disabled={purchaseDisabled}
+										data-flx="app.plutonium.subscription-card.action-button.navigate-to-redeem-gift"
+									>
+										<Trans comment="Billing button for entering a premium gift code.">Redeem gift code</Trans>
+									</Button>,
+									'redeem-gift',
+									purchaseDisabled,
+								)}
+							</>
+						) : (
+							<>
+								{(isFullyExpired || isInGracePeriod) && canSubscribe
+									? wrapIfDisabled(
+											<Button
+												variant="primary"
+												onClick={handleStartSubscription}
+												small
+												className={styles.actionButton}
+												disabled={purchaseDisabled}
+												data-flx="app.plutonium.subscription-card.action-button.resubscribe"
+											>
+												{hasEverPurchased ? (
+													<Trans comment="Billing button for starting a new subscription after premium ended.">
+														Resubscribe
+													</Trans>
+												) : (
+													<Trans comment="Billing button that starts a recurring subscription for someone on gifted premium time.">
+														Subscribe
+													</Trans>
+												)}
+											</Button>,
+											'resubscribe',
+											purchaseDisabled,
+										)
+									: hasEverPurchased &&
+										wrapIfDisabled(
+											<Button
+												variant={isFullyExpired || isInGracePeriod || premiumWillCancel ? 'primary' : 'secondary'}
+												onClick={
+													shouldUseReactivateQuickAction ? handleReactivateSubscription : handleOpenCustomerPortal
+												}
+												submitting={shouldUseReactivateQuickAction ? loadingReactivate : loadingPortal}
+												small
+												className={styles.actionButton}
+												disabled={purchaseDisabled && shouldUseReactivateQuickAction}
+												data-flx="app.plutonium.subscription-card.action-button.reactivate-subscription"
+											>
+												{isFullyExpired ? (
+													<Trans comment="Billing button for starting a new subscription after premium expired.">
+														Resubscribe
+													</Trans>
+												) : isInGracePeriod ? (
+													<Trans comment="Billing button for restarting a subscription during the grace period.">
+														Resubscribe
+													</Trans>
+												) : premiumWillCancel ? (
+													<Trans comment="Billing button that cancels a scheduled subscription cancellation.">
+														Reactivate
+													</Trans>
+												) : isVisionary ? (
+													<Trans comment="Billing button that opens the external customer portal.">
+														Customer portal
+													</Trans>
+												) : (
+													i18n._(MANAGE_SUBSCRIPTION_DESCRIPTOR)
+												)}
+											</Button>,
+											'manage-reactivate',
+											purchaseDisabled && shouldUseReactivateQuickAction,
+										)}
 								{isVisionary && (
 									<Button
 										variant="secondary"

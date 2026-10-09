@@ -3,6 +3,7 @@
 import MacPermissions from '@app/features/permissions/system/state/MacPermissions';
 import type {NativePermissionResult} from '@app/features/permissions/system/utils/NativePermissions';
 import {Logger} from '@app/features/platform/utils/AppLogger';
+import {initializeStore} from '@app/features/platform/utils/StoreInitialization';
 import {getElectronAPI, getNativePlatform, isDesktop, type NativePlatform} from '@app/features/ui/utils/NativeUtils';
 import {makeAutoObservable, runInAction} from 'mobx';
 
@@ -16,7 +17,7 @@ class NativePermission {
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
-		void this.initialize();
+		initializeStore(this, () => this.initialize());
 	}
 
 	private async initialize(): Promise<void> {
@@ -56,10 +57,6 @@ class NativePermission {
 		return this._platform === 'macos';
 	}
 
-	get isNativeMacDesktop(): boolean {
-		return this._isDesktop && this._platform === 'macos';
-	}
-
 	get isLinuxWaylandDesktop(): boolean {
 		return this._isDesktop && this._platform === 'linux' && this._waylandSession;
 	}
@@ -74,10 +71,6 @@ class NativePermission {
 
 	get isInputMonitoringGranted(): boolean {
 		return MacPermissions.statuses['input-monitoring'] === 'granted';
-	}
-
-	async recheckInputMonitoring(): Promise<NativePermissionResult> {
-		return MacPermissions.refreshKind('input-monitoring');
 	}
 
 	setInputMonitoringStatus(status: NativePermissionResult): void {

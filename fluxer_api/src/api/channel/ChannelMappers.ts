@@ -99,6 +99,17 @@ function serializeGuildTextChannel(channel: Channel, ctx: ContentWarningCtx): Ch
 	};
 }
 
+function serializeThreadOnlyChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
+	return {
+		...serializeBaseChannelFields(channel),
+		...serializeMessageableFields(channel),
+		...serializePositionableGuildChannelFields(channel),
+		topic: channel.topic,
+		...serializeContentWarningFields(channel, ctx),
+		rate_limit_per_user: channel.rateLimitPerUser,
+	};
+}
+
 function serializeGuildVoiceChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
 	return {
 		...serializeBaseChannelFields(channel),
@@ -111,58 +122,6 @@ function serializeGuildVoiceChannel(channel: Channel, ctx: ContentWarningCtx): C
 		rtc_region: channel.rtcRegion,
 		...serializeContentWarningFields(channel, ctx),
 		rate_limit_per_user: channel.rateLimitPerUser,
-	};
-}
-
-// Echowire: thread channels (PUBLIC_THREAD / PRIVATE_THREAD) live under a text/forum parent.
-function serializeThreadChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
-	const meta = channel.threadMetadata;
-	return {
-		...serializeBaseChannelFields(channel),
-		...serializeMessageableFields(channel),
-		...serializePositionableGuildChannelFields(channel),
-		owner_id: channel.ownerId ? channel.ownerId.toString() : null,
-		...serializeContentWarningFields(channel, ctx),
-		rate_limit_per_user: channel.rateLimitPerUser,
-		member_count: channel.memberCount ?? undefined,
-		message_count: channel.messageCount ?? undefined,
-		recent_participant_ids:
-			channel.recentParticipantIds && channel.recentParticipantIds.length > 0
-				? channel.recentParticipantIds
-				: undefined,
-		pinned: channel.pinned ? true : undefined,
-		applied_tags: channel.appliedTags && channel.appliedTags.length > 0 ? channel.appliedTags : undefined,
-		thread_metadata: meta
-			? {
-					archived: meta.archived,
-					auto_archive_duration: meta.autoArchiveDuration,
-					archive_timestamp: meta.archiveTimestamp?.toISOString() ?? null,
-					locked: meta.locked,
-					invitable: meta.invitable,
-					create_timestamp: meta.createTimestamp?.toISOString() ?? null,
-				}
-			: null,
-	};
-}
-
-// Echowire: forum channels (GUILD_FORUM) hold posts (threads) and define available tags.
-function serializeGuildForumChannel(channel: Channel, ctx: ContentWarningCtx): ChannelResponse {
-	return {
-		...serializeBaseChannelFields(channel),
-		...serializePositionableGuildChannelFields(channel),
-		topic: channel.topic,
-		...serializeContentWarningFields(channel, ctx),
-		rate_limit_per_user: channel.rateLimitPerUser,
-		available_tags:
-			channel.availableTags && channel.availableTags.length > 0
-				? channel.availableTags.map((tag) => ({...tag, moderated: tag.moderated ?? false}))
-				: undefined,
-		default_reaction_emoji: channel.defaultReactionEmoji ?? undefined,
-		default_sort_order: channel.defaultSortOrder ?? undefined,
-		default_auto_archive_duration: channel.forumDefaultAutoArchiveDuration ?? undefined,
-		require_tag: channel.forumRequireTag ? true : undefined,
-		default_forum_layout: channel.defaultForumLayout ?? undefined,
-		default_thread_rate_limit_per_user: channel.defaultThreadRateLimitPerUser ?? undefined,
 	};
 }
 
@@ -206,6 +165,7 @@ function serializeGroupDMChannel(channel: Channel): ChannelResponse {
 		icon: channel.iconHash ?? null,
 		owner_id: channel.ownerId ? channel.ownerId.toString() : null,
 		nicks: nicknameMap.size > 0 ? nicks : undefined,
+		nsfw: channel.isNsfw,
 	};
 }
 
@@ -254,18 +214,15 @@ export async function mapChannelToResponse(params: MapChannelToResponseParams): 
 		case ChannelTypes.GUILD_VOICE:
 			response = serializeGuildVoiceChannel(channel, ctx);
 			break;
+		case ChannelTypes.GUILD_FORUM:
+		case ChannelTypes.GUILD_MEDIA:
+			response = serializeThreadOnlyChannel(channel, ctx);
+			break;
 		case ChannelTypes.GUILD_CATEGORY:
 			response = serializeGuildCategoryChannel(channel, ctx);
 			break;
 		case ChannelTypes.GUILD_LINK:
 			response = serializeGuildLinkChannel(channel, ctx);
-			break;
-		case ChannelTypes.PUBLIC_THREAD:
-		case ChannelTypes.PRIVATE_THREAD:
-			response = serializeThreadChannel(channel, ctx);
-			break;
-		case ChannelTypes.GUILD_FORUM:
-			response = serializeGuildForumChannel(channel, ctx);
 			break;
 		case ChannelTypes.DM:
 			response = serializeDMChannel(channel);

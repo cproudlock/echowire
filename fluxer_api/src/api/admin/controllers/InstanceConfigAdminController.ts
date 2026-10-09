@@ -37,7 +37,6 @@ import {
 } from '@fluxer/schema/src/domains/admin/AdminSchemas';
 import {DomainMigrationConfigSchema} from '@fluxer/schema/src/domains/admin/DomainMigrationSchemas';
 import {GatewayRolloutConfigSchema} from '@fluxer/schema/src/domains/admin/GatewayRolloutSchemas';
-import {PlutoniumPageConfigSchema} from '@fluxer/schema/src/domains/admin/PlutoniumPageSchemas';
 import type {PushRelayConfig, PushRelayConfigUpdateRequest} from '@fluxer/schema/src/domains/admin/PushRelaySchemas';
 import {UserIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 import {ExperimentDeliveryConfigSchema} from '@fluxer/schema/src/domains/experiment/ExperimentSchemas';
@@ -67,7 +66,6 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 		gatewayRollout,
 		pushRelay,
 		domainMigration,
-		plutoniumPage,
 		captcha,
 		experimentDelivery,
 		registrationConfig,
@@ -78,7 +76,6 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 		instanceConfigRepository.getGatewayRolloutConfig(),
 		instanceConfigRepository.getPushRelayConfig(),
 		instanceConfigRepository.getDomainMigrationConfig(),
-		instanceConfigRepository.getPlutoniumPageConfig(),
 		instanceConfigRepository.getCaptchaConfig(),
 		instanceConfigRepository.getExperimentDeliveryConfig(),
 		instanceConfigRepository.getRegistrationConfig(),
@@ -116,7 +113,6 @@ async function buildInstanceConfigResponse(): Promise<InstanceConfigResponse> {
 		gateway_rollout: gatewayRollout,
 		push_relay: pushRelay,
 		domain_migration: domainMigration,
-		plutonium_page: plutoniumPage,
 		captcha,
 		experiment_delivery: experimentDelivery,
 		registration: {
@@ -400,18 +396,6 @@ export function InstanceConfigAdminController(app: HonoApp) {
 					);
 				}
 			}
-			if (data.plutonium_page) {
-				const patch = omitUndefinedFields(data.plutonium_page);
-				if (Object.keys(patch).length > 0) {
-					await instanceConfigRepository.updatePlutoniumPageConfig((current) =>
-						PlutoniumPageConfigSchema.parse({
-							...current,
-							...patch,
-							config_version: current.config_version + 1,
-						}),
-					);
-				}
-			}
 			if (data.captcha) {
 				const patch = omitUndefinedFields(data.captcha);
 				if (Object.keys(patch).length > 0) {
@@ -495,6 +479,7 @@ export function InstanceConfigAdminController(app: HonoApp) {
 						? omitUndefinedFields({
 								terms_url: readOptionalField(data.app_public.legal, 'terms_url'),
 								privacy_url: readOptionalField(data.app_public.legal, 'privacy_url'),
+								guidelines_url: readOptionalField(data.app_public.legal, 'guidelines_url'),
 							})
 						: undefined,
 					registration: data.app_public.registration

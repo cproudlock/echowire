@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Echowire: admin routes for threads and forum posts. Channel-scoped rather than guild-scoped,
-// because a thread is addressed by its own channel id everywhere else in the api.
-
+import {AdminAuditReadActions} from '@app/api/admin/AdminAuditActions';
+import {recordAdminRead, recordAdminWrite} from '@app/api/admin/AdminAuditRecorder';
+import {createChannelID, createGuildID} from '@app/api/BrandedTypes';
 import {requireAdminACL} from '@app/api/middleware/AdminMiddleware';
 import {RateLimitMiddleware} from '@app/api/middleware/RateLimitMiddleware';
 import {OpenAPI} from '@app/api/middleware/ResponseTypeMiddleware';
@@ -10,92 +10,75 @@ import {AdminRateLimitConfigs} from '@app/api/rate_limit_configs/AdminRateLimitC
 import type {HonoApp} from '@app/api/types/HonoEnv';
 import {Validator} from '@app/api/Validator';
 import {AdminACLs} from '@fluxer/constants/src/AdminACLs';
-import {
-	AdminThreadResponse,
-	ListChannelThreadsResponse,
-	UpdateAdminThreadRequest,
-} from '@fluxer/schema/src/domains/admin/AdminThreadSchemas';
-import {ChannelIdParam, SuccessResponse} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
+import {InvalidChannelTypeError} from '@fluxer/errors/src/domains/channel/InvalidChannelTypeError';
+import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
+import {ListGuildThreadsResponse} from '@fluxer/schema/src/domains/admin/AdminThreadSchemas';
+import {ChannelIdParam, GuildIdParam} from '@fluxer/schema/src/domains/common/CommonParamSchemas';
 
 export function ThreadAdminController(app: HonoApp) {
 	app.get(
-		'/admin/channels/:channel_id/threads',
+		'/admin/guilds/:guild_id/threads',
 		RateLimitMiddleware(AdminRateLimitConfigs.ADMIN_LOOKUP),
-		requireAdminACL(AdminACLs.CHANNEL_LIST_THREADS),
-		Validator('param', ChannelIdParam),
+		requireAdminACL(AdminACLs.GUILD_LOOKUP),
+		Validator('param', GuildIdParam),
 		OpenAPI({
-			operationId: 'list_admin_channel_threads',
-			summary: 'List channel threads',
+			operationId: 'list_admin_guild_threads',
+			summary: 'List guild threads',
 			description:
-				'Lists the threads or forum posts under a text or forum channel, newest first, with their archive, lock and pin state. Returns an empty list for channel types that cannot parent threads. Requires CHANNEL_LIST_THREADS permission.',
-			responseSchema: ListChannelThreadsResponse,
+				'Lists every thread of a guild, active and archived, whether or not the channel threads experiment is active for it. Requires GUILD_LOOKUP permission.',
+			responseSchema: ListGuildThreadsResponse,
 			statusCode: 200,
 			security: 'adminApiKey',
 			tags: 'Admin',
+			experiment: 'channel_threads',
 		}),
 		async (ctx) => {
-			const adminService = ctx.get('adminService');
-			return ctx.json(
-				await adminService.threadService.listChannelThreads({
-					channel_id: ctx.req.valid('param').channel_id,
-					adminUserId: ctx.get('adminUserId'),
-					auditLogReason: ctx.get('auditLogReason'),
-				}),
-			);
-		},
-	);
-	app.patch(
-		'/admin/channels/:channel_id/thread',
-		RateLimitMiddleware(AdminRateLimitConfigs.ADMIN_GUILD_MODIFY),
-		requireAdminACL(AdminACLs.CHANNEL_THREAD_UPDATE),
-		Validator('param', ChannelIdParam),
-		Validator('json', UpdateAdminThreadRequest),
-		OpenAPI({
-			operationId: 'update_admin_channel_thread',
-			summary: 'Update thread state',
-			description:
-				'Archives, unarchives, locks or unlocks a thread or forum post as an instance admin. Dispatches THREAD_UPDATE to the guild. Logged to audit log. Requires CHANNEL_THREAD_UPDATE permission.',
-			responseSchema: AdminThreadResponse,
-			statusCode: 200,
-			security: 'adminApiKey',
-			tags: 'Admin',
-		}),
-		async (ctx) => {
-			const adminService = ctx.get('adminService');
-			return ctx.json(
-				await adminService.threadService.updateThread({
-					channel_id: ctx.req.valid('param').channel_id,
-					body: ctx.req.valid('json'),
-					adminUserId: ctx.get('adminUserId'),
-					auditLogReason: ctx.get('auditLogReason'),
-				}),
-			);
+			const guildId = createGuildID(ctx.req.valid('param').guild_id);
+			const threads = await ctx.get('threadService').lists.listGuildThreadsForAdmin(guildId);
+			await recordAdminRead(ctx, {
+				targetType: 'guild',
+				targetId: guildId,
+				action: AdminAuditReadActions.LIST_GUILD_THREADS,
+				metadata: {result_count: threads.length},
+			});
+			return ctx.json({threads});
 		},
 	);
 	app.delete(
-		'/admin/channels/:channel_id/thread',
-		RateLimitMiddleware(AdminRateLimitConfigs.ADMIN_GUILD_MODIFY),
-		requireAdminACL(AdminACLs.CHANNEL_THREAD_DELETE),
+		'/admin/channels/:channel_id',
+		RateLimitMiddleware(AdminRateLimitConfigs.ADMIN_MESSAGE_OPERATION),
+		requireAdminACL(AdminACLs.MESSAGE_DELETE_ALL),
 		Validator('param', ChannelIdParam),
 		OpenAPI({
-			operationId: 'delete_admin_channel_thread',
-			summary: 'Delete thread',
+			operationId: 'delete_admin_thread_channel',
+			summary: 'Delete a thread',
 			description:
-				'Permanently deletes a thread or forum post and purges its messages, attachments and search documents. Irreversible. Logged to audit log. Requires CHANNEL_THREAD_DELETE permission.',
-			responseSchema: SuccessResponse,
-			statusCode: 200,
+				'Deletes a thread channel with its messages and memberships. Only public and private threads can be deleted here. Requires MESSAGE_DELETE_ALL permission.',
+			responseSchema: null,
+			statusCode: 204,
 			security: 'adminApiKey',
 			tags: 'Admin',
+			experiment: 'channel_threads',
 		}),
 		async (ctx) => {
-			const adminService = ctx.get('adminService');
-			return ctx.json(
-				await adminService.threadService.deleteThread({
-					channel_id: ctx.req.valid('param').channel_id,
-					adminUserId: ctx.get('adminUserId'),
-					auditLogReason: ctx.get('auditLogReason'),
-				}),
-			);
+			const channelId = createChannelID(ctx.req.valid('param').channel_id);
+			const thread = await ctx.get('channelRepository').findUnique(channelId);
+			if (!thread) throw new UnknownChannelError();
+			if (!thread.isThread()) throw new InvalidChannelTypeError();
+			const adminUserId = ctx.get('adminUserId');
+			await ctx.get('threadService').deletion.deleteThread({
+				thread,
+				actorId: adminUserId,
+				auditLogReason: ctx.get('auditLogReason'),
+				recordGuildAudit: false,
+			});
+			await recordAdminWrite(ctx, {
+				targetType: 'channel',
+				targetId: channelId,
+				action: 'delete_thread',
+				metadata: {guild_id: thread.guildId?.toString(), parent_id: thread.parentId?.toString(), type: thread.type},
+			});
+			return ctx.body(null, 204);
 		},
 	);
 }

@@ -10,7 +10,6 @@ import {isMediaOnlyEmbed} from '@app/features/channel/components/embeds/EmbedRen
 import {MessageAttachments} from '@app/features/channel/components/MessageAttachments';
 import {MessageAuthorInfo} from '@app/features/channel/components/MessageAuthorInfo';
 import {MessageAvatar} from '@app/features/channel/components/MessageAvatar';
-import {MessageThreadLink} from '@app/features/channel/components/MessageThreadLink';
 import {MessageTimeoutIndicator} from '@app/features/channel/components/MessageTimeoutIndicator';
 import {MessageUsername} from '@app/features/channel/components/MessageUsername';
 import {useMessageViewContext} from '@app/features/channel/components/MessageViewContext';
@@ -19,6 +18,7 @@ import {TimestampWithTooltip} from '@app/features/channel/components/TimestampWi
 import {createSystemMessage} from '@app/features/devtools/utils/CommandUtils';
 import Emoji from '@app/features/emoji/state/Emoji';
 import {checkEmojiAvailability} from '@app/features/expressions/utils/ExpressionPermissionUtils';
+import {isOriginalPoster} from '@app/features/forum/utils/ForumChannelUtils';
 import Guilds from '@app/features/guild/state/Guilds';
 import {TRY_AGAIN_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import {dropTrailingEmptyBlockquoteLines} from '@app/features/lexical/composer/blockquoteLines';
@@ -487,7 +487,6 @@ export const UserMessage = observer(() => {
 				<div className={styles.messageGutterRight} data-flx="channel.user-message.message-gutter-right" />
 				<div className={styles.container} data-flx="channel.user-message.container">
 					<MessageAttachments data-flx="channel.user-message.message-attachments" />
-					<MessageThreadLink />
 				</div>
 			</SpoilerSyncProvider>
 		);
@@ -565,7 +564,6 @@ export const UserMessage = observer(() => {
 				</CompactMessageLayout>
 				<div className={styles.container} data-flx="channel.user-message.container--2">
 					<MessageAttachments data-flx="channel.user-message.message-attachments--2" />
-					<MessageThreadLink />
 					{!previewContext && (
 						<CrosspostPublishNudge
 							message={message}
@@ -618,6 +616,13 @@ export const UserMessage = observer(() => {
 											system={author.system}
 											variant={message.isCrosspostCopy ? 'community' : undefined}
 											data-flx="channel.user-message.user-tag-offset--2"
+										/>
+									)}
+									{isOriginalPoster(message.channelId, author.id) && (
+										<UserTag
+											className={styles.userTagOffset}
+											variant="op"
+											data-flx="channel.user-message.user-tag-offset--op1"
 										/>
 									)}
 								</span>
@@ -720,6 +725,13 @@ export const UserMessage = observer(() => {
 										data-flx="channel.user-message.user-tag-offset--3"
 									/>
 								)}
+								{isOriginalPoster(message.channelId, author.id) && (
+									<UserTag
+										className={styles.userTagOffset}
+										variant="op"
+										data-flx="channel.user-message.user-tag-offset--op2"
+									/>
+								)}
 							</span>
 							<TimestampWithTooltip
 								date={message.timestamp}
@@ -772,7 +784,6 @@ export const UserMessage = observer(() => {
 						</TimestampWithTooltip>
 					))}
 				<MessageAttachments data-flx="channel.user-message.message-attachments--3" />
-				<MessageThreadLink />
 				{message.content.length === 0 &&
 					!isEditing &&
 					(message.editedTimestamp || message.isEditing) &&

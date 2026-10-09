@@ -4,13 +4,13 @@ import Accessibility from '@app/features/accessibility/state/Accessibility';
 import {showChannelDeleteFailedModal} from '@app/features/app/components/alerts/ChannelDeleteFailedModal';
 import {GenericErrorModal} from '@app/features/app/components/alerts/GenericErrorModal';
 import {ConfirmModal} from '@app/features/app/components/dialogs/ConfirmModal';
+import {ChannelSettingsModal} from '@app/features/app/components/dialogs/LoadableSettingsModals';
 import Authentication from '@app/features/auth/state/Authentication';
 import * as ChannelCommands from '@app/features/channel/commands/ChannelCommands';
 import * as LinkChannelCommands from '@app/features/channel/commands/LinkChannelCommands';
 import * as PrivateChannelCommands from '@app/features/channel/commands/PrivateChannelCommands';
 import {ChannelDuplicateModal} from '@app/features/channel/components/modals/ChannelDuplicateModal';
 import {ChannelFollowModal} from '@app/features/channel/components/modals/ChannelFollowModal';
-import {ChannelSettingsModal} from '@app/features/channel/components/modals/ChannelSettingsModal';
 import {EditGroupModal} from '@app/features/channel/components/modals/EditGroupModal';
 import {GroupInvitesModal} from '@app/features/channel/components/modals/GroupInvitesModal';
 import {useDeleteMyMessagesInChannel} from '@app/features/channel/hooks/useDeleteMyMessagesInChannel';
@@ -29,8 +29,9 @@ import {
 	UNPIN_DM_DESCRIPTOR,
 	UNPIN_GROUP_DM_DESCRIPTOR,
 } from '@app/features/channel/utils/ChannelMessageDescriptors';
-import {forumHasUnreadPosts, markForumRead} from '@app/features/channel/utils/ForumReadState';
 import {ChannelDebugModal} from '@app/features/devtools/components/debug/ChannelDebugModal';
+import {isNewPostsUnreadEnabled, setNewPostsUnreadEnabled} from '@app/features/forum/state/ForumReadState';
+import {NEW_POSTS_NOTIFICATION_DESCRIPTOR} from '@app/features/forum/utils/ForumMessageDescriptors';
 import {GuildNotificationSettingsModal} from '@app/features/guild/components/modals/GuildNotificationSettingsModal';
 import {useLeaveGroup} from '@app/features/guild/hooks/useLeaveGroup';
 import type {Guild} from '@app/features/guild/models/Guild';
@@ -172,7 +173,7 @@ export interface ChannelMenuData {
 	state: ChannelMenuState;
 }
 
-export interface ChannelMenuHandlers {
+interface ChannelMenuHandlers {
 	handleMarkAsRead: () => void;
 	handleToggleFavorite: () => void;
 	handleInviteMembers: () => void;
@@ -198,15 +199,12 @@ export interface ChannelMenuHandlers {
 	handleResetMatureContentAgreeState: () => void;
 }
 
-export interface ChannelMenuState {
+interface ChannelMenuState {
 	isGroupDM: boolean;
 	isDM: boolean;
 	isTextChannel: boolean;
 	isVoiceChannel: boolean;
 	isLinkChannel: boolean;
-	// Echowire: forum channels and threads/posts get the text channel menu.
-	isForumChannel: boolean;
-	isThreadChannel: boolean;
 	isOwner: boolean;
 	isMuted: boolean;
 	isFavorited: boolean;
@@ -224,13 +222,7 @@ function getChannelMenuState(channel: Channel, guild: Guild | undefined): Channe
 	const currentUserId = Authentication.currentUserId;
 	const isGroupDM = channel.type === ChannelTypes.GROUP_DM;
 	const isDM = channel.type === ChannelTypes.DM;
-	const isForumChannel = channel.isForum();
-	const isThreadChannel = channel.isThread();
-	const isTextChannel =
-		channel.type === ChannelTypes.GUILD_TEXT ||
-		channel.type === ChannelTypes.GUILD_ANNOUNCEMENT ||
-		isForumChannel ||
-		isThreadChannel;
+	const isTextChannel = channel.type === ChannelTypes.GUILD_TEXT || channel.type === ChannelTypes.GUILD_ANNOUNCEMENT;
 	const isVoiceChannel = channel.type === ChannelTypes.GUILD_VOICE;
 	const isLinkChannel = channel.type === ChannelTypes.GUILD_LINK;
 	const isOwner = isGroupDM && channel.ownerId === currentUserId;
@@ -241,9 +233,9 @@ function getChannelMenuState(channel: Channel, guild: Guild | undefined): Channe
 	const mutedText = getMutedText(isMuted, muteConfig);
 	const isFavorited = !!Favorites.getChannel(channel.id);
 	const readState = ReadStates.get(channel.id);
-	const hasUnread = isForumChannel ? forumHasUnreadPosts(channel) : readState.hasUnread();
+	const hasUnread = readState.hasUnread();
 	const canManageChannels = Permission.can(Permissions.MANAGE_CHANNELS, {
-		channelId: isThreadChannel ? (channel.parentId ?? channel.id) : channel.id,
+		channelId: channel.id,
 		guildId: channel.guildId,
 	});
 	const canUpdateRtcRegion =
@@ -263,8 +255,6 @@ function getChannelMenuState(channel: Channel, guild: Guild | undefined): Channe
 		isTextChannel,
 		isVoiceChannel,
 		isLinkChannel,
-		isForumChannel,
-		isThreadChannel,
 		isOwner,
 		isMuted,
 		isFavorited,
@@ -289,19 +279,11 @@ export function useChannelMenuData(
 	const leaveGroup = useLeaveGroup();
 	const deleteMyMessagesInChannel = useDeleteMyMessagesInChannel();
 	const state = getChannelMenuState(channel, guild);
-	const initialHasUnread = useMemo(
-		() => (channel.isForum() ? forumHasUnreadPosts(channel) : ReadStates.hasUnread(channel.id)),
-		[channel],
-	);
+	const initialHasUnread = useMemo(() => ReadStates.hasUnread(channel.id), [channel.id]);
 	const showMarkAsReadItem = preserveInitialMarkAsReadVisibility ? initialHasUnread : state.hasUnread;
 	const handlers = useMemo(
 		() => ({
 			handleMarkAsRead: () => {
-				if (channel.isForum()) {
-					markForumRead(channel);
-					onClose();
-					return;
-				}
 				ReadStateCommands.ack(channel.id, true, true);
 				onClose();
 			},
@@ -422,12 +404,15 @@ export function useChannelMenuData(
 			handleChannelSettings: () => {
 				ModalCommands.pushAfterBottomSheetClose(
 					onClose,
-					modal(() => (
-						<ChannelSettingsModal
-							channelId={channel.id}
-							data-flx="ui.action-menu.items.channel-menu-data.handle-channel-settings.channel-settings-modal"
-						/>
-					)),
+					modal(
+						() => (
+							<ChannelSettingsModal
+								channelId={channel.id}
+								data-flx="ui.action-menu.items.channel-menu-data.handle-channel-settings.channel-settings-modal"
+							/>
+						),
+						'channel-settings',
+					),
 				);
 			},
 			handleDeleteChannel: () => {
@@ -668,7 +653,7 @@ export function useChannelMenuData(
 			menuGroups.push({items});
 			return menuGroups;
 		}
-		if (guild && (state.isTextChannel || state.isVoiceChannel || state.isLinkChannel)) {
+		if (guild && (state.isTextChannel || state.isVoiceChannel || state.isLinkChannel || channel.isThreadOnly())) {
 			if (state.isVoiceChannel && !Accessibility.voiceChannelJoinRequiresDoubleClick) {
 				menuGroups.push({
 					items: [
@@ -690,7 +675,7 @@ export function useChannelMenuData(
 					onClick: handlers.handleMarkAsRead,
 				});
 			}
-			if (Accessibility.showFavorites) {
+			if (Accessibility.showFavorites && !channel.isThread() && !channel.isThreadOnly()) {
 				metaItems.push({
 					icon: (
 						<FavoriteIcon
@@ -707,7 +692,7 @@ export function useChannelMenuData(
 				menuGroups.push({items: metaItems});
 			}
 			const inviteItems: Array<MenuItemType> = [];
-			if (state.canInvite) {
+			if (state.canInvite && !channel.isThreadOnly()) {
 				inviteItems.push({
 					icon: <InviteIcon size={20} data-flx="ui.action-menu.items.channel-menu-data.groups.invite-icon" />,
 					label: i18n._(INVITE_PEOPLE_DESCRIPTOR),
@@ -776,7 +761,18 @@ export function useChannelMenuData(
 				onClick: handlers.handleNotificationSettings,
 			});
 			menuGroups.push({items: notificationItems});
-			if (state.canEditChannel && !state.isThreadChannel) {
+			if (channel.isThreadOnly()) {
+				menuGroups.push({
+					items: [
+						{
+							label: i18n._(NEW_POSTS_NOTIFICATION_DESCRIPTOR),
+							checked: isNewPostsUnreadEnabled(channel),
+							onChange: (checked: boolean) => setNewPostsUnreadEnabled(channel, checked),
+						},
+					],
+				});
+			}
+			if (state.canEditChannel) {
 				const manageItems: Array<MenuItemType> = [
 					{
 						icon: <SettingsIcon size={20} data-flx="ui.action-menu.items.channel-menu-data.groups.settings-icon" />,
@@ -825,7 +821,7 @@ export function useChannelMenuData(
 			});
 			menuGroups.push({items: debugItems});
 			const destructiveItems: Array<MenuItemType> = [];
-			if (state.canManageChannels && !state.isThreadChannel) {
+			if (state.canManageChannels) {
 				destructiveItems.push({
 					icon: <DeleteIcon size={20} data-flx="ui.action-menu.items.channel-menu-data.groups.delete-icon--4" />,
 					label: i18n._(DELETE_CHANNEL_DESCRIPTOR),

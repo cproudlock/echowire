@@ -23,7 +23,7 @@ import {
 	type UserID,
 } from '@app/api/BrandedTypes';
 import {Config} from '@app/api/Config';
-import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
+import type {IThreadRepository} from '@app/api/channel/repositories/IThreadRepository';
 import {
 	isChannelEligible,
 	isTimestampInWindow,
@@ -32,6 +32,7 @@ import {
 } from '@app/api/channel/services/message/SelfMessageFilter';
 import type {UserConnectionRow} from '@app/api/database/types/ConnectionTypes';
 import type {StorePurchaseRow} from '@app/api/database/types/StoreBillingTypes';
+import {everEnabled, isTainted} from '@app/api/experiment/ChannelThreadsGate';
 import type {IStorageService} from '@app/api/infrastructure/IStorageService';
 import {Logger} from '@app/api/Logger';
 import type {Application} from '@app/api/models/Application';
@@ -47,6 +48,7 @@ import type {Payment} from '@app/api/models/Payment';
 import type {PushSubscription} from '@app/api/models/PushSubscription';
 import type {Relationship} from '@app/api/models/Relationship';
 import type {SavedMessage} from '@app/api/models/SavedMessage';
+import type {ThreadMember} from '@app/api/models/ThreadMember';
 import type {User} from '@app/api/models/User';
 import type {UserGuildSettings} from '@app/api/models/UserGuildSettings';
 import type {UserSettings} from '@app/api/models/UserSettings';
@@ -66,7 +68,7 @@ import {ContentAddressedAttachmentCollector} from '@app/api/worker/utils/Content
 import {deserializeSelfMessageFilter, SelfMessageFilterPayload} from '@app/api/worker/utils/SelfMessageFilterPayload';
 import {getWorkerDependencies} from '@app/api/worker/WorkerContext';
 import type {WorkerDependencies} from '@app/api/worker/WorkerDependencies';
-import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {
 	decodeSyncedPreferencesLenient,
 	syncedPreferencesToJson,
@@ -118,16 +120,6 @@ interface HarvestMessageResult {
 	totalMessages: number;
 }
 
-// Echowire: the threads and forum posts the user has joined. Membership is partitioned by thread,
-// so the set is gathered per guild the same way the deletion path does it.
-interface ThreadMembershipEntry {
-	threadId: string;
-	guildId: string;
-	parentId: string | null;
-	name: string;
-	joinedAt: string;
-}
-
 interface UserDataJsonParams {
 	user: User;
 	userId: UserID;
@@ -137,8 +129,8 @@ interface UserDataJsonParams {
 	userNotes: Map<UserID, string>;
 	userSettings: UserSettings | null;
 	guildMemberships: Array<GuildMembershipEntry>;
-	threadMemberships: Array<ThreadMembershipEntry>;
 	guildSettings: Array<UserGuildSettings | null>;
+	threadMemberships: Array<ThreadMember>;
 	savedMessages: Array<SavedMessage>;
 	privateChannels: Array<Channel>;
 	favoriteMemes: Array<FavoriteMeme>;
@@ -321,39 +313,6 @@ interface HarvestMessageRepository {
 	): Promise<{content: string | null; attachments?: Array<Attachment>} | null>;
 }
 
-// Echowire: every thread of one guild the user is a member of, for the data export. The by-user
-// membership index names the threads, so only those channels are read rather than every channel of
-// the guild.
-export async function collectThreadMemberships(params: {
-	guildId: GuildID;
-	userId: UserID;
-	channelRepository: {listChannels: (channelIds: Array<ChannelID>) => Promise<Array<Channel>>};
-}): Promise<Array<ThreadMembershipEntry>> {
-	const {guildId, userId, channelRepository} = params;
-	const threadMemberRepository = new ThreadMemberRepository();
-	const memberships = (await threadMemberRepository.listMembershipsForUser(userId)).filter(
-		(membership) => membership.guildId === guildId,
-	);
-	if (memberships.length === 0) return [];
-	const channels = await channelRepository.listChannels(memberships.map((membership) => membership.threadId));
-	const channelsById = new Map(channels.map((channel) => [channel.id.toString(), channel]));
-	const entries: Array<ThreadMembershipEntry> = [];
-	for (const membership of memberships) {
-		const channel = channelsById.get(membership.threadId.toString());
-		if (!channel || !THREAD_CHANNEL_TYPES.has(channel.type)) {
-			continue;
-		}
-		entries.push({
-			threadId: channel.id.toString(),
-			guildId: guildId.toString(),
-			parentId: channel.parentId ? channel.parentId.toString() : null,
-			name: channel.name ?? '',
-			joinedAt: membership.joinTimestamp.toISOString(),
-		});
-	}
-	return entries;
-}
-
 export async function harvestMessages(
 	channelRepository: HarvestMessageRepository,
 	userId: UserID,
@@ -457,6 +416,21 @@ export async function harvestMessages(
 	return {channelMessagesMap, totalMessages};
 }
 
+export async function collectThreadMemberships(
+	threads: Pick<IThreadRepository, 'listJoinedThreadIds' | 'getMember'>,
+	userId: UserID,
+	guildIds: ReadonlyArray<GuildID>,
+): Promise<Array<ThreadMember>> {
+	if (!everEnabled()) return [];
+	const perGuild = await mapWithConcurrency(guildIds, HARVEST_READ_CONCURRENCY, async (guildId) => {
+		if (!(await isTainted(guildId, {fresh: true}))) return [];
+		const threadIds = await threads.listJoinedThreadIds(userId, guildId);
+		const members = await Promise.all(threadIds.map((threadId) => threads.getMember(threadId, userId)));
+		return members.filter((member): member is ThreadMember => member !== null);
+	});
+	return perGuild.flat();
+}
+
 export function buildUserDataJson(params: UserDataJsonParams) {
 	const {
 		user,
@@ -467,8 +441,8 @@ export function buildUserDataJson(params: UserDataJsonParams) {
 		userNotes,
 		userSettings,
 		guildMemberships,
-		threadMemberships,
 		guildSettings,
+		threadMemberships,
 		savedMessages,
 		privateChannels,
 		favoriteMemes,
@@ -595,6 +569,8 @@ export function buildUserDataJson(params: UserDataJsonParams) {
 					staff_dm_access_user_ids: Array.from(userSettings.staffDmAccessUserIds).map((id) => id.toString()),
 					synced_preferences: syncedPreferencesToJson(decodeSyncedPreferencesLenient(userSettings.syncedPreferences)),
 					profile_privacy: userSettings.profilePrivacy,
+					privacy_setup_version: userSettings.privacySetupVersion,
+					privacy_setup_completed_at: userSettings.privacySetupCompletedAt?.toISOString() ?? null,
 				}
 			: null,
 		guild_memberships: guildMemberships
@@ -614,13 +590,6 @@ export function buildUserDataJson(params: UserDataJsonParams) {
 					: null,
 				role_ids: Array.from(member!.roleIds).map((id) => id.toString()),
 			})),
-		thread_memberships: threadMemberships.map((membership) => ({
-			thread_id: membership.threadId,
-			guild_id: membership.guildId,
-			parent_id: membership.parentId,
-			name: membership.name,
-			joined_at: membership.joinedAt,
-		})),
 		user_guild_settings: guildSettings
 			.filter((settings) => settings !== null)
 			.map((settings) => ({
@@ -632,6 +601,18 @@ export function buildUserDataJson(params: UserDataJsonParams) {
 				suppress_roles: settings!.suppressRoles,
 				hide_muted_channels: settings!.hideMutedChannels,
 			})),
+		...(threadMemberships.length > 0
+			? {
+					thread_memberships: threadMemberships.map((member) => ({
+						thread_id: member.threadId.toString(),
+						guild_id: member.guildId.toString(),
+						parent_id: member.parentId.toString(),
+						join_timestamp: member.joinTimestamp.toISOString(),
+						flags: member.flags,
+						muted: member.muted,
+					})),
+				}
+			: {}),
 		saved_messages: savedMessages.map((msg) => ({
 			channel_id: msg.channelId.toString(),
 			message_id: msg.messageId.toString(),
@@ -947,11 +928,7 @@ const harvestUserData: ArchiveTaskHandler = async (payload, helpers, attempt) =>
 		const guildSettings = await mapWithConcurrency(guildIds, HARVEST_READ_CONCURRENCY, (guildId) =>
 			userRepository.findGuildSettings(userId, guildId),
 		);
-		const threadMemberships = (
-			await mapWithConcurrency(guildIds, HARVEST_READ_CONCURRENCY, async (guildId) =>
-				collectThreadMemberships({guildId, userId, channelRepository}),
-			)
-		).flat();
+		const threadMemberships = await collectThreadMemberships(channelRepository.threads, userId, guildIds);
 		const {branding} = await instanceConfigRepository.getAppPublicConfig();
 		const userData = buildUserDataJson({
 			user,
@@ -962,8 +939,8 @@ const harvestUserData: ArchiveTaskHandler = async (payload, helpers, attempt) =>
 			userNotes,
 			userSettings,
 			guildMemberships,
-			threadMemberships,
 			guildSettings,
+			threadMemberships,
 			savedMessages,
 			privateChannels,
 			favoriteMemes,

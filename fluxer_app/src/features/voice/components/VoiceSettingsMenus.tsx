@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {UserSettingsModal} from '@app/features/app/components/dialogs/LoadableSettingsModals';
 import * as VoiceStateCommands from '@app/features/devtools/commands/VoiceStateCommands';
 import {CAMERA_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import Keybind from '@app/features/input/state/InputKeybind';
@@ -15,7 +16,6 @@ import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {modal} from '@app/features/ui/commands/ModalCommands';
 import {formatRoundedPercentage} from '@app/features/ui/utils/PercentageFormatting';
 import {AudioLevelMeter} from '@app/features/user/components/modals/tabs/components/AudioLevelMeter';
-import {UserSettingsModal} from '@app/features/user/components/modals/UserSettingsModal';
 import Users from '@app/features/user/state/Users';
 import * as CallCommands from '@app/features/voice/commands/CallCommands';
 import * as VoiceCallLayoutCommands from '@app/features/voice/commands/VoiceCallLayoutCommands';
@@ -125,13 +125,16 @@ type VoiceVideoSettingsSection = 'audio' | 'video';
 export function openVoiceVideoSettings(onClose: () => void, section?: VoiceVideoSettingsSection): void {
 	ModalCommands.pushAfterBottomSheetClose(
 		onClose,
-		modal(() => (
-			<UserSettingsModal
-				initialTab="voice_video"
-				initialSubtab={section}
-				data-flx="voice.voice-settings-menus.open-voice-video-settings.user-settings-modal"
-			/>
-		)),
+		modal(
+			() => (
+				<UserSettingsModal
+					initialTab="voice_video"
+					initialSubtab={section}
+					data-flx="voice.voice-settings-menus.open-voice-video-settings.user-settings-modal"
+				/>
+			),
+			'user-settings',
+		),
 	);
 }
 
@@ -449,38 +452,36 @@ interface VoiceDeviceSettingsMenuProps {
 	onClose: () => void;
 }
 
-export const VoiceDeviceSettingsMenu: React.FC<VoiceDeviceSettingsMenuProps> = observer(
-	({devices, deviceType, onClose}) => {
-		const isInput = deviceType === 'input';
-		return (
-			<>
-				<MenuGroup data-flx="voice.voice-settings-menus.voice-device-settings-menu.menu-group">
-					<VoiceAudioDeviceSubmenu
-						devices={devices}
-						deviceType={deviceType}
-						data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-audio-device-submenu"
-					/>
-					{isInput && (
-						<VoiceInputProfileSubmenu data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-input-profile-submenu" />
-					)}
-				</MenuGroup>
-				<MenuGroup data-flx="voice.voice-settings-menus.voice-device-settings-menu.menu-group--2">
-					{isInput ? (
-						<VoiceInputVolumeItems data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-input-volume-items" />
-					) : (
-						<VoiceOutputVolumeItem data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-output-volume-item" />
-					)}
-				</MenuGroup>
-				<MenuGroup data-flx="voice.voice-settings-menus.voice-device-settings-menu.menu-group--3">
-					<VoiceSettingsMenuItem
-						onClose={onClose}
-						data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-settings-menu-item"
-					/>
-				</MenuGroup>
-			</>
-		);
-	},
-);
+const VoiceDeviceSettingsMenu: React.FC<VoiceDeviceSettingsMenuProps> = observer(({devices, deviceType, onClose}) => {
+	const isInput = deviceType === 'input';
+	return (
+		<>
+			<MenuGroup data-flx="voice.voice-settings-menus.voice-device-settings-menu.menu-group">
+				<VoiceAudioDeviceSubmenu
+					devices={devices}
+					deviceType={deviceType}
+					data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-audio-device-submenu"
+				/>
+				{isInput && (
+					<VoiceInputProfileSubmenu data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-input-profile-submenu" />
+				)}
+			</MenuGroup>
+			<MenuGroup data-flx="voice.voice-settings-menus.voice-device-settings-menu.menu-group--2">
+				{isInput ? (
+					<VoiceInputVolumeItems data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-input-volume-items" />
+				) : (
+					<VoiceOutputVolumeItem data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-output-volume-item" />
+				)}
+			</MenuGroup>
+			<MenuGroup data-flx="voice.voice-settings-menus.voice-device-settings-menu.menu-group--3">
+				<VoiceSettingsMenuItem
+					onClose={onClose}
+					data-flx="voice.voice-settings-menus.voice-device-settings-menu.voice-settings-menu-item"
+				/>
+			</MenuGroup>
+		</>
+	);
+});
 
 interface VoiceInputSettingsMenuProps {
 	inputDevices: Array<MediaDeviceInfo>;
@@ -875,12 +876,15 @@ export const VoiceMoreOptionsMenu: React.FC<VoiceMoreOptionsMenuProps> = observe
 					onClick={() => {
 						ModalCommands.pushAfterBottomSheetClose(
 							onClose,
-							modal(() => (
-								<UserSettingsModal
-									initialTab="voice_video"
-									data-flx="voice.voice-settings-menus.voice-more-options-menu.user-settings-modal"
-								/>
-							)),
+							modal(
+								() => (
+									<UserSettingsModal
+										initialTab="voice_video"
+										data-flx="voice.voice-settings-menus.voice-more-options-menu.user-settings-modal"
+									/>
+								),
+								'user-settings',
+							),
 						);
 					}}
 					data-flx="voice.voice-settings-menus.voice-more-options-menu.menu-item.close"

@@ -2,7 +2,6 @@
 
 import {LexicalChannelTextareaContent} from '@app/features/channel/components/LexicalChannelTextareaContent';
 import type {Channel} from '@app/features/channel/models/Channel';
-import {isThreadComposerLocked} from '@app/features/channel/utils/ThreadActions';
 import DeveloperOptions from '@app/features/devtools/state/DeveloperOptions';
 import GuildMembers from '@app/features/member/state/GuildMembers';
 import Drafts from '@app/features/messaging/state/MessagingDrafts';
@@ -14,9 +13,11 @@ import {observer} from 'mobx-react-lite';
 interface ChannelTextareaProps {
 	readonly channel: Channel;
 	readonly inputSuppressed?: boolean;
+	readonly placeholder?: string;
 }
 
-export const ChannelTextarea = observer(({channel, inputSuppressed = false}: ChannelTextareaProps) => {
+export const ChannelTextarea = observer(({channel, inputSuppressed = false, placeholder}: ChannelTextareaProps) => {
+	const accountKey = Users.viewAccountKey;
 	const draft = Drafts.getDraft(channel.id);
 	const draftSegments = Drafts.getDraftSegments(channel.id);
 	const forceNoSendMessages = DeveloperOptions.forceNoSendMessages;
@@ -31,18 +32,16 @@ export const ChannelTextarea = observer(({channel, inputSuppressed = false}: Cha
 			Users.currentUser == null ? null : Users.currentUser.id,
 		);
 	}
-	// Echowire: see isThreadComposerLocked. Read live, so a lock from another user takes effect at once.
-	if (isThreadComposerLocked(channel)) {
-		disabled = true;
-	}
 	return (
 		<LexicalChannelTextareaContent
-			key={channel.id}
+			key={`${accountKey ?? ''}:${channel.id}`}
+			accountKey={accountKey}
 			channel={channel}
 			draft={draft}
 			draftSegments={draftSegments}
 			disabled={disabled}
 			inputSuppressed={inputSuppressed}
+			placeholder={placeholder}
 			data-flx="channel.channel-textarea.lexical-channel-textarea-content"
 		/>
 	);

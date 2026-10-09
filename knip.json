@@ -7,24 +7,28 @@
 		"fluxer_admin/src/styles/app.css",
 		"fluxer_admin/static/htmx.min.js",
 		"fluxer_api/scripts/MigrateScyllaToPostgres.ts",
+		"fluxer_app/src/features/voice/utils/camera-effects/models/selfie_segmentation_256x256.d.onnx.ts",
+		"fluxer_app/src/media/images/badges/bug-hunter.d.svg.ts",
+		"fluxer_app/src/media/images/badges/partner.d.svg.ts",
+		"fluxer_app/src/media/images/badges/plutonium.d.svg.ts",
+		"fluxer_app/src/media/images/badges/staff.d.svg.ts",
+		"fluxer_app/src/media/images/i-like-food.d.svg.ts",
 		"fluxer_marketing/src/styles/app.css",
 		"fluxer_marketing/static/htmx.min.js",
 		"tools/ci/templates/libfluxcore_wrapper.d.ts",
 		"tools/ci/templates/libfluxcore_wrapper.js"
 	],
 	"ignoreIssues": {
-		"fluxer_api/src/api/channel/repositories/ThreadMemberRepository.ts": ["types"],
+		"fluxer_api/src/api/infrastructure/activity/Contract.generated.ts": ["exports", "types"],
 		"fluxer_api/src/api/models/Channel.ts": ["types"],
 		"fluxer_app/scripts/build/Config.tsx": ["exports"],
+		"fluxer_app/src/features/voice/utils/ScreenShareCodecSelection.ts": ["exports", "types"],
 		"fluxer_app/scripts/build/rspack/static-files.mjs": ["exports"],
+		"fluxer_app/src/features/notification/utils/EntranceSoundScopes.ts": ["exports"],
+		"fluxer_app/src/features/platform/state/PersistentStorage.ts": ["exports"],
+		"fluxer_app/src/features/voice/utils/CodecCapabilityDetector.ts": ["exports"],
 		"fluxer_app/src/index.tsx": ["unlisted"],
-		"fluxer_api/src/api/infrastructure/activity/Contract.generated.ts": ["exports", "types"],
 		"fluxer_desktop/native/mac-app-audio/index.test.mjs": ["unlisted"],
-		"fluxer_desktop/src/common/DesktopConfig.ts": ["types"],
-		"fluxer_desktop/src/common/Types.ts": ["types"],
-		"fluxer_desktop/src/main/Autostart.ts": ["exports"],
-		"fluxer_desktop/src/main/LinuxDesktopEntry.ts": ["exports"],
-		"fluxer_desktop/src/main/NotificationState.ts": ["exports", "types"],
 		"packages/schema/src/domains/admin/AdminUserSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelRequestSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelSchemas.ts": ["exports"],
@@ -40,7 +44,6 @@
 		"fluxer_api": {
 			"ignoreDependencies": [
 				"@elastic/elasticsearch",
-				"@hono/node-server",
 				"@messageformat/core",
 				"@messageformat/parser",
 				"@vvo/tzdb",
@@ -55,7 +58,13 @@
 			]
 		},
 		"fluxer_app": {
-			"entry": ["lingui.config.js", "scripts/build-sw.mjs", "scripts/Generate*.ts", "scripts/build/**/*.{ts,tsx,mjs}"],
+			"entry": [
+				"lingui.config.js",
+				"scripts/build-sw.mjs",
+				"scripts/Generate*.ts",
+				"scripts/build/**/*.{ts,tsx,mjs}",
+				"src/features/platform/utils/BrowserAssertStrict.ts"
+			],
 			"ignoreDependencies": ["@sapphi-red/web-noise-suppressor", "@lingui/swc-plugin"]
 		},
 		"fluxer_desktop": {
@@ -63,15 +72,17 @@
 				"src/main/Bootstrap.ts",
 				"src/main/index.ts",
 				"src/preload/index.ts",
+				"src/preload/LegacyHarvestPreload.ts",
 				"src/main/**/*.test.{ts,mjs}",
+				"scripts/release-check.mjs",
 				"native/*/index.{js,d.ts}",
 				"native/*/loader-diagnostics.cjs",
 				"native/*/*.test.mjs",
 				"native/*/test/**/*.mjs"
 			],
 			"project": ["src/**/*.{ts,tsx,mjs,js}", "scripts/**/*.mjs", "native/**/*.{js,mjs,cjs,d.ts}"],
-			"ignoreBinaries": ["reg.exe", "update-desktop-database"],
-			"ignoreDependencies": ["electron-builder", "electron-builder-squirrel-windows"]
+			"ignoreBinaries": ["reg.exe", "update-desktop-database", "xdg-mime"],
+			"ignoreDependencies": ["electron-builder"]
 		},
 		"fluxer_docs": {
 			"entry": ["scripts/*.ts", "src/**/*.astro"],

@@ -66,6 +66,7 @@ import {
 	WebhookTypes,
 } from '@fluxer/constants/src/ChannelConstants';
 import {GuildFeatures, GuildOperations} from '@fluxer/constants/src/GuildConstants';
+import {THREAD_MESSAGE_FLAG_MASK} from '@fluxer/constants/src/ThreadConstants';
 import {ContentBlockedError} from '@fluxer/errors/src/domains/content/ContentBlockedError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
 import type {GuildResponse} from '@fluxer/schema/src/domains/guild/GuildResponseSchemas';
@@ -128,14 +129,14 @@ const UNAVAILABLE_GUILD_FEATURES: ReadonlyArray<string> = [
 	GuildFeatures.UNAVAILABLE_HIDDEN,
 ];
 
-export class CrosspostDeliveryPendingError extends Error {
+class CrosspostDeliveryPendingError extends Error {
 	constructor(sourceMessageId: MessageID, webhookId: WebhookID) {
 		super(`Crosspost delivery for ${sourceMessageId} to webhook ${webhookId} is still pending`);
 		this.name = 'CrosspostDeliveryPendingError';
 	}
 }
 
-export class CrosspostSyncConflictError extends Error {
+class CrosspostSyncConflictError extends Error {
 	constructor(sourceMessageId: MessageID, webhookId: WebhookID) {
 		super(`Crosspost copy for ${sourceMessageId} via webhook ${webhookId} changed during sync`);
 		this.name = 'CrosspostSyncConflictError';
@@ -165,7 +166,7 @@ function toStableValue(value: unknown): unknown {
 	return value;
 }
 
-export function crosspostSourceFingerprint(source: Message): string {
+function crosspostSourceFingerprint(source: Message): string {
 	const state = {
 		content: source.content ?? null,
 		flags: source.flags & SENDABLE_MESSAGE_FLAGS,
@@ -644,7 +645,10 @@ export class CrosspostDeliveryService {
 						attachments: null,
 						embeds: null,
 						sticker_items: null,
-						flags: MessageFlags.IS_CROSSPOST | MessageFlags.SOURCE_MESSAGE_DELETED,
+						flags:
+							MessageFlags.IS_CROSSPOST |
+							MessageFlags.SOURCE_MESSAGE_DELETED |
+							(fresh.flags & THREAD_MESSAGE_FLAG_MASK),
 						edited_timestamp: new Date(),
 					},
 					fresh.toRow(),

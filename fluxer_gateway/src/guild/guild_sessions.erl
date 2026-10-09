@@ -15,8 +15,6 @@
     set_session_active_guild/3,
     set_session_passive_guild/3,
     build_initial_last_message_ids/1,
-    is_session_active/2,
-    subscribe_connected_user_presence/2,
     subscribe_to_user_presence/2,
     unsubscribe_from_user_presence/2,
     set_session_viewable_channels/3,
@@ -27,9 +25,7 @@
     released_push_holds/2,
     handle_send_guild_sync/2,
     handle_send_members_chunk/3,
-    build_viewable_channel_map/1,
-    is_thread_channel/2,
-    without_thread_channels/2
+    build_viewable_channel_map/1
 ]).
 
 -define(MAX_MEMO_ENTRIES, 8192).
@@ -44,7 +40,8 @@
 -type session_pair() :: {session_id(), session_data()}.
 -type perm_memo() :: #{user_id() => non_neg_integer()}.
 -type view_memo() :: #{user_id() => boolean()}.
--type message_ctx() :: {channel_id(), binary(), session_id() | undefined, guild_state()}.
+-type message_ctx() ::
+    {channel_id(), binary(), session_id() | undefined, boolean(), guild_state()}.
 -export_type([
     guild_state/0,
     session_id/0,
@@ -113,10 +110,6 @@ remove_session(SessionId, State) ->
 build_initial_last_message_ids(GuildState) ->
     guild_sessions_connect:build_initial_last_message_ids(GuildState).
 
--spec subscribe_connected_user_presence(user_id(), guild_state()) -> guild_state().
-subscribe_connected_user_presence(UserId, State) ->
-    guild_sessions_presence:subscribe_connected_user_presence(UserId, State).
-
 -spec subscribe_to_user_presence(user_id(), guild_state()) -> guild_state().
 subscribe_to_user_presence(UserId, State) ->
     guild_sessions_presence:subscribe_to_user_presence(UserId, State).
@@ -136,10 +129,6 @@ set_session_active_guild(SessionId, GuildId, State) ->
 -spec set_session_passive_guild(session_id(), guild_id(), guild_state()) -> guild_state().
 set_session_passive_guild(SessionId, GuildId, State) ->
     guild_sessions_passive:set_session_passive_guild(SessionId, GuildId, State).
-
--spec is_session_active(session_id(), guild_state()) -> boolean().
-is_session_active(SessionId, State) ->
-    guild_sessions_passive:is_session_active(SessionId, State).
 
 -spec handle_set_typing_override(session_id(), boolean(), guild_state()) -> guild_state().
 handle_set_typing_override(SessionId, TypingFlag, State) ->
@@ -176,9 +165,10 @@ handle_send_members_chunk(SessionId, ChunkData, State) ->
     sessions_map(), channel_id(), session_id() | undefined, guild_state()
 ) -> [session_pair()].
 filter_sessions_for_channel(Sessions, ChannelId, SessionIdOpt, State) ->
+    Gated = guild_thread_gate:needs_variant(State),
     {Acc, _Memo} = maps:fold(
         fun(Sid, S, In) ->
-            collect_channel_session(Sid, S, ChannelId, SessionIdOpt, State, In)
+            collect_channel_session(Sid, S, ChannelId, SessionIdOpt, Gated, State, In)
         end,
         {[], #{}},
         Sessions
@@ -190,15 +180,16 @@ filter_sessions_for_channel(Sessions, ChannelId, SessionIdOpt, State) ->
     session_data(),
     channel_id(),
     session_id() | undefined,
+    boolean(),
     guild_state(),
     {[session_pair()], view_memo()}
 ) -> {[session_pair()], view_memo()}.
-collect_channel_session(Sid, S, ChannelId, SessionIdOpt, State, {Acc, Memo}) ->
+collect_channel_session(Sid, S, ChannelId, SessionIdOpt, Gated, State, {Acc, Memo}) ->
     case is_pending_or_excluded(Sid, S, SessionIdOpt) of
         true ->
             {Acc, Memo};
         false ->
-            {Visible, Memo1} = memo_session_can_view_channel(S, ChannelId, State, Memo),
+            {Visible, Memo1} = memo_session_can_view_channel(Gated, S, ChannelId, State, Memo),
             {prepend_session(Visible, Sid, S, Acc), Memo1}
     end.
 
@@ -212,7 +203,7 @@ filter_sessions_for_message(Sessions, ChannelId, MessageId, SessionIdOpt, State)
     sessions_map(), channel_id(), binary(), session_id() | undefined, guild_state()
 ) -> [session_pair()].
 filter_message_memo(Sessions, ChannelId, MessageId, SessionIdOpt, State) ->
-    Ctx = {ChannelId, MessageId, SessionIdOpt, State},
+    Ctx = {ChannelId, MessageId, SessionIdOpt, guild_thread_gate:needs_variant(State), State},
     {Acc, _ViewMemo, _PermMemo} = maps:fold(
         fun(Sid, S, In) -> collect_message_session(Sid, S, Ctx, In) end,
         {[], #{}, #{}},
@@ -224,7 +215,7 @@ filter_message_memo(Sessions, ChannelId, MessageId, SessionIdOpt, State) ->
     session_id(), session_data(), message_ctx(), {[session_pair()], view_memo(), perm_memo()}
 ) -> {[session_pair()], view_memo(), perm_memo()}.
 collect_message_session(Sid, S, Ctx, {Acc, ViewMemo, PermMemo}) ->
-    {ChannelId, _MessageId, SessionIdOpt, State} = Ctx,
+    {ChannelId, _MessageId, SessionIdOpt, Gated, State} = Ctx,
     case is_pending_or_excluded(Sid, S, SessionIdOpt) of
         true ->
             {Acc, ViewMemo, PermMemo};
@@ -234,7 +225,7 @@ collect_message_session(Sid, S, Ctx, {Acc, ViewMemo, PermMemo}) ->
                 S,
                 Ctx,
                 Acc,
-                memo_session_can_view_channel(S, ChannelId, State, ViewMemo),
+                memo_session_can_view_channel(Gated, S, ChannelId, State, ViewMemo),
                 PermMemo
             )
     end.
@@ -256,7 +247,7 @@ collect_visible_message_session(_Sid, _S, _Ctx, Acc, {false, ViewMemo}, PermMemo
 -spec memo_message_session(
     session_id(), session_data(), message_ctx(), [session_pair()], perm_memo()
 ) -> {[session_pair()], perm_memo()}.
-memo_message_session(Sid, S, {ChannelId, MessageId, _SessionIdOpt, State}, Acc, Memo) ->
+memo_message_session(Sid, S, {ChannelId, MessageId, _SessionIdOpt, _Gated, State}, Acc, Memo) ->
     case maps:get(user_id, S, undefined) of
         UserId when is_integer(UserId) ->
             {Perms, Memo1} = memo_member_permissions(UserId, ChannelId, State, Memo),
@@ -420,29 +411,26 @@ refresh_session_viewable(SessionId, SessionData, AccState) ->
             AccState
     end.
 
--spec memo_session_can_view_channel(session_data(), channel_id(), guild_state(), view_memo()) ->
+-spec memo_session_can_view_channel(
+    boolean(), session_data(), channel_id(), guild_state(), view_memo()
+) ->
     {boolean(), view_memo()}.
-memo_session_can_view_channel(SessionData, ChannelId, State, Memo) ->
-    UserId = maps:get(user_id, SessionData, undefined),
-    %% Echowire: thread visibility depends on the user (private-thread membership), so a thread id
-    %% is never answered from the session's viewable map, which can be shared across users with the
-    %% same roles and goes stale when membership changes. It is resolved from membership instead,
-    %% through the same per-pass memo upstream added in #3072: that memo is computed by
-    %% check_member_channel_access, so the answer is still live, and it is keyed per user within one
-    %% pass over one channel, which is what keeps large guilds responsive under a flood.
-    case is_thread_channel(ChannelId, State) of
-        true when is_integer(UserId) ->
-            memo_member_channel_access(UserId, ChannelId, State, Memo);
+memo_session_can_view_channel(false, SessionData, ChannelId, State, Memo) ->
+    memo_session_can_view_channel_by_permissions(SessionData, ChannelId, State, Memo);
+memo_session_can_view_channel(true, SessionData, ChannelId, State, Memo) ->
+    case guild_thread_gate:channel_visible(SessionData, ChannelId, State) of
         true ->
-            {false, Memo};
+            memo_session_can_view_channel_by_permissions(SessionData, ChannelId, State, Memo);
         false ->
-            session_can_view_non_thread_channel(UserId, SessionData, ChannelId, State, Memo)
+            {false, Memo}
     end.
 
--spec session_can_view_non_thread_channel(
-    user_id() | undefined, session_data(), channel_id(), guild_state(), view_memo()
-) -> {boolean(), view_memo()}.
-session_can_view_non_thread_channel(UserId, SessionData, ChannelId, State, Memo) ->
+-spec memo_session_can_view_channel_by_permissions(
+    session_data(), channel_id(), guild_state(), view_memo()
+) ->
+    {boolean(), view_memo()}.
+memo_session_can_view_channel_by_permissions(SessionData, ChannelId, State, Memo) ->
+    UserId = maps:get(user_id, SessionData, undefined),
     case {UserId, maps:get(viewable_channels, SessionData, undefined)} of
         {Uid, ViewableChannels} when is_integer(Uid), is_map(ViewableChannels) ->
             case maps:is_key(ChannelId, ViewableChannels) of
@@ -473,38 +461,6 @@ check_member_channel_access(UserId, ChannelId, State) ->
         undefined -> false;
         _ -> guild_permissions:can_view_channel(UserId, ChannelId, Member, State)
     end.
-
--define(THREAD_CHANNEL_TYPES, [11, 12]).
-
--spec is_thread_channel(channel_id(), guild_state()) -> boolean().
-is_thread_channel(ChannelId, State) when is_integer(ChannelId) ->
-    case guild_permissions:find_channel_by_id(ChannelId, State) of
-        Channel when is_map(Channel) ->
-            lists:member(channel_type(Channel), ?THREAD_CHANNEL_TYPES);
-        _ ->
-            false
-    end;
-is_thread_channel(_ChannelId, _State) ->
-    false.
-
--spec channel_type(map()) -> integer() | undefined.
-channel_type(Channel) ->
-    case maps:get(<<"type">>, Channel, undefined) of
-        Type when is_integer(Type) -> Type;
-        Type when is_binary(Type) ->
-            try binary_to_integer(Type) of
-                Int -> Int
-            catch
-                error:badarg -> undefined
-            end;
-        _ ->
-            undefined
-    end.
-
-%% Echowire: drop thread ids from a channel id list before it is cached or shared.
--spec without_thread_channels([channel_id()], guild_state()) -> [channel_id()].
-without_thread_channels(ChannelIds, State) ->
-    [Id || Id <- ChannelIds, not is_thread_channel(Id, State)].
 
 -spec build_viewable_channel_map([channel_id()]) -> #{channel_id() => true}.
 build_viewable_channel_map(ChannelIds) ->
@@ -588,6 +544,14 @@ reference_session_can_access_message(SessionData, ChannelId, MessageId, State) -
 -spec reference_session_can_view_channel(session_data(), channel_id(), guild_state()) ->
     boolean().
 reference_session_can_view_channel(SessionData, ChannelId, State) ->
+    guild_thread_gate:channel_visible(SessionData, ChannelId, State) andalso
+        reference_session_can_view_channel_by_permissions(SessionData, ChannelId, State).
+
+-spec reference_session_can_view_channel_by_permissions(
+    session_data(), channel_id(), guild_state()
+) ->
+    boolean().
+reference_session_can_view_channel_by_permissions(SessionData, ChannelId, State) ->
     UserId = maps:get(user_id, SessionData, undefined),
     case {UserId, maps:get(viewable_channels, SessionData, undefined)} of
         {Uid, ViewableChannels} when is_integer(Uid), is_map(ViewableChannels) ->
@@ -625,11 +589,11 @@ memo_member_channel_access_miss_test() ->
 
 memo_session_can_view_channel_listed_skips_memo_test() ->
     Session = #{user_id => 1001, viewable_channels => #{10 => true}},
-    ?assertEqual({true, #{}}, memo_session_can_view_channel(Session, 10, #{}, #{})).
+    ?assertEqual({true, #{}}, memo_session_can_view_channel(false, Session, 10, #{}, #{})).
 
 memo_session_can_view_channel_without_user_test() ->
     Session = #{viewable_channels => #{10 => true}},
-    ?assertEqual({false, #{}}, memo_session_can_view_channel(Session, 10, #{}, #{})).
+    ?assertEqual({false, #{}}, memo_session_can_view_channel(false, Session, 10, #{}, #{})).
 
 channel_filters_match_per_session_reference_test() ->
     State = visibility_fixture_state(),
@@ -812,103 +776,5 @@ handle_pending_session_down_last_session_test() ->
     ?assertEqual(#{}, maps:get(sessions, NewState)),
     ?assertEqual(#{}, maps:get(guild_session_refs, NewState)),
     ?assertEqual(false, maps:is_key(auto_stop_pending, NewState)).
-
-%% Echowire: private-thread visibility is per user and must never come from a viewable map.
-
-thread_visibility_state(ThreadMemberIds) ->
-    thread_visibility_state(ThreadMemberIds, []).
-
-thread_visibility_state(ThreadMemberIds, ParentOverwrites) ->
-    View = constants:view_channel_permission(),
-    Everyone = #{
-        <<"id">> => <<"42">>,
-        <<"name">> => <<"@everyone">>,
-        <<"permissions">> => integer_to_binary(View)
-    },
-    Parent = #{
-        <<"id">> => <<"100">>, <<"type">> => 0, <<"permission_overwrites">> => ParentOverwrites
-    },
-    Private = #{
-        <<"id">> => <<"200">>,
-        <<"type">> => 12,
-        <<"parent_id">> => <<"100">>,
-        <<"thread_member_ids">> => ThreadMemberIds,
-        <<"permission_overwrites">> => []
-    },
-    Public = #{
-        <<"id">> => <<"201">>,
-        <<"type">> => 11,
-        <<"parent_id">> => <<"100">>,
-        <<"permission_overwrites">> => []
-    },
-    Member = fun(Id) ->
-        #{<<"user">> => #{<<"id">> => Id, <<"username">> => Id}, <<"roles">> => []}
-    end,
-    #{
-        id => 42,
-        data => guild_data_index:normalize_data(#{
-            <<"id">> => <<"42">>,
-            <<"guild">> => #{<<"id">> => <<"42">>, <<"owner_id">> => <<"9999">>},
-            <<"roles">> => [Everyone],
-            <<"channels">> => [Parent, Private, Public],
-            <<"members">> => [Member(<<"10">>), Member(<<"11">>)]
-        })
-    }.
-
-%% Both sessions carry the same role-keyed map, which (as the old cache did) lists the private
-%% thread because it was computed for its member.
-thread_visibility_sessions() ->
-    Shared = #{100 => true, 200 => true, 201 => true},
-    #{
-        <<"member">> => #{user_id => 10, pid => self(), viewable_channels => Shared},
-        <<"same-roles">> => #{user_id => 11, pid => self(), viewable_channels => Shared}
-    }.
-
-private_thread_filters_out_same_role_non_member_test() ->
-    State = thread_visibility_state([<<"10">>]),
-    Pairs = filter_sessions_for_channel(thread_visibility_sessions(), 200, undefined, State),
-    ?assertEqual([<<"member">>], lists:sort([Sid || {Sid, _} <- Pairs])).
-
-private_thread_filters_out_member_who_left_test() ->
-    State = thread_visibility_state([]),
-    Pairs = filter_sessions_for_channel(thread_visibility_sessions(), 200, undefined, State),
-    ?assertEqual([], Pairs).
-
-public_thread_visible_without_map_entry_test() ->
-    State = thread_visibility_state([]),
-    Sessions = #{
-        <<"s">> => #{user_id => 11, pid => self(), viewable_channels => #{100 => true}}
-    },
-    Pairs = filter_sessions_for_channel(Sessions, 201, undefined, State),
-    ?assertEqual([<<"s">>], [Sid || {Sid, _} <- Pairs]).
-
-without_thread_channels_strips_threads_test() ->
-    State = thread_visibility_state([<<"10">>]),
-    ?assertEqual([100], without_thread_channels([100, 200, 201], State)).
-
-%% Echowire (HIGH-2): a session whose viewable map still lists a thread from before its parent was
-%% denied must stop receiving the thread's events straight away, without a reconnect.
-thread_hidden_after_parent_denied_test() ->
-    View = constants:view_channel_permission(),
-    Deny = #{
-        <<"id">> => <<"42">>,
-        <<"type">> => 0,
-        <<"allow">> => <<"0">>,
-        <<"deny">> => integer_to_binary(View)
-    },
-    State = thread_visibility_state([<<"10">>], [Deny]),
-    Sessions = thread_visibility_sessions(),
-    ?assertEqual([], filter_sessions_for_channel(Sessions, 201, undefined, State)),
-    ?assertEqual([], filter_sessions_for_channel(Sessions, 200, undefined, State)).
-
-%% Echowire (MEDIUM-2): mention resolution and push eligibility both ask
-%% guild_permissions:can_view_channel, which must admit a private thread's members.
-private_thread_member_passes_mention_and_push_view_checks_test() ->
-    State = thread_visibility_state([<<"10">>]),
-    MemberOf = fun(UserId) -> guild_permissions:find_member_by_user_id(UserId, State) end,
-    ?assert(guild_members_common:member_can_view_channel(10, 200, MemberOf(10), State)),
-    ?assertNot(guild_members_common:member_can_view_channel(11, 200, MemberOf(11), State)),
-    ?assert(guild_permissions:can_view_channel(10, 200, MemberOf(10), State)),
-    ?assertNot(guild_permissions:can_view_channel(11, 200, MemberOf(11), State)).
 
 -endif.

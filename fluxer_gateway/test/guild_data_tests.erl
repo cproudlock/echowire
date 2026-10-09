@@ -31,6 +31,31 @@ read_model_preserves_query_results_test() ->
         cleanup_read_model(State)
     end.
 
+read_model_resolves_thread_channels_test() ->
+    State0 = read_model_state(),
+    Store = guild_thread_store:new(),
+    ok = guild_thread_store:put_thread(Store, #{
+        <<"id">> => <<"600">>, <<"parent_id">> => <<"500">>, <<"type">> => 11
+    }),
+    #{data := Data} = State0,
+    State = State0#{
+        data => Data#{thread_gate => #{active => true, version => 1}, thread_store => Store}
+    },
+    Request = #{user_id => 200, channel_id => 600},
+    try
+        ok = guild_read_model:put_state(State),
+        {reply, Expected, _} = guild_data:get_auth_context(Request, State),
+        ?assertMatch(
+            #{auth_context := #{<<"parent_channel">> := #{<<"id">> := 500}}}, Expected
+        ),
+        ?assertEqual(
+            {ok, Expected}, guild_read_model:query(100, {get_guild_auth_context, Request})
+        )
+    after
+        cleanup_read_model(State),
+        guild_thread_store:destroy(Store)
+    end.
+
 read_model_uses_live_member_rows_without_copying_members_test() ->
     State = read_model_state(),
     #{data := #{members_ets := Tab}} = State,
@@ -500,16 +525,6 @@ sort_channels_for_ordering_places_announcement_channels_with_text_test() ->
         [<<"3">>, <<"2">>, <<"1">>, <<"4">>, <<"6">>, <<"5">>],
         [maps:get(<<"id">>, C) || C <- Ordered]
     ).
-
-voice_members_from_states_reads_embedded_member_test() ->
-    EmbeddedMember = #{<<"user">> => #{<<"id">> => <<"300">>}, <<"roles">> => []},
-    IndexedMember = #{<<"user">> => #{<<"id">> => <<"200">>}, <<"roles">> => []},
-    VoiceStates = [
-        #{<<"user_id">> => <<"300">>, <<"member">> => EmbeddedMember},
-        #{<<"user_id">> => <<"200">>}
-    ],
-    VoiceMembers = guild_data_channels:voice_members_from_states(VoiceStates, [IndexedMember]),
-    ?assertEqual([EmbeddedMember, IndexedMember], VoiceMembers).
 
 paginate_members_test() ->
     Members = [#{<<"id">> => 1}, #{<<"id">> => 2}, #{<<"id">> => 3}],

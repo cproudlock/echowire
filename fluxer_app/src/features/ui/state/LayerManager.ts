@@ -4,7 +4,13 @@ import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import * as PopoutCommands from '@app/features/ui/commands/PopoutCommands';
 import type {PopoutKey} from '@app/features/ui/popover';
 
-type LayerType = 'modal' | 'popout' | 'contextmenu';
+export const LayerType = Object.freeze({
+	CONTEXT_MENU: 'contextmenu',
+	MODAL: 'modal',
+	POPOUT: 'popout',
+} as const);
+
+export type LayerType = (typeof LayerType)[keyof typeof LayerType];
 
 export interface Layer {
 	type: LayerType;
@@ -62,10 +68,6 @@ class LayerManager {
 		return this.layers.length > 0 ? this.layers[this.layers.length - 1] : undefined;
 	}
 
-	hasLayers(): boolean {
-		return this.layers.length > 0;
-	}
-
 	isTopLayer(type: LayerType, key: string | PopoutKey): boolean {
 		const topLayer = this.getTopLayer();
 		return topLayer?.type === type && topLayer?.key === key;
@@ -73,11 +75,6 @@ class LayerManager {
 
 	hasType(type: LayerType): boolean {
 		return this.layers.some((l) => l.type === type);
-	}
-
-	isTopType(type: LayerType): boolean {
-		const top = this.getTopLayer();
-		return top?.type === type;
 	}
 
 	closeAll(): void {

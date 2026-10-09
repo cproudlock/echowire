@@ -24,18 +24,21 @@ const configuredMaxConcurrency = parseParallelInteger(process.env.API_TEST_MAX_C
 
 const MODULE_REGISTRY_TEST_FILES = [
 	'src/api/channel/tests/MessageCrosspostFanout.test.ts',
-	// Echowire: found by VitestIsolationCoverage.test.ts. This replaces
-	// @app/api/Logger, which 225 api source files import, with a Proxy that throws on
-	// any property access. In the shared pool that leaks into unrelated files as
-	// "Logger has not been initialized". Unlisted since it arrived in upstream #2118.
-	'src/api/database/PostgresKvLoggerSafety.test.ts',
-	// Echowire: this fork test replaces the ThreadMemberRepository module, so it needs
-	// its own registry for the same reason #3091 isolated the two crosspost files.
-	'src/api/channel/tests/ThreadSweepScan.test.ts',
 	'src/api/gif/GifRequestCountry.test.ts',
 	'src/api/stripe/tests/StripeCheckoutCountryEnforcement.test.ts',
 	'src/api/stripe/tests/StripeNordicCurrencies.test.ts',
+	// Echowire: found by VitestIsolationCoverage.test.ts. PostgresKvLoggerSafety replaces
+	// @app/api/Logger, which 225 api source files import, with a Proxy that throws on any
+	// property access; unlisted, that leaks into unrelated files as "Logger has not been
+	// initialized". StripeGiftSubscriptionShift replaces a module with a factory.
+	'src/api/database/PostgresKvLoggerSafety.test.ts',
+	'src/api/stripe/tests/StripeGiftSubscriptionShift.test.ts',
 	'src/api/worker/tests/CrosspostTasks.test.ts',
+	'src/api/search/tests/ThreadSearchScopeCap.test.ts',
+	'src/api/search/ThreadSearchScope.test.ts',
+	'src/api/worker/tests/HandleMentionsThread.test.ts',
+	'src/api/search/tests/GuildSearchThreadScope.test.ts',
+	'src/api/worker/tasks/HarvestUserData.test.ts',
 ];
 
 const INSTANCE_POLICY_TEST_FILES = [
@@ -60,6 +63,7 @@ const sharedTestConfig = {
 	testTimeout: 40000,
 	hookTimeout: 20000,
 	maxConcurrency: configuredMaxConcurrency,
+	execArgv: ['--no-experimental-webstorage', '--disable-warning=ExperimentalWarning'],
 };
 
 export default defineConfig({

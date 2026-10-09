@@ -1,20 +1,90 @@
 // @vitest-environment happy-dom
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {StatusTypes} from '@fluxer/constants/src/StatusConstants';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
-const IDLE_DURATION_MS = 600_000;
-const IDLE_CHECK_INTERVAL_MS = 30_000;
+const IDLE_THRESHOLD_PASSED_MS = 11 * 60 * 1000;
 
+const mobileLayoutLoad = vi.hoisted(() => ({delayMs: 0}));
+
+// Echowire: pin production timing (10 minute idle window) so the system idle clock tests below hold in dev mode too.
 vi.mock('@app/features/platform/types/Env', () => ({
 	IS_DEV: false,
 	IS_PROD: true,
 	MODE: 'test',
 }));
 
-vi.mock('@app/features/presence/state/LocalPresence', () => ({
-	default: {updatePresence: vi.fn()},
+vi.mock('@app/features/ui/state/MobileLayout', async () => {
+	await vi.advanceTimersByTimeAsync(mobileLayoutLoad.delayMs);
+	return {default: {isMobileLayout: () => false}};
+});
+
+vi.mock('@app/features/user/state/CustomStatus', () => ({
+	customStatusToKey: () => 'none',
+	normalizeCustomStatus: () => null,
+	toGatewayCustomStatus: () => null,
 }));
+
+function hydratedOnlineSettings() {
+	return {
+		status: StatusTypes.ONLINE,
+		isHydrated: () => true,
+		markSessionChanging: () => {},
+		getAfkTimeout: () => 600,
+		getCustomStatus: () => null,
+		getStatusResetsAt: () => null,
+		getStatusResetsTo: () => null,
+	};
+}
+
+describe('Idle', () => {
+	beforeEach(() => {
+		vi.resetModules();
+		vi.useFakeTimers();
+		mobileLayoutLoad.delayMs = 0;
+	});
+
+	afterEach(async () => {
+		const {default: Idle} = await import('@app/features/ui/state/Idle');
+		Idle.destroy();
+		vi.useRealTimers();
+	});
+
+	it('flips idle on its own timer while LocalPresence is still loading', async () => {
+		mobileLayoutLoad.delayMs = IDLE_THRESHOLD_PASSED_MS;
+		const {default: LocalPresence} = await import('@app/features/presence/state/LocalPresence');
+		const {default: Idle} = await import('@app/features/ui/state/Idle');
+		expect(Idle.isIdle()).toBe(true);
+		expect(LocalPresence).toBeDefined();
+	});
+
+	it('moves LocalPresence to idle and back to online with the idle state', async () => {
+		const {default: LocalPresence, setLocalPresenceUserSettings} = await import(
+			'@app/features/presence/state/LocalPresence'
+		);
+		const {default: Idle} = await import('@app/features/ui/state/Idle');
+		setLocalPresenceUserSettings(hydratedOnlineSettings());
+		LocalPresence.updatePresence();
+		await vi.advanceTimersByTimeAsync(0);
+		expect(LocalPresence.getStatus()).toBe(StatusTypes.ONLINE);
+
+		await vi.advanceTimersByTimeAsync(IDLE_THRESHOLD_PASSED_MS);
+		expect(Idle.isIdle()).toBe(true);
+		expect(LocalPresence.getStatus()).toBe(StatusTypes.IDLE);
+		expect(LocalPresence.getPresence().since).toBeGreaterThan(0);
+
+		Idle.recordActivity();
+		expect(Idle.isIdle()).toBe(false);
+		expect(LocalPresence.getStatus()).toBe(StatusTypes.ONLINE);
+		expect(LocalPresence.getPresence().since).toBe(0);
+	});
+});
+
+const IDLE_DURATION_MS = 600_000;
+const IDLE_CHECK_INTERVAL_MS = 30_000;
+
+let loadedIdle: {destroy: () => void} | null = null;
 
 async function loadIdle(getSystemIdleTimeMs?: () => Promise<number>) {
 	vi.resetModules();
@@ -24,15 +94,18 @@ async function loadIdle(getSystemIdleTimeMs?: () => Promise<number>) {
 		Reflect.deleteProperty(window as unknown as Record<string, unknown>, 'electron');
 	}
 	const {default: Idle} = await import('@app/features/ui/state/Idle');
+	loadedIdle = Idle;
 	return Idle;
 }
 
-describe('Idle', () => {
+describe('Idle system idle clock', () => {
 	beforeEach(() => {
 		vi.useFakeTimers();
 	});
 
 	afterEach(() => {
+		loadedIdle?.destroy();
+		loadedIdle = null;
 		Reflect.deleteProperty(window as unknown as Record<string, unknown>, 'electron');
 		vi.useRealTimers();
 	});

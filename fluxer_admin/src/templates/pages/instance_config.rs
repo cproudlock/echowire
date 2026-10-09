@@ -8,9 +8,8 @@ use crate::{
         EXPERIMENT_MAX_TARGETED_USERS, ExperimentDeliveryConfigResponse,
         GatewayRolloutConfigResponse, InstanceConfigResponse, InstanceIntegrationsResponse,
         InstanceMediaResponse, InstancePolicyResponse, InstanceRegistrationResponse,
-        LimitConfigResponse, PLUTONIUM_PAGE_DEFAULT_SALT, PendingRegistrationResponse,
-        PlutoniumPageConfigResponse, PushRelayConfigResponse, RegistrationUrlResponse,
-        SsoConfigResponse, TagStyle,
+        LimitConfigResponse, PendingRegistrationResponse, PushRelayConfigResponse,
+        RegistrationUrlResponse, SsoConfigResponse, TagStyle,
     },
     config::AdminConfig,
     middleware::auth::AuthContext,
@@ -168,6 +167,7 @@ pub fn instance_config_page(
                             csrf_token,
                             &instance_config.integrations,
                             instance_config.account_identity.mode,
+                            &instance_config.app_public.branding.product_name,
                         ))
                     },
                 ))
@@ -190,13 +190,9 @@ pub fn instance_config_page(
                     "Gateway rollout behavior and the limit rules applied to users and guilds.",
                     html! {
                         (gateway_rollout_section(base, csrf_token, &instance_config.gateway_rollout))
-                        (domain_migration_section(base, csrf_token, &instance_config.domain_migration))
-                        (plutonium_page_section(
-                            base,
-                            csrf_token,
-                            &instance_config.plutonium_page,
-                            &instance_config.app_public.branding.premium_product_name,
-                        ))
+                        @if !instance_config.self_hosted {
+                            (domain_migration_section(base, csrf_token, &instance_config.domain_migration))
+                        }
                         (experiment_delivery_section(base, csrf_token, &instance_config.experiment_delivery))
                         @if let Some(limit_config) = limit_config {
                             (limit_config_section(base, limit_config))
@@ -573,6 +569,7 @@ fn integrations_config_section(
     csrf_token: &str,
     integrations: &InstanceIntegrationsResponse,
     account_identity: AccountIdentityMode,
+    product_name: &str,
 ) -> Markup {
     let smtp_port = integrations
         .email
@@ -634,7 +631,7 @@ fn integrations_config_section(
                                     "integration_email_from_name",
                                     "From name",
                                     integrations.email.from_name.as_deref().unwrap_or(""),
-                                    "echowire",
+                                    product_name,
                                 ))
                                 (text_input(
                                     "integration_smtp_host",
@@ -657,7 +654,7 @@ fn integrations_config_section(
                                 (password_input("integration_smtp_password", "SMTP password", Some("Leave blank to keep the current password.")))
                             }
                             (checkbox("integration_smtp_secure", "true", "Use TLS", integrations.email.smtp.secure.unwrap_or(true), true))
-                            (checkbox("integration_email_disable_new_ip_authorization", "true", "Disable new IP login authorisation", integrations.email.disable_new_ip_authorization, true))
+                            (checkbox("integration_email_disable_new_ip_authorization", "true", "Disable new IP login authorization", integrations.email.disable_new_ip_authorization, true))
                             div class="flex flex-wrap gap-2" {
                                 button type="submit"
                                     formaction={(base) "/instance-config?action=test_smtp"}
@@ -960,9 +957,18 @@ fn app_public_config_section(
                                     app_public.legal.privacy_url.as_deref().unwrap_or(""),
                                     "https://example.com/privacy",
                                 ))
+                                (text_input(
+                                    "app_guidelines_url",
+                                    "Community Guidelines URL",
+                                    app_public.legal.guidelines_url.as_deref().unwrap_or(""),
+                                    "https://example.com/guidelines",
+                                ))
                             }
                             p class="text-xs text-neutral-500" {
-                                "Registration asks for agreement only to the documents configured here. Leave both blank to hide legal consent on self-hosted registration."
+                                "Registration asks for agreement only to the terms and privacy documents configured here. Leave both blank to hide legal consent on self-hosted registration."
+                            }
+                            p class="text-xs text-neutral-500" {
+                                "The community guidelines URL is linked from the app, the report flow and enforcement emails. Use an absolute http or https URL. Leave it blank to hide those links."
                             }
                             (form_actions(html! {
                                 (submit_button("Save Legal Documents"))
@@ -1281,165 +1287,6 @@ fn domain_migration_section(
     )
 }
 
-// Echowire: the premium tier is Reverb, not upstream Plutonium, so every operator-visible
-// string in this section reads the configured premium product name. Upstream hard-codes the
-// word here while reading the configured name in premium_mode_form just below; this threads
-// the same value one section further. Identifiers keep upstream's names on purpose: the form
-// fields are plutonium_page_*, the action is update_plutonium_page, and the response type is
-// PlutoniumPageConfigResponse, because those are wire and route names rather than display text.
-fn plutonium_page_section(
-    base: &str,
-    csrf_token: &str,
-    plutonium_page: &PlutoniumPageConfigResponse,
-    premium_name: &str,
-) -> Markup {
-    let status = if plutonium_page.enabled {
-        ("Live", BadgeVariant::Success)
-    } else {
-        ("Inert", BadgeVariant::Default)
-    };
-    let included_user_ids = plutonium_page.included_user_ids.join("\n");
-    let excluded_user_ids = plutonium_page.excluded_user_ids.join("\n");
-    let section_title = format!("{premium_name} page");
-    let section_description = format!(
-        "Replaces the {premium_name} settings tab with a full {premium_name} page, makes app \
-         pages linkable in chat, and uses a minimal gift purchase modal."
-    );
-    let enable_label = format!("Serve the {premium_name} page to the selected users");
-    let kill_switch_hint = format!(
-        "Off is the safe state and the kill switch. With this unchecked every client keeps the \
-         {premium_name} settings tab, so the rollout and targeting fields below have no effect \
-         at all."
-    );
-    let rollout_hint = format!(
-        "Share of users bucketed into the {premium_name} page, in basis points: 0 is nobody, \
-         100 is 1%, 10000 is everybody."
-    );
-    let save_label = format!("Save {premium_name} Page Configuration");
-    section_card_with_description(
-        &section_title,
-        &section_description,
-        html! {
-            form method="post" action={(base) "/instance-config?action=update_plutonium_page"} {
-                (csrf_input(csrf_token))
-                div class="space-y-6" {
-                    div class="flex flex-wrap items-center gap-2" {
-                        h3 class="text-sm font-semibold text-neutral-900" { "Master switch" }
-                        (badge(status.0, status.1))
-                        span class="text-xs text-neutral-500" {
-                            "Config version " (plutonium_page.config_version)
-                        }
-                    }
-                    (checkbox(
-                        "plutonium_page_enabled",
-                        "true",
-                        &enable_label,
-                        plutonium_page.enabled,
-                        true,
-                    ))
-                    p class="text-xs text-neutral-500" { (kill_switch_hint) }
-
-                    h3 class="text-sm font-semibold text-neutral-900" { "Rollout" }
-                    (number_field(
-                        "plutonium_page_rollout_basis_points",
-                        "Rollout (basis points)",
-                        &plutonium_page.rollout_basis_points.to_string(),
-                        Some(0), Some(10000), "1",
-                        Some(rollout_hint.as_str()),
-                    ))
-                    div class="flex flex-col gap-2" {
-                        (text_input(
-                            "plutonium_page_rollout_salt",
-                            "Rollout Salt",
-                            &plutonium_page.rollout_salt,
-                            PLUTONIUM_PAGE_DEFAULT_SALT,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "Seeds the bucketing hash. Changing it reshuffles which users fall \
-                             inside the percentage above. Leave it alone to keep the current \
-                             cohort stable."
-                        }
-                    }
-                    div class="flex flex-col gap-2" {
-                        (textarea_input(
-                            "plutonium_page_included_user_ids",
-                            "Always-on User IDs",
-                            "1500000000000000001\n1500000000000000002",
-                            &included_user_ids,
-                            4,
-                            false,
-                        ))
-                        (entry_count_hint(
-                            plutonium_page.included_user_ids.len(),
-                            EXPERIMENT_MAX_TARGETED_USERS,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "One snowflake per line, or comma separated. These users are targeted \
-                             regardless of the percentage above. IDs must contain 1 to 20 decimal \
-                             digits. Invalid entries prevent the save. Blank entries and duplicate \
-                             IDs are ignored."
-                        }
-                    }
-                    div class="flex flex-col gap-2" {
-                        (checkbox(
-                            "plutonium_page_include_premium_users",
-                            "true",
-                            "Include premium users",
-                            plutonium_page.include_premium_users,
-                            true,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "Includes every account with active premium perks, regardless of the \
-                             percentage above. The never-on list still wins."
-                        }
-                    }
-                    div class="flex flex-col gap-2" {
-                        (textarea_input(
-                            "plutonium_page_included_guild_ids",
-                            "Always-on Guild IDs",
-                            "1500000000000000005\n1500000000000000006",
-                            &plutonium_page.included_guild_ids.join("\n"),
-                            4,
-                            false,
-                        ))
-                        (entry_count_hint(
-                            plutonium_page.included_guild_ids.len(),
-                            EXPERIMENT_MAX_TARGETED_USERS,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "Same format, with guild IDs. Every member of a listed guild is \
-                             included regardless of the percentage above, unless the user is \
-                             in the never-on list."
-                        }
-                    }
-                    div class="flex flex-col gap-2" {
-                        (textarea_input(
-                            "plutonium_page_excluded_user_ids",
-                            "Never-on User IDs",
-                            "1500000000000000003\n1500000000000000004",
-                            &excluded_user_ids,
-                            4,
-                            false,
-                        ))
-                        (entry_count_hint(
-                            plutonium_page.excluded_user_ids.len(),
-                            EXPERIMENT_MAX_TARGETED_USERS,
-                        ))
-                        p class="text-xs text-neutral-500" {
-                            "Same format. Exclusion wins over both the always-on list and the \
-                             percentage."
-                        }
-                    }
-
-                    (form_actions(html! {
-                        (submit_button(&save_label))
-                    }))
-                }
-            }
-        },
-    )
-}
-
 fn estimate_low_end_solve_seconds(cost: u32, max_counter: u32) -> f64 {
     0.75 * f64::from(cost) * f64::from(max_counter) / 1_050_000.0
 }
@@ -1526,7 +1373,7 @@ fn experiment_delivery_section(
         "How often every client revalidates its experiment assignments. This is instance-wide \
          and covers every experiment, not just the ones above. Raising the interval sheds \
          request volume and makes a change take longer to reach a client. Raising the jitter \
-         spreads a fleet that has synchronised on one tick back out across the interval.",
+         spreads a fleet that has synchronized on one tick back out across the interval.",
         html! {
             form method="post" action={(base) "/instance-config?action=update_experiment_delivery"} {
                 (csrf_input(csrf_token))
@@ -2139,6 +1986,7 @@ mod tests {
             "csrf",
             &integrations,
             AccountIdentityMode::Username,
+            "Fluxer",
         )
         .into_string();
         assert!(!username.contains("Email delivery"));
@@ -2151,6 +1999,7 @@ mod tests {
             "csrf",
             &integrations,
             AccountIdentityMode::Email,
+            "Fluxer",
         )
         .into_string();
         assert!(email.contains("Email delivery"));
@@ -2257,73 +2106,6 @@ mod tests {
         assert!(markup.contains("1 of 1000 stored"));
         assert!(markup.contains("2 of 1000 stored"));
         assert!(!markup.contains("at the cap"));
-    }
-
-    #[test]
-    fn plutonium_page_section_shows_the_rollout_and_list_counts() {
-        let plutonium_page = PlutoniumPageConfigResponse {
-            enabled: true,
-            config_version: 3,
-            rollout_basis_points: 250,
-            included_user_ids: vec!["1500000000000000001".to_owned()],
-            excluded_user_ids: vec![
-                "1500000000000000002".to_owned(),
-                "1500000000000000003".to_owned(),
-            ],
-            ..PlutoniumPageConfigResponse::default()
-        };
-        let markup =
-            plutonium_page_section("/admin", "csrf", &plutonium_page, "Gold").into_string();
-        assert!(markup.contains("Gold page"));
-        assert!(markup.contains("action=update_plutonium_page"));
-        assert!(markup.contains("name=\"plutonium_page_enabled\""));
-        assert!(markup.contains("name=\"plutonium_page_rollout_basis_points\""));
-        assert!(markup.contains("value=\"250\""));
-        assert!(markup.contains("name=\"plutonium_page_include_premium_users\""));
-        assert!(markup.contains("name=\"plutonium_page_included_guild_ids\""));
-        assert!(markup.contains("Config version 3"));
-        assert!(markup.contains("1 of 1000 stored"));
-        assert!(markup.contains("2 of 1000 stored"));
-        assert!(!markup.contains("anonymous_rollout_basis_points"));
-        assert!(!markup.contains("standalone_forwarding"));
-    }
-
-    // Echowire: the premium tier is Reverb, not upstream Plutonium. If this test fails after a
-    // merge, upstream has added or reworded an operator-visible string in this section and the
-    // divergence needs re-applying. Do not update the expectation to match upstream's wording.
-    // The identifiers are deliberately excluded: plutonium_page_* field names, the
-    // update_plutonium_page action and PlutoniumPageConfigResponse all keep upstream's names,
-    // so this asserts over display text only.
-    #[test]
-    fn plutonium_page_section_names_the_configured_premium_tier_everywhere() {
-        let markup = plutonium_page_section(
-            "/admin",
-            "csrf",
-            &PlutoniumPageConfigResponse::default(),
-            "Reverb",
-        )
-        .into_string();
-
-        for expected in [
-            "Reverb page",
-            "Replaces the Reverb settings tab with a full Reverb page",
-            "Serve the Reverb page to the selected users",
-            "client keeps the Reverb settings tab",
-            "Share of users bucketed into the Reverb page",
-            "Save Reverb Page Configuration",
-        ] {
-            assert!(
-                markup.contains(expected),
-                "operator-visible string lost the configured premium name: {expected}"
-            );
-        }
-
-        // The display text must never name upstream's tier, while the identifiers still must.
-        assert!(!markup.contains("Plutonium page"));
-        assert!(!markup.contains("Plutonium settings tab"));
-        assert!(!markup.contains("Save Plutonium"));
-        assert!(markup.contains("name=\"plutonium_page_enabled\""));
-        assert!(markup.contains("action=update_plutonium_page"));
     }
 
     #[test]

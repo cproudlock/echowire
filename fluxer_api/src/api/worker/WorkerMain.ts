@@ -4,6 +4,7 @@ import {Config} from '@app/api/Config';
 import {createApiContext} from '@app/api/CreateApiContext';
 import {setDatabaseQueryExecutor} from '@app/api/database/CassandraQueryExecution';
 import {ensurePostgresKvSchema, PostgresKvQueryExecutor} from '@app/api/database/PostgresKvQueryExecutor';
+import {channelThreadsEnabled, everEnabled} from '@app/api/experiment/ChannelThreadsGate';
 import {
 	jetStreamActivityPublisher,
 	shutdownActivityEvents,
@@ -51,12 +52,21 @@ import {createWorkerProcessErrorHandler} from '@app/api/worker/WorkerProcessErro
 import {WorkerRunner} from '@app/api/worker/WorkerRunner';
 import {WorkerService} from '@app/api/worker/WorkerService';
 import {workerTasks} from '@app/api/worker/WorkerTaskRegistry';
-import {setupGracefulShutdown} from '@fluxer/hono/src/Server';
+import {createRegisteredMetricsHandler} from '@fluxer/hono/src/middleware/Metrics';
+import {createServer, setupGracefulShutdown} from '@fluxer/hono/src/Server';
+import type {ServerType} from '@hono/node-server';
 import {BACKGROUND_READ_TIMEOUT_MS, initCassandra, shutdownCassandra} from '@pkgs/cassandra/src/Client';
 import {JetStreamConnectionManager} from '@pkgs/nats/src/JetStreamConnectionManager';
 import {getDefaultPostgresClient, initPostgres, shutdownPostgres} from '@pkgs/postgres/src/Client';
 import type {WorkerTaskHandler} from '@pkgs/worker/src/contracts/WorkerTask';
+import {Hono} from 'hono';
 import {ms} from 'itty-time';
+
+function startWorkerMetricsServer(port: number): ServerType {
+	const app = new Hono();
+	app.get('/_metrics', createRegisteredMetricsHandler());
+	return createServer(app, {port, onListen: (info) => Logger.info({port: info.port}, 'Worker metrics listening')});
+}
 
 function registerCronJobs(cron: CronScheduler, jobsStreamMaxAgeMs: number): void {
 	cron.upsert('processAssetDeletionQueue', 'processAssetDeletionQueue', {}, '0 */5 * * * *', {ledger: false});
@@ -82,6 +92,7 @@ function registerCronJobs(cron: CronScheduler, jobsStreamMaxAgeMs: number): void
 	}
 	cron.upsert('processInactivityDeletions', 'processInactivityDeletions', {}, '0 0 */6 * * *', {ledger: false});
 	cron.upsert('expireAttachments', 'expireAttachments', {}, '0 0 */12 * * *', {ledger: false});
+	cron.upsert('expireReportSnapshots', 'expireReportSnapshots', {}, '0 15 5 * * *', {ledger: false});
 	if (jobsStreamMaxAgeMs > 0 && jobsStreamMaxAgeMs <= JOBS_STREAM_MAX_AGE_MS) {
 		cron.upsert('expireStaleJobs', 'expireStaleJobs', {}, '0 45 3 * * *', {ledger: false});
 	} else {
@@ -91,12 +102,6 @@ function registerCronJobs(cron: CronScheduler, jobsStreamMaxAgeMs: number): void
 		);
 	}
 	cron.upsert('prunePostgresKvTtl', 'prunePostgresKvTtl', {}, '0 */5 * * * *', {ledger: false});
-	// Echowire: threads/forums are a fork feature, absent upstream — keep this
-	// registered when adopting upstream's ledger option.
-	cron.upsert('archiveInactiveThreads', 'archiveInactiveThreads', {}, '0 */5 * * * *', {ledger: false});
-	// Echowire: sweep threads orphaned by parent-channel deletes that predate ThreadPurge.
-	cron.upsert('purgeOrphanedThreads', 'purgeOrphanedThreads', {}, '0 17 * * * *', {ledger: false});
-	cron.upsert('backfillThreadMembersByUser', 'backfillThreadMembersByUser', {}, '0 41 * * * *', {ledger: false});
 	cron.upsert('syncDiscoveryIndex', 'syncDiscoveryIndex', {}, '0 */15 * * * *', {ledger: false});
 	if (Config.blocklistFeeds.enabled) {
 		cron.upsert('syncUrlBlocklists', 'syncUrlBlocklists', {}, '0 0 */6 * * *', {ledger: true});
@@ -104,6 +109,10 @@ function registerCronJobs(cron: CronScheduler, jobsStreamMaxAgeMs: number): void
 	}
 	cron.upsert('flushUserActivityBuffer', 'flushUserActivityBuffer', {}, '*/10 * * * * *', {ledger: false});
 	cron.upsert('drainActivitySpool', 'drainActivitySpool', {}, '*/5 * * * * *', {ledger: false});
+	cron.upsert('archiveInactiveThreads', 'archiveInactiveThreads', {}, '0 * * * * *', {
+		ledger: false,
+		enabled: () => everEnabled() || channelThreadsEnabled(),
+	});
 	Logger.info(
 		{
 			blocklistFeeds: Config.blocklistFeeds.enabled,
@@ -124,6 +133,7 @@ export async function startWorkerMain(): Promise<void> {
 	let instanceConfigRepository: InstanceConfigRepository | null = null;
 	let dependencies: WorkerDependencies | null = null;
 	let cron: CronScheduler | null = null;
+	let metricsServer: ServerType | null = null;
 	const heartbeat = new WorkerHeartbeat({logger: Logger});
 	const runners: Array<WorkerRunner> = [];
 	let searchInitialized = false;
@@ -141,6 +151,10 @@ export async function startWorkerMain(): Promise<void> {
 		Logger.info('Shutting down worker backend...');
 		const voiceShutdown = cleanupStep('voice resources', shutdownVoiceResources);
 		await cleanupStep('heartbeat', () => heartbeat.stop());
+		await cleanupStep('metrics server', () => {
+			metricsServer?.close();
+			metricsServer = null;
+		});
 		await cleanupStep('cron', () => cron?.stop());
 		await cleanupStep('account actions', stopAccountActionConsumer);
 		await cleanupStep('runners', async () => {
@@ -281,6 +295,14 @@ export async function startWorkerMain(): Promise<void> {
 		await startContentBlocklistCaches({kvClient: dependencies.kvClient, storageService: dependencies.storageService});
 		Logger.info('Content blocklist caches initialised for worker backend');
 		await queueBlocklistFeedStartupJobs(dependencies.kvClient, workerService, Config.blocklistFeeds.enabled);
+		try {
+			const normalized = await getInstanceConfigRepository().normalizeStoredBrandingAssets(dependencies.storageService);
+			if (normalized > 0) {
+				Logger.info({normalized}, 'Normalised stored instance branding assets to references');
+			}
+		} catch (error) {
+			Logger.warn({err: error}, 'Failed to normalise stored instance branding assets');
+		}
 		setActivityProcessChannel('worker');
 		await startActivityEvents({
 			publisher: jetStreamActivityPublisher(jsConnectionManager.getJetStreamClient()),
@@ -346,6 +368,9 @@ export async function startWorkerMain(): Promise<void> {
 			'Worker runners started',
 		);
 		heartbeat.start();
+		if (Config.worker.metricsPort !== undefined) {
+			metricsServer = startWorkerMetricsServer(Config.worker.metricsPort);
+		}
 		setupGracefulShutdown(shutdown, {logger: Logger, timeoutMs: 30000});
 		const handleProcessError = createWorkerProcessErrorHandler({
 			logger: Logger,

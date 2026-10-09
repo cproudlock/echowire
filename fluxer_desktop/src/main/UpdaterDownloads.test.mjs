@@ -10,25 +10,27 @@ import vm from 'node:vm';
 const require = createRequire(import.meta.url);
 const esbuild = require('esbuild');
 
-const sourcePath = fileURLToPath(new URL('./UpdaterDownloads.ts', import.meta.url));
-const source = readFileSync(sourcePath, 'utf8');
-
 // Echowire: DESKTOP_BUILD_VARIANT is a compile-time global, substituted by esbuild define in
 // scripts/build.mjs. Compile per variant here so these tests exercise the same substitution a
 // shipped build gets, rather than a stub, and so the Windows variant segment is covered.
-const transformedSourceByVariant = new Map();
-function transformedSourceFor(variant) {
-	const cached = transformedSourceByVariant.get(variant);
+const transformedByVariant = new Map();
+function transform(name, variant) {
+	const key = `${name}:${variant}`;
+	const cached = transformedByVariant.get(key);
 	if (cached !== undefined) return cached;
-	const code = esbuild.transformSync(source, {
-		loader: 'ts',
-		format: 'cjs',
-		platform: 'node',
-		target: 'node20',
-		define: {DESKTOP_BUILD_VARIANT: JSON.stringify(variant)},
-	}).code;
-	transformedSourceByVariant.set(variant, code);
-	return code;
+	const path = fileURLToPath(new URL(`./${name}`, import.meta.url));
+	const result = {
+		path,
+		code: esbuild.transformSync(readFileSync(path, 'utf8'), {
+			loader: 'ts',
+			format: 'cjs',
+			platform: 'node',
+			target: 'node20',
+			define: {DESKTOP_BUILD_VARIANT: JSON.stringify(variant)},
+		}).code,
+	};
+	transformedByVariant.set(key, result);
+	return result;
 }
 
 const APPIMAGE_SHA256 = 'a'.repeat(64);
@@ -36,20 +38,41 @@ const DEB_SHA256 = 'b'.repeat(64);
 const TAR_GZ_SHA256 = 'c'.repeat(64);
 
 function loadUpdaterDownloads({channel = 'stable', platform = 'linux', arch = 'x64', variant = 'default'} = {}) {
+	const stubs = {};
 	function requireStub(specifier) {
+		if (specifier in stubs) return stubs[specifier];
 		if (specifier === '@electron/common/BuildChannel') return {BUILD_CHANNEL: channel};
+		if (specifier === '@electron/common/Constants') {
+			return {
+				DOWNLOAD_PAGE_URLS: {
+					stable: 'https://echowire.org/download',
+					canary: 'https://canary.echowire.org/download',
+					development: 'http://localhost:8088/download',
+				},
+			};
+		}
+		if (specifier === '@electron/common/DesktopIdentity') {
+			const names = {stable: 'echowire', canary: 'echowire-canary', development: 'echowire-development'};
+			return {DESKTOP_ARTIFACT_PRODUCT_NAME: names[channel]};
+		}
 		throw new Error(`Unexpected import: ${specifier}`);
 	}
 
-	const module = {exports: {}};
-	const context = vm.createContext({
-		require: requireStub,
-		module,
-		exports: module.exports,
-		process: {platform, arch},
-	});
-	vm.runInContext(transformedSourceFor(variant), context, {filename: sourcePath});
-	return module.exports;
+	function evaluate({path, code}) {
+		const module = {exports: {}};
+		const context = vm.createContext({
+			require: requireStub,
+			module,
+			exports: module.exports,
+			process: {platform, arch},
+		});
+		vm.runInContext(code, context, {filename: path});
+		return module.exports;
+	}
+
+	const shellDownloadFormats = evaluate(transform('ShellDownloadFormats.ts', variant));
+	stubs['@electron/main/ShellDownloadFormats'] = shellDownloadFormats;
+	return evaluate(transform('UpdaterDownloads.ts', variant));
 }
 
 function latestInfo(version, files = {}) {

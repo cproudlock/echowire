@@ -11,8 +11,6 @@ import {
 	requestSpeakMessage,
 	useMessagePermissions,
 } from '@app/features/channel/components/MessageActionUtils';
-import {ThreadCreateModal} from '@app/features/channel/components/modals/ThreadCreateModal';
-import Channels from '@app/features/channel/state/Channels';
 import {useQuickReactionEmojis} from '@app/features/channel/state/QuickReactionStore';
 import {MessageDebugModal} from '@app/features/devtools/components/debug/MessageDebugModal';
 import type {FlatEmoji} from '@app/features/emoji/types/EmojiTypes';
@@ -37,12 +35,15 @@ import type {Message} from '@app/features/messaging/models/MessagingMessage';
 import SavedMessages from '@app/features/messaging/state/SavedMessages';
 import {openReportMessageModal} from '@app/features/moderation/utils/ReportActionUtils';
 import Permission from '@app/features/permissions/state/Permission';
+import {openCreateThread} from '@app/features/threads/commands/ThreadNavigation';
+import {CREATE_THREAD_DESCRIPTOR} from '@app/features/threads/utils/ThreadMessageDescriptors';
 import {
 	AddReactionIcon,
 	BookmarkIcon,
 	CopyIdIcon,
 	CopyLinkIcon,
 	CopyMessageTextIcon,
+	CreateThreadIcon,
 	CrosspostIcon,
 	DebugMessageIcon,
 	DeleteIcon,
@@ -65,10 +66,9 @@ import {KeybindHint} from '@app/features/ui/keybind_hint/KeybindHint';
 import type {MenuGroupType, MenuItemType} from '@app/features/ui/menu_bottom_sheet/MenuBottomSheet';
 import UserSettings from '@app/features/user/state/UserSettings';
 import TtsUtils from '@app/features/voice/utils/VoiceTtsUtils';
-import {ChannelTypes, MessageStates, Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {MessageStates, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
-import {ChatCircleIcon} from '@phosphor-icons/react';
 import {useCallback, useEffect, useMemo, useState} from 'react';
 
 const MESSAGE_DEBUG_DESCRIPTOR = msg({
@@ -123,20 +123,14 @@ interface MessageActionMenuOptions {
 	submenuReactionCount?: number;
 }
 
-// Echowire: "Create Thread" message action.
-const CREATE_THREAD_DESCRIPTOR = msg({
-	message: 'Create Thread',
-	comment: 'Message right-click action that starts a thread from the message.',
-});
-
 export const messageActionMenuItemIds = {
 	addReaction: 'add-reaction',
 	viewReactions: 'view_reactions',
 	removeAllReactions: 'remove_all_reactions',
 	reply: 'reply',
-	createThread: 'message_create_thread',
 	forward: 'forward',
 	crosspost: 'message_crosspost',
+	createThread: 'create_thread',
 	edit: 'edit',
 	pinMessage: 'message_pin',
 	bookmarkMessage: 'message_bookmark',
@@ -298,38 +292,6 @@ export const useMessageActionMenuData = (
 					),
 				});
 			}
-			// Echowire: create a thread from this message (guild text channels only).
-			{
-				const liveChannel = Channels.getChannel(message.channelId);
-				if (
-					message.isUserMessage() &&
-					supportsInteractiveActions &&
-					liveChannel?.type === ChannelTypes.GUILD_TEXT &&
-					liveChannel.guildId
-				) {
-					const threadGuildId = liveChannel.guildId;
-					const threadParentId = liveChannel.id;
-					interactionActions.push({
-						id: messageActionMenuItemIds.createThread,
-						icon: <ChatCircleIcon size={20} />,
-						label: i18n._(CREATE_THREAD_DESCRIPTOR),
-						onClick: () => {
-							onClose?.();
-							ModalCommands.push(
-								modal(() => (
-									<ThreadCreateModal
-										guildId={threadGuildId}
-										parentChannelId={threadParentId}
-										starterMessageId={message.id}
-										starterMessageContent={message.content}
-										starterMessageAuthor={message.author.displayName}
-									/>
-								)),
-							);
-						},
-					});
-				}
-			}
 			if (message.isUserMessage() && supportsInteractiveActions && permissions?.canForwardMessage) {
 				interactionActions.push({
 					id: messageActionMenuItemIds.forward,
@@ -347,6 +309,14 @@ export const useMessageActionMenuData = (
 					icon: <CrosspostIcon size={20} data-flx="channel.message-action-menu.groups.crosspost-icon" />,
 					label: i18n._(PUBLISH_MESSAGE_DESCRIPTOR),
 					onClick: handlers.handleCrosspostMessage,
+				});
+			}
+			if (permissions?.canCreateThread) {
+				interactionActions.push({
+					id: messageActionMenuItemIds.createThread,
+					icon: <CreateThreadIcon size={20} data-flx="channel.message-action-menu.groups.create-thread-icon" />,
+					label: i18n._(CREATE_THREAD_DESCRIPTOR),
+					onClick: () => openCreateThread(permissions.channel, message.id),
 				});
 			}
 			if (message.isCurrentUserAuthor() && message.isUserMessage() && !message.messageSnapshots) {

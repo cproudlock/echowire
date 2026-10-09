@@ -86,8 +86,7 @@ import GuildListState, {type OrganizedItem} from '@app/features/guild/state/Guil
 import GuildReadState from '@app/features/guild/state/GuildReadState';
 import HiddenGuildListButtons from '@app/features/guild/state/HiddenGuildListButtons';
 import {PRIMARY_NAVIGATION_LANDMARK_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
-import {openMacPermissionsModal} from '@app/features/permissions/system/commands/MacPermissionsModalCommands';
-import MacPermissions from '@app/features/permissions/system/state/MacPermissions';
+import {preloadMacPermissionsModal} from '@app/features/permissions/system/commands/MacPermissionsModalCommands';
 import {useLocation} from '@app/features/platform/components/router/RouterReact';
 import {Platform} from '@app/features/platform/types/Platform';
 import {ComponentBus} from '@app/features/platform/utils/ComponentBus';
@@ -214,7 +213,7 @@ function useGuildNavigationVisibility(): GuildNavigationVisibility {
 	const fluxerVisible = !RuntimeConfig.directMessagesDisabled;
 	const favoritesVisible = Accessibility.showFavorites;
 	const downloadVisible = !Platform.isElectron && !Platform.isPWA && !HiddenGuildListButtons.downloadButtonHidden;
-	const helpVisible = !HiddenGuildListButtons.helpButtonHidden;
+	const helpVisible = !HiddenGuildListButtons.helpButtonHidden && Routes.help() != null;
 	return useMemo(
 		() =>
 			Object.freeze({
@@ -1280,11 +1279,11 @@ const SKELETON_NAGBAR_ROW_SHAPES: Record<NagbarType, SkeletonNagbarRowShape> = {
 	[NagbarType.LEGACY_PRICE_OPT_IN]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
 	[NagbarType.GIFT_INVENTORY]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
 	[NagbarType.DESKTOP_DOWNLOAD]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
-	[NagbarType.DESKTOP_UPDATE_READY]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
 	[NagbarType.GUILD_MEMBERSHIP_CTA]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
 	[NagbarType.VISIONARY_MFA]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
 	[NagbarType.VOICE_SESSION_RESTORE]: {tone: SkeletonNagbarTone.VOICE, hasActions: true},
 	[NagbarType.TERMS_ACCEPTANCE]: {tone: SkeletonNagbarTone.LEGAL, hasActions: true},
+	[NagbarType.PRIVACY_SETUP]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
 	[NagbarType.SOFTWARE_ENCODER]: {tone: SkeletonNagbarTone.ENCODER, hasActions: true},
 	[NagbarType.STREAMER_MODE]: {tone: SkeletonNagbarTone.STREAMER, hasActions: true},
 	[NagbarType.DOMAIN_MOVED]: {tone: SkeletonNagbarTone.BRAND, hasActions: true},
@@ -2240,13 +2239,8 @@ export const GuildsLayout = observer(({children}: {children: React.ReactNode}) =
 		openWhatsNewModal();
 	}, [isReady, user]);
 	useEffect(() => {
-		if (!isReady) return;
-		if (!user) return;
-		if (!MacPermissions.shouldShowOnboarding) return;
-		if (MacPermissions.onboardingOpenedThisSession) return;
-		MacPermissions.markOnboardingOpenedThisSession();
-		openMacPermissionsModal();
-	}, [isReady, user]);
+		preloadMacPermissionsModal();
+	}, []);
 	const shouldShowSidebarDivider = !mobileLayout.enabled;
 	return (
 		<div

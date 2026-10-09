@@ -2,12 +2,13 @@
 
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import {makePersistent} from '@app/features/platform/utils/MobXPersistence';
+import {initializeStore} from '@app/features/platform/utils/StoreInitialization';
 import UserSettings from '@app/features/user/state/UserSettings';
 import {create} from '@bufbuild/protobuf';
 import {SearchEngineSettingsSchema} from '@fluxer/schema/src/gen/fluxer/user/preferences/v1/preferences_pb';
 import {makeAutoObservable} from 'mobx';
 
-export interface ReverseImageSearchEngine {
+interface ReverseImageSearchEngine {
 	id: string;
 	name: string;
 	urlTemplate: string;
@@ -54,9 +55,9 @@ const BUILT_IN_ENGINES: ReadonlyArray<Omit<ReverseImageSearchEngine, 'enabled'>>
 		isBuiltIn: true,
 	},
 ];
-export const SUGGESTED_DEFAULT_REVERSE_IMAGE_SEARCH_ENGINE_ID = 'google_lens';
+const SUGGESTED_DEFAULT_REVERSE_IMAGE_SEARCH_ENGINE_ID = 'google_lens';
 
-export function createDefaultReverseImageSearchEngines(): Array<ReverseImageSearchEngine> {
+function createDefaultReverseImageSearchEngines(): Array<ReverseImageSearchEngine> {
 	return BUILT_IN_ENGINES.map((engine) => ({
 		...engine,
 		enabled: engine.id === SUGGESTED_DEFAULT_REVERSE_IMAGE_SEARCH_ENGINE_ID,
@@ -68,7 +69,7 @@ class ReverseImageSearch {
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
-		void makePersistent(this, 'ReverseImageSearch', ['engines'], {version: 2});
+		initializeStore(this, () => makePersistent(this, 'ReverseImageSearch', ['engines'], {version: 2}));
 	}
 
 	get enabledEngines(): ReadonlyArray<ReverseImageSearchEngine> {
@@ -93,17 +94,9 @@ class ReverseImageSearch {
 		return enabled.length === 1 ? enabled[0] : null;
 	}
 
-	get hasUserPreference(): boolean {
-		return this.defaultEngine != null;
-	}
-
 	get nonDefaultEnabledEngines(): ReadonlyArray<ReverseImageSearchEngine> {
 		const defaultId = this.defaultEngine?.id;
 		return this.enabledEngines.filter((engine) => engine.id !== defaultId);
-	}
-
-	get hasMultipleEnabled(): boolean {
-		return this.enabledEngines.length > 1;
 	}
 
 	setEnabled(engineId: string, enabled: boolean): void {
@@ -122,10 +115,6 @@ class ReverseImageSearch {
 			engine.enabled = true;
 		}
 		return this.persistDefault(engineId);
-	}
-
-	clearDefaultEngine(): void {
-		void this.persistDefault(null);
 	}
 
 	addCustomEngine(name: string, urlTemplate: string): string {

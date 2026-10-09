@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 use crate::app_wasm::resolve_app_dir;
+use crate::functions::sha256_file;
 use anyhow::{Context, Result, bail, ensure};
 use clap::Args;
 use serde::{Deserialize, Serialize};
-use sha2::{Digest, Sha256};
 use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::OsStr;
 use std::fs;
-use std::io::Read;
 use std::path::{Path, PathBuf};
 use std::process::Stdio;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
@@ -75,7 +74,7 @@ struct StepMetadata {
 type Metadata = BTreeMap<String, StepMetadata>;
 
 pub async fn run(args: AppDevServerArgs) -> Result<()> {
-    let project_root = args.app_dir.unwrap_or(resolve_app_dir()?);
+    let project_root = resolve_app_dir(args.app_dir)?;
     let mut server = AppDevServer::new(project_root);
     server.run().await
 }
@@ -391,25 +390,8 @@ where
     Ok(result)
 }
 
-fn hash_file(path: &Path) -> Result<String> {
-    let mut file = fs::File::open(path)
-        .with_context(|| format!("Failed to open {} for hashing", path.display()))?;
-    let mut hasher = Sha256::new();
-    let mut buffer = [0_u8; 64 * 1024];
-    loop {
-        let bytes_read = file
-            .read(&mut buffer)
-            .with_context(|| format!("Failed to read {} for hashing", path.display()))?;
-        if bytes_read == 0 {
-            break;
-        }
-        hasher.update(&buffer[..bytes_read]);
-    }
-    Ok(hex::encode(hasher.finalize()))
-}
-
 fn fingerprint_file(path: &Path) -> Result<InputFingerprint> {
-    let sha256 = hash_file(path)?;
+    let sha256 = sha256_file(path)?;
     let metadata = fs::metadata(path)
         .with_context(|| format!("Failed to stat {} after hashing", path.display()))?;
     Ok(InputFingerprint::Sha256 {

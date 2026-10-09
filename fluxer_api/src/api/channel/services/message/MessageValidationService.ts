@@ -16,7 +16,6 @@ import type {User} from '@app/api/models/User';
 import {hasVisibleContent} from '@app/api/utils/StringUtils';
 import {
 	isMessageTypeDeletable,
-	isMessageTypeDeletableByModerator,
 	MessageFlags,
 	MessageTypes,
 	Permissions,
@@ -31,6 +30,7 @@ import {
 	MAX_MESSAGE_LENGTH_PREMIUM,
 	MAX_VOICE_MESSAGE_DURATION,
 } from '@fluxer/constants/src/LimitConstants';
+import {THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ThreadConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {CannotEditSystemMessageError} from '@fluxer/errors/src/domains/channel/CannotEditSystemMessageError';
 import {CannotSendEmptyMessageError} from '@fluxer/errors/src/domains/channel/CannotSendEmptyMessageError';
@@ -47,7 +47,7 @@ export class MessageValidationService {
 	) {}
 
 	ensureTextChannel(channel: Channel): void {
-		if (!TEXT_BASED_CHANNEL_TYPES.has(channel.type)) {
+		if (!TEXT_BASED_CHANNEL_TYPES.has(channel.type) && !THREAD_CHANNEL_TYPES.has(channel.type)) {
 			throw new CannotSendMessageToNonTextChannelError();
 		}
 	}
@@ -251,14 +251,10 @@ export class MessageValidationService {
 		guild: GuildResponse | null;
 		hasPermission: (permission: bigint) => Promise<boolean>;
 	}): Promise<boolean> {
-		const isAuthor = message.authorId === userId;
 		if (!isMessageTypeDeletable(message.type)) {
-			// Echowire: a moderator may clear the thread-created notice; its subject may not.
-			if (!guild || !isMessageTypeDeletableByModerator(message.type)) {
-				return false;
-			}
-			return (await hasPermission(Permissions.SEND_MESSAGES)) && (await hasPermission(Permissions.MANAGE_MESSAGES));
+			return false;
 		}
+		const isAuthor = message.authorId === userId;
 		if (!guild) return isAuthor;
 		if (isAuthor) return true;
 		return hasPermission(Permissions.MANAGE_MESSAGES);

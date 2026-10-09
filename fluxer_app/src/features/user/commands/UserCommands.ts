@@ -415,7 +415,7 @@ export async function completePasswordChange(
 		const response = await http.post<PasswordChangeCompleteResponse>(Endpoints.USER_PASSWORD_CHANGE_COMPLETE, {
 			body: completePasswordChangeBody(ticket, verificationProof, newPassword),
 		});
-		SessionManager.setToken(response.body.token);
+		await SessionManager.setToken(response.body.token);
 		GatewayConnection.setToken(response.body.token);
 		AuthSession.handleAuthSessionChange(response.body.auth_session_id_hash);
 		logger.info('Password changed successfully');
@@ -601,17 +601,6 @@ export async function getLatestHarvest(): Promise<HarvestStatusResponse | null> 
 		return response.body;
 	} catch (error) {
 		logger.error('Failed to fetch latest harvest', error);
-		throw error;
-	}
-}
-
-export async function getHarvestStatus(harvestId: string): Promise<HarvestStatusResponse> {
-	try {
-		logger.debug('Fetching harvest status', {harvestId});
-		const response = await http.get<HarvestStatusResponse>(Endpoints.USER_HARVEST_STATUS(harvestId));
-		return response.body;
-	} catch (error) {
-		logger.error('Failed to fetch harvest status', error);
 		throw error;
 	}
 }

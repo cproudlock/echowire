@@ -1,83 +1,31 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type {ChannelID, GuildID, MessageID, UserID} from '@app/api/BrandedTypes';
+import {type ChannelID, channelIdToMessageId, type GuildID, type MessageID, type UserID} from '@app/api/BrandedTypes';
 import {
 	privateChannelFanOutTargets,
 	privateChannelLastMessageIdPatch,
 	privateChannelMetadataPatch,
 } from '@app/api/channel/PrivateChannelSnapshot';
-import {IChannelDataRepository} from '@app/api/channel/repositories/IChannelDataRepository';
-import {nextRecentParticipants} from '@app/api/channel/services/ThreadParticipants';
+import {type GuildChannelListMode, IChannelDataRepository} from '@app/api/channel/repositories/IChannelDataRepository';
 import {
 	BatchBuilder,
+	executeConditional,
 	fetchMany,
 	fetchManyInChunks,
 	fetchOne,
 	upsertOne,
 } from '@app/api/database/CassandraQueryExecution';
-import {Db, type DbOp} from '@app/api/database/CassandraTypes';
+import {Db} from '@app/api/database/CassandraTypes';
 import {buildPatchFromData, executeVersionedUpdate} from '@app/api/database/CassandraVersionedUpdate';
 import type {ChannelRow} from '@app/api/database/types/ChannelTypes';
 import {CHANNEL_COLUMNS} from '@app/api/database/types/ChannelTypes';
+import type {ThreadStatsRow} from '@app/api/database/types/ThreadTypes';
+import {guildActive, isTainted} from '@app/api/experiment/ChannelThreadsGate';
 import {Logger} from '@app/api/Logger';
 import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
 import {Channel} from '@app/api/models/Channel';
-import {Channels, ChannelsByGuild, PrivateChannels} from '@app/api/Tables';
-import {ChannelTypes, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
-import type {ICacheService} from '@pkgs/cache/src/ICacheService';
-
-// Echowire: thread columns that change independently of the rest of the row. They are written
-// with a targeted patch, never a full-row upsert from a possibly stale snapshot, so a concurrent
-// message send cannot roll back last_message_id or the message count.
-type ThreadPatchableColumn =
-	| 'name'
-	| 'applied_tags'
-	| 'rate_limit_per_user'
-	| 'thread_auto_archive_duration'
-	| 'thread_invitable'
-	| 'thread_archived'
-	| 'thread_archive_timestamp'
-	| 'thread_locked'
-	| 'thread_pinned'
-	| 'thread_member_count'
-	| 'thread_message_count';
-
-// Echowire: thread counters have no atomic increment in the KV store, so the read-modify-write is
-// serialised per thread with the distributed cache lock (the same primitive message edits use).
-// If the lock cannot be taken in time the write proceeds unlocked: an occasionally inexact count
-// is preferable to failing a message send. The cache singleton is loaded lazily to avoid an import
-// cycle between repositories and the service singletons.
-const THREAD_COUNTER_LOCK_TTL_SECONDS = 5;
-const THREAD_COUNTER_LOCK_ATTEMPTS = 25;
-const THREAD_COUNTER_LOCK_RETRY_MS = 10;
-
-async function withThreadCounterLock<T>(channelId: ChannelID, fn: () => Promise<T>): Promise<T> {
-	let cache: ICacheService | null = null;
-	try {
-		cache = (await import('@app/api/middleware/ServiceSingletons')).getCacheService();
-	} catch {
-		cache = null;
-	}
-	if (!cache) {
-		return fn();
-	}
-	const key = `channel:${channelId}:thread-counters`;
-	let token: string | null = null;
-	for (let attempt = 0; attempt < THREAD_COUNTER_LOCK_ATTEMPTS; attempt++) {
-		token = await cache.acquireLock(key, THREAD_COUNTER_LOCK_TTL_SECONDS).catch(() => null);
-		if (token) break;
-		await new Promise((resolve) => setTimeout(resolve, THREAD_COUNTER_LOCK_RETRY_MS * (attempt + 1)));
-	}
-	if (!token) {
-		Logger.warn({channelId: channelId.toString()}, 'Thread counter lock unavailable; updating unlocked');
-		return fn();
-	}
-	try {
-		return await fn();
-	} finally {
-		await cache.releaseLock(key, token).catch(() => {});
-	}
-}
+import {Channels, ChannelsByGuild, PrivateChannels, ThreadOnlyChannelsByGuild, ThreadStats} from '@app/api/Tables';
+import {THREAD_CHANNEL_TYPES, THREAD_ONLY_CHANNEL_TYPES} from '@fluxer/constants/src/ThreadConstants';
 
 const FETCH_CHANNEL_BY_ID = Channels.select({
 	where: [Channels.where.eq('channel_id'), Channels.where.eq('soft_deleted')],
@@ -89,6 +37,11 @@ const FETCH_CHANNELS_BY_IDS = Channels.select({
 const FETCH_GUILD_CHANNELS_BY_GUILD_ID = ChannelsByGuild.select({
 	where: ChannelsByGuild.where.eq('guild_id'),
 });
+const FETCH_THREAD_ONLY_CHANNELS_BY_GUILD_ID = ThreadOnlyChannelsByGuild.select({
+	where: ThreadOnlyChannelsByGuild.where.eq('guild_id'),
+});
+const THREAD_STATS_CAS_ATTEMPTS = 16;
+const FETCH_THREAD_STATS = ThreadStats.select({where: ThreadStats.where.eq('thread_id'), limit: 1});
 const FETCH_OPEN_PRIVATE_CHANNEL_TARGET = PrivateChannels.selectCql({
 	columns: ['user_id'],
 	where: [PrivateChannels.where.eq('user_id'), PrivateChannels.where.eq('channel_id')],
@@ -126,12 +79,14 @@ export class ChannelDataRepository extends IChannelDataRepository {
 			Channels,
 			{initialData: oldData},
 		);
-		if (data.guild_id) {
+		if (data.guild_id && !THREAD_CHANNEL_TYPES.has(data.type)) {
 			await upsertOne(
-				ChannelsByGuild.upsertAll({
-					guild_id: data.guild_id,
-					channel_id: channelId,
-				}),
+				THREAD_ONLY_CHANNEL_TYPES.has(data.type)
+					? ThreadOnlyChannelsByGuild.upsertAll({guild_id: data.guild_id, channel_id: channelId})
+					: ChannelsByGuild.upsertAll({
+							guild_id: data.guild_id,
+							channel_id: channelId,
+						}),
 			);
 		}
 		const finalRow: ChannelRow = {...data, version: result.finalVersion ?? 0};
@@ -139,7 +94,7 @@ export class ChannelDataRepository extends IChannelDataRepository {
 		return new Channel(finalRow);
 	}
 
-	async updateLastMessageId(channelId: ChannelID, messageId: MessageID, authorId?: UserID | null): Promise<void> {
+	async updateLastMessageId(channelId: ChannelID, messageId: MessageID, opts?: {isInsert?: boolean}): Promise<void> {
 		this.requestCache?.channels.delete(channelId);
 		const existing = await fetchOne<ChannelRow>(
 			FETCH_CHANNEL_BY_ID.bind({
@@ -148,89 +103,43 @@ export class ChannelDataRepository extends IChannelDataRepository {
 			}),
 		);
 		if (!existing) return;
-		if (!THREAD_CHANNEL_TYPES.has(existing.type)) {
-			await this.advanceLastMessageId(existing, messageId, authorId ?? null);
-			return;
+		if (opts?.isInsert && THREAD_CHANNEL_TYPES.has(existing.type) && messageId !== channelIdToMessageId(channelId)) {
+			await this.adjustThreadStats(channelId, 1, 1);
 		}
-		// Echowire: a thread's message count is read, bumped and written back. Serialise that per
-		// thread so concurrent sends neither lose increments nor both treat themselves as a forum
-		// post's uncounted starter message. Re-read inside the lock.
-		await withThreadCounterLock(channelId, async () => {
-			const fresh = await fetchOne<ChannelRow>(FETCH_CHANNEL_BY_ID.bind({channel_id: channelId, soft_deleted: false}));
-			if (fresh) {
-				await this.advanceLastMessageId(fresh, messageId, authorId ?? null);
-			}
-		});
-	}
-
-	private async advanceLastMessageId(
-		existing: ChannelRow,
-		messageId: MessageID,
-		authorId: UserID | null,
-	): Promise<void> {
-		const channelId = existing.channel_id;
 		const prev = existing.last_message_id ?? null;
 		if (prev !== null && messageId <= prev) return;
-		const patch: Partial<
-			Record<'last_message_id' | 'thread_message_count' | 'thread_recent_participant_ids', DbOp<unknown>>
-		> = {
-			last_message_id: Db.set(messageId),
-		};
-		// Echowire: a thread keeps a rolling window of its most recent distinct authors, written here
-		// so a forum card can render participant avatars without a lookup per post. Inside the same
-		// counter lock as the message count, so concurrent sends do not lose an entry.
-		if (THREAD_CHANNEL_TYPES.has(existing.type) && authorId) {
-			const participants = nextRecentParticipants(existing.thread_recent_participant_ids, authorId);
-			if (participants !== null) {
-				patch.thread_recent_participant_ids = Db.set(participants);
-			}
-		}
-		// Echowire: a new message in a thread bumps its message count in the same write. The first
-		// message of a forum post is the starter message, which Discord does not count.
-		if (THREAD_CHANNEL_TYPES.has(existing.type) && !(await this.isForumPostStarter(existing, prev))) {
-			patch.thread_message_count = Db.set((existing.thread_message_count ?? 0) + 1);
-		}
-		await upsertOne(Channels.patchByPk({channel_id: channelId, soft_deleted: false}, patch as never));
+		await upsertOne(
+			Channels.patchByPk({channel_id: channelId, soft_deleted: false}, {last_message_id: Db.set(messageId)}),
+		);
 		void this.fanOutPrivateChannelLastMessageId(existing, messageId);
 	}
 
-	private async isForumPostStarter(thread: ChannelRow, previousLastMessageId: MessageID | null): Promise<boolean> {
-		if (previousLastMessageId !== null || !thread.parent_id) return false;
-		const parent = await fetchOne<ChannelRow>(
-			FETCH_CHANNEL_BY_ID.bind({channel_id: thread.parent_id, soft_deleted: false}),
-		);
-		return parent?.type === ChannelTypes.GUILD_FORUM;
-	}
-
-	async patchThreadFields(
-		channelId: ChannelID,
-		fields: Partial<Pick<ChannelRow, ThreadPatchableColumn>>,
-	): Promise<void> {
-		const patch: Record<string, DbOp<unknown>> = {};
-		for (const [column, value] of Object.entries(fields)) {
-			if (value === undefined) continue;
-			patch[column] = value === null ? Db.clear() : Db.set(value);
+	async adjustThreadStats(threadId: ChannelID, messageDelta: number, sentDelta: number): Promise<void> {
+		for (let attempt = 0; attempt < THREAD_STATS_CAS_ATTEMPTS; attempt++) {
+			const stats = await fetchOne<ThreadStatsRow>(FETCH_THREAD_STATS.bind({thread_id: threadId}));
+			const messageCount = Math.max(0, (stats?.message_count ?? 0) + messageDelta);
+			const totalMessageSent = Math.max(0, (stats?.total_message_sent ?? 0) + sentDelta);
+			const applied = await executeConditional(
+				stats
+					? ThreadStats.conditionalPatchByPk(
+							{thread_id: threadId},
+							{message_count: Db.set(messageCount), total_message_sent: Db.set(totalMessageSent)},
+							{message_count: stats.message_count ?? null, total_message_sent: stats.total_message_sent ?? null},
+						)
+					: ThreadStats.insertIfNotExists({
+							thread_id: threadId,
+							message_count: messageCount,
+							total_message_sent: totalMessageSent,
+						}),
+			);
+			if (applied) return;
 		}
-		if (Object.keys(patch).length === 0) return;
-		this.requestCache?.channels.delete(channelId);
-		await upsertOne(Channels.patchByPk({channel_id: channelId, soft_deleted: false}, patch as never));
+		Logger.warn({threadId: threadId.toString()}, 'Gave up adjusting thread stats under contention');
 	}
 
-	async adjustThreadMessageCount(channelId: ChannelID, delta: number): Promise<void> {
-		if (delta === 0) return;
-		await withThreadCounterLock(channelId, async () => {
-			const existing = await fetchOne<ChannelRow>(
-				FETCH_CHANNEL_BY_ID.bind({channel_id: channelId, soft_deleted: false}),
-			);
-			if (!existing || !THREAD_CHANNEL_TYPES.has(existing.type)) return;
-			const current = existing.thread_message_count ?? 0;
-			const next = Math.max(0, current + delta);
-			if (next === current) return;
-			this.requestCache?.channels.delete(channelId);
-			await upsertOne(
-				Channels.patchByPk({channel_id: channelId, soft_deleted: false}, {thread_message_count: Db.set(next)}),
-			);
-		});
+	async patchIndexedAt(channelId: ChannelID, indexedAt: Date): Promise<void> {
+		this.requestCache?.channels.delete(channelId);
+		await upsertOne(Channels.patchByPk({channel_id: channelId, soft_deleted: false}, {indexed_at: Db.set(indexedAt)}));
 	}
 
 	private async writeThroughPrivateChannelMetadata(row: ChannelRow): Promise<void> {
@@ -308,7 +217,7 @@ export class ChannelDataRepository extends IChannelDataRepository {
 		);
 	}
 
-	async delete(channelId: ChannelID, guildId?: GuildID): Promise<void> {
+	async delete(channelId: ChannelID, guildId?: GuildID, type?: number): Promise<void> {
 		this.requestCache?.channels.delete(channelId);
 		const batch = new BatchBuilder();
 		batch.addPrepared(
@@ -317,23 +226,30 @@ export class ChannelDataRepository extends IChannelDataRepository {
 				soft_deleted: false,
 			}),
 		);
-		if (guildId) {
+		if (guildId && (type === undefined || !THREAD_CHANNEL_TYPES.has(type))) {
 			batch.addPrepared(
-				ChannelsByGuild.deleteByPk({
-					guild_id: guildId,
-					channel_id: channelId,
-				}),
+				type !== undefined && THREAD_ONLY_CHANNEL_TYPES.has(type)
+					? ThreadOnlyChannelsByGuild.deleteByPk({guild_id: guildId, channel_id: channelId})
+					: ChannelsByGuild.deleteByPk({
+							guild_id: guildId,
+							channel_id: channelId,
+						}),
 			);
 		}
 		await batch.execute();
 	}
 
-	async listGuildChannels(guildId: GuildID): Promise<Array<Channel>> {
-		const guildChannels = await fetchMany<{
-			channel_id: bigint;
-		}>(FETCH_GUILD_CHANNELS_BY_GUILD_ID.bind({guild_id: guildId}));
-		if (guildChannels.length === 0) return [];
-		const channelIds = guildChannels.map((c) => c.channel_id);
+	async listGuildChannels(guildId: GuildID, mode: GuildChannelListMode): Promise<Array<Channel>> {
+		const includeThreadOnly =
+			mode === 'enrolled' ? guildActive(guildId) : await isTainted(guildId, {fresh: mode === 'complete'});
+		const [guildChannels, threadOnlyChannels] = await Promise.all([
+			fetchMany<{channel_id: bigint}>(FETCH_GUILD_CHANNELS_BY_GUILD_ID.bind({guild_id: guildId})),
+			includeThreadOnly
+				? fetchMany<{channel_id: bigint}>(FETCH_THREAD_ONLY_CHANNELS_BY_GUILD_ID.bind({guild_id: guildId}))
+				: Promise.resolve([]),
+		]);
+		if (guildChannels.length === 0 && threadOnlyChannels.length === 0) return [];
+		const channelIds = [...guildChannels, ...threadOnlyChannels].map((c) => c.channel_id);
 		const channels = await fetchManyInChunks<ChannelRow>(FETCH_CHANNELS_BY_IDS, channelIds, (chunk) => ({
 			channel_ids: chunk,
 			soft_deleted: false,
@@ -351,9 +267,12 @@ export class ChannelDataRepository extends IChannelDataRepository {
 	}
 
 	async countGuildChannels(guildId: GuildID): Promise<number> {
-		const guildChannels = await fetchMany<{
-			channel_id: bigint;
-		}>(FETCH_GUILD_CHANNELS_BY_GUILD_ID.bind({guild_id: guildId}));
-		return guildChannels.length;
+		const [guildChannels, threadOnlyChannels] = await Promise.all([
+			fetchMany<{channel_id: bigint}>(FETCH_GUILD_CHANNELS_BY_GUILD_ID.bind({guild_id: guildId})),
+			guildActive(guildId)
+				? fetchMany<{channel_id: bigint}>(FETCH_THREAD_ONLY_CHANNELS_BY_GUILD_ID.bind({guild_id: guildId}))
+				: Promise.resolve([]),
+		]);
+		return guildChannels.length + threadOnlyChannels.length;
 	}
 }

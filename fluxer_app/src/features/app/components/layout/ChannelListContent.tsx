@@ -15,7 +15,6 @@ import {GenericChannelItem} from '@app/features/app/components/layout/GenericCha
 import {GuildDetachedBanner} from '@app/features/app/components/layout/GuildDetachedBanner';
 import {NullSpaceDropIndicator} from '@app/features/app/components/layout/NullSpaceDropIndicator';
 import {ScrollIndicatorOverlay} from '@app/features/app/components/layout/ScrollIndicatorOverlay';
-import {SidebarThreadRows} from '@app/features/app/components/layout/SidebarThreadRows';
 import {type DragItem, DragItemType, type DropResult} from '@app/features/app/components/layout/types/DndTypes';
 import {
 	shouldShowCategoryWhenHidingMutedChannels,
@@ -40,7 +39,6 @@ import {
 	measureSkeletonTextWidthPx,
 	useSkeletonLayoutReport,
 } from '@app/features/app/hooks/useSkeletonLayoutMemoryCapture';
-import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import type {Channel} from '@app/features/channel/models/Channel';
 import Channels from '@app/features/channel/state/Channels';
 import * as GuildCommands from '@app/features/guild/commands/GuildCommands';
@@ -53,6 +51,8 @@ import {useLocation} from '@app/features/platform/components/router/RouterReact'
 import {failureCode} from '@app/features/platform/utils/ResponseInspection';
 import ReadStates from '@app/features/read_state/state/ReadStates';
 import {remFromPx} from '@app/features/theme/layout/RemFromPx';
+import {SidebarThreadList} from '@app/features/threads/components/SidebarThreadList';
+import ThreadGuilds from '@app/features/threads/state/ThreadGuilds';
 import {ChannelListContextMenu} from '@app/features/ui/action_menu/ChannelListContextMenu';
 import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuCommands';
 import * as DimensionCommands from '@app/features/ui/commands/DimensionCommands';
@@ -173,6 +173,7 @@ interface ChannelListContentProps {
 	readonly banner: GuildBannerPresentation;
 }
 export const ChannelListContent = observer(({guild, scrollY, banner}: ChannelListContentProps) => {
+	const threadsActive = ThreadGuilds.isActive(guild.id);
 	const {i18n} = useLingui();
 	const channels = Channels.getGuildChannels(guild.id);
 	const location = useLocation();
@@ -220,10 +221,6 @@ export const ChannelListContent = observer(({guild, scrollY, banner}: ChannelLis
 			selectedChannelInGuildId = segment;
 		}
 	}
-	// Echowire: load the guild's active threads and the user's memberships for sidebar nesting.
-	useEffect(() => {
-		void ThreadCommands.listGuildActiveThreads(guild.id);
-	}, [guild.id]);
 	const handleMembersClick = useCallback(() => {
 		RouterUtils.transitionTo(Routes.guildMembers(guild.id));
 	}, [guild.id]);
@@ -631,6 +628,23 @@ export const ChannelListContent = observer(({guild, scrollY, banner}: ChannelLis
 									/>
 								)}
 								{group.showTextChannels &&
+									!threadsActive &&
+									group.visibleTextChannels.map((ch) => (
+										<ChannelItem
+											key={ch.id}
+											guild={guild}
+											channel={ch}
+											isDraggingAnything={isDraggingAnything}
+											activeDragItem={activeDragItem}
+											onChannelDrop={handleChannelDrop}
+											onDragStateChange={setActiveDragItem}
+											isSelectedByPath={selectedChannelInGuildId === ch.id}
+											isOnMembersRoute={isMembersSelected}
+											data-flx="app.channel-list-content.channel-item--2"
+										/>
+									))}
+								{group.showTextChannels &&
+									threadsActive &&
 									group.visibleTextChannels.map((ch) => (
 										<React.Fragment key={ch.id}>
 											<ChannelItem
@@ -642,16 +656,14 @@ export const ChannelListContent = observer(({guild, scrollY, banner}: ChannelLis
 												onDragStateChange={setActiveDragItem}
 												isSelectedByPath={selectedChannelInGuildId === ch.id}
 												isOnMembersRoute={isMembersSelected}
-												data-flx="app.channel-list-content.channel-item--2"
+												data-flx="app.channel-list-content.channel-item--4"
 											/>
-											{!isDraggingAnything && (
-												<SidebarThreadRows
-													guild={guild}
-													parent={ch}
-													selectedChannelId={selectedChannelInGuildId ?? null}
-													onlySelected={group.isCollapsed}
-												/>
-											)}
+											<SidebarThreadList
+												guildId={guild.id}
+												parentId={ch.id}
+												onlySelected={group.isCollapsed}
+												data-flx="app.channel-list-content.sidebar-thread-list"
+											/>
 										</React.Fragment>
 									))}
 								{group.showVoiceChannels &&

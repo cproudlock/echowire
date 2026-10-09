@@ -53,6 +53,7 @@ impl Job {
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 enum Audience {
     Standard,
+    Thread,
     Ring,
 }
 
@@ -60,6 +61,7 @@ impl Audience {
     fn admits(self, subscription: &Subscription) -> bool {
         match self {
             Self::Standard => subscription.platform() != Some(Platform::IosApnsVoip),
+            Self::Thread => Self::Standard.admits(subscription) && subscription.thread_channels,
             Self::Ring => Self::rings(subscription),
         }
     }
@@ -388,7 +390,11 @@ async fn run_message_job(
         &subscriptions,
         envelopes,
         deadline,
-        Audience::Standard,
+        if job.is_thread() {
+            Audience::Thread
+        } else {
+            Audience::Standard
+        },
     )
     .await;
     let duration_ms = elapsed_ms(started_ms);
@@ -697,6 +703,14 @@ mod tests {
             platform: Some(platform.to_owned()),
             app_id: None,
             provider_environment: None,
+            thread_channels: false,
+        }
+    }
+
+    fn threaded(platform: &str, thread_channels: bool) -> Subscription {
+        Subscription {
+            thread_channels,
+            ..subscription(platform, "token", false)
         }
     }
 
@@ -730,5 +744,18 @@ mod tests {
     fn a_voip_registration_is_still_excluded_from_standard_pushes() {
         let voip = subscription("ios_apns_voip", "https://relay.example/x", true);
         assert!(!Audience::Standard.admits(&voip));
+    }
+
+    #[test]
+    fn a_thread_push_reaches_only_devices_that_registered_the_capability() {
+        assert!(Audience::Thread.admits(&threaded("android_fcm", true)));
+        assert!(!Audience::Thread.admits(&threaded("android_fcm", false)));
+        assert!(!Audience::Thread.admits(&threaded("ios_apns_voip", true)));
+    }
+
+    #[test]
+    fn a_standard_push_ignores_the_capability() {
+        assert!(Audience::Standard.admits(&threaded("ios_apns", false)));
+        assert!(Audience::Standard.admits(&threaded("ios_apns", true)));
     }
 }

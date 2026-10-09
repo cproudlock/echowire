@@ -1,9 +1,16 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 type ElasticsearchFieldType = 'text' | 'keyword' | 'boolean' | 'long' | 'integer' | 'date' | 'float';
-export type FluxerSearchIndexName = 'messages' | 'guilds' | 'users' | 'reports' | 'audit_logs' | 'guild_members';
+export type FluxerSearchIndexName =
+	| 'messages'
+	| 'guilds'
+	| 'users'
+	| 'reports'
+	| 'audit_logs'
+	| 'guild_members'
+	| 'threads';
 
-export interface ElasticsearchFieldMapping {
+interface ElasticsearchFieldMapping {
 	type: ElasticsearchFieldType;
 	index?: boolean;
 	analyzer?: string;
@@ -11,7 +18,7 @@ export interface ElasticsearchFieldMapping {
 	fields?: Record<string, ElasticsearchFieldMapping>;
 }
 
-export interface ElasticsearchIndexSettings {
+interface ElasticsearchIndexSettings {
 	number_of_shards?: number;
 	number_of_replicas?: number;
 	analysis?: Record<string, unknown>;
@@ -158,8 +165,10 @@ export const ELASTICSEARCH_INDEX_DEFINITIONS: Record<FluxerSearchIndexName, Elas
 				status: integer(),
 				reportType: integer(),
 				category: textWithKeyword(),
+				reason: keyword(),
 				additionalInfo: textWithKeyword(),
 				reportedUserId: keyword(),
+				reportedWebhookId: keyword(),
 				reportedGuildId: keyword(),
 				reportedGuildName: textWithKeyword(),
 				reportedMessageId: keyword(),
@@ -170,6 +179,26 @@ export const ELASTICSEARCH_INDEX_DEFINITIONS: Record<FluxerSearchIndexName, Elas
 				resolvedByAdminId: keyword(),
 				publicComment: keyword(),
 				createdAt: long(),
+			},
+		},
+	},
+	threads: {
+		indexName: 'threads',
+		mappings: {
+			properties: {
+				id: keyword(),
+				guildId: keyword(),
+				parentId: keyword(),
+				type: integer(),
+				name: textWithKeyword(),
+				ownerId: keyword(),
+				archived: bool(),
+				locked: bool(),
+				appliedTagIds: keyword(),
+				createdAt: long(),
+				idSequence: long(),
+				lastMessageAt: long(),
+				archivedAt: long(),
 			},
 		},
 	},

@@ -1,77 +1,54 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// Echowire: threads and forum posts are a fork feature, so their admin routes need
-// their own audit coverage cases alongside upstream's areas.
-
 import type {AdminAuditCoverageCase} from '@app/api/admin/tests/audit_coverage/AdminAuditCoverage';
-import {createTestAccount, type TestAccount} from '@app/api/auth/tests/AuthTestUtils';
-import {createChannel, createGuild} from '@app/api/channel/tests/AttachmentTestUtils';
-import type {ApiTestHarness} from '@app/api/test/ApiTestHarness';
-import {HTTP_STATUS} from '@app/api/test/TestConstants';
-import {createBuilder} from '@app/api/test/TestRequestBuilder';
-import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
-
-const THREAD_NAME = 'audit coverage thread';
-
-async function createParentWithThread(
-	harness: ApiTestHarness,
-): Promise<{owner: TestAccount; guildId: string; parentId: string; threadId: string}> {
-	const owner = await createTestAccount(harness);
-	const guild = await createGuild(harness, owner.token, 'Audit Thread Guild');
-	const parent = await createChannel(harness, owner.token, guild.id, 'audit-threads');
-	const thread = await createBuilder<ChannelResponse>(harness, owner.token)
-		.post(`/channels/${parent.id}/threads`)
-		.body({name: THREAD_NAME})
-		.expect(HTTP_STATUS.CREATED)
-		.execute();
-	return {owner, guildId: guild.id, parentId: parent.id, threadId: thread.id};
-}
+import {createChannel, createGuild} from '@app/api/channel/tests/ChannelTestUtils';
+import {
+	ALL_THREADS_ACTIVE,
+	resetChannelThreadsConfig,
+	setChannelThreadsConfig,
+	threadsRequest,
+} from '@app/api/channel/tests/ThreadTestUtils';
+import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
+import type {ThreadChannelResponse} from '@fluxer/schema/src/domains/channel/ThreadRequestSchemas';
 
 export const ThreadAdminAuditCases: ReadonlyArray<AdminAuditCoverageCase> = [
 	{
 		method: 'GET',
-		route: '/admin/channels/:channel_id/threads',
-		async prepare({harness}) {
-			const {parentId} = await createParentWithThread(harness);
+		route: '/admin/guilds/:guild_id/threads',
+		async prepare({harness, admin}) {
+			resetChannelThreadsConfig();
+			const guild = await createGuild(harness, admin.token, 'Audit Thread List Guild');
 			return {
-				request: {path: `/admin/channels/${parentId}/threads`},
+				request: {path: `/admin/guilds/${guild.id}/threads`},
 				expected: {
-					action: 'list_channel_threads',
-					targetType: 'channel',
-					targetId: parentId,
-					metadata: {result_count: '1'},
-				},
-			};
-		},
-	},
-	{
-		method: 'PATCH',
-		route: '/admin/channels/:channel_id/thread',
-		async prepare({harness}) {
-			const {threadId} = await createParentWithThread(harness);
-			return {
-				request: {path: `/admin/channels/${threadId}/thread`, body: {archived: true, locked: true}},
-				expected: {
-					action: 'thread_update',
-					targetType: 'thread',
-					targetId: threadId,
-					metadata: {thread_name: THREAD_NAME, archived: 'true', locked: 'true'},
+					action: 'list_guild_threads',
+					targetType: 'guild',
+					targetId: guild.id,
+					metadata: {result_count: '0'},
 				},
 			};
 		},
 	},
 	{
 		method: 'DELETE',
-		route: '/admin/channels/:channel_id/thread',
-		async prepare({harness}) {
-			const {guildId, parentId, threadId} = await createParentWithThread(harness);
+		route: '/admin/channels/:channel_id',
+		async prepare({harness, admin}) {
+			resetChannelThreadsConfig();
+			await setChannelThreadsConfig(ALL_THREADS_ACTIVE);
+			const guild = await createGuild(harness, admin.token, 'Audit Thread Delete Guild');
+			const channel = await createChannel(harness, admin.token, guild.id, 'general');
+			const thread = await threadsRequest<ThreadChannelResponse>(harness, admin.token)
+				.post(`/channels/${channel.id}/threads`)
+				.body({name: 'doomed', type: ChannelTypes.PUBLIC_THREAD})
+				.expect(201)
+				.execute();
 			return {
-				request: {path: `/admin/channels/${threadId}/thread`},
+				request: {path: `/admin/channels/${thread.id}`, expectStatus: 204},
 				expected: {
-					action: 'thread_delete',
-					targetType: 'thread',
-					targetId: threadId,
-					metadata: {thread_name: THREAD_NAME, guild_id: guildId, parent_id: parentId},
+					action: 'delete_thread',
+					targetType: 'channel',
+					targetId: thread.id,
+					metadata: {guild_id: guild.id, parent_id: channel.id, type: String(ChannelTypes.PUBLIC_THREAD)},
 				},
 			};
 		},

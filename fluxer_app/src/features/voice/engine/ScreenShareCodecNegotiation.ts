@@ -2,6 +2,7 @@
 
 import {getDesktopTroubleshootingSettings} from '@app/features/devtools/utils/DesktopTroubleshootingUtils';
 import {Logger} from '@app/features/platform/utils/AppLogger';
+import {randomUuid} from '@app/features/platform/utils/RandomUuid';
 import {
 	computeDecodableByKnownParticipants,
 	type FluxerVideoCodecName,
@@ -24,7 +25,6 @@ import {
 	type CodecPreference,
 	isVideoCodecAllowedForPublish,
 	type ScreenShareEncoderMode,
-	selectNativeScreenCaptureScreenShareCodec,
 	selectOptimalScreenShareCodec,
 } from '@app/features/voice/utils/CodecCapabilityDetector';
 import {loadGpuEncoderReport} from '@app/features/voice/utils/GpuEncoderCapabilities';
@@ -90,7 +90,7 @@ const CODEC_PRIORITY_MAX = 65_535;
 const COMPATIBILITY_FALLBACK_CODEC_PREFERENCE: ReadonlyArray<VideoCodec> = ['h264', 'vp9', 'vp8'];
 const BASELINE_VIDEO_CODEC: VideoCodec = 'vp8';
 
-export interface FluxerSelectProtocolMessage {
+interface FluxerSelectProtocolMessage {
 	op: typeof SELECT_PROTOCOL_OP;
 	d: {
 		protocol: 'livekit';
@@ -103,7 +103,7 @@ export interface FluxerSelectProtocolMessage {
 	};
 }
 
-export interface FluxerSessionUpdateMessage {
+interface FluxerSessionUpdateMessage {
 	op: typeof SESSION_UPDATE_OP;
 	d: {
 		video_codec: FluxerVideoCodecName;
@@ -113,7 +113,7 @@ export interface FluxerSessionUpdateMessage {
 	};
 }
 
-export type FluxerCodecNegotiationMessage = FluxerSelectProtocolMessage | FluxerSessionUpdateMessage;
+type FluxerCodecNegotiationMessage = FluxerSelectProtocolMessage | FluxerSessionUpdateMessage;
 
 interface CodecNegotiationSelection {
 	codec: VideoCodec;
@@ -147,9 +147,7 @@ type ScreenShareCodecNegotiationMachineEvent =
 	| {type: 'negotiation.reset'};
 
 function createId(prefix: string): string {
-	const cryptoObject = globalThis.crypto as Crypto | undefined;
-	if (typeof cryptoObject?.randomUUID === 'function') return `${prefix}_${cryptoObject.randomUUID()}`;
-	return `${prefix}_${Date.now().toString(36)}_${Math.random().toString(36).slice(2)}`;
+	return `${prefix}_${randomUuid()}`;
 }
 
 function hasReceiverCapability(codec: VideoCodec): boolean | null {
@@ -229,7 +227,7 @@ export function computeNegotiatedVideoCodec(
 	};
 }
 
-export function buildLocalCodecAdvertisements(
+function buildLocalCodecAdvertisements(
 	order: ReadonlyArray<VideoCodec> = getScreenShareCodecPreferenceOrder(),
 ): Array<FluxerCodecAdvertisement> {
 	return buildScreenShareCodecAdvertisements(order, getLocalDecodeCapabilities());
@@ -256,7 +254,7 @@ function evaluateScreenShareCodecNegotiation(
 	};
 }
 
-export const screenShareCodecNegotiationStateMachine = setup({
+const screenShareCodecNegotiationStateMachine = setup({
 	types: {} as {
 		context: ScreenShareCodecNegotiationMachineContext;
 		events: ScreenShareCodecNegotiationMachineEvent;
@@ -292,13 +290,13 @@ export const screenShareCodecNegotiationStateMachine = setup({
 	},
 });
 
-export type ScreenShareCodecNegotiationSnapshot = SnapshotFrom<typeof screenShareCodecNegotiationStateMachine>;
+type ScreenShareCodecNegotiationSnapshot = SnapshotFrom<typeof screenShareCodecNegotiationStateMachine>;
 
-export function createScreenShareCodecNegotiationSnapshot(): ScreenShareCodecNegotiationSnapshot {
+function createScreenShareCodecNegotiationSnapshot(): ScreenShareCodecNegotiationSnapshot {
 	return initialTransition(screenShareCodecNegotiationStateMachine)[0];
 }
 
-export function transitionScreenShareCodecNegotiationSnapshot(
+function transitionScreenShareCodecNegotiationSnapshot(
 	snapshot: ScreenShareCodecNegotiationSnapshot,
 	event: ScreenShareCodecNegotiationMachineEvent,
 ): ScreenShareCodecNegotiationSnapshot {
@@ -449,11 +447,6 @@ class ScreenShareCodecNegotiation {
 		return result;
 	}
 
-	getRemoteDecodeInputs(): {knownDecode: Array<Set<VideoCodec>>; unknownParticipants: number} {
-		const {knownRemoteCodecs, unknownParticipants} = this.getRemoteCodecInputs();
-		return {knownDecode: knownRemoteCodecs.map((codecs) => getDecodeSet(codecs)), unknownParticipants};
-	}
-
 	setSelectionChangeListener(
 		listener: ((room: Room, codec: VideoCodec, reason: NegotiationReason) => void) | null,
 	): void {
@@ -469,15 +462,6 @@ class ScreenShareCodecNegotiation {
 				? selected
 				: this.selectLocalEncodeFallback(selector, preference);
 		return this.selectLocalEncodeFallback(selector, preference);
-	}
-
-	selectNativeScreenShareCodec(preference: CodecPreference = 'auto'): VideoCodec {
-		const selected = this.selectedCodec;
-		if (preference === 'auto')
-			return selected && this.canUseSelectedCodecForCurrentParticipants(selected)
-				? selected
-				: this.selectLocalEncodeFallback(selectNativeScreenCaptureScreenShareCodec, preference);
-		return this.selectLocalEncodeFallback(selectNativeScreenCaptureScreenShareCodec, preference);
 	}
 
 	private canLocalEncode(codec: VideoCodec): boolean {
@@ -866,7 +850,5 @@ class ScreenShareCodecNegotiation {
 		}
 	}
 }
-
-export {PROTOCOL_TOPIC as SCREEN_SHARE_CODEC_NEGOTIATION_TOPIC};
 
 export default new ScreenShareCodecNegotiation();

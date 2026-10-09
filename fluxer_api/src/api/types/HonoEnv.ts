@@ -15,9 +15,9 @@ import type {ChannelService} from '@app/api/channel/services/ChannelService';
 import type {MessageRequestService} from '@app/api/channel/services/message/MessageRequestService';
 import type {StreamPreviewService} from '@app/api/channel/services/StreamPreviewService';
 import type {StreamService} from '@app/api/channel/services/StreamService';
+import type {ThreadService} from '@app/api/channel/services/thread/ThreadService';
 import type {ConnectionRequestService} from '@app/api/connection/ConnectionRequestService';
 import type {ConnectionService} from '@app/api/connection/ConnectionService';
-import type {NcmecSubmissionService} from '@app/api/csam/NcmecSubmissionService';
 import type {DonationService} from '@app/api/donation/DonationService';
 import type {DownloadService} from '@app/api/download/DownloadService';
 import type {FavoriteMemeRequestService} from '@app/api/favorite_meme/FavoriteMemeRequestService';
@@ -108,6 +108,7 @@ export interface HonoEnv {
 		adminUserId: UserID;
 		adminUserAcls: Set<string>;
 		authTokenType?: 'session' | 'bearer' | 'bot' | 'admin_api_key';
+		clientFeatures: ReadonlySet<string>;
 		authViaCookie?: boolean;
 		authToken?: string;
 		authUserId?: string;
@@ -124,6 +125,7 @@ export interface HonoEnv {
 		cacheService: ICacheService;
 		channelService: ChannelService;
 		channelRequestService: ChannelRequestService;
+		threadService: ThreadService;
 		messageRequestService: MessageRequestService;
 		channelRepository: IChannelRepository;
 		connectionService: ConnectionService;
@@ -159,7 +161,6 @@ export interface HonoEnv {
 		reportService: ReportService;
 		reportRequestService: ReportRequestService;
 		contactChangeLogService: UserContactChangeLogService;
-		ncmecSubmissionService: NcmecSubmissionService;
 		requestCache: RequestCache;
 		rpcService: RpcService;
 		searchService: SearchService;
@@ -199,6 +200,7 @@ export interface HonoEnv {
 		requestLocale: string;
 		errorI18nService: ErrorI18nService;
 		channelUpdateType?: number;
+		channelUpdateGuildId?: string;
 	};
 }
 

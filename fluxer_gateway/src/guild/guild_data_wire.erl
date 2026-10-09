@@ -99,6 +99,8 @@ is_fast_snowflake_scalar(_) ->
 -spec binary_key_kind(binary()) -> key_kind().
 binary_key_kind(<<First, _/binary>> = Key) when First >= $1, First =< $9 ->
     numeric_binary_key_kind(Key);
+binary_key_kind(<<"_fluxer_", _/binary>>) ->
+    drop;
 binary_key_kind(Key) ->
     named_or_suffix_kind(Key).
 
@@ -155,15 +157,15 @@ named_key_kind(<<"recipients">>) -> maybe_scalar_list;
 named_key_kind(<<"guild_folders">>) -> restrict;
 named_key_kind(<<"rtc_regions">>) -> restrict;
 named_key_kind(<<"recipient_ids">>) -> drop;
-%% Echowire: a private thread's member ids are internal to the gateway's permission checks and
-%% must never reach a client session, whatever the thread type.
-named_key_kind(<<"thread_member_ids">>) -> drop;
 named_key_kind(<<"role_index">>) -> drop;
 named_key_kind(<<"channel_index">>) -> drop;
 named_key_kind(<<"member_role_index">>) -> drop;
 named_key_kind(<<"member_list_revision">>) -> drop;
 named_key_kind(<<"role_perms_cache">>) -> drop;
 named_key_kind(<<"overwrite_perms_cache">>) -> drop;
+named_key_kind(<<"thread_index">>) -> drop;
+named_key_kind(<<"member_ids_preview">>) -> drop;
+named_key_kind(<<"applied_tags">>) -> scalar_list;
 named_key_kind(_) -> unknown.
 
 -spec has_suffix(binary(), binary()) -> boolean().
@@ -210,17 +212,17 @@ fast_payload_drops_internal_keys_test() ->
     Data = #{<<"id">> => 1, <<"role_index">> => #{}, role_perms_cache => #{}},
     ?assertEqual(#{<<"id">> => <<"1">>}, fast_payload(Data, false)).
 
-fast_payload_drops_thread_member_ids_test() ->
-    Private = #{<<"id">> => 21, <<"type">> => 12, <<"thread_member_ids">> => [<<"77">>]},
-    Public = #{<<"id">> => 22, <<"type">> => 11, thread_member_ids => [78]},
+fast_payload_shapes_thread_keys_test() ->
+    Data = #{
+        <<"id">> => 1,
+        <<"applied_tags">> => [2, 3],
+        <<"member_ids_preview">> => [4],
+        <<"_fluxer_thread">> => #{},
+        <<"thread_index">> => #{}
+    },
     ?assertEqual(
-        #{
-            <<"channels">> => [
-                #{<<"id">> => <<"21">>, <<"type">> => 12},
-                #{<<"id">> => <<"22">>, <<"type">> => 11}
-            ]
-        },
-        payload(#{<<"channels">> => [Private, Public]})
+        #{<<"id">> => <<"1">>, <<"applied_tags">> => [<<"2">>, <<"3">>]},
+        fast_payload(Data, false)
     ).
 
 pre_encoded_payload_passes_through_unchanged_test() ->
@@ -362,7 +364,6 @@ reference_payload_map_field(Path, Key, FieldValue, Acc) ->
 reference_keep_payload_field(Key) ->
     not lists:member(reference_key_binary(Key), [
         <<"recipient_ids">>,
-        <<"thread_member_ids">>,
         <<"role_index">>,
         <<"channel_index">>,
         <<"member_role_index">>,

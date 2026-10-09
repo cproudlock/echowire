@@ -40,6 +40,8 @@ import {canonicalizeMediaUrl, useSpoilerState} from '@app/features/messaging/uti
 import markupStyles from '@app/features/theme/styles/Markup.module.css';
 import messageStyles from '@app/features/theme/styles/Message.module.css';
 import * as ThemeUtils from '@app/features/theme/utils/ThemeUtils';
+import {MessageThreadChip} from '@app/features/threads/components/MessageThreadChip';
+import ThreadGuilds from '@app/features/threads/state/ThreadGuilds';
 import {StickerInlineMenuItems} from '@app/features/ui/action_menu/items/StickerContextMenuItems';
 import {MessageContextMenu} from '@app/features/ui/action_menu/MessageContextMenu';
 import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuCommands';
@@ -287,7 +289,7 @@ interface ForwardedMessageContentProps {
 	onDelete?: (bypassConfirm?: boolean) => void;
 }
 
-export const ForwardedMessageContent = observer(({message, snapshot, onDelete}: ForwardedMessageContentProps) => {
+const ForwardedMessageContent = observer(({message, snapshot, onDelete}: ForwardedMessageContentProps) => {
 	const {i18n} = useLingui();
 	const snapshotIndex = 0;
 	const snapshotEditedTimestamp = snapshot.edited_timestamp ? new Date(snapshot.edited_timestamp) : null;
@@ -719,6 +721,9 @@ export const MessageAttachments = observer(() => {
 					onPopoutToggle={onPopoutToggle}
 					data-flx="channel.message-attachments.message-reactions"
 				/>
+			)}
+			{!isPreview && ThreadGuilds.anyActive && (
+				<MessageThreadChip message={message} data-flx="channel.message-attachments.message-thread-chip" />
 			)}
 		</>
 	);

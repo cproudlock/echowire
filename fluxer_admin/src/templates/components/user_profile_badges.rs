@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 use crate::admin_flags::user_flag_bits;
+use crate::utils::timestamps::format_admin_timestamp;
 use maud::{Markup, html};
 
 pub mod premium_types {
@@ -22,19 +23,22 @@ fn premium_tooltip(
     if is_self_hosted {
         let name = self_hosted_premium_name?;
         return Some(match premium_since {
-            Some(since) => format!("{name} subscriber since {since}"),
+            Some(since) => format!("{name} subscriber since {}", format_admin_timestamp(since)),
             None => name.to_owned(),
         });
     }
     // Echowire: the premium tier is Reverb, not upstream Plutonium.
     Some(if premium_type == premium_types::LIFETIME {
         match premium_since {
-            Some(since) => format!("echowire Visionary since {since}"),
+            Some(since) => format!("echowire Visionary since {}", format_admin_timestamp(since)),
             None => "echowire Visionary".into(),
         }
     } else {
         match premium_since {
-            Some(since) => format!("echowire Reverb subscriber since {since}"),
+            Some(since) => format!(
+                "echowire Reverb subscriber since {}",
+                format_admin_timestamp(since)
+            ),
             None => "echowire Reverb".into(),
         }
     })

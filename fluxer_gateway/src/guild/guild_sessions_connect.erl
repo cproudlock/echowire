@@ -5,7 +5,6 @@
 
 -export([
     handle_session_connect/3,
-    resection_connected_user/3,
     resection_connected_user/4,
     build_initial_last_message_ids/1,
     build_initial_channel_versions/1,
@@ -42,7 +41,8 @@ handle_session_connect(Request, Pid, State) ->
     Sessions = maps:get(sessions, State, #{}),
     case maps:is_key(SessionId, Sessions) of
         true ->
-            {reply, {ok, guild_data:get_guild_state(UserId, State)}, State};
+            Opts = guild_thread_gate:state_opts(maps:get(SessionId, Sessions)),
+            {reply, {ok, guild_data:get_guild_state(UserId, State, Opts)}, State};
         false ->
             register_new_session(Request, Pid, UserId, SessionId, State)
     end.
@@ -78,7 +78,10 @@ do_register_new_session(Request, Pid, UserId, SessionId, Sessions, State) ->
         reject_not_member ->
             {reply, {error, not_member}, State};
         admit ->
-            GuildState = guild_data:get_guild_state(UserId, State),
+            ThreadFields = guild_thread_gate:session_fields(Request, UserId, State),
+            GuildState = guild_data:get_guild_state(
+                UserId, State, guild_thread_gate:state_opts(maps:merge(Request, ThreadFields))
+            ),
             register_admitted_session(
                 Request, Pid, UserId, SessionId, GuildId, GuildState, Sessions, State
             )
@@ -152,6 +155,9 @@ user_session_count_increment(UserId, SData) ->
 ) -> session_data().
 build_session_data(Request, Pid, UserId, SessionId, State) ->
     UserRoles = session_passive:get_user_roles_for_guild(UserId, State),
+    #{thread_capable := Capable, thread_viewer := Viewer} = guild_thread_gate:session_fields(
+        Request, UserId, State
+    ),
     #{
         session_id => SessionId,
         user_id => UserId,
@@ -161,7 +167,9 @@ build_session_data(Request, Pid, UserId, SessionId, State) ->
         user_roles => UserRoles,
         bot => maps:get(bot, Request, false),
         is_staff => maps:get(is_staff, Request, false),
-        viewable_channels => get_viewable_channels_cached(UserId, UserRoles, State)
+        viewable_channels => get_viewable_channels_cached(UserId, UserRoles, State),
+        thread_capable => Capable,
+        thread_viewer => Viewer
     }.
 
 -spec store_initial_passive_state(session_id(), guild_id(), map()) -> ok.
@@ -431,11 +439,6 @@ maybe_resection_disconnected_user(UserId, OldState, NewState) ->
         false -> NewState
     end.
 
--spec resection_connected_user(user_id() | undefined, guild_state(), guild_state()) ->
-    guild_state().
-resection_connected_user(UserId, OldState, NewState) ->
-    resection_connected_user(UserId, undefined, OldState, NewState).
-
 -spec resection_connected_user(
     user_id() | undefined, map() | undefined, guild_state(), guild_state()
 ) -> guild_state().
@@ -562,12 +565,8 @@ lookup_or_compute_viewable(UserId, RoleKey, CacheTab, State) ->
 
 -spec compute_viewable_channel_map(user_id(), guild_state()) -> map().
 compute_viewable_channel_map(UserId, State) ->
-    %% Echowire: this map is cached per role set and handed to every user with those roles, so it
-    %% must not contain threads, whose visibility is per user (see guild_sessions).
     guild_sessions:build_viewable_channel_map(
-        guild_sessions:without_thread_channels(
-            guild_visibility:get_user_viewable_channels(UserId, State), State
-        )
+        guild_visibility:get_user_viewable_channels(UserId, State)
     ).
 
 -spec invalidate_viewable_channels_cache(guild_state()) -> ok.

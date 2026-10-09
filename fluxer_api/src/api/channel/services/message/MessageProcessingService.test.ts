@@ -25,7 +25,6 @@ const MESSAGE_ID = createMessageID(1546325276953149440n);
 
 function dmChannelRow(lastMessageId: MessageID | null): ChannelRow {
 	return {
-		// Echowire: this fork adds thread and forum columns to ChannelRow.
 		channel_id: CHANNEL_ID,
 		guild_id: null,
 		type: ChannelTypes.DM,

@@ -14,7 +14,6 @@ import {
 	useSkeletonLayoutReport,
 } from '@app/features/app/hooks/useSkeletonLayoutMemoryCapture';
 import {useTextOverflow} from '@app/features/app/hooks/useTextOverflow';
-import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {ChannelDetailsBottomSheet} from '@app/features/channel/components/bottomsheets/ChannelDetailsBottomSheet';
 import {ChannelSearchBottomSheet} from '@app/features/channel/components/bottomsheets/ChannelSearchBottomSheet';
 import styles from '@app/features/channel/components/ChannelHeader.module.css';
@@ -22,7 +21,6 @@ import {CHANNEL_HEADER_DM_AVATAR_SIZE_PX} from '@app/features/channel/components
 import {UserTag} from '@app/features/channel/components/ChannelUserTag';
 import {
 	ADD_FRIENDS_TO_GROUP_DESCRIPTOR,
-	BACK_DESCRIPTOR,
 	CHANNEL_ACTIONS_DESCRIPTOR,
 	CREATE_GROUP_DM_DESCRIPTOR,
 	EDIT_GROUP_DETAILS_DESCRIPTOR,
@@ -44,12 +42,6 @@ import {ChannelFollowButton} from '@app/features/channel/components/channel_head
 import {ChannelHeaderIcon} from '@app/features/channel/components/channel_header_components/ChannelHeaderIcon';
 import {ChannelNotificationSettingsButton} from '@app/features/channel/components/channel_header_components/ChannelNotificationSettingsButton';
 import {ChannelPinsButton} from '@app/features/channel/components/channel_header_components/ChannelPinsButton';
-import {ChannelThreadsButton} from '@app/features/channel/components/channel_header_components/ChannelThreadsButton';
-import {
-	ThreadFollowButton,
-	ThreadManageButton,
-} from '@app/features/channel/components/channel_header_components/ThreadManageButton';
-import {ThreadMembersButton} from '@app/features/channel/components/channel_header_components/ThreadMembersButton';
 import {
 	isUpdaterIconVisible,
 	UpdaterIcon,
@@ -67,9 +59,9 @@ import {EditGroupModal} from '@app/features/channel/components/modals/EditGroupM
 import type {Channel} from '@app/features/channel/models/Channel';
 import * as ChannelUtils from '@app/features/channel/utils/ChannelUtils';
 import {isGroupDmFull} from '@app/features/channel/utils/GroupDmUtils';
-import {canToggleThreadArchive} from '@app/features/channel/utils/ThreadActions';
 import {
 	ADD_TO_FAVORITES_DESCRIPTOR,
+	BACK_DESCRIPTOR,
 	CHANNEL_ADDED_TO_FAVORITES_DESCRIPTOR,
 	CHANNEL_REMOVED_FROM_FAVORITES_DESCRIPTOR,
 	HIDE_FAVORITES_DESCRIPTOR,
@@ -92,6 +84,10 @@ import {AddFriendsToGroupModal} from '@app/features/relationship/components/moda
 import Relationships from '@app/features/relationship/state/Relationships';
 import type {SearchSegment} from '@app/features/search/utils/SearchSegmentManager';
 import markupStyles from '@app/features/theme/styles/Markup.module.css';
+import {ThreadContextMenu} from '@app/features/threads/components/ThreadContextMenu';
+import {ThreadNotificationSettingsButton, ThreadsButton} from '@app/features/threads/components/ThreadHeaderButtons';
+import {ThreadParentCrumb} from '@app/features/threads/components/ThreadParentCrumb';
+import {useThreadPanelState} from '@app/features/threads/components/ThreadSidePanel';
 import {ChannelContextMenu} from '@app/features/ui/action_menu/ChannelContextMenu';
 import {DMContextMenu} from '@app/features/ui/action_menu/DMContextMenu';
 import {GroupDMContextMenu} from '@app/features/ui/action_menu/GroupDMContextMenu';
@@ -118,10 +114,8 @@ import {VOICE_CALL_DESCRIPTOR} from '@app/features/voice/utils/VoiceMessageDescr
 import {ME} from '@fluxer/constants/src/AppConstants';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
 import {RelationshipTypes} from '@fluxer/constants/src/UserConstants';
-import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
 import {
-	ArchiveIcon,
 	ArrowLeftIcon,
 	CaretRightIcon,
 	EyeSlashIcon,
@@ -140,16 +134,6 @@ import type React from 'react';
 import {useCallback, useEffect, useRef, useState} from 'react';
 
 const {VoiceCallButton, VideoCallButton} = CallButtons;
-
-// Echowire: create-thread header button.
-const ARCHIVE_THREAD_DESCRIPTOR = msg({
-	message: 'Archive Thread',
-	comment: 'Tooltip on the archive-thread button in a thread header.',
-});
-const UNARCHIVE_THREAD_DESCRIPTOR = msg({
-	message: 'Unarchive Thread',
-	comment: 'Tooltip on the unarchive-thread button in a thread header.',
-});
 
 interface ChannelHeaderProps {
 	channel?: Channel;
@@ -401,6 +385,8 @@ export const ChannelHeader = observer(
 				RouterUtils.transitionTo(Routes.ME);
 			} else if (Routes.isFavoritesRoute(location.pathname)) {
 				RouterUtils.transitionTo(Routes.FAVORITES);
+			} else if (channel?.isThread() && channel.guildId && channel.parentId) {
+				NavigationCommands.selectChannel(channel.guildId, channel.parentId);
 			} else if (isGuildChannel && channel?.guildId) {
 				NavigationCommands.selectChannel(channel.guildId);
 			} else {
@@ -422,6 +408,18 @@ export const ChannelHeader = observer(
 		};
 		const handleContextMenu = useCallback(
 			(event: React.MouseEvent) => {
+				if (channel?.isThread()) {
+					event.preventDefault();
+					event.stopPropagation();
+					ContextMenuCommands.openFromEvent(event, ({onClose}) => (
+						<ThreadContextMenu
+							thread={channel}
+							onClose={onClose}
+							data-flx="channel.channel-header.handle-context-menu.thread-context-menu"
+						/>
+					));
+					return;
+				}
 				if (channel && isGuildChannel) {
 					event.preventDefault();
 					event.stopPropagation();
@@ -577,6 +575,8 @@ export const ChannelHeader = observer(
 			mobileActionCount += 1;
 		}
 		const searchPanelOpen = Boolean(isSearchResultsVisible);
+		const threadPanelState = useThreadPanelState(channel);
+		const isThreadPanelOpen = threadPanelState.thread !== undefined || threadPanelState.createMessageId !== undefined;
 		useSkeletonLayoutReport(
 			() => {
 				if (channelId == null || channelType == null) {
@@ -604,7 +604,11 @@ export const ChannelHeader = observer(
 					data-flx="channel.channel-header.header-wrapper"
 				>
 					<NativeDragRegion
-						className={clsx(styles.headerContainer, isVoiceHeaderActive && styles.headerContainerCallActive)}
+						className={clsx(
+							styles.headerContainer,
+							isVoiceHeaderActive && styles.headerContainerCallActive,
+							isThreadPanelOpen && styles.headerContainerThreadPanelOpen,
+						)}
 						data-flx="channel.channel-header.header-container"
 					>
 						<div className={styles.headerLeftSection} data-flx="channel.channel-header.header-left-section">
@@ -868,6 +872,13 @@ export const ChannelHeader = observer(
 											onContextMenu={handleContextMenu}
 											data-flx="channel.channel-header.channel-info-container.context-menu"
 										>
+											{channel.isThread() && (
+												<ThreadParentCrumb
+													thread={channel}
+													iconClassName={styles.channelIcon}
+													data-flx="channel.channel-header.thread-parent-crumb"
+												/>
+											)}
 											{ChannelUtils.getIcon(channel, {className: styles.channelIcon}, e2eeIconOptions)}
 											<Tooltip
 												text={isGuildChannelNameOverflowing && channelName ? channelName : ''}
@@ -945,27 +956,32 @@ export const ChannelHeader = observer(
 									{voiceCallHeaderSupplement}
 								</div>
 							)}
-							{isMobile && channel && !isPersonalNotes && Accessibility.showFavorites && (
-								<FocusRing offset={-2} data-flx="channel.channel-header.focus-ring--7">
-									<button
-										type="button"
-										className={styles.iconButtonMobile}
-										aria-label={
-											isFavorited ? i18n._(REMOVE_FROM_FAVORITES_DESCRIPTOR) : i18n._(ADD_TO_FAVORITES_DESCRIPTOR)
-										}
-										aria-pressed={isFavorited}
-										onClick={handleToggleFavorite}
-										onContextMenu={handleFavoriteContextMenu}
-										data-flx="channel.channel-header.icon-button-mobile.toggle-favorite"
-									>
-										<StarIcon
-											className={styles.buttonIconMobile}
-											weight={isFavorited ? 'fill' : 'bold'}
-											data-flx="channel.channel-header.button-icon-mobile"
-										/>
-									</button>
-								</FocusRing>
-							)}
+							{isMobile &&
+								channel &&
+								!isPersonalNotes &&
+								!channel.isThread() &&
+								!channel.isThreadOnly() &&
+								Accessibility.showFavorites && (
+									<FocusRing offset={-2} data-flx="channel.channel-header.focus-ring--7">
+										<button
+											type="button"
+											className={styles.iconButtonMobile}
+											aria-label={
+												isFavorited ? i18n._(REMOVE_FROM_FAVORITES_DESCRIPTOR) : i18n._(ADD_TO_FAVORITES_DESCRIPTOR)
+											}
+											aria-pressed={isFavorited}
+											onClick={handleToggleFavorite}
+											onContextMenu={handleFavoriteContextMenu}
+											data-flx="channel.channel-header.icon-button-mobile.toggle-favorite"
+										>
+											<StarIcon
+												className={styles.buttonIconMobile}
+												weight={isFavorited ? 'fill' : 'bold'}
+												data-flx="channel.channel-header.button-icon-mobile"
+											/>
+										</button>
+									</FocusRing>
+								)}
 							{isMobile && (isDM || isGroupDM) && !isPersonalNotes && (
 								<>
 									<FocusRing offset={-2} data-flx="channel.channel-header.focus-ring--8">
@@ -998,6 +1014,9 @@ export const ChannelHeader = observer(
 									</FocusRing>
 								</>
 							)}
+							{isMobile && channel && (
+								<ThreadsButton channel={channel} data-flx="channel.channel-header.threads-button--mobile" />
+							)}
 							{isMobile && isGuildChannel && (
 								<FocusRing offset={-2} data-flx="channel.channel-header.focus-ring--10">
 									<button
@@ -1015,11 +1034,20 @@ export const ChannelHeader = observer(
 									</button>
 								</FocusRing>
 							)}
-							{channel && isGuildChannel && !isMobile && !isPersonalNotes && (
+							{channel && isGuildChannel && !isMobile && !isPersonalNotes && !channel.isThread() && (
 								<ChannelNotificationSettingsButton
 									channel={channel}
 									data-flx="channel.channel-header.channel-notification-settings-button"
 								/>
+							)}
+							{channel && !isMobile && channel.isThread() && (
+								<ThreadNotificationSettingsButton
+									thread={channel}
+									data-flx="channel.channel-header.thread-notification-settings-button"
+								/>
+							)}
+							{channel && !isMobile && (
+								<ThreadsButton channel={channel} data-flx="channel.channel-header.threads-button" />
 							)}
 							{(isDM || isGroupDM) && channel && !isMobile && !(isDM && isBotDMRecipient) && (
 								<>
@@ -1030,26 +1058,6 @@ export const ChannelHeader = observer(
 							{showPins && channel && !isMobile && (
 								<ChannelPinsButton channel={channel} data-flx="channel.channel-header.channel-pins-button" />
 							)}
-							{channel && !isMobile && channel.type === ChannelTypes.GUILD_TEXT && (
-								<ChannelThreadsButton channel={channel} />
-							)}
-							{channel && !isMobile && channel.isThread() && <ThreadFollowButton channel={channel} />}
-							{channel && !isMobile && channel.isThread() && canToggleThreadArchive(channel) && (
-								<ChannelHeaderIcon
-									icon={ArchiveIcon}
-									label={i18n._(
-										channel.threadMetadata?.archived ? UNARCHIVE_THREAD_DESCRIPTOR : ARCHIVE_THREAD_DESCRIPTOR,
-									)}
-									onClick={() =>
-										void ThreadCommands.updateThread(channel.id, {
-											archived: !channel.threadMetadata?.archived,
-										})
-									}
-									data-flx="channel.channel-header.archive-thread"
-								/>
-							)}
-							{channel && !isMobile && channel.isThread() && <ThreadMembersButton channel={channel} />}
-							{channel && !isMobile && channel.isThread() && <ThreadManageButton channel={channel} />}
 							{shouldShowCreateGroupButton && (
 								<ChannelHeaderIcon
 									icon={UserPlusIcon}
@@ -1066,33 +1074,38 @@ export const ChannelHeader = observer(
 									data-flx="channel.channel-header.channel-header-icon.open-add-friends-to-group"
 								/>
 							)}
-							{channel && !isMobile && !isPersonalNotes && Accessibility.showFavorites && (
-								<Tooltip
-									text={isFavorited ? i18n._(REMOVE_FROM_FAVORITES_DESCRIPTOR) : i18n._(ADD_TO_FAVORITES_DESCRIPTOR)}
-									position="bottom"
-									data-flx="channel.channel-header.tooltip--9"
-								>
-									<FocusRing offset={-2} data-flx="channel.channel-header.focus-ring--11">
-										<button
-											type="button"
-											className={isFavorited ? styles.iconButtonSelected : styles.iconButtonDefault}
-											aria-label={
-												isFavorited ? i18n._(REMOVE_FROM_FAVORITES_DESCRIPTOR) : i18n._(ADD_TO_FAVORITES_DESCRIPTOR)
-											}
-											aria-pressed={isFavorited}
-											onClick={handleToggleFavorite}
-											onContextMenu={handleFavoriteContextMenu}
-											data-flx="channel.channel-header.icon-button.toggle-favorite"
-										>
-											<StarIcon
-												className={styles.buttonIcon}
-												weight={isFavorited ? 'fill' : 'bold'}
-												data-flx="channel.channel-header.button-icon"
-											/>
-										</button>
-									</FocusRing>
-								</Tooltip>
-							)}
+							{channel &&
+								!isMobile &&
+								!isPersonalNotes &&
+								!channel.isThread() &&
+								!channel.isThreadOnly() &&
+								Accessibility.showFavorites && (
+									<Tooltip
+										text={isFavorited ? i18n._(REMOVE_FROM_FAVORITES_DESCRIPTOR) : i18n._(ADD_TO_FAVORITES_DESCRIPTOR)}
+										position="bottom"
+										data-flx="channel.channel-header.tooltip--9"
+									>
+										<FocusRing offset={-2} data-flx="channel.channel-header.focus-ring--11">
+											<button
+												type="button"
+												className={isFavorited ? styles.iconButtonSelected : styles.iconButtonDefault}
+												aria-label={
+													isFavorited ? i18n._(REMOVE_FROM_FAVORITES_DESCRIPTOR) : i18n._(ADD_TO_FAVORITES_DESCRIPTOR)
+												}
+												aria-pressed={isFavorited}
+												onClick={handleToggleFavorite}
+												onContextMenu={handleFavoriteContextMenu}
+												data-flx="channel.channel-header.icon-button.toggle-favorite"
+											>
+												<StarIcon
+													className={styles.buttonIcon}
+													weight={isFavorited ? 'fill' : 'bold'}
+													data-flx="channel.channel-header.button-icon"
+												/>
+											</button>
+										</FocusRing>
+									</Tooltip>
+								)}
 							{showMembersToggle && !isMobile && (
 								<ChannelHeaderIcon
 									icon={UsersIcon}
@@ -1111,7 +1124,7 @@ export const ChannelHeader = observer(
 									data-flx="channel.channel-header.channel-header-icon.toggle-members"
 								/>
 							)}
-							{!isMobile && channel && !isPersonalNotes && (
+							{!isMobile && channel && !isPersonalNotes && !channel.isThreadOnly() && (
 								<FocusRing offset={-2} within data-flx="channel.channel-header.focus-ring--12">
 									<div
 										className={styles.messageSearchFocusWrapper}

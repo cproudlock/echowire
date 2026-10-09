@@ -1,31 +1,27 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type {AttachmentID, ChannelID, GuildID, MessageID, UserID} from '@app/api/BrandedTypes';
+import type {ChannelID, GuildID, UserID} from '@app/api/BrandedTypes';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
-import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
+import {withThreadParentFieldsMany} from '@app/api/channel/services/thread/ThreadParentSettings';
+import {SYSTEM_THREAD_VIEWER, type ThreadViewer, viewerActive} from '@app/api/experiment/ChannelThreadsGate';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
 import {ChannelOperationsService} from '@app/api/guild/services/channel/ChannelOperationsService';
 import {createGuildMfaEnforcer} from '@app/api/guild/services/GuildMfaEnforcement';
+import {maskChannelResponseThreadBits} from '@app/api/guild/services/ThreadPermissionBits';
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {ISnowflakeService} from '@app/api/infrastructure/ISnowflakeService';
 import type {UserCacheService} from '@app/api/infrastructure/UserCacheService';
 import type {LimitConfigService} from '@app/api/limits/LimitConfigService';
 import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
 import type {IUserRepository} from '@app/api/user/IUserRepository';
-import {Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
-import type {
-	ChannelCreateRequest,
-	ThreadCreateRequest,
-	ThreadsQuery,
-	ThreadUpdateRequest,
-} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
-import type {ChannelResponse, GuildActiveThreadsResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {ChannelCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
+import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
-import type {IRateLimitService} from '@pkgs/rate_limit/src/IRateLimitService';
 
 export class GuildChannelService {
 	private readonly channelOps: ChannelOperationsService;
@@ -39,9 +35,7 @@ export class GuildChannelService {
 		snowflakeService: ISnowflakeService,
 		guildAuditLogService: GuildAuditLogService,
 		limitConfigService: LimitConfigService,
-		messageSystemService: MessageSystemService,
 		private readonly userRepository: IUserRepository,
-		rateLimitService: IRateLimitService,
 	) {
 		this.channelOps = new ChannelOperationsService(
 			channelRepository,
@@ -52,9 +46,6 @@ export class GuildChannelService {
 			snowflakeService,
 			guildAuditLogService,
 			limitConfigService,
-			messageSystemService,
-			rateLimitService,
-			userRepository,
 		);
 	}
 
@@ -62,6 +53,7 @@ export class GuildChannelService {
 		userId: UserID;
 		guildId: GuildID;
 		requestCache: RequestCache;
+		viewer?: ThreadViewer;
 	}): Promise<Array<ChannelResponse>> {
 		try {
 			await this.gatewayService.getGuildData({guildId: params.guildId, userId: params.userId});
@@ -75,12 +67,14 @@ export class GuildChannelService {
 			guildId: params.guildId,
 			userId: params.userId,
 		});
-		const channels = await this.channelRepository.listGuildChannels(params.guildId);
-		// Echowire: threads are not part of the guild channel list; they are fetched via the thread endpoints.
+		const channels = await this.channelRepository.listGuildChannels(params.guildId, 'enrolled');
+		const viewer = params.viewer;
 		const viewableChannels = channels.filter(
-			(channel) => viewableChannelIds.includes(channel.id) && !THREAD_CHANNEL_TYPES.has(channel.type),
+			(channel) =>
+				viewableChannelIds.includes(channel.id) &&
+				(!channel.isThreadOnly() || !viewer || viewerActive(viewer, params.guildId)),
 		);
-		return Promise.all(
+		const responses = await Promise.all(
 			viewableChannels.map((channel) => {
 				return mapChannelToResponse({
 					channel,
@@ -90,6 +84,17 @@ export class GuildChannelService {
 				});
 			}),
 		);
+		return maskChannelResponseThreadBits(
+			params.guildId,
+			viewer,
+			await withThreadParentFieldsMany(
+				this.channelRepository.threads,
+				params.guildId,
+				viewableChannels,
+				responses,
+				viewer ?? SYSTEM_THREAD_VIEWER,
+			),
+		);
 	}
 
 	async createChannel(
@@ -98,6 +103,8 @@ export class GuildChannelService {
 			guildId: GuildID;
 			data: ChannelCreateRequest;
 			requestCache: RequestCache;
+			clientFeatures?: ReadonlySet<string>;
+			viewer?: ThreadViewer;
 		},
 		auditLogReason?: string | null,
 	): Promise<ChannelResponse> {
@@ -106,104 +113,9 @@ export class GuildChannelService {
 			guildId: params.guildId,
 			permission: Permissions.MANAGE_CHANNELS,
 		});
-		return this.channelOps.createChannel(params, auditLogReason);
-	}
-
-	// Echowire: create a thread under a text/forum channel. Permission (SEND_MESSAGES on
-	// the parent) is checked inside channelOps, which also resolves the parent's guild.
-	async createThread(params: {
-		userId: UserID;
-		parentChannelId: ChannelID;
-		data: ThreadCreateRequest;
-		requestCache: RequestCache;
-	}): Promise<ChannelResponse> {
-		return this.channelOps.createThread(params);
-	}
-
-	// Echowire: list active threads under a text/forum channel.
-	async listActiveThreads(params: {
-		userId: UserID;
-		parentChannelId: ChannelID;
-		requestCache: RequestCache;
-		page?: ThreadsQuery;
-	}): Promise<Array<ChannelResponse>> {
-		return this.channelOps.listActiveThreads(params);
-	}
-
-	// Echowire: active threads across the guild, for sidebar nesting.
-	async listGuildActiveThreads(params: {
-		userId: UserID;
-		guildId: GuildID;
-		requestCache: RequestCache;
-	}): Promise<GuildActiveThreadsResponse> {
-		return this.channelOps.listGuildActiveThreads(params);
-	}
-
-	// Echowire: list archived threads under a text/forum channel.
-	async listArchivedThreads(params: {
-		userId: UserID;
-		parentChannelId: ChannelID;
-		requestCache: RequestCache;
-		page?: ThreadsQuery;
-	}): Promise<Array<ChannelResponse>> {
-		return this.channelOps.listArchivedThreads(params);
-	}
-
-	// Echowire: update a thread (archive/unarchive/lock/rename).
-	async updateThread(params: {
-		userId: UserID;
-		threadChannelId: ChannelID;
-		data: ThreadUpdateRequest;
-		requestCache: RequestCache;
-	}): Promise<ChannelResponse> {
-		return this.channelOps.updateThread(params);
-	}
-
-	// Echowire: add to post - append an attachment from a reply to the starter message of a post.
-	async addAttachmentToStarterMessage(params: {
-		userId: UserID;
-		threadChannelId: ChannelID;
-		sourceMessageId: MessageID;
-		attachmentId: AttachmentID;
-		requestCache: RequestCache;
-	}): Promise<ChannelResponse> {
-		return this.channelOps.addAttachmentToStarterMessage(params);
-	}
-
-	// Echowire: delete a thread.
-	async deleteThread(params: {userId: UserID; threadChannelId: ChannelID}): Promise<void> {
-		return this.channelOps.deleteThread(params);
-	}
-
-	async joinThread(params: {threadChannelId: ChannelID; userId: UserID}): Promise<void> {
-		return this.channelOps.joinThread(params);
-	}
-
-	async leaveThread(params: {threadChannelId: ChannelID; userId: UserID}): Promise<void> {
-		return this.channelOps.leaveThread(params);
-	}
-
-	async listThreadMembers(params: {
-		threadChannelId: ChannelID;
-		userId: UserID;
-	}): Promise<Array<{id: string; user_id: string; join_timestamp: string; flags: number}>> {
-		return this.channelOps.listThreadMembers(params);
-	}
-
-	async addThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
-		return this.channelOps.addThreadMember(params);
-	}
-
-	async removeThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
-		return this.channelOps.removeThreadMember(params);
-	}
-
-	async getThreadMember(params: {
-		threadChannelId: ChannelID;
-		userId: UserID;
-		targetUserId: UserID;
-	}): Promise<{id: string; user_id: string; join_timestamp: string; flags: number}> {
-		return this.channelOps.getThreadMember(params);
+		const response = await this.channelOps.createChannel(params, auditLogReason);
+		const [masked] = await maskChannelResponseThreadBits(params.guildId, params.viewer, [response]);
+		return masked;
 	}
 
 	async updateChannelPositions(
@@ -218,6 +130,8 @@ export class GuildChannelService {
 				lockPermissions: boolean;
 			}>;
 			requestCache: RequestCache;
+			clientFeatures?: ReadonlySet<string>;
+			viewer?: ThreadViewer;
 		},
 		auditLogReason?: string | null,
 	): Promise<void> {
@@ -232,6 +146,8 @@ export class GuildChannelService {
 			updates: params.updates,
 			requestCache: params.requestCache,
 			auditLogReason: auditLogReason ?? null,
+			clientFeatures: params.clientFeatures,
+			viewer: params.viewer,
 		});
 	}
 

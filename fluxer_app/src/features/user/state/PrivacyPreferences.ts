@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {initializeStore} from '@app/features/platform/utils/StoreInitialization';
 import {makeSyncedField} from '@app/features/user/state/SyncedField';
 import Users from '@app/features/user/state/Users';
 import {PrivacyPreferencesSchema} from '@fluxer/schema/src/gen/fluxer/user/preferences/v1/preferences_pb';
@@ -7,10 +8,10 @@ import {extractTimestampFromSnowflake} from '@fluxer/snowflake/src/SnowflakeUtil
 import {makeAutoObservable} from 'mobx';
 
 const SHOW_ACTIVE_NOW_DEFAULT = true;
-export const PREUPLOAD_MESSAGE_ATTACHMENTS_DEFAULT_ON_AFTER = '2026-06-04T16:10:00.000Z';
+const PREUPLOAD_MESSAGE_ATTACHMENTS_DEFAULT_ON_AFTER = '2026-06-04T16:10:00.000Z';
 const PREUPLOAD_MESSAGE_ATTACHMENTS_DEFAULT_ON_AFTER_MS = Date.parse(PREUPLOAD_MESSAGE_ATTACHMENTS_DEFAULT_ON_AFTER);
 
-export function getPreuploadMessageAttachmentsDefaultForUserId(userId: string | null | undefined): boolean {
+function getPreuploadMessageAttachmentsDefaultForUserId(userId: string | null | undefined): boolean {
 	if (!userId) {
 		return false;
 	}
@@ -29,7 +30,7 @@ class PrivacyPreferences {
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
-		this.initPersistence();
+		initializeStore(this, () => this.initPersistence());
 	}
 
 	private async initPersistence(): Promise<void> {

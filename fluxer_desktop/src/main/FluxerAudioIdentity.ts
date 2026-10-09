@@ -7,7 +7,7 @@ import {app, webContents} from 'electron';
 const FLUXER_AUDIO_DISPLAY_IDENTITY_KEYS = ['application.name', 'node.name', 'node.nick', 'node.description'] as const;
 // Echowire: keep the pre-lowercase names so self-exclusion still recognises a process started from
 // an install that has not been renamed yet.
-const FALLBACK_PRODUCT_NAMES = ['echowire', 'echowire canary', 'Echowire', 'Echowire Canary'];
+const FALLBACK_PRODUCT_NAMES = ['echowire', 'echowire canary', 'echowire development', 'Echowire', 'Echowire Canary'];
 const FLUXER_AUDIO_PREFIXES = [
 	'echowire ',
 	'echowire-',

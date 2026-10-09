@@ -84,57 +84,6 @@ export const ChannelRateLimitConfigs = {
 		bucket: 'channel:typing::channel_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},
 	} as RouteRateLimitConfig,
-	// Echowire: thread and forum post routes. These carry channel_id only, so a bucket naming
-	// :guild_id (as GUILD_CHANNEL_CREATE does) never resolves and every caller would share one
-	// global bucket across every guild. Each route gets its own bucket keyed on the channel.
-	THREAD_CREATE: {
-		bucket: 'channel:thread:create::channel_id',
-		config: {limit: 10, windowMs: ms('1 minute')},
-	} as RouteRateLimitConfig,
-	THREAD_UPDATE: {
-		bucket: 'channel:thread:update::channel_id',
-		config: {limit: 20, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_DELETE: {
-		bucket: 'channel:thread:delete::channel_id',
-		config: {limit: 10, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_LIST_ACTIVE: {
-		bucket: 'channel:threads:active::channel_id',
-		config: {limit: 40, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_LIST_ARCHIVED: {
-		bucket: 'channel:threads:archived::channel_id',
-		config: {limit: 20, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_MEMBER_JOIN: {
-		bucket: 'channel:thread:member:join::channel_id',
-		config: {limit: 20, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_MEMBER_LEAVE: {
-		bucket: 'channel:thread:member:leave::channel_id',
-		config: {limit: 20, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_MEMBER_LIST: {
-		bucket: 'channel:thread:members::channel_id',
-		config: {limit: 40, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_MEMBER_ADD: {
-		bucket: 'channel:thread:member:add::channel_id',
-		config: {limit: 20, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_MEMBER_REMOVE: {
-		bucket: 'channel:thread:member:remove::channel_id',
-		config: {limit: 20, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_STARTER_ATTACHMENT: {
-		bucket: 'channel:thread:starter:attachment::channel_id',
-		config: {limit: 10, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
-	THREAD_MEMBER_GET: {
-		bucket: 'channel:thread:member:get::channel_id',
-		config: {limit: 40, windowMs: ms('10 seconds')},
-	} as RouteRateLimitConfig,
 	CHANNEL_PINS: {
 		bucket: 'channel:pins::channel_id',
 		config: {limit: 20, windowMs: ms('10 seconds')},
@@ -185,6 +134,51 @@ export const ChannelRateLimitConfigs = {
 	} as RouteRateLimitConfig,
 	CHANNEL_FOLLOWER_STATS: {
 		bucket: 'channel:follower_stats::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREAD_CREATE: {
+		bucket: 'channel:thread:create::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREAD_MEMBER_PUT: {
+		bucket: 'channel:thread:member:put::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREAD_MEMBER_DELETE: {
+		bucket: 'channel:thread:member:delete::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREAD_MEMBER_SETTINGS: {
+		bucket: 'channel:thread:member:settings::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREAD_MEMBERS_LIST: {
+		bucket: 'channel:thread:members:list::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREAD_MEMBER_GET: {
+		bucket: 'channel:thread:member:get::channel_id',
+		config: {limit: 40, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREADS_ARCHIVED_LIST: {
+		bucket: 'channel:threads:archived:list::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_THREADS_SEARCH: {
+		bucket: 'channel:threads:search::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_POST_DATA: {
+		bucket: 'channel:post_data::channel_id',
+		config: {limit: 20, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	// Echowire: add to post, see docs/upstream-divergence.md.
+	CHANNEL_STARTER_ATTACHMENT: {
+		bucket: 'channel:starter_attachment::channel_id',
+		config: {limit: 10, windowMs: ms('10 seconds')},
+	} as RouteRateLimitConfig,
+	CHANNEL_FORUM_TAGS: {
+		bucket: 'channel:forum_tags::channel_id',
 		config: {limit: 10, windowMs: ms('10 seconds')},
 	} as RouteRateLimitConfig,
 	VOICE_ENTRANCE_SOUND_PLAY: {

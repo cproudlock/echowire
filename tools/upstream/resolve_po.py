@@ -42,6 +42,7 @@ import subprocess
 import sys
 
 APPLY = os.environ.get("APPLY") == "1"
+PREFER_THEIRS = os.environ.get("PREFER_THEIRS") == "1"
 
 
 def git(*a: str, binary: bool = False):
@@ -175,6 +176,11 @@ def resolve(path: str) -> tuple[str, dict]:
             out.append(t); stats["take_theirs"] += 1; continue
         if bt is not None and tt == bt:
             out.append(o); stats["keep_ours"] += 1; continue
+        if PREFER_THEIRS and "Fluxer" not in tt:
+            # Opt-in for a deliberate adoption of upstream's feature (ADR 0012): both
+            # sides translated the same new string. Upstream wins, except where its text
+            # carries the upstream brand, which stays a hand decision.
+            out.append(t); stats["take_theirs"] += 1; continue
         stats["conflict"] += 1
         conflicts.append(f'{key[1][:70]!r}')
         out.append(o)

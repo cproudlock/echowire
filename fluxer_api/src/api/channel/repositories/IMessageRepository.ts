@@ -9,8 +9,9 @@ export interface ListMessagesOptions {
 	immediateAfter?: boolean;
 }
 
-export interface MessageDeleteOptions {
-	channelType?: number;
+export interface UpsertMessageOptions {
+	isInsert?: boolean;
+	skipParentLastMessageId?: boolean;
 }
 
 export abstract class IMessageRepository {
@@ -24,25 +25,18 @@ export abstract class IMessageRepository {
 
 	abstract getMessage(channelId: ChannelID, messageId: MessageID): Promise<Message | null>;
 
-	abstract upsertMessage(data: MessageRow, oldData?: MessageRow | null): Promise<Message>;
+	abstract upsertMessage(data: MessageRow, oldData?: MessageRow | null, opts?: UpsertMessageOptions): Promise<Message>;
 
 	abstract updateEmbeds(message: Message): Promise<void>;
 
-	// Echowire: channelType, when the caller already knows it, lets non-thread deletes skip the
-	// thread message_count bookkeeping lookup.
 	abstract deleteMessage(
 		channelId: ChannelID,
 		messageId: MessageID,
 		authorId: UserID,
 		pinnedTimestamp?: Date,
-		options?: MessageDeleteOptions,
 	): Promise<void>;
 
-	abstract bulkDeleteMessages(
-		channelId: ChannelID,
-		messageIds: Array<MessageID>,
-		options?: MessageDeleteOptions,
-	): Promise<void>;
+	abstract bulkDeleteMessages(channelId: ChannelID, messageIds: Array<MessageID>): Promise<void>;
 
 	abstract deleteAllChannelMessages(channelId: ChannelID): Promise<void>;
 

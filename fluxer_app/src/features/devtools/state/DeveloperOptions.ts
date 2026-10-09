@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {makePersistent} from '@app/features/platform/utils/MobXPersistence';
+import {initializeStore} from '@app/features/platform/utils/StoreInitialization';
 import {makeAutoObservable} from 'mobx';
 
 export type PremiumScenarioOverride =
@@ -27,11 +28,6 @@ export type DeveloperOptionsState = Readonly<{
 	forceRenderPlaceholders: boolean;
 	forceEmbedSkeletons: boolean;
 	forceMediaLoading: boolean;
-	forceUpdateReady: boolean;
-	forceNativeUpdateReady: boolean;
-	mockNativeUpdateProgress: number | null;
-	forceWebUpdateReady: boolean;
-	mockUpdaterState: 'none' | 'checking' | 'available' | 'downloading' | 'ready' | 'installing' | 'error';
 	showMyselfTyping: boolean;
 	slowAttachmentUpload: boolean;
 	slowMessageLoad: boolean;
@@ -102,11 +98,6 @@ class DeveloperOptions implements DeveloperOptionsState {
 	forceRenderPlaceholders = false;
 	forceEmbedSkeletons = false;
 	forceMediaLoading = false;
-	forceUpdateReady = false;
-	forceNativeUpdateReady = false;
-	mockNativeUpdateProgress: number | null = null;
-	forceWebUpdateReady = false;
-	mockUpdaterState: DeveloperOptionsState['mockUpdaterState'] = 'none';
 	showMyselfTyping = false;
 	slowAttachmentUpload = false;
 	slowMessageLoad = false;
@@ -168,7 +159,7 @@ class DeveloperOptions implements DeveloperOptionsState {
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
-		this.initPersistence();
+		initializeStore(this, () => this.initPersistence());
 	}
 
 	private async initPersistence(): Promise<void> {
@@ -180,11 +171,6 @@ class DeveloperOptions implements DeveloperOptionsState {
 			'forceRenderPlaceholders',
 			'forceEmbedSkeletons',
 			'forceMediaLoading',
-			'forceUpdateReady',
-			'forceNativeUpdateReady',
-			'mockNativeUpdateProgress',
-			'forceWebUpdateReady',
-			'mockUpdaterState',
 			'showMyselfTyping',
 			'slowAttachmentUpload',
 			'slowMessageLoad',

@@ -16,12 +16,13 @@ Each `GET` route answers with `Access-Control-Allow-Origin: *`, replaced by the 
 
 ## Instance discovery object
 
-The discovery document is the complete public description of one deployment. Every field is always present. The one optional field, `domain_migration`, is absent only from a server older than this version.
+The discovery document is the complete public description of one deployment. Every field without a `?` is always present. This server never sends `codename` or `age_policy`, and `domain_migration` and `endpoints.upload_relay` are absent only from a server older than this version.
 
 ### Structure
 
 | Field | Type | Description |
 | --- | --- | --- |
+| codename? | string | The protocol generation the deployment speaks |
 | api_code_version<sup>1</sup> | integer | The version of the API server code this deployment runs |
 | endpoints | [instance endpoints](#instance-endpoints-object) object | Public service endpoints for this deployment |
 | captcha | [captcha configuration](#captcha-configuration-object) object | Public CAPTCHA configuration |
@@ -34,6 +35,7 @@ The discovery document is the complete public description of one deployment. Eve
 | limits | [limit configuration](#limit-configuration-object) object | Ordered limit rules and the trait names the deployment declares |
 | push | [push configuration](#push-configuration-object) object | Public Web Push identity |
 | app_public | [public application configuration](#public-application-configuration-object) object | Public client configuration |
+| age_policy? | [age policy](#age-policy-object) object | Regional age policy for the deployment |
 | domain_migration? | [domain migration](#domain-migration-object) object | Web domain migration switch and logged-out rollout |
 
 <sup>1</sup> The value is a plain integer that increases when the API introduces a change a client is expected to notice, and the current value is `1`
@@ -50,13 +52,15 @@ Each value is an absolute URL supplied by the operator. A value can be a bare or
 | api_client<sup>1</sup> | string | Base URL for client API requests |
 | api_public | string | Base URL for public API requests |
 | gateway<sup>2</sup> | string | The [main Gateway](/gateway/overview/) WebSocket URL |
-| media | string | [Media Proxy](/media-proxy/overview/) base URL, also used as the attachment [upload relay](/media-proxy/upload-relay/) base |
+| media | string | [Media Proxy](/media-proxy/overview/) base URL |
+| upload_relay? | string | Attachment [upload relay](/media-proxy/upload-relay/) base URL |
 | static_cdn<sup>3</sup> | string | Static asset base URL |
 | marketing | string | Marketing site base URL |
 | admin | string | Admin application base URL |
 | invite | string | Invite link base URL |
 | gift | string | Gift link base URL |
 | webapp | string | Web application base URL |
+| docs? | string | Documentation website base URL |
 
 <sup>1</sup> Both fields are the same configured client API endpoint, which the first-party web application reads. `api_public` is the separately configured public API endpoint, which a bot, a library, or any other third-party client reads. A deployment can point the two at one origin, and the instance Fluxer hosts does not
 
@@ -113,12 +117,16 @@ Whether this deployment asks for a CAPTCHA on gated operations.
 | Field | Type | Description |
 | --- | --- | --- |
 | provider | string | The [CAPTCHA provider](#captcha-providers) in use |
+| hcaptcha_site_key | ?string | The hCaptcha site key, present when `provider` is `hcaptcha`, otherwise null |
+| turnstile_site_key | ?string | The Cloudflare Turnstile site key, present when `provider` is `turnstile`, otherwise null |
 
 ### CAPTCHA providers
 
 | Value | Description |
 | --- | --- |
 | altcha | An ALTCHA proof-of-work challenge gates the operations that require one |
+| hcaptcha | An hCaptcha challenge, for clients that cannot solve an ALTCHA challenge |
+| turnstile | A Cloudflare Turnstile challenge, for clients that cannot solve an ALTCHA challenge |
 | none | The deployment requires no CAPTCHA |
 
 The complete challenge handshake, including the `X-Captcha-Token` request header, is defined in [CAPTCHA handling](/topics/captcha/).
@@ -141,6 +149,9 @@ Deployment-wide switches a client reads before it offers a feature, plus whether
 | phone_verification_enabled | boolean | Deprecated. Always false |
 | account_identity<sup>5</sup> | string | How members sign in, one of the [account identity modes](#account-identity-modes) |
 | tag_style<sup>6</sup> | string | How usernames are tagged, one of the [tag styles](#tag-styles) |
+| desktop_modules_enabled? | boolean | Whether desktop clients may load downloadable modules |
+| account_deletion_grace_period_hours? | integer | Hours between a deletion request and the permanent deletion of the account (1-8,760) |
+| max_background_gateway_connections? | integer | Maximum Gateway connections a client may keep open for background accounts (0-64) |
 
 <sup>1</sup> The value is true only when email is switched on and the transport is completely configured. It is always false on a `username` deployment
 
@@ -245,6 +256,10 @@ This deployment's public Web Push identity.
 | Field | Type | Description |
 | --- | --- | --- |
 | public_vapid_key<sup>1</sup> | ?string | The deployment's Web Push VAPID public key, or null |
+| delivery_mode? | string | How push notifications reach devices, one of `direct`, `external_relay`, or `hybrid` |
+| event_resolution_path? | string | API path a client calls to resolve the payload of a push event |
+| external_relay_url? | ?string | URL of the external push relay, or null when there is none |
+| relay_signing_key_hashes? | ?array[string] | Hashes of the keys the external push relay signs with, or null |
 
 <sup>1</sup> Null when the deployment has configured no Web Push identity
 
@@ -347,8 +362,6 @@ Each key names one limit. A key whose name begins with `feature_` is a feature g
 | feature_higher_video_quality | Access to higher video streaming quality, in user scope |
 | feature_per_guild_profiles | Different profile per guild, in user scope |
 | feature_voice_entrance_sounds | Play a sound when joining voice, in user scope |
-| max_active_threads_per_channel | Maximum unarchived threads under one channel, in guild scope |
-| max_active_threads_per_guild | Maximum unarchived threads across a guild, in guild scope |
 | max_attachment_file_size | Maximum size of each attachment file in bytes, in user and guild scope |
 | max_attachments_per_message | Maximum number of file attachments per message, in user and guild scope |
 | max_bio_length | Maximum characters in a user biography, in user scope |
@@ -376,7 +389,6 @@ Each key names one limit. A key whose name begins with `feature_` is a feature g
 | max_private_channels_per_user | Maximum direct message channels per user, in user scope |
 | max_reactions_per_message | Maximum distinct reactions per message, in guild scope |
 | max_relationships | Maximum friend and blocked relationships, in user scope |
-| max_thread_members | Maximum members of one thread, in guild scope |
 | max_users_per_message_reaction | Maximum users who can use the same reaction on a message, in guild scope |
 | max_voice_message_duration | Maximum voice message duration in seconds, in user and guild scope |
 | max_webhooks_per_channel | Maximum webhooks per channel, in guild scope |
@@ -386,6 +398,8 @@ Each key names one limit. A key whose name begins with `feature_` is a feature g
 <sup>1</sup> Emoji limits are enforced as one shared total against `max_guild_emojis`, and the aliases exist only for older clients. The default of each alias equals the `max_guild_emojis` default
 
 <sup>2</sup> Sticker limits are enforced as one shared total against `max_guild_stickers`
+
+No key sets a thread or forum limit. [Thread lifecycle](/http-api/threads/#thread-lifecycle), [Thread members](/http-api/thread-members/), and [Forum channel fields](/http-api/forums/#forum-channel-fields) state those fixed bounds. `max_guild_channels` counts forum and media channels and counts no thread.
 
 Where a rule sets `max_guild_emojis`, `max_guild_stickers`, or one of the compatibility aliases, it republishes that key in its own `overrides` even when the value matches the default.
 
@@ -399,7 +413,7 @@ Branding, setup state, legal documents, and registration fields a client reads b
 | --- | --- | --- |
 | branding | [public branding](#public-branding-object) object | Public instance identity |
 | setup | [public setup state](#public-setup-state-object) object | Initial configuration state |
-| legal | [public legal configuration](#public-legal-configuration-object) object | Registration legal document URLs |
+| legal | [public legal configuration](#public-legal-configuration-object) object | Legal and policy document URLs |
 | registration | [public registration fields](#public-registration-fields-object) object | Registration field collection policy |
 
 ## Public branding object
@@ -440,7 +454,7 @@ Whether the deployment has finished its initial configuration, and where an oper
 
 ## Public legal configuration object
 
-The public URLs a client links from its registration form.
+The public document URLs a client links from its registration form and its report flows.
 
 ### Structure
 
@@ -448,6 +462,9 @@ The public URLs a client links from its registration form.
 | --- | --- | --- |
 | terms_url | ?string | Public terms of service URL, or null |
 | privacy_url | ?string | Public privacy policy URL, or null |
+| guidelines_url<sup>1</sup> | ?string | Public community guidelines URL, or null |
+
+<sup>1</sup> The URL the operator set. A [report flow](/http-api/reports/#report-flows) and the account enforcement emails link it. When it is null, a hosted instance links its own guidelines page, and a self-hosted instance hides every guidelines link
 
 ## Public registration fields object
 
@@ -477,6 +494,27 @@ The public part of the instance [domain migration configuration](/admin-api/inst
 A logged-out device draws its own random ID once and keeps it. The device moves when its bucket over that ID and `rollout_salt` falls below `anonymous_rollout_basis_points`. Signed-in accounts use the [domain migration assignment](/http-api/experiments/#domain-migration-assignment-object) instead.
 
 While `standalone_forwarding` is false, an installed desktop web app moves its data and stays on the legacy origin. Browser tabs forward either way.
+
+## Age policy object
+
+The regions where the deployment gates access behind an age check or blocks it.
+
+### Structure
+
+| Field | Type | Description |
+| --- | --- | --- |
+| geos | array[[age policy region](#age-policy-region-object) object] | Regions with an age policy |
+
+## Age policy region object
+
+### Structure
+
+| Field | Type | Description |
+| --- | --- | --- |
+| country_code | string | The ISO 3166-1 alpha-2 country code |
+| region_code | ?string | The ISO 3166-2 subdivision code, or null when the entry covers the whole country |
+| action | string | `restrict` to require an age check, or `block` to refuse access |
+| card_verification_available | boolean | Whether card age verification is available in the region |
 
 ## Geolocation object
 

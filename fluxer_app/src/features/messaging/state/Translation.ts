@@ -2,12 +2,13 @@
 
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import {makePersistent} from '@app/features/platform/utils/MobXPersistence';
+import {initializeStore} from '@app/features/platform/utils/StoreInitialization';
 import UserSettings from '@app/features/user/state/UserSettings';
 import {create} from '@bufbuild/protobuf';
 import {SearchEngineSettingsSchema} from '@fluxer/schema/src/gen/fluxer/user/preferences/v1/preferences_pb';
 import {makeAutoObservable} from 'mobx';
 
-export interface TranslationProvider {
+interface TranslationProvider {
 	id: string;
 	name: string;
 	urlTemplate: string;
@@ -60,9 +61,9 @@ const BUILT_IN_TRANSLATION_PROVIDERS: ReadonlyArray<Omit<TranslationProvider, 'e
 		isBuiltIn: true,
 	},
 ];
-export const SUGGESTED_DEFAULT_TRANSLATION_PROVIDER_ID = 'google_translate';
+const SUGGESTED_DEFAULT_TRANSLATION_PROVIDER_ID = 'google_translate';
 
-export function createDefaultTranslationProviders(): Array<TranslationProvider> {
+function createDefaultTranslationProviders(): Array<TranslationProvider> {
 	return BUILT_IN_TRANSLATION_PROVIDERS.map((provider) => ({
 		...provider,
 		enabled: provider.id === SUGGESTED_DEFAULT_TRANSLATION_PROVIDER_ID,
@@ -74,7 +75,7 @@ class Translation {
 
 	constructor() {
 		makeAutoObservable(this, {}, {autoBind: true});
-		void makePersistent(this, 'Translation', ['engines'], {version: 1});
+		initializeStore(this, () => makePersistent(this, 'Translation', ['engines'], {version: 1}));
 	}
 
 	get enabledEngines(): ReadonlyArray<TranslationProvider> {
@@ -99,17 +100,9 @@ class Translation {
 		return enabled.length === 1 ? enabled[0] : null;
 	}
 
-	get hasUserPreference(): boolean {
-		return this.defaultEngine != null;
-	}
-
 	get nonDefaultEnabledEngines(): ReadonlyArray<TranslationProvider> {
 		const defaultId = this.defaultEngine?.id;
 		return this.enabledEngines.filter((engine) => engine.id !== defaultId);
-	}
-
-	get hasMultipleEnabled(): boolean {
-		return this.enabledEngines.length > 1;
 	}
 
 	setEnabled(engineId: string, enabled: boolean): void {
@@ -128,10 +121,6 @@ class Translation {
 			engine.enabled = true;
 		}
 		return this.persistDefault(engineId);
-	}
-
-	clearDefaultEngine(): void {
-		void this.persistDefault(null);
 	}
 
 	addCustomEngine(name: string, urlTemplate: string): string {

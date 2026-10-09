@@ -28,11 +28,13 @@ export const MessageTypeSchema = createInt32EnumType(
 			'CHANNEL_FOLLOW_ADD',
 			'System message posted when a channel starts following an announcement channel',
 		],
-		// Echowire: threads are a fork feature, and this system message type was
-		// declared in MessageTypes without ever being added here, so the schema
-		// rejected it and it was absent from the published enum.
 		[MessageTypes.THREAD_CREATED, 'THREAD_CREATED', 'A system message indicating a thread was created'],
 		[MessageTypes.REPLY, 'REPLY', 'A reply message'],
+		[
+			MessageTypes.THREAD_STARTER_MESSAGE,
+			'THREAD_STARTER_MESSAGE',
+			'The first message of a thread, pointing at its source',
+		],
 	],
 	'The type of message',
 	'MessageType',

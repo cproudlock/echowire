@@ -17,6 +17,7 @@ import type {IGuildSearchService} from '@app/api/search/IGuildSearchService';
 import type {IMessageSearchService} from '@app/api/search/IMessageSearchService';
 import type {IReportSearchService} from '@app/api/search/IReportSearchService';
 import type {ISearchProvider} from '@app/api/search/ISearchProvider';
+import type {IThreadSearchService} from '@app/api/search/IThreadSearchService';
 import type {IUserSearchService} from '@app/api/search/IUserSearchService';
 import {convertToSearchableMessage} from '@app/api/search/message/MessageSearchSerializer';
 import {convertToSearchableReport} from '@app/api/search/report/ReportSearchSerializer';
@@ -33,7 +34,10 @@ import type {
 	SearchableGuildMember,
 	SearchableMessage,
 	SearchableReport,
+	SearchableThread,
 	SearchableUser,
+	ThreadSearchCursor,
+	ThreadSearchFilters,
 	UserSearchFilters,
 } from '@fluxer/schema/src/contracts/search/SearchDocumentTypes';
 
@@ -486,9 +490,12 @@ function matchesReportFilters(doc: SearchableReport, filters: ReportSearchFilter
 	if (filters.status !== undefined && doc.status !== filters.status) return false;
 	if (filters.reportType !== undefined && doc.reportType !== filters.reportType) return false;
 	if (filters.category !== undefined && doc.category !== filters.category) return false;
+	if (filters.reason !== undefined && doc.reason !== filters.reason) return false;
 	if (filters.reportedUserId !== undefined && doc.reportedUserId !== filters.reportedUserId) return false;
+	if (filters.reportedWebhookId !== undefined && doc.reportedWebhookId !== filters.reportedWebhookId) return false;
 	if (filters.reportedGuildId !== undefined && doc.reportedGuildId !== filters.reportedGuildId) return false;
 	if (filters.reportedMessageId !== undefined && doc.reportedMessageId !== filters.reportedMessageId) return false;
+	if (filters.reportedChannelId !== undefined && doc.reportedChannelId !== filters.reportedChannelId) return false;
 	if (filters.guildContextId !== undefined && doc.guildContextId !== filters.guildContextId) return false;
 	if (filters.resolvedByAdminId !== undefined && doc.resolvedByAdminId !== filters.resolvedByAdminId) return false;
 	if (filters.isResolved !== undefined && (doc.resolvedAt !== null) !== filters.isResolved) return false;
@@ -504,6 +511,7 @@ function collectReportText(doc: SearchableReport): Array<string | null> {
 		doc.reportedChannelName,
 		doc.publicComment,
 		doc.reportedUserId,
+		doc.reportedWebhookId,
 		doc.reportedGuildId,
 		doc.reportedMessageId,
 	];
@@ -545,28 +553,8 @@ class InMemoryReportSearchService
 		return this.search(query, filters, options);
 	}
 
-	listReportsByReporter(reporterId: UserID, limit?: number, offset?: number) {
-		return this.searchReports('', {reporterId: reporterId.toString()}, {limit, offset});
-	}
-
 	listReportsByStatus(status: number, limit?: number, offset?: number) {
 		return this.searchReports('', {status}, {limit, offset});
-	}
-
-	listReportsByType(reportType: number, limit?: number, offset?: number) {
-		return this.searchReports('', {reportType}, {limit, offset});
-	}
-
-	listReportsByReportedUser(reportedUserId: UserID, limit?: number, offset?: number) {
-		return this.searchReports('', {reportedUserId: reportedUserId.toString()}, {limit, offset});
-	}
-
-	listReportsByReportedGuild(reportedGuildId: GuildID, limit?: number, offset?: number) {
-		return this.searchReports('', {reportedGuildId: reportedGuildId.toString()}, {limit, offset});
-	}
-
-	listReportsByReportedMessage(reportedMessageId: MessageID, limit?: number, offset?: number) {
-		return this.searchReports('', {reportedMessageId: reportedMessageId.toString()}, {limit, offset});
 	}
 }
 
@@ -689,6 +677,60 @@ class InMemoryGuildMemberSearchService
 	}
 }
 
+function compareThreadCursor(doc: SearchableThread, cursor: ThreadSearchCursor): number {
+	return doc.createdAt - cursor.createdAt || doc.idSequence - cursor.idSequence;
+}
+
+function matchesThreadFilters(doc: SearchableThread, filters: ThreadSearchFilters): boolean {
+	if (doc.guildId !== filters.guildId || doc.parentId !== filters.parentId) return false;
+	if (filters.publicOnly && doc.type === 12 && !filters.privateThreadIds?.includes(doc.id)) return false;
+	if (filters.archived !== undefined && doc.archived !== filters.archived) return false;
+	if (filters.tagIds && filters.tagIds.length > 0) {
+		const matches =
+			filters.tagSetting === 'match_all'
+				? filters.tagIds.every((id) => doc.appliedTagIds.includes(id))
+				: filters.tagIds.some((id) => doc.appliedTagIds.includes(id));
+		if (!matches) return false;
+	}
+	if (filters.after && compareThreadCursor(doc, filters.after) <= 0) return false;
+	if (filters.before && compareThreadCursor(doc, filters.before) >= 0) return false;
+	return true;
+}
+
+const THREAD_SORT_FIELDS = {
+	last_message_time: 'lastMessageAt',
+	archive_time: 'archivedAt',
+	creation_time: 'createdAt',
+} as const;
+
+function sortThreadDocs(
+	left: SearchableThread,
+	right: SearchableThread,
+	filters: ThreadSearchFilters,
+	query: string,
+): number {
+	const sortBy = filters.sortBy ?? 'last_message_time';
+	if (sortBy === 'relevance') {
+		const delta = relevanceScore([right.name], query) - relevanceScore([left.name], query);
+		if (delta !== 0) return delta;
+		return Number(BigInt(right.id) - BigInt(left.id));
+	}
+	const field = THREAD_SORT_FIELDS[sortBy];
+	const direction = filters.sortOrder === 'asc' ? 1 : -1;
+	return (left[field] - right[field] || Number(BigInt(left.id) - BigInt(right.id))) * direction;
+}
+
+class InMemoryThreadSearchService
+	extends InMemorySearchServiceBase<ThreadSearchFilters, SearchableThread>
+	implements IThreadSearchService
+{
+	constructor() {
+		super(matchesThreadFilters, (doc) => [doc.name], sortThreadDocs);
+	}
+
+	async ready(): Promise<void> {}
+}
+
 export class InMemorySearchProvider implements ISearchProvider {
 	private readonly messages = new InMemoryMessageSearchService();
 	private readonly guilds = new InMemoryGuildSearchService();
@@ -696,6 +738,7 @@ export class InMemorySearchProvider implements ISearchProvider {
 	private readonly reports = new InMemoryReportSearchService();
 	private readonly auditLogs = new InMemoryAuditLogSearchService();
 	private readonly guildMembers = new InMemoryGuildMemberSearchService();
+	private readonly threads = new InMemoryThreadSearchService();
 
 	async initialize(): Promise<void> {
 		await Promise.all([
@@ -716,6 +759,7 @@ export class InMemorySearchProvider implements ISearchProvider {
 			this.reports.shutdown(),
 			this.auditLogs.shutdown(),
 			this.guildMembers.shutdown(),
+			this.threads.shutdown(),
 		]);
 	}
 
@@ -741,5 +785,9 @@ export class InMemorySearchProvider implements ISearchProvider {
 
 	getGuildMemberSearchService(): IGuildMemberSearchService {
 		return this.guildMembers;
+	}
+
+	getThreadSearchService(): IThreadSearchService {
+		return this.threads;
 	}
 }

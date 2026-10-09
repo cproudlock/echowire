@@ -19,7 +19,6 @@
     administrator_permission/0,
     manage_roles_permission/0,
     manage_channels_permission/0,
-    manage_threads_permission/0,
     connect_permission/0,
     speak_permission/0,
     stream_permission/0,
@@ -27,6 +26,10 @@
     kick_members_permission/0,
     ban_members_permission/0,
     view_channel_members_permission/0,
+    manage_threads_permission/0,
+    create_public_threads_permission/0,
+    create_private_threads_permission/0,
+    send_messages_in_threads_permission/0,
     voice_channel_camera_user_limit/0
 ]).
 
@@ -47,6 +50,7 @@ gateway_opcode(12) -> gateway_error;
 gateway_opcode(14) -> lazy_request;
 gateway_opcode(15) -> request_guild_counts;
 gateway_opcode(16) -> request_channel_member_counts;
+gateway_opcode(28) -> request_forum_unreads;
 gateway_opcode(_) -> unknown.
 
 -spec opcode_to_num(atom()) -> integer().
@@ -65,7 +69,8 @@ opcode_to_num(heartbeat_ack) -> 11;
 opcode_to_num(gateway_error) -> 12;
 opcode_to_num(lazy_request) -> 14;
 opcode_to_num(request_guild_counts) -> 15;
-opcode_to_num(request_channel_member_counts) -> 16.
+opcode_to_num(request_channel_member_counts) -> 16;
+opcode_to_num(request_forum_unreads) -> 28.
 
 -spec close_code_to_num(atom()) -> integer().
 close_code_to_num(unknown_error) -> 4000;
@@ -132,11 +137,6 @@ manage_roles_permission() -> 268435456.
 -spec manage_channels_permission() -> pos_integer().
 manage_channels_permission() -> 16.
 
-%% Echowire: MANAGE_THREADS, 1 bsl 34, Discord's own position for it. Moderating a thread accepts
-%% either this or MANAGE_CHANNELS, the permission every existing moderator role already holds.
--spec manage_threads_permission() -> pos_integer().
-manage_threads_permission() -> 17179869184.
-
 -spec connect_permission() -> pos_integer().
 connect_permission() -> 1048576.
 
@@ -157,6 +157,18 @@ ban_members_permission() -> 4.
 
 -spec view_channel_members_permission() -> pos_integer().
 view_channel_members_permission() -> 18014398509481984.
+
+-spec manage_threads_permission() -> pos_integer().
+manage_threads_permission() -> 17179869184.
+
+-spec create_public_threads_permission() -> pos_integer().
+create_public_threads_permission() -> 34359738368.
+
+-spec create_private_threads_permission() -> pos_integer().
+create_private_threads_permission() -> 68719476736.
+
+-spec send_messages_in_threads_permission() -> pos_integer().
+send_messages_in_threads_permission() -> 274877906944.
 
 -spec voice_channel_camera_user_limit() -> pos_integer().
 voice_channel_camera_user_limit() -> 25.
@@ -206,5 +218,15 @@ constants_values_test() ->
     ?assertEqual(1024, view_channel_permission()),
     ?assertEqual(128, view_audit_log_permission()),
     ?assertEqual(8, administrator_permission()).
+
+thread_permission_bits_test() ->
+    ?assertEqual(1 bsl 34, manage_threads_permission()),
+    ?assertEqual(1 bsl 35, create_public_threads_permission()),
+    ?assertEqual(1 bsl 36, create_private_threads_permission()),
+    ?assertEqual(1 bsl 38, send_messages_in_threads_permission()).
+
+dispatch_event_atom_normalizes_thread_events_test() ->
+    ?assertEqual(thread_member_update, dispatch_event_atom(<<"THREAD_MEMBER_UPDATE">>)),
+    ?assertEqual(<<"THREAD_MEMBERS_UPDATE">>, dispatch_event_atom(thread_members_update)).
 
 -endif.

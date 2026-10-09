@@ -141,19 +141,14 @@ import {
 	type InviteRow,
 	PRIVATE_CHANNEL_COLUMNS,
 	type PrivateChannelRow,
+	READ_STATE_COLUMNS,
+	type ReadStateRow,
 	WEBHOOK_COLUMNS,
 	WEBHOOKS_BY_SOURCE_CHANNEL_COLUMNS,
 	type WebhookRow,
 	type WebhooksBySourceChannelRow,
-	withChannelThreadDefaults,
 } from '@app/api/database/types/ChannelTypes';
 import {USER_CONNECTION_STORAGE_COLUMNS, type UserConnectionStorageRow} from '@app/api/database/types/ConnectionTypes';
-import {
-	NCMEC_ATTACHMENT_SUBMISSION_COLUMNS,
-	NCMEC_USER_WORKFLOW_COLUMNS,
-	type NcmecAttachmentSubmissionRow,
-	type NcmecUserWorkflowRow,
-} from '@app/api/database/types/CsamTypes';
 import {
 	GUILD_DISCOVERY_BY_STATUS_COLUMNS,
 	GUILD_DISCOVERY_COLUMNS,
@@ -254,10 +249,14 @@ import {
 	DSA_REPORT_TICKET_COLUMNS,
 	type DSAReportEmailVerificationRow,
 	type DSAReportTicketRow,
+	GUILD_REPORT_SUBMISSION_BY_REPORTER_COLUMNS,
+	type GuildReportSubmissionByReporterRow,
 	IAR_SUBMISSION_COLUMNS,
 	type IARSubmissionRow,
 	MESSAGE_REPORT_SUBMISSION_BY_REPORTER_COLUMNS,
 	type MessageReportSubmissionByReporterRow,
+	USER_REPORT_SUBMISSION_BY_REPORTER_COLUMNS,
+	type UserReportSubmissionByReporterRow,
 } from '@app/api/database/types/ReportTypes';
 import {
 	STORE_ACCOUNT_TOKEN_BY_USER_COLUMNS,
@@ -269,6 +268,30 @@ import {
 	type StorePurchaseByUserRow,
 	type StorePurchaseRow,
 } from '@app/api/database/types/StoreBillingTypes';
+import {
+	ACTIVE_THREADS_BY_GUILD_COLUMNS,
+	type ActiveThreadsByGuildRow,
+	ARCHIVED_THREADS_BY_PARENT_COLUMNS,
+	type ArchivedThreadsByParentRow,
+	FORUM_PINNED_THREAD_COLUMNS,
+	type ForumPinnedThreadRow,
+	GUILD_THREAD_STATE_COLUMNS,
+	type GuildThreadStateRow,
+	THREAD_MEMBER_COLUMNS,
+	THREAD_MEMBERS_BY_USER_COLUMNS,
+	THREAD_ONLY_CHANNELS_BY_GUILD_COLUMNS,
+	THREAD_PARENT_CONFIG_COLUMNS,
+	THREAD_STATE_COLUMNS,
+	THREAD_STATS_COLUMNS,
+	THREADS_BY_PARENT_COLUMNS,
+	type ThreadMemberRow,
+	type ThreadMembersByUserRow,
+	type ThreadOnlyChannelsByGuildRow,
+	type ThreadParentConfigRow,
+	type ThreadStateRow,
+	type ThreadStatsRow,
+	type ThreadsByParentRow,
+} from '@app/api/database/types/ThreadTypes';
 import {
 	FAVORITE_MEME_COLUMNS,
 	type FavoriteMemeRow,
@@ -538,23 +561,11 @@ export const GuildMembers = defineTable<GuildMemberRow, 'guild_id' | 'user_id'>(
 	columns: GUILD_MEMBER_COLUMNS,
 	primaryKey: ['guild_id', 'user_id'],
 });
-const ChannelsTable = defineTable<ChannelRow, 'channel_id' | 'soft_deleted'>({
+export const Channels = defineTable<ChannelRow, 'channel_id' | 'soft_deleted'>({
 	name: 'channels',
 	columns: CHANNEL_COLUMNS,
 	primaryKey: ['channel_id', 'soft_deleted'],
 });
-
-// Echowire: thread and forum columns are optional on ChannelRow, so the full-row writers normalise
-// the absent ones to null here. That keeps what reaches the store identical to spelling every column
-// out at the call site, while a plain channel row literal neither mentions thread state nor can
-// forget it. Partial writes (patchByPk, patchThreadFields) are untouched and still address single
-// columns. See docs/adr/0005-channel-thread-metadata-shape.md.
-export const Channels = {
-	...ChannelsTable,
-	insert: (row: ChannelRow) => ChannelsTable.insert(withChannelThreadDefaults(row)),
-	insertIfNotExists: (row: ChannelRow) => ChannelsTable.insertIfNotExists(withChannelThreadDefaults(row)),
-	upsertAll: (row: ChannelRow) => ChannelsTable.upsertAll(withChannelThreadDefaults(row)),
-};
 export const ChannelsByGuild = defineTable<ChannelsByGuildRow, 'guild_id' | 'channel_id'>({
 	name: 'channels_by_guild_id',
 	columns: CHANNELS_BY_GUILD_COLUMNS,
@@ -592,6 +603,84 @@ export const DmStates = defineTable<DmStateRow, 'hi_user_id' | 'lo_user_id' | 'c
 	columns: DM_STATE_COLUMNS,
 	primaryKey: ['hi_user_id', 'lo_user_id', 'channel_id'],
 });
+export const ThreadState = defineTable<ThreadStateRow, 'thread_id'>({
+	name: 'thread_state',
+	columns: THREAD_STATE_COLUMNS,
+	primaryKey: ['thread_id'],
+	partitionKey: ['thread_id'],
+});
+export const ThreadStats = defineTable<ThreadStatsRow, 'thread_id'>({
+	name: 'thread_stats',
+	columns: THREAD_STATS_COLUMNS,
+	primaryKey: ['thread_id'],
+	partitionKey: ['thread_id'],
+});
+export const ThreadsByParent = defineTable<ThreadsByParentRow, 'parent_id' | 'thread_id', 'parent_id'>({
+	name: 'threads_by_parent',
+	columns: THREADS_BY_PARENT_COLUMNS,
+	primaryKey: ['parent_id', 'thread_id'],
+	partitionKey: ['parent_id'],
+});
+export const ActiveThreadsByGuild = defineTable<ActiveThreadsByGuildRow, 'guild_id' | 'thread_id', 'guild_id'>({
+	name: 'active_threads_by_guild',
+	columns: ACTIVE_THREADS_BY_GUILD_COLUMNS,
+	primaryKey: ['guild_id', 'thread_id'],
+	partitionKey: ['guild_id'],
+});
+export const ArchivedThreadsByParent = defineTable<
+	ArchivedThreadsByParentRow,
+	'parent_id' | 'is_private' | 'archive_timestamp' | 'thread_id',
+	'parent_id' | 'is_private'
+>({
+	name: 'archived_threads_by_parent',
+	columns: ARCHIVED_THREADS_BY_PARENT_COLUMNS,
+	primaryKey: ['parent_id', 'is_private', 'archive_timestamp', 'thread_id'],
+	partitionKey: ['parent_id', 'is_private'],
+});
+export const ThreadMembers = defineTable<ThreadMemberRow, 'thread_id' | 'user_id', 'thread_id'>({
+	name: 'thread_members',
+	columns: THREAD_MEMBER_COLUMNS,
+	primaryKey: ['thread_id', 'user_id'],
+	partitionKey: ['thread_id'],
+});
+export const ThreadMembersByUser = defineTable<
+	ThreadMembersByUserRow,
+	'user_id' | 'guild_id' | 'parent_id' | 'is_private' | 'thread_id',
+	'user_id'
+>({
+	name: 'thread_members_by_user',
+	columns: THREAD_MEMBERS_BY_USER_COLUMNS,
+	primaryKey: ['user_id', 'guild_id', 'parent_id', 'is_private', 'thread_id'],
+	partitionKey: ['user_id'],
+});
+export const ThreadParentConfig = defineTable<ThreadParentConfigRow, 'guild_id' | 'channel_id', 'guild_id'>({
+	name: 'thread_parent_config',
+	columns: THREAD_PARENT_CONFIG_COLUMNS,
+	primaryKey: ['guild_id', 'channel_id'],
+	partitionKey: ['guild_id'],
+});
+export const ForumPinnedThread = defineTable<ForumPinnedThreadRow, 'parent_id'>({
+	name: 'forum_pinned_thread',
+	columns: FORUM_PINNED_THREAD_COLUMNS,
+	primaryKey: ['parent_id'],
+	partitionKey: ['parent_id'],
+});
+export const ThreadOnlyChannelsByGuild = defineTable<
+	ThreadOnlyChannelsByGuildRow,
+	'guild_id' | 'channel_id',
+	'guild_id'
+>({
+	name: 'thread_only_channels_by_guild',
+	columns: THREAD_ONLY_CHANNELS_BY_GUILD_COLUMNS,
+	primaryKey: ['guild_id', 'channel_id'],
+	partitionKey: ['guild_id'],
+});
+export const GuildThreadState = defineTable<GuildThreadStateRow, 'guild_id'>({
+	name: 'guild_thread_state',
+	columns: GUILD_THREAD_STATE_COLUMNS,
+	primaryKey: ['guild_id'],
+	partitionKey: ['guild_id'],
+});
 
 interface PinnedDmRow {
 	user_id: bigint;
@@ -606,58 +695,10 @@ export const PinnedDms = defineTable<PinnedDmRow, 'user_id' | 'channel_id'>({
 	primaryKey: ['user_id', 'channel_id'],
 });
 
-interface ReadStateRow {
-	user_id: bigint;
-	channel_id: bigint;
-}
-
-const READ_STATE_COLUMNS = ['user_id', 'channel_id'] as const satisfies ReadonlyArray<keyof ReadStateRow>;
 export const ReadStates = defineTable<ReadStateRow, 'user_id' | 'channel_id'>({
 	name: 'read_states',
 	columns: READ_STATE_COLUMNS,
 	primaryKey: ['user_id', 'channel_id'],
-});
-
-// Echowire: thread membership. Partition by thread so all members of a thread list together.
-export interface ThreadMemberRow {
-	thread_id: bigint;
-	user_id: bigint;
-	join_timestamp: Date;
-	flags: number;
-}
-const THREAD_MEMBER_COLUMNS = ['thread_id', 'user_id', 'join_timestamp', 'flags'] as const satisfies ReadonlyArray<
-	keyof ThreadMemberRow
->;
-export const ThreadMembers = defineTable<ThreadMemberRow, 'thread_id' | 'user_id', 'thread_id'>({
-	name: 'thread_members',
-	columns: THREAD_MEMBER_COLUMNS,
-	primaryKey: ['thread_id', 'user_id'],
-	partitionKey: ['thread_id'],
-});
-
-// Echowire: the same membership from the user's side. Partitioned by user so a session can be told
-// which threads it belongs to without walking every thread of every guild, which is what the
-// thread list endpoints, account deletion and the data export each had to do. guild_id is carried
-// so a reader can group by guild without loading the channels.
-export interface ThreadMemberByUserRow {
-	user_id: bigint;
-	thread_id: bigint;
-	guild_id: bigint | null;
-	join_timestamp: Date;
-	flags: number;
-}
-const THREAD_MEMBER_BY_USER_COLUMNS = [
-	'user_id',
-	'thread_id',
-	'guild_id',
-	'join_timestamp',
-	'flags',
-] as const satisfies ReadonlyArray<keyof ThreadMemberByUserRow>;
-export const ThreadMembersByUser = defineTable<ThreadMemberByUserRow, 'user_id' | 'thread_id', 'user_id'>({
-	name: 'thread_members_by_user',
-	columns: THREAD_MEMBER_BY_USER_COLUMNS,
-	primaryKey: ['user_id', 'thread_id'],
-	partitionKey: ['user_id'],
 });
 export const Messages = defineTable<MessageRow, 'channel_id' | 'bucket' | 'message_id', 'channel_id' | 'bucket'>({
 	name: 'messages',
@@ -882,16 +923,41 @@ export const MessageReportSubmissionsByReporter = defineTable<
 	columns: MESSAGE_REPORT_SUBMISSION_BY_REPORTER_COLUMNS,
 	primaryKey: ['reporter_id', 'channel_id', 'message_id'],
 	partitionKey: ['reporter_id'],
+	defaultTtlSeconds: seconds('365 days'),
+});
+export const UserReportSubmissionsByReporter = defineTable<
+	UserReportSubmissionByReporterRow,
+	'reporter_id' | 'reported_user_id',
+	'reporter_id'
+>({
+	name: 'user_report_submissions_by_reporter',
+	columns: USER_REPORT_SUBMISSION_BY_REPORTER_COLUMNS,
+	primaryKey: ['reporter_id', 'reported_user_id'],
+	partitionKey: ['reporter_id'],
+	defaultTtlSeconds: seconds('24 hours'),
+});
+export const GuildReportSubmissionsByReporter = defineTable<
+	GuildReportSubmissionByReporterRow,
+	'reporter_id' | 'reported_guild_id',
+	'reporter_id'
+>({
+	name: 'guild_report_submissions_by_reporter',
+	columns: GUILD_REPORT_SUBMISSION_BY_REPORTER_COLUMNS,
+	primaryKey: ['reporter_id', 'reported_guild_id'],
+	partitionKey: ['reporter_id'],
+	defaultTtlSeconds: seconds('24 hours'),
 });
 export const DSAReportEmailVerifications = defineTable<DSAReportEmailVerificationRow, 'email_lower'>({
 	name: 'dsa_report_email_verifications',
 	columns: DSA_REPORT_EMAIL_VERIFICATION_COLUMNS,
 	primaryKey: ['email_lower'],
+	defaultTtlSeconds: seconds('10 minutes'),
 });
 export const DSAReportTickets = defineTable<DSAReportTicketRow, 'ticket'>({
 	name: 'dsa_report_tickets',
 	columns: DSA_REPORT_TICKET_COLUMNS,
 	primaryKey: ['ticket'],
+	defaultTtlSeconds: seconds('1 hour'),
 });
 export const EmailVerificationTokens = defineTable<EmailVerificationTokenRow, 'token_' | 'user_id'>({
 	name: 'email_verification_tokens',
@@ -1221,16 +1287,6 @@ export const AttachmentUploadTracesByAttachment = defineTable<AttachmentUploadTr
 	columns: ATTACHMENT_UPLOAD_TRACE_BY_ATTACHMENT_COLUMNS,
 	primaryKey: ['attachment_id'],
 	defaultTtlSeconds: seconds('30 days'),
-});
-export const NcmecAttachmentSubmissions = defineTable<NcmecAttachmentSubmissionRow, 'attachment_id'>({
-	name: 'ncmec_attachment_submissions',
-	columns: NCMEC_ATTACHMENT_SUBMISSION_COLUMNS,
-	primaryKey: ['attachment_id'],
-});
-export const NcmecUserWorkflows = defineTable<NcmecUserWorkflowRow, 'user_id'>({
-	name: 'ncmec_user_workflows',
-	columns: NCMEC_USER_WORKFLOW_COLUMNS,
-	primaryKey: ['user_id'],
 });
 export const BillingCustomers = defineTable<BillingCustomerRow, 'provider_id'>({
 	name: 'billing_customers',

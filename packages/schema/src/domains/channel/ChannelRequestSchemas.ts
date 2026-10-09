@@ -18,22 +18,34 @@ import {
 	VOICE_CHANNEL_USER_LIMIT_MAX,
 	VOICE_CHANNEL_USER_LIMIT_MIN,
 } from '@fluxer/constants/src/LimitConstants';
+import {
+	THREAD_NAME_MAX_LENGTH,
+	THREAD_NAME_MIN_LENGTH,
+	THREAD_RATE_LIMIT_PER_USER_MAX,
+} from '@fluxer/constants/src/ThreadConstants';
 import {ChannelNicknameOverrides} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import {
+	ForumChannelRequestFields,
+	ForumLayoutSchema,
+	ThreadAppliedTagsRequestFields,
+	ThreadParentDefaultsRequestFields,
+} from '@fluxer/schema/src/domains/channel/ForumRequestSchemas';
+import {ThreadAutoArchiveDurationSchema} from '@fluxer/schema/src/domains/channel/ThreadRequestSchemas';
 import {ReadStateResponse} from '@fluxer/schema/src/domains/gateway/GatewaySchemas';
 import {ChannelOverwriteTypeSchema, GeneralChannelNameType} from '@fluxer/schema/src/primitives/ChannelValidators';
 import {base64LengthForBytes, createBase64StringType} from '@fluxer/schema/src/primitives/FileValidators';
 import {ContentWarningLevelSchema} from '@fluxer/schema/src/primitives/GuildValidators';
-import {createQueryIntegerType, QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
+import {QueryBooleanType} from '@fluxer/schema/src/primitives/QueryValidators';
 import {
 	createNamedLiteral,
 	createNamedLiteralUnion,
 	createStringType,
 	Int32Type,
-	SnowflakeStringType,
 	SnowflakeType,
 	UnsignedInt64Type,
 } from '@fluxer/schema/src/primitives/SchemaPrimitives';
 import {URLType} from '@fluxer/schema/src/primitives/UrlValidators';
+import {withSchemaMetadata} from '@fluxer/schema/src/SchemaMetadata';
 import {z} from 'zod';
 
 const ChannelOverwriteRequest = z.object({
@@ -162,57 +174,49 @@ const ChannelCreateLinkRequest = ChannelCreateCommon.extend({
 	name: GeneralChannelNameType.describe('The name of the channel'),
 });
 
-// Echowire: a forum tag as supplied by the client. id is present when editing an existing tag and
-// omitted when creating a new one (the server assigns a snowflake).
-export const ForumTagInput = z.object({
-	id: SnowflakeStringType.optional().describe('Existing tag ID (omit to create a new tag)'),
-	name: createStringType(1, 20).describe('Tag name (1-20 characters)'),
-	emoji_name: z.string().nullish().describe('Optional emoji for the tag'),
-	moderated: z
-		.boolean()
-		.optional()
-		.describe('Restrict applying and removing this tag to members who can moderate threads'),
-});
-export type ForumTagInput = z.infer<typeof ForumTagInput>;
+const EXPERIMENT = {experiment: 'channel_threads'} as const;
 
-const DefaultReactionEmojiInput = z
-	.object({
-		emoji_id: SnowflakeStringType.nullish().describe('Custom emoji ID'),
-		emoji_name: z.string().nullish().describe('Unicode emoji'),
-	})
-	.describe('Default reaction shown on forum posts');
+const ChannelCreateThreadParentTextRequest = ChannelCreateTextRequest.extend(ThreadParentDefaultsRequestFields);
 
-const ChannelCreateForumRequest = ChannelCreateCommon.extend({
-	type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
-	name: GeneralChannelNameType.describe('The name of the forum channel'),
-	available_tags: z.array(ForumTagInput).max(20).optional().describe('Tags available for posts (max 20)'),
-	default_reaction_emoji: DefaultReactionEmojiInput.nullish(),
-	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
-	default_auto_archive_duration: z
-		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
-		.nullish()
-		.describe('Default inactivity (minutes) new posts inherit'),
-	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
-	default_forum_layout: z
-		.union([z.literal(0), z.literal(1), z.literal(2)])
-		.nullish()
-		.describe('Default forum layout (0 = not set, 1 = list, 2 = gallery)'),
-	default_thread_rate_limit_per_user: z
-		.number()
-		.int()
-		.min(0)
-		.max(21600)
-		.nullish()
-		.describe('Slowmode in seconds that new forum posts inherit (0-21600)'),
-});
+const ChannelCreateThreadParentAnnouncementRequest = ChannelCreateAnnouncementRequest.extend(
+	ThreadParentDefaultsRequestFields,
+);
 
-export const ChannelCreateRequest = z.discriminatedUnion('type', [
+const ChannelCreateForumRequest = withSchemaMetadata(
+	ChannelCreateCommon.extend({
+		type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
+		name: GeneralChannelNameType.describe('The name of the channel'),
+		...ForumChannelRequestFields,
+		default_forum_layout: ForumLayoutSchema.nullish(),
+	}),
+	EXPERIMENT,
+);
+
+const ChannelCreateMediaRequest = withSchemaMetadata(
+	ChannelCreateCommon.extend({
+		type: createNamedLiteral(ChannelTypes.GUILD_MEDIA, 'GUILD_MEDIA', 'Channel type (media channel)'),
+		name: GeneralChannelNameType.describe('The name of the channel'),
+		...ForumChannelRequestFields,
+	}),
+	EXPERIMENT,
+);
+
+export const ChannelCreateControlRequest = z.discriminatedUnion('type', [
 	ChannelCreateTextRequest,
 	ChannelCreateAnnouncementRequest,
 	ChannelCreateVoiceRequest,
 	ChannelCreateCategoryRequest,
 	ChannelCreateLinkRequest,
+]);
+
+export const ChannelCreateRequest = z.discriminatedUnion('type', [
+	ChannelCreateThreadParentTextRequest,
+	ChannelCreateThreadParentAnnouncementRequest,
+	ChannelCreateVoiceRequest,
+	ChannelCreateCategoryRequest,
+	ChannelCreateLinkRequest,
 	ChannelCreateForumRequest,
+	ChannelCreateMediaRequest,
 ]);
 
 export type ChannelCreateRequest = z.infer<typeof ChannelCreateRequest>;
@@ -246,40 +250,6 @@ const ChannelUpdateLinkRequest = ChannelUpdateCommon.extend({
 	name: GeneralChannelNameType.nullish().describe('The name of the channel'),
 });
 
-const ChannelUpdateForumRequest = ChannelUpdateCommon.extend({
-	type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
-	name: GeneralChannelNameType.nullish().describe('The name of the forum channel'),
-	available_tags: z
-		.array(ForumTagInput)
-		.max(20)
-		.nullish()
-		.describe('Full replacement set of available tags (max 20); existing tags keep their id'),
-	default_reaction_emoji: z
-		.object({
-			emoji_id: SnowflakeStringType.nullish(),
-			emoji_name: z.string().nullish(),
-		})
-		.nullish()
-		.describe('Default reaction shown on forum posts (null to clear)'),
-	default_sort_order: Int32Type.nullish().describe('Default post sort (0 = latest activity, 1 = creation)'),
-	default_auto_archive_duration: z
-		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
-		.nullish()
-		.describe('Default inactivity (minutes) new posts inherit'),
-	require_tag: z.boolean().optional().describe('Require at least one tag on each post'),
-	default_forum_layout: z
-		.union([z.literal(0), z.literal(1), z.literal(2)])
-		.nullish()
-		.describe('Default forum layout (0 = not set, 1 = list, 2 = gallery)'),
-	default_thread_rate_limit_per_user: z
-		.number()
-		.int()
-		.min(0)
-		.max(21600)
-		.nullish()
-		.describe('Slowmode in seconds that new forum posts inherit (0-21600)'),
-});
-
 const ChannelUpdateGroupDmRequest = z.object({
 	type: createNamedLiteral(ChannelTypes.GROUP_DM, 'GROUP_DM', 'Channel type (group DM)'),
 	name: GeneralChannelNameType.nullish().describe('The name of the group DM'),
@@ -288,16 +258,57 @@ const ChannelUpdateGroupDmRequest = z.object({
 		.describe('Base64-encoded icon image for the group DM'),
 	owner_id: SnowflakeType.nullish().describe('ID of the new owner of the group DM'),
 	nicks: ChannelNicknameOverrides.nullish().describe('Custom nicknames for users in this group DM'),
+	nsfw: z.boolean().nullish().describe('Whether the group DM is marked for mature content (owner only)'),
 });
 
-export const ChannelUpdateRequest = z.discriminatedUnion('type', [
+const ChannelUpdateThreadFields = {
+	name: createStringType(THREAD_NAME_MIN_LENGTH, THREAD_NAME_MAX_LENGTH)
+		.optional()
+		.describe('The name of the thread (1-100 characters)'),
+	archived: z.boolean().nullish().describe('Whether the thread is archived'),
+	auto_archive_duration: ThreadAutoArchiveDurationSchema.optional(),
+	locked: z.boolean().nullish().describe('Whether only moderators can unarchive the thread'),
+	rate_limit_per_user: Int32Type.max(THREAD_RATE_LIMIT_PER_USER_MAX)
+		.nullish()
+		.describe('Seconds a user has to wait before sending another message (0-21600)'),
+	flags: Int32Type.optional().describe('Channel flags'),
+};
+
+const ChannelUpdatePublicThreadRequest = z.object({
+	type: createNamedLiteral(ChannelTypes.PUBLIC_THREAD, 'PUBLIC_THREAD', 'Channel type (public thread)'),
+	...ChannelUpdateThreadFields,
+	...ThreadAppliedTagsRequestFields,
+});
+
+const ChannelUpdateAnnouncementThreadRequest = z.object({
+	type: createNamedLiteral(
+		ChannelTypes.ANNOUNCEMENT_THREAD,
+		'ANNOUNCEMENT_THREAD',
+		'Channel type (announcement thread)',
+	),
+	...ChannelUpdateThreadFields,
+});
+
+const ChannelUpdatePrivateThreadRequest = z.object({
+	type: createNamedLiteral(ChannelTypes.PRIVATE_THREAD, 'PRIVATE_THREAD', 'Channel type (private thread)'),
+	...ChannelUpdateThreadFields,
+	invitable: z.boolean().nullish().describe('Whether non-moderators can add other non-moderators'),
+});
+
+const CHANNEL_UPDATE_REQUEST_OPTIONS = [
 	ChannelUpdateTextRequest,
 	ChannelUpdateAnnouncementRequest,
 	ChannelUpdateVoiceRequest,
 	ChannelUpdateCategoryRequest,
 	ChannelUpdateLinkRequest,
-	ChannelUpdateForumRequest,
 	ChannelUpdateGroupDmRequest,
+] as const;
+
+export const ChannelUpdateRequest = z.discriminatedUnion('type', [
+	...CHANNEL_UPDATE_REQUEST_OPTIONS,
+	ChannelUpdateAnnouncementThreadRequest,
+	ChannelUpdatePublicThreadRequest,
+	ChannelUpdatePrivateThreadRequest,
 ]);
 
 export type ChannelUpdateRequest = z.infer<typeof ChannelUpdateRequest>;
@@ -309,14 +320,91 @@ const ChannelTypeConversionField = z
 
 const CONVERTIBLE_UPDATE_REQUESTS = new Set<z.ZodObject>([ChannelUpdateTextRequest, ChannelUpdateAnnouncementRequest]);
 
-export const ChannelUpdateRequestBody = z.union(
-	ChannelUpdateRequest.options.map((option) => {
+const ChannelUpdateThreadParentTextRequest = ChannelUpdateTextRequest.extend(ThreadParentDefaultsRequestFields);
+
+const ChannelUpdateThreadParentAnnouncementRequest = ChannelUpdateAnnouncementRequest.extend(
+	ThreadParentDefaultsRequestFields,
+);
+
+const ChannelUpdateForumRequest = ChannelUpdateCommon.extend({
+	type: createNamedLiteral(ChannelTypes.GUILD_FORUM, 'GUILD_FORUM', 'Channel type (forum channel)'),
+	name: GeneralChannelNameType.nullish().describe('The name of the channel'),
+	...ForumChannelRequestFields,
+	default_forum_layout: ForumLayoutSchema.nullish(),
+});
+
+const ChannelUpdateMediaRequest = ChannelUpdateCommon.extend({
+	type: createNamedLiteral(ChannelTypes.GUILD_MEDIA, 'GUILD_MEDIA', 'Channel type (media channel)'),
+	name: GeneralChannelNameType.nullish().describe('The name of the channel'),
+	...ForumChannelRequestFields,
+});
+
+export const ChannelUpdateGatedRequest = z.discriminatedUnion('type', [
+	ChannelUpdateThreadParentTextRequest,
+	ChannelUpdateThreadParentAnnouncementRequest,
+	ChannelUpdateVoiceRequest,
+	ChannelUpdateCategoryRequest,
+	ChannelUpdateLinkRequest,
+	ChannelUpdateGroupDmRequest,
+	ChannelUpdateAnnouncementThreadRequest,
+	ChannelUpdatePublicThreadRequest,
+	ChannelUpdatePrivateThreadRequest,
+	ChannelUpdateForumRequest,
+	ChannelUpdateMediaRequest,
+]);
+
+export type ChannelUpdateGatedRequest = z.infer<typeof ChannelUpdateGatedRequest>;
+
+export type ChannelUpdateNonThreadRequest =
+	| z.infer<(typeof CHANNEL_UPDATE_REQUEST_OPTIONS)[number]>
+	| z.infer<typeof ChannelUpdateThreadParentTextRequest>
+	| z.infer<typeof ChannelUpdateThreadParentAnnouncementRequest>
+	| z.infer<typeof ChannelUpdateForumRequest>
+	| z.infer<typeof ChannelUpdateMediaRequest>;
+
+export type ChannelUpdateThreadRequest =
+	| z.infer<typeof ChannelUpdateAnnouncementThreadRequest>
+	| z.infer<typeof ChannelUpdatePublicThreadRequest>
+	| z.infer<typeof ChannelUpdatePrivateThreadRequest>;
+
+export const ChannelUpdatePublicThreadRequestBody = withSchemaMetadata(
+	ChannelUpdatePublicThreadRequest.omit({type: true}),
+	{experiment: 'channel_threads'},
+);
+
+export const ChannelUpdatePrivateThreadRequestBody = withSchemaMetadata(
+	ChannelUpdatePrivateThreadRequest.omit({type: true}),
+	{experiment: 'channel_threads'},
+);
+
+export const ChannelUpdateThreadParentRequestBody = withSchemaMetadata(
+	z.object(ThreadParentDefaultsRequestFields),
+	EXPERIMENT,
+);
+
+export const ChannelUpdateForumRequestBody = withSchemaMetadata(
+	ChannelUpdateForumRequest.omit({type: true}),
+	EXPERIMENT,
+);
+
+export const ChannelUpdateMediaRequestBody = withSchemaMetadata(
+	ChannelUpdateMediaRequest.omit({type: true}),
+	EXPERIMENT,
+);
+
+export const ChannelUpdateRequestBody = z.union([
+	...CHANNEL_UPDATE_REQUEST_OPTIONS.map((option) => {
 		const {type, ...shape} = option.shape;
 		return CONVERTIBLE_UPDATE_REQUESTS.has(option)
 			? z.object({...shape, type: ChannelTypeConversionField})
 			: z.object(shape);
 	}),
-);
+	ChannelUpdatePublicThreadRequestBody,
+	ChannelUpdatePrivateThreadRequestBody,
+	ChannelUpdateThreadParentRequestBody,
+	ChannelUpdateForumRequestBody,
+	ChannelUpdateMediaRequestBody,
+]);
 
 export const PermissionOverwriteCreateRequest = z.object({
 	type: ChannelOverwriteTypeSchema.describe('The type of overwrite (0 = role, 1 = member)'),
@@ -445,81 +533,3 @@ export const StreamPreviewUploadUrlResponseSchema = z.object({
 });
 
 export type StreamPreviewUploadUrlResponseSchema = z.infer<typeof StreamPreviewUploadUrlResponseSchema>;
-
-// Echowire: create a thread under a text/forum channel (POST /channels/:channel_id/threads).
-// Echowire: paging for the thread list endpoints. Both parameters are optional and the endpoints
-// keep returning every visible thread when neither is given, so existing clients are unaffected.
-export const ThreadsQuery = z.object({
-	limit: createQueryIntegerType({defaultValue: 0, minValue: 1, maxValue: 100})
-		.optional()
-		.describe('Maximum threads to return (1-100); omit for every visible thread'),
-	before: SnowflakeType.optional().describe('Return threads with an ID lower than this one'),
-});
-export type ThreadsQuery = z.infer<typeof ThreadsQuery>;
-
-export const ThreadCreateRequest = z.object({
-	name: GeneralChannelNameType.describe('The name of the thread (1-100 characters)'),
-	message_id: SnowflakeStringType.optional().describe(
-		'When creating a thread from an existing message, the source message ID. The thread adopts this ID so the message can render an inline link to it (Discord semantics).',
-	),
-	applied_tags: z
-		.array(SnowflakeStringType)
-		.max(5)
-		.optional()
-		.describe('Tag IDs to apply to this forum post (max 5). Only valid when the parent is a forum channel.'),
-	auto_archive_duration: z
-		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
-		.optional()
-		.describe('Minutes of inactivity before auto-archiving (60, 1440, 4320, or 10080); defaults to 1440'),
-	type: z
-		.union([
-			createNamedLiteral(ChannelTypes.PUBLIC_THREAD, 'PUBLIC_THREAD'),
-			createNamedLiteral(ChannelTypes.PRIVATE_THREAD, 'PRIVATE_THREAD'),
-		])
-		.optional()
-		.describe('The thread type (11 = public, 12 = private); defaults to public'),
-	invitable: z
-		.boolean()
-		.optional()
-		.describe(
-			'Whether members of a private thread may add other members. Only meaningful for private threads; defaults to false.',
-		),
-});
-
-export type ThreadCreateRequest = z.infer<typeof ThreadCreateRequest>;
-
-// Echowire: update a thread (PATCH /channels/:channel_id/thread). All fields optional.
-export const ThreadUpdateRequest = z.object({
-	name: GeneralChannelNameType.optional().describe('New thread name (1-100 characters)'),
-	archived: z.boolean().optional().describe('Whether the thread is archived'),
-	locked: z.boolean().optional().describe('Whether the thread is locked (only moderators can unarchive)'),
-	auto_archive_duration: z
-		.union([z.literal(60), z.literal(1440), z.literal(4320), z.literal(10080)])
-		.optional()
-		.describe('Minutes of inactivity before auto-archiving'),
-	invitable: z.boolean().optional().describe('Whether non-moderators can add others to a private thread'),
-	applied_tags: z
-		.array(SnowflakeStringType)
-		.max(5)
-		.optional()
-		.describe('Replacement set of tag IDs for a forum post (max 5)'),
-	pinned: z.boolean().optional().describe('Whether to pin this forum post to the top (moderators only)'),
-	rate_limit_per_user: z
-		.number()
-		.int()
-		.min(0)
-		.max(21600)
-		.optional()
-		.describe('Slowmode for this thread or forum post in seconds (0-21600)'),
-});
-
-export type ThreadUpdateRequest = z.infer<typeof ThreadUpdateRequest>;
-
-// Echowire: "add to post". Appends an attachment that already exists on a message inside a forum
-// post to that post's starter message, where it becomes the post thumbnail.
-export const StarterMessageAttachmentRequest = z.object({
-	message_id: SnowflakeStringType.describe('A message in this post that carries the attachment'),
-	attachment_id: SnowflakeStringType.describe('The attachment to append to the starter message'),
-});
-
-export type StarterMessageAttachmentRequest = z.infer<typeof StarterMessageAttachmentRequest>;

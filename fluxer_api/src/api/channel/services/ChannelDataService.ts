@@ -12,6 +12,9 @@ import {ChannelOperationsService} from '@app/api/channel/services/channel_data/C
 import {ChannelUtilsService} from '@app/api/channel/services/channel_data/ChannelUtilsService';
 import {GroupDmUpdateService} from '@app/api/channel/services/channel_data/GroupDmUpdateService';
 import type {MessagePersistenceService} from '@app/api/channel/services/message/MessagePersistenceService';
+import {ThreadModifyService} from '@app/api/channel/services/thread/ThreadModifyService';
+import {pickThreadParentSettings} from '@app/api/channel/services/thread/ThreadParentSettings';
+import type {ThreadViewer} from '@app/api/experiment/ChannelThreadsGate';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
 import type {AvatarService} from '@app/api/infrastructure/AvatarService';
@@ -30,12 +33,16 @@ import type {IUserRepository} from '@app/api/user/IUserRepository';
 import type {VoiceAvailabilityService} from '@app/api/voice/VoiceAvailabilityService';
 import type {IWebhookRepository} from '@app/api/webhook/IWebhookRepository';
 import {ChannelTypes} from '@fluxer/constants/src/ChannelConstants';
-import type {ChannelUpdateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
+import type {
+	ChannelUpdateGatedRequest,
+	ChannelUpdateNonThreadRequest,
+	ChannelUpdateThreadRequest,
+} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import type {IRateLimitService} from '@pkgs/rate_limit/src/IRateLimitService';
 
 type GuildChannelUpdateRequest = Exclude<
-	ChannelUpdateRequest,
+	ChannelUpdateNonThreadRequest,
 	{
 		type: typeof ChannelTypes.GROUP_DM;
 	}
@@ -47,6 +54,7 @@ export class ChannelDataService {
 	public readonly operations: ChannelOperationsService;
 	public readonly groupDmUpdate: GroupDmUpdateService;
 	public readonly utils: ChannelUtilsService;
+	public readonly threadModify: ThreadModifyService;
 
 	constructor(
 		channelRepository: IChannelRepositoryAggregate,
@@ -56,7 +64,7 @@ export class ChannelDataService {
 		storageService: IStorageService,
 		gatewayService: IGatewayService,
 		avatarService: AvatarService,
-		private readonly snowflakeService: ISnowflakeService,
+		snowflakeService: ISnowflakeService,
 		purgeQueue: IPurgeQueue,
 		voiceRoomStore: IVoiceRoomStore,
 		liveKitService: ILiveKitService,
@@ -93,7 +101,18 @@ export class ChannelDataService {
 			limitConfigService,
 			rateLimitService,
 			cacheService,
+			snowflakeService,
 		);
+		this.threadModify = new ThreadModifyService({
+			channelRepository,
+			gatewayService,
+			guildAuditLogService,
+			rateLimitService,
+			cacheService,
+			snowflakeService,
+			messagePersistence: messagePersistenceService,
+			utils: this.utils,
+		});
 		this.groupDmUpdate = new GroupDmUpdateService(
 			channelRepository,
 			userRepository,
@@ -104,8 +123,26 @@ export class ChannelDataService {
 		);
 	}
 
+	async deleteThread({
+		userId,
+		viewer,
+		channelId,
+		requestCache,
+		auditLogReason,
+	}: {
+		userId: UserID;
+		viewer: ThreadViewer;
+		channelId: ChannelID;
+		requestCache: RequestCache;
+		auditLogReason: string | null;
+	}): Promise<void> {
+		const authChannel = await this.auth.getChannelAuthenticated({userId, channelId, viewer, skipNsfwValidation: true});
+		await this.threadModify.deleteThread({authChannel, userId, requestCache, auditLogReason});
+	}
+
 	async editChannel({
 		userId,
+		viewer,
 		channelId,
 		data,
 		clientFeatures,
@@ -114,22 +151,35 @@ export class ChannelDataService {
 		typeConversion,
 	}: {
 		userId: UserID;
+		viewer: ThreadViewer;
 		channelId: ChannelID;
-		data: Omit<ChannelUpdateRequest, 'type'>;
+		data: Omit<ChannelUpdateGatedRequest, 'type'>;
 		clientFeatures: ReadonlySet<string>;
 		requestCache: RequestCache;
 		auditLogReason: string | null;
 		typeConversion?: ChannelTypeConversion | null;
 	}): Promise<Channel> {
-		const {channel} = await this.auth.getChannelAuthenticated({userId, channelId, skipNsfwValidation: true});
+		const authChannel = await this.auth.getChannelAuthenticated({userId, channelId, viewer, skipNsfwValidation: true});
+		const {channel} = authChannel;
+		if (authChannel.thread) {
+			return this.threadModify.updateThread({
+				authChannel,
+				userId,
+				data: data as Omit<ChannelUpdateThreadRequest, 'type'>,
+				requestCache,
+				auditLogReason,
+			});
+		}
 		if (channel.type === ChannelTypes.GROUP_DM) {
+			const groupDmData = data as Omit<Extract<ChannelUpdateNonThreadRequest, {type: 3}>, 'type'>;
 			return await this.groupDmUpdate.updateGroupDmChannel({
 				userId,
 				channelId,
-				name: data.name !== undefined ? data.name : undefined,
-				icon: data.icon !== undefined ? data.icon : undefined,
-				ownerId: data.owner_id ? createUserID(data.owner_id) : undefined,
-				nicks: data.nicks,
+				name: groupDmData.name !== undefined ? groupDmData.name : undefined,
+				icon: groupDmData.icon !== undefined ? groupDmData.icon : undefined,
+				ownerId: groupDmData.owner_id ? createUserID(groupDmData.owner_id) : undefined,
+				nicks: groupDmData.nicks,
+				nsfw: groupDmData.nsfw ?? undefined,
 				requestCache,
 			});
 		}
@@ -186,55 +236,12 @@ export class ChannelDataService {
 		if (guildChannelData.nicks !== undefined) {
 			channelUpdateData.nicks = guildChannelData.nicks ?? null;
 		}
-		// Echowire: forum tag/sort/reaction edits. New tags (no id) get a server-assigned snowflake;
-		// existing tags keep theirs. The discriminated-union `type` is Omit'd here, so narrow via a cast.
-		const forumData = guildChannelData as {
-			available_tags?: Array<{id?: string; name: string; emoji_name?: string | null; moderated?: boolean}> | null;
-			default_reaction_emoji?: {emoji_id?: string | null; emoji_name?: string | null} | null;
-			default_sort_order?: number | null;
-			default_auto_archive_duration?: number | null;
-			require_tag?: boolean;
-			default_forum_layout?: number | null;
-			default_thread_rate_limit_per_user?: number | null;
-		};
-		if (forumData.available_tags !== undefined) {
-			const tags = forumData.available_tags ?? [];
-			channelUpdateData.available_tags = await Promise.all(
-				tags.map(async (tag) => ({
-					id: tag.id ?? (await this.snowflakeService.generate()).toString(),
-					name: tag.name,
-					emoji_name: tag.emoji_name ?? null,
-					moderated: tag.moderated ?? false,
-				})),
-			);
-		}
-		if (forumData.default_reaction_emoji !== undefined) {
-			channelUpdateData.default_reaction_emoji = forumData.default_reaction_emoji
-				? {
-						emoji_id: forumData.default_reaction_emoji.emoji_id ?? null,
-						emoji_name: forumData.default_reaction_emoji.emoji_name ?? null,
-					}
-				: null;
-		}
-		if (forumData.default_sort_order !== undefined) {
-			channelUpdateData.default_sort_order = forumData.default_sort_order ?? null;
-		}
-		if (forumData.default_auto_archive_duration !== undefined) {
-			channelUpdateData.default_auto_archive_duration = forumData.default_auto_archive_duration ?? null;
-		}
-		if (forumData.require_tag !== undefined) {
-			channelUpdateData.require_tag = forumData.require_tag;
-		}
-		if (forumData.default_forum_layout !== undefined) {
-			channelUpdateData.default_forum_layout = forumData.default_forum_layout ?? null;
-		}
-		if (forumData.default_thread_rate_limit_per_user !== undefined) {
-			channelUpdateData.default_thread_rate_limit_per_user = forumData.default_thread_rate_limit_per_user ?? null;
-		}
 		return this.operations.editChannel({
 			userId,
+			viewer,
 			channelId,
 			data: channelUpdateData,
+			threadParent: pickThreadParentSettings(channel.type, guildChannelData),
 			clientFeatures,
 			requestCache,
 			auditLogReason,

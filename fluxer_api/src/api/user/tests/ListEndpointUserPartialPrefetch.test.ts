@@ -93,23 +93,6 @@ function createPrivateChannel(channelId: ChannelID, type: number, recipientIds: 
 		soft_deleted: false,
 		indexed_at: null,
 		version: 1,
-		thread_archived: null,
-		thread_auto_archive_duration: null,
-		thread_archive_timestamp: null,
-		thread_locked: null,
-		thread_invitable: null,
-		thread_create_timestamp: null,
-		thread_member_count: null,
-		thread_message_count: null,
-		thread_pinned: null,
-		available_tags: null,
-		applied_tags: null,
-		default_reaction_emoji: null,
-		default_sort_order: null,
-		forum_default_auto_archive_duration: null,
-		forum_require_tag: null,
-		default_forum_layout: null,
-		default_thread_rate_limit_per_user: null,
 	} satisfies ChannelRow);
 }
 

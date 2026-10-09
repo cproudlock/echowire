@@ -1,48 +1,35 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import Config from '@app/features/app/config/Config';
-import {PREMIUM_PRODUCT_FULL_NAME, PREMIUM_PRODUCT_NAME, PRODUCT_NAME} from '@app/features/app/config/ProductConstants';
+import {PRODUCT_NAME} from '@app/features/app/config/ProductConstants';
 import {formatAssetUploadExtensions, formatKnownAnimatedAssetExtensions} from '@fluxer/constants/src/AssetFormatPolicy';
 import {THE_OTHER_PLATFORM} from '@fluxer/constants/src/ExternalPlatformConstants';
 
-export {PREMIUM_PRODUCT_FULL_NAME, PREMIUM_PRODUCT_NAME, PRODUCT_NAME};
-export const PRODUCT_API_NAME = `${PRODUCT_NAME} API`;
-export const PRODUCT_HQ_COMMUNITY_NAME = `${PRODUCT_NAME} HQ`;
-export const CANARY_RELEASE_CHANNEL_NAME = `${PRODUCT_NAME} Canary`;
+export {PRODUCT_NAME};
 // Echowire: these name the app in the OS shortcut settings, so they must equal the desktop entry Name
 // (DESKTOP_APP_NAME in fluxer_desktop DesktopIdentity.ts), which is lowercase.
 export const DESKTOP_ENTRY_NAME = 'echowire';
 export const CANARY_DESKTOP_ENTRY_NAME = 'echowire canary';
-export const VOICE_PROVIDER_NAME = 'LiveKit';
 export const PAYMENT_PROVIDER_NAME = 'Stripe';
 export const BLUESKY_PROVIDER_NAME = 'Bluesky';
 export const APP_STORE_NAME = 'App Store';
 export const GOOGLE_PLAY_NAME = 'Google Play';
-export const MACOS_SYSTEM_SETTINGS_NAME = 'System Settings';
-export const MACOS_PRIVACY_AND_SECURITY_SETTINGS_NAME = 'Privacy & Security';
-export const MACOS_CAMERA_PERMISSION_NAME = 'Camera';
-export const MACOS_INPUT_MONITORING_PERMISSION_NAME = 'Input Monitoring';
-export const MACOS_MICROPHONE_PERMISSION_NAME = 'Microphone';
-export const MACOS_SCREEN_RECORDING_PERMISSION_NAME = 'Screen Recording';
 export const PIX_PAYMENT_METHOD = 'Pix';
 export const UPI_PAYMENT_METHOD = 'UPI';
-export const BLIK_PAYMENT_METHOD = 'BLIK';
-// Echowire: upstream's is support@fluxer.app. This matches the address the errors
+// Echowire: upstream's is support@fluxer.com. This matches the address the errors
 // package already answers at, so the app and the API agree on where to send people.
 export const SUPPORT_EMAIL = 'support@echowire.org';
 export const SUPPORT_EMAIL_MAILTO = `mailto:${SUPPORT_EMAIL}`;
-// Echowire: the Weblate constants and the i18n contact address are gone with the "help
-// translate" link they fed. This fork has no translation server; its catalogs are in-repo
-// and re-extracted during merges, so the link invited users to translate upstream's
-// product. I18N_EMAIL and its mailto had no consumer at all.
+// Echowire: the Weblate constants are gone with the "help translate" link they fed. This fork
+// has no translation server; its catalogs are in-repo and re-extracted during merges.
 export const EXAMPLE_DOMAIN = 'example.com';
 export const EXAMPLE_URL = `https://${EXAMPLE_DOMAIN}`;
 export const EXAMPLE_CALLBACK_URL = `${EXAMPLE_URL}/callback`;
 export const EXAMPLE_EMAIL = 'name@example.com';
 export const EXAMPLE_PERSONAL_EMAIL = 'marty@example.com';
-export const EXAMPLE_USERNAME_TAG = 'Username#0000';
 export const EXAMPLE_REPORT_EMAIL = 'you@example.com';
 export const EXAMPLE_REPORT_USER_TAG = 'username#1234';
+export const EXAMPLE_REPORT_USERNAME = 'username';
 export const EXAMPLE_INVITE_CODE = 'abcDEF12';
 export const EXAMPLE_VERIFICATION_CODE = 'ABCD-1234';
 export const EXAMPLE_FLUXER_TAG = 'Marty_McFly';
@@ -53,30 +40,22 @@ export const EXAMPLE_GENERAL_CHANNEL_NAME = 'general';
 export const EXAMPLE_USERNAME_MENTION = '@username';
 export const EXAMPLE_FLUXER_TAG_FULL = 'Username#0000';
 export const EXAMPLE_USERNAME = 'Username';
-export const FLUXER_TAG_LABEL = 'EchoTag';
 export const VISIONARY_LIFETIME_BADGE_LABEL = 'Visionary #42';
-export const FLUXER_TAG_MIN_WITH_ZERO_LABEL = '#0000';
-export const FLUXER_TAG_MIN_STANDARD_LABEL = '#0001';
-export const FLUXER_TAG_MAX_LABEL = '#9999';
-// Echowire: a cosmetic example of how a link renders, in the accessibility tab and as
-// the report form's message-link placeholder. It showed upstream's domain to our users.
+// Echowire: a cosmetic example of how a link renders; upstream's showed its own domain.
 export const LINK_PREVIEW_EXAMPLE_URL = 'https://echowire.org';
-export const EXAMPLE_MESSAGE_LINK = `${LINK_PREVIEW_EXAMPLE_URL}/channels/...`;
 export const EXAMPLE_GIF_URLS = `${EXAMPLE_URL}/gif1.gif\n${EXAMPLE_URL}/gif2.gif`;
 export const THE_OTHER_PLATFORM_TEMPLATE_EXAMPLE_URL = `https://${THE_OTHER_PLATFORM.toLowerCase()}.new/abcd1234`;
+const DESKTOP_DOWNLOAD_URLS: Record<string, string> = {
+	stable: 'https://echowire.org/download',
+	canary: 'https://canary.echowire.org/download',
+	development: 'http://localhost:8088/download',
+};
+
 export const DESKTOP_DOWNLOAD_URL =
-	Config.PUBLIC_RELEASE_CHANNEL === 'canary' ? 'https://canary.echowire.org/download' : 'https://echowire.org/download';
-// Echowire: the docs constants are gone with the applications tab's "read the
-// documentation" link. This fork vendors fluxer_docs but does not deploy it, so the link
-// pointed at upstream's site. Restoring it is these two constants and the <a> in
-// applications_tab/index.tsx, which is worth knowing because deploying the docs is a real
-// possibility rather than a hypothetical.
-// Echowire: the handle shown on the startup failure screen, beside a link to
-// ExternalUrls.BLUESKY. That URL is already https://bsky.app/profile/echowire.org, so the
-// link went to our account while the text named upstream's. A Bluesky profile URL is its
-// handle, so this is derived from the URL rather than invented.
+	DESKTOP_DOWNLOAD_URLS[Config.PUBLIC_RELEASE_CHANNEL] ?? DESKTOP_DOWNLOAD_URLS.stable;
+// Echowire: the docs constants are gone with the applications tab's "read the documentation" link
+// (this fork does not deploy fluxer_docs). The Bluesky handle matches ExternalUrls.BLUESKY.
 export const FLUXER_BLUESKY_HANDLE = '@echowire.org';
-// Echowire: SPLASH_IRC_SERVER deleted. It named upstream's IRC host and had no consumer.
 export const YOUTUBE_PROVIDER_NAME = 'YouTube';
 export const EVERYONE_MENTION = '@everyone';
 export const HERE_MENTION = '@here';
@@ -91,19 +70,13 @@ export const ANIMATED_BANNER_FEATURE = 'ANIMATED_BANNER';
 export const STATIC_IMAGE_FORMATS = formatAssetUploadExtensions('avatar', {animatedAllowed: false});
 export const STATIC_IMAGE_WITH_AVIF_FORMATS = formatAssetUploadExtensions('splash');
 export const ANIMATED_IMAGE_FORMATS = formatAssetUploadExtensions('avatar');
-export const BACKGROUND_MEDIA_FORMATS = 'JPG, PNG, GIF, WebP, MP4, WebM';
 export const ANIMATED_AVATAR_FORMATS = formatKnownAnimatedAssetExtensions('avatar');
 export const AVIF_FORMAT_LABEL = 'AVIF';
-export const CUSTOM_SOUND_FORMATS = 'MP3, WAV, OGG, M4A, AAC, FLAC, Opus, WebM';
 export const IMAGE_MAX_SIZE_BYTES = 10 * 1024 * 1024;
 export const BACKGROUND_MEDIA_MAX_SIZE_BYTES = 10 * 1024 * 1024;
 export const CUSTOM_SOUND_MAX_SIZE_BYTES = 2 * 1024 * 1024;
-export const CUSTOM_SOUND_MAX_DURATION_LABEL = '5.2 seconds';
 export const AVATAR_RECOMMENDED_SIZE_LABEL = '512×512px';
 export const BANNER_MINIMUM_SIZE_LABEL = '680×240px';
 export const BANNER_ASPECT_RATIO_LABEL = '17:6';
 export const WIDE_IMAGE_ASPECT_RATIO_LABEL = '16:9';
 export const MFA_CODE_DIGIT_COUNT = 6;
-export const FLUXER_TAG_DIGIT_COUNT = 4;
-export const ADULT_CONTENT_MINIMUM_AGE = 18;
-export const UNLIMITED_USER_LIMIT = 0;

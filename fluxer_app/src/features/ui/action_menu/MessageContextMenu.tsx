@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import Accessibility from '@app/features/accessibility/state/Accessibility';
-import * as ThreadCommands from '@app/features/channel/commands/ThreadCommands';
 import {messageActionMenuItemIds, useMessageActionMenuData} from '@app/features/channel/components/MessageActionMenu';
 import {getEffectiveContent, triggerAddReaction} from '@app/features/channel/components/MessageActionUtils';
 import {
@@ -11,10 +10,6 @@ import {
 	useReactionSubmenuEmojiSrc,
 } from '@app/features/channel/components/QuickReactionsRow';
 import type {Channel} from '@app/features/channel/models/Channel';
-import Channels from '@app/features/channel/state/Channels';
-import ForumPostPreviews from '@app/features/channel/state/ForumPostPreviews';
-import {canAddToPost} from '@app/features/channel/utils/ForumPaneUtils';
-import {canModerateThreads} from '@app/features/channel/utils/ThreadActions';
 import EmojiPicker from '@app/features/emoji/state/EmojiPicker';
 import type {FlatEmoji} from '@app/features/emoji/types/EmojiTypes';
 import {
@@ -51,12 +46,10 @@ import {CTRL_DESCRIPTOR} from '@app/features/ui/keybind_hint/KeybindHint';
 import type {MenuGroupType, MenuItemType} from '@app/features/ui/menu_bottom_sheet/MenuBottomSheet';
 import {Tooltip} from '@app/features/ui/tooltip/Tooltip';
 import {openExternalUrl} from '@app/features/ui/utils/NativeUtils';
-import Users from '@app/features/user/state/Users';
 import {ContextMenu as BaseContextMenu} from '@base-ui/react/context-menu';
 import type {MessageReaction} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
-import {ImageIcon} from '@phosphor-icons/react';
 import {observer} from 'mobx-react-lite';
 import type React from 'react';
 import {useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
@@ -109,11 +102,6 @@ const getSelectionSnapshot = (normalizeText?: (range: Range, fallbackText: strin
 		return {text, range: null};
 	}
 };
-
-const ADD_TO_POST_DESCRIPTOR = msg({
-	message: 'Add to Post',
-	comment: 'Action on your own reply that appends its image to the forum post you started.',
-});
 
 interface MessageContextMenuProps {
 	message: Message;
@@ -202,7 +190,7 @@ const RemoveReactionsSubmenu = observer(({reactions, channelId, messageId}: Remo
 
 RemoveReactionsSubmenu.displayName = 'RemoveReactionsSubmenu';
 
-export const AddReactionSubmenuItem = observer(
+const AddReactionSubmenuItem = observer(
 	({emoji, onSelect}: {emoji: FlatEmoji; onSelect: (emoji: FlatEmoji) => void}) => {
 		const reactionEmoji = useMemo(() => toReactionEmoji(emoji), [emoji]);
 		const emojiUrl = useReactionSubmenuEmojiSrc(emoji);
@@ -315,27 +303,6 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = observer(
 	}) => {
 		const {i18n} = useLingui();
 		const closeMenu = useContextMenuClose();
-		// Echowire: "Add to Post" appends this message's image to the post's starter message, where it
-		// becomes the card thumbnail (forums phase 2 contract, section 2).
-		const addToPostAttachmentId = (() => {
-			const post = Channels.getChannel(message.channelId);
-			const parent = post?.parentId ? Channels.getChannel(post.parentId) : undefined;
-			const image = message.attachments?.find((attachment) => attachment.content_type?.startsWith('image/'));
-			const preview = ForumPostPreviews.get(message.channelId);
-			const eligible = canAddToPost({
-				post,
-				parentIsForum: parent?.isForum() === true,
-				currentUserId: Users.currentUserId,
-				hasImageAttachment: image != null,
-				postAlreadyHasMedia: preview?.firstAttachment != null,
-				isStarterMessage: (preview?.messageId ?? post?.id) === message.id,
-				canManage: canModerateThreads({
-					channelId: post?.parentId ?? message.channelId,
-					guildId: message.guildId ?? undefined,
-				}),
-			});
-			return eligible ? (image?.id ?? null) : null;
-		})();
 		const getMessagePlaintext = useCallback(
 			(messageId: string): string | null => {
 				const selectedMessage =
@@ -529,6 +496,7 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = observer(
 		const editItem = itemById.get(ids.edit);
 		const replyItem = itemById.get(ids.reply);
 		const forwardItem = itemById.get(ids.forward);
+		const createThreadItem = itemById.get(ids.createThread);
 		const crosspostItem = itemById.get(ids.crosspost);
 		const copyMessageItem = itemById.get(ids.copyMessage);
 		const pinMessageItem = itemById.get(ids.pinMessage);
@@ -611,15 +579,14 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = observer(
 				</MenuGroup>
 			);
 		};
-		const createThreadItem = itemById.get(ids.createThread);
 		const renderInteractionGroup = () => {
 			if (!editItem && !replyItem && !forwardItem && !createThreadItem && !crosspostItem) return null;
 			return (
 				<MenuGroup data-flx="ui.action-menu.message-context-menu.render-interaction-group.menu-group">
 					{editItem && renderDataMenuItem(editItem, 'edit')}
 					{replyItem && renderDataMenuItem(replyItem, 'reply')}
-					{createThreadItem && renderDataMenuItem(createThreadItem, 'create-thread')}
 					{forwardItem && renderDataMenuItem(forwardItem, 'forward')}
+					{createThreadItem && renderDataMenuItem(createThreadItem, 'create-thread')}
 					{crosspostItem && renderDataMenuItem(crosspostItem, 'crosspost')}
 				</MenuGroup>
 			);
@@ -636,23 +603,6 @@ export const MessageContextMenu: React.FC<MessageContextMenuProps> = observer(
 			return (
 				<MenuGroup data-flx="ui.action-menu.message-context-menu.render-utility-group.menu-group">
 					{renderCopyTextItem()}
-					{addToPostAttachmentId && (
-						<MenuItem
-							key="add-to-post"
-							icon={<ImageIcon size={20} />}
-							onClick={() => {
-								onClose();
-								void ThreadCommands.addAttachmentToStarterMessage(
-									message.channelId,
-									message.id,
-									addToPostAttachmentId,
-								).catch(() => {});
-							}}
-							data-flx="ui.action-menu.message-context-menu.add-to-post"
-						>
-							{i18n._(ADD_TO_POST_DESCRIPTOR)}
-						</MenuItem>
-					)}
 					{pinMessageItem && renderDataMenuItem(pinMessageItem, 'pin-message')}
 					{bookmarkMessageItem && renderDataMenuItem(bookmarkMessageItem, 'bookmark-message')}
 					{markUnreadItem && renderDataMenuItem(markUnreadItem, 'mark-unread')}

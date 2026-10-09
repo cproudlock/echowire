@@ -4,28 +4,18 @@ import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import {noteText} from '@app/features/theme/fonts/ScriptFontLoader';
 import UserPinnedDM from '@app/features/user/state/UserPinnedDM';
 import Users from '@app/features/user/state/Users';
-import {
-	ChannelTypes,
-	GUILD_TEXT_BASED_CHANNEL_TYPES,
-	Permissions,
-	THREAD_CHANNEL_TYPES,
-} from '@fluxer/constants/src/ChannelConstants';
+import {ChannelTypes, GUILD_TEXT_BASED_CHANNEL_TYPES, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT} from '@fluxer/constants/src/LimitConstants';
+import {THREAD_CHANNEL_TYPES, THREAD_ONLY_CHANNEL_TYPES} from '@fluxer/constants/src/ThreadConstants';
 import type {ChannelOverwrite, Channel as WireChannel} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {
+	DefaultReactionEmojiResponse,
+	ForumTagResponse,
+	ThreadMemberResponse,
+	ThreadMetadataResponse,
+} from '@fluxer/schema/src/domains/channel/ThreadSchemas';
 import type {UserPartial} from '@fluxer/schema/src/domains/user/UserResponseSchemas';
 import * as SnowflakeUtils from '@fluxer/snowflake/src/SnowflakeUtils';
-
-// Echowire: forum fields added by the forums server contract that the shared schema does not declare yet.
-type ForumWireExtras = {
-	default_forum_layout?: number | null;
-	default_thread_rate_limit_per_user?: number | null;
-	// Echowire: moderated tags. A server that supports them reports the field on every tag, false
-	// included, which is how the client tells support apart from "no moderated tags here".
-	available_tags?: ReadonlyArray<{id: string; name: string; emoji_name: string | null; moderated?: boolean}>;
-	// Echowire: the last few distinct message authors in a thread, most recent first, for the
-	// participant avatar row on a forum post card (forums phase 2 contract, section 3).
-	recent_participant_ids?: ReadonlyArray<string> | null;
-};
 
 export class ChannelOverwriteRecord {
 	readonly id: string;
@@ -67,6 +57,71 @@ interface ChannelRecordOptions {
 	instanceId?: string;
 }
 
+export interface ThreadChannelFields {
+	readonly flags?: number;
+	readonly thread_metadata?: ThreadMetadataResponse;
+	readonly applied_tags?: ReadonlyArray<string>;
+	readonly message_count?: number;
+	readonly total_message_sent?: number;
+	readonly member_count?: number;
+	// Echowire: read by the participant avatars on forum post cards.
+	readonly member_ids_preview?: ReadonlyArray<string>;
+	readonly default_auto_archive_duration?: number | null;
+	readonly default_thread_rate_limit_per_user?: number;
+	readonly available_tags?: ReadonlyArray<ForumTagResponse>;
+	readonly default_reaction_emoji?: DefaultReactionEmojiResponse | null;
+	readonly default_sort_order?: number | null;
+	readonly default_forum_layout?: number;
+	readonly default_tag_setting?: 'match_some' | 'match_all';
+}
+
+export interface ChannelWire extends WireChannel, ThreadChannelFields {
+	readonly member?: ThreadMemberResponse;
+	readonly newly_created?: boolean;
+}
+
+const THREAD_FIELD_KEYS: ReadonlyArray<keyof ThreadChannelFields> = [
+	'flags',
+	'thread_metadata',
+	'applied_tags',
+	'message_count',
+	'total_message_sent',
+	'member_count',
+	'member_ids_preview',
+	'default_auto_archive_duration',
+	'default_thread_rate_limit_per_user',
+	'available_tags',
+	'default_reaction_emoji',
+	'default_sort_order',
+	'default_forum_layout',
+	'default_tag_setting',
+];
+
+function pickThreadFields(source: ThreadChannelFields, base?: ThreadChannelFields | null): ThreadChannelFields | null {
+	let picked: Record<string, unknown> | null = base ? {...base} : null;
+	for (const key of THREAD_FIELD_KEYS) {
+		const value = source[key];
+		if (value !== undefined) {
+			picked ??= {};
+			picked[key] = value;
+		}
+	}
+	return picked as ThreadChannelFields | null;
+}
+
+function threadFieldsEqual(a: ThreadChannelFields | null, b: ThreadChannelFields | null): boolean {
+	if (a === b) return true;
+	if (a == null || b == null) return false;
+	for (const key of THREAD_FIELD_KEYS) {
+		const left = a[key];
+		const right = b[key];
+		if (left === right) continue;
+		if (typeof left !== 'object' || typeof right !== 'object' || left == null || right == null) return false;
+		if (JSON.stringify(left) !== JSON.stringify(right)) return false;
+	}
+	return true;
+}
+
 function getRecipientPartials(recipientIds: ReadonlyArray<string>): Array<UserPartial> {
 	return recipientIds
 		.map((id) => Users?.getUser(id)?.toJSON())
@@ -99,37 +154,9 @@ export class Channel {
 	readonly contentWarningText: string | null;
 	readonly rateLimitPerUser: number;
 	readonly nicks: Readonly<Record<string, string>>;
-	// Echowire: thread state (non-null only for thread channels).
-	readonly threadMetadata: {
-		readonly archived: boolean;
-		readonly autoArchiveDuration: number;
-		readonly archiveTimestamp: Date | null;
-		readonly locked: boolean;
-		readonly invitable: boolean;
-	} | null;
-	readonly memberCount: number | null;
-	readonly messageCount: number | null;
-	// Echowire forum fields. availableTags/defaultReactionEmoji/defaultSortOrder: forum channels.
-	// appliedTags: forum posts (threads).
-	readonly availableTags: ReadonlyArray<{
-		readonly id: string;
-		readonly name: string;
-		readonly emojiName: string | null;
-		// null when the server did not report it, meaning moderated tags are unsupported.
-		readonly moderated: boolean | null;
-	}>;
-	readonly appliedTags: ReadonlyArray<string>;
-	readonly defaultReactionEmoji: {readonly emojiId: string | null; readonly emojiName: string | null} | null;
-	readonly defaultSortOrder: number | null;
-	readonly defaultForumLayout: number | null;
-	readonly defaultThreadRateLimitPerUser: number | null;
-	readonly forumDefaultAutoArchiveDuration: number | null;
-	readonly forumRequireTag: boolean;
-	// Up to five recent authors, most recent first. Empty when the server does not report them.
-	readonly recentParticipantIds: ReadonlyArray<string>;
-	readonly pinned: boolean;
+	readonly threadFields: ThreadChannelFields | null;
 
-	constructor(channel: WireChannel, options?: ChannelRecordOptions) {
+	constructor(channel: ChannelWire, options?: ChannelRecordOptions) {
 		this.instanceId = options?.instanceId ?? RuntimeConfig.localInstanceDomain;
 		this.id = channel.id;
 		this.guildId = channel.guild_id;
@@ -156,37 +183,7 @@ export class Channel {
 		this.contentWarningText = channel.content_warning_text ?? null;
 		this.rateLimitPerUser = channel.rate_limit_per_user ?? 0;
 		this.nicks = channel.nicks ?? {};
-		this.threadMetadata = channel.thread_metadata
-			? {
-					archived: channel.thread_metadata.archived,
-					autoArchiveDuration: channel.thread_metadata.auto_archive_duration,
-					archiveTimestamp: channel.thread_metadata.archive_timestamp
-						? new Date(channel.thread_metadata.archive_timestamp)
-						: null,
-					locked: channel.thread_metadata.locked ?? false,
-					invitable: channel.thread_metadata.invitable ?? false,
-				}
-			: null;
-		this.memberCount = channel.member_count ?? null;
-		this.messageCount = channel.message_count ?? null;
-		this.availableTags = ((channel as WireChannel & ForumWireExtras).available_tags ?? []).map((tag) => ({
-			id: tag.id,
-			name: tag.name,
-			emojiName: tag.emoji_name,
-			moderated: 'moderated' in tag ? ((tag.moderated as boolean | undefined) ?? false) : null,
-		}));
-		this.appliedTags = channel.applied_tags ?? [];
-		this.defaultReactionEmoji = channel.default_reaction_emoji
-			? {emojiId: channel.default_reaction_emoji.emoji_id, emojiName: channel.default_reaction_emoji.emoji_name}
-			: null;
-		this.defaultSortOrder = channel.default_sort_order ?? null;
-		const forumExtras = channel as WireChannel & ForumWireExtras;
-		this.defaultForumLayout = forumExtras.default_forum_layout ?? null;
-		this.defaultThreadRateLimitPerUser = forumExtras.default_thread_rate_limit_per_user ?? null;
-		this.forumDefaultAutoArchiveDuration = channel.default_auto_archive_duration ?? null;
-		this.forumRequireTag = channel.require_tag ?? false;
-		this.recentParticipantIds = forumExtras.recent_participant_ids ?? [];
-		this.pinned = channel.pinned ?? false;
+		this.threadFields = pickThreadFields(channel);
 		if ((this.type === ChannelTypes.DM || this.type === ChannelTypes.GROUP_DM) && channel.recipients) {
 			Users?.cacheUsers(Array.from(channel.recipients));
 		}
@@ -225,14 +222,6 @@ export class Channel {
 		return this.type === ChannelTypes.DM;
 	}
 
-	isThread(): boolean {
-		return THREAD_CHANNEL_TYPES.has(this.type);
-	}
-
-	isForum(): boolean {
-		return this.type === ChannelTypes.GUILD_FORUM;
-	}
-
 	isGroupDM(): boolean {
 		return this.type === ChannelTypes.GROUP_DM;
 	}
@@ -269,6 +258,67 @@ export class Channel {
 		return this.nsfw;
 	}
 
+	isThread(): boolean {
+		return THREAD_CHANNEL_TYPES.has(this.type);
+	}
+
+	isPrivateThread(): boolean {
+		return this.type === ChannelTypes.PRIVATE_THREAD;
+	}
+
+	isThreadOnly(): boolean {
+		return THREAD_ONLY_CHANNEL_TYPES.has(this.type);
+	}
+
+	get flags(): number {
+		return this.threadFields?.flags ?? 0;
+	}
+
+	get threadMetadata(): ThreadMetadataResponse | null {
+		return this.threadFields?.thread_metadata ?? null;
+	}
+
+	get isArchived(): boolean {
+		return this.threadFields?.thread_metadata?.archived ?? false;
+	}
+
+	get isLocked(): boolean {
+		return this.threadFields?.thread_metadata?.locked ?? false;
+	}
+
+	get messageCount(): number {
+		return this.threadFields?.message_count ?? 0;
+	}
+
+	get totalMessageSent(): number {
+		return this.threadFields?.total_message_sent ?? 0;
+	}
+
+	get memberCount(): number {
+		return this.threadFields?.member_count ?? 0;
+	}
+
+	// Echowire: most recently joined members of a forum post, newest first.
+	get memberIdsPreview(): ReadonlyArray<string> {
+		return this.threadFields?.member_ids_preview ?? [];
+	}
+
+	get appliedTags(): ReadonlyArray<string> {
+		return this.threadFields?.applied_tags ?? [];
+	}
+
+	get availableTags(): ReadonlyArray<ForumTagResponse> {
+		return this.threadFields?.available_tags ?? [];
+	}
+
+	get defaultAutoArchiveDuration(): number | null {
+		return this.threadFields?.default_auto_archive_duration ?? null;
+	}
+
+	get defaultThreadRateLimitPerUser(): number {
+		return this.threadFields?.default_thread_rate_limit_per_user ?? 0;
+	}
+
 	isRoleRequired(): boolean {
 		if (
 			this.guildId == null ||
@@ -293,7 +343,7 @@ export class Channel {
 		return new Date(SnowflakeUtils.extractTimestamp(this.id));
 	}
 
-	withUpdates(updates: Partial<WireChannel>): Channel {
+	withUpdates(updates: Partial<ChannelWire>): Channel {
 		let newRecipients: Array<UserPartial> = [];
 		if (
 			updates.type === ChannelTypes.DM_PERSONAL_NOTES ||
@@ -340,62 +390,8 @@ export class Channel {
 					updates.content_warning_text !== undefined ? updates.content_warning_text : this.contentWarningText,
 				rate_limit_per_user: updates.rate_limit_per_user ?? this.rateLimitPerUser,
 				nicks: updates.nicks ?? this.nicks,
-				// Echowire: preserve/merge thread state so THREAD_UPDATE events don't wipe it.
-				thread_metadata:
-					updates.thread_metadata !== undefined
-						? updates.thread_metadata
-						: this.threadMetadata
-							? {
-									archived: this.threadMetadata.archived,
-									auto_archive_duration: this.threadMetadata.autoArchiveDuration,
-									archive_timestamp: this.threadMetadata.archiveTimestamp?.toISOString() ?? null,
-									locked: this.threadMetadata.locked,
-									invitable: this.threadMetadata.invitable,
-								}
-							: null,
-				member_count: updates.member_count ?? this.memberCount ?? undefined,
-				message_count: updates.message_count ?? this.messageCount ?? undefined,
-				pinned: updates.pinned !== undefined ? updates.pinned : this.pinned,
-				// Echowire: preserve/merge forum state so partial channel updates don't wipe tags etc.
-				available_tags:
-					updates.available_tags !== undefined
-						? updates.available_tags
-						: this.availableTags.length > 0
-							? this.availableTags.map((tag) => ({
-									id: tag.id,
-									name: tag.name,
-									emoji_name: tag.emojiName,
-									...(tag.moderated == null ? {} : {moderated: tag.moderated}),
-								}))
-							: undefined,
-				applied_tags:
-					updates.applied_tags !== undefined
-						? updates.applied_tags
-						: this.appliedTags.length > 0
-							? [...this.appliedTags]
-							: undefined,
-				default_reaction_emoji:
-					updates.default_reaction_emoji !== undefined
-						? updates.default_reaction_emoji
-						: this.defaultReactionEmoji
-							? {emoji_id: this.defaultReactionEmoji.emojiId, emoji_name: this.defaultReactionEmoji.emojiName}
-							: null,
-				default_sort_order:
-					updates.default_sort_order !== undefined ? updates.default_sort_order : (this.defaultSortOrder ?? null),
-				default_auto_archive_duration:
-					updates.default_auto_archive_duration !== undefined
-						? updates.default_auto_archive_duration
-						: (this.forumDefaultAutoArchiveDuration ?? null),
-				require_tag: updates.require_tag !== undefined ? updates.require_tag : this.forumRequireTag,
-				default_forum_layout:
-					(updates as ForumWireExtras).default_forum_layout !== undefined
-						? (updates as ForumWireExtras).default_forum_layout
-						: this.defaultForumLayout,
-				default_thread_rate_limit_per_user:
-					(updates as ForumWireExtras).default_thread_rate_limit_per_user !== undefined
-						? (updates as ForumWireExtras).default_thread_rate_limit_per_user
-						: this.defaultThreadRateLimitPerUser,
-			} as WireChannel,
+				...pickThreadFields(updates, this.threadFields),
+			},
 			{instanceId: this.instanceId},
 		);
 	}
@@ -440,6 +436,7 @@ export class Channel {
 		if (this.contentWarningLevel !== other.contentWarningLevel) return false;
 		if (this.contentWarningText !== other.contentWarningText) return false;
 		if (this.rateLimitPerUser !== other.rateLimitPerUser) return false;
+		if (!threadFieldsEqual(this.threadFields, other.threadFields)) return false;
 		if (this.recipientIds.length !== other.recipientIds.length) return false;
 		for (let i = 0; i < this.recipientIds.length; i++) {
 			if (this.recipientIds[i] !== other.recipientIds[i]) return false;
@@ -453,42 +450,10 @@ export class Channel {
 				return false;
 			}
 		}
-		// Echowire: thread state must be part of identity equality, otherwise an
-		// archive/unarchive (which changes only thread_metadata) is treated as "equal"
-		// and the store skips the update — the UI then needs a hard refresh to reflect it.
-		if (this.threadMetadata?.archived !== other.threadMetadata?.archived) return false;
-		if (this.threadMetadata?.locked !== other.threadMetadata?.locked) return false;
-		if (this.threadMetadata?.autoArchiveDuration !== other.threadMetadata?.autoArchiveDuration) return false;
-		if (this.threadMetadata?.invitable !== other.threadMetadata?.invitable) return false;
-		if (this.threadMetadata?.archiveTimestamp?.getTime() !== other.threadMetadata?.archiveTimestamp?.getTime()) {
-			return false;
-		}
-		if (this.memberCount !== other.memberCount) return false;
-		if (this.messageCount !== other.messageCount) return false;
-		if (this.pinned !== other.pinned) return false;
-		if (this.forumDefaultAutoArchiveDuration !== other.forumDefaultAutoArchiveDuration) return false;
-		if (this.forumRequireTag !== other.forumRequireTag) return false;
-		// Echowire: forum tag/sort/reaction state — same live-update reasoning as thread state above.
-		if (this.defaultSortOrder !== other.defaultSortOrder) return false;
-		if (this.defaultForumLayout !== other.defaultForumLayout) return false;
-		if (this.defaultThreadRateLimitPerUser !== other.defaultThreadRateLimitPerUser) return false;
-		if (this.defaultReactionEmoji?.emojiId !== other.defaultReactionEmoji?.emojiId) return false;
-		if (this.defaultReactionEmoji?.emojiName !== other.defaultReactionEmoji?.emojiName) return false;
-		if (this.appliedTags.length !== other.appliedTags.length) return false;
-		for (let i = 0; i < this.appliedTags.length; i++) {
-			if (this.appliedTags[i] !== other.appliedTags[i]) return false;
-		}
-		if (this.availableTags.length !== other.availableTags.length) return false;
-		for (let i = 0; i < this.availableTags.length; i++) {
-			if (this.availableTags[i].id !== other.availableTags[i].id) return false;
-			if (this.availableTags[i].name !== other.availableTags[i].name) return false;
-			if (this.availableTags[i].emojiName !== other.availableTags[i].emojiName) return false;
-			if (this.availableTags[i].moderated !== other.availableTags[i].moderated) return false;
-		}
 		return true;
 	}
 
-	toJSON(): WireChannel {
+	toJSON(): ChannelWire {
 		return {
 			id: this.id,
 			guild_id: this.guildId,
@@ -517,23 +482,7 @@ export class Channel {
 			content_warning_text: this.contentWarningText,
 			rate_limit_per_user: this.rateLimitPerUser,
 			nicks: this.nicks,
-			available_tags:
-				this.availableTags.length > 0
-					? this.availableTags.map((tag) => ({
-							id: tag.id,
-							name: tag.name,
-							emoji_name: tag.emojiName,
-							...(tag.moderated == null ? {} : {moderated: tag.moderated}),
-						}))
-					: undefined,
-			applied_tags: this.appliedTags.length > 0 ? [...this.appliedTags] : undefined,
-			default_reaction_emoji: this.defaultReactionEmoji
-				? {emoji_id: this.defaultReactionEmoji.emojiId, emoji_name: this.defaultReactionEmoji.emojiName}
-				: null,
-			default_sort_order: this.defaultSortOrder,
-			default_auto_archive_duration: this.forumDefaultAutoArchiveDuration,
-			require_tag: this.forumRequireTag ? true : undefined,
-			pinned: this.pinned ? true : undefined,
+			...this.threadFields,
 		};
 	}
 }

@@ -41,12 +41,21 @@ function loadDeepLinks({platform = 'win32'} = {}) {
 			if (specifier === '@electron/common/Constants') {
 				return {APP_PROTOCOLS: ['echowire', 'fluxer']};
 			}
+			if (specifier === '@electron/main/DesktopUpdatePrompt') return {updateFromCommandLine: async () => {}};
+			if (specifier === '@electron/main/LaunchOptions') return {isDesktopUpdateRequested: () => false};
 			if (specifier === '@electron/main/JumpList') return {parseJumpListTaskFromArgv: () => null};
 			if (specifier === '@electron/main/RecentDocuments') return {recordRecentDeepLink: () => {}};
-			if (specifier === '@electron/main/Window') return {getMainWindow: () => mainWindow, showWindow: () => {}};
+			if (specifier === '@electron/main/Window') {
+				return {
+					getMainWindow: () => mainWindow,
+					isMainWindowTakenOver: () => false,
+					onMainWindowTakeoverEnded: () => {},
+					showWindow: () => {},
+				};
+			}
 			if (specifier === 'electron') {
 				return {
-					app: {setAsDefaultProtocolClient: (protocol) => registered.push(protocol)},
+					app: {isPackaged: true, setAsDefaultProtocolClient: (protocol) => registered.push(protocol)},
 					ipcMain: {handle: (channel, handler) => handlers.set(channel, handler)},
 				};
 			}

@@ -19,58 +19,6 @@ export interface PermissionOverwrite {
 	deny_: Nullish<bigint>;
 }
 
-// Echowire: forum channel tag (available_tags) + default reaction shapes.
-export interface ForumTag {
-	id: string;
-	name: string;
-	emoji_name: Nullish<string>;
-	// Echowire: a moderated tag may only be applied or removed by a member who can moderate
-	// threads. Tags stored before this field existed read as null, which means not moderated.
-	moderated: Nullish<boolean>;
-}
-export interface DefaultReactionEmoji {
-	emoji_id: Nullish<string>;
-	emoji_name: Nullish<string>;
-}
-
-// Echowire: thread and forum state lives on the channel row but is set only on threads, forum
-// posts and forums. The columns are optional here so a plain channel row literal never mentions
-// them, and `withChannelThreadDefaults` fills the missing ones with null at the single write
-// boundary in Tables.ts, which is what the full-row upsert DSL requires. See
-// docs/adr/0005-channel-thread-metadata-shape.md.
-const THREAD_METADATA_COLUMNS = [
-	'thread_archived',
-	'thread_auto_archive_duration',
-	'thread_archive_timestamp',
-	'thread_locked',
-	'thread_invitable',
-	'thread_create_timestamp',
-	'thread_member_count',
-	'thread_message_count',
-	'thread_recent_participant_ids',
-	'thread_pinned',
-	'available_tags',
-	'applied_tags',
-	'default_reaction_emoji',
-	'default_sort_order',
-	'forum_default_auto_archive_duration',
-	'forum_require_tag',
-	'default_forum_layout',
-	'default_thread_rate_limit_per_user',
-] as const satisfies ReadonlyArray<keyof ChannelRow>;
-
-type ThreadMetadataColumn = (typeof THREAD_METADATA_COLUMNS)[number];
-
-export function withChannelThreadDefaults(row: ChannelRow): ChannelRow {
-	const filled: ChannelRow = {...row};
-	for (const column of THREAD_METADATA_COLUMNS) {
-		if (filled[column] === undefined) {
-			(filled as Record<ThreadMetadataColumn, null>)[column] = null;
-		}
-	}
-	return filled;
-}
-
 export interface ChannelRow {
 	channel_id: ChannelID;
 	guild_id: Nullish<GuildID>;
@@ -95,33 +43,6 @@ export interface ChannelRow {
 	last_pin_timestamp: Nullish<Date>;
 	permission_overwrites: Nullish<Map<RoleID | UserID, PermissionOverwrite>>;
 	nicks: Nullish<Map<string, string>>;
-	// Echowire: thread fields (flat, like other Date/scalar columns so they round-trip through the KV layer).
-	// Present only when `type` is a thread; owner_id (above) is the thread creator. Optional: the write
-	// boundary fills the absent ones with null, so only thread sites name them.
-	thread_archived?: Nullish<boolean>;
-	thread_auto_archive_duration?: Nullish<number>;
-	thread_archive_timestamp?: Nullish<Date>;
-	thread_locked?: Nullish<boolean>;
-	thread_invitable?: Nullish<boolean>;
-	thread_create_timestamp?: Nullish<Date>;
-	thread_member_count?: Nullish<number>;
-	thread_message_count?: Nullish<number>;
-	// Echowire: the last few distinct message authors, most recent first, written in the same patch
-	// that advances last_message_id. A rolling window for participant avatars on forum cards, not a
-	// membership list and not a complete author list.
-	thread_recent_participant_ids?: Nullish<Array<string>>;
-	thread_pinned?: Nullish<boolean>;
-	// Echowire forum fields. available_tags/default_reaction_emoji/default_sort_order are set on
-	// GUILD_FORUM channels; applied_tags is set on threads (forum posts). Optional, as above.
-	available_tags?: Nullish<Array<ForumTag>>;
-	applied_tags?: Nullish<Array<string>>;
-	default_reaction_emoji?: Nullish<DefaultReactionEmoji>;
-	default_sort_order?: Nullish<number>;
-	forum_default_auto_archive_duration?: Nullish<number>;
-	forum_require_tag?: Nullish<boolean>;
-	// Echowire: forum list layout (0 not set, 1 list, 2 gallery) and the slowmode new posts inherit.
-	default_forum_layout?: Nullish<number>;
-	default_thread_rate_limit_per_user?: Nullish<number>;
 	soft_deleted: boolean;
 	indexed_at: Nullish<Date>;
 	version: number;
@@ -161,7 +82,7 @@ export interface WebhooksBySourceChannelRow {
 	guild_id: GuildID;
 }
 
-export type CrosspostedMessageState = 'pending' | 'delivered';
+type CrosspostedMessageState = 'pending' | 'delivered';
 
 export interface CrosspostedMessageRow {
 	source_message_id: MessageID;
@@ -211,6 +132,8 @@ export interface ReadStateRow {
 	message_id: Nullish<MessageID>;
 	mention_count: number;
 	last_pin_timestamp: Nullish<Date>;
+	flags?: Nullish<number>;
+	guild_id?: Nullish<GuildID>;
 }
 
 export const CHANNEL_COLUMNS = [
@@ -237,24 +160,6 @@ export const CHANNEL_COLUMNS = [
 	'last_pin_timestamp',
 	'permission_overwrites',
 	'nicks',
-	'thread_archived',
-	'thread_auto_archive_duration',
-	'thread_archive_timestamp',
-	'thread_locked',
-	'thread_invitable',
-	'thread_create_timestamp',
-	'thread_member_count',
-	'thread_message_count',
-	'thread_recent_participant_ids',
-	'thread_pinned',
-	'available_tags',
-	'applied_tags',
-	'default_reaction_emoji',
-	'default_sort_order',
-	'forum_default_auto_archive_duration',
-	'forum_require_tag',
-	'default_forum_layout',
-	'default_thread_rate_limit_per_user',
 	'soft_deleted',
 	'indexed_at',
 	'version',
@@ -321,6 +226,8 @@ export const READ_STATE_COLUMNS = [
 	'message_id',
 	'mention_count',
 	'last_pin_timestamp',
+	'flags',
+	'guild_id',
 ] as const satisfies ReadonlyArray<keyof ReadStateRow>;
 export const PRIVATE_CHANNEL_COLUMNS = [
 	'user_id',

@@ -4,14 +4,13 @@ import {PurchaseDisclaimer} from '@app/features/app/components/dialogs/component
 import {useCheckoutActions} from '@app/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions';
 import {usePremiumData} from '@app/features/app/components/dialogs/components/plutonium/hooks/usePremiumData';
 import * as Modal from '@app/features/app/components/dialogs/Modal';
-import {PREMIUM_PRODUCT_NAME} from '@app/features/app/config/I18nDisplayConstants';
 import GeoIP from '@app/features/app/state/GeoIP';
 import {CANCEL_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import * as PremiumCommands from '@app/features/premium/commands/PremiumCommands';
 import styles from '@app/features/premium/components/modals/GiftPlutoniumModal.module.css';
 import PremiumState from '@app/features/premium/state/PremiumState';
 import {BUY_GIFT_DESCRIPTOR, GIFT_PREMIUM_DESCRIPTOR} from '@app/features/premium/utils/PremiumMessageDescriptors';
-import {areGiftPurchasesAvailable} from '@app/features/premium/utils/PremiumUtils';
+import {areGiftPurchasesAvailable, getPremiumProductName} from '@app/features/premium/utils/PremiumUtils';
 import {Button} from '@app/features/ui/button/Button';
 import * as ModalCommands from '@app/features/ui/commands/ModalCommands';
 import {RadioGroup, type RadioOption} from '@app/features/ui/radio_group/RadioGroup';
@@ -71,7 +70,7 @@ export const GiftPlutoniumModal = observer(() => {
 	const premiumState = PremiumState.loadedForUserId === currentUser?.id ? PremiumState.state : null;
 	const countryCode = GeoIP.countryCode;
 	const {priceIds, giftMonthlyPrice, giftYearlyPrice} = usePremiumData({premiumState});
-	const {loadingCheckout, handleSelectPlan} = useCheckoutActions(priceIds, countryCode, false, MobileLayout.enabled);
+	const {loadingCheckout, handleSelectPlan} = useCheckoutActions(priceIds, countryCode, MobileLayout.enabled);
 	const [plan, setPlan] = useState<GiftPlan>('gift_1_year');
 	useEffect(() => {
 		if (!currentUser?.id) return;
@@ -95,7 +94,7 @@ export const GiftPlutoniumModal = observer(() => {
 		],
 		[giftMonthlyPrice, giftYearlyPrice, i18n],
 	);
-	const title = i18n._(GIFT_PREMIUM_DESCRIPTOR, {premiumProductName: PREMIUM_PRODUCT_NAME});
+	const title = i18n._(GIFT_PREMIUM_DESCRIPTOR, {premiumProductName: getPremiumProductName()});
 	return (
 		<Modal.Root size="small" centered data-flx="premium.gift-plutonium-modal.modal-root">
 			<Modal.Header title={title} data-flx="premium.gift-plutonium-modal.modal-header" />
@@ -114,15 +113,20 @@ export const GiftPlutoniumModal = observer(() => {
 								aria-label={i18n._(GIFT_PLAN_LABEL_DESCRIPTOR)}
 								renderContent={(option) => (
 									<div className={styles.option} data-flx="premium.gift-plutonium-modal.option">
-										<span className={styles.optionName}>
-											<span>{option.name}</span>
+										<span className={styles.optionName} data-flx="premium.gift-plutonium-modal.option-name">
+											<span data-flx="premium.gift-plutonium-modal.span">{option.name}</span>
 											{option.value === 'gift_1_year' && percent != null && (
-												<span className={styles.badge}>{i18n._(SAVE_PERCENT_DESCRIPTOR, {percent})}</span>
+												<span className={styles.badge} data-flx="premium.gift-plutonium-modal.badge">
+													{i18n._(SAVE_PERCENT_DESCRIPTOR, {percent})}
+												</span>
 											)}
 										</span>
-										<span className={styles.optionPrice}>{option.desc}</span>
+										<span className={styles.optionPrice} data-flx="premium.gift-plutonium-modal.option-price">
+											{option.desc}
+										</span>
 									</div>
 								)}
+								data-flx="premium.gift-plutonium-modal.radio-group.set-plan"
 							/>
 							{blockedNote && (
 								<p className={styles.note} role="note" data-flx="premium.gift-plutonium-modal.blocked-note">

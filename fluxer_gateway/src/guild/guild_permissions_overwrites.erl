@@ -28,10 +28,6 @@
 -type guild_state() :: map().
 -type maybe_channel_id() :: integer() | undefined.
 
-%% Echowire: thread channel types. Threads and forum posts carry no overwrites of their own.
--define(CHANNEL_TYPE_PUBLIC_THREAD, 11).
--define(CHANNEL_TYPE_PRIVATE_THREAD, 12).
-
 -spec apply_channel_overwrites(
     permission(), user_id() | undefined, member_roles(), channel(), role_id()
 ) -> permission().
@@ -68,105 +64,6 @@ maybe_apply_channel_overwrites(Permissions, _UserId, _MemberRoles, undefined, _G
 maybe_apply_channel_overwrites(Permissions, UserId, MemberRoles, ChannelId, GuildId, State) when
     is_integer(ChannelId)
 ->
-    %% Echowire: a thread resolves against its parent channel's overwrites, and a private thread
-    %% loses VIEW_CHANNEL for anyone who is neither one of its members nor holds MANAGE_CHANNELS on
-    %% the parent. The API applies the same rules (ThreadAccess.ts). Member ids arrive on the
-    %% thread's channel map as thread_member_ids and are kept current by THREAD_MEMBERS_UPDATE.
-    case thread_parent(ChannelId, State) of
-        {thread, ThreadType, ParentId, MemberIds} ->
-            ParentPerms = apply_non_thread_overwrites(
-                Permissions, UserId, MemberRoles, ParentId, GuildId, State
-            ),
-            restrict_thread_permissions(ThreadType, ParentPerms, UserId, MemberIds);
-        orphan_thread ->
-            permission_bits:remove(Permissions, constants:view_channel_permission());
-        not_thread ->
-            apply_non_thread_overwrites(
-                Permissions, UserId, MemberRoles, ChannelId, GuildId, State
-            )
-    end;
-maybe_apply_channel_overwrites(
-    Permissions, _UserId, _MemberRoles, _ChannelId, _GuildId, _State
-) ->
-    Permissions.
-
--spec thread_parent(integer(), guild_state()) ->
-    {thread, integer(), integer(), [term()]} | orphan_thread | not_thread.
-thread_parent(ChannelId, State) ->
-    case guild_permissions_check:find_channel_by_id(ChannelId, State) of
-        Channel when is_map(Channel) -> require_indexed_parent(classify_thread(Channel), State);
-        _ -> not_thread
-    end.
-
-%% Echowire: a thread whose parent channel is no longer indexed (deleted) has nothing to resolve
-%% its permissions against. Treat it as an orphan, which is not viewable, rather than letting the
-%% unknown parent fall back to guild-level permissions.
--spec require_indexed_parent(
-    {thread, integer(), integer(), [term()]} | orphan_thread | not_thread, guild_state()
-) -> {thread, integer(), integer(), [term()]} | orphan_thread | not_thread.
-require_indexed_parent({thread, _Type, ParentId, _MemberIds} = Thread, State) ->
-    case guild_permissions_check:find_channel_by_id(ParentId, State) of
-        Parent when is_map(Parent) -> Thread;
-        _ -> orphan_thread
-    end;
-require_indexed_parent(Other, _State) ->
-    Other.
-
--spec classify_thread(channel()) ->
-    {thread, integer(), integer(), [term()]} | orphan_thread | not_thread.
-classify_thread(Channel) ->
-    case channel_type(Channel) of
-        Type when Type =:= ?CHANNEL_TYPE_PUBLIC_THREAD; Type =:= ?CHANNEL_TYPE_PRIVATE_THREAD ->
-            case snowflake_id:parse_maybe(maps:get(<<"parent_id">>, Channel, undefined)) of
-                ParentId when is_integer(ParentId) ->
-                    {thread, Type, ParentId, thread_member_ids(Channel)};
-                _ ->
-                    orphan_thread
-            end;
-        _ ->
-            not_thread
-    end.
-
--spec channel_type(channel()) -> integer() | undefined.
-channel_type(Channel) ->
-    case maps:get(<<"type">>, Channel, undefined) of
-        Type when is_integer(Type) -> Type;
-        Type when is_binary(Type) ->
-            try binary_to_integer(Type) of
-                Int -> Int
-            catch
-                error:badarg -> undefined
-            end;
-        _ ->
-            undefined
-    end.
-
--spec thread_member_ids(channel()) -> [term()].
-thread_member_ids(Channel) ->
-    case maps:get(<<"thread_member_ids">>, Channel, []) of
-        Ids when is_list(Ids) -> Ids;
-        _ -> []
-    end.
-
--spec restrict_thread_permissions(integer(), permission(), user_id() | undefined, [term()]) ->
-    permission().
-restrict_thread_permissions(?CHANNEL_TYPE_PRIVATE_THREAD, Perms, UserId, MemberIds) ->
-    IsManager =
-        permission_bits:has(Perms, constants:manage_threads_permission()) orelse
-            permission_bits:has(Perms, constants:manage_channels_permission()),
-    IsMember =
-        is_integer(UserId) andalso UserId > 0 andalso snowflake_id:member(UserId, MemberIds),
-    case IsManager orelse IsMember of
-        true -> Perms;
-        false -> permission_bits:remove(Perms, constants:view_channel_permission())
-    end;
-restrict_thread_permissions(_Type, Perms, _UserId, _MemberIds) ->
-    Perms.
-
--spec apply_non_thread_overwrites(
-    permission(), user_id(), member_roles(), integer(), role_id(), guild_state()
-) -> permission().
-apply_non_thread_overwrites(Permissions, UserId, MemberRoles, ChannelId, GuildId, State) ->
     Data = guild_permissions_common:resolve_data_map(State),
     OverwriteCache = overwrite_cache_from_data(Data),
     case maps:get(ChannelId, OverwriteCache, undefined) of
@@ -176,15 +73,26 @@ apply_non_thread_overwrites(Permissions, UserId, MemberRoles, ChannelId, GuildId
             apply_from_channel_lookup(
                 Permissions, UserId, MemberRoles, ChannelId, GuildId, State
             )
-    end.
+    end;
+maybe_apply_channel_overwrites(
+    Permissions, _UserId, _MemberRoles, _ChannelId, _GuildId, _State
+) ->
+    Permissions.
 
 -spec apply_from_channel_lookup(
     permission(), user_id(), member_roles(), integer(), role_id(), guild_state()
 ) -> permission().
 apply_from_channel_lookup(Permissions, UserId, MemberRoles, ChannelId, GuildId, State) ->
     case guild_permissions_check:find_channel_by_id(ChannelId, State) of
-        undefined -> Permissions;
+        undefined -> unknown_channel_permissions(Permissions, State);
         Channel -> apply_channel_overwrites(Permissions, UserId, MemberRoles, Channel, GuildId)
+    end.
+
+-spec unknown_channel_permissions(permission(), guild_state()) -> permission().
+unknown_channel_permissions(Permissions, State) ->
+    case guild_thread_gate:active(State) of
+        true -> 0;
+        false -> Permissions
     end.
 
 -spec overwrite_cache_from_data(map() | undefined) -> map().
@@ -420,214 +328,5 @@ cached_overwrites_matches_uncached_test() ->
     CachedOWs = maps:get(10, OverwriteCache),
     Cached = apply_cached_overwrites(BasePerms, UserId, MemberRoles, CachedOWs, GuildId),
     ?assertEqual(Uncached, Cached).
-
-%% Echowire: thread permission resolution.
-
-thread_test_state() ->
-    View = constants:view_channel_permission(),
-    Parent = #{
-        <<"id">> => <<"10">>,
-        <<"type">> => 0,
-        <<"permission_overwrites">> => [
-            #{
-                <<"id">> => <<"5">>,
-                <<"type">> => 0,
-                <<"allow">> => <<"0">>,
-                <<"deny">> => integer_to_binary(View)
-            },
-            #{
-                <<"id">> => <<"9">>,
-                <<"type">> => 0,
-                <<"allow">> => integer_to_binary(View),
-                <<"deny">> => <<"0">>
-            }
-        ]
-    },
-    PublicThread = #{
-        <<"id">> => <<"20">>,
-        <<"type">> => 11,
-        <<"parent_id">> => <<"10">>,
-        <<"permission_overwrites">> => []
-    },
-    PrivateThread = #{
-        <<"id">> => <<"21">>,
-        <<"type">> => 12,
-        <<"parent_id">> => <<"30">>,
-        <<"thread_member_ids">> => [<<"77">>],
-        <<"permission_overwrites">> => []
-    },
-    OpenParent = #{<<"id">> => <<"30">>, <<"type">> => 0, <<"permission_overwrites">> => []},
-    OrphanThread = #{<<"id">> => <<"22">>, <<"type">> => 11, <<"permission_overwrites">> => []},
-    Channels = [Parent, PublicThread, PrivateThread, OpenParent, OrphanThread],
-    #{data => guild_data_index:put_channels(Channels, #{})}.
-
-thread_inherits_parent_deny_test() ->
-    View = constants:view_channel_permission(),
-    State = thread_test_state(),
-    Hidden = maybe_apply_channel_overwrites(View, 11, [], 20, 5, State),
-    ?assertEqual(false, permission_bits:has(Hidden, View)),
-    Allowed = maybe_apply_channel_overwrites(View, 11, [9], 20, 5, State),
-    ?assertEqual(true, permission_bits:has(Allowed, View)).
-
-thread_matches_parent_permissions_test() ->
-    View = constants:view_channel_permission(),
-    State = thread_test_state(),
-    ?assertEqual(
-        maybe_apply_channel_overwrites(View, 11, [9], 10, 5, State),
-        maybe_apply_channel_overwrites(View, 11, [9], 20, 5, State)
-    ).
-
-private_thread_requires_manage_channels_test() ->
-    View = constants:view_channel_permission(),
-    Manage = constants:manage_channels_permission(),
-    State = thread_test_state(),
-    Member = maybe_apply_channel_overwrites(View, 11, [], 21, 5, State),
-    ?assertEqual(false, permission_bits:has(Member, View)),
-    ManagerBase = permission_bits:add(View, Manage),
-    Manager = maybe_apply_channel_overwrites(ManagerBase, 11, [], 21, 5, State),
-    ?assertEqual(true, permission_bits:has(Manager, View)).
-
-%% Echowire: MANAGE_THREADS is the thread-specific moderator bit, and it opens a private thread
-%% on its own. MANAGE_CHANNELS keeps working, which is what every existing moderator role holds.
-private_thread_admits_a_thread_moderator_test() ->
-    View = constants:view_channel_permission(),
-    ManageThreads = constants:manage_threads_permission(),
-    State = thread_test_state(),
-    Base = permission_bits:add(View, ManageThreads),
-    Moderator = maybe_apply_channel_overwrites(Base, 11, [], 21, 5, State),
-    ?assertEqual(true, permission_bits:has(Moderator, View)).
-
-private_thread_admits_its_members_test() ->
-    View = constants:view_channel_permission(),
-    State = thread_test_state(),
-    Member = maybe_apply_channel_overwrites(View, 77, [], 21, 5, State),
-    ?assertEqual(true, permission_bits:has(Member, View)),
-    Outsider = maybe_apply_channel_overwrites(View, 78, [], 21, 5, State),
-    ?assertEqual(false, permission_bits:has(Outsider, View)).
-
-private_thread_member_still_needs_parent_view_test() ->
-    View = constants:view_channel_permission(),
-    Hidden = #{
-        <<"id">> => <<"40">>,
-        <<"type">> => 0,
-        <<"permission_overwrites">> => [
-            #{
-                <<"id">> => <<"5">>,
-                <<"type">> => 0,
-                <<"allow">> => <<"0">>,
-                <<"deny">> => integer_to_binary(View)
-            }
-        ]
-    },
-    Private = #{
-        <<"id">> => <<"41">>,
-        <<"type">> => 12,
-        <<"parent_id">> => <<"40">>,
-        <<"thread_member_ids">> => [<<"77">>],
-        <<"permission_overwrites">> => []
-    },
-    State = #{data => guild_data_index:put_channels([Hidden, Private], #{})},
-    Perms = maybe_apply_channel_overwrites(View, 77, [], 41, 5, State),
-    ?assertEqual(false, permission_bits:has(Perms, View)).
-
-orphan_thread_is_not_viewable_test() ->
-    View = constants:view_channel_permission(),
-    State = thread_test_state(),
-    Perms = maybe_apply_channel_overwrites(View, 11, [], 22, 5, State),
-    ?assertEqual(false, permission_bits:has(Perms, View)).
-
-thread_with_deleted_parent_is_not_viewable_test() ->
-    View = constants:view_channel_permission(),
-    %% The parent (50) is not in the index: it was deleted while the thread row survived.
-    Stranded = #{
-        <<"id">> => <<"51">>,
-        <<"type">> => 11,
-        <<"parent_id">> => <<"50">>,
-        <<"permission_overwrites">> => []
-    },
-    State = #{data => guild_data_index:put_channels([Stranded], #{})},
-    Perms = maybe_apply_channel_overwrites(View, 11, [], 51, 5, State),
-    ?assertEqual(false, permission_bits:has(Perms, View)),
-    Admin = maybe_apply_channel_overwrites(View, 11, [9], 51, 5, State),
-    ?assertEqual(false, permission_bits:has(Admin, View)).
-
-%% Echowire: the gateway half of the thread visibility contract. The api decides the same question
-%% in ThreadAccess.ts and is tested against the same file by
-%% fluxer_api/src/api/channel/tests/ThreadVisibilityContract.test.ts, so a rule that changes on one
-%% side without the other fails on one of the two. The file lives at contracts/
-%% thread_visibility_cases.json in the repository root.
-contract_cases_path() ->
-    Candidates = [
-        "../contracts/thread_visibility_cases.json",
-        "contracts/thread_visibility_cases.json",
-        "../../contracts/thread_visibility_cases.json"
-    ],
-    case lists:search(fun filelib:is_regular/1, Candidates) of
-        {value, Path} -> Path;
-        false -> error({thread_visibility_contract_not_found, Candidates})
-    end.
-
-contract_permission_bits(Names) ->
-    lists:foldl(
-        fun
-            (<<"VIEW_CHANNEL">>, Acc) ->
-                permission_bits:add(Acc, constants:view_channel_permission());
-            (<<"MANAGE_CHANNELS">>, Acc) ->
-                permission_bits:add(Acc, constants:manage_channels_permission());
-            (<<"MANAGE_THREADS">>, Acc) ->
-                permission_bits:add(Acc, constants:manage_threads_permission());
-            (Other, _Acc) ->
-                error({unmapped_contract_permission, Other})
-        end,
-        0,
-        Names
-    ).
-
-%% One case as the gateway sees it: the thread in the channel index, its parent present unless the
-%% case says it was deleted, and the caller's parent permissions supplied as the base permissions.
-contract_case_can_view(Case) ->
-    ThreadType = maps:get(<<"thread_type">>, Case),
-    ParentMissing = maps:get(<<"parent_missing">>, Case),
-    UserId = binary_to_integer(maps:get(<<"user_id">>, Case)),
-    MemberIds = maps:get(<<"member_ids">>, Case),
-    Base = contract_permission_bits(maps:get(<<"parent_permissions">>, Case)),
-    Thread = #{
-        <<"id">> => <<"9000">>,
-        <<"type">> => ThreadType,
-        <<"parent_id">> => <<"9001">>,
-        <<"thread_member_ids">> => MemberIds,
-        <<"permission_overwrites">> => []
-    },
-    Parent = #{
-        <<"id">> => <<"9001">>,
-        <<"type">> => 0,
-        <<"permission_overwrites">> => []
-    },
-    Channels =
-        case ParentMissing of
-            true -> [Thread];
-            false -> [Thread, Parent]
-        end,
-    State = #{data => guild_data_index:put_channels(Channels, #{})},
-    Perms = maybe_apply_channel_overwrites(Base, UserId, [], 9000, 5, State),
-    permission_bits:has(Perms, constants:view_channel_permission()).
-
-thread_visibility_contract_test() ->
-    {ok, Raw} = file:read_file(contract_cases_path()),
-    Contract = json:decode(Raw),
-    Cases = maps:get(<<"cases">>, Contract),
-    ?assert(length(Cases) > 0),
-    lists:foreach(
-        fun(Case) ->
-            Expected = maps:get(<<"expect_can_view">>, Case),
-            Actual = contract_case_can_view(Case),
-            ?assertEqual(
-                Expected,
-                Actual,
-                binary_to_list(maps:get(<<"name">>, Case))
-            )
-        end,
-        Cases
-    ).
 
 -endif.

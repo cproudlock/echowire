@@ -5,7 +5,6 @@
 
 -export([
     is_guild_unavailable_for_user/2,
-    is_user_staff/2,
     check_unavailability_transition/2,
     handle_unavailability_transition/2,
     get_cached_unavailability_mode/1,
@@ -14,7 +13,9 @@
     is_guild_unavailable_for_user_from_cache/2,
     update_unavailability_cache_for_state/1,
     schedule_availability_recheck/1,
-    handle_availability_recheck/1
+    handle_availability_recheck/1,
+    send_guild_create_to_session/4,
+    send_guild_create_to_session/5
 ]).
 
 -type guild_state() :: map().
@@ -39,10 +40,6 @@ is_guild_unavailable_for_user(UserId, State) ->
         available ->
             false
     end.
-
--spec is_user_staff(user_id(), guild_state()) -> boolean().
-is_user_staff(UserId, State) ->
-    guild_availability_check:is_user_staff(UserId, State).
 
 -spec check_unavailability_transition(guild_state(), guild_state()) ->
     {unavailable_enabled, boolean()} | unavailable_disabled | no_change.
@@ -118,14 +115,22 @@ send_guild_create_to_sessions(State, GuildId) ->
 
 -spec send_guild_create_to_session(map(), guild_id(), guild_state(), list()) -> ok.
 send_guild_create_to_session(SessionData, GuildId, State, BulkPresences) ->
+    send_guild_create_to_session(SessionData, GuildId, State, BulkPresences, #{}).
+
+-spec send_guild_create_to_session(map(), guild_id(), guild_state(), list(), map()) -> ok.
+send_guild_create_to_session(SessionData, GuildId, State, BulkPresences, Extra) ->
     case maps:get(pending_connect, SessionData, false) of
         true ->
             ok;
         false ->
             UserId = maps:get(user_id, SessionData),
             Pid = maps:get(pid, SessionData),
-            GuildState = guild_data:get_guild_state(UserId, State),
-            gateway_dispatch_relay:dispatch(Pid, guild_create, GuildState, GuildId),
+            GuildState = guild_data:get_guild_state(
+                UserId, State, guild_thread_gate:state_opts(SessionData)
+            ),
+            gateway_dispatch_relay:dispatch(
+                Pid, guild_create, maps:merge(GuildState, Extra), GuildId
+            ),
             presence_utils:send_presence_bulk(Pid, GuildId, UserId, BulkPresences)
     end.
 

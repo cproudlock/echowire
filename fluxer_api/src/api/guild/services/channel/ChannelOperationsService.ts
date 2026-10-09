@@ -1,47 +1,29 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {AttachmentDecayService} from '@app/api/attachment/AttachmentDecayService';
-import {
-	type AttachmentID,
-	type ChannelID,
-	createChannelID,
-	createMessageID,
-	createRoleID,
-	createUserID,
-	type EmojiID,
-	type GuildID,
-	type MessageID,
-	type RoleID,
-	type StickerID,
-	type UserID,
-} from '@app/api/BrandedTypes';
+import type {ChannelID, EmojiID, GuildID, RoleID, StickerID, UserID} from '@app/api/BrandedTypes';
+import {createChannelID, createRoleID, createUserID} from '@app/api/BrandedTypes';
 import {mapChannelToResponse} from '@app/api/channel/ChannelMappers';
 import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
-import {ThreadMemberRepository} from '@app/api/channel/repositories/ThreadMemberRepository';
-import {countCapacityChannels} from '@app/api/channel/services/ChannelCapacity';
-import {dispatchMessageUpdateBroadcast} from '@app/api/channel/services/message/MessageGatewayDispatch';
-import {makeAttachmentCdnUrl, purgeMessageAttachments} from '@app/api/channel/services/message/MessageHelpers';
-import type {MessageSystemService} from '@app/api/channel/services/message/MessageSystemService';
 import {
-	canAccessPrivateThread,
-	canCreatePrivateThread,
-	canCreatePublicThread,
-	canModerateThreads,
-	canSendInThread,
-	canViewThread,
-	getThreadParentPermissions,
-	hasPermissionBits,
-	permissionChannelId,
-	resolveAppliedTags,
-	withPrivateThreadMemberIds,
-} from '@app/api/channel/services/ThreadAccess';
-import {purgeThread} from '@app/api/channel/services/ThreadPurge';
+	buildThreadParentPatch,
+	loadThreadParentConfig,
+	pickThreadParentSettings,
+	serializeThreadParentForAudit,
+	withThreadParentFields,
+	withThreadParentFieldsMany,
+} from '@app/api/channel/services/thread/ThreadParentSettings';
 import type {PermissionOverwrite} from '@app/api/database/types/ChannelTypes';
-import type {MessageRow} from '@app/api/database/types/MessageTypes';
+import {
+	ensureActiveGuildTainted,
+	guildActive,
+	type ThreadViewer,
+	viewerActive,
+} from '@app/api/experiment/ChannelThreadsGate';
 import type {GuildAuditLogService} from '@app/api/guild/GuildAuditLogService';
 import type {GuildAuditLogChange} from '@app/api/guild/GuildAuditLogTypes';
 import type {IGuildRepositoryAggregate} from '@app/api/guild/repositories/IGuildRepositoryAggregate';
 import {ChannelHelpers, type ChannelReorderOperation} from '@app/api/guild/services/channel/ChannelHelpers';
+import {resolveProtectedBitActor} from '@app/api/guild/services/ThreadPermissionBits';
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import type {ISnowflakeService} from '@app/api/infrastructure/ISnowflakeService';
 import type {UserCacheService} from '@app/api/infrastructure/UserCacheService';
@@ -50,47 +32,27 @@ import type {LimitConfigService} from '@app/api/limits/LimitConfigService';
 import {resolveLimitSafe} from '@app/api/limits/LimitConfigUtils';
 import {createLimitMatchContext} from '@app/api/limits/LimitMatchContextBuilder';
 import type {RequestCache} from '@app/api/middleware/RequestCacheMiddleware';
-import {getPurgeQueue, getStorageService} from '@app/api/middleware/ServiceSingletons';
 import type {Channel} from '@app/api/models/Channel';
 import {ChannelPermissionOverwrite} from '@app/api/models/ChannelPermissionOverwrite';
-import type {Message} from '@app/api/models/Message';
-import type {IUserRepository} from '@app/api/user/IUserRepository';
+import {applyProtectedOverwriteBits, permissionWriteMask, protectedThreadBits} from '@app/api/utils/featureUtils';
 import {AuditLogActionType} from '@fluxer/constants/src/AuditLogActionType';
-import {ALL_PERMISSIONS, ChannelTypes, Permissions, THREAD_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {ALL_PERMISSIONS, ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {ContentWarningLevel, GuildFeatures, resolveVoiceChannelBitrate} from '@fluxer/constants/src/GuildConstants';
 import {
-	MAX_ACTIVE_THREADS_PER_CHANNEL,
-	MAX_ACTIVE_THREADS_PER_GUILD,
-	MAX_ATTACHMENTS_PER_MESSAGE,
 	MAX_CHANNELS_PER_CATEGORY,
 	MAX_GUILD_CHANNELS,
-	MAX_THREAD_MEMBERS,
 	VOICE_CHANNEL_CONNECTION_LIMIT_DEFAULT,
 } from '@fluxer/constants/src/LimitConstants';
+import {THREAD_ONLY_CHANNEL_TYPES} from '@fluxer/constants/src/ThreadConstants';
+import {withImplicitThreadBits} from '@fluxer/constants/src/ThreadPermissionUtils';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
-import {MaxActiveThreadsError} from '@fluxer/errors/src/domains/channel/MaxActiveThreadsError';
 import {MaxCategoryChannelsError} from '@fluxer/errors/src/domains/channel/MaxCategoryChannelsError';
-import {MaxThreadMembersError} from '@fluxer/errors/src/domains/channel/MaxThreadMembersError';
-import {UnknownChannelError} from '@fluxer/errors/src/domains/channel/UnknownChannelError';
-import {UnknownMessageError} from '@fluxer/errors/src/domains/channel/UnknownMessageError';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
 import {MissingPermissionsError} from '@fluxer/errors/src/domains/core/MissingPermissionsError';
 import {ResourceLockedError} from '@fluxer/errors/src/domains/core/ResourceLockedError';
-import {SlowmodeRateLimitError} from '@fluxer/errors/src/domains/core/SlowmodeRateLimitError';
 import {MaxGuildChannelsError} from '@fluxer/errors/src/domains/guild/MaxGuildChannelsError';
-import {UnknownGuildError} from '@fluxer/errors/src/domains/guild/UnknownGuildError';
-import {UnknownGuildMemberError} from '@fluxer/errors/src/domains/guild/UnknownGuildMemberError';
-import type {
-	ChannelCreateRequest,
-	ThreadCreateRequest,
-	ThreadsQuery,
-	ThreadUpdateRequest,
-} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
-import type {
-	ChannelResponse,
-	GuildActiveThreadsResponse,
-	ThreadStarterMessagePreviewResponse,
-} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
+import type {ChannelCreateRequest} from '@fluxer/schema/src/domains/channel/ChannelRequestSchemas';
+import type {ChannelResponse} from '@fluxer/schema/src/domains/channel/ChannelSchemas';
 import {
 	computeChannelMoveBlockIds,
 	computeGuildChannelReorderPlan,
@@ -99,20 +61,6 @@ import {
 } from '@fluxer/schema/src/domains/channel/GuildChannelOrdering';
 import {ChannelNameType} from '@fluxer/schema/src/primitives/ChannelValidators';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
-import type {IRateLimitService} from '@pkgs/rate_limit/src/IRateLimitService';
-
-const STARTER_PREVIEW_MAX_LENGTH = 200;
-const THREAD_PURGE_ATTACHMENT_BATCH = 100;
-
-// Echowire: newest first, then Discord-style `before` and `limit`. With neither parameter the list
-// is returned whole, which is what clients built against the unpaged endpoints expect.
-function applyThreadPaging(threads: ReadonlyArray<Channel>, page: ThreadsQuery | undefined): Array<Channel> {
-	const sorted = [...threads].sort((left, right) => (right.id > left.id ? 1 : right.id < left.id ? -1 : 0));
-	const before = page?.before;
-	const windowed = before === undefined ? sorted : sorted.filter((thread) => thread.id < BigInt(before));
-	const limit = page?.limit;
-	return limit === undefined || limit <= 0 ? windowed : windowed.slice(0, limit);
-}
 
 export class ChannelOperationsService {
 	constructor(
@@ -124,13 +72,7 @@ export class ChannelOperationsService {
 		private readonly snowflakeService: ISnowflakeService,
 		private readonly guildAuditLogService: GuildAuditLogService,
 		private readonly limitConfigService: LimitConfigService,
-		private readonly messageSystemService: MessageSystemService,
-		private readonly rateLimitService: IRateLimitService,
-		private readonly userRepository: IUserRepository,
 	) {}
-
-	private readonly threadMemberRepository = new ThreadMemberRepository();
-	private readonly attachmentDecayService = new AttachmentDecayService();
 
 	async createChannel(
 		params: {
@@ -138,11 +80,13 @@ export class ChannelOperationsService {
 			guildId: GuildID;
 			data: ChannelCreateRequest;
 			requestCache: RequestCache;
+			clientFeatures?: ReadonlySet<string>;
+			viewer?: ThreadViewer;
 		},
 		auditLogReason?: string | null,
 	): Promise<ChannelResponse> {
 		await this.ensureGuildHasCapacity(params.guildId);
-		const channels = await this.channelRepository.listGuildChannels(params.guildId);
+		const channels = await this.channelRepository.listGuildChannels(params.guildId, 'enrolled');
 		const parentId = params.data.parent_id ? createChannelID(params.data.parent_id) : null;
 		const parentChannel = this.validateParentCategory({
 			parentId,
@@ -167,25 +111,56 @@ export class ChannelOperationsService {
 				userId: params.userId,
 				channelId: parentId ?? undefined,
 			});
-			for (const overwrite of requestedOverwrites) {
-				const allowPerms = (overwrite.allow ? BigInt(overwrite.allow) : 0n) & ALL_PERMISSIONS;
-				if ((allowPerms & ~basePermissions) !== 0n) {
-					throw new MissingPermissionsError();
+			const actor = await resolveProtectedBitActor({
+				guildId: params.guildId,
+				userId: params.userId,
+				clientFeatures: params.clientFeatures ?? new Set(),
+				viewer: params.viewer,
+				isBot: async () => (params.viewer?.kind === 'user' ? params.viewer.bot : false),
+			});
+			if (!actor.threadBits) {
+				for (const overwrite of requestedOverwrites) {
+					const allowPerms = (overwrite.allow ? BigInt(overwrite.allow) : 0n) & ALL_PERMISSIONS;
+					if ((allowPerms & ~basePermissions) !== 0n) {
+						throw new MissingPermissionsError();
+					}
 				}
+				permissionOverwrites = new Map(
+					requestedOverwrites.map((overwrite) => {
+						const targetId = overwrite.type === 0 ? createRoleID(overwrite.id) : createUserID(overwrite.id);
+						return [
+							targetId,
+							new ChannelPermissionOverwrite({
+								type: overwrite.type,
+								allow_: overwrite.allow ? BigInt(overwrite.allow) : 0n,
+								deny_: overwrite.deny ? BigInt(overwrite.deny) : 0n,
+							}).toPermissionOverwrite(),
+						];
+					}),
+				);
+			} else {
+				const writeMask = permissionWriteMask(actor) & ~protectedThreadBits(actor);
+				const effectiveBase = withImplicitThreadBits(basePermissions);
+				for (const overwrite of requestedOverwrites) {
+					const allowPerms = (overwrite.allow ? BigInt(overwrite.allow) : 0n) & writeMask;
+					if ((allowPerms & ~effectiveBase) !== 0n) {
+						throw new MissingPermissionsError();
+					}
+				}
+				permissionOverwrites = new Map(
+					requestedOverwrites.map((overwrite) => {
+						const targetId = overwrite.type === 0 ? createRoleID(overwrite.id) : createUserID(overwrite.id);
+						return [
+							targetId,
+							new ChannelPermissionOverwrite({
+								type: overwrite.type,
+								allow_: (overwrite.allow ? BigInt(overwrite.allow) : 0n) & writeMask,
+								deny_: (overwrite.deny ? BigInt(overwrite.deny) : 0n) & writeMask,
+							}).toPermissionOverwrite(),
+						];
+					}),
+				);
 			}
-			permissionOverwrites = new Map(
-				requestedOverwrites.map((overwrite) => {
-					const targetId = overwrite.type === 0 ? createRoleID(overwrite.id) : createUserID(overwrite.id);
-					return [
-						targetId,
-						new ChannelPermissionOverwrite({
-							type: overwrite.type,
-							allow_: overwrite.allow ? BigInt(overwrite.allow) : 0n,
-							deny_: overwrite.deny ? BigInt(overwrite.deny) : 0n,
-						}).toPermissionOverwrite(),
-					];
-				}),
-			);
 		} else if (parentChannel?.permissionOverwrites) {
 			permissionOverwrites = new Map(
 				Array.from(parentChannel.permissionOverwrites.entries()).map(([targetId, overwrite]) => [
@@ -196,18 +171,31 @@ export class ChannelOperationsService {
 		}
 		let channelName = params.data.name;
 		let guildFeatures: Array<string> | null = null;
-		if (
+		const textNamed =
 			params.data.type === ChannelTypes.GUILD_TEXT ||
 			params.data.type === ChannelTypes.GUILD_ANNOUNCEMENT ||
-			params.data.type === ChannelTypes.GUILD_VOICE
-		) {
+			THREAD_ONLY_CHANNEL_TYPES.has(params.data.type);
+		if (textNamed || params.data.type === ChannelTypes.GUILD_VOICE) {
 			const guildData = await this.gatewayService.getGuildData({
 				guildId: params.guildId,
 				userId: params.userId,
 			});
 			guildFeatures = guildData.features;
 		}
-		if (params.data.type === ChannelTypes.GUILD_TEXT || params.data.type === ChannelTypes.GUILD_ANNOUNCEMENT) {
+		const parentSettings = pickThreadParentSettings(params.data.type, params.data);
+		const parentPatch =
+			parentSettings && guildActive(params.guildId)
+				? await buildThreadParentPatch({
+						channelType: params.data.type,
+						guildId: params.guildId,
+						input: parentSettings,
+						current: null,
+						guildRepository: this.guildRepository,
+						generateId: () => this.snowflakeService.generate(),
+					})
+				: null;
+		if (THREAD_ONLY_CHANNEL_TYPES.has(params.data.type)) await ensureActiveGuildTainted(params.guildId);
+		if (textNamed) {
 			const hasFlexibleNamesEnabled = (guildFeatures ?? []).includes(GuildFeatures.TEXT_CHANNEL_FLEXIBLE_NAMES);
 			if (!hasFlexibleNamesEnabled) {
 				channelName = ChannelNameType.parse(channelName);
@@ -224,38 +212,6 @@ export class ChannelOperationsService {
 		const requestedContentWarningText =
 			trimmedContentWarningText && trimmedContentWarningText.length > 0 ? trimmedContentWarningText : null;
 		const channelId = createChannelID(await this.snowflakeService.generate());
-		// Echowire: forum channels carry available_tags (each tag gets a server-assigned snowflake id),
-		// a default reaction, and a default sort order.
-		let forumAvailableTags: Array<{id: string; name: string; emoji_name: string | null; moderated: boolean}> | null =
-			null;
-		let forumDefaultReaction: {emoji_id: string | null; emoji_name: string | null} | null = null;
-		let forumDefaultSortOrder: number | null = null;
-		let forumDefaultAutoArchive: number | null = null;
-		let forumRequireTag: boolean | null = null;
-		let forumDefaultLayout: number | null = null;
-		let forumDefaultThreadRateLimit: number | null = null;
-		if (params.data.type === ChannelTypes.GUILD_FORUM) {
-			const tags = params.data.available_tags ?? [];
-			forumAvailableTags = await Promise.all(
-				tags.map(async (tag) => ({
-					id: tag.id ?? (await this.snowflakeService.generate()).toString(),
-					name: tag.name,
-					emoji_name: tag.emoji_name ?? null,
-					moderated: tag.moderated ?? false,
-				})),
-			);
-			forumDefaultReaction = params.data.default_reaction_emoji
-				? {
-						emoji_id: params.data.default_reaction_emoji.emoji_id ?? null,
-						emoji_name: params.data.default_reaction_emoji.emoji_name ?? null,
-					}
-				: null;
-			forumDefaultSortOrder = params.data.default_sort_order ?? null;
-			forumDefaultAutoArchive = params.data.default_auto_archive_duration ?? null;
-			forumRequireTag = params.data.require_tag ?? false;
-			forumDefaultLayout = params.data.default_forum_layout ?? null;
-			forumDefaultThreadRateLimit = params.data.default_thread_rate_limit_per_user ?? null;
-		}
 		const channel = await this.channelRepository.upsert({
 			channel_id: channelId,
 			guild_id: params.guildId,
@@ -286,17 +242,11 @@ export class ChannelOperationsService {
 			last_pin_timestamp: null,
 			permission_overwrites: permissionOverwrites,
 			nicks: null,
-			available_tags: forumAvailableTags,
-			default_reaction_emoji: forumDefaultReaction,
-			default_sort_order: forumDefaultSortOrder,
-			forum_default_auto_archive_duration: forumDefaultAutoArchive,
-			forum_require_tag: forumRequireTag,
-			default_forum_layout: forumDefaultLayout,
-			default_thread_rate_limit_per_user: forumDefaultThreadRateLimit,
 			soft_deleted: false,
 			indexed_at: null,
 			version: 1,
 		});
+		if (parentPatch) await this.channelRepository.threads.patchParentConfig(params.guildId, channel.id, parentPatch);
 		await this.dispatchChannelCreate({guildId: params.guildId, channel, requestCache: params.requestCache});
 		await this.recordAuditLog({
 			guildId: params.guildId,
@@ -305,7 +255,13 @@ export class ChannelOperationsService {
 			targetId: channel.id,
 			auditLogReason: auditLogReason ?? null,
 			metadata: {name: channel.name ?? '', type: channel.type.toString()},
-			changes: this.guildAuditLogService.computeChanges(null, ChannelHelpers.serializeChannelForAudit(channel)),
+			changes: this.guildAuditLogService.computeChanges(null, {
+				...ChannelHelpers.serializeChannelForAudit(channel),
+				...serializeThreadParentForAudit(
+					channel.type,
+					await loadThreadParentConfig(this.channelRepository.threads, channel),
+				),
+			}),
 		});
 		if (channel.permissionOverwrites.size > 0) {
 			await this.guildAuditLogService.recordPermissionOverwriteDiff({
@@ -317,1130 +273,22 @@ export class ChannelOperationsService {
 				reason: auditLogReason ?? null,
 			});
 		}
-		return await mapChannelToResponse({
+		return await withThreadParentFields(
+			this.channelRepository.threads,
 			channel,
-			currentUserId: null,
-			userCacheService: this.userCacheService,
-			requestCache: params.requestCache,
-		});
-	}
-
-	// Echowire: create a thread under a text/forum parent channel.
-	async createThread(params: {
-		userId: UserID;
-		parentChannelId: ChannelID;
-		data: ThreadCreateRequest;
-		requestCache: RequestCache;
-	}): Promise<ChannelResponse> {
-		const parent = await this.channelRepository.findUnique(params.parentChannelId);
-		if (!parent || parent.isSoftDeleted || !parent.guildId) {
-			throw new UnknownChannelError();
-		}
-		if (parent.type !== ChannelTypes.GUILD_TEXT && parent.type !== ChannelTypes.GUILD_FORUM) {
-			throw new UnknownChannelError();
-		}
-		const guildId = parent.guildId;
-		// Echowire: creating a thread needs VIEW_CHANNEL on the parent channel itself, honouring its
-		// overwrites, plus the thread permission for the kind being created. A role set written before
-		// the thread bits existed falls back to SEND_MESSAGES (see ThreadAccess.canCreatePublicThread).
-		const parentPermissions = await this.gatewayService.getUserPermissions({
-			guildId,
-			userId: params.userId,
-			channelId: parent.id,
-		});
-		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
-			throw new MissingPermissionsError();
-		}
-		const threadType = params.data.type ?? ChannelTypes.PUBLIC_THREAD;
-		const mayCreate =
-			threadType === ChannelTypes.PRIVATE_THREAD
-				? canCreatePrivateThread(parentPermissions)
-				: canCreatePublicThread(parentPermissions);
-		if (!mayCreate) {
-			throw new MissingPermissionsError();
-		}
-		// Echowire: forum posts may carry applied_tags, but only IDs defined in the forum's
-		// available_tags are valid. Reject unknown tags (and reject tags on non-forum threads).
-		if (params.data.applied_tags && params.data.applied_tags.length > 0) {
-			if (parent.type !== ChannelTypes.GUILD_FORUM) {
-				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
-			}
-			const validTagIds = new Set((parent.availableTags ?? []).map((tag) => tag.id));
-			if (!params.data.applied_tags.every((tagId) => validTagIds.has(tagId))) {
-				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
-			}
-			// Echowire: a moderated tag needs MANAGE_THREADS. A new post has none applied yet, so this
-			// rejects rather than preserves.
-			resolveAppliedTags({
-				requested: params.data.applied_tags,
-				current: [],
-				availableTags: parent.availableTags,
-				canModerate: canModerateThreads(parentPermissions),
-			});
-		}
-		// Echowire: a forum that requires a tag rejects tagless posts.
-		if (
-			parent.type === ChannelTypes.GUILD_FORUM &&
-			parent.forumRequireTag &&
-			(!params.data.applied_tags || params.data.applied_tags.length === 0)
-		) {
-			throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
-		}
-		const now = new Date();
-		// Echowire: when starting a thread from a message, the thread adopts the source
-		// message's ID (Discord semantics) so the message can render an inline link to it.
-		// If a thread already exists for that message, return it idempotently.
-		// Private threads never adopt a message ID: otherwise the adopted ID would let anyone who can
-		// start a thread on that message learn that a hidden private thread exists there.
-		let channelId: ChannelID;
-		if (params.data.message_id != null && threadType !== ChannelTypes.PRIVATE_THREAD) {
-			// SECURITY: the client supplies message_id and we adopt it as the new channel's
-			// ID, so we must verify it actually names a real message in THIS parent channel.
-			// Otherwise a caller could squat an arbitrary snowflake (e.g. collide a thread's
-			// ID with an unrelated message/resource, making a bogus inline thread link appear
-			// under it). The SEND_MESSAGES check above already gates who may create threads
-			// here; this gates which IDs they may claim.
-			const messageId = createMessageID(BigInt(params.data.message_id));
-			channelId = createChannelID(BigInt(params.data.message_id));
-			const existing = await this.channelRepository.findUnique(channelId);
-			if (existing && !existing.isSoftDeleted) {
-				if (existing.parentId !== params.parentChannelId || !THREAD_CHANNEL_TYPES.has(existing.type)) {
-					throw new UnknownChannelError();
-				}
-				// Echowire: the idempotent path must not hand back a private thread the caller cannot see,
-				// nor confirm it exists: answer as if no thread were there.
-				const canAccessExisting = await canAccessPrivateThread({
-					channel: existing,
-					userId: params.userId,
-					parentPermissions,
-					threadMemberRepository: this.threadMemberRepository,
-				});
-				if (!canAccessExisting) {
-					throw new UnknownChannelError();
-				}
-				return mapChannelToResponse({
-					channel: existing,
-					currentUserId: null,
-					userCacheService: this.userCacheService,
-					requestCache: params.requestCache,
-				});
-			}
-			const message = await this.channelRepository.getMessage(params.parentChannelId, messageId);
-			if (!message) {
-				throw new UnknownMessageError();
-			}
-		} else {
-			channelId = createChannelID(await this.snowflakeService.generate());
-		}
-		// Echowire: active thread caps are checked after validation and before slowmode, so a request
-		// that cannot succeed does not burn the member's slowmode window.
-		await this.ensureThreadCapacity({
-			guildId,
-			parentChannelId: params.parentChannelId,
-			channels: await this.channelRepository.listGuildChannels(guildId),
-		});
-		// Echowire: a forum's own slowmode limits how often a member may open new posts. Checked after
-		// every validation, so a rejected request does not use up the member's slowmode window.
-		await this.enforceForumPostSlowmode(parent, params.userId, parentPermissions);
-		const channel = await this.channelRepository.upsert({
-			channel_id: channelId,
-			guild_id: guildId,
-			type: threadType,
-			name: params.data.name,
-			topic: null,
-			icon_hash: null,
-			url: null,
-			parent_id: params.parentChannelId,
-			position: 0,
-			owner_id: params.userId,
-			recipient_ids: null,
-			nsfw: parent.nsfwOverride,
-			content_warning_level: parent.contentWarningLevel,
-			content_warning_text: parent.contentWarningText,
-			// Echowire: forum posts take the forum's per-post default; threads in a text channel keep
-			// copying the parent's slowmode.
-			rate_limit_per_user:
-				parent.type === ChannelTypes.GUILD_FORUM
-					? (parent.defaultThreadRateLimitPerUser ?? 0)
-					: parent.rateLimitPerUser,
-			bitrate: null,
-			user_limit: null,
-			voice_connection_limit: null,
-			rtc_region: null,
-			last_message_id: null,
-			last_pin_timestamp: null,
-			permission_overwrites: null,
-			nicks: null,
-			thread_archived: false,
-			thread_auto_archive_duration: params.data.auto_archive_duration ?? parent.forumDefaultAutoArchiveDuration ?? 1440,
-			thread_archive_timestamp: now,
-			thread_locked: false,
-			// Echowire: only a private thread has anything to invite into, and members may only invite
-			// others when the creator asked for it.
-			thread_invitable: threadType === ChannelTypes.PRIVATE_THREAD ? (params.data.invitable ?? false) : false,
-			thread_create_timestamp: now,
-			thread_member_count: 1,
-			thread_message_count: 0,
-			thread_pinned: false,
-			available_tags: null,
-			applied_tags: params.data.applied_tags ?? null,
-			default_reaction_emoji: null,
-			default_sort_order: null,
-			forum_default_auto_archive_duration: null,
-			forum_require_tag: null,
-			default_forum_layout: null,
-			default_thread_rate_limit_per_user: null,
-			soft_deleted: false,
-			indexed_at: null,
-			version: 1,
-		});
-		const response = await mapChannelToResponse({
-			channel,
-			currentUserId: null,
-			userCacheService: this.userCacheService,
-			requestCache: params.requestCache,
-		});
-		// Echowire: the creator auto-joins the thread (member_count was seeded to 1 on the row above)
-		// before THREAD_CREATE, so a private thread's creator is already a member when the gateway
-		// filters the event. Clients learn about the join the same way as any other.
-		const creatorMember = await this.threadMemberRepository.addMember(channelId, params.userId, 0, guildId);
-		await this.gatewayService.dispatchGuild({
-			guildId,
-			event: 'THREAD_CREATE',
-			data: await withPrivateThreadMemberIds({
+			await mapChannelToResponse({
 				channel,
-				response,
-				threadMemberRepository: this.threadMemberRepository,
-			}),
-		});
-		await this.gatewayService.dispatchGuild({
-			guildId,
-			event: 'THREAD_MEMBERS_UPDATE',
-			data: {
-				id: channelId.toString(),
-				guild_id: guildId.toString(),
-				member_count: 1,
-				added_members: [
-					{
-						id: channelId.toString(),
-						user_id: params.userId.toString(),
-						join_timestamp: creatorMember.joinTimestamp.toISOString(),
-						flags: creatorMember.flags,
-					},
-				],
-			},
-		});
-		// Echowire: drop a "started a thread" system message in the parent channel (Discord
-		// parity). Best-effort — a failure here must not fail thread creation. Private threads are
-		// not announced: the message would reveal the thread's id and creator to every parent viewer.
-		if (threadType !== ChannelTypes.PRIVATE_THREAD) {
-			try {
-				await this.messageSystemService.sendThreadCreatedSystemMessage({
-					parentChannelId: params.parentChannelId,
-					threadChannelId: channelId,
-					userId: params.userId,
-					guildId,
-					requestCache: params.requestCache,
-				});
-			} catch {
-				// ignore — the thread is already created and dispatched.
-			}
-		}
-		return response;
-	}
-
-	// Echowire: list active (non-archived) threads under a text/forum channel.
-	async listActiveThreads(params: {
-		userId: UserID;
-		parentChannelId: ChannelID;
-		requestCache: RequestCache;
-		page?: ThreadsQuery;
-	}): Promise<Array<ChannelResponse>> {
-		const parent = await this.channelRepository.findUnique(params.parentChannelId);
-		if (!parent || parent.isSoftDeleted || !parent.guildId) {
-			throw new UnknownChannelError();
-		}
-		const parentPermissions = await this.gatewayService.getUserPermissions({
-			guildId: parent.guildId,
-			userId: params.userId,
-			channelId: parent.id,
-		});
-		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
-			throw new MissingPermissionsError();
-		}
-		const channels = await this.channelRepository.listGuildChannels(parent.guildId);
-		const threads = channels.filter(
-			(channel) =>
-				channel.parentId === params.parentChannelId &&
-				THREAD_CHANNEL_TYPES.has(channel.type) &&
-				!channel.threadMetadata?.archived,
-		);
-		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
-		return this.mapThreadsWithPreview(applyThreadPaging(visibleThreads, params.page), params.requestCache, () =>
-			hasPermissionBits(parentPermissions, Permissions.READ_MESSAGE_HISTORY),
-		);
-	}
-
-	// Echowire: every active thread in the guild the caller can view, plus the caller's memberships,
-	// for sidebar nesting. Access follows the same parent-channel and private-thread rules.
-	async listGuildActiveThreads(params: {
-		userId: UserID;
-		guildId: GuildID;
-		requestCache: RequestCache;
-	}): Promise<GuildActiveThreadsResponse> {
-		const isMember = await this.gatewayService.hasGuildMember({guildId: params.guildId, userId: params.userId});
-		if (!isMember) {
-			throw new UnknownGuildError();
-		}
-		const channels = await this.channelRepository.listGuildChannels(params.guildId);
-		const activeThreads = channels.filter(
-			(channel) =>
-				THREAD_CHANNEL_TYPES.has(channel.type) && !channel.isSoftDeleted && !channel.threadMetadata?.archived,
-		);
-		// Echowire: one read of the by-user membership index, instead of one getMember per visible
-		// thread. It answers both the private-thread gate and the members array below.
-		const memberships = await this.threadMemberRepository.listMembershipsForUser(params.userId);
-		const membershipByThread = new Map(memberships.map((membership) => [membership.threadId, membership]));
-		const parentPermissions = new Map<ChannelID, bigint>();
-		const liveChannelIds = new Set(channels.filter((channel) => !channel.isSoftDeleted).map((channel) => channel.id));
-		const visible: Array<Channel> = [];
-		for (const thread of activeThreads) {
-			// Echowire: a thread whose parent is gone is inaccessible.
-			if (!thread.parentId || !liveChannelIds.has(thread.parentId)) {
-				continue;
-			}
-			let permissions = parentPermissions.get(thread.parentId);
-			if (permissions === undefined) {
-				permissions = await this.gatewayService.getUserPermissions({
-					guildId: params.guildId,
-					userId: params.userId,
-					channelId: thread.parentId,
-				});
-				parentPermissions.set(thread.parentId, permissions);
-			}
-			if (!hasPermissionBits(permissions, Permissions.VIEW_CHANNEL)) {
-				continue;
-			}
-			const canAccess =
-				thread.type !== ChannelTypes.PRIVATE_THREAD ||
-				canModerateThreads(permissions) ||
-				membershipByThread.has(thread.id);
-			if (canAccess) {
-				visible.push(thread);
-			}
-		}
-		return {
-			threads: await this.mapThreadsWithPreview(visible, params.requestCache, (thread) =>
-				hasPermissionBits(parentPermissions.get(thread.parentId!) ?? 0n, Permissions.READ_MESSAGE_HISTORY),
-			),
-			members: visible.flatMap((thread) => {
-				const member = membershipByThread.get(thread.id);
-				return member
-					? [
-							{
-								id: member.threadId.toString(),
-								user_id: member.userId.toString(),
-								join_timestamp: member.joinTimestamp.toISOString(),
-								flags: member.flags,
-							},
-						]
-					: [];
-			}),
-		};
-	}
-
-	// Echowire: the starter preview carries message content, so it is included only when the caller
-	// may read message history in the thread's parent channel. canReadHistory answers per parent.
-	private async mapThreadsWithPreview(
-		threads: Array<Channel>,
-		requestCache: RequestCache,
-		canReadHistory: (thread: Channel) => boolean,
-	): Promise<Array<ChannelResponse>> {
-		return Promise.all(
-			threads.map(async (channel) => {
-				const response = await mapChannelToResponse({
-					channel,
-					currentUserId: null,
-					userCacheService: this.userCacheService,
-					requestCache,
-				});
-				if (canReadHistory(channel)) {
-					response.starter_message_preview = await this.buildStarterMessagePreview(channel, requestCache);
-				}
-				return response;
-			}),
-		);
-	}
-
-	// Echowire: a thread started from a message shares that message's id and its starter lives in the
-	// parent; any other thread (every forum post) uses its own first message.
-	// Echowire: a thread started from a message shares that message's id and its starter lives in the
-	// parent; any other thread (every forum post) uses its own first message.
-	private async resolveStarterMessage(thread: Channel): Promise<Message | null> {
-		const threadIdAsMessage = createMessageID(BigInt(thread.id));
-		const fromParent = thread.parentId
-			? await this.channelRepository.getMessage(thread.parentId, threadIdAsMessage)
-			: null;
-		if (fromParent) {
-			return fromParent;
-		}
-		const [first] = await this.channelRepository.listMessages(thread.id, undefined, 1, threadIdAsMessage);
-		return first ?? null;
-	}
-
-	// Echowire: "add to post". The author of a forum post replies with media and then appends that
-	// media to the post's starter message, where it becomes the card thumbnail. Nothing is uploaded:
-	// the attachment already exists, and its CDN key is derived from the channel and the attachment
-	// id, so one blob serves both messages.
-	async addAttachmentToStarterMessage(params: {
-		userId: UserID;
-		threadChannelId: ChannelID;
-		sourceMessageId: MessageID;
-		attachmentId: AttachmentID;
-		requestCache: RequestCache;
-	}): Promise<ChannelResponse> {
-		const thread = await this.channelRepository.findUnique(params.threadChannelId);
-		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			throw new UnknownChannelError();
-		}
-		const parent = thread.parentId ? await this.channelRepository.findUnique(thread.parentId) : null;
-		if (!parent || parent.type !== ChannelTypes.GUILD_FORUM) {
-			throw new UnknownChannelError();
-		}
-		const parentPermissions = await getThreadParentPermissions({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			guildId: thread.guildId,
-			channel: thread,
-			userId: params.userId,
-		});
-		const canView = await canViewThread({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			threadMemberRepository: this.threadMemberRepository,
-			guildId: thread.guildId,
-			channel: thread,
-			userId: params.userId,
-			parentPermissions,
-		});
-		if (!canView) {
-			throw new MissingPermissionsError();
-		}
-		if (thread.ownerId !== params.userId && !canModerateThreads(parentPermissions)) {
-			throw new MissingPermissionsError();
-		}
-		const source = await this.channelRepository.getMessage(thread.id, params.sourceMessageId);
-		if (!source) {
-			throw new UnknownMessageError();
-		}
-		const starter = await this.resolveStarterMessage(thread);
-		if (!starter) {
-			throw new UnknownMessageError();
-		}
-		if (starter.id === source.id) {
-			throw InputValidationError.fromCode('message_id', ValidationErrorCodes.STARTER_ATTACHMENT_SOURCE_INVALID);
-		}
-		const sourceRow = source.toRow();
-		const attachment = (sourceRow.attachments ?? []).find((entry) => entry.attachment_id === params.attachmentId);
-		if (!attachment) {
-			throw InputValidationError.fromCode('attachment_id', ValidationErrorCodes.ATTACHMENT_ID_NOT_FOUND_IN_MESSAGE);
-		}
-		const starterRow = starter.toRow();
-		const existing = starterRow.attachments ?? [];
-		if (existing.some((entry) => entry.attachment_id === params.attachmentId)) {
-			throw InputValidationError.fromCode('attachment_id', ValidationErrorCodes.STARTER_ATTACHMENT_ALREADY_PRESENT);
-		}
-		const guild = await this.guildRepository.findUnique(thread.guildId);
-		const maxAttachments = resolveLimitSafe(
-			this.limitConfigService.getConfigSnapshot(),
-			createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null}),
-			'max_attachments_per_message',
-			MAX_ATTACHMENTS_PER_MESSAGE,
-		);
-		if (existing.length >= maxAttachments) {
-			throw InputValidationError.fromCode('attachment_id', ValidationErrorCodes.STARTER_ATTACHMENT_LIMIT_REACHED);
-		}
-		const hadThumbnail = existing.length > 0;
-		const updatedRow: MessageRow = {...starterRow, attachments: [...existing, attachment]};
-		const updated = await this.channelRepository.messages.upsertMessage(updatedRow, starterRow);
-		// Echowire: point the attachment's decay record at the starter message, so when attachment
-		// decay is enabled the blob's lifetime follows the post rather than the reply.
-		await this.attachmentDecayService.upsertMany([
-			{
-				attachmentId: attachment.attachment_id,
-				channelId: thread.id,
-				messageId: starter.id,
-				filename: attachment.filename,
-				sizeBytes: attachment.size,
-				uploadedAt: new Date(),
-			},
-		]);
-		await dispatchMessageUpdateBroadcast({
-			gatewayService: this.gatewayService,
-			channel: thread,
-			message: updated,
-		});
-		const response = await mapChannelToResponse({
-			channel: thread,
-			currentUserId: null,
-			userCacheService: this.userCacheService,
-			requestCache: params.requestCache,
-		});
-		response.starter_message_preview = await this.buildStarterMessagePreview(thread, params.requestCache);
-		// Echowire: only a starter that had no attachment gains a thumbnail, so only then does the
-		// forum card change and only then is a THREAD_UPDATE worth dispatching.
-		if (!hadThumbnail) {
-			await this.gatewayService.dispatchGuild({
-				guildId: thread.guildId,
-				event: 'THREAD_UPDATE',
-				data: await withPrivateThreadMemberIds({
-					channel: thread,
-					response,
-					threadMemberRepository: this.threadMemberRepository,
-				}),
-			});
-		}
-		return response;
-	}
-
-	private async buildStarterMessagePreview(
-		thread: Channel,
-		requestCache: RequestCache,
-	): Promise<ThreadStarterMessagePreviewResponse | null> {
-		try {
-			const message = await this.resolveStarterMessage(thread);
-			if (!message) {
-				return null;
-			}
-			const author = message.authorId
-				? await this.userCacheService.getUserPartialResponse(message.authorId, requestCache)
-				: null;
-			const attachment = message.attachments[0];
-			return {
-				message_id: message.id.toString(),
-				author: author
-					? {id: author.id, username: author.username, global_name: author.global_name, avatar: author.avatar}
-					: null,
-				content: (message.content ?? '').slice(0, STARTER_PREVIEW_MAX_LENGTH),
-				first_attachment: attachment
-					? {
-							id: attachment.id.toString(),
-							filename: attachment.filename,
-							url: makeAttachmentCdnUrl(message.channelId, attachment.id, attachment.filename),
-							proxy_url: null,
-							content_type: attachment.contentType ?? null,
-							width: attachment.width,
-							height: attachment.height,
-						}
-					: null,
-			};
-		} catch (error) {
-			Logger.warn({error, threadId: thread.id.toString()}, 'Failed to build starter message preview');
-			return null;
-		}
-	}
-
-	// Echowire: list archived threads under a text/forum channel.
-	async listArchivedThreads(params: {
-		userId: UserID;
-		parentChannelId: ChannelID;
-		requestCache: RequestCache;
-		page?: ThreadsQuery;
-	}): Promise<Array<ChannelResponse>> {
-		const parent = await this.channelRepository.findUnique(params.parentChannelId);
-		if (!parent || parent.isSoftDeleted || !parent.guildId) {
-			throw new UnknownChannelError();
-		}
-		const parentPermissions = await this.gatewayService.getUserPermissions({
-			guildId: parent.guildId,
-			userId: params.userId,
-			channelId: parent.id,
-		});
-		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
-			throw new MissingPermissionsError();
-		}
-		const channels = await this.channelRepository.listGuildChannels(parent.guildId);
-		const threads = channels.filter(
-			(channel) =>
-				channel.parentId === params.parentChannelId &&
-				THREAD_CHANNEL_TYPES.has(channel.type) &&
-				channel.threadMetadata?.archived === true,
-		);
-		const visibleThreads = await this.filterVisibleThreads(threads, params.userId, parentPermissions);
-		return this.mapThreadsWithPreview(applyThreadPaging(visibleThreads, params.page), params.requestCache, () =>
-			hasPermissionBits(parentPermissions, Permissions.READ_MESSAGE_HISTORY),
-		);
-	}
-
-	// Echowire: update a thread (name / archived / locked / auto-archive / invitable).
-	async updateThread(params: {
-		userId: UserID;
-		threadChannelId: ChannelID;
-		data: ThreadUpdateRequest;
-		requestCache: RequestCache;
-	}): Promise<ChannelResponse> {
-		const thread = await this.channelRepository.findUnique(params.threadChannelId);
-		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			throw new UnknownChannelError();
-		}
-		// Echowire: the caller must be able to see the thread, and then be its owner or hold
-		// MANAGE_CHANNELS on the parent channel.
-		const {isModerator} = await this.assertCanManageThread(thread, params.userId);
-		const row = thread.toRow();
-		const {data} = params;
-		// Echowire: owners may rename, retag, change auto-archive, and close or reopen their own
-		// unlocked thread. Locking, pinning, invitability, and any edit at all to a locked thread are
-		// for moderators only.
-		if (!isModerator) {
-			const moderatorOnlyChange =
-				row.thread_locked === true ||
-				data.locked !== undefined ||
-				data.pinned !== undefined ||
-				data.invitable !== undefined;
-			if (moderatorOnlyChange) {
-				throw new MissingPermissionsError();
-			}
-		}
-		// Echowire: editing a forum post's tags — validate against the parent forum's available_tags.
-		let appliedTags = row.applied_tags;
-		if (data.applied_tags !== undefined) {
-			const parent = thread.parentId ? await this.channelRepository.findUnique(thread.parentId) : null;
-			if (data.applied_tags.length > 0) {
-				if (!parent || parent.type !== ChannelTypes.GUILD_FORUM) {
-					throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
-				}
-				const validTagIds = new Set((parent.availableTags ?? []).map((tag) => tag.id));
-				if (!data.applied_tags.every((tagId) => validTagIds.has(tagId))) {
-					throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_INVALID);
-				}
-			} else if (parent?.type === ChannelTypes.GUILD_FORUM && parent.forumRequireTag) {
-				// Echowire: a forum that requires a tag rejects tagless posts on create, so clearing the
-				// tags on an existing post must not be a way around it.
-				throw InputValidationError.fromCode('applied_tags', ValidationErrorCodes.FORUM_TAG_REQUIRED);
-			}
-			const effectiveTags = resolveAppliedTags({
-				requested: data.applied_tags,
-				current: row.applied_tags ?? [],
-				availableTags: parent?.availableTags ?? null,
-				canModerate: isModerator,
-			});
-			appliedTags = effectiveTags.length > 0 ? effectiveTags : null;
-		}
-		const archivedChanged = data.archived !== undefined && data.archived !== row.thread_archived;
-		// Echowire: write only the fields this request changes. Upserting the whole row read above
-		// would roll back anything written since, such as last_message_id, the message and member
-		// counts, or an unarchive triggered by a concurrent send.
-		await this.channelRepository.channelData.patchThreadFields(thread.id, {
-			name: data.name,
-			thread_archived: data.archived,
-			thread_locked: data.locked,
-			thread_auto_archive_duration: data.auto_archive_duration,
-			thread_invitable: data.invitable,
-			thread_archive_timestamp: archivedChanged ? new Date() : undefined,
-			thread_pinned: data.pinned,
-			applied_tags: data.applied_tags !== undefined ? appliedTags : undefined,
-			rate_limit_per_user: data.rate_limit_per_user,
-		});
-		const channel = await this.channelRepository.findUnique(thread.id);
-		if (!channel) {
-			throw new UnknownChannelError();
-		}
-		const response = await mapChannelToResponse({
-			channel,
-			currentUserId: null,
-			userCacheService: this.userCacheService,
-			requestCache: params.requestCache,
-		});
-		await this.gatewayService.dispatchGuild({
-			guildId: thread.guildId,
-			event: 'THREAD_UPDATE',
-			data: await withPrivateThreadMemberIds({
-				channel,
-				response,
-				threadMemberRepository: this.threadMemberRepository,
-			}),
-		});
-		if (data.pinned === true && !row.thread_pinned) {
-			await this.unpinOtherForumPosts(channel, params.requestCache);
-		}
-		return response;
-	}
-
-	// Echowire: a forum shows a single pinned post, so pinning one unpins the rest.
-	private async unpinOtherForumPosts(pinned: Channel, requestCache: RequestCache): Promise<void> {
-		if (!pinned.guildId || !pinned.parentId) {
-			return;
-		}
-		const parent = await this.channelRepository.findUnique(pinned.parentId);
-		if (!parent || parent.type !== ChannelTypes.GUILD_FORUM) {
-			return;
-		}
-		const channels = await this.channelRepository.listGuildChannels(pinned.guildId);
-		const others = channels.filter(
-			(channel) =>
-				channel.id !== pinned.id &&
-				channel.parentId === pinned.parentId &&
-				THREAD_CHANNEL_TYPES.has(channel.type) &&
-				channel.pinned,
-		);
-		for (const other of others) {
-			await this.channelRepository.channelData.patchThreadFields(other.id, {thread_pinned: false});
-			const unpinned = await this.channelRepository.findUnique(other.id);
-			if (!unpinned) {
-				continue;
-			}
-			const data = await mapChannelToResponse({
-				channel: unpinned,
 				currentUserId: null,
 				userCacheService: this.userCacheService,
-				requestCache,
-			});
-			await this.gatewayService.dispatchGuild({
-				guildId: pinned.guildId,
-				event: 'THREAD_UPDATE',
-				data: await withPrivateThreadMemberIds({
-					channel: unpinned,
-					response: data,
-					threadMemberRepository: this.threadMemberRepository,
-				}),
-			});
-		}
-	}
-
-	// Echowire: delete a thread.
-	async deleteThread(params: {userId: UserID; threadChannelId: ChannelID}): Promise<void> {
-		const thread = await this.channelRepository.findUnique(params.threadChannelId);
-		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			throw new UnknownChannelError();
-		}
-		await this.assertCanManageThread(thread, params.userId);
-		// Echowire: the same purge the parent-channel delete and the orphan sweep use. Deleting the
-		// channel row alone left the thread's messages, attachments and search documents behind.
-		const storageService = getStorageService();
-		const purgeQueue = getPurgeQueue();
-		await purgeThread({
-			thread,
-			guildId: thread.guildId,
-			deleteMessages: (id) => this.channelRepository.messages.deleteAllChannelMessages(id),
-			deleteChannelRow: (id, guildId) => this.channelRepository.channelData.delete(id, guildId),
-			purgeAttachments: async (target) => {
-				let before: MessageID | undefined;
-				for (;;) {
-					const messages = await this.channelRepository.messages.listMessages(
-						target.id,
-						before,
-						THREAD_PURGE_ATTACHMENT_BATCH,
-					);
-					await Promise.all(messages.map((message) => purgeMessageAttachments(message, storageService, purgeQueue)));
-					if (messages.length < THREAD_PURGE_ATTACHMENT_BATCH) {
-						break;
-					}
-					before = messages[messages.length - 1].id;
-				}
-			},
-			threadMemberRepository: this.threadMemberRepository,
-			gatewayService: this.gatewayService,
-			source: 'thread_delete',
-		});
-	}
-
-	// Echowire: a thread or forum post holds a bounded member list. Every member of a private thread
-	// is carried to the gateway so it can scope that thread's events, so the list cannot grow without
-	// limit. The creator is added as part of creating the thread and is never refused.
-	private async ensureThreadMemberCapacity(thread: Channel): Promise<void> {
-		const guild = thread.guildId ? await this.guildRepository.findUnique(thread.guildId) : null;
-		const ctx = createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null});
-		const maxMembers = resolveLimitSafe(
-			this.limitConfigService.getConfigSnapshot(),
-			ctx,
-			'max_thread_members',
-			MAX_THREAD_MEMBERS,
-			'guild',
+				requestCache: params.requestCache,
+			}),
+			params.viewer,
 		);
-		const members = await this.threadMemberRepository.listMembers(thread.id);
-		if (members.length >= maxMembers) {
-			throw new MaxThreadMembersError(maxMembers);
-		}
-	}
-
-	// Echowire: recompute member_count from the membership table and persist it on the thread.
-	private async syncThreadMemberCount(threadChannelId: ChannelID): Promise<number> {
-		const thread = await this.channelRepository.findUnique(threadChannelId);
-		if (!thread || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			return 0;
-		}
-		const members = await this.threadMemberRepository.listMembers(threadChannelId);
-		const count = members.length;
-		await this.channelRepository.channelData.patchThreadFields(threadChannelId, {thread_member_count: count});
-		return count;
-	}
-
-	// Echowire: join the current user (or auto-join an actor) to a thread. Idempotent.
-	async joinThread(params: {threadChannelId: ChannelID; userId: UserID; silent?: boolean}): Promise<void> {
-		const thread = await this.channelRepository.findUnique(params.threadChannelId);
-		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			throw new UnknownChannelError();
-		}
-		const parentPermissions = await getThreadParentPermissions({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			guildId: thread.guildId,
-			channel: thread,
-			userId: params.userId,
-		});
-		// Echowire: joining needs VIEW_CHANNEL on the parent channel, even for an existing member.
-		if (!hasPermissionBits(parentPermissions, Permissions.VIEW_CHANNEL)) {
-			throw new MissingPermissionsError();
-		}
-		const existing = await this.threadMemberRepository.getMember(params.threadChannelId, params.userId);
-		if (existing) {
-			return;
-		}
-		await this.ensureThreadMemberCapacity(thread);
-		// Echowire: nobody adds themselves to a private thread. Its owner, a thread moderator, or any
-		// member when the thread is invitable, adds them through PUT .../thread-members/{user_id}.
-		if (thread.type === ChannelTypes.PRIVATE_THREAD && !canModerateThreads(parentPermissions)) {
-			throw new MissingPermissionsError();
-		}
-		const member = await this.threadMemberRepository.addMember(
-			params.threadChannelId,
-			params.userId,
-			0,
-			thread.guildId,
-		);
-		const count = await this.syncThreadMemberCount(params.threadChannelId);
-		await this.gatewayService.dispatchGuild({
-			guildId: thread.guildId,
-			event: 'THREAD_MEMBERS_UPDATE',
-			data: {
-				id: thread.id.toString(),
-				guild_id: thread.guildId.toString(),
-				member_count: count,
-				added_members: [
-					{
-						id: thread.id.toString(),
-						user_id: params.userId.toString(),
-						join_timestamp: member.joinTimestamp.toISOString(),
-						flags: member.flags,
-					},
-				],
-			},
-		});
-	}
-
-	// Echowire: leave a thread.
-	async leaveThread(params: {threadChannelId: ChannelID; userId: UserID}): Promise<void> {
-		const thread = await this.channelRepository.findUnique(params.threadChannelId);
-		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			throw new UnknownChannelError();
-		}
-		const existing = await this.threadMemberRepository.getMember(params.threadChannelId, params.userId);
-		if (!existing) {
-			return;
-		}
-		await this.threadMemberRepository.removeMember(params.threadChannelId, params.userId);
-		const count = await this.syncThreadMemberCount(params.threadChannelId);
-		await this.gatewayService.dispatchGuild({
-			guildId: thread.guildId,
-			event: 'THREAD_MEMBERS_UPDATE',
-			data: {
-				id: thread.id.toString(),
-				guild_id: thread.guildId.toString(),
-				member_count: count,
-				removed_member_ids: [params.userId.toString()],
-			},
-		});
-	}
-
-	// Echowire: list the members of a thread (requires VIEW_CHANNEL).
-	async listThreadMembers(params: {
-		threadChannelId: ChannelID;
-		userId: UserID;
-	}): Promise<Array<{id: string; user_id: string; join_timestamp: string; flags: number}>> {
-		const thread = await this.channelRepository.findUnique(params.threadChannelId);
-		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			throw new UnknownChannelError();
-		}
-		const canView = await canViewThread({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			threadMemberRepository: this.threadMemberRepository,
-			guildId: thread.guildId,
-			channel: thread,
-			userId: params.userId,
-		});
-		if (!canView) {
-			throw new MissingPermissionsError();
-		}
-		const members = await this.threadMemberRepository.listMembers(params.threadChannelId);
-		return members.map((member) => ({
-			id: thread.id.toString(),
-			user_id: member.userId.toString(),
-			join_timestamp: member.joinTimestamp.toISOString(),
-			flags: member.flags,
-		}));
-	}
-
-	// Echowire: add another member to a thread. A public thread takes anyone who may post in it; a
-	// private thread takes its owner's and its moderators' invitations, and any member's invitation
-	// when the thread is invitable. The target must be able to see the parent channel, so a private
-	// thread cannot be used to smuggle someone into a channel they cannot read.
-	async addThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
-		const thread = await this.loadThreadOrThrow(params.threadChannelId);
-		const guildId = thread.guildId!;
-		const actorPermissions = await getThreadParentPermissions({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			guildId,
-			channel: thread,
-			userId: params.actorId,
-		});
-		const actorCanView = await canViewThread({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			threadMemberRepository: this.threadMemberRepository,
-			guildId,
-			channel: thread,
-			userId: params.actorId,
-			parentPermissions: actorPermissions,
-		});
-		if (!actorCanView) {
-			throw new MissingPermissionsError();
-		}
-		const isModerator = canModerateThreads(actorPermissions);
-		const isOwner = thread.ownerId === params.actorId;
-		let mayInvite = isModerator || isOwner;
-		if (!mayInvite) {
-			const actorIsMember = (await this.threadMemberRepository.getMember(thread.id, params.actorId)) !== null;
-			mayInvite =
-				thread.type === ChannelTypes.PRIVATE_THREAD
-					? (thread.threadMetadata?.invitable ?? false) && actorIsMember
-					: canSendInThread(actorPermissions);
-		}
-		if (!mayInvite) {
-			throw new MissingPermissionsError();
-		}
-		const parentChannelId = permissionChannelId(thread);
-		if (!parentChannelId) {
-			throw new UnknownChannelError();
-		}
-		const targetPermissions = await this.gatewayService.getUserPermissions({
-			guildId,
-			userId: params.targetUserId,
-			channelId: parentChannelId,
-		});
-		if (!hasPermissionBits(targetPermissions, Permissions.VIEW_CHANNEL)) {
-			throw new UnknownGuildMemberError();
-		}
-		if (await this.threadMemberRepository.getMember(thread.id, params.targetUserId)) {
-			return;
-		}
-		await this.ensureThreadMemberCapacity(thread);
-		const member = await this.threadMemberRepository.addMember(thread.id, params.targetUserId);
-		const count = await this.syncThreadMemberCount(thread.id);
-		await this.gatewayService.dispatchGuild({
-			guildId,
-			event: 'THREAD_MEMBERS_UPDATE',
-			data: {
-				id: thread.id.toString(),
-				guild_id: guildId.toString(),
-				member_count: count,
-				added_members: [
-					{
-						id: thread.id.toString(),
-						user_id: params.targetUserId.toString(),
-						join_timestamp: member.joinTimestamp.toISOString(),
-						flags: member.flags,
-					},
-				],
-			},
-		});
-	}
-
-	// Echowire: remove a member from a thread. Removing yourself is leaving; removing anyone else
-	// needs MANAGE_THREADS (or MANAGE_CHANNELS) on the parent, or ownership of the thread.
-	async removeThreadMember(params: {threadChannelId: ChannelID; actorId: UserID; targetUserId: UserID}): Promise<void> {
-		if (params.actorId === params.targetUserId) {
-			await this.leaveThread({threadChannelId: params.threadChannelId, userId: params.actorId});
-			return;
-		}
-		const thread = await this.loadThreadOrThrow(params.threadChannelId);
-		const guildId = thread.guildId!;
-		const actorPermissions = await getThreadParentPermissions({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			guildId,
-			channel: thread,
-			userId: params.actorId,
-		});
-		const actorCanView = await canViewThread({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			threadMemberRepository: this.threadMemberRepository,
-			guildId,
-			channel: thread,
-			userId: params.actorId,
-			parentPermissions: actorPermissions,
-		});
-		if (!actorCanView) {
-			throw new MissingPermissionsError();
-		}
-		if (!canModerateThreads(actorPermissions) && thread.ownerId !== params.actorId) {
-			throw new MissingPermissionsError();
-		}
-		if (!(await this.threadMemberRepository.getMember(thread.id, params.targetUserId))) {
-			return;
-		}
-		await this.threadMemberRepository.removeMember(thread.id, params.targetUserId);
-		const count = await this.syncThreadMemberCount(thread.id);
-		await this.gatewayService.dispatchGuild({
-			guildId,
-			event: 'THREAD_MEMBERS_UPDATE',
-			data: {
-				id: thread.id.toString(),
-				guild_id: guildId.toString(),
-				member_count: count,
-				removed_member_ids: [params.targetUserId.toString()],
-			},
-		});
-	}
-
-	// Echowire: fetch one thread member. Anyone who can see the thread can see its membership, which
-	// is what the member list already exposes.
-	async getThreadMember(params: {
-		threadChannelId: ChannelID;
-		userId: UserID;
-		targetUserId: UserID;
-	}): Promise<{id: string; user_id: string; join_timestamp: string; flags: number}> {
-		const thread = await this.loadThreadOrThrow(params.threadChannelId);
-		const canView = await canViewThread({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			threadMemberRepository: this.threadMemberRepository,
-			guildId: thread.guildId!,
-			channel: thread,
-			userId: params.userId,
-		});
-		if (!canView) {
-			throw new MissingPermissionsError();
-		}
-		const member = await this.threadMemberRepository.getMember(thread.id, params.targetUserId);
-		if (!member) {
-			throw new UnknownGuildMemberError();
-		}
-		return {
-			id: thread.id.toString(),
-			user_id: member.userId.toString(),
-			join_timestamp: member.joinTimestamp.toISOString(),
-			flags: member.flags,
-		};
-	}
-
-	private async loadThreadOrThrow(threadChannelId: ChannelID): Promise<Channel> {
-		const thread = await this.channelRepository.findUnique(threadChannelId);
-		if (!thread || thread.isSoftDeleted || !thread.guildId || !THREAD_CHANNEL_TYPES.has(thread.type)) {
-			throw new UnknownChannelError();
-		}
-		return thread;
-	}
-
-	// Echowire: forum post-creation slowmode, applied the way message slowmode is: the shared rate
-	// limiter, bots exempt, BYPASS_SLOWMODE exempt.
-	private async enforceForumPostSlowmode(parent: Channel, userId: UserID, parentPermissions: bigint): Promise<void> {
-		if (parent.type !== ChannelTypes.GUILD_FORUM || parent.rateLimitPerUser <= 0) {
-			return;
-		}
-		if (hasPermissionBits(parentPermissions, Permissions.BYPASS_SLOWMODE)) {
-			return;
-		}
-		const user = await this.userRepository.findUnique(userId);
-		if (user?.isBot) {
-			return;
-		}
-		const result = await this.rateLimitService.checkLimit({
-			identifier: `forum-post-slowmode:${parent.id}:${userId}`,
-			maxAttempts: 1,
-			windowMs: parent.rateLimitPerUser * 1000,
-			algorithm: 'leaky_bucket',
-		});
-		if (!result.allowed) {
-			throw new SlowmodeRateLimitError({
-				retryAfter: result.retryAfter,
-				retryAfterDecimal: result.retryAfterDecimal,
-			});
-		}
-	}
-
-	// Echowire: drop private threads the caller is neither a member of nor a manager of.
-	private async filterVisibleThreads(
-		threads: Array<Channel>,
-		userId: UserID,
-		parentPermissions: bigint,
-	): Promise<Array<Channel>> {
-		const visible = await Promise.all(
-			threads.map((channel) =>
-				canAccessPrivateThread({
-					channel,
-					userId,
-					parentPermissions,
-					threadMemberRepository: this.threadMemberRepository,
-				}),
-			),
-		);
-		return threads.filter((_, index) => visible[index]);
-	}
-
-	// Echowire: thread moderation. The caller must see the thread, then own it or hold
-	// MANAGE_CHANNELS on the parent channel.
-	private async assertCanManageThread(thread: Channel, userId: UserID): Promise<{isModerator: boolean}> {
-		const guildId = thread.guildId!;
-		const parentPermissions = await getThreadParentPermissions({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			guildId,
-			channel: thread,
-			userId,
-		});
-		const canView = await canViewThread({
-			gatewayService: this.gatewayService,
-			channelRepository: this.channelRepository,
-			threadMemberRepository: this.threadMemberRepository,
-			guildId,
-			channel: thread,
-			userId,
-			parentPermissions,
-		});
-		if (!canView) {
-			throw new MissingPermissionsError();
-		}
-		const isModerator = canModerateThreads(parentPermissions);
-		if (!isModerator && thread.ownerId !== userId) {
-			throw new MissingPermissionsError();
-		}
-		return {isModerator};
-	}
-
-	async updateChannelPositionsLocked(params: {
-		userId: UserID;
-		guildId: GuildID;
-		operation: ChannelReorderOperation;
-		requestCache: RequestCache;
-	}): Promise<void> {
-		const lockKey = `guild:${params.guildId}:channel-positions`;
-		const lockToken = await this.cacheService.acquireLock(lockKey, 30);
-		if (!lockToken) {
-			throw new ResourceLockedError();
-		}
-		try {
-			await this.executeChannelReorder(params);
-		} finally {
-			await this.cacheService.releaseLock(lockKey, lockToken);
-		}
 	}
 
 	async sanitizeTextChannelNames(params: {guildId: GuildID; requestCache: RequestCache}): Promise<void> {
 		const {guildId, requestCache} = params;
-		const channels = await this.channelRepository.listGuildChannels(guildId);
+		const channels = await this.channelRepository.listGuildChannels(guildId, 'enrolled');
 		let hasChanges = false;
 		const updatedChannels: Array<Channel> = [];
 		for (const channel of channels) {
@@ -1480,6 +328,8 @@ export class ChannelOperationsService {
 		}>;
 		requestCache: RequestCache;
 		auditLogReason: string | null;
+		clientFeatures?: ReadonlySet<string>;
+		viewer?: ThreadViewer;
 	}): Promise<void> {
 		const {guildId, userId, updates, requestCache} = params;
 		const lockKey = `guild:${guildId}:channel-positions`;
@@ -1488,7 +338,8 @@ export class ChannelOperationsService {
 			throw new ResourceLockedError();
 		}
 		try {
-			const allChannels = await this.channelRepository.listGuildChannels(guildId);
+			const hideThreadOnly = hidesThreadOnlyChannels(params.viewer, guildId);
+			const allChannels = await this.listPositionableChannels(guildId, hideThreadOnly);
 			const channelMap = new Map(allChannels.map((ch) => [ch.id, ch]));
 			for (const update of updates) {
 				if (!channelMap.has(update.channelId)) {
@@ -1509,11 +360,19 @@ export class ChannelOperationsService {
 					userId,
 					update,
 					requestCache,
+					clientFeatures: params.clientFeatures,
+					viewer: params.viewer,
+					hideThreadOnly,
 				});
 			}
 		} finally {
 			await this.cacheService.releaseLock(lockKey, lockToken);
 		}
+	}
+
+	private async listPositionableChannels(guildId: GuildID, hideThreadOnly: boolean): Promise<Array<Channel>> {
+		const channels = await this.channelRepository.listGuildChannels(guildId, 'enrolled');
+		return hideThreadOnly ? channels.filter((ch) => !ch.isThreadOnly()) : channels;
 	}
 
 	private async applySinglePositionUpdate(params: {
@@ -1527,9 +386,12 @@ export class ChannelOperationsService {
 			lockPermissions: boolean;
 		};
 		requestCache: RequestCache;
+		clientFeatures?: ReadonlySet<string>;
+		viewer?: ThreadViewer;
+		hideThreadOnly: boolean;
 	}): Promise<void> {
 		const {guildId, update, requestCache} = params;
-		const allChannels = await this.channelRepository.listGuildChannels(guildId);
+		const allChannels = await this.listPositionableChannels(guildId, params.hideThreadOnly);
 		const channelMap = new Map(allChannels.map((ch) => [ch.id, ch]));
 		const target = channelMap.get(update.channelId);
 		if (!target) {
@@ -1584,6 +446,8 @@ export class ChannelOperationsService {
 				userId: params.userId,
 				channelId: target.id,
 				parentId: desiredParent,
+				clientFeatures: params.clientFeatures,
+				viewer: params.viewer,
 			});
 		}
 	}
@@ -1593,6 +457,8 @@ export class ChannelOperationsService {
 		userId: UserID;
 		channelId: ChannelID;
 		parentId: ChannelID;
+		clientFeatures?: ReadonlySet<string>;
+		viewer?: ThreadViewer;
 	}): Promise<void> {
 		const parent = await this.channelRepository.findUnique(params.parentId);
 		if (!parent || parent.guildId !== params.guildId || parent.type !== ChannelTypes.GUILD_CATEGORY) return;
@@ -1606,18 +472,45 @@ export class ChannelOperationsService {
 		if ((userPermissions & Permissions.MANAGE_ROLES) === 0n) {
 			throw new MissingPermissionsError();
 		}
+		const actor = await resolveProtectedBitActor({
+			guildId: params.guildId,
+			userId: params.userId,
+			clientFeatures: params.clientFeatures ?? new Set(),
+			viewer: params.viewer,
+			isBot: async () => (params.viewer?.kind === 'user' ? params.viewer.bot : false),
+		});
+		const incomingOverwrites = actor.threadBits
+			? new Map(
+					Array.from(parent.permissionOverwrites.entries()).map(([targetId, overwrite]) => {
+						const existing = child.permissionOverwrites.get(targetId);
+						const protectedBits = applyProtectedOverwriteBits(
+							{allow: overwrite.allow, deny: overwrite.deny},
+							{allow: existing?.allow ?? 0n, deny: existing?.deny ?? 0n},
+							actor,
+						);
+						return [
+							targetId,
+							new ChannelPermissionOverwrite({
+								type: overwrite.type,
+								allow_: protectedBits.allow,
+								deny_: protectedBits.deny,
+							}),
+						];
+					}),
+				)
+			: parent.permissionOverwrites;
 		for (const [targetId, existing] of child.permissionOverwrites) {
-			const incomingDeny = parent.permissionOverwrites.get(targetId)?.deny ?? 0n;
+			const incomingDeny = incomingOverwrites.get(targetId)?.deny ?? 0n;
 			if ((existing.deny & ~incomingDeny & ~userPermissions) !== 0n) throw new MissingPermissionsError();
 		}
-		for (const [targetId, incoming] of parent.permissionOverwrites) {
+		for (const [targetId, incoming] of incomingOverwrites) {
 			const existingAllow = child.permissionOverwrites.get(targetId)?.allow ?? 0n;
 			if ((incoming.allow & ~existingAllow & ~userPermissions) !== 0n) throw new MissingPermissionsError();
 		}
 		await this.channelRepository.upsert({
 			...child.toRow(),
 			permission_overwrites: new Map(
-				Array.from(parent.permissionOverwrites.entries()).map(([targetId, overwrite]) => [
+				Array.from(incomingOverwrites.entries()).map(([targetId, overwrite]) => [
 					targetId,
 					overwrite.toPermissionOverwrite(),
 				]),
@@ -1631,7 +524,7 @@ export class ChannelOperationsService {
 		requestCache: RequestCache;
 	}): Promise<void> {
 		const {guildId, operation, requestCache} = params;
-		const allChannels = await this.channelRepository.listGuildChannels(guildId);
+		const allChannels = await this.channelRepository.listGuildChannels(guildId, 'enrolled');
 		const planResult = computeGuildChannelReorderPlan({channels: allChannels, operation});
 		if (!planResult.ok) {
 			this.throwReorderPlanError(planResult.code, operation);
@@ -1674,7 +567,7 @@ export class ChannelOperationsService {
 			}
 		}
 		await Promise.all(updatePromises);
-		const updatedChannels = await this.channelRepository.listGuildChannels(guildId);
+		const updatedChannels = await this.channelRepository.listGuildChannels(guildId, 'enrolled');
 		await this.dispatchChannelUpdateBulk({guildId, channels: updatedChannels, requestCache});
 	}
 
@@ -1791,12 +684,16 @@ export class ChannelOperationsService {
 		await this.gatewayService.dispatchGuild({
 			guildId,
 			event: 'CHANNEL_CREATE',
-			data: await mapChannelToResponse({
+			data: await withThreadParentFields(
+				this.channelRepository.threads,
 				channel,
-				currentUserId: null,
-				userCacheService: this.userCacheService,
-				requestCache,
-			}),
+				await mapChannelToResponse({
+					channel,
+					currentUserId: null,
+					userCacheService: this.userCacheService,
+					requestCache,
+				}),
+			),
 		});
 	}
 
@@ -1822,7 +719,9 @@ export class ChannelOperationsService {
 		await this.gatewayService.dispatchGuild({
 			guildId,
 			event: 'CHANNEL_UPDATE_BULK',
-			data: {channels: channelResponses},
+			data: {
+				channels: await withThreadParentFieldsMany(this.channelRepository.threads, guildId, channels, channelResponses),
+			},
 		});
 	}
 
@@ -1842,52 +741,8 @@ export class ChannelOperationsService {
 		}
 	}
 
-	// Echowire: active (non-archived) threads are capped per parent channel and per guild. Archived
-	// threads do not count, so a busy forum keeps accepting posts as older ones archive, while the
-	// working set the gateway and READY carry stays bounded.
-	private async ensureThreadCapacity(params: {
-		guildId: GuildID;
-		parentChannelId: ChannelID;
-		channels: ReadonlyArray<Channel>;
-	}): Promise<void> {
-		const guild = await this.guildRepository.findUnique(params.guildId);
-		const ctx = createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null});
-		const snapshot = this.limitConfigService.getConfigSnapshot();
-		// Both keys are guild-scoped, so they are resolved with the guild evaluation context: the
-		// default 'user' context drops guild-scoped keys and an instance override would never apply.
-		const maxPerChannel = resolveLimitSafe(
-			snapshot,
-			ctx,
-			'max_active_threads_per_channel',
-			MAX_ACTIVE_THREADS_PER_CHANNEL,
-			'guild',
-		);
-		const maxPerGuild = resolveLimitSafe(
-			snapshot,
-			ctx,
-			'max_active_threads_per_guild',
-			MAX_ACTIVE_THREADS_PER_GUILD,
-			'guild',
-		);
-		const activeThreads = params.channels.filter(
-			(channel) => THREAD_CHANNEL_TYPES.has(channel.type) && !channel.threadMetadata?.archived,
-		);
-		if (activeThreads.length >= maxPerGuild) {
-			throw new MaxActiveThreadsError(maxPerGuild);
-		}
-		const activeUnderParent = activeThreads.filter((channel) => channel.parentId === params.parentChannelId);
-		if (activeUnderParent.length >= maxPerChannel) {
-			throw new MaxActiveThreadsError(maxPerChannel);
-		}
-	}
-
 	private async ensureGuildHasCapacity(guildId: GuildID): Promise<void> {
-		// Echowire: threads and forum posts are channel rows and they sit in the gateway's channel
-		// index, so the gateway's count includes them. Counting them here let a forum with enough
-		// posts exhaust max_guild_channels and block channel creation for good, so the cap is
-		// measured against real channels only. Threads have their own caps, see ensureThreadCapacity.
-		const channels = await this.channelRepository.listGuildChannels(guildId);
-		const count = countCapacityChannels(channels);
+		const count = await this.gatewayService.getChannelCount({guildId});
 		let maxChannels = MAX_GUILD_CHANNELS;
 		const guild = await this.guildRepository.findUnique(guildId);
 		const ctx = createLimitMatchContext({user: null, guildFeatures: guild?.features ?? null});
@@ -1896,4 +751,8 @@ export class ChannelOperationsService {
 			throw new MaxGuildChannelsError(maxChannels);
 		}
 	}
+}
+
+function hidesThreadOnlyChannels(viewer: ThreadViewer | undefined, guildId: GuildID): boolean {
+	return viewer != null && guildActive(guildId) && !viewerActive(viewer, guildId);
 }

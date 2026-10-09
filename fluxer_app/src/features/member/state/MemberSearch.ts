@@ -4,6 +4,7 @@ import Guilds from '@app/features/guild/state/Guilds';
 import type {GuildMember} from '@app/features/member/models/GuildMember';
 import GuildMembers from '@app/features/member/state/GuildMembers';
 import {Logger} from '@app/features/platform/utils/AppLogger';
+import {randomUuid} from '@app/features/platform/utils/RandomUuid';
 import Relationships from '@app/features/relationship/state/Relationships';
 import type {User} from '@app/features/user/models/User';
 import Users from '@app/features/user/state/Users';
@@ -11,14 +12,7 @@ import {formatUserTag} from '@app/features/user/utils/UserTagUtils';
 import {RelationshipTypes} from '@fluxer/constants/src/UserConstants';
 import {makeAutoObservable} from 'mobx';
 
-export enum MemberSearchActionTypes {
-	INGEST_DIRECTORY = 'INGEST_DIRECTORY',
-	MATCHES_READY = 'MATCHES_READY',
-	SEARCH_BEGIN = 'SEARCH_BEGIN',
-	SEARCH_CANCEL = 'SEARCH_CANCEL',
-}
-
-export enum MemberSearchWorkerMessageTypes {
+enum MemberSearchWorkerMessageTypes {
 	INGEST_DIRECTORY = 'INGEST_DIRECTORY',
 	MATCHES_READY = 'MATCHES_READY',
 	SEARCH_BEGIN = 'SEARCH_BEGIN',
@@ -172,7 +166,7 @@ export class SearchContext {
 	private _attachedWorker: Worker | null = null;
 
 	constructor(callback: (results: Array<TransformedMember>) => void, limit: number = DEFAULT_LIMIT) {
-		this._contextId = crypto.randomUUID();
+		this._contextId = randomUuid();
 		this._deliverResults = callback;
 		this._maxResults = limit;
 		this._inFlightQuery = null;
@@ -404,24 +398,6 @@ class MemberSearch {
 		if (!worker) return;
 		const transformedMembers = updateMembersList(members, guildId);
 		updateMembers(transformedMembers);
-	}
-
-	handleUserUpdate(userId: string): void {
-		if (!worker) return;
-		const user = Users.getUser(userId);
-		if (user == null) return;
-		const allMembers: Array<TransformedMember> = [getTransformedUser(user)];
-		const guilds = Guilds.getGuilds();
-		for (const guild of guilds) {
-			const member = GuildMembers.getMember(guild.id, userId);
-			if (member) {
-				const transformedMember = getTransformedMember(member, guild.id);
-				if (transformedMember) {
-					allMembers.push(transformedMember);
-				}
-			}
-		}
-		updateMembers(allMembers);
 	}
 
 	handleFriendshipChange(userId: string, isFriend: boolean): void {

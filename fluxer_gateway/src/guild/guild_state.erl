@@ -91,17 +91,6 @@ update_channel_event(channel_update_bulk, ED, D) ->
     guild_state_channels:handle_channel_update_bulk(ED, D);
 update_channel_event(channel_delete, ED, D) ->
     guild_state_channels:handle_channel_delete(ED, D);
-%% Echowire: threads live in the channel index too, so permission checks and event filtering
-%% can resolve a thread to its parent. Without this, a thread created after the guild loaded
-%% was unknown and fell back to guild-level permissions.
-update_channel_event(thread_create, ED, D) ->
-    guild_state_channels:handle_channel_create(ED, D);
-update_channel_event(thread_update, ED, D) ->
-    guild_state_channels:handle_channel_update(ED, D);
-update_channel_event(thread_delete, ED, D) ->
-    guild_state_channels:handle_channel_delete(ED, D);
-update_channel_event(thread_members_update, ED, D) ->
-    guild_state_channels:handle_thread_members_update(ED, D);
 update_channel_event(message_create, ED, D) ->
     guild_state_channels:handle_message_create(ED, D);
 update_channel_event(channel_pins_update, ED, D) ->
@@ -141,22 +130,6 @@ handle_post_update(Event, EventData, OldState, NewState) when
     Event =:= channel_delete
 ->
     post_update_channel(Event, EventData, OldState, NewState);
-handle_post_update(Event, EventData, OldState, NewState) when
-    Event =:= thread_members_update;
-    Event =:= thread_update
-->
-    %% Echowire: refresh the cached session data of users whose private-thread access may have
-    %% changed. Thread ids are always checked live when filtering, so this keeps the cached maps
-    %% honest rather than being what enforces access.
-    OldData = guild_permissions_common:resolve_data_map(OldState),
-    UserIds = guild_state_channels:thread_membership_user_ids(
-        EventData,
-        case OldData of
-            undefined -> #{};
-            _ -> OldData
-        end
-    ),
-    lists:foldl(fun refresh_member_session_cache/2, NewState, UserIds);
 handle_post_update(guild_member_remove, EventData, _OldState, NewState) ->
     post_update_member_remove(EventData, NewState);
 handle_post_update(Event, _EventData, OldState, NewState) ->
@@ -182,10 +155,7 @@ post_update_role(guild_role_delete, EventData, OldState, NewState) ->
     guild_state().
 resync_roles_after_permission_change(RoleIds, OldState, NewState) ->
     Recomputed = guild_state_roles:recompute_visibility_for_roles(RoleIds, OldState, NewState),
-    lists:foreach(
-        fun(RoleId) -> guild_voice_permission_sync:sync_users_with_role(RoleId, Recomputed) end,
-        RoleIds
-    ),
+    ok = guild_voice_permission_sync:sync_roles_after_change(RoleIds, OldState, Recomputed),
     Recomputed.
 
 -spec post_update_channel(event(), event_data(), guild_state(), guild_state()) -> guild_state().

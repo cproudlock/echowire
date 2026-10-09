@@ -375,6 +375,14 @@ export const UserSettingsResponse = z.object({
 		.describe(
 			'Default value of share_voice_activity applied to newly accepted friend relationships. Read-only here; mutated via PUT /users/@me/settings/voice-activity-sharing.',
 		),
+	privacy_setup_version: z
+		.number()
+		.int()
+		.describe('Latest privacy setup version the user has reviewed, 0 if never reviewed'),
+	privacy_setup_completed_at: z.iso
+		.datetime()
+		.nullable()
+		.describe('When the user last completed the privacy setup, or null if never'),
 });
 
 export type UserSettingsResponse = z.infer<typeof UserSettingsResponse>;
@@ -396,6 +404,9 @@ const UserGuildChannelOverride = z.object({
 	unread_badges: withFieldDescription(UserNotificationSettingsSchema, 'Unread badges level override for this channel')
 		.nullish()
 		.describe('Unread badges level override for this channel (null = inherit)'),
+	flags: Int32Type.optional().describe(
+		'Channel override flags (NEW_FORUM_THREADS_OFF 1<<13, NEW_FORUM_THREADS_ON 1<<14)',
+	),
 });
 export const UserGuildSettingsResponse = z.object({
 	guild_id: SnowflakeStringType.nullable().describe('The ID of the guild these settings apply to'),
@@ -445,7 +456,7 @@ export interface BackupCode {
 	readonly consumed: boolean;
 }
 
-export interface PendingBulkMessageDeletion {
+interface PendingBulkMessageDeletion {
 	readonly scheduled_at: string;
 	readonly channel_count: number;
 	readonly message_count: number;

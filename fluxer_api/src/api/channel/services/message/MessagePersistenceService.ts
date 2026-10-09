@@ -19,6 +19,7 @@ import {
 	keepOwnedEmbedAttachments,
 } from '@app/api/channel/services/message/MessageHelpers';
 import {MessageStickerService} from '@app/api/channel/services/message/MessageStickerService';
+import {resolveNsfwScopeChannel} from '@app/api/channel/utils/ThreadNsfwScope';
 import {getContentMessage} from '@app/api/content_i18n/ContentI18n';
 import type {
 	MessageAttachment,
@@ -93,6 +94,7 @@ interface CreateMessageParams {
 	embeds?: Array<RichEmbedRequest>;
 	attachments?: Array<AttachmentToProcess>;
 	attachmentUploadUserId?: UserID;
+	uploadChannelId?: ChannelID;
 	processedAttachments?: Array<MessageAttachment>;
 	stickerIds?: Array<StickerID>;
 	messageReference?: MessageReference;
@@ -116,6 +118,7 @@ interface CreateMessageParams {
 	processedEmbeds?: Array<MessageEmbed>;
 	processedStickerItems?: Array<MessageStickerItem>;
 	skipDeferredEmbeds?: boolean;
+	threadInsert?: boolean;
 }
 
 export class MessagePersistenceService {
@@ -151,6 +154,14 @@ export class MessagePersistenceService {
 		this.attachmentDecayService = new AttachmentDecayService();
 	}
 
+	private nsfwScopeChannel(channel: Channel): Promise<Channel> {
+		return resolveNsfwScopeChannel(channel, (channelId) => this.channelRepository.channelData.findUnique(channelId));
+	}
+
+	resolveDmNsfwContext(channel: Channel, senderId: UserID): Promise<DmNsfwContext | undefined> {
+		return this.contentService.resolveDmNsfwContext(channel, senderId);
+	}
+
 	getEmbedAttachmentResolver(): MessageEmbedAttachmentResolver {
 		return this.embedAttachmentResolver;
 	}
@@ -169,7 +180,7 @@ export class MessagePersistenceService {
 		const isBot = params.user?.isBot ?? false;
 		const isBugHunterBot = isBot && ((params.user?.flags ?? 0n) & UserFlags.BUG_HUNTER) !== 0n;
 		const isNSFWAllowed = this.contentService.isNSFWContentAllowed({
-			channel: params.channel,
+			channel: params.channel ? await this.nsfwScopeChannel(params.channel) : undefined,
 			guild: params.guild,
 			member: params.member,
 			isBot,
@@ -248,7 +259,11 @@ export class MessagePersistenceService {
 			has_reaction: false,
 			version: 1,
 		};
-		const message = await this.channelRepository.messages.upsertMessage(messageRowData, null);
+		const message = await this.channelRepository.messages.upsertMessage(
+			messageRowData,
+			null,
+			params.threadInsert ? {isInsert: true} : undefined,
+		);
 		const enqueueDeferredEmbeds = await this.runPostPersistenceOperations({
 			message,
 			params,
@@ -297,6 +312,7 @@ export class MessagePersistenceService {
 			} as Message,
 			attachments: params.attachments,
 			uploadUserId,
+			uploadChannelId: params.uploadChannelId,
 			channel: params.channel,
 			guild: params.guild,
 			member: params.member,
@@ -367,6 +383,7 @@ export class MessagePersistenceService {
 						mentionCount: 0,
 						implicit: {unreadThrough: params.user ? (params.channel?.lastMessageId ?? null) : null},
 						emitGateway: false,
+						...(params.threadInsert ? {capable: true, channel: params.channel ?? null} : {}),
 					}),
 				);
 			}
@@ -389,16 +406,18 @@ export class MessagePersistenceService {
 		isBot?: boolean;
 		isBugHunterBot?: boolean;
 		locale?: string | null;
+		dmNsfwContext?: DmNsfwContext;
 	}): Promise<UpdateMessageResult> {
 		const {message, messageId, data, channel, guild, member} = params;
 		if (message.messageSnapshots && message.messageSnapshots.length > 0) {
 			throw InputValidationError.fromCode('message', ValidationErrorCodes.MESSAGES_WITH_SNAPSHOTS_CANNOT_BE_EDITED);
 		}
 		const isNSFWAllowed = this.contentService.isNSFWContentAllowed({
-			channel,
+			channel: await this.nsfwScopeChannel(channel),
 			guild,
 			member,
 			isBot: params.isBot,
+			dmNsfwContext: params.dmNsfwContext,
 		});
 		const updatedRowData = {...message.toRow()};
 		let hasChanges = false;
@@ -566,55 +585,6 @@ export class MessagePersistenceService {
 		return {message: updatedMessage, enqueueDeferredEmbeds};
 	}
 
-	async updateSnapshotAttachments(params: {
-		message: Message;
-		snapshotEdits: ReadonlyArray<{
-			attachments?: ReadonlyArray<{
-				id: bigint | number;
-				title?: string | null;
-				description?: string | null;
-			}>;
-		}>;
-	}): Promise<Message> {
-		const {message, snapshotEdits} = params;
-		if (!message.messageSnapshots || message.messageSnapshots.length === 0) {
-			throw InputValidationError.fromCode('message_snapshots', ValidationErrorCodes.INVALID_MESSAGE_DATA);
-		}
-		const updatedSnapshots = message.messageSnapshots.map((snapshot, index) => {
-			const edit = snapshotEdits[index];
-			if (!edit?.attachments || edit.attachments.length === 0) {
-				return snapshot.toMessageSnapshot();
-			}
-			const snapshotRow = snapshot.toMessageSnapshot();
-			const existingAttachments = snapshotRow.attachments ?? [];
-			const editsByRefId = new Map<
-				bigint,
-				{
-					title?: string | null;
-					description?: string | null;
-				}
-			>();
-			for (const att of edit.attachments) {
-				const refId = createAttachmentID(typeof att.id === 'number' ? BigInt(att.id) : att.id);
-				editsByRefId.set(refId, {title: att.title, description: att.description});
-			}
-			const newAttachments = existingAttachments.map((existing, attIndex) => {
-				const matchById = editsByRefId.get(existing.attachment_id);
-				const fallback = matchById === undefined ? editsByRefId.get(createAttachmentID(BigInt(attIndex))) : undefined;
-				const patch = matchById ?? fallback;
-				if (!patch) return existing;
-				return {
-					...existing,
-					title: patch.title !== undefined ? patch.title : existing.title,
-					description: patch.description !== undefined ? patch.description : existing.description,
-				};
-			});
-			return {...snapshotRow, attachments: newAttachments.length > 0 ? newAttachments : null};
-		});
-		const updatedRowData = {...message.toRow(), message_snapshots: updatedSnapshots};
-		return await this.channelRepository.messages.upsertMessage(updatedRowData, message.toRow());
-	}
-
 	async handleNonAuthorEdit(params: {
 		message: Message;
 		data: MessageUpdateRequest;
@@ -715,6 +685,7 @@ export class MessagePersistenceService {
 			guildId: params.guildId ?? null,
 			allowEmbeds: false,
 			messageReference: params.messageReference,
+			threadInsert: true,
 			mentionData: {
 				flags: 0,
 				mentionUserIds: params.mentionUserIds ?? [],

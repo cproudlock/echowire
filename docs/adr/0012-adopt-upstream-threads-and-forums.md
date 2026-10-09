@@ -40,6 +40,34 @@ Facts that drive the plan (all from reading code, none from running it):
 - Private-thread moderation upstream is MANAGE_THREADS or ADMINISTRATOR. Ours also accepts
   MANAGE_CHANNELS.
 
+## What production holds (measured 2026-10-09, read-only)
+
+Counted from the production database in read-only transactions, with no rows changed:
+
+- 6 guilds, 24 guild members, 176 channel rows in total.
+- Threads: 20 public threads in 3 guilds, 0 private threads. Only 1 of the 20 is active; 19 are
+  archived. 1 is locked and none are pinned. 18 are forum posts and 2 sit under text channels.
+- Forum channels: 4 (one has 2 tags, none requires a tag).
+- Thread members: 34 rows. 12 of the 32 thread groups belong to threads that no longer exist
+  (orphans left behind); 31 groups have 1 member and 1 has 3.
+- Permissions: 17 roles, 1 of them administrator. No role has Manage Channels without
+  administrator, and no role has any thread permission bit. Every guild's @everyone role can
+  send messages and has no thread bit, so all 6 guilds run on our legacy fallback today. 8
+  channels have permission overwrites (18 entries in 5 guilds); none carries an explicit
+  thread bit, and 9 entries touch Send Messages.
+
+What follows from it:
+
+- The data migration is tiny: 20 thread rows, 4 forum rows and about 22 live member rows, with
+  12 orphaned member groups to skip. It can be verified by reading every row.
+- The private-thread moderator rule (Manage Threads, not Manage Channels) affects nobody today,
+  so no one-time grant of Manage Threads is needed at the cutover.
+- Upstream's seeding job would erase no explicit thread setting, since there are none. It would
+  add Create Public Threads, Create Private Threads and Send Messages in Threads to @everyone in
+  all 6 guilds, and add the same bits to the 9 overwrite entries that touch Send Messages,
+  which matches what our fallback already allows. The one new capability is @everyone getting
+  Create Private Threads, which our fallback never granted; 0 private threads exist today.
+
 ## Decision
 
 We will make upstream's implementation the base for threads and forums, retire ours, and
@@ -71,8 +99,7 @@ behaviour only where it matches Discord's. That gives every later choice a test:
 
 Exit criteria, all required:
 
-1. Count what exists in production: thread rows by type, forum channels, forum posts, thread
-   members, and guilds with any of them. This sizes the migration and is the main unknown.
+1. Count what exists in production. DONE 2026-10-09, see the section above.
 2. Where upstream and ours BEHAVE differently (as opposed to ours having something upstream
    lacks), the maintainer picks one per item. The default is upstream, because that is what
    keeps the merge small, and ours wins only where the maintainer says ours is the Discord
@@ -96,7 +123,8 @@ Exit criteria, all required:
      in the request.
    - The thread-created system message is deletable like any other message.
    - The OP badge shows in forum posts only (ordinary threads lose it).
-   The permission seeding job still needs a decision, because it rewrites overwrites.
+   The permission seeding job: run upstream's as it is. Measured, it erases nothing we have set.
+   The one decision left is whether @everyone gets Create Private Threads, upstream's default.
 3. The extras to carry are everything we have that upstream lacks: the "N New" forum pill,
    "Add to Post", participant avatars on post cards, the "Closed posts" toggle, the forum
    examples modal, the mobile post header actions, and the mobile add-member UI. Upstream
@@ -248,10 +276,12 @@ the unread cap, search, the admin thread tools, desktop, web, Android and iOS.
 
 ## Effort
 
-A guess, not a measurement: roughly four to six calendar weeks for one person working with an
-assistant, dominated by the server merge, the migration rehearsal, and the mobile release and
-adoption wait. The adoption wait is outside our control. The Phase 0 count is the main thing
-that could move this number.
+A guess, not a measurement. With 20 threads in 6 guilds the migration and its rehearsal are
+small, so the weight is the server merge and the mobile release. Roughly three to four calendar
+weeks for one person working with an assistant, if the mobile adoption wait is kept short. With
+6 guilds and 24 members the audience is small enough that the maintainer may choose to cut over
+without waiting for old mobile clients, and tell members to update; that is a decision for the
+cutover, not assumed here.
 
 ## Abort criteria
 

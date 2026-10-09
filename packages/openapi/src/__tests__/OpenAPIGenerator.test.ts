@@ -96,6 +96,8 @@ describe('OpenAPI generation from API controllers', () => {
 			.sort();
 		expect(tagged).toEqual(
 			[
+				// Echowire: the Add to Post route (docs/upstream-divergence.md).
+				'add_attachment_to_post',
 				'start_thread_from_message',
 				'start_thread',
 				'list_guild_active_threads',

@@ -64,6 +64,8 @@ export interface ThreadChannelFields {
 	readonly message_count?: number;
 	readonly total_message_sent?: number;
 	readonly member_count?: number;
+	// Echowire: read by the participant avatars on forum post cards.
+	readonly member_ids_preview?: ReadonlyArray<string>;
 	readonly default_auto_archive_duration?: number | null;
 	readonly default_thread_rate_limit_per_user?: number;
 	readonly available_tags?: ReadonlyArray<ForumTagResponse>;
@@ -85,6 +87,7 @@ const THREAD_FIELD_KEYS: ReadonlyArray<keyof ThreadChannelFields> = [
 	'message_count',
 	'total_message_sent',
 	'member_count',
+	'member_ids_preview',
 	'default_auto_archive_duration',
 	'default_thread_rate_limit_per_user',
 	'available_tags',
@@ -293,6 +296,11 @@ export class Channel {
 
 	get memberCount(): number {
 		return this.threadFields?.member_count ?? 0;
+	}
+
+	// Echowire: most recently joined members of a forum post, newest first.
+	get memberIdsPreview(): ReadonlyArray<string> {
+		return this.threadFields?.member_ids_preview ?? [];
 	}
 
 	get appliedTags(): ReadonlyArray<string> {

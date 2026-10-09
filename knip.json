@@ -42,6 +42,7 @@
 			"ignoreDependencies": ["vite"]
 		},
 		"fluxer_api": {
+			"entry": ["scripts/MigrateForkThreads.ts"],
 			"ignoreDependencies": [
 				"@elastic/elasticsearch",
 				"@messageformat/core",

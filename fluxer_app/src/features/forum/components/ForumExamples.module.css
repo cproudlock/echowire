@@ -1,0 +1,33 @@
+/* SPDX-License-Identifier: AGPL-3.0-or-later */
+
+.intro {
+	margin: 0 0 0.75rem;
+	color: var(--text-secondary);
+	font-size: 0.875rem;
+}
+
+.list {
+	display: flex;
+	flex-direction: column;
+	gap: 0.375rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.example {
+	width: 100%;
+	padding: 0.625rem 0.75rem;
+	border: 1px solid var(--background-modifier-accent);
+	border-radius: 0.375rem;
+	background: var(--background-secondary);
+	color: var(--text-primary);
+	font: inherit;
+	font-size: 0.875rem;
+	text-align: left;
+	cursor: pointer;
+}
+
+.example:hover {
+	background: var(--background-modifier-hover);
+}

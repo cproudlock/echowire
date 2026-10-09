@@ -4,6 +4,7 @@ import {SkeletonLine} from '@app/features/app/components/skeleton/SkeletonLine';
 import {ChannelHeader} from '@app/features/channel/components/ChannelHeader';
 import type {Channel} from '@app/features/channel/models/Channel';
 import styles from '@app/features/forum/components/Forum.module.css';
+import {ForumExamplesButton} from '@app/features/forum/components/ForumExamples';
 import {ForumPostCard} from '@app/features/forum/components/ForumPostCard';
 import {ForumPostComposer} from '@app/features/forum/components/ForumPostComposer';
 import {ForumFilterRow, ForumSearchCard} from '@app/features/forum/components/ForumToolbar';
@@ -68,7 +69,15 @@ const ForumGuidelines = observer(({forum}: {forum: Channel}) => {
 	);
 });
 
-const ForumEmptyState = ({searching}: {searching: boolean}) => {
+const ForumEmptyState = ({
+	forum,
+	searching,
+	onNewPost,
+}: {
+	forum: Channel;
+	searching: boolean;
+	onNewPost: (title: string) => void;
+}) => {
 	const {i18n} = useLingui();
 	return (
 		<div className={styles.empty} data-flx="forum.forum-channel-view.forum-empty-state.empty">
@@ -83,6 +92,14 @@ const ForumEmptyState = ({searching}: {searching: boolean}) => {
 			<span data-flx="forum.forum-channel-view.forum-empty-state.span">
 				{i18n._(searching ? D.NO_MATCHING_POSTS_HINT_DESCRIPTOR : D.NO_POSTS_HINT_DESCRIPTOR)}
 			</span>
+			{/* Echowire: example post ideas, see docs/upstream-divergence.md */}
+			{!searching && (
+				<ForumExamplesButton
+					forum={forum}
+					onPick={onNewPost}
+					data-flx="forum.forum-channel-view.forum-empty-state.forum-examples-button"
+				/>
+			)}
 		</div>
 	);
 };
@@ -122,7 +139,7 @@ const PostCards = observer(({forum, posts, grid}: {forum: Channel; posts: Readon
 	</div>
 ));
 
-const ForumPostList = observer(({forum}: {forum: Channel}) => {
+const ForumPostList = observer(({forum, onNewPost}: {forum: Channel; onNewPost: (title: string) => void}) => {
 	const {i18n} = useLingui();
 	const view = getForumPostListView(forum);
 	const grid = ForumPosts.getLayout(forum) === ForumLayoutTypes.GRID;
@@ -167,6 +184,8 @@ const ForumPostList = observer(({forum}: {forum: Channel}) => {
 			)}
 			{empty && settled && list.loaded && (
 				<ForumEmptyState
+					forum={forum}
+					onNewPost={onNewPost}
 					searching={view.searching}
 					data-flx="forum.forum-channel-view.forum-post-list.forum-empty-state"
 				/>
@@ -247,7 +266,7 @@ export const ForumChannelView = observer(({forum}: {forum: Channel}) => {
 							data-flx="forum.forum-channel-view.forum-post-composer"
 						/>
 					)}
-					<ForumPostList forum={forum} data-flx="forum.forum-channel-view.forum-post-list" />
+					<ForumPostList forum={forum} onNewPost={handleNewPost} data-flx="forum.forum-channel-view.forum-post-list" />
 				</div>
 			</div>
 		</div>

@@ -1363,6 +1363,11 @@ msgstr "{count, plural, one {आप # सेव किए गए मीडिय
 msgid "{count, plural, one {You've reached the maximum number of communities you can join (# community). Leave a community before joining another one.} other {You've reached the maximum number of communities you can join (# communities). Leave a community before joining another one.}}"
 msgstr "{count, plural, one {आप अधिकतम संख्या में कम्युनिटी में शामिल हो चुके हैं (# कम्युनिटी)। किसी दूसरी कम्युनिटी में शामिल होने से पहले एक कम्युनिटी छोड़ दें।} other {आप अधिकतम संख्या में कम्युनिटी में शामिल हो चुके हैं (# कम्युनिटी)। किसी दूसरी कम्युनिटी में शामिल होने से पहले एक कम्युनिटी छोड़ दें।}}"
 
+#. Pill beside a forum channel in the channel list: how many posts have new activity since the user last visited.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:8
+msgid "{count} New"
+msgstr "{count} New"
+
 #. Custom status clear-time label. dayLabel is a relative day such as "today" or a formatted date; timeString is the localized time.
 #: src/features/user/components/modals/CustomStatusModal.tsx:96
 msgid "{dayLabel} at {timeString}"
@@ -2047,11 +2052,6 @@ msgstr "{productName} विजनरी"
 #: src/features/user/components/popouts/UserProfileBadges.tsx:43
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} विजनरी, {premiumSinceFormatted} से"
-
-#. Accessible label for the application wordmark.
-#: src/features/ui/components/icons/FluxerWordmark.tsx:13
-msgid "{productName} wordmark"
-msgstr "{productName} वर्डमार्क"
 
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts:17
@@ -4956,6 +4956,11 @@ msgstr "कॉल शुरू करने से पहले पूछें"
 msgid "Ask for a passkey after your password when you sign in"
 msgstr "साइन इन करते समय आपके पासवर्ड के बाद पासकी भी मांगी जाए"
 
+#. Example forum post idea.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:36
+msgid "Ask for help with something"
+msgstr "Ask for help with something"
+
 #. Short label in the theme studio. Keep it concise.
 #: src/features/theme_studio/ThemeStudio.tsx:56
 msgid "Assets"
@@ -6941,7 +6946,7 @@ msgid "Categories"
 msgstr "श्रेणियाँ"
 
 #. Lowercase channel type label used inside channel-list accessible text.
-#: src/features/app/components/layout/ChannelItem.tsx:85
+#: src/features/app/components/layout/ChannelItem.tsx:86
 msgid "category"
 msgstr "श्रेणी"
 
@@ -7437,7 +7442,7 @@ msgstr "बदलाव तुरंत लाइव क्लाइंट प�
 
 #. Fallback channel-name placeholder used inside the textarea message hint when no name is available. Lowercase.
 #. Lowercase generic channel type label used inside channel-list accessible text.
-#: src/features/app/components/layout/ChannelItem.tsx:93
+#: src/features/app/components/layout/ChannelItem.tsx:94
 #: src/features/channel/components/channel_textarea/shared.ts:12
 msgid "channel"
 msgstr "चैनल"
@@ -8814,7 +8819,7 @@ msgstr "{channelHeading} के लिए न पढ़े गए मैसे�
 
 #. Lowercase screen-reader fragment in the sidebar navigation guild folder item.
 #. Lowercase state label used inside channel-list accessible text for a collapsed category.
-#: src/features/app/components/layout/ChannelItem.tsx:101
+#: src/features/app/components/layout/ChannelItem.tsx:102
 #: src/features/app/components/layout/sidebar_nav/GuildFolderItem.tsx:86
 msgid "collapsed"
 msgstr "छोटा किया गया"
@@ -9444,7 +9449,7 @@ msgid "Connect with {providerName}"
 msgstr "{providerName} से कनेक्ट करें"
 
 #. Lowercase state label used inside channel-list accessible text for the current voice channel.
-#: src/features/app/components/layout/ChannelItem.tsx:117
+#: src/features/app/components/layout/ChannelItem.tsx:118
 msgid "connected"
 msgstr "कनेक्ट किया गया"
 
@@ -13739,7 +13744,7 @@ msgstr "अटैचमेंट एडिट करें"
 
 #. Action that opens the edit-category modal.
 #. Tooltip and accessible label for the category settings button in the channel list.
-#: src/features/app/components/layout/ChannelItem.tsx:121
+#: src/features/app/components/layout/ChannelItem.tsx:122
 #: src/features/ui/action_menu/items/CategoryMenuData.tsx:85
 msgid "Edit category"
 msgstr "श्रेणी एडिट करें"
@@ -15085,7 +15090,7 @@ msgstr "{channelHeading} के लिए न पढ़े गए मैसे�
 
 #. Lowercase screen-reader fragment in the sidebar navigation guild folder item.
 #. Lowercase state label used inside channel-list accessible text for an expanded category.
-#: src/features/app/components/layout/ChannelItem.tsx:105
+#: src/features/app/components/layout/ChannelItem.tsx:106
 #: src/features/app/components/layout/sidebar_nav/GuildFolderItem.tsx:82
 msgid "expanded"
 msgstr "विस्तारित"
@@ -18904,6 +18909,11 @@ msgstr "इंटरफ़ेस भाषा"
 msgid "Interface size"
 msgstr "इंटरफ़ेस का आकार"
 
+#. Example forum post idea.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:35
+msgid "Introduce yourself"
+msgstr "Introduce yourself"
+
 #. Error message in the use entrance sound.
 #. Error message in the use sound settings.
 #: src/features/user/components/modals/tabs/hooks/useEntranceSound.ts:32
@@ -19079,7 +19089,7 @@ msgstr "इनवाइट मास्किंग"
 #. Action label that opens the invite flow.
 #. Button or menu action label in the guild header popout. Keep it concise.
 #. Tooltip and accessible label for the invite button shown beside a channel in the channel list.
-#: src/features/app/components/layout/ChannelItem.tsx:125
+#: src/features/app/components/layout/ChannelItem.tsx:126
 #: src/features/guild/components/popouts/GuildHeaderPopout.tsx:57
 #: src/features/ui/action_menu/items/GuildMenuData.tsx:82
 msgid "Invite members"
@@ -22555,7 +22565,7 @@ msgstr "थ्रेड म्यूट करें"
 #. Lowercase screen-reader fragment in the sidebar navigation guild list item.
 #. Lowercase state label used inside channel-list accessible text when a channel is muted.
 #. Screen-reader fragment announcing that the DM list row is muted. Lowercase fragment.
-#: src/features/app/components/layout/ChannelItem.tsx:113
+#: src/features/app/components/layout/ChannelItem.tsx:114
 #: src/features/app/components/layout/sidebar_nav/GuildListDMItem.tsx:62
 #: src/features/app/components/layout/sidebar_nav/UseGuildListItemState.ts:39
 #: src/features/channel/components/direct_message/DMListItem.tsx:75
@@ -24593,7 +24603,7 @@ msgstr "{channelName} के चैनल विवरण खोलें"
 
 #. Context-menu action that opens a voice channel's embedded chat view without connecting to voice.
 #. Tooltip and accessible label for the chat icon shown beside a voice channel in the channel list.
-#: src/features/app/components/layout/ChannelItem.tsx:129
+#: src/features/app/components/layout/ChannelItem.tsx:130
 #: src/features/ui/action_menu/items/ChannelMenuData.tsx:158
 msgid "Open chat"
 msgstr "चैट खोलें"
@@ -25776,6 +25786,11 @@ msgstr "इस पोस्ट के लिए कम से कम एक ट�
 msgid "Pick one or more dictionaries. Words from any selected dictionary are accepted, which is useful for multilingual chats."
 msgstr "एक या ज़्यादा शब्दकोश चुनें। किसी भी चुने गए शब्दकोश के शब्द स्वीकार किए जाते हैं, जो बहुभाषी चैट के लिए उपयोगी है।"
 
+#. Introduction above the example post ideas.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:29
+msgid "Pick one to start a post, or write your own."
+msgstr "Pick one to start a post, or write your own."
+
 #. Plutonium page comparison row label for the custom username tag perk.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts:183
 msgid "Pick the 4-digit number after your username"
@@ -26138,6 +26153,11 @@ msgstr "पोस्ट करें"
 #: src/features/forum/utils/ForumMessageDescriptors.ts:187
 msgid "Post guidelines"
 msgstr "गाइडलाइन्स पोस्ट करें"
+
+#. Title of the sheet listing example first posts for an empty forum.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:24
+msgid "Post ideas"
+msgstr "Post ideas"
 
 #. Toast after the forum post link was copied.
 #: src/features/forum/utils/ForumMessageDescriptors.ts:413
@@ -27260,6 +27280,11 @@ msgstr "हाल के सदस्य"
 #: src/features/messaging/components/pages/RecentMentionsPage.tsx:27
 msgid "Recent mentions"
 msgstr "हाल के मेंशन"
+
+#. Accessible label for the row of member avatars on a forum post card.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:14
+msgid "Recent participants"
+msgstr "Recent participants"
 
 #. Section header in the message search popout listing previously-run searches.
 #: src/features/channel/components/message_search_bar/HistorySection.tsx:20
@@ -30174,6 +30199,11 @@ msgstr "सभी थ्रेड देखें"
 msgid "See channels by default. Channels that deny it stay hidden."
 msgstr "डिफ़ॉल्ट रूप से चैनल देखें। जो चैनल इसे अस्वीकार करते हैं वे छिपे रहते हैं।"
 
+#. Button on an empty forum that lists example first posts.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:19
+msgid "See Examples"
+msgstr "See Examples"
+
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/fields/GuildInviteSplashSettingsField.tsx:89
 msgid "See how your invite looks to visitors."
 msgstr "देखें कि आपका इनवाइट विज़िटर को कैसा दिखता है।"
@@ -30339,7 +30369,7 @@ msgstr "सिलेक्टेबल टेक्स्ट"
 #. Lowercase screen-reader fragment in the sidebar navigation guild list item.
 #. Lowercase state label used inside channel-list accessible text for the selected channel.
 #. Screen-reader suffix announcing that the DM list row is the active selection. Lowercase fragment.
-#: src/features/app/components/layout/ChannelItem.tsx:97
+#: src/features/app/components/layout/ChannelItem.tsx:98
 #: src/features/app/components/layout/sidebar_nav/GuildListDMItem.tsx:54
 #: src/features/app/components/layout/sidebar_nav/UseGuildListItemState.ts:35
 #: src/features/channel/components/direct_message/DMListItem.tsx:67
@@ -31003,6 +31033,11 @@ msgstr "उपहार शेयर करें"
 #: src/features/voice/components/modals/ScreenSharePickerModal.tsx:196
 msgid "Share screen"
 msgstr "स्क्रीन शेयर करें"
+
+#. Example forum post idea.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:37
+msgid "Share something you made"
+msgstr "Share something you made"
 
 #. Toggle label for sharing audio with an active stream.
 #: src/features/voice/components/StreamSettingsMenuContent.tsx:157
@@ -32833,6 +32868,11 @@ msgstr "साइन इन करने पर {appName} को अपने �
 msgid "Start a call in a DM or group"
 msgstr "किसी DM या ग्रुप में कॉल शुरू करें"
 
+#. Example forum post idea.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:38
+msgid "Start a discussion"
+msgstr "Start a discussion"
+
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts:157
 msgid "Start a group DM"
@@ -33498,6 +33538,11 @@ msgstr "सबटेक्स्ट"
 #: src/features/user/components/modals/tabs/component_gallery_tab/OverlaysTab.tsx:123
 msgid "Success"
 msgstr "सफलता"
+
+#. Example forum post idea.
+#: src/features/forum/utils/ForumEchowireDescriptors.ts:39
+msgid "Suggest an improvement"
+msgstr "Suggest an improvement"
 
 #. Helper text under the "Filter members without roles" explicit content filter option in the community moderation settings tab.
 #: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx:114
@@ -37338,7 +37383,7 @@ msgstr "ग्रुप DM अनपिन किया गया"
 #. Lowercase screen-reader fragment in the sidebar navigation guild list item.
 #. Lowercase state label used inside channel-list accessible text when a channel has unread messages.
 #. Screen-reader fragment announcing that the DM list row has unread messages. Lowercase fragment.
-#: src/features/app/components/layout/ChannelItem.tsx:109
+#: src/features/app/components/layout/ChannelItem.tsx:110
 #: src/features/app/components/layout/sidebar_nav/GuildFolderItem.tsx:90
 #: src/features/app/components/layout/sidebar_nav/GuildListDMItem.tsx:58
 #: src/features/app/components/layout/sidebar_nav/UseGuildListItemState.ts:27
@@ -39213,7 +39258,7 @@ msgstr "वॉइस कॉल। {statusText}।"
 
 #. Generic channel-type token used inside a wider delete confirmation string.
 #. Lowercase channel type label used inside channel-list accessible text.
-#: src/features/app/components/layout/ChannelItem.tsx:89
+#: src/features/app/components/layout/ChannelItem.tsx:90
 #: src/features/ui/action_menu/items/ChannelMenuItems.tsx:76
 msgid "voice channel"
 msgstr "वॉइस चैनल"

@@ -35,6 +35,7 @@ import {getTypingText, usePresentableTypingUsers} from '@app/features/channel/co
 import type {Channel} from '@app/features/channel/models/Channel';
 import Channels from '@app/features/channel/state/Channels';
 import * as ChannelUtils from '@app/features/channel/utils/ChannelUtils';
+import {ForumNewPostsPill} from '@app/features/forum/components/ForumNewPostsPill';
 import {hasForumUnread} from '@app/features/forum/state/ForumReadState';
 import type {Guild} from '@app/features/guild/models/Guild';
 import {
@@ -688,6 +689,10 @@ export const ChannelItem = observer(
 					<>
 						{!channelIsCategory && showMentionBadge && (
 							<MentionBadge mentionCount={mentionCount} size="small" data-flx="app.channel-item.mention-badge" />
+						)}
+						{/* Echowire: "N New" pill on forums, see docs/upstream-divergence.md */}
+						{channel.isThreadOnly() && !isSelected && !isChannelDirectlyMuted && !showMentionBadge && (
+							<ForumNewPostsPill forum={channel} data-flx="app.channel-item.forum-new-posts-pill" />
 						)}
 						{shouldShowVoiceUserCount && channel.userLimit != null && (
 							<div className={styles.voiceUserCount} data-flx="app.channel-item.voice-user-count">

@@ -4,6 +4,7 @@ import type {Channel} from '@app/features/channel/models/Channel';
 import Emoji from '@app/features/emoji/state/Emoji';
 import styles from '@app/features/forum/components/Forum.module.css';
 import {ForumPostMenuSheet, openForumPostContextMenu} from '@app/features/forum/components/ForumPostContextMenu';
+import {ForumPostParticipants} from '@app/features/forum/components/ForumPostParticipants';
 import {ForumEmoji, ForumTagPill} from '@app/features/forum/components/ForumTagPill';
 import ForumPosts from '@app/features/forum/state/ForumPosts';
 import ForumReadState from '@app/features/forum/state/ForumReadState';
@@ -244,6 +245,8 @@ export const ForumPostCard = observer(({forum, post, grid}: ForumPostCardProps) 
 								message={firstMessage}
 								data-flx="forum.forum-post-card.default-reaction-button"
 							/>
+							{/* Echowire: participant avatars, see docs/upstream-divergence.md */}
+							<ForumPostParticipants post={post} data-flx="forum.forum-post-card.forum-post-participants" />
 							<span className={styles.cardMeta} data-flx="forum.forum-post-card.card-meta">
 								<ChatCircleIcon
 									size={remFromPx(14)}

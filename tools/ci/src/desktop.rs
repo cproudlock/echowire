@@ -4866,7 +4866,7 @@ fn prepare_release_assets_step(args: &BuildDesktopArgs) -> Result<()> {
         }
     }
     require_release_payload_dirs(&payload_root, &coordinates)?;
-    for (platform, arch) in coordinates {
+    for (platform, arch) in coordinates.iter().copied() {
         let dir = payload_root.join(platform).join(arch);
         let manifest_path = dir.join("manifest.json");
         let manifest: DesktopManifest = serde_json::from_slice(
@@ -4908,7 +4908,7 @@ fn prepare_release_assets_step(args: &BuildDesktopArgs) -> Result<()> {
             release_builder.add(platform, arch, &updater_file, true)?;
         }
     }
-    add_desktop_module_release_assets(&mut release_builder, &payload_root)?;
+    add_desktop_module_release_assets(&mut release_builder, &payload_root, &coordinates)?;
     let (mut descriptor_assets, mut descriptor_modules) = release_builder.finish();
     descriptor_assets.sort_by(|left, right| left.storage_key.cmp(&right.storage_key));
     descriptor_modules.sort_by(|left, right| left.storage_key.cmp(&right.storage_key));
@@ -4934,9 +4934,11 @@ fn prepare_release_assets_step(args: &BuildDesktopArgs) -> Result<()> {
 fn add_desktop_module_release_assets(
     release_builder: &mut DesktopReleaseAssetBuilder,
     channel_payload: &Path,
+    coordinates: &[(&str, &str)],
 ) -> Result<()> {
     let mut packages = BTreeMap::<String, String>::new();
-    for (platform, arch) in desktop_release_coordinates() {
+    // Echowire: only the coordinates this release carries; a deliberately skipped platform has no manifest.
+    for &(platform, arch) in coordinates {
         let manifest_path = channel_payload
             .join(platform)
             .join(arch)
@@ -6425,7 +6427,11 @@ fn prepare_modules_release_assets_step() -> Result<()> {
     fs::create_dir_all(release_assets)?;
     let mut release_builder =
         DesktopReleaseAssetBuilder::new(&channel, &version, product, release_assets);
-    add_desktop_module_release_assets(&mut release_builder, &payload_root)?;
+    add_desktop_module_release_assets(
+        &mut release_builder,
+        &payload_root,
+        &desktop_release_coordinates(),
+    )?;
     let (descriptor_assets, mut descriptor_modules) = release_builder.finish();
     ensure!(
         descriptor_assets.is_empty(),
@@ -8222,7 +8228,12 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
             "echowire-canary",
             &release_assets,
         );
-        add_desktop_module_release_assets(&mut builder, &payload_root.join("canary")).unwrap();
+        add_desktop_module_release_assets(
+            &mut builder,
+            &payload_root.join("canary"),
+            &desktop_release_coordinates(),
+        )
+        .unwrap();
         let (assets, modules) = builder.finish();
         assert!(assets.is_empty());
         let mut expected = desktop_release_coordinates()
@@ -8303,10 +8314,14 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
             &release_assets,
         );
         assert!(
-            add_desktop_module_release_assets(&mut builder, &payload_root.join("canary"))
-                .unwrap_err()
-                .to_string()
-                .starts_with("Release source is missing")
+            add_desktop_module_release_assets(
+                &mut builder,
+                &payload_root.join("canary"),
+                &desktop_release_coordinates()
+            )
+            .unwrap_err()
+            .to_string()
+            .starts_with("Release source is missing")
         );
     }
 
@@ -8328,10 +8343,14 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
             &release_assets,
         );
         assert!(
-            add_desktop_module_release_assets(&mut builder, &payload_root.join("canary"))
-                .unwrap_err()
-                .to_string()
-                .contains("across coordinates")
+            add_desktop_module_release_assets(
+                &mut builder,
+                &payload_root.join("canary"),
+                &desktop_release_coordinates()
+            )
+            .unwrap_err()
+            .to_string()
+            .contains("across coordinates")
         );
     }
 
@@ -8374,6 +8393,41 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
         assert!(!root.join("assets/main.js.map").exists());
         assert!(!root.join("assets/fluxer_fonts_jp").exists());
         assert_eq!(read_bundled_renderer_version(&root).unwrap(), "2026.1009.1");
+    }
+
+    #[test]
+    fn module_release_assets_tolerate_a_deliberately_skipped_platform() {
+        let temp = tempfile::tempdir().unwrap();
+        let (payload_root, _packed) = write_fake_module_payload(temp.path());
+        let canary = payload_root.join("canary");
+        fs::remove_dir_all(canary.join("darwin")).unwrap();
+        let release_assets = temp.path().join("release_assets");
+        fs::create_dir_all(&release_assets).unwrap();
+        let kept: Vec<_> = desktop_release_coordinates()
+            .into_iter()
+            .filter(|(platform, _)| *platform != "darwin")
+            .collect();
+        let mut builder = DesktopReleaseAssetBuilder::new(
+            "canary",
+            LAYOUT_VERSION,
+            "echowire-canary",
+            &release_assets,
+        );
+        add_desktop_module_release_assets(&mut builder, &canary, &kept).unwrap();
+        let mut strict = DesktopReleaseAssetBuilder::new(
+            "canary",
+            LAYOUT_VERSION,
+            "echowire-canary",
+            &release_assets,
+        );
+        let error =
+            add_desktop_module_release_assets(&mut strict, &canary, &desktop_release_coordinates())
+                .unwrap_err()
+                .to_string();
+        assert!(
+            error.starts_with("Desktop module manifest is missing"),
+            "{error}"
+        );
     }
 
     #[test]

@@ -401,6 +401,9 @@ pub(crate) fn validate_desktop_release_descriptor(
             channel,
             version,
             &mut release_asset_names,
+            &desktop_release_coordinates()
+                .into_iter()
+                .collect::<BTreeSet<_>>(),
         );
     }
     // Echowire: the exact route total depends on which platforms this release
@@ -510,7 +513,19 @@ pub(crate) fn validate_desktop_release_descriptor(
         route_counts == expected_route_counts,
         "Desktop release descriptor route inventory mismatch: expected {expected_route_counts:?}, found {route_counts:?}"
     );
-    validate_desktop_release_modules(descriptor, channel, version, &mut release_asset_names)
+    // Echowire: a release that deliberately omits a platform carries no module manifest for it, so
+    // the manifests expected are exactly the coordinates whose shell assets are present.
+    let carried_coordinates = desktop_release_coordinates()
+        .into_iter()
+        .filter(|(platform, arch)| route_counts.contains_key(&format!("{platform}/{arch}")))
+        .collect::<BTreeSet<_>>();
+    validate_desktop_release_modules(
+        descriptor,
+        channel,
+        version,
+        &mut release_asset_names,
+        &carried_coordinates,
+    )
 }
 
 fn validate_desktop_release_modules<'a>(
@@ -518,6 +533,7 @@ fn validate_desktop_release_modules<'a>(
     channel: &str,
     version: &str,
     release_asset_names: &mut BTreeMap<String, &'a str>,
+    expected_manifests: &BTreeSet<(&'static str, &'static str)>,
 ) -> Result<()> {
     let mut storage_keys = BTreeSet::new();
     let mut manifests = BTreeSet::new();
@@ -579,11 +595,8 @@ fn validate_desktop_release_modules<'a>(
             entry.release_asset
         );
     }
-    let expected_manifests = desktop_release_coordinates()
-        .into_iter()
-        .collect::<BTreeSet<_>>();
     ensure!(
-        manifests == expected_manifests,
+        &manifests == expected_manifests,
         "Desktop release descriptor module manifests mismatch: expected {expected_manifests:?}, found {manifests:?}"
     );
     ensure!(
@@ -1528,6 +1541,7 @@ mod tests {
         }
         let mut modules = desktop_release_coordinates()
             .into_iter()
+            .filter(|(platform, _)| platforms.contains(platform))
             .enumerate()
             .map(|(index, (platform, arch))| DesktopReleaseAsset {
                 storage_key: desktop_module_manifest_storage_key(SAMPLE_CHANNEL, platform, arch),
@@ -1769,6 +1783,22 @@ mod tests {
                 .all(|asset| !asset.storage_key.contains("/darwin/")),
             "the fixture must not carry darwin routes"
         );
+    }
+
+    #[test]
+    fn a_manifest_for_a_platform_the_release_omits_is_refused() {
+        let mut descriptor = sample_descriptor_covering(&BTreeSet::from(["win32", "linux"]));
+        let darwin = sample_descriptor();
+        descriptor
+            .modules
+            .extend(darwin.modules.into_iter().filter(|entry| {
+                entry
+                    .storage_key
+                    .contains(&format!("{}/darwin/", SAMPLE_CHANNEL))
+            }));
+
+        let error = validate_sample(&descriptor).unwrap_err().to_string();
+        assert!(error.contains("module manifests mismatch"), "{error}");
     }
 
     #[test]

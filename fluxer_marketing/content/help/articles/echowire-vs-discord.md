@@ -53,15 +53,15 @@ Over 760,000 users of a service that was not run by Discord had their usernames,
 
 | | Discord | Fluxer (hosted) | Fluxer (self-hosted) | echowire |
 | --- | --- | --- | --- | --- |
-| Who pays | Nitro subscriptions and a growing ad business | Open-source project from Sweden, with an optional paid tier | You pay for your own server | No ad system. Optional paid features are planned; real payments are not live yet |
-| Advertising | Yes: Sponsored Quests and a FanDuel test | None | None | None |
-| Age checks (face scan or ID) | Planned for everyone, now due in the second half of 2026 | Follows the laws it is subject to | The server owner decides | None. No face scans and no ID uploads |
-| Source code | Closed | Open, AGPL-3.0 | Open, AGPL-3.0 | Open, AGPL-3.0, published on GitHub |
-| Run your own | No | Not applicable, this is the hosted service | Yes, Docker-based setup | Yes, same codebase with deploy scripts in the repository |
-| Where your data lives | On Discord's systems and its vendors' systems | On the operator's servers | On a machine you control | On echowire.org's server, or your own if you self-host |
-| Outside services | Many, including identity vendors and ad partners | Some: check the operator's privacy policy | Your choice | A few: Cloudflare Turnstile (sign-up captcha), SMTP2GO (email), Klipy (GIF search), Cloudflare R2 (downloads). Stripe is set up but not taking live payments |
-| Chat features | Most: servers, voice, video, bots and a huge ecosystem | Core: servers, channels, DMs, voice and video, threads | Same as hosted | Fluxer's features, plus forum boards and a few extras |
-| Joining | Anyone can sign up | Open | You decide who joins | Accounts on echowire.org are approved by hand for now |
+| Who pays | <span class="cmp-no">ADS + SUBS</span> Nitro subscriptions and a growing ad business | <span class="cmp-ok">NO ADS</span> Open-source project from Sweden, with an optional paid tier | <span class="cmp-ok">YOU</span> You pay for your own server | <span class="cmp-ok">NO ADS</span> No ad system. Optional paid features are planned; real payments are not live yet |
+| Advertising | <span class="cmp-no">YES</span> Sponsored Quests and a FanDuel test | <span class="cmp-ok">NONE</span> | <span class="cmp-ok">NONE</span> | <span class="cmp-ok">NONE</span> |
+| Age checks (face scan or ID) | <span class="cmp-no">PLANNED</span> Planned for everyone, now due in the second half of 2026 | <span class="cmp-mid">VARIES</span> Follows the laws it is subject to | <span class="cmp-ok">YOUR CALL</span> The server owner decides | <span class="cmp-ok">NONE</span> No face scans and no ID uploads |
+| Source code | <span class="cmp-no">CLOSED</span> | <span class="cmp-ok">OPEN</span> AGPL-3.0 | <span class="cmp-ok">OPEN</span> AGPL-3.0 | <span class="cmp-ok">OPEN</span> AGPL-3.0, published on GitHub |
+| Run your own | <span class="cmp-no">NO</span> | <span class="cmp-mid">N/A</span> Not applicable, this is the hosted service | <span class="cmp-ok">YES</span> Docker-based setup. [Setup guide](https://docs.fluxer.app/operator/get-started/) | <span class="cmp-ok">YES</span> Same codebase with deploy scripts in the repository |
+| Where your data lives | <span class="cmp-no">DISCORD</span> On Discord's systems and its vendors' systems | <span class="cmp-mid">FLUXER</span> On the operator's servers | <span class="cmp-ok">YOURS</span> On a machine you control | <span class="cmp-mid">US, OR YOURS</span> On echowire.org's server, or your own if you self-host |
+| Outside services | <span class="cmp-no">MANY</span> Including identity vendors and ad partners | <span class="cmp-mid">SOME</span> Check the operator's privacy policy | <span class="cmp-ok">YOUR CHOICE</span> | <span class="cmp-mid">A FEW</span> Cloudflare Turnstile (sign-up captcha), SMTP2GO (email), Klipy (GIF search), Cloudflare R2 (downloads). Stripe is set up but not taking live payments |
+| Chat features | <span class="cmp-ok">MOST</span> Servers, voice, video, bots and a huge ecosystem | <span class="cmp-ok">CORE</span> Servers, channels, DMs, voice and video, threads | <span class="cmp-ok">CORE</span> Same as hosted | <span class="cmp-ok">CORE</span> Fluxer's features, plus forum boards and a few extras |
+| Joining | <span class="cmp-ok">OPEN</span> Anyone can sign up | <span class="cmp-ok">OPEN</span> | <span class="cmp-ok">YOURS</span> You decide who joins | <span class="cmp-mid">BY APPROVAL</span> Accounts on echowire.org are approved by hand for now |
 
 ## What you give up
 
@@ -80,8 +80,8 @@ What to expect from echowire and Fluxer:
 ## Pick your path
 
 - Use echowire: request an account at [echowire.org](https://echowire.org). Accounts are approved by hand.
-- Use Fluxer: the upstream project, run by its own team, at [fluxer.app](https://fluxer.app).
-- Host your own: run [Fluxer](https://github.com/fluxerapp/fluxer) or [echowire](https://github.com/cproudlock/echowire) on your own server and keep every message on a machine you control.
+- Use Fluxer: the upstream project, run by its own team. Try the service at [fluxer.app](https://fluxer.app) or read the [Fluxer docs](https://docs.fluxer.app).
+- Host your own: run Fluxer or echowire on your own server and keep every message on a machine you control. Fluxer's [self-hosting guide](https://docs.fluxer.app/operator/get-started/) takes you from a fresh server to a working instance with Docker Compose. Source code: [Fluxer](https://github.com/fluxerapp/fluxer) and [echowire](https://github.com/cproudlock/echowire).
 
 ## Sources
 
@@ -99,5 +99,6 @@ What to expect from echowire and Fluxer:
 12. [Yahoo Tech: hackers stole millions of Discord IDs and emails in a multi-stage attack](https://tech.yahoo.com/cybersecurity/articles/hackers-stole-millions-discord-ids-185629432.html)
 13. [CSHub: Discord.io exposes personal data of more than 760,000 users (August 2023)](https://www.cshub.com/attacks/news/discordio-exposes-personal-data-of-more-than-760000-users)
 14. [CM Alliance: cyber insights on the Discord data breach (vendor breach, 2025)](https://www.cm-alliance.com/cyber-insights-on-the-discord-data-breach)
+15. [Fluxer documentation: get started with self-hosting](https://docs.fluxer.app/operator/get-started/)
 
 Figures and dates were checked on 2026-10-11 and may change. echowire is not affiliated with Discord.

@@ -1695,5 +1695,17 @@ async fn help_center_serves_the_comparison_article() {
     assert!(article.contains("data leaked"));
     assert!(article.contains("Double Counter"));
     assert!(article.contains("<table"));
+    assert!(article.contains(r#"class="cmp-ok""#));
+    assert!(article.contains(r#"class="cmp-no""#));
+    assert!(article.contains(r#"class="cmp-mid""#));
+    assert!(article.contains(r#"href="https://fluxer.app""#));
+    assert!(article.contains(r#"href="https://docs.fluxer.app""#));
+    assert!(
+        article
+            .matches(r#"href="https://docs.fluxer.app/operator/get-started/""#)
+            .count()
+            >= 3,
+        "the self-hosting guide is linked from the table, the path list and the sources"
+    );
     assert!(!article.contains("https://help.fluxer.app"));
 }

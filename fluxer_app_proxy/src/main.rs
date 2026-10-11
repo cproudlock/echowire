@@ -8,6 +8,7 @@ use fluxer_app_proxy::{
     state::{AppState, build_http_client},
 };
 use std::sync::Arc;
+use std::time::Duration;
 use tokio::{net::TcpListener, runtime::Builder};
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -50,6 +51,13 @@ fn main() -> anyhow::Result<()> {
             state.config.discovery_upstream_url.clone(),
             state.config.discovery_refresh_interval_ms,
         );
+        let branding_refresh = state.config.self_hosted.then(|| {
+            state.branding.start_background_refresh(
+                state.http_client.clone(),
+                state.config.discovery_upstream_url.clone(),
+                Duration::from_millis(state.config.discovery_refresh_interval_ms),
+            )
+        });
 
         let router = build_router(state);
         let listener = TcpListener::bind(&addr)
@@ -63,6 +71,9 @@ fn main() -> anyhow::Result<()> {
             .context("app proxy server exited unexpectedly")?;
 
         cancel.abort();
+        if let Some(branding_refresh) = branding_refresh {
+            branding_refresh.abort();
+        }
         Ok(())
     })
 }

@@ -119,7 +119,7 @@ describe('thread leak regression: lifecycle', () => {
 		await threadsRequest(harness, w.owner.token).delete(`/channels/${thread.id}`).expect(204).execute();
 
 		expect(await getChannelRepository().messages.listMessages(threadId, undefined, 50)).toEqual([]);
-		expect(await getChannelRepository().findUnique(threadId)).toBeNull();
+		expect(await getChannelRepository().channelData.findUnique(threadId)).toBeNull();
 		expect(await threads().getState(threadId)).toBeNull();
 		expect(await memberRowCount(thread.id)).toBe(0);
 		for (const account of [w.creator, w.outsider, w.owner]) {
@@ -144,7 +144,7 @@ describe('thread leak regression: lifecycle', () => {
 		for (const thread of [publicThread, privateThread]) {
 			const threadId = createChannelID(BigInt(thread.id));
 			expect(await threads().getState(threadId)).toBeNull();
-			expect(await getChannelRepository().findUnique(threadId)).toBeNull();
+			expect(await getChannelRepository().channelData.findUnique(threadId)).toBeNull();
 			expect(await getChannelRepository().messages.listMessages(threadId, undefined, 50)).toEqual([]);
 			expect(await memberRowCount(thread.id)).toBe(0);
 		}

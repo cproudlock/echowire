@@ -46,6 +46,22 @@ const UPSTREAM_HOST = /(?:[A-Za-z0-9._+-]*@)?(?:[A-Za-z0-9-]+\.)*fluxer\.(?:app|
  */
 const ALLOWED: ReadonlyArray<{readonly text: string; readonly why: string}> = [
 	{
+		text: 'Switch back to Fluxer Sans',
+		why: 'the real family name of the bundled UI font (font-fallback.css); the Windows font setting must name the font the user is switching to',
+	},
+	{
+		text: 'Text on Windows now uses the system font. You can switch back to Fluxer Sans in settings.',
+		why: 'the real family name of the bundled UI font (font-fallback.css); the Windows font setting must name the font the user is switching to',
+	},
+	{
+		text: 'Show text in Fluxer Sans, the previous default font, instead of the Windows system font',
+		why: 'the real family name of the bundled UI font (font-fallback.css); the Windows font setting must name the font the user is switching to',
+	},
+	{
+		text: 'Use Fluxer Sans on Windows',
+		why: 'the real family name of the bundled UI font (font-fallback.css); the Windows font setting must name the font the user is switching to',
+	},
+	{
 		text: 'Neko',
 		why: 'settings-search synonym kept on purpose so searching the upstream name still finds Pickles; documented in AGENTS.md',
 	},

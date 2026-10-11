@@ -20,7 +20,9 @@ import {usePlatformClasses} from '@app/features/app/hooks/usePlatformClasses';
 import {useServiceWorkerBadge} from '@app/features/app/hooks/useServiceWorkerBadge';
 import {useTabKeyFocusGuard} from '@app/features/app/hooks/useTabKeyFocusGuard';
 import {type LayoutVariant, LayoutVariantProvider} from '@app/features/app/state/LayoutVariantContext';
+import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import RuntimeCrash from '@app/features/app/state/RuntimeCrash';
+import DeveloperOptions from '@app/features/devtools/state/DeveloperOptions';
 import {showMyselfTypingHelper} from '@app/features/devtools/utils/ShowMyselfTypingHelper';
 import GatewayConnection from '@app/features/gateway/transport/GatewayConnection';
 import GatewaySessions from '@app/features/gateway/transport/GatewaySessionPool';
@@ -41,6 +43,7 @@ import {useRemScaleTracking} from '@app/features/theme/hooks/useRemScaleTracking
 import {useThemeCssVariables} from '@app/features/theme/hooks/useThemeCssVariables';
 import Theme from '@app/features/theme/state/Theme';
 import ThemeLibrary from '@app/features/theme/state/ThemeLibrary';
+import WindowsFont from '@app/features/theme/state/WindowsFont';
 import {useThemeStudioBroadcast} from '@app/features/theme_studio/state/ThemeStudioBroadcast';
 import ThemeStudioState from '@app/features/theme_studio/state/ThemeStudioState';
 import {SVGMasks} from '@app/features/ui/components/SVGMasks';
@@ -79,6 +82,14 @@ const logger = new Logger('App');
 
 interface AppWrapperProps {
 	children: ReactNode;
+}
+
+function getInstanceThemeColor(): string | null {
+	const snapshot = RuntimeConfig.getSnapshotOrNull();
+	if (snapshot === null || !(DeveloperOptions.selfHostedModeOverride || snapshot.features.self_hosted)) {
+		return null;
+	}
+	return snapshot.appPublic.branding.theme_color ?? null;
 }
 
 export const AppWrapper = observer(({children}: AppWrapperProps) => {
@@ -174,6 +185,7 @@ export const AppWrapper = observer(({children}: AppWrapperProps) => {
 	useDocumentClassToggle('reduced-motion', reducedMotion);
 	useDocumentClassToggle('mobile-layout', MobileLayout.platformMobileDetected || MobileLayout.enabled);
 	useDocumentClassToggle(UNFOCUSED_FULLY_INTERACTIVE_CLASS, stayInteractiveWhenUnfocused);
+	useDocumentClassToggle('windows-fluxer-sans', WindowsFont.useFluxerSans);
 	useDesktopAllowTransparency(isNative);
 	useWindowEventListeners();
 	useRemScaleTracking();
@@ -188,6 +200,7 @@ export const AppWrapper = observer(({children}: AppWrapperProps) => {
 		messageGutter: Accessibility.messageGutter,
 		messageGroupSpacing: Accessibility.getMessageGroupSpacingValue(messageDisplayCompact),
 		hdrDisplayMode: Accessibility.hdrDisplayMode,
+		instanceThemeColor: getInstanceThemeColor(),
 	});
 	useCustomThemeStyle({
 		enabledThemeCss: ThemeLibrary.activeThemeCss,

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import Channels from '@app/features/channel/state/Channels';
 import GuildMembers from '@app/features/member/state/GuildMembers';
 import SelectedGuild from '@app/features/navigation/state/SelectedGuild';
@@ -7,19 +8,15 @@ import Relationships from '@app/features/relationship/state/Relationships';
 import StreamerMode from '@app/features/streamer_mode/state/StreamerMode';
 import {noteText} from '@app/features/theme/fonts/ScriptFontLoader';
 import type {User} from '@app/features/user/models/User';
+import {truncateStreamerModeName} from '@app/features/user/utils/DisplayNameUtils';
 import {formatUserTag} from '@app/features/user/utils/UserTagUtils';
+import {FLUXERBOT_ID} from '@fluxer/constants/src/AppConstants';
 
 export interface UserDisplayNameLike {
 	username: string;
 	displayName?: string | null;
 	globalName?: string | null;
 	global_name?: string | null;
-}
-
-function truncateStreamerModeName(name: string): string {
-	const trimmed = name.trim();
-	if (!trimmed) return '…';
-	return `${Array.from(trimmed)[0]}…`;
 }
 
 export function formatNameForStreamerMode(name: string): string {
@@ -51,6 +48,10 @@ export function getDisplayName(user: UserDisplayNameLike): string {
 }
 
 export function getNickname(user: User, guildId?: string | null, channelId?: string): string {
+	if (user.id === FLUXERBOT_ID) {
+		const productName = RuntimeConfig.getSnapshotOrNull()?.appPublic.branding.product_name;
+		if (productName) return formatNicknameForStreamerMode(productName);
+	}
 	let name = user.displayName || user.globalName || user.username || user.id || '';
 	const relationship = Relationships.getRelationship(user.id);
 	if (relationship?.nickname) {

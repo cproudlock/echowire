@@ -13,9 +13,8 @@ import {
 	createUserID,
 	type GuildID,
 } from '@app/api/BrandedTypes';
-import {ChannelRepository} from '@app/api/channel/repositories/ChannelRepository';
-import type {CreateThreadParams} from '@app/api/channel/repositories/IThreadRepository';
-import {ThreadRepository} from '@app/api/channel/repositories/ThreadRepository';
+import {ChannelRepository} from '@app/api/channel/ChannelRepository';
+import {type CreateThreadParams, ThreadRepository} from '@app/api/channel/repositories/ThreadRepository';
 import {
 	type CassandraQueryExecutorForTesting,
 	deleteOneOrMany,
@@ -128,6 +127,7 @@ function channelRow(channelId: ChannelID, type: number, overrides: Partial<Chann
 		user_limit: null,
 		voice_connection_limit: null,
 		rtc_region: null,
+		rtc_p2p: null,
 		last_message_id: null,
 		last_pin_timestamp: null,
 		permission_overwrites: null,
@@ -860,6 +860,7 @@ describe('thread storage leaves control storage untouched', () => {
 			'user_limit',
 			'voice_connection_limit',
 			'rtc_region',
+			'rtc_p2p',
 			'last_message_id',
 			'last_pin_timestamp',
 			'permission_overwrites',

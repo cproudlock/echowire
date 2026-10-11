@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import type {AttachmentDecayPayload} from '@app/api/attachment/AttachmentDecayService';
 import type {AttachmentID, ChannelID, MessageID, UserID} from '@app/api/BrandedTypes';
 import {createAttachmentID, userIdToChannelId} from '@app/api/BrandedTypes';
 import {Config} from '@app/api/Config';
-import type {IChannelRepositoryAggregate} from '@app/api/channel/repositories/IChannelRepositoryAggregate';
+import type {ChannelRepository} from '@app/api/channel/ChannelRepository';
 import {forEachEmbedMedia} from '@app/api/channel/services/message/CrosspostEmbedObjects';
 import type {
 	MessageSnapshot as CassandraMessageSnapshot,
@@ -472,6 +473,22 @@ export function collectMessageAttachments(message: Message): Array<Attachment> {
 	return [...message.attachments, ...message.messageSnapshots.flatMap((snapshot) => snapshot.attachments)];
 }
 
+export function attachmentDecayPayloadsForMessage(message: Message): Array<AttachmentDecayPayload> {
+	const attachments = collectMessageAttachments(message);
+	if (attachments.length === 0) return [];
+	const ownerMessageId = isCrosspostCopy(message) ? (message.reference?.messageId ?? message.id) : message.id;
+	const uploadedAt = snowflakeToDate(ownerMessageId);
+	const storageChannelId = attachmentStorageChannelId(message);
+	return attachments.map((attachment) => ({
+		attachmentId: attachment.id,
+		channelId: storageChannelId,
+		messageId: ownerMessageId,
+		filename: attachment.filename,
+		sizeBytes: attachment.size,
+		uploadedAt,
+	}));
+}
+
 export function countedThreadMessages(channel: Channel, messageIds: Array<MessageID>): number {
 	if (!channel.isThread()) return 0;
 	const starterId = channel.id.toString();
@@ -479,7 +496,7 @@ export function countedThreadMessages(channel: Channel, messageIds: Array<Messag
 }
 
 export async function decrementThreadMessageCount(
-	channelRepository: IChannelRepositoryAggregate,
+	channelRepository: ChannelRepository,
 	channel: Channel | null,
 	messageIds: Array<MessageID>,
 ): Promise<void> {

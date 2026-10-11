@@ -7,7 +7,7 @@ import {
 	createGuildID,
 	createUserID,
 } from '@app/api/BrandedTypes';
-import {ChannelRepository} from '@app/api/channel/repositories/ChannelRepository';
+import {ChannelRepository} from '@app/api/channel/ChannelRepository';
 import {setCassandraQueryExecutorForTesting, upsertOne} from '@app/api/database/CassandraQueryExecution';
 import type {ChannelRow} from '@app/api/database/types/ChannelTypes';
 import {
@@ -50,6 +50,7 @@ function threadRow(threadId: ChannelID): ChannelRow {
 		user_limit: null,
 		voice_connection_limit: null,
 		rtc_region: null,
+		rtc_p2p: null,
 		last_message_id: null,
 		last_pin_timestamp: null,
 		permission_overwrites: null,

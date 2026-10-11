@@ -310,6 +310,8 @@ async fn help_center_serves_imported_articles_and_legacy_redirects() {
     // echowire fork, so it no longer appears in the help center listing.
     assert!(help.contains("How to delete or disable your account"));
     assert!(help.contains("Legal &amp; Policy"));
+    assert!(help.contains("Articles"));
+    assert!(help.contains("/help/echowire-vs-discord"));
     assert!(!help.contains("https://help.fluxer.app"));
 
     let search = render_path(app.clone(), "/help?q=regional").await;
@@ -1682,4 +1684,14 @@ async fn pages_never_reference_the_static_cdn_for_fonts() {
         csp.contains("style-src 'self' 'unsafe-inline';"),
         "style-src was {csp}"
     );
+}
+
+#[tokio::test]
+async fn help_center_serves_the_comparison_article() {
+    let app = build_router(test_config());
+    let article = render_path(app, "/help/echowire-vs-discord").await;
+    assert!(article.contains("echowire vs Discord"));
+    assert!(article.contains("What we can and cannot say"));
+    assert!(article.contains("<table"));
+    assert!(!article.contains("https://help.fluxer.app"));
 }

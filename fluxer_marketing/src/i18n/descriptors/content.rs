@@ -321,6 +321,22 @@ crate::marketing_message!(
 );
 
 crate::marketing_message!(
+    pub const CONTENT_HELP_CATEGORY_ARTICLES_TITLE_DESCRIPTOR = {
+        key: "content.help.category.articles.title",
+        message: "Articles",
+        comment: "Help center category title for longer explanatory articles. Keep as a short noun.",
+    };
+);
+
+crate::marketing_message!(
+    pub const CONTENT_HELP_CATEGORY_ARTICLES_DESCRIPTION_DESCRIPTOR = {
+        key: "content.help.category.articles.description",
+        message: "Longer reads on why {product_name} is built the way it is.",
+        comment: "Help center category summary shown under the Articles heading. Translate as a short descriptive sentence. Preserve placeholders exactly.",
+    };
+);
+
+crate::marketing_message!(
     pub const CONTENT_HELP_ARTICLE_PLUTONIUM_PROMOTION_TITLE_DESCRIPTOR = {
         key: "content.help.article.plutonium_promotion_march_2026.title",
         message: "March 2026 {premium_tier_name} promotion",
@@ -541,6 +557,22 @@ crate::marketing_message!(
         key: "content.help.article.regional_restrictions.description",
         message: "How regional age verification laws affect your access to {product_name}, which regions are currently affected, and what restrictions apply.",
         comment: "Help article summary about regional access restrictions. Keep 'Fluxer' as a brand name. Preserve placeholders exactly.",
+    };
+);
+
+crate::marketing_message!(
+    pub const CONTENT_HELP_ARTICLE_ECHOWIRE_VS_DISCORD_TITLE_DESCRIPTOR = {
+        key: "content.help.article.echowire_vs_discord.title",
+        message: "{product_name} vs {discord}",
+        comment: "Help article title comparing the product with a larger chat service. Preserve placeholders exactly.",
+    };
+);
+
+crate::marketing_message!(
+    pub const CONTENT_HELP_ARTICLE_ECHOWIRE_VS_DISCORD_DESCRIPTION_DESCRIPTOR = {
+        key: "content.help.article.echowire_vs_discord.description",
+        message: "What is documented about {discord}'s advertising and age checks, and how {product_name} and Fluxer compare.",
+        comment: "Help article summary for the comparison article. Preserve placeholders exactly; keep the name Fluxer unchanged.",
     };
 );
 

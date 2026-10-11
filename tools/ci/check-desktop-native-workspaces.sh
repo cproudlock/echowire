@@ -23,6 +23,7 @@ linux_workspaces=(
 	"linux-input-hook/Cargo.toml"
 	"linux-notifications/Cargo.toml"
 	"linux-portals/Cargo.toml"
+	"linux-screen-capture/Cargo.toml"
 	"platform-info/Cargo.toml"
 	"rt-thread/Cargo.toml"
 	"rust/Cargo.toml"

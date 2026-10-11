@@ -197,7 +197,7 @@ function getStatusText(state) {
 				? `Required security update failed. Retrying in ${state.seconds ?? 0} sec…`
 				: `Update failed. Retrying in ${state.seconds ?? 0} sec…`;
 		case SplashStatus.SHELL_UPDATE_DOWNLOADING:
-			return state.requiredSecurityUpdate ? 'Downloading required security update…' : 'Updating Fluxer…';
+			return state.requiredSecurityUpdate ? 'Downloading required security update…' : 'Updating echowire…';
 		case SplashStatus.SHELL_UPDATE_RESTARTING:
 			return state.requiredSecurityUpdate
 				? 'Restarting to finish the required security update…'
@@ -207,7 +207,7 @@ function getStatusText(state) {
 				? 'A required security update is needed to continue'
 				: 'Update required to continue';
 		case SplashStatus.BLOCKED_UPDATE_UNREACHABLE:
-			return "Can't reach the Fluxer update server";
+			return "Can't reach the echowire update server";
 		case SplashStatus.BLOCKED_SECURITY_UPDATE_REQUIRED:
 			return 'A required security update is needed to continue';
 		case SplashStatus.BLOCKED_SECURITY_UPDATE_MANAGED:
@@ -215,11 +215,11 @@ function getStatusText(state) {
 		case SplashStatus.BLOCKED_SHELL_UPDATE:
 			return state.requiredSecurityUpdate
 				? 'A required security update is needed to continue'
-				: 'A new version of Fluxer is required';
+				: 'A new version of echowire is required';
 		case SplashStatus.BLOCKED_SHELL_UPDATE_MANAGED:
-			return 'Update Fluxer through your package manager';
+			return 'Update echowire through your package manager';
 		case SplashStatus.BLOCKED_UNSUPPORTED_BUILD:
-			return 'This installation is incomplete. Reinstall Fluxer';
+			return 'This installation is incomplete. Reinstall echowire';
 		case SplashStatus.LAUNCHING:
 			return 'Starting…';
 		case SplashStatus.UNREACHABLE_LAUNCH:

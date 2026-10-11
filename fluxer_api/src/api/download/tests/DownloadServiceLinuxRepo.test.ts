@@ -68,6 +68,15 @@ describe('linux repository download keys', () => {
 		);
 	});
 
+	it('caches desktop update feeds and the module pointer briefly and installers forever', () => {
+		expect(downloadCacheControlForKey('desktop/canary/darwin/arm64/manifest.json')).toBe('public, max-age=300');
+		expect(downloadCacheControlForKey('desktop/canary/darwin/arm64/modules.json')).toBe('public, max-age=300');
+		expect(downloadCacheControlForKey('desktop/stable/linux/arm64/modules.json')).toBe('public, max-age=300');
+		expect(
+			downloadCacheControlForKey('desktop/canary/darwin/arm64/echowire-canary-2026.1011.212857-mac-universal.dmg'),
+		).toBe('public, max-age=31536000');
+	});
+
 	it('caches repository indexes briefly and repository packages forever', () => {
 		expect(downloadCacheControlForKey('apt/dists/stable/InRelease')).toBe('public, max-age=60');
 		expect(downloadCacheControlForKey('apt/dists/stable/main/binary-amd64/Packages')).toBe('public, max-age=60');

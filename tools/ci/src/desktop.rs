@@ -6100,7 +6100,11 @@ fn is_payload_metadata_key(relative: &Path) -> bool {
         .file_name()
         .and_then(OsStr::to_str)
         .unwrap_or_default();
+    // Echowire: modules.json is the per-coordinate pointer clients fetch, and its content changes on
+    // every build. Treated as a versioned artifact it was uploaded append-only (a second publish to a
+    // channel failed the immutability guard) and served with a one-year cache.
     name == "manifest.json"
+        || name == DESKTOP_CHANNEL_MANIFEST_NAME
         || name.ends_with(".yml")
         || name.ends_with(".yaml")
         || name.starts_with("RELEASES")
@@ -7239,9 +7243,11 @@ mod tests {
         "canary/darwin/x64/releases.json",
         "canary/linux/x64/latest-linux.yml",
         "canary/linux/x64/manifest.json",
+        "canary/linux/x64/modules.json",
         "canary/win32/x64/RELEASES",
         "canary/win32/x64/assets.win.json",
         "canary/win32/x64/manifest.json",
+        "canary/win32/x64/modules.json",
         "canary/win32/x64/releases.win.json",
         "canary/win32/x64/windows-game-capture/RELEASES",
         "canary/win32/x64/windows-game-capture/manifest.json",
@@ -7442,6 +7448,7 @@ mod tests {
     fn the_payload_and_cache_classifiers_agree_on_every_release_feed_filename() {
         for name in [
             "manifest.json",
+            "modules.json",
             "RELEASES",
             "RELEASES.json",
             "releases.json",
@@ -7468,6 +7475,10 @@ mod tests {
         assert!(is_payload_metadata_key(Path::new("channel.yaml")));
         assert_eq!(
             desktop_object_cache_control("desktop/canary/linux/x64/latest-linux.yaml"),
+            MUTABLE_DOWNLOAD_CACHE_CONTROL
+        );
+        assert_eq!(
+            desktop_object_cache_control("desktop/canary/linux/arm64/modules.json"),
             MUTABLE_DOWNLOAD_CACHE_CONTROL
         );
     }

@@ -34,7 +34,7 @@ const CHANNELS = {
 		protocolSchemes: ['echowire', 'fluxer'],
 		macEntitlements: 'build_resources/entitlements.mac.stable.plist',
 		notarize: true,
-		provisioningProfile: 'build_resources/profiles/Fluxer.provisionprofile',
+		provisioningProfile: null,
 	},
 	canary: {
 		productName: 'echowire canary',
@@ -49,7 +49,7 @@ const CHANNELS = {
 		protocolSchemes: ['echowire', 'fluxer'],
 		macEntitlements: 'build_resources/entitlements.mac.canary.plist',
 		notarize: true,
-		provisioningProfile: 'build_resources/profiles/Fluxer_Canary.provisionprofile',
+		provisioningProfile: null,
 	},
 	development: {
 		productName: 'echowire development',

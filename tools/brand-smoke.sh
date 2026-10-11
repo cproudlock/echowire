@@ -2,7 +2,7 @@
 # Post-deploy check: the public surfaces of an instance must not name the upstream product.
 # Run it after every web, app proxy or marketing deploy.
 #
-#   deploy/self-hosting/brand-smoke.sh [base-url] [expected-product-name]
+#   tools/brand-smoke.sh [base-url] [expected-product-name]
 #
 # Defaults: https://echowire.org and echowire. Exits 1 and lists every surface that names Fluxer,
 # Plutonium or Neko in a field a user reads (install name, page titles, instance branding).

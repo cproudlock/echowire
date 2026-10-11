@@ -1174,6 +1174,20 @@ fn heading_anchor_button(slug: &str, copy_link_label: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn comparison_badges_survive_sanitising_but_script_and_handlers_do_not() {
+        let md = "| a | b |\n| --- | --- |\n| <span class=\"cmp-ok\">OK</span> | <span class=\"cmp-no\">NO</span> <span class=\"cmp-mid\">MID</span> |\n\n<script>alert(1)</script>\n\n<span onclick=\"steal()\" class=\"cmp-ok\">x</span> <span style=\"color:red\" class=\"cmp-no\">y</span> <a href=\"javascript:alert(1)\">z</a>\n";
+        let html = super::render_markdown(md, "").into_string();
+        assert!(html.contains(r#"class="cmp-ok""#), "{html}");
+        assert!(html.contains(r#"class="cmp-no""#), "{html}");
+        assert!(html.contains(r#"class="cmp-mid""#), "{html}");
+        assert!(!html.contains("<script"), "{html}");
+        assert!(!html.contains("alert(1)</script"), "{html}");
+        assert!(!html.contains("onclick"), "{html}");
+        assert!(!html.contains("style="), "{html}");
+        assert!(!html.contains("javascript:"), "{html}");
+    }
+
     use super::*;
 
     fn rendered(markdown: &str) -> String {

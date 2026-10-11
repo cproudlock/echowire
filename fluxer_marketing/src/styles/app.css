@@ -260,6 +260,73 @@
     overflow-x: hidden;
   }
 
+  .prose-content table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .prose-content th,
+  .prose-content td {
+    min-width: 9rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose-content thead th {
+    background: #f3f4f6;
+    color: #111827;
+    font-weight: 600;
+  }
+
+  .prose-content th:first-child,
+  .prose-content td:first-child {
+    min-width: 7rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  /* Status badges used in the comparison article: green is good for the reader's privacy,
+     red is bad, amber is mixed or neutral. The site is light-only, so these are light-theme pills. */
+  .prose-content .cmp-ok,
+  .prose-content .cmp-no,
+  .prose-content .cmp-mid {
+    display: inline-block;
+    margin-right: 0.4rem;
+    padding: 0.05rem 0.45rem;
+    border-radius: 0.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+    text-transform: uppercase;
+    white-space: nowrap;
+    vertical-align: 0.06em;
+  }
+
+  .prose-content .cmp-ok {
+    background: #dff3ea;
+    color: #0b6b4a;
+  }
+
+  .prose-content .cmp-no {
+    background: #f9e1e4;
+    color: #9b2230;
+  }
+
+  .prose-content .cmp-mid {
+    background: #fbeedb;
+    color: #8a4b00;
+  }
+
   .toc-link {
     display: block;
     padding: 0.25rem 0;

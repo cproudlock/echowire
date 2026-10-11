@@ -11,7 +11,7 @@ export interface TextSpan {
 	end: number;
 }
 
-function isUrlStart(content: string, index: number): boolean {
+export function isUrlStart(content: string, index: number): boolean {
 	if (content.startsWith(HTTP_PREFIX, index) || content.startsWith(HTTPS_PREFIX, index)) {
 		return true;
 	}
@@ -24,8 +24,17 @@ function isUrlStart(content: string, index: number): boolean {
 	return nextChar === '/' || /[A-Za-z0-9_-]/u.test(nextChar);
 }
 
-function isUrlTerminationChar(char: string): boolean {
-	return char === '' || char === ' ' || char === '\t' || char === '\n' || char === '\r' || char === ')' || char === '"';
+function isUrlTerminationChar(char: string, terminateOnAngleBrackets: boolean): boolean {
+	return (
+		char === '' ||
+		char === ' ' ||
+		char === '\t' ||
+		char === '\n' ||
+		char === '\r' ||
+		char === ')' ||
+		char === '"' ||
+		(terminateOnAngleBrackets && (char === '<' || char === '>'))
+	);
 }
 
 function hasTerminalTld(text: string): boolean {
@@ -38,7 +47,7 @@ function hasTerminalTld(text: string): boolean {
 	return letterCount >= 2 && index > 0 && text[index - 1] === '.';
 }
 
-export function findUrlEnd(content: string, start: number): number {
+export function findUrlEnd(content: string, start: number, terminateOnAngleBrackets = false): number {
 	let end = start;
 	let parenDepth = 0;
 	while (end < content.length) {
@@ -56,7 +65,7 @@ export function findUrlEnd(content: string, start: number): number {
 			}
 			break;
 		}
-		if (isUrlTerminationChar(char)) {
+		if (isUrlTerminationChar(char, terminateOnAngleBrackets)) {
 			break;
 		}
 		end++;
@@ -77,7 +86,7 @@ function containsAngleBracketSyntax(value: string): boolean {
 	return ANGLE_BRACKET_SYNTAX_NEEDLES.some((needle) => value.includes(needle));
 }
 
-export function findUrlSpans(content: string): Array<TextSpan> {
+export function findUrlSpans(content: string, terminateOnAngleBrackets = false): Array<TextSpan> {
 	const spans: Array<TextSpan> = [];
 	let index = 0;
 	while (index < content.length) {
@@ -85,7 +94,7 @@ export function findUrlSpans(content: string): Array<TextSpan> {
 			index++;
 			continue;
 		}
-		const end = findUrlEnd(content, index);
+		const end = findUrlEnd(content, index, terminateOnAngleBrackets);
 		if (end > index && !containsAngleBracketSyntax(content.slice(index, end))) {
 			spans.push({start: index, end});
 			index = end;

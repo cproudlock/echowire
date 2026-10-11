@@ -299,6 +299,7 @@ class RequestServices implements RequestScopedServices {
 							getChannelRepository(),
 							voiceRoomStore,
 							voiceAvailabilityService,
+							getInstanceConfigRepository(),
 						)
 					: null;
 		}
@@ -531,7 +532,6 @@ class RequestServices implements RequestScopedServices {
 	get applicationService(): ApplicationService {
 		this.cachedApplicationService ??= new ApplicationService(this.context, {
 			applicationRepository: getApplicationRepository(),
-			channelRepository: getChannelRepository(),
 			userCacheService: getUserCacheService(),
 			entityAssetService: getEntityAssetService(),
 			discriminatorService: getDiscriminatorService(),
@@ -581,7 +581,7 @@ class RequestServices implements RequestScopedServices {
 	get singleCommunityService(): SingleCommunityService {
 		this.cachedSingleCommunityService ??= new SingleCommunityService(
 			getInstanceConfigRepository(),
-			this.guildService.data,
+			this.guildService.data.operations,
 			this.guildService.members,
 		);
 		return this.cachedSingleCommunityService;

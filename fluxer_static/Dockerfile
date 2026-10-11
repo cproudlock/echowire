@@ -1,6 +1,11 @@
 # syntax=docker/dockerfile:1.7
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+FROM alpine:3.24 AS spellcheck-dictionaries
+RUN apk add --no-cache curl
+COPY fluxer_static/fetch-spellcheck-dictionaries.sh fluxer_static/spellcheck-dictionaries.sha256 /src/
+RUN sh /src/fetch-spellcheck-dictionaries.sh /dictionaries
+
 FROM caddy:2.11-alpine
 
 ARG BUILD_VERSION=""
@@ -27,6 +32,7 @@ COPY --chown=65532:65532 fluxer_static/desktop /srv/fluxer-static/desktop
 # Echowire: upstream #3173 dropped this COPY when it moved the embed icons out; we keep serving
 # fluxer_static/embeds (hn.webp), and the Caddyfile still routes /embeds/*.
 COPY --chown=65532:65532 fluxer_static/embeds /srv/fluxer-static/embeds
+COPY --chown=65532:65532 --from=spellcheck-dictionaries /dictionaries /srv/fluxer-static/desktop/spellcheck/dictionaries
 COPY --chown=65532:65532 fluxer_static/emoji /srv/fluxer-static/emoji
 # Echowire: upstream #3087 moved the DeepFilterNet3 wasm and model into the app bundle and
 # deleted these files. Keep serving them anyway. The desktop client ships its own renderer

@@ -101,7 +101,25 @@ export interface GatewayVoiceStateUpdateParams {
 	self_stream: boolean;
 	viewer_stream_keys?: ReadonlyArray<string>;
 	connection_id: string | null;
+	p2p?: boolean;
 }
+
+export interface GatewayVoiceSignalParams {
+	guild_id: string | null;
+	channel_id: string;
+	to: string;
+	data: object;
+}
+
+export const VOICE_SIGNAL_MAX_JSON_BYTES = 16000;
+
+export const VoiceSignalSendResult = {
+	Sent: 'sent',
+	Oversized: 'oversized',
+	Unsent: 'unsent',
+} as const;
+
+export type VoiceSignalSendResult = ValueOf<typeof VoiceSignalSendResult>;
 
 export interface GatewaySocketOptions {
 	token: string;
@@ -157,7 +175,7 @@ function parseGatewayPayload(json: string): GatewayPayload {
 }
 
 function isGatewayErrorData(value: unknown): value is GatewayErrorData {
-	return isRecord(value) && typeof value.code === 'number' && typeof value.message === 'string';
+	return isRecord(value) && typeof value.code === 'string' && typeof value.message === 'string';
 }
 
 export interface GatewayDispatchReceipt {
@@ -563,6 +581,13 @@ export class GatewaySocket extends EventEmitter<GatewaySocketEvents> {
 		mobile?: boolean,
 		customStatus?: GatewayCustomStatusPayload | null,
 	): void {
+		const current = this.options.presence;
+		this.options.presence = {
+			status,
+			afk: afk ?? current?.afk ?? false,
+			mobile: mobile ?? current?.mobile ?? false,
+			custom_status: customStatus === undefined ? current?.custom_status : customStatus,
+		};
 		if (!this.isConnected()) return;
 		this.sendPayload({
 			op: GatewayOpcodes.PRESENCE_UPDATE,
@@ -573,6 +598,12 @@ export class GatewaySocket extends EventEmitter<GatewaySocketEvents> {
 				...(customStatus !== undefined && {custom_status: customStatus}),
 			},
 		});
+	}
+
+	private resendPresence(): void {
+		const presence = this.options.presence;
+		if (!presence) return;
+		this.sendPayload({op: GatewayOpcodes.PRESENCE_UPDATE, d: presence});
 	}
 
 	private buildVoiceStatePayload(params: GatewayVoiceStateUpdateParams): GatewayPayload {
@@ -591,6 +622,17 @@ export class GatewaySocket extends EventEmitter<GatewaySocketEvents> {
 
 	updateVoiceStateExplicit(params: GatewayVoiceStateUpdateParams): boolean {
 		return this.sendPayload(this.buildVoiceStatePayload(params));
+	}
+
+	sendVoiceSignal(params: GatewayVoiceSignalParams): VoiceSignalSendResult {
+		if (!this.isConnected()) return VoiceSignalSendResult.Unsent;
+		const payload: GatewayPayload = {op: GatewayOpcodes.VOICE_SIGNAL, d: params};
+		const bytes = new TextEncoder().encode(JSON.stringify(payload)).byteLength;
+		if (bytes > VOICE_SIGNAL_MAX_JSON_BYTES) {
+			this.log.warn(`Refusing voice signal of ${bytes} bytes`);
+			return VoiceSignalSendResult.Oversized;
+		}
+		return this.sendPayload(payload) ? VoiceSignalSendResult.Sent : VoiceSignalSendResult.Unsent;
 	}
 
 	requestGuildMembers(params: {
@@ -707,16 +749,8 @@ export class GatewaySocket extends EventEmitter<GatewaySocketEvents> {
 		return this.activeSessionId;
 	}
 
-	getSequence(): number {
-		return this.lastSequenceNumber;
-	}
-
 	isConnected(): boolean {
 		return this.connectionState === GatewayState.Connected && this.socket?.readyState === GatewayWireReadyState.OPEN;
-	}
-
-	isConnecting(): boolean {
-		return this.connectionState === GatewayState.Connecting;
 	}
 
 	private openSocket(): void {
@@ -957,6 +991,7 @@ export class GatewaySocket extends EventEmitter<GatewaySocketEvents> {
 				this.updateState(GatewayState.Connected);
 				this.resetBackoffUnlessDispatchesKeepFailing();
 				this.log.info('Gateway session resumed');
+				this.resendPresence();
 				this.logDispatchTimings('RESUMED', payload.d);
 				this.emitDeferred('resumed', payload.d);
 				break;

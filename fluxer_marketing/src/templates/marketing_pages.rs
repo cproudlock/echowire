@@ -125,7 +125,7 @@ pub fn plutonium_page(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                         }
                     }
                     div class="mt-12 text-center md:mt-16" {
-                        a class="label inline-block rounded-xl bg-[#4641D9] px-10 py-5 text-lg text-white shadow-lg transition hover:bg-[#3d38c7] md:px-12 md:py-6 md:text-xl" href=(ctx.app_url("/channels/@me")) {
+                        a class="label inline-block rounded-xl bg-[#4641D9] px-10 py-5 text-lg text-white shadow-lg transition hover:bg-[#3d38c7] md:px-12 md:py-6 md:text-xl" href=(ctx.app_url("/channels/@premium")) {
                             (tr(i18n, ctx, PRICING_AND_TIERS_PLUTONIUM_GET_PLUTONIUM_DESCRIPTOR))
                         }
                     }

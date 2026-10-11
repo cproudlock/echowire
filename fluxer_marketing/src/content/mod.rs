@@ -268,6 +268,11 @@ pub const HELP_CATEGORIES: &[HelpCategory] = &[
         title: CONTENT_HELP_CATEGORY_LEGAL_POLICY_TITLE_DESCRIPTOR,
         description: CONTENT_HELP_CATEGORY_LEGAL_POLICY_DESCRIPTION_DESCRIPTOR,
     },
+    HelpCategory {
+        slug: "articles",
+        title: CONTENT_HELP_CATEGORY_ARTICLES_TITLE_DESCRIPTOR,
+        description: CONTENT_HELP_CATEGORY_ARTICLES_DESCRIPTION_DESCRIPTOR,
+    },
 ];
 
 pub const HELP_ARTICLES: &[HelpArticle] = &[
@@ -395,6 +400,15 @@ pub const HELP_ARTICLES: &[HelpArticle] = &[
         category_slug: "legal-policy",
         last_updated: "2026-03-29",
         body: include_str!("../../content/help/legal-policy/regional-restrictions.md"),
+    },
+    HelpArticle {
+        slug: "echowire-vs-discord",
+        aliases: &["why-echowire", "echowire-vs-discord-comparison"],
+        title: CONTENT_HELP_ARTICLE_ECHOWIRE_VS_DISCORD_TITLE_DESCRIPTOR,
+        description: CONTENT_HELP_ARTICLE_ECHOWIRE_VS_DISCORD_DESCRIPTION_DESCRIPTOR,
+        category_slug: "articles",
+        last_updated: "2026-10-11",
+        body: include_str!("../../content/help/articles/echowire-vs-discord.md"),
     },
 ];
 
@@ -1160,6 +1174,20 @@ fn heading_anchor_button(slug: &str, copy_link_label: &str) -> String {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn comparison_badges_survive_sanitising_but_script_and_handlers_do_not() {
+        let md = "| a | b |\n| --- | --- |\n| <span class=\"cmp-ok\">OK</span> | <span class=\"cmp-no\">NO</span> <span class=\"cmp-mid\">MID</span> |\n\n<script>alert(1)</script>\n\n<span onclick=\"steal()\" class=\"cmp-ok\">x</span> <span style=\"color:red\" class=\"cmp-no\">y</span> <a href=\"javascript:alert(1)\">z</a>\n";
+        let html = super::render_markdown(md, "").into_string();
+        assert!(html.contains(r#"class="cmp-ok""#), "{html}");
+        assert!(html.contains(r#"class="cmp-no""#), "{html}");
+        assert!(html.contains(r#"class="cmp-mid""#), "{html}");
+        assert!(!html.contains("<script"), "{html}");
+        assert!(!html.contains("alert(1)</script"), "{html}");
+        assert!(!html.contains("onclick"), "{html}");
+        assert!(!html.contains("style="), "{html}");
+        assert!(!html.contains("javascript:"), "{html}");
+    }
+
     use super::*;
 
     fn rendered(markdown: &str) -> String {

@@ -28,7 +28,6 @@
 		"fluxer_app/src/features/platform/state/PersistentStorage.ts": ["exports"],
 		"fluxer_app/src/features/voice/utils/CodecCapabilityDetector.ts": ["exports"],
 		"fluxer_app/src/index.tsx": ["unlisted"],
-		"fluxer_desktop/native/mac-app-audio/index.test.mjs": ["unlisted"],
 		"packages/schema/src/domains/admin/AdminUserSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelRequestSchemas.ts": ["exports"],
 		"packages/schema/src/domains/channel/ChannelSchemas.ts": ["exports"],
@@ -51,12 +50,12 @@
 				"emoji-regex",
 				"ioredis",
 				"maxmind",
-				"nodemailer",
 				"pg",
 				"pino",
 				"undici",
 				"validator"
-			]
+			],
+			"ignoreBinaries": ["ffmpeg", "ffprobe"]
 		},
 		"fluxer_app": {
 			"entry": [
@@ -77,9 +76,7 @@
 				"src/main/**/*.test.{ts,mjs}",
 				"scripts/release-check.mjs",
 				"native/*/index.{js,d.ts}",
-				"native/*/loader-diagnostics.cjs",
-				"native/*/*.test.mjs",
-				"native/*/test/**/*.mjs"
+				"native/*/loader-diagnostics.cjs"
 			],
 			"project": ["src/**/*.{ts,tsx,mjs,js}", "scripts/**/*.mjs", "native/**/*.{js,mjs,cjs,d.ts}"],
 			"ignoreBinaries": ["reg.exe", "update-desktop-database", "xdg-mime"],

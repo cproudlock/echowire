@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {PRODUCT_NAME} from '@app/features/app/config/ProductConstants';
-import type {UpdaterDownloadFormat, UpdaterDownloadOption} from '@app/features/platform/types/Electron';
+import type {UpdaterDownloadFormat, UpdaterDownloadOption} from '@app/types/electron.d';
 
 type LinuxManualDownloadFormat = Extract<UpdaterDownloadFormat, 'appimage' | 'deb' | 'rpm' | 'tar_gz'>;
 type LinuxDownloadArch = 'x64' | 'arm64';

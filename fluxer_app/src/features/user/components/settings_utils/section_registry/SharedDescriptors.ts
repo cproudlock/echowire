@@ -53,6 +53,11 @@ export const SHOW_NEKO_DESCRIPTOR = msg({
 	comment:
 		'Toggle label and settings search entry for showing Pickles, the cat sprite that chases the cursor. Pickles is a proper name; do not translate it.',
 });
+export const USE_FLUXER_SANS_ON_WINDOWS_DESCRIPTOR = msg({
+	message: 'Use Fluxer Sans on Windows',
+	comment:
+		'Toggle label and settings search entry for showing app text in the Fluxer Sans font instead of the Windows system font. Fluxer Sans is a font name and must not be translated.',
+});
 export const KEEP_NEKO_STILL_DESCRIPTOR = msg({
 	message: 'Keep Pickles still',
 	comment:

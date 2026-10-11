@@ -1300,7 +1300,7 @@ describe('splash preload rendering', () => {
 
 		harness.sendState({status: 'shell-update-downloading'});
 
-		assert.equal(harness.statusText(), 'Updating Fluxer…');
+		assert.equal(harness.statusText(), 'Updating echowire…');
 		assert.notEqual(harness.query('.progress-placeholder'), null);
 
 		harness.sendState({status: 'shell-update-downloading', progress: 12});
@@ -1408,7 +1408,7 @@ describe('splash preload rendering', () => {
 
 		harness.sendState(serializeSplashState({status: 'blocked-shell-update', action: SplashAction.DOWNLOAD}));
 
-		assert.equal(harness.statusText(), 'A new version of Fluxer is required');
+		assert.equal(harness.statusText(), 'A new version of echowire is required');
 		assert.equal(harness.query('.splash-action').textContent, 'Download update');
 
 		harness.click('.splash-action');
@@ -1423,7 +1423,7 @@ describe('splash preload rendering', () => {
 
 		harness.sendState(serializeSplashState({status: 'blocked-shell-update-managed', action: SplashAction.QUIT}));
 
-		assert.equal(harness.statusText(), 'Update Fluxer through your package manager');
+		assert.equal(harness.statusText(), 'Update echowire through your package manager');
 		assert.equal(harness.query('.splash-action').textContent, 'Quit');
 
 		harness.click('.splash-action');
@@ -1479,7 +1479,7 @@ describe('splash preload manual update layout', () => {
 			progress: null,
 			seconds: null,
 			action: null,
-			message: 'A new version of Fluxer is ready to install.',
+			message: 'A new version of echowire is ready to install.',
 			versionLabel: 'Version 2026.823.1 available',
 			options: MANUAL_UPDATE_OPTIONS,
 			...patch,
@@ -1495,7 +1495,7 @@ describe('splash preload manual update layout', () => {
 		assert.equal(harness.mount.replaceChildrenCalls, 2);
 		assert.equal(harness.query('.splash-inner-dl').children.length, 4);
 		assert.equal(harness.query('.splash-mark-dl').querySelector('img').getAttribute('src'), './symbol.svg');
-		assert.equal(harness.query('.dl-update-message').textContent, 'A new version of Fluxer is ready to install.');
+		assert.equal(harness.query('.dl-update-message').textContent, 'A new version of echowire is ready to install.');
 		assert.equal(harness.query('.dl-version-message').textContent, 'Version 2026.823.1 available');
 		assert.deepEqual(
 			harness.queryAll('option').map((node) => [node.value, node.textContent]),
@@ -1546,7 +1546,7 @@ describe('splash preload manual update layout', () => {
 
 		assert.equal(harness.query('.dl-select-frame'), null);
 		assert.equal(harness.query('#dl-button').textContent, 'Quit');
-		assert.equal(harness.query('.dl-update-message').textContent, 'A new version of Fluxer is ready to install.');
+		assert.equal(harness.query('.dl-update-message').textContent, 'A new version of echowire is ready to install.');
 
 		harness.click('#dl-button');
 

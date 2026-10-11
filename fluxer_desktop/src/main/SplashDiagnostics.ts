@@ -50,7 +50,7 @@ export function buildSplashDiagnosticsText(input: SplashDiagnosticsInput): strin
 		.sort(([left], [right]) => left.localeCompare(right))
 		.map(([name, sha]) => `  ${name} ${sha.slice(0, SHA_PREFIX_LENGTH)}`);
 	const lines = [
-		'Fluxer desktop updater diagnostics',
+		'echowire desktop updater diagnostics',
 		`Generated: ${formatTime(input.generatedAt)}`,
 		`Splash opened: ${formatTime(input.splashOpenedAt)}`,
 		`App version: ${input.appVersion} (${input.channel})`,

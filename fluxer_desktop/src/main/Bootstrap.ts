@@ -78,7 +78,7 @@ const UPDATE_TAKEOVER_SPLASH_WAIT_MS = 250;
 const UPDATE_SPLASH_PRELOAD_DELAY_MS = 5000;
 
 const UPDATE_SERVER_UNREACHABLE_MESSAGE =
-	"Fluxer couldn't reach its update server to download app files. Check your internet connection, proxy or firewall. Fluxer keeps retrying.";
+	"echowire couldn't reach its update server to download app files. Check your internet connection, proxy or firewall. echowire keeps retrying.";
 
 interface ModuleLaunchPermit {
 	readonly [MODULE_LAUNCH_PERMIT]: true;
@@ -187,7 +187,7 @@ async function refuseUnsupportedBuild(reason: string): Promise<never> {
 	const {onSplashQuit, openSplashWindow, setSplashState, SplashAction} = await import('@electron/main/SplashWindow');
 	const logger = createChildLogger('Bootstrap');
 	logger.error('This build cannot start a renderer, refusing to launch', {reason});
-	process.stderr.write(`Fluxer cannot start: ${reason}\n`);
+	process.stderr.write(`echowire cannot start: ${reason}\n`);
 	await app.whenReady();
 	openSplashWindow();
 	setSplashState({status: 'blocked-unsupported-build', action: SplashAction.QUIT});

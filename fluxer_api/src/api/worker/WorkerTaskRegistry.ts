@@ -10,7 +10,6 @@ import bulkUpdateUserFlags from '@app/api/worker/tasks/admin_bulk/BulkUpdateUser
 import batchGuildAuditLogMessageDeletes from '@app/api/worker/tasks/BatchGuildAuditLogMessageDeletes';
 import bulkDeleteSelfMessagesImmediate from '@app/api/worker/tasks/BulkDeleteSelfMessagesImmediate';
 import bulkDeleteUserMessages from '@app/api/worker/tasks/BulkDeleteUserMessages';
-import bulkDeleteUserMessagesScoped from '@app/api/worker/tasks/BulkDeleteUserMessagesScoped';
 import clearAuthenticatedReporterEmails from '@app/api/worker/tasks/ClearAuthenticatedReporterEmails';
 import crosspostMessage from '@app/api/worker/tasks/CrosspostMessage';
 import crosspostMessageChunk from '@app/api/worker/tasks/CrosspostMessageChunk';
@@ -41,6 +40,7 @@ import processPremiumStateReconciliationQueue from '@app/api/worker/tasks/Proces
 import processStorePurchaseRefreshQueue from '@app/api/worker/tasks/ProcessStorePurchaseRefreshQueue';
 import processStripeWebhook from '@app/api/worker/tasks/ProcessStripeWebhook';
 import prunePostgresKvTtl from '@app/api/worker/tasks/PrunePostgresKvTtl';
+import reconcileAttachmentDecay from '@app/api/worker/tasks/ReconcileAttachmentDecay';
 import reconcileUserPayments from '@app/api/worker/tasks/ReconcileUserPayments';
 import refreshSearchIndex from '@app/api/worker/tasks/RefreshSearchIndex';
 import refreshStorePurchase from '@app/api/worker/tasks/RefreshStorePurchase';
@@ -79,7 +79,6 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	bulkDeleteMessagesForUsers: bulkDeleteMessagesForUsers,
 	bulkDeleteSelfMessagesImmediate,
 	bulkDeleteUserMessages,
-	bulkDeleteUserMessagesScoped,
 	bulkScheduleUserDeletion: bulkScheduleUserDeletion,
 	bulkUpdateGuildFeatures: bulkUpdateGuildFeatures,
 	bulkUpdateUserFlags: bulkUpdateUserFlags,
@@ -106,6 +105,7 @@ export const workerTasks: Record<WorkerTaskName, WorkerTaskHandler> = {
 	processInactivityDeletions,
 	processPendingBulkMessageDeletions,
 	processPremiumStateReconciliationQueue,
+	reconcileAttachmentDecay,
 	reconcileUserPayments,
 	processAppStoreNotification,
 	processGooglePlayNotification,

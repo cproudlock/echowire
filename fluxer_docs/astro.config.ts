@@ -286,7 +286,13 @@ export default defineConfig({
 				},
 				{
 					label: 'Voice',
-					items: ['voice', 'http-api/calls', 'http-api/streams', 'http-api/entrance-sounds'],
+					items: [
+						'voice',
+						'http-api/calls',
+						'http-api/peer-to-peer-voice',
+						'http-api/streams',
+						'http-api/entrance-sounds',
+					],
 				},
 				{
 					label: 'Admin API',

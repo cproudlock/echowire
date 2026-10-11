@@ -1,12 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-// echowire: port of the September thread visibility contract test. The api and the gateway each
-// decide who may see a thread, in TypeScript and in Erlang. Upstream shares one case table between
-// them: packages/constants/src/ThreadPermissionCases.json is run through ThreadPermissionUtils by
-// ThreadPermissionUtils.test.ts, and fluxer_gateway/test/thread_permission_cases.json is run
-// through guild_thread_permissions.erl by its eunit section. Those are two separate files, so
-// nothing stops one from changing without the other. This test closes that gap: the copies must be
-// byte-identical, and the cases that guard against a private thread leaking must exist in them.
+// echowire: port of the September thread visibility contract test. The api and the gateway each decide
+// who may see a thread, in TypeScript and in Erlang. Upstream now runs both through one shared table,
+// packages/constants/src/ThreadPermissionCases.json (guild_thread_permissions.erl reads it directly), so the
+// old byte-identical-copies check is gone. This test keeps the other half: the cases that stop a private
+// thread from leaking must exist in that table.
 
 import {readFileSync} from 'node:fs';
 import {join} from 'node:path';
@@ -14,7 +12,6 @@ import {describe, expect, it} from 'vitest';
 
 const REPO_ROOT = join(import.meta.dirname, '../../../../..');
 const API_SIDE = join(REPO_ROOT, 'packages/constants/src/ThreadPermissionCases.json');
-const GATEWAY_SIDE = join(REPO_ROOT, 'fluxer_gateway/test/thread_permission_cases.json');
 
 interface Case {
 	name: string;
@@ -31,10 +28,6 @@ function expectation(name: string): unknown {
 }
 
 describe('thread visibility contract between the api and the gateway', () => {
-	it('keeps one case table for both implementations', () => {
-		expect(readFileSync(GATEWAY_SIDE, 'utf8')).toBe(readFileSync(API_SIDE, 'utf8'));
-	});
-
 	it('keeps the cases that stop a private thread from leaking', () => {
 		const hidden = 'MISSING_ACCESS';
 		expect(expectation('private thread hidden from non-members')).toBe(hidden);

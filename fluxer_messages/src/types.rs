@@ -71,24 +71,6 @@ mod serde_id {
 #[serde(tag = "op")]
 #[allow(clippy::enum_variant_names, clippy::large_enum_variant)]
 pub enum MessageRequest {
-    GetById {
-        channel_id: i64,
-        message_id: i64,
-    },
-    GetLatest {
-        channel_id: i64,
-        limit: u32,
-    },
-    GetBefore {
-        channel_id: i64,
-        before_id: i64,
-        limit: u32,
-    },
-    GetAfter {
-        channel_id: i64,
-        after_id: i64,
-        limit: u32,
-    },
     GetResponseById {
         channel_id: String,
         message_id: String,
@@ -101,6 +83,7 @@ pub enum MessageRequest {
         #[serde(default)]
         attachment_url_secret_base64: Option<String>,
         include_reactions: Option<bool>,
+        attachment_decay: Option<bool>,
         nonce: Option<String>,
         tts: Option<bool>,
         #[serde(default)]
@@ -119,6 +102,7 @@ pub enum MessageRequest {
         #[serde(default)]
         attachment_url_secret_base64: Option<String>,
         include_reactions: Option<bool>,
+        attachment_decay: Option<bool>,
         nonce: Option<String>,
         tts: Option<bool>,
         #[serde(default)]
@@ -137,6 +121,7 @@ pub enum MessageRequest {
         #[serde(default)]
         attachment_url_secret_base64: Option<String>,
         include_reactions: Option<bool>,
+        attachment_decay: Option<bool>,
         #[serde(default)]
         include_hidden: bool,
         #[serde(default)]
@@ -157,6 +142,7 @@ pub enum MessageRequest {
         #[serde(default)]
         attachment_url_secret_base64: Option<String>,
         include_reactions: Option<bool>,
+        attachment_decay: Option<bool>,
         #[serde(default)]
         include_hidden: bool,
         #[serde(default)]
@@ -172,8 +158,6 @@ pub enum MessageRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[allow(clippy::large_enum_variant)]
 pub enum MessageResponse {
-    Found(Message),
-    FoundMany(Vec<Message>),
     FoundApi(ApiMessageResponse),
     FoundApiMany(Vec<ApiMessageResponse>),
     FoundMentions(Vec<ExtractedMentionsResponse>),

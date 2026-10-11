@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {RTC_REGION_ID_MAX_LENGTH, RTC_REGION_ID_MIN_LENGTH} from '@fluxer/constants/src/LimitConstants';
+import {
+	RTC_REGION_ID_MAX_LENGTH,
+	RTC_REGION_ID_MIN_LENGTH,
+	VOICE_P2P_MAX_PARTICIPANTS,
+} from '@fluxer/constants/src/LimitConstants';
 import {FORUM_UNREAD_COUNT_CAP, FORUM_UNREADS_MAX_THREADS} from '@fluxer/constants/src/ThreadConstants';
 import {ChannelThreadsConfigResponse} from '@fluxer/schema/src/domains/admin/ChannelThreadsSchemas';
 import {GatewayRolloutConfigResponse} from '@fluxer/schema/src/domains/admin/GatewayRolloutSchemas';
@@ -125,17 +129,6 @@ export const RpcRequest = z.discriminatedUnion('type', [
 			.describe('List of subscriptions to delete'),
 	}),
 	z.object({
-		type: z
-			.literal('send_apns_push')
-			.describe('Request type for sending an APNs notification through the API HTTP/2 client'),
-		user_id: SnowflakeType.describe('ID of the user receiving the notification'),
-		subscription_id: createStringType().describe('ID of the APNs subscription to report back to the gateway'),
-		device_token: createStringType(1, 4096).describe('APNs device token'),
-		app_id: createStringType(1, 128).describe('Client app channel or bundle mapping identifier'),
-		provider_environment: z.enum(['production', 'development']).describe('APNs provider environment'),
-		payload: z.record(z.string(), z.unknown()).describe('Notification payload built by the gateway'),
-	}),
-	z.object({
 		type: z.literal('get_user_blocked_ids').describe('Request type for fetching blocked user IDs'),
 		user_ids: z.array(SnowflakeType).max(RPC_USER_BATCH_MAX).describe('IDs of users to fetch blocked lists for'),
 	}),
@@ -156,6 +149,20 @@ export const RpcRequest = z.discriminatedUnion('type', [
 		can_stream: z.boolean().optional().describe('Whether the user can stream in the channel'),
 		can_video: z.boolean().optional().describe('Whether the user can use video in the channel'),
 		token_nonce: createStringType(1, 64).optional().describe('Token nonce for replay prevention'),
+		p2p: z.boolean().optional().describe('Whether the gateway asks for a peer-to-peer grant for this connection'),
+		p2p_initiator: z.boolean().optional().describe('Whether this connection would start the peer-to-peer call'),
+		p2p_participant_count: z
+			.number()
+			.int()
+			.min(1)
+			.max(VOICE_P2P_MAX_PARTICIPANTS)
+			.optional()
+			.describe('Peer-to-peer participants in the channel or call once this connection joins'),
+		country_code: z
+			.string()
+			.regex(/^[A-Z]{2}$/u)
+			.optional()
+			.describe('ISO 3166-1 alpha-2 country code of the session, omitted when unknown'),
 	}),
 	z.object({
 		type: z.literal('kick_temporary_member').describe('Request type for kicking temporary guild members'),
@@ -365,6 +372,10 @@ export const RpcResponseSessionData = z.object({
 	guilds: z.array(GuildReadyResponse).describe('Guilds the user is a member of'),
 	pinned_dms: z.array(SnowflakeStringType).describe('IDs of pinned DM channels'),
 	country_code: z.string().describe('Two-letter country code from IP geolocation'),
+	geoip_country_code: z
+		.string()
+		.nullable()
+		.describe('Two-letter country code from IP geolocation, null when the lookup found none'),
 	latitude: createStringType(1, 32).optional().describe('Latitude from IP geolocation'),
 	longitude: createStringType(1, 32).optional().describe('Longitude from IP geolocation'),
 	rtc_regions: z.array(RtcRegionResponse).describe('Available voice server regions'),
@@ -464,31 +475,41 @@ export const RpcResponse = z.discriminatedUnion('type', [
 		data: z.object({success: z.boolean().describe('Whether the deletion was successful')}).describe('Deletion result'),
 	}),
 	z.object({
-		type: z.literal('send_apns_push').describe('Response type for APNs push delivery'),
-		data: z
-			.object({
-				success: z.boolean().describe('Whether APNs accepted the notification'),
-				should_delete: z.boolean().describe('Whether the gateway should delete this subscription'),
-				reason: z.string().optional().describe('APNs or local failure reason'),
-				status_code: z.number().optional().describe('APNs HTTP status code'),
-			})
-			.describe('APNs delivery result'),
-	}),
-	z.object({
 		type: z.literal('get_user_blocked_ids').describe('Response type for blocked user IDs'),
 		data: z.record(SnowflakeStringType, z.array(SnowflakeStringType)).describe('Blocked user IDs keyed by user ID'),
 	}),
 	z.object({
 		type: z.literal('voice_get_token').describe('Response type for voice connection token'),
 		data: z
-			.object({
-				token: z.string().describe('Voice server authentication token'),
-				endpoint: z.string().describe('Voice server endpoint URL'),
-				connectionId: z.string().describe('Unique connection identifier'),
-				tokenNonce: z.string().describe('Token nonce for webhook confirmation'),
-				regionId: createStringType(1, 64).optional().describe('Voice region selected for the connection'),
-				serverId: createStringType(1, 128).optional().describe('Voice server selected for the connection'),
-			})
+			.union([
+				z.object({
+					token: z.string().describe('Voice server authentication token'),
+					endpoint: z.string().describe('Voice server endpoint URL'),
+					connectionId: z.string().describe('Unique connection identifier'),
+					tokenNonce: z.string().describe('Token nonce for webhook confirmation'),
+					regionId: createStringType(1, 64).optional().describe('Voice region selected for the connection'),
+					serverId: createStringType(1, 128).optional().describe('Voice server selected for the connection'),
+				}),
+				z.object({
+					p2p: z.literal(true).describe('Marks a peer-to-peer grant'),
+					connectionId: z.string().describe('Unique connection identifier'),
+					iceServers: z
+						.array(z.object({urls: z.array(z.string()).describe('STUN URLs of the server')}))
+						.describe('ICE servers the connection uses for its peer connections'),
+					maxParticipants: z
+						.number()
+						.int()
+						.min(1)
+						.max(VOICE_P2P_MAX_PARTICIPANTS)
+						.describe('Configured peer-to-peer participant cap the call enforces on this join'),
+				}),
+				z.object({
+					p2p: z.literal(false).describe('Marks a declined peer-to-peer request'),
+					declineReason: z
+						.literal('channel_full')
+						.describe('The join would take the call past the configured peer-to-peer participant cap'),
+				}),
+			])
 			.describe('Voice connection credentials'),
 	}),
 	z.object({

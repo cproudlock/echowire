@@ -3,7 +3,6 @@
 import type {ApiContext} from '@app/api/ApiContext';
 import type {ApplicationID, UserID} from '@app/api/BrandedTypes';
 import {applicationIdToUserId} from '@app/api/BrandedTypes';
-import type {IChannelRepository} from '@app/api/channel/IChannelRepository';
 import type {ApplicationRow} from '@app/api/database/types/OAuth2Types';
 import type {UserRow} from '@app/api/database/types/UserTypes';
 import {contentModerationService} from '@app/api/infrastructure/ContentModerationService';
@@ -14,10 +13,9 @@ import {Logger} from '@app/api/Logger';
 import {profileSubstringBlocklistCache} from '@app/api/middleware/ProfileSubstringBlocklistCache';
 import type {Application} from '@app/api/models/Application';
 import type {User} from '@app/api/models/User';
-import {remapAuthorMessagesToDeletedUser} from '@app/api/oauth/ApplicationMessageAuthorAnonymization';
 import type {BotAuthService} from '@app/api/oauth/BotAuthService';
 import {generateOAuthTokenSecret} from '@app/api/oauth/OAuthTokenSecret';
-import type {IApplicationRepository} from '@app/api/oauth/repositories/IApplicationRepository';
+import type {ApplicationRepository} from '@app/api/oauth/repositories/ApplicationRepository';
 import {enforceFluxerTagChangeRateLimit} from '@app/api/user/FluxerTagChangeRateLimit';
 import {hasPartialUserFieldsChanged, mapUserToPrivateResponse} from '@app/api/user/UserMappers';
 import {runAllInOrder} from '@app/api/utils/ConcurrencyUtils';
@@ -43,8 +41,7 @@ import type {BotProfileUpdateRequest} from '@fluxer/schema/src/domains/oauth/OAu
 
 interface ApplicationServiceDeps {
 	discriminatorService: DiscriminatorService;
-	channelRepository: IChannelRepository;
-	applicationRepository: IApplicationRepository;
+	applicationRepository: ApplicationRepository;
 	botAuthService: BotAuthService;
 	entityAssetService: EntityAssetService;
 	userCacheService: UserCacheService;
@@ -307,12 +304,6 @@ export class ApplicationService {
 		const application = await this.verifyOwnership(userId, applicationId);
 		if (application.hasBotUser()) {
 			const botUserId = application.getBotUserId()!;
-			const replacementAuthorId = await remapAuthorMessagesToDeletedUser({
-				originalAuthorId: botUserId,
-				channelRepository: this.deps.channelRepository,
-				userRepository: this.apiContext.services.users,
-				snowflakeService: this.apiContext.services.snowflake,
-			});
 			const guildIds = await this.apiContext.services.users.getUserGuildIds(botUserId);
 			await this.apiContext.services.users.deleteUserSecondaryIndices(botUserId);
 			await this.apiContext.services.users.removeFromAllGuilds(botUserId);
@@ -372,14 +363,10 @@ export class ApplicationService {
 				botUser.toRow(),
 			);
 			await this.deps.userCacheService.invalidateUserCache(botUserId);
-			if (replacementAuthorId) {
-				await this.deps.userCacheService.invalidateUserCache(replacementAuthorId);
-			}
 			Logger.info(
 				{
 					applicationId: applicationId.toString(),
 					botUserId: botUserId.toString(),
-					replacementAuthorId: replacementAuthorId?.toString() ?? null,
 				},
 				'Anonymized bot user associated with application',
 			);

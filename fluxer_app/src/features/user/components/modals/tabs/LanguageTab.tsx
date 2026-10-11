@@ -11,7 +11,6 @@ import {
 import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import * as EmojiUtils from '@app/features/expressions/utils/EmojiUtils';
 import Spellcheck from '@app/features/messaging/state/Spellcheck';
-import type {SpellcheckEngine} from '@app/features/platform/types/Electron';
 import {Button} from '@app/features/ui/button/Button';
 import {Combobox, type ComboboxFilterOption, type ComboboxOption} from '@app/features/ui/components/form/FormCombobox';
 import {Switch} from '@app/features/ui/components/form/FormSwitch';
@@ -23,6 +22,7 @@ import * as UserSettingsCommands from '@app/features/user/commands/UserSettingsC
 import styles from '@app/features/user/components/modals/tabs/LanguageTab.module.css';
 import UserSettings from '@app/features/user/state/UserSettings';
 import * as LocaleUtils from '@app/features/user/utils/LocaleUtils';
+import type {SpellcheckEngine} from '@app/types/electron.d';
 import {TimeFormatTypes} from '@fluxer/constants/src/UserConstants';
 import {getFormattedTime} from '@fluxer/date_utils/src/DateFormatting';
 import {localeUses12Hour} from '@fluxer/date_utils/src/DateHourCycle';

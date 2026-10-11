@@ -41,7 +41,6 @@ const LANE_CONFIG = {
 			'applicationProcessDeletion',
 			'bulkDeleteSelfMessagesImmediate',
 			'bulkDeleteUserMessages',
-			'bulkDeleteUserMessagesScoped',
 			'deleteUserMessagesInGuildByTime',
 			'messageShred',
 			'harvestGuildData',
@@ -70,6 +69,7 @@ const LANE_CONFIG = {
 		consumerName: 'workers_batch',
 		tasks: [
 			'expireAttachments',
+			'reconcileAttachmentDecay',
 			'expireReportSnapshots',
 			'clearAuthenticatedReporterEmails',
 			'expireStaleJobs',

@@ -5,7 +5,6 @@ import {DESKTOP_DOWNLOAD_URL} from '@app/features/app/config/I18nDisplayConstant
 import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import {WORKER_NAVIGATION_CACHE_PREFIX} from '@app/features/platform/service_worker/WorkerCacheCleanup';
 import {getProtectedCacheStorage} from '@app/features/platform/state/ProtectedWebStorage';
-import type {UpdaterContext, UpdaterDownloadOption, UpdaterEvent} from '@app/features/platform/types/Electron';
 import {Logger} from '@app/features/platform/utils/AppLogger';
 import {getClientInfo} from '@app/features/platform/utils/ClientInfo';
 import {flushPendingPersistWrites} from '@app/features/platform/utils/MobXPersistence';
@@ -21,17 +20,48 @@ import type * as UpdaterModalCommands from '@app/features/updater/commands/Updat
 import {
 	createUpdaterMachineSnapshot,
 	getUpdaterDisplayVersion,
-	getUpdaterMachineStateValue,
 	hasManualNativeDownload,
 	transitionUpdaterMachineSnapshot,
 	type UpdateInfo,
 	type UpdaterMachineEvent,
 	type UpdaterMachineSnapshot,
-	type UpdaterState,
 } from '@app/features/updater/state/UpdaterStateMachine';
 import {buildLinuxManualUpdateOptions} from '@app/features/updater/utils/LinuxManualUpdateOptions';
-import type {UpdaterEvent as NativeUpdaterEvent} from '@app/types/electron.d';
+import type {UpdaterEvent as NativeUpdaterEvent, UpdaterDownloadOption} from '@app/types/electron.d';
 import {makeAutoObservable, runInAction} from 'mobx';
+
+type UpdaterContext = NonNullable<NativeUpdaterEvent['context']>;
+type UpdaterEvent =
+	| {
+			type: 'checking';
+			context: UpdaterContext;
+	  }
+	| {
+			type: 'available';
+			context: UpdaterContext;
+			version: string | null;
+			downloadUrl?: string;
+			downloadOptions?: Array<UpdaterDownloadOption>;
+	  }
+	| {
+			type: 'not-available';
+			context: UpdaterContext;
+	  }
+	| {
+			type: 'downloaded';
+			context: UpdaterContext;
+	  }
+	| {
+			type: 'error';
+			context: UpdaterContext;
+			message: string;
+	  }
+	| {
+			type: 'unsupported';
+			context: UpdaterContext;
+			reason: 'platform' | 'unpackaged' | 'managed-package';
+			downloadUrl?: string;
+	  };
 
 const logger = new Logger('Updater');
 const CHECK_INTERVAL_MS = 5 * 60 * 1000;
@@ -205,10 +235,6 @@ class Updater {
 
 	get nativeManualUpdateAvailable(): boolean {
 		return this.updateInfo.native.available && this.hasManualNativeDownload;
-	}
-
-	get state(): UpdaterState {
-		return getUpdaterMachineStateValue(this.snapshot);
 	}
 
 	get isChecking(): boolean {
@@ -728,10 +754,6 @@ class Updater {
 		} finally {
 			this.transition({type: 'manualDownload.finished'});
 		}
-	}
-
-	reset(): void {
-		this.transition({type: 'reset'});
 	}
 
 	dispose(): void {

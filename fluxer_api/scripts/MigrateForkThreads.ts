@@ -56,7 +56,7 @@ import {
 	rowsEqual,
 } from '@app/api/channel/migration/ForkThreadMapping';
 import {ChannelDataRepository} from '@app/api/channel/repositories/ChannelDataRepository';
-import type {IMessageRepository} from '@app/api/channel/repositories/IMessageRepository';
+import type {MessageRepository} from '@app/api/channel/repositories/MessageRepository';
 import {ThreadRepository} from '@app/api/channel/repositories/ThreadRepository';
 import {mapThreadToResponse} from '@app/api/channel/services/thread/ThreadMappers';
 import {mapThreadParentFields} from '@app/api/channel/services/thread/ThreadParentSettings';
@@ -653,7 +653,7 @@ async function verify(fullPlan: MigrationPlan, legacy: LegacySnapshot, options: 
 		);
 	}
 	const checks = new Checks();
-	const messageStub = {} as IMessageRepository;
+	const messageStub = {} as MessageRepository;
 	const channelData = new ChannelDataRepository();
 	const threads = new ThreadRepository(channelData, messageStub);
 	const byId = new Map(legacy.channels.filter((c) => !c.softDeleted).map((c) => [c.id, c]));

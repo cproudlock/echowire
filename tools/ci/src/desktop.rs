@@ -4,11 +4,11 @@ use crate::common::{
     CalverEnv, CommandSpec, S3UploadPlanItem, append_github_env, append_github_output,
     append_github_path, capture, collect_files, command_succeeds, copy_dir_contents, count_files,
     count_files_min_depth, directory_upload_plan, download_file, download_s3_prefix, env_bool,
-    env_string, get_s3_object_bytes, join_s3_key, list_s3_keys, output_bytes, output_text,
-    parse_bool, parse_version_instant, path_to_s3_key, remove_dir_if_exists,
-    remove_empty_dirs_below, remove_file_if_exists, require_any_env, require_env, require_home,
-    resolve_calver, run_command, runner_temp, s3_client, title_case, trim_option,
-    upload_directory_to_s3, upload_s3_plan_append_only, upload_s3_plan_overwrite,
+    env_string, get_s3_object_bytes, join_s3_key, list_s3_keys, output_text, parse_bool,
+    parse_version_instant, path_to_s3_key, remove_dir_if_exists, remove_empty_dirs_below,
+    remove_file_if_exists, require_any_env, require_env, require_home, resolve_calver, run_command,
+    runner_temp, s3_client, title_case, trim_option, upload_directory_to_s3,
+    upload_s3_plan_append_only, upload_s3_plan_overwrite,
 };
 use crate::functions::{sha256_file, write_json_pretty};
 use crate::release::{
@@ -220,7 +220,7 @@ const PLATFORMS: &[Platform] = &[
         platform: "macos",
         arch: MACOS_UNIVERSAL_ARCH,
         desktop_variant: DEFAULT_DESKTOP_VARIANT,
-        os: "fluxer-desktop-macos-arm64",
+        os: "macos-15",
         electron_arch: MACOS_UNIVERSAL_ARCH,
     },
     Platform {
@@ -2643,7 +2643,7 @@ impl DesktopBuildPlatform {
 
 fn build_app_step(platform: DesktopBuildPlatform) -> Result<()> {
     let macos_keychain = if matches!(platform, DesktopBuildPlatform::Macos) {
-        Some(validate_macos_signing_env()?)
+        validate_macos_signing_env()?
     } else {
         None
     };
@@ -2707,16 +2707,32 @@ fn build_app_step(platform: DesktopBuildPlatform) -> Result<()> {
     bail!("electron-builder failed after retries")
 }
 
-fn validate_macos_signing_env() -> Result<PathBuf> {
-    let missing = ["APPLE_ID", "APPLE_APP_SPECIFIC_PASSWORD", "APPLE_TEAM_ID"]
-        .into_iter()
-        .filter(|name| env_string(name).is_none())
-        .collect::<Vec<_>>();
+// Echowire: notarization takes either an App Store Connect API key (APPLE_API_KEY is the path to the
+// .p8) or an Apple ID with an app-specific password. electron-builder reads whichever is set.
+fn macos_notarization_ready(get: impl Fn(&str) -> Option<String>) -> Result<()> {
+    let has_all = |names: &[&str]| names.iter().all(|name| get(name).is_some());
+    let api_key = has_all(&["APPLE_API_KEY", "APPLE_API_KEY_ID", "APPLE_API_ISSUER"]);
+    let apple_id = has_all(&["APPLE_ID", "APPLE_APP_SPECIFIC_PASSWORD", "APPLE_TEAM_ID"]);
     ensure!(
-        missing.is_empty(),
-        "Missing macOS notarization environment variables: {}. APPLE_ID maps to repo secret APPLE_ID; APPLE_APP_SPECIFIC_PASSWORD maps to APPLE_PASSWORD; APPLE_TEAM_ID maps to APPLE_TEAM_ID.",
-        missing.join(" ")
+        api_key || apple_id,
+        "Missing macOS notarization credentials: set APPLE_API_KEY (path to the .p8), APPLE_API_KEY_ID and APPLE_API_ISSUER, or APPLE_ID, APPLE_APP_SPECIFIC_PASSWORD and APPLE_TEAM_ID."
     );
+    Ok(())
+}
+
+// Echowire: GitHub-hosted macOS runners are ephemeral and have no pre-provisioned keychain, so the
+// certificate arrives as CSC_LINK and electron-builder imports it into its own temporary keychain.
+// The persistent-keychain path stays for a self-hosted runner.
+fn validate_macos_signing_env() -> Result<Option<PathBuf>> {
+    macos_notarization_ready(env_string)?;
+    if env_string("CSC_LINK").is_some() {
+        ensure!(
+            env_string("CSC_KEY_PASSWORD").is_some(),
+            "CSC_LINK is set but CSC_KEY_PASSWORD is not."
+        );
+        println!("Signing with the certificate from CSC_LINK (ephemeral keychain).");
+        return Ok(None);
+    }
 
     let keychain = require_home()?.join("Library/Keychains/fluxer-build.keychain-db");
     ensure!(
@@ -2742,7 +2758,7 @@ fn validate_macos_signing_env() -> Result<PathBuf> {
         "No valid Developer ID Application identity in {}.",
         keychain.display()
     );
-    Ok(keychain)
+    Ok(Some(keychain))
 }
 
 fn is_transient_failure(log: &str, patterns: &[&str]) -> bool {
@@ -2818,7 +2834,6 @@ fn verify_bundle_id_step() -> Result<()> {
         )
     })?;
     let info_plist = app.join("Contents").join("Info.plist");
-    let profile = app.join("Contents").join("embedded.provisionprofile");
     let bid = output_text(CommandSpec::new("/usr/libexec/PlistBuddy").args([
         "-c",
         "Print :CFBundleIdentifier",
@@ -2826,41 +2841,19 @@ fn verify_bundle_id_step() -> Result<()> {
     ]))?;
 
     let expected = if build_channel == "canary" {
-        "app.fluxer.canary"
+        "org.echowire.canary"
     } else {
-        "app.fluxer"
-    };
-    let expected_profile = if build_channel == "canary" {
-        "3G5837T29K.app.fluxer.canary"
-    } else {
-        "3G5837T29K.app.fluxer"
+        "org.echowire.app"
     };
     println!("Bundle id in zip: {bid} (expected: {expected})");
     ensure!(bid == expected, "Unexpected bundle id: {bid}");
+    // Echowire: no provisioning profile is embedded. The restricted entitlements that need one
+    // (application-identifier, associated-domains) belong to upstream's Apple team and are not used here.
     ensure!(
-        profile.exists(),
-        "Missing provisioning profile: {}",
-        profile.display()
-    );
-
-    let decoded_profile = temp.path().join("embedded.provisionprofile.plist");
-    let decoded = output_bytes(CommandSpec::new("security").args([
-        "cms",
-        "-D",
-        "-i",
-        profile.to_string_lossy().as_ref(),
-    ]))?;
-    fs::write(&decoded_profile, decoded)
-        .with_context(|| format!("Failed to write {}", decoded_profile.display()))?;
-    let profile_app_id = output_text(CommandSpec::new("/usr/libexec/PlistBuddy").args([
-        "-c",
-        "Print :Entitlements:com.apple.application-identifier",
-        decoded_profile.to_string_lossy().as_ref(),
-    ]))?;
-    println!("Provisioning profile app id: {profile_app_id} (expected: {expected_profile})");
-    ensure!(
-        profile_app_id == expected_profile,
-        "Unexpected provisioning profile app id: {profile_app_id}"
+        !app.join("Contents")
+            .join("embedded.provisionprofile")
+            .exists(),
+        "Unexpected embedded provisioning profile: this build is signed without one"
     );
 
     for (rel, expected_macho_arch) in macos_native_runtime_targets(&electron_arch) {
@@ -8427,6 +8420,42 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
         assert!(
             error.starts_with("Desktop module manifest is missing"),
             "{error}"
+        );
+    }
+
+    fn env_from(pairs: &[(&str, &str)]) -> impl Fn(&str) -> Option<String> {
+        let map = pairs
+            .iter()
+            .map(|(key, value)| (key.to_string(), value.to_string()))
+            .collect::<BTreeMap<_, _>>();
+        move |name| map.get(name).cloned()
+    }
+
+    #[test]
+    fn macos_notarization_accepts_an_api_key_or_an_apple_id() {
+        macos_notarization_ready(env_from(&[
+            ("APPLE_API_KEY", "/tmp/AuthKey.p8"),
+            ("APPLE_API_KEY_ID", "ABC123"),
+            ("APPLE_API_ISSUER", "issuer"),
+        ]))
+        .unwrap();
+        macos_notarization_ready(env_from(&[
+            ("APPLE_ID", "me@example.com"),
+            ("APPLE_APP_SPECIFIC_PASSWORD", "pw"),
+            ("APPLE_TEAM_ID", "TEAM"),
+        ]))
+        .unwrap();
+    }
+
+    #[test]
+    fn macos_notarization_refuses_a_partial_credential_set() {
+        assert!(macos_notarization_ready(env_from(&[])).is_err());
+        assert!(
+            macos_notarization_ready(env_from(&[
+                ("APPLE_API_KEY", "/tmp/AuthKey.p8"),
+                ("APPLE_API_KEY_ID", "ABC123"),
+            ]))
+            .is_err()
         );
     }
 

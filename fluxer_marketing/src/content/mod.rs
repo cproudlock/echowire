@@ -268,6 +268,11 @@ pub const HELP_CATEGORIES: &[HelpCategory] = &[
         title: CONTENT_HELP_CATEGORY_LEGAL_POLICY_TITLE_DESCRIPTOR,
         description: CONTENT_HELP_CATEGORY_LEGAL_POLICY_DESCRIPTION_DESCRIPTOR,
     },
+    HelpCategory {
+        slug: "articles",
+        title: CONTENT_HELP_CATEGORY_ARTICLES_TITLE_DESCRIPTOR,
+        description: CONTENT_HELP_CATEGORY_ARTICLES_DESCRIPTION_DESCRIPTOR,
+    },
 ];
 
 pub const HELP_ARTICLES: &[HelpArticle] = &[
@@ -395,6 +400,15 @@ pub const HELP_ARTICLES: &[HelpArticle] = &[
         category_slug: "legal-policy",
         last_updated: "2026-03-29",
         body: include_str!("../../content/help/legal-policy/regional-restrictions.md"),
+    },
+    HelpArticle {
+        slug: "echowire-vs-discord",
+        aliases: &["why-echowire", "echowire-vs-discord-comparison"],
+        title: CONTENT_HELP_ARTICLE_ECHOWIRE_VS_DISCORD_TITLE_DESCRIPTOR,
+        description: CONTENT_HELP_ARTICLE_ECHOWIRE_VS_DISCORD_DESCRIPTION_DESCRIPTOR,
+        category_slug: "articles",
+        last_updated: "2026-10-11",
+        body: include_str!("../../content/help/articles/echowire-vs-discord.md"),
     },
 ];
 

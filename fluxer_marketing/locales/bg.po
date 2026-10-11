@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-09-22 00:00+0000\n"
-"PO-Revision-Date: 2026-09-22 00:00+0000\n"
+"POT-Creation-Date: 2026-10-11 00:00+0000\n"
+"PO-Revision-Date: 2026-10-11 00:00+0000\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -985,6 +985,18 @@ msgctxt "content.help.category.legal_policy.description"
 msgid "View important policies pertaining to {product_name}."
 msgstr "Преглед на важни политики, отнасящи се до {product_name}."
 
+#. Help center category title for longer explanatory articles. Keep as a short noun.
+#: fluxer_marketing/generated:content.help.category.articles.title
+msgctxt "content.help.category.articles.title"
+msgid "Articles"
+msgstr "Articles"
+
+#. Help center category summary shown under the Articles heading. Translate as a short descriptive sentence. Preserve placeholders exactly.
+#: fluxer_marketing/generated:content.help.category.articles.description
+msgctxt "content.help.category.articles.description"
+msgid "Longer reads on why {product_name} is built the way it is."
+msgstr "Longer reads on why {product_name} is built the way it is."
+
 #. Help article title for a time-limited Plutonium promotion. Keep month/year and 'Plutonium' as proper names. Preserve placeholders exactly.
 #: fluxer_marketing/generated:content.help.article.plutonium_promotion_march_2026.title
 msgctxt "content.help.article.plutonium_promotion_march_2026.title"
@@ -1172,6 +1184,20 @@ msgid ""
 "How regional age verification laws affect your access to {product_name}, which regions are currently affected, and what restrictions apply."
 msgstr ""
 "Как регионалните закони за проверка на възрастта засягат достъпа ви до {product_name}, кои региони са засегнати в момента и какви ограничения се прилагат."
+
+#. Help article title comparing the product with a larger chat service. Preserve placeholders exactly.
+#: fluxer_marketing/generated:content.help.article.echowire_vs_discord.title
+msgctxt "content.help.article.echowire_vs_discord.title"
+msgid "{product_name} vs {discord}"
+msgstr "{product_name} vs {discord}"
+
+#. Help article summary for the comparison article. Preserve placeholders exactly; keep the name Fluxer unchanged.
+#: fluxer_marketing/generated:content.help.article.echowire_vs_discord.description
+msgctxt "content.help.article.echowire_vs_discord.description"
+msgid ""
+"What is documented about {discord}'s advertising and age checks, and how {product_name} and Fluxer compare."
+msgstr ""
+"What is documented about {discord}'s advertising and age checks, and how {product_name} and Fluxer compare."
 
 #. Accessible label on the small icon button next to help/policy article headings; clicking copies a deep link to that section.
 #: fluxer_marketing/generated:content.help.copy_link_to_section

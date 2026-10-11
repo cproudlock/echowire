@@ -4844,13 +4844,39 @@ fn prepare_release_assets_step(args: &BuildDesktopArgs) -> Result<()> {
     let version = require_env("VERSION")?;
     let source_sha = require_env("SOURCE_SHA")?;
     let s3_prefix = require_env("S3_DESKTOP_PREFIX")?;
+    prepare_release_assets(
+        Path::new("."),
+        &selected_platforms(args)?,
+        &channel,
+        &version,
+        &source_sha,
+        &s3_prefix,
+    )
+}
+
+// Echowire: split out of the step so tests can run the real assembly against a synthetic payload under a
+// temporary base directory. The workflow skips this step in test builds, so only a real publish used to
+// exercise it.
+fn prepare_release_assets(
+    base: &Path,
+    selected: &[Platform],
+    channel: &str,
+    version: &str,
+    source_sha: &str,
+    s3_prefix: &str,
+) -> Result<()> {
+    let channel = channel.to_string();
+    let version = version.to_string();
+    let source_sha = source_sha.to_string();
+    let s3_prefix = s3_prefix.to_string();
     ensure!(
         s3_prefix == "desktop",
         "GitHub desktop releases require S3_DESKTOP_PREFIX=desktop, received {s3_prefix:?}"
     );
     let product = desktop_release_product(&channel)?;
-    let payload_root = Path::new("payload_tree").join(&s3_prefix).join(&channel);
-    let release_assets = Path::new("release_assets");
+    let payload_root = base.join("payload_tree").join(&s3_prefix).join(&channel);
+    let release_assets_dir = base.join("release_assets");
+    let release_assets = release_assets_dir.as_path();
     remove_dir_if_exists(release_assets)?;
     fs::create_dir_all(release_assets)?;
 
@@ -4859,7 +4885,7 @@ fn prepare_release_assets_step(args: &BuildDesktopArgs) -> Result<()> {
     // Echowire: the coordinates a release must carry come from the same skip
     // inputs the build matrix reads, so a deliberate skip is honoured while an
     // accidentally missing payload still fails below.
-    let coordinates = payload_coordinates(&selected_platforms(args)?)?;
+    let coordinates = payload_coordinates(selected)?;
     for (platform, arch) in payload_coordinates(PLATFORMS)? {
         if !coordinates.contains(&(platform, arch)) {
             println!("Release deliberately omits {platform}/{arch}");
@@ -8428,6 +8454,149 @@ export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
             error.starts_with("Desktop module manifest is missing"),
             "{error}"
         );
+    }
+
+    fn write_prepare_fixture(base: &Path, absent: &[(&str, &str)]) {
+        let (payload_root, _packed) = write_fake_module_payload(base);
+        let channel_root = payload_root.join("canary");
+        let prefix = format!(
+            "{}-{LAYOUT_VERSION}",
+            desktop_release_product("canary").unwrap()
+        );
+        for (platform, arch) in desktop_release_coordinates() {
+            let dir = channel_root.join(platform).join(arch);
+            if absent.contains(&(platform, arch)) {
+                fs::remove_dir_all(&dir).unwrap();
+                continue;
+            }
+            let names: Vec<String> = match platform {
+                "win32" => vec![
+                    format!("{prefix}-portable-win-{arch}.zip"),
+                    format!("{prefix}-win-{arch}.exe"),
+                    "RELEASES".to_string(),
+                    "releases.win.json".to_string(),
+                    "assets.win.json".to_string(),
+                    format!("{prefix}-win-{arch}-full.nupkg"),
+                ],
+                "darwin" => vec![
+                    format!("{prefix}-mac-universal.dmg"),
+                    format!("{prefix}-mac-universal.zip"),
+                    "RELEASES.json".to_string(),
+                    "releases.json".to_string(),
+                ],
+                _ => vec![
+                    format!("{prefix}-linux-{arch}.AppImage"),
+                    format!("{prefix}-linux-{arch}.deb"),
+                    format!("{prefix}-linux-{arch}.rpm"),
+                    format!("{prefix}-linux-{arch}.tar.gz"),
+                ],
+            };
+            for name in &names {
+                write_file(
+                    &dir.join(name),
+                    &format!("content of {}", name.to_ascii_lowercase()),
+                );
+            }
+            let manifest = build_desktop_manifest(
+                &dir,
+                &PayloadManifestInput {
+                    channel: "canary".to_string(),
+                    platform: platform.to_string(),
+                    arch: arch.to_string(),
+                    desktop_variant: "default".to_string(),
+                    version: LAYOUT_VERSION.to_string(),
+                    pub_date: LAYOUT_PUB_DATE.to_string(),
+                },
+            )
+            .unwrap();
+            write_json_pretty(&dir.join("manifest.json"), &manifest).unwrap();
+        }
+    }
+
+    const PREPARE_SOURCE_SHA: &str = "0123456789abcdef0123456789abcdef01234567";
+
+    fn run_prepare(base: &Path, skip_targets: Option<&str>) -> Result<()> {
+        let mut args = matrix_args();
+        args.skip_targets = skip_targets.map(str::to_string);
+        prepare_release_assets(
+            base,
+            &selected_platforms(&args)?,
+            "canary",
+            LAYOUT_VERSION,
+            PREPARE_SOURCE_SHA,
+            "desktop",
+        )
+    }
+
+    fn read_prepared_descriptor(base: &Path) -> DesktopReleaseDescriptor {
+        let name = desktop_release_descriptor_filename("canary", LAYOUT_VERSION).unwrap();
+        serde_json::from_slice(&fs::read(base.join("release_assets").join(name)).unwrap()).unwrap()
+    }
+
+    #[test]
+    fn prepare_release_assets_accepts_a_release_with_macos_deliberately_skipped() {
+        let temp = tempfile::tempdir().unwrap();
+        write_prepare_fixture(temp.path(), &[("darwin", "x64"), ("darwin", "arm64")]);
+
+        run_prepare(temp.path(), Some("macos")).unwrap();
+
+        let descriptor = read_prepared_descriptor(temp.path());
+        assert!(!descriptor.assets.is_empty());
+        assert!(
+            descriptor
+                .assets
+                .iter()
+                .chain(descriptor.modules.iter())
+                .all(|asset| !asset.storage_key.contains("/darwin/")),
+            "a skipped platform must leave no trace in the descriptor"
+        );
+        assert!(
+            descriptor
+                .assets
+                .iter()
+                .any(|asset| asset.storage_key.contains("/win32/arm64/"))
+        );
+        assert!(
+            descriptor
+                .modules
+                .iter()
+                .any(|asset| asset.storage_key.contains("/linux/x64/"))
+        );
+    }
+
+    #[test]
+    fn prepare_release_assets_accepts_a_full_release() {
+        let temp = tempfile::tempdir().unwrap();
+        write_prepare_fixture(temp.path(), &[]);
+
+        run_prepare(temp.path(), None).unwrap();
+
+        let descriptor = read_prepared_descriptor(temp.path());
+        assert!(
+            descriptor
+                .assets
+                .iter()
+                .any(|asset| asset.storage_key.contains("/darwin/"))
+        );
+    }
+
+    #[test]
+    fn prepare_release_assets_refuses_a_missing_platform_that_was_not_skipped() {
+        let temp = tempfile::tempdir().unwrap();
+        write_prepare_fixture(temp.path(), &[("darwin", "x64"), ("darwin", "arm64")]);
+
+        assert!(run_prepare(temp.path(), None).is_err());
+    }
+
+    #[test]
+    fn prepare_release_assets_refuses_a_half_built_platform_even_when_macos_is_skipped() {
+        let temp = tempfile::tempdir().unwrap();
+        write_prepare_fixture(
+            temp.path(),
+            &[("darwin", "x64"), ("darwin", "arm64"), ("linux", "arm64")],
+        );
+
+        assert!(run_prepare(temp.path(), Some("macos")).is_err());
     }
 
     #[test]

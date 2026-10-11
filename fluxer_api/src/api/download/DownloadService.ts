@@ -86,9 +86,12 @@ const MUTABLE_DOWNLOAD_CACHE_CONTROL = 'public, max-age=300';
 const VERSIONED_ARTIFACT_CACHE_CONTROL = 'public, max-age=31536000';
 const LINUX_REPO_INDEX_CACHE_CONTROL = 'public, max-age=60';
 
+// Echowire: modules.json is the per-coordinate pointer desktop clients fetch and it changes on every
+// build, so it is a feed like manifest.json. Treated as a versioned artifact it was served for a year.
 function isDesktopReleaseFeedFilename(filename: string): boolean {
 	return (
 		filename === 'manifest.json' ||
+		filename === 'modules.json' ||
 		filename.endsWith('.yml') ||
 		filename.endsWith('.yaml') ||
 		filename.startsWith('RELEASES') ||

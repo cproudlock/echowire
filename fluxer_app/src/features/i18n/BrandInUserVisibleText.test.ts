@@ -82,6 +82,26 @@ function sourceFiles(root: string): Array<string> {
 	return out;
 }
 
+describe('the installed web app is not named for upstream', () => {
+	it('names the fork in the generated manifest', () => {
+		// The live app proxy runs with FLUXER_SELF_HOSTED=false and so never applies the instance
+		// branding to manifest.json: whatever generateManifest writes is what a user installs.
+		const source = readFileSync(
+			join(REPO_ROOT, 'fluxer_app', 'scripts', 'build', 'rspack', 'static-files.mjs'),
+			'utf8',
+		);
+		const start = source.indexOf('function generateManifest');
+		expect(start).toBeGreaterThan(-1);
+		const body = source
+			.slice(start, source.indexOf('icons:', start))
+			.split('\n')
+			.filter((line) => !line.trim().startsWith('//'))
+			.join('\n');
+		expect(UPSTREAM_BRANDS.test(body)).toBe(false);
+		expect(body).toContain("name: 'echowire'");
+	});
+});
+
 describe('user-visible text never names the upstream brand', () => {
 	it('has no unapproved upstream brand name in any display string', () => {
 		const allowed = new Set(ALLOWED.map((entry) => entry.text));

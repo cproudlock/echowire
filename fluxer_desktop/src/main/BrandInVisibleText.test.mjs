@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import {readdirSync, readFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import {join, relative} from 'node:path';
 import {test} from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -71,4 +72,32 @@ test('desktop display text never names the upstream brand', () => {
 test('the splash mark is the echowire mark, not the upstream one', () => {
 	const mark = readFileSync(join(SRC, 'splash', 'symbol.svg'), 'utf8');
 	assert.ok(mark.includes('url(#wg)'), 'symbol.svg should be the echowire waveform mark');
+});
+
+// The upstream Fluxer images this fork replaced, by sha256. If a merge restores one of them, the splash
+// or the macOS tray shows the Fluxer logo again with no text conflict to notice.
+const UPSTREAM_IMAGE_SHA256 = new Map([
+	['6fbfbefdb697fbb20770717aaaf2f007640032d0ff93232e3eb717361f85c429', 'splash/symbol.svg (Fluxer mark)'],
+	['a8db79e9ede805d367b807cf454b20049bb429840eba0a71e35baf8345176771', 'FluxerTrayTemplate.png (Fluxer mark)'],
+	['da9774ed429b944db4d1d01d2bd182dfbffdbcaf5052c4bf4740f8f410ae388e', 'FluxerTrayTemplate@2x.png (Fluxer mark)'],
+]);
+
+test('no upstream Fluxer image has been restored', () => {
+	const root = join(SRC, '..');
+	const candidates = [join(SRC, 'splash', 'symbol.svg')];
+	for (const dir of readdirSync(join(root, 'build_resources'))) {
+		if (!dir.startsWith('icons-')) continue;
+		for (const name of ['FluxerTrayTemplate.png', 'FluxerTrayTemplate@2x.png']) {
+			candidates.push(join(root, 'build_resources', dir, name));
+		}
+	}
+	const restored = [];
+	for (const file of candidates) {
+		if (!existsSync(file)) continue;
+		const digest = createHash('sha256').update(readFileSync(file)).digest('hex');
+		if (UPSTREAM_IMAGE_SHA256.has(digest)) {
+			restored.push(`${relative(root, file)} is the upstream ${UPSTREAM_IMAGE_SHA256.get(digest)}`);
+		}
+	}
+	assert.deepEqual(restored, []);
 });

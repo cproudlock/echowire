@@ -4,10 +4,6 @@ When a platform sells advertising and answers to investors, your attention and y
 
 Each item links to its source. Where a figure comes from a third party, the article says so.
 
-### October 2025: a support vendor leaked ID photos
-
-Hackers breached a third-party vendor that handled age-related appeals. Discord said about 70,000 users may have had government ID photos exposed. The attackers claimed to hold far more. Discord says it no longer works with that vendor. Sources: [TechCrunch](https://techcrunch.com/2025/10/09/discord-suffers-data-breach-impacting-at-least-70000-users) and [Computing](https://www.computing.co.uk/news/2025/security/discord-privacy-breach-fears-personal-ids).
-
 ### February 2026: every account defaults to "teen"
 
 Discord announced that all accounts would start in a restricted teen experience unless the user proves they are an adult with a face scan or a government ID. It also described an age inference model that can classify some users as adults using signals such as account tenure, device information and activity data. Sources: [Help Net Security](https://www.helpnetsecurity.com/2026/02/10/discord-age-verification-settings/) and [Redact](https://redact.dev/blog/discord-teen-by-default-global-age-verification-2026).
@@ -31,6 +27,27 @@ Honesty is the point of this article, so here is where the evidence stops.
 - We cannot show that Discord brought back age verification in order to sell gambling ads. Discord says age signals "are used to ensure users in the teenage age group don't see ads meant for adults, and are not used to target ads." One analyst wrote that there is no evidence of that motive, but "extremely convenient timing."
 - What is documented is a company that is moving toward more advertising and a public listing, while asking users for face scans or IDs, after a breach of ID photos held by its own vendor.
 - The question to ask of any free platform is how it earns money from you. For Discord, the answer includes advertisers.
+
+## When Discord users' data leaked
+
+Discord says none of these were a breach of its own servers, and two of the three involved other companies. The common thread is that user data, including government ID photos, sat with outside services that had to collect and store it.
+
+### 4 October 2026: Double Counter, a Discord security bot (the most recent)
+
+An attacker got into the bot's cloud systems through an analytics tool left exposed on an old server and copied about 12 GB. Reported exposure: Discord IDs and usernames for about 28 million accounts, IP addresses with coarse location, and about 1 million email addresses. Have I Been Pwned lists roughly 275,000 unique emails from the data that was published. Passwords and card numbers were not part of it. Discord said the incident "was not a breach of Discord" and disabled new installs of the app. The larger figures are the attacker's claims, and they overlap, so they do not mean 28 million people lost every kind of data. Sources: [Cybersecurity News](https://cybersecuritynews.com/discord-users-data-exposed/) and [Yahoo Tech](https://tech.yahoo.com/cybersecurity/articles/hackers-stole-millions-discord-ids-185629432.html).
+
+### Late September to October 2025: a support vendor leaked ID photos
+
+Attackers were inside a customer-support vendor's ticketing system for about 58 hours. Discord said about 70,000 users may have had government ID photos exposed, along with names, emails, IP addresses and support messages. The attackers claimed to hold far more. Discord says it no longer works with that vendor. Sources: [TechCrunch](https://techcrunch.com/2025/10/09/discord-suffers-data-breach-impacting-at-least-70000-users), [Computing](https://www.computing.co.uk/news/2025/security/discord-privacy-breach-fears-personal-ids) and [CM Alliance](https://www.cm-alliance.com/cyber-insights-on-the-discord-data-breach).
+
+### August 2023: Discord.io, an unofficial invite service
+
+Over 760,000 users of a service that was not run by Discord had their usernames, Discord IDs and emails exposed, plus billing addresses and hashed passwords for older sign-ups. Discord stated: "Discord is not affiliated with Discord.io. We do not share any user information with Discord.io directly." It is here because it shows how much user data ends up outside Discord, not because Discord was breached. Source: [CSHub](https://www.cshub.com/attacks/news/discordio-exposes-personal-data-of-more-than-760000-users).
+
+### What this does and does not show
+
+- It shows that the more a platform collects (IDs, selfies, support tickets, bot databases), the more there is to lose. Age verification asks for exactly the most sensitive kind of data.
+- It does not show that any self-hosted or smaller service is immune. echowire can be breached too. What it collects is limited, it asks for no ID or face scans, and the comparison below lists the few outside services it uses.
 
 ## The comparison
 
@@ -78,5 +95,9 @@ What to expect from echowire and Fluxer:
 8. [Everything PR: Discord IPO status and revenue model (reported, not confirmed by Discord)](https://everything-pr.com/discord-the-community-layer-of-the-creator-economy)
 9. [All About Cookies: did Discord bring back age verification to sell sports gambling ads?](https://allaboutcookies.org/discord-age-verification-sport-gambling-ads)
 10. [Discord Ads Policy](https://support.discord.com/hc/en-us/articles/25516720403223-Ads-Policy)
+11. [Cybersecurity News: Double Counter breach exposes Discord users' data (October 2026)](https://cybersecuritynews.com/discord-users-data-exposed/)
+12. [Yahoo Tech: hackers stole millions of Discord IDs and emails in a multi-stage attack](https://tech.yahoo.com/cybersecurity/articles/hackers-stole-millions-discord-ids-185629432.html)
+13. [CSHub: Discord.io exposes personal data of more than 760,000 users (August 2023)](https://www.cshub.com/attacks/news/discordio-exposes-personal-data-of-more-than-760000-users)
+14. [CM Alliance: cyber insights on the Discord data breach (vendor breach, 2025)](https://www.cm-alliance.com/cyber-insights-on-the-discord-data-breach)
 
 Figures and dates were checked on 2026-10-11 and may change. echowire is not affiliated with Discord.

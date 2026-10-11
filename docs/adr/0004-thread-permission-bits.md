@@ -4,7 +4,7 @@ Date: 2026-09-16
 
 ## Status
 
-Accepted
+Superseded by [0012](0012-adopt-upstream-threads-and-forums.md)
 
 ## Context
 

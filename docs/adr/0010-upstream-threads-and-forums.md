@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Superseded by [0012](0012-adopt-upstream-threads-and-forums.md)
 
 Date: 2026-10-07
 

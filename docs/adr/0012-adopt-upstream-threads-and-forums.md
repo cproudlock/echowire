@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed
+Accepted and implemented. Cut over to production on 2026-10-10.
 
 Date: 2026-10-08
 
@@ -233,6 +233,11 @@ upstream's tables and is lost on rollback; the window keeps that small and is st
 Supersede ADRs 0003 to 0007, delete the retired code, later drop the legacy columns once
 rollback is no longer wanted, update the docs, and delete the production copy.
 
+Done 2026-10-11: ADRs 0003, 0004, 0005, 0007 and 0010 are marked superseded by this one, and 0006 notes that
+its thread parts are superseded while the follow-upstream policy stands. Dropping the legacy `channels` thread
+columns and the old thread tables is deliberately left for later, once rollback to the 2026-10-08 image is no
+longer wanted.
+
 ## Consequences
 
 Easy afterwards: upstream syncs stop colliding in the same 35 files, we inherit their search,
@@ -350,3 +355,20 @@ handoff, so it verified nothing while adding a runner dependency.
   difference: upstream adds a mentioned member to an invitable private thread.
 - Left: mobile (Phase 5), then cutover (Phase 6): backup, `--apply --pre-cutover` while the old image is live, deploy,
   `--delta`, run seeding, set `premium_product_name` to `Reverb`, verify, then `--cleanup-legacy` later.
+
+### 2026-10-10 to 2026-10-11: cutover and cleanup
+
+- Production backup taken, `--apply --pre-cutover` run with the old image live, then images tagged 2026-10-10
+  (commit 8be553ec7) deployed. Rollback tag was 2026-10-08.
+- The full `--apply` wrote the remaining 20 by-user rows. `--verify` passed 325 checks; the three
+  `perms_seeded_at untouched` checks fail by design because upstream's seeding ran at first load (02:15 UTC) for
+  all six guilds. Afterwards `@everyone` could create public and private threads and send in threads in every
+  guild, and nobody gained Manage Threads. Seven of 18 channel overwrites gained thread bits.
+- Mobile 1.7.36 (20261009) was uploaded to Play and iOS built through Codemagic from `canary`. Members still on
+  1.7.35 see no threads or forums until they update.
+- `premium_product_name` was already `Reverb` in the instance config.
+- `--cleanup-legacy` ran on 2026-10-11 after `--verify` and a stable day: 34 `thread_members_by_user` legacy rows
+  and 4 forum `channels_by_guild_id` rows deleted, backup of all 38 kept off the repository. A second run finds 0.
+- The desktop release pipeline needed three fixes after the merge, none about threads: the Windows packaged-shell
+  check matched only `fluxer*` executables (#24), the module-asset step ignored a deliberately skipped platform
+  (#25), and the release descriptor validator required macOS module manifests (#26).

@@ -4,6 +4,8 @@
 
 Accepted
 
+The thread-specific parts of this decision are superseded by [0012](0012-adopt-upstream-threads-and-forums.md); the policy of following upstream stands.
+
 Date: 2026-09-16
 
 ## Context

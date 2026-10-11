@@ -1692,6 +1692,8 @@ async fn help_center_serves_the_comparison_article() {
     let article = render_path(app, "/help/echowire-vs-discord").await;
     assert!(article.contains("echowire vs Discord"));
     assert!(article.contains("What we can and cannot say"));
+    assert!(article.contains("data leaked"));
+    assert!(article.contains("Double Counter"));
     assert!(article.contains("<table"));
     assert!(!article.contains("https://help.fluxer.app"));
 }

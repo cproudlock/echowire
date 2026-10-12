@@ -894,8 +894,10 @@ async fn download_page_renders_strips_and_cache_header() {
     assert!(html.contains(&format!(
         "/dl/desktop/{channel}/linux/x64/latest/appimage?test=1"
     )));
-    // Echowire: no macOS build, no arm64 Linux build, no Flatpak published -> none linked.
-    assert!(!html.contains("darwin"));
+    // Echowire: macOS is published (a universal dmg); no arm64 Linux build and no Flatpak are -> not linked.
+    assert!(html.contains(&format!(
+        "/dl/desktop/{channel}/darwin/arm64/latest/dmg?test=1"
+    )));
     assert!(!html.contains("flathub"));
     assert!(!html.contains(&format!("/dl/desktop/{channel}/linux/arm64/")));
 }

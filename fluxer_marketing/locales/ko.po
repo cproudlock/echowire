@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-10-11 00:00+0000\n"
-"PO-Revision-Date: 2026-10-11 00:00+0000\n"
+"POT-Creation-Date: 2026-10-12 00:00+0000\n"
+"PO-Revision-Date: 2026-10-12 00:00+0000\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1976,8 +1976,9 @@ msgstr "웹 브라우저, {windows}, {linux}용 {product_name}을(를) 다운로
 #: fluxer_marketing/generated:platform_support.availability.summary
 msgctxt "platform_support.availability.summary"
 msgid ""
-"Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing."
-msgstr "웹 브라우저와 {windows}, {linux}에서 사용 가능하며, {ios} 및 {android}은 공개 테스트 중입니다."
+"Available in your web browser and on {windows}, {macos} and {linux}, with {ios} and {android} in public testing."
+msgstr ""
+"Available in your web browser and on {windows}, {macos} and {linux}, with {ios} and {android} in public testing."
 
 #. Alt text for a desktop product screenshot. Preserve {product_name} exactly; describe the image as the desktop interface, not as a download action. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.desktop.interface_label

@@ -45,10 +45,16 @@ const ALLOWED_CONTENT_FILES: &[(&str, &str)] = &[
 
 /// Descriptor keys (the `key:` of a `marketing_message!`) whose `message:` names an upstream
 /// brand on purpose.
-const ALLOWED_DESCRIPTOR_KEYS: &[(&str, &str)] = &[(
-    "content.help.article.echowire_vs_discord.description",
-    "summary of the comparison article, which names Fluxer deliberately",
-)];
+const ALLOWED_DESCRIPTOR_KEYS: &[(&str, &str)] = &[
+    (
+        "content.help.article.echowire_vs_discord.description",
+        "summary of the comparison article, which names Fluxer deliberately",
+    ),
+    (
+        "footer.upstream_fluxer",
+        "the footer and menu link to fluxer.app, the upstream project echowire is built on, labelled as upstream",
+    ),
+];
 
 fn crate_root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR"))

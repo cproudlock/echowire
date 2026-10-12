@@ -145,6 +145,14 @@ crate::marketing_message!(
 );
 
 crate::marketing_message!(
+    pub const FOOTER_UPSTREAM_FLUXER_DESCRIPTOR = {
+        key: "footer.upstream_fluxer",
+        message: "Fluxer (upstream)",
+        comment: "Footer and menu link to the Fluxer project website, the open-source chat app echowire is built on. Fluxer is a product name, keep it unchanged; the word in brackets marks it as the upstream project.",
+    };
+);
+
+crate::marketing_message!(
     pub const FOOTER_STATUS_DESCRIPTOR = {
         key: "footer.status",
         message: "Status",

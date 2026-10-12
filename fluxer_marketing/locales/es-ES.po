@@ -1648,6 +1648,12 @@ msgctxt "footer.source_code"
 msgid "Source code"
 msgstr "Código fuente"
 
+#. Footer and menu link to the Fluxer project website, the open-source chat app echowire is built on. Fluxer is a product name, keep it unchanged; the word in brackets marks it as the upstream project.
+#: fluxer_marketing/generated:footer.upstream_fluxer
+msgctxt "footer.upstream_fluxer"
+msgid "Fluxer (upstream)"
+msgstr "Fluxer (upstream)"
+
 #. Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.status
 msgctxt "footer.status"

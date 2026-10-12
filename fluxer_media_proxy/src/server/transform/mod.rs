@@ -93,12 +93,13 @@ impl TransformRuntime {
         cfg: &Config,
         metrics: &Arc<metrics::Metrics>,
     ) -> anyhow::Result<Self> {
-        let limits = MediaLimits::default_from_config();
         let memory_limit_bytes = process_memory_limit_bytes();
         let memory_budget_bytes = native_memory_budget_bytes(
             memory_limit_bytes,
             cfg.media.transform_cache_capacity_bytes,
         );
+        let limits =
+            MediaLimits::default_from_config().with_native_memory_budget(memory_budget_bytes);
         tracing::info!(
             memory_limit_bytes,
             transform_cache_bytes = cfg.media.transform_cache_capacity_bytes,
@@ -574,8 +575,8 @@ async fn serve_image_transform(
             requested_download: transform.requested_download,
         });
     }
-    let can_serve_original = transform.width.is_none()
-        && transform.height.is_none()
+    let can_serve_original = ((transform.width.is_none() && transform.height.is_none())
+        || options.is_animated())
         && is_browser_displayable_image(sniffed.mime);
     let mut too_large_original = None;
     let leader_original = &mut too_large_original;

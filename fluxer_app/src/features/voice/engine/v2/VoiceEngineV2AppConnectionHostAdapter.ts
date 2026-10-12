@@ -3,7 +3,11 @@
 import assert from 'node:assert/strict';
 import Authentication from '@app/features/auth/state/Authentication';
 import {Logger} from '@app/features/platform/utils/AppLogger';
-import {createVoiceMeshRoom, holdVoiceMeshConversion} from '@app/features/voice/engine/mesh/VoiceMeshRoom';
+import {
+	createVoiceMeshRoom,
+	holdVoiceMeshConversion,
+	isVoiceMeshRoom,
+} from '@app/features/voice/engine/mesh/VoiceMeshRoom';
 import {Store} from '@app/features/voice/engine/Store';
 import {sendVoiceStateDisconnect} from '@app/features/voice/engine/VoiceChannelConnector';
 import {
@@ -41,12 +45,12 @@ import {
 	getRoomVideoPublishDefaults,
 } from '@app/features/voice/utils/CodecCapabilityDetector';
 import {getH264HardwareProfilesSync} from '@app/features/voice/utils/GpuEncoderCapabilities';
-import {SCREEN_SHARE_MAX_VIDEO_BITRATE_BPS} from '@app/features/voice/utils/ScreenShareOptions';
 import {
 	clearScreenShareDecodeFailures,
 	getVideoDecoderExclusionsSync,
 	loadVideoDecoderExclusions,
 } from '@app/features/voice/utils/VideoDecoderCapabilities';
+import {getScreenShareBitrateCeilingBps} from '@app/features/voice/utils/VideoQualityEntitlement';
 import type {
 	ExternalE2EEKeyProvider,
 	LocalTrack,
@@ -145,7 +149,7 @@ function createWebAudioMixOption(): RoomOptions['webAudioMix'] {
 function createRoomPublishDefaults(): RoomOptions['publishDefaults'] {
 	return {
 		screenShareEncoding: {
-			maxBitrate: SCREEN_SHARE_MAX_VIDEO_BITRATE_BPS,
+			maxBitrate: getScreenShareBitrateCeilingBps(),
 			maxFramerate: 30,
 			priority: 'high',
 		},
@@ -785,8 +789,13 @@ export class VoiceEngineV2AppConnectionHostAdapter extends Store {
 			logger.warn('Region hot-swap: missing participant for track republishing');
 			return;
 		}
+		const isMeshConversion = isVoiceMeshRoom(oldRoom);
 		const publications = selectLocalMediaPublicationsForConnectionRepublish(
 			Array.from(oldParticipant.trackPublications.values()),
+		).filter(
+			(publication) =>
+				!isMeshConversion ||
+				(publication.source !== Track.Source.ScreenShare && publication.source !== Track.Source.ScreenShareAudio),
 		);
 		const errors: Array<{source: string; error: unknown}> = [];
 		let codecPolicyFailure: Error | null = null;

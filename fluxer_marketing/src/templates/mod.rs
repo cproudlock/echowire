@@ -1051,8 +1051,8 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                             }
                         }
                         div class="flex items-center gap-1 xl:gap-2" {
-                            (nav_icon_link("https://bsky.app/profile/echowire.org", tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR), Icon::Bluesky, "hidden lg:flex"))
-                            (nav_icon_link("https://github.com/fluxerapp/fluxer", tr(i18n, ctx, SOCIAL_AND_FEEDS_GITHUB_DESCRIPTOR), Icon::Github, "hidden lg:flex"))
+                            (nav_icon_link("https://bsky.app/profile/echowire.bsky.social", tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR), Icon::Bluesky, "hidden lg:flex"))
+                            (nav_icon_link("https://github.com/cproudlock/echowire", tr(i18n, ctx, SOCIAL_AND_FEEDS_GITHUB_DESCRIPTOR), Icon::Github, "hidden lg:flex"))
                             button
                                 type="button"
                                 class="locale-toggle hidden items-center rounded-lg p-2 text-[#4641D9] transition-colors hover:bg-gray-100 hover:text-[#3d38c7] lg:flex"
@@ -1105,8 +1105,9 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                                 }
                             }
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_CONNECT_DESCRIPTOR, &[
-                                ("https://bsky.app/profile/echowire.org".to_owned(), SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR),
-                                ("https://github.com/fluxerapp/fluxer".to_owned(), COMPANY_AND_RESOURCES_SOURCE_AND_CONTRIBUTION_SOURCE_CODE_DESCRIPTOR),
+                                ("https://bsky.app/profile/echowire.bsky.social".to_owned(), SOCIAL_AND_FEEDS_BLUESKY_LABEL_DESCRIPTOR),
+                                ("https://github.com/cproudlock/echowire".to_owned(), COMPANY_AND_RESOURCES_SOURCE_AND_CONTRIBUTION_SOURCE_CODE_DESCRIPTOR),
+                                ("https://fluxer.app".to_owned(), FOOTER_UPSTREAM_FLUXER_DESCRIPTOR),
                             ]))
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_COMPANY_DESCRIPTOR, &[
                                 (ctx.href("/donate"), DONATIONS_DONATE_ACTION_DESCRIPTOR),
@@ -1485,7 +1486,7 @@ fn bluesky_support_card(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 h3 class="title mb-4 text-xl text-black md:text-2xl" { (tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_FOLLOW_US_DESCRIPTOR)) }
                 p class="body-lg text-gray-700 leading-relaxed" {
                     (tr(i18n, ctx, SOCIAL_AND_FEEDS_STAY_UPDATED_CTA_DESCRIPTOR)) " "
-                    a class="underline hover:text-[#4641D9]" href="https://bsky.app/profile/echowire.org/rss" target="_blank" rel="noopener noreferrer" {
+                    a class="underline hover:text-[#4641D9]" href="https://bsky.app/profile/echowire.bsky.social/rss" target="_blank" rel="noopener noreferrer" {
                         (tr(i18n, ctx, SOCIAL_AND_FEEDS_BLUESKY_RSS_FEED_DESCRIPTOR))
                     }
                     " " (tr(i18n, ctx, GENERAL_OR_DESCRIPTOR)) " "
@@ -1496,7 +1497,7 @@ fn bluesky_support_card(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                 }
             }
             div class="mt-auto flex flex-col items-center" {
-                a class="label w-full rounded-xl bg-[#4641D9] px-6 py-3 text-center font-semibold text-base text-white shadow-md transition hover:bg-[#3832B8] md:text-lg" href="https://bsky.app/profile/echowire.org" target="_blank" rel="noopener noreferrer" {
+                a class="label w-full rounded-xl bg-[#4641D9] px-6 py-3 text-center font-semibold text-base text-white shadow-md transition hover:bg-[#3832B8] md:text-lg" href="https://bsky.app/profile/echowire.bsky.social" target="_blank" rel="noopener noreferrer" {
                     (tr(i18n, ctx, SOCIAL_AND_FEEDS_FOLLOW_FLUXER_DESCRIPTOR))
                 }
             }
@@ -1558,12 +1559,10 @@ fn recommended_desktop_url(ctx: &RequestContext, platform: Platform) -> String {
     match platform {
         Platform::Windows => desktop_url(ctx, "win32", recommended_arch(ctx, platform), "setup"),
         Platform::Macos => desktop_url(ctx, "darwin", recommended_arch(ctx, platform), "dmg"),
-        // Echowire: recommend the .deb (Debian/Ubuntu/Mint — the desktop-Linux majority).
-        // The AppImage's Chromium sandbox is blocked by Ubuntu 24 / Mint 22's userns
-        // restriction (a read-only AppImage can't set a SUID chrome-sandbox or install an
-        // AppArmor profile), so it fails to launch there; the .deb's postinst does both and
-        // works. AppImage/RPM/Flatpak remain as labeled alternatives below.
-        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "deb"),
+        // Echowire: recommend the AppImage (any distro, updates itself). The .deb, RPM and tar.gz stay
+        // as labeled alternatives below. On Ubuntu 24 / Mint 22 the AppImage's Chromium sandbox is blocked
+        // by the userns restriction unless it is started with --no-sandbox; the .deb handles that itself.
+        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "appimage"),
         Platform::Ios | Platform::Android | Platform::Unknown => ctx.href("/download"),
     }
 }
@@ -1720,12 +1719,11 @@ fn alternate_builds(
         Platform::Linux => {
             // Echowire: x64 only (no arm64 build) and no Flatpak published, so drop both the
             // arm64 alternate (served a stale build) and the Flatpak link (wrong/unpublished app).
-            // .deb is the primary/recommended download; AppImage is the "any distro, no install"
-            // alternative (note: needs --no-sandbox on Ubuntu 24 / Mint 22).
+            // AppImage is the primary/recommended download; .deb, RPM and tar.gz are alternatives.
             vec![
                 alt(
-                    "AppImage".to_owned(),
-                    desktop_url(ctx, "linux", arch, "appimage"),
+                    ".deb".to_owned(),
+                    desktop_url(ctx, "linux", arch, "deb"),
                     false,
                 ),
                 alt(
@@ -2059,8 +2057,9 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                         ul class="space-y-3" {
                             (footer_link(ctx.href("/reverb"), tr(i18n, ctx, FOOTER_PLUTONIUM_TIER_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/download"), tr(i18n, ctx, FOOTER_DOWNLOAD_DESCRIPTOR), link_class))
-                            (footer_link("https://github.com/fluxerapp/fluxer".to_owned(), tr(i18n, ctx, FOOTER_SOURCE_CODE_DESCRIPTOR), link_class))
-                            (footer_link("https://bsky.app/profile/echowire.org".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))
+                            (footer_link("https://github.com/cproudlock/echowire".to_owned(), tr(i18n, ctx, FOOTER_SOURCE_CODE_DESCRIPTOR), link_class))
+                            (footer_link("https://fluxer.app".to_owned(), tr(i18n, ctx, FOOTER_UPSTREAM_FLUXER_DESCRIPTOR), link_class))
+                            (footer_link("https://bsky.app/profile/echowire.bsky.social".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/help"), tr(i18n, ctx, COMPANY_AND_RESOURCES_HELP_HELP_CENTER_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/press"), tr(i18n, ctx, FOOTER_PRESS_DESCRIPTOR), link_class))
                         }

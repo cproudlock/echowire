@@ -7,5 +7,5 @@ export const ExternalUrls = {
 	// App, API, Realtime Gateway, Voice ORD/EWR/ATL, Help. Managed via the Instatus API
 	// (key in repo-root .secrets as INSTATUS_API_KEY).
 	SERVICE_STATUS: 'https://echowire.instatus.com',
-	BLUESKY: 'https://bsky.app/profile/echowire.org',
+	BLUESKY: 'https://bsky.app/profile/echowire.bsky.social',
 } as const;

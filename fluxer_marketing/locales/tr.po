@@ -18,12 +18,6 @@ msgctxt "app.communities.community_support"
 msgid "Community support"
 msgstr "Topluluk desteği"
 
-#. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.featured_in_discovery
-msgctxt "app.communities.featured_in_discovery"
-msgid "Featured in discovery"
-msgstr "Keşfette öne çıkanlar"
-
 #. Button or link label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.moderation.actions_and_tools
 msgctxt "app.communities.moderation.actions_and_tools"
@@ -59,18 +53,6 @@ msgstr "Roller, yetkiler ve kayıtlarla topluluğunu sorunsuz yönet."
 msgctxt "app.communities.title"
 msgid "Communities"
 msgstr "Topluluklar"
-
-#. Short UI label or heading used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.verification.label
-msgctxt "app.communities.verification.label"
-msgid "Community verification"
-msgstr "Topluluk doğrulaması"
-
-#. Body copy used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.verification.value_statement
-msgctxt "app.communities.verification.value_statement"
-msgid "Your community gets verified status for authenticity and trust."
-msgstr "Topluluğun, özgünlük ve güven için doğrulanmış statü kazanır."
 
 #. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.verification.verified_community
@@ -1030,20 +1012,6 @@ msgid ""
 msgstr ""
 "{visionary_tier_full_name}, Şubat 2026'da tükenen, ömür boyu süreli ve sınırlı sayıda sunulan bir {premium_tier_name} teklifiydi. Numaralı rozet ve {visionary_tier_name}'nin neler içerdiği hakkında bilgi edinin."
 
-#. Help article title listing the three programmes that showcase a community on Fluxer. Keep 'Partner', 'Verified', and 'Discovery' as programme names.
-#: fluxer_marketing/generated:content.help.article.community_programmes.title
-msgctxt "content.help.article.community_programmes.title"
-msgid "Partner, Verified, and Discovery programmes"
-msgstr "Ortaklık, Doğrulama ve Keşif programları"
-
-#. Help article summary about the Partner, Verified, and Discovery programmes. Preserve placeholders exactly.
-#: fluxer_marketing/generated:content.help.article.community_programmes.description
-msgctxt "content.help.article.community_programmes.description"
-msgid ""
-"The three ways to get your community showcased on {product_name}, what each programme requires, and how to apply."
-msgstr ""
-"Topluluğunu {product_name}'da öne çıkarmanın üç yolu, her programın gereksinimleri ve nasıl başvuracağın."
-
 #. Help article title about how file attachments eventually expire. Keep it as an explanatory phrase.
 #: fluxer_marketing/generated:content.help.article.attachment_expiry.title
 msgctxt "content.help.article.attachment_expiry.title"
@@ -1627,12 +1595,6 @@ msgstr ""
 "Bağımsız bir iletişim platformunu destekle. Bağışın platformun altyapısını ve geliştirilmesini finanse eder."
 
 #. Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
-#: fluxer_marketing/generated:footer.partners
-msgctxt "footer.partners"
-msgid "Partners"
-msgstr "Ortaklar"
-
-#. Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.plutonium_tier
 msgctxt "footer.plutonium_tier"
 msgid "{premium_tier_name} tier"
@@ -2039,168 +2001,6 @@ msgstr "{product_name} logolarını, marka materyallerini indir ve basın ekibim
 msgctxt "navigation.press.press_and_brand_assets"
 msgid "Press and brand assets"
 msgstr "Basın ve marka materyalleri"
-
-#. Body copy in the partner application section, pointing readers to the help center guide. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.apply.guide_prompt
-msgctxt "partner_program.apply.guide_prompt"
-msgid ""
-"Our help center guide covers what we look for, what each program includes, and how to send in your application."
-msgstr ""
-"Yardım merkezindeki rehberimiz neye baktığımızı, her programın neler içerdiğini ve başvurunu nasıl göndereceğini anlatıyor."
-
-#. Button or link label on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.become_partner.call_to_action
-msgctxt "partner_program.become_partner.call_to_action"
-msgid "Become a partner"
-msgstr "Ortak ol"
-
-#. Hero heading on the partner program page. Preserve {product_name} exactly; keep the tone professional and creator-friendly. Preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.become_partner.heading
-msgctxt "partner_program.become_partner.heading"
-msgid "Become a {product_name} partner"
-msgstr "{product_name} ortağı ol"
-
-#. Compact UI label on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.become_partner.ready_prompt
-msgctxt "partner_program.become_partner.ready_prompt"
-msgid "Ready to become a partner?"
-msgstr "Ortak olmaya hazır mısın?"
-
-#. Body copy on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.description
-msgctxt "partner_program.description"
-msgid "Exclusive perks and benefits for content creators and large community owners."
-msgstr "İçerik üreticileri ve büyük toplulukların sahiplerine özel ayrıcalıklı avantajlar."
-
-#. Short UI label or heading on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.label
-msgctxt "partner_program.label"
-msgid "Partners"
-msgstr "Ortaklar"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.creator_monetization.description
-msgctxt "partner_program.perks.creator_monetization.description"
-msgid "Early access to creator monetization features with lower platform fees than non-partners."
-msgstr ""
-"Ortak olmayanlardan daha düşük platform ücretleriyle içerik üreticisi para kazanma özelliklerine erken erişim."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.creator_monetization.label
-msgctxt "partner_program.perks.creator_monetization.label"
-msgid "Creator monetization"
-msgstr "İçerik üreticisi para kazanma"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.custom_vanity_url.description
-msgctxt "partner_program.perks.custom_vanity_url.description"
-msgid "Get an exclusive custom vanity URL like fluxer.gg/yourcommunity."
-msgstr "fluxer.gg/topluluğun gibi sana özel bir bağlantı al."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.custom_vanity_url.label
-msgctxt "partner_program.perks.custom_vanity_url.label"
-msgid "Custom vanity URL"
-msgstr "Sana özel bağlantı"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.direct_team_access.description
-msgctxt "partner_program.perks.direct_team_access.description"
-msgid "Join the exclusive partners community with direct access to the {product_name} team."
-msgstr "{product_name} ekibine doğrudan erişim sağlayan ayrıcalıklı ortaklar topluluğuna katıl."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.direct_team_access.label
-msgctxt "partner_program.perks.direct_team_access.label"
-msgid "Direct team access"
-msgstr "Doğrudan ekip erişimi"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.discovery_visibility
-msgctxt "partner_program.perks.discovery_visibility"
-msgid "Get increased visibility by being featured in community discovery."
-msgstr "Topluluk keşfinde öne çıkarak daha fazla görünürlük kazan."
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.exclusive_merch.description
-msgctxt "partner_program.perks.exclusive_merch.description"
-msgid "Get exclusive {product_name} partner-only merchandise and swag."
-msgstr "{product_name} ortaklarına özel ürünler ve hediyelik eşyalar al."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.exclusive_merch.label
-msgctxt "partner_program.perks.exclusive_merch.label"
-msgid "Exclusive merch"
-msgstr "Ayrıcalıklı ürünler"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.free_plutonium.description
-msgctxt "partner_program.perks.free_plutonium.description"
-msgid "Get free {premium_tier_name} for your account to enjoy all premium features."
-msgstr ""
-"Hesabınız için tüm premium özelliklerin keyfini çıkarmak üzere ücretsiz {premium_tier_name} kazanın."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.free_plutonium.label
-msgctxt "partner_program.perks.free_plutonium.label"
-msgid "Free {premium_tier_name}"
-msgstr "Ücretsiz {premium_tier_name}"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.heading
-msgctxt "partner_program.perks.heading"
-msgid "Partner perks"
-msgstr "Ortak avantajları"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.increased_limits.description
-msgctxt "partner_program.perks.increased_limits.description"
-msgid "Your community receives increased limits when you need them."
-msgstr "Topluluğun, ihtiyaç duyduğunda artırılmış limitlere sahip olur."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.increased_limits.label
-msgctxt "partner_program.perks.increased_limits.label"
-msgid "Increased limits"
-msgstr "Artırılmış limitler"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.partner_badge.description
-msgctxt "partner_program.perks.partner_badge.description"
-msgid "Display an exclusive partner badge on your profile to stand out."
-msgstr "Öne çıkmak için profilinde ayrıcalıklı bir ortak rozeti sergile."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.partner_badge.label
-msgctxt "partner_program.perks.partner_badge.label"
-msgid "Partner badge"
-msgstr "Ortak rozeti"
-
-#. Compact UI label on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.see_perks
-msgctxt "partner_program.perks.see_perks"
-msgid "See perks"
-msgstr "Avantajları gör"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.vip_voice_servers.description
-msgctxt "partner_program.perks.vip_voice_servers.description"
-msgid "Access to VIP voice servers reserved exclusively for partnered communities."
-msgstr "Sadece ortak topluluklara ayrılmış VIP sesli kanallara erişim."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.vip_voice_servers.label
-msgctxt "partner_program.perks.vip_voice_servers.label"
-msgid "VIP voice channels"
-msgstr "VIP sesli kanallar"
-
-#. Body copy under the partner program hero. Preserve {premium_tier_name} exactly; explain the target audience and benefits without sounding like a paid ad. Preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.who_its_for
-msgctxt "partner_program.who_its_for"
-msgid ""
-"For creators and community owners: free {premium_tier_name}, a partner badge, a custom vanity URL, and more."
-msgstr ""
-"İçerik üreticileri ve topluluk sahipleri için: ücretsiz {premium_tier_name}, ortak rozeti, özel vanity URL ve daha fazlası."
 
 #. Download-page meta description. Preserve {product_name} exactly; keep platform names conventional and make desktop, browser, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.meta_description

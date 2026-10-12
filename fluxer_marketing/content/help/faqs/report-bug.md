@@ -28,7 +28,7 @@ Before sending:
 
 ## Submit your report
 
-Email [bugs@echowire.org](mailto:bugs@echowire.org) with the completed template. A concise but descriptive subject line helps us triage quickly. If you prefer GitHub, you are welcome to file issues in the [echowire GitHub repository](https://github.com/fluxerapp/fluxer).
+Email [bugs@echowire.org](mailto:bugs@echowire.org) with the completed template. A concise but descriptive subject line helps us triage quickly. If you prefer GitHub, you are welcome to file issues in the [echowire GitHub repository](https://github.com/cproudlock/echowire).
 
 ## Security issues
 

@@ -475,10 +475,6 @@
         "msgid": "© {product_name} — operated by Proudlock Technology LLC, a North Carolina limited liability company"
       },
       {
-        "msgctxt": "partner_program.perks.free_plutonium.description",
-        "msgid": "Get free {premium_tier_name} for your account to enjoy all premium features."
-      },
-      {
         "msgctxt": "platform_support.availability.meta_description",
         "msgid": "Get {product_name} for your web browser, {windows}, and {linux}. {ios} and {android} are in public testing."
       },
@@ -1399,20 +1395,12 @@
         "msgid": "Bluesky"
       },
       {
-        "msgctxt": "footer.partners",
-        "msgid": "Partners"
-      },
-      {
         "msgctxt": "footer.status",
         "msgid": "Status"
       },
       {
         "msgctxt": "languages.list.hindi",
         "msgid": "Hindi"
-      },
-      {
-        "msgctxt": "partner_program.label",
-        "msgid": "Partners"
       },
       {
         "msgctxt": "platform_support.mobile.install_as_app.guides.in_safari",

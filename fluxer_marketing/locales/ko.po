@@ -18,12 +18,6 @@ msgctxt "app.communities.community_support"
 msgid "Community support"
 msgstr "커뮤니티 지원"
 
-#. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.featured_in_discovery
-msgctxt "app.communities.featured_in_discovery"
-msgid "Featured in discovery"
-msgstr "둘러보기에 소개됨"
-
 #. Button or link label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.moderation.actions_and_tools
 msgctxt "app.communities.moderation.actions_and_tools"
@@ -59,18 +53,6 @@ msgstr "역할, 권한, 로그를 통해 커뮤니티를 원활하게 운영하�
 msgctxt "app.communities.title"
 msgid "Communities"
 msgstr "커뮤니티"
-
-#. Short UI label or heading used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.verification.label
-msgctxt "app.communities.verification.label"
-msgid "Community verification"
-msgstr "커뮤니티 인증"
-
-#. Body copy used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.verification.value_statement
-msgctxt "app.communities.verification.value_statement"
-msgid "Your community gets verified status for authenticity and trust."
-msgstr "커뮤니티가 인증되어 진정성과 신뢰를 얻을 수 있어요."
 
 #. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.verification.verified_community
@@ -1011,19 +993,6 @@ msgid ""
 msgstr ""
 "{visionary_tier_full_name}는 2026년 2월에 매진된 한정판 평생 {premium_tier_name} 상품이었습니다. 번호가 새겨진 배지와 {visionary_tier_name}에 포함된 혜택에 대해 알아보세요."
 
-#. Help article title listing the three programmes that showcase a community on Fluxer. Keep 'Partner', 'Verified', and 'Discovery' as programme names.
-#: fluxer_marketing/generated:content.help.article.community_programmes.title
-msgctxt "content.help.article.community_programmes.title"
-msgid "Partner, Verified, and Discovery programmes"
-msgstr "파트너, 인증, 둘러보기 프로그램"
-
-#. Help article summary about the Partner, Verified, and Discovery programmes. Preserve placeholders exactly.
-#: fluxer_marketing/generated:content.help.article.community_programmes.description
-msgctxt "content.help.article.community_programmes.description"
-msgid ""
-"The three ways to get your community showcased on {product_name}, what each programme requires, and how to apply."
-msgstr "{product_name}에서 커뮤니티를 알리는 세 가지 방법과 각 프로그램의 조건, 신청 방법을 안내해요."
-
 #. Help article title about how file attachments eventually expire. Keep it as an explanatory phrase.
 #: fluxer_marketing/generated:content.help.article.attachment_expiry.title
 msgctxt "content.help.article.attachment_expiry.title"
@@ -1589,12 +1558,6 @@ msgid ""
 msgstr "독립적인 커뮤니케이션 플랫폼을 지원해 주세요. 후원금은 플랫폼의 인프라와 개발에 사용돼요."
 
 #. Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
-#: fluxer_marketing/generated:footer.partners
-msgctxt "footer.partners"
-msgid "Partners"
-msgstr "파트너"
-
-#. Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.plutonium_tier
 msgctxt "footer.plutonium_tier"
 msgid "{premium_tier_name} tier"
@@ -2001,164 +1964,6 @@ msgstr "{product_name} 로고, 브랜드 자산을 다운로드하고 언론팀�
 msgctxt "navigation.press.press_and_brand_assets"
 msgid "Press and brand assets"
 msgstr "언론 자료 및 브랜드 자산"
-
-#. Body copy in the partner application section, pointing readers to the help center guide. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.apply.guide_prompt
-msgctxt "partner_program.apply.guide_prompt"
-msgid ""
-"Our help center guide covers what we look for, what each program includes, and how to send in your application."
-msgstr "도움말 센터 가이드에서 저희가 무엇을 보는지, 각 프로그램에 무엇이 포함되는지, 신청서를 어떻게 보내는지 확인할 수 있어요."
-
-#. Button or link label on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.become_partner.call_to_action
-msgctxt "partner_program.become_partner.call_to_action"
-msgid "Become a partner"
-msgstr "파트너가 되어 보세요"
-
-#. Hero heading on the partner program page. Preserve {product_name} exactly; keep the tone professional and creator-friendly. Preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.become_partner.heading
-msgctxt "partner_program.become_partner.heading"
-msgid "Become a {product_name} partner"
-msgstr "{product_name} 파트너가 되어 보세요"
-
-#. Compact UI label on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.become_partner.ready_prompt
-msgctxt "partner_program.become_partner.ready_prompt"
-msgid "Ready to become a partner?"
-msgstr "파트너가 될 준비가 되셨어요?"
-
-#. Body copy on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.description
-msgctxt "partner_program.description"
-msgid "Exclusive perks and benefits for content creators and large community owners."
-msgstr "콘텐츠 크리에이터와 대규모 커뮤니티 소유자를 위한 독점 혜택이 있어요."
-
-#. Short UI label or heading on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.label
-msgctxt "partner_program.label"
-msgid "Partners"
-msgstr "파트너"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.creator_monetization.description
-msgctxt "partner_program.perks.creator_monetization.description"
-msgid "Early access to creator monetization features with lower platform fees than non-partners."
-msgstr "비파트너보다 낮은 플랫폼 수수료로 크리에이터 수익화 기능을 먼저 이용할 수 있어요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.creator_monetization.label
-msgctxt "partner_program.perks.creator_monetization.label"
-msgid "Creator monetization"
-msgstr "크리에이터 수익화"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.custom_vanity_url.description
-msgctxt "partner_program.perks.custom_vanity_url.description"
-msgid "Get an exclusive custom vanity URL like fluxer.gg/yourcommunity."
-msgstr "fluxer.gg/yourcommunity와 같은 독점 맞춤형 URL을 받을 수 있어요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.custom_vanity_url.label
-msgctxt "partner_program.perks.custom_vanity_url.label"
-msgid "Custom vanity URL"
-msgstr "맞춤형 URL"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.direct_team_access.description
-msgctxt "partner_program.perks.direct_team_access.description"
-msgid "Join the exclusive partners community with direct access to the {product_name} team."
-msgstr "{product_name} 팀과 직접 소통할 수 있는 독점 파트너 커뮤니티에 참여할 수 있어요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.direct_team_access.label
-msgctxt "partner_program.perks.direct_team_access.label"
-msgid "Direct team access"
-msgstr "팀과 직접 소통"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.discovery_visibility
-msgctxt "partner_program.perks.discovery_visibility"
-msgid "Get increased visibility by being featured in community discovery."
-msgstr "커뮤니티 검색에 소개되어 가시성을 높일 수 있어요."
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.exclusive_merch.description
-msgctxt "partner_program.perks.exclusive_merch.description"
-msgid "Get exclusive {product_name} partner-only merchandise and swag."
-msgstr "{product_name} 파트너 전용 상품을 받을 수 있어요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.exclusive_merch.label
-msgctxt "partner_program.perks.exclusive_merch.label"
-msgid "Exclusive merch"
-msgstr "독점 상품"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.free_plutonium.description
-msgctxt "partner_program.perks.free_plutonium.description"
-msgid "Get free {premium_tier_name} for your account to enjoy all premium features."
-msgstr "계정에 무료 {premium_tier_name}을(를) 받아 모든 프리미엄 기능을 이용하세요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.free_plutonium.label
-msgctxt "partner_program.perks.free_plutonium.label"
-msgid "Free {premium_tier_name}"
-msgstr "무료 {premium_tier_name}"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.heading
-msgctxt "partner_program.perks.heading"
-msgid "Partner perks"
-msgstr "파트너 혜택"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.increased_limits.description
-msgctxt "partner_program.perks.increased_limits.description"
-msgid "Your community receives increased limits when you need them."
-msgstr "필요할 때 커뮤니티 제한이 늘어나요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.increased_limits.label
-msgctxt "partner_program.perks.increased_limits.label"
-msgid "Increased limits"
-msgstr "제한 상향"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.partner_badge.description
-msgctxt "partner_program.perks.partner_badge.description"
-msgid "Display an exclusive partner badge on your profile to stand out."
-msgstr "프로필에 파트너 배지를 표시하고 돋보일 수 있어요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.partner_badge.label
-msgctxt "partner_program.perks.partner_badge.label"
-msgid "Partner badge"
-msgstr "파트너 배지"
-
-#. Compact UI label on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.see_perks
-msgctxt "partner_program.perks.see_perks"
-msgid "See perks"
-msgstr "혜택을 확인해 보세요"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.vip_voice_servers.description
-msgctxt "partner_program.perks.vip_voice_servers.description"
-msgid "Access to VIP voice servers reserved exclusively for partnered communities."
-msgstr "파트너 커뮤니티 전용 VIP 음성 채널을 이용할 수 있어요."
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.vip_voice_servers.label
-msgctxt "partner_program.perks.vip_voice_servers.label"
-msgid "VIP voice channels"
-msgstr "VIP 음성 채널"
-
-#. Body copy under the partner program hero. Preserve {premium_tier_name} exactly; explain the target audience and benefits without sounding like a paid ad. Preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.who_its_for
-msgctxt "partner_program.who_its_for"
-msgid ""
-"For creators and community owners: free {premium_tier_name}, a partner badge, a custom vanity URL, and more."
-msgstr "크리에이터와 커뮤니티 소유자를 위해: 무료 {premium_tier_name}, 파트너 배지, 맞춤형 배니티 URL 등."
 
 #. Download-page meta description. Preserve {product_name} exactly; keep platform names conventional and make desktop, browser, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.meta_description

@@ -1160,11 +1160,7 @@ async fn donation_page_renders_business_tab_and_swish_proxy_rejects_bad_amount()
 #[tokio::test]
 async fn product_program_and_press_pages_are_not_placeholders() {
     let app = build_router(test_config());
-    for (path, expected) in [
-        ("/reverb", "Free vs Reverb"),
-        ("/partners", "Partner perks"),
-        ("/press", "logo-color.svg"),
-    ] {
+    for (path, expected) in [("/reverb", "Free vs Reverb"), ("/press", "logo-color.svg")] {
         let response = app
             .clone()
             .oneshot(Request::builder().uri(path).body(Body::empty()).unwrap())
@@ -1203,6 +1199,25 @@ async fn product_program_and_press_pages_are_not_placeholders() {
 }
 
 #[tokio::test]
+async fn retired_partner_programme_pages_are_gone() {
+    let app = build_router(test_config());
+    for path in ["/partners", "/help/community-programmes", "/help/partners"] {
+        let response = app
+            .clone()
+            .oneshot(Request::builder().uri(path).body(Body::empty()).unwrap())
+            .await
+            .unwrap();
+        assert_eq!(response.status(), StatusCode::NOT_FOUND, "{path}");
+    }
+
+    let home = render_path(app, "/").await;
+    assert!(
+        !home.contains("/partners"),
+        "home page still links /partners"
+    );
+}
+
+#[tokio::test]
 async fn rendered_pages_keep_no_js_and_accessibility_contracts() {
     let mut config = test_config();
     config.api_endpoint = "http://127.0.0.1:9".to_owned();
@@ -1220,7 +1235,6 @@ async fn rendered_pages_keep_no_js_and_accessibility_contracts() {
         "/blog",
         // `/blog/<slug>` dropped: all blog posts were deleted in the echowire fork.
         "/careers",
-        "/partners",
         "/press",
         "/reverb",
         "/does-not-exist",

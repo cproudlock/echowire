@@ -9,14 +9,6 @@ crate::marketing_message!(
 );
 
 crate::marketing_message!(
-    pub const APP_COMMUNITIES_FEATURED_IN_DISCOVERY_DESCRIPTOR = {
-        key: "app.communities.featured_in_discovery",
-        message: "Featured in discovery",
-        comment: "Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.",
-    };
-);
-
-crate::marketing_message!(
     pub const APP_COMMUNITIES_MODERATION_ACTIONS_AND_TOOLS_DESCRIPTOR = {
         key: "app.communities.moderation.actions_and_tools",
         message: "Moderation actions and tools",
@@ -61,22 +53,6 @@ crate::marketing_message!(
         key: "app.communities.title",
         message: "Communities",
         comment: "Short UI label or heading used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.",
-    };
-);
-
-crate::marketing_message!(
-    pub const APP_COMMUNITIES_VERIFICATION_LABEL_DESCRIPTOR = {
-        key: "app.communities.verification.label",
-        message: "Community verification",
-        comment: "Short UI label or heading used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.",
-    };
-);
-
-crate::marketing_message!(
-    pub const APP_COMMUNITIES_VERIFICATION_VALUE_STATEMENT_DESCRIPTOR = {
-        key: "app.communities.verification.value_statement",
-        message: "Your community gets verified status for authenticity and trust.",
-        comment: "Body copy used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.",
     };
 );
 

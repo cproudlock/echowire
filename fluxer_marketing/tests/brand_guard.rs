@@ -26,10 +26,6 @@ const ALLOWED_CONTENT_FILES: &[(&str, &str)] = &[
         "the comparison article names Fluxer deliberately: its table compares Discord, Fluxer and self-hosted Fluxer",
     ),
     (
-        "content/help/faqs/report-bug.md",
-        "links to the upstream GitHub repository (github.com/fluxerapp/fluxer) for issue reports",
-    ),
-    (
         "content/policies/changelog.md",
         "names the fluxerusercontent.com CDN domain, which is a real infrastructure hostname",
     ),

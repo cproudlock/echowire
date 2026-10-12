@@ -159,8 +159,11 @@ pub fn download_page(
                         }
                     }
                     ul class="border-gray-200 border-t" {
-                        // Echowire: no macOS build, so no macOS card (was a dead 404 link).
+                        // Echowire: macOS is built, signed and notarized since 2026-10-11 (universal dmg, so
+                        // the arm64 and x64 download paths serve the same file); the card was hidden while
+                        // the link was a dead 404.
                         (download_strip(i18n, ctx, Platform::Windows, latest_versions.windows.as_ref()))
+                        (download_strip(i18n, ctx, Platform::Macos, latest_versions.macos.as_ref()))
                         (download_strip(i18n, ctx, Platform::Linux, latest_versions.linux.as_ref()))
                         (mobile_download_row(i18n, ctx, MobileDownload::WebApp))
                         (mobile_download_row(i18n, ctx, MobileDownload::Ios))

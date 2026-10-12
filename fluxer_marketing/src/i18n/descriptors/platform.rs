@@ -11,7 +11,7 @@ crate::marketing_message!(
 crate::marketing_message!(
     pub const PLATFORM_SUPPORT_AVAILABILITY_SUMMARY_DESCRIPTOR = {
         key: "platform_support.availability.summary",
-        message: "Available in your web browser and on {windows} and {linux}, with {ios} and {android} in public testing.",
+        message: "Available in your web browser and on {windows}, {macos} and {linux}, with {ios} and {android} in public testing.",
         comment: "Intro copy below the download-page heading. Keep platform names conventional and make browser, desktop, and public mobile testing availability clear. Preserve placeholders exactly.",
     };
 );

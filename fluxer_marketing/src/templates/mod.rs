@@ -1558,12 +1558,10 @@ fn recommended_desktop_url(ctx: &RequestContext, platform: Platform) -> String {
     match platform {
         Platform::Windows => desktop_url(ctx, "win32", recommended_arch(ctx, platform), "setup"),
         Platform::Macos => desktop_url(ctx, "darwin", recommended_arch(ctx, platform), "dmg"),
-        // Echowire: recommend the .deb (Debian/Ubuntu/Mint — the desktop-Linux majority).
-        // The AppImage's Chromium sandbox is blocked by Ubuntu 24 / Mint 22's userns
-        // restriction (a read-only AppImage can't set a SUID chrome-sandbox or install an
-        // AppArmor profile), so it fails to launch there; the .deb's postinst does both and
-        // works. AppImage/RPM/Flatpak remain as labeled alternatives below.
-        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "deb"),
+        // Echowire: recommend the AppImage (any distro, updates itself). The .deb, RPM and tar.gz stay
+        // as labeled alternatives below. On Ubuntu 24 / Mint 22 the AppImage's Chromium sandbox is blocked
+        // by the userns restriction unless it is started with --no-sandbox; the .deb handles that itself.
+        Platform::Linux => desktop_url(ctx, "linux", recommended_arch(ctx, platform), "appimage"),
         Platform::Ios | Platform::Android | Platform::Unknown => ctx.href("/download"),
     }
 }
@@ -1720,12 +1718,11 @@ fn alternate_builds(
         Platform::Linux => {
             // Echowire: x64 only (no arm64 build) and no Flatpak published, so drop both the
             // arm64 alternate (served a stale build) and the Flatpak link (wrong/unpublished app).
-            // .deb is the primary/recommended download; AppImage is the "any distro, no install"
-            // alternative (note: needs --no-sandbox on Ubuntu 24 / Mint 22).
+            // AppImage is the primary/recommended download; .deb, RPM and tar.gz are alternatives.
             vec![
                 alt(
-                    "AppImage".to_owned(),
-                    desktop_url(ctx, "linux", arch, "appimage"),
+                    ".deb".to_owned(),
+                    desktop_url(ctx, "linux", arch, "deb"),
                     false,
                 ),
                 alt(

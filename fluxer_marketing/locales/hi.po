@@ -18,12 +18,6 @@ msgctxt "app.communities.community_support"
 msgid "Community support"
 msgstr "कम्युनिटी सपोर्ट"
 
-#. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.featured_in_discovery
-msgctxt "app.communities.featured_in_discovery"
-msgid "Featured in discovery"
-msgstr "डिस्कवरी में फीचर किया गया"
-
 #. Button or link label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.moderation.actions_and_tools
 msgctxt "app.communities.moderation.actions_and_tools"
@@ -59,18 +53,6 @@ msgstr "अपनी कम्युनिटी को रोल, अनुम�
 msgctxt "app.communities.title"
 msgid "Communities"
 msgstr "कम्युनिटी"
-
-#. Short UI label or heading used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.verification.label
-msgctxt "app.communities.verification.label"
-msgid "Community verification"
-msgstr "कम्युनिटी वेरिफिकेशन"
-
-#. Body copy used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
-#: fluxer_marketing/generated:app.communities.verification.value_statement
-msgctxt "app.communities.verification.value_statement"
-msgid "Your community gets verified status for authenticity and trust."
-msgstr "आपकी कम्युनिटी को प्रामाणिकता और विश्वास के लिए वेरिफाइड स्टेटस मिलता है।"
 
 #. Compact UI label used in the home-page communities/moderation feature card. Keep it concise, natural, and consistent with product terminology; preserve placeholders exactly.
 #: fluxer_marketing/generated:app.communities.verification.verified_community
@@ -1027,20 +1009,6 @@ msgid ""
 msgstr ""
 "{visionary_tier_full_name} एक सीमित आजीवन {premium_tier_name} ऑफ़र था जो फ़रवरी 2026 में बिक गया। नंबर वाले बैज और {visionary_tier_name} में शामिल सुविधाओं के बारे में जानें।"
 
-#. Help article title listing the three programmes that showcase a community on Fluxer. Keep 'Partner', 'Verified', and 'Discovery' as programme names.
-#: fluxer_marketing/generated:content.help.article.community_programmes.title
-msgctxt "content.help.article.community_programmes.title"
-msgid "Partner, Verified, and Discovery programmes"
-msgstr "पार्टनर, वेरिफिकेशन और डिस्कवरी प्रोग्राम"
-
-#. Help article summary about the Partner, Verified, and Discovery programmes. Preserve placeholders exactly.
-#: fluxer_marketing/generated:content.help.article.community_programmes.description
-msgctxt "content.help.article.community_programmes.description"
-msgid ""
-"The three ways to get your community showcased on {product_name}, what each programme requires, and how to apply."
-msgstr ""
-"{product_name} पर अपनी कम्युनिटी को दिखाने के तीन तरीके, हर प्रोग्राम की शर्तें, और आवेदन कैसे करें."
-
 #. Help article title about how file attachments eventually expire. Keep it as an explanatory phrase.
 #: fluxer_marketing/generated:content.help.article.attachment_expiry.title
 msgctxt "content.help.article.attachment_expiry.title"
@@ -1620,12 +1588,6 @@ msgstr ""
 "एक इंडिपेंडेंट कम्युनिकेशन प्लेटफॉर्म को सपोर्ट करें। आपका डोनेशन प्लेटफॉर्म के इंफ्रास्ट्रक्चर और डेवलपमेंट को फंड करता है।"
 
 #. Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
-#: fluxer_marketing/generated:footer.partners
-msgctxt "footer.partners"
-msgid "Partners"
-msgstr "पार्टनर्स"
-
-#. Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.
 #: fluxer_marketing/generated:footer.plutonium_tier
 msgctxt "footer.plutonium_tier"
 msgid "{premium_tier_name} tier"
@@ -2033,168 +1995,6 @@ msgstr "{product_name} लोगो, ब्रांड एसेट डाउ�
 msgctxt "navigation.press.press_and_brand_assets"
 msgid "Press and brand assets"
 msgstr "प्रेस और ब्रांड एसेट्स"
-
-#. Body copy in the partner application section, pointing readers to the help center guide. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.apply.guide_prompt
-msgctxt "partner_program.apply.guide_prompt"
-msgid ""
-"Our help center guide covers what we look for, what each program includes, and how to send in your application."
-msgstr ""
-"हमारी सहायता केंद्र गाइड बताती है कि हम क्या देखते हैं, हर प्रोग्राम में क्या शामिल है, और आवेदन कैसे भेजें."
-
-#. Button or link label on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.become_partner.call_to_action
-msgctxt "partner_program.become_partner.call_to_action"
-msgid "Become a partner"
-msgstr "पार्टनर बनें"
-
-#. Hero heading on the partner program page. Preserve {product_name} exactly; keep the tone professional and creator-friendly. Preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.become_partner.heading
-msgctxt "partner_program.become_partner.heading"
-msgid "Become a {product_name} partner"
-msgstr "{product_name} पार्टनर बनें"
-
-#. Compact UI label on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.become_partner.ready_prompt
-msgctxt "partner_program.become_partner.ready_prompt"
-msgid "Ready to become a partner?"
-msgstr "क्या आप पार्टनर बनने के लिए तैयार हैं?"
-
-#. Body copy on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.description
-msgctxt "partner_program.description"
-msgid "Exclusive perks and benefits for content creators and large community owners."
-msgstr "कंटेंट क्रिएटर्स और बड़ी कम्युनिटी के ओनर्स के लिए एक्सक्लूसिव पर्क्स और फायदे।"
-
-#. Short UI label or heading on the partner program page. Keep the tone professional, creator-friendly, and clear about application expectations.
-#: fluxer_marketing/generated:partner_program.label
-msgctxt "partner_program.label"
-msgid "Partners"
-msgstr "पार्टनर्स"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.creator_monetization.description
-msgctxt "partner_program.perks.creator_monetization.description"
-msgid "Early access to creator monetization features with lower platform fees than non-partners."
-msgstr ""
-"नॉन-पार्टनर्स की तुलना में कम प्लेटफॉर्म फीस के साथ क्रिएटर मोनेटाइजेशन फीचर्स तक जल्दी एक्सेस।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.creator_monetization.label
-msgctxt "partner_program.perks.creator_monetization.label"
-msgid "Creator monetization"
-msgstr "क्रिएटर मोनेटाइजेशन"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.custom_vanity_url.description
-msgctxt "partner_program.perks.custom_vanity_url.description"
-msgid "Get an exclusive custom vanity URL like fluxer.gg/yourcommunity."
-msgstr "fluxer.gg/yourcommunity जैसा एक एक्सक्लूसिव कस्टम वैनिटी URL पाएं।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.custom_vanity_url.label
-msgctxt "partner_program.perks.custom_vanity_url.label"
-msgid "Custom vanity URL"
-msgstr "कस्टम वैनिटी URL"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.direct_team_access.description
-msgctxt "partner_program.perks.direct_team_access.description"
-msgid "Join the exclusive partners community with direct access to the {product_name} team."
-msgstr "{product_name} टीम तक सीधी पहुंच के साथ एक्सक्लूसिव पार्टनर्स कम्युनिटी से जुड़ें।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.direct_team_access.label
-msgctxt "partner_program.perks.direct_team_access.label"
-msgid "Direct team access"
-msgstr "सीधी टीम एक्सेस"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.discovery_visibility
-msgctxt "partner_program.perks.discovery_visibility"
-msgid "Get increased visibility by being featured in community discovery."
-msgstr "कम्युनिटी डिस्कवरी में फीचर होकर अपनी विजिबिलिटी बढ़ाएं।"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.exclusive_merch.description
-msgctxt "partner_program.perks.exclusive_merch.description"
-msgid "Get exclusive {product_name} partner-only merchandise and swag."
-msgstr "एक्सक्लूसिव {product_name} पार्टनर-ओनली मर्चेंडाइज और स्वैग पाएं।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.exclusive_merch.label
-msgctxt "partner_program.perks.exclusive_merch.label"
-msgid "Exclusive merch"
-msgstr "एक्सक्लूसिव मर्चेंडाइज"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.free_plutonium.description
-msgctxt "partner_program.perks.free_plutonium.description"
-msgid "Get free {premium_tier_name} for your account to enjoy all premium features."
-msgstr ""
-"अपने खाते के लिए मुफ़्त {premium_tier_name} प्राप्त करें ताकि सभी प्रीमियम सुविधाओं का आनंद ले सकें।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.free_plutonium.label
-msgctxt "partner_program.perks.free_plutonium.label"
-msgid "Free {premium_tier_name}"
-msgstr "मुफ्त {premium_tier_name}"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.heading
-msgctxt "partner_program.perks.heading"
-msgid "Partner perks"
-msgstr "पार्टनर पर्क्स"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.increased_limits.description
-msgctxt "partner_program.perks.increased_limits.description"
-msgid "Your community receives increased limits when you need them."
-msgstr "ज़रूरत पड़ने पर आपकी कम्युनिटी को बढ़ी हुई लिमिट्स मिलती हैं।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.increased_limits.label
-msgctxt "partner_program.perks.increased_limits.label"
-msgid "Increased limits"
-msgstr "इंक्रीज्ड लिमिट्स"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.partner_badge.description
-msgctxt "partner_program.perks.partner_badge.description"
-msgid "Display an exclusive partner badge on your profile to stand out."
-msgstr "अलग दिखने के लिए अपनी प्रोफाइल पर एक एक्सक्लूसिव पार्टनर बैज डिस्प्ले करें।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.partner_badge.label
-msgctxt "partner_program.perks.partner_badge.label"
-msgid "Partner badge"
-msgstr "पार्टनर बैज"
-
-#. Compact UI label on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.see_perks
-msgctxt "partner_program.perks.see_perks"
-msgid "See perks"
-msgstr "पर्क्स देखें"
-
-#. Body copy on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.vip_voice_servers.description
-msgctxt "partner_program.perks.vip_voice_servers.description"
-msgid "Access to VIP voice servers reserved exclusively for partnered communities."
-msgstr "पार्टनर कम्युनिटी के लिए विशेष रूप से आरक्षित VIP वॉइस चैनल तक एक्सेस।"
-
-#. Short UI label or heading on the partner program perks section. Keep benefits concrete and appealing to creators/community owners; preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.perks.vip_voice_servers.label
-msgctxt "partner_program.perks.vip_voice_servers.label"
-msgid "VIP voice channels"
-msgstr "VIP वॉइस चैनल"
-
-#. Body copy under the partner program hero. Preserve {premium_tier_name} exactly; explain the target audience and benefits without sounding like a paid ad. Preserve placeholders exactly.
-#: fluxer_marketing/generated:partner_program.who_its_for
-msgctxt "partner_program.who_its_for"
-msgid ""
-"For creators and community owners: free {premium_tier_name}, a partner badge, a custom vanity URL, and more."
-msgstr ""
-"क्रिएटर्स और समुदाय मालिकों के लिए: मुफ़्त {premium_tier_name}, पार्टनर बैज, कस्टम वैनिटी URL, और बहुत कुछ।"
 
 #. Download-page meta description. Preserve {product_name} exactly; keep platform names conventional and make desktop, browser, and public mobile testing availability clear. Preserve placeholders exactly.
 #: fluxer_marketing/generated:platform_support.availability.meta_description

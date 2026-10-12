@@ -224,7 +224,6 @@ pub fn build_router(config: MarketingConfig) -> Router {
         .route("/donate/manage", get(donate_manage))
         .route("/donate/success", get(donate_success))
         .route("/reverb", get(plutonium))
-        .route("/partners", get(partners))
         .route("/press", get(press))
         .route("/press/download/{asset_id}", get(press_download))
         .route("/terms", get(policy_terms))
@@ -920,11 +919,6 @@ async fn plutonium(State(state): State<AppState>, headers: HeaderMap, uri: Uri) 
     Html(templates::plutonium_page(&state.i18n, &ctx).into_string())
 }
 
-async fn partners(State(state): State<AppState>, headers: HeaderMap, uri: Uri) -> Html<String> {
-    let ctx = RequestContext::from_headers(&state, &headers, &uri);
-    Html(templates::partners_page(&state.i18n, &ctx).into_string())
-}
-
 async fn press(State(state): State<AppState>, headers: HeaderMap, uri: Uri) -> Html<String> {
     let ctx = RequestContext::from_headers(&state, &headers, &uri);
     Html(templates::press_page(&state.i18n, &ctx).into_string())
@@ -1115,7 +1109,6 @@ async fn sitemap(State(state): State<AppState>) -> impl IntoResponse {
         (format!("{base}/help"), "weekly", "0.7"),
         (format!("{base}/download"), "weekly", "0.9"),
         (format!("{base}/plutonium"), "weekly", "0.8"),
-        (format!("{base}/partners"), "monthly", "0.6"),
         (format!("{base}/press"), "monthly", "0.5"),
     ];
     for policy in POLICIES {

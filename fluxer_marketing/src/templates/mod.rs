@@ -25,7 +25,7 @@ pub use donations::{
     donate_success_page, donation_amount_fieldset_fragment, donation_amount_from_form,
     donation_checkout_error_fragment, manage_message_fragment, swish_payment_fragment,
 };
-pub use marketing_pages::{partners_page, plutonium_page, press_page};
+pub use marketing_pages::{plutonium_page, press_page};
 use voice_regions::{languages_section, voice_region_flag_preload_hrefs, voice_regions_section};
 
 use icons::{Icon, icon};
@@ -1089,7 +1089,6 @@ fn nav(i18n: &MarketingI18n, ctx: &RequestContext) -> Markup {
                             (mobile_drawer_section(i18n, ctx, COMPANY_AND_RESOURCES_PRODUCT_DESCRIPTOR, &[
                                 (ctx.href("/download"), DOWNLOAD_DOWNLOAD_DESCRIPTOR),
                                 (ctx.href("/reverb"), PRICING_AND_TIERS_PLUTONIUM_TIER_NAME_DESCRIPTOR),
-                                (ctx.href("/partners"), PARTNER_PROGRAM_LABEL_DESCRIPTOR),
                             ]))
                             div {
                                 p class="mb-2 font-semibold text-gray-500 text-xs uppercase" { (tr(i18n, ctx, COMPANY_AND_RESOURCES_RESOURCES_DESCRIPTOR)) }
@@ -2056,7 +2055,6 @@ fn footer_with_class(i18n: &MarketingI18n, ctx: &RequestContext, class_name: &st
                         h3 class="title mb-4 text-white md:mb-6" { (tr(i18n, ctx, FOOTER_FLUXER_DESCRIPTOR)) }
                         ul class="space-y-3" {
                             (footer_link(ctx.href("/reverb"), tr(i18n, ctx, FOOTER_PLUTONIUM_TIER_DESCRIPTOR), link_class))
-                            (footer_link(ctx.href("/partners"), tr(i18n, ctx, FOOTER_PARTNERS_DESCRIPTOR), link_class))
                             (footer_link(ctx.href("/download"), tr(i18n, ctx, FOOTER_DOWNLOAD_DESCRIPTOR), link_class))
                             (footer_link("https://github.com/fluxerapp/fluxer".to_owned(), tr(i18n, ctx, FOOTER_SOURCE_CODE_DESCRIPTOR), link_class))
                             (footer_link("https://bsky.app/profile/echowire.org".to_owned(), tr(i18n, ctx, FOOTER_BLUESKY_SOCIAL_MEDIA_DESCRIPTOR), link_class))

@@ -73,14 +73,6 @@ crate::marketing_message!(
 );
 
 crate::marketing_message!(
-    pub const FOOTER_PARTNERS_DESCRIPTOR = {
-        key: "footer.partners",
-        message: "Partners",
-        comment: "Compact UI label in the global marketing footer. Keep navigation labels compact and use legally precise company wording where applicable; preserve placeholders exactly.",
-    };
-);
-
-crate::marketing_message!(
     pub const FOOTER_PLUTONIUM_TIER_DESCRIPTOR = {
         key: "footer.plutonium_tier",
         message: "{premium_tier_name} tier",

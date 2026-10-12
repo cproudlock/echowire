@@ -1,4 +1,43 @@
-When a platform sells advertising and answers to investors, your attention and your data are part of what it sells. echowire and Fluxer have no ad system. You can read the code, and you can run your own copy. This article sets out what is documented about Discord today and how the alternatives compare.
+When a platform sells advertising and answers to investors, your attention and your data are part of what it sells. echowire and Fluxer have no ad system. You can read the code, and you can run your own copy. The table below is the short version. The sections after it set out [what is documented about Discord](#what-is-documented-about-discord) today, with a source for each item.
+
+## At a glance
+
+| | Discord | Fluxer | echowire |
+| --- | --- | --- | --- |
+| Advertising | <span class="cmp-no">YES</span> Sponsored Quests, a FanDuel test | <span class="cmp-ok">NONE</span> | <span class="cmp-ok">NONE</span> |
+| Paid for by | <span class="cmp-no">ADS + SUBS</span> | <span class="cmp-ok">SUBS</span> Optional paid tier | <span class="cmp-ok">NOBODY YET</span> Paid features planned |
+| Face scan or ID check | <span class="cmp-no">PLANNED</span> Due in the second half of 2026 | <span class="cmp-mid">VARIES</span> Follows the laws it is subject to | <span class="cmp-ok">NONE</span> |
+| Source code | <span class="cmp-no">CLOSED</span> | <span class="cmp-ok">OPEN</span> AGPL-3.0 | <span class="cmp-ok">OPEN</span> AGPL-3.0 |
+| Run your own copy | <span class="cmp-no">NO</span> | <span class="cmp-ok">YES</span> [Setup guide](https://docs.fluxer.app/operator/get-started/) | <span class="cmp-ok">YES</span> Deploy scripts in the repository |
+| Where your data lives | <span class="cmp-no">DISCORD</span> And its vendors | <span class="cmp-mid">OPERATOR</span> | <span class="cmp-mid">US OR YOU</span> echowire.org, or your own server |
+| Outside services | <span class="cmp-no">MANY</span> Identity vendors, ad partners | <span class="cmp-mid">SOME</span> See the operator's policy | <span class="cmp-mid">4</span> See below |
+
+Each badge carries a word as well as a color: green is good for your privacy, amber is mixed, red is bad.
+
+- **Fluxer, self-hosted:** you pay for your own server, you decide who joins and whether to check ages, and your data stays on a machine you control. The same is true of echowire if you host it yourself.
+- **echowire's four outside services:** Cloudflare Turnstile (sign-up captcha), SMTP2GO (email), Klipy (GIF search) and Cloudflare R2 (downloads). Stripe is set up but not taking live payments.
+- **Where Discord wins:** features and ecosystem. See "What you give up" below.
+
+## What you give up
+
+Why people stay on Discord:
+
+- Almost everyone you know is already there.
+- Bots, integrations and game tools are far more mature. Discord has the most features of the three; echowire has Fluxer's core set (servers, channels, DMs, voice, video and threads) plus forum boards.
+- There is nothing to host, update or secure yourself.
+
+What to expect from echowire and Fluxer:
+
+- A smaller community, so you may be bringing your friends with you.
+- Joining echowire.org is by approval for now: accounts are approved by hand. Discord lets anyone sign up.
+- Young software. Expect rough edges and fast change.
+- Self-hosting means you own the uptime, backups and security.
+
+## Pick your path
+
+- Use echowire: request an account at [echowire.org](https://echowire.org). Accounts are approved by hand.
+- Use Fluxer: the upstream project, run by its own team. Try the service at [fluxer.app](https://fluxer.app) or read the [Fluxer docs](https://docs.fluxer.app).
+- Host your own: run Fluxer or echowire on your own server and keep every message on a machine you control. Fluxer's [self-hosting guide](https://docs.fluxer.app/operator/get-started/) takes you from a fresh server to a working instance with Docker Compose. Source code: [Fluxer](https://github.com/fluxerapp/fluxer) and [echowire](https://github.com/cproudlock/echowire).
 
 ## What is documented about Discord
 
@@ -48,40 +87,6 @@ Over 760,000 users of a service that was not run by Discord had their usernames,
 
 - It shows that the more a platform collects (IDs, selfies, support tickets, bot databases), the more there is to lose. Age verification asks for exactly the most sensitive kind of data.
 - It does not show that any self-hosted or smaller service is immune. echowire can be breached too. What it collects is limited, it asks for no ID or face scans, and the comparison below lists the few outside services it uses.
-
-## The comparison
-
-| | Discord | Fluxer (hosted) | Fluxer (self-hosted) | echowire |
-| --- | --- | --- | --- | --- |
-| Who pays | <span class="cmp-no">ADS + SUBS</span> Nitro subscriptions and a growing ad business | <span class="cmp-ok">NO ADS</span> Open-source project from Sweden, with an optional paid tier | <span class="cmp-ok">YOU</span> You pay for your own server | <span class="cmp-ok">NO ADS</span> No ad system. Optional paid features are planned; real payments are not live yet |
-| Advertising | <span class="cmp-no">YES</span> Sponsored Quests and a FanDuel test | <span class="cmp-ok">NONE</span> | <span class="cmp-ok">NONE</span> | <span class="cmp-ok">NONE</span> |
-| Age checks (face scan or ID) | <span class="cmp-no">PLANNED</span> Planned for everyone, now due in the second half of 2026 | <span class="cmp-mid">VARIES</span> Follows the laws it is subject to | <span class="cmp-ok">YOUR CALL</span> The server owner decides | <span class="cmp-ok">NONE</span> No face scans and no ID uploads |
-| Source code | <span class="cmp-no">CLOSED</span> | <span class="cmp-ok">OPEN</span> AGPL-3.0 | <span class="cmp-ok">OPEN</span> AGPL-3.0 | <span class="cmp-ok">OPEN</span> AGPL-3.0, published on GitHub |
-| Run your own | <span class="cmp-no">NO</span> | <span class="cmp-mid">N/A</span> Not applicable, this is the hosted service | <span class="cmp-ok">YES</span> Docker-based setup. [Setup guide](https://docs.fluxer.app/operator/get-started/) | <span class="cmp-ok">YES</span> Same codebase with deploy scripts in the repository |
-| Where your data lives | <span class="cmp-no">DISCORD</span> On Discord's systems and its vendors' systems | <span class="cmp-mid">FLUXER</span> On the operator's servers | <span class="cmp-ok">YOURS</span> On a machine you control | <span class="cmp-mid">US, OR YOURS</span> On echowire.org's server, or your own if you self-host |
-| Outside services | <span class="cmp-no">MANY</span> Including identity vendors and ad partners | <span class="cmp-mid">SOME</span> Check the operator's privacy policy | <span class="cmp-ok">YOUR CHOICE</span> | <span class="cmp-mid">A FEW</span> Cloudflare Turnstile (sign-up captcha), SMTP2GO (email), Klipy (GIF search), Cloudflare R2 (downloads). Stripe is set up but not taking live payments |
-| Chat features | <span class="cmp-ok">MOST</span> Servers, voice, video, bots and a huge ecosystem | <span class="cmp-ok">CORE</span> Servers, channels, DMs, voice and video, threads | <span class="cmp-ok">CORE</span> Same as hosted | <span class="cmp-ok">CORE</span> Fluxer's features, plus forum boards and a few extras |
-| Joining | <span class="cmp-ok">OPEN</span> Anyone can sign up | <span class="cmp-ok">OPEN</span> | <span class="cmp-ok">YOURS</span> You decide who joins | <span class="cmp-mid">BY APPROVAL</span> Accounts on echowire.org are approved by hand for now |
-
-## What you give up
-
-Why people stay on Discord:
-
-- Almost everyone you know is already there.
-- Bots, integrations and game tools are far more mature.
-- There is nothing to host, update or secure yourself.
-
-What to expect from echowire and Fluxer:
-
-- A smaller community, so you may be bringing your friends with you.
-- Young software. Expect rough edges and fast change.
-- Self-hosting means you own the uptime, backups and security.
-
-## Pick your path
-
-- Use echowire: request an account at [echowire.org](https://echowire.org). Accounts are approved by hand.
-- Use Fluxer: the upstream project, run by its own team. Try the service at [fluxer.app](https://fluxer.app) or read the [Fluxer docs](https://docs.fluxer.app).
-- Host your own: run Fluxer or echowire on your own server and keep every message on a machine you control. Fluxer's [self-hosting guide](https://docs.fluxer.app/operator/get-started/) takes you from a fresh server to a working instance with Docker Compose. Source code: [Fluxer](https://github.com/fluxerapp/fluxer) and [echowire](https://github.com/cproudlock/echowire).
 
 ## Sources
 

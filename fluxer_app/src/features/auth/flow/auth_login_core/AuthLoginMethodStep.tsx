@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import {
 	SIGN_IN_WITH_A_PASSKEY_DESCRIPTOR,
 	SIGN_IN_WITH_BROWSER_DESCRIPTOR,
@@ -14,9 +15,18 @@ import type {LoginIdentifierField} from '@app/features/auth/utils/AccountSignInI
 import {CHANGE_INSTANCE_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import {remFromPx} from '@app/features/theme/layout/RemFromPx';
 import {Button, ButtonVariant} from '@app/features/ui/button/Button';
+import {isDesktop} from '@app/features/ui/utils/NativeUtils';
 import {msg} from '@lingui/core/macro';
 import {useLingui} from '@lingui/react/macro';
-import {ArrowLeftIcon, BrowserIcon, EnvelopeSimpleIcon, KeyIcon, UserIcon, UserPlusIcon} from '@phosphor-icons/react';
+import {
+	ArrowLeftIcon,
+	BrowserIcon,
+	DownloadSimpleIcon,
+	EnvelopeSimpleIcon,
+	KeyIcon,
+	UserIcon,
+	UserPlusIcon,
+} from '@phosphor-icons/react';
 import {clsx} from 'clsx';
 import {cloneElement, type ReactElement, type ReactNode} from 'react';
 
@@ -27,6 +37,11 @@ const SIGN_IN_WITH_EMAIL_DESCRIPTOR = msg({
 const SIGN_IN_WITH_USERNAME_DESCRIPTOR = msg({
 	message: 'Sign in with username',
 	comment: 'Button label on the authentication method picker when the instance signs people in with a username.',
+});
+const DOWNLOAD_ECHOWIRE_DESCRIPTOR = msg({
+	message: 'Download echowire',
+	comment:
+		'Link label on the sign-in screen that opens the page for downloading the desktop and mobile apps. echowire is the product name, keep it lowercase.',
 });
 const REGISTER_ACCOUNT_DESCRIPTOR = msg({
 	message: 'Register an account',
@@ -60,6 +75,19 @@ interface AuthLoginMethodStepProps {
 	readonly onEmailLogin: () => void;
 	readonly onPasskeyLogin: () => void;
 	readonly onBackToInstance: (() => void) | null;
+}
+
+// Echowire: the sign-in screen is the whole of echowire.org for a signed-out visitor, so it links to the
+// download page. Not shown inside the desktop app, which is already installed.
+function resolveDownloadPageUrl(): string | null {
+	if (isDesktop()) {
+		return null;
+	}
+	const endpoint = RuntimeConfig.marketingEndpoint;
+	if (endpoint == null || endpoint.length === 0) {
+		return null;
+	}
+	return `${endpoint.replace(/\/+$/, '')}/download`;
 }
 
 export function AuthLoginMethodStep({
@@ -98,6 +126,25 @@ export function AuthLoginMethodStep({
 			</>
 		),
 	});
+	const downloadPageUrl = resolveDownloadPageUrl();
+	const downloadLink =
+		downloadPageUrl == null ? null : (
+			<a
+				href={downloadPageUrl}
+				className={styles.methodChoiceLink}
+				target="_blank"
+				rel="noopener noreferrer"
+				data-flx="auth.flow.auth-login-core.auth-login-method-step.download-link"
+			>
+				<DownloadSimpleIcon
+					size={remFromPx(16)}
+					data-flx="auth.flow.auth-login-core.auth-login-method-step.download-simple-icon"
+				/>
+				<span data-flx="auth.flow.auth-login-core.auth-login-method-step.download-label">
+					{i18n._(DOWNLOAD_ECHOWIRE_DESCRIPTOR)}
+				</span>
+			</a>
+		);
 	const secondaryActions: Array<AuthLoginMethodAction> = [];
 	if (resolveShowPasskeyAction(showPasskeyOption, passkeyAvailableForInstance)) {
 		secondaryActions.push({
@@ -212,7 +259,12 @@ export function AuthLoginMethodStep({
 					variant: ButtonVariant.PRIMARY,
 				}}
 				secondaryActions={secondaryActions}
-				registerAction={methodRegisterLink}
+				registerAction={
+					<>
+						{methodRegisterLink}
+						{downloadLink}
+					</>
+				}
 				footerAction={renderFooterAction()}
 				data-flx="auth.flow.auth-login-core.auth-login-method-step.auth-login-method-picker"
 			/>

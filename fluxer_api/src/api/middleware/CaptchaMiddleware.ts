@@ -74,6 +74,22 @@ function requestedProvider(ctx: Context<HonoEnv>): CaptchaProvider | null {
 	return requested === 'altcha' || requested === 'hcaptcha' || requested === 'turnstile' ? requested : null;
 }
 
+// Echowire: the web and desktop clients solve ALTCHA and retry with only X-Captcha-Token, no
+// X-Captcha-Type, since upstream made ALTCHA the only captcha. When this instance offers
+// Turnstile or hCaptcha for the mobile clients, that token was being checked against the wrong
+// provider and every sign-in failed. A token that decodes to an ALTCHA solution is routed to
+// ALTCHA, which still verifies it in full.
+export function isAltchaPayload(token: string): boolean {
+	try {
+		const decoded: unknown = JSON.parse(Buffer.from(token, 'base64').toString('utf8'));
+		if (typeof decoded !== 'object' || decoded === null) return false;
+		const {challenge, solution} = decoded as Record<string, unknown>;
+		return typeof challenge === 'object' && challenge !== null && typeof solution === 'object' && solution !== null;
+	} catch {
+		return false;
+	}
+}
+
 export async function verifyCaptchaToken(ctx: Context<HonoEnv>): Promise<boolean> {
 	if (Config.dev.testModeEnabled && ctx.req.header(TEST_ENABLE_CAPTCHA_HEADER) !== 'true') return false;
 	const config = await ctx.get('instanceConfigRepository').getCaptchaConfig();
@@ -88,7 +104,7 @@ export async function verifyCaptchaToken(ctx: Context<HonoEnv>): Promise<boolean
 	if (!token) {
 		throw new CaptchaRequiredError(await challengeData(offered, altcha));
 	}
-	const resolved = requestedProvider(ctx) ?? offered;
+	const resolved = requestedProvider(ctx) ?? (isAltchaPayload(token) ? 'altcha' : offered);
 	if (resolved === 'altcha') {
 		if (!(await altcha.verify({token}))) {
 			throw new InvalidCaptchaError(await challengeData(offered, altcha));

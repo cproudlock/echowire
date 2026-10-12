@@ -13473,6 +13473,11 @@ msgstr "다운로드 버튼"
 msgid "Download desktop app"
 msgstr "데스크톱 앱 다운로드"
 
+#. Link label on the sign-in screen that opens the page for downloading the desktop and mobile apps. echowire is the product name, keep it lowercase.
+#: src/features/auth/flow/auth_login_core/AuthLoginMethodStep.tsx
+msgid "Download echowire"
+msgstr "Download echowire"
+
 #: src/features/user/components/modals/tabs/privacy_safety_tab/DataExportTab.tsx
 msgid "Download export"
 msgstr "내보내기 다운로드"

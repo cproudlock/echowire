@@ -7,14 +7,7 @@ import {AttachmentDecayService} from '@app/api/attachment/AttachmentDecayService
 import {createTestAccount, type TestAccount} from '@app/api/auth/tests/AuthTestUtils';
 import {createMultipartFormData, loadFixture} from '@app/api/channel/tests/AttachmentTestUtils';
 import {acceptInvite, createChannel, createChannelInvite, createGuild} from '@app/api/channel/tests/ChannelTestUtils';
-import {
-	ALL_THREADS_ACTIVE,
-	resetChannelThreadsConfig,
-	setChannelThreadsConfig,
-	THREADS_FEATURE,
-	THREADS_FEATURE_HEADER,
-	threadsRequest,
-} from '@app/api/channel/tests/ThreadTestUtils';
+import {THREADS_FEATURE, THREADS_FEATURE_HEADER, threadsRequest} from '@app/api/channel/tests/ThreadTestUtils';
 import {ensureSessionStarted} from '@app/api/message/tests/MessageTestUtils';
 import {type ApiTestHarness, createApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {NoopGatewayService} from '@app/api/test/NoopGatewayService';
@@ -66,7 +59,6 @@ describe('add to post', () => {
 
 	beforeEach(async () => {
 		await harness.reset();
-		resetChannelThreadsConfig();
 		dispatches = [];
 		presenceDispatches = 0;
 		vi.spyOn(NoopGatewayService.prototype, 'dispatchGuild').mockImplementation(async (params) => {
@@ -82,7 +74,6 @@ describe('add to post', () => {
 	});
 
 	afterAll(async () => {
-		resetChannelThreadsConfig();
 		await harness.shutdown();
 	});
 
@@ -155,7 +146,6 @@ describe('add to post', () => {
 	}
 
 	async function setup(starterFiles: Array<string> = []): Promise<World> {
-		await setChannelThreadsConfig(ALL_THREADS_ACTIVE);
 		const owner = await createTestAccount(harness);
 		await ensureSessionStarted(harness, owner.token);
 		const guild = await createGuild(harness, owner.token, 'add to post');

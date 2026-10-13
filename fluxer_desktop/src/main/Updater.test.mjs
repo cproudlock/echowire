@@ -36,6 +36,8 @@ function transform(name) {
 }
 
 const appImageUpdateSource = transform('AppImageUpdate.ts');
+const errorMessageSource = transform('../common/ErrorMessage.ts');
+const moduleVersionSource = transform('ModuleVersion.ts');
 const shellDownloadFormatsSource = transform('ShellDownloadFormats.ts');
 const shellUpdateCapabilitySource = transform('ShellUpdateCapability.ts');
 const updaterDownloadsSource = transform('UpdaterDownloads.ts');
@@ -112,6 +114,9 @@ function loadUpdater({
 			},
 		},
 		'@electron/main/LinuxSandbox': {isFlatpakRuntime: () => flatpak},
+		'@fluxer/record_utils/src/RecordGuards': {
+			isRecord: (value) => typeof value === 'object' && value !== null && !Array.isArray(value),
+		},
 		'electron-log': {info() {}, warn() {}, error() {}, debug() {}},
 		electron: {
 			app: {
@@ -165,6 +170,8 @@ function loadUpdater({
 		stubs[specifier] = loaded.exports;
 	};
 	load(appImageUpdateSource, '@electron/main/AppImageUpdate');
+	load(errorMessageSource, '@electron/common/ErrorMessage');
+	load(moduleVersionSource, '@electron/main/ModuleVersion');
 	load(shellUpdateCapabilitySource, '@electron/main/ShellUpdateCapability');
 	load(shellDownloadFormatsSource, '@electron/main/ShellDownloadFormats');
 	load(updaterDownloadsSource, '@electron/main/UpdaterDownloads');

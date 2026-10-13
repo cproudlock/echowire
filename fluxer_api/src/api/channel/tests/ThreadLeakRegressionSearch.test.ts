@@ -9,7 +9,6 @@ import type {TestAccount} from '@app/api/auth/tests/AuthTestUtils';
 import {
 	hideChannelFromEveryone,
 	post,
-	resetChannelThreadsConfig,
 	setupLeakWorld,
 	startPrivateThread,
 	startThread,
@@ -35,11 +34,9 @@ describe('thread leak regression: search', () => {
 
 	beforeEach(async () => {
 		await harness.reset();
-		resetChannelThreadsConfig();
 	});
 
 	afterAll(async () => {
-		resetChannelThreadsConfig();
 		await harness.shutdown();
 	});
 

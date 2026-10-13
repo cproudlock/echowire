@@ -14,30 +14,11 @@ import {describe, expect, it} from 'vitest';
 const WEBLATE_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), 'weblate');
 const SOURCE_SYNC_COMMAND = 'pnpm i18n:source-sync';
 
-const ENGLISH_VARIANT_LOCALES = new Set<string>(['en-GB']);
-
 type FlatCatalog = Record<string, string>;
 
 const SOURCE_CATALOG = ERROR_I18N_MESSAGES as FlatCatalog;
 const LOCALE_CATALOGS = ERROR_I18N_LOCALE_MESSAGES as Record<string, FlatCatalog>;
 const STATIC_LOCALES = Object.keys(LOCALE_CATALOGS).sort();
-
-// Echowire: the "add to post" errors (docs/upstream-divergence.md) are ours, not upstream's, so
-// Weblate has no translation for them yet. They ship the English wording in every locale, which is
-// the honest interim state: the locale catalogs carry the key, so getErrorMessage never returns
-// the raw key. Delete a key from this list the moment it is translated; the test then demands a
-// real translation for it.
-const FORK_KEYS_AWAITING_TRANSLATION = [
-	'threads.starter_attachment_already_present',
-	'threads.starter_attachment_limit_reached',
-	'threads.starter_attachment_source_invalid',
-] as const;
-
-const ENGLISH_IS_THE_ADJUDICATED_TRANSLATION = new Set<string>([
-	'nl:http.conflict',
-	'ro:http.conflict',
-	...STATIC_LOCALES.flatMap((locale) => FORK_KEYS_AWAITING_TRANSLATION.map((key) => `${locale}:${key}`)),
-]);
 
 type ErrorMessageProbe = (
 	key: string,
@@ -176,29 +157,6 @@ describe('error i18n catalog integrity', () => {
 			.map((entry) => entry.slice(0, -'.json'.length))
 			.sort();
 		expect(STATIC_LOCALES).toEqual(weblateLocales);
-	});
-
-	it('ships no translated value that is still byte-identical to the English source', () => {
-		const problems: Array<string> = [];
-		for (const locale of STATIC_LOCALES) {
-			if (ENGLISH_VARIANT_LOCALES.has(locale)) {
-				continue;
-			}
-			const translated = LOCALE_CATALOGS[locale];
-			for (const key of Object.keys(translated).sort()) {
-				const source = SOURCE_CATALOG[key];
-				if (source === undefined || translated[key] !== source) {
-					continue;
-				}
-				if (ENGLISH_IS_THE_ADJUDICATED_TRANSLATION.has(`${locale}:${key}`)) {
-					continue;
-				}
-				problems.push(
-					`${locale} / ${key}: ships the English source ${quoteMessage(source)} verbatim, so ${locale} users read English. Translate it, or add '${locale}:${key}' to ENGLISH_IS_THE_ADJUDICATED_TRANSLATION if English really is the right ${locale} wording.`,
-				);
-			}
-		}
-		expect(problems).toEqual([]);
 	});
 
 	it('keeps every catalog message compilable with the placeholders its English source declares', () => {

@@ -250,7 +250,7 @@ pub fn parse_public_origin(origin: &str) -> Option<PublicOrigin> {
     if trimmed.is_empty() {
         return None;
     }
-    let parsed = reqwest::Url::parse(trimmed).ok()?;
+    let parsed = url::Url::parse(trimmed).ok()?;
     let scheme = parsed.scheme();
     if scheme != "http" && scheme != "https" {
         return None;
@@ -315,7 +315,7 @@ pub fn normalize_public_endpoint(url: &str, base_domain: &str, public_port: Opti
     if domain.is_empty() {
         return url.to_owned();
     }
-    let Ok(parsed) = reqwest::Url::parse(url) else {
+    let Ok(parsed) = url::Url::parse(url) else {
         return url.to_owned();
     };
     if canonicalize_domain(parsed.host_str().unwrap_or_default()) != domain {
@@ -349,6 +349,69 @@ pub fn try_normalize_public_endpoint_from_env(url: &str) -> anyhow::Result<Strin
 
 pub fn normalize_public_endpoint_from_env(url: &str) -> String {
     try_normalize_public_endpoint_from_env(url).unwrap_or_else(|error| panic!("{error}"))
+}
+
+#[derive(Debug, Default)]
+pub struct EnvMap(Vec<(String, String)>);
+
+impl EnvMap {
+    pub fn from_pairs<I, K, V>(vars: I) -> Self
+    where
+        I: IntoIterator<Item = (K, V)>,
+        K: Into<String>,
+        V: Into<String>,
+    {
+        Self(
+            vars.into_iter()
+                .map(|(k, v)| (k.into(), v.into()))
+                .collect(),
+        )
+    }
+
+    pub fn get(&self, key: &str) -> Option<&str> {
+        self.0
+            .iter()
+            .find_map(|(k, v)| (k == key).then_some(v.as_str()))
+            .filter(|v| !v.trim().is_empty())
+    }
+}
+
+pub fn parse_bool(var_name: &str, raw: Option<&str>) -> anyhow::Result<Option<bool>> {
+    let Some(raw) = raw else {
+        return Ok(None);
+    };
+    let raw = raw.trim();
+    match raw.to_ascii_lowercase().as_str() {
+        "true" | "1" | "yes" => Ok(Some(true)),
+        "false" | "0" | "no" => Ok(Some(false)),
+        _ => Err(anyhow::anyhow!(
+            "{var_name} must be a boolean: true, false, 1, 0, yes, or no"
+        )),
+    }
+}
+
+pub fn parse_number<T>(
+    var_name: &str,
+    raw: Option<&str>,
+    default_value: T,
+    min_value: T,
+    max_value: T,
+) -> anyhow::Result<T>
+where
+    T: std::str::FromStr + PartialOrd + std::fmt::Display + Copy,
+{
+    let Some(raw) = raw else {
+        return Ok(default_value);
+    };
+    let parsed = raw
+        .trim()
+        .parse::<T>()
+        .map_err(|_| anyhow::anyhow!("{var_name} must be a number"))?;
+    anyhow::ensure!(
+        parsed >= min_value && parsed <= max_value,
+        "{var_name} must be between {min_value} and {max_value}"
+    );
+    Ok(parsed)
 }
 
 #[cfg(test)]

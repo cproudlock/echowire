@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 // Echowire: upstream #3173 hotlinks this media from fluxer.app (hostedImageUrl); we keep the bundled local files. Keep this file at the fork version when merging.
 
+import {BACK_DESCRIPTOR, SAVE_PERCENT_DESCRIPTOR} from '@app/features/i18n/utils/CommonMessageDescriptors';
 import '@app/app/fonts/radio_canada_big/radio-canada-big.css';
 import {Routes} from '@app/app/Routes';
 import {ConfirmModal} from '@app/features/app/components/dialogs/ConfirmModal';
@@ -27,7 +28,6 @@ import {
 } from '@app/features/premium/components/plutonium_page/PlutoniumPageComparison';
 import {PlutoniumPageIcon} from '@app/features/premium/components/plutonium_page/PlutoniumPageIcons';
 import {
-	BACK_DESCRIPTOR,
 	CLOSING_BODY_DESCRIPTOR,
 	CLOSING_GIFT_BODY_DESCRIPTOR,
 	CLOSING_GIFT_TITLE_DESCRIPTOR,
@@ -51,7 +51,6 @@ import {
 	PURCHASE_BLOCKED_VERIFY_DESCRIPTOR,
 	REDEEM_GIFT_CODE_DESCRIPTOR,
 	REDEEM_ONLY_DESCRIPTOR,
-	SAVE_PERCENT_DESCRIPTOR,
 	SUBSCRIBE_MONTHLY_DESCRIPTOR,
 	SUBSCRIBE_YEARLY_DESCRIPTOR,
 	TAG_FOOTNOTE_DESCRIPTOR,

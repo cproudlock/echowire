@@ -83,7 +83,6 @@ export const ERROR_I18N_MESSAGES = {
 	'attachments_and_uploads.unresolved_attachment_url':
 		'Unresolved `attachment://` URL detected. This should have been resolved before embed processing.',
 	'attachments_and_uploads.uploaded_attachment_not_found': "Uploaded attachment {filename} wasn't found.",
-	'auth_and_oauth.application_not_owned': "You don't own this application.",
 	'auth_and_oauth.bot_already_in_guild': 'This bot is already in the community.',
 	'auth_and_oauth.bot_users_cannot_create_auth_sessions': "Bot users can't create auth sessions.",
 	'auth_and_oauth.bot_users_cannot_use_auth_endpoints': "Bot users can't use auth endpoints.",
@@ -129,6 +128,9 @@ export const ERROR_I18N_MESSAGES = {
 	'auth_and_registration.password_is_too_common':
 		'Your password is too common. Please choose a less predictable password.',
 	'auth_and_registration.password_not_set': "Password isn't set.",
+	'auth_and_registration.setup_token_invalid': 'That setup token is not correct. Check the token and try again.',
+	'auth_and_registration.setup_token_required':
+		'This instance is not set up yet. Finish setup in a web browser with the setup token before creating accounts.',
 	'auth_and_registration.username_sign_in_only':
 		'This is only available on instances where people sign in with a username.',
 	'bots.bot_discriminator_cannot_be_changed': "Bot discriminator can't be changed.",

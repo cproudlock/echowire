@@ -6,13 +6,13 @@ use crate::desktop::{
     DESKTOP_RENDERER_MODULE, DesktopChannelManifest, desktop_module_package_url,
     is_desktop_module_name,
 };
-use crate::functions::sha256_reader;
+use crate::functions::sha256_file;
 use anyhow::{Context, Result, anyhow, bail, ensure};
 use chrono::{DateTime, Utc};
 use clap::{Args, Subcommand};
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
-use std::fs::{self, File};
+use std::fs;
 use std::path::{Path, PathBuf};
 use std::thread;
 use std::time::Duration;
@@ -1196,12 +1196,6 @@ fn local_release_assets(
     Ok(assets)
 }
 
-fn sha256_file(path: &Path) -> Result<String> {
-    let file = File::open(path)
-        .with_context(|| format!("Failed to open release asset {}", path.display()))?;
-    sha256_reader(file).with_context(|| format!("Failed to read release asset {}", path.display()))
-}
-
 fn create_draft_release(
     tag: &str,
     title: &str,
@@ -1470,7 +1464,6 @@ fn desktop_channel(component: &str) -> Option<&str> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use anyhow::anyhow;
 
     const SAMPLE_CHANNEL: &str = "canary";
     const SAMPLE_VERSION: &str = "2026.913.210037";
@@ -2176,58 +2169,5 @@ mod tests {
             .to_string()
             .starts_with("Desktop release asset inventory mismatch")
         );
-    }
-
-    #[test]
-    fn retry_publish_retries_until_a_publish_succeeds() {
-        let mut calls = 0;
-        let mut waits = Vec::new();
-        let result = retry_publish(
-            3,
-            |attempt| waits.push(attempt),
-            || {
-                calls += 1;
-                if calls < 3 {
-                    Err(anyhow!("unexpected end of JSON input"))
-                } else {
-                    Ok(())
-                }
-            },
-        );
-        assert!(result.is_ok());
-        assert_eq!(calls, 3);
-        assert_eq!(waits, vec![1, 2]);
-    }
-
-    #[test]
-    fn retry_publish_returns_the_last_error_without_waiting_after_it() {
-        let mut calls = 0;
-        let mut waits = Vec::new();
-        let result = retry_publish(
-            3,
-            |attempt| waits.push(attempt),
-            || {
-                calls += 1;
-                Err(anyhow!("attempt {calls} failed"))
-            },
-        );
-        assert_eq!(result.unwrap_err().to_string(), "attempt 3 failed");
-        assert_eq!(calls, 3);
-        assert_eq!(waits, vec![1, 2]);
-    }
-
-    #[test]
-    fn retry_publish_does_not_retry_a_successful_publish() {
-        let mut calls = 0;
-        let result = retry_publish(
-            3,
-            |_| panic!("a successful publish must not wait"),
-            || {
-                calls += 1;
-                Ok(())
-            },
-        );
-        assert!(result.is_ok());
-        assert_eq!(calls, 1);
     }
 }

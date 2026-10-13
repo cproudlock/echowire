@@ -11,7 +11,6 @@ import {
 	createViewRole,
 	hideChannelFromEveryone,
 	post,
-	resetChannelThreadsConfig,
 	setupLeakWorld,
 	startPrivateThread,
 	startThread,
@@ -36,11 +35,9 @@ describe('thread leak regression: messages', () => {
 
 	beforeEach(async () => {
 		await harness.reset();
-		resetChannelThreadsConfig();
 	});
 
 	afterAll(async () => {
-		resetChannelThreadsConfig();
 		await harness.shutdown();
 	});
 

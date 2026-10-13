@@ -2,6 +2,7 @@
 // Echowire: upstream #3173 hotlinks this media from fluxer.app (hostedImageUrl); we keep the bundled local files. Keep this file at the fork version when merging.
 
 import Accessibility from '@app/features/accessibility/state/Accessibility';
+import {showGenericErrorModal} from '@app/features/app/components/alerts/GenericErrorModalCommands';
 import * as Modal from '@app/features/app/components/dialogs/Modal';
 import {useAnimatedMediaVideoPlayback} from '@app/features/app/hooks/useAnimatedMediaPlayback';
 import {useSaveData} from '@app/features/app/hooks/useSaveData';
@@ -12,9 +13,9 @@ import {
 	ONE_HOUR_DURATION_DESCRIPTOR,
 	ONE_MONTH_DURATION_DESCRIPTOR,
 	ONE_WEEK_DURATION_DESCRIPTOR,
+	SOMETHING_WENT_WRONG_DESCRIPTOR,
 	TWELVE_HOURS_DURATION_DESCRIPTOR,
 } from '@app/features/i18n/utils/CommonMessageDescriptors';
-import {showModerationErrorModal} from '@app/features/moderation/components/alerts/ModerationErrorModalUtils';
 import styles from '@app/features/moderation/components/modals/BanMemberModal.module.css';
 import {BAN_DELETE_MESSAGE_OPTIONS} from '@app/features/moderation/constants/BanDeleteMessageOptions';
 import {Logger} from '@app/features/platform/utils/AppLogger';
@@ -25,7 +26,7 @@ import {Combobox as FormCombobox} from '@app/features/ui/components/form/FormCom
 import {Input} from '@app/features/ui/components/form/FormInput';
 import {RadioGroup} from '@app/features/ui/radio_group/RadioGroup';
 import type {User} from '@app/features/user/models/User';
-import * as DisplayNameUtils from '@app/features/user/utils/DisplayNameUtils';
+import * as DisplayNameUtils from '@app/features/user/utils/NicknameUtils';
 import bannedMp4 from '@app/media/videos/banned.mp4';
 import bannedWebm from '@app/media/videos/banned.webm';
 import bannedPoster from '@app/media/videos/banned.webp';
@@ -137,11 +138,12 @@ export const BanMemberModal: React.FC<{guildId: string; targetUser: User}> = obs
 			ModalCommands.pop();
 		} catch (error) {
 			logger.error('Failed to ban member:', error);
-			showModerationErrorModal(
-				i18n,
-				<Trans>Failed to ban member. Try again.</Trans>,
-				'moderation.ban-member-modal.ban-error-modal',
-			);
+			showGenericErrorModal({
+				title: () => i18n._(SOMETHING_WENT_WRONG_DESCRIPTOR),
+				message: <Trans>Failed to ban member. Try again.</Trans>,
+				dataFlx: 'moderation.ban-member-modal.ban-error-modal',
+				defer: false,
+			});
 		} finally {
 			setIsBanning(false);
 		}

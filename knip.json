@@ -13,10 +13,7 @@
 		"fluxer_app/src/media/images/badges/plutonium.d.svg.ts",
 		"fluxer_app/src/media/images/badges/staff.d.svg.ts",
 		"fluxer_app/src/media/images/i-like-food.d.svg.ts",
-		"fluxer_marketing/src/styles/app.css",
-		"fluxer_marketing/static/htmx.min.js",
-		"tools/ci/templates/libfluxcore_wrapper.d.ts",
-		"tools/ci/templates/libfluxcore_wrapper.js"
+		"fluxer_marketing/static/htmx.min.js"
 	],
 	"ignoreIssues": {
 		"fluxer_api/src/api/infrastructure/activity/Contract.generated.ts": ["exports", "types"],
@@ -64,8 +61,7 @@
 				"scripts/Generate*.ts",
 				"scripts/build/**/*.{ts,tsx,mjs}",
 				"src/features/platform/utils/BrowserAssertStrict.ts"
-			],
-			"ignoreDependencies": ["@sapphi-red/web-noise-suppressor", "@lingui/swc-plugin"]
+			]
 		},
 		"fluxer_desktop": {
 			"entry": [

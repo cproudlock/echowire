@@ -4,6 +4,7 @@ import {InstanceBrandMark} from '@app/features/auth/components/InstanceBrandMark
 import styles from '@app/features/auth/flow/InstanceSelector.module.css';
 import {
 	type InstanceInfo,
+	instanceDomainHost,
 	isOfficialInstanceInfo,
 	resolveInstanceLabel,
 } from '@app/features/auth/flow/instance_selector/InstanceDirectoryStorage';
@@ -17,8 +18,14 @@ import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuComma
 import {VerifiedConnectionIcon} from '@app/features/ui/components/icons/VerifiedConnectionIcon';
 import FocusRing from '@app/features/ui/focus_ring/FocusRing';
 import {flxElementClassName} from '@app/lib/react';
+import EchowireLogoAsset from '@app/media/images/echowire-icon-transparent.svg?react';
 import FluxerLogoAsset from '@app/media/images/fluxer-logo-color.svg?react';
 import {OFFICIAL_INSTANCE_DISPLAY_HOST, OFFICIAL_INSTANCE_NAME} from '@fluxer/instance_bootstrap/src/OfficialInstance';
+
+export const ECHOWIRE_INSTANCE_NAME = 'echowire';
+export const ECHOWIRE_INSTANCE_HOST = 'echowire.org';
+export const ECHOWIRE_INSTANCE_ORIGIN = `https://${ECHOWIRE_INSTANCE_HOST}`;
+
 import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
 import {ArrowRightIcon, PlusIcon, TrashIcon} from '@phosphor-icons/react';
@@ -49,6 +56,7 @@ interface InstancePickerRowsProps {
 	readonly pinnedInstance: InstanceInfo | null;
 	readonly onAddInstance: () => void;
 	readonly onRemoveInstance: (instance: InstanceInfo) => void;
+	readonly onSelectEchowire: () => void;
 	readonly onSelectOfficial: () => void;
 	readonly onSelectInstance: (instance: InstanceInfo) => void;
 }
@@ -60,6 +68,7 @@ export function InstancePickerRows({
 	pinnedInstance,
 	onAddInstance,
 	onRemoveInstance,
+	onSelectEchowire,
 	onSelectOfficial,
 	onSelectInstance,
 }: InstancePickerRowsProps) {
@@ -171,7 +180,7 @@ export function InstancePickerRows({
 						<button
 							type="button"
 							className={styles.instanceOption}
-							onClick={onSelectOfficial}
+							onClick={onSelectEchowire}
 							disabled={disabled || isDiscovering}
 							aria-label={i18n._(USE_OFFICIAL_INSTANCE_DESCRIPTOR)}
 							data-step-focus="true"
@@ -181,9 +190,9 @@ export function InstancePickerRows({
 								className={styles.instanceLogo}
 								data-flx="auth.flow.instance-selector.instance-picker-rows.instance-logo"
 							>
-								<FluxerLogoAsset
+								<EchowireLogoAsset
 									role="img"
-									aria-label={OFFICIAL_INSTANCE_NAME}
+									aria-label={ECHOWIRE_INSTANCE_NAME}
 									data-flx="auth.flow.instance-selector.instance-picker-rows.img"
 								/>
 							</span>
@@ -199,7 +208,7 @@ export function InstancePickerRows({
 										className={styles.instanceName}
 										data-flx="auth.flow.instance-selector.instance-picker-rows.instance-name"
 									>
-										{OFFICIAL_INSTANCE_NAME}
+										{ECHOWIRE_INSTANCE_NAME}
 									</span>
 									<span
 										className={styles.instanceOfficialBadge}
@@ -217,7 +226,7 @@ export function InstancePickerRows({
 									className={styles.instanceDomain}
 									data-flx="auth.flow.instance-selector.instance-picker-rows.instance-domain"
 								>
-									{OFFICIAL_INSTANCE_DISPLAY_HOST}
+									{ECHOWIRE_INSTANCE_HOST}
 								</span>
 							</span>
 							<ArrowRightIcon
@@ -229,9 +238,71 @@ export function InstancePickerRows({
 						</button>
 					</FocusRing>
 				</div>
+				<div
+					className={styles.instanceRow}
+					role="listitem"
+					data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-instance-row"
+				>
+					<FocusRing offset={-2} data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-focus-ring">
+						<button
+							type="button"
+							className={styles.instanceOption}
+							onClick={onSelectOfficial}
+							disabled={disabled || isDiscovering}
+							aria-label={i18n._(USE_INSTANCE_DESCRIPTOR, {
+								name: OFFICIAL_INSTANCE_NAME,
+								domain: OFFICIAL_INSTANCE_DISPLAY_HOST,
+							})}
+							data-step-focus="true"
+							data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-button.select-official"
+						>
+							<span
+								className={styles.instanceLogo}
+								data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-instance-logo"
+							>
+								<FluxerLogoAsset
+									role="img"
+									aria-label={OFFICIAL_INSTANCE_NAME}
+									data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-img"
+								/>
+							</span>
+							<span
+								className={styles.instanceMeta}
+								data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-instance-meta"
+							>
+								<span
+									className={styles.instanceNameRow}
+									data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-instance-name-row"
+								>
+									<span
+										className={styles.instanceName}
+										data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-instance-name"
+									>
+										{OFFICIAL_INSTANCE_NAME}
+									</span>
+								</span>
+								<span
+									className={styles.instanceDomain}
+									data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-instance-domain"
+								>
+									{OFFICIAL_INSTANCE_DISPLAY_HOST}
+								</span>
+							</span>
+							<ArrowRightIcon
+								size={remFromPx(17)}
+								weight="bold"
+								className={styles.instanceArrow}
+								data-flx="auth.flow.instance-selector.instance-picker-rows.fluxer-instance-arrow"
+							/>
+						</button>
+					</FocusRing>
+				</div>
 				{pinnedInstance != null && renderKnownInstance(pinnedInstance, false)}
 				{instances
-					.filter((instance) => !isOfficialInstanceInfo(instance))
+					.filter(
+						(instance) =>
+							!isOfficialInstanceInfo(instance) && instanceDomainHost(instance.domain) !== ECHOWIRE_INSTANCE_HOST,
+					)
 					.map((instance) => renderKnownInstance(instance, true))}
 				<div
 					className={styles.instanceRow}

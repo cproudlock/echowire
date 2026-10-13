@@ -23,7 +23,10 @@ import {
 	INSTANCE_ADDRESS_INVALID_DESCRIPTOR,
 } from '@app/features/auth/flow/instance_selector/InstanceDiscoveryFailure';
 import {InstanceDiscoveryStatusIcon} from '@app/features/auth/flow/instance_selector/InstanceDiscoveryStatusIcon';
-import {InstancePickerRows} from '@app/features/auth/flow/instance_selector/InstancePickerRows';
+import {
+	ECHOWIRE_INSTANCE_ORIGIN,
+	InstancePickerRows,
+} from '@app/features/auth/flow/instance_selector/InstancePickerRows';
 import {InstanceSelectorStatusRow} from '@app/features/auth/flow/instance_selector/InstanceSelectorStatusRow';
 import {
 	INSTANCE_SELECTOR_STEPS,
@@ -325,6 +328,10 @@ export const InstanceSelector = observer(function InstanceSelector({
 		onChange(origin);
 		startDiscovery(origin, false);
 	}, [onChange, startDiscovery]);
+	const handleSelectEchowire = useCallback(() => {
+		onChange(ECHOWIRE_INSTANCE_ORIGIN);
+		startDiscovery(ECHOWIRE_INSTANCE_ORIGIN, false);
+	}, [onChange, startDiscovery]);
 	const handleSelectKnown = useCallback(
 		(instance: InstanceInfo) => {
 			onChange(instance.domain);
@@ -459,6 +466,7 @@ export const InstanceSelector = observer(function InstanceSelector({
 					pinnedInstance={resolveLocalDevelopmentInstance(knownInstances)}
 					onAddInstance={handleAddInstance}
 					onRemoveInstance={handleRemoveKnownInstance}
+					onSelectEchowire={handleSelectEchowire}
 					onSelectOfficial={handleSelectOfficial}
 					onSelectInstance={handleSelectKnown}
 					data-flx="auth.flow.instance-selector.instance-picker-rows"

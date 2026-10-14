@@ -1807,6 +1807,24 @@ msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อให
 msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware acceleration. Use this only if you're troubleshooting graphics glitches or high GPU usage."
 msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อปิดการเร่งฮาร์ดแวร์ของ Chromium ใช้ตัวเลือกนี้เฉพาะเมื่อคุณกำลังแก้ปัญหาภาพกราฟิกผิดปกติหรือการใช้งาน GPU สูง"
 
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
+msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อเริ่มดาวน์โหลดอัปเดตอีกครั้ง"
+
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
+msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อหยุดดาวน์โหลดอัปเดต อาจทำให้ล้าหลังและหยุดทำงานกับบริการได้จนกว่าคุณจะเปิดอัปเดตอีกครั้ง"
+
+#. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
+#: src/features/updater/commands/UpdaterModalCommands.tsx
+msgid "{productName} {version} is available. Update it from your software center."
+msgstr "มี {productName} {version} พร้อมให้อัปเดตแล้ว อัปเดตได้จากศูนย์ซอฟต์แวร์ของคุณ"
+
+#. Desktop updater modal body for a Linux install managed by a package manager, such as a deb, rpm or AUR package, when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
+#: src/features/updater/commands/UpdaterModalCommands.tsx
+msgid "{productName} {version} is available. Update it with your package manager, or download the new version."
+msgstr "มี {productName} {version} พร้อมให้อัปเดตแล้ว อัปเดตด้วยตัวจัดการแพ็กเกจของคุณ หรือดาวน์โหลดเวอร์ชันใหม่"
+
 #. Accessible label for the Echowire application icon.
 #: src/features/ui/components/icons/FluxerIconMark.tsx
 msgid "{productName} application icon"
@@ -2006,6 +2024,11 @@ msgstr "{productName} ตรวจพบการโจมตีที่อา�
 msgid "{productName} Staff"
 msgstr "ทีมงาน {productName}"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
+msgstr "{productName} จะหยุดดาวน์โหลดอัปเดต อาจทำให้ล้าสมัยและหยุดทำงานร่วมกับบริการได้จนกว่าจะเปิดใช้งานอัปเดตอีกครั้ง จะมีผลในครั้งถัดไปที่ {productName} เริ่มทำงาน"
+
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2119,6 +2142,11 @@ msgstr "หน้าจอของ {streamerDisplayName}"
 msgid "{tenSeconds} seconds"
 msgstr "{tenSeconds} วินาที"
 
+#. Template preview summary listing how many text channels, forum channels, voice channels, categories, and roles will be imported. Used when the template has at least one forum or media channel.
+#: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
+msgid "{textChannelCount, plural, one {# text channel} other {# text channels}}, {forumChannelCount, plural, one {# forum channel} other {# forum channels}}, {voiceChannelCount, plural, one {# voice channel} other {# voice channels}}, {categoryCount, plural, one {# category} other {# categories}}, {roleCount, plural, one {# role} other {# roles}}"
+msgstr "{textChannelCount, plural, one {# ช่องข้อความ} other {# ช่องข้อความ}}, {forumChannelCount, plural, one {# ช่องฟอรัม} other {# ช่องฟอรัม}}, {voiceChannelCount, plural, one {# ช่องเสียง} other {# ช่องเสียง}}, {categoryCount, plural, one {# หมวดหมู่} other {# หมวดหมู่}}, {roleCount, plural, one {# บทบาท} other {# บทบาท}}"
+
 #. Template preview summary listing how many text channels, voice channels, categories, and roles will be imported.
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
 msgid "{textChannelCount, plural, one {# text channel} other {# text channels}}, {voiceChannelCount, plural, one {# voice channel} other {# voice channels}}, {categoryCount, plural, one {# category} other {# categories}}, {roleCount, plural, one {# role} other {# roles}}"
@@ -2128,6 +2156,11 @@ msgstr "{textChannelCount, plural, other {ช่องข้อความ # �
 #: src/features/theme/state/ThemeLibrary.ts
 msgid "{themeName} Copy"
 msgstr "{themeName} (สำเนา)"
+
+#. Error in the import-template form when the third-party platform named by {theOtherPlatform} temporarily refused the desktop app template lookup because of too many requests.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "{theOtherPlatform} is limiting template lookups right now. Try again in a moment."
+msgstr "{theOtherPlatform} กำลังจำกัดการค้นหาเทมเพลตในขณะนี้ โปรดลองอีกครั้งในอีกสักครู่"
 
 #. Time window preset label shown as a standalone duration in option lists. The number is interpolated.
 #: src/features/app/config/TimeWindowPresets.ts
@@ -2669,11 +2702,6 @@ msgstr "บอทตัวช่วยที่ทำสิ่งน่าทึ
 msgid "a hostname, e.g. {exampleDomain}"
 msgstr "ชื่อโฮสต์ เช่น {exampleDomain}"
 
-#. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "มีการอัปเดตเดสก์ท็อปสำหรับ Linux แล้ว เลือกรูปแบบแพ็กเกจสำหรับระบบนี้ แล้ว {productName} จะบันทึกไฟล์ไว้ในเครื่อง"
-
 #. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx
 msgid "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
@@ -2860,6 +2888,11 @@ msgstr "ยืนยันบัญชีสำเร็จแล้ว"
 msgid "Account connected"
 msgstr "เชื่อมต่อบัญชีแล้ว"
 
+#. One line of the support email written for the user. createdAt is the account creation time as an ISO 8601 UTC timestamp.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Account created: {createdAt}"
+msgstr "สร้างบัญชีเมื่อ: {createdAt}"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts
 msgid "Account data"
@@ -2869,6 +2902,11 @@ msgstr "ข้อมูลบัญชี"
 #: src/features/auth/AccountDisplayUtils.ts
 msgid "Account details unavailable"
 msgstr "รายละเอียดบัญชีไม่พร้อมใช้งาน"
+
+#. One line of the support email written for the user. accountId is the numeric account ID.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Account ID: {accountId}"
+msgstr "ID บัญชี: {accountId}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts
@@ -9596,6 +9634,11 @@ msgstr "คัดลอกรหัส"
 msgid "Copy community ID"
 msgstr "คัดลอก ID คอมมูนิตี้"
 
+#. Button in the help dialog opened from "My text didn't go through". Copies the account details for a support email to the clipboard.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Copy details"
+msgstr "คัดลอกรายละเอียด"
+
 #. Developer-mode voice menu action that copies the unique identifier of a voice device or connection.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts
 msgid "Copy device ID"
@@ -10199,6 +10242,11 @@ msgstr "ไม่สามารถโหลดการตั้งค่าไ
 msgid "Couldn't load the report form."
 msgstr "ไม่สามารถโหลดแบบฟอร์มรายงานได้"
 
+#. Instructions in the desktop app import-template flow shown when looking up the template directly failed, so the user has to fetch the JSON in a browser and paste it instead. "JSON" must not be translated.
+#: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
+msgid "Couldn't load the template automatically. Open the link below in your browser, then copy the entire JSON response and paste it into the box."
+msgstr "ไม่สามารถโหลดเทมเพลตได้โดยอัตโนมัติ เปิดลิงก์ด้านล่างในเบราว์เซอร์ของคุณ จากนั้นคัดลอกการตอบสนอง JSON ทั้งหมดแล้ววางลงในช่อง"
+
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationDetail.tsx
 msgid "Couldn't load this application"
 msgstr "ไม่สามารถโหลดแอปพลิเคชันนี้ได้"
@@ -10531,6 +10579,16 @@ msgstr "ตัวจับเวลาถอยหลัง"
 #: src/features/moderation/components/report/ReportStepDetails.tsx
 msgid "Country of residence"
 msgstr "ประเทศที่พำนัก"
+
+#. Field label in the help dialog opened from "My text didn't go through". The user types the country they are in so support can help.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Country you're in"
+msgstr "ประเทศที่คุณอยู่"
+
+#. One line of the support email written for the user. country is the country the user typed.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Country: {country}"
+msgstr "ประเทศ: {country}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -11427,11 +11485,6 @@ msgstr "ปิดเสียงทั้งหมดแล้ว"
 msgid "Deafened by moderators"
 msgstr "ปิดเสียงทั้งหมดโดยผู้ดูแล"
 
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "DEB" verbatim and translate only the word "package".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "DEB package"
-msgstr "แพ็กเกจ DEB"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the settings dialog mobile settings view.
 #: src/features/app/components/dialogs/components/MobileSettingsView.tsx
@@ -11545,6 +11598,10 @@ msgstr "การตั้งค่าการแจ้งเตือนเร
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/DefaultNotificationsSection.tsx
 msgid "Default notifications"
 msgstr "การแจ้งเตือนเริ่มต้น"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Default output device"
+msgstr "อุปกรณ์ส่งเสียงเริ่มต้น"
 
 #. Label of the forum setting that picks the reaction button shown on every post.
 #: src/features/forum/utils/ForumMessageDescriptors.ts
@@ -12095,20 +12152,10 @@ msgstr "การแจ้งเตือนบนเดสก์ท็อปถ
 msgid "Desktop startup"
 msgstr "การเริ่มต้นบนเดสก์ท็อป"
 
-#. Tooltip on the updater icon for a Linux desktop update that requires choosing a package format.
-#: src/features/channel/components/channel_header_components/UpdaterIcon.tsx
-msgid "Desktop update {version} available. Choose a Linux package."
-msgstr "มีอัปเดตเดสก์ท็อป {version} ให้ใช้งาน เลือกแพ็กเกจ Linux"
-
 #. Modal title shown when a new desktop app update can be downloaded.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "Desktop update available"
 msgstr "มีอัปเดตสำหรับเดสก์ท็อป"
-
-#. Tooltip on the updater icon for a Linux desktop update that requires choosing a package format and no version is known.
-#: src/features/channel/components/channel_header_components/UpdaterIcon.tsx
-msgid "Desktop update available. Choose a Linux package."
-msgstr "มีการอัปเดตเดสก์ท็อป เลือกแพ็กเกจ Linux"
 
 #. Desktop updater modal body. The version placeholder is the target app version; productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -12229,6 +12276,10 @@ msgstr "เสียงอุปกรณ์เท่านั้น"
 #: src/features/user/components/modals/tabs/DevicesTab.tsx
 msgid "Device details"
 msgstr "รายละเอียดอุปกรณ์"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Device not connected"
+msgstr "อุปกรณ์ไม่ได้เชื่อมต่อ"
 
 #. Toast shown after a saved login session was signed out.
 #: src/features/auth/components/modals/DeviceRevokeModal.tsx
@@ -12388,6 +12439,16 @@ msgstr "ปิดภาพเคลื่อนไหวและเอฟเฟ
 #: src/features/user/components/modals/tabs/accessibility_tab/MotionTab.tsx
 msgid "Disable animations and transitions. Currently controlled by your system setting."
 msgstr "ปิดภาพเคลื่อนไหวและเอฟเฟกต์การเปลี่ยนภาพ ขณะนี้ควบคุมโดยการตั้งค่าระบบของคุณ"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Disable automatic updates"
+msgstr "ปิดการอัปเดตอัตโนมัติ"
+
+#. Confirmation prompt in advanced settings.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "Disable automatic updates?"
+msgstr "ปิดการอัปเดตอัตโนมัติหรือไม่"
 
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx
 msgid "Disable backend premium perks"
@@ -13054,11 +13115,6 @@ msgstr "ดาวน์โหลดตัวติดตั้ง"
 msgid "Download media"
 msgstr "ดาวน์โหลดสื่อ"
 
-#. Button label that downloads a selected Linux desktop update package.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Download package"
-msgstr "ดาวน์โหลดแพ็กเกจ"
-
 #. Button that downloads the account recovery kit as a PDF file.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "Download PDF"
@@ -13582,6 +13638,11 @@ msgstr "มีสิทธิ์ได้รับเงินคืนจนถ
 msgid "Email"
 msgstr "อีเมล"
 
+#. Body of the help dialog opened from "My text didn't go through" while messaging is paused on the account. supportEmail is the support email address. Keep it short, calm and neutral.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Email {supportEmail} and a person will check your account. You can also reply to the email we sent you."
+msgstr "ส่งอีเมลไปที่ {supportEmail} แล้วเจ้าหน้าที่จะตรวจสอบบัญชีของคุณ คุณยังตอบกลับอีเมลที่เราส่งให้คุณได้ด้วย"
+
 #. Short label in the inputs tab. Keep it concise.
 #. Short label in the moderation report step email. Keep it concise. Keep the tone plain and specific.
 #: src/features/moderation/components/report/ReportStepEmail.tsx
@@ -13608,6 +13669,11 @@ msgstr "การส่งอีเมล"
 #: src/features/moderation/components/report/ReportStepUnavailable.tsx
 msgid "Email reports aren't available here"
 msgstr "ไม่สามารถรายงานทางอีเมลได้ที่นี่"
+
+#. Primary button in the help dialog opened from "My text didn't go through". Opens a new email to support with the account details filled in.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Email support"
+msgstr "ส่งอีเมลถึงฝ่ายสนับสนุน"
 
 #. Developer control label for the email-verification banner.
 #: src/features/devtools/components/NagbarControls.ts
@@ -13857,6 +13923,11 @@ msgstr "เปิดใช้งานการหมดอายุไฟล์
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx
 msgid "Enable audio"
 msgstr "เปิดเสียง"
+
+#. Confirmation prompt in advanced settings.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "Enable automatic updates?"
+msgstr "เปิดใช้งานการอัปเดตอัตโนมัติหรือไม่"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "Enable beta feature"
@@ -14401,6 +14472,7 @@ msgid "Entire system"
 msgstr "ทั้งระบบ"
 
 #: src/features/voice/components/AudioSourcePickerLinux.tsx
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Entire system audio"
 msgstr "เสียงทั้งระบบ"
 
@@ -15616,6 +15688,10 @@ msgstr "กำลังติดตาม"
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx
 msgid "Following master • {effectiveValue}"
 msgstr "ใช้ระดับเสียงหลัก • {effectiveValue}"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Follows your Windows sound settings"
+msgstr "เป็นไปตามการตั้งค่าเสียงของ Windows ของคุณ"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts
@@ -17965,10 +18041,6 @@ msgstr "ในช่อง"
 msgid "In channels I moderate"
 msgstr "ในช่องที่ฉันเป็นผู้ดูแล"
 
-#: src/features/channel/components/ChannelWelcomeSection.tsx
-msgid "In the beginning, there was nothing. Then, there was {channelDisplayName}. And it was good."
-msgstr "ในตอนแรกไม่มีอะไรเลย จากนั้นก็มี {channelDisplayName} และมันก็ดี"
-
 #: src/features/user/components/profile/VoiceActivityCard.tsx
 msgid "In voice"
 msgstr "อยู่ในช่องเสียง"
@@ -18275,11 +18347,6 @@ msgstr "ติดตั้งจากเมนูเบราว์เซอร
 #: src/features/app/components/layout/app_layout/nagbars/DomainMovedNagbar.tsx
 msgid "Install the new app"
 msgstr "ติดตั้งแอปใหม่"
-
-#. Label for the installed desktop version in the Linux update modal.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Installed"
-msgstr "ติดตั้งแล้ว"
 
 #. Desktop updater modal body. The currentVersion placeholder is the installed app version.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -19790,11 +19857,6 @@ msgstr "แอป Linux"
 msgid "Linux default"
 msgstr "ค่าเริ่มต้นของ Linux"
 
-#. Select label for choosing the Linux desktop package format to download.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Linux package"
-msgstr "แพ็กเกจ Linux"
-
 #. Forum layout name shown inside an activity log row.
 #. Forum layout option that shows posts as rows.
 #: src/features/forum/utils/ForumMessageDescriptors.ts
@@ -20541,6 +20603,10 @@ msgstr "ปกป้องเต็มที่เพื่อพื้นที
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts
 msgid "May cause compatibility issues for viewers. We’re working on improving this."
 msgstr "อาจทำให้ผู้ชมมีปัญหาด้านความเข้ากันได้ เรากำลังปรับปรุงเรื่องนี้อยู่"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "May include call audio from mixer apps"
+msgstr "อาจรวมเสียงการโทรจากแอปมิกเซอร์"
 
 #. Short label in the max favorite memes modal.
 #: src/features/app/components/alerts/MaxFavoriteMemesModal.tsx
@@ -22063,6 +22129,11 @@ msgstr "การค้นหารูปภาพย้อนกลับขอ
 msgid "My search engine"
 msgstr "เครื่องมือค้นหาของฉัน"
 
+#. Button shown while messaging is paused on the current account, and the title of the help dialog it opens. The email describing the quick step asks the user to send a text message from their phone. This is for users who could not send that text, and also for users who sent it and nothing happened. The translation should cover both. Also used as the subject of the support email.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "My text didn't go through"
+msgstr "SMS ของฉันส่งไม่ถึง"
+
 #. Short label in the add custom search engine modal. Keep it concise.
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx
 msgid "My translator"
@@ -22418,11 +22489,6 @@ msgstr "เธรดใหม่จะหยุดแสดงในรายก
 #: src/features/invite/utils/InviteMessageDescriptors.ts
 msgid "New users can't join right now. You can still create an account or sign in, then try this link again later."
 msgstr "ผู้ใช้ใหม่ไม่สามารถเข้าร่วมได้ในขณะนี้ คุณยังสามารถสร้างบัญชีหรือลงชื่อเข้าใช้ แล้วลองใช้ลิงก์นี้อีกครั้งในภายหลังได้"
-
-#. Fallback version label when the available desktop version is unknown.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "New version"
-msgstr "เวอร์ชันใหม่"
 
 #. US state name, shown next to the country name in the mature content gate.
 #: src/features/user/utils/UserGeo.ts
@@ -24126,6 +24192,8 @@ msgid "Open settings"
 msgstr "เปิดการตั้งค่า"
 
 #. Button label that opens the software center via appstream protocol.
+#. Native desktop dialog button on a Flatpak install that opens the software center page for the desktop app.
+#: src/features/platform/utils/DesktopLocaleBridge.ts
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "Open software center"
 msgstr "เปิดศูนย์ซอฟต์แวร์"
@@ -25335,6 +25403,11 @@ msgstr "เล่น"
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts
 msgid "Playback"
 msgstr "การเล่น"
+
+#. Submenu label in the stream settings menu of a Windows screen share. Picks which playback devices the shared desktop audio comes from.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Playback devices"
+msgstr "อุปกรณ์เสียง"
 
 #. Section / menu header above the playback rate options in the media player.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -26878,8 +26951,8 @@ msgstr "โหลดใหม่เพื่อใช้เครื่องม
 
 #. Description text in the text to speech.
 #: src/features/user/components/modals/tabs/notifications_tab/TextToSpeech.tsx
-msgid "Remain silent unless someone runs /tts manually."
-msgstr "จะไม่มีเสียงพูดจนกว่าจะมีคนใช้คำสั่ง /tts ด้วยตัวเอง"
+msgid "Remain silent unless someone runs /tts in the channel you're viewing."
+msgstr "เงียบไว้ เว้นแต่จะมีคนพิมพ์ /tts ในแชทที่คุณกำลังดู"
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -28457,11 +28530,6 @@ msgstr "ช่องทำเครื่องหมายแบบวงกล
 #: src/features/channel/components/guild_members_page/MembersTableFooter.tsx
 msgid "Rows per page"
 msgstr "จำนวนแถวต่อหน้า"
-
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "RPM" verbatim and translate only the word "package".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "RPM package"
-msgstr "แพ็กเกจ RPM"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -30770,6 +30838,11 @@ msgstr "แสดงไอคอนในถาดระบบ"
 #: src/features/user/components/settings_utils/search_index/AdvancedSettingsIndex.ts
 msgid "Show text in Fluxer Sans, the previous default font, instead of the Windows system font"
 msgstr "แสดงข้อความด้วยฟอนต์ Fluxer Sans ซึ่งเป็นฟอนต์เริ่มต้นก่อนหน้า แทนฟอนต์ระบบของ Windows"
+
+#. Desktop setting description under the colored tray icon toggle on Windows and Linux.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Show the full-color {productName} icon instead of a monochrome one that matches your taskbar."
+msgstr "แสดงไอคอน {productName} สีเต็มแทนไอคอนสีเดียวที่เข้ากับแถบงานของคุณ"
 
 #. Switch label in the role editor (hoist toggle). When on, members with this role appear in their own member-list section.
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleEditor.tsx
@@ -33134,11 +33207,6 @@ msgstr "แตะแชร์ แล้วแตะ เพิ่มไปยั�
 msgid "Tap to add a note"
 msgstr "แตะเพื่อเพิ่มโน้ต"
 
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "tar.gz" verbatim and translate only the word "archive".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "tar.gz archive"
-msgstr "ไฟล์บีบอัด tar.gz"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 msgid "Taskbar badge"
@@ -33526,11 +33594,6 @@ msgstr "การเชื่อมต่อจะอัปเกรดเป็
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "The desktop update could not be downloaded. Try again from the update button when your connection is stable."
 msgstr "ไม่สามารถดาวน์โหลดการอัปเดตเดสก์ท็อปได้ โปรดลองอีกครั้งจากปุ่มอัปเดตเมื่อการเชื่อมต่อของคุณเสถียร"
-
-#. Help text below the Linux package format selector in the desktop updater modal.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "The downloaded file is saved to your computer. Install it with your normal package manager."
-msgstr "ไฟล์ที่ดาวน์โหลดจะถูกบันทึกลงในคอมพิวเตอร์ของคุณ ติดตั้งด้วยตัวจัดการแพ็กเกจปกติของคุณ"
 
 #. Activity log detail line under a deleted emoji, shown only when someone other than the person who deleted it had uploaded it. {user} is the user who uploaded the emoji, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogExpressionMessageMessages.ts
@@ -33926,6 +33989,11 @@ msgstr "ตัวเลือกที่ 3"
 #: src/features/user/components/settings_utils/search_index/AuthorizedAppsIndex.ts
 msgid "Third party"
 msgstr "บุคคลภายนอก"
+
+#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape. PRODUCT_NAME is the name of this app.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "This {theOtherPlatform} template couldn't be read. It may use a format {PRODUCT_NAME} doesn't support yet."
+msgstr "เทมเพลต {theOtherPlatform} นี้ไม่สามารถอ่านได้ อาจใช้รูปแบบที่ {PRODUCT_NAME} ยังไม่รองรับ"
 
 #. Body of the block-user error modal when the target is a system account that cannot be blocked.
 #: src/features/relationship/components/alerts/RelationshipErrorModalUtils.tsx
@@ -34415,6 +34483,10 @@ msgstr "นี่คือคำอธิบายตัวเลือกแร
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "This is the second option description"
 msgstr "นี่คือคำอธิบายตัวเลือกที่สอง"
+
+#: src/features/channel/components/ChannelWelcomeSection.tsx
+msgid "This is the start of {channelDisplayName}."
+msgstr "นี่คือจุดเริ่มต้นของ {channelDisplayName}"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "This is the third option description"
@@ -36557,10 +36629,20 @@ msgstr "สูงสุด 4K ที่ 60 FPS"
 msgid "Up to 720p at 30 FPS"
 msgstr "สูงสุด 720p ที่ 30 FPS"
 
+#. Native desktop dialog body under the headline announcing a new version, shown on a Flatpak install. {appName} is the desktop app name (typically Fluxer).
+#: src/features/platform/utils/DesktopLocaleBridge.ts
+msgid "Update {appName} from your software center."
+msgstr "อัปเดต {appName} จากศูนย์ซอฟต์แวร์ของคุณ"
+
 #. Tray menu item shown only while a desktop update is waiting. Clicking it installs the update. {appName} is the desktop app name (typically Fluxer).
 #: src/features/platform/utils/DesktopLocaleBridge.ts
 msgid "Update {appName} now"
 msgstr "อัปเดต {appName} ตอนนี้"
+
+#. Native desktop dialog body under the headline announcing a new version, shown on a Linux install managed by a package manager such as a deb, rpm or AUR package. {appName} is the desktop app name (typically Fluxer).
+#: src/features/platform/utils/DesktopLocaleBridge.ts
+msgid "Update {appName} with your package manager, or download the new version."
+msgstr "อัปเดต {appName} ด้วยตัวจัดการแพ็กเกจของคุณ หรือดาวน์โหลดเวอร์ชันใหม่"
 
 #. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
 #: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
@@ -36632,6 +36714,11 @@ msgstr "อัปเดตนโยบายแล้ว"
 #: src/features/expressions/commands/FavoriteMemeCommands.tsx
 msgid "Updated saved media"
 msgstr "อัปเดตสื่อที่บันทึกไว้แล้ว"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "Updates"
+msgstr "อัปเดต"
 
 #. Heading of the dialog shown after the user follows an announcement channel.
 #: src/features/channel/components/modals/ChannelFollowSuccessModal.tsx
@@ -36998,6 +37085,11 @@ msgstr "ใช้ค่าเริ่มต้นของช่อง"
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx
 msgid "Use coal theme (pitch-black surfaces)"
 msgstr "ใช้ธีมถ่านหิน (พื้นผิวสีดำสนิท)"
+
+#. Desktop setting toggle label on Windows and Linux. Switches the system tray icon from monochrome to the full-color app icon.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Use colored tray icon"
+msgstr "ใช้ไอคอนถาดสี"
 
 #. Plutonium page comparison row label for global emojis and stickers.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -37377,6 +37469,11 @@ msgstr "แท็กชื่อผู้ใช้"
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx
 msgid "Username updated"
 msgstr "อัปเดตชื่อผู้ใช้แล้ว"
+
+#. One line of the support email written for the user. username is the account username with its tag.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Username: {username}"
+msgstr "ชื่อผู้ใช้: {username}"
 
 #. Summary value on the setup wizard finish step when people sign in with a username.
 #: src/features/app/components/setup/SetupWizardSteps.tsx
@@ -38501,6 +38598,11 @@ msgstr "เราไม่พบการซื้อล่าสุดที่
 #: src/features/app/components/dialogs/components/plutonium/utils/PremiumActionErrorModal.tsx
 msgid "We couldn't find an active subscription on this account. Refresh and try again."
 msgstr "เราไม่พบการสมัครสมาชิกที่ใช้งานอยู่สำหรับบัญชีนี้ โปรดรีเฟรชแล้วลองอีกครั้ง"
+
+#. Error in the import-template form when the desktop app looked up the template and the third-party platform named by {theOtherPlatform} said it does not exist or has expired.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "We couldn't find that {theOtherPlatform} template. Check the link and try again."
+msgstr "เราไม่พบเทมเพลต {theOtherPlatform} นั้น โปรดตรวจสอบลิงก์แล้วลองอีกครั้ง"
 
 #. Error message in the message forward failed modal.
 #: src/features/messaging/components/modals/ForwardModal.tsx
@@ -40599,6 +40701,11 @@ msgstr "การสมัครของคุณจะเปลี่ยนเ
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts
 msgid "Your subscription will switch to yearly billing at the next renewal."
 msgstr "การสมัครของคุณจะเปลี่ยนเป็นการเรียกเก็บเงินรายปีในการต่ออายุครั้งถัดไป"
+
+#. Inline informational note in the screen share picker on Linux systems where no hardware video encoder is available, for example NVIDIA-only machines. Not an error.
+#: src/features/voice/components/modals/screen_share_picker_modal/SoftwareEncodeNotice.tsx
+msgid "Your system has no hardware video encoder that {productName} can use, so screen sharing uses software encoding."
+msgstr "ระบบของคุณไม่มีตัวเข้ารหัสวิดีโอฮาร์ดแวร์ที่ {productName} สามารถใช้ได้ ดังนั้นการแชร์หน้าจอจึงใช้การเข้ารหัสซอฟต์แวร์"
 
 #. Body of the error modal shown when a theme CSS exceeds the maximum shareable size.
 #: src/features/theme/components/modals/ShareThemeModal.tsx

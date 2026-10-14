@@ -9,13 +9,6 @@ const DESKTOP_APP_NAMES: Record<BuildChannel, string> = {
 	canary: 'echowire canary',
 	development: 'echowire development',
 };
-// Echowire: the artifact product name prefixes every published installer and must match what the
-// DownloadService publishes (echowire / echowire-canary).
-const DESKTOP_ARTIFACT_PRODUCT_NAMES: Record<BuildChannel, string> = {
-	stable: 'echowire',
-	canary: 'echowire-canary',
-	development: 'echowire-development',
-};
 const MACOS_BUNDLE_IDS: Record<BuildChannel, string> = {
 	stable: 'org.echowire.app',
 	canary: 'org.echowire.canary',
@@ -62,7 +55,6 @@ const WINDOWS_TOAST_ACTIVATOR_CLSIDS: Record<BuildChannel, string> = {
 };
 
 export const DESKTOP_APP_NAME = DESKTOP_APP_NAMES[BUILD_CHANNEL];
-export const DESKTOP_ARTIFACT_PRODUCT_NAME = DESKTOP_ARTIFACT_PRODUCT_NAMES[BUILD_CHANNEL];
 export const MACOS_BUNDLE_ID = MACOS_BUNDLE_IDS[BUILD_CHANNEL];
 export const LINUX_DESKTOP_ENTRY_ID = LINUX_DESKTOP_ENTRY_IDS[BUILD_CHANNEL];
 export const LINUX_PORTAL_SESSION_TOKEN = LINUX_PORTAL_SESSION_TOKENS[BUILD_CHANNEL];

@@ -1807,6 +1807,24 @@ msgstr "A címsor módosításának érvénybe lépéséhez újra kell indítani
 msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware acceleration. Use this only if you're troubleshooting graphics glitches or high GPU usage."
 msgstr "A(z) {PRODUCT_NAME} újraindítása szükséges a Chromium hardveres gyorsításának kikapcsolásához. Ezt csak akkor használd, ha grafikai hibákat vagy magas GPU-használatot észlelsz."
 
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
+msgstr "A(z) {PRODUCT_NAME} újraindításra szorul, hogy újra elkezdhesse a frissítések letöltését."
+
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
+msgstr "A(z) {PRODUCT_NAME} újraindításra szorul a frissítések letöltésének leállításához. Lehet, hogy lemarad, és leáll a szolgáltatással való együttműködés, amíg újra be nem kapcsolja a frissítéseket."
+
+#. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
+#: src/features/updater/commands/UpdaterModalCommands.tsx
+msgid "{productName} {version} is available. Update it from your software center."
+msgstr "{productName} {version} elérhető. Frissítsd a szoftverközpontodból."
+
+#. Desktop updater modal body for a Linux install managed by a package manager, such as a deb, rpm or AUR package, when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
+#: src/features/updater/commands/UpdaterModalCommands.tsx
+msgid "{productName} {version} is available. Update it with your package manager, or download the new version."
+msgstr "{productName} {version} érhető el. Frissítsd a csomagkezelőddel, vagy töltsd le az új verziót."
+
 #. Accessible label for the Echowire application icon.
 #: src/features/ui/components/icons/FluxerIconMark.tsx
 msgid "{productName} application icon"
@@ -2006,6 +2024,11 @@ msgstr "A(z) {productName} lehetséges összehangolt támadást észlelt itt. A 
 msgid "{productName} Staff"
 msgstr "{productName} munkatárs"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
+msgstr "A(z) {productName} leállítja a frissítések letöltését. Lehet, hogy elavul, és nem fog működni a szolgáltatással, amíg a frissítések újra engedélyezve nem lesznek. A következő indításkor lép életbe a(z) {productName} esetében."
+
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2119,6 +2142,11 @@ msgstr "{streamerDisplayName} képernyője"
 msgid "{tenSeconds} seconds"
 msgstr "{tenSeconds} másodperc"
 
+#. Template preview summary listing how many text channels, forum channels, voice channels, categories, and roles will be imported. Used when the template has at least one forum or media channel.
+#: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
+msgid "{textChannelCount, plural, one {# text channel} other {# text channels}}, {forumChannelCount, plural, one {# forum channel} other {# forum channels}}, {voiceChannelCount, plural, one {# voice channel} other {# voice channels}}, {categoryCount, plural, one {# category} other {# categories}}, {roleCount, plural, one {# role} other {# roles}}"
+msgstr "{textChannelCount, plural, one {# szöveges csatorna} other {# szöveges csatorna}}, {forumChannelCount, plural, one {# fórumcsatorna} other {# fórumcsatorna}}, {voiceChannelCount, plural, one {# hangcsatorna} other {# hangcsatorna}}, {categoryCount, plural, one {# kategória} other {# kategória}}, {roleCount, plural, one {# szerepkör} other {# szerepkör}}"
+
 #. Template preview summary listing how many text channels, voice channels, categories, and roles will be imported.
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
 msgid "{textChannelCount, plural, one {# text channel} other {# text channels}}, {voiceChannelCount, plural, one {# voice channel} other {# voice channels}}, {categoryCount, plural, one {# category} other {# categories}}, {roleCount, plural, one {# role} other {# roles}}"
@@ -2128,6 +2156,11 @@ msgstr "{textChannelCount, plural, one {# szöveges csatorna} other {# szöveges
 #: src/features/theme/state/ThemeLibrary.ts
 msgid "{themeName} Copy"
 msgstr "{themeName} másolata"
+
+#. Error in the import-template form when the third-party platform named by {theOtherPlatform} temporarily refused the desktop app template lookup because of too many requests.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "{theOtherPlatform} is limiting template lookups right now. Try again in a moment."
+msgstr "A(z) {theOtherPlatform} jelenleg korlátozza a sablonkereséseket. Próbáld meg később újra."
 
 #. Time window preset label shown as a standalone duration in option lists. The number is interpolated.
 #: src/features/app/config/TimeWindowPresets.ts
@@ -2669,11 +2702,6 @@ msgstr "Egy segítőkész bot, ami csodálatos dolgokra képes!"
 msgid "a hostname, e.g. {exampleDomain}"
 msgstr "állomásnév, pl. {exampleDomain}"
 
-#. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "Elérhető egy frissítés az asztali Linux-alkalmazáshoz. Válaszd ki a rendszeredhez megfelelő csomagformátumot, és a(z) {productName} helyileg menti a csomagot."
-
 #. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx
 msgid "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
@@ -2860,6 +2888,11 @@ msgstr "A fiókregisztráció sikeresen befejeződött"
 msgid "Account connected"
 msgstr "Fiók csatlakoztatva"
 
+#. One line of the support email written for the user. createdAt is the account creation time as an ISO 8601 UTC timestamp.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Account created: {createdAt}"
+msgstr "Fiók létrehozva: {createdAt}"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts
 msgid "Account data"
@@ -2869,6 +2902,11 @@ msgstr "Fiókadatok"
 #: src/features/auth/AccountDisplayUtils.ts
 msgid "Account details unavailable"
 msgstr "A fiók részletei nem érhetők el"
+
+#. One line of the support email written for the user. accountId is the numeric account ID.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Account ID: {accountId}"
+msgstr "Fiókazonosító: {accountId}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts
@@ -9596,6 +9634,11 @@ msgstr "Kód másolása"
 msgid "Copy community ID"
 msgstr "Közösségi azonosító másolása"
 
+#. Button in the help dialog opened from "My text didn't go through". Copies the account details for a support email to the clipboard.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Copy details"
+msgstr "Adatok másolása"
+
 #. Developer-mode voice menu action that copies the unique identifier of a voice device or connection.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts
 msgid "Copy device ID"
@@ -10199,6 +10242,11 @@ msgstr "Nem sikerült betölteni a beállításokat"
 msgid "Couldn't load the report form."
 msgstr "Nem sikerült betölteni a bejelentési űrlapot."
 
+#. Instructions in the desktop app import-template flow shown when looking up the template directly failed, so the user has to fetch the JSON in a browser and paste it instead. "JSON" must not be translated.
+#: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
+msgid "Couldn't load the template automatically. Open the link below in your browser, then copy the entire JSON response and paste it into the box."
+msgstr "Nem sikerült automatikusan betölteni a sablont. Nyisd meg az alábbi linket a böngésződben, majd másold ki a teljes JSON választ, és illeszd be a mezőbe."
+
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationDetail.tsx
 msgid "Couldn't load this application"
 msgstr "Nem sikerült betölteni az alkalmazást"
@@ -10531,6 +10579,16 @@ msgstr "Visszaszámláló"
 #: src/features/moderation/components/report/ReportStepDetails.tsx
 msgid "Country of residence"
 msgstr "Lakóhely szerinti ország"
+
+#. Field label in the help dialog opened from "My text didn't go through". The user types the country they are in so support can help.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Country you're in"
+msgstr "Ország, ahol vagy"
+
+#. One line of the support email written for the user. country is the country the user typed.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Country: {country}"
+msgstr "Ország: {country}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -11427,11 +11485,6 @@ msgstr "Hang kikapcsolva"
 msgid "Deafened by moderators"
 msgstr "A moderátorok kikapcsolták a hangot"
 
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "DEB" verbatim and translate only the word "package".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "DEB package"
-msgstr "DEB csomag"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the settings dialog mobile settings view.
 #: src/features/app/components/dialogs/components/MobileSettingsView.tsx
@@ -11545,6 +11598,10 @@ msgstr "Alapértelmezett értesítési beállítások"
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/DefaultNotificationsSection.tsx
 msgid "Default notifications"
 msgstr "Alapértelmezett értesítések"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Default output device"
+msgstr "Alapértelmezett kimeneti eszköz"
 
 #. Label of the forum setting that picks the reaction button shown on every post.
 #: src/features/forum/utils/ForumMessageDescriptors.ts
@@ -12095,20 +12152,10 @@ msgstr "Az asztali értesítések le vannak tiltva. Később engedélyezheted ő
 msgid "Desktop startup"
 msgstr "Asztali indítás"
 
-#. Tooltip on the updater icon for a Linux desktop update that requires choosing a package format.
-#: src/features/channel/components/channel_header_components/UpdaterIcon.tsx
-msgid "Desktop update {version} available. Choose a Linux package."
-msgstr "Elérhető a(z) {version} asztali frissítés. Válassz Linux-csomagot."
-
 #. Modal title shown when a new desktop app update can be downloaded.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "Desktop update available"
 msgstr "Asztali frissítés érhető el"
-
-#. Tooltip on the updater icon for a Linux desktop update that requires choosing a package format and no version is known.
-#: src/features/channel/components/channel_header_components/UpdaterIcon.tsx
-msgid "Desktop update available. Choose a Linux package."
-msgstr "Asztali frissítés érhető el. Válassz Linux-csomagot."
 
 #. Desktop updater modal body. The version placeholder is the target app version; productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -12229,6 +12276,10 @@ msgstr "Csak az eszköz hangja"
 #: src/features/user/components/modals/tabs/DevicesTab.tsx
 msgid "Device details"
 msgstr "Eszköz részletei"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Device not connected"
+msgstr "Eszköz nincs csatlakoztatva"
 
 #. Toast shown after a saved login session was signed out.
 #: src/features/auth/components/modals/DeviceRevokeModal.tsx
@@ -12388,6 +12439,16 @@ msgstr "Animációk és átmenetek kikapcsolása az alkalmazásban."
 #: src/features/user/components/modals/tabs/accessibility_tab/MotionTab.tsx
 msgid "Disable animations and transitions. Currently controlled by your system setting."
 msgstr "Animációk és átmenetek letiltása. Jelenleg a rendszerbeállítások vezérlik."
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Disable automatic updates"
+msgstr "Automatikus frissítések letiltása"
+
+#. Confirmation prompt in advanced settings.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "Disable automatic updates?"
+msgstr "Automatikus frissítések letiltása?"
 
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx
 msgid "Disable backend premium perks"
@@ -13054,11 +13115,6 @@ msgstr "Telepítő letöltése"
 msgid "Download media"
 msgstr "Média letöltése"
 
-#. Button label that downloads a selected Linux desktop update package.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Download package"
-msgstr "Csomag letöltése"
-
 #. Button that downloads the account recovery kit as a PDF file.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "Download PDF"
@@ -13582,6 +13638,11 @@ msgstr "Eddig kérhetsz visszatérítést: {windowEndsOn}. Ezzel az előfizetés
 msgid "Email"
 msgstr "E-mail"
 
+#. Body of the help dialog opened from "My text didn't go through" while messaging is paused on the account. supportEmail is the support email address. Keep it short, calm and neutral.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Email {supportEmail} and a person will check your account. You can also reply to the email we sent you."
+msgstr "Írj a(z) {supportEmail} címre, és egy munkatársunk átnézi a fiókodat. Arra az e-mailre is válaszolhatsz, amit küldtünk neked."
+
 #. Short label in the inputs tab. Keep it concise.
 #. Short label in the moderation report step email. Keep it concise. Keep the tone plain and specific.
 #: src/features/moderation/components/report/ReportStepEmail.tsx
@@ -13608,6 +13669,11 @@ msgstr "E-mailek kézbesítése"
 #: src/features/moderation/components/report/ReportStepUnavailable.tsx
 msgid "Email reports aren't available here"
 msgstr "Az e-mailes bejelentés itt nem érhető el"
+
+#. Primary button in the help dialog opened from "My text didn't go through". Opens a new email to support with the account details filled in.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Email support"
+msgstr "Írj az ügyfélszolgálatnak"
 
 #. Developer control label for the email-verification banner.
 #: src/features/devtools/components/NagbarControls.ts
@@ -13857,6 +13923,11 @@ msgstr "Mellékletek lejáratának engedélyezése"
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx
 msgid "Enable audio"
 msgstr "Hang engedélyezése"
+
+#. Confirmation prompt in advanced settings.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "Enable automatic updates?"
+msgstr "Automatikus frissítések engedélyezése?"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "Enable beta feature"
@@ -14401,6 +14472,7 @@ msgid "Entire system"
 msgstr "Teljes rendszer"
 
 #: src/features/voice/components/AudioSourcePickerLinux.tsx
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Entire system audio"
 msgstr "Teljes rendszerhang"
 
@@ -15616,6 +15688,10 @@ msgstr "Követem"
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx
 msgid "Following master • {effectiveValue}"
 msgstr "Fő hangerőt követi • {effectiveValue}"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Follows your Windows sound settings"
+msgstr "Kövesse a Windows hangbeállításait"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts
@@ -17965,10 +18041,6 @@ msgstr "Csatornán belül"
 msgid "In channels I moderate"
 msgstr "Az általam moderált csatornákon"
 
-#: src/features/channel/components/ChannelWelcomeSection.tsx
-msgid "In the beginning, there was nothing. Then, there was {channelDisplayName}. And it was good."
-msgstr "Kezdetben vala a semmi. Aztán vala a(z) {channelDisplayName}. És ez jó volt."
-
 #: src/features/user/components/profile/VoiceActivityCard.tsx
 msgid "In voice"
 msgstr "Hanghívásban"
@@ -18275,11 +18347,6 @@ msgstr "Telepítsd a böngésző menüjéből."
 #: src/features/app/components/layout/app_layout/nagbars/DomainMovedNagbar.tsx
 msgid "Install the new app"
 msgstr "Telepítsd az új alkalmazást"
-
-#. Label for the installed desktop version in the Linux update modal.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Installed"
-msgstr "Telepítve"
 
 #. Desktop updater modal body. The currentVersion placeholder is the installed app version.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -19790,11 +19857,6 @@ msgstr "Linux-alkalmazás"
 msgid "Linux default"
 msgstr "Linux alapértelmezett"
 
-#. Select label for choosing the Linux desktop package format to download.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Linux package"
-msgstr "Linux-csomag"
-
 #. Forum layout name shown inside an activity log row.
 #. Forum layout option that shows posts as rows.
 #: src/features/forum/utils/ForumMessageDescriptors.ts
@@ -20541,6 +20603,10 @@ msgstr "Maximális védelem a családbarát tereknek"
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts
 msgid "May cause compatibility issues for viewers. We’re working on improving this."
 msgstr "Előfordulhatnak kompatibilitási problémák a nézők számára. Dolgozunk a javításon."
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "May include call audio from mixer apps"
+msgstr "Tartalmazhat híváshangot keverőalkalmazásokból"
 
 #. Short label in the max favorite memes modal.
 #: src/features/app/components/alerts/MaxFavoriteMemesModal.tsx
@@ -22063,6 +22129,11 @@ msgstr "Saját fordított képkeresés"
 msgid "My search engine"
 msgstr "Saját keresőmotor"
 
+#. Button shown while messaging is paused on the current account, and the title of the help dialog it opens. The email describing the quick step asks the user to send a text message from their phone. This is for users who could not send that text, and also for users who sent it and nothing happened. The translation should cover both. Also used as the subject of the support email.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "My text didn't go through"
+msgstr "Nem ment át az SMS-em"
+
 #. Short label in the add custom search engine modal. Keep it concise.
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx
 msgid "My translator"
@@ -22418,11 +22489,6 @@ msgstr "Az új szálak egy idő után nem jelennek meg a csatornalistán."
 #: src/features/invite/utils/InviteMessageDescriptors.ts
 msgid "New users can't join right now. You can still create an account or sign in, then try this link again later."
 msgstr "Új felhasználók jelenleg nem tudnak csatlakozni. Fiókot továbbra is létrehozhatsz, vagy bejelentkezhetsz, majd később újra megnyithatod ezt a linket."
-
-#. Fallback version label when the available desktop version is unknown.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "New version"
-msgstr "Új verzió"
 
 #. US state name, shown next to the country name in the mature content gate.
 #: src/features/user/utils/UserGeo.ts
@@ -24126,6 +24192,8 @@ msgid "Open settings"
 msgstr "Beállítások megnyitása"
 
 #. Button label that opens the software center via appstream protocol.
+#. Native desktop dialog button on a Flatpak install that opens the software center page for the desktop app.
+#: src/features/platform/utils/DesktopLocaleBridge.ts
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "Open software center"
 msgstr "Szoftverközpont megnyitása"
@@ -25335,6 +25403,11 @@ msgstr "Lejátszás."
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts
 msgid "Playback"
 msgstr "Lejátszás"
+
+#. Submenu label in the stream settings menu of a Windows screen share. Picks which playback devices the shared desktop audio comes from.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Playback devices"
+msgstr "Lejátszóeszközök"
 
 #. Section / menu header above the playback rate options in the media player.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -26878,8 +26951,8 @@ msgstr "Újratöltés a motorváltás érvényesítéséhez"
 
 #. Description text in the text to speech.
 #: src/features/user/components/modals/tabs/notifications_tab/TextToSpeech.tsx
-msgid "Remain silent unless someone runs /tts manually."
-msgstr "Maradjon csendben, hacsak valaki manuálisan nem futtatja a /tts parancsot."
+msgid "Remain silent unless someone runs /tts in the channel you're viewing."
+msgstr "Maradj csendben, hacsak valaki be nem írja a `/tts` parancsot a megtekintett csatornában."
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -28457,11 +28530,6 @@ msgstr "Kerek stílusú jelölőnégyzet"
 #: src/features/channel/components/guild_members_page/MembersTableFooter.tsx
 msgid "Rows per page"
 msgstr "Sorok száma oldalanként"
-
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "RPM" verbatim and translate only the word "package".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "RPM package"
-msgstr "RPM csomag"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -30770,6 +30838,11 @@ msgstr "Ikon megjelenítése az értesítési területen"
 #: src/features/user/components/settings_utils/search_index/AdvancedSettingsIndex.ts
 msgid "Show text in Fluxer Sans, the previous default font, instead of the Windows system font"
 msgstr "Szöveg megjelenítése Fluxer Sans, a korábbi alapértelmezett betűtípus, a Windows rendszerbetűtípusa helyett"
+
+#. Desktop setting description under the colored tray icon toggle on Windows and Linux.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Show the full-color {productName} icon instead of a monochrome one that matches your taskbar."
+msgstr "Mutassa a teljes színű {productName} ikont a monokróm helyett, amely illeszkedik a tálcához."
 
 #. Switch label in the role editor (hoist toggle). When on, members with this role appear in their own member-list section.
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleEditor.tsx
@@ -33134,11 +33207,6 @@ msgstr "Érintsd meg a Megosztás gombot, majd a Főképernyőhöz adás lehető
 msgid "Tap to add a note"
 msgstr "Koppints jegyzet hozzáadásához"
 
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "tar.gz" verbatim and translate only the word "archive".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "tar.gz archive"
-msgstr "tar.gz archívum"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 msgid "Taskbar badge"
@@ -33526,11 +33594,6 @@ msgstr "A kapcsolat csak akkor frissül TLS-re, ha a szerver felajánlja azt."
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "The desktop update could not be downloaded. Try again from the update button when your connection is stable."
 msgstr "Nem sikerült letölteni az asztali frissítést. Próbáld újra a frissítés gombbal, ha stabil a kapcsolatod."
-
-#. Help text below the Linux package format selector in the desktop updater modal.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "The downloaded file is saved to your computer. Install it with your normal package manager."
-msgstr "A letöltött fájl a számítógépedre mentve. Telepítsd a szokásos csomagkezelőddel."
 
 #. Activity log detail line under a deleted emoji, shown only when someone other than the person who deleted it had uploaded it. {user} is the user who uploaded the emoji, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogExpressionMessageMessages.ts
@@ -33926,6 +33989,11 @@ msgstr "Harmadik opció"
 #: src/features/user/components/settings_utils/search_index/AuthorizedAppsIndex.ts
 msgid "Third party"
 msgstr "Harmadik fél"
+
+#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape. PRODUCT_NAME is the name of this app.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "This {theOtherPlatform} template couldn't be read. It may use a format {PRODUCT_NAME} doesn't support yet."
+msgstr "Ezt a(z) {theOtherPlatform} sablont nem sikerült beolvasni. Lehetséges, hogy olyan formátumot használ, amelyet a {PRODUCT_NAME} még nem támogat."
 
 #. Body of the block-user error modal when the target is a system account that cannot be blocked.
 #: src/features/relationship/components/alerts/RelationshipErrorModalUtils.tsx
@@ -34415,6 +34483,10 @@ msgstr "Ez az első opció leírása"
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "This is the second option description"
 msgstr "Ez a második opció leírása"
+
+#: src/features/channel/components/ChannelWelcomeSection.tsx
+msgid "This is the start of {channelDisplayName}."
+msgstr "Ez a(z) {channelDisplayName} eleje."
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "This is the third option description"
@@ -36557,10 +36629,20 @@ msgstr "Akár 4K felbontás 60 FPS sebességgel"
 msgid "Up to 720p at 30 FPS"
 msgstr "Akár 720p felbontás 30 FPS sebességgel"
 
+#. Native desktop dialog body under the headline announcing a new version, shown on a Flatpak install. {appName} is the desktop app name (typically Fluxer).
+#: src/features/platform/utils/DesktopLocaleBridge.ts
+msgid "Update {appName} from your software center."
+msgstr "Frissítsd a(z) {appName} alkalmazást a szoftverközpontodból."
+
 #. Tray menu item shown only while a desktop update is waiting. Clicking it installs the update. {appName} is the desktop app name (typically Fluxer).
 #: src/features/platform/utils/DesktopLocaleBridge.ts
 msgid "Update {appName} now"
 msgstr "Frissítsd a(z) {appName} rendszert most"
+
+#. Native desktop dialog body under the headline announcing a new version, shown on a Linux install managed by a package manager such as a deb, rpm or AUR package. {appName} is the desktop app name (typically Fluxer).
+#: src/features/platform/utils/DesktopLocaleBridge.ts
+msgid "Update {appName} with your package manager, or download the new version."
+msgstr "Frissítsd a(z) {appName} alkalmazást a csomagkezelőddel, vagy töltsd le az új verziót."
 
 #. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
 #: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
@@ -36632,6 +36714,11 @@ msgstr "Frissített szabályzatok"
 #: src/features/expressions/commands/FavoriteMemeCommands.tsx
 msgid "Updated saved media"
 msgstr "Mentett média frissítve"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "Updates"
+msgstr "Frissítések"
 
 #. Heading of the dialog shown after the user follows an announcement channel.
 #: src/features/channel/components/modals/ChannelFollowSuccessModal.tsx
@@ -36998,6 +37085,11 @@ msgstr "Csatorna alapértelmezett használata"
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx
 msgid "Use coal theme (pitch-black surfaces)"
 msgstr "Szén téma használata (koromfekete felületek)"
+
+#. Desktop setting toggle label on Windows and Linux. Switches the system tray icon from monochrome to the full-color app icon.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Use colored tray icon"
+msgstr "Színes tálca ikon használata"
 
 #. Plutonium page comparison row label for global emojis and stickers.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -37377,6 +37469,11 @@ msgstr "Felhasználói nevek címkéi"
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx
 msgid "Username updated"
 msgstr "Felhasználónév frissítve"
+
+#. One line of the support email written for the user. username is the account username with its tag.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Username: {username}"
+msgstr "Felhasználónév: {username}"
 
 #. Summary value on the setup wizard finish step when people sign in with a username.
 #: src/features/app/components/setup/SetupWizardSteps.tsx
@@ -38501,6 +38598,11 @@ msgstr "Nem találtunk visszatéríthető vásárlást ezen a fiókon."
 #: src/features/app/components/dialogs/components/plutonium/utils/PremiumActionErrorModal.tsx
 msgid "We couldn't find an active subscription on this account. Refresh and try again."
 msgstr "Nem találtunk aktív előfizetést ezen a fiókon. Frissítsd, majd próbáld újra."
+
+#. Error in the import-template form when the desktop app looked up the template and the third-party platform named by {theOtherPlatform} said it does not exist or has expired.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "We couldn't find that {theOtherPlatform} template. Check the link and try again."
+msgstr "Nem találtuk ezt a(z) {theOtherPlatform} sablont. Ellenőrizd a linket, és próbáld újra."
 
 #. Error message in the message forward failed modal.
 #: src/features/messaging/components/modals/ForwardModal.tsx
@@ -40599,6 +40701,11 @@ msgstr "Előfizetésed a következő megújításkor havi számlázásra vált."
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts
 msgid "Your subscription will switch to yearly billing at the next renewal."
 msgstr "Előfizetésed a következő megújításkor éves számlázásra vált."
+
+#. Inline informational note in the screen share picker on Linux systems where no hardware video encoder is available, for example NVIDIA-only machines. Not an error.
+#: src/features/voice/components/modals/screen_share_picker_modal/SoftwareEncodeNotice.tsx
+msgid "Your system has no hardware video encoder that {productName} can use, so screen sharing uses software encoding."
+msgstr "A rendszeredben nincs olyan hardveres videokódoló, amelyet a(z) {productName} használhatna, ezért a képernyőmegosztás szoftveres kódolást használ."
 
 #. Body of the error modal shown when a theme CSS exceeds the maximum shareable size.
 #: src/features/theme/components/modals/ShareThemeModal.tsx

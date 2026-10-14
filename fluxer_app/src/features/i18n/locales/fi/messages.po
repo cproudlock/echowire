@@ -1807,6 +1807,24 @@ msgstr "{PRODUCT_NAME} täytyy käynnistää uudelleen, jotta otsikkopalkin muut
 msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware acceleration. Use this only if you're troubleshooting graphics glitches or high GPU usage."
 msgstr "{PRODUCT_NAME} on käynnistettävä uudelleen, jotta Chromiumin laitteistokiihdytys voidaan poistaa käytöstä. Käytä tätä vain, jos selvität grafiikkaongelmia tai korkeaa GPU:n käyttöastetta."
 
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
+msgstr "{PRODUCT_NAME} täytyy käynnistää uudelleen, jotta päivitysten lataaminen voi jatkua."
+
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
+msgstr "{PRODUCT_NAME} täytyy käynnistyä uudelleen pysäyttääkseen päivitysten lataamisen. Se voi jäädä jälkeen ja lakata toimimasta palvelun kanssa, kunnes otat päivitykset uudelleen käyttöön."
+
+#. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
+#: src/features/updater/commands/UpdaterModalCommands.tsx
+msgid "{productName} {version} is available. Update it from your software center."
+msgstr "{productName} {version} on saatavilla. Päivitä se ohjelmistokeskuksestasi."
+
+#. Desktop updater modal body for a Linux install managed by a package manager, such as a deb, rpm or AUR package, when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
+#: src/features/updater/commands/UpdaterModalCommands.tsx
+msgid "{productName} {version} is available. Update it with your package manager, or download the new version."
+msgstr "{productName} {version} on saatavilla. Päivitä se paketinhallinnallasi tai lataa uusi versio."
+
 #. Accessible label for the Echowire application icon.
 #: src/features/ui/components/icons/FluxerIconMark.tsx
 msgid "{productName} application icon"
@@ -2006,6 +2024,11 @@ msgstr "{productName} havaitsi mahdollisen hyökkäyksen täällä. Kutsut on ke
 msgid "{productName} Staff"
 msgstr "{productName}-henkilöstö"
 
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
+msgstr "{productName} lopettaa päivitysten lataamisen. Se voi jäädä jälkeen ja lakata toimimasta palvelun kanssa, kunnes päivitykset otetaan uudelleen käyttöön. Tulee voimaan seuraavan kerran, kun {productName} käynnistyy."
+
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2119,6 +2142,11 @@ msgstr "Käyttäjän {streamerDisplayName} näyttö"
 msgid "{tenSeconds} seconds"
 msgstr "{tenSeconds} sekuntia"
 
+#. Template preview summary listing how many text channels, forum channels, voice channels, categories, and roles will be imported. Used when the template has at least one forum or media channel.
+#: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
+msgid "{textChannelCount, plural, one {# text channel} other {# text channels}}, {forumChannelCount, plural, one {# forum channel} other {# forum channels}}, {voiceChannelCount, plural, one {# voice channel} other {# voice channels}}, {categoryCount, plural, one {# category} other {# categories}}, {roleCount, plural, one {# role} other {# roles}}"
+msgstr "{textChannelCount, plural, one {# tekstikanava} other {# tekstikanavaa}}, {forumChannelCount, plural, one {# keskustelukanava} other {# keskustelukanavaa}}, {voiceChannelCount, plural, one {# äänikanava} other {# äänikanavaa}}, {categoryCount, plural, one {# kategoria} other {# kategoriaa}}, {roleCount, plural, one {# rooli} other {# roolia}}"
+
 #. Template preview summary listing how many text channels, voice channels, categories, and roles will be imported.
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
 msgid "{textChannelCount, plural, one {# text channel} other {# text channels}}, {voiceChannelCount, plural, one {# voice channel} other {# voice channels}}, {categoryCount, plural, one {# category} other {# categories}}, {roleCount, plural, one {# role} other {# roles}}"
@@ -2128,6 +2156,11 @@ msgstr "{textChannelCount, plural, one {# tekstikanava} other {# tekstikanavaa}}
 #: src/features/theme/state/ThemeLibrary.ts
 msgid "{themeName} Copy"
 msgstr "{themeName} (kopio)"
+
+#. Error in the import-template form when the third-party platform named by {theOtherPlatform} temporarily refused the desktop app template lookup because of too many requests.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "{theOtherPlatform} is limiting template lookups right now. Try again in a moment."
+msgstr "{theOtherPlatform} rajoittaa mallipohjien hakua juuri nyt. Yritä uudelleen hetken kuluttua."
 
 #. Time window preset label shown as a standalone duration in option lists. The number is interpolated.
 #: src/features/app/config/TimeWindowPresets.ts
@@ -2669,11 +2702,6 @@ msgstr "Auttavainen botti, joka tekee uskomattomia asioita!"
 msgid "a hostname, e.g. {exampleDomain}"
 msgstr "isäntänimi, esim. {exampleDomain}"
 
-#. Linux desktop updater modal body shown before version details and package format selector. productName is the app name.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "A Linux desktop update is available. Choose the package format for this system and {productName} will save it locally."
-msgstr "Linux-työpöytäpäivitys on saatavilla. Valitse pakettimuoto tälle järjestelmälle, niin {productName} tallentaa sen paikallisesti."
-
 #. Plutonium subscription card line offering a move to a lower price. {listPriceEffectiveDate} is a date already formatted and localized by code; never write a date into the translation.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx
 msgid "A lower price is available. Switching takes effect on <0>{listPriceEffectiveDate}</0> and changes nothing else."
@@ -2860,6 +2888,11 @@ msgstr "Tili lunastettu"
 msgid "Account connected"
 msgstr "Tili yhdistetty"
 
+#. One line of the support email written for the user. createdAt is the account creation time as an ISO 8601 UTC timestamp.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Account created: {createdAt}"
+msgstr "Tili luotu: {createdAt}"
+
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts
 msgid "Account data"
@@ -2869,6 +2902,11 @@ msgstr "Tilitiedot"
 #: src/features/auth/AccountDisplayUtils.ts
 msgid "Account details unavailable"
 msgstr "Tilin tiedot eivät saatavilla"
+
+#. One line of the support email written for the user. accountId is the numeric account ID.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Account ID: {accountId}"
+msgstr "Tilin tunnus: {accountId}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AccountSecuritySections.ts
@@ -9596,6 +9634,11 @@ msgstr "Kopioi koodi"
 msgid "Copy community ID"
 msgstr "Kopioi yhteisön tunnus"
 
+#. Button in the help dialog opened from "My text didn't go through". Copies the account details for a support email to the clipboard.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Copy details"
+msgstr "Kopioi tiedot"
+
 #. Developer-mode voice menu action that copies the unique identifier of a voice device or connection.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts
 msgid "Copy device ID"
@@ -10199,6 +10242,11 @@ msgstr "Asetuksia ei voitu ladata"
 msgid "Couldn't load the report form."
 msgstr "Ilmoituslomakkeen lataaminen epäonnistui."
 
+#. Instructions in the desktop app import-template flow shown when looking up the template directly failed, so the user has to fetch the JSON in a browser and paste it instead. "JSON" must not be translated.
+#: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
+msgid "Couldn't load the template automatically. Open the link below in your browser, then copy the entire JSON response and paste it into the box."
+msgstr "Mallia ei voitu ladata automaattisesti. Avaa alla oleva linkki selaimessasi, kopioi sitten koko JSON-vastaus ja liitä se ruutuun."
+
 #: src/features/user/components/modals/tabs/applications_tab/ApplicationDetail.tsx
 msgid "Couldn't load this application"
 msgstr "Sovellusta ei voitu ladata"
@@ -10531,6 +10579,16 @@ msgstr "Ajastin"
 #: src/features/moderation/components/report/ReportStepDetails.tsx
 msgid "Country of residence"
 msgstr "Asuinmaa"
+
+#. Field label in the help dialog opened from "My text didn't go through". The user types the country they are in so support can help.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Country you're in"
+msgstr "Maa, jossa olet"
+
+#. One line of the support email written for the user. country is the country the user typed.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Country: {country}"
+msgstr "Maa: {country}"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -11427,11 +11485,6 @@ msgstr "Äänet mykistetty"
 msgid "Deafened by moderators"
 msgstr "Moderaattorit mykistivät äänesi"
 
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "DEB" verbatim and translate only the word "package".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "DEB package"
-msgstr "DEB-paketti"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the settings dialog mobile settings view.
 #: src/features/app/components/dialogs/components/MobileSettingsView.tsx
@@ -11545,6 +11598,10 @@ msgstr "Oletusarvoiset ilmoitusasetukset"
 #: src/features/guild/components/modals/guild_tabs/guild_overview_tab/sections/DefaultNotificationsSection.tsx
 msgid "Default notifications"
 msgstr "Oletusilmoitukset"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Default output device"
+msgstr "Oletuslähtölaite"
 
 #. Label of the forum setting that picks the reaction button shown on every post.
 #: src/features/forum/utils/ForumMessageDescriptors.ts
@@ -12095,20 +12152,10 @@ msgstr "Työpöytäilmoitukset on estetty. Voit ottaa ne käyttöön myöhemmin 
 msgid "Desktop startup"
 msgstr "Käynnistys työpöydällä"
 
-#. Tooltip on the updater icon for a Linux desktop update that requires choosing a package format.
-#: src/features/channel/components/channel_header_components/UpdaterIcon.tsx
-msgid "Desktop update {version} available. Choose a Linux package."
-msgstr "Työpöytäpäivitys {version} saatavilla. Valitse Linux-paketti."
-
 #. Modal title shown when a new desktop app update can be downloaded.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "Desktop update available"
 msgstr "Työpöytäsovelluksen päivitys saatavilla"
-
-#. Tooltip on the updater icon for a Linux desktop update that requires choosing a package format and no version is known.
-#: src/features/channel/components/channel_header_components/UpdaterIcon.tsx
-msgid "Desktop update available. Choose a Linux package."
-msgstr "Työpöytäpäivitys saatavilla. Valitse Linux-paketti."
 
 #. Desktop updater modal body. The version placeholder is the target app version; productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -12229,6 +12276,10 @@ msgstr "Laitteen ääni"
 #: src/features/user/components/modals/tabs/DevicesTab.tsx
 msgid "Device details"
 msgstr "Laitteen tiedot"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Device not connected"
+msgstr "Laite ei ole yhteydessä"
 
 #. Toast shown after a saved login session was signed out.
 #: src/features/auth/components/modals/DeviceRevokeModal.tsx
@@ -12388,6 +12439,16 @@ msgstr "Poista animaatiot ja siirtymät käytöstä koko sovelluksessa."
 #: src/features/user/components/modals/tabs/accessibility_tab/MotionTab.tsx
 msgid "Disable animations and transitions. Currently controlled by your system setting."
 msgstr "Poista animaatiot ja siirtymät käytöstä. Ohjataan tällä hetkellä järjestelmäasetuksistasi."
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Disable automatic updates"
+msgstr "Poista automaattiset päivitykset käytöstä"
+
+#. Confirmation prompt in advanced settings.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "Disable automatic updates?"
+msgstr "Poistetaanko automaattiset päivitykset?"
 
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx
 msgid "Disable backend premium perks"
@@ -13054,11 +13115,6 @@ msgstr "Lataa asennusohjelma"
 msgid "Download media"
 msgstr "Lataa media"
 
-#. Button label that downloads a selected Linux desktop update package.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Download package"
-msgstr "Lataa paketti"
-
 #. Button that downloads the account recovery kit as a PDF file.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "Download PDF"
@@ -13582,6 +13638,11 @@ msgstr "Oikeutettu hyvitykseen {windowEndsOn} asti. Tämä peruuttaa myös tilau
 msgid "Email"
 msgstr "Sähköposti"
 
+#. Body of the help dialog opened from "My text didn't go through" while messaging is paused on the account. supportEmail is the support email address. Keep it short, calm and neutral.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Email {supportEmail} and a person will check your account. You can also reply to the email we sent you."
+msgstr "Lähetä sähköpostia osoitteeseen {supportEmail}, niin ihminen tarkistaa tilisi. Voit myös vastata sähköpostiin, jonka lähetimme sinulle."
+
 #. Short label in the inputs tab. Keep it concise.
 #. Short label in the moderation report step email. Keep it concise. Keep the tone plain and specific.
 #: src/features/moderation/components/report/ReportStepEmail.tsx
@@ -13608,6 +13669,11 @@ msgstr "Sähköpostin lähetys"
 #: src/features/moderation/components/report/ReportStepUnavailable.tsx
 msgid "Email reports aren't available here"
 msgstr "Ilmoitukset sähköpostilla eivät ole käytettävissä täällä"
+
+#. Primary button in the help dialog opened from "My text didn't go through". Opens a new email to support with the account details filled in.
+#: src/features/user/components/modals/MessagingPausedHelpModal.tsx
+msgid "Email support"
+msgstr "Lähetä sähköpostia tukeen"
 
 #. Developer control label for the email-verification banner.
 #: src/features/devtools/components/NagbarControls.ts
@@ -13857,6 +13923,11 @@ msgstr "Ota liitteiden vanheneminen käyttöön"
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx
 msgid "Enable audio"
 msgstr "Ota ääni käyttöön"
+
+#. Confirmation prompt in advanced settings.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
+msgid "Enable automatic updates?"
+msgstr "Ota automaattiset päivitykset käyttöön?"
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "Enable beta feature"
@@ -14401,6 +14472,7 @@ msgid "Entire system"
 msgstr "Koko järjestelmä"
 
 #: src/features/voice/components/AudioSourcePickerLinux.tsx
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Entire system audio"
 msgstr "Koko järjestelmän ääni"
 
@@ -15616,6 +15688,10 @@ msgstr "Seuraa"
 #: src/features/user/components/modals/tabs/notifications_tab/NotificationsTabSounds.tsx
 msgid "Following master • {effectiveValue}"
 msgstr "Seuraa yleisäänenvoimakkuutta • {effectiveValue}"
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Follows your Windows sound settings"
+msgstr "Noudattaa Windowsin ääniasetuksiasi"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/AppearanceSections.ts
@@ -17965,10 +18041,6 @@ msgstr "Kanavalla"
 msgid "In channels I moderate"
 msgstr "Kanavilla, joita moderoin"
 
-#: src/features/channel/components/ChannelWelcomeSection.tsx
-msgid "In the beginning, there was nothing. Then, there was {channelDisplayName}. And it was good."
-msgstr "Alussa ei ollut mitään. Sitten oli {channelDisplayName}. Ja se oli hyvä."
-
 #: src/features/user/components/profile/VoiceActivityCard.tsx
 msgid "In voice"
 msgstr "Puhelussa"
@@ -18275,11 +18347,6 @@ msgstr "Asenna se selaimesi valikosta."
 #: src/features/app/components/layout/app_layout/nagbars/DomainMovedNagbar.tsx
 msgid "Install the new app"
 msgstr "Asenna uusi sovellus"
-
-#. Label for the installed desktop version in the Linux update modal.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Installed"
-msgstr "Asennettu"
 
 #. Desktop updater modal body. The currentVersion placeholder is the installed app version.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -19790,11 +19857,6 @@ msgstr "Linux-sovellus"
 msgid "Linux default"
 msgstr "Linuxin oletusarvo"
 
-#. Select label for choosing the Linux desktop package format to download.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "Linux package"
-msgstr "Linux-paketti"
-
 #. Forum layout name shown inside an activity log row.
 #. Forum layout option that shows posts as rows.
 #: src/features/forum/utils/ForumMessageDescriptors.ts
@@ -20541,6 +20603,10 @@ msgstr "Paras suoja perheystävällisille tiloille"
 #: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts
 msgid "May cause compatibility issues for viewers. We’re working on improving this."
 msgstr "Voi aiheuttaa yhteensopivuusongelmia katsojille. Pyrimme parantamaan tätä."
+
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "May include call audio from mixer apps"
+msgstr "Voi sisältää puheluääniä mikserisovelluksista"
 
 #. Short label in the max favorite memes modal.
 #: src/features/app/components/alerts/MaxFavoriteMemesModal.tsx
@@ -22063,6 +22129,11 @@ msgstr "Oma käänteinen kuvahaku"
 msgid "My search engine"
 msgstr "Oma hakukone"
 
+#. Button shown while messaging is paused on the current account, and the title of the help dialog it opens. The email describing the quick step asks the user to send a text message from their phone. This is for users who could not send that text, and also for users who sent it and nothing happened. The translation should cover both. Also used as the subject of the support email.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "My text didn't go through"
+msgstr "Tekstiviestini ei mennyt perille"
+
 #. Short label in the add custom search engine modal. Keep it concise.
 #: src/features/user/components/modals/tabs/chat_settings_tab/AddCustomSearchEngineModal.tsx
 msgid "My translator"
@@ -22418,11 +22489,6 @@ msgstr "Uudet keskustelut lakkaavat näkymästä kanavaluettelossa tämän toime
 #: src/features/invite/utils/InviteMessageDescriptors.ts
 msgid "New users can't join right now. You can still create an account or sign in, then try this link again later."
 msgstr "Uudet käyttäjät eivät voi liittyä juuri nyt. Voit silti luoda tilin tai kirjautua sisään ja yrittää tätä linkkiä uudelleen myöhemmin."
-
-#. Fallback version label when the available desktop version is unknown.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "New version"
-msgstr "Uusi versio"
 
 #. US state name, shown next to the country name in the mature content gate.
 #: src/features/user/utils/UserGeo.ts
@@ -24126,6 +24192,8 @@ msgid "Open settings"
 msgstr "Avaa asetukset"
 
 #. Button label that opens the software center via appstream protocol.
+#. Native desktop dialog button on a Flatpak install that opens the software center page for the desktop app.
+#: src/features/platform/utils/DesktopLocaleBridge.ts
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "Open software center"
 msgstr "Avaa ohjelmistokeskus"
@@ -25335,6 +25403,11 @@ msgstr "Toista."
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts
 msgid "Playback"
 msgstr "Toisto"
+
+#. Submenu label in the stream settings menu of a Windows screen share. Picks which playback devices the shared desktop audio comes from.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Playback devices"
+msgstr "Äänentoistolaitteet"
 
 #. Section / menu header above the playback rate options in the media player.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
@@ -26878,8 +26951,8 @@ msgstr "Lataa uudelleen, jotta moottorin vaihdos tulee voimaan."
 
 #. Description text in the text to speech.
 #: src/features/user/components/modals/tabs/notifications_tab/TextToSpeech.tsx
-msgid "Remain silent unless someone runs /tts manually."
-msgstr "Pysyy hiljaa, ellei joku käytä /tts-komentoa manuaalisesti."
+msgid "Remain silent unless someone runs /tts in the channel you're viewing."
+msgstr "Pysy hiljaa, ellei joku suorita komentoa /tts katsomassasi kanavassa."
 
 #. Settings search entry label. Names the settings search entry in the settings UI.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -28457,11 +28530,6 @@ msgstr "Pyöreä valintaruutu"
 #: src/features/channel/components/guild_members_page/MembersTableFooter.tsx
 msgid "Rows per page"
 msgstr "Rivejä sivulla"
-
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "RPM" verbatim and translate only the word "package".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "RPM package"
-msgstr "RPM-paketti"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -30770,6 +30838,11 @@ msgstr "Näytä ilmaisinalueen kuvake"
 #: src/features/user/components/settings_utils/search_index/AdvancedSettingsIndex.ts
 msgid "Show text in Fluxer Sans, the previous default font, instead of the Windows system font"
 msgstr "Näytä teksti Fluxer Sans -fontilla, aiemmalla oletusfontilla, Windowsin järjestelmäfontin sijaan"
+
+#. Desktop setting description under the colored tray icon toggle on Windows and Linux.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Show the full-color {productName} icon instead of a monochrome one that matches your taskbar."
+msgstr "Näytä täysvärinen {productName}-kuvake yksivärisen sijaan, joka vastaa tehtäväpalkkiasi."
 
 #. Switch label in the role editor (hoist toggle). When on, members with this role appear in their own member-list section.
 #: src/features/guild/components/modals/guild_tabs/guild_roles_tab/RoleEditor.tsx
@@ -33134,11 +33207,6 @@ msgstr "Napauta Jaa ja sitten Lisää Koti-valikkoon."
 msgid "Tap to add a note"
 msgstr "Lisää muistiinpano napauttamalla"
 
-#. Option in the Linux package format dropdown of the desktop updater modal. Keep the format token "tar.gz" verbatim and translate only the word "archive".
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "tar.gz archive"
-msgstr "tar.gz-arkisto"
-
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 msgid "Taskbar badge"
@@ -33526,11 +33594,6 @@ msgstr "Yhteys päivitetään TLS-salausta käyttäväksi vain, jos palvelin tar
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "The desktop update could not be downloaded. Try again from the update button when your connection is stable."
 msgstr "Työpöytäpäivitystä ei voitu ladata. Yritä uudelleen päivityspainikkeesta, kun yhteytesi on vakaa."
-
-#. Help text below the Linux package format selector in the desktop updater modal.
-#: src/features/updater/commands/UpdaterModalCommands.tsx
-msgid "The downloaded file is saved to your computer. Install it with your normal package manager."
-msgstr "Ladattu tiedosto tallennetaan tietokoneellesi. Asenna se tavallisella pakettienhallintaohjelmallasi."
 
 #. Activity log detail line under a deleted emoji, shown only when someone other than the person who deleted it had uploaded it. {user} is the user who uploaded the emoji, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogExpressionMessageMessages.ts
@@ -33926,6 +33989,11 @@ msgstr "Kolmas vaihtoehto"
 #: src/features/user/components/settings_utils/search_index/AuthorizedAppsIndex.ts
 msgid "Third party"
 msgstr "Kolmas osapuoli"
+
+#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape. PRODUCT_NAME is the name of this app.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "This {theOtherPlatform} template couldn't be read. It may use a format {PRODUCT_NAME} doesn't support yet."
+msgstr "Tätä {theOtherPlatform}-mallia ei voitu lukea. Se saattaa käyttää muotoa, jota {PRODUCT_NAME} ei vielä tue."
 
 #. Body of the block-user error modal when the target is a system account that cannot be blocked.
 #: src/features/relationship/components/alerts/RelationshipErrorModalUtils.tsx
@@ -34415,6 +34483,10 @@ msgstr "Tämä on ensimmäisen vaihtoehdon kuvaus"
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "This is the second option description"
 msgstr "Tämä on toisen vaihtoehdon kuvaus"
+
+#: src/features/channel/components/ChannelWelcomeSection.tsx
+msgid "This is the start of {channelDisplayName}."
+msgstr "Tämä on alku {channelDisplayName}:lle."
 
 #: src/features/user/components/modals/tabs/component_gallery_tab/index.tsx
 msgid "This is the third option description"
@@ -36557,10 +36629,20 @@ msgstr "Jopa 4K 60 FPS"
 msgid "Up to 720p at 30 FPS"
 msgstr "Jopa 720p 30 FPS"
 
+#. Native desktop dialog body under the headline announcing a new version, shown on a Flatpak install. {appName} is the desktop app name (typically Fluxer).
+#: src/features/platform/utils/DesktopLocaleBridge.ts
+msgid "Update {appName} from your software center."
+msgstr "Päivitä {appName} ohjelmistokeskuksestasi."
+
 #. Tray menu item shown only while a desktop update is waiting. Clicking it installs the update. {appName} is the desktop app name (typically Fluxer).
 #: src/features/platform/utils/DesktopLocaleBridge.ts
 msgid "Update {appName} now"
 msgstr "Päivitä {appName} nyt"
+
+#. Native desktop dialog body under the headline announcing a new version, shown on a Linux install managed by a package manager such as a deb, rpm or AUR package. {appName} is the desktop app name (typically Fluxer).
+#: src/features/platform/utils/DesktopLocaleBridge.ts
+msgid "Update {appName} with your package manager, or download the new version."
+msgstr "Päivitä {appName} paketinhallinnallasi tai lataa uusi versio."
 
 #. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
 #: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
@@ -36632,6 +36714,11 @@ msgstr "Päivitetyt käytännöt"
 #: src/features/expressions/commands/FavoriteMemeCommands.tsx
 msgid "Updated saved media"
 msgstr "Tallennettu media päivitetty"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "Updates"
+msgstr "Päivitykset"
 
 #. Heading of the dialog shown after the user follows an announcement channel.
 #: src/features/channel/components/modals/ChannelFollowSuccessModal.tsx
@@ -36998,6 +37085,11 @@ msgstr "Käytä kanavan oletusasetusta"
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx
 msgid "Use coal theme (pitch-black surfaces)"
 msgstr "Käytä hiiliteemaa (sysimustat pinnat)"
+
+#. Desktop setting toggle label on Windows and Linux. Switches the system tray icon from monochrome to the full-color app icon.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Use colored tray icon"
+msgstr "Käytä värillistä ilmoitusalueen kuvaketta"
 
 #. Plutonium page comparison row label for global emojis and stickers.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -37377,6 +37469,11 @@ msgstr "Käyttäjänimien tunnisteet"
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx
 msgid "Username updated"
 msgstr "Käyttäjänimi päivitetty"
+
+#. One line of the support email written for the user. username is the account username with its tag.
+#: src/features/user/utils/MessagingPausedHelpEmail.ts
+msgid "Username: {username}"
+msgstr "Käyttäjänimi: {username}"
 
 #. Summary value on the setup wizard finish step when people sign in with a username.
 #: src/features/app/components/setup/SetupWizardSteps.tsx
@@ -38501,6 +38598,11 @@ msgstr "Emme löytäneet tältä tililtä äskettäistä ostosta, josta voisi sa
 #: src/features/app/components/dialogs/components/plutonium/utils/PremiumActionErrorModal.tsx
 msgid "We couldn't find an active subscription on this account. Refresh and try again."
 msgstr "Emme löytäneet aktiivista tilausta tältä tililtä. Päivitä ja yritä uudelleen."
+
+#. Error in the import-template form when the desktop app looked up the template and the third-party platform named by {theOtherPlatform} said it does not exist or has expired.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "We couldn't find that {theOtherPlatform} template. Check the link and try again."
+msgstr "Emme löytäneet kyseistä {theOtherPlatform}-mallia. Tarkista linkki ja yritä uudelleen."
 
 #. Error message in the message forward failed modal.
 #: src/features/messaging/components/modals/ForwardModal.tsx
@@ -40599,6 +40701,11 @@ msgstr "Tilauksesi muuttuu kuukausilaskutukseksi seuraavan uusimisen yhteydessä
 #: src/features/app/components/dialogs/components/plutonium/hooks/useSubscriptionActions.ts
 msgid "Your subscription will switch to yearly billing at the next renewal."
 msgstr "Tilauksesi muuttuu vuosilaskutukseksi seuraavan uusimisen yhteydessä."
+
+#. Inline informational note in the screen share picker on Linux systems where no hardware video encoder is available, for example NVIDIA-only machines. Not an error.
+#: src/features/voice/components/modals/screen_share_picker_modal/SoftwareEncodeNotice.tsx
+msgid "Your system has no hardware video encoder that {productName} can use, so screen sharing uses software encoding."
+msgstr "Järjestelmässäsi ei ole laitteistopohjaista videosiirrintä, jota {productName} voisi käyttää, joten näytön jakaminen käyttää ohjelmistopohjaista siirtoa."
 
 #. Body of the error modal shown when a theme CSS exceeds the maximum shareable size.
 #: src/features/theme/components/modals/ShareThemeModal.tsx

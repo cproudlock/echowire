@@ -526,6 +526,7 @@ class RequestServices implements RequestScopedServices {
 			getDiscriminatorService(),
 			getKVActivityTracker(),
 			this.singleCommunityService,
+			this.inviteService,
 		);
 		return this.cachedSsoService;
 	}

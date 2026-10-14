@@ -14,10 +14,9 @@ import {getDMDisplayName, getIcon, getName} from '@app/features/channel/utils/Ch
 import DeveloperMode from '@app/features/devtools/state/DeveloperMode';
 import {joinDiscoveryGuild} from '@app/features/discovery/commands/DiscoveryJoinCommands';
 import DiscoveryChannelPreviews from '@app/features/discovery/state/DiscoveryChannelPreviews';
+import {GuildAcronym} from '@app/features/guild/components/GuildAcronym';
 import type {Guild} from '@app/features/guild/models/Guild';
 import Guilds from '@app/features/guild/state/Guilds';
-import * as StringUtils from '@app/features/guild/utils/GuildInitialsUtils';
-import {getGuildIconDisplayInitials} from '@app/features/guild/utils/GuildInitialsUtils';
 import {
 	COPY_LINK_DESCRIPTOR,
 	OKAY_DESCRIPTOR,
@@ -229,7 +228,6 @@ function CompactGuildMentionIcon({guild}: {guild: Pick<Guild, 'id' | 'name' | 'i
 	const style: CompactGuildMentionIconStyle | undefined = iconUrl
 		? {'--jump-link-guild-icon-image': `url(${iconUrl})`}
 		: undefined;
-	const initials = getGuildIconDisplayInitials(StringUtils.getInitialsFromName(guild.name));
 	return (
 		<span
 			className={clsx(jumpLinkStyles.icon, jumpLinkStyles.guildIcon)}
@@ -239,12 +237,10 @@ function CompactGuildMentionIcon({guild}: {guild: Pick<Guild, 'id' | 'name' | 'i
 			data-flx="messaging.markdown.renderers.link-renderer.compact-guild-mention-icon"
 		>
 			{!iconUrl && (
-				<span
-					className={jumpLinkStyles.guildInitials}
-					data-flx="messaging.markdown.renderers.link-renderer.compact-guild-mention-icon.initials"
-				>
-					{initials}
-				</span>
+				<GuildAcronym
+					name={guild.name}
+					data-flx="messaging.markdown.renderers.link-renderer.compact-guild-mention-icon.acronym"
+				/>
 			)}
 		</span>
 	);

@@ -7,6 +7,21 @@ import path from 'node:path';
 import {describe, test} from 'node:test';
 import {loadTsModule} from './fixtures/TsModuleLoader.mjs';
 
+// The real writer picks a random temp name. This stand-in keeps the pid-named temp path the tests
+// block with a directory, to make the write fail.
+async function writeAtomicallyViaPidTemp(filePath, contents, mode) {
+	const tempPath = `${filePath}.${process.pid}.tmp`;
+	await fs.promises.writeFile(tempPath, contents, {encoding: 'utf8', mode});
+	await fs.promises.rename(tempPath, filePath);
+}
+
+const LINUX_DESKTOP_ENTRY_STUB = {
+	GENERATED_MARKER: '# X-Generated-By=fluxer-desktop',
+	escapeDesktopValue: (value) =>
+		value.replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/\t/g, '\\t').replace(/\r/g, '\\r'),
+	quoteExecArg: (value) => `"${value.replace(/(["`$\\])/g, '\\$1')}"`,
+};
+
 const autostart = loadTsModule('@electron/main/Autostart', {
 	stubs: {
 		'node:fs': fs,
@@ -17,7 +32,10 @@ const autostart = loadTsModule('@electron/main/Autostart', {
 		'electron-log': {info: () => {}, warn: () => {}, error: () => {}},
 		'@electron/common/BuildChannel': {BUILD_CHANNEL: 'stable'},
 		'@electron/common/UserDataPath': {isPortableMode: () => false},
-		'@electron/main/LinuxDesktopEntry': {GENERATED_MARKER: '# X-Generated-By=fluxer-desktop'},
+		'@electron/main/AtomicFile': {
+			writeFileAtomically: writeAtomicallyViaPidTemp,
+		},
+		'@electron/main/LinuxDesktopEntry': LINUX_DESKTOP_ENTRY_STUB,
 		'@electron/main/LinuxLaunchPath': {getStableLinuxLaunchPath: () => '/opt/Fluxer/fluxer'},
 		'@electron/main/LinuxSandbox': {isFlatpakRuntime: () => false},
 		'@electron/main/MainI18n': {t: (key) => key},
@@ -72,7 +90,10 @@ describe('Linux autostart with an entry left under the previous desktop id', () 
 					'electron-log': {info: () => {}, warn: () => {}, error: () => {}},
 					'@electron/common/BuildChannel': {BUILD_CHANNEL: 'stable'},
 					'@electron/common/UserDataPath': {isPortableMode: () => false},
-					'@electron/main/LinuxDesktopEntry': {GENERATED_MARKER: '# X-Generated-By=fluxer-desktop'},
+					'@electron/main/AtomicFile': {
+						writeFileAtomically: writeAtomicallyViaPidTemp,
+					},
+					'@electron/main/LinuxDesktopEntry': LINUX_DESKTOP_ENTRY_STUB,
 					'@electron/main/LinuxLaunchPath': {getStableLinuxLaunchPath: () => process.execPath},
 					'@electron/main/LinuxSandbox': {isFlatpakRuntime: () => false},
 					'@electron/main/MainI18n': {t: (key) => key},

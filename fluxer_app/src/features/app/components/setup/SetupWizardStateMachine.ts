@@ -5,6 +5,7 @@ import {assign, initialTransition, type SnapshotFrom, setup, transition} from 'x
 
 export type WizardStep =
 	| 'welcome'
+	| 'setup_token'
 	| 'theme'
 	| 'sign_in_method'
 	| 'admin_intro'
@@ -32,6 +33,7 @@ type WizardPhase = 'register' | 'loading' | 'configure';
 
 const REGISTER_STEPS: ReadonlyArray<WizardStep> = [
 	'welcome',
+	'setup_token',
 	'theme',
 	'sign_in_method',
 	'admin_intro',
@@ -67,12 +69,18 @@ const USERNAME_CONFIGURE_STEPS: ReadonlyArray<WizardStep> = [
 
 function phaseSteps(
 	phase: WizardPhase,
+	currentStep: WizardStep,
 	accountIdentity: AccountIdentityMode,
-	identityLocked = false,
+	identityLocked: boolean,
+	setupTokenRequired: boolean,
 ): ReadonlyArray<WizardStep> {
 	switch (phase) {
 		case 'register':
-			return identityLocked ? REGISTER_STEPS.filter((step) => step !== 'sign_in_method') : REGISTER_STEPS;
+			return REGISTER_STEPS.filter(
+				(step) =>
+					step === currentStep ||
+					((step !== 'sign_in_method' || !identityLocked) && (step !== 'setup_token' || setupTokenRequired)),
+			);
 		case 'loading':
 			return LOADING_STEPS;
 		case 'configure':
@@ -87,17 +95,21 @@ interface SetupWizardMachineContext {
 	hasConfig: boolean;
 	accountIdentity: AccountIdentityMode;
 	identityLocked: boolean;
+	setupTokenRequired: boolean;
+	setupTokenRejected: boolean;
 }
 
 export type SetupWizardMachineEvent =
 	| {type: 'wizard.next'}
 	| {type: 'wizard.back'}
+	| {type: 'wizard.setupTokenRejected'}
 	| {
 			type: 'wizard.sync';
 			isAuthenticated: boolean;
 			hasConfig: boolean;
 			accountIdentity: AccountIdentityMode;
 			identityLocked: boolean;
+			setupTokenRequired: boolean;
 	  };
 
 export interface SetupWizardModel {
@@ -108,12 +120,18 @@ export interface SetupWizardModel {
 	stepIndex: number;
 }
 
-function advance(context: SetupWizardMachineContext, delta: number): Partial<SetupWizardMachineContext> {
-	const steps = phaseSteps(
+function contextSteps(context: SetupWizardMachineContext): ReadonlyArray<WizardStep> {
+	return phaseSteps(
 		derivePhase(context.isAuthenticated, context.hasConfig),
+		context.step,
 		context.accountIdentity,
 		context.identityLocked,
+		context.setupTokenRequired || context.setupTokenRejected,
 	);
+}
+
+function advance(context: SetupWizardMachineContext, delta: number): Partial<SetupWizardMachineContext> {
+	const steps = contextSteps(context);
 	const index = steps.indexOf(context.step);
 	const safeIndex = index < 0 ? 0 : index;
 	const nextIndex = Math.min(steps.length - 1, Math.max(0, safeIndex + delta));
@@ -147,9 +165,12 @@ const setupWizardStateMachine = setup({
 				event.type === 'wizard.sync' ? event.accountIdentity : context.accountIdentity,
 			identityLocked: ({context, event}) =>
 				event.type === 'wizard.sync' ? event.identityLocked : context.identityLocked,
+			setupTokenRequired: ({context, event}) =>
+				event.type === 'wizard.sync' ? event.setupTokenRequired : context.setupTokenRequired,
 		}),
 		goNext: assign(({context}) => advance(context, 1)),
 		goBack: assign(({context}) => advance(context, -1)),
+		requireSetupToken: assign({setupTokenRejected: () => true, step: () => 'setup_token', direction: () => -1}),
 		enterRegister: assign({step: () => REGISTER_STEPS[0], direction: () => 0}),
 		enterLoading: assign({step: () => LOADING_STEPS[0], direction: () => 0}),
 		enterConfigure: assign({step: () => CONFIGURE_STEPS[0], direction: () => 0}),
@@ -163,6 +184,8 @@ const setupWizardStateMachine = setup({
 		hasConfig: false,
 		accountIdentity: AccountIdentityModes.EMAIL,
 		identityLocked: false,
+		setupTokenRequired: false,
+		setupTokenRejected: false,
 	},
 	initial: 'register',
 	on: {
@@ -179,6 +202,7 @@ const setupWizardStateMachine = setup({
 			on: {
 				'wizard.next': {actions: 'goNext'},
 				'wizard.back': {actions: 'goBack'},
+				'wizard.setupTokenRejected': {actions: 'requireSetupToken'},
 			},
 		},
 		loading: {
@@ -209,7 +233,7 @@ export function transitionSetupWizardSnapshot(
 
 export function selectSetupWizardModel(snapshot: SetupWizardSnapshot): SetupWizardModel {
 	const phase = derivePhase(snapshot.context.isAuthenticated, snapshot.context.hasConfig);
-	const steps = phaseSteps(phase, snapshot.context.accountIdentity, snapshot.context.identityLocked);
+	const steps = contextSteps(snapshot.context);
 	const stepIndex = steps.indexOf(snapshot.context.step);
 	return {
 		phase,

@@ -1,19 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type {IpAddressFamily, ParsedIpAddress} from '@fluxer/ip_utils/src/IpAddress';
-import {parseIpAddress} from '@fluxer/ip_utils/src/IpAddress';
+import {canonicalizeIpAddress} from '@fluxer/ip_utils/src/IpAddress';
 
 interface ClientIpExtractionOptions {
 	trustClientIpHeader?: boolean;
 	clientIpHeaderName?: string;
-}
-
-type ClientIpSource = 'client-ip-header';
-
-interface ExtractedClientIp {
-	ip: string;
-	source: ClientIpSource;
-	ipVersion: IpAddressFamily;
+	peerAddress?: string | null;
 }
 
 export class MissingClientIpError extends Error {
@@ -21,13 +13,9 @@ export class MissingClientIpError extends Error {
 	readonly status = 403;
 
 	constructor() {
-		super('Client IP header is required');
+		super('Client IP is required');
 		this.name = 'MissingClientIpError';
 	}
-}
-
-interface HeaderReader {
-	get(name: string): string | null;
 }
 
 const DEFAULT_CLIENT_IP_HEADER_NAME = 'x-forwarded-for';
@@ -40,23 +28,12 @@ export function resolveClientIpHeaderName(clientIpHeaderName?: string): string {
 	return normalizeHeaderName(clientIpHeaderName ?? DEFAULT_CLIENT_IP_HEADER_NAME);
 }
 
-function parseClientIpHeaderValue(value: string | null): ParsedIpAddress | null {
-	if (value === null) {
-		return null;
-	}
-	return parseIpAddress(value.split(',', 1)[0]);
-}
-
-function extractClientIpDetailsFromReader(
-	headerReader: HeaderReader,
-	options?: ClientIpExtractionOptions,
-): ExtractedClientIp | null {
+export function extractClientIp(req: Request, options?: ClientIpExtractionOptions): string | null {
 	if (!options?.trustClientIpHeader) {
-		return null;
+		return options?.peerAddress ? canonicalizeIpAddress(options.peerAddress) : null;
 	}
 	const headerName = resolveClientIpHeaderName(options.clientIpHeaderName);
-	const configuredHeaderValue = headerReader.get(headerName);
-	let clientIpHeader = parseClientIpHeaderValue(configuredHeaderValue);
+	let headerValue = req.headers.get(headerName);
 	// Echowire: fall back to x-forwarded-for when the primary header is absent.
 	// Our ingress is Cloudflare -> NetBird frontend -> Caddy, so external requests
 	// carry the real client in cf-connecting-ip, but internal service-to-service
@@ -66,26 +43,10 @@ function extractClientIpDetailsFromReader(
 	// but malformed is a misconfigured or hostile edge, so it keeps upstream's
 	// rejection rather than quietly trusting x-forwarded-for instead.
 	const fallbackHeaderName = 'x-forwarded-for';
-	if (!clientIpHeader && configuredHeaderValue === null && headerName !== fallbackHeaderName) {
-		clientIpHeader = parseClientIpHeaderValue(headerReader.get(fallbackHeaderName));
+	if (headerValue === null && headerName !== fallbackHeaderName) {
+		headerValue = req.headers.get(fallbackHeaderName);
 	}
-	if (clientIpHeader) {
-		return {
-			ip: clientIpHeader.normalized,
-			source: 'client-ip-header',
-			ipVersion: clientIpHeader.family,
-		};
-	}
-	return null;
-}
-
-export function extractClientIpDetails(req: Request, options?: ClientIpExtractionOptions): ExtractedClientIp | null {
-	return extractClientIpDetailsFromReader(req.headers, options);
-}
-
-export function extractClientIp(req: Request, options?: ClientIpExtractionOptions): string | null {
-	const extracted = extractClientIpDetails(req, options);
-	return extracted?.ip ?? null;
+	return headerValue === null ? null : canonicalizeIpAddress(headerValue.split(',', 1)[0]);
 }
 
 export function requireClientIp(req: Request, options?: ClientIpExtractionOptions): string {

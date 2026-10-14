@@ -328,6 +328,7 @@ export interface MasterConfig {
 		branding: InstanceBrandingConfig;
 		setup: {
 			configured: boolean;
+			token?: string;
 		};
 		account_identity: AccountIdentityModeName | null;
 		tag_style: TagStyleName | null;

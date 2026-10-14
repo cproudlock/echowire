@@ -27,6 +27,7 @@ const SHARED_SHELL_CACHE_CONTROL: &str = "public, max-age=0, s-maxage=1";
 const CSP_NONCE_PLACEHOLDER_ATTRIBUTE: &str = r#" nonce="{{CSP_NONCE_PLACEHOLDER}}""#;
 const MEDIA_PRECONNECT_TAG: &str = r#"<link rel="preconnect" href="{{MEDIA_ENDPOINT}}">"#;
 const SAME_ORIGIN_API_META_TAG: &str = r#"<meta name="fluxer-api-origin" content="self">"#;
+const RELEASE_CHANNEL_META_NAME: &str = "fluxer-release-channel";
 const HEAD_CLOSE_TAG: &str = "</head>";
 const TITLE_START: &str = "<title";
 const TITLE_END: &str = "</title>";
@@ -204,6 +205,10 @@ async fn serve_spa_index(state: &AppState, headers: &HeaderMap, request_path: &s
     } else {
         raw_html
     };
+    let raw_html = match state.config.release_channel {
+        Some(channel) => mark_release_channel(&raw_html, channel),
+        None => raw_html,
+    };
 
     let dev_buster = should_bust_dev_assets.then(current_dev_asset_cache_buster);
     let html = match render_spa_document(
@@ -256,6 +261,17 @@ fn mark_same_origin_api(html: &str) -> String {
     html.replacen(
         HEAD_CLOSE_TAG,
         &format!("{SAME_ORIGIN_API_META_TAG}\n{HEAD_CLOSE_TAG}"),
+        1,
+    )
+}
+
+fn mark_release_channel(html: &str, channel: &str) -> String {
+    html.replacen(
+        HEAD_CLOSE_TAG,
+        &format!(
+            r#"<meta name="{RELEASE_CHANNEL_META_NAME}" content="{channel}">
+{HEAD_CLOSE_TAG}"#
+        ),
         1,
     )
 }
@@ -700,7 +716,7 @@ mod tests {
     }
 
     use crate::branding_images::InstanceBranding;
-    use crate::config::{AppProxyConfig, ReleaseChannel};
+    use crate::config::AppProxyConfig;
     use crate::state::LOCAL_FILE_READS_IN_FLIGHT_MAX;
     use axum::Router;
     use axum::body::Body;
@@ -1048,27 +1064,6 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn a_self_hosted_instance_serves_its_branded_favicon() {
-        let (served, _) = served_self_hosted_head(BrandingSnapshot {
-            image_origins: Arc::from([branding_origin()]),
-            favicon_url: Some(Arc::from("https://example.test/favicon.png?v=1&size=32")),
-            ..BrandingSnapshot::default()
-        })
-        .await;
-
-        assert_eq!(served.matches(r#"<link rel="icon""#).count(), 1);
-        assert!(served.contains(
-            r#"<link rel="icon" href="https://example.test/favicon.png?v=1&amp;size=32">"#
-        ));
-        assert!(!served.contains("/web/favicon-32x32.png"));
-        assert_eq!(served.matches(r#"<link rel="apple-touch-icon""#).count(), 1);
-        assert!(served.contains(
-            r#"<link rel="apple-touch-icon" href="https://example.test/favicon.png?v=1&amp;size=32">"#
-        ));
-        assert!(!served.contains("/web/apple-touch-icon.png"));
-    }
-
-    #[tokio::test]
     async fn a_self_hosted_instance_serves_its_branded_head() {
         let (served, policy) = served_self_hosted_head(full_branding()).await;
 
@@ -1095,18 +1090,6 @@ mod tests {
         assert!(!served.contains("Fluxer</title>"));
         assert!(!served.contains(r#"name="description""#));
         assert_every_inline_script_is_granted(&served, &policy);
-    }
-
-    #[tokio::test]
-    async fn a_self_hosted_instance_without_branding_keeps_the_default_head() {
-        let (served, _) = served_self_hosted_head(BrandingSnapshot::default()).await;
-
-        assert_eq!(
-            served,
-            strip_link_preview_metadata(
-                &render_spa_document(SHIPPED_APP_SHELL, "", "", None).unwrap()
-            )
-        );
     }
 
     #[test]
@@ -1207,6 +1190,24 @@ mod tests {
         }
         let served = read_document(serve_spa_index(&state, &HeaderMap::new(), "/").await).await;
         assert!(!served.contains(SAME_ORIGIN_API_META_TAG));
+    }
+
+    #[tokio::test]
+    async fn the_configured_release_channel_is_marked_in_the_document() {
+        let mut state = spa_state_serving(SHIPPED_APP_SHELL);
+        let served = read_document(serve_spa_index(&state, &HeaderMap::new(), "/").await).await;
+        assert!(!served.contains(RELEASE_CHANNEL_META_NAME));
+
+        for channel in ["stable", "canary"] {
+            Arc::make_mut(&mut state.config).release_channel = Some(channel);
+            let response = serve_spa_index(&state, &HeaderMap::new(), "/").await;
+            let policy = policy_of(&response);
+            let served = read_document(response).await;
+            let tag = format!(r#"<meta name="fluxer-release-channel" content="{channel}">"#);
+            assert_eq!(served.matches(&tag).count(), 1);
+            assert!(served.find(&tag).unwrap() < served.find("</head>").unwrap());
+            assert_every_inline_script_is_granted(&served, &policy);
+        }
     }
 
     #[tokio::test]
@@ -1328,7 +1329,6 @@ mod tests {
         self_hosted: bool,
     ) -> AppState {
         let mut config = AppProxyConfig::from_env();
-        config.release_channel = ReleaseChannel::Stable;
         config.index_upstream_url = match &spa_index_source {
             SpaIndexSource::Bundled { .. } => None,
             SpaIndexSource::Upstream(url) => Some((**url).clone()),

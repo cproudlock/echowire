@@ -3074,7 +3074,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Permanently deletes a guild. Deletes all channels, messages, and settings. Irreversible operation with no recovery window. Logged to audit log. Requires GUILD_DELETE permission.",
+				"description": "Permanently deletes a guild. The guild becomes unavailable at once, and a background job deletes all channels, messages, and settings. Irreversible operation with no recovery window. Logged to audit log. Requires GUILD_DELETE permission.",
 				"security": [{"adminApiKey": []}],
 				"parameters": [
 					{
@@ -17279,7 +17279,6 @@
 					"ACCOUNT_TOO_NEW_FOR_GUILD",
 					"ACLS_MUST_BE_NON_EMPTY",
 					"ADMIN_API_KEY_NOT_FOUND",
-					"APPLICATION_NOT_OWNED",
 					"ALREADY_FRIENDS",
 					"BOTS_CANNOT_CREATE_GUILDS",
 					"BOTS_CANNOT_SEND_FRIEND_REQUESTS",
@@ -17575,7 +17574,6 @@
 					"Your account is too new to send messages in this community.",
 					"ACLs must be non-empty.",
 					"Admin API key wasn't found.",
-					"You don't own this application.",
 					"You're already friends with this user.",
 					"Bots can't create communities.",
 					"Bots can't send friend requests.",

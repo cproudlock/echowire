@@ -16,7 +16,6 @@ import {authorizeBot, createTestBotAccount} from '@app/api/bot/tests/BotTestUtil
 import {
 	joinGuild,
 	post,
-	resetChannelThreadsConfig,
 	setupLeakWorld,
 	startPrivateThread,
 	startThread,
@@ -57,7 +56,6 @@ describe('thread leak regression: delivery', () => {
 
 	beforeEach(async () => {
 		await harness.reset();
-		resetChannelThreadsConfig();
 	});
 
 	afterEach(() => {
@@ -65,7 +63,6 @@ describe('thread leak regression: delivery', () => {
 	});
 
 	afterAll(async () => {
-		resetChannelThreadsConfig();
 		await harness.shutdown();
 	});
 

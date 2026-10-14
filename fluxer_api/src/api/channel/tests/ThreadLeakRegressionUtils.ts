@@ -14,12 +14,7 @@ import {
 	createPermissionOverwrite,
 	createRole,
 } from '@app/api/channel/tests/ChannelTestUtils';
-import {
-	ALL_THREADS_ACTIVE,
-	resetChannelThreadsConfig,
-	setChannelThreadsConfig,
-	threadsRequest,
-} from '@app/api/channel/tests/ThreadTestUtils';
+import {threadsRequest} from '@app/api/channel/tests/ThreadTestUtils';
 import {ensureSessionStarted} from '@app/api/message/tests/MessageTestUtils';
 import type {ApiTestHarness} from '@app/api/test/ApiTestHarness';
 import {ChannelTypes, Permissions} from '@fluxer/constants/src/ChannelConstants';
@@ -27,8 +22,6 @@ import {ThreadPermissionFlags} from '@fluxer/constants/src/ThreadPermissionUtils
 import type {ThreadChannelResponse} from '@fluxer/schema/src/domains/channel/ThreadRequestSchemas';
 import type {GuildRoleResponse} from '@fluxer/schema/src/domains/guild/GuildRoleSchemas';
 import type {MessageResponse} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
-
-export {resetChannelThreadsConfig};
 
 export interface LeakWorld {
 	owner: TestAccount;
@@ -57,7 +50,6 @@ export async function joinGuild(harness: ApiTestHarness, owner: TestAccount, cha
 }
 
 export async function setupLeakWorld(harness: ApiTestHarness): Promise<LeakWorld> {
-	await setChannelThreadsConfig(ALL_THREADS_ACTIVE);
 	const owner = await createTestAccount(harness);
 	const guild = await createGuild(harness, owner.token, 'leak regression');
 	const channel = await createChannel(harness, owner.token, guild.id, 'general');

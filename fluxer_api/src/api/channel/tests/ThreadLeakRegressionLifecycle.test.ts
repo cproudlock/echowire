@@ -19,13 +19,13 @@ import {
 import {
 	hideChannelFromEveryone,
 	post,
-	resetChannelThreadsConfig,
 	setupLeakWorld,
 	startPrivateThread,
 	startThread,
 	statusOf,
 } from '@app/api/channel/tests/ThreadLeakRegressionUtils';
-import {ALL_THREADS_ACTIVE, setChannelThreadsConfig, threadsRequest} from '@app/api/channel/tests/ThreadTestUtils';
+import {threadsRequest} from '@app/api/channel/tests/ThreadTestUtils';
+import {processRecordedGuildDeletions, recordGuildDeletions} from '@app/api/guild/tests/GuildDeletionTestUtils';
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import {getKVClient, getWorkerService} from '@app/api/middleware/ServiceRegistry';
 import {
@@ -68,7 +68,6 @@ describe('thread leak regression: lifecycle', () => {
 
 	beforeEach(async () => {
 		await harness.reset();
-		resetChannelThreadsConfig();
 		setWorkerDependenciesForTest({
 			kvClient: getKVClient(),
 			channelRepository: getChannelRepository(),
@@ -90,7 +89,6 @@ describe('thread leak regression: lifecycle', () => {
 
 	afterAll(async () => {
 		clearWorkerDependencies();
-		resetChannelThreadsConfig();
 		await harness.shutdown();
 	});
 
@@ -171,7 +169,6 @@ describe('thread leak regression: lifecycle', () => {
 
 	it('deleting the guild removes every thread, state and membership row', async () => {
 		const owner = await createTestAccount(harness);
-		await setChannelThreadsConfig(ALL_THREADS_ACTIVE);
 		const guild = await createGuild(harness, owner.token, 'doomed');
 		const parent = await createChannel(harness, owner.token, guild.id, 'general');
 		const first = await startThread(harness, owner.token, parent.id, {name: 'one'});
@@ -179,11 +176,14 @@ describe('thread leak regression: lifecycle', () => {
 		await post(harness, owner.token, second.id, SECRET);
 		expect(await memberRowCount(first.id)).toBe(1);
 
+		// Guild deletion runs as a background job: record it, then run the purge it queued.
+		const worker = recordGuildDeletions();
 		await createBuilder(harness, owner.token)
 			.post(`/guilds/${guild.id}/delete`)
 			.body({password: owner.password})
 			.expect(204)
 			.execute();
+		await processRecordedGuildDeletions(worker);
 
 		for (const thread of [first, second]) {
 			const threadId = createChannelID(BigInt(thread.id));
@@ -260,7 +260,6 @@ describe('thread leak regression: lifecycle', () => {
 
 	describe('the age gate of a thread follows its parent at check time', () => {
 		it('gates a thread when the parent or its category becomes nsfw after the thread exists', async () => {
-			await setChannelThreadsConfig(ALL_THREADS_ACTIVE);
 			const minor = await createTestAccount(harness, {dateOfBirth: '2010-01-01'});
 			const guild = await createGuild(harness, minor.token, 'age gate');
 			const category = await createChannel(harness, minor.token, guild.id, 'after dark', ChannelTypes.GUILD_CATEGORY);

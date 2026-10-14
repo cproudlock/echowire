@@ -48,8 +48,6 @@ export const ChannelFlags = {
 	HIDE_MEDIA_DOWNLOAD_OPTIONS: 1 << 15,
 } as const;
 
-export type ChannelFlag = ValueOf<typeof ChannelFlags>;
-
 export function settableChannelFlags(type: number, parentType?: number | null): number {
 	switch (type) {
 		case ChannelTypes.PUBLIC_THREAD:

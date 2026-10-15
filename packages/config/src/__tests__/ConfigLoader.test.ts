@@ -80,6 +80,29 @@ describe('ConfigLoader', () => {
 		expect((await loadConfig()).domain.base_domain).toBe('localhost');
 	});
 
+	test('a self-hosted instance without FLUXER_ENV runs in production', async () => {
+		stubMinimalEnv({
+			FLUXER_SELF_HOSTED: 'true',
+			FLUXER_PROFILE_PSEUDONYM_SECRET: 'self-hosted-secret',
+			FLUXER_POSTGRES_HOST: 'postgres',
+			FLUXER_POSTGRES_DATABASE: 'fluxer',
+			FLUXER_POSTGRES_PASSWORD: 'self-hosted-password',
+		});
+		vi.stubEnv('FLUXER_ENV', undefined);
+		expect((await loadConfig()).env).toBe('production');
+	});
+
+	test('a self-hosted instance keeps an explicit FLUXER_ENV', async () => {
+		stubMinimalEnv({FLUXER_SELF_HOSTED: 'true', FLUXER_ENV: 'development'});
+		expect((await loadConfig()).env).toBe('development');
+	});
+
+	test('an instance that is not self-hosted still defaults to development', async () => {
+		stubMinimalEnv();
+		vi.stubEnv('FLUXER_ENV', undefined);
+		expect((await loadConfig()).env).toBe('development');
+	});
+
 	test('endpoint overrides take precedence over derived endpoints', async () => {
 		stubMinimalEnv({
 			FLUXER_API_ENDPOINT: 'https://custom-api.example.com',
@@ -720,6 +743,46 @@ describe('ConfigLoader', () => {
 				/^FLUXER_CACHE_PURGE_HTTP_TOKEN must contain only visible ASCII characters$/,
 			);
 		}
+	});
+
+	test('rejects the controller cache purge adapter without an endpoint', async () => {
+		stubMinimalEnv({FLUXER_CACHE_PURGE_ADAPTER: 'controller'});
+		await expect(loadConfig()).rejects.toThrow('FLUXER_CACHE_PURGE_CONTROLLER_ENDPOINT is required');
+	});
+
+	test('rejects a controller cache purge endpoint that is not https', async () => {
+		stubMinimalEnv({
+			FLUXER_CACHE_PURGE_ADAPTER: 'controller',
+			FLUXER_CACHE_PURGE_CONTROLLER_ENDPOINT: 'http://controller.test/v1/orgs/a/sites/b/purge',
+			FLUXER_CACHE_PURGE_CONTROLLER_TOKEN: 'pak_test',
+		});
+		await expect(loadConfig()).rejects.toThrow(
+			'FLUXER_CACHE_PURGE_CONTROLLER_ENDPOINT must be an absolute https URL without credentials',
+		);
+	});
+
+	test('rejects the controller cache purge adapter without a token', async () => {
+		stubMinimalEnv({
+			FLUXER_CACHE_PURGE_ADAPTER: 'controller',
+			FLUXER_CACHE_PURGE_CONTROLLER_ENDPOINT: 'https://controller.test/v1/orgs/a/sites/b/purge',
+		});
+		await expect(loadConfig()).rejects.toThrow('FLUXER_CACHE_PURGE_CONTROLLER_TOKEN is required');
+	});
+
+	test('accepts a complete controller cache purge configuration', async () => {
+		stubMinimalEnv({
+			FLUXER_CACHE_PURGE_ADAPTER: 'controller',
+			FLUXER_CACHE_PURGE_CONTROLLER_ENDPOINT: 'https://controller.test/v1/orgs/a/sites/b/purge',
+			FLUXER_CACHE_PURGE_CONTROLLER_TOKEN: 'pak_test',
+			FLUXER_CACHE_PURGE_CONTROLLER_TIMEOUT_MS: '5000',
+		});
+		const cachePurge = (await loadConfig()).integrations.cache_purge;
+		expect(cachePurge.adapter).toBe('controller');
+		expect(cachePurge.controller).toEqual({
+			endpoint: 'https://controller.test/v1/orgs/a/sites/b/purge',
+			token: 'pak_test',
+			timeout_ms: 5000,
+		});
 	});
 
 	test('leaves the cache purge settings unvalidated when the adapter is none', async () => {

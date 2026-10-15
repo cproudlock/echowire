@@ -61,7 +61,7 @@ import {
 	InstanceConfigResponse,
 	InstanceConfigUpdateRequest,
 	type InstanceEmailSmtpTestRequest,
-	type PendingRegistrationResponse,
+	PendingRegistrationResponse,
 	type RegistrationUrlResponse,
 } from '@fluxer/schema/src/domains/admin/AdminSchemas';
 import {
@@ -1084,7 +1084,6 @@ function parseStoredRegistrationConfig(raw: string | null): InstanceRegistration
 }
 
 const RegistrationUrlSchema = InstanceConfigResponse.shape.registration.shape.urls.element;
-const PendingRegistrationSchema = InstanceConfigResponse.shape.registration.shape.pending_registrations.element;
 const StoredRegistrationTimestampSchema = z.iso
 	.datetime({offset: true})
 	.refine((value) => value === value.trim() && Number.isFinite(Date.parse(value)))
@@ -1117,14 +1116,15 @@ const StoredRegistrationUrlSchema = RegistrationUrlSchema.extend({
 	last_used_at: StoredRegistrationTimestampSchema.nullable().default(null),
 	last_used_by_user_id: StoredNullableStringSchema.pipe(StoredSnowflakeStringSchema.nullable()),
 }) satisfies z.ZodType<InstanceRegistrationUrl>;
-const StoredPendingRegistrationSchema = PendingRegistrationSchema.extend({
+const StoredPendingRegistrationSchema = PendingRegistrationResponse.extend({
 	user_id: StoredSnowflakeStringSchema,
-	discriminator: PendingRegistrationSchema.shape.discriminator.default(0),
+	discriminator: PendingRegistrationResponse.shape.discriminator.default(0),
 	global_name: StoredNullableStringSchema,
 	email: StoredNullableStringSchema,
 	requested_at: StoredRegistrationTimestampSchema,
 	registration_url_id: StoredNullableStringSchema.pipe(StoredRegistrationUrlIdSchema.nullable()),
 	client_ip: StoredNullableStringSchema,
+	invite_code: StoredNullableStringSchema,
 }) satisfies z.ZodType<InstancePendingRegistration>;
 
 function isRegistrationUrlUsable(registrationUrl: InstanceRegistrationUrl, now: Date): boolean {

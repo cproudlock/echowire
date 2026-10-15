@@ -52,9 +52,10 @@ import {inputValidationErrorFromZodIssues} from '@app/api/Validator';
 import {AccountIdentityModes, TagStyles} from '@fluxer/constants/src/AccountIdentityConstants';
 import {AdminACLs} from '@fluxer/constants/src/AdminACLs';
 import {getRegionalMinimumAge} from '@fluxer/constants/src/RegionalMinimumAge';
-import {ProfileFieldPrivacyFlags, UserFlags} from '@fluxer/constants/src/UserConstants';
+import {ProfileFieldPrivacyFlags} from '@fluxer/constants/src/UserConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {RegistrationClosedError} from '@fluxer/errors/src/domains/auth/RegistrationClosedError';
+import {RegistrationCredentialsRequiredError} from '@fluxer/errors/src/domains/auth/RegistrationCredentialsRequiredError';
 import {RegistrationUrlInvalidError} from '@fluxer/errors/src/domains/auth/RegistrationUrlInvalidError';
 import {ContentBlockedError} from '@fluxer/errors/src/domains/content/ContentBlockedError';
 import {InputValidationError} from '@fluxer/errors/src/domains/core/InputValidationError';
@@ -192,6 +193,9 @@ async function registerAccount(
 	const registrationAccess = setupTokenVerified
 		? {pendingApproval: false, registrationUrl: null}
 		: await resolveRegistrationAccess(instanceConfigRepository, data.registration_url_code);
+	if (registrationAccess.pendingApproval && !hasSignInCredentials(data, usernameMode)) {
+		throw new RegistrationCredentialsRequiredError();
+	}
 	const geoipResult = await lookupGeoip(clientIp);
 	const countryCode = geoipResult.countryCode;
 	const collectDateOfBirth = appPublicConfig.registration.collect_date_of_birth;
@@ -282,7 +286,6 @@ async function registerAccount(
 	const acceptLanguage = request.headers.get('accept-language');
 	const userLocale = parseAcceptLanguage(acceptLanguage);
 	const passwordHash = data.password ? await hashPassword(data.password) : null;
-	const flags = config.nodeEnv === 'development' ? UserFlags.STAFF : 0n;
 	const userRow: UserRow = {
 		...EMPTY_USER_ROW,
 		user_id: userId,
@@ -300,7 +303,7 @@ async function registerAccount(
 		timezone_privacy_flags: ProfileFieldPrivacyFlags.EVERYONE,
 		date_of_birth: dateOfBirth,
 		locale: userLocale,
-		flags,
+		flags: 0n,
 		terms_agreed_at: requiresTermsConsent ? now : null,
 		privacy_agreed_at: requiresPrivacyConsent ? now : null,
 		last_active_at: now,
@@ -332,6 +335,7 @@ async function registerAccount(
 				requested_at: now.toISOString(),
 				registration_url_id: registrationAccess.registrationUrl?.id ?? null,
 				client_ip: clientIp,
+				invite_code: data.invite_code?.trim() || config.instance.autoJoinInviteCode || null,
 			});
 		}
 		grantBootstrapAdmin = bootstrapAdminEligible && (await instanceConfigRepository.claimAdminBootstrap(userId));
@@ -437,6 +441,11 @@ function assertUsernameModeRegistration(data: RegisterRequest): void {
 	}
 }
 
+function hasSignInCredentials(data: RegisterRequest, usernameMode: boolean): boolean {
+	if (!data.password) return false;
+	return usernameMode || Boolean(data.email);
+}
+
 function requestedUsernameFromOlderApp(config: APIConfig, email: string | null | undefined): string | undefined {
 	if (email == null) return undefined;
 	const localPart = getLocalPartAtInstance(config, email.trim());
@@ -527,7 +536,7 @@ async function resolveRegistrationAccess(
 	};
 }
 
-async function maybeAutoJoinInvite(
+export async function maybeAutoJoinInvite(
 	inviteService: InviteService,
 	params: {
 		userId: UserID;
@@ -545,7 +554,7 @@ async function maybeAutoJoinInvite(
 			requestCache,
 		});
 	} catch (error) {
-		Logger.warn({inviteCode: normalizedInviteCode, error}, 'Failed to auto-join invite on registration');
+		Logger.warn({inviteCode: normalizedInviteCode, error}, 'Failed to auto-join invite');
 	}
 }
 

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import {DESKTOP_APP_NAME} from '@electron/common/DesktopIdentity';
+import {areModuleUpdatesDisabled} from '@electron/main/DesktopDebugInfo';
 import {checkForUpdatesFromShell} from '@electron/main/DesktopUpdatePrompt';
 import {onLocaleChange, t} from '@electron/main/MainI18n';
 import {openExternalDeduped} from '@electron/main/OpenExternal';
@@ -31,7 +32,7 @@ function buildTemplate(): Array<MenuItemConstructorOptions> {
 					role: 'about',
 					label: t('desktop.appMenu.about', {appName}),
 				},
-				checkForUpdatesItem(),
+				...(areModuleUpdatesDisabled() ? [] : [checkForUpdatesItem()]),
 				{type: 'separator'},
 				{
 					label: t('desktop.appMenu.preferences'),
@@ -209,7 +210,7 @@ function buildTemplate(): Array<MenuItemConstructorOptions> {
 			? `${t('desktop.appMenu.help')}${MACOS_HELP_MENU_TITLE_AUTODETECT_OPT_OUT}`
 			: t('desktop.appMenu.help'),
 		submenu: [
-			...(isMac ? [] : [checkForUpdatesItem(), {type: 'separator' as const}]),
+			...(isMac || areModuleUpdatesDisabled() ? [] : [checkForUpdatesItem(), {type: 'separator' as const}]),
 			{
 				label: t('desktop.appMenu.website'),
 				click: async () => {

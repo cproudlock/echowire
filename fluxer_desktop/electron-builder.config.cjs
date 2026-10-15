@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 const {execFile} = require('node:child_process');
+const {readFileSync} = require('node:fs');
 const fs = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
@@ -14,7 +15,7 @@ const execFileAsync = promisify(execFile);
 // Echowire: artifactProductName must not contain the space in productName. The release contract
 // on both ends (tools/ci release.rs and the API DesktopReleaseContract) only accepts
 // [A-Za-z0-9._-] in storage keys and GitHub asset names, and the updater looks for this
-// spelling (DesktopIdentity.ts DESKTOP_ARTIFACT_PRODUCT_NAME).
+// spelling (the electron-builder artifactName patterns below).
 // Echowire: upstream #3185 splits the desktop id from the package name (app.fluxer.FluxerDesktop).
 // We keep them equal: the packaged .desktop, StartupWMClass and the runtime entry id must all be
 // the package name, or the app writes a second user-local launcher (see DesktopIdentity.ts).
@@ -120,6 +121,7 @@ const isMacBuild = process.argv.includes('--mac');
 const isWindowsBuild = process.argv.includes('--win');
 const targetPlatform = isLinuxBuild ? 'linux' : isMacBuild ? 'darwin' : isWindowsBuild ? 'win32' : process.platform;
 const metadataName = isLinuxBuild ? linuxPackageName : packageName;
+const shellVersion = process.env.VERSION || readBundledRendererVersion();
 const supportedTargetArchs = ['x64', 'arm64'];
 const supportedMacTargetArchs = [...supportedTargetArchs, 'universal'];
 const electronArch = process.env.ELECTRON_ARCH;
@@ -660,6 +662,15 @@ function packagePathParts(packageName) {
 		return parts;
 	}
 	return [packageName];
+}
+
+function readBundledRendererVersion() {
+	try {
+		const {version} = JSON.parse(readFileSync(path.join(__dirname, 'dist', 'renderer', 'version.json'), 'utf8'));
+		return typeof version === 'string' && /^\d+\.\d+\.\d+$/u.test(version) ? version : null;
+	} catch {
+		return null;
+	}
 }
 
 function isNonEmptyString(value) {
@@ -1641,7 +1652,7 @@ module.exports = {
 	extraMetadata: {
 		main: 'dist/main/index.js',
 		name: metadataName,
-		...(process.env.VERSION ? {version: process.env.VERSION} : {}),
+		...(shellVersion ? {version: shellVersion} : {}),
 		...(targetPlatform === 'linux' ? {desktopName: `${linuxDesktopId}.desktop`} : {}),
 	},
 	extraResources: [

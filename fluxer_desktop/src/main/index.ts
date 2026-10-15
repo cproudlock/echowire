@@ -49,6 +49,7 @@ import {
 	recordDesktopAppStoreSuccess,
 } from '@electron/main/DesktopAppStoreHealth';
 import {
+	areModuleUpdatesDisabled,
 	formatDesktopDebugInfo,
 	getDesktopDebugInfo,
 	getLaunchNetLogPath,
@@ -609,7 +610,7 @@ if (launchConfigurationError) {
 						showWindow,
 					});
 				});
-				if (process.env.FLUXER_OFFLINE !== '1') {
+				if (process.env.FLUXER_OFFLINE !== '1' && !areModuleUpdatesDisabled()) {
 					const {registerUpdater} = await import('@electron/main/Updater');
 					registerUpdater(getMainWindow);
 				}

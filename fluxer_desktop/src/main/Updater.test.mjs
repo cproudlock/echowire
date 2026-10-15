@@ -270,36 +270,11 @@ describe('Updater on a shell that updates itself', () => {
 });
 
 describe('Updater on a shell that cannot update itself', () => {
-	test('a Linux package install offers the newer package for manual download', async () => {
-		const updater = loadUpdater({appImagePath: null});
-
-		await updater.check('user');
-
-		assert.equal(updater.gate.checks, 1, 'the renderer module can update even when the shell cannot');
-		assert.deepEqual(types(updater.events), ['checking', 'available']);
-		const available = updater.events.at(-1);
-		assert.equal(available.version, PUBLISHED_VERSION);
-		assert.equal(Object.hasOwn(available, 'downloadStarted'), false);
-		assert.ok(available.downloadOptions.some((option) => option.format === 'deb'));
-	});
-
 	test('a Linux package install that is current reports no update', async () => {
 		const updater = loadUpdater({appImagePath: null, version: PUBLISHED_VERSION});
 
 		await updater.check('user');
 
 		assert.deepEqual(types(updater.events), ['checking', 'not-available']);
-	});
-
-	test('Flatpak and development builds point at their own update path', async () => {
-		const flatpak = loadUpdater({appImagePath: null, flatpak: true});
-		await flatpak.check('user');
-		assert.deepEqual(JSON.parse(JSON.stringify(flatpak.events)), [
-			{type: 'unsupported', context: 'user', reason: 'managed-package'},
-		]);
-
-		const unpackaged = loadUpdater({appImagePath: null, packaged: false});
-		await unpackaged.check('user');
-		assert.equal(unpackaged.events[0].reason, 'unpackaged');
 	});
 });

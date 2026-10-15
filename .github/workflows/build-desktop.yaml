@@ -31,14 +31,23 @@ on:
         required: false
         default: false
         type: boolean
+      shell_contract:
+        description: "Did the shell contract change since the oldest shell these modules still reach? unchanged refuses if it did. compatible keeps older shells on these modules because the renderer still works on them. raise stops sending these modules to shells without the new contract: Linux and managed shells keep their current renderer, Windows and macOS update their shell first."
+        required: true
+        type: choice
+        options:
+          - unchanged
+          - compatible
+          - raise
+        default: unchanged
 permissions:
   contents: write
   id-token: write
   actions: read
 
 concurrency:
-  group: desktop-${{ inputs.channel }}-${{ inputs.test_build && 'test' || 'release' }}
-  cancel-in-progress: true
+  group: desktop-${{ inputs.channel }}
+  cancel-in-progress: false
 
 env:
   CHANNEL: ${{ inputs.channel }}
@@ -68,6 +77,7 @@ jobs:
           # Echowire builds from the dispatched ref (our release branch is
           # feat/threads; there is no `main` branch in this fork).
           ref: ${{ github.ref_name }}
+          fetch-depth: 0
 
       - name: Set up Rust toolchain (CI helpers)
         uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de
@@ -87,6 +97,19 @@ jobs:
           --step set_metadata
           --channel "${{ inputs.channel }}"
           --test-build "${{ inputs.test_build }}"
+
+      # Echowire: the release history is read from this repository with the built-in token.
+      - name: Check which shells run these modules
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHANNEL: ${{ steps.meta.outputs.build_channel }}
+          SOURCE_SHA: ${{ steps.meta.outputs.source_sha }}
+          VERSION: ${{ steps.meta.outputs.version }}
+          SHELL_CONTRACT: ${{ inputs.shell_contract }}
+          DESKTOP_MODULES_ONLY_RELEASE: false
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step check_shell_contract
 
   matrix:
     name: Resolve build matrix
@@ -743,6 +766,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ needs.meta.outputs.source_sha }}
+          fetch-depth: 0
 
       - name: Set up Rust toolchain (CI helpers)
         uses: dtolnay/rust-toolchain@02cb101ec7c40f2c49e1d9714d64511d8e1b74de
@@ -767,6 +791,16 @@ jobs:
         with:
           name: desktop-modules-${{ needs.meta.outputs.build_channel }}-${{ needs.meta.outputs.version }}-${{ needs.meta.outputs.source_sha }}
           path: desktop-modules
+
+      # Echowire: no GitHub App in this fork; the built-in token reads our own releases.
+      - name: Check which shells run these modules
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHELL_CONTRACT: ${{ inputs.shell_contract }}
+          DESKTOP_MODULES_ONLY_RELEASE: false
+        run: >-
+          cargo run --locked --quiet --manifest-path tools/ci/Cargo.toml -- build-desktop
+          --step check_shell_contract
 
       - name: Build desktop module manifest
         run: >-

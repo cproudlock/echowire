@@ -1808,12 +1808,12 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อปิดการเร่งฮาร์ดแวร์ของ Chromium ใช้ตัวเลือกนี้เฉพาะเมื่อคุณกำลังแก้ปัญหาภาพกราฟิกผิดปกติหรือการใช้งาน GPU สูง"
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
-msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อเริ่มดาวน์โหลดอัปเดตอีกครั้ง"
+msgid "{PRODUCT_NAME} needs to restart to install updates automatically again."
+msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อติดตั้งอัปเดตอีกครั้งโดยอัตโนมัติ"
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
-msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อหยุดดาวน์โหลดอัปเดต อาจทำให้ล้าหลังและหยุดทำงานกับบริการได้จนกว่าคุณจะเปิดอัปเดตอีกครั้ง"
+msgid "{PRODUCT_NAME} needs to restart to stop updating while starting. When an update is available, you can install it from the app whenever you like."
+msgstr "{PRODUCT_NAME} ต้องรีสตาร์ทเพื่อหยุดการอัปเดตขณะเริ่มต้น เมื่อมีอัปเดตพร้อมใช้งาน คุณสามารถติดตั้งได้จากแอปได้ทุกเมื่อ"
 
 #. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -2024,11 +2024,6 @@ msgstr "{productName} ตรวจพบการโจมตีที่อา�
 msgid "{productName} Staff"
 msgstr "ทีมงาน {productName}"
 
-#. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
-msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
-msgstr "{productName} จะหยุดดาวน์โหลดอัปเดต อาจทำให้ล้าสมัยและหยุดทำงานร่วมกับบริการได้จนกว่าจะเปิดใช้งานอัปเดตอีกครั้ง จะมีผลในครั้งถัดไปที่ {productName} เริ่มทำงาน"
-
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2043,6 +2038,11 @@ msgstr "{productName} Visionary"
 #: src/features/user/components/popouts/UserProfileBadges.tsx
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} Visionary ตั้งแต่ {premiumSinceFormatted}"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} won't update while starting. When an update is available, you can install it from the app whenever you like. Takes effect the next time {productName} starts."
+msgstr "{productName} จะไม่อัปเดตขณะกำลังเริ่มทำงาน เมื่อมีอัปเดตพร้อมใช้งาน คุณสามารถติดตั้งได้จากแอปทุกเมื่อที่ต้องการ มีผลในครั้งถัดไปที่ {productName} เริ่มทำงาน"
 
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts

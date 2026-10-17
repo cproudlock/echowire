@@ -180,7 +180,7 @@ describe('Enforcement closures', () => {
 			expect(decision).toMatchObject({kind: 'closure', status: 'active', notice_status: 'sent'});
 			expect(decision.deletion_at).toBe(user.pending_deletion_at);
 			expect(decision.notice_text).toContain(
-				"We closed your account.\n\nYou can't sign in or use Fluxer anywhere. We'll delete the account and its data on ",
+				"We closed your account.\n\nYou can't sign in or use echowire anywhere. We'll delete the account and its data on ",
 			);
 			expect(decision.notice_text).toContain('You may not create or use other accounts.');
 			expect(await emailsTo(harness, target, 'enforcement_notice')).toHaveLength(1);

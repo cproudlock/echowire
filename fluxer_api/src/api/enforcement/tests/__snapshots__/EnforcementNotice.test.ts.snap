@@ -47,7 +47,7 @@ exports[`buildEnforcementNotice > renders closure 1`] = `
   "decision_id": "1234567890123",
   "deletion_at": "2026-12-27T10:00:00.000Z",
   "effects": [
-    "You can't sign in or use Fluxer anywhere. We'll delete the account and its data on Dec 27, 2026, except data we have to keep by law.",
+    "You can't sign in or use echowire anywhere. We'll delete the account and its data on Dec 27, 2026, except data we have to keep by law.",
     "You may not create or use other accounts.",
   ],
   "ends_at": null,
@@ -86,7 +86,7 @@ exports[`buildEnforcementNotice > renders community_removal 1`] = `
   "deletion_at": null,
   "effects": [
     "The community and its channels and messages are no longer available to anyone. Your own account is not restricted.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -124,7 +124,7 @@ exports[`buildEnforcementNotice > renders content_removal 1`] = `
   "deletion_at": null,
   "effects": [
     "Your account is not otherwise restricted.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -162,7 +162,7 @@ exports[`buildEnforcementNotice > renders content_removal_all 1`] = `
   "deletion_at": null,
   "effects": [
     "Your account is not otherwise restricted.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -200,7 +200,7 @@ exports[`buildEnforcementNotice > renders copyright 1`] = `
   "deletion_at": null,
   "effects": [
     "Your account is not restricted. If this happens again, we may limit or suspend it.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -239,7 +239,7 @@ exports[`buildEnforcementNotice > renders feature_limit_direct_messages 1`] = `
   "deletion_at": null,
   "effects": [
     "Your one-to-one messages and friend requests are not delivered, and your profile is hidden. In communities and group conversations, people see your messages collapsed and marked as possible spam.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -276,8 +276,8 @@ exports[`buildEnforcementNotice > renders feature_limit_purchases 1`] = `
   "decision_id": "1234567890123",
   "deletion_at": null,
   "effects": [
-    "You can't make purchases on Fluxer until a person on our team reviews this.",
-    "This decision applies everywhere Fluxer is available.",
+    "You can't make purchases on echowire until a person on our team reviews this.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -316,7 +316,7 @@ exports[`buildEnforcementNotice > renders feature_limit_reports 1`] = `
   "deletion_at": null,
   "effects": [
     "You can't send reports in the app until then. To report illegal content, use the safety route on our [company information page](http://localhost:8088/marketing/company-information).",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": "2026-10-21T10:00:00.000Z",
   "facts": [
@@ -353,7 +353,7 @@ exports[`buildEnforcementNotice > renders permanent_suspension 1`] = `
   "decision_id": "1234567890123",
   "deletion_at": null,
   "effects": [
-    "You can't sign in or use Fluxer anywhere.",
+    "You can't sign in or use echowire anywhere.",
     "You may not create or use other accounts.",
     "We also removed 3 messages.",
   ],
@@ -393,7 +393,7 @@ exports[`buildEnforcementNotice > renders profile_reset 1`] = `
   "deletion_at": null,
   "effects": [
     "Your account is not otherwise restricted.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -431,7 +431,7 @@ exports[`buildEnforcementNotice > renders protected_harassment 1`] = `
   "decision_id": "1234567890123",
   "deletion_at": null,
   "effects": [
-    "You can't sign in or use Fluxer anywhere until then. Your account, messages and communities are kept.",
+    "You can't sign in or use echowire anywhere until then. Your account, messages and communities are kept.",
   ],
   "ends_at": "2026-10-21T10:00:00.000Z",
   "facts": [
@@ -470,7 +470,7 @@ exports[`buildEnforcementNotice > renders restricted_child_safety 1`] = `
   "decision_id": "1234567890123",
   "deletion_at": null,
   "effects": [
-    "You can't sign in or use Fluxer anywhere.",
+    "You can't sign in or use echowire anywhere.",
     "You may not create or use other accounts.",
   ],
   "ends_at": null,
@@ -508,7 +508,7 @@ exports[`buildEnforcementNotice > renders self_harm 1`] = `
   "deletion_at": null,
   "effects": [
     "Your account is not restricted. If this happens again, we may limit or suspend it.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [
@@ -546,7 +546,7 @@ exports[`buildEnforcementNotice > renders suspension 1`] = `
   "decision_id": "1234567890123",
   "deletion_at": null,
   "effects": [
-    "You can't sign in or use Fluxer anywhere until then. Your account, messages and communities are kept.",
+    "You can't sign in or use echowire anywhere until then. Your account, messages and communities are kept.",
   ],
   "ends_at": "2026-10-21T10:00:00.000Z",
   "facts": [
@@ -584,7 +584,7 @@ exports[`buildEnforcementNotice > renders warning 1`] = `
   "deletion_at": null,
   "effects": [
     "Your account is not restricted. If this happens again, we may limit or suspend it.",
-    "This decision applies everywhere Fluxer is available.",
+    "This decision applies everywhere echowire is available.",
   ],
   "ends_at": null,
   "facts": [

@@ -390,7 +390,7 @@ describe('Enforcement network blocks', () => {
 			expect(json.appeal_email).toBe('appeals@fluxer.com');
 			expect(json.appeals_supported).toBe(true);
 			expect(json.message).toMatch(
-				/^Fluxer blocked access from this network because of activity that broke its rules\. The block ends on /,
+				/^echowire blocked access from this network because of activity that broke its rules\. The block ends on /,
 			);
 			expect(json.message).not.toMatch(/platform admin|sign in/i);
 			expect(JSON.stringify(json)).not.toContain(decisionId);

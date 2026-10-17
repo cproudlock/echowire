@@ -398,7 +398,7 @@ describe('buildEnforcementNotice', () => {
 			);
 			expect(legacy.effects).toEqual([`You can't sign in or use ${productName} anywhere.`]);
 		};
-		expectScope('Fluxer');
+		expectScope('echowire');
 		config.instance.selfHosted = true;
 		setCachedProductName('Plant Chat');
 		expectScope('Plant Chat');

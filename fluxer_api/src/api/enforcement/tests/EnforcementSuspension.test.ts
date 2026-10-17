@@ -119,7 +119,7 @@ describe('Enforcement suspensions', () => {
 		const text = decision.notice_text!;
 		expect(text).toContain(`Hello ${target.username},`);
 		expect(text).toContain('We suspended your account until ');
-		expect(text).toContain("You can't sign in or use Fluxer anywhere until then.");
+		expect(text).toContain("You can't sign in or use echowire anywhere until then.");
 		expect(text).toMatch(/Rule: Spam \(.+\/guidelines#6-spam-and-service-abuse\)/);
 		expect(text).toContain('We found that your account sent unwanted messages in bulk.');
 		expect(text).toContain(`1 message in #${channelName} of Test Guild, on `);

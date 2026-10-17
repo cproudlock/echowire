@@ -604,6 +604,103 @@ describe('ConfigLoader', () => {
 		);
 	});
 
+	const emailFallbackEnv = {
+		FLUXER_EMAIL_FALLBACK_DOMAINS: ' Gmail.com, googlemail.com ,gmail.com',
+		FLUXER_EMAIL_FALLBACK_SMTP_HOST: 'smtp.sendgrid.net',
+		FLUXER_EMAIL_FALLBACK_SMTP_USERNAME: 'apikey',
+		FLUXER_EMAIL_FALLBACK_SMTP_PASSWORD: 'secret',
+	};
+
+	test('leaves the email fallback unset by default', async () => {
+		stubMinimalEnv();
+		const config = await loadConfig();
+		expect(config.integrations.email.fallback).toBeUndefined();
+	});
+
+	test('loads the email fallback with normalized domains and port 587', async () => {
+		stubMinimalEnv(emailFallbackEnv);
+		const config = await loadConfig();
+		expect(config.integrations.email.fallback).toEqual({
+			domains: ['gmail.com', 'googlemail.com'],
+			smtp: {host: 'smtp.sendgrid.net', port: 587, username: 'apikey', password: 'secret'},
+		});
+	});
+
+	test('loads the email fallback port and TLS mode', async () => {
+		stubMinimalEnv({
+			...emailFallbackEnv,
+			FLUXER_EMAIL_FALLBACK_SMTP_PORT: '465',
+			FLUXER_EMAIL_FALLBACK_SMTP_TLS_MODE: 'implicit',
+		});
+		const config = await loadConfig();
+		expect(config.integrations.email.fallback?.smtp).toMatchObject({port: 465, tls_mode: 'implicit'});
+	});
+
+	test.each([
+		'FLUXER_EMAIL_FALLBACK_DOMAINS',
+		'FLUXER_EMAIL_FALLBACK_SMTP_HOST',
+		'FLUXER_EMAIL_FALLBACK_SMTP_USERNAME',
+		'FLUXER_EMAIL_FALLBACK_SMTP_PASSWORD',
+	] as const)('rejects an email fallback without %s', async (missing) => {
+		stubMinimalEnv({...emailFallbackEnv, [missing]: ''});
+		await expect(loadConfig()).rejects.toThrow(`${missing} is required when an email fallback provider is set`);
+	});
+
+	test('rejects email fallback domains without an SMTP provider', async () => {
+		stubMinimalEnv({FLUXER_EMAIL_FALLBACK_DOMAINS: 'gmail.com'});
+		await expect(loadConfig()).rejects.toThrow('FLUXER_EMAIL_FALLBACK_SMTP_HOST is required');
+	});
+
+	test.each(['@gmail.com', 'user@gmail.com', 'gmail', '*.gmail.com', 'gmail.com:25', '-gmail.com', 'gmail..com'])(
+		'rejects the email fallback domain %j',
+		async (domain) => {
+			stubMinimalEnv({...emailFallbackEnv, FLUXER_EMAIL_FALLBACK_DOMAINS: domain});
+			await expect(loadConfig()).rejects.toThrow('FLUXER_EMAIL_FALLBACK_DOMAINS entry');
+		},
+	);
+
+	test('loads * as the email fallback domains', async () => {
+		stubMinimalEnv({...emailFallbackEnv, FLUXER_EMAIL_FALLBACK_DOMAINS: ' * '});
+		const config = await loadConfig();
+		expect(config.integrations.email.fallback?.domains).toEqual(['*']);
+	});
+
+	test('rejects * mixed with email fallback domains', async () => {
+		stubMinimalEnv({...emailFallbackEnv, FLUXER_EMAIL_FALLBACK_DOMAINS: '*,gmail.com'});
+		await expect(loadConfig()).rejects.toThrow('FLUXER_EMAIL_FALLBACK_DOMAINS must be either * or a list of domains');
+	});
+
+	test('loads the email fallback headers', async () => {
+		stubMinimalEnv({...emailFallbackEnv, FLUXER_EMAIL_FALLBACK_SMTP_HEADERS: '{"X-Tracking":"{\\"enable\\":0}"}'});
+		const config = await loadConfig();
+		expect(config.integrations.email.fallback?.smtp.headers).toEqual({'X-Tracking': '{"enable":0}'});
+	});
+
+	test.each([
+		{headers: '["X-Tracking"]', error: 'must be a JSON object'},
+		{headers: '{"X-Tracking":{"enable":0}}', error: 'value of X-Tracking must be a string'},
+		{headers: '{"X-Tracking":0}', error: 'value of X-Tracking must be a string'},
+		{headers: '{"X Tracking":"off"}', error: 'header name "X Tracking" is not a valid header field name'},
+		{headers: '{"X-Tracking:":"off"}', error: 'header name "X-Tracking:" is not a valid header field name'},
+		{headers: '{"X-Tracking\\r\\nBcc":"off"}', error: 'is not a valid header field name'},
+		{headers: '{"X-Tracking":"off\\r\\nBcc: user@example.com"}', error: 'must be printable ASCII without line breaks'},
+		{headers: '{"X-Tracking":"off\\n"}', error: 'must be printable ASCII without line breaks'},
+		{headers: `{"X-Tracking":"${'a'.repeat(990)}"}`, error: 'must fit on one 998 character line'},
+		...['From', 'to', 'Cc', 'BCC', 'Subject', 'Reply-To', 'Message-ID', 'Date', 'content-type', 'MIME-Version'].map(
+			(name) => ({headers: JSON.stringify({[name]: 'x'}), error: `must not set the ${name} header`}),
+		),
+	])('rejects the email fallback headers $headers', async ({headers, error}) => {
+		stubMinimalEnv({...emailFallbackEnv, FLUXER_EMAIL_FALLBACK_SMTP_HEADERS: headers});
+		await expect(loadConfig()).rejects.toThrow(error);
+	});
+
+	test('rejects an out of range email fallback port', async () => {
+		stubMinimalEnv({...emailFallbackEnv, FLUXER_EMAIL_FALLBACK_SMTP_PORT: '70000'});
+		await expect(loadConfig()).rejects.toThrow(
+			'FLUXER_EMAIL_FALLBACK_SMTP_PORT must be an integer between 1 and 65535',
+		);
+	});
+
 	test.each(['sequential', 'zero_first'])('rejects the tag style %j', async (raw) => {
 		stubMinimalEnv({FLUXER_TAG_STYLE: raw});
 		await expect(loadConfig()).rejects.toThrow('FLUXER_TAG_STYLE must be none or random');
@@ -959,42 +1056,22 @@ describe('report retention settings', () => {
 		vi.unstubAllEnvs();
 	});
 
-	test('deletes reports for real after 365 days with no resolved-report rule by default', async () => {
+	test('deletes resolved reports for real after 365 days by default', async () => {
 		stubMinimalEnv();
 		const config = await loadConfig();
-		expect(config.report_retention).toEqual({days: 365, resolved_days: null, dry_run: false});
+		expect(config.report_retention).toEqual({days: 365, dry_run: false});
 	});
 
-	test('reads both day settings and the dry run switch from the environment', async () => {
-		stubMinimalEnv({
-			FLUXER_REPORT_RETENTION_DAYS: '730',
-			FLUXER_RESOLVED_REPORT_RETENTION_DAYS: ' 90 ',
-			FLUXER_REPORT_RETENTION_DRY_RUN: 'TRUE',
-		});
+	test('reads the day setting and the dry run switch from the environment', async () => {
+		stubMinimalEnv({FLUXER_REPORT_RETENTION_DAYS: ' 730 ', FLUXER_REPORT_RETENTION_DRY_RUN: 'TRUE'});
 		const config = await loadConfig();
-		expect(config.report_retention).toEqual({days: 730, resolved_days: 90, dry_run: true});
-	});
-
-	test('an empty resolved-report setting leaves the rule off', async () => {
-		stubMinimalEnv({FLUXER_RESOLVED_REPORT_RETENTION_DAYS: '', FLUXER_REPORT_RETENTION_DRY_RUN: 'false'});
-		const config = await loadConfig();
-		expect(config.report_retention).toEqual({days: 365, resolved_days: null, dry_run: false});
+		expect(config.report_retention).toEqual({days: 730, dry_run: true});
 	});
 
 	test.each([
 		['FLUXER_REPORT_RETENTION_DAYS', '0', 'FLUXER_REPORT_RETENTION_DAYS must be an integer between 1 and 36500'],
 		['FLUXER_REPORT_RETENTION_DAYS', '36501', 'FLUXER_REPORT_RETENTION_DAYS must be an integer between 1 and 36500'],
 		['FLUXER_REPORT_RETENTION_DAYS', '1.5', 'FLUXER_REPORT_RETENTION_DAYS must be an integer, got "1.5"'],
-		[
-			'FLUXER_RESOLVED_REPORT_RETENTION_DAYS',
-			'0',
-			'FLUXER_RESOLVED_REPORT_RETENTION_DAYS must be an integer between 1 and 36500',
-		],
-		[
-			'FLUXER_RESOLVED_REPORT_RETENTION_DAYS',
-			'-30',
-			'FLUXER_RESOLVED_REPORT_RETENTION_DAYS must be an integer between 1 and 36500',
-		],
 		['FLUXER_REPORT_RETENTION_DRY_RUN', '1', 'FLUXER_REPORT_RETENTION_DRY_RUN must be true or false'],
 	])('refuses %s=%j', async (name, value, message) => {
 		stubMinimalEnv({[name]: value});

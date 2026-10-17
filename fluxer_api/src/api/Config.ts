@@ -40,6 +40,18 @@ function resolveEmailAppBaseUrl(master: MasterConfig): string {
 	}
 }
 
+function toSmtpConfig(
+	smtp: NonNullable<MasterConfig['integrations']['email']['smtp']>,
+): NonNullable<APIConfig['email']['smtp']> {
+	return {
+		host: smtp.host,
+		port: smtp.port,
+		username: smtp.username,
+		password: smtp.password,
+		tlsMode: smtp.tls_mode ?? smtpTlsModeFromSecure(smtp.secure),
+	};
+}
+
 function isBoolean(value: unknown): value is boolean {
 	return typeof value === 'boolean';
 }
@@ -311,14 +323,14 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 			fromName: master.integrations.email.from_name,
 			replyToEmail: master.integrations.email.reply_to_email,
 			appBaseUrl: resolveEmailAppBaseUrl(master),
-			smtp: master.integrations.email.smtp
+			smtp: master.integrations.email.smtp ? toSmtpConfig(master.integrations.email.smtp) : undefined,
+			fallback: master.integrations.email.fallback
 				? {
-						host: master.integrations.email.smtp.host,
-						port: master.integrations.email.smtp.port,
-						username: master.integrations.email.smtp.username,
-						password: master.integrations.email.smtp.password,
-						tlsMode:
-							master.integrations.email.smtp.tls_mode ?? smtpTlsModeFromSecure(master.integrations.email.smtp.secure),
+						domains: master.integrations.email.fallback.domains,
+						smtp: {
+							...toSmtpConfig(master.integrations.email.fallback.smtp),
+							headers: master.integrations.email.fallback.smtp.headers,
+						},
 					}
 				: undefined,
 		},
@@ -486,7 +498,6 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 		inactivityDeletionThresholdDays: master.inactivity_deletion_threshold_days,
 		reportRetention: {
 			days: master.report_retention.days,
-			resolvedDays: master.report_retention.resolved_days,
 			dryRun: master.report_retention.dry_run,
 		},
 		push: {

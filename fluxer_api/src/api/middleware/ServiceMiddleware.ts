@@ -142,6 +142,7 @@ import {VoiceService} from '@app/api/voice/VoiceService';
 import {ChannelFollowService} from '@app/api/webhook/ChannelFollowService';
 import {WebhookRequestService} from '@app/api/webhook/WebhookRequestService';
 import {WebhookService} from '@app/api/webhook/WebhookService';
+import {parseAcceptLanguage} from '@fluxer/i18n/src/locale/resolution/AcceptLanguageNegotiation';
 import {createMiddleware} from 'hono/factory';
 
 export {initializeServiceSingletons} from '@app/api/middleware/ServiceSingletons';
@@ -551,7 +552,6 @@ class RequestServices implements RequestScopedServices {
 				},
 				{
 					inviteService: this.inviteService,
-					kvDeletionQueue: getKVAccountDeletionQueue(),
 				},
 			);
 		}
@@ -928,6 +928,8 @@ export const ServiceMiddleware = createMiddleware<HonoEnv>(async (ctx, next) => 
 		requestId: ctx.get('requestId') ?? crypto.randomUUID(),
 		clientIp: getRequestClientIp(ctx),
 		userAgent: ctx.req.header('user-agent') ?? null,
+		locale: parseAcceptLanguage(ctx.req.header('accept-language')),
+		blockedNetworkSignIn: ctx.get('blockedNetworkSignIn') ?? null,
 	});
 	ctx.set('apiContext', apiContext);
 	ctx.set('sudoModeValid', false);

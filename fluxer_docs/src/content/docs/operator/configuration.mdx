@@ -790,7 +790,7 @@ While email is on, registration checks the address domain. It has to publish an 
 
 #### `FLUXER_EMAIL_FROM_NAME`
 
-`.env.example` `echowire`. The sender name. Default empty. An empty value sends mail under the instance product name, which is the name saved in the admin dashboard or else `FLUXER_APP_PRODUCT_NAME`, and a rename in the dashboard applies to the next email. A set value always wins. Compose forwards it from `.env`.
+`.env.example` `echowire`. The sender name. Default empty. An empty value sends mail under the instance product name, which is the name saved in the admin dashboard or else `FLUXER_APP_PRODUCT_NAME`, with the [self-hosted host name rule](#instance-identity-and-branding) applied, and a rename in the dashboard applies to the next email. A set value always wins. Compose forwards it from `.env`.
 
 #### `FLUXER_EMAIL_REPLY_TO_EMAIL`
 
@@ -838,6 +838,36 @@ The Save and test button in the admin dashboard, and [Create SMTP test](/admin-a
 The API reads `FLUXER_EMAIL_WEBHOOK_SECRET` for inbound delivery webhooks. `.env.example` lists it commented out.
 
 The API registers `POST /webhooks/sweego` on every deployment. The route authenticates the Standard Webhooks header triple `webhook-id`, `webhook-timestamp`, and `webhook-signature` against that secret, and answers 404 `Email not enabled` while email is off. The route sits outside the client-IP exempt list that covers `/webhooks/livekit`, so give the provider a delivery URL that goes through the edge, `https://chat.example.com/api/webhooks/sweego`.
+
+A second SMTP provider can take the mail for chosen recipient domains while everything else keeps going through the one above. It is off by default. Setting any fallback variable turns it on, and from then on the domains, host, username and password are all required, or startup fails with the name of the one that is missing. The sender, `Reply-To` header and bounced-address check are the same for both providers. Email still has to be on with the main SMTP provider complete, because the fallback never sends on its own. The admin dashboard has no fields for it, and the SMTP test only checks the main provider. Bounce webhooks come only from the provider behind `/webhooks/sweego`, so a hard bounce at the fallback provider does not mark the address as bounced.
+
+#### `FLUXER_EMAIL_FALLBACK_DOMAINS`
+
+Default empty. The recipient domains that go through the fallback provider, comma separated, such as `gmail.com,googlemail.com`. Matching ignores case and takes the part of the address after the last `@`. Only an exact match counts, so `gmail.com` leaves `mail.gmail.com` on the main provider. Set it to `*` alone to send every email through the fallback provider. An entry that is not a bare domain or `*` fails startup. `.env.example` lists it commented out.
+
+#### `FLUXER_EMAIL_FALLBACK_SMTP_HOST`
+
+Default empty. The fallback SMTP host. Required when the domains are set.
+
+#### `FLUXER_EMAIL_FALLBACK_SMTP_PORT`
+
+Default `587`. The fallback SMTP port.
+
+#### `FLUXER_EMAIL_FALLBACK_SMTP_USERNAME`
+
+Default empty. The fallback SMTP login. Required when the domains are set.
+
+#### `FLUXER_EMAIL_FALLBACK_SMTP_PASSWORD`
+
+Default empty. The fallback SMTP password. Required when the domains are set.
+
+#### `FLUXER_EMAIL_FALLBACK_SMTP_TLS_MODE`
+
+Default empty. How the fallback connection is encrypted, with the same four values as `FLUXER_EMAIL_SMTP_TLS_MODE`. An empty value picks `implicit` on port 465 and `starttls` on every other port. A failed send through the fallback is logged as `SMTP send failed` with the fallback host.
+
+#### `FLUXER_EMAIL_FALLBACK_SMTP_HEADERS`
+
+Default empty. Extra headers added to every message sent through the fallback provider, as a JSON object of header name to string value, such as `{"X-Example-Tracking":"off"}` for a provider that reads a header to turn off link tracking. Values are sent exactly as given, never encoded or folded. A name must be a valid header field name, a value must be printable ASCII without line breaks, and each header has to fit on one 998 character line. `From`, `To`, `Cc`, `Bcc`, `Subject`, `Reply-To`, `Message-ID`, `Date`, `Content-Type` and `MIME-Version` cannot be set here. Anything else fails startup with the reason. `.env.example` lists it commented out.
 
 Only `api` and `worker` build the mail service, so recreating those two is enough after a change.
 
@@ -1072,15 +1102,11 @@ With feeds off, Fluxer checks none of this data. The first worker start with fee
 
 #### `FLUXER_REPORT_RETENTION_DAYS`
 
-Default `365`. Read by `worker`. The daily [report retention](/admin-api/reports/#report-retention) job deletes each report this many days after it was filed, pending or resolved, with its evidence copies and search entry, unless a legal hold is in place. Integer 1 to 36500, checked at startup.
-
-#### `FLUXER_RESOLVED_REPORT_RETENTION_DAYS`
-
-Default unset, which leaves resolved reports to `FLUXER_REPORT_RETENTION_DAYS`. Read by `worker`. When set, a resolved report is deleted this many days after it was resolved, if that comes before the end of its retention period. Pending reports are not affected, and a legal hold still keeps a report. Integer 1 to 36500, checked at startup.
+Default `365`. Read by `worker`. The daily [report retention](/admin-api/reports/#report-retention) job deletes each resolved report this many days after it was resolved, with its evidence copies and search entry. Pending reports are kept until they are resolved. A legal hold, a `child_safety` category or a linked enforcement decision can keep a report longer. Integer 1 to 36500, checked at startup.
 
 #### `FLUXER_REPORT_RETENTION_DRY_RUN`
 
-Default `false`. Read by `worker`. With `true`, each run only counts what it would delete and deletes nothing. `true` or `false`, checked at startup. Deleted evidence cannot be restored. Check the counts in the `Processed report retention` log line before the first real run.
+Default `false`. Read by `worker`. With `true`, each run only counts what it would delete or clear and changes nothing. `true` or `false`, checked at startup. Deleted evidence cannot be restored. Check the counts in the `Processed report retention` log line before the first real run.
 
 #### `FLUXER_BREACHED_PASSWORD_CHECK_ENABLED`
 
@@ -1163,7 +1189,7 @@ Default `production` when `FLUXER_SELF_HOSTED` is `true`, otherwise `development
 
 #### `FLUXER_SELF_HOSTED`
 
-Default `false`. The self-host switch. Compose sets `true`. It relaxes the production Postgres SSL requirement, seeds the limit tier, gates registration, donation and discovery controllers, keeps premium billing off until it is set up as [Payments](#payments) describes, turns blocklist feeds off, and keeps hosted-only artwork from `fluxer.app` out of the app, webhook avatars and link embeds.
+Default `false`. The self-host switch. Compose sets `true`. It relaxes the production Postgres SSL requirement, seeds the limit tier, gates registration, donation and discovery controllers, keeps premium billing off until it is set up as [Payments](#payments) describes, turns blocklist feeds off, keeps an account closed for a broken rule for at least 14 days instead of 74 because there is no appeal route, and keeps hosted-only artwork from `fluxer.app` out of the app, webhook avatars and link embeds.
 
 ## Feature flags and development switches
 
@@ -1268,6 +1294,8 @@ A brand asset on another origin than the instance needs no CSP setting. `app-pro
 #### `FLUXER_APP_PRODUCT_NAME`
 
 Default `Fluxer`. The product name clients display and the API writes in its emails and report flows.
+
+On a self-hosted instance, a name that is empty or `Fluxer` is replaced by the host name of the web app endpoint in everything the server writes: emails and their sender name, system messages and the name of the system user, report flows, enforcement notices, IP block errors, the name of the built-in admin application and donation checkout. Clients keep showing the saved name, except on the network blocked screen, which takes the name from the error. Set a name of your own to use it everywhere.
 
 #### `FLUXER_APP_ICON_URL`
 
@@ -1799,7 +1827,7 @@ The admin dashboard at `FLUXER_ADMIN_BASE_PATH` stores these in the database. Th
 
 #### Instance Config, Public App Identity
 
-Product name, client-visible brand assets, the terms, privacy, and community guidelines links, and the setup state in the instance discovery document. No environment variable sets a legal link. On a self-hosted instance, the enforcement emails list only the terms and guidelines links set here, and the clients and report flows show no guidelines link until one is set. Its emails and its IP block errors name no contact address. They tell the reader to contact the administrators of the instance, and no setting adds an address. The emails, the report flows, the IP block errors, the title of an APNs alert that has none, and the built-in admin application use the product name set here, and a rename applies without a restart.
+Product name, client-visible brand assets, the terms, privacy, and community guidelines links, and the setup state in the instance discovery document. No environment variable sets a legal link. On a self-hosted instance, enforcement notices link a rule to the terms or guidelines page set here, without an anchor, and show the rule title alone when no page is set. The clients and report flows show no guidelines link until one is set. Self-hosted emails, enforcement notices and IP block errors name no contact address and no appeal route, and no setting adds one. The emails, the report flows, the IP block errors, the title of an APNs alert that has none, and the built-in admin application use the product name set here, with the [self-hosted host name rule](#instance-identity-and-branding), and a rename applies without a restart.
 
 #### Instance Config, Registration Controls
 

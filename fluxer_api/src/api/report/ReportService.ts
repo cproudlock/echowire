@@ -255,6 +255,7 @@ function notifyReportFiledWebhook(row: IARSubmissionRow, target: ReportTarget): 
 		threadName: `Report ${reportId}: ${row.category} (${target})`,
 		content: `New ${target} report **${reportId}**, category: ${row.category}. Review it in Admin > Reports`,
 		label: 'report-filed',
+		appliedTagId: process.env.FLUXER_REPORT_WEBHOOK_TAG_ID,
 	});
 }
 

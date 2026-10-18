@@ -38,6 +38,13 @@ describe('notifyReviewWebhook', () => {
 		});
 	});
 
+	it('applies the configured forum tag to the new post', async () => {
+		fetchMock.mockResolvedValue(new Response(null, {status: 200}));
+		notifyReviewWebhook(URL_FORUM, {threadName: 't', content: 'c', label: 'test', appliedTagId: ' 123 '});
+		await settle();
+		expect(JSON.parse(fetchMock.mock.calls[0][1].body as string)).toMatchObject({applied_tags: ['123']});
+	});
+
 	it('retries as a plain message when a text channel webhook refuses the thread name', async () => {
 		fetchMock
 			.mockResolvedValueOnce(new Response(null, {status: 400}))

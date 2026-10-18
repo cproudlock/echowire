@@ -78,6 +78,7 @@ function notifyPendingRegistrationWebhook(params: {username: string; email: stri
 		threadName: `Registration: ${params.username}`,
 		content: `New registration pending approval: **${params.username}**${emailPart}. Approve in Admin > Instance Config > Pending Registrations`,
 		label: 'pending-registration',
+		appliedTagId: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG_ID,
 	});
 }
 

@@ -29,16 +29,23 @@ async function postJson(url: string, body: Record<string, unknown>): Promise<Res
  * Posts a review-queue notification to a channel webhook without ever blocking or failing the caller.
  * The webhook may belong to a forum channel, which needs a thread name and opens one post per event,
  * or to a plain text channel, which rejects a thread name with a 400. The post is therefore sent with a
- * thread name first and retried as a plain message when the webhook refuses it.
+ * thread name first and retried as a plain message when the webhook refuses it. An optional forum tag id
+ * is applied to the new post, which lets a forum that requires a tag accept these posts. The tag must be
+ * one that members without the moderator permission can apply.
  */
 export function notifyReviewWebhook(
 	url: string | undefined,
-	params: {threadName: string; content: string; label: string},
+	params: {threadName: string; content: string; label: string; appliedTagId?: string | undefined},
 ): void {
 	if (!url) return;
 	void (async () => {
 		try {
-			let response = await postJson(url, {content: params.content, thread_name: clampThreadName(params.threadName)});
+			const tagId = params.appliedTagId?.trim();
+			let response = await postJson(url, {
+				content: params.content,
+				thread_name: clampThreadName(params.threadName),
+				...(tagId ? {applied_tags: [tagId]} : {}),
+			});
 			if (response.status === 400) {
 				response = await postJson(url, {content: params.content});
 			}

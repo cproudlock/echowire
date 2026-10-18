@@ -126,7 +126,7 @@ function notifyDiscoveryApplicationWebhook(guildName: string, row: GuildDiscover
 		],
 		label: 'discovery-application',
 		appliedTagId: process.env.FLUXER_DISCOVERY_WEBHOOK_TAG_ID,
-		appliedTagName: process.env.FLUXER_DISCOVERY_WEBHOOK_TAG ?? 'new',
+		appliedTagName: process.env.FLUXER_DISCOVERY_WEBHOOK_TAG || 'new',
 	});
 }
 

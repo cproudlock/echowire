@@ -274,7 +274,7 @@ function notifyReportFiledWebhook(row: IARSubmissionRow, target: ReportTarget): 
 		],
 		label: 'report-filed',
 		appliedTagId: process.env.FLUXER_REPORT_WEBHOOK_TAG_ID,
-		appliedTagName: process.env.FLUXER_REPORT_WEBHOOK_TAG ?? 'new',
+		appliedTagName: process.env.FLUXER_REPORT_WEBHOOK_TAG || 'new',
 	});
 }
 

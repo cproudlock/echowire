@@ -95,7 +95,7 @@ function notifyPendingRegistrationWebhook(params: {username: string; email: stri
 		],
 		label: 'pending-registration',
 		appliedTagId: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG_ID,
-		appliedTagName: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG ?? 'new',
+		appliedTagName: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG || 'new',
 	});
 }
 

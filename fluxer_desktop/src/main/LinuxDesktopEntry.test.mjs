@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -41,6 +42,7 @@ const englishStrings = {
 const desktopEntry = loadTsModule('@electron/main/LinuxDesktopEntry', {
 	stubs: {
 		'node:child_process': childProcess,
+		'node:crypto': crypto,
 		'node:fs': fs,
 		'node:os': os,
 		'node:path': path,

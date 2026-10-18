@@ -46,6 +46,7 @@ import {lookupGeoip} from '@app/api/utils/IpUtils';
 import {hashPassword} from '@app/api/utils/PasswordUtils';
 import {createRateLimitError} from '@app/api/utils/RateLimitUtils';
 import {requireConfiguredClientIp} from '@app/api/utils/RequestClientIp';
+import {notifyReviewWebhook} from '@app/api/utils/ReviewWebhook';
 import {generateRandomUsername} from '@app/api/utils/UsernameGenerator';
 import {deriveUsernameFromDisplayName} from '@app/api/utils/UsernameSuggestionUtils';
 import {inputValidationErrorFromZodIssues} from '@app/api/Validator';
@@ -68,31 +69,16 @@ import {ms} from 'itty-time';
 
 // Fire-and-forget notification to a channel webhook when a new registration is
 // pending admin approval, so admins get pinged instead of having to poll the
-// pending list. Configured via FLUXER_REGISTRATION_PENDING_WEBHOOK_URL (a
-// channel webhook URL). Never blocks or fails the registration.
+// pending list. Configured via FLUXER_REGISTRATION_PENDING_WEBHOOK_URL (a text
+// channel or forum webhook URL; a forum gets one post per registration).
+// Never blocks or fails the registration.
 function notifyPendingRegistrationWebhook(params: {username: string; email: string | null}): void {
-	const webhookUrl = process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_URL;
-	if (!webhookUrl) return;
 	const emailPart = params.email ? ` (${params.email})` : '';
-	const content = `🆕 New registration pending approval: **${params.username}**${emailPart} — approve in Admin → Instance Config → Pending Registrations`;
-	void (async () => {
-		try {
-			const controller = new AbortController();
-			const timeout = setTimeout(() => controller.abort(), 5000);
-			try {
-				await fetch(webhookUrl, {
-					method: 'POST',
-					headers: {'Content-Type': 'application/json'},
-					body: JSON.stringify({content}),
-					signal: controller.signal,
-				});
-			} finally {
-				clearTimeout(timeout);
-			}
-		} catch (error) {
-			Logger.warn({error}, '[AuthRegistration] Failed to POST pending-registration notification webhook');
-		}
-	})();
+	notifyReviewWebhook(process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_URL, {
+		threadName: `Registration: ${params.username}`,
+		content: `New registration pending approval: **${params.username}**${emailPart}. Approve in Admin > Instance Config > Pending Registrations`,
+		label: 'pending-registration',
+	});
 }
 
 function parseDobLocalDate(dateOfBirth: string): types.LocalDate {

@@ -61,7 +61,8 @@ export async function resolveForumTagId(url: string, tagName: string | undefined
  * Posts a review-queue notification to a channel webhook without ever blocking or failing the caller.
  * The webhook may belong to a forum channel, which needs a thread name and opens one post per event,
  * or to a plain text channel, which rejects a thread name with a 400. The post is therefore sent with a
- * thread name first and retried as a plain message when the webhook refuses it. An optional forum tag id
+ * thread name first and retried as a plain message when the webhook refuses it, and an embed link the server
+ * rejects is dropped on a retry rather than losing the post. An optional forum tag id
  * is applied to the new post, which lets a forum that requires a tag accept these posts. The tag must be
  * one that members without the moderator permission can apply.
  */
@@ -80,14 +81,23 @@ export function notifyReviewWebhook(
 	void (async () => {
 		try {
 			const tagId = params.appliedTagId?.trim() || (await resolveForumTagId(url, params.appliedTagName));
-			const plain = {content: params.content, ...(params.embeds ? {embeds: params.embeds} : {})};
-			let response = await postJson(url, {
-				...plain,
-				thread_name: clampThreadName(params.threadName),
-				...(tagId ? {applied_tags: [tagId]} : {}),
-			});
-			if (response.status === 400) {
-				response = await postJson(url, plain);
+			const withLinks = params.embeds;
+			const withoutLinks = params.embeds?.map(({url: _url, ...rest}) => rest);
+			const thread = clampThreadName(params.threadName);
+			const threadFields = {thread_name: thread, ...(tagId ? {applied_tags: [tagId]} : {})};
+			// A forum webhook needs a thread name; a text channel webhook refuses one. An embed whose link the server
+			// rejects (for example a self-hosted admin address without a public host name) is retried without the link,
+			// so the notification is never lost to a bad link.
+			const attempts: Array<Record<string, unknown>> = [
+				{content: params.content, ...(withLinks ? {embeds: withLinks} : {}), ...threadFields},
+				...(withoutLinks ? [{content: params.content, embeds: withoutLinks, ...threadFields}] : []),
+				{content: params.content, ...(withLinks ? {embeds: withLinks} : {})},
+				...(withoutLinks ? [{content: params.content, embeds: withoutLinks}] : []),
+			];
+			let response = await postJson(url, attempts[0] as Record<string, unknown>);
+			for (const attempt of attempts.slice(1)) {
+				if (response.status !== 400) break;
+				response = await postJson(url, attempt);
 			}
 			if (!response.ok) {
 				Logger.warn({status: response.status}, `[ReviewWebhook] ${params.label} webhook was refused`);

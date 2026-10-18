@@ -70,15 +70,29 @@ describe('notifyReviewWebhook', () => {
 		await settle();
 	});
 
+	it('retries without the embed link when the server rejects it, keeping the thread post', async () => {
+		fetchMock
+			.mockResolvedValueOnce(new Response(null, {status: 400}))
+			.mockResolvedValueOnce(new Response(null, {status: 200}));
+		const embeds = [{title: 'New report', url: 'http://localhost/admin', description: 'd'}];
+		notifyReviewWebhook(URL_FORUM, {threadName: 't', content: 'c', label: 'test', embeds});
+		await settle();
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		const second = JSON.parse(fetchMock.mock.calls[1][1].body as string) as Record<string, unknown>;
+		expect(second.thread_name).toBe('t');
+		expect(second.embeds).toEqual([{title: 'New report', description: 'd'}]);
+	});
+
 	it('sends embeds with the thread post and again on the plain retry', async () => {
 		fetchMock
+			.mockResolvedValueOnce(new Response(null, {status: 400}))
 			.mockResolvedValueOnce(new Response(null, {status: 400}))
 			.mockResolvedValueOnce(new Response(null, {status: 200}));
 		const embeds = [{title: 'New registration: ada', url: 'https://example.test/admin/pending-registrations'}];
 		notifyReviewWebhook(URL_FORUM, {threadName: 't', content: 'c', label: 'test', embeds});
 		await settle();
 		expect(JSON.parse(fetchMock.mock.calls[0][1].body as string)).toMatchObject({thread_name: 't', embeds});
-		const retry = JSON.parse(fetchMock.mock.calls[1][1].body as string) as Record<string, unknown>;
+		const retry = JSON.parse(fetchMock.mock.calls[2][1].body as string) as Record<string, unknown>;
 		expect(retry.embeds).toEqual(embeds);
 		expect(retry.thread_name).toBeUndefined();
 	});

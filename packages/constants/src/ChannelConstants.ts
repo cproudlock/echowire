@@ -25,6 +25,11 @@ export const GUILD_TEXT_BASED_CHANNEL_TYPES = new Set<number>([
 	ChannelTypes.GUILD_VOICE,
 	ChannelTypes.GUILD_ANNOUNCEMENT,
 ]);
+export const WEBHOOK_CHANNEL_TYPES = new Set<number>([
+	...GUILD_TEXT_BASED_CHANNEL_TYPES,
+	ChannelTypes.GUILD_FORUM,
+	ChannelTypes.GUILD_MEDIA,
+]);
 export const TEXT_BASED_CHANNEL_TYPES = new Set<number>([
 	...GUILD_TEXT_BASED_CHANNEL_TYPES,
 	ChannelTypes.DM,

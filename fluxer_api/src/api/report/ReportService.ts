@@ -68,6 +68,7 @@ import type {UserRepository} from '@app/api/user/repositories/UserRepository';
 import {findPersonByLoginHandle, type ParsedLoginHandle, parseLoginHandle} from '@app/api/user/UniqueUsernames';
 import {isAccountClosed} from '@app/api/user/UserHelpers';
 import {dispatchUserUpdate} from '@app/api/user/UserMappers';
+import {notifyReviewWebhook} from '@app/api/utils/ReviewWebhook';
 import type {WebhookRepository} from '@app/api/webhook/WebhookRepository';
 import {buildHashedAssetKey} from '@app/api/worker/utils/AssetArchiveHelpers';
 import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
@@ -248,7 +249,18 @@ const DSA_EMAIL_VERIFY_ADDRESS_MAX = 5;
 const DSA_EMAIL_VERIFY_ADDRESS_WINDOW = ms('10 minutes');
 const PUBLIC_CHANNEL_PERMISSIONS = Permissions.VIEW_CHANNEL | Permissions.READ_MESSAGE_HISTORY;
 
+function notifyReportFiledWebhook(row: IARSubmissionRow, target: ReportTarget): void {
+	const reportId = row.report_id.toString();
+	notifyReviewWebhook(process.env.FLUXER_REPORT_WEBHOOK_URL, {
+		threadName: `Report ${reportId}: ${row.category} (${target})`,
+		content: `New ${target} report **${reportId}**, category: ${row.category}. Review it in Admin > Reports`,
+		label: 'report-filed',
+		appliedTagId: process.env.FLUXER_REPORT_WEBHOOK_TAG_ID,
+	});
+}
+
 async function emitReportFiled(row: IARSubmissionRow, target: ReportTarget): Promise<void> {
+	notifyReportFiledWebhook(row, target);
 	const key = row.reported_user_id ?? row.reporter_id ?? 0n;
 	await emitActivity(
 		'report_filed',

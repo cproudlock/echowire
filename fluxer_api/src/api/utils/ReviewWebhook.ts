@@ -26,6 +26,38 @@ async function postJson(url: string, body: Record<string, unknown>): Promise<Res
 }
 
 /**
+ * Looks up the id of an unmoderated tag with the given name on the forum that owns the webhook, so operators
+ * can set a tag by name instead of copying ids. Returns undefined when the webhook is not on a forum, no such
+ * tag exists, or the tag is moderated (a webhook cannot apply a moderated tag).
+ */
+export async function resolveForumTagId(url: string, tagName: string | undefined): Promise<string | undefined> {
+	const name = tagName?.trim().toLowerCase();
+	if (!name) return undefined;
+	try {
+		const webhookId = /\/webhooks\/(\d+)\//.exec(url)?.[1];
+		if (!webhookId) return undefined;
+		const {getChannelRepository, getWebhookRepository} = await import('@app/api/middleware/ServiceSingletons');
+		const {createWebhookID} = await import('@app/api/BrandedTypes');
+		const webhook = await getWebhookRepository().findUnique(createWebhookID(BigInt(webhookId)));
+		if (!webhook?.channelId) return undefined;
+		const channels = getChannelRepository();
+		const channel = await channels.channelData.findUnique(webhook.channelId);
+		if (!channel?.guildId) return undefined;
+		const config = await channels.threads.getParentConfig(channel.guildId, channel.id);
+		const tag = config?.availableTags.find((candidate) => candidate.name.trim().toLowerCase() === name);
+		if (!tag) return undefined;
+		if (tag.moderated) {
+			Logger.warn({tag: tagName}, '[ReviewWebhook] Forum tag is moderated, so the webhook cannot apply it');
+			return undefined;
+		}
+		return tag.id.toString();
+	} catch (error) {
+		Logger.warn({error}, '[ReviewWebhook] Failed to look up the forum tag');
+		return undefined;
+	}
+}
+
+/**
  * Posts a review-queue notification to a channel webhook without ever blocking or failing the caller.
  * The webhook may belong to a forum channel, which needs a thread name and opens one post per event,
  * or to a plain text channel, which rejects a thread name with a 400. The post is therefore sent with a
@@ -35,19 +67,27 @@ async function postJson(url: string, body: Record<string, unknown>): Promise<Res
  */
 export function notifyReviewWebhook(
 	url: string | undefined,
-	params: {threadName: string; content: string; label: string; appliedTagId?: string | undefined},
+	params: {
+		threadName: string;
+		content: string;
+		label: string;
+		embeds?: Array<Record<string, unknown>> | undefined;
+		appliedTagId?: string | undefined;
+		appliedTagName?: string | undefined;
+	},
 ): void {
 	if (!url) return;
 	void (async () => {
 		try {
-			const tagId = params.appliedTagId?.trim();
+			const tagId = params.appliedTagId?.trim() || (await resolveForumTagId(url, params.appliedTagName));
+			const plain = {content: params.content, ...(params.embeds ? {embeds: params.embeds} : {})};
 			let response = await postJson(url, {
-				content: params.content,
+				...plain,
 				thread_name: clampThreadName(params.threadName),
 				...(tagId ? {applied_tags: [tagId]} : {}),
 			});
 			if (response.status === 400) {
-				response = await postJson(url, {content: params.content});
+				response = await postJson(url, plain);
 			}
 			if (!response.ok) {
 				Logger.warn({status: response.status}, `[ReviewWebhook] ${params.label} webhook was refused`);

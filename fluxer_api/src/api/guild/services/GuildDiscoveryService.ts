@@ -12,12 +12,14 @@ import {contentModerationService} from '@app/api/infrastructure/ContentModeratio
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import {Logger} from '@app/api/Logger';
 import type {IGuildSearchService} from '@app/api/search/IGuildSearchService';
+import {notifyReviewWebhook} from '@app/api/utils/ReviewWebhook';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {
 	DISCOVERY_DEFAULT_LANGUAGE,
 	DISCOVERY_MAX_TAGS,
 	DiscoveryApplicationStatus,
 	type DiscoveryCategory,
+	DiscoveryCategoryLabels,
 	isValidDiscoveryLanguage,
 	isValidDiscoveryTag,
 	normalizeDiscoveryTag,
@@ -99,6 +101,35 @@ function toDiscoveryCategoryCounts(
 	return entries.sort((left, right) => left.category_type - right.category_type);
 }
 
+function notifyDiscoveryApplicationWebhook(guildName: string, row: GuildDiscoveryRow): void {
+	const adminBase = Config.endpoints.admin?.replace(/\/+$/, '');
+	const reviewUrl = adminBase ? `${adminBase}/discovery` : undefined;
+	const category = DiscoveryCategoryLabels[row.category_type as DiscoveryCategory] ?? 'Other';
+	notifyReviewWebhook(process.env.FLUXER_DISCOVERY_WEBHOOK_URL, {
+		threadName: `Discovery application: ${guildName}`,
+		content: 'A community applied to be listed in discovery.',
+		embeds: [
+			{
+				title: `Discovery application: ${guildName}`,
+				...(reviewUrl ? {url: reviewUrl} : {}),
+				description: row.description,
+				color: 0x3e63dd,
+				fields: [
+					{name: 'Community', value: guildName, inline: true},
+					{name: 'Category', value: category, inline: true},
+					{name: 'Language', value: row.primary_language, inline: true},
+					...(row.custom_tags && row.custom_tags.length > 0 ? [{name: 'Tags', value: row.custom_tags.join(', ')}] : []),
+				],
+				footer: {text: 'echowire discovery'},
+				timestamp: new Date().toISOString(),
+			},
+		],
+		label: 'discovery-application',
+		appliedTagId: process.env.FLUXER_DISCOVERY_WEBHOOK_TAG_ID,
+		appliedTagName: process.env.FLUXER_DISCOVERY_WEBHOOK_TAG || 'new',
+	});
+}
+
 export class GuildDiscoveryService {
 	constructor(
 		private readonly discoveryRepository: GuildDiscoveryRepository,
@@ -164,6 +195,9 @@ export class GuildDiscoveryService {
 			await this.discoveryRepository.updateStatus(guildId, existing.status, existing.applied_at, row);
 		} else {
 			await this.discoveryRepository.upsert(row);
+		}
+		if (!shouldAutoApprove) {
+			notifyDiscoveryApplicationWebhook(guild.name, row);
 		}
 		if (shouldAutoApprove) {
 			await this.setDiscoverableFeature(guildId, true);

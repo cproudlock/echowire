@@ -251,11 +251,30 @@ const PUBLIC_CHANNEL_PERMISSIONS = Permissions.VIEW_CHANNEL | Permissions.READ_M
 
 function notifyReportFiledWebhook(row: IARSubmissionRow, target: ReportTarget): void {
 	const reportId = row.report_id.toString();
+	const adminBase = Config.endpoints.admin?.replace(/\/+$/, '');
+	const reviewUrl = adminBase ? `${adminBase}/reports/${reportId}` : undefined;
+	const category = row.category.replace(/_/g, ' ');
 	notifyReviewWebhook(process.env.FLUXER_REPORT_WEBHOOK_URL, {
-		threadName: `Report ${reportId}: ${row.category} (${target})`,
-		content: `New ${target} report **${reportId}**, category: ${row.category}. Review it in Admin > Reports`,
+		threadName: `Report ${reportId}: ${category} (${target})`,
+		content: `A new ${target} report was filed.`,
+		embeds: [
+			{
+				title: `New ${target} report`,
+				...(reviewUrl ? {url: reviewUrl} : {}),
+				description: reviewUrl ? 'Open the title to review it in the admin panel.' : 'Review it in the admin panel.',
+				color: 0xe5484d,
+				fields: [
+					{name: 'Report ID', value: reportId, inline: true},
+					{name: 'Type', value: target, inline: true},
+					{name: 'Category', value: category, inline: true},
+				],
+				footer: {text: 'echowire reports'},
+				timestamp: new Date().toISOString(),
+			},
+		],
 		label: 'report-filed',
 		appliedTagId: process.env.FLUXER_REPORT_WEBHOOK_TAG_ID,
+		appliedTagName: process.env.FLUXER_REPORT_WEBHOOK_TAG || 'new',
 	});
 }
 

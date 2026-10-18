@@ -12,6 +12,7 @@ import {
 	usernameFromInstanceLocalPart,
 } from '@app/api/auth/InstanceAddress';
 import {createInviteCode, createUserID, type UserID} from '@app/api/BrandedTypes';
+import {Config} from '@app/api/Config';
 import type {APIConfig} from '@app/api/config/APIConfig';
 import {EMPTY_USER_ROW, type UserRow} from '@app/api/database/types/UserTypes';
 import {emitActivity} from '@app/api/infrastructure/activity/ActivityEvents';
@@ -73,12 +74,28 @@ import {ms} from 'itty-time';
 // channel or forum webhook URL; a forum gets one post per registration).
 // Never blocks or fails the registration.
 function notifyPendingRegistrationWebhook(params: {username: string; email: string | null}): void {
-	const emailPart = params.email ? ` (${params.email})` : '';
+	const adminBase = Config.endpoints.admin?.replace(/\/+$/, '');
+	const reviewUrl = adminBase ? `${adminBase}/pending-registrations` : undefined;
 	notifyReviewWebhook(process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_URL, {
 		threadName: `Registration: ${params.username}`,
-		content: `New registration pending approval: **${params.username}**${emailPart}. Approve in Admin > Instance Config > Pending Registrations`,
+		content: 'A new registration is waiting for approval.',
+		embeds: [
+			{
+				title: `New registration: ${params.username}`,
+				...(reviewUrl ? {url: reviewUrl} : {}),
+				description: reviewUrl ? 'Open the title to review it in the admin panel.' : 'Review it in the admin panel.',
+				color: 0xf5a524,
+				fields: [
+					{name: 'Username', value: params.username, inline: true},
+					...(params.email ? [{name: 'Email', value: params.email, inline: true}] : []),
+				],
+				footer: {text: 'echowire registrations'},
+				timestamp: new Date().toISOString(),
+			},
+		],
 		label: 'pending-registration',
 		appliedTagId: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG_ID,
+		appliedTagName: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG || 'new',
 	});
 }
 

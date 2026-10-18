@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {notifyReviewWebhook} from '@app/api/utils/ReviewWebhook';
+import {notifyReviewWebhook, resolveForumTagId} from '@app/api/utils/ReviewWebhook';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 
 const URL_FORUM = 'https://example.test/api/webhooks/1/token';
@@ -68,5 +68,40 @@ describe('notifyReviewWebhook', () => {
 		fetchMock.mockRejectedValue(new Error('network'));
 		expect(() => notifyReviewWebhook(URL_FORUM, {threadName: 't', content: 'c', label: 'test'})).not.toThrow();
 		await settle();
+	});
+
+	it('retries without the embed link when the server rejects it, keeping the thread post', async () => {
+		fetchMock
+			.mockResolvedValueOnce(new Response(null, {status: 400}))
+			.mockResolvedValueOnce(new Response(null, {status: 200}));
+		const embeds = [{title: 'New report', url: 'http://localhost/admin', description: 'd'}];
+		notifyReviewWebhook(URL_FORUM, {threadName: 't', content: 'c', label: 'test', embeds});
+		await settle();
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		const second = JSON.parse(fetchMock.mock.calls[1][1].body as string) as Record<string, unknown>;
+		expect(second.thread_name).toBe('t');
+		expect(second.embeds).toEqual([{title: 'New report', description: 'd'}]);
+	});
+
+	it('sends embeds with the thread post and again on the plain retry', async () => {
+		fetchMock
+			.mockResolvedValueOnce(new Response(null, {status: 400}))
+			.mockResolvedValueOnce(new Response(null, {status: 400}))
+			.mockResolvedValueOnce(new Response(null, {status: 200}));
+		const embeds = [{title: 'New registration: ada', url: 'https://example.test/admin/pending-registrations'}];
+		notifyReviewWebhook(URL_FORUM, {threadName: 't', content: 'c', label: 'test', embeds});
+		await settle();
+		expect(JSON.parse(fetchMock.mock.calls[0][1].body as string)).toMatchObject({thread_name: 't', embeds});
+		const retry = JSON.parse(fetchMock.mock.calls[2][1].body as string) as Record<string, unknown>;
+		expect(retry.embeds).toEqual(embeds);
+		expect(retry.thread_name).toBeUndefined();
+	});
+});
+
+describe('resolveForumTagId', () => {
+	it('returns undefined without a tag name or a webhook id in the url', async () => {
+		expect(await resolveForumTagId(URL_FORUM, undefined)).toBeUndefined();
+		expect(await resolveForumTagId(URL_FORUM, '  ')).toBeUndefined();
+		expect(await resolveForumTagId('https://example.test/not-a-webhook', 'new')).toBeUndefined();
 	});
 });

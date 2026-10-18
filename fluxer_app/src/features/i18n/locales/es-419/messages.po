@@ -1808,12 +1808,12 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "{PRODUCT_NAME} debe reiniciarse para deshabilitar la aceleración de hardware de Chromium. Usa esto solo si estás solucionando problemas gráficos o un alto uso de la GPU."
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
-msgstr "{PRODUCT_NAME} necesita reiniciarse para volver a descargar actualizaciones."
+msgid "{PRODUCT_NAME} needs to restart to install updates automatically again."
+msgstr "{PRODUCT_NAME} necesita reiniciarse para volver a instalar actualizaciones automáticamente."
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
-msgstr "{PRODUCT_NAME} necesita reiniciarse para dejar de descargar actualizaciones. Puede quedarse obsoleto y dejar de funcionar con el servicio hasta que vuelvas a activar las actualizaciones."
+msgid "{PRODUCT_NAME} needs to restart to stop updating while starting. When an update is available, you can install it from the app whenever you like."
+msgstr "{PRODUCT_NAME} necesita reiniciarse para dejar de actualizarse al iniciarse. Cuando haya una actualización disponible, puedes instalarla desde la app cuando quieras."
 
 #. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -1834,6 +1834,16 @@ msgstr "Icono de la aplicación {productName}"
 #: src/features/user/components/modals/tabs/notifications_tab/PushSettings.tsx
 msgid "{productName} avoids sending push notifications to your mobile devices when you are at your computer. Choose how long you need to be inactive on desktop before you receive push notifications."
 msgstr "{productName} evita enviar notificaciones push a tus dispositivos móviles cuando estás usando tu computadora. Elige cuánto tiempo necesitas estar inactivo en el escritorio antes de que recibas las notificaciones push."
+
+#. First sentence of the network blocked screen when a rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network because of activity that broke its rules."
+msgstr "{productName} bloqueó el acceso desde esta red debido a una actividad que infringía sus reglas."
+
+#. First sentence of the network blocked screen when no rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network."
+msgstr "{productName} bloqueó el acceso desde esta red."
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
 #: src/features/user/components/popouts/UserProfileBadges.tsx
@@ -2024,11 +2034,6 @@ msgstr "{productName} detectó un posible ataque aquí. Las invitaciones están 
 msgid "{productName} Staff"
 msgstr "Personal de {productName}"
 
-#. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
-msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
-msgstr "{productName} deja de descargar actualizaciones. Puede quedarse desactualizado y dejar de funcionar con el servicio hasta que las actualizaciones se vuelvan a activar. Tiene efecto la próxima vez que se inicie {productName}."
-
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2043,6 +2048,11 @@ msgstr "{productName} Visionary"
 #: src/features/user/components/popouts/UserProfileBadges.tsx
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} Visionary desde {premiumSinceFormatted}"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} won't update while starting. When an update is available, you can install it from the app whenever you like. Takes effect the next time {productName} starts."
+msgstr "{productName} no se actualizará mientras se está iniciando. Cuando haya una actualización disponible, podrás instalarla desde la app cuando quieras. Tendrá efecto la próxima vez que se inicie {productName}."
 
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts
@@ -2879,10 +2889,20 @@ msgstr "Estados forzados de cuenta y premium"
 msgid "Account and security details are hidden"
 msgstr "Los detalles de la cuenta y seguridad están ocultos"
 
+#. Title of the sign-in screen for an account suspended with no end date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account banned"
+msgstr "Cuenta suspendida de forma permanente"
+
 #. Short label in the authentication claim account modal. Keep the tone plain and specific.
 #: src/features/auth/components/modals/ClaimAccountModal.tsx
 msgid "Account claimed successfully"
 msgstr "Registro de la cuenta completado"
+
+#. Title of the sign-in screen for an account the team closed and will delete.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account closed"
+msgstr "Cuenta cerrada"
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx
 msgid "Account connected"
@@ -2917,6 +2937,11 @@ msgstr "Eliminar cuenta"
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx
 msgid "Account state"
 msgstr "Estado de la cuenta"
+
+#. Title of the sign-in screen for an account suspended until a set date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account suspended"
+msgstr "Cuenta suspendida"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts
@@ -10426,7 +10451,7 @@ msgid "Couldn't send the friend request. Try again."
 msgstr "No se pudo enviar la solicitud de amistad. Intenta de nuevo."
 
 #. Title of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Couldn't send the verification email"
 msgstr "No se pudo enviar el correo de verificación"
 
@@ -11540,6 +11565,11 @@ msgstr "Decide cómo se aplican los límites premium a las personas en esta inst
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts
 msgid "Decide whether replies @mention you by default"
 msgstr "Decide si las respuestas te @mencionan por defecto"
+
+#. Reference line on the account restriction screen. People quote this ID when they appeal.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Decision ID: {decisionId}"
+msgstr "ID de la decisión: {decisionId}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -13020,10 +13050,22 @@ msgstr "Listo"
 msgid "Double-click"
 msgstr "Doble clic"
 
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#. Short label for an advanced preference that edits your own message or replies to someone else's when you double-click it.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click a message to edit or reply"
+msgstr "Haz doble clic en un mensaje para editarlo o responder"
+
 #. Empty / hint text on the screen-share hover card explaining how to start watching a remote stream.
 #: src/features/voice/components/StreamWatchHoverCard.tsx
 msgid "Double-click someone to watch their stream."
 msgstr "Haz doble clic en alguien para ver su transmisión."
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click your own message to edit it, or someone else's message to reply to it"
+msgstr "Haz doble clic en tu propio mensaje para editarlo, o en el mensaje de otra persona para responderle"
 
 #. Button that downloads account backup codes as a text file.
 #. Generic action label that downloads an attachment / file.
@@ -13227,6 +13269,11 @@ msgstr "Arrastra para reposicionar el ícono de tu grupo y usa la rueda de despl
 #: src/features/expressions/components/modals/AssetCropModal.tsx
 msgid "Drag to reposition your invite background and use the scroll wheel or pinch to zoom. The recommended minimum size is {minimumWidth}×{minimumHeight} pixels (16:9)."
 msgstr "Arrastra para reubicar el fondo de tu invitación y usa la rueda de desplazamiento o pellizca para hacer zoom. El tamaño mínimo recomendado es de {minimumWidth}×{minimumHeight} píxeles (16:9)."
+
+#. Desktop setting description under the dark taskbar badge toggle on Windows.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Draw the unread badge on the {productName} taskbar button in dark gray instead of red."
+msgstr "Dibuja la insignia de no leído en el botón de la barra de tareas de {productName} en gris oscuro en lugar de rojo."
 
 #. Description text in the theme studio assets section.
 #: src/features/theme_studio/sections/AssetsSection.tsx
@@ -17535,10 +17582,20 @@ msgstr "Qué parte del historial reciente de mensajes del miembro se eliminará.
 msgid "How this works"
 msgstr "Cómo funciona"
 
+#. Heading on the account restriction screen above the appeal instructions.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How to appeal"
+msgstr "Cómo apelar"
+
 #. Heading above the recovery steps in the printed or downloaded recovery kit.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "How to recover your account"
 msgstr "Cómo recuperar tu cuenta"
+
+#. Heading on the account restriction screen above how the case reached the team and who decided it.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How we decided"
+msgstr "Cómo lo decidimos"
 
 #. Accessible label in the language and locale names. Keep it concise.
 #: src/features/user/utils/LocaleUtils.ts
@@ -17733,6 +17790,31 @@ msgstr "Si guardas este nombre de usuario, tu etiqueta se volverá a generar ale
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx
 msgid "If you save this username, your tag will reroll randomly when your {PREMIUM_PRODUCT_NAME} expires, unless it renews."
 msgstr "Si guardas este nombre de usuario, tu etiqueta se volverá a generar aleatoriamente cuando caduque tu {PREMIUM_PRODUCT_NAME}, a menos que se renueve."
+
+#. Paragraph on the network blocked screen for people who share a network with others. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "If you share this network, for example at school, at work, on public Wi-Fi, through your mobile carrier or a VPN, this block may have nothing to do with you. The quickest fix is to switch networks, for example to mobile data instead of Wi-Fi, or to turn your VPN on or off."
+msgstr "Si compartes esta red, por ejemplo en la escuela, en el trabajo, en una red Wi-Fi pública, a través de tu compañía de celular o de una VPN, es posible que este bloqueo no tenga nada que ver contigo. La forma más rápida de solucionarlo es cambiar de red, por ejemplo usar datos móviles en lugar de Wi-Fi, o activar o desactivar tu VPN."
+
+#. Line on the network blocked screen. The link is the contact email address and ip is the blocked IP address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think this block is a mistake, email <0>{email}</0> and include your IP address, {ip}."
+msgstr "Si crees que este bloqueo es un error, escribe a <0>{email}</0> e indica tu dirección IP, {ip}."
+
+#. Appeal line for a restriction from before the team recorded decisions, with no appeal deadline. The link is the appeals email address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> and include your username."
+msgstr "Si crees que nos equivocamos, escribe a <0>{email}</0> e indica tu nombre de usuario."
+
+#. Appeal line for an account with no email address. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Include the decision ID and your username. Appeals are free, and a person reviews each one."
+msgstr "Si crees que nos equivocamos, escribe a <0>{email}</0> a más tardar el {deadline}. Indica el ID de la decisión y tu nombre de usuario. Apelar es gratis, y una persona revisa cada apelación."
+
+#. Appeal line on the account restriction screen. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Write from the email address on your account if you can, and include the decision ID. Appeals are free, and a person reviews each one."
+msgstr "Si crees que nos equivocamos, escribe a <0>{email}</0> a más tardar el {deadline}. Si puedes, escribe desde la dirección de correo electrónico de tu cuenta e indica el ID de la decisión. Apelar es gratis, y una persona revisa cada apelación."
 
 #: src/features/auth/components/modals/AccountDeleteModal.tsx
 msgid "If you want to export your data or delete your messages first, please visit {privacyDashboardPath} before proceeding."
@@ -22291,6 +22373,11 @@ msgstr "Países Bajos"
 msgid "Network"
 msgstr "Red"
 
+#. Title of the screen and dialog shown when the instance blocks the network a request came from.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "Network blocked"
+msgstr "Red bloqueada"
+
 #. Error message in the devices tab.
 #: src/features/user/components/modals/tabs/DevicesTab.tsx
 msgid "Network error"
@@ -23353,6 +23440,11 @@ msgstr "Nota"
 msgid "Note (only visible to you)"
 msgstr "Nota (solo visible para ti)"
 
+#. Line on the account restriction screen with a note the team wrote to the account holder.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Note from our team: {statement}"
+msgstr "Nota de nuestro equipo: {statement}"
+
 #. Notification level option. Suppresses all pushes for the channel or community. Paired with "All messages" and "Only mentions".
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "Nothing"
@@ -24340,6 +24432,11 @@ msgstr "Se volvió a abrir el hilo"
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "Opens in a new tab"
 msgstr "Se abre en una pestaña nueva"
+
+#. Screen-reader-only hint on a settings menu entry that opens a web page in the browser instead of a settings page.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Opens in your browser"
+msgstr "Se abre en tu navegador"
 
 #. Screen-reader-only hint for the Members entry in community settings. The entry receives keyboard focus without automatically opening.
 #: src/features/app/components/dialogs/components/DesktopGuildSettingsView.tsx
@@ -26380,6 +26477,11 @@ msgstr "CSS rápido reemplazado desde {fileName}."
 msgid "Quick reactions"
 msgstr "Reacciones rápidas"
 
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Quick reply"
+msgstr "Respuesta rápida"
+
 #. Accessible label for the desktop quick switcher modal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/direct_message/DirectMessageList.tsx
@@ -27802,8 +27904,10 @@ msgstr "Reenviar ({secondsRemaining} s)"
 msgid "Resend code"
 msgstr "Reenviar código"
 
+#. Button label that sends another verification email after one was already sent. Keep it concise.
 #: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
 #: src/features/auth/flow/IpAuthorizationScreen.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Resend email"
 msgstr "Reenviar correo"
 
@@ -28530,6 +28634,16 @@ msgstr "Casilla de verificación de estilo redondo"
 #: src/features/channel/components/guild_members_page/MembersTableFooter.tsx
 msgid "Rows per page"
 msgstr "Filas por página"
+
+#. Names the rule behind a restriction when the instance publishes no link for it. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: {title}"
+msgstr "Regla: {title}"
+
+#. Names the rule behind a restriction, with the rule title linked to the rule. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: <0>{title}</0>"
+msgstr "Regla: <0>{title}</0>"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -29825,6 +29939,11 @@ msgstr "Enviar mensajes con síntesis de voz"
 #: src/features/moderation/components/report/ReportStepEmail.tsx
 msgid "Send verification code"
 msgstr "Enviar código de verificación"
+
+#. Button label on prompts that ask the user to verify their email, such as the add friend form. Sends a verification email right away. Keep it concise.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
+msgid "Send verification email"
+msgstr "Enviar correo de verificación"
 
 #. Accessible label and tooltip for the send button after recording a voice message.
 #. Keyboard shortcut action label that opens the desktop voice message composer.
@@ -31587,7 +31706,7 @@ msgid "Something went wrong while saving this setting. Please try again in a mom
 msgstr "Algo salió mal al guardar esta configuración. Intenta de nuevo en un momento."
 
 #. Body of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Something went wrong while sending your verification email. Please try again in a moment."
 msgstr "Algo salió mal al enviar tu correo electrónico de verificación. Intenta de nuevo en un momento."
 
@@ -32631,6 +32750,11 @@ msgstr "Submenú"
 msgid "Submit application"
 msgstr "Enviar solicitud"
 
+#. Settings menu entry that opens the feedback website, where people suggest features and report problems.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Submit feedback"
+msgstr "Enviar comentarios"
+
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Submitting"
 msgstr "Enviando"
@@ -33542,6 +33666,11 @@ msgstr "El baneo ya había expirado el {date}"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts
 msgid "The ban was scheduled to expire on {date}"
 msgstr "El baneo estaba programado para expirar el {date}"
+
+#. Line on the network blocked screen for a block with an end. date is a date and time.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "The block ends on {date}."
+msgstr "El bloqueo termina el {date}."
 
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthSuccessState.tsx
 msgid "The bot has been added to <0>{destinationName}</0>."
@@ -37101,6 +37230,11 @@ msgstr "Usa emojis y stickers personalizados en cualquier comunidad"
 msgid "Use custom image"
 msgstr "Usar imagen personalizada"
 
+#. Desktop setting toggle label on Windows. Switches the unread badge drawn over the taskbar button from red to dark gray.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Use dark taskbar badge"
+msgstr "Usar insignia oscura en la barra de tareas"
+
 #. Short label in the theme tab content. Keep it concise.
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx
 msgid "Use dark theme"
@@ -37631,8 +37765,8 @@ msgstr "Código de verificación"
 msgid "Verification code sent"
 msgstr "Código de verificación enviado"
 
-#. Toast confirmation in the email verification alert after a verification email has been sent.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#. Toast confirmation shown after a verification email has been sent.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Verification email sent. Check your inbox."
 msgstr "Correo electrónico de verificación enviado. Revisa tu bandeja de entrada."
 
@@ -38954,6 +39088,11 @@ msgctxt "us-state"
 msgid "West Virginia"
 msgstr "Virginia Occidental"
 
+#. Heading on the account restriction screen above what the team did and what it means.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "What happened"
+msgstr "Qué pasó"
+
 #. Display-name field placeholder in account registration forms.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "What should people call you?"
@@ -38978,6 +39117,11 @@ msgstr "Lo que estás compartiendo no se está actualizando"
 #: src/features/user/utils/UserMessageDescriptors.ts
 msgid "What's happening?"
 msgstr "¿Qué pasa?"
+
+#. Settings menu entry that opens the latest patch notes for the app on the website.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "What's new"
+msgstr "Novedades"
 
 #. DSA report page: title of the reason step while its questions load or when they could not be loaded.
 #: src/features/moderation/components/report/ReportStepReason.tsx
@@ -39116,6 +39260,11 @@ msgstr "Quién está escribiendo"
 #: src/features/messaging/components/alerts/TooManyAttachmentsModal.tsx
 msgid "Whoa, this is heavy"
 msgstr "Uhm, esto es demasiado"
+
+#. Heading on the account restriction screen above the rule that was broken and the findings.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Why"
+msgstr "Por qué"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts
@@ -40048,7 +40197,7 @@ msgstr "Estás editando mensajes muy rápido"
 #. Title of the error modal shown when resending a verification email is rate-limited.
 #. Title of the error modal shown when sharing or sending a theme link is rate limited.
 #: src/features/app/components/alerts/CommonErrorModalDescriptors.ts
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 #: src/features/discovery/commands/DiscoveryJoinCommands.tsx
 #: src/features/emoji/components/emojis/EmojiListItem.tsx
 #: src/features/theme/components/modals/ShareThemeModal.tsx
@@ -40212,7 +40361,7 @@ msgid "You've received a gift"
 msgstr "Recibiste un regalo"
 
 #. Body of the error modal shown when resending a verification email is rate-limited.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "You've requested too many verification emails. Please wait a moment and try again."
 msgstr "Has solicitado demasiados correos de verificación. Espera un momento y vuelve a intentarlo."
 

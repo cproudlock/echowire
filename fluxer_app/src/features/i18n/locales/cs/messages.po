@@ -1808,12 +1808,12 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "Aplikace {PRODUCT_NAME} se musí restartovat, aby se vypnula hardwarová akcelerace Chromia. Tuto možnost použijte pouze při řešení problémů s grafikou nebo vysokým využitím GPU."
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
-msgstr "{PRODUCT_NAME} se musí restartovat, aby mohl znovu začít stahovat aktualizace."
+msgid "{PRODUCT_NAME} needs to restart to install updates automatically again."
+msgstr "{PRODUCT_NAME} se musí restartovat, aby mohl znovu automaticky instalovat aktualizace."
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
-msgstr "{PRODUCT_NAME} se musí restartovat, aby se zastavilo stahování aktualizací. Může zaostávat a přestat fungovat se službou, dokud aktualizace znovu nezapnete."
+msgid "{PRODUCT_NAME} needs to restart to stop updating while starting. When an update is available, you can install it from the app whenever you like."
+msgstr "{PRODUCT_NAME} se musí restartovat, aby se zastavily aktualizace při spouštění. Když je k dispozici aktualizace, můžete si ji kdykoli nainstalovat z aplikace."
 
 #. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -1834,6 +1834,16 @@ msgstr "Ikona aplikace {productName}"
 #: src/features/user/components/modals/tabs/notifications_tab/PushSettings.tsx
 msgid "{productName} avoids sending push notifications to your mobile devices when you are at your computer. Choose how long you need to be inactive on desktop before you receive push notifications."
 msgstr "{productName} neposílá push oznámení do vašich mobilních zařízení, když jste u počítače. Zvolte, jak dlouho musíte být na počítači neaktivní, než začnete dostávat push oznámení."
+
+#. First sentence of the network blocked screen when a rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network because of activity that broke its rules."
+msgstr "{productName} zablokoval přístup z této sítě kvůli aktivitě, která porušila jeho pravidla."
+
+#. First sentence of the network blocked screen when no rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network."
+msgstr "{productName} zablokoval přístup z této sítě."
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
 #: src/features/user/components/popouts/UserProfileBadges.tsx
@@ -2024,11 +2034,6 @@ msgstr "Aplikace {productName} zde zjistila možný nájezd. Pozvánky jsou poza
 msgid "{productName} Staff"
 msgstr "Tým {productName}"
 
-#. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
-msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
-msgstr "{productName} přestane stahovat aktualizace. Může zaostávat a přestat fungovat se službou, dokud se aktualizace znovu nezapnou. Projeví se při příštím spuštění {productName}."
-
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2043,6 +2048,11 @@ msgstr "{productName} Visionary"
 #: src/features/user/components/popouts/UserProfileBadges.tsx
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} Visionary od {premiumSinceFormatted}"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} won't update while starting. When an update is available, you can install it from the app whenever you like. Takes effect the next time {productName} starts."
+msgstr "{productName} se během spouštění neaktualizuje. Když bude aktualizace k dispozici, můžete si ji kdykoli nainstalovat z aplikace. Projeví se při příštím spuštění {productName}."
 
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts
@@ -2879,10 +2889,20 @@ msgstr "Přepsání účtu a prémiových funkcí"
 msgid "Account and security details are hidden"
 msgstr "Podrobnosti o účtu a zabezpečení jsou skryté"
 
+#. Title of the sign-in screen for an account suspended with no end date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account banned"
+msgstr "Účet zablokován"
+
 #. Short label in the authentication claim account modal. Keep the tone plain and specific.
 #: src/features/auth/components/modals/ClaimAccountModal.tsx
 msgid "Account claimed successfully"
 msgstr "Registrace účtu byla úspěšně dokončena"
+
+#. Title of the sign-in screen for an account the team closed and will delete.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account closed"
+msgstr "Účet zrušen"
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx
 msgid "Account connected"
@@ -2917,6 +2937,11 @@ msgstr "Odstranění účtu"
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx
 msgid "Account state"
 msgstr "Stav účtu"
+
+#. Title of the sign-in screen for an account suspended until a set date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account suspended"
+msgstr "Účet pozastaven"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts
@@ -10426,7 +10451,7 @@ msgid "Couldn't send the friend request. Try again."
 msgstr "Nepodařilo se odeslat žádost o přátelství. Zkuste to znovu."
 
 #. Title of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Couldn't send the verification email"
 msgstr "Ověřovací e-mail se nepodařilo odeslat"
 
@@ -11540,6 +11565,11 @@ msgstr "Rozhodněte, jak se prémiové limity vztahují na lidi v této instanci
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts
 msgid "Decide whether replies @mention you by default"
 msgstr "Určete, zda vás odpovědi ve výchozím nastavení @zmiňují"
+
+#. Reference line on the account restriction screen. People quote this ID when they appeal.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Decision ID: {decisionId}"
+msgstr "ID rozhodnutí: {decisionId}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -13020,10 +13050,22 @@ msgstr "Hotovo"
 msgid "Double-click"
 msgstr "Dvojklik"
 
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#. Short label for an advanced preference that edits your own message or replies to someone else's when you double-click it.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click a message to edit or reply"
+msgstr "Dvojklikem na zprávu ji upravíte nebo na ni odpovíte"
+
 #. Empty / hint text on the screen-share hover card explaining how to start watching a remote stream.
 #: src/features/voice/components/StreamWatchHoverCard.tsx
 msgid "Double-click someone to watch their stream."
 msgstr "Dvojitým kliknutím na někoho se připojíte k jeho streamu."
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click your own message to edit it, or someone else's message to reply to it"
+msgstr "Dvojklikem na svou zprávu ji upravíte, dvojklikem na zprávu někoho jiného na ni odpovíte"
 
 #. Button that downloads account backup codes as a text file.
 #. Generic action label that downloads an attachment / file.
@@ -13227,6 +13269,11 @@ msgstr "Přetažením změňte polohu ikony skupiny. Kolečkem myši nebo gestem
 #: src/features/expressions/components/modals/AssetCropModal.tsx
 msgid "Drag to reposition your invite background and use the scroll wheel or pinch to zoom. The recommended minimum size is {minimumWidth}×{minimumHeight} pixels (16:9)."
 msgstr "Přetažením změňte polohu pozadí pozvánky. Kolečkem myši nebo gestem dvěma prsty upravte přiblížení. Doporučené minimální rozměry jsou {minimumWidth} × {minimumHeight} pixelů (16:9)."
+
+#. Desktop setting description under the dark taskbar badge toggle on Windows.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Draw the unread badge on the {productName} taskbar button in dark gray instead of red."
+msgstr "Zobrazit odznak nepřečtených zpráv na tlačítku {productName} na hlavním panelu tmavě šedě místo červeně."
 
 #. Description text in the theme studio assets section.
 #: src/features/theme_studio/sections/AssetsSection.tsx
@@ -17535,10 +17582,20 @@ msgstr "Kolik z nedávné historie zpráv člena chcete smazat."
 msgid "How this works"
 msgstr "Jak to funguje"
 
+#. Heading on the account restriction screen above the appeal instructions.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How to appeal"
+msgstr "Jak se odvolat"
+
 #. Heading above the recovery steps in the printed or downloaded recovery kit.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "How to recover your account"
 msgstr "Jak obnovit svůj účet"
+
+#. Heading on the account restriction screen above how the case reached the team and who decided it.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How we decided"
+msgstr "Jak jsme rozhodli"
 
 #. Accessible label in the language and locale names. Keep it concise.
 #: src/features/user/utils/LocaleUtils.ts
@@ -17733,6 +17790,31 @@ msgstr "Pokud toto uživatelské jméno uložíte, váš čtyřmístný identifi
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx
 msgid "If you save this username, your tag will reroll randomly when your {PREMIUM_PRODUCT_NAME} expires, unless it renews."
 msgstr "Pokud toto uživatelské jméno uložíte, váš čtyřmístný identifikátor se po vypršení předplatného {PREMIUM_PRODUCT_NAME} změní na náhodné číslo, pokud se předplatné neobnoví."
+
+#. Paragraph on the network blocked screen for people who share a network with others. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "If you share this network, for example at school, at work, on public Wi-Fi, through your mobile carrier or a VPN, this block may have nothing to do with you. The quickest fix is to switch networks, for example to mobile data instead of Wi-Fi, or to turn your VPN on or off."
+msgstr "Pokud tuto síť sdílíte s dalšími lidmi, například ve škole, v práci, na veřejné Wi-Fi, u mobilního operátora nebo přes VPN, toto blokování s vámi nemusí vůbec souviset. Nejrychleji pomůže přepnout na jinou síť, například z Wi-Fi na mobilní data, nebo zapnout či vypnout VPN."
+
+#. Line on the network blocked screen. The link is the contact email address and ip is the blocked IP address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think this block is a mistake, email <0>{email}</0> and include your IP address, {ip}."
+msgstr "Pokud si myslíte, že je toto blokování omyl, napište na <0>{email}</0> a uveďte svou IP adresu: {ip}."
+
+#. Appeal line for a restriction from before the team recorded decisions, with no appeal deadline. The link is the appeals email address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> and include your username."
+msgstr "Pokud si myslíte, že jsme udělali chybu, napište na <0>{email}</0> a uveďte své uživatelské jméno."
+
+#. Appeal line for an account with no email address. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Include the decision ID and your username. Appeals are free, and a person reviews each one."
+msgstr "Pokud si myslíte, že jsme udělali chybu, napište na <0>{email}</0> do {deadline}. Uveďte ID rozhodnutí a své uživatelské jméno. Odvolání je zdarma a každé posoudí člověk."
+
+#. Appeal line on the account restriction screen. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Write from the email address on your account if you can, and include the decision ID. Appeals are free, and a person reviews each one."
+msgstr "Pokud si myslíte, že jsme udělali chybu, napište na <0>{email}</0> do {deadline}. Pokud můžete, pište z e-mailové adresy svého účtu a uveďte ID rozhodnutí. Odvolání je zdarma a každé posoudí člověk."
 
 #: src/features/auth/components/modals/AccountDeleteModal.tsx
 msgid "If you want to export your data or delete your messages first, please visit {privacyDashboardPath} before proceeding."
@@ -22291,6 +22373,11 @@ msgstr "Nizozemsko"
 msgid "Network"
 msgstr "Síť"
 
+#. Title of the screen and dialog shown when the instance blocks the network a request came from.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "Network blocked"
+msgstr "Síť zablokována"
+
 #. Error message in the devices tab.
 #: src/features/user/components/modals/tabs/DevicesTab.tsx
 msgid "Network error"
@@ -23353,6 +23440,11 @@ msgstr "Poznámka"
 msgid "Note (only visible to you)"
 msgstr "Poznámka (viditelná jen pro vás)"
 
+#. Line on the account restriction screen with a note the team wrote to the account holder.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Note from our team: {statement}"
+msgstr "Poznámka od našeho týmu: {statement}"
+
 #. Notification level option. Suppresses all pushes for the channel or community. Paired with "All messages" and "Only mentions".
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "Nothing"
@@ -24340,6 +24432,11 @@ msgstr "Vlákno bylo znovu otevřeno"
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "Opens in a new tab"
 msgstr "Otevře se v nové kartě"
+
+#. Screen-reader-only hint on a settings menu entry that opens a web page in the browser instead of a settings page.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Opens in your browser"
+msgstr "Otevře se v prohlížeči"
 
 #. Screen-reader-only hint for the Members entry in community settings. The entry receives keyboard focus without automatically opening.
 #: src/features/app/components/dialogs/components/DesktopGuildSettingsView.tsx
@@ -26380,6 +26477,11 @@ msgstr "Rychlé CSS nahrazeno ze souboru {fileName}."
 msgid "Quick reactions"
 msgstr "Rychlé reakce"
 
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Quick reply"
+msgstr "Rychlá odpověď"
+
 #. Accessible label for the desktop quick switcher modal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/direct_message/DirectMessageList.tsx
@@ -27802,8 +27904,10 @@ msgstr "Znovu odeslat ({secondsRemaining} s)"
 msgid "Resend code"
 msgstr "Znovu odeslat kód"
 
+#. Button label that sends another verification email after one was already sent. Keep it concise.
 #: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
 #: src/features/auth/flow/IpAuthorizationScreen.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Resend email"
 msgstr "Znovu odeslat e-mail"
 
@@ -28530,6 +28634,16 @@ msgstr "Kulaté zaškrtávací políčko"
 #: src/features/channel/components/guild_members_page/MembersTableFooter.tsx
 msgid "Rows per page"
 msgstr "Řádků na stránku"
+
+#. Names the rule behind a restriction when the instance publishes no link for it. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: {title}"
+msgstr "Pravidlo: {title}"
+
+#. Names the rule behind a restriction, with the rule title linked to the rule. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: <0>{title}</0>"
+msgstr "Pravidlo: <0>{title}</0>"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -29825,6 +29939,11 @@ msgstr "Odesílat zprávy převodem textu na řeč"
 #: src/features/moderation/components/report/ReportStepEmail.tsx
 msgid "Send verification code"
 msgstr "Odeslat ověřovací kód"
+
+#. Button label on prompts that ask the user to verify their email, such as the add friend form. Sends a verification email right away. Keep it concise.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
+msgid "Send verification email"
+msgstr "Odeslat ověřovací e-mail"
 
 #. Accessible label and tooltip for the send button after recording a voice message.
 #. Keyboard shortcut action label that opens the desktop voice message composer.
@@ -31587,7 +31706,7 @@ msgid "Something went wrong while saving this setting. Please try again in a mom
 msgstr "Při ukládání tohoto nastavení se něco pokazilo. Zkuste to prosím za chvíli znovu."
 
 #. Body of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Something went wrong while sending your verification email. Please try again in a moment."
 msgstr "Při odesílání ověřovacího e-mailu se něco pokazilo. Zkuste to prosím za chvíli znovu."
 
@@ -32631,6 +32750,11 @@ msgstr "Podnabídka"
 msgid "Submit application"
 msgstr "Odeslat žádost"
 
+#. Settings menu entry that opens the feedback website, where people suggest features and report problems.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Submit feedback"
+msgstr "Odeslat zpětnou vazbu"
+
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Submitting"
 msgstr "Odesílání"
@@ -33542,6 +33666,11 @@ msgstr "Ban už vypršel {date}"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts
 msgid "The ban was scheduled to expire on {date}"
 msgstr "Ban měl vypršet {date}"
+
+#. Line on the network blocked screen for a block with an end. date is a date and time.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "The block ends on {date}."
+msgstr "Blokování platí do {date}."
 
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthSuccessState.tsx
 msgid "The bot has been added to <0>{destinationName}</0>."
@@ -37101,6 +37230,11 @@ msgstr "Používejte vlastní emotikony a nálepky v jakékoli komunitě"
 msgid "Use custom image"
 msgstr "Použít vlastní obrázek"
 
+#. Desktop setting toggle label on Windows. Switches the unread badge drawn over the taskbar button from red to dark gray.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Use dark taskbar badge"
+msgstr "Použít tmavý odznak na hlavním panelu"
+
 #. Short label in the theme tab content. Keep it concise.
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx
 msgid "Use dark theme"
@@ -37631,8 +37765,8 @@ msgstr "Ověřovací kód"
 msgid "Verification code sent"
 msgstr "Ověřovací kód odeslán"
 
-#. Toast confirmation in the email verification alert after a verification email has been sent.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#. Toast confirmation shown after a verification email has been sent.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Verification email sent. Check your inbox."
 msgstr "Ověřovací e-mail byl odeslán. Zkontrolujte si doručenou poštu."
 
@@ -38954,6 +39088,11 @@ msgctxt "us-state"
 msgid "West Virginia"
 msgstr "Západní Virginie"
 
+#. Heading on the account restriction screen above what the team did and what it means.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "What happened"
+msgstr "Co se stalo"
+
 #. Display-name field placeholder in account registration forms.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "What should people call you?"
@@ -38978,6 +39117,11 @@ msgstr "Sdílený obsah se neaktualizuje"
 #: src/features/user/utils/UserMessageDescriptors.ts
 msgid "What's happening?"
 msgstr "Co se děje?"
+
+#. Settings menu entry that opens the latest patch notes for the app on the website.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "What's new"
+msgstr "Co je nového"
 
 #. DSA report page: title of the reason step while its questions load or when they could not be loaded.
 #: src/features/moderation/components/report/ReportStepReason.tsx
@@ -39116,6 +39260,11 @@ msgstr "Kdo píše"
 #: src/features/messaging/components/alerts/TooManyAttachmentsModal.tsx
 msgid "Whoa, this is heavy"
 msgstr "Jejda, to je nálož"
+
+#. Heading on the account restriction screen above the rule that was broken and the findings.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Why"
+msgstr "Proč"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts
@@ -40048,7 +40197,7 @@ msgstr "Zprávy upravujete příliš rychle"
 #. Title of the error modal shown when resending a verification email is rate-limited.
 #. Title of the error modal shown when sharing or sending a theme link is rate limited.
 #: src/features/app/components/alerts/CommonErrorModalDescriptors.ts
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 #: src/features/discovery/commands/DiscoveryJoinCommands.tsx
 #: src/features/emoji/components/emojis/EmojiListItem.tsx
 #: src/features/theme/components/modals/ShareThemeModal.tsx
@@ -40212,7 +40361,7 @@ msgid "You've received a gift"
 msgstr "Dostali jste dárek"
 
 #. Body of the error modal shown when resending a verification email is rate-limited.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "You've requested too many verification emails. Please wait a moment and try again."
 msgstr "Vyžádali jste si příliš mnoho ověřovacích e-mailů. Počkejte chvíli a zkuste to znovu."
 

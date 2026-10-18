@@ -106,8 +106,8 @@ export function getLaunchDesktopTroubleshootingSettings(): DesktopTroubleshootin
 	return launchTroubleshootingSettings;
 }
 
-export function areModuleUpdatesDisabled(): boolean {
-	return getLaunchDesktopTroubleshootingSettings().disableModuleUpdates;
+export function isUpdateOnDemandLaunch(): boolean {
+	return getLaunchDesktopTroubleshootingSettings().disableModuleUpdates && !shouldDisableModuleUpdatesForLaunch();
 }
 
 export function shouldOpenDevToolsOnLaunch(argv: ReadonlyArray<string>): boolean {
@@ -242,6 +242,7 @@ function formatWindowBehavior(settings: DesktopWindowBehaviorSettings): string {
 	return [
 		`showTrayIcon=${settings.showTrayIcon}`,
 		`coloredTrayIcon=${settings.coloredTrayIcon}`,
+		`darkTaskbarBadge=${settings.darkTaskbarBadge}`,
 		`minimizeToTray=${settings.minimizeToTray}`,
 		`closeToTray=${settings.closeToTray}`,
 		`startMinimized=${settings.startMinimized}`,

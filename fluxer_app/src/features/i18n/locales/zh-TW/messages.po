@@ -1808,12 +1808,12 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "{PRODUCT_NAME} 需要重新啟動才能停用 Chromium 的硬體加速。只有在排解顯示異常或 GPU 使用率過高的問題時才使用。"
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
-msgstr "{PRODUCT_NAME} 需要重新啟動才能再次開始下載更新。"
+msgid "{PRODUCT_NAME} needs to restart to install updates automatically again."
+msgstr "{PRODUCT_NAME} 需要重新啟動才能再次自動安裝更新。"
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
-msgstr "{PRODUCT_NAME} 需要重新啟動才能停止下載更新。它可能會落後，直到您重新開啟更新，否則將無法繼續使用此服務。"
+msgid "{PRODUCT_NAME} needs to restart to stop updating while starting. When an update is available, you can install it from the app whenever you like."
+msgstr "{PRODUCT_NAME} 需要重新啟動才能停止啟動時的更新。當有可用更新時，您可以隨時在應用程式中安裝。"
 
 #. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -1834,6 +1834,16 @@ msgstr "{productName} 應用程式圖示"
 #: src/features/user/components/modals/tabs/notifications_tab/PushSettings.tsx
 msgid "{productName} avoids sending push notifications to your mobile devices when you are at your computer. Choose how long you need to be inactive on desktop before you receive push notifications."
 msgstr "{productName} 會在您使用電腦時，避免向您的行動裝置傳送推播通知。請選擇要在桌面端閒置多久之後，才開始接收推播通知。"
+
+#. First sentence of the network blocked screen when a rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network because of activity that broke its rules."
+msgstr "由於有違反規則的活動，{productName} 已封鎖來自此網路的存取。"
+
+#. First sentence of the network blocked screen when no rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network."
+msgstr "{productName} 已封鎖來自此網路的存取。"
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
 #: src/features/user/components/popouts/UserProfileBadges.tsx
@@ -2024,11 +2034,6 @@ msgstr "{productName} 在此偵測到可能的突襲。邀請已暫停，請稍�
 msgid "{productName} Staff"
 msgstr "{productName} 員工"
 
-#. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
-msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
-msgstr "{productName} 會停止下載更新。這可能會導致它落後並停止與服務搭配使用，直到更新重新啟用為止。下次啟動 {productName} 時生效。"
-
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2043,6 +2048,11 @@ msgstr "{productName} 遠見者"
 #: src/features/user/components/popouts/UserProfileBadges.tsx
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} 遠見者，自 {premiumSinceFormatted} 起"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} won't update while starting. When an update is available, you can install it from the app whenever you like. Takes effect the next time {productName} starts."
+msgstr "{productName} 啟動時不會更新。有可用的更新時，您可以隨時從應用程式中安裝。下次啟動 {productName} 時生效。"
 
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts
@@ -2879,10 +2889,20 @@ msgstr "帳號與進階方案覆寫"
 msgid "Account and security details are hidden"
 msgstr "帳號與安全性資訊已隱藏"
 
+#. Title of the sign-in screen for an account suspended with no end date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account banned"
+msgstr "帳號已遭永久停權"
+
 #. Short label in the authentication claim account modal. Keep the tone plain and specific.
 #: src/features/auth/components/modals/ClaimAccountModal.tsx
 msgid "Account claimed successfully"
 msgstr "帳號認領成功"
+
+#. Title of the sign-in screen for an account the team closed and will delete.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account closed"
+msgstr "帳號已關閉"
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx
 msgid "Account connected"
@@ -2917,6 +2937,11 @@ msgstr "移除帳號"
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx
 msgid "Account state"
 msgstr "帳號狀態"
+
+#. Title of the sign-in screen for an account suspended until a set date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account suspended"
+msgstr "帳號已遭暫時停權"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts
@@ -10426,7 +10451,7 @@ msgid "Couldn't send the friend request. Try again."
 msgstr "無法傳送好友邀請。請再試一次。"
 
 #. Title of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Couldn't send the verification email"
 msgstr "無法傳送驗證電子郵件"
 
@@ -11540,6 +11565,11 @@ msgstr "決定進階方案限制如何套用至此實例上的使用者。"
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts
 msgid "Decide whether replies @mention you by default"
 msgstr "決定回覆是否預設 @提及您"
+
+#. Reference line on the account restriction screen. People quote this ID when they appeal.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Decision ID: {decisionId}"
+msgstr "決定 ID：{decisionId}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -13020,10 +13050,22 @@ msgstr "完成"
 msgid "Double-click"
 msgstr "按兩下"
 
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#. Short label for an advanced preference that edits your own message or replies to someone else's when you double-click it.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click a message to edit or reply"
+msgstr "按兩下訊息即可編輯或回覆"
+
 #. Empty / hint text on the screen-share hover card explaining how to start watching a remote stream.
 #: src/features/voice/components/StreamWatchHoverCard.tsx
 msgid "Double-click someone to watch their stream."
 msgstr "對某人按兩下即可觀看他們的直播。"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click your own message to edit it, or someone else's message to reply to it"
+msgstr "按兩下自己的訊息即可編輯，按兩下別人的訊息即可回覆"
 
 #. Button that downloads account backup codes as a text file.
 #. Generic action label that downloads an attachment / file.
@@ -13227,6 +13269,11 @@ msgstr "拖曳以重新調整群組圖示的位置，並使用滾輪或雙指縮
 #: src/features/expressions/components/modals/AssetCropModal.tsx
 msgid "Drag to reposition your invite background and use the scroll wheel or pinch to zoom. The recommended minimum size is {minimumWidth}×{minimumHeight} pixels (16:9)."
 msgstr "拖曳以重新調整邀請背景位置，並使用滾輪或雙指縮放。建議的最小尺寸為 {minimumWidth}×{minimumHeight} 像素 (16:9)。"
+
+#. Desktop setting description under the dark taskbar badge toggle on Windows.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Draw the unread badge on the {productName} taskbar button in dark gray instead of red."
+msgstr "在 Windows 上，將 {productName} 工作列按鈕上的未讀徽章繪製成深灰色，而非紅色。"
 
 #. Description text in the theme studio assets section.
 #: src/features/theme_studio/sections/AssetsSection.tsx
@@ -17535,10 +17582,20 @@ msgstr "要刪除該成員多少近期訊息紀錄。"
 msgid "How this works"
 msgstr "運作方式"
 
+#. Heading on the account restriction screen above the appeal instructions.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How to appeal"
+msgstr "如何申訴"
+
 #. Heading above the recovery steps in the printed or downloaded recovery kit.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "How to recover your account"
 msgstr "如何復原你的帳號"
+
+#. Heading on the account restriction screen above how the case reached the team and who decided it.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How we decided"
+msgstr "我們如何做出決定"
 
 #. Accessible label in the language and locale names. Keep it concise.
 #: src/features/user/utils/LocaleUtils.ts
@@ -17733,6 +17790,31 @@ msgstr "如果您儲存此使用者名稱，您的標籤將在 {PREMIUM_PRODUCT_
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx
 msgid "If you save this username, your tag will reroll randomly when your {PREMIUM_PRODUCT_NAME} expires, unless it renews."
 msgstr "如果您儲存此使用者名稱，當您的 {PREMIUM_PRODUCT_NAME} 到期時，您的標籤將會隨機重新產生，除非續訂。"
+
+#. Paragraph on the network blocked screen for people who share a network with others. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "If you share this network, for example at school, at work, on public Wi-Fi, through your mobile carrier or a VPN, this block may have nothing to do with you. The quickest fix is to switch networks, for example to mobile data instead of Wi-Fi, or to turn your VPN on or off."
+msgstr "如果您與他人共用此網路，例如在學校、在公司、使用公共 Wi-Fi、透過電信業者或 VPN 上網，這項封鎖可能與您無關。最快的解決方法是切換網路，例如改用行動數據而非 Wi-Fi，或開啟或關閉 VPN。"
+
+#. Line on the network blocked screen. The link is the contact email address and ip is the blocked IP address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think this block is a mistake, email <0>{email}</0> and include your IP address, {ip}."
+msgstr "如果您認為這項封鎖有誤，請寄信至 <0>{email}</0>，並附上您的 IP 位址 {ip}。"
+
+#. Appeal line for a restriction from before the team recorded decisions, with no appeal deadline. The link is the appeals email address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> and include your username."
+msgstr "如果您認為我們判斷有誤，請寄信至 <0>{email}</0>，並附上您的使用者名稱。"
+
+#. Appeal line for an account with no email address. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Include the decision ID and your username. Appeals are free, and a person reviews each one."
+msgstr "如果您認為我們判斷有誤，請最遲於 {deadline} 寄信至 <0>{email}</0>。請附上決定 ID 和您的使用者名稱。申訴不收取任何費用，且每件申訴都會由專人審核。"
+
+#. Appeal line on the account restriction screen. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Write from the email address on your account if you can, and include the decision ID. Appeals are free, and a person reviews each one."
+msgstr "如果您認為我們判斷有誤，請最遲於 {deadline} 寄信至 <0>{email}</0>。可以的話，請使用您帳號的電子郵件地址寄信，並附上決定 ID。申訴不收取任何費用，且每件申訴都會由專人審核。"
 
 #: src/features/auth/components/modals/AccountDeleteModal.tsx
 msgid "If you want to export your data or delete your messages first, please visit {privacyDashboardPath} before proceeding."
@@ -22291,6 +22373,11 @@ msgstr "荷蘭"
 msgid "Network"
 msgstr "網路"
 
+#. Title of the screen and dialog shown when the instance blocks the network a request came from.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "Network blocked"
+msgstr "網路已遭封鎖"
+
 #. Error message in the devices tab.
 #: src/features/user/components/modals/tabs/DevicesTab.tsx
 msgid "Network error"
@@ -23353,6 +23440,11 @@ msgstr "備註"
 msgid "Note (only visible to you)"
 msgstr "備註（僅自己可見）"
 
+#. Line on the account restriction screen with a note the team wrote to the account holder.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Note from our team: {statement}"
+msgstr "團隊留言：{statement}"
+
 #. Notification level option. Suppresses all pushes for the channel or community. Paired with "All messages" and "Only mentions".
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "Nothing"
@@ -24340,6 +24432,11 @@ msgstr "重新開啟了討論串"
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "Opens in a new tab"
 msgstr "在新分頁中開啟"
+
+#. Screen-reader-only hint on a settings menu entry that opens a web page in the browser instead of a settings page.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Opens in your browser"
+msgstr "在瀏覽器中開啟"
 
 #. Screen-reader-only hint for the Members entry in community settings. The entry receives keyboard focus without automatically opening.
 #: src/features/app/components/dialogs/components/DesktopGuildSettingsView.tsx
@@ -26380,6 +26477,11 @@ msgstr "快速 CSS 已從「{fileName}」取代。"
 msgid "Quick reactions"
 msgstr "快速反應"
 
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Quick reply"
+msgstr "快速回覆"
+
 #. Accessible label for the desktop quick switcher modal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/direct_message/DirectMessageList.tsx
@@ -27802,8 +27904,10 @@ msgstr "重新傳送（{secondsRemaining} 秒）"
 msgid "Resend code"
 msgstr "重新傳送驗證碼"
 
+#. Button label that sends another verification email after one was already sent. Keep it concise.
 #: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
 #: src/features/auth/flow/IpAuthorizationScreen.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Resend email"
 msgstr "重寄驗證信"
 
@@ -28530,6 +28634,16 @@ msgstr "圓形樣式核取方塊"
 #: src/features/channel/components/guild_members_page/MembersTableFooter.tsx
 msgid "Rows per page"
 msgstr "每頁列數"
+
+#. Names the rule behind a restriction when the instance publishes no link for it. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: {title}"
+msgstr "規則：{title}"
+
+#. Names the rule behind a restriction, with the rule title linked to the rule. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: <0>{title}</0>"
+msgstr "規則：<0>{title}</0>"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -29825,6 +29939,11 @@ msgstr "傳送 TTS 訊息"
 #: src/features/moderation/components/report/ReportStepEmail.tsx
 msgid "Send verification code"
 msgstr "傳送驗證碼"
+
+#. Button label on prompts that ask the user to verify their email, such as the add friend form. Sends a verification email right away. Keep it concise.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
+msgid "Send verification email"
+msgstr "寄送驗證信件"
 
 #. Accessible label and tooltip for the send button after recording a voice message.
 #. Keyboard shortcut action label that opens the desktop voice message composer.
@@ -31587,7 +31706,7 @@ msgid "Something went wrong while saving this setting. Please try again in a mom
 msgstr "儲存此設定時發生錯誤。請稍後再試一次。"
 
 #. Body of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Something went wrong while sending your verification email. Please try again in a moment."
 msgstr "傳送驗證電子郵件時發生錯誤。請稍後再試一次。"
 
@@ -32631,6 +32750,11 @@ msgstr "子選單"
 msgid "Submit application"
 msgstr "送出申請"
 
+#. Settings menu entry that opens the feedback website, where people suggest features and report problems.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Submit feedback"
+msgstr "提交意見回饋"
+
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Submitting"
 msgstr "正在送出"
@@ -33542,6 +33666,11 @@ msgstr "該停權已於 {date} 到期"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts
 msgid "The ban was scheduled to expire on {date}"
 msgstr "該停權原定於 {date} 到期"
+
+#. Line on the network blocked screen for a block with an end. date is a date and time.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "The block ends on {date}."
+msgstr "這項封鎖將於 {date} 結束。"
 
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthSuccessState.tsx
 msgid "The bot has been added to <0>{destinationName}</0>."
@@ -37101,6 +37230,11 @@ msgstr "在任何社群中使用自訂表情符號和貼圖"
 msgid "Use custom image"
 msgstr "使用自訂圖片"
 
+#. Desktop setting toggle label on Windows. Switches the unread badge drawn over the taskbar button from red to dark gray.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Use dark taskbar badge"
+msgstr "使用深色工作列徽章"
+
 #. Short label in the theme tab content. Keep it concise.
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx
 msgid "Use dark theme"
@@ -37631,8 +37765,8 @@ msgstr "驗證碼"
 msgid "Verification code sent"
 msgstr "驗證碼已送出"
 
-#. Toast confirmation in the email verification alert after a verification email has been sent.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#. Toast confirmation shown after a verification email has been sent.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Verification email sent. Check your inbox."
 msgstr "驗證電子郵件已寄出。請檢查您的收件匣。"
 
@@ -38954,6 +39088,11 @@ msgctxt "us-state"
 msgid "West Virginia"
 msgstr "西維吉尼亞州"
 
+#. Heading on the account restriction screen above what the team did and what it means.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "What happened"
+msgstr "發生了什麼事"
+
 #. Display-name field placeholder in account registration forms.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "What should people call you?"
@@ -38978,6 +39117,11 @@ msgstr "您分享的內容沒有更新"
 #: src/features/user/utils/UserMessageDescriptors.ts
 msgid "What's happening?"
 msgstr "近況如何？"
+
+#. Settings menu entry that opens the latest patch notes for the app on the website.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "What's new"
+msgstr "新功能"
 
 #. DSA report page: title of the reason step while its questions load or when they could not be loaded.
 #: src/features/moderation/components/report/ReportStepReason.tsx
@@ -39116,6 +39260,11 @@ msgstr "誰正在輸入"
 #: src/features/messaging/components/alerts/TooManyAttachmentsModal.tsx
 msgid "Whoa, this is heavy"
 msgstr "哇，有點太多了"
+
+#. Heading on the account restriction screen above the rule that was broken and the findings.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Why"
+msgstr "原因"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts
@@ -40048,7 +40197,7 @@ msgstr "您編輯訊息的速度太快了"
 #. Title of the error modal shown when resending a verification email is rate-limited.
 #. Title of the error modal shown when sharing or sending a theme link is rate limited.
 #: src/features/app/components/alerts/CommonErrorModalDescriptors.ts
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 #: src/features/discovery/commands/DiscoveryJoinCommands.tsx
 #: src/features/emoji/components/emojis/EmojiListItem.tsx
 #: src/features/theme/components/modals/ShareThemeModal.tsx
@@ -40212,7 +40361,7 @@ msgid "You've received a gift"
 msgstr "您收到一份禮物"
 
 #. Body of the error modal shown when resending a verification email is rate-limited.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "You've requested too many verification emails. Please wait a moment and try again."
 msgstr "您已要求傳送太多驗證電子郵件。請稍候片刻再試一次。"
 

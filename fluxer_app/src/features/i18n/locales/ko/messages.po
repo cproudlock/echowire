@@ -1808,12 +1808,12 @@ msgid "{PRODUCT_NAME} needs to restart to disable Chromium's hardware accelerati
 msgstr "Chromium의 하드웨어 가속을 비활성화하려면 {PRODUCT_NAME}을(를) 다시 시작해야 합니다. 그래픽 오류나 GPU 사용량이 높은 문제를 해결할 때만 사용하세요."
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to start downloading updates again."
-msgstr "{PRODUCT_NAME}에서 업데이트 다운로드를 다시 시작하려면 다시 시작해야 합니다."
+msgid "{PRODUCT_NAME} needs to restart to install updates automatically again."
+msgstr "{PRODUCT_NAME}에서 업데이트를 다시 자동으로 설치하려면 다시 시작해야 합니다."
 
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedDesktopControls.tsx
-msgid "{PRODUCT_NAME} needs to restart to stop downloading updates. It can fall behind and stop working with the service until you turn updates back on."
-msgstr "{PRODUCT_NAME}에서 업데이트 다운로드를 중지하려면 다시 시작해야 합니다. 업데이트가 뒤처지면 서비스 작동이 중지될 수 있습니다."
+msgid "{PRODUCT_NAME} needs to restart to stop updating while starting. When an update is available, you can install it from the app whenever you like."
+msgstr "{PRODUCT_NAME}을(를) 다시 시작해야 시작 중 업데이트가 중지됩니다. 업데이트를 사용할 수 있을 때 앱에서 원할 때 언제든지 설치할 수 있습니다."
 
 #. Desktop updater modal body for a Flatpak install when a newer desktop version exists. The version placeholder is the new app version and productName is the app name.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
@@ -1834,6 +1834,16 @@ msgstr "{productName} 애플리케이션 아이콘"
 #: src/features/user/components/modals/tabs/notifications_tab/PushSettings.tsx
 msgid "{productName} avoids sending push notifications to your mobile devices when you are at your computer. Choose how long you need to be inactive on desktop before you receive push notifications."
 msgstr "{productName}은 사용자가 컴퓨터를 사용하는 중에는 모바일 기기로 푸시 알림을 보내지 않습니다. 데스크톱에서 얼마나 오래 비활성 상태여야 푸시 알림을 받을지 선택하세요."
+
+#. First sentence of the network blocked screen when a rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network because of activity that broke its rules."
+msgstr "규칙을 위반한 활동 때문에 {productName}에서 이 네트워크의 접속을 차단했어요."
+
+#. First sentence of the network blocked screen when no rule is shown. productName is the app name. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "{productName} blocked access from this network."
+msgstr "{productName}에서 이 네트워크의 접속을 차단했어요."
 
 #. Short badge title in the user profile badges popout. Preserve {productName}; it is inserted by code. English locales use Title Case for official badge titles; other locales should use natural local capitalization.
 #: src/features/user/components/popouts/UserProfileBadges.tsx
@@ -2024,11 +2034,6 @@ msgstr "{productName}에서 잠재적인 레이드를 감지했습니다. 초대
 msgid "{productName} Staff"
 msgstr "{productName} 직원"
 
-#. Settings search entry description. One-line summary of what the settings search entry controls.
-#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
-msgid "{productName} stops downloading updates. It can fall behind and stop working with the service until updates are turned back on. Takes effect the next time {productName} starts."
-msgstr "{productName}에서 업데이트 다운로드를 중지합니다. 이렇게 하면 서비스와 호환되지 않을 수 있으며, 업데이트를 다시 켜기 전까지 작동이 중지될 수 있습니다. 이 설정은 다음에 {productName}을(를) 시작할 때 적용됩니다."
-
 #. Label in the notifications.
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering ensures the gateway can reach your device even when the app is backgrounded."
@@ -2043,6 +2048,11 @@ msgstr "{productName} Visionary"
 #: src/features/user/components/popouts/UserProfileBadges.tsx
 msgid "{productName} Visionary since {premiumSinceFormatted}"
 msgstr "{productName} Visionary ({premiumSinceFormatted}부터)"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
+msgid "{productName} won't update while starting. When an update is available, you can install it from the app whenever you like. Takes effect the next time {productName} starts."
+msgstr "{productName}이(가) 시작 중에는 업데이트되지 않습니다. 업데이트를 사용할 수 있을 때 앱에서 원할 때 설치할 수 있습니다. 다음번 {productName}을(를) 시작할 때 적용됩니다."
 
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts
@@ -2879,10 +2889,20 @@ msgstr "계정 및 프리미엄 재정의"
 msgid "Account and security details are hidden"
 msgstr "계정 및 보안 정보가 숨겨져 있습니다"
 
+#. Title of the sign-in screen for an account suspended with no end date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account banned"
+msgstr "계정 영구 정지"
+
 #. Short label in the authentication claim account modal. Keep the tone plain and specific.
 #: src/features/auth/components/modals/ClaimAccountModal.tsx
 msgid "Account claimed successfully"
 msgstr "계정 등록 완료"
+
+#. Title of the sign-in screen for an account the team closed and will delete.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account closed"
+msgstr "계정 폐쇄"
 
 #: src/features/connection/components/pages/ConnectionCallbackPage.tsx
 msgid "Account connected"
@@ -2917,6 +2937,11 @@ msgstr "계정 삭제"
 #: src/features/channel/components/channel_header_components/developer_tools/AccountPremiumMenu.tsx
 msgid "Account state"
 msgstr "계정 상태"
+
+#. Title of the sign-in screen for an account suspended until a set date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Account suspended"
+msgstr "계정 일시 정지"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/OptionPresets.ts
@@ -10426,7 +10451,7 @@ msgid "Couldn't send the friend request. Try again."
 msgstr "친구 요청을 보낼 수 없습니다. 다시 시도해 주세요."
 
 #. Title of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Couldn't send the verification email"
 msgstr "인증 이메일을 보낼 수 없습니다"
 
@@ -11540,6 +11565,11 @@ msgstr "이 인스턴스의 사용자에게 프리미엄 제한을 적용할 방
 #: src/features/user/components/settings_utils/section_registry/NotificationsSections.ts
 msgid "Decide whether replies @mention you by default"
 msgstr "답글이 기본적으로 나를 @멘션할지 결정합니다"
+
+#. Reference line on the account restriction screen. People quote this ID when they appeal.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Decision ID: {decisionId}"
+msgstr "결정 ID: {decisionId}"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -13020,10 +13050,22 @@ msgstr "완료"
 msgid "Double-click"
 msgstr "더블 클릭"
 
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#. Short label for an advanced preference that edits your own message or replies to someone else's when you double-click it.
+#: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click a message to edit or reply"
+msgstr "메시지를 더블 클릭하여 수정하거나 답장하세요"
+
 #. Empty / hint text on the screen-share hover card explaining how to start watching a remote stream.
 #: src/features/voice/components/StreamWatchHoverCard.tsx
 msgid "Double-click someone to watch their stream."
 msgstr "다른 사람을 더블 클릭하여 스트림을 시청하세요."
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Double-click your own message to edit it, or someone else's message to reply to it"
+msgstr "자신의 메시지를 더블 클릭하여 수정하거나, 다른 사람의 메시지를 더블 클릭하여 답장하세요"
 
 #. Button that downloads account backup codes as a text file.
 #. Generic action label that downloads an attachment / file.
@@ -13227,6 +13269,11 @@ msgstr "그룹 아이콘을 드래그하여 위치를 조정하고 스크롤 휠
 #: src/features/expressions/components/modals/AssetCropModal.tsx
 msgid "Drag to reposition your invite background and use the scroll wheel or pinch to zoom. The recommended minimum size is {minimumWidth}×{minimumHeight} pixels (16:9)."
 msgstr "초대 배경을 드래그하여 위치를 조정하고 스크롤 휠 또는 핀치로 확대/축소하세요. 권장 최소 크기는 {minimumWidth}×{minimumHeight}픽셀(16:9)입니다."
+
+#. Desktop setting description under the dark taskbar badge toggle on Windows.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Draw the unread badge on the {productName} taskbar button in dark gray instead of red."
+msgstr "Windows의 {productName} 작업 표시줄 버튼에 읽지 않은 배지를 빨간색 대신 어두운 회색으로 표시합니다."
 
 #. Description text in the theme studio assets section.
 #: src/features/theme_studio/sections/AssetsSection.tsx
@@ -17535,10 +17582,20 @@ msgstr "멤버의 최근 메시지 기록 중 얼마나 삭제할지 결정합�
 msgid "How this works"
 msgstr "작동 방식"
 
+#. Heading on the account restriction screen above the appeal instructions.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How to appeal"
+msgstr "이의 제기 방법"
+
 #. Heading above the recovery steps in the printed or downloaded recovery kit.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "How to recover your account"
 msgstr "계정 복구 방법"
+
+#. Heading on the account restriction screen above how the case reached the team and who decided it.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "How we decided"
+msgstr "결정 과정"
 
 #. Accessible label in the language and locale names. Keep it concise.
 #: src/features/user/utils/LocaleUtils.ts
@@ -17733,6 +17790,31 @@ msgstr "이 사용자 이름을 저장하면, 갱신하지 않는 한 {PREMIUM_P
 #: src/features/user/components/modals/FluxerTagChangeModal.tsx
 msgid "If you save this username, your tag will reroll randomly when your {PREMIUM_PRODUCT_NAME} expires, unless it renews."
 msgstr "이 사용자 이름을 저장하면, 갱신하지 않는 한 {PREMIUM_PRODUCT_NAME}이(가) 만료될 때 태그가 무작위로 다시 지정됩니다."
+
+#. Paragraph on the network blocked screen for people who share a network with others. Must read the same as the error message for this block.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "If you share this network, for example at school, at work, on public Wi-Fi, through your mobile carrier or a VPN, this block may have nothing to do with you. The quickest fix is to switch networks, for example to mobile data instead of Wi-Fi, or to turn your VPN on or off."
+msgstr "학교, 직장, 공용 Wi-Fi, 이동통신사, VPN 등으로 이 네트워크를 다른 사람과 함께 쓰고 있다면 이 차단은 본인과 관계없을 수도 있어요. 가장 빠른 해결 방법은 Wi-Fi 대신 모바일 데이터를 쓰는 등 네트워크를 바꾸거나, VPN을 켜거나 끄는 거예요."
+
+#. Line on the network blocked screen. The link is the contact email address and ip is the blocked IP address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think this block is a mistake, email <0>{email}</0> and include your IP address, {ip}."
+msgstr "이 차단이 잘못되었다고 생각하면 IP 주소({ip})를 적어 <0>{email}</0> 주소로 이메일을 보내 주세요."
+
+#. Appeal line for a restriction from before the team recorded decisions, with no appeal deadline. The link is the appeals email address.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> and include your username."
+msgstr "결정이 잘못되었다고 생각하면 사용자 이름을 적어 <0>{email}</0> 주소로 이메일을 보내 주세요."
+
+#. Appeal line for an account with no email address. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Include the decision ID and your username. Appeals are free, and a person reviews each one."
+msgstr "결정이 잘못되었다고 생각하면 {deadline}까지 <0>{email}</0> 주소로 이메일을 보내 주세요. 결정 ID와 사용자 이름을 적어 주세요. 이의 제기는 무료이며, 모든 이의 제기는 담당자가 직접 검토해요."
+
+#. Appeal line on the account restriction screen. The link is the appeals email address and deadline is a date.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "If you think we got this wrong, email <0>{email}</0> by {deadline}. Write from the email address on your account if you can, and include the decision ID. Appeals are free, and a person reviews each one."
+msgstr "결정이 잘못되었다고 생각하면 {deadline}까지 <0>{email}</0> 주소로 이메일을 보내 주세요. 가능하면 계정에 등록된 이메일 주소로 보내고, 결정 ID를 적어 주세요. 이의 제기는 무료이며, 모든 이의 제기는 담당자가 직접 검토해요."
 
 #: src/features/auth/components/modals/AccountDeleteModal.tsx
 msgid "If you want to export your data or delete your messages first, please visit {privacyDashboardPath} before proceeding."
@@ -22291,6 +22373,11 @@ msgstr "네덜란드"
 msgid "Network"
 msgstr "네트워크"
 
+#. Title of the screen and dialog shown when the instance blocks the network a request came from.
+#: src/features/auth/AuthMessageDescriptors.ts
+msgid "Network blocked"
+msgstr "네트워크 차단"
+
 #. Error message in the devices tab.
 #: src/features/user/components/modals/tabs/DevicesTab.tsx
 msgid "Network error"
@@ -23353,6 +23440,11 @@ msgstr "메모"
 msgid "Note (only visible to you)"
 msgstr "메모 (나에게만 보임)"
 
+#. Line on the account restriction screen with a note the team wrote to the account holder.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Note from our team: {statement}"
+msgstr "팀에서 남긴 메모: {statement}"
+
 #. Notification level option. Suppresses all pushes for the channel or community. Paired with "All messages" and "Only mentions".
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "Nothing"
@@ -24340,6 +24432,11 @@ msgstr "스레드를 다시 열었습니다"
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "Opens in a new tab"
 msgstr "새 탭에서 열립니다"
+
+#. Screen-reader-only hint on a settings menu entry that opens a web page in the browser instead of a settings page.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Opens in your browser"
+msgstr "브라우저에서 열립니다"
 
 #. Screen-reader-only hint for the Members entry in community settings. The entry receives keyboard focus without automatically opening.
 #: src/features/app/components/dialogs/components/DesktopGuildSettingsView.tsx
@@ -26380,6 +26477,11 @@ msgstr "{fileName}에서 빠른 CSS를 교체했습니다."
 msgid "Quick reactions"
 msgstr "빠른 반응"
 
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
+msgid "Quick reply"
+msgstr "빠른 답장"
+
 #. Accessible label for the desktop quick switcher modal.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/channel/components/direct_message/DirectMessageList.tsx
@@ -27802,8 +27904,10 @@ msgstr "재전송 ({secondsRemaining}초)"
 msgid "Resend code"
 msgstr "코드 재전송"
 
+#. Button label that sends another verification email after one was already sent. Keep it concise.
 #: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
 #: src/features/auth/flow/IpAuthorizationScreen.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Resend email"
 msgstr "이메일 재전송"
 
@@ -28530,6 +28634,16 @@ msgstr "원형 체크박스"
 #: src/features/channel/components/guild_members_page/MembersTableFooter.tsx
 msgid "Rows per page"
 msgstr "페이지당 행 수"
+
+#. Names the rule behind a restriction when the instance publishes no link for it. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: {title}"
+msgstr "규칙: {title}"
+
+#. Names the rule behind a restriction, with the rule title linked to the rule. title is the rule title.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Rule: <0>{title}</0>"
+msgstr "규칙: <0>{title}</0>"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -29825,6 +29939,11 @@ msgstr "TTS 메시지 보내기"
 #: src/features/moderation/components/report/ReportStepEmail.tsx
 msgid "Send verification code"
 msgstr "인증 코드 전송"
+
+#. Button label on prompts that ask the user to verify their email, such as the add friend form. Sends a verification email right away. Keep it concise.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
+msgid "Send verification email"
+msgstr "인증 이메일 보내기"
 
 #. Accessible label and tooltip for the send button after recording a voice message.
 #. Keyboard shortcut action label that opens the desktop voice message composer.
@@ -31587,7 +31706,7 @@ msgid "Something went wrong while saving this setting. Please try again in a mom
 msgstr "설정 저장 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
 #. Body of the error modal shown when sending the verification email fails unexpectedly.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Something went wrong while sending your verification email. Please try again in a moment."
 msgstr "인증 이메일을 보내는 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요."
 
@@ -32631,6 +32750,11 @@ msgstr "하위 메뉴"
 msgid "Submit application"
 msgstr "신청서 제출"
 
+#. Settings menu entry that opens the feedback website, where people suggest features and report problems.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Submit feedback"
+msgstr "피드백 제출"
+
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Submitting"
 msgstr "제출 중"
@@ -33542,6 +33666,11 @@ msgstr "차단은 이미 {date}에 만료되었습니다"
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts
 msgid "The ban was scheduled to expire on {date}"
 msgstr "차단은 {date}에 해제될 예정이었습니다"
+
+#. Line on the network blocked screen for a block with an end. date is a date and time.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "The block ends on {date}."
+msgstr "차단은 {date}에 해제돼요."
 
 #: src/features/auth/components/pages/oauth_authorize_page/OAuthSuccessState.tsx
 msgid "The bot has been added to <0>{destinationName}</0>."
@@ -37101,6 +37230,11 @@ msgstr "커뮤니티에서 나만의 이모티콘과 스티커를 사용하세�
 msgid "Use custom image"
 msgstr "맞춤 이미지 사용"
 
+#. Desktop setting toggle label on Windows. Switches the unread badge drawn over the taskbar button from red to dark gray.
+#: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
+msgid "Use dark taskbar badge"
+msgstr "다크 작업 표시줄 배지 사용"
+
 #. Short label in the theme tab content. Keep it concise.
 #: src/features/user/components/modals/tabs/appearance_tab/theme/ThemeTabContent.tsx
 msgid "Use dark theme"
@@ -37631,8 +37765,8 @@ msgstr "인증 코드"
 msgid "Verification code sent"
 msgstr "인증 코드 전송됨"
 
-#. Toast confirmation in the email verification alert after a verification email has been sent.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#. Toast confirmation shown after a verification email has been sent.
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "Verification email sent. Check your inbox."
 msgstr "인증 이메일을 보냈습니다. 받은편지함을 확인해 주세요."
 
@@ -38954,6 +39088,11 @@ msgctxt "us-state"
 msgid "West Virginia"
 msgstr "웨스트버지니아"
 
+#. Heading on the account restriction screen above what the team did and what it means.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "What happened"
+msgstr "조치 내용"
+
 #. Display-name field placeholder in account registration forms.
 #: src/features/i18n/utils/CommonMessageDescriptors.ts
 msgid "What should people call you?"
@@ -38978,6 +39117,11 @@ msgstr "공유 중인 화면이 업데이트되지 않고 있습니다"
 #: src/features/user/utils/UserMessageDescriptors.ts
 msgid "What's happening?"
 msgstr "무슨 일이 일어나고 있나요?"
+
+#. Settings menu entry that opens the latest patch notes for the app on the website.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "What's new"
+msgstr "새로운 기능"
 
 #. DSA report page: title of the reason step while its questions load or when they could not be loaded.
 #: src/features/moderation/components/report/ReportStepReason.tsx
@@ -39116,6 +39260,11 @@ msgstr "입력 중인 사람"
 #: src/features/messaging/components/alerts/TooManyAttachmentsModal.tsx
 msgid "Whoa, this is heavy"
 msgstr "우와, 너무 많은데요"
+
+#. Heading on the account restriction screen above the rule that was broken and the findings.
+#: src/features/auth/flow/AccountRestrictionScreen.tsx
+msgid "Why"
+msgstr "사유"
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/DeveloperOptionLabels.ts
@@ -40048,7 +40197,7 @@ msgstr "메시지를 너무 빨리 수정하고 있습니다"
 #. Title of the error modal shown when resending a verification email is rate-limited.
 #. Title of the error modal shown when sharing or sending a theme link is rate limited.
 #: src/features/app/components/alerts/CommonErrorModalDescriptors.ts
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 #: src/features/discovery/commands/DiscoveryJoinCommands.tsx
 #: src/features/emoji/components/emojis/EmojiListItem.tsx
 #: src/features/theme/components/modals/ShareThemeModal.tsx
@@ -40212,7 +40361,7 @@ msgid "You've received a gift"
 msgstr "선물을 받았어요"
 
 #. Body of the error modal shown when resending a verification email is rate-limited.
-#: src/features/app/components/dialogs/components/EmailVerificationAlert.tsx
+#: src/features/auth/hooks/useVerifyEmailAction.tsx
 msgid "You've requested too many verification emails. Please wait a moment and try again."
 msgstr "인증 이메일을 너무 많이 요청했습니다. 잠시 기다렸다가 다시 시도해 주세요."
 

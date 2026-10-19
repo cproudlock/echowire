@@ -1,7 +1,19 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import {notifyReviewWebhook, resolveForumTagId} from '@app/api/utils/ReviewWebhook';
+import {decidedEmbeds, notifyReviewWebhook, resolveForumTagId, updateReviewCard} from '@app/api/utils/ReviewWebhook';
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+
+const kvStore = new Map<string, string>();
+vi.mock('@app/api/middleware/ServiceRegistry', () => ({
+	getKVClient: () => ({
+		setex: async (key: string, _ttl: number, value: string) => void kvStore.set(key, value),
+		get: async (key: string) => kvStore.get(key) ?? null,
+		del: async (key: string) => void kvStore.delete(key),
+	}),
+}));
+vi.mock('@app/api/middleware/ServiceSingletons', () => ({
+	getUserRepository: () => ({findUnique: async () => ({username: 'ada'})}),
+}));
 
 const URL_FORUM = 'https://example.test/api/webhooks/1/token';
 
@@ -103,5 +115,104 @@ describe('resolveForumTagId', () => {
 		expect(await resolveForumTagId(URL_FORUM, undefined)).toBeUndefined();
 		expect(await resolveForumTagId(URL_FORUM, '  ')).toBeUndefined();
 		expect(await resolveForumTagId('https://example.test/not-a-webhook', 'new')).toBeUndefined();
+	});
+});
+
+describe('review card updates', () => {
+	const fetchMock = vi.fn();
+	const embeds = [{title: 'New registration: bob', color: 0xf5a524, fields: [{name: 'Username', value: 'bob'}]}];
+
+	beforeEach(() => {
+		kvStore.clear();
+		fetchMock.mockReset();
+		vi.stubGlobal('fetch', fetchMock);
+	});
+
+	afterEach(() => {
+		vi.unstubAllGlobals();
+	});
+
+	it('colours the card, states the outcome and keeps the fields', () => {
+		const [card] = decidedEmbeds(embeds, 'approved', 'ada');
+		expect(card?.['color']).toBe(0x3ba55d);
+		expect(card?.['description']).toBe('Approved by ada');
+		expect(card?.['fields']).toEqual([
+			{name: 'Status', value: 'Approved by ada', inline: true},
+			{name: 'Username', value: 'bob'},
+		]);
+		expect(decidedEmbeds(embeds, 'denied')[0]?.['color']).toBe(0x8a8f98);
+	});
+
+	it('asks for the created message and remembers the forum post', async () => {
+		fetchMock.mockResolvedValue(Response.json({id: '77', channel_id: '88'}));
+		notifyReviewWebhook(URL_FORUM, {
+			threadName: 't',
+			content: 'c',
+			label: 'test',
+			embeds,
+			track: {kind: 'registration', id: '5'},
+		});
+		await settle();
+		await settle();
+		expect(fetchMock.mock.calls[0][0]).toBe(`${URL_FORUM}?wait=true`);
+		expect(JSON.parse(kvStore.get('review_webhook_card:registration:5') as string)).toMatchObject({
+			url: URL_FORUM,
+			messageId: '77',
+			threadId: '88',
+		});
+	});
+
+	it('does not track or ask for the message without a track key', async () => {
+		fetchMock.mockResolvedValue(Response.json({id: '77', channel_id: '88'}));
+		notifyReviewWebhook(URL_FORUM, {threadName: 't', content: 'c', label: 'test', embeds});
+		await settle();
+		expect(fetchMock.mock.calls[0][0]).toBe(URL_FORUM);
+		expect(kvStore.size).toBe(0);
+	});
+
+	it('does not remember a plain text channel post as a thread', async () => {
+		fetchMock
+			.mockResolvedValueOnce(new Response(null, {status: 400}))
+			.mockResolvedValueOnce(new Response(null, {status: 400}))
+			.mockResolvedValueOnce(Response.json({id: '90', channel_id: '91'}));
+		notifyReviewWebhook(URL_FORUM, {
+			threadName: 't',
+			content: 'c',
+			label: 'test',
+			embeds,
+			track: {kind: 'report', id: '9'},
+		});
+		await settle();
+		await settle();
+		expect(JSON.parse(kvStore.get('review_webhook_card:report:9') as string).threadId).toBeNull();
+	});
+
+	it('edits the card, replies in the post and forgets the record', async () => {
+		kvStore.set(
+			'review_webhook_card:registration:5',
+			JSON.stringify({url: URL_FORUM, messageId: '77', threadId: '88', embeds}),
+		);
+		fetchMock.mockResolvedValue(new Response(null, {status: 200}));
+		await updateReviewCard('registration', '5', 'approved', {actorUserId: 1n, note: 'welcome'});
+		expect(fetchMock).toHaveBeenCalledTimes(2);
+		const [editUrl, editInit] = fetchMock.mock.calls[0];
+		expect(editUrl).toBe(`${URL_FORUM}/messages/77?thread_id=88`);
+		expect(editInit.method).toBe('PATCH');
+		expect(JSON.parse(editInit.body).embeds[0].color).toBe(0x3ba55d);
+		const [replyUrl, replyInit] = fetchMock.mock.calls[1];
+		expect(replyUrl).toBe(`${URL_FORUM}?thread_id=88`);
+		expect(JSON.parse(replyInit.body).content).toBe('Approved by ada: welcome');
+		expect(kvStore.size).toBe(0);
+	});
+
+	it('does nothing when no card was recorded and never throws', async () => {
+		await updateReviewCard('report', '404', 'resolved');
+		expect(fetchMock).not.toHaveBeenCalled();
+		kvStore.set(
+			'review_webhook_card:report:1',
+			JSON.stringify({url: URL_FORUM, messageId: '1', threadId: null, embeds}),
+		);
+		fetchMock.mockRejectedValue(new Error('network down'));
+		await expect(updateReviewCard('report', '1', 'resolved')).resolves.toBeUndefined();
 	});
 });

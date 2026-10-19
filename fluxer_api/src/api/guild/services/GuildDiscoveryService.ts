@@ -12,7 +12,7 @@ import {contentModerationService} from '@app/api/infrastructure/ContentModeratio
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
 import {Logger} from '@app/api/Logger';
 import type {IGuildSearchService} from '@app/api/search/IGuildSearchService';
-import {notifyReviewWebhook} from '@app/api/utils/ReviewWebhook';
+import {notifyReviewWebhook, updateReviewCard} from '@app/api/utils/ReviewWebhook';
 import {Permissions} from '@fluxer/constants/src/ChannelConstants';
 import {
 	DISCOVERY_DEFAULT_LANGUAGE,
@@ -125,6 +125,7 @@ function notifyDiscoveryApplicationWebhook(guildName: string, row: GuildDiscover
 			},
 		],
 		label: 'discovery-application',
+		track: {kind: 'discovery', id: row.guild_id.toString()},
 		appliedTagId: process.env.FLUXER_DISCOVERY_WEBHOOK_TAG_ID,
 		appliedTagName: process.env.FLUXER_DISCOVERY_WEBHOOK_TAG || 'new',
 	});
@@ -313,6 +314,7 @@ export class GuildDiscoveryService {
 		};
 		await this.discoveryRepository.updateStatus(guildId, existing.status, existing.applied_at, updatedRow);
 		await this.setDiscoverableFeature(guildId, true);
+		void updateReviewCard('discovery', guildId.toString(), 'approved', {actorUserId: adminUserId, note: reason});
 		if (this.guildSearchService) {
 			const guild = await this.guildRepository.findUnique(guildId);
 			if (guild) {
@@ -345,6 +347,7 @@ export class GuildDiscoveryService {
 			review_reason: reason,
 		};
 		await this.discoveryRepository.updateStatus(guildId, existing.status, existing.applied_at, updatedRow);
+		void updateReviewCard('discovery', guildId.toString(), 'denied', {actorUserId: adminUserId, note: reason});
 		return updatedRow;
 	}
 

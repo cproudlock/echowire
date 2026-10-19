@@ -2585,7 +2585,19 @@ impl DesktopBuildPlatform {
                 "connection reset",
                 "TLS handshake",
             ],
-            Self::Macos | Self::Linux => &[
+            // Echowire: notarization and stapling talk to Apple, and a dropped connection there
+            // ("The network connection was lost", stapler error 68) fails an otherwise good build.
+            Self::Macos => &[
+                "EOF",
+                "status code 5",
+                "cannot resolve",
+                "i/o timeout",
+                "connection reset",
+                "TLS handshake",
+                "network connection was lost",
+                "Failed to staple",
+            ],
+            Self::Linux => &[
                 "EOF",
                 "status code 5",
                 "cannot resolve",
@@ -7602,6 +7614,24 @@ mod tests {
     use super::*;
     use crate::common::{directory_upload_plan, parse_version_instant, s3_directory_prefix};
     use chrono::{DateTime, TimeZone, Utc};
+
+    #[test]
+    fn a_dropped_apple_connection_while_stapling_is_retried_on_macos_only() {
+        let log =
+            "Failed to staple your application with code: 68\nThe network connection was lost.";
+        assert!(is_transient_failure(
+            log,
+            DesktopBuildPlatform::Macos.transient_patterns()
+        ));
+        assert!(!is_transient_failure(
+            log,
+            DesktopBuildPlatform::Linux.transient_patterns()
+        ));
+        assert!(!is_transient_failure(
+            "codesign: invalid signature",
+            DesktopBuildPlatform::Macos.transient_patterns()
+        ));
+    }
 
     #[test]
     fn every_uploaded_desktop_object_carries_a_cache_instruction() {

@@ -33,6 +33,7 @@ const MODULE_REGISTRY_TEST_FILES = [
 	// initialized". StripeGiftSubscriptionShift replaces a module with a factory.
 	'src/api/database/PostgresKvLoggerSafety.test.ts',
 	'src/api/stripe/tests/StripeGiftSubscriptionShift.test.ts',
+	'src/api/utils/ReviewWebhook.test.ts',
 	'src/api/worker/tests/CrosspostTasks.test.ts',
 	'src/api/search/tests/ThreadSearchScopeCap.test.ts',
 	'src/api/search/ThreadSearchScope.test.ts',

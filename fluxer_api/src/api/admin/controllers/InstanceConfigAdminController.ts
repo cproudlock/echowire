@@ -21,6 +21,7 @@ import {getKVClient, getWorkerService} from '@app/api/middleware/ServiceRegistry
 import {getInstanceConfigRepository, getNatsConfigPublisher} from '@app/api/middleware/ServiceSingletons';
 import {RateLimitConfigs} from '@app/api/RateLimitConfig';
 import type {HonoApp, HonoEnv} from '@app/api/types/HonoEnv';
+import {updateReviewCard} from '@app/api/utils/ReviewWebhook';
 import {Validator} from '@app/api/Validator';
 import {AdminACLs} from '@fluxer/constants/src/AdminACLs';
 import {resolveSmtpTlsMode, type SmtpTlsMode, smtpTlsModeFromSecure} from '@fluxer/constants/src/SmtpConstants';
@@ -783,6 +784,9 @@ export function InstanceConfigAdminController(app: HonoApp) {
 			);
 			await updatePendingRegistrationUser(ctx, userId, decision, pendingRegistration?.invite_code ?? null);
 			await instanceConfigRepository.removePendingRegistration(userId);
+			void updateReviewCard('registration', userId, decision === 'approve' ? 'approved' : 'denied', {
+				actorUserId: ctx.get('adminUserId'),
+			});
 			return ctx.json({pending_registrations: await instanceConfigRepository.getPendingRegistrations()});
 		},
 	);

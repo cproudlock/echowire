@@ -68,7 +68,7 @@ import type {UserRepository} from '@app/api/user/repositories/UserRepository';
 import {findPersonByLoginHandle, type ParsedLoginHandle, parseLoginHandle} from '@app/api/user/UniqueUsernames';
 import {isAccountClosed} from '@app/api/user/UserHelpers';
 import {dispatchUserUpdate} from '@app/api/user/UserMappers';
-import {notifyReviewWebhook} from '@app/api/utils/ReviewWebhook';
+import {notifyReviewWebhook, updateReviewCard} from '@app/api/utils/ReviewWebhook';
 import type {WebhookRepository} from '@app/api/webhook/WebhookRepository';
 import {buildHashedAssetKey} from '@app/api/worker/utils/AssetArchiveHelpers';
 import {APIErrorCodes} from '@fluxer/constants/src/ApiErrorCodes';
@@ -273,6 +273,7 @@ function notifyReportFiledWebhook(row: IARSubmissionRow, target: ReportTarget): 
 			},
 		],
 		label: 'report-filed',
+		track: {kind: 'report', id: reportId},
 		appliedTagId: process.env.FLUXER_REPORT_WEBHOOK_TAG_ID,
 		appliedTagName: process.env.FLUXER_REPORT_WEBHOOK_TAG || 'new',
 	});
@@ -1353,6 +1354,10 @@ export class ReportService {
 			Logger.error({error, reportId: report.reportId}, 'Failed to update report in search index');
 		});
 		await emitReportResolved(report, resolution.outcome, resolution.resolvedBy);
+		void updateReviewCard('report', report.reportId.toString(), 'resolved', {
+			actorUserId: adminUserId,
+			note: `outcome ${String(resolution.outcome).replace(/_/g, ' ')}`,
+		});
 		return report;
 	}
 

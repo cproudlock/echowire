@@ -73,7 +73,7 @@ import {ms} from 'itty-time';
 // pending list. Configured via FLUXER_REGISTRATION_PENDING_WEBHOOK_URL (a text
 // channel or forum webhook URL; a forum gets one post per registration).
 // Never blocks or fails the registration.
-function notifyPendingRegistrationWebhook(params: {username: string; email: string | null}): void {
+function notifyPendingRegistrationWebhook(params: {userId: string; username: string; email: string | null}): void {
 	const adminBase = Config.endpoints.admin?.replace(/\/+$/, '');
 	const reviewUrl = adminBase ? `${adminBase}/pending-registrations` : undefined;
 	notifyReviewWebhook(process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_URL, {
@@ -94,6 +94,7 @@ function notifyPendingRegistrationWebhook(params: {username: string; email: stri
 			},
 		],
 		label: 'pending-registration',
+		track: {kind: 'registration', id: params.userId},
 		appliedTagId: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG_ID,
 		appliedTagName: process.env.FLUXER_REGISTRATION_PENDING_WEBHOOK_TAG || 'new',
 	});
@@ -397,7 +398,7 @@ async function registerAccount(
 	if (registrationAccess.pendingApproval) {
 		// Echowire: the pending-approval record itself is written before user creation
 		// by upstream's signup race fix; this notifies operators once it is confirmed.
-		notifyPendingRegistrationWebhook({username: user.username, email: rawEmail});
+		notifyPendingRegistrationWebhook({userId: userId.toString(), username: user.username, email: rawEmail});
 		return {
 			registration_pending_approval: true,
 			user_id: user.id.toString(),

@@ -10,16 +10,11 @@ function clampThreadName(name: string): string {
 	return oneLine.length <= THREAD_NAME_MAX_LENGTH ? oneLine : `${oneLine.slice(0, THREAD_NAME_MAX_LENGTH - 1)}…`;
 }
 
-async function postJson(url: string, body: Record<string, unknown>): Promise<Response> {
+async function fetchWithTimeout(url: string, init: RequestInit): Promise<Response> {
 	const controller = new AbortController();
 	const timeout = setTimeout(() => controller.abort(), REVIEW_WEBHOOK_TIMEOUT_MS);
 	try {
-		return await fetch(url, {
-			method: 'POST',
-			headers: {'Content-Type': 'application/json'},
-			body: JSON.stringify(body),
-			signal: controller.signal,
-		});
+		return await fetch(url, {...init, signal: controller.signal});
 	} finally {
 		clearTimeout(timeout);
 	}
@@ -57,6 +52,120 @@ export async function resolveForumTagId(url: string, tagName: string | undefined
 	}
 }
 
+export type ReviewItemKind = 'registration' | 'report' | 'discovery';
+export type ReviewOutcome = 'approved' | 'denied' | 'resolved' | 'removed';
+
+const CARD_TTL_SECONDS = 60 * 24 * 60 * 60;
+const OUTCOME_COLOR: Record<ReviewOutcome, number> = {
+	approved: 0x3ba55d,
+	resolved: 0x3ba55d,
+	denied: 0x8a8f98,
+	removed: 0x8a8f98,
+};
+const OUTCOME_LABEL: Record<ReviewOutcome, string> = {
+	approved: 'Approved',
+	denied: 'Denied',
+	resolved: 'Resolved',
+	removed: 'Removed',
+};
+
+interface TrackedCard {
+	url: string;
+	messageId: string;
+	threadId: string | null;
+	embeds: Array<Record<string, unknown>>;
+}
+
+function cardKey(kind: ReviewItemKind, id: string): string {
+	return `review_webhook_card:${kind}:${id}`;
+}
+
+function stripQuery(url: string): string {
+	return url.split('?')[0] ?? url;
+}
+
+/**
+ * Returns the posted embeds with the outcome applied: the colour changes, the card says how it ended, and the
+ * card is stamped with who decided. The card's title link and fields are kept so it stays useful as a record.
+ */
+export function decidedEmbeds(
+	embeds: ReadonlyArray<Record<string, unknown>>,
+	outcome: ReviewOutcome,
+	actor?: string,
+): Array<Record<string, unknown>> {
+	return embeds.map((embed, index) => {
+		if (index > 0) return {...embed};
+		const fields = Array.isArray(embed['fields']) ? (embed['fields'] as Array<Record<string, unknown>>) : [];
+		const status = actor ? `${OUTCOME_LABEL[outcome]} by ${actor}` : OUTCOME_LABEL[outcome];
+		return {
+			...embed,
+			color: OUTCOME_COLOR[outcome],
+			description: status,
+			fields: [{name: 'Status', value: status, inline: true}, ...fields.filter((field) => field['name'] !== 'Status')],
+		};
+	});
+}
+
+async function lookupActorName(userId: bigint | string | undefined): Promise<string | undefined> {
+	if (userId === undefined) return undefined;
+	try {
+		const {getUserRepository} = await import('@app/api/middleware/ServiceSingletons');
+		const {createUserID} = await import('@app/api/BrandedTypes');
+		const user = await getUserRepository().findUnique(createUserID(BigInt(userId)));
+		return user?.username || undefined;
+	} catch {
+		return undefined;
+	}
+}
+
+async function rememberCard(kind: ReviewItemKind, id: string, card: TrackedCard): Promise<void> {
+	const {getKVClient} = await import('@app/api/middleware/ServiceRegistry');
+	await getKVClient().setex(cardKey(kind, id), CARD_TTL_SECONDS, JSON.stringify(card));
+}
+
+/**
+ * Updates the card posted for a review item once an admin has decided it: the embed is edited to show the
+ * outcome and a short reply is posted in the same forum post. Never throws and does nothing when no card
+ * was recorded (no webhook set, the post failed, or the record expired).
+ */
+export async function updateReviewCard(
+	kind: ReviewItemKind,
+	id: string,
+	outcome: ReviewOutcome,
+	options: {actorUserId?: bigint | string | undefined; note?: string | undefined} = {},
+): Promise<void> {
+	try {
+		const {getKVClient} = await import('@app/api/middleware/ServiceRegistry');
+		const kv = getKVClient();
+		const raw = await kv.get(cardKey(kind, id));
+		if (!raw) return;
+		const actor = await lookupActorName(options.actorUserId);
+		const card = JSON.parse(raw) as TrackedCard;
+		const threadQuery = card.threadId ? `?thread_id=${encodeURIComponent(card.threadId)}` : '';
+		const edit = await fetchWithTimeout(`${card.url}/messages/${card.messageId}${threadQuery}`, {
+			method: 'PATCH',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({embeds: decidedEmbeds(card.embeds, outcome, actor)}),
+		});
+		if (!edit.ok) {
+			Logger.warn({status: edit.status, kind}, '[ReviewWebhook] Editing the review card was refused');
+		}
+		const who = actor ? ` by ${actor}` : '';
+		const note = options.note ? `: ${options.note}` : '';
+		const reply = await fetchWithTimeout(`${card.url}${threadQuery}`, {
+			method: 'POST',
+			headers: {'Content-Type': 'application/json'},
+			body: JSON.stringify({content: `${OUTCOME_LABEL[outcome]}${who}${note}`.slice(0, 1900)}),
+		});
+		if (!reply.ok) {
+			Logger.warn({status: reply.status, kind}, '[ReviewWebhook] Posting the review outcome was refused');
+		}
+		await kv.del(cardKey(kind, id));
+	} catch (error) {
+		Logger.warn({error, kind}, '[ReviewWebhook] Failed to update the review card');
+	}
+}
+
 /**
  * Posts a review-queue notification to a channel webhook without ever blocking or failing the caller.
  * The webhook may belong to a forum channel, which needs a thread name and opens one post per event,
@@ -75,6 +184,7 @@ export function notifyReviewWebhook(
 		embeds?: Array<Record<string, unknown>> | undefined;
 		appliedTagId?: string | undefined;
 		appliedTagName?: string | undefined;
+		track?: {kind: ReviewItemKind; id: string} | undefined;
 	},
 ): void {
 	if (!url) return;
@@ -94,10 +204,31 @@ export function notifyReviewWebhook(
 				{content: params.content, ...(withLinks ? {embeds: withLinks} : {})},
 				...(withoutLinks ? [{content: params.content, embeds: withoutLinks}] : []),
 			];
-			let response = await postJson(url, attempts[0] as Record<string, unknown>);
+			const base = stripQuery(url);
+			const postUrl = params.track ? `${base}?wait=true` : url;
+			const send = (body: Record<string, unknown>) =>
+				fetchWithTimeout(postUrl, {
+					method: 'POST',
+					headers: {'Content-Type': 'application/json'},
+					body: JSON.stringify(body),
+				});
+			let sent = attempts[0] as Record<string, unknown>;
+			let response = await send(sent);
 			for (const attempt of attempts.slice(1)) {
 				if (response.status !== 400) break;
-				response = await postJson(url, attempt);
+				sent = attempt;
+				response = await send(attempt);
+			}
+			if (response.ok && params.track && params.embeds) {
+				const message = (await response.json().catch(() => null)) as {id?: string; channel_id?: string} | null;
+				if (message?.id) {
+					await rememberCard(params.track.kind, params.track.id, {
+						url: base,
+						messageId: message.id,
+						threadId: 'thread_name' in sent ? (message.channel_id ?? null) : null,
+						embeds: (sent['embeds'] as Array<Record<string, unknown>> | undefined) ?? params.embeds,
+					});
+				}
 			}
 			if (!response.ok) {
 				Logger.warn({status: response.status}, `[ReviewWebhook] ${params.label} webhook was refused`);

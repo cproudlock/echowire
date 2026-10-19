@@ -2842,11 +2842,28 @@ fn verify_bundle_id_step() -> Result<()> {
         "--verbose=4",
         app.to_string_lossy().as_ref(),
     ]))?;
-    run_command(CommandSpec::new("xcrun").args([
-        "stapler",
-        "validate",
-        app.to_string_lossy().as_ref(),
-    ]))?;
+    // Echowire: `stapler validate` asks Apple to confirm the ticket and fails with exit 68 when that
+    // connection drops, which has failed whole macOS builds that were otherwise fine. Retry it a few
+    // times before treating the failure as real.
+    let mut stapler_attempt = 1;
+    loop {
+        let result = run_command(CommandSpec::new("xcrun").args([
+            "stapler",
+            "validate",
+            app.to_string_lossy().as_ref(),
+        ]));
+        match result {
+            Ok(_) => break,
+            Err(error) if stapler_attempt < 5 => {
+                println!(
+                    "stapler validate failed on attempt {stapler_attempt} of 5, retrying in 30s: {error}"
+                );
+                std::thread::sleep(std::time::Duration::from_secs(30));
+                stapler_attempt += 1;
+            }
+            Err(error) => return Err(error),
+        }
+    }
     run_command(CommandSpec::new("spctl").args([
         "--assess",
         "--type",

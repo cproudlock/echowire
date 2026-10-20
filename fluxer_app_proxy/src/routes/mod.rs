@@ -9,6 +9,7 @@ mod spa_index;
 mod spa_static;
 mod well_known_fluxer;
 
+pub use assets_proxy::bundles_app_assets;
 pub use spa_index::present_local_asset_prefixes;
 
 use crate::state::AppState;

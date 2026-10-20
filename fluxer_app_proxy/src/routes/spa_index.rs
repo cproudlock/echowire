@@ -1357,6 +1357,7 @@ mod tests {
             discovery_cache: std::sync::Arc::new(crate::discovery_cache::DiscoveryCache::new()),
             spa_index_source,
             local_asset_prefixes: None,
+            bundled_app_assets: false,
             budgets,
             local_files,
         }

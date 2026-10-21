@@ -24,7 +24,7 @@ ignore = [
 	# depends on the unmaintained encoding crate. Advisory is unmaintained-only,
 	# not a vulnerability, and RUSTSEC lists no safe upgrade.
 	{ id = "RUSTSEC-2021-0153", reason = "unmaintained encoding via fluxer_marketing -> gettext; no safe upgrade exists" },
-    { id = "RUSTSEC-2026-0381", reason = "webpki-roots 0.26.11 only re-exports webpki-roots 1.x, which is locked at 1.0.10 without the emSign root" },
+	{ id = "RUSTSEC-2026-0381", reason = "webpki-roots 0.26.11 only re-exports webpki-roots 1.x, which is locked at 1.0.10 without the emSign root" },
 ]
 
 # ---------------------------------------------------------------------------

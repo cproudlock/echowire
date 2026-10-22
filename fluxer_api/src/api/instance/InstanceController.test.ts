@@ -121,6 +121,25 @@ describe('InstanceController discovery captcha', () => {
 		});
 	});
 
+	it('publishes whether discovery is enabled', async () => {
+		const previousDiscoveryEnabled = Config.discovery.enabled;
+		const app = createApp(createRepository());
+		const readDiscoveryEnabled = async () => {
+			const response = await app.request('http://localhost/.well-known/fluxer');
+			expect(response.status).toBe(200);
+			return ((await response.json()) as {features: {discovery_enabled?: boolean}}).features.discovery_enabled;
+		};
+		try {
+			Config.discovery.enabled = false;
+			await expect(readDiscoveryEnabled()).resolves.toBe(false);
+
+			Config.discovery.enabled = true;
+			await expect(readDiscoveryEnabled()).resolves.toBe(true);
+		} finally {
+			Config.discovery.enabled = previousDiscoveryEnabled;
+		}
+	});
+
 	it('publishes the domain migration kill switch and anonymous rollout without the targeting lists', async () => {
 		const repository = createRepository();
 		const app = createApp(repository);

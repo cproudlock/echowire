@@ -35,7 +35,7 @@ class Idle {
 	private afkThresholdMs = IDLE_DURATION_MS;
 	private lastLocalActivityTime = Date.now();
 	private lastSystemActivityTime = 0;
-	private peakSystemIdleMs = 0;
+	private lastNonZeroSystemIdleTime = Date.now();
 	private checkInterval: NodeJS.Timeout | null = null;
 	private systemIdleCheckInFlight = false;
 	private lastSystemIdleFailureAt = 0;
@@ -83,28 +83,10 @@ class Idle {
 	}
 
 	getInactiveDurationMs(now = Date.now()): number {
-		return Math.max(0, now - this.getLastActivityTime(now));
+		return Math.max(0, now - this.getLastActivityTime());
 	}
 
-	// Echowire: Electron's powerMonitor.getSystemIdleTime() reports 0 forever on a
-	// Linux desktop with no D-Bus idle path that Chromium reads. Cinnamon on X11
-	// exposes org.cinnamon.Muffin.IdleMonitor and the MIT-SCREEN-SAVER extension,
-	// neither of which Chromium queries, so it always answers 0. A constant 0 keeps
-	// lastSystemActivityTime pinned to now, so those clients never go idle: never
-	// away, never push-eligible. Treat the source as dead once a full idle window
-	// has passed with no in-app activity while the OS clock has never once reached
-	// the threshold, and trust in-app inactivity instead. A machine whose clock
-	// works reaches the threshold the first time the user steps away, which retires
-	// this for the rest of the session.
-	private systemIdleSourceIsDead(now: number): boolean {
-		if (this.peakSystemIdleMs >= IDLE_DURATION_MS) return false;
-		return now - this.lastLocalActivityTime >= IDLE_DURATION_MS;
-	}
-
-	private getLastActivityTime(now = Date.now()): number {
-		if (this.systemIdleSourceIsDead(now)) {
-			return this.lastLocalActivityTime;
-		}
+	private getLastActivityTime(): number {
 		return Math.max(this.lastLocalActivityTime, this.lastSystemActivityTime);
 	}
 
@@ -129,11 +111,14 @@ class Idle {
 		this.systemIdleCheckInFlight = true;
 		try {
 			const idleTimeMs = normalizeIdleTimeMs(await desktopIdleApi.getSystemIdleTimeMs());
+			const now = Date.now();
 			if (idleTimeMs === null) {
-				this.lastSystemIdleFailureAt = Date.now();
-			} else {
-				this.peakSystemIdleMs = Math.max(this.peakSystemIdleMs, idleTimeMs);
-				this.lastSystemActivityTime = Math.max(this.lastSystemActivityTime, Date.now() - idleTimeMs);
+				this.lastSystemIdleFailureAt = now;
+			} else if (idleTimeMs > 0) {
+				this.lastNonZeroSystemIdleTime = now;
+				this.lastSystemActivityTime = Math.max(this.lastSystemActivityTime, now - idleTimeMs);
+			} else if (now - this.lastNonZeroSystemIdleTime < Math.min(IDLE_DURATION_MS, this.afkThresholdMs)) {
+				this.lastSystemActivityTime = now;
 			}
 		} catch {
 			this.lastSystemIdleFailureAt = Date.now();

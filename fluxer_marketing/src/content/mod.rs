@@ -373,7 +373,11 @@ pub const HELP_ARTICLES: &[HelpArticle] = &[
     },
     HelpArticle {
         slug: "report-intimate-images",
-        aliases: &["intimate-images", "revenge-porn", "report-non-consensual-intimate-images"],
+        aliases: &[
+            "intimate-images",
+            "revenge-porn",
+            "report-non-consensual-intimate-images",
+        ],
         title: CONTENT_HELP_ARTICLE_REPORT_INTIMATE_IMAGES_TITLE_DESCRIPTOR,
         description: CONTENT_HELP_ARTICLE_REPORT_INTIMATE_IMAGES_DESCRIPTION_DESCRIPTOR,
         category_slug: "legal-policy",

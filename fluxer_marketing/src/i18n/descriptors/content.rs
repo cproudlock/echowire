@@ -561,6 +561,22 @@ crate::marketing_message!(
 );
 
 crate::marketing_message!(
+    pub const CONTENT_HELP_ARTICLE_REPORT_INTIMATE_IMAGES_TITLE_DESCRIPTOR = {
+        key: "content.help.article.report_intimate_images.title",
+        message: "Reporting intimate images shared without consent",
+        comment: "Help article title about reporting and removing intimate images shared without the person's consent. Keep the tone plain and supportive.",
+    };
+);
+
+crate::marketing_message!(
+    pub const CONTENT_HELP_ARTICLE_REPORT_INTIMATE_IMAGES_DESCRIPTION_DESCRIPTOR = {
+        key: "content.help.article.report_intimate_images.description",
+        message: "How to report intimate images shared on {product_name} without your consent, and what we do about it.",
+        comment: "Help article summary about reporting non-consensual intimate images. Preserve placeholders exactly.",
+    };
+);
+
+crate::marketing_message!(
     pub const CONTENT_HELP_COPY_LINK_TO_SECTION_DESCRIPTOR = {
         key: "content.help.copy_link_to_section",
         message: "Copy link to section",

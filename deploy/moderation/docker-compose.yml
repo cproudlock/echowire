@@ -1,0 +1,41 @@
+# Moderation sidecar for echowire: an NSFW image classifier and a ClamAV daemon.
+# Runs on its own VM so a scan spike can never slow the app stack. See README.md.
+#
+#   MODERATION_BIND_IP   the VM's LAN address; both ports are published only there.
+#   Allow 8080 and 3310 from the app VM and nothing else (ufw or the Proxmox firewall).
+services:
+  nsfw:
+    build: ./nsfw-service
+    image: echowire/nsfw-service:local
+    restart: unless-stopped
+    ports:
+      - "${MODERATION_BIND_IP:?set MODERATION_BIND_IP}:8080:8080"
+    environment:
+      NSFW_MAX_CONCURRENT: ${NSFW_MAX_CONCURRENT:-2}
+      NSFW_TORCH_THREADS: ${NSFW_TORCH_THREADS:-2}
+    mem_limit: 3g
+    cpus: 3
+
+  clamav:
+    image: clamav/clamav:stable
+    restart: unless-stopped
+    ports:
+      - "${MODERATION_BIND_IP:?set MODERATION_BIND_IP}:3310:3310"
+    environment:
+      # Premium attachments go up to 500 MiB (ATTACHMENT_MAX_SIZE_PREMIUM). clamd's default
+      # stream limit is 25 MiB, which would reject every larger upload while fail-open is off.
+      CLAMD_CONF_StreamMaxLength: 512M
+      CLAMD_CONF_MaxFileSize: 512M
+      CLAMD_CONF_MaxScanSize: 512M
+    volumes:
+      - clamav-db:/var/lib/clamav
+    mem_limit: 3g
+    healthcheck:
+      test: ["CMD", "clamdcheck.sh"]
+      interval: 60s
+      timeout: 10s
+      retries: 5
+      start_period: 300s
+
+volumes:
+  clamav-db:

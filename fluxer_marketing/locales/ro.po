@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fluxer-marketing\n"
-"POT-Creation-Date: 2026-10-12 00:00+0000\n"
-"PO-Revision-Date: 2026-10-12 00:00+0000\n"
+"POT-Creation-Date: 2026-10-24 00:00+0000\n"
+"PO-Revision-Date: 2026-10-24 00:00+0000\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1173,6 +1173,20 @@ msgid ""
 "What is documented about {discord}'s advertising and age checks, and how {product_name} and Fluxer compare."
 msgstr ""
 "What is documented about {discord}'s advertising and age checks, and how {product_name} and Fluxer compare."
+
+#. Help article title about reporting and removing intimate images shared without the person's consent. Keep the tone plain and supportive.
+#: fluxer_marketing/generated:content.help.article.report_intimate_images.title
+msgctxt "content.help.article.report_intimate_images.title"
+msgid "Reporting intimate images shared without consent"
+msgstr "Reporting intimate images shared without consent"
+
+#. Help article summary about reporting non-consensual intimate images. Preserve placeholders exactly.
+#: fluxer_marketing/generated:content.help.article.report_intimate_images.description
+msgctxt "content.help.article.report_intimate_images.description"
+msgid ""
+"How to report intimate images shared on {product_name} without your consent, and what we do about it."
+msgstr ""
+"How to report intimate images shared on {product_name} without your consent, and what we do about it."
 
 #. Accessible label on the small icon button next to help/policy article headings; clicking copies a deep link to that section.
 #: fluxer_marketing/generated:content.help.copy_link_to_section

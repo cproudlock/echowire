@@ -372,6 +372,15 @@ pub const HELP_ARTICLES: &[HelpArticle] = &[
         body: include_str!("../../content/help/legal-policy/copyright.md"),
     },
     HelpArticle {
+        slug: "report-intimate-images",
+        aliases: &["intimate-images", "revenge-porn", "report-non-consensual-intimate-images"],
+        title: CONTENT_HELP_ARTICLE_REPORT_INTIMATE_IMAGES_TITLE_DESCRIPTOR,
+        description: CONTENT_HELP_ARTICLE_REPORT_INTIMATE_IMAGES_DESCRIPTION_DESCRIPTOR,
+        category_slug: "legal-policy",
+        last_updated: "2026-10-24",
+        body: include_str!("../../content/help/legal-policy/report-intimate-images.md"),
+    },
+    HelpArticle {
         slug: "data-retention",
         aliases: &[
             "how-long-fluxer-keeps-your-information",

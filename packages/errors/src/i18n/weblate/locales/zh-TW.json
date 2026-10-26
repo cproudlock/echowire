@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "你的帳號還有另一個轉交請求正在送出。請稍後再試。",
 	"operator_pass.offer_unavailable": "目前無法將此通行證轉交給該帳號。",
 	"operator_pass.price_changed": "Operator Pass 的價格已變更。請檢查新價格後再試一次。",
-	"operator_pass.recipient_not_friend": "此通行證只能轉交給你在 Fluxer 上的好友。",
+	"operator_pass.recipient_not_friend": "此通行證只能轉交給你在 echowire 上的好友。",
 	"operator_pass.release_already_published": "此 Operators 名單已發布。",
 	"operator_pass.release_not_ready": "此 Operators 名單在截止日期前無法發布。",
 	"operator_pass.removal_limited_first": "對不嚴重的違規進行永久移除前，必須先進行一次限時移除。",

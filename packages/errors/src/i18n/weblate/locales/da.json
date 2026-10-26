@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Et andet tilbud fra din konto er ved at blive sendt. Prøv igen om lidt.",
 	"operator_pass.offer_unavailable": "Dette pas kan ikke gives videre til den konto lige nu.",
 	"operator_pass.price_changed": "Prisen på Operator Pass er ændret. Tjek den nye pris, og prøv igen.",
-	"operator_pass.recipient_not_friend": "Du kan kun give dette pas videre til en af dine venner på Fluxer.",
+	"operator_pass.recipient_not_friend": "Du kan kun give dette pas videre til en af dine venner på echowire.",
 	"operator_pass.release_already_published": "Denne Operators-liste er allerede offentliggjort.",
 	"operator_pass.release_not_ready": "Denne Operators-liste kan ikke offentliggøres før sin skæringsdato.",
 	"operator_pass.removal_limited_first": "En permanent fjernelse for en overtrædelse, der ikke er alvorlig, kræver en tidligere fjernelse i en begrænset periode.",

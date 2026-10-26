@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Outra proposta da sua conta ainda está sendo enviada. Tente de novo em instantes.",
 	"operator_pass.offer_unavailable": "No momento, este passe não pode ser repassado para essa conta.",
 	"operator_pass.price_changed": "O preço do Operator Pass mudou. Verifique o novo preço e tente novamente.",
-	"operator_pass.recipient_not_friend": "Você só pode repassar este passe para alguém dos seus amigos no Fluxer.",
+	"operator_pass.recipient_not_friend": "Você só pode repassar este passe para alguém dos seus amigos no echowire.",
 	"operator_pass.release_already_published": "Esta lista de Operators já foi publicada.",
 	"operator_pass.release_not_ready": "Esta lista de Operators não pode ser publicada antes da data de corte.",
 	"operator_pass.removal_limited_first": "Uma remoção permanente por uma violação que não é grave exige uma remoção anterior por tempo limitado.",

@@ -58,5 +58,6 @@ export function useRegionLatencies(regions: Array<RegionWithPingEndpoint>): Map<
 
 /** Echowire: color thresholds shared by latency badges (green < 80ms, yellow < 150ms, red otherwise). */
 export function latencyColor(latency: number): string {
-	return latency < 80 ? 'var(--status-online)' : latency < 150 ? 'var(--status-idle)' : 'var(--status-dnd)';
+	if (latency < 80) return 'var(--status-online)';
+	return latency < 150 ? 'var(--status-idle)' : 'var(--status-dnd)';
 }

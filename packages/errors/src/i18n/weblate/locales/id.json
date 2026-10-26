@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Tawaran lain dari akunmu masih dikirim. Coba lagi sebentar lagi.",
 	"operator_pass.offer_unavailable": "Pass ini tidak dapat diteruskan ke akun tersebut saat ini.",
 	"operator_pass.price_changed": "Harga Operator Pass telah berubah. Periksa harga baru dan coba lagi.",
-	"operator_pass.recipient_not_friend": "Kamu hanya dapat meneruskan pass ini ke salah satu temanmu di Fluxer.",
+	"operator_pass.recipient_not_friend": "Kamu hanya dapat meneruskan pass ini ke salah satu temanmu di echowire.",
 	"operator_pass.release_already_published": "Daftar Operators ini sudah diterbitkan.",
 	"operator_pass.release_not_ready": "Daftar Operators ini tidak dapat diterbitkan sebelum tanggal batasnya.",
 	"operator_pass.removal_limited_first": "Penghapusan permanen karena pelanggaran yang tidak serius harus didahului penghapusan untuk waktu terbatas.",

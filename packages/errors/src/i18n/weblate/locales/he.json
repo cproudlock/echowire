@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "הצעה אחרת מהחשבון שלך עדיין נשלחת. נסה שוב בעוד רגע.",
 	"operator_pass.offer_unavailable": "אי אפשר להעביר את ה-Operator Pass הזה לחשבון הזה כרגע.",
 	"operator_pass.price_changed": "מחיר ה-Operator Pass השתנה. בדוק את המחיר החדש ונסה שוב.",
-	"operator_pass.recipient_not_friend": "אפשר להעביר את ה-Operator Pass הזה רק לחברים שלך ב-Fluxer.",
+	"operator_pass.recipient_not_friend": "אפשר להעביר את ה-Operator Pass הזה רק לחברים שלך ב-echowire.",
 	"operator_pass.release_already_published": "רשימת ה-Operators הזו כבר פורסמה.",
 	"operator_pass.release_not_ready": "אי אפשר לפרסם את רשימת ה-Operators הזו לפני תאריך הסגירה שלה.",
 	"operator_pass.removal_limited_first": "הסרה לצמיתות בגלל הפרה שאינה חמורה מחייבת הסרה קודמת לזמן מוגבל.",

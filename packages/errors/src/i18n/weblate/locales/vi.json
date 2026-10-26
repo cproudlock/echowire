@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Một lời đề nghị khác từ tài khoản của bạn vẫn đang được gửi. Hãy thử lại sau giây lát.",
 	"operator_pass.offer_unavailable": "Hiện không thể chuyển pass này cho tài khoản đó.",
 	"operator_pass.price_changed": "Giá Operator Pass đã thay đổi. Hãy kiểm tra giá mới và thử lại.",
-	"operator_pass.recipient_not_friend": "Bạn chỉ có thể chuyển pass này cho một người bạn của bạn trên Fluxer.",
+	"operator_pass.recipient_not_friend": "Bạn chỉ có thể chuyển pass này cho một người bạn của bạn trên echowire.",
 	"operator_pass.release_already_published": "Danh sách Operators này đã được công bố.",
 	"operator_pass.release_not_ready": "Không thể công bố danh sách Operators này trước ngày chốt.",
 	"operator_pass.removal_limited_first": "Muốn gỡ bỏ vĩnh viễn vì một vi phạm không nghiêm trọng thì trước đó phải có một lần gỡ bỏ có thời hạn.",

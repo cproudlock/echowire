@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Ein anderes Angebot von deinem Account wird noch gesendet. Versuche es gleich noch einmal.",
 	"operator_pass.offer_unavailable": "Dieser Pass kann derzeit nicht an diesen Account weitergegeben werden.",
 	"operator_pass.price_changed": "Der Preis für den Operator Pass hat sich geändert. Überprüfe den neuen Preis und versuche es erneut.",
-	"operator_pass.recipient_not_friend": "Du kannst diesen Pass nur an jemanden weitergeben, mit dem du auf Fluxer befreundet bist.",
+	"operator_pass.recipient_not_friend": "Du kannst diesen Pass nur an jemanden weitergeben, mit dem du auf echowire befreundet bist.",
 	"operator_pass.release_already_published": "Diese Operators-Liste wurde bereits veröffentlicht.",
 	"operator_pass.release_not_ready": "Diese Operators-Liste kann nicht vor ihrem Stichtag veröffentlicht werden.",
 	"operator_pass.removal_limited_first": "Eine dauerhafte Entfernung wegen eines nicht schwerwiegenden Verstoßes setzt eine vorherige befristete Entfernung voraus.",

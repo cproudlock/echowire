@@ -369,7 +369,7 @@ export const ERROR_I18N_MESSAGES = {
 	'donation.magic_link_used': 'Magic link has already been used.',
 	'operator_pass.offer_unavailable': 'This pass cannot be passed on to that account right now.',
 	'operator_pass.offer_busy': 'Another offer from your account is still being sent. Try again in a moment.',
-	'operator_pass.recipient_not_friend': 'You can only pass this on to one of your friends on Fluxer.',
+	'operator_pass.recipient_not_friend': 'You can only pass this on to one of your friends on echowire.',
 	'operator_pass.not_transferable':
 		'This pass cannot be passed on. A pass you received, or one that comes with Visionary, stays with you.',
 	'operator_pass.last_pass_confirmation_required':

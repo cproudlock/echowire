@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Inna propozycja przekazania z Twojego konta jest jeszcze wysyłana. Spróbuj ponownie za chwilę.",
 	"operator_pass.offer_unavailable": "Tej przepustki nie można teraz przekazać na to konto.",
 	"operator_pass.price_changed": "Cena Operator Pass uległa zmianie. Sprawdź nową cenę i spróbuj ponownie.",
-	"operator_pass.recipient_not_friend": "Tę przepustkę możesz przekazać tylko komuś ze swoich znajomych na Fluxerze.",
+	"operator_pass.recipient_not_friend": "Tę przepustkę możesz przekazać tylko komuś ze swoich znajomych na echowireze.",
 	"operator_pass.release_already_published": "Ta lista Operators została już opublikowana.",
 	"operator_pass.release_not_ready": "Tej listy Operators nie można opublikować przed jej datą zamknięcia.",
 	"operator_pass.removal_limited_first": "Trwałe odebranie za naruszenie, które nie jest poważne, wymaga wcześniejszego odebrania na określony czas.",

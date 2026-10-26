@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Jiná nabídka z vašeho účtu se ještě odesílá. Zkuste to za chvíli znovu.",
 	"operator_pass.offer_unavailable": "Tento pass teď nelze předat na tento účet.",
 	"operator_pass.price_changed": "Cena Operator Pass se změnila. Zkontrolujte novou cenu a zkuste to znovu.",
-	"operator_pass.recipient_not_friend": "Tento pass můžete předat jen někomu z vašich přátel na Fluxeru.",
+	"operator_pass.recipient_not_friend": "Tento pass můžete předat jen někomu z vašich přátel na echowireu.",
 	"operator_pass.release_already_published": "Tento seznam Operators už byl zveřejněn.",
 	"operator_pass.release_not_ready": "Tento seznam Operators nelze zveřejnit před jeho uzávěrkou.",
 	"operator_pass.removal_limited_first": "Trvalé odebrání za porušení, které není závažné, vyžaduje předchozí dočasné odebrání.",

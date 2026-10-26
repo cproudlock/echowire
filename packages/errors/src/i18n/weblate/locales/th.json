@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "ข้อเสนออื่นจากบัญชีของคุณยังส่งอยู่ ลองอีกครั้งในอีกสักครู่",
 	"operator_pass.offer_unavailable": "ขณะนี้ส่งต่อพาสนี้ให้บัญชีนั้นไม่ได้",
 	"operator_pass.price_changed": "ราคา Operator Pass เปลี่ยนแปลงแล้ว โปรดตรวจสอบราคาใหม่แล้วลองอีกครั้ง",
-	"operator_pass.recipient_not_friend": "คุณส่งต่อพาสนี้ได้เฉพาะให้เพื่อนของคุณบน Fluxer เท่านั้น",
+	"operator_pass.recipient_not_friend": "คุณส่งต่อพาสนี้ได้เฉพาะให้เพื่อนของคุณบน echowire เท่านั้น",
 	"operator_pass.release_already_published": "รายชื่อ Operators นี้เผยแพร่ไปแล้ว",
 	"operator_pass.release_not_ready": "รายชื่อ Operators นี้เผยแพร่ก่อนวันตัดรอบไม่ได้",
 	"operator_pass.removal_limited_first": "การนำออกถาวรเนื่องจากการละเมิดที่ไม่ร้ายแรงต้องมีการนำออกแบบมีกำหนดเวลามาก่อน",

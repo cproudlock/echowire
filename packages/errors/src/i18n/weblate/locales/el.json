@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Μια άλλη πρόταση από τον λογαριασμό σας αποστέλλεται ακόμα. Δοκιμάστε ξανά σε λίγο.",
 	"operator_pass.offer_unavailable": "Αυτό το πάσο δεν μπορεί να μεταβιβαστεί σε αυτόν τον λογαριασμό αυτή τη στιγμή.",
 	"operator_pass.price_changed": "Η τιμή του Operator Pass άλλαξε. Ελέγξτε τη νέα τιμή και δοκιμάστε ξανά.",
-	"operator_pass.recipient_not_friend": "Μπορείτε να μεταβιβάσετε αυτό το πάσο μόνο σε κάποιον από τους φίλους σας στο Fluxer.",
+	"operator_pass.recipient_not_friend": "Μπορείτε να μεταβιβάσετε αυτό το πάσο μόνο σε κάποιον από τους φίλους σας στο echowire.",
 	"operator_pass.release_already_published": "Αυτή η λίστα Operators έχει ήδη δημοσιευτεί.",
 	"operator_pass.release_not_ready": "Αυτή η λίστα Operators δεν μπορεί να δημοσιευτεί πριν από την ημερομηνία αποκοπής της.",
 	"operator_pass.removal_limited_first": "Η μόνιμη αφαίρεση για παράβαση που δεν είναι σοβαρή απαιτεί πρώτα μια αφαίρεση για περιορισμένο χρονικό διάστημα.",

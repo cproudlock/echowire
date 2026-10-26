@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "あなたのアカウントから別の申し出を送信中です。しばらくしてからもう一度お試しください。",
 	"operator_pass.offer_unavailable": "現在、このパスをそのアカウントに譲ることはできません。",
 	"operator_pass.price_changed": "Operator Passの価格が変更されました。新しい価格を確認して、もう一度お試しください。",
-	"operator_pass.recipient_not_friend": "このパスは、Fluxerで友だちになっている相手にのみ譲渡できます。",
+	"operator_pass.recipient_not_friend": "このパスは、echowireで友だちになっている相手にのみ譲渡できます。",
 	"operator_pass.release_already_published": "このOperators一覧はすでに公開されています。",
 	"operator_pass.release_not_ready": "このOperators一覧は締め切り日より前には公開できません。",
 	"operator_pass.removal_limited_first": "重大ではない違反で永久に削除するには、先に期間を限定した削除が必要です。",

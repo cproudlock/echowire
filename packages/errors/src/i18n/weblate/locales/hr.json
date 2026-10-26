@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Druga ponuda s vašeg računa još se šalje. Pokušajte ponovno za trenutak.",
 	"operator_pass.offer_unavailable": "Ova se propusnica trenutačno ne može prenijeti na taj račun.",
 	"operator_pass.price_changed": "Cijena Operator Passa se promijenila. Provjerite novu cijenu i pokušajte ponovno.",
-	"operator_pass.recipient_not_friend": "Ovu propusnicu možete prenijeti samo nekome od svojih prijatelja na Fluxeru.",
+	"operator_pass.recipient_not_friend": "Ovu propusnicu možete prenijeti samo nekome od svojih prijatelja na echowireu.",
 	"operator_pass.release_already_published": "Ovaj popis Operators već je objavljen.",
 	"operator_pass.release_not_ready": "Ovaj popis Operators ne može se objaviti prije svog zaključnog datuma.",
 	"operator_pass.removal_limited_first": "Trajno uklanjanje zbog kršenja koje nije ozbiljno zahtijeva ranije uklanjanje na ograničeno vrijeme.",

@@ -306,7 +306,9 @@
     "help": "Captcha the instance asks for",
     "options": [
       "none",
-      "altcha"
+      "altcha",
+      "hcaptcha",
+      "turnstile"
     ]
   },
   {

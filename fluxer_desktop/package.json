@@ -11,6 +11,7 @@
 	"scripts": {
 		"build": "node scripts/build.mjs",
 		"generate:windows-badges": "electron scripts/generate-windows-badges.mjs",
+		"test": "node --test src/common/ChannelIsolation.test.mjs src/main/BrandInVisibleText.test.mjs",
 		"set-channel": "../tools/ci/run.sh build-desktop --step set_build_channel",
 		"typecheck": "pnpm set-channel && tsc --noEmit"
 	},

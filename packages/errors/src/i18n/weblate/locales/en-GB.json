@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Another offer from your account is still being sent. Try again in a moment.",
 	"operator_pass.offer_unavailable": "This pass cannot be passed on to that account right now.",
 	"operator_pass.price_changed": "The Operator Pass price has changed. Check the new price and try again.",
-	"operator_pass.recipient_not_friend": "You can only pass this on to one of your friends on Fluxer.",
+	"operator_pass.recipient_not_friend": "You can only pass this on to one of your friends on echowire.",
 	"operator_pass.release_already_published": "This Operators list has already been published.",
 	"operator_pass.release_not_ready": "This Operators list cannot be published before its cut-off date.",
 	"operator_pass.removal_limited_first": "A permanent removal for a breach that is not serious needs an earlier removal for a limited time.",

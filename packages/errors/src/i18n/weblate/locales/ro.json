@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "O altă ofertă din contul tău este încă în curs de trimitere. Încearcă din nou peste câteva clipe.",
 	"operator_pass.offer_unavailable": "Momentan, acest pass nu poate fi dat mai departe către acel cont.",
 	"operator_pass.price_changed": "Prețul Operator Pass s-a modificat. Verifică noul preț și încearcă din nou.",
-	"operator_pass.recipient_not_friend": "Poți da acest pass mai departe doar unuia dintre prietenii tăi de pe Fluxer.",
+	"operator_pass.recipient_not_friend": "Poți da acest pass mai departe doar unuia dintre prietenii tăi de pe echowire.",
 	"operator_pass.release_already_published": "Această listă Operators a fost deja publicată.",
 	"operator_pass.release_not_ready": "Această listă Operators nu poate fi publicată înainte de data-limită.",
 	"operator_pass.removal_limited_first": "O eliminare permanentă pentru o încălcare care nu este gravă necesită o eliminare anterioară pentru o perioadă limitată.",

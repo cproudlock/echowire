@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "계정에서 다른 제안을 아직 보내고 있어요. 잠시 후 다시 시도해 주세요.",
 	"operator_pass.offer_unavailable": "지금은 이 패스를 해당 계정에 넘겨줄 수 없어요.",
 	"operator_pass.price_changed": "Operator Pass 가격이 변경되었어요. 새 가격을 확인하고 다시 시도해 주세요.",
-	"operator_pass.recipient_not_friend": "이 패스는 Fluxer 친구에게만 넘겨줄 수 있어요.",
+	"operator_pass.recipient_not_friend": "이 패스는 echowire 친구에게만 넘겨줄 수 있어요.",
 	"operator_pass.release_already_published": "이 Operators 목록은 이미 게시되었어요.",
 	"operator_pass.release_not_ready": "이 Operators 목록은 마감일 전에는 게시할 수 없어요.",
 	"operator_pass.removal_limited_first": "심각하지 않은 위반으로 영구 제거하려면 먼저 기간을 정한 제거가 있어야 해요.",

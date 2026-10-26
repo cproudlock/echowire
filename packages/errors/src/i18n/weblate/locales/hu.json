@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Egy másik felajánlásod küldése még folyamatban van. Próbáld újra egy kis idő múlva.",
 	"operator_pass.offer_unavailable": "Ez a pass most nem adható tovább ennek a fióknak.",
 	"operator_pass.price_changed": "Az Operator Pass ára megváltozott. Nézd meg az új árat, és próbáld újra.",
-	"operator_pass.recipient_not_friend": "Ezt a passt csak valamelyik Fluxer-ismerősödnek adhatod tovább.",
+	"operator_pass.recipient_not_friend": "Ezt a passt csak valamelyik echowire-ismerősödnek adhatod tovább.",
 	"operator_pass.release_already_published": "Ezt az Operators-listát már közzétették.",
 	"operator_pass.release_not_ready": "Ez az Operators-lista a határnapja előtt nem tehető közzé.",
 	"operator_pass.removal_limited_first": "A nem súlyos szabályszegés esetén a végleges eltávolításhoz előzetes, korlátozott idejű eltávolítás szükséges.",

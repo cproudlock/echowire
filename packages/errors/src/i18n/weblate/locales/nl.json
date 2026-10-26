@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Er wordt nog een ander aanbod vanaf je account verstuurd. Probeer het zo opnieuw.",
 	"operator_pass.offer_unavailable": "Deze pass kan op dit moment niet aan dat account worden doorgegeven.",
 	"operator_pass.price_changed": "De prijs van de Operator Pass is gewijzigd. Controleer de nieuwe prijs en probeer het opnieuw.",
-	"operator_pass.recipient_not_friend": "Je kunt deze pass alleen doorgeven aan iemand met wie je op Fluxer bevriend bent.",
+	"operator_pass.recipient_not_friend": "Je kunt deze pass alleen doorgeven aan iemand met wie je op echowire bevriend bent.",
 	"operator_pass.release_already_published": "Deze Operators-lijst is al gepubliceerd.",
 	"operator_pass.release_not_ready": "Deze Operators-lijst kan niet worden gepubliceerd vóór de peildatum.",
 	"operator_pass.removal_limited_first": "Een permanente verwijdering wegens een niet-ernstige overtreding vereist een eerdere verwijdering voor een beperkte tijd.",

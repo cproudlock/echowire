@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "ما زال عرض آخر من حسابك قيد الإرسال. حاول مرة أخرى بعد قليل.",
 	"operator_pass.offer_unavailable": "لا يمكن نقل Operator Pass هذا إلى ذلك الحساب حاليًا.",
 	"operator_pass.price_changed": "لقد تغير سعر Operator Pass. تحقق من السعر الجديد وحاول مرة أخرى.",
-	"operator_pass.recipient_not_friend": "يمكنك نقل Operator Pass هذا إلى أحد أصدقائك على Fluxer فقط.",
+	"operator_pass.recipient_not_friend": "يمكنك نقل Operator Pass هذا إلى أحد أصدقائك على echowire فقط.",
 	"operator_pass.release_already_published": "تم نشر قائمة Operators هذه بالفعل.",
 	"operator_pass.release_not_ready": "لا يمكن نشر قائمة Operators هذه قبل تاريخ إغلاقها.",
 	"operator_pass.removal_limited_first": "تتطلب الإزالة الدائمة بسبب مخالفة غير جسيمة إزالةً سابقة لمدة محدودة.",

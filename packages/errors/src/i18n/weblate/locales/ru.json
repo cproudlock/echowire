@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Другое предложение с вашего аккаунта ещё отправляется. Попробуйте ещё раз чуть позже.",
 	"operator_pass.offer_unavailable": "Сейчас этот пропуск нельзя передать этому аккаунту.",
 	"operator_pass.price_changed": "Цена Operator Pass изменилась. Проверьте новую цену и попробуйте снова.",
-	"operator_pass.recipient_not_friend": "Этот пропуск можно передать только одному из ваших друзей на Fluxer.",
+	"operator_pass.recipient_not_friend": "Этот пропуск можно передать только одному из ваших друзей на echowire.",
 	"operator_pass.release_already_published": "Этот список Operators уже опубликован.",
 	"operator_pass.release_not_ready": "Этот список Operators нельзя опубликовать до даты его закрытия.",
 	"operator_pass.removal_limited_first": "Чтобы навсегда отозвать Operator Pass за несерьёзное нарушение, сначала нужно отозвать его на время.",

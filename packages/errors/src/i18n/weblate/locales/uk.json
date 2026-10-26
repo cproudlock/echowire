@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Інша пропозиція з вашого облікового запису ще надсилається. Спробуйте ще раз трохи згодом.",
 	"operator_pass.offer_unavailable": "Зараз цей пропуск не можна передати цьому обліковому запису.",
 	"operator_pass.price_changed": "Ціна Operator Pass змінилася. Перевірте нову ціну та спробуйте ще раз.",
-	"operator_pass.recipient_not_friend": "Цей пропуск можна передати лише комусь із ваших друзів у Fluxer.",
+	"operator_pass.recipient_not_friend": "Цей пропуск можна передати лише комусь із ваших друзів у echowire.",
 	"operator_pass.release_already_published": "Цей список Operators уже опубліковано.",
 	"operator_pass.release_not_ready": "Цей список Operators не можна опублікувати до дати його закриття.",
 	"operator_pass.removal_limited_first": "Постійне вилучення за несерйозне порушення можливе лише після попереднього тимчасового вилучення.",

@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Hesabınızdan başka bir teklif hâlâ gönderiliyor. Biraz sonra tekrar deneyin.",
 	"operator_pass.offer_unavailable": "Bu Operator Pass şu anda o hesaba devredilemez.",
 	"operator_pass.price_changed": "Operator Pass fiyatı değişti. Yeni fiyatı kontrol edip tekrar deneyin.",
-	"operator_pass.recipient_not_friend": "Bu Operator Pass'i yalnızca Fluxer'daki arkadaşlarınızdan birine devredebilirsiniz.",
+	"operator_pass.recipient_not_friend": "Bu Operator Pass'i yalnızca echowire'daki arkadaşlarınızdan birine devredebilirsiniz.",
 	"operator_pass.release_already_published": "Bu Operators listesi zaten yayımlandı.",
 	"operator_pass.release_not_ready": "Bu Operators listesi son tarihinden önce yayımlanamaz.",
 	"operator_pass.removal_limited_first": "Ciddi olmayan bir ihlal nedeniyle kalıcı kaldırma için önce süreli bir kaldırma uygulanmış olmalıdır.",

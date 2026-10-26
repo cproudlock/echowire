@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Toista tililtäsi lähtevää tarjousta lähetetään vielä. Yritä hetken päästä uudelleen.",
 	"operator_pass.offer_unavailable": "Tätä passia ei voi juuri nyt luovuttaa kyseiselle tilille.",
 	"operator_pass.price_changed": "Operator Passin hinta on muuttunut. Tarkista uusi hinta ja yritä uudelleen.",
-	"operator_pass.recipient_not_friend": "Voit luovuttaa tämän passin vain jollekulle Fluxer-kavereistasi.",
+	"operator_pass.recipient_not_friend": "Voit luovuttaa tämän passin vain jollekulle echowire-kavereistasi.",
 	"operator_pass.release_already_published": "Tämä Operators-lista on jo julkaistu.",
 	"operator_pass.release_not_ready": "Tätä Operators-listaa ei voi julkaista ennen sen rajapäivää.",
 	"operator_pass.removal_limited_first": "Pysyvä poisto ei-vakavasta rikkomuksesta vaatii aiemman määräaikaisen poiston.",

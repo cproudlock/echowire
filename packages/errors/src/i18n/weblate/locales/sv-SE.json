@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Ett annat erbjudande från ditt konto håller fortfarande på att skickas. Försök igen om en stund.",
 	"operator_pass.offer_unavailable": "Det här passet kan inte lämnas vidare till det kontot just nu.",
 	"operator_pass.price_changed": "Priset för Operator Pass har ändrats. Kontrollera det nya priset och försök igen.",
-	"operator_pass.recipient_not_friend": "Du kan bara lämna vidare det här passet till någon som du är vän med på Fluxer.",
+	"operator_pass.recipient_not_friend": "Du kan bara lämna vidare det här passet till någon som du är vän med på echowire.",
 	"operator_pass.release_already_published": "Den här Operators-listan har redan publicerats.",
 	"operator_pass.release_not_ready": "Den här Operators-listan kan inte publiceras före sitt brytdatum.",
 	"operator_pass.removal_limited_first": "En permanent borttagning för en överträdelse som inte är allvarlig kräver att förmånerna först har tagits bort under en begränsad tid.",

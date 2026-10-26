@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Un'altra proposta dal tuo account è ancora in fase di invio. Riprova tra un momento.",
 	"operator_pass.offer_unavailable": "Al momento questo pass non può essere ceduto a quell'account.",
 	"operator_pass.price_changed": "Il prezzo dell'Operator Pass è cambiato. Controlla il nuovo prezzo e riprova.",
-	"operator_pass.recipient_not_friend": "Puoi cedere questo pass solo a uno dei tuoi amici su Fluxer.",
+	"operator_pass.recipient_not_friend": "Puoi cedere questo pass solo a uno dei tuoi amici su echowire.",
 	"operator_pass.release_already_published": "Questo elenco degli Operators è già stato pubblicato.",
 	"operator_pass.release_not_ready": "Questo elenco degli Operators non può essere pubblicato prima della sua data limite.",
 	"operator_pass.removal_limited_first": "Una rimozione permanente per una violazione non grave richiede una rimozione precedente per un periodo limitato.",

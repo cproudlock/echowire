@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "Kitas pasiūlymas iš jūsų paskyros dar siunčiamas. Netrukus bandykite dar kartą.",
 	"operator_pass.offer_unavailable": "Šiuo metu šio leidimo negalima perduoti tai paskyrai.",
 	"operator_pass.price_changed": "Operator Pass kaina pasikeitė. Patikrinkite naują kainą ir bandykite dar kartą.",
-	"operator_pass.recipient_not_friend": "Šį leidimą galite perduoti tik vienam iš savo Fluxer draugų.",
+	"operator_pass.recipient_not_friend": "Šį leidimą galite perduoti tik vienam iš savo echowire draugų.",
 	"operator_pass.release_already_published": "Šis Operators sąrašas jau paskelbtas.",
 	"operator_pass.release_not_ready": "Šio Operators sąrašo negalima paskelbti iki jo ribinės datos.",
 	"operator_pass.removal_limited_first": "Nuolatiniam pašalinimui už nesunkų pažeidimą pirmiausia reikia laikino pašalinimo.",

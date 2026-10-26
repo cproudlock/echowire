@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "你的账号还有另一个转交请求正在发送。请稍后再试。",
 	"operator_pass.offer_unavailable": "目前无法将此通行证转交给该账号。",
 	"operator_pass.price_changed": "Operator Pass 价格已更改。请查看新价格后重试。",
-	"operator_pass.recipient_not_friend": "此通行证只能转交给你在 Fluxer 上的好友。",
+	"operator_pass.recipient_not_friend": "此通行证只能转交给你在 echowire 上的好友。",
 	"operator_pass.release_already_published": "此 Operators 名单已发布。",
 	"operator_pass.release_not_ready": "此 Operators 名单在截止日期前无法发布。",
 	"operator_pass.removal_limited_first": "对不严重的违规进行永久移除前，必须先进行一次限时移除。",

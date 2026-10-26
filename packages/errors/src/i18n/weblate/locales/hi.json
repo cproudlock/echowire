@@ -452,7 +452,7 @@
 	"operator_pass.offer_busy": "आपके अकाउंट से एक और ऑफ़र अभी भेजा जा रहा है। थोड़ी देर बाद फिर से कोशिश करें।",
 	"operator_pass.offer_unavailable": "यह पास अभी उस अकाउंट को नहीं सौंपा जा सकता।",
 	"operator_pass.price_changed": "Operator Pass की कीमत बदल गई है। नई कीमत देखें और फिर से कोशिश करें।",
-	"operator_pass.recipient_not_friend": "आप यह पास सिर्फ़ Fluxer पर अपने किसी दोस्त को ही सौंप सकते हैं।",
+	"operator_pass.recipient_not_friend": "आप यह पास सिर्फ़ echowire पर अपने किसी दोस्त को ही सौंप सकते हैं।",
 	"operator_pass.release_already_published": "यह Operators सूची पहले ही प्रकाशित हो चुकी है।",
 	"operator_pass.release_not_ready": "यह Operators सूची अपनी कट-ऑफ़ तारीख से पहले प्रकाशित नहीं की जा सकती।",
 	"operator_pass.removal_limited_first": "जो उल्लंघन गंभीर नहीं है, उसके लिए स्थायी रूप से हटाने से पहले एक बार सीमित समय के लिए हटाना ज़रूरी है।",

@@ -308,7 +308,7 @@ export function buildMemberIdsPreview(
 		const left = a.joinTimestamp?.getTime() ?? 0;
 		const right = b.joinTimestamp?.getTime() ?? 0;
 		if (left !== right) return right - left;
-		return a.userId < b.userId ? 1 : a.userId > b.userId ? -1 : 0;
+		return compareAscending(b.userId, a.userId);
 	});
 	const preview: Array<bigint> = [];
 	for (const id of [...participants, ...byJoinDesc.map((member) => member.userId)]) {
@@ -330,7 +330,13 @@ export interface MigrationInput {
 	starterThreadIds: ReadonlySet<bigint>;
 }
 
-export type SkipReason =
+function compareAscending<T extends bigint | string>(a: T, b: T): number {
+	if (a < b) return -1;
+	if (a > b) return 1;
+	return 0;
+}
+
+type SkipReason =
 	| 'soft_deleted'
 	| 'missing_guild'
 	| 'missing_parent'
@@ -338,7 +344,7 @@ export type SkipReason =
 	| 'parent_not_thread_parent'
 	| 'orphan_member_group';
 
-export interface Skipped {
+interface Skipped {
 	id: bigint;
 	reason: SkipReason;
 	count: number;
@@ -508,7 +514,7 @@ export function planMigration(input: MigrationInput): MigrationPlan {
 	const threads: Array<PlannedThread> = [];
 	const threadCountByParent = new Map<bigint, number>();
 	const earliestByGuild = new Map<bigint, Date>();
-	for (const thread of [...candidates].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))) {
+	for (const thread of [...candidates].sort((a, b) => compareAscending(a.id, b.id))) {
 		const parent = liveChannels.get(thread.parentId!)!;
 		const guildId = createGuildID(thread.guildId!);
 		const parentId = createChannelID(thread.parentId!);
@@ -621,7 +627,7 @@ export function planMigration(input: MigrationInput): MigrationPlan {
 	const parents: Array<PlannedParent> = [];
 	const threadOnly: Array<ThreadOnlyChannelsByGuildRow> = [];
 	const markerGuilds = new Set<bigint>(earliestByGuild.keys());
-	for (const channel of [...liveChannels.values()].sort((a, b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0))) {
+	for (const channel of [...liveChannels.values()].sort((a, b) => compareAscending(a.id, b.id))) {
 		if (channel.guildId === null) continue;
 		const count = threadCountByParent.get(channel.id) ?? 0;
 		if (THREAD_ONLY_CHANNEL_TYPES.has(channel.type)) {
@@ -651,7 +657,7 @@ export function planMigration(input: MigrationInput): MigrationPlan {
 
 	const guildMarkers: Array<GuildThreadStateRow> = [...markerGuilds]
 		.filter((guildId) => guildIds.has(guildId))
-		.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0))
+		.sort((a, b) => compareAscending(a, b))
 		.map((guildId) => ({
 			guild_id: createGuildID(guildId),
 			// Deterministic so a re-plan produces the same row. perms_seeded_at stays null on purpose: ADR 0012 runs
@@ -677,7 +683,7 @@ function normalise(value: unknown): unknown {
 		const entries = Object.entries(value as Record<string, unknown>)
 			.map(([key, inner]) => [key, normalise(inner)] as const)
 			.filter(([, inner]) => inner !== null)
-			.sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0));
+			.sort(([a], [b]) => compareAscending(a, b));
 		return Object.fromEntries(entries);
 	}
 	return value;

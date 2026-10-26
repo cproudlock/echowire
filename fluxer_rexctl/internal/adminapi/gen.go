@@ -494,8 +494,10 @@ func (e BrandingAssetUploadRequestKind) Valid() bool {
 
 // Defines values for CaptchaProviderSchema.
 const (
-	CaptchaProviderSchemaALTCHA CaptchaProviderSchema = "altcha"
-	CaptchaProviderSchemaNONE   CaptchaProviderSchema = "none"
+	CaptchaProviderSchemaALTCHA    CaptchaProviderSchema = "altcha"
+	CaptchaProviderSchemaHCAPTCHA  CaptchaProviderSchema = "hcaptcha"
+	CaptchaProviderSchemaNONE      CaptchaProviderSchema = "none"
+	CaptchaProviderSchemaTURNSTILE CaptchaProviderSchema = "turnstile"
 )
 
 // Valid indicates whether the value is a known member of the CaptchaProviderSchema enum.
@@ -503,7 +505,11 @@ func (e CaptchaProviderSchema) Valid() bool {
 	switch e {
 	case CaptchaProviderSchemaALTCHA:
 		return true
+	case CaptchaProviderSchemaHCAPTCHA:
+		return true
 	case CaptchaProviderSchemaNONE:
+		return true
+	case CaptchaProviderSchemaTURNSTILE:
 		return true
 	default:
 		return false

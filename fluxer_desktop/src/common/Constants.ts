@@ -12,7 +12,7 @@ import {
 // another instance (federation) still opens this app. Keep in step with
 // packages/constants/src/AppProtocolConstants.ts, which the Electron main process cannot import.
 // The development channel claims only its own scheme so a dev build never steals the production one.
-export const CHANNEL_APP_PROTOCOLS: Record<BuildChannel, string> = {
+const CHANNEL_APP_PROTOCOLS: Record<BuildChannel, string> = {
 	stable: 'echowire',
 	canary: 'echowire',
 	development: 'echowire-development',
@@ -31,7 +31,7 @@ export const STABLE_APP_URL = 'https://echowire.org';
 // feed host in ShellDownloadFormats.ts, which runs in the main process where CORS does not
 // apply. Revisit only if canary becomes a genuinely separate deployment with
 // its own per-host instance config.
-export const CANARY_APP_URL = 'https://echowire.org';
+const CANARY_APP_URL = 'https://echowire.org';
 const DEVELOPMENT_APP_URL = 'http://localhost:8088';
 export const CHANNEL_APP_URLS: Record<BuildChannel, string> = {
 	stable: STABLE_APP_URL,

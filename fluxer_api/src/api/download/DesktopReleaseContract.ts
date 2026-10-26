@@ -125,7 +125,9 @@ export function parseDesktopReleaseDescriptor(value: unknown): DesktopReleaseDes
 		}
 		storageKeys.add(asset.storage_key);
 		const [, , platform, arch, filename] = asset.storage_key.split('/');
-		const platformToken = platform === 'win32' ? 'win' : platform === 'darwin' ? 'mac' : 'linux';
+		let platformToken = 'linux';
+		if (platform === 'win32') platformToken = 'win';
+		else if (platform === 'darwin') platformToken = 'mac';
 		const releaseFilename =
 			platform === 'darwin' && filename.toLowerCase() === 'releases.json' ? 'releases.json' : filename;
 		const expectedReleaseAsset = filename.startsWith(expectedReleasePrefix)

@@ -61,7 +61,7 @@ function discoveryDocument(
 			phone_verification_enabled: false,
 		},
 		gif: {provider: 'tenor', display_name: 'Tenor', attribution_required: true},
-		sso: {enabled: false, enforced: false, display_name: null, redirect_uri: `https://${host}/sso`},
+		sso: {enabled: false, enforced: false, display_name: null, button_label: null, redirect_uri: `https://${host}/sso`},
 		registration: {mode: 'closed', admin_registration_urls_enabled: false},
 		community: {
 			single_community: false,
@@ -93,7 +93,7 @@ afterEach(() => {
 });
 
 function runningChannel(): OfficialReleaseChannel {
-	return Config.PUBLIC_RELEASE_CHANNEL === 'stable' ? 'stable' : 'canary';
+	return Config.RELEASE_CHANNEL === 'stable' ? 'stable' : 'canary';
 }
 
 function stubBrowserDocument(origin: string, {servesOwnApi = false}: {servesOwnApi?: boolean} = {}): void {
@@ -233,11 +233,17 @@ describe('runtimeSnapshotFromDiscovery', () => {
 				status_page_incident_history_url: 'https://status.q.test/history',
 				premium_product_name: 'Supporter',
 				premium_info_url: 'https://q.test/premium',
+				favicon_dark_url: null,
+				sign_in_backdrop_url: null,
+				custom_css: null,
+				trusted_domains: [],
+				upload_limit_message: null,
 			},
 			setup: {
 				configured: false,
 				admin_url: 'https://q.test/admin',
 				account_identity_locked: true,
+				account_identity_lock_reason: null,
 				setup_token_required: true,
 			},
 			legal: {

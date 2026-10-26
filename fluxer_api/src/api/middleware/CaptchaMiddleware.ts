@@ -9,11 +9,12 @@ import {getKVClient} from '@app/api/middleware/ServiceRegistry';
 import type {User} from '@app/api/models/User';
 import type {HonoEnv} from '@app/api/types/HonoEnv';
 import {extractEmailDomain} from '@app/api/utils/EmailDomainUtils';
+import {type CaptchaProvider, CaptchaProviders} from '@fluxer/constants/src/CaptchaConstants';
 import {Headers} from '@fluxer/constants/src/Headers';
 import {UserFlags} from '@fluxer/constants/src/UserConstants';
 import {CaptchaRequiredError, InvalidCaptchaError} from '@fluxer/errors/src/CaptchaErrors';
 import {extractClientIp} from '@fluxer/ip_utils/src/ClientIp';
-import type {CaptchaConfig, CaptchaProvider} from '@fluxer/schema/src/domains/admin/CaptchaSchemas';
+import {type CaptchaConfig, isCaptchaActive} from '@fluxer/schema/src/domains/admin/CaptchaSchemas';
 import type {ICaptchaProvider} from '@pkgs/captcha/src/ICaptchaProvider';
 import {AltchaProvider} from '@pkgs/captcha/src/providers/AltchaProvider';
 import {HcaptchaProvider} from '@pkgs/captcha/src/providers/HcaptchaProvider';
@@ -40,11 +41,9 @@ function createAltchaProvider(config: CaptchaConfig): AltchaProvider {
 	});
 }
 
-// Echowire: the provider offered to a client that cannot solve ALTCHA. A null
-// provider means nobody chose one, which is ALTCHA, the upstream default.
-function offeredProvider(config: CaptchaConfig): CaptchaProvider {
-	return config.provider ?? 'altcha';
-}
+const MAX_CAPTCHA_ESCALATION_STEPS = 6;
+
+type ActiveCaptchaProvider = Exclude<CaptchaProvider, typeof CaptchaProviders.NONE>;
 
 // Echowire: hCaptcha and Turnstile secrets live in the environment only, never in
 // the database. See docs/adr/0008.
@@ -65,13 +64,21 @@ function createHttpProvider(provider: 'hcaptcha' | 'turnstile'): ICaptchaProvide
 // stores reads captcha_provider and renders the widget it implements. Naming the
 // offered provider here is what keeps those clients able to log in, because they
 // fall back to hCaptcha for any provider string they do not recognise.
-async function challengeData(provider: CaptchaProvider, altcha: AltchaProvider): Promise<Record<string, unknown>> {
-	return {captcha_provider: provider, altcha_challenge: await altcha.createChallenge()};
+async function challengeData(
+	provider: ActiveCaptchaProvider,
+	altcha: AltchaProvider,
+	cost?: number,
+): Promise<Record<string, unknown>> {
+	return {captcha_provider: provider, altcha_challenge: await altcha.createChallenge(cost)};
 }
 
-function requestedProvider(ctx: Context<HonoEnv>): CaptchaProvider | null {
+function requestedProvider(ctx: Context<HonoEnv>): ActiveCaptchaProvider | null {
 	const requested = ctx.req.header(Headers.X_CAPTCHA_TYPE);
-	return requested === 'altcha' || requested === 'hcaptcha' || requested === 'turnstile' ? requested : null;
+	return requested === CaptchaProviders.ALTCHA ||
+		requested === CaptchaProviders.HCAPTCHA ||
+		requested === CaptchaProviders.TURNSTILE
+		? requested
+		: null;
 }
 
 // Echowire: the web and desktop clients solve ALTCHA and retry with only X-Captcha-Token, no
@@ -90,30 +97,62 @@ export function isAltchaPayload(token: string): boolean {
 	}
 }
 
-export async function verifyCaptchaToken(ctx: Context<HonoEnv>): Promise<boolean> {
-	if (Config.dev.testModeEnabled && ctx.req.header(TEST_ENABLE_CAPTCHA_HEADER) !== 'true') return false;
+function isCaptchaBypassedForTest(ctx: Context<HonoEnv>): boolean {
+	return Config.dev.testModeEnabled && ctx.req.header(TEST_ENABLE_CAPTCHA_HEADER) !== 'true';
+}
+
+function escalatedCaptchaCost(baseCost: number, steps: number): number {
+	const boundedSteps = Math.min(Math.max(0, Math.floor(steps)), MAX_CAPTCHA_ESCALATION_STEPS);
+	return baseCost * 2 ** boundedSteps;
+}
+
+export type CaptchaChallengeResponse =
+	| {captcha_provider: typeof CaptchaProviders.NONE}
+	| {
+			captcha_provider: ActiveCaptchaProvider;
+			altcha_challenge: Awaited<ReturnType<AltchaProvider['createChallenge']>>;
+	  };
+
+export async function createCaptchaChallenge(
+	ctx: Context<HonoEnv>,
+	escalationSteps = 0,
+): Promise<CaptchaChallengeResponse> {
+	if (isCaptchaBypassedForTest(ctx)) return {captcha_provider: CaptchaProviders.NONE};
 	const config = await ctx.get('instanceConfigRepository').getCaptchaConfig();
-	if (!config.enabled) return false;
+	if (!isCaptchaActive(config)) return {captcha_provider: CaptchaProviders.NONE};
+	return {
+		captcha_provider: config.provider as ActiveCaptchaProvider,
+		altcha_challenge: await createAltchaProvider(config).createChallenge(
+			escalatedCaptchaCost(config.cost, escalationSteps),
+		),
+	};
+}
+
+export async function verifyCaptchaToken(ctx: Context<HonoEnv>, escalationSteps = 0): Promise<boolean> {
+	if (isCaptchaBypassedForTest(ctx)) return false;
+	const config = await ctx.get('instanceConfigRepository').getCaptchaConfig();
+	if (!isCaptchaActive(config)) return false;
 	const user = ctx.get('user') as User | undefined;
 	if (sharedListHas('email_domain_exempt', extractEmailDomain(user?.email))) return false;
 	if (userHasCaptchaExemptFlag(user)) return false;
 	if (await requestUserHasCaptchaExemptFlag(ctx)) return false;
 	const altcha = createAltchaProvider(config);
-	const offered = offeredProvider(config);
+	const cost = escalatedCaptchaCost(config.cost, escalationSteps);
+	const offered = config.provider as ActiveCaptchaProvider;
 	const token = ctx.req.header(Headers.X_CAPTCHA_TOKEN);
 	if (!token) {
-		throw new CaptchaRequiredError(await challengeData(offered, altcha));
+		throw new CaptchaRequiredError(await challengeData(offered, altcha, cost));
 	}
-	const resolved = requestedProvider(ctx) ?? (isAltchaPayload(token) ? 'altcha' : offered);
-	if (resolved === 'altcha') {
-		if (!(await altcha.verify({token}))) {
-			throw new InvalidCaptchaError(await challengeData(offered, altcha));
+	const resolved = requestedProvider(ctx) ?? (isAltchaPayload(token) ? CaptchaProviders.ALTCHA : offered);
+	if (resolved === CaptchaProviders.ALTCHA) {
+		if (!(await altcha.verify({token, minCost: cost}))) {
+			throw new InvalidCaptchaError(await challengeData(offered, altcha, cost));
 		}
 		return true;
 	}
 	const provider = createHttpProvider(resolved);
 	if (!provider) {
-		throw new InvalidCaptchaError(await challengeData(offered, altcha));
+		throw new InvalidCaptchaError(await challengeData(offered, altcha, cost));
 	}
 	const remoteIp =
 		extractClientIp(ctx.req.raw, {
@@ -121,7 +160,7 @@ export async function verifyCaptchaToken(ctx: Context<HonoEnv>): Promise<boolean
 			clientIpHeaderName: Config.proxy.client_ip_header,
 		}) ?? undefined;
 	if (!(await provider.verify({token, remoteIp}))) {
-		throw new InvalidCaptchaError(await challengeData(offered, altcha));
+		throw new InvalidCaptchaError(await challengeData(offered, altcha, cost));
 	}
 	return true;
 }
@@ -148,3 +187,10 @@ export const CaptchaMiddleware = createMiddleware<HonoEnv>(async (ctx, next) => 
 	ctx.set('captchaVerified', await verifyCaptchaToken(ctx));
 	await next();
 });
+
+export function EscalatingCaptchaMiddleware(resolveSteps: (ctx: Context<HonoEnv>) => Promise<number>) {
+	return createMiddleware<HonoEnv>(async (ctx, next) => {
+		ctx.set('captchaVerified', await verifyCaptchaToken(ctx, await resolveSteps(ctx)));
+		await next();
+	});
+}

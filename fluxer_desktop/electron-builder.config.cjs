@@ -77,7 +77,21 @@ if (!channel) {
 
 const isCanary = buildChannel === 'canary';
 const isStable = buildChannel === 'stable';
-const isLinuxBuild = process.argv.includes('--linux');
+const platformArguments = new Set(process.argv.map((argument) => argument.split('=', 1)[0]));
+const linuxRequested = ['--linux', '-l'].some((selector) => platformArguments.has(selector));
+const macRequested = ['--mac', '--macos', '-m', '-o'].some((selector) => platformArguments.has(selector));
+const windowsRequested = ['--win', '--windows', '-w'].some((selector) => platformArguments.has(selector));
+let targetPlatform;
+if (linuxRequested) {
+	targetPlatform = 'linux';
+} else if (macRequested) {
+	targetPlatform = 'darwin';
+} else if (windowsRequested) {
+	targetPlatform = 'win32';
+} else {
+	targetPlatform = process.platform;
+}
+const isLinuxBuild = targetPlatform === 'linux';
 const productName = channel.productName;
 const linuxOptDirName = channel.linuxOptDirName;
 const installedProductName = isLinuxBuild ? linuxOptDirName : productName;
@@ -117,11 +131,11 @@ const legacyLinuxCanaryOptDir = '/opt/Fluxer Canary';
 const legacyLinuxOptDirSweepScript = path.resolve(__dirname, 'packaging/linux/rpm-post-transaction.sh');
 const legacyLinuxOptDirRpmFpmArgs = isCanary ? ['--rpm-posttrans', legacyLinuxOptDirSweepScript] : [];
 const macOSMinimumSystemVersion = '13.0';
-const isMacBuild = process.argv.includes('--mac');
-const isWindowsBuild = process.argv.includes('--win');
-const targetPlatform = isLinuxBuild ? 'linux' : isMacBuild ? 'darwin' : isWindowsBuild ? 'win32' : process.platform;
 const metadataName = isLinuxBuild ? linuxPackageName : packageName;
-const shellVersion = process.env.VERSION || readBundledRendererVersion();
+if (process.env.VERSION && !process.env.BUILD_VERSION) {
+	throw new Error('The desktop packaging no longer reads VERSION. Set BUILD_VERSION instead.');
+}
+const shellVersion = process.env.BUILD_VERSION || readBundledRendererVersion();
 const supportedTargetArchs = ['x64', 'arm64'];
 const supportedMacTargetArchs = [...supportedTargetArchs, 'universal'];
 const electronArch = process.env.ELECTRON_ARCH;
@@ -1507,13 +1521,14 @@ async function verifyRpmArtifactsSweepTheRenamedInstallDirectory(buildResult) {
 	const violations = [];
 	for (const artifactPath of rpmArtifacts) {
 		const scriptlet = await readRpmPostTransactionScriptlet(artifactPath);
-		const detail = !scriptlet.includes(legacyLinuxCanaryOptDir)
-			? `does not reference ${legacyLinuxCanaryOptDir}`
-			: !scriptlet.includes('rmdir')
-				? 'does not sweep the directory with rmdir'
-				: /\brm\s+-[a-zA-Z]*[rf]/.test(scriptlet)
-					? 'removes files rather than only empty directories'
-					: null;
+		let detail = null;
+		if (!scriptlet.includes(legacyLinuxCanaryOptDir)) {
+			detail = `does not reference ${legacyLinuxCanaryOptDir}`;
+		} else if (!scriptlet.includes('rmdir')) {
+			detail = 'does not sweep the directory with rmdir';
+		} else if (/\brm\s+-[a-zA-Z]*[rf]/.test(scriptlet)) {
+			detail = 'removes files rather than only empty directories';
+		}
 		if (detail !== null) {
 			violations.push({artifactPath, detail});
 		}

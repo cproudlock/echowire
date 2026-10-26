@@ -2,7 +2,8 @@
 
 use crate::job::{ClearJob, MessageJob, RingJob};
 use crate::metrics::PayloadShrink;
-use crate::{unix_millis, unix_seconds};
+use crate::unix_seconds;
+use fluxer_common::time::unix_millis;
 use serde_json::{Map, Value, json};
 
 const WEB_PUSH_MARKER: u64 = 8030;

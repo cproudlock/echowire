@@ -136,7 +136,9 @@ function parseOptions(): Options {
 	if (apply && delta) throw new Error('Choose --apply or --delta, not both.');
 	if (dryRun && apply) throw new Error('--dry-run and --apply contradict each other.');
 	const backupFile = values['backup-file'] ?? null;
-	const mode: Mode = verify ? 'verify' : cleanup ? 'cleanup' : 'sync';
+	let mode: Mode = 'sync';
+	if (verify) mode = 'verify';
+	else if (cleanup) mode = 'cleanup';
 	const write = mode === 'cleanup' ? apply : (apply || delta) && !dryRun;
 	if (mode === 'cleanup' && write && backupFile === null) {
 		throw new Error('--cleanup-legacy --apply needs --backup-file <path>: the deleted rows are saved there first.');
@@ -950,7 +952,8 @@ async function indexedAs(threads: ThreadRepository, thread: PlannedThread): Prom
 		if (page.threads.some((s) => s.threadId === thread.state.thread_id)) archived = true;
 	}
 	if (active && archived) return 'none';
-	return active ? 'active' : archived ? 'archived' : 'none';
+	if (active) return 'active';
+	return archived ? 'archived' : 'none';
 }
 
 async function fetchManyAll<T>(tableName: string): Promise<Array<T>> {
@@ -1069,18 +1072,16 @@ async function main(): Promise<void> {
 	if (!isLoopback(host) && !options.allowRemote) {
 		throw new Error(`Refusing to connect to non-loopback host "${host}" without --allow-remote.`);
 	}
-	const modeLabel =
-		options.mode === 'verify'
-			? 'verify'
-			: options.mode === 'cleanup'
-				? `cleanup-legacy${options.write ? ' (apply)' : ' (preview)'}`
-				: options.write
-					? options.delta
-						? 'delta'
-						: 'apply'
-					: options.delta
-						? 'dry-run (delta rules)'
-						: 'dry-run';
+	let modeLabel: string;
+	if (options.mode === 'verify') {
+		modeLabel = 'verify';
+	} else if (options.mode === 'cleanup') {
+		modeLabel = `cleanup-legacy${options.write ? ' (apply)' : ' (preview)'}`;
+	} else if (options.write) {
+		modeLabel = options.delta ? 'delta' : 'apply';
+	} else {
+		modeLabel = options.delta ? 'dry-run (delta rules)' : 'dry-run';
+	}
 	console.log(`MigrateForkThreads mode=${modeLabel}${options.preCutover ? ' pre-cutover' : ''} target=${host}`);
 
 	await initPostgres({...config});

@@ -233,7 +233,7 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
                 .channel
                 .clone()
                 .filter(|value| !value.is_empty())
-                .or_else(|| env_string("CHANNEL"))
+                .or_else(|| env_string("BUILD_CHANNEL"))
                 .unwrap_or_else(|| "stable".to_string());
             let test_build = args
                 .test_build
@@ -260,7 +260,7 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
         }
         DesktopStep::UpdateVersion => run_command(pnpm_command()?.args([
             "version",
-            &require_env("VERSION")?,
+            &require_env("BUILD_VERSION")?,
             "--no-git-tag-version",
             "--allow-same-version",
         ])),
@@ -326,7 +326,6 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
 fn calver_env_from_process() -> CalverEnv {
     CalverEnv {
         build_version: trim_option(env::var("BUILD_VERSION").ok()),
-        fluxer_build_version: trim_option(env::var("FLUXER_BUILD_VERSION").ok()),
         fluxer_build_date: trim_option(env::var("FLUXER_BUILD_DATE").ok()),
     }
 }
@@ -349,7 +348,6 @@ fn set_metadata_step(channel: &str, test_build: bool) -> Result<()> {
     append_github_output(&[
         ("version", version.as_str()),
         ("pub_date", pub_date.as_str()),
-        ("channel", channel),
         ("build_channel", build_channel),
         ("test_build", if test_build { "true" } else { "false" }),
         ("s3_prefix", s3_prefix),
@@ -3095,7 +3093,7 @@ fn windows_package_config(build_channel: &str, arch: &str) -> Result<WindowsPack
 fn package_app_windows_velopack_step() -> Result<()> {
     let build_channel = env::var("BUILD_CHANNEL").unwrap_or_else(|_| "stable".to_string());
     let arch = require_env("ARCH")?;
-    let version = require_env("VERSION")?;
+    let version = require_env("BUILD_VERSION")?;
     let config = windows_package_config(&build_channel, &arch)?;
     remove_dir_if_exists(&config.output_dir)?;
 
@@ -3492,7 +3490,7 @@ fn velopack_path_lengths(nupkg: &Path, prefix: &Path) -> Result<Vec<ArchivePathL
 fn create_portable_zip_windows_step() -> Result<()> {
     let build_channel = env::var("BUILD_CHANNEL").unwrap_or_else(|_| "stable".to_string());
     let arch = require_env("ARCH")?;
-    let version = require_env("VERSION")?;
+    let version = require_env("BUILD_VERSION")?;
     let config = windows_package_config(&build_channel, &arch)?;
     let Some(pack_dir) = find_windows_unpacked_app(&arch, &config.main_exe) else {
         println!("No unpacked Windows app found; skipping portable ZIP.");
@@ -4432,7 +4430,7 @@ fn extract_zip_safely(archive_path: &Path, destination: &Path) -> Result<()> {
 fn verify_windows_signed_artifacts_step() -> Result<()> {
     let build_channel = env::var("BUILD_CHANNEL").unwrap_or_else(|_| "stable".to_string());
     let arch = require_env("ARCH")?;
-    let version = require_env("VERSION")?;
+    let version = require_env("BUILD_VERSION")?;
     let config = windows_package_config(&build_channel, &arch)?;
 
     let nupkg = first_file_matching(&config.output_dir, |name| name.ends_with("-full.nupkg"))
@@ -4742,8 +4740,8 @@ fn build_payload_step() -> Result<()> {
     remove_dir_if_exists(&payload_root)?;
     fs::create_dir_all(&payload_root)?;
 
-    let channel = require_env("CHANNEL")?;
-    let version = require_env("VERSION")?;
+    let channel = require_env("BUILD_CHANNEL")?;
+    let version = require_env("BUILD_VERSION")?;
     let pub_date = require_env("PUB_DATE")?;
     let artifacts = Path::new("artifacts");
     for (dir, identity) in payload_artifact_dirs(artifacts, &channel)? {
@@ -4823,8 +4821,8 @@ fn require_release_payload_dirs(
 }
 
 fn prepare_release_assets_step(args: &BuildDesktopArgs) -> Result<()> {
-    let channel = require_env("CHANNEL")?;
-    let version = require_env("VERSION")?;
+    let channel = require_env("BUILD_CHANNEL")?;
+    let version = require_env("BUILD_VERSION")?;
     let source_sha = require_env("SOURCE_SHA")?;
     let s3_prefix = require_env("S3_DESKTOP_PREFIX")?;
     prepare_release_assets(
@@ -5500,8 +5498,8 @@ async fn upload_payload_step() -> Result<()> {
 }
 
 fn read_release_descriptor_from_assets() -> Result<(PathBuf, DesktopReleaseDescriptor)> {
-    let channel = require_env("CHANNEL")?;
-    let version = require_env("VERSION")?;
+    let channel = require_env("BUILD_CHANNEL")?;
+    let version = require_env("BUILD_VERSION")?;
     let source_sha = require_env("SOURCE_SHA")?;
     let path =
         Path::new("release_assets").join(desktop_release_descriptor_filename(&channel, &version)?);
@@ -5576,7 +5574,7 @@ async fn publish_payload_metadata_step() -> Result<()> {
         count_files(metadata_root)? > 0,
         "No desktop payload metadata was downloaded from {metadata_prefix}"
     );
-    let version = require_env("VERSION")?;
+    let version = require_env("BUILD_VERSION")?;
     for key in release_feed_manifest_keys(&s3_prefix, metadata_root)? {
         let live = read_optional_s3_object(&client, &bucket, &key).await?;
         ensure_release_feed_not_superseded(&key, live.as_deref(), &version)?;
@@ -6122,8 +6120,8 @@ fn build_module_manifest_step() -> Result<()> {
         "Missing {}, run the build_payload step first",
         payload_root.display()
     );
-    let channel = require_env("CHANNEL")?;
-    let build_version = require_env("VERSION")?;
+    let channel = require_env("BUILD_CHANNEL")?;
+    let build_version = require_env("BUILD_VERSION")?;
     let pub_date = require_env("PUB_DATE")?;
     let packed = read_packed_desktop_modules(&desktop_modules_dir(), &channel, &build_version)?;
     let targets = desktop_module_manifest_targets(&payload_root, &channel)?;
@@ -7127,9 +7125,9 @@ fn channel_baseline_sha(
 }
 
 async fn check_shell_contract_step() -> Result<()> {
-    let channel = require_env("CHANNEL")?;
+    let channel = require_env("BUILD_CHANNEL")?;
     let source_sha = validate_full_sha("SOURCE_SHA", &require_env("SOURCE_SHA")?)?;
-    let version = require_env("VERSION")?;
+    let version = require_env("BUILD_VERSION")?;
     crate::common::parse_version_instant(&version)?;
     let choice =
         DesktopShellContractChoice::parse_input(&require_env(DESKTOP_SHELL_CONTRACT_ENV)?)?;
@@ -7295,8 +7293,8 @@ fn modules_only_channel_manifest(
 }
 
 fn build_modules_only_manifest_step() -> Result<()> {
-    let channel = require_env("CHANNEL")?;
-    let build_version = require_env("VERSION")?;
+    let channel = require_env("BUILD_CHANNEL")?;
+    let build_version = require_env("BUILD_VERSION")?;
     let pub_date = require_env("PUB_DATE")?;
     let modules_dir = desktop_modules_dir();
     let contract = read_shell_contract(&channel)?.with_context(|| {
@@ -7356,8 +7354,8 @@ fn build_modules_only_manifest_step() -> Result<()> {
 }
 
 fn prepare_modules_release_assets_step() -> Result<()> {
-    let channel = require_env("CHANNEL")?;
-    let version = require_env("VERSION")?;
+    let channel = require_env("BUILD_CHANNEL")?;
+    let version = require_env("BUILD_VERSION")?;
     let source_sha = require_env("SOURCE_SHA")?;
     let product = desktop_release_product(&channel)?;
     let payload_root = Path::new("payload_tree")
@@ -7401,10 +7399,14 @@ fn prepare_modules_release_assets_step() -> Result<()> {
 fn build_summary_step() -> Result<()> {
     let summary = require_env("GITHUB_STEP_SUMMARY")?;
     let test_build = env_bool("TEST_BUILD");
-    let display_channel = env::var("DISPLAY_CHANNEL").unwrap_or_default();
-    let version = require_env("VERSION")?;
+    let version = require_env("BUILD_VERSION")?;
     let s3_prefix = require_env("S3_DESKTOP_PREFIX")?;
-    let channel = require_env("CHANNEL")?;
+    let channel = require_env("BUILD_CHANNEL")?;
+    // Echowire: upstream no longer exports DISPLAY_CHANNEL; the channel name is the title.
+    let display_channel = env::var("DISPLAY_CHANNEL")
+        .ok()
+        .filter(|value| !value.is_empty())
+        .unwrap_or_else(|| channel.clone());
     let mut file = OpenOptions::new()
         .create(true)
         .append(true)
@@ -8478,7 +8480,6 @@ mod tests {
     fn resolves_explicit_calver_with_precedence() {
         let calver_env = CalverEnv {
             build_version: Some("2026.520.1".to_string()),
-            fluxer_build_version: Some("2026.521.2".to_string()),
             fluxer_build_date: Some("2026-05-22T03:04:05Z".to_string()),
         };
         assert_eq!(

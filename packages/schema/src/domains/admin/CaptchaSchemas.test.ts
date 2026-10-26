@@ -8,9 +8,9 @@ import {
 import {describe, expect, test} from 'vitest';
 
 describe('captcha configuration', () => {
-	test('defaults to enabled at the mobile-friendly difficulty', () => {
-		expect(CaptchaConfigSchema.parse({})).toEqual({enabled: true, provider: null, cost: 5000, max_counter: 1000});
-		expect(DEFAULT_CAPTCHA_CONFIG).toEqual({enabled: true, provider: null, cost: 5000, max_counter: 1000});
+	test('defaults to altcha at the mobile-friendly difficulty', () => {
+		expect(CaptchaConfigSchema.parse({})).toEqual({provider: 'altcha', cost: 5000, max_counter: 1000});
+		expect(DEFAULT_CAPTCHA_CONFIG).toEqual({provider: 'altcha', cost: 5000, max_counter: 1000});
 	});
 
 	// Echowire: the guard that keeps every installed client able to log in.
@@ -32,7 +32,7 @@ describe('captcha configuration', () => {
 
 	test('rejects a provider nobody implements', () => {
 		expect(CaptchaConfigUpdateRequest.safeParse({provider: 'recaptcha'}).success).toBe(false);
-		expect(CaptchaConfigUpdateRequest.safeParse({provider: 'none'}).success).toBe(false);
+		expect(CaptchaConfigUpdateRequest.safeParse({provider: 'none'}).success).toBe(true);
 	});
 
 	test('rejects difficulty outside the supported range', () => {

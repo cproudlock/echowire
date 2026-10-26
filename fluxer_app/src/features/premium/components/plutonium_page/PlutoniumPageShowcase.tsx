@@ -1,8 +1,23 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// Echowire: upstream #3173 hotlinks this media from fluxer.app (hostedImageUrl); we keep the bundled local files. Keep this file at the fork version when merging.
 
 import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import styles from '@app/features/premium/components/plutonium_page/PlutoniumPage.module.css';
+import {
+	AVATAR_LSF,
+	BANNER_LSF,
+	EMOJI_CATVIBE,
+	EMOJI_CATWAVE,
+	EXPRESSIONS_SHOTS,
+	PROFILE_SHOTS,
+	type ShotFamily,
+	STICKER_FEEL_THAT,
+	STREAM_SHOTS,
+	UPLOAD_SHOTS,
+} from '@app/features/premium/components/plutonium_page/PlutoniumPageArt';
+import {
+	PlutoniumPageIcon,
+	type PlutoniumPageIconName,
+} from '@app/features/premium/components/plutonium_page/PlutoniumPageIcons';
 import {
 	SHOWCASE_EXPRESSIONS_BODY_DESCRIPTOR,
 	SHOWCASE_EXPRESSIONS_TITLE_DESCRIPTOR,
@@ -16,47 +31,14 @@ import {
 	TAG_FOOTNOTE_MARKER_DESCRIPTOR,
 } from '@app/features/premium/components/plutonium_page/PlutoniumPageMessages';
 import FocusRing from '@app/features/ui/focus_ring/FocusRing';
-import avatarLsf from '@app/media/images/plutonium/avatar-lsf.webp';
-import bannerLsf from '@app/media/images/plutonium/banner-lsf.webp';
-import emojiCatvibe from '@app/media/images/plutonium/emoji-catvibe.webp';
-import emojiCatwave from '@app/media/images/plutonium/emoji-catwave.webp';
-import expressions640Avif from '@app/media/images/plutonium/feature-perk-expressions-640w.avif';
-import expressions640Webp from '@app/media/images/plutonium/feature-perk-expressions-640w.webp';
-import expressions1120Avif from '@app/media/images/plutonium/feature-perk-expressions-1120w.avif';
-import expressions1120Webp from '@app/media/images/plutonium/feature-perk-expressions-1120w.webp';
-import expressions1600Avif from '@app/media/images/plutonium/feature-perk-expressions-1600w.avif';
-import expressions1600Webp from '@app/media/images/plutonium/feature-perk-expressions-1600w.webp';
-import profile640Avif from '@app/media/images/plutonium/feature-perk-profile-640w.avif';
-import profile640Webp from '@app/media/images/plutonium/feature-perk-profile-640w.webp';
-import profile1120Avif from '@app/media/images/plutonium/feature-perk-profile-1120w.avif';
-import profile1120Webp from '@app/media/images/plutonium/feature-perk-profile-1120w.webp';
-import profile1600Avif from '@app/media/images/plutonium/feature-perk-profile-1600w.avif';
-import profile1600Webp from '@app/media/images/plutonium/feature-perk-profile-1600w.webp';
-import stream640Avif from '@app/media/images/plutonium/feature-perk-stream-640w.avif';
-import stream640Webp from '@app/media/images/plutonium/feature-perk-stream-640w.webp';
-import stream1120Avif from '@app/media/images/plutonium/feature-perk-stream-1120w.avif';
-import stream1120Webp from '@app/media/images/plutonium/feature-perk-stream-1120w.webp';
-import stream1600Avif from '@app/media/images/plutonium/feature-perk-stream-1600w.avif';
-import stream1600Webp from '@app/media/images/plutonium/feature-perk-stream-1600w.webp';
-import upload640Avif from '@app/media/images/plutonium/feature-perk-upload-640w.avif';
-import upload640Webp from '@app/media/images/plutonium/feature-perk-upload-640w.webp';
-import upload1120Avif from '@app/media/images/plutonium/feature-perk-upload-1120w.avif';
-import upload1120Webp from '@app/media/images/plutonium/feature-perk-upload-1120w.webp';
-import upload1600Avif from '@app/media/images/plutonium/feature-perk-upload-1600w.avif';
-import upload1600Webp from '@app/media/images/plutonium/feature-perk-upload-1600w.webp';
-import stickerFeelThat from '@app/media/images/plutonium/sticker-feel-that.webp';
 import type {MessageDescriptor} from '@lingui/core';
 import {useLingui} from '@lingui/react/macro';
 import {clsx} from 'clsx';
 import type React from 'react';
+import {useCallback, useState} from 'react';
 
-const PERK_SHOT_SIZES = '(min-width: 48rem) 50vw, calc(100vw - 5rem)';
+const PERK_SHOT_SIZES = '(min-width: 80rem) 35rem, (min-width: 48rem) calc(50vw - 3rem), calc(100vw - 2.5rem)';
 const CHAT_SURFACE = 'rgb(30, 29, 35)';
-
-interface ShotFamily {
-	avif: [string, string, string];
-	webp: [string, string, string];
-}
 
 interface PerkOverlay {
 	src: string;
@@ -69,6 +51,7 @@ interface PerkOverlay {
 
 interface PerkCard {
 	id: string;
+	icon: PlutoniumPageIconName;
 	title: MessageDescriptor;
 	body: MessageDescriptor;
 	shots: ShotFamily;
@@ -81,32 +64,28 @@ interface PerkCard {
 const SHOT_WIDTHS = [640, 1120, 1600] as const;
 
 const EXPRESSIONS_OVERLAYS: ReadonlyArray<PerkOverlay> = [
-	{src: emojiCatvibe, left: 65.22, top: 11.241, width: 4.372, height: 5.128, backdrop: CHAT_SURFACE},
-	{src: emojiCatwave, left: 14.936, top: 31.197, width: 8.743, height: 10.256, backdrop: CHAT_SURFACE},
-	{src: stickerFeelThat, left: 14.936, top: 52.35, width: 29.144, height: 34.188},
+	{src: EMOJI_CATVIBE, left: 65.22, top: 11.241, width: 4.372, height: 5.128, backdrop: CHAT_SURFACE},
+	{src: EMOJI_CATWAVE, left: 14.936, top: 31.197, width: 8.743, height: 10.256, backdrop: CHAT_SURFACE},
+	{src: STICKER_FEEL_THAT, left: 14.936, top: 52.35, width: 29.144, height: 34.188},
 ];
 
 const PERK_CARDS: ReadonlyArray<PerkCard> = [
 	{
 		id: 'expressions',
+		icon: 'smiley',
 		title: SHOWCASE_EXPRESSIONS_TITLE_DESCRIPTOR,
 		body: SHOWCASE_EXPRESSIONS_BODY_DESCRIPTOR,
-		shots: {
-			avif: [expressions640Avif, expressions1120Avif, expressions1600Avif],
-			webp: [expressions640Webp, expressions1120Webp, expressions1600Webp],
-		},
+		shots: EXPRESSIONS_SHOTS,
 		width: 549,
 		height: 468,
 		overlays: EXPRESSIONS_OVERLAYS,
 	},
 	{
 		id: 'profile',
+		icon: 'userCircle',
 		title: SHOWCASE_PROFILE_TITLE_DESCRIPTOR,
 		body: SHOWCASE_PROFILE_BODY_DESCRIPTOR,
-		shots: {
-			avif: [profile640Avif, profile1120Avif, profile1600Avif],
-			webp: [profile640Webp, profile1120Webp, profile1600Webp],
-		},
+		shots: PROFILE_SHOTS,
 		width: 662,
 		height: 407,
 		overlays: [],
@@ -114,24 +93,20 @@ const PERK_CARDS: ReadonlyArray<PerkCard> = [
 	},
 	{
 		id: 'stream',
+		icon: 'videoCamera',
 		title: SHOWCASE_STREAM_TITLE_DESCRIPTOR,
 		body: SHOWCASE_STREAM_BODY_DESCRIPTOR,
-		shots: {
-			avif: [stream640Avif, stream1120Avif, stream1600Avif],
-			webp: [stream640Webp, stream1120Webp, stream1600Webp],
-		},
+		shots: STREAM_SHOTS,
 		width: 588,
 		height: 343,
 		overlays: [],
 	},
 	{
 		id: 'upload',
+		icon: 'paperclip',
 		title: SHOWCASE_UPLOAD_TITLE_DESCRIPTOR,
 		body: SHOWCASE_UPLOAD_BODY_DESCRIPTOR,
-		shots: {
-			avif: [upload640Avif, upload1120Avif, upload1600Avif],
-			webp: [upload640Webp, upload1120Webp, upload1600Webp],
-		},
+		shots: UPLOAD_SHOTS,
 		width: 549,
 		height: 362,
 		overlays: [],
@@ -228,7 +203,7 @@ function ProfileOverlay() {
 					data-flx="premium.plutonium-page.plutonium-page-showcase.profile-overlay.g--2"
 				>
 					<image
-						href={bannerLsf}
+						href={BANNER_LSF}
 						x="345.333"
 						y="16.333"
 						width="300.333"
@@ -253,7 +228,7 @@ function ProfileOverlay() {
 				data-flx="premium.plutonium-page.plutonium-page-showcase.profile-overlay.g--3"
 			>
 				<image
-					href={avatarLsf}
+					href={AVATAR_LSF}
 					x="358.333"
 					y="74.333"
 					width="80"
@@ -267,8 +242,28 @@ function ProfileOverlay() {
 }
 
 function PerkArt({card, eager}: {card: PerkCard; eager: boolean}) {
+	const [status, setStatus] = useState<'pending' | 'loaded' | 'failed'>('pending');
+	const imageRef = useCallback((image: HTMLImageElement | null) => {
+		if (image?.complete) setStatus(image.naturalWidth > 0 ? 'loaded' : 'failed');
+	}, []);
 	return (
-		<div className={styles.perkArt} data-flx="premium.plutonium-page.perk-art">
+		<div
+			className={clsx(
+				styles.perkArt,
+				status === 'pending' && styles.perkArtPending,
+				status === 'failed' && styles.perkArtFailed,
+			)}
+			data-flx="premium.plutonium-page.perk-art"
+		>
+			{status !== 'loaded' && (
+				<div className={styles.perkArtPlaceholder} data-flx="premium.plutonium-page.perk-art.placeholder">
+					<PlutoniumPageIcon
+						name={card.icon}
+						className={styles.perkArtPlaceholderIcon}
+						data-flx="premium.plutonium-page.perk-art.placeholder-icon"
+					/>
+				</div>
+			)}
 			<picture data-flx="premium.plutonium-page.plutonium-page-showcase.perk-art.picture">
 				<source
 					type="image/avif"
@@ -283,6 +278,7 @@ function PerkArt({card, eager}: {card: PerkCard; eager: boolean}) {
 					data-flx="premium.plutonium-page.plutonium-page-showcase.perk-art.source.image-webp"
 				/>
 				<img
+					ref={imageRef}
 					draggable={false}
 					className={styles.perkArtImage}
 					src={card.shots.webp[1]}
@@ -292,6 +288,8 @@ function PerkArt({card, eager}: {card: PerkCard; eager: boolean}) {
 					fetchPriority={eager ? 'high' : undefined}
 					decoding="async"
 					alt=""
+					onLoad={() => setStatus('loaded')}
+					onError={() => setStatus('failed')}
 					data-flx="premium.plutonium-page.perk-art.image"
 				/>
 			</picture>
@@ -339,20 +337,22 @@ export function PlutoniumPageShowcase({
 }: PlutoniumPageShowcaseProps) {
 	const {i18n} = useLingui();
 	return (
-		<>
+		<div className={styles.featureRows} data-flx="premium.plutonium-page.feature-rows">
 			{PERK_CARDS.map((card, index) => {
 				const flipped = index % 2 === 1;
-				const body =
-					card.id === 'profile' && RuntimeConfig.usesUniqueUsernames
-						? i18n._(SHOWCASE_PROFILE_BODY_WITHOUT_TAG_DESCRIPTOR)
-						: card.id === 'profile'
-							? renderProfileBody(
-									i18n._(card.body, {footnote: '\u0000'}),
-									footnoteId,
-									onFootnoteClick,
-									i18n._(TAG_FOOTNOTE_MARKER_DESCRIPTOR),
-								)
-							: i18n._(card.body, {freeSize: freeUploadSize});
+				let body: React.ReactNode;
+				if (card.id === 'profile' && RuntimeConfig.usesUniqueUsernames) {
+					body = i18n._(SHOWCASE_PROFILE_BODY_WITHOUT_TAG_DESCRIPTOR);
+				} else if (card.id === 'profile') {
+					body = renderProfileBody(
+						i18n._(card.body, {footnote: '\u0000'}),
+						footnoteId,
+						onFootnoteClick,
+						i18n._(TAG_FOOTNOTE_MARKER_DESCRIPTOR),
+					);
+				} else {
+					body = i18n._(card.body, {freeSize: freeUploadSize});
+				}
 				return (
 					<article
 						key={card.id}
@@ -360,11 +360,16 @@ export function PlutoniumPageShowcase({
 						data-flx={`premium.plutonium-page.perk-row.${card.id}`}
 					>
 						<div className={styles.perkArtColumn} data-flx="premium.plutonium-page.perk-row.art-column">
-							<PerkArt
-								card={card}
-								eager={index === 0}
-								data-flx="premium.plutonium-page.plutonium-page-showcase.perk-art"
-							/>
+							<div
+								className={clsx(styles.tilt, flipped && styles.tiltReverse)}
+								data-flx="premium.plutonium-page.perk-row.tilt"
+							>
+								<PerkArt
+									card={card}
+									eager={index === 0}
+									data-flx="premium.plutonium-page.plutonium-page-showcase.perk-art"
+								/>
+							</div>
 						</div>
 						<div className={styles.perkTextColumn} data-flx="premium.plutonium-page.perk-row.text-column">
 							<h2 className={styles.perkTitle} data-flx="premium.plutonium-page.perk-row.title">
@@ -377,7 +382,7 @@ export function PlutoniumPageShowcase({
 					</article>
 				);
 			})}
-		</>
+		</div>
 	);
 }
 

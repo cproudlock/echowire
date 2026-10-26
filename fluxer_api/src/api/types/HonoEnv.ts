@@ -26,6 +26,7 @@ import type {GatewayRequestService} from '@app/api/gateway/GatewayRequestService
 import type {NatsGifProvider} from '@app/api/gif/NatsGifProvider';
 import type {GuildDiscoveryService} from '@app/api/guild/services/GuildDiscoveryService';
 import type {GuildService} from '@app/api/guild/services/GuildService';
+import type {GuildVisitService} from '@app/api/guild/visits/GuildVisitService';
 import type {EntityAssetService} from '@app/api/infrastructure/EntityAssetService';
 import type {ErrorI18nService} from '@app/api/infrastructure/ErrorI18nService';
 import type {IGatewayService} from '@app/api/infrastructure/IGatewayService';
@@ -49,6 +50,9 @@ import type {OAuth2ApplicationsRequestService} from '@app/api/oauth/OAuth2Applic
 import type {OAuth2RequestService} from '@app/api/oauth/OAuth2RequestService';
 import type {OAuth2Service} from '@app/api/oauth/OAuth2Service';
 import type {OAuth2TokenRepository} from '@app/api/oauth/repositories/OAuth2TokenRepository';
+import type {OperatorPassCheckoutService} from '@app/api/operator_pass/OperatorPassCheckoutService';
+import type {OperatorPassEntitlementService} from '@app/api/operator_pass/OperatorPassEntitlementService';
+import type {OperatorPassWaitlistService} from '@app/api/operator_pass/OperatorPassWaitlistService';
 import type {ReadStateRequestService} from '@app/api/read_state/ReadStateRequestService';
 import type {ReadStateService} from '@app/api/read_state/ReadStateService';
 import type {ReportRequestService} from '@app/api/report/ReportRequestService';
@@ -56,7 +60,6 @@ import type {RpcService} from '@app/api/rpc/RpcService';
 import type {SearchService} from '@app/api/search/SearchService';
 import type {StoreEntitlementService} from '@app/api/store_billing/StoreEntitlementService';
 import type {StripeService} from '@app/api/stripe/StripeService';
-import type {AgeVerificationService} from '@app/api/stripe/services/AgeVerificationService';
 import type {ThemeService} from '@app/api/theme/ThemeService';
 import type {EntranceSoundPlayService} from '@app/api/user/entrance_sound/EntranceSoundPlayService';
 import type {EntranceSoundService} from '@app/api/user/entrance_sound/EntranceSoundService';
@@ -83,6 +86,8 @@ import type {IRateLimitService} from '@pkgs/rate_limit/src/IRateLimitService';
 import type {IWorkerService} from '@pkgs/worker/src/contracts/IWorkerService';
 import type {Hono} from 'hono';
 
+export type AuthTokenType = 'session' | 'bearer' | 'bot' | 'admin_api_key' | 'operator';
+
 export interface HonoEnv {
 	Variables: {
 		apiContext: ApiContext;
@@ -94,9 +99,10 @@ export interface HonoEnv {
 		adminArchiveService: AdminArchiveService;
 		adminApiKeyService: AdminApiKeyService;
 		adminApiKeyAcls: Set<string> | null;
+		adminApiKeyId: bigint | null;
 		adminUserId: UserID;
 		adminUserAcls: Set<string>;
-		authTokenType?: 'session' | 'bearer' | 'bot' | 'admin_api_key';
+		authTokenType?: AuthTokenType;
 		clientFeatures: ReadonlySet<string>;
 		authToken?: string;
 		oauthBearerAllowed?: boolean;
@@ -118,6 +124,9 @@ export interface HonoEnv {
 		blueskyOAuthService: IBlueskyOAuthService | null;
 		donationService: DonationService;
 		downloadService: DownloadService;
+		operatorPassCheckoutService: OperatorPassCheckoutService;
+		operatorPassEntitlementService: OperatorPassEntitlementService;
+		operatorPassWaitlistService: OperatorPassWaitlistService;
 		streamService: StreamService;
 		emailService: IEmailService;
 		emailChangeService: EmailChangeService;
@@ -132,6 +141,7 @@ export interface HonoEnv {
 		gatewayRequestService: GatewayRequestService;
 		discoveryService: GuildDiscoveryService;
 		guildService: GuildService;
+		guildVisitService: GuildVisitService;
 		inviteService: InviteService;
 		inviteRequestService: InviteRequestService;
 		liveKitWebhookService?: LiveKitWebhookService;
@@ -164,7 +174,6 @@ export interface HonoEnv {
 		workerService: IWorkerService<WorkerTaskName>;
 		stripeService: StripeService;
 		storeEntitlementService: StoreEntitlementService;
-		ageVerificationService: AgeVerificationService;
 		applicationService: ApplicationService;
 		oauth2Service: OAuth2Service;
 		oauth2RequestService: OAuth2RequestService;

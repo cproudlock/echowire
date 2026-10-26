@@ -33,6 +33,16 @@ const API_SETTINGS_NOT_FORWARDED: Record<string, string> = {
 	FLUXER_API_ADDITIONAL_CORS_ORIGINS: 'set on this instance, not through the shipped stack',
 	FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES: 'set on this instance, not through the shipped stack',
 	FLUXER_API_AUTOMATED_MESSAGE_DELETION_DELAY_DAYS: 'automated account actions run only on the hosted service',
+	// Echowire: Operator Pass, the labs guild and payment dispute closure belong to the hosted service.
+	FLUXER_LABS_GUILD_ID: 'run only by the hosted service',
+	FLUXER_LABS_OPERATOR_ROLE_ID: 'run only by the hosted service',
+	FLUXER_PAYMENT_DISPUTE_CLOSURE_EFFECTIVE_AT: 'run only by the hosted service',
+	...Object.fromEntries(
+		NAMED_FLUXER_ENV_NAMES.filter((name) => name.startsWith('FLUXER_OPERATOR_PASS_')).map((name) => [
+			name,
+			'Operator Pass is sold only by the hosted service',
+		]),
+	),
 	...Object.fromEntries(
 		['MONTHLY', 'YEARLY', 'GIFT_1_MONTH', 'GIFT_1_YEAR'].flatMap((slot) =>
 			['USD', 'EUR', 'BRL', 'DKK', 'INR', 'ISK', 'NOK', 'PLN', 'SEK', 'TRY'].map((currency) => [

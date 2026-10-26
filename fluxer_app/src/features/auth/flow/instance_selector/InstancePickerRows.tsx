@@ -17,6 +17,7 @@ import {MenuItem} from '@app/features/ui/action_menu/MenuItem';
 import * as ContextMenuCommands from '@app/features/ui/commands/ContextMenuCommands';
 import {VerifiedConnectionIcon} from '@app/features/ui/components/icons/VerifiedConnectionIcon';
 import FocusRing from '@app/features/ui/focus_ring/FocusRing';
+import {ArrowRightIcon} from '@app/features/ui/icons/DirectionalIcons';
 import {flxElementClassName} from '@app/lib/react';
 import EchowireLogoAsset from '@app/media/images/echowire-icon-transparent.svg?react';
 import FluxerLogoAsset from '@app/media/images/fluxer-logo-color.svg?react';
@@ -28,7 +29,7 @@ export const ECHOWIRE_INSTANCE_ORIGIN = `https://${ECHOWIRE_INSTANCE_HOST}`;
 
 import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
-import {ArrowRightIcon, PlusIcon, TrashIcon} from '@phosphor-icons/react';
+import {PlusIcon, TrashIcon} from '@phosphor-icons/react';
 import {type MouseEvent, type ReactNode, useCallback} from 'react';
 
 const USE_OFFICIAL_INSTANCE_DESCRIPTOR = msg({
@@ -102,6 +103,8 @@ export function InstancePickerRows({
 		const storedName = instance.name !== instance.domain ? instance.name : null;
 		const name = resolveInstanceLabel(storedName ?? resolveInstanceProductName(snapshot), instance.domain);
 		const iconUrl = resolveInstanceBrandIconUrl(snapshot);
+		const instanceHost = instanceDomainHost(instance.domain);
+		const showDomain = name !== instanceHost;
 		return (
 			<div
 				key={instance.instanceKey}
@@ -119,7 +122,7 @@ export function InstancePickerRows({
 						onClick={() => onSelectInstance(instance)}
 						onContextMenu={removable ? (event) => handleKnownInstanceContextMenu(event, instance) : undefined}
 						disabled={disabled || isDiscovering}
-						aria-label={i18n._(USE_INSTANCE_DESCRIPTOR, {name, domain: instance.domain})}
+						aria-label={i18n._(USE_INSTANCE_DESCRIPTOR, {name, domain: instanceHost})}
 						data-flx="auth.flow.instance-selector.instance-picker-rows.button.select-known"
 					>
 						<span
@@ -143,12 +146,14 @@ export function InstancePickerRows({
 							>
 								{name}
 							</span>
-							<span
-								className={styles.instanceDomain}
-								data-flx="auth.flow.instance-selector.instance-picker-rows.render-known-instance.instance-domain"
-							>
-								{instance.domain}
-							</span>
+							{showDomain ? (
+								<span
+									className={styles.instanceDomain}
+									data-flx="auth.flow.instance-selector.instance-picker-rows.render-known-instance.instance-domain"
+								>
+									{instanceHost}
+								</span>
+							) : null}
 						</span>
 						<ArrowRightIcon
 							size={remFromPx(17)}

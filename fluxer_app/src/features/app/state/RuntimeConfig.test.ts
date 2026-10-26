@@ -55,7 +55,7 @@ function discoveryDocument(host: string): InstanceDiscoveryResponse {
 			phone_verification_enabled: false,
 		},
 		gif: {provider: 'klipy', display_name: 'Klipy', attribution_required: false},
-		sso: {enabled: false, enforced: false, display_name: null, redirect_uri: `https://${host}/sso`},
+		sso: {enabled: false, enforced: false, display_name: null, button_label: null, redirect_uri: `https://${host}/sso`},
 		registration: {mode: 'open', admin_registration_urls_enabled: true},
 		community: {
 			single_community: false,

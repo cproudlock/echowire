@@ -4,6 +4,7 @@ pub mod branding_images;
 pub mod config;
 pub mod csp;
 pub mod discovery_cache;
+mod instance_brand_colors;
 mod local_files;
 pub mod routes;
 pub mod state;

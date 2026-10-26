@@ -41,9 +41,12 @@ const MODULE_REGISTRY_TEST_FILES = [
 	'src/api/search/tests/GuildSearchThreadScope.test.ts',
 	'src/api/worker/tasks/HarvestUserData.test.ts',
 	'src/api/voice/tests/VoiceP2pConnectionReports.test.ts',
+	'src/api/voice/tests/VoiceAvailabilityService.test.ts',
 ];
 
 const INSTANCE_POLICY_TEST_FILES = ['src/api/admin/tests/InstanceConfigPendingRegistrationApproval.test.ts'];
+
+const NATIVE_TIMEZONE_TEST_FILES = ['src/api/utils/AgeUtils.test.ts'];
 
 const sharedExclude = [...configDefaults.exclude, 'pkgs/**', '../fluxer_desktop/**', '**/target/**'];
 
@@ -75,7 +78,12 @@ export default defineConfig({
 					...sharedTestConfig,
 					name: 'api',
 					include: ['src/**/*.{test,spec}.{ts,tsx}'],
-					exclude: [...sharedExclude, ...MODULE_REGISTRY_TEST_FILES, ...INSTANCE_POLICY_TEST_FILES],
+					exclude: [
+						...sharedExclude,
+						...MODULE_REGISTRY_TEST_FILES,
+						...INSTANCE_POLICY_TEST_FILES,
+						...NATIVE_TIMEZONE_TEST_FILES,
+					],
 					isolate: false,
 				},
 			},
@@ -96,6 +104,17 @@ export default defineConfig({
 					name: 'api-instance-policy',
 					include: INSTANCE_POLICY_TEST_FILES,
 					exclude: sharedExclude,
+					isolate: true,
+				},
+			},
+			{
+				resolve: {tsconfigPaths: true},
+				test: {
+					...sharedTestConfig,
+					name: 'api-native-timezones',
+					include: NATIVE_TIMEZONE_TEST_FILES,
+					exclude: sharedExclude,
+					pool: 'forks',
 					isolate: true,
 				},
 			},

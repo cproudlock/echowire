@@ -8,6 +8,8 @@ import {THE_OTHER_PLATFORM} from '@fluxer/constants/src/ExternalPlatformConstant
 export {PRODUCT_NAME};
 // Echowire: these name the app in the OS shortcut settings, so they must equal the desktop entry Name
 // (DESKTOP_APP_NAME in fluxer_desktop DesktopIdentity.ts), which is lowercase.
+export const PRODUCT_LABS_COMMUNITY_NAME = `${PRODUCT_NAME} Labs`;
+export const OPERATOR_PASS_NAME = 'Operator Pass';
 export const DESKTOP_ENTRY_NAME = 'echowire';
 export const CANARY_DESKTOP_ENTRY_NAME = 'echowire canary';
 export const PAYMENT_PROVIDER_NAME = 'Stripe';
@@ -51,8 +53,7 @@ const DESKTOP_DOWNLOAD_URLS: Record<string, string> = {
 	development: 'http://localhost:8088/download',
 };
 
-export const DESKTOP_DOWNLOAD_URL =
-	DESKTOP_DOWNLOAD_URLS[Config.PUBLIC_RELEASE_CHANNEL] ?? DESKTOP_DOWNLOAD_URLS.stable;
+export const DESKTOP_DOWNLOAD_URL = DESKTOP_DOWNLOAD_URLS[Config.RELEASE_CHANNEL] ?? DESKTOP_DOWNLOAD_URLS.stable;
 // Echowire: the docs constants are gone with the applications tab's "read the documentation" link
 // (this fork does not deploy fluxer_docs). The Bluesky handle matches ExternalUrls.BLUESKY.
 export const FLUXER_BLUESKY_HANDLE = '@echowire.org';

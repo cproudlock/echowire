@@ -29,9 +29,6 @@ sha2 = "0.11.0"
 thiserror = "2"
 urlencoding = "2.1.3"
 
-[dev-dependencies]
-url = "2.5.8"
-
 [features]
 # Echowire: reqwest is always built (geoip downloads need it), so the upstream
 # optional dependency gate is an empty feature here.

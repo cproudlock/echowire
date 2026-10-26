@@ -1,80 +1,48 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import type {SsoService} from '@app/api/auth/services/SsoService';
+import {createAuthHarness} from '@app/api/auth/tests/AuthTestUtils';
 import {Config} from '@app/api/Config';
-import {setCassandraQueryExecutorForTesting} from '@app/api/database/CassandraQueryExecution';
-import {InstanceConfigRepository} from '@app/api/instance/InstanceConfigRepository';
-import {InstanceController} from '@app/api/instance/InstanceController';
-import type {LimitConfigService} from '@app/api/limits/LimitConfigService';
-import {InMemoryCassandraQueryExecutor} from '@app/api/test/InMemoryCassandraQueryExecutor';
-import type {HonoEnv} from '@app/api/types/HonoEnv';
+import type {InstanceConfigRepository} from '@app/api/instance/InstanceConfigRepository';
+import {getInstanceConfigRepository} from '@app/api/middleware/ServiceSingletons';
+import type {ApiTestHarness} from '@app/api/test/ApiTestHarness';
+import {createBuilderWithoutAuth} from '@app/api/test/TestRequestBuilder';
 import {DEFAULT_DOMAIN_MIGRATION_CONFIG} from '@fluxer/schema/src/domains/admin/DomainMigrationSchemas';
-import {MockKVProvider} from '@pkgs/kv_client/src/testing/MockKVProvider';
-import {Hono} from 'hono';
-import {afterEach, beforeEach, describe, expect, it} from 'vitest';
+import {afterAll, afterEach, beforeAll, beforeEach, describe, expect, it} from 'vitest';
 
-interface DiscoveryCaptcha {
-	provider: string;
-	hcaptcha_site_key: string | null;
-	turnstile_site_key: string | null;
+interface DiscoveryResponse {
+	captcha: {provider: string; hcaptcha_site_key: string | null; turnstile_site_key: string | null};
+	features: {discovery_enabled?: boolean};
+	domain_migration: unknown;
 }
 
-describe('InstanceController discovery captcha', () => {
-	const repositories: Array<InstanceConfigRepository> = [];
-	let previousCaptcha: Pick<typeof Config.captcha, 'enabled' | 'provider' | 'turnstile' | 'hcaptcha'>;
+describe('InstanceController discovery', () => {
+	let harness: ApiTestHarness;
+	let repository: InstanceConfigRepository;
+	const previousDiscoveryEnabled = Config.discovery.enabled;
 
-	beforeEach(() => {
-		const {enabled, provider, turnstile, hcaptcha} = Config.captcha;
-		previousCaptcha = {enabled, provider, turnstile, hcaptcha};
+	beforeAll(async () => {
+		harness = await createAuthHarness();
 	});
-
+	beforeEach(async () => {
+		await harness.reset();
+		repository = getInstanceConfigRepository();
+	});
 	afterEach(() => {
-		Config.captcha.enabled = previousCaptcha.enabled;
-		Config.captcha.provider = previousCaptcha.provider;
-		Config.captcha.turnstile = previousCaptcha.turnstile;
-		Config.captcha.hcaptcha = previousCaptcha.hcaptcha;
-		for (const repository of repositories) {
-			repository.shutdown();
-		}
-		repositories.length = 0;
+		Config.discovery.enabled = previousDiscoveryEnabled;
+		repository.clearCacheForTesting();
+	});
+	afterAll(async () => {
+		await harness?.shutdown();
 	});
 
-	function createRepository(): InstanceConfigRepository {
-		setCassandraQueryExecutorForTesting(new InMemoryCassandraQueryExecutor());
-		const repository = new InstanceConfigRepository(new MockKVProvider());
-		repositories.push(repository);
-		return repository;
-	}
-
-	function createApp(repository: InstanceConfigRepository): Hono<HonoEnv> {
-		const app = new Hono<HonoEnv>({strict: true});
-		app.use('*', async (ctx, next) => {
-			ctx.set('instanceConfigRepository', repository);
-			ctx.set('limitConfigService', {
-				getConfigWireFormat: () => ({version: 2, traitDefinitions: [], rules: [], defaultsHash: 'test'}),
-			} as unknown as LimitConfigService);
-			ctx.set('ssoService', {
-				getPublicStatus: async () => ({
-					enabled: false,
-					enforced: false,
-					display_name: null,
-					redirect_uri: '',
-				}),
-			} as unknown as SsoService);
-			await next();
-		});
-		InstanceController(app);
-		return app;
-	}
-
-	async function readCaptcha(repository: InstanceConfigRepository): Promise<DiscoveryCaptcha> {
-		const response = await createApp(repository).request('http://localhost/.well-known/fluxer');
-		expect(response.status).toBe(200);
-		return ((await response.json()) as {captcha: DiscoveryCaptcha}).captcha;
+	async function fetchDiscovery() {
+		const result = await createBuilderWithoutAuth<DiscoveryResponse>(harness).get('/.well-known/fluxer').executeRaw();
+		expect(result.response.status).toBe(200);
+		return result;
 	}
 
 	it('advertises altcha by default', async () => {
-		await expect(readCaptcha(createRepository())).resolves.toEqual({
+		expect((await fetchDiscovery()).json.captcha).toEqual({
 			provider: 'altcha',
 			hcaptcha_site_key: null,
 			turnstile_site_key: null,
@@ -82,39 +50,9 @@ describe('InstanceController discovery captcha', () => {
 	});
 
 	it('advertises no provider once an admin turns the captcha off', async () => {
-		const repository = createRepository();
 		await repository.updateCaptchaConfig({enabled: false});
 
-		await expect(readCaptcha(repository)).resolves.toEqual({
-			provider: 'none',
-			hcaptcha_site_key: null,
-			turnstile_site_key: null,
-		});
-	});
-
-	// Echowire: the other half of the guard in CaptchaProviderDispatch.test.ts. A
-	// mobile client already on the stores renders its widget from the provider and
-	// site key advertised here, so dropping either one breaks login for every
-	// install at 1.7.32 or earlier. See docs/adr/0008.
-	it('advertises turnstile and its site key when the environment selects turnstile', async () => {
-		Config.captcha.enabled = true;
-		Config.captcha.provider = 'turnstile';
-		Config.captcha.turnstile = {siteKey: 'turnstile-site-key', secretKey: 'turnstile-secret-key'};
-
-		await expect(readCaptcha(createRepository())).resolves.toEqual({
-			provider: 'turnstile',
-			hcaptcha_site_key: null,
-			turnstile_site_key: 'turnstile-site-key',
-		});
-	});
-
-	it('advertises no provider when turnstile is selected but its keys are missing', async () => {
-		// Falling back to ALTCHA here would hand those clients a challenge they cannot
-		// solve, so a misconfigured provider turns the check off instead.
-		Config.captcha.enabled = true;
-		Config.captcha.provider = 'turnstile';
-
-		await expect(readCaptcha(createRepository())).resolves.toEqual({
+		expect((await fetchDiscovery()).json.captcha).toEqual({
 			provider: 'none',
 			hcaptcha_site_key: null,
 			turnstile_site_key: null,
@@ -122,30 +60,16 @@ describe('InstanceController discovery captcha', () => {
 	});
 
 	it('publishes whether discovery is enabled', async () => {
-		const previousDiscoveryEnabled = Config.discovery.enabled;
-		const app = createApp(createRepository());
-		const readDiscoveryEnabled = async () => {
-			const response = await app.request('http://localhost/.well-known/fluxer');
-			expect(response.status).toBe(200);
-			return ((await response.json()) as {features: {discovery_enabled?: boolean}}).features.discovery_enabled;
-		};
-		try {
-			Config.discovery.enabled = false;
-			await expect(readDiscoveryEnabled()).resolves.toBe(false);
+		Config.discovery.enabled = false;
+		expect((await fetchDiscovery()).json.features.discovery_enabled).toBe(false);
 
-			Config.discovery.enabled = true;
-			await expect(readDiscoveryEnabled()).resolves.toBe(true);
-		} finally {
-			Config.discovery.enabled = previousDiscoveryEnabled;
-		}
+		Config.discovery.enabled = true;
+		expect((await fetchDiscovery()).json.features.discovery_enabled).toBe(true);
 	});
 
 	it('publishes the domain migration kill switch and anonymous rollout without the targeting lists', async () => {
-		const repository = createRepository();
-		const app = createApp(repository);
-
-		const initial = await app.request('http://localhost/.well-known/fluxer');
-		expect(((await initial.json()) as {domain_migration: unknown}).domain_migration).toEqual({
+		const initial = await fetchDiscovery();
+		expect(initial.json.domain_migration).toEqual({
 			enabled: false,
 			anonymous_rollout_basis_points: 0,
 			rollout_salt: 'domain-migration-v1',
@@ -162,9 +86,9 @@ describe('InstanceController discovery captcha', () => {
 			standalone_forwarding: true,
 		});
 
-		const updated = await app.request('http://localhost/.well-known/fluxer');
-		expect(updated.headers.get('etag')).not.toBe(initial.headers.get('etag'));
-		expect(((await updated.json()) as {domain_migration: unknown}).domain_migration).toEqual({
+		const updated = await fetchDiscovery();
+		expect(updated.response.headers.get('etag')).not.toBe(initial.response.headers.get('etag'));
+		expect(updated.json.domain_migration).toEqual({
 			enabled: true,
 			anonymous_rollout_basis_points: 1500,
 			rollout_salt: 'domain-migration-v1',

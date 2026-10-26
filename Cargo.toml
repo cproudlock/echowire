@@ -15,7 +15,6 @@ members = [
 	"fluxer_snowflakes",
 	"tools/ci",
 	"tools/dev",
-	"tools/i18n_auto",
 	# Echowire: kept alongside the in-tree marketing crate, since upstream deleted this with
 	# the extraction, but our catalog-update workflow still needs it.
 	"tools/marketing/update-gettext-catalogs",

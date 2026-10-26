@@ -18,6 +18,7 @@ import {
 	type UserID,
 } from '@app/api/BrandedTypes';
 import {dispatchMessageUpdateBroadcast} from '@app/api/channel/services/message/MessageGatewayDispatch';
+import {messageResponseAccessForGuild} from '@app/api/channel/services/message/MessageResponseDataService';
 import {MessageWriteLock} from '@app/api/channel/services/message/MessageWriteLock';
 import {assertThreadAllowed} from '@app/api/channel/services/thread/ThreadDenials';
 import {dispatchThreadEvents, threadUpdateEvent} from '@app/api/channel/services/thread/ThreadDispatch';
@@ -129,8 +130,7 @@ export class StarterAttachmentService {
 		const response = (
 			await this.ctx.threadMessageResponses.getFirstMessages({
 				userId: params.userId,
-				guildId: channel.guildId,
-				canReadMessageHistory: true,
+				access: messageResponseAccessForGuild(channel.guildId),
 				threadIds: [channel.id],
 			})
 		).get(channel.id.toString());

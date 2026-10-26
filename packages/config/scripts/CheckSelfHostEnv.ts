@@ -67,6 +67,36 @@ const API_SETTINGS_NOT_FORWARDED: Record<string, string> = {
 			['FLUXER_APP_STORE_', 'FLUXER_GOOGLE_PLAY_', 'FLUXER_STORE_BILLING_'].some((prefix) => name.startsWith(prefix)),
 		).map((name) => [name, 'in-app purchases are sold only by the hosted service']),
 	),
+	...Object.fromEntries(
+		[
+			'FLUXER_CAPTCHA_ENABLED',
+			'FLUXER_CAPTCHA_PROVIDER',
+			'FLUXER_CAPTCHA_HCAPTCHA_SITE_KEY',
+			'FLUXER_CAPTCHA_HCAPTCHA_SECRET_KEY',
+			'FLUXER_CAPTCHA_TURNSTILE_SITE_KEY',
+			'FLUXER_CAPTCHA_TURNSTILE_SECRET_KEY',
+		].map((name) => [
+			name,
+			'echowire keeps hCaptcha and Turnstile; its own compose in deploy/self-hosting forwards these, not the rexctl installer',
+		]),
+	),
+	...Object.fromEntries(
+		[
+			'FLUXER_S3_BUCKET_DOWNLOADS',
+			'FLUXER_S3_DOWNLOADS_ENDPOINT',
+			'FLUXER_S3_DOWNLOADS_PUBLIC_ENDPOINT',
+			'FLUXER_S3_DOWNLOADS_FORCE_PATH_STYLE',
+			'FLUXER_S3_DOWNLOADS_REGION',
+			'FLUXER_S3_DOWNLOADS_ACCESS_KEY_ID',
+			'FLUXER_S3_DOWNLOADS_SECRET_ACCESS_KEY',
+			'FLUXER_API_ADDITIONAL_CORS_ORIGINS',
+			'FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES',
+			'FLUXER_API_PRESIGNED_DOWNLOADS_ENABLED',
+		].map((name) => [
+			name,
+			'echowire serves downloads from its own object store through its own API, set in its own compose',
+		]),
+	),
 };
 
 const INPUT_NAMES: Record<string, string> = {

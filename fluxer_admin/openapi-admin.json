@@ -12718,6 +12718,12 @@
 						"minimum": 1,
 						"maximum": 2147483647
 					},
+					"notes": {
+						"description": "Free-form admin notes about this server, or null to clear them",
+						"nullable": true,
+						"type": "string",
+						"maxLength": 2000
+					},
 					"vip_only": {"description": "Whether this server is restricted to VIP users", "type": "boolean"},
 					"required_guild_features": {
 						"description": "Guild features required to use this server",
@@ -12791,6 +12797,12 @@
 						"type": "integer",
 						"minimum": 1,
 						"maximum": 2147483647
+					},
+					"notes": {
+						"description": "Free-form admin notes about this server",
+						"nullable": true,
+						"type": "string",
+						"maxLength": 2000
 					},
 					"vip_only": {
 						"default": false,
@@ -24689,6 +24701,11 @@
 						"minimum": 1,
 						"maximum": 2147483647
 					},
+					"notes": {
+						"nullable": true,
+						"description": "Free-form admin notes about this server, or null when there are none",
+						"type": "string"
+					},
 					"vip_only": {"type": "boolean", "description": "Whether this server is restricted to VIP users"},
 					"required_guild_features": {
 						"maxItems": 100,
@@ -24727,6 +24744,7 @@
 					"longitude",
 					"is_active",
 					"soft_connection_limit",
+					"notes",
 					"vip_only",
 					"required_guild_features",
 					"allowed_guild_ids",

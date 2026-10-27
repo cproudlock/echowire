@@ -297,6 +297,7 @@ export default defineConfig({
 						'admin-api/api-keys',
 						'admin-api/users',
 						'admin-api/guilds',
+						'admin-api/badges',
 						'admin-api/threads',
 						'admin-api/applications',
 						'admin-api/reports',

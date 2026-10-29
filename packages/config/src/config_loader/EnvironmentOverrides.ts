@@ -547,12 +547,13 @@ function setNestedValue(target: ConfigContainer, keys: Array<ConfigPathKey>, val
 	setNestedValue(child, rest, value);
 }
 
+// Echowire: kept for packages/config/src/__tests__/SelfHostingComposeEnvironment.test.ts, see docs/upstream-divergence.md.
+export const NAMED_FLUXER_ENV_NAMES = Object.keys(NAMED_FLUXER_ENV_OVERRIDES);
+
 const NAMED_FLUXER_ENV_ALIASES: Record<string, string | undefined> = {
 	FLUXER_INTERNAL_MEDIA_PROXY_ENDPOINT: 'FLUXER_MEDIA_PROXY_ENDPOINT',
 	FLUXER_NATS_URL: 'FLUXER_NATS_CORE_URL',
 };
-
-export const NAMED_FLUXER_ENV_NAMES = Object.keys(NAMED_FLUXER_ENV_OVERRIDES);
 
 function nonBlank(value: string | undefined): string | undefined {
 	return value === undefined || value.trim().length === 0 ? undefined : value;

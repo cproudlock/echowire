@@ -214,7 +214,7 @@ export const ERROR_I18N_MESSAGES = {
 	'auth_and_oauth.sso_unable_to_allocate_discriminator':
 		"We couldn't allocate a discriminator for your SSO account. Please try again.",
 	'auth_and_oauth.sso_user_info_signed_response_unsupported':
-		"Your sign-in provider sent your profile in a signed format that Fluxer can't use. Ask an admin of this instance to turn off signed userinfo responses at the provider.",
+		"Your sign-in provider sent your profile in a signed format that echowire can't use. Ask an admin of this instance to turn off signed userinfo responses at the provider.",
 	'auth_and_oauth.sudo_mode_required': 'Sudo mode is required.',
 	'auth_and_oauth.unknown_application': 'Unknown application.',
 	'auth_and_oauth.unknown_origin_handoff': 'This sign-in transfer has expired or was already used.',
@@ -711,7 +711,7 @@ export const ERROR_I18N_MESSAGES = {
 	'urls.invalid_url_format': 'Invalid URL format.',
 	'urls.invalid_url_or_attachment_reference': 'Invalid URL format or attachment reference.',
 	'urls.url_hostname_not_resolvable':
-		"Fluxer couldn't look up the hostname in this URL. Check it's spelled right and resolves from the Fluxer server.",
+		"echowire couldn't look up the hostname in this URL. Check it's spelled right and resolves from the echowire server.",
 	'urls.url_length_invalid': 'URL must be between {min} and {max} characters.',
 	'urls.url_must_use_https': 'URL must start with https://.',
 	'urls.url_not_publicly_routable': 'URL must resolve to a publicly routable address.',

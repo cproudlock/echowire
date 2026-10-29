@@ -7,11 +7,6 @@ use crate::common::{
     remove_dir_if_exists, remove_empty_dirs_below, remove_file_if_exists, require_any_env,
     require_env, require_home, resolve_calver, run_command, runner_temp, title_case, trim_option,
 };
-use crate::s3::{
-    S3UploadPlanItem, count_files_min_depth, directory_upload_plan, download_s3_prefix,
-    get_s3_object_bytes, join_s3_key, list_s3_keys, s3_client, upload_directory_to_s3,
-    upload_s3_plan_append_only, upload_s3_plan_overwrite,
-};
 use crate::functions::{sha256_file, write_json_pretty};
 use crate::release::{
     DESKTOP_RELEASE_DESCRIPTOR_SCHEMA_VERSION, DesktopPublishedRelease, DesktopReleaseAsset,
@@ -21,6 +16,11 @@ use crate::release::{
     desktop_release_descriptor_filename, desktop_release_kind, desktop_release_product,
     desktop_releases, download_desktop_release_asset, resolve_commit_sha,
     validate_desktop_release_descriptor, validate_desktop_release_module_files, validate_full_sha,
+};
+use crate::s3::{
+    S3UploadPlanItem, count_files_min_depth, directory_upload_plan, download_s3_prefix,
+    get_s3_object_bytes, join_s3_key, list_s3_keys, s3_client, upload_directory_to_s3,
+    upload_s3_plan_append_only, upload_s3_plan_overwrite,
 };
 use anyhow::{Context, Result, anyhow, bail, ensure};
 use aws_sdk_s3::Client as S3Client;

@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 use crate::common::{
-    CalverEnv, CommandSpec, S3UploadPlanItem, append_github_env, append_github_output,
-    append_github_path, capture, collect_files, command_succeeds, copy_dir_contents, count_files,
-    count_files_min_depth, directory_upload_plan, download_file, download_s3_prefix, env_bool,
-    env_string, get_s3_object_bytes, join_s3_key, list_s3_keys, output_text, parse_bool,
-    parse_version_instant, path_to_s3_key, remove_dir_if_exists, remove_empty_dirs_below,
-    remove_file_if_exists, require_any_env, require_env, require_home, resolve_calver, run_command,
-    runner_temp, s3_client, title_case, trim_option, upload_directory_to_s3,
+    CalverEnv, CommandSpec, append_github_env, append_github_output, append_github_path, capture,
+    collect_files, command_succeeds, copy_dir_contents, count_files, download_file, env_bool,
+    env_string, output_text, parse_bool, parse_version_instant, path_to_s3_key,
+    remove_dir_if_exists, remove_empty_dirs_below, remove_file_if_exists, require_any_env,
+    require_env, require_home, resolve_calver, run_command, runner_temp, title_case, trim_option,
+};
+use crate::s3::{
+    S3UploadPlanItem, count_files_min_depth, directory_upload_plan, download_s3_prefix,
+    get_s3_object_bytes, join_s3_key, list_s3_keys, s3_client, upload_directory_to_s3,
     upload_s3_plan_append_only, upload_s3_plan_overwrite,
 };
 use crate::functions::{sha256_file, write_json_pretty};
@@ -6175,6 +6177,7 @@ const DESKTOP_SHELL_CONTRACT_ENV: &str = "SHELL_CONTRACT";
 const DESKTOP_SHELL_CONTRACT_INPUT: &str = "shell_contract";
 const DESKTOP_MODULES_ONLY_RELEASE_ENV: &str = "DESKTOP_MODULES_ONLY_RELEASE";
 const DESKTOP_SHELL_CONTRACT_FILE: &str = "shell-contract.json";
+#[cfg(feature = "http")]
 const DESKTOP_LIVE_MANIFEST_TIMEOUT: Duration = Duration::from_secs(30);
 const DESKTOP_FIRST_MODULE_SHELL_COMMIT: &str = "7c5fa2180a60e4d39bb06c3c384557fd9a3eabc4";
 const DESKTOP_CONTRACT_ROOTS: &[&str] = &[
@@ -6258,6 +6261,7 @@ struct DesktopShellContract {
 #[derive(Debug, Clone, PartialEq)]
 enum DesktopLiveFeed {
     Missing,
+    #[cfg_attr(not(feature = "http"), allow(dead_code))]
     Served(Value),
 }
 
@@ -6273,33 +6277,40 @@ fn desktop_live_manifest_url(channel: &str, platform: &str, arch: &str) -> Strin
 }
 
 async fn fetch_live_channel_feeds(channel: &str) -> Result<BTreeMap<String, DesktopLiveFeed>> {
-    let client = reqwest::Client::builder()
-        .timeout(DESKTOP_LIVE_MANIFEST_TIMEOUT)
-        .build()
-        .context("Failed to build the HTTP client")?;
-    let mut feeds = BTreeMap::new();
-    for (platform, arch) in desktop_release_coordinates() {
-        let url = desktop_live_manifest_url(channel, platform, arch);
-        let response = client
-            .get(&url)
-            .send()
-            .await
-            .with_context(|| format!("Failed to fetch {url}"))?;
-        let feed = if response.status() == reqwest::StatusCode::NOT_FOUND {
-            DesktopLiveFeed::Missing
-        } else {
-            DesktopLiveFeed::Served(
-                response
-                    .error_for_status()
-                    .with_context(|| format!("{url} did not serve a module manifest"))?
-                    .json()
-                    .await
-                    .with_context(|| format!("{url} is not JSON"))?,
-            )
-        };
-        feeds.insert(desktop_coordinate_key(platform, arch), feed);
+    #[cfg(not(feature = "http"))]
+    {
+        bail!("Fetching the live {channel} feeds needs the http feature")
     }
-    Ok(feeds)
+    #[cfg(feature = "http")]
+    {
+        let client = reqwest::Client::builder()
+            .timeout(DESKTOP_LIVE_MANIFEST_TIMEOUT)
+            .build()
+            .context("Failed to build the HTTP client")?;
+        let mut feeds = BTreeMap::new();
+        for (platform, arch) in desktop_release_coordinates() {
+            let url = desktop_live_manifest_url(channel, platform, arch);
+            let response = client
+                .get(&url)
+                .send()
+                .await
+                .with_context(|| format!("Failed to fetch {url}"))?;
+            let feed = if response.status() == reqwest::StatusCode::NOT_FOUND {
+                DesktopLiveFeed::Missing
+            } else {
+                DesktopLiveFeed::Served(
+                    response
+                        .error_for_status()
+                        .with_context(|| format!("{url} did not serve a module manifest"))?
+                        .json()
+                        .await
+                        .with_context(|| format!("{url} is not JSON"))?,
+                )
+            };
+            feeds.insert(desktop_coordinate_key(platform, arch), feed);
+        }
+        Ok(feeds)
+    }
 }
 
 fn newest_release_with_manifest<'a>(
@@ -7614,7 +7625,8 @@ fn print_tree(root: &Path, max_depth: usize) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::common::{directory_upload_plan, parse_version_instant, s3_directory_prefix};
+    use crate::common::parse_version_instant;
+    use crate::s3::{directory_upload_plan, s3_directory_prefix};
     use chrono::{DateTime, TimeZone, Utc};
 
     #[test]

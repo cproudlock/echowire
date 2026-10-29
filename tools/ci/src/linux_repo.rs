@@ -21,9 +21,12 @@ use sha2::{Digest, Sha256};
 use tempfile::TempDir;
 
 use crate::common::{
-    CommandSpec, S3UploadPlanItem, collect_files, command_succeeds, download_file, env_string,
-    output_bytes, remove_file_if_exists, require_any_env, run_command, s3_client,
-    s3_content_type_for_key, upload_s3_plan_append_only, upload_s3_plan_overwrite,
+    CommandSpec, collect_files, command_succeeds, download_file, env_string, output_bytes,
+    remove_file_if_exists, require_any_env, run_command,
+};
+use crate::s3::{
+    S3UploadPlanItem, s3_client, s3_content_type_for_key, upload_s3_plan_append_only,
+    upload_s3_plan_overwrite,
 };
 
 const REPO_ORIGIN: &str = "echowire";

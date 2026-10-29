@@ -61,7 +61,14 @@ function discoveryDocument(
 			phone_verification_enabled: false,
 		},
 		gif: {provider: 'tenor', display_name: 'Tenor', attribution_required: true},
-		sso: {enabled: false, enforced: false, display_name: null, button_label: null, redirect_uri: `https://${host}/sso`},
+		sso: {
+			enabled: false,
+			enforced: false,
+			username_from_provider: false,
+			display_name: null,
+			button_label: null,
+			redirect_uri: `https://${host}/sso`,
+		},
 		registration: {mode: 'closed', admin_registration_urls_enabled: false},
 		community: {
 			single_community: false,

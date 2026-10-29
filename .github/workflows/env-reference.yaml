@@ -11,6 +11,7 @@ on:
       - fluxer_common/**
       - fluxer_gateway/**
       - fluxer_gifs/**
+      - fluxer_marketing/**
       - fluxer_media_proxy/**
       - fluxer_messages/**
       - fluxer_push/**
@@ -39,6 +40,7 @@ on:
       - fluxer_common/**
       - fluxer_gateway/**
       - fluxer_gifs/**
+      - fluxer_marketing/**
       - fluxer_media_proxy/**
       - fluxer_messages/**
       - fluxer_push/**

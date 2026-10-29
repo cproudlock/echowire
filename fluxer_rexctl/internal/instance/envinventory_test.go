@@ -1145,6 +1145,7 @@ func rangeValue(v string) string {
 }
 
 func TestEnvInventory(t *testing.T) {
+	envVars := withForkEnvVars(envVars)
 	var err error
 	set := stack.Embedded()
 	reads, all := codeEnvNames(t)
@@ -1622,7 +1623,7 @@ func TestEnvFileForms(t *testing.T) {
 		}
 	}
 	got := slices.Sorted(maps.Keys(direct))
-	want := slices.Sorted(slices.Values(envNoFileVars))
+	want := slices.Sorted(slices.Values(slices.Concat(envNoFileVars, forkNoFileVars)))
 	if !slices.Equal(got, want) {
 		t.Errorf("Fluxer code looks up these variables without the _FILE form\n got %v\nwant %v (envNoFileVars)", got, want)
 	}

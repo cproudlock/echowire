@@ -36984,8 +36984,8 @@ msgstr "Ez a böngésző nem tud animált {avifFormatLabel} fájlokat vágni. T�
 
 #. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
 #: src/features/platform/hooks/useAppStorageDegradedNotice.ts
-msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
-msgstr "Ez a böngésző nem tudja menteni a Fluxer adatait. Bezárása után újra be kell jelentkezned."
+msgid "This browser can't save echowire's data. You'll need to sign in again after you close it."
+msgstr "Ez a böngésző nem tudja menteni a echowire adatait. Bezárása után újra be kell jelentkezned."
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts

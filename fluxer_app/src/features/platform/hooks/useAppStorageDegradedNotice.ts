@@ -7,7 +7,7 @@ import {useLingui} from '@lingui/react/macro';
 import {useEffect} from 'react';
 
 const STORAGE_UNAVAILABLE_DESCRIPTOR = msg({
-	message: "This browser can't save Fluxer's data. You'll need to sign in again after you close it.",
+	message: "This browser can't save echowire's data. You'll need to sign in again after you close it.",
 	comment: 'Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.',
 });
 

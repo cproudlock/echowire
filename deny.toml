@@ -99,6 +99,8 @@ skip = [
     { crate = "hashbrown@0.14.5", reason = "transitive dependency requires the older hashbrown API" },
     { crate = "pem-rfc7468@0.7.0", reason = "transitive dependency requires the older PEM API" },
     { crate = "phf@0.13.1", reason = "transitive dependency requires the older release line" },
+    { crate = "phf_codegen@0.13.1", reason = "transitive dependency requires the older release line" },
+    { crate = "phf_generator@0.13.1", reason = "transitive dependency requires the older release line" },
     { crate = "phf_shared@0.13.1", reason = "transitive dependency requires the older release line" },
     { crate = "pkcs8@0.10.2", reason = "transitive dependency requires the older PKCS#8 API" },
     { crate = "r-efi@5.3.0", reason = "transitive dependency requires the older WASI API" },

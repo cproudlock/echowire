@@ -36984,8 +36984,8 @@ msgstr "यह ब्राउज़र एनिमेटेड {avifFormatLabe
 
 #. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
 #: src/features/platform/hooks/useAppStorageDegradedNotice.ts
-msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
-msgstr "यह ब्राउज़र Fluxer का डेटा सेव नहीं कर सकता। इसे बंद करने के बाद आपको फिर से साइन इन करना होगा।"
+msgid "This browser can't save echowire's data. You'll need to sign in again after you close it."
+msgstr "यह ब्राउज़र echowire का डेटा सेव नहीं कर सकता। इसे बंद करने के बाद आपको फिर से साइन इन करना होगा।"
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts

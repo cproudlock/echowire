@@ -36984,8 +36984,8 @@ msgstr "Este navegador não consegue cortar arquivos animados de {avifFormatLabe
 
 #. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
 #: src/features/platform/hooks/useAppStorageDegradedNotice.ts
-msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
-msgstr "Este navegador não consegue salvar os dados do Fluxer. Você precisará entrar novamente depois de fechá-lo."
+msgid "This browser can't save echowire's data. You'll need to sign in again after you close it."
+msgstr "Este navegador não consegue salvar os dados do echowire. Você precisará entrar novamente depois de fechá-lo."
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts

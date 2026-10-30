@@ -36984,8 +36984,8 @@ msgstr "เบราว์เซอร์นี้ไม่สามารถค
 
 #. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
 #: src/features/platform/hooks/useAppStorageDegradedNotice.ts
-msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
-msgstr "เบราว์เซอร์นี้บันทึกข้อมูลของ Fluxer ไม่ได้ คุณจะต้องลงชื่อเข้าใช้อีกครั้งหลังจากปิดเบราว์เซอร์"
+msgid "This browser can't save echowire's data. You'll need to sign in again after you close it."
+msgstr "เบราว์เซอร์นี้บันทึกข้อมูลของ echowire ไม่ได้ คุณจะต้องลงชื่อเข้าใช้อีกครั้งหลังจากปิดเบราว์เซอร์"
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts

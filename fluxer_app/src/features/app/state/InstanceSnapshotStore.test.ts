@@ -237,6 +237,7 @@ describe('runtimeSnapshotFromDiscovery', () => {
 				favicon_url: 'https://cdn.q.test/favicon.png',
 				theme_color: '#4641d9',
 				status_page_url: 'https://status.q.test',
+				status_page_instatus: false,
 				status_page_incident_history_url: 'https://status.q.test/history',
 				premium_product_name: 'Supporter',
 				premium_info_url: 'https://q.test/premium',

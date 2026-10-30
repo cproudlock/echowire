@@ -12182,6 +12182,92 @@
 				]
 			}
 		},
+		"/instance/badges": {
+			"get": {
+				"operationId": "list_instance_badges",
+				"summary": "List community badges",
+				"tags": ["Instance"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/InstanceBadgesResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Lists the custom badges that communities on this instance can show, in display order. Send ids to look up the badges listed in badge_ids of a community, or page through every badge with after and limit. Send the custom_badges_version from discovery as version. While that is still the current version, the response can be cached for a day.",
+				"parameters": [
+					{
+						"name": "ids",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Up to 100 badge IDs separated by commas. Only these badges are returned. Cannot be sent with after",
+							"type": "string",
+							"pattern": "^[0-9]{1,20}(?:,[0-9]{1,20}){0,99}$"
+						},
+						"description": "Up to 100 badge IDs separated by commas. Only these badges are returned. Cannot be sent with after"
+					},
+					{
+						"name": "after",
+						"in": "query",
+						"required": false,
+						"schema": {"$ref": "#/components/schemas/CustomBadgeCursorType"},
+						"description": "Opaque cursor from the next field of a previous page"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "Most badges to return, from 1 to 200. Not used with ids",
+							"default": "100",
+							"type": "string"
+						},
+						"description": "Most badges to return, from 1 to 200. Not used with ids"
+					},
+					{
+						"name": "version",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"description": "The catalog version the client already holds. When it is the current version the response can be cached for a day",
+							"type": "string",
+							"maxLength": 64
+						},
+						"description": "The catalog version the client already holds. When it is the current version the response can be cached for a day"
+					}
+				]
+			}
+		},
 		"/instance/setup/account-identity": {
 			"put": {
 				"operationId": "set_instance_account_identity",
@@ -24914,6 +25000,231 @@
 				}
 			}
 		},
+		"/voice/join": {
+			"post": {
+				"operationId": "create_voice_join",
+				"summary": "Join a voice server to the instance",
+				"tags": ["Voice"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/VoiceJoinResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Registers a new voice server with a join token. Send Authorization: VoiceJoin with the token. Fluxer checks that the endpoint answers and that the key and secret match before it saves the server, then the token stops working.",
+				"requestBody": {
+					"required": true,
+					"content": {"application/json": {"schema": {"$ref": "#/components/schemas/VoiceJoinRequest"}}}
+				}
+			}
+		},
+		"/voice/join/preview": {
+			"post": {
+				"operationId": "preview_voice_join",
+				"summary": "Preview joining a voice server",
+				"tags": ["Voice"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/VoiceJoinPreviewResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Shows the server id, region, coordinates and webhook URL a new voice server would get from a join token. Send Authorization: VoiceJoin with the token. The call changes nothing and does not use the token.",
+				"requestBody": {
+					"required": false,
+					"content": {"application/json": {"schema": {"$ref": "#/components/schemas/VoiceJoinPreviewRequest"}}}
+				}
+			}
+		},
+		"/voice/node": {
+			"get": {
+				"operationId": "get_voice_node",
+				"summary": "Get the calling voice server",
+				"tags": ["Voice"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/VoiceNodeResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Returns the voice server that signed the request, with its health as the API sees it. Send Authorization: Bearer with an HS256 JWT signed with the API secret of the server, with iss set to its API key, aud set to fluxer-voice-node, method and path of the request, an exp at most 5 minutes ahead and sha256 holding the base64 SHA-256 of the body, or an empty string for a request without a body."
+			},
+			"patch": {
+				"operationId": "update_voice_node",
+				"summary": "Update the calling voice server",
+				"tags": ["Voice"],
+				"responses": {
+					"200": {
+						"description": "Success",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/VoiceNodeResponse"}}}
+					},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Changes the endpoint, draining flag, coordinates or soft connection limit of the voice server that signed the request. A new endpoint is checked before it is saved. Send Authorization: Bearer with an HS256 JWT signed with the API secret of the server, with iss set to its API key, aud set to fluxer-voice-node, method and path of the request, an exp at most 5 minutes ahead and sha256 holding the base64 SHA-256 of the body, or an empty string for a request without a body.",
+				"requestBody": {
+					"required": true,
+					"content": {"application/json": {"schema": {"$ref": "#/components/schemas/UpdateVoiceNodeRequest"}}}
+				}
+			},
+			"delete": {
+				"operationId": "delete_voice_node",
+				"summary": "Remove the calling voice server",
+				"tags": ["Voice"],
+				"responses": {
+					"204": {"description": "No Content"},
+					"400": {
+						"description": "Bad Request - The request was malformed or contained invalid data",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					},
+					"429": {
+						"description": "Too Many Requests - You are being rate limited",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/ThrottledError"}}},
+						"headers": {
+							"Retry-After": {
+								"description": "Number of seconds to wait before retrying (only on 429)",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Limit": {
+								"description": "The number of requests that can be made in the current window",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Remaining": {
+								"description": "The number of remaining requests that can be made",
+								"schema": {"type": "integer"}
+							},
+							"X-RateLimit-Reset": {
+								"description": "Unix timestamp when the rate limit resets",
+								"schema": {"type": "integer"}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error - An unexpected error occurred",
+						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
+					}
+				},
+				"description": "Deletes the voice server that signed the request. Send Authorization: Bearer with an HS256 JWT signed with the API secret of the server, with iss set to its API key, aud set to fluxer-voice-node, method and path of the request, an exp at most 5 minutes ahead and sha256 holding the base64 SHA-256 of the body, or an empty string for a request without a body."
+			}
+		},
 		"/voice/p2p/connection-reports": {
 			"post": {
 				"operationId": "create_voice_p2p_connection_reports",
@@ -27465,6 +27776,255 @@
 					}
 				},
 				"required": ["reports"]
+			},
+			"UpdateVoiceNodeRequest": {
+				"type": "object",
+				"properties": {
+					"endpoint": {"description": "New public wss endpoint", "type": "string", "maxLength": 512, "format": "uri"},
+					"draining": {"description": "Whether placement sends new calls elsewhere", "type": "boolean"},
+					"latitude": {"anyOf": [{"type": "number", "minimum": -90, "maximum": 90}, {"type": "null"}]},
+					"longitude": {"anyOf": [{"type": "number", "minimum": -180, "maximum": 180}, {"type": "null"}]},
+					"soft_connection_limit": {
+						"anyOf": [{"type": "integer", "minimum": 1, "maximum": 2147483647}, {"type": "null"}]
+					},
+					"public_ipv4": {
+						"description": "Public IPv4 address, or an empty string for none",
+						"anyOf": [{"$ref": "#/components/schemas/VoicePublicIpv4Type"}, {"type": "string", "const": ""}]
+					},
+					"public_ipv6": {
+						"description": "Public IPv6 address, or an empty string for none",
+						"anyOf": [{"$ref": "#/components/schemas/VoicePublicIpv6Type"}, {"type": "string", "const": ""}]
+					}
+				},
+				"additionalProperties": false
+			},
+			"VoiceNodeResponse": {
+				"type": "object",
+				"properties": {
+					"region_id": {"type": "string", "description": "Region of the server"},
+					"server_id": {"type": "string", "description": "ID of the server"},
+					"endpoint": {"type": "string", "description": "Endpoint of the server"},
+					"latitude": {"description": "Server latitude", "type": ["number", "null"]},
+					"longitude": {"description": "Server longitude", "type": ["number", "null"]},
+					"is_active": {"type": "boolean", "description": "Whether an admin keeps the server turned on"},
+					"draining": {"type": "boolean", "description": "Whether placement sends new calls elsewhere"},
+					"soft_connection_limit": {"description": "Soft connection limit, or null", "type": ["number", "null"]},
+					"public_ipv4": {
+						"description": "Public IPv4 address the server last reported, or null",
+						"type": ["string", "null"]
+					},
+					"public_ipv6": {
+						"description": "Public IPv6 address the server last reported, or null",
+						"type": ["string", "null"]
+					},
+					"turn_servers": {
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/VoiceTurnServer"},
+						"description": "TURN servers of the instance, for the LiveKit configuration of the voice server"
+					},
+					"health": {
+						"description": "Health of the server as this API node last saw it",
+						"$ref": "#/components/schemas/VoiceServerHealthResponse"
+					}
+				},
+				"required": [
+					"region_id",
+					"server_id",
+					"endpoint",
+					"latitude",
+					"longitude",
+					"is_active",
+					"draining",
+					"soft_connection_limit",
+					"public_ipv4",
+					"public_ipv6",
+					"turn_servers",
+					"health"
+				],
+				"additionalProperties": false
+			},
+			"VoiceJoinPreviewRequest": {
+				"type": "object",
+				"properties": {
+					"public_ipv4": {
+						"description": "Public IPv4 address of the voice machine",
+						"anyOf": [
+							{
+								"type": "string",
+								"format": "ipv4",
+								"pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$"
+							},
+							{"type": "null"}
+						]
+					},
+					"public_ipv6": {
+						"description": "Public IPv6 address of the voice machine",
+						"anyOf": [
+							{
+								"type": "string",
+								"format": "ipv6",
+								"pattern": "^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$"
+							},
+							{"type": "null"}
+						]
+					},
+					"region_id": {
+						"description": "Existing region the operator asked for",
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 64,
+						"pattern": "^[a-z0-9][a-z0-9-]*$"
+					},
+					"cpu_count": {
+						"description": "CPU count of the voice machine",
+						"type": "integer",
+						"minimum": 1,
+						"maximum": 4096
+					},
+					"memory_bytes": {
+						"description": "Memory of the voice machine in bytes",
+						"type": "integer",
+						"minimum": 0,
+						"maximum": 9007199254740991
+					},
+					"rexctl_version": {"description": "Version of rexctl on the voice machine", "type": "string", "maxLength": 64}
+				}
+			},
+			"VoiceJoinPreviewResponse": {
+				"type": "object",
+				"properties": {
+					"server_id": {"type": "string", "description": "Suggested server id, or the preset of the token"},
+					"server_id_pinned": {
+						"type": "boolean",
+						"description": "Whether the token sets the server id, which the join then always uses"
+					},
+					"region": {
+						"type": "object",
+						"properties": {
+							"id": {"type": "string", "description": "Region id"},
+							"name": {"type": "string", "description": "Region name"},
+							"distance_km": {
+								"description": "Distance from the voice machine, or null without GeoIP data",
+								"type": ["number", "null"]
+							},
+							"new": {"type": "boolean", "description": "Whether the region is created when the server joins"},
+							"source": {
+								"type": "string",
+								"enum": ["token", "requested", "nearest", "default"],
+								"description": "Why Fluxer picked the region, from the token, region_id, the nearest region or the default region"
+							}
+						},
+						"required": ["id", "name", "distance_km", "new", "source"],
+						"additionalProperties": false
+					},
+					"latitude": {"description": "Server latitude from GeoIP, rounded to 0.1 degrees", "type": ["number", "null"]},
+					"longitude": {
+						"description": "Server longitude from GeoIP, rounded to 0.1 degrees",
+						"type": ["number", "null"]
+					},
+					"hostname": {"description": "Hostname preset of the token, or null", "type": ["string", "null"]},
+					"suggested_hostname": {
+						"type": "string",
+						"description": "A hostname under the instance domain the operator may use"
+					},
+					"soft_connection_limit": {
+						"description": "Soft limit preset of the token, or null",
+						"type": ["number", "null"]
+					},
+					"webhook_url": {"type": "string", "description": "URL the server sends LiveKit webhooks to"},
+					"api_code_version": {
+						"type": "integer",
+						"minimum": -9007199254740991,
+						"maximum": 9007199254740991,
+						"description": "Version of the API server code"
+					},
+					"release": {
+						"type": "string",
+						"description": "Fluxer release of the API, or an empty string for a development build"
+					},
+					"expires_at": {"type": "string", "description": "ISO 8601 timestamp when the token stops working"},
+					"turn_servers": {
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/VoiceTurnServer"},
+						"description": "TURN servers of the instance, for the LiveKit configuration of the voice server"
+					}
+				},
+				"required": [
+					"server_id",
+					"server_id_pinned",
+					"region",
+					"latitude",
+					"longitude",
+					"hostname",
+					"suggested_hostname",
+					"soft_connection_limit",
+					"webhook_url",
+					"api_code_version",
+					"release",
+					"expires_at",
+					"turn_servers"
+				],
+				"additionalProperties": false
+			},
+			"VoiceJoinRequest": {
+				"type": "object",
+				"properties": {
+					"server_id": {
+						"description": "Server id, ignored when the token has a preset",
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 64,
+						"pattern": "^[a-z0-9][a-z0-9-]*$"
+					},
+					"region_id": {
+						"description": "Existing region, ignored when the token has a preset",
+						"type": "string",
+						"minLength": 1,
+						"maxLength": 64,
+						"pattern": "^[a-z0-9][a-z0-9-]*$"
+					},
+					"endpoint": {
+						"type": "string",
+						"maxLength": 512,
+						"format": "uri",
+						"description": "Public wss endpoint of the server"
+					},
+					"api_key": {"description": "LiveKit API key of the server", "type": "string"},
+					"api_secret": {"description": "LiveKit API secret of the server", "type": "string"},
+					"latitude": {"type": "number", "minimum": -90, "maximum": 90},
+					"longitude": {"type": "number", "minimum": -180, "maximum": 180},
+					"soft_connection_limit": {"type": "integer", "minimum": 1, "maximum": 2147483647},
+					"public_ipv4": {
+						"description": "Public IPv4 address of the voice machine",
+						"type": "string",
+						"format": "ipv4",
+						"pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$"
+					},
+					"public_ipv6": {
+						"description": "Public IPv6 address of the voice machine",
+						"type": "string",
+						"format": "ipv6",
+						"pattern": "^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$"
+					}
+				},
+				"required": ["endpoint", "api_key", "api_secret"]
+			},
+			"VoiceJoinResponse": {
+				"type": "object",
+				"properties": {
+					"server_id": {"type": "string", "description": "ID of the new server"},
+					"region_id": {"type": "string", "description": "Region of the new server"},
+					"endpoint": {"type": "string", "description": "Endpoint of the new server"},
+					"webhook_url": {"type": "string", "description": "URL the server sends LiveKit webhooks to"},
+					"node_url": {"type": "string", "description": "URL of the node routes for this server"},
+					"turn_servers": {
+						"type": "array",
+						"items": {"$ref": "#/components/schemas/VoiceTurnServer"},
+						"description": "TURN servers of the instance, for the LiveKit configuration of the voice server"
+					}
+				},
+				"required": ["server_id", "region_id", "endpoint", "webhook_url", "node_url", "turn_servers"],
+				"additionalProperties": false
 			},
 			"EntranceSoundPlayRequest": {
 				"type": "object",
@@ -30113,7 +30673,7 @@
 						"description": "Array of guild feature flags"
 					},
 					"badge_ids": {
-						"description": "IDs of the custom badges assigned to the community. Look them up in guild_badges of the instance discovery document and skip IDs that are not there",
+						"description": "IDs of the custom badges assigned to the community. Look them up in guild_badges of the instance discovery document. When guild_badges_partial is true, look up the IDs that are not there with GET /instance/badges?ids=...&version=custom_badges_version, and skip IDs that it does not return",
 						"$ref": "#/components/schemas/CustomBadgeIdListResponse"
 					},
 					"verification_level": {
@@ -33654,6 +34214,54 @@
 				"required": ["mode", "tag_style"],
 				"additionalProperties": false
 			},
+			"CustomBadgeCursorType": {
+				"type": "string",
+				"pattern": "^[gu]-?[0-9]{1,19}$",
+				"description": "Opaque cursor from the next field of a previous page"
+			},
+			"InstanceBadgesResponse": {
+				"type": "object",
+				"properties": {
+					"version": {
+						"type": "string",
+						"maxLength": 64,
+						"description": "Version of the badge catalog. It changes whenever a badge is created, edited, deleted or moved"
+					},
+					"badges": {
+						"maxItems": 200,
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"description": "The ID of the badge, as listed in badge_ids of a community",
+									"$ref": "#/components/schemas/SnowflakeStringType"
+								},
+								"name": {"type": "string", "description": "The name of the badge"},
+								"description": {
+									"description": "Text shown under the name when hovering over the badge, or null",
+									"type": ["string", "null"]
+								},
+								"asset_url": {
+									"type": "string",
+									"description": "URL of the badge image, served as WebP by the media proxy"
+								},
+								"href": {"description": "URL opened when the badge is clicked, or null", "type": ["string", "null"]},
+								"position": {"$ref": "#/components/schemas/CustomBadgePositionType"}
+							},
+							"required": ["id", "name", "description", "asset_url", "href", "position"],
+							"additionalProperties": false
+						},
+						"description": "Community badges in display order. IDs that are unknown or deleted are left out"
+					},
+					"next": {
+						"anyOf": [{"$ref": "#/components/schemas/CustomBadgeCursorType"}, {"type": "null"}],
+						"description": "Pass this as after to get the next page, or null on the last page and for a lookup by ids"
+					}
+				},
+				"required": ["version", "badges", "next"],
+				"additionalProperties": false
+			},
 			"HarvestArchiveResponse": {
 				"type": "string",
 				"format": "binary",
@@ -35865,6 +36473,10 @@
 								"items": {"$ref": "#/components/schemas/GuildFeatureSchema"},
 								"description": "The public badge features of the source community: VERIFIED, PARTNERED and DISCOVERABLE only"
 							},
+							"badge_ids": {
+								"description": "IDs of the custom badges assigned to the source community. Look them up in guild_badges of the instance discovery document. When guild_badges_partial is true, look up the IDs that are not there with GET /instance/badges?ids=...&version=custom_badges_version, and skip IDs that it does not return",
+								"$ref": "#/components/schemas/CustomBadgeIdListResponse"
+							},
 							"approximate_member_count": {
 								"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}],
 								"description": "Approximate number of members in the source community, or null when unavailable"
@@ -37980,10 +38592,29 @@
 						"$ref": "#/components/schemas/DomainMigrationDiscoveryResponse"
 					},
 					"guild_badges": {
-						"description": "Custom badges that communities on this instance can show next to their name, in display order",
+						"description": "The first 100 custom badges that communities on this instance can show next to their name, in display order. GET /instance/badges serves every badge",
 						"maxItems": 100,
 						"type": "array",
 						"items": {"$ref": "#/components/schemas/InstanceGuildBadgeSchema"}
+					},
+					"guild_badges_partial": {
+						"description": "True when the instance has more community badges than guild_badges lists",
+						"type": "boolean"
+					},
+					"custom_badges_version": {
+						"type": "string",
+						"maxLength": 64,
+						"description": "Version of the badge catalog. It changes whenever a badge is created, edited, deleted or moved"
+					},
+					"built_in_guild_badge_images": {
+						"description": "Images this instance shows in place of the built-in verified, partnered and discoverable community badges",
+						"$ref": "#/components/schemas/InstanceBuiltInGuildBadgeImagesSchema"
+					},
+					"voice_origins": {
+						"description": "Origins of every voice server endpoint, such as wss://voice.example.com, for content security policies",
+						"maxItems": 1000,
+						"type": "array",
+						"items": {"type": "string"}
 					}
 				},
 				"required": [
@@ -38002,6 +38633,25 @@
 				],
 				"additionalProperties": false
 			},
+			"InstanceBuiltInGuildBadgeImagesSchema": {
+				"type": "object",
+				"properties": {
+					"verified": {
+						"description": "URL of the image this instance shows for the badge, or null to use the built-in artwork",
+						"type": ["string", "null"]
+					},
+					"partnered": {
+						"description": "URL of the image this instance shows for the badge, or null to use the built-in artwork",
+						"type": ["string", "null"]
+					},
+					"discoverable": {
+						"description": "URL of the image this instance shows for the badge, or null to use the built-in artwork",
+						"type": ["string", "null"]
+					}
+				},
+				"required": ["verified", "partnered", "discoverable"],
+				"additionalProperties": false
+			},
 			"InstanceGuildBadgeSchema": {
 				"type": "object",
 				"properties": {
@@ -38015,7 +38665,8 @@
 						"type": ["string", "null"]
 					},
 					"asset_url": {"type": "string", "description": "URL of the badge image, served as WebP by the media proxy"},
-					"href": {"description": "URL opened when the badge is clicked, or null", "type": ["string", "null"]}
+					"href": {"description": "URL opened when the badge is clicked, or null", "type": ["string", "null"]},
+					"position": {"$ref": "#/components/schemas/CustomBadgePositionType"}
 				},
 				"required": ["id", "name", "description", "asset_url", "href"],
 				"additionalProperties": false
@@ -38181,6 +38832,10 @@
 					},
 					"theme_color": {"description": "Optional browser theme color", "type": ["string", "null"]},
 					"status_page_url": {"description": "Optional public status page URL", "type": ["string", "null"]},
+					"status_page_instatus": {
+						"type": "boolean",
+						"description": "Whether the server detected that the status page is an Instatus page that clients can read current incidents from"
+					},
 					"status_page_incident_history_url": {
 						"description": "Optional public status page incident history URL",
 						"type": ["string", "null"]
@@ -38221,6 +38876,7 @@
 					"favicon_dark_url",
 					"theme_color",
 					"status_page_url",
+					"status_page_instatus",
 					"status_page_incident_history_url",
 					"premium_product_name",
 					"premium_info_url",
@@ -38637,6 +39293,11 @@
 				"description": "Age policy for one region"
 			},
 			"InstanceAgePolicyActionSchema": {"type": "string", "enum": ["restrict", "block"]},
+			"CustomBadgePositionType": {
+				"type": "string",
+				"pattern": "^-?[0-9]{1,19}$",
+				"description": "Display position of the badge. Badges are shown in ascending order of this value"
+			},
 			"SnowflakeStringType": {"type": "string", "pattern": "^(0|[1-9][0-9]*)$", "format": "snowflake"},
 			"BotFlags": {
 				"type": "integer",
@@ -39505,7 +40166,7 @@
 								"description": "Array of guild feature flags"
 							},
 							"badge_ids": {
-								"description": "IDs of the custom badges assigned to the community. Look them up in guild_badges of the instance discovery document and skip IDs that are not there",
+								"description": "IDs of the custom badges assigned to the community. Look them up in guild_badges of the instance discovery document. When guild_badges_partial is true, look up the IDs that are not there with GET /instance/badges?ids=...&version=custom_badges_version, and skip IDs that it does not return",
 								"$ref": "#/components/schemas/CustomBadgeIdListResponse"
 							},
 							"visits_enabled": {
@@ -39640,7 +40301,7 @@
 						"description": "Array of guild feature flags"
 					},
 					"badge_ids": {
-						"description": "IDs of the custom badges assigned to the community. Look them up in guild_badges of the instance discovery document and skip IDs that are not there",
+						"description": "IDs of the custom badges assigned to the community. Look them up in guild_badges of the instance discovery document. When guild_badges_partial is true, look up the IDs that are not there with GET /instance/badges?ids=...&version=custom_badges_version, and skip IDs that it does not return",
 						"$ref": "#/components/schemas/CustomBadgeIdListResponse"
 					},
 					"visits_enabled": {
@@ -39653,7 +40314,7 @@
 				"additionalProperties": false
 			},
 			"CustomBadgeIdListResponse": {
-				"maxItems": 10,
+				"maxItems": 1000,
 				"type": "array",
 				"items": {"$ref": "#/components/schemas/SnowflakeStringType"},
 				"description": "IDs of the custom badges assigned to it"
@@ -40746,6 +41407,10 @@
 						"items": {"$ref": "#/components/schemas/GuildFeatureSchema"},
 						"description": "The public badge features of the source community: VERIFIED, PARTNERED and DISCOVERABLE only"
 					},
+					"badge_ids": {
+						"description": "IDs of the custom badges assigned to the source community. Look them up in guild_badges of the instance discovery document. When guild_badges_partial is true, look up the IDs that are not there with GET /instance/badges?ids=...&version=custom_badges_version, and skip IDs that it does not return",
+						"$ref": "#/components/schemas/CustomBadgeIdListResponse"
+					},
 					"approximate_member_count": {
 						"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}],
 						"description": "Approximate number of members in the source community, or null when unavailable"
@@ -40764,6 +41429,7 @@
 					"name",
 					"description",
 					"features",
+					"badge_ids",
 					"approximate_member_count",
 					"approximate_presence_count",
 					"discoverable"
@@ -44473,7 +45139,7 @@
 				]
 			},
 			"HiddenProfileBadgesType": {
-				"maxItems": 18,
+				"maxItems": 1008,
 				"type": "array",
 				"items": {
 					"type": "string",
@@ -45339,6 +46005,66 @@
 				"enum": ["online", "dnd", "idle", "invisible"],
 				"type": "string"
 			},
+			"VoiceTurnServer": {
+				"type": "object",
+				"properties": {
+					"host": {"type": "string", "description": "Hostname or IPv4 address of the TURN server"},
+					"port": {
+						"type": "integer",
+						"minimum": -9007199254740991,
+						"maximum": 9007199254740991,
+						"description": "Port of the TURN server"
+					},
+					"protocol": {
+						"type": "string",
+						"enum": ["udp", "tcp", "tls"],
+						"description": "Transport clients use to connect to the TURN server"
+					},
+					"username": {"description": "Fixed TURN username", "type": "string"},
+					"credential": {"description": "Fixed TURN password", "type": "string"},
+					"secret": {"description": "Shared secret LiveKit signs short-lived TURN credentials with", "type": "string"},
+					"ttl": {
+						"description": "Lifetime of the signed credentials in seconds",
+						"type": "integer",
+						"minimum": -9007199254740991,
+						"maximum": 9007199254740991
+					}
+				},
+				"required": ["host", "port", "protocol"],
+				"additionalProperties": false
+			},
+			"VoiceServerHealthResponse": {
+				"type": "object",
+				"properties": {
+					"status": {
+						"type": "string",
+						"enum": ["up", "down", "unknown"],
+						"description": "up, down, or unknown before the first check"
+					},
+					"checked_at": {
+						"description": "ISO 8601 timestamp of the last check, or null before the first",
+						"type": ["string", "null"]
+					},
+					"error": {
+						"description": "Status code or short transport error of the last failed check",
+						"type": ["string", "null"]
+					}
+				},
+				"required": ["status", "checked_at", "error"],
+				"additionalProperties": false
+			},
+			"VoicePublicIpv6Type": {
+				"type": "string",
+				"format": "ipv6",
+				"pattern": "^(([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:))$",
+				"description": "Public IPv6 address LiveKit gives to clients"
+			},
+			"VoicePublicIpv4Type": {
+				"type": "string",
+				"format": "ipv4",
+				"pattern": "^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])\\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])$",
+				"description": "Public IPv4 address LiveKit gives to clients"
+			},
 			"Int64Type": {
 				"anyOf": [{"type": "string"}, {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991}],
 				"format": "int64"
@@ -45687,6 +46413,16 @@
 					"USER_OWNS_GUILDS",
 					"VALIDATION_ERROR",
 					"VOICE_CHANNEL_FULL",
+					"VOICE_JOIN_ENDPOINT_INVALID",
+					"VOICE_JOIN_ENDPOINT_UNREACHABLE",
+					"VOICE_JOIN_KEY_MISMATCH",
+					"VOICE_JOIN_TOKEN_BUSY",
+					"VOICE_JOIN_TOKEN_INVALID",
+					"VOICE_NODE_SIGNATURE_INVALID",
+					"VOICE_NODE_TOKEN_EXPIRED",
+					"VOICE_NODE_UNKNOWN",
+					"VOICE_SERVER_API_KEY_IN_USE",
+					"VOICE_SERVER_ID_IN_USE",
 					"WEBAUTHN_CREDENTIAL_LIMIT_REACHED",
 					"ACCOUNT_VERIFICATION_REQUIRED",
 					"DATE_OF_BIRTH_REQUIRED",
@@ -45863,7 +46599,7 @@
 					"This IP address cannot be added to the blocklist.",
 					"This network block belongs to an enforcement decision. End the decision to remove it.",
 					"You've reached the maximum of {limit, plural, one {# application} other {# applications}}.",
-					"You've reached the maximum of {count, plural, one {# badge} other {# badges}} for this type.",
+					"The limit is {count, plural, one {# badge} other {# badges}}.",
 					"You've reached the maximum of {count, plural, one {# bookmark} other {# bookmarks}}.",
 					"This community has reached its active thread limit of {count}.",
 					"You've reached the maximum of {count, plural, one {# category channel} other {# category channels}}.",
@@ -46052,6 +46788,16 @@
 					"This user owns communities.",
 					"Validation failed.",
 					"Voice channel is full.",
+					"The voice server endpoint isn't allowed.",
+					"echowire couldn't connect to the voice server endpoint.",
+					"The voice server rejected its API key and secret.",
+					"Another voice server is joining with this token right now.",
+					"The voice join token is not valid.",
+					"The voice server's signature doesn't match its secret.",
+					"The voice server's request is expired or not valid yet. Check the clock on that machine.",
+					"No voice server has this API key.",
+					"Another voice server already uses this API key.",
+					"Another voice server already uses this ID.",
 					"You've reached the maximum of {count, plural, one {# WebAuthn credential} other {# WebAuthn credentials}}.",
 					"{need, select, add_email {{action, select, message {Add an email to your account to send messages.} typing {Add an email to your account to send messages.} reaction {Add an email to your account to add reactions.} direct_message {Add an email to your account to send direct messages.} direct_message_open {Add an email to your account to start direct messages.} group_dm {Add an email to your account to join group chats.} friend_request {Add an email to your account to send friend requests.} friend_accept {Add an email to your account to accept friend requests.} invite_create {Add an email to your account to create invites.} guild_join {Add an email to your account to join this community.} guild_create {Add an email to your account to create a community.} voice {Add an email to your account to join voice channels.} call {Add an email to your account to start calls.} group_call {Add an email to your account to join group calls.} thread_join {Add an email to your account to join threads.} channel_follow {Add an email to your account to follow channels.} ownership_transfer {This person needs to add an email to their account before they can own a community.} application_create {Add an email to your account to create applications.} gift_redeem {Add an email to your account to redeem gifts.} profile_customize {Add an email to your account to change your profile.} report {Add an email to your account to submit reports.} mfa {Add an email to your account to turn on two-factor authentication.} guild_verification {Add an email to your account to talk in this community.} other {Add an email to your account to do this.}}} confirm_email {{action, select, message {Confirm your email to send messages.} typing {Confirm your email to send messages.} reaction {Confirm your email to add reactions.} direct_message {Confirm your email to send direct messages.} direct_message_open {Confirm your email to start direct messages.} group_dm {Confirm your email to join group chats.} friend_request {Confirm your email to send friend requests.} friend_accept {Confirm your email to accept friend requests.} invite_create {Confirm your email to create invites.} guild_join {Confirm your email to join this community.} guild_create {Confirm your email to create a community.} voice {Confirm your email to join voice channels.} call {Confirm your email to start calls.} group_call {Confirm your email to join group calls.} thread_join {Confirm your email to join threads.} channel_follow {Confirm your email to follow channels.} ownership_transfer {This person needs to confirm their email before they can own a community.} application_create {Confirm your email to create applications.} gift_redeem {Confirm your email to redeem gifts.} profile_customize {Confirm your email to change your profile.} report {Confirm your email to submit reports.} mfa {Confirm your email to turn on two-factor authentication.} guild_verification {Confirm your email to talk in this community.} other {Confirm your email to do this.}}} password {{action, select, message {Set a password to send messages.} typing {Set a password to send messages.} reaction {Set a password to add reactions.} direct_message {Set a password to send direct messages.} direct_message_open {Set a password to start direct messages.} group_dm {Set a password to join group chats.} friend_request {Set a password to send friend requests.} friend_accept {Set a password to accept friend requests.} invite_create {Set a password to create invites.} guild_join {Set a password to join this community.} guild_create {Set a password to create a community.} voice {Set a password to join voice channels.} call {Set a password to start calls.} group_call {Set a password to join group calls.} thread_join {Set a password to join threads.} channel_follow {Set a password to follow channels.} ownership_transfer {This person needs to set a password before they can own a community.} application_create {Set a password to create applications.} gift_redeem {Set a password to redeem gifts.} profile_customize {Set a password to change your profile.} report {Set a password to submit reports.} mfa {Set a password to turn on two-factor authentication.} guild_verification {Set a password to talk in this community.} other {Set a password to do this.}}} other {{action, select, message {Claim your account to send messages.} typing {Claim your account to send messages.} reaction {Claim your account to add reactions.} direct_message {Claim your account to send direct messages.} direct_message_open {Claim your account to start direct messages.} group_dm {Claim your account to join group chats.} friend_request {Claim your account to send friend requests.} friend_accept {Claim your account to accept friend requests.} invite_create {Claim your account to create invites.} guild_join {Claim your account to join this community.} guild_create {Claim your account to create a community.} voice {Claim your account to join voice channels.} call {Claim your account to start calls.} group_call {Claim your account to join group calls.} thread_join {Claim your account to join threads.} channel_follow {Claim your account to follow channels.} ownership_transfer {This person needs to claim their account before they can own a community.} application_create {Claim your account to create applications.} gift_redeem {Claim your account to redeem gifts.} profile_customize {Claim your account to change your profile.} report {Claim your account to submit reports.} mfa {Claim your account to turn on two-factor authentication.} guild_verification {Claim your account to talk in this community.} other {Claim your account to do this.}}}}",
 					"Enter your date of birth to continue.",

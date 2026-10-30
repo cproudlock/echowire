@@ -1166,6 +1166,11 @@ msgstr "{count, plural, one {#개 활성 구독} other {#개 활성 구독}}"
 msgid "{count, plural, one {# attachment} other {# attachments}}"
 msgstr "{count, plural, one {#개 첨부파일} other {#개 첨부파일}}"
 
+#. Read out by screen readers while typing in the badge filter of the "Badges" profile settings, with the number of badges that match.
+#: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
+msgid "{count, plural, one {# badge matches} other {# badges match}}"
+msgstr "{count, plural, other {배지 #개 일치}}"
+
 #. Label on the collapsed block in the message list that hides messages from blocked users. count is how many messages are hidden; clicking the label reveals them.
 #: src/features/channel/components/BlockedMessageGroups.tsx
 msgid "{count, plural, one {# blocked message} other {# blocked messages}}"
@@ -1351,6 +1356,11 @@ msgstr "{count, plural, other {#주}}"
 msgctxt "short-relative-time"
 msgid "{count, plural, one {#y} other {#y}}"
 msgstr "{count, plural, other {#년}}"
+
+#. Screen reader label for the +3 style button that opens the full list of badges. It starts with the same +3 text that is shown on the button, so voice control users can say it.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "{count, plural, one {+# more badge, show all} other {+# more badges, show all}}"
+msgstr "{count, plural, other {+#개 배지 더 있음, 모두 보기}}"
 
 #: src/features/channel/components/embeds/attachments/TextualAttachmentPreviewFooter.tsx
 msgid "{count, plural, one {Collapse (# line)} other {Collapse (# lines)}}"
@@ -2464,7 +2474,9 @@ msgid "/tts"
 msgstr "/tts"
 
 #. Badge on the forward modal preview thumbnail. count is the number of other attachments that the thumbnail does not show.
+#. Short count of badges that are not shown next to a name or on a profile, such as +3. Pressing it opens the full list. Keep it as short as possible.
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx
+#: src/features/user/utils/UserMessageDescriptors.ts
 msgid "+{count}"
 msgstr "+{count}"
 
@@ -6130,6 +6142,8 @@ msgid "Badge and wall count: {count}"
 msgstr "배지와 벽에 표시되는 수: {count}"
 
 #. Title of the profile settings section that lists the badges you hold and lets you hide each one.
+#. Title of the window that lists every badge of a person or community.
+#: src/features/user/components/modals/BadgeListModal.tsx
 #: src/features/user/utils/UserMessageDescriptors.ts
 msgid "Badges"
 msgstr "배지"
@@ -16643,6 +16657,11 @@ msgstr "로그인 페이지에서 양식 뒤를 가득 채우며, 양식이 잘 
 msgid "Filter"
 msgstr "필터"
 
+#. Placeholder and screen reader label of the text field above a long list of badges in the "Badges" profile settings. Typing in it shows only the badges whose name holds the text.
+#: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
+msgid "Filter badges"
+msgstr "배지 필터"
+
 #. Accessible label for the account-age filter chip on the community members page.
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx
 msgid "Filter by account creation date"
@@ -24277,6 +24296,11 @@ msgstr "자동 완성 제안 없음"
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx
 msgid "No background"
 msgstr "배경 없음"
+
+#. Shown under the badge filter in the "Badges" profile settings when the typed text matches none of your badges.
+#: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
+msgid "No badges match."
+msgstr "일치하는 배지가 없어요."
 
 #: src/features/guild/components/modals/guild_tabs/GuildBansTab.tsx
 msgid "No banned users"
@@ -32998,6 +33022,11 @@ msgstr "홈 화면에 지금 활동 중을 표시하면 음성 채널에 있는 
 msgid "Show activity on other accounts"
 msgstr "다른 계정의 활동 보기"
 
+#. Tooltip for the +3 style button that opens the full list of badges.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Show all badges"
+msgstr "모든 배지 보기"
+
 #. Short label for an advanced media button preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx
 msgid "Show attachment expiration indicator"
@@ -33488,10 +33517,10 @@ msgstr "Visionary 배지가 표시되고 구독으로 표시되지 않을 때만
 msgid "Shows the banner in its own section below the community header."
 msgstr "커뮤니티 헤더 아래에 배너가 별도의 섹션으로 표시됩니다."
 
-#. Help under the YouTube Data API key field in the setup wizard.
+#. Help under the YouTube Data API key field in the setup wizard. YouTube Data API v3 is a product name. Website restrictions means the Websites application restriction in the Google Cloud console.
 #: src/features/app/components/setup/SetupServicesStep.tsx
-msgid "Shows the title and thumbnail when someone posts a YouTube link."
-msgstr "누군가 YouTube 링크를 올리면 제목과 썸네일을 표시합니다."
+msgid "Shows the title and thumbnail when someone posts a YouTube link. Enable YouTube Data API v3 with a daily quota above 0. Restrict the key by IP address or not at all. Website restrictions block it."
+msgstr "누군가 YouTube 링크를 올리면 제목과 썸네일을 표시합니다. 일일 할당량이 0보다 큰 상태로 YouTube Data API v3을 사용 설정하세요. 키는 IP 주소로 제한하거나 제한하지 마세요. 웹사이트 제한을 사용하면 차단됩니다."
 
 #. Where the app icon branding image appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -36952,6 +36981,11 @@ msgstr "이 봇은 관리자 권한을 요청합니다. 개발자를 완전히 �
 #: src/features/messaging/components/modals/ImageCropModal.tsx
 msgid "This browser can't crop animated {avifFormatLabel} files. Upload a GIF or WebP instead."
 msgstr "이 브라우저에서는 애니메이션 {avifFormatLabel} 파일을 편집할 수 없습니다. 대신 GIF 또는 WebP 파일을 업로드하세요."
+
+#. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
+#: src/features/platform/hooks/useAppStorageDegradedNotice.ts
+msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
+msgstr "이 브라우저에서는 Fluxer 데이터를 저장할 수 없습니다. 브라우저를 닫은 후에는 다시 로그인해야 합니다."
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts

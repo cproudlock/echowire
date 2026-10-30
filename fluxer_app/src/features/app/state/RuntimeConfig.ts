@@ -48,11 +48,13 @@ import {
 } from '@fluxer/constants/src/AccountIdentityConstants';
 import {resolveEffectiveVerificationBasis, resolveEmailCodeAvailability} from '@fluxer/constants/src/AccountTierRules';
 import {API_CODE_VERSION} from '@fluxer/constants/src/AppConstants';
+import {NO_BUILT_IN_GUILD_BADGE_IMAGES} from '@fluxer/instance_bootstrap/src/ClientRuntimeDiscovery';
 import {InstanceDiscoveryUnreachableError} from '@fluxer/instance_bootstrap/src/Discovery';
 import {InstanceEndpointKind, normalizeInstanceEndpoint} from '@fluxer/instance_bootstrap/src/EndpointNormalization';
 import {isOfficialInstanceHost, OFFICIAL_INSTANCE_DISPLAY_HOST} from '@fluxer/instance_bootstrap/src/OfficialInstance';
 import type {
 	InstanceAppPublic,
+	InstanceBuiltInGuildBadgeImages,
 	InstanceCommunity,
 	InstanceFeatures,
 	InstanceGuildBadge,
@@ -684,6 +686,10 @@ class RuntimeConfig {
 			appPublic: resolution.snapshot.appPublic,
 			notice: resolution.snapshot.notice,
 			guildBadges: resolution.snapshot.guildBadges,
+			guildBadgesPartial: resolution.snapshot.guildBadgesPartial,
+			customBadgesVersion: resolution.snapshot.customBadgesVersion,
+			builtInGuildBadgeImages: resolution.snapshot.builtInGuildBadgeImages,
+			limits: resolution.snapshot.limits,
 		});
 		this.activeRuntime = {...runtime, snapshot: usable};
 		this.lifecycleGeneration = nextLifecycleGeneration(this.lifecycleGeneration);
@@ -708,7 +714,12 @@ class RuntimeConfig {
 	applyAdminInstanceConfig(config: InstanceConfigResponse): void {
 		const current = this.requireActiveSnapshot();
 		const appPublic: InstanceAppPublic = {
-			branding: config.app_public.branding,
+			branding: {
+				...config.app_public.branding,
+				status_page_instatus:
+					current.appPublic.branding.status_page_instatus &&
+					current.appPublic.branding.status_page_url === config.app_public.branding.status_page_url,
+			},
 			setup: {
 				configured: config.app_public.setup.configured,
 				admin_url: current.appPublic.setup.admin_url,
@@ -773,6 +784,10 @@ class RuntimeConfig {
 
 	get statusPageUrl(): string {
 		return this.activeRuntime?.snapshot.appPublic.branding.status_page_url ?? '';
+	}
+
+	get statusPageInstatus(): boolean {
+		return this.activeRuntime?.snapshot.appPublic.branding.status_page_instatus ?? false;
 	}
 
 	isSelfHosted(): boolean {
@@ -909,6 +924,18 @@ class RuntimeConfig {
 
 	get guildBadges(): ReadonlyArray<InstanceGuildBadge> {
 		return this.activeRuntime?.snapshot.guildBadges ?? [];
+	}
+
+	get guildBadgesPartial(): boolean {
+		return this.activeRuntime?.snapshot.guildBadgesPartial ?? false;
+	}
+
+	get customBadgesVersion(): string | null {
+		return this.activeRuntime?.snapshot.customBadgesVersion ?? null;
+	}
+
+	get builtInGuildBadgeImages(): InstanceBuiltInGuildBadgeImages {
+		return this.activeRuntime?.snapshot.builtInGuildBadgeImages ?? NO_BUILT_IN_GUILD_BADGE_IMAGES;
 	}
 
 	get gifEnabled(): boolean {

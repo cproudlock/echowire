@@ -15,6 +15,9 @@ mod linux_repo;
 mod release;
 mod schema;
 
+#[cfg(feature = "s3")]
+mod s3;
+
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 

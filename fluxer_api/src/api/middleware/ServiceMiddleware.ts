@@ -550,6 +550,13 @@ class RequestServices implements RequestScopedServices {
 			this.singleCommunityService,
 			this.inviteService,
 			this.guildService.members,
+			{
+				userCacheService: getUserCacheService(),
+				userRepository: getUserRepository(),
+				guildRepository: getGuildRepository(),
+				gatewayService: this.gatewayService,
+			},
+			getGuildRepository(),
 		);
 		return this.cachedSsoService;
 	}

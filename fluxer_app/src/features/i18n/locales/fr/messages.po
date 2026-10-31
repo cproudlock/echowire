@@ -1166,6 +1166,11 @@ msgstr "{count, plural, one {# abonnement actif} other {# abonnements actifs}}"
 msgid "{count, plural, one {# attachment} other {# attachments}}"
 msgstr "{count, plural, one {# pièce jointe} other {# pièces jointes}}"
 
+#. Read out by screen readers while typing in the badge filter of the "Badges" profile settings, with the number of badges that match.
+#: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
+msgid "{count, plural, one {# badge matches} other {# badges match}}"
+msgstr "{count, plural, one {# badge correspond} other {# badges correspondent}}"
+
 #. Label on the collapsed block in the message list that hides messages from blocked users. count is how many messages are hidden; clicking the label reveals them.
 #: src/features/channel/components/BlockedMessageGroups.tsx
 msgid "{count, plural, one {# blocked message} other {# blocked messages}}"
@@ -1351,6 +1356,11 @@ msgstr "{count, plural, one {# sem.} many {# sem.} other {# sem.}}"
 msgctxt "short-relative-time"
 msgid "{count, plural, one {#y} other {#y}}"
 msgstr "{count, plural, one {# an} many {# ans} other {# ans}}"
+
+#. Screen reader label for the +3 style button that opens the full list of badges. It starts with the same +3 text that is shown on the button, so voice control users can say it.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "{count, plural, one {+# more badge, show all} other {+# more badges, show all}}"
+msgstr "{count, plural, one {+# badge de plus, tout afficher} other {+# badges de plus, tout afficher}}"
 
 #: src/features/channel/components/embeds/attachments/TextualAttachmentPreviewFooter.tsx
 msgid "{count, plural, one {Collapse (# line)} other {Collapse (# lines)}}"
@@ -2464,7 +2474,9 @@ msgid "/tts"
 msgstr "/tts"
 
 #. Badge on the forward modal preview thumbnail. count is the number of other attachments that the thumbnail does not show.
+#. Short count of badges that are not shown next to a name or on a profile, such as +3. Pressing it opens the full list. Keep it as short as possible.
 #: src/features/messaging/components/modals/ForwardMessagePreview.tsx
+#: src/features/user/utils/UserMessageDescriptors.ts
 msgid "+{count}"
 msgstr "+{count}"
 
@@ -6130,6 +6142,8 @@ msgid "Badge and wall count: {count}"
 msgstr "Nombre pour le badge et le mur : {count}"
 
 #. Title of the profile settings section that lists the badges you hold and lets you hide each one.
+#. Title of the window that lists every badge of a person or community.
+#: src/features/user/components/modals/BadgeListModal.tsx
 #: src/features/user/utils/UserMessageDescriptors.ts
 msgid "Badges"
 msgstr "Badges"
@@ -16643,6 +16657,11 @@ msgstr "Remplit la page de connexion derrière le formulaire. L'image est assomb
 msgid "Filter"
 msgstr "Filtrer"
 
+#. Placeholder and screen reader label of the text field above a long list of badges in the "Badges" profile settings. Typing in it shows only the badges whose name holds the text.
+#: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
+msgid "Filter badges"
+msgstr "Filtrer les badges"
+
 #. Accessible label for the account-age filter chip on the community members page.
 #: src/features/channel/components/guild_members_page/MembersTableHeaderRow.tsx
 msgid "Filter by account creation date"
@@ -24277,6 +24296,11 @@ msgstr "Aucune suggestion de saisie semi-automatique"
 #: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx
 msgid "No background"
 msgstr "Pas d'arrière-plan"
+
+#. Shown under the badge filter in the "Badges" profile settings when the typed text matches none of your badges.
+#: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
+msgid "No badges match."
+msgstr "Aucun badge ne correspond."
 
 #: src/features/guild/components/modals/guild_tabs/GuildBansTab.tsx
 msgid "No banned users"
@@ -32998,6 +33022,11 @@ msgstr "Affichez « Actif en ce moment » sur l’écran d’accueil pour retrou
 msgid "Show activity on other accounts"
 msgstr "Afficher l'activité sur d'autres comptes"
 
+#. Tooltip for the +3 style button that opens the full list of badges.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Show all badges"
+msgstr "Afficher tous les badges"
+
 #. Short label for an advanced media button preference.
 #: src/features/user/components/modals/tabs/advanced_settings_tab/AdvancedChatControls.tsx
 msgid "Show attachment expiration indicator"
@@ -33488,10 +33517,10 @@ msgstr "Affiché uniquement quand votre badge Visionary est visible et n'est pas
 msgid "Shows the banner in its own section below the community header."
 msgstr "Affiche la bannière dans sa propre section sous l'en-tête de la communauté."
 
-#. Help under the YouTube Data API key field in the setup wizard.
+#. Help under the YouTube Data API key field in the setup wizard. YouTube Data API v3 is a product name. Website restrictions means the Websites application restriction in the Google Cloud console.
 #: src/features/app/components/setup/SetupServicesStep.tsx
-msgid "Shows the title and thumbnail when someone posts a YouTube link."
-msgstr "Affiche le titre et la miniature quand quelqu'un publie un lien YouTube."
+msgid "Shows the title and thumbnail when someone posts a YouTube link. Enable YouTube Data API v3 with a daily quota above 0. Restrict the key by IP address or not at all. Website restrictions block it."
+msgstr "Affiche le titre et la miniature quand quelqu'un publie un lien YouTube. Activez YouTube Data API v3 avec un quota quotidien supérieur à 0. Limitez la clé par adresse IP ou ne la limitez pas. Les restrictions par site web la bloquent."
 
 #. Where the app icon branding image appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -36952,6 +36981,11 @@ msgstr "Ce bot demande la permission d'administrateur. Ne l'accordez que si vous
 #: src/features/messaging/components/modals/ImageCropModal.tsx
 msgid "This browser can't crop animated {avifFormatLabel} files. Upload a GIF or WebP instead."
 msgstr "Ce navigateur ne peut pas recadrer les fichiers {avifFormatLabel} animés. Téléchargez plutôt un GIF ou un WebP."
+
+#. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
+#: src/features/platform/hooks/useAppStorageDegradedNotice.ts
+msgid "This browser can't save echowire's data. You'll need to sign in again after you close it."
+msgstr "Ce navigateur ne peut pas enregistrer les données de echowire. Vous devrez vous reconnecter après l'avoir fermé."
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts

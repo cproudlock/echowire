@@ -36,6 +36,7 @@ import type {InviteRepository} from '@app/api/invite/InviteRepository';
 import {JobAdminService} from '@app/api/jobs/JobAdminService';
 import type {JobLedgerRepository} from '@app/api/jobs/JobLedgerRepository';
 import {
+	getCustomBadgeCatalog,
 	getEnforcementDecisionRepository,
 	getGuildDiscoveryRepository,
 	getInstanceConfigRepository,
@@ -53,6 +54,7 @@ import type {ReportService} from '@app/api/report/ReportService';
 import type {StoreEntitlementService} from '@app/api/store_billing/StoreEntitlementService';
 import {systemDmsHidden} from '@app/api/user/services/SystemDmMessage';
 import type {UserService} from '@app/api/user/services/UserService';
+import {VoiceJoinTokenRepository} from '@app/api/voice/VoiceJoinTokenRepository';
 import type {VoiceRepository} from '@app/api/voice/VoiceRepository';
 import {DirectMessagesDisabledError} from '@fluxer/errors/src/domains/channel/DirectMessagesDisabledError';
 import type {SendSystemDmResponse} from '@fluxer/schema/src/domains/admin/AdminSchemas';
@@ -177,7 +179,7 @@ export class AdminService {
 			auditService: this.auditService,
 			discoveryRepository: getGuildDiscoveryRepository(),
 			enforcement: this.enforcementService,
-			instanceConfigRepository: getInstanceConfigRepository(),
+			customBadgeCatalog: getCustomBadgeCatalog(),
 		});
 		this.messageShredService = new AdminMessageShredService({
 			apiContext: this.apiContext,
@@ -232,10 +234,13 @@ export class AdminService {
 		this.voiceService = new AdminVoiceService({
 			apiContext: this.apiContext,
 			voiceRepository: this.voiceRepository,
+			joinTokenRepository: new VoiceJoinTokenRepository(),
+			snowflakeService: snowflake,
 			auditService: this.auditService,
 		});
 		this.badgeService = new AdminBadgeService({
 			instanceConfigRepository: getInstanceConfigRepository(),
+			catalog: getCustomBadgeCatalog(),
 			entityAssetService: this.entityAssetService,
 			assetDeletionQueue: this.assetDeletionQueue,
 			snowflakeService: snowflake,

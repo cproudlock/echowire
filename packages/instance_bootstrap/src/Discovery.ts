@@ -24,6 +24,7 @@ import {
 	type InstanceAgePolicyGeo,
 	type InstanceAppRegistration,
 	type InstanceBranding,
+	type InstanceBuiltInGuildBadgeImages,
 	type InstanceCommunity,
 	type InstanceDomainMigration,
 	type InstanceFeatures,
@@ -145,6 +146,9 @@ export interface InstanceDiscoveryDocument {
 	readonly domainMigration: InstanceDomainMigration | null;
 	readonly notice?: InstanceNotice | null;
 	readonly guildBadges?: ReadonlyArray<InstanceGuildBadge>;
+	readonly guildBadgesPartial?: boolean;
+	readonly customBadgesVersion?: string | null;
+	readonly builtInGuildBadgeImages?: InstanceBuiltInGuildBadgeImages;
 }
 
 interface InstanceDiscoveryAttempt {
@@ -308,6 +312,9 @@ export function parseInstanceDiscoveryDocument(payload: unknown): InstanceDiscov
 		domainMigration: parseInstanceDomainMigration(source.domain_migration),
 		notice: parseNotice(source.notice),
 		guildBadges: parseGuildBadges(source.guild_badges),
+		guildBadgesPartial: source.guild_badges_partial === true,
+		customBadgesVersion: readNonEmptyString(source, 'custom_badges_version'),
+		builtInGuildBadgeImages: parseBuiltInGuildBadgeImages(source.built_in_guild_badge_images),
 	};
 }
 
@@ -697,6 +704,15 @@ function parseNotice(value: unknown): InstanceNotice | null {
 	};
 }
 
+function parseBuiltInGuildBadgeImages(value: unknown): InstanceBuiltInGuildBadgeImages {
+	const source = asRecord(value) ?? {};
+	return {
+		verified: readNonEmptyString(source, 'verified'),
+		partnered: readNonEmptyString(source, 'partnered'),
+		discoverable: readNonEmptyString(source, 'discoverable'),
+	};
+}
+
 function parseGuildBadges(value: unknown): Array<InstanceGuildBadge> {
 	if (!Array.isArray(value)) {
 		return [];
@@ -712,6 +728,7 @@ function parseGuildBadges(value: unknown): Array<InstanceGuildBadge> {
 		if (id == null || name == null || assetUrl == null) {
 			return [];
 		}
+		const position = readNonEmptyString(source, 'position');
 		return [
 			{
 				id,
@@ -719,6 +736,7 @@ function parseGuildBadges(value: unknown): Array<InstanceGuildBadge> {
 				description: readNonEmptyString(source, 'description'),
 				asset_url: assetUrl,
 				href: readAbsoluteHTTPURL(source, 'href'),
+				...(position != null && /^-?[0-9]{1,19}$/.test(position) ? {position} : {}),
 			},
 		];
 	});
@@ -883,6 +901,10 @@ function parseBranding(value: unknown): Readonly<Partial<InstanceBranding>> {
 		if (Object.hasOwn(source, key)) {
 			branding[key] = readAbsoluteHTTPURL(source, key);
 		}
+	}
+	const statusPageInstatus = readBoolean(source, 'status_page_instatus');
+	if (statusPageInstatus != null) {
+		branding.status_page_instatus = statusPageInstatus;
 	}
 	if (Object.hasOwn(source, 'theme_color')) {
 		branding.theme_color = readNonEmptyString(source, 'theme_color');

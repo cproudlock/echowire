@@ -12,6 +12,7 @@ export const BOOTSTRAP_APP_PUBLIC: InstanceAppPublic = {
 		favicon_url: null,
 		theme_color: null,
 		status_page_url: null,
+		status_page_instatus: false,
 		status_page_incident_history_url: null,
 		premium_product_name: 'Plutonium',
 		premium_info_url: null,

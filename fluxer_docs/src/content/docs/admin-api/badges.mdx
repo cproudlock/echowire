@@ -10,6 +10,8 @@ A custom badge is an image that instance admins make and give out. A user badge 
 
 Admins can also replace the image of a built-in badge: staff or premium on profiles, and verified, partnered or discoverable on guilds. The badge keeps its name, tooltip and meaning, and everyone sees the new image in its place. See [Replace built-in badge image](#replace-built-in-badge-image).
 
+Admins can also hide a built-in guild badge so that clients stop showing it. The guild keeps what the badge stands for: a discoverable guild stays listed in discovery without the badge next to its name. See [Hide built-in guild badge](#hide-built-in-guild-badge).
+
 There is no limit on how many badges an instance can have. The [badge settings](#badge-settings-object) set how many one account or one guild can be given, 100 per account and 50 per guild by default. Give badges with [Update user badges](/admin-api/users/#update-user-badges) and the `badge_ids` field of [Update guild](/admin-api/guilds/#update-guild). Deleting a badge takes it off everyone who had it.
 
 Each badge type has its own display order. A new badge goes to the end of its type. [Move badge](#move-badge) moves one badge, and the Badges page of the admin panel uses it for its Move up, Move down, Move to top and Move to bottom buttons. [Reorder badges](#reorder-badges) sets the whole order on instances with up to 1,000 badges.
@@ -51,6 +53,7 @@ Each badge type has its own display order. A new badge goes to the end of its ty
 | kind | string | The built-in badge<sup>1</sup> |
 | asset_url | ?string | The replacement image as WebP from the media proxy, or null when the built-in image is used |
 | built_in_asset | ?string | The hash of the built-in image at `{static_cdn}/badges/{hash}.webp`, or null for a guild badge |
+| hidden | boolean | Whether clients leave the badge out. Only guild badges can be hidden, so this is always false for `staff` and `premium` |
 
 <sup>1</sup> One of the profile badges `staff` and `premium`, or one of the guild badges `guild_verified`, `guild_partnered` and `guild_discoverable`
 
@@ -75,13 +78,13 @@ Guilds have a lower ceiling because every guild a person is in sends its `badge_
 
 Returns one page of custom badges in display order, with the badge settings and the built-in badge images. Without `type` the list holds every user badge, then every guild badge. You need `badge:list`.
 
-### Query string parameters
+### Query parameters
 
 | Field | Type | Description |
 | --- | --- | --- |
 | type? | string | `user` or `guild` |
 | query? | string | Only badges whose ID is this value, or whose name holds it, ignoring case (1-64 characters) |
-| ids? | string | Up to 100 badge IDs separated by commas. Only these badges come back, and `next` is null. Can't be sent with `query` or `after` |
+| ids? | string | Up to 100 badge IDs separated by commas. Only these come back, and `next` is null. Not with `query` or `after` |
 | after? | string | The `next` value of the previous page |
 | limit? | integer | How many badges to return (1-200, default 100) |
 
@@ -190,7 +193,7 @@ Moves one badge within the badges of its type and returns it. Send either `direc
 | Field | Type | Description |
 | --- | --- | --- |
 | badge_id | snowflake | The badge to move |
-| direction? | string | `up` or `down` to swap places with the badge before or after it, `first` or `last` to put it before or after every other badge of its type |
+| direction? | string | `up` or `down` swaps it with the badge before or after it. `first` or `last` puts it before or after every badge of its type |
 | after_id? | ?snowflake | Put the badge right after this badge of the same type, or first when null |
 
 ### Response
@@ -217,11 +220,21 @@ It works on instances with up to 1,000 badges. Larger instances move badges one 
 | --- | --- | --- |
 | badge_ids | array[snowflake] | Every badge ID on the instance in the new order (up to 1000) |
 
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
+| next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
+| version | string | The catalog version |
+| settings | [badge settings](#badge-settings-object) object | The badge limits |
+| built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
+
 ### Response
 
 | Status | Body | Condition |
 | --- | --- | --- |
-| 200 | [List badges](#list-badges) response body | The order was saved |
+| 200 | response body | The order was saved |
 | 400 | [error response](/admin-api/#error-response) | `INVALID_FORM_BODY` when `badge_ids` leaves out a badge or lists one twice, or the instance has more than 1,000 badges |
 | 404 | [error response](/admin-api/#error-response) | `UNKNOWN_BADGE` when an ID isn't a badge on the instance |
 
@@ -267,11 +280,21 @@ Uploads an image and shows it everywhere the built-in badge appears, then return
 
 <sup>1</sup> The same formats and limits as [Create badge](#create-badge)
 
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
+| next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
+| version | string | The catalog version |
+| settings | [badge settings](#badge-settings-object) object | The badge limits |
+| built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
+
 ### Response
 
 | Status | Body | Condition |
 | --- | --- | --- |
-| 200 | [List badges](#list-badges) response body | The image was replaced |
+| 200 | response body | The image was replaced |
 | 400 | [error response](/admin-api/#error-response) | `INVALID_FORM_BODY` for an unknown `kind` |
 | 400 | [error response](/admin-api/#error-response) | `IMAGE_SIZE_EXCEEDS_LIMIT`, `INVALID_IMAGE_FORMAT` or `FAILED_TO_UPLOAD_IMAGE` for a bad image |
 
@@ -283,11 +306,71 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 Goes back to the built-in image for a badge, deletes the uploaded one and returns the first page of [List badges](#list-badges) with up to 200 badges. You need `badge:update`.
 
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
+| next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
+| version | string | The catalog version |
+| settings | [badge settings](#badge-settings-object) object | The badge limits |
+| built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
+
 ### Response
 
 | Status | Body | Condition |
 | --- | --- | --- |
-| 200 | [List badges](#list-badges) response body | The built-in image is used again |
+| 200 | response body | The built-in image is used again |
 | 400 | [error response](/admin-api/#error-response) | `INVALID_FORM_BODY` for an unknown `kind` |
+
+The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
+
+## Hide built-in guild badge
+
+<RouteHeader method="PUT" path="/v1/admin/badges/built-in/{kind}/hidden" auditReason />
+
+Stops clients on this instance from showing a built-in guild badge, then returns the first page of [List badges](#list-badges) with up to 200 badges. `kind` is `guild_verified`, `guild_partnered` or `guild_discoverable`. Guilds keep the feature behind the badge, so a discoverable guild stays listed in discovery. When a guild has more than one of these badges, clients show the next one that isn't hidden. You need `badge:update`.
+
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
+| next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
+| version | string | The catalog version |
+| settings | [badge settings](#badge-settings-object) object | The badge limits |
+| built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | response body | The badge is hidden |
+| 400 | [error response](/admin-api/#error-response) | `INVALID_FORM_BODY` for a `kind` that isn't a guild badge |
+
+The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
+
+## Show built-in guild badge
+
+<RouteHeader method="DELETE" path="/v1/admin/badges/built-in/{kind}/hidden" auditReason />
+
+Shows a hidden built-in guild badge again and returns the first page of [List badges](#list-badges) with up to 200 badges. You need `badge:update`.
+
+### Response body
+
+| Field | Type | Description |
+| --- | --- | --- |
+| badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
+| next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
+| version | string | The catalog version |
+| settings | [badge settings](#badge-settings-object) object | The badge limits |
+| built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
+
+### Response
+
+| Status | Body | Condition |
+| --- | --- | --- |
+| 200 | response body | The badge is shown again |
+| 400 | [error response](/admin-api/#error-response) | `INVALID_FORM_BODY` for a `kind` that isn't a guild badge |
 
 The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.

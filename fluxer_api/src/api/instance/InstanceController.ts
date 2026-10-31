@@ -38,6 +38,7 @@ import {
 } from '@fluxer/constants/src/AccountIdentityConstants';
 import {resolveEffectiveVerificationBasis, resolveIdentifierFirst} from '@fluxer/constants/src/AccountTierRules';
 import {API_CODE_VERSION} from '@fluxer/constants/src/AppConstants';
+import {BUILT_IN_GUILD_BADGE_KINDS, type HideableBuiltInBadgeKind} from '@fluxer/constants/src/BadgeConstants';
 import {CaptchaProviders} from '@fluxer/constants/src/CaptchaConstants';
 import {ValidationErrorCodes} from '@fluxer/constants/src/ValidationErrorCodes';
 import {AccountIdentityLockedError} from '@fluxer/errors/src/domains/auth/AccountIdentityLockedError';
@@ -54,6 +55,7 @@ import {
 	InstanceBadgesQuery,
 	InstanceBadgesResponse,
 	type InstanceBuiltInGuildBadgeImages,
+	type InstanceHiddenBuiltInGuildBadges,
 	InstanceSetupTokenCheckRequest,
 	WellKnownFluxerResponse,
 } from '@fluxer/schema/src/domains/instance/InstanceSchemas';
@@ -178,6 +180,12 @@ function mapBuiltInGuildBadgeImagesForDiscovery(images: BuiltInBadgeImages): Ins
 	};
 }
 
+function mapHiddenBuiltInGuildBadgesForDiscovery(
+	hidden: ReadonlySet<HideableBuiltInBadgeKind>,
+): InstanceHiddenBuiltInGuildBadges {
+	return BUILT_IN_GUILD_BADGE_KINDS.filter((kind) => hidden.has(`guild_${kind}`));
+}
+
 const INT64_MAX = (1n << 63n) - 1n;
 const BADGE_CACHE_CURRENT = 'public, max-age=86400, immutable';
 const BADGE_CACHE_REVALIDATE = 'public, max-age=60, must-revalidate';
@@ -236,6 +244,7 @@ export function InstanceController(app: Hono<HonoEnv>) {
 				notice,
 				badgeHead,
 				builtInBadgeImages,
+				hiddenBuiltInBadges,
 			] = await Promise.all([
 				instanceConfigRepository.getRegistrationPublicConfig(),
 				instanceConfigRepository.getInstanceCommunityPublicConfig(),
@@ -251,6 +260,7 @@ export function InstanceController(app: Hono<HonoEnv>) {
 				instanceConfigRepository.getActiveInstanceNotice(),
 				getCustomBadgeCatalog().readDiscoveryHead(),
 				instanceConfigRepository.getBuiltInBadgeImages(),
+				instanceConfigRepository.getHiddenBuiltInBadges(),
 			]);
 			const statusPageInstatus = await getStatusPageDetector().isInstatus(appPublicConfig.branding.status_page_url);
 			const lockReason =
@@ -302,6 +312,7 @@ export function InstanceController(app: Hono<HonoEnv>) {
 				guild_badges_partial: badgeHead.value.partial,
 				custom_badges_version: getCustomBadgeCatalog().clientVersion(badgeHead.version),
 				built_in_guild_badge_images: mapBuiltInGuildBadgeImagesForDiscovery(builtInBadgeImages),
+				hidden_built_in_guild_badges: mapHiddenBuiltInGuildBadgesForDiscovery(hiddenBuiltInBadges),
 				voice_origins: listVoiceOrigins(),
 			};
 			discoveryValidators = nextDiscoveryValidators(response, discoveryValidators);

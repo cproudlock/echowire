@@ -155,6 +155,7 @@ export interface APIConfig {
 	};
 	endpoints: {
 		apiPublic: string;
+		apiPublicDiscovery: string;
 		apiClient: string;
 		webApp: string;
 		webAppOrigins: Array<string>;

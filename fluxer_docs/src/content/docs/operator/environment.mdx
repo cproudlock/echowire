@@ -148,6 +148,10 @@ The public base URL of the API. When it's empty, Fluxer uses the public origin f
 
 The API base URL Fluxer hands to clients. When it's empty, Fluxer uses the public origin followed by `/api`. With rexctl, use `rexctl config set FLUXER_API_CLIENT_ENDPOINT`.
 
+### `FLUXER_API_DISCOVERY_PUBLIC_ENDPOINT`
+
+The public API base URL Fluxer lists in instance discovery as `api_public`. When it's empty, Fluxer uses `FLUXER_API_ENDPOINT`. Webhooks, signed links and federation always use `FLUXER_API_ENDPOINT`. With rexctl, use `rexctl config set FLUXER_API_DISCOVERY_PUBLIC_ENDPOINT`.
+
 ### `FLUXER_APP_ENDPOINT`
 
 The address of the web app, which Fluxer allows through CORS and uses in links. When it's empty, Fluxer uses the public origin. With rexctl, use `rexctl config set FLUXER_APP_ENDPOINT`.

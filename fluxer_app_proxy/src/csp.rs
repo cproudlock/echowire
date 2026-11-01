@@ -102,7 +102,9 @@ const FRAME_SOURCES: &[&str] = &[
 
 const IMAGE_SOURCES: &[&str] = &[
     "https://*.fluxer.app",
+    "https://*.fluxer.com",
     "https://fluxer.app",
+    "https://fluxer.com",
     "https://i.ytimg.com",
     "https://*.youtube.com",
     "https://*.fluxer.media",
@@ -111,7 +113,9 @@ const IMAGE_SOURCES: &[&str] = &[
 
 const MEDIA_SOURCES: &[&str] = &[
     "https://*.fluxer.app",
+    "https://*.fluxer.com",
     "https://fluxer.app",
+    "https://fluxer.com",
     "https://*.youtube.com",
     "https://*.fluxer.media",
     "https://fluxer.media",
@@ -133,11 +137,13 @@ const FONT_SOURCES: &[&str] = &[
 
 const CONNECT_SOURCES: &[&str] = &[
     "https://*.fluxer.app",
+    "https://*.fluxer.com",
     "wss://*.fluxer.app",
     // Echowire origins: voice-region latency pings (https GET /ping) and LiveKit voice
     // connect to voice-*.echowire.org (separate hosts). CSP only allows full-subdomain wildcards.
     "https://*.echowire.org",
     "wss://*.echowire.org",
+    "wss://*.fluxer.com",
     "https://*.fluxer.media",
     "wss://*.fluxer.media",
     "https://fluxer-uploads.ewr1.vultrobjects.com",

@@ -37,6 +37,7 @@ const DEFAULT_PASSKEY_ORIGINS = [
 	CANARY_APP_ORIGIN,
 	'https://web.canary.echowire.org',
 	'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
+	'android:apk-key-hash:Ld4qnT0TfBeHMT3Yu2H0WTwqlxgFs-32uDmwqtLndsk',
 ];
 
 const DEFAULT_ADDITIONAL_CORS_ORIGINS = [CANARY_APP_ORIGIN];

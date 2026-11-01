@@ -1,0 +1,2 @@
+2026-11-01T10:00:00Z INFO all good
+2026-11-01T10:00:01Z ERROR the database fell over

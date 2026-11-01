@@ -4,6 +4,7 @@
 	"ignoreExportsUsedInFile": true,
 	"ignoreDependencies": ["@bufbuild/protoc-gen-es", "@tailwindcss/cli", "@types/events", "events", "tailwindcss"],
 	"ignoreFiles": [
+		"tools/staging-gate/**",
 		"fluxer_admin/src/styles/app.css",
 		"fluxer_admin/static/htmx.min.js",
 		"fluxer_api/scripts/MigrateScyllaToPostgres.ts",

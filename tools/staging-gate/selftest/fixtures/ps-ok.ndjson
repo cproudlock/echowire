@@ -1,0 +1,4 @@
+{"Service":"db","State":"running","Health":"healthy"}
+{"Service":"api","State":"running","Health":"healthy"}
+{"Service":"proxy","State":"running","Health":""}
+{"Service":"init","State":"exited","ExitCode":0,"Health":""}

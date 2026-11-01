@@ -1,0 +1,8 @@
+{
+	"services": {
+		"db": {"healthcheck": {"test": ["CMD", "true"]}},
+		"api": {"healthcheck": {"test": ["CMD", "true"]}},
+		"proxy": {},
+		"init": {"restart": "no"}
+	}
+}

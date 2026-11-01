@@ -1,0 +1,4 @@
+# One regular expression per line: log lines that match are ignored by scenario 99-log-scan.
+# Keep this list short and say why each entry is harmless.
+# Scenario 08 recreates the api container while the gateway is up; the gateway logs a session RPC with no responder.
+no_responders

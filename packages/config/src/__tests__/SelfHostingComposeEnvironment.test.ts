@@ -31,6 +31,8 @@ const API_SETTINGS_NOT_FORWARDED: Record<string, string> = {
 	FLUXER_S3_DOWNLOADS_SECRET_ACCESS_KEY: 'downloads fall back to the main bucket unless overridden',
 	FLUXER_API_PRESIGNED_DOWNLOADS_ENABLED: 'set on this instance, not through the shipped stack',
 	FLUXER_API_ADDITIONAL_CORS_ORIGINS: 'set on this instance, not through the shipped stack',
+	FLUXER_API_DISCOVERY_PUBLIC_ENDPOINT:
+		'discovery lists FLUXER_API_ENDPOINT as api_public unless a separate address is set; the shipped stack offers none',
 	FLUXER_API_DESKTOP_GITHUB_REDIRECT_COUNTRIES: 'set on this instance, not through the shipped stack',
 	FLUXER_API_AUTOMATED_MESSAGE_DELETION_DELAY_DAYS: 'automated account actions run only on the hosted service',
 	// Echowire: Operator Pass, the labs guild and payment dispute closure belong to the hosted service.

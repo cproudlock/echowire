@@ -28,6 +28,7 @@ import {showMyselfTypingHelper} from '@app/features/devtools/utils/ShowMyselfTyp
 import GatewaySessions from '@app/features/gateway/transport/GatewaySessionPool';
 import {AppI18nProvider} from '@app/features/i18n/components/AppI18nProvider';
 import MemberSidebar from '@app/features/member/state/MemberSidebar';
+import {parseEndpoint} from '@app/features/messaging/utils/AttachmentCdnUrl';
 import {attachExternalLinkInterceptor} from '@app/features/messaging/utils/ExternalLinkUtils';
 import {startDeepLinkHandling} from '@app/features/navigation/utils/DeepLinkUtils';
 import {Outlet, RouterProvider} from '@app/features/platform/components/router/RouterReact';
@@ -41,6 +42,7 @@ import {QUICK_SWITCHER_PORTAL_ID} from '@app/features/search/components/quick_sw
 import {useCustomThemeStyle, useInstanceCustomCss} from '@app/features/theme/hooks/useCustomThemeStyle';
 import {useRemScaleTracking} from '@app/features/theme/hooks/useRemScaleTracking';
 import {useThemeCssVariables} from '@app/features/theme/hooks/useThemeCssVariables';
+import CustomCssSuspension from '@app/features/theme/state/CustomCssSuspension';
 import Theme from '@app/features/theme/state/Theme';
 import ThemeLibrary from '@app/features/theme/state/ThemeLibrary';
 import ThemeProfile from '@app/features/theme/state/ThemeProfile';
@@ -48,6 +50,7 @@ import WindowsFont from '@app/features/theme/state/WindowsFont';
 import * as ThemeSettingsCommands from '@app/features/theme_settings/commands/ThemeSettingsCommands';
 import {QuickCssEditorHost} from '@app/features/theme_settings/components/QuickCssEditorHost';
 import ThemeSettingsState from '@app/features/theme_settings/state/ThemeSettingsState';
+import {canTrustSites} from '@app/features/theme_settings/state/TrustedSites';
 import {SVGMasks} from '@app/features/ui/components/SVGMasks';
 import FocusRingScope from '@app/features/ui/focus_ring/FocusRingScope';
 import {useTextInputContextMenu} from '@app/features/ui/hooks/useTextInputContextMenu';
@@ -79,6 +82,7 @@ import {reaction} from 'mobx';
 import {observer} from 'mobx-react-lite';
 import React, {type ReactNode, useEffect, useMemo, useRef, useState} from 'react';
 
+const NO_TRUSTED_SITES: ReadonlyArray<string> = [];
 const SKIP_TO_CONTENT_DESCRIPTOR = msg({
 	message: 'Skip to content',
 	comment: 'Accessible skip-link label for keyboard users.',
@@ -110,6 +114,19 @@ function getInstanceBrandStyle(): InstanceBrandStyle {
 		return NO_INSTANCE_BRAND_STYLE;
 	}
 	return {themeColor: snapshot.appPublic.branding.theme_color, customCss: snapshot.appPublic.branding.custom_css};
+}
+
+function getInstanceCssOrigins(): ReadonlyArray<string> | null {
+	if (!isDesktop()) return null;
+	const snapshot = RuntimeConfig.getSnapshotOrNull();
+	if (snapshot === null) return [];
+	const endpoints = [
+		snapshot.mediaEndpoint,
+		snapshot.staticCdnEndpoint,
+		snapshot.apiPublicEndpoint,
+		snapshot.webAppEndpoint,
+	];
+	return endpoints.flatMap((endpoint) => parseEndpoint(endpoint)?.origin ?? []);
 }
 
 export const AppWrapper = observer(({children}: AppWrapperProps) => {
@@ -211,16 +228,20 @@ export const AppWrapper = observer(({children}: AppWrapperProps) => {
 		hdrDisplayMode: Accessibility.hdrDisplayMode,
 		instanceThemeColor: instanceBrandStyle.themeColor,
 	});
-	useInstanceCustomCss(instanceBrandStyle.customCss);
-	const userCssApplied = !isAuthLayout && !ThemeSettingsState.customCssOff;
+	const customCssSuspended = isAuthLayout || CustomCssSuspension.active;
+	useInstanceCustomCss(customCssSuspended ? null : instanceBrandStyle.customCss, getInstanceCssOrigins());
+	const userCssApplied = !customCssSuspended && !ThemeSettingsState.customCssOff;
 	useCustomThemeStyle({
 		enabledThemeCss: userCssApplied ? ThemeProfile.activeThemeCss : null,
 		customThemeCss: userCssApplied ? ThemeProfile.customThemeCss : null,
 		themeLibraryAssets: ThemeLibrary.assets,
 		themeLibraryLocalFiles: ThemeLibrary.localFiles,
 		themeLibraryRevision: ThemeLibrary.revision,
+		mediaEndpoint: RuntimeConfig.getSnapshotOrNull()?.mediaEndpoint ?? '',
+		trustedSites: canTrustSites() ? ThemeSettingsState.trustedSites : NO_TRUSTED_SITES,
 		onMissingReferences: ThemeSettingsState.setMissingReferences,
 		onBlockedUrl: ThemeSettingsState.recordBlockedUrl,
+		onCssRejected: ThemeSettingsState.setCssRejected,
 	});
 	return (
 		<LayoutVariantProvider value={layoutVariantContextValue} data-flx="app.app.app-wrapper.layout-variant-provider">

@@ -91,13 +91,25 @@ function parsedDocument(host: string): InstanceDiscoveryDocument {
 	return parseInstanceDiscoveryDocument(discoveryDocument(host));
 }
 
-function jsonResponse(body: unknown): Response {
-	return new Response(JSON.stringify(body), {status: 200, headers: {'content-type': 'application/json'}});
+function jsonResponse(body: unknown, headers: Record<string, string> = {}): Response {
+	return new Response(JSON.stringify(body), {
+		status: 200,
+		headers: {'content-type': 'application/json', ...headers},
+	});
 }
 
 afterEach(() => {
 	vi.unstubAllGlobals();
 });
+
+function selfServedDocument(host: string): InstanceDiscoveryResponse {
+	const document = discoveryDocument(host);
+	const origin = `https://${host}`;
+	document.endpoints.api = origin;
+	document.endpoints.api_client = origin;
+	document.endpoints.api_public = origin;
+	return document;
+}
 
 function runningChannel(): OfficialReleaseChannel {
 	return Config.RELEASE_CHANNEL === 'stable' ? 'stable' : 'canary';
@@ -597,19 +609,36 @@ describe('InstanceSnapshotStore.resolve', () => {
 		expect(init?.referrerPolicy).toBe('no-referrer');
 	});
 
-	test('treats 304 as a not-modified success when the document is cached', async () => {
+	test('treats 304 as a not-modified success when the document is cached with a validator', async () => {
+		stubBrowserDocument('https://four.test');
 		vi.stubGlobal(
 			'fetch',
-			vi.fn(async () => jsonResponse(discoveryDocument('four.test'))),
+			vi.fn(async () => jsonResponse(selfServedDocument('four.test'), {etag: '"v1"'})),
 		);
 		const first = await InstanceSnapshotStore.resolve({input: 'four.test', signal: null});
+		const revalidate = vi.fn(async () => new Response(null, {status: 304}));
+		vi.stubGlobal('fetch', revalidate);
+		const second = await InstanceSnapshotStore.refresh({input: 'four.test', signal: null});
+		expect(second.snapshot).toBe(first.snapshot);
+		expect(second.instanceKey).toBe(first.instanceKey);
+		const sent = new Headers((revalidate.mock.calls[0] as unknown as [string, RequestInit])[1]?.headers);
+		expect(sent.get('if-none-match')).toBe('"v1"');
+	});
+
+	test('sends no conditional headers for a document cached without an ETag or Last-Modified', async () => {
+		stubBrowserDocument('https://novalidator.test');
 		vi.stubGlobal(
 			'fetch',
-			vi.fn(async () => new Response(null, {status: 304})),
+			vi.fn(async () => jsonResponse(selfServedDocument('novalidator.test'))),
 		);
-		const second = await InstanceSnapshotStore.resolve({input: 'four.test', signal: null});
-		expect(second.snapshot).toBe(first.snapshot);
-		expect(second.instanceKey).toBe('https://four.test/api');
+		await InstanceSnapshotStore.resolve({input: 'novalidator.test', signal: null});
+		const revalidate = vi.fn(async () => new Response(null, {status: 304}));
+		vi.stubGlobal('fetch', revalidate);
+		await InstanceSnapshotStore.refresh({input: 'novalidator.test', signal: null}).catch(() => null);
+		expect(revalidate).toHaveBeenCalled();
+		const sent = new Headers((revalidate.mock.calls[0] as unknown as [string, RequestInit])[1]?.headers);
+		expect(sent.get('if-none-match')).toBeNull();
+		expect(sent.get('if-modified-since')).toBeNull();
 	});
 
 	test('reports every candidate when nothing answers', async () => {

@@ -359,9 +359,9 @@ describe('resolveAndPrepareSnapshot', () => {
 
 describe('describeAPIEndpoint', () => {
 	test.each([
-		['https://api.fluxer.app', 'fluxer.app'],
-		['https://web.fluxer.app', 'fluxer.app'],
-		['https://api.canary.fluxer.app', 'fluxer.app'],
+		['https://api.fluxer.app', 'fluxer.com'],
+		['https://web.fluxer.app', 'fluxer.com'],
+		['https://api.canary.fluxer.app', 'fluxer.com'],
 		['https://self.example/api', 'self.example/api'],
 		['https://self.example/api/', 'self.example/api'],
 		['self.example', 'self.example'],

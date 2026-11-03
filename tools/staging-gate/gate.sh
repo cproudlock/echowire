@@ -17,6 +17,7 @@ STAGE_DIR="${STAGE_DIR:-/root/stage-19t}"
 RESULTS_ROOT="${GATE_RESULTS_DIR:-/root/gate-results}"
 BASE_URL="${GATE_BASE_URL:-http://localhost:8080}"
 WAIT_SECONDS="${GATE_WAIT_SECONDS:-420}"
+UP_SECONDS="${GATE_UP_SECONDS:-240}"
 TAG=""
 WORKTREE=""
 CHANGED_FROM=""
@@ -72,10 +73,10 @@ trap teardown EXIT
 
 log "clean slate: docker compose down -v"
 stage_compose down -v --remove-orphans >"$OUT/down-start.log" 2>&1
-log "docker compose up -d"
-stage_compose up -d >"$OUT/up.log" 2>&1 || {
+log "docker compose up -d (bounded to ${UP_SECONDS}s, GATE_UP_SECONDS)"
+bounded_compose_up "$OUT" "$UP_SECONDS" || {
 	tail -n 15 "$OUT/up.log"
-	log "compose up failed"
+	log "compose up failed or did not finish in ${UP_SECONDS}s"
 	CONTAINERS_RC=1
 }
 
@@ -91,7 +92,7 @@ if [ "$CONTAINERS_RC" = 0 ]; then
 	extra_args=()
 	[ -n "$CHANGED_FROM" ] && extra_args+=(--changed-from "$CHANGED_FROM")
 	"$NODE" "$GATE_HERE/run-scenarios.mjs" --base "$BASE_URL" --stage-dir "$STAGE_DIR" --worktree "$WORKTREE" \
-		--scenarios "$GATE_HERE/scenarios" --extra-dir "$GATE_HERE/extra" --min-scenarios 12 \
+		--scenarios "$GATE_HERE/scenarios" --extra-dir "$GATE_HERE/extra" --min-scenarios 15 \
 		--results "$OUT/scenarios.json" "${extra_args[@]}"
 	SCENARIOS_RC=$?
 else

@@ -26201,10 +26201,10 @@ msgstr "Відкрити гілку"
 msgid "Open thread again"
 msgstr "Знову відкрити обговорення"
 
-#. Line in the dialog that withdraws from a paid Operator Pass purchase that was not delivered yet. It is the last day the withdrawal can be sent. {date} is a date without a time, such as Dec 4, 2026.
+#. Line in the dialog that withdraws from a paid Operator Pass purchase or pass. It is the last day the withdrawal can be sent. {date} is a date without a time, such as Dec 4, 2026.
 #: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
 msgid "Open until {date}."
-msgstr "Можна надіслати до {date}."
+msgstr "Можна надіслати до {date} включно."
 
 #. Short label in the app layout user area. Preserve {displayName}; it is inserted by code.
 #: src/features/app/components/layout/UserArea.tsx
@@ -27244,7 +27244,7 @@ msgstr "Вибрати дочірній елемент під час вибор�
 #. Text in the dialog where you pick who gets one of your Operator Passes. Only friends can get a pass. They means the friend you pick. Take it back means canceling your offer. It moves means the pass moves to their account. Never word it as a present.
 #: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
 msgid "Pick a friend to pass it on to. They can accept or decline, and you can take it back until it moves."
-msgstr "Оберіть друга, якому передати його. Він зможе прийняти або відхилити, а ви зможете забрати його назад, доки він не переміститься."
+msgstr "Оберіть друга, якому передати пропуск. Він зможе прийняти або відхилити пропозицію, а ви зможете відкликати її, доки пропуск не перейшов."
 
 #. Body of the closing call to action on the Plutonium page for people without the paid tier.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -42936,7 +42936,7 @@ msgstr "Ви можете використовувати лише одне вл�
 #. Shown in the Pass it on dialog when you have no friends yet. Operator Passes can only go to friends so they cannot be sent to strangers.
 #: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
 msgid "You can only pass a pass on to a friend. Add the person as a friend first, then come back here."
-msgstr "Ви можете передати перепустку лише другові. Спочатку додайте людину до друзів, а потім поверніться сюди."
+msgstr "Ви можете передати пропуск лише другові. Спочатку додайте людину до друзів, а потім поверніться сюди."
 
 #. Error when you try to pass an Operator Pass on to someone you are not friends with.
 #: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
@@ -44463,3 +44463,1753 @@ msgstr "Збільшити масштаб"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
 msgid "Zoom out"
 msgstr "Зменшити масштаб"
+
+#. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "--{name} isn't a Fluxer variable and isn't set anywhere in your CSS."
+msgstr "--{name} не є змінною Fluxer і не використовується у вашому CSS."
+
+#: src/features/expressions/components/modals/sticker_form/StickerPreview.tsx
+msgid "{altText} (dark theme preview)"
+msgstr "{altText} — попередній перегляд у темній темі"
+
+#: src/features/expressions/components/modals/sticker_form/StickerPreview.tsx
+msgid "{altText} (light theme preview)"
+msgstr "{altText} — попередній перегляд у світлій темі"
+
+#. Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.
+#: src/features/platform/utils/DesktopLocaleBridge.ts
+msgid "{appName} can't connect to its servers. It will keep trying in the background."
+msgstr "{appName} не може підключитися до своїх серверів. Програма продовжуватиме спроби у фоновому режимі."
+
+#: src/features/guild/components/alerts/MaxGuildsModal.tsx
+msgid "{count, plural, one {You're in # community, the most you can join. Leave a community before joining another one.} other {You're in # communities, the most you can join. Leave a community before joining another one.}}"
+msgstr "{count, plural, one {Ви досягли максимальної кількості спільнот, до яких можете приєднатися (# спільнота). Залиште спільноту, перш ніж приєднатися до іншої.} few {Ви досягли максимальної кількості спільнот, до яких можете приєднатися (# спільноти). Залиште спільноту, перш ніж приєднатися до іншої.} many {Ви досягли максимальної кількості спільнот, до яких можете приєднатися (# спільнот). Залиште спільноту, перш ніж приєднатися до іншої.} other {Ви досягли максимальної кількості спільнот, до яких можете приєднатися (# спільнот). Залиште спільноту, перш ніж приєднатися до іншої.}}"
+
+#. Instance selector error shown when the instance speaks a protocol generation this client does not know. Domain is interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "{domain} runs a newer version of Fluxer than this app. Update Fluxer, then try again."
+msgstr "{domain} працює на новішій версії Fluxer, ніж ця програма. Оновіть Fluxer, а потім спробуйте ще раз."
+
+#. Line naming a Plutonium gift purchase the buyer can withdraw from, shown in settings and in the withdrawal dialog. This is the statutory line naming the contract, required for the withdrawal function by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. {premiumProductName} is the plan name, such as Plutonium, keep it as is. {date} is the purchase date, such as Dec 4, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "{premiumProductName} gift, bought on {date}."
+msgstr "Подарунок {premiumProductName}, придбаний {date}."
+
+#. Line naming a Plutonium subscription the buyer can withdraw from, shown in settings and in the withdrawal dialog. This is the statutory line naming the contract, required for the withdrawal function by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. {premiumProductName} is the plan name, such as Plutonium, keep it as is. {date} is the date of the payment that started the withdrawal period, the first payment or a renewal, such as Dec 4, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "{premiumProductName} subscription, paid on {date}."
+msgstr "Підписка {premiumProductName}, оплачена {date}."
+
+#: src/features/auth/state/NewDeviceMonitoring.tsx
+msgid "{PRODUCT_NAME} has found a new audio device called <0>{deviceName}</0>. Do you want to switch to it?"
+msgstr "{PRODUCT_NAME} виявив новий аудіопристрій під назвою <0>{deviceName}</0>. Хочете перемкнутися на нього?"
+
+#: src/features/auth/state/NewDeviceMonitoring.tsx
+msgid "{PRODUCT_NAME} has found a new audio input device called <0>{deviceName}</0>. Do you want to switch to it?"
+msgstr "{PRODUCT_NAME} виявив новий пристрій введення звуку під назвою <0>{deviceName}</0>. Хочете перемкнутися на нього?"
+
+#: src/features/auth/state/NewDeviceMonitoring.tsx
+msgid "{PRODUCT_NAME} has found a new audio output device called <0>{deviceName}</0>. Do you want to switch to it?"
+msgstr "{PRODUCT_NAME} виявив новий пристрій виведення звуку під назвою <0>{deviceName}</0>. Хочете перемкнутися на нього?"
+
+#. Linux settings text before system-wide shortcuts are set up. The desktop environment owns the keys. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "{productName} can ask your desktop to run its keybinds while {productName} is not focused. Your desktop asks you to confirm and lets you pick the keys."
+msgstr "{productName} може попросити ваше робоче середовище виконувати його комбінації клавіш, коли {productName} не у фокусі. Робоче середовище попросить підтвердження і дозволить вибрати клавіші."
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, on an X11 session. The app now listens for shortcuts through the X11 display server itself. Keep "X11" as written. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "{productName} can no longer read your keyboard, so it listens for keybinds through X11 instead."
+msgstr "{productName} більше не може зчитувати вашу клавіатуру, тому відстежує комбінації клавіш через X11."
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read, for example after a restart removed the access. The app already falls back to the shortcuts the desktop runs. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "{productName} can no longer read your keyboard, so your desktop's keybinds are used instead."
+msgstr "{productName} більше не може зчитувати вашу клавіатуру, тому натомість використовуються комбінації клавіш вашого робочого середовища."
+
+#. Description for the Linux direct input device access switch when it is on but the keyboard can no longer be read and nothing else runs system-wide shortcuts. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "{productName} can no longer read your keyboard. Keybinds only work while {productName} is focused."
+msgstr "{productName} більше не може зчитувати вашу клавіатуру. Комбінації клавіш працюють лише тоді, коли {productName} у фокусі."
+
+#. Linux settings text before system-wide shortcuts are set up on the Hyprland desktop. Hyprland shows no dialog. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "{productName} can register its keybinds with Hyprland so they run while {productName} is not focused. You then bind the keys in your Hyprland config."
+msgstr "{productName} може зареєструвати свої комбінації клавіш у Hyprland, щоб вони працювали, коли {productName} не у фокусі. Після цього призначте клавіші в конфігурації Hyprland."
+
+#. Modal body shown when a user-initiated update check fails. productName is the app name.
+#: src/features/updater/commands/UpdaterModalCommands.tsx
+msgid "{productName} could not connect to the update service. Check your connection and try again."
+msgstr "{productName} не зміг підключитися до служби оновлень. Перевірте з'єднання та спробуйте ще раз."
+
+#. Subtitle for system-wide shortcuts on the Hyprland desktop after setup. Hyprland shows no list of assigned keys. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "{productName} registered its keybinds with Hyprland. Bind them in your Hyprland config to use them while {productName} is not focused."
+msgstr "{productName} зареєстрував свої комбінації клавіш у Hyprland. Призначте їм клавіші в конфігурації Hyprland, щоб використовувати їх, коли {productName} не у фокусі."
+
+#. Label in the invites disabled modal.
+#: src/features/invite/components/alerts/InvitesDisabledModal.tsx
+msgid "{productName} spotted a possible raid here. Invites are paused. Try again later."
+msgstr "{productName} виявив тут можливий рейд. Запрошення призупинено, спробуйте пізніше."
+
+#. Label in the notifications.
+#: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
+msgid "{productName} uses push notifications when installed as a mobile PWA. Registering lets the gateway send notifications to your device even when the app is in the background."
+msgstr "{productName} використовує push-сповіщення, коли його встановлено як мобільний PWA. Реєстрація гарантує, що шлюз зможе зв'язатися з вашим пристроєм, навіть коли програма працює у фоновому режимі."
+
+#. Summary row value when both a start and end date are set. Both values are localized dates.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/data_request_modal/DataRequestModal.tsx
+msgid "{start} to {end}"
+msgstr "{start} to {end}"
+
+#. Settings search synonym for the Operator Pass settings tab. #operators is a channel name, keep it as is.
+#: src/features/user/components/settings_utils/search_index/OperatorPassIndex.ts
+msgid "#operators"
+msgstr "#operators"
+
+#. Heading of a slide in the Operator Pass checkout dialog about the #operators channel. #operators is the channel's literal name and Fluxer Labs is the name of the official community, keep both unchanged. No trailing punctuation.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "#operators in Fluxer Labs"
+msgstr "#operators у Fluxer Labs"
+
+#. Help text for custom emoji names. Emoji names may use letters, numbers, and underscores only.
+#: src/features/emoji/components/emojis/EmojiListItem.tsx
+msgid "2 to 32 characters, using only letters, numbers, and underscores."
+msgstr "2–32 символи: літери, цифри, підкреслення."
+
+#. Heading of a slide in the Operator Pass checkout dialog about the Operators' wall. The Operators' wall is a section on the website's homepage that shows Operators, the people who have an Operator Pass, with their avatars and names. Keep the word Operators in English. Never suggest the spot belongs to the buyer or is what the price pays for.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "A spot on the Operators' wall"
+msgstr "Місце на стіні Operators"
+
+#. Toast after accepting an Operator Pass offer while the waiting period after payment runs. It is the pass. {date} is a date such as Nov 23, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassOfferModal.tsx
+msgid "Accepted. It arrives on {date}, unless the sender takes the offer back first."
+msgstr "Прийнято. Пропуск надійде {date}, хіба що відправник раніше відкличе пропозицію."
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Add a keybind"
+msgstr "Додати комбінацію клавіш"
+
+#. Button or menu action label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
+msgid "Add another custom keybind"
+msgstr "Додати ще одну власну комбінацію клавіш"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Add custom keybinds, disable built-in keybinds, and sync keybind preferences"
+msgstr "Додавайте власні комбінації клавіш, вимикайте вбудовані та синхронізуйте налаштування комбінацій"
+
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx
+msgid "Add keybind"
+msgstr "Додати комбінацію клавіш"
+
+#. Description for the custom profile option in the voice tab.
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx
+msgid "Adjust noise suppression, echo cancellation, and gain yourself."
+msgstr "Налаштуйте кожну опцію самостійно: приглушення шуму, ехокомпенсація та підсилення."
+
+#. Error message in the invites disabled modal.
+#: src/features/invite/components/alerts/InvitesDisabledModal.tsx
+msgid "Admins paused invites. You can't join right now."
+msgstr "Адміністратори призупинили запрошення, тому зараз приєднатися не можна."
+
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx
+msgid "Automatically check images and videos for explicit content in channels not marked for mature content."
+msgstr "Автоматично перевіряти зображення та відео на наявність відвертого вмісту в каналах, не позначених як вміст для дорослих."
+
+#. Webhook avatar upload error. IMAGE_MAX_SIZE_LABEL is a formatted file-size limit.
+#: src/features/webhook/components/WebhookListItem.tsx
+msgid "Avatar is too large. Pick one under {imageMaxSizeLabel}."
+msgstr "Аватар завеликий — виберіть менший за {imageMaxSizeLabel}."
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Built-in keybinds"
+msgstr "Вбудовані швидкі клавіші"
+
+#. Help text under the theme color picker in the setup wizard branding step.
+#: src/features/app/components/setup/SetupBrandingFields.tsx
+msgid "Buttons, links and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to keep Fluxer's indigo."
+msgstr "Цей колір використовують кнопки, посилання та виділення в усьому застосунку, а мобільні браузери фарбують ним свою панель інструментів. Скиньте його, щоб залишити індиго Fluxer."
+
+#. Row in the list of Operator Passes for the pass that comes with Visionary. {date} is the date the account got Visionary, without a time. Visionary is a product name, keep it as is.
+#: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
+msgid "Came with Visionary, {date}"
+msgstr "Додається до Visionary, {date}"
+
+#. Completion in the quick CSS editor that inserts a :root rule, where theme variables are set.
+#: src/features/theme_settings/editor/CssCompletions.ts
+msgid "Change Fluxer variables"
+msgstr "Змінити змінні Fluxer"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Chat keybinds"
+msgstr "Комбінації клавіш у чаті"
+
+#. Title of the third step of the Operator Pass checkout dialog, with the total price and the required checkboxes before the payment page opens.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Check and pay"
+msgstr "Перевірка й оплата"
+
+#. Label of a text field in the checkout dialogs, shown only to buyers in Brazil after they tick "I'm buying for a business". CNPJ is the Brazilian company registration number, keep the abbreviation CNPJ as is in every language.
+#: src/features/premium/components/BusinessPurchaseField.tsx
+msgid "CNPJ (optional)"
+msgstr "CNPJ (необов'язково)"
+
+#: src/features/guild/components/modals/guild_tabs/GuildModerationTab.tsx
+msgid "Communities listed in Explore must check images and videos from all members. You can't change this setting while your community is listed in Explore."
+msgstr "Спільноти в розділі «Огляд» мають перевіряти зображення та відео від усіх учасників. Поки ваша спільнота є в розділі «Огляд», цей параметр не можна змінити."
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Configure keybinds"
+msgstr "Налаштувати комбінації клавіш"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Context menu keybinds"
+msgstr "Швидкі дії в контекстному меню"
+
+#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online."
+msgstr "Не вдалося підключитися до екземпляра Fluxer за адресою {domain}. Перевірте адресу та переконайтеся, що екземпляр онлайн."
+
+#. Muted line in settings when the list of paid Operator Pass purchases could not be loaded. A Try again button follows. Operator Pass is a product name.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Couldn't load your Operator Pass purchases."
+msgstr "Не вдалося завантажити ваші придбання Operator Pass."
+
+#. Error toast when replacing the private link to an Operator certificate page failed.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Couldn't reset the link. Try again."
+msgstr "Не вдалося скинути посилання. Спробуйте ще раз."
+
+#. Toast when turning on the Operator Pass that comes with Visionary failed.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "Couldn't turn on the pass. Try again."
+msgstr "Не вдалося ввімкнути пропуск. Спробуйте ще раз."
+
+#. Short label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx
+msgid "Custom keybind action"
+msgstr "Дія для власної комбінації клавіш"
+
+#. Short label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx
+msgid "Custom keybind options"
+msgstr "Параметри власної комбінації клавіш"
+
+#. Settings search entry label. Also used as a search synonym in the settings search bar.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Custom keybinds"
+msgstr "Власні комбінації клавіш"
+
+#. Settings label for the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
+#: src/features/voice/utils/VoiceMessageDescriptors.ts
+msgid "Deafen keybind"
+msgstr "Комбінація клавіш для вимкнення звуку"
+
+#. Settings search entry label. Also used as a search synonym in the settings search bar.
+#. Short heading in the keyboard shortcuts cheatsheet.
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Default keybinds"
+msgstr "Стандартні комбінації клавіш"
+
+#. Button or menu action label in the keybinds tab. Keep it concise. Keep the tone plain and specific.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx
+msgid "Delete keybind"
+msgstr "Видалити комбінацію клавіш"
+
+#. Required checkbox in the Operator Pass checkout dialog when buying one pass. The buyer asks for the certificate PDF to be delivered right after payment, before the statutory withdrawal period ends, and confirms that the right of withdrawal is lost on delivery. Consumer law text, translate faithfully and keep every condition. Withdraw means the consumer right of withdrawal, never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Deliver my certificate now, before the 14-day withdrawal period ends. I understand that I lose my right to withdraw once it's delivered."
+msgstr "Прошу надати мій сертифікат зараз, до завершення 14-денного строку для відмови. Я розумію, що після надання втрачаю право на відмову від договору."
+
+#. Required checkbox in the Operator Pass checkout dialog when buying one pass from Brazil or in Brazilian reais for a company whose CNPJ the buyer entered. The buyer asks for the certificate PDF to be delivered right after payment and confirms that a purchase for a company with a CNPJ has no right of withdrawal under the Brazilian Consumer Defense Code, unless Brazilian law treats the company as a consumer. CNPJ is the Brazilian company registration number, keep it as is. Consumer law text, translate faithfully and keep every condition. Withdrawal means the consumer right of withdrawal (pt-BR: direito de arrependimento), never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Deliver my certificate now. I'm buying for the company with the CNPJ I entered, and I understand that this purchase has no right of withdrawal, unless Brazilian law treats the company as a consumer."
+msgstr "Прошу надати мій сертифікат зараз. Я купую для компанії з указаним мною CNPJ і розумію, що ця покупка не має права на відмову, якщо тільки бразильський закон не вважає компанію споживачем."
+
+#. Required checkbox in the Operator Pass checkout dialog when buying one pass from Brazil or in Brazilian reais. The buyer asks for the certificate PDF to be delivered right after payment. A buyer who has a billing address in Brazil or pays in reais (the Brazilian currency) keeps the right to withdraw for {days} days after delivery. A buyer who enters the CNPJ of a company sees a different text, so this one never needs a business exception. The billing address is not where the buyer happens to be. Nothing in this text takes the right away from anyone, so never add a sentence about losing it. Consumer law text, translate faithfully and keep every condition. Withdraw means the consumer right of withdrawal (pt-BR: desistir), never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Deliver my certificate now. If I have a billing address in Brazil or pay in reais, I can still withdraw within {days, plural, one {# day} other {# days}} of delivery and get a full refund."
+msgstr "Прошу надати мій сертифікат зараз. Якщо моя адреса для виставлення рахунків у Бразилії або я плачу в бразильських реалах, я все ще можу відмовитися протягом {days, plural, one {# дня} few {# днів} many {# днів} other {# днів}} після надання й отримати повне повернення коштів."
+
+#. Required checkbox in the Operator Pass checkout dialog when buying more than one pass. The buyer asks for the certificate PDF pages to be delivered right after payment, before the statutory withdrawal period ends, and confirms that the right of withdrawal is lost on delivery. Consumer law text, translate faithfully and keep every condition. Withdraw means the consumer right of withdrawal, never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Deliver my certificates now, before the 14-day withdrawal period ends. I understand that I lose my right to withdraw once they're delivered."
+msgstr "Прошу надати мої сертифікати зараз, до завершення 14-денного строку для відмови. Я розумію, що після надання втрачаю право на відмову від договору."
+
+#. Required checkbox in the Operator Pass checkout dialog when buying more than one pass from Brazil or in Brazilian reais for a company whose CNPJ the buyer entered. The buyer asks for the certificate PDF pages to be delivered right after payment and confirms that a purchase for a company with a CNPJ has no right of withdrawal under the Brazilian Consumer Defense Code, unless Brazilian law treats the company as a consumer. CNPJ is the Brazilian company registration number, keep it as is. Consumer law text, translate faithfully and keep every condition. Withdrawal means the consumer right of withdrawal (pt-BR: direito de arrependimento), never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Deliver my certificates now. I'm buying for the company with the CNPJ I entered, and I understand that this purchase has no right of withdrawal, unless Brazilian law treats the company as a consumer."
+msgstr "Прошу надати мої сертифікати зараз. Я купую для компанії з указаним мною CNPJ і розумію, що ця покупка не має права на відмову, якщо тільки бразильський закон не вважає компанію споживачем."
+
+#. Required checkbox in the Operator Pass checkout dialog when buying more than one pass from Brazil or in Brazilian reais. The buyer asks for the certificate PDF pages to be delivered right after payment. A buyer who has a billing address in Brazil or pays in reais (the Brazilian currency) keeps the right to withdraw from each pass for {days} days after delivery. A buyer who enters the CNPJ of a company sees a different text, so this one never needs a business exception. The billing address is not where the buyer happens to be. Nothing in this text takes the right away from anyone, so never add a sentence about losing it. Consumer law text, translate faithfully and keep every condition. Withdraw means the consumer right of withdrawal (pt-BR: desistir), never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Deliver my certificates now. If I have a billing address in Brazil or pay in reais, I can still withdraw from each pass within {days, plural, one {# day} other {# days}} of delivery and get a full refund."
+msgstr "Прошу надати мої сертифікати зараз. Якщо моя адреса для виставлення рахунків у Бразилії або я плачу в бразильських реалах, я все ще можу відмовитися від кожного пропуску протягом {days, plural, one {# дня} few {# днів} many {# днів} other {# днів}} після надання й отримати повне повернення коштів."
+
+#. Tooltip on the P2P indicator of a peer-to-peer call. Do not say or suggest that the call is end-to-end encrypted.
+#: src/features/voice/utils/VoiceMessageDescriptors.ts
+msgid "Direct connection. Audio and video go directly between the people in the call, who can see each other's IP address."
+msgstr "Пряме з'єднання. Звук і відео передаються напряму між учасниками дзвінка, і вони бачать IP-адреси одне одного."
+
+#. Button or menu action label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
+msgid "Disable built-in keybind"
+msgstr "Вимкнути вбудовану комбінацію клавіш"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Disable built-in keybinds"
+msgstr "Вимкнути вбудовані комбінації клавіш"
+
+#. Button or menu action label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx
+msgid "Disable keybind"
+msgstr "Вимкнути комбінацію клавіш"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts
+msgid "Display keybind indicators next to context menu items"
+msgstr "Показувати індикатори комбінацій клавіш біля пунктів контекстного меню"
+
+#. Link under the Weblate line in the language settings. It opens a help article on fluxer.com about suggesting a new language and helping translate the app. Keep it a short question.
+#: src/features/user/components/modals/tabs/LanguageTab.tsx
+msgid "Don't see your language?"
+msgstr "Не бачите своєї мови?"
+
+#. Button next to an Operator Pass purchase that opens the Operator certificate, a PDF with a number and the name chosen at checkout, in the browser. Never translate certificate as diploma, card, license or token.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Download certificate"
+msgstr "Завантажити сертифікат"
+
+#. Small text link after an Operator Pass purchase with more than one certificate page. It opens only that certificate page, as its own PDF, in the browser. {number} is the page number in the certificate PDF, starting at 1. {name} is the name chosen at checkout for that page, and several pages can have the same name. Never translate page as website or certificate as diploma, card, license or token.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Download page {number} ({name})"
+msgstr "Завантажити сторінку {number} ({name})"
+
+#. Note under the list of system-wide shortcuts on Linux. The desktop cannot assign one key to two actions.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Each key can run only one system-wide keybind."
+msgstr "Кожна клавіша може запускати лише одну загальносистемну комбінацію клавіш."
+
+#. Error when you try to pass on an Operator Pass that cannot move. Visionary is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "Each pass can be passed on only once, so a pass you received can't be passed on again. The pass in your Visionary can't be passed on either."
+msgstr "Кожен пропуск можна передати лише один раз, тому отриманий пропуск не можна передати знову. Пропуск із вашого Visionary теж не можна передати."
+
+#. Description under the switch that adds the Operators' wall name to the yearly Operators list. A Fluxer release is a published version of the app. Operators are the people who have an Operator Pass, keep the word Operators in English.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
+msgid "Each yearly list of Operators that we publish goes into the notes of a Fluxer release and a file in its source code. Your wall name is only on it if you turn this on. If you ask us to remove it later, we take it out of future lists, the release notes and that file, but earlier versions of the source code and copies others made can't be recalled."
+msgstr "Кожен щорічний список Operators, який ми публікуємо, потрапляє в примітки до випуску Fluxer і у файл у його вихідному коді. Ваше ім'я зі стіни потрапить до нього, лише якщо ви це ввімкнете. Якщо пізніше ви попросите його прибрати, ми приберемо його з майбутніх списків, приміток до випуску і цього файлу, але попередні версії вихідного коду та копії, зроблені іншими, відкликати не можна."
+
+#. Heading of a slide in the Operator Pass checkout dialog about being invited to try new features before they are released. Plain, no hype. No trailing punctuation.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "Early feature testing"
+msgstr "Раннє тестування функцій"
+
+#. Button or menu action label in the keyboard shortcuts keybind recorder. Keep it concise.
+#: src/features/input/components/KeybindRecorder.tsx
+msgid "Edit keybind"
+msgstr "Редагувати комбінацію клавіш"
+
+#. Notice in the Operator Pass checkout dialog when emails to the account address bounced. The purchase confirmation is the email sent before the certificate is delivered. Operator Pass is a product name.
+#: src/features/premium/components/operator_pass/checkout/CheckoutNoticeStage.tsx
+msgid "Emails to your address can't be delivered. Change your email before you buy the {operatorPassName}, because we send your purchase confirmation there."
+msgstr "Листи на вашу адресу не доставляються. Змініть адресу електронної пошти, перш ніж купувати {operatorPassName}, бо саме туди ми надсилаємо підтвердження покупки."
+
+#. Button or menu action label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx
+msgid "Enable keybind"
+msgstr "Увімкнути комбінацію клавіш"
+
+#. Error under the CNPJ field in the checkout dialogs when the number has the wrong format or check digits. CNPJ is the Brazilian company registration number, keep it as is.
+#: src/features/premium/components/BusinessPurchaseField.tsx
+msgid "Enter a valid CNPJ, or leave the field empty."
+msgstr "Введи дійсний CNPJ або залиш поле порожнім."
+
+#. Error under a certificate name field when it is empty.
+#: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
+msgid "Enter the name you want on the certificate."
+msgstr "Введіть ім'я, яке має бути на сертифікаті."
+
+#. Sentence in the dialog that withdraws from a whole paid Operator Pass purchase whose certificate was already delivered, which the law allows in some countries such as Brazil. The certificate pages are the pages for these passes in the Operator certificate PDF. Never translate certificate as diploma, card, license or token.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Every pass from this order that is still on your account ends now, and our records show their certificate pages as canceled."
+msgstr "Кожен пропуск із цього замовлення, який ще є у вашому акаунті, припиняється зараз, а в наших записах їхні сторінки сертифіката позначені як анульовані."
+
+#. Bullet point in the P2P call dialog. Plutonium is the name of the paid subscription and must not be translated. 4K and fps are video terms.
+#: src/features/voice/utils/VoiceMessageDescriptors.ts
+msgid "Everyone in the call gets Plutonium stream quality for free, with up to 4K source resolution and 60 fps."
+msgstr "Усі учасники дзвінка безкоштовно отримують якість потоку Plutonium: до 4K вихідної роздільної здатності та 60 кадрів на секунду."
+
+#. Title of the Operator Pass checkout dialog while the app waits for the payment on the payment page.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Finish paying"
+msgstr "Завершіть оплату"
+
+#. Description of the shared usernames option in the setup wizard. Keep the example alex#4821 as it is.
+#: src/features/app/components/setup/SetupIdentitySteps.tsx
+msgid "Fluxer adds a random number to each username, like alex#4821, so many people can use the same name."
+msgstr "Fluxer додає до кожного імені користувача випадковий номер, наприклад alex#4821, щоб одне ім'я могли використовувати багато людей."
+
+#. Problem shown in the quick CSS editor on a web address that the app is not allowed to load. Assets are files uploaded under "Assets".
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer blocked loading {url}. Upload it as an asset."
+msgstr "Fluxer заблокував завантаження {url}. Завантажте це як ресурс."
+
+#. Problem shown in the quick CSS editor on an image address on a site the person has not trusted. Assets are files uploaded under "Assets". Trusting a site lets quick CSS and themes load images from it.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer blocked loading {url}. Upload the file as an asset, or trust the site it's on."
+msgstr "Fluxer заблокував завантаження {url}. Завантажте файл як ресурс або довіртеся сайту, на якому він розміщений."
+
+#. Problem shown in the quick CSS editor on a reference to an uploaded theme asset that does not exist.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer can't find the asset \"{name}\"."
+msgstr "Fluxer не може знайти ресурс \"{name}\"."
+
+#. Problem shown in the quick CSS editor on a reference to a file on the computer that Fluxer cannot read.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer can't find the file \"{path}\"."
+msgstr "Fluxer не може знайти файл \"{path}\"."
+
+#. Shown for a watched theme folder in Settings > Themes when the folder was moved, deleted or disconnected.
+#: src/features/theme_settings/components/YourThemesSection.tsx
+msgid "Fluxer can't find this folder. It will load the themes again when the folder is back."
+msgstr "Fluxer не знаходить цю папку. Теми знову завантажаться, коли папка повернеться."
+
+#. Shown for a watched theme folder in Settings > Themes when the desktop app no longer has permission to read it.
+#: src/features/theme_settings/components/YourThemesSection.tsx
+msgid "Fluxer can't open this folder. Import it again to keep watching it."
+msgstr "Fluxer не може відкрити цю папку. Імпортуйте її ще раз, щоб продовжити спостереження."
+
+#. Error toast in "Your themes" when the chosen theme folder cannot be opened.
+#: src/features/theme_settings/components/YourThemesSection.tsx
+msgid "Fluxer can't read this folder."
+msgstr "Fluxer не може прочитати цю папку."
+
+#. Problem shown at the top of the quick CSS editor when the whole sheet was left out.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer couldn't apply this CSS. Check it for a broken comment, string or bracket."
+msgstr "Fluxer не вдалося застосувати цей CSS. Перевірте, чи немає в ньому пошкодженого коментаря, рядка або дужки."
+
+#. Alert when the SMTP check fails and the mail server sent no reply. host is the mail server address.
+#: src/features/app/components/setup/SetupEmailSteps.tsx
+msgid "Fluxer couldn't connect to {host}."
+msgstr "Fluxer не вдалося підключитися до {host}."
+
+#. Alert when the SMTP check fails. host is the mail server address and error is its reply.
+#: src/features/app/components/setup/SetupEmailSteps.tsx
+msgid "Fluxer couldn't connect to {host}. The server said: \"{error}\""
+msgstr "Fluxer не вдалося підключитися до {host}. Відповідь сервера: «{error}»"
+
+#. Status shown in the desktop app when it stopped checking the browser sign-in because the instance could not be reached. instanceName is the server name, such as Fluxer. "Try again" is the label of the button below and must match its translation.
+#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
+msgid "Fluxer couldn't connect to {instanceName} to check whether your browser approved this sign-in. Check your connection, then select \"Try again\"."
+msgstr "Fluxer не зміг зв’язатися з {instanceName}, щоб перевірити, чи браузер схвалив цей вхід. Перевірте підключення й виберіть «Спробувати ще раз»."
+
+#. Name of the section in the Operator Pass settings tab about the Fluxer Labs community. Fluxer Labs is the name of a community, keep it as is.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "Fluxer Labs"
+msgstr "Fluxer Labs"
+
+#. Status shown when browser sign-in status polling gives up after repeated failures.
+#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
+msgid "Fluxer stopped checking whether the browser approved this sign-in. It didn't lose your code."
+msgstr "Fluxer припинив перевіряти, чи браузер схвалив цей вхід. Ваш код не втрачено."
+
+#. Shown in the modal that applies a shared theme when the theme points at files the app will not load.
+#: src/features/theme/components/modals/ThemeAcceptModal.tsx
+msgid "Fluxer won't load {count, plural, one {# file} other {# files}} that this theme links to on other sites."
+msgstr "Fluxer не завантажить {count, plural, one {# файл} few {# файли} many {# файлів} other {# файла}} з інших сайтів, на які посилається ця тема."
+
+#. Warning on GNOME when a hold shortcut uses a key combination. Letting go of a modifier key such as Ctrl before the main key can leave the shortcut active.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "For this keybind, use a single key without Ctrl, Alt or Shift. With a combination, let go of the main key first or the keybind can stay active."
+msgstr "Для цієї комбінації клавіш використовуйте одну клавішу без Ctrl, Alt або Shift. Якщо клавіш кілька, спочатку відпускайте основну, інакше комбінація може лишитися активною."
+
+#. Title of the row in the Refunds section of the Payments settings where the user can get all the money back for their recent Plutonium purchases.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "Full refund"
+msgstr "Повне повернення коштів"
+
+#. Title of the first step of the Operator Pass checkout dialog, where the buyer picks how many passes and the names on the certificate. Operator Pass is a product name and stays untranslated.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Get an {operatorPassName}"
+msgstr "Купити {operatorPassName}"
+
+#. Button next to the list of Operator Passes in the Operator Pass settings. It opens the Operator Pass checkout. Operator Pass is a product name.
+#: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
+msgid "Get another pass"
+msgstr "Отримати ще один пропуск"
+
+#. Toggle in the keybinds tab. When on, the shortcut works even when Fluxer is not focused. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
+msgid "Global keybind"
+msgstr "Глобальна комбінація клавіш"
+
+#: src/features/user/components/modals/tabs/LanguageTab.tsx
+msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
+msgstr "Допоможіть перекласти {PRODUCT_NAME} вашою мовою на <0>{I18N_WEBLATE_DOMAIN}</0>."
+
+#. Hint under a system-wide hold shortcut such as push-to-talk on Linux. The desktop ignores the key while other modifier keys are held.
+#: src/features/user/components/modals/tabs/keybinds_tab/SystemShortcutRowHint.tsx
+msgid "Holding Shift, Ctrl or Alt blocks this keybind. Add alternates in your system settings."
+msgstr "Утримування Shift, Ctrl або Alt блокує цю комбінацію. Додайте альтернативні комбінації в налаштуваннях системи."
+
+#. Instructions for the Hyprland desktop, shown above config lines for hyprland.lua (Hyprland 0.55 and later) and for hyprland.conf (before 0.55). Keep "KEY" exactly as written.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Hyprland has no keybind dialog. Add the lines for your Hyprland version to your Hyprland config and replace KEY with the key you want."
+msgstr "У Hyprland немає вікна для налаштування комбінацій клавіш. Додайте рядки для вашої версії Hyprland до його конфігурації і замініть KEY на потрібну клавішу."
+
+#. Instructions for the Hyprland desktop when the app id is unknown. The config is hyprland.lua on Hyprland 0.55 and later, hyprland.conf before.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Hyprland has no keybind dialog. Bind the keys in your Hyprland config."
+msgstr "У Hyprland немає вікна для налаштування комбінацій клавіш. Призначте клавіші в конфігурації Hyprland."
+
+#. Required checkbox next to Accept in the dialog for an Operator Pass someone passed on to you. Consumer law text, translate faithfully and keep every condition. The linked text names the Operator Pass terms document. {OPERATOR_PASS_NAME} is a product name and stays untranslated. The buyer is the person who paid for the pass. Reversed means charged back through a bank or card company.
+#: src/features/premium/components/operator_pass/OperatorPassOfferModal.tsx
+msgid "I accept the <0>{OPERATOR_PASS_NAME} terms</0>. Each pass can be passed on only once, so you can't pass this one on again. It ends if the buyer's payment for it is refunded or reversed, because the purchase stays theirs."
+msgstr "Я приймаю <0>умови {OPERATOR_PASS_NAME}</0>. Кожен пропуск можна передати лише один раз, тому цей не можна передати знову. Він припиняє дію, якщо платіж покупця за нього повернуто або скасовано, бо покупка залишається за покупцем."
+
+#. Required checkbox in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Consumer law text, translate faithfully and keep every condition. The linked text names the Operator Pass terms document. {OPERATOR_PASS_NAME} is a product name and stays untranslated, and so does Visionary. Passed on means given to another account with the Pass it on feature.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "I accept the <0>{OPERATOR_PASS_NAME} terms</0>. This pass is part of your Visionary, so it can't be passed on."
+msgstr "Я приймаю <0>умови {OPERATOR_PASS_NAME}</0>. Цей пропуск входить до вашого Visionary, тому його не можна передати."
+
+#. Checkbox label in the Operator Pass and gift checkout dialogs, off by default. Tick it when the purchase is for a company, so the payment page asks for a billing address for the invoice. First person, plain words.
+#: src/features/premium/components/BusinessPurchaseField.tsx
+msgid "I'm buying for a business"
+msgstr "Купую для компанії"
+
+#. Hint in the desktop app while it waits for the browser, for people with more than one Fluxer app installed. "Signing in on another device?" is the label of the button below and must match its translation.
+#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
+msgid "If the link opens a different Fluxer app, select \"Signing in on another device?\" and type the code in your browser instead."
+msgstr "Якщо посилання відкриває інший застосунок Fluxer, виберіть «Входите з іншого пристрою?» і введіть код у браузері."
+
+#. Line in the dialog for an Operator Pass someone passed on to you, while the waiting period after payment runs. It is the pass. {date} is a date such as Nov 23, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassOfferModal.tsx
+msgid "If you accept, it arrives on {date}, unless the sender takes the offer back first."
+msgstr "Якщо ви приймете пропозицію, пропуск надійде {date}, хіба що відправник раніше відкличе її."
+
+#. Line in the Operator Pass checkout dialog right above the button that opens the payment page, shown to buyers who appear to be in Brazil or who pay in Brazilian reais when buying more than one pass. A buyer who has a billing address in Brazil or pays in reais (the Brazilian currency) keeps the right to withdraw from each pass for {days} days after delivery. A buyer who enters the CNPJ of a company sees a different text, so this one never needs a business exception. The billing address is not where the buyer happens to be. Nothing in this text takes the right away from anyone, so never add a sentence about losing it. Consumer law text, translate faithfully and keep every condition. Withdraw means the consumer right of withdrawal (pt-BR: desistir), never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "If you have a billing address in Brazil or pay in reais, you can withdraw from each pass within {days, plural, one {# day} other {# days}} of delivery and get a full refund."
+msgstr "Якщо ваша адреса для виставлення рахунків у Бразилії або ви платите в бразильських реалах, ви можете відмовитися від кожного пропуску протягом {days, plural, one {# дня} few {# днів} many {# днів} other {# днів}} після надання сертифікатів й отримати повне повернення коштів."
+
+#. Line in the Operator Pass checkout dialog right above the button that opens the payment page, shown to buyers who appear to be in Brazil or who pay in Brazilian reais. A buyer who has a billing address in Brazil or pays in reais (the Brazilian currency) keeps the right to withdraw for {days} days after delivery. A buyer who enters the CNPJ of a company sees a different text, so this one never needs a business exception. The billing address is not where the buyer happens to be. Nothing in this text takes the right away from anyone, so never add a sentence about losing it. Consumer law text, translate faithfully and keep every condition. Withdraw means the consumer right of withdrawal (pt-BR: desistir), never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "If you have a billing address in Brazil or pay in reais, you can withdraw within {days, plural, one {# day} other {# days}} of delivery and get a full refund."
+msgstr "Якщо ваша адреса для виставлення рахунків у Бразилії або ви платите в бразильських реалах, ви можете відмовитися протягом {days, plural, one {# дня} few {# днів} many {# днів} other {# днів}} після надання сертифіката й отримати повне повернення коштів."
+
+#. Help on the setup token screen, followed by a terminal command. rexctl is a name that must not be translated.
+#: src/features/app/components/setup/SetupTokenStep.tsx
+msgid "If you installed Fluxer with rexctl, it printed the token when it finished. Run this on your server to show it again."
+msgstr "Якщо ви встановили Fluxer за допомогою rexctl, токен було виведено після завершення. Виконайте цю команду на своєму сервері, щоб показати його знову."
+
+#. What the app shows when no wordmark is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, the product name shows as plain text, or as the Fluxer wordmark while the product name is Fluxer."
+msgstr "Якщо залишити порожнім, назва продукту показується звичайним текстом або, якщо назва продукту Fluxer, текстовим логотипом Fluxer."
+
+#. What the app shows when no logo is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, the sign-in page uses your app icon or symbol. Without those, it shows the Fluxer logo while the product name is Fluxer, and no image for any other name."
+msgstr "Якщо залишити порожнім, сторінка входу використовує іконку застосунку або символ. Якщо їх немає, показується логотип Fluxer, коли назва продукту Fluxer, а за будь-якої іншої назви зображення не показується."
+
+#. What the app shows when no favicon is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, the tab uses your app icon, or the Fluxer icon if that is empty too."
+msgstr "Якщо залишити порожнім, вкладка використовує іконку застосунку, а якщо порожня і вона, то іконку Fluxer."
+
+#. What the app shows when no app icon is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, those places show the Fluxer icon."
+msgstr "Якщо залишити порожнім, у цих місцях показується іконка Fluxer."
+
+#. Short muted line under an Operator Pass during the waiting period after payment. The pass can be offered to another account at any time, but it only moves to them once this waiting period is over. {date} is a date without a time.
+#: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
+msgid "If you pass it on, it moves on {date} at the earliest"
+msgstr "Якщо ви його передасте, він перейде не раніше {date}"
+
+#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
+#: src/features/app/components/setup/SetupTokenStep.tsx
+msgid "If you run Fluxer without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart Fluxer, and enter that value here."
+msgstr "Якщо ви запускаєте Fluxer без rexctl, встановіть FLUXER_SETUP_TOKEN значенням щонайменше 32 символи на ваш вибір, перезапустіть Fluxer і введіть це значення тут."
+
+#. Text under the heading A spot on the Operators' wall on a slide in the Operator Pass checkout dialog. The Operators' wall is a section on the website's homepage that shows Operators, the people who have an Operator Pass, with their avatars and names. Keep the word Operators in English. Until we check them, the spot shows the word Operator and the default avatar, never the username. Usually within 72 hours is a description of how it works today, not a promise. Never add a word that says how long the spot lasts.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "If you'd like a spot, it goes up when you pay. Your name and avatar show once we check them, usually within 72 hours, and you can leave the wall or come back in your settings."
+msgstr "Якщо ви хочете отримати місце, воно з'явиться після оплати. Ваше ім'я та аватар відображаються після перевірки, зазвичай протягом 72 годин, і ви можете залишити стіну або повернутися у своїх налаштуваннях."
+
+#. Completion text in the favorite GIF import modal. importedCount is the number added; skippedCount is the number skipped.
+#: src/features/channel/components/pickers/gif/ImportFavoriteGifsModal.tsx
+msgid "Import complete. Added {importedCount, plural, one {# GIF} other {# GIFs}}, skipped {skippedCount, number} (duplicates or over the limit)."
+msgstr "Імпорт завершено. Додано {importedCount, plural, one {# GIF-файл} few {# GIF-файли} many {# GIF-файлів} other {# GIF-файлу}}, пропущено {skippedCount, number} (дублікати або досягнуто ліміту)."
+
+#. Body of the confirmation before offering an Operator Pass to someone. It is the pass, they is the person you offer it to. Take the offer back means canceling your offer, which you can do even after they accept, until the pass moves. The waiting period is the time after payment before a pass can move.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "It moves to them once they accept and any waiting period has ended. You can take the offer back until it moves."
+msgstr "Пропуск перейде до нього, коли він прийме пропозицію і закінчиться період очікування, якщо він є. Ви можете відкликати пропозицію, доки пропуск не перейшов."
+
+#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Keep Neko still"
+msgstr "Залишити Неко нерухомим"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindRow.tsx
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Keybind"
+msgstr "Комбінація клавіш"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Keybind badges"
+msgstr "Значки комбінацій клавіш"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Keybind conflicts"
+msgstr "Конфлікти комбінацій клавіш"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Keybind hints in tooltips"
+msgstr "Показувати комбінації клавіш у спливаючих підказках"
+
+#. Button in the status bar of the quick CSS editor that lists its keyboard shortcuts.
+#. Modal title for the keyboard shortcuts cheatsheet.
+#. Name of the settings tab where people set keyboard keys for actions. Also used as a settings search synonym.
+#. Title of the dialog that lists the keyboard shortcuts of the quick CSS editor.
+#: src/features/input/components/modals/KeyboardShortcutsCheatsheetModal.tsx
+#: src/features/theme_settings/components/QuickCssShortcutsModal.tsx
+#: src/features/theme_settings/components/QuickCssStatusBar.tsx
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Keybinds"
+msgstr "Комбінації клавіш"
+
+#. Short helper text in the keybinds tab.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx
+msgid "Keybinds are paused while recording."
+msgstr "Під час запису комбінації клавіш призупинено."
+
+#. Linux warning when direct input device access is on but reading the keyboard failed. Not related to the "Direct input" voice processing profile. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Keyboard access couldn't start. Keybinds only work while {productName} is focused."
+msgstr "Не вдалося запустити доступ до клавіатури. Комбінації клавіш працюють лише тоді, коли {productName} у фокусі."
+
+#. Description for the Linux direct input device access switch while it is on, on a desktop that can also run system-wide shortcuts itself (KDE, GNOME, Hyprland). {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Lets {productName} read your keyboard directly. Turn this off to set up keybinds through your desktop instead."
+msgstr "Дозволяє {productName} зчитувати клавіатуру напряму. Вимкніть цей параметр, щоб натомість налаштувати комбінації клавіш через робоче середовище."
+
+#. One sentence explaining what the macOS Input Monitoring permission is used for.
+#: src/features/permissions/system/components/MacPermissionPrompt.tsx
+msgid "Lets push-to-talk and keybinds work in other apps."
+msgstr "Дозволяє працювати голосовому введенню та гарячим клавішам в інших програмах."
+
+#. Settings search entry description for the AV1 and H.265 screen-share opt-in toggles.
+#: src/features/user/components/settings_utils/search_index/VoiceVideoIndex.ts
+msgid "May cause compatibility issues for viewers. We're working on improving this."
+msgstr "Може спричинити проблеми сумісності у глядачів. Ми працюємо над покращенням."
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AccessibilityIndex.ts
+msgid "Menu keybinds"
+msgstr "Комбінації клавіш у меню"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Message keybinds"
+msgstr "Комбінації клавіш для повідомлень"
+
+#. Short label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
+msgid "More keybind options"
+msgstr "Більше дій для комбінації клавіш"
+
+#. Button in the quick CSS editor window that moves the editor back into a panel inside the app.
+#: src/features/theme_settings/components/QuickCssWorkspace.tsx
+msgid "Move back into Fluxer"
+msgstr "Повернути у Fluxer"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Mute keybind"
+msgstr "Комбінація клавіш для вимкнення мікрофона"
+
+#. Label of one of several text fields for the names printed on the pages of the Operator certificate, one page per pass. A page is a page of the Operator certificate PDF, so use the same word for page as in "Download page {number} ({name})". {number} is the page number, such as 2.
+#: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
+msgid "Name on page {number}"
+msgstr "Ім'я на сторінці {number}"
+
+#. Label of the text field for the name printed on the Operator certificate, a PDF the buyer gets for the Operator Pass. Never translate certificate as diploma, card, license or token.
+#: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
+msgid "Name on your certificate"
+msgstr "Ім'я на вашому сертифікаті"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Navigation keybinds"
+msgstr "Комбінації клавіш навігації"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Neko cat that chases your cursor"
+msgstr "Кіт Неко, що ганяється за вашим курсором"
+
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx
+msgid "No custom keybinds match that search."
+msgstr "Немає власних комбінацій клавіш, що відповідають цьому пошуку."
+
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx
+msgid "No custom keybinds yet."
+msgstr "Поки що немає власних комбінацій клавіш."
+
+#. Empty-state text in the keyboard shortcuts keybind recorder.
+#: src/features/input/components/KeybindRecorder.tsx
+msgid "No keybind set"
+msgstr "Комбінацію клавіш не встановлено"
+
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultKeybindsList.tsx
+msgid "No keybinds match that search."
+msgstr "Немає комбінацій клавіш, що відповідають цьому пошуку."
+
+#. Status in the Operators' wall settings while our team has removed the Operator badge, the wall listing and the Operator role from the account under the Operator Pass terms. Operator is the role name, keep it as is. A link to the terms follows it.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
+msgid "Off the wall while your badge and Operator role are removed."
+msgstr "Вас немає на стіні, поки ваш значок і роль Operator вилучено."
+
+#. Hint under the checkbox "I'm buying for a business" in the checkout dialogs. The payment page is the card payment page that opens after this dialog. VAT ID is the company's value-added tax number, use the usual local term.
+#: src/features/premium/components/BusinessPurchaseField.tsx
+msgid "On the payment page, add your company name, address and VAT ID."
+msgstr "На сторінці оплати вкажіть назву компанії, адресу та номер платника ПДВ."
+
+#. Line in the Operator Pass checkout dialog right above the button that opens the payment page. It tells the buyer before paying that the consumer right of withdrawal ends when the certificate is delivered. Withdraw means the consumer right of withdrawal, never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Once we deliver your certificate, which happens right after you pay, you can't withdraw from the purchase."
+msgstr "Щойно ми надамо ваш сертифікат, а це стається одразу після оплати, відмовитися від покупки вже не можна."
+
+#. Line in the Operator Pass checkout dialog right above the button that opens the payment page, when buying more than one pass. It tells the buyer before paying that the consumer right of withdrawal ends when the certificate PDF pages are delivered. Use the same word for certificates as in the checkbox that starts with "Deliver my certificates now". Withdraw means the consumer right of withdrawal, never taking money out.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "Once we deliver your certificates, which happens right after you pay, you can't withdraw from the purchase."
+msgstr "Щойно ми надамо ваші сертифікати, а це стається одразу після оплати, відмовитися від покупки вже не можна."
+
+#. Line in the dialog that withdraws from one Operator Pass of a purchase. This is the statutory line naming the contract being withdrawn from, required for the withdrawal function by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. {orderNumber} is the order number from the purchase receipt email, such as 1A2B3C4D-0001, keep it as is. {date} is the purchase date, such as Dec 4, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "One pass from order {orderNumber}, bought on {date}."
+msgstr "Один пропуск із замовлення {orderNumber}, придбаного {date}."
+
+#. Line in the dialog that withdraws from one Operator Pass of a purchase, shown when the order number is not known. This is the statutory line naming the contract being withdrawn from, required for the withdrawal function by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. {date} is the purchase date, such as Dec 4, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "One pass from the Operator Pass purchase made on {date}."
+msgstr "Один пропуск із придбання Operator Pass від {date}."
+
+#. Warning in Settings > Themes and in the modal that applies a shared theme. Trusting a site lets quick CSS and themes load images from it, and CSS can make the browser load different images depending on what the app shows.
+#: src/features/theme_settings/utils/ThemeSettingsMessageDescriptors.ts
+msgid "Only trust sites you know. A site you trust can see your IP address, when you have Fluxer open and some of what's on your screen."
+msgstr "Довіряйте лише сайтам, які знаєте. Сайт, якому ви довіряєте, може бачити вашу IP-адресу, коли у вас відкритий Fluxer, і частину того, що є на екрані."
+
+#. Button after an Operator Pass purchase, in the Operator Pass dialog and in the Operator Pass settings. It takes the person to #operators, a channel in the Fluxer Labs community, and adds them to Fluxer Labs first when the pass allows it. Keep #operators as is, it is the channel name.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "Open #operators"
+msgstr "Відкрити #operators"
+
+#. Button in the Operator Pass checkout dialog while the app waits for the payment. It opens the same payment page again in the web browser.
+#: src/features/premium/components/operator_pass/checkout/CheckoutWaitingStage.tsx
+msgid "Open payment page again"
+msgstr "Знову відкрити сторінку оплати"
+
+#. Button in the Payments settings that opens one receipt as a PDF.
+#: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx
+msgid "Open receipt"
+msgstr "Відкрити квитанцію"
+
+#. Accessible label of the button that opens one receipt in the Payments settings. {invoiceLabel} is the receipt number, keep it as is.
+#: src/features/app/components/dialogs/components/plutonium/InvoiceList.tsx
+msgid "Open receipt {invoiceLabel}"
+msgstr "Відкрити квитанцію {invoiceLabel}"
+
+#. Tip explaining the keyboard shortcut for opening the shortcuts list.
+#: src/features/input/components/modals/KeyboardModeIntroModal.tsx
+msgid "Open the keybind list for quick actions."
+msgstr "Відкрийте список комбінацій клавіш для швидких дій."
+
+#. Settings search synonym for the Operator Pass settings tab. The Operator certificate is the PDF that comes with an Operator Pass. Never translate certificate as diploma, card, license or token.
+#: src/features/user/components/settings_utils/search_index/OperatorPassIndex.ts
+msgid "Operator certificate"
+msgstr "Сертифікат оператора"
+
+#. Line in the dialog that withdraws from a paid Operator Pass purchase, shown when the order number is not known. This is the statutory line naming the contract being withdrawn from, required for the withdrawal function by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. {date} is the purchase date, such as Dec 4, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Operator Pass purchase made on {date}."
+msgstr "Придбання Operator Pass від {date}."
+
+#. Alternative text of the screenshot on a slide in the Operator Pass checkout dialog, read out by screen readers. The screenshot shows a short chat in the #operators channel. Operators are the people who have an Operator Pass, keep the word Operators in English. Fluxer Labs is the name of the official community, keep it unchanged. #operators is the channel's literal name, keep it unchanged. Talking means chatting with each other, never asking for or giving support. No trailing punctuation.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "Operators and the Fluxer Team talking about self-hosting in the #operators channel of Fluxer Labs"
+msgstr "Operators і команда Fluxer спілкуються про самостійне розміщення в каналі #operators у Fluxer Labs"
+
+#. Line in the dialog that withdraws from a paid Operator Pass purchase. This is the statutory line naming the contract being withdrawn from, required for the withdrawal function by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. {orderNumber} is the order number from the purchase receipt email, such as 1A2B3C4D-0001, keep it as is. {date} is the purchase date, such as Dec 4, 2026.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Order {orderNumber}, bought on {date}."
+msgstr "Замовлення {orderNumber}, придбано {date}."
+
+#. Label of one Operator certificate page in the Operator Pass settings, for a purchase with more than one page or a pass the buyer offered or passed on to someone else. Download, Copy link and Reset link text links follow it. {number} is the page number in the certificate PDF, starting at 1. {name} is the name chosen at checkout for that page. Never translate page as website or certificate as diploma, card, license or token.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Page {number} ({name})"
+msgstr "Сторінка {number} ({name})"
+
+#. Voice screen share menu preference that pauses the local stream preview while the app is unfocused. {productName} is the app name.
+#: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts
+msgid "Pause preview when {productName} isn't focused"
+msgstr "Призупинити попередній перегляд, коли {productName} неактивний"
+
+#. Muted line under the list of Operator Passes in the Operator Pass settings while our team has removed the Operator badge, the Operators' wall listing and the Operator role from the account under the Operator Pass terms. Operator is the role name, keep it as is. A link to the terms follows it.
+#: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
+msgid "Paused while your badge, wall listing and Operator role are removed."
+msgstr "Призупинено, поки ваш значок, запис на стіні та роль Operator вилучено."
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/PaymentsIndex.ts
+msgid "Payment history"
+msgstr "Історія платежів"
+
+#. Heading of the section in the Payments settings tab for the cards and other payment methods on file.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "Payment methods"
+msgstr "Способи оплати"
+
+#. Title of the Operator Pass checkout dialog when the payment page timed out before anyone paid.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Payment page expired"
+msgstr "Термін дії сторінки оплати минув"
+
+#. Title of the Operator Pass checkout dialog after a payment that we refunded in full right away, with no certificate created.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Payment refunded"
+msgstr "Платіж повернено"
+
+#. Settings search entry label for the Payments settings tab, which holds the payment methods on file, refunds and receipts.
+#. User settings tab under Billing that holds the payment methods on file, refunds and the receipts for past payments.
+#: src/features/user/components/settings_utils/search_index/PaymentsIndex.ts
+#: src/features/user/components/settings_utils/SettingsConstants.tsx
+msgid "Payments"
+msgstr "Платежі"
+
+#. Description of leaving the push relay off in the setup wizard.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "People using the Fluxer mobile apps won't get notifications from your instance. You can turn this on later in the admin panel."
+msgstr "Користувачі мобільних застосунків Fluxer не отримуватимуть сповіщень від вашого екземпляра. Увімкнути це можна пізніше в панелі адміністратора."
+
+#. Review row label for the push relay.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "Phone notifications"
+msgstr "Сповіщення на телефон"
+
+#: src/features/input/components/KeybindRecorder.tsx
+msgid "Press a keybind…"
+msgstr "Натисніть комбінацію клавіш…"
+
+#. Notice in the Operator Pass checkout dialog while a payment dispute this account made is open. A payment dispute is a chargeback filed with a bank or card company. Neutral tone, never suggest the person did something wrong.
+#: src/features/premium/components/operator_pass/checkout/CheckoutNoticeStage.tsx
+msgid "Purchases are paused while a payment dispute on your account is open, because a disputed payment can still be reversed."
+msgstr "Покупки призупинено, поки щодо вашого облікового запису триває оскарження платежу, бо оскаржений платіж ще можуть скасувати."
+
+#. Voice settings warning on Linux when the desktop dialog for system-wide shortcuts was dismissed or failed. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Push-to-talk only works while {productName} is focused because your desktop didn't set up system-wide keybinds."
+msgstr "Функція «Натисни і говори» працює лише тоді, коли {productName} у фокусі, бо ваше робоче середовище не налаштувало загальносистемні комбінації клавіш."
+
+#. Voice settings warning on Linux before system-wide shortcuts are set up. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Push-to-talk only works while {productName} is focused until you set up system-wide keybinds."
+msgstr "Функція «Натисни і говори» працює лише тоді, коли {productName} у фокусі, доки ви не налаштуєте загальносистемні комбінації клавіш."
+
+#. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
+msgid "Re-enable built-in keybind"
+msgstr "Увімкнути вбудовану комбінацію клавіш"
+
+#. Developer applications link label. domain is the documentation domain.
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx
+msgid "Read the documentation ({domain})"
+msgstr "Прочитати документацію ({domain})"
+
+#. Link to the push relay privacy notice in the setup wizard.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "Read the push relay privacy notice"
+msgstr "Прочитати повідомлення про конфіденційність push-ретранслятора"
+
+#. Heading of the section in the Payments settings tab that lists the receipts for past payments.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "Receipts"
+msgstr "Квитанції"
+
+#. Short label in the keyboard shortcuts keybind recorder. Keep it concise.
+#: src/features/input/components/KeybindRecorder.tsx
+msgid "Record keybind"
+msgstr "Записати комбінацію клавіш"
+
+#. Title of the confirm dialog for a Plutonium self-serve refund paid on the web or in the desktop app. The refund covers every payment made in the last 3 days, for example a subscription and the upgrade paid after it. Keep the tone plain and specific.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "Refund your recent purchases?"
+msgstr "Повернути кошти за останні покупки?"
+
+#. Heading of the section in the Payments settings tab that lists purchases the user can still get money back for.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "Refunds"
+msgstr "Повернення коштів"
+
+#. Confirmation prompt in the keybinds tab.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx
+msgid "Reset all keybinds?"
+msgstr "Скинути всі комбінації клавіш?"
+
+#. Small text link next to an Operator certificate page in the Operator Pass settings. It replaces the private link to that certificate page with a new one, after a confirmation.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Reset link"
+msgstr "Скинути посилання"
+
+#. Title of the confirmation dialog before replacing the private link to an Operator certificate page with a new one. Never translate certificate as diploma, card, license or token.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Reset this certificate link?"
+msgstr "Скинути посилання на цей сертифікат?"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Review the built-in keybinds by section"
+msgstr "Переглянути вбудовані комбінації клавіш за розділами"
+
+#. Description of the macOS permissions section in user settings. {productName} is the app name.
+#: src/features/permissions/system/components/MacPermissionsSettingsRow.tsx
+msgid "Review the permissions {productName} uses for voice, video, screen sharing, and keybinds."
+msgstr "Перегляньте дозволи, які використовує {productName} для голосу, відео, демонстрації екрана та швидких клавіш."
+
+#. Button or menu action label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/KeybindsTab.tsx
+msgid "Search keybinds"
+msgstr "Пошук комбінацій клавіш"
+
+#. Button or menu action label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/KeybindsTab.tsx
+msgid "Search keybinds…"
+msgstr "Пошук комбінацій клавіш…"
+
+#. Heading in the Explore navigation bar when a search is active. {query} is the text the user searched for.
+#: src/features/discovery/discovery/DiscoveryNavbar.tsx
+msgid "Search results for \"{query}\""
+msgstr "Результати пошуку для «{query}»"
+
+#. Purchase disclaimer in the premium subscription checkout. Consumer law text, translate faithfully. {premiumProductName} is a product name and stays untranslated. {PAYMENT_PROVIDER_NAME} is the payment processor name. Withdraw means using the consumer right of withdrawal to cancel the purchase, never taking money out. The first withdraw is a link to the section of the terms that explains how to withdraw and has the withdrawal form, so wrap the words your language uses for that action. The UK is the United Kingdom. The terms set how long each withdrawal period lasts and how much comes back, so the sentence names no number of days and no refund amount. A payment dispute is a chargeback filed with a bank or card company. The second link, our terms, goes to the section of the terms of service on payment disputes. Action against the account means enforcement such as suspension or deletion.
+#: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
+msgid "Self-serve refunds are available within 3 days of payment, once every 30 days. Refunding a subscription cancels it. If you are a consumer in the EU, the EEA, the UK or Brazil, you can <0>withdraw</0> until your withdrawal period ends, even after {premiumProductName} starts. Please ask for a refund before you dispute a charge. A dispute about a wrong or unauthorized charge never leads to action against your account, and <1>our terms</1> list the only cases where a dispute can. {PAYMENT_PROVIDER_NAME} handles payment securely. We never see your full card number."
+msgstr "Ви можете самостійно оформити повернення коштів протягом 3 днів після оплати, один раз на 30 днів. Повернення підписки скасовує її. Якщо ви є споживачем у ЄС, ЄЕЗ, Великій Британії або Бразилії, ви можете <0>відмовитися від договору</0> до спливу строку для відмови, навіть після початку використання {premiumProductName}. Будь ласка, запитуйте повернення коштів до того, як оскаржувати платіж. Оскарження помилкового чи несанкціонованого списання ніколи не призводить до заходів щодо вашого облікового запису, а <1>наші умови</1> перелічують єдині випадки, коли оскарження може до них призвести. {PAYMENT_PROVIDER_NAME} безпечно обробляє платежі. Ми ніколи не бачимо повний номер вашої картки."
+
+#. Sentence after the privacy sentence in the Operator Pass checkout dialog that names the company selling the pass. Fluxer Platform AB is the company name and 559537-3993 its Swedish organization number, keep both as is. Haninge is the Swedish municipality where the company is registered and stays as is. Translate registered office with the legal term your language uses for the registered seat of a company, and keep the Swedish word säte in parentheses. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
+#: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
+msgid "Seller: Fluxer Platform AB, 559537-3993, registered office (säte) Haninge, Sweden, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
+msgstr "Продавець: Fluxer Platform AB, 559537-3993, місцезнаходження (säte) Haninge, Швеція, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
+
+#. Setup wizard title for the push relay consent.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "Send notifications to the Fluxer mobile apps?"
+msgstr "Надсилати сповіщення в мобільні застосунки Fluxer?"
+
+#. Short label in the keybinds tab. Keep it concise.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
+msgid "Set custom keybind"
+msgstr "Встановити власну комбінацію клавіш"
+
+#. Label in the keybinds tab. Preserve {label}; it is inserted by code.
+#: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
+msgid "Set custom keybind for \"{label}\""
+msgstr "Установити власну комбінацію клавіш для «{label}»"
+
+#. Settings description for assigning the keyboard shortcut that toggles voice deafen. Deafen controls hearing voice chat, not microphone mute.
+#: src/features/voice/utils/VoiceMessageDescriptors.ts
+msgid "Set deafen keybind"
+msgstr "Установити комбінацію клавіш для вимкнення звуку"
+
+#. Settings search entry description. One-line summary of what the settings search entry controls.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Set mute keybind"
+msgstr "Установити комбінацію клавіш для вимкнення мікрофона"
+
+#. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
+#: src/features/theme_settings/editor/AppSelectors.ts
+msgid "Set on messages that Fluxer sends, such as when someone joins."
+msgstr "Встановлюється на повідомлення, які надсилає Fluxer, наприклад, коли хтось приєднується."
+
+#. Accessible label of a small dot under the slideshow in the Operator Pass checkout dialog. Selecting it shows that slide. {title} is the heading of the slide, such as The Operator badge.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcase.tsx
+msgid "Show {title}"
+msgstr "Показати: {title}"
+
+#. Settings search entry label. Names the settings search entry in the settings UI.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Show context menu keybinds"
+msgstr "Показувати комбінації клавіш контекстного меню"
+
+#. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
+#: src/features/input/state/input_keybind/shared.ts
+msgid "Show keybind list"
+msgstr "Показати список комбінацій клавіш"
+
+#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Show Neko"
+msgstr "Показувати Неко"
+
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx
+msgid "Show the ID of each voice connection next to people in calls and in voice channels. With it off, each device shows its type."
+msgstr "Показувати ID кожного голосового з'єднання поруч із людьми в дзвінках і голосових каналах. Якщо вимкнено, кожен пристрій називатиметься за типом."
+
+#. Switch in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Off by default. Operator is the badge name, keep it as is.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "Show the Operator badge on my profile"
+msgstr "Показувати значок Operator у моєму профілі"
+
+#. Switch description in the leave-group confirmation modal. Explains that silently leaving avoids posting a system leave notice.
+#: src/features/guild/hooks/useLeaveGroup.tsx
+msgid "Skip the system leave notice. Nobody gets pinged."
+msgstr "Пропустити системне повідомлення про вихід — ніхто не отримає сповіщення."
+
+#. Modal body shown when an action is blocked by rate limiting. Keep plain.
+#: src/features/app/components/alerts/RateLimitedConfirmModal.tsx
+msgid "Slow down and wait a moment before trying again."
+msgstr "Пригальмуйте. Зачекайте трохи, перш ніж повторити спробу."
+
+#. Modal body shown when slowmode blocks sending a message. {minutes} and {seconds} are the two parts of the remaining wait.
+#: src/features/slowmode/components/alerts/SlowmodeRateLimitedModal.tsx
+msgid "Slowmode is on. Wait {minutes, plural, one {# minute} other {# minutes}} and {seconds, plural, one {# second} other {# seconds}} before sending another."
+msgstr "Увімкнено повільний режим — зачекайте {minutes, plural, one {# хвилину} few {# хвилини} many {# хвилин} other {# хвилини}} і {seconds, plural, one {# секунду} few {# секунди} many {# секунд} other {# секунди}}, перш ніж надсилати наступне повідомлення."
+
+#. Modal body shown when slowmode blocks sending a message. {minutes} is the remaining wait, a whole number of minutes.
+#: src/features/slowmode/components/alerts/SlowmodeRateLimitedModal.tsx
+msgid "Slowmode is on. Wait {minutes, plural, one {# minute} other {# minutes}} before sending another."
+msgstr "Увімкнено повільний режим — зачекайте {minutes, plural, one {# хвилину} few {# хвилини} many {# хвилин} other {# хвилини}}, перш ніж надсилати наступне повідомлення."
+
+#. Modal body shown when slowmode blocks sending a message. {seconds} is the remaining wait, under a minute.
+#: src/features/slowmode/components/alerts/SlowmodeRateLimitedModal.tsx
+msgid "Slowmode is on. Wait {seconds, plural, one {# second} other {# seconds}} before sending another."
+msgstr "Увімкнено повільний режим — зачекайте {seconds, plural, one {# секунду} few {# секунди} many {# секунд} other {# секунди}}, перш ніж надсилати наступне повідомлення."
+
+#. Help text shown while recording a voice message on desktop.
+#: src/features/voice/components/VoiceMessageComposerModal.tsx
+msgid "Speak now. Press Stop when you are done, and you can trim the recording afterwards."
+msgstr "Говоріть. Натисніть «Зупинити», коли закінчите — потім можна буде обрізати."
+
+#. Primary button in the Operator Pass checkout dialog after the payment page expired. It goes back to the step with the checkboxes to open a new payment page.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Start again"
+msgstr "Почати знову"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Static Neko"
+msgstr "Статичний Неко"
+
+#. Status message returned by search when results are unavailable because the server is still building the index.
+#: src/features/search/utils/SearchUtils.ts
+msgid "Still indexing. Check back in a moment"
+msgstr "Триває індексування — зачекайте"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Still Neko"
+msgstr "Нерухомий Неко"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
+msgstr "Неко більше не бігатиме за курсором, але його й далі можна перетягувати та з ним взаємодіяти."
+
+#. User settings tab under Billing where the user manages a Plutonium subscription, its renewal and cancellation.
+#: src/features/user/components/settings_utils/SettingsConstants.tsx
+msgid "Subscriptions"
+msgstr "Підписки"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/utils/UserMessageDescriptors.ts
+msgid "Sync keybinds"
+msgstr "Синхронізувати комбінації клавіш"
+
+#. Settings subsection title for keyboard and mouse shortcuts that work outside the app.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "System-wide keybinds"
+msgstr "Загальносистемні комбінації клавіш"
+
+#. Linux settings text when setting up system-wide shortcuts failed.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "System-wide keybinds could not be set up."
+msgstr "Не вдалося налаштувати загальносистемні комбінації клавіш."
+
+#. Title of the Operator Pass checkout dialog after the payment went through and the pass is on the account.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Thank you"
+msgstr "Дякуємо"
+
+#. Text in the Operator Pass dialog when the account already has a pass and buying is not open. Backing means supporting the project. "{operatorPassName}" is the name of the settings tab that lists the passes, keep the quotes. Operator Pass is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/checkout/CheckoutNoticeStage.tsx
+msgid "Thanks for backing {productName}. Your passes are under \"{operatorPassName}\" in your settings."
+msgstr "Дякуємо за підтримку {productName}. Ваші пропуски є в налаштуваннях, у розділі «{operatorPassName}»."
+
+#. Error when an Operator Pass cannot be offered to the chosen account right now. Operator Pass is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "That account can't receive a pass right now, for example because it's being deleted or can't have an Operator Pass."
+msgstr "Цей обліковий запис зараз не може отримати пропуск, наприклад тому що його видаляють або він не може мати Operator Pass."
+
+#. Text under the heading The Operator badge on a slide in the Operator Pass checkout dialog. The quoted example is the text on the badge, translate it the way the app shows it in your language. Operator badge is a name, keep Operator in English. Never add a word that says how long the badge lasts.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "The badge on your Fluxer profile shows when you got your pass, like \"Operator Pass since November 2026\". You can hide it, or just its date, in your settings at any time."
+msgstr "Значок у вашому профілі Fluxer показує, коли ви отримали пропуск, наприклад «Operator Pass з листопада 2026». Ви можете будь-коли приховати його або лише його дату в налаштуваннях."
+
+#. Body of the confirmation dialog before replacing the private link to an Operator certificate page. The certificate is a PDF, and each page has a number and the date and time of payment. The new copy of the page has the new link printed on it.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "The current link stops working right away, for you and for anyone you've shared it with. We make a new copy of this page with the new link printed on it, with the same number and date."
+msgstr "Поточне посилання одразу перестане працювати, для вас і для всіх, з ким ви ним поділилися. Ми створимо нову копію цієї сторінки з надрукованим на ній новим посиланням, з тим самим номером і датою."
+
+#. Setup wizard body explaining the push relay.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "The Fluxer apps for iOS and Android get notifications through a push relay that Fluxer runs, which passes them to Apple and Google. To use it, you accept the push relay privacy notice."
+msgstr "Застосунки Fluxer для iOS і Android отримують сповіщення через push-ретранслятор, яким керує Fluxer і який передає їх Apple і Google. Щоб користуватися ним, ви приймаєте повідомлення про конфіденційність push-ретранслятора."
+
+#. Sentence in the dialog that withdraws from a paid Plutonium gift. Withdrawing refunds the buyer, so the gift code no longer works and whoever redeemed it loses the Plutonium time it gave.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "The gift code stops working, and if someone redeemed it, they lose the time it gave them."
+msgstr "Подарунковий код перестає працювати, і якщо хтось його активував, він втрачає час, який код дав."
+
+#. Where the logo branding image appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "The large image next to the sign-in form, which is always dark. On a phone it only shows next to the name, when there is no wordmark and the product name is not Fluxer. Use a square or wide PNG or SVG in light colors with a transparent background, at least 256 pixels tall and up to {size}."
+msgstr "Велике зображення поруч із формою входу, яка завжди темна. На телефоні воно показується лише поруч із назвою, коли немає текстового логотипа, а назва продукту не Fluxer. Використовуйте квадратний або широкий PNG чи SVG у світлих кольорах із прозорим тлом, заввишки щонайменше 256 пікселів, файл до {size}."
+
+#. Notice shown under the delivery checkbox in the Operator Pass checkout dialog. The buyer had ticked the required box that asks for the certificate to be delivered right away, then changed how many passes to buy, which unchecks that box because its wording changes. Check means tick the checkbox. The delivery box is the checkbox that starts with Deliver my certificate now.
+#: src/features/premium/components/operator_pass/checkout/CheckoutAgreeStage.tsx
+msgid "The number of passes changed, so check the delivery box again."
+msgstr "Кількість пропусків змінилася, тому знову позначте пункт про надання сертифіката."
+
+#. Heading of a slide in the Operator Pass checkout dialog about the badge shown on the user's profile. Operator is the badge's name, keep it in English. No trailing punctuation.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "The Operator badge"
+msgstr "Значок Operator"
+
+#. Description of the Fluxer Labs section in the Operator Pass settings. #operators is a channel name, keep it as is. {labsName} is the name of the community, such as Fluxer Labs.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassLabsGreetingSetting.tsx
+msgid "The Operator role opens #operators in {labsName}, where you can talk about self-hosting, bots and the API."
+msgstr "Роль оператора відкриває #operators у {labsName}, де ти можеш обговорювати самостійний хостинг, ботів і API."
+
+#. Text under the heading #operators in Fluxer Labs on a slide in the Operator Pass checkout dialog. Operator is the role's name, keep it in English. #operators is the channel's literal name, keep it unchanged. Opens #operators to talk about means the role gives access to the channel, where people talk about self-hosting, bots and the API. Hampus is a person's first name, keep it as is. Who created {productName} describes him as the person who started and made the software. Use past tense. Joins in when he can means Hampus takes part in the conversation when he has time, never that he answers questions or gives support. Warm and plain, never salesy. No dashes as punctuation and no semicolons.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "The Operator role opens #operators to talk about self-hosting, bots and the API. Hampus, who created {productName}, joins in when he can."
+msgstr "Роль Operator відкриває доступ до #operators, де можна обговорювати самостійне розміщення, ботів і API. Hampus, який створив {productName}, долучається, коли може."
+
+#. Caption under the phone preview in the setup wizard branding step.
+#: src/features/app/components/setup/SetupBrandingPreview.tsx
+msgid "The sign-in page on a phone, in a mobile browser or the Fluxer mobile app."
+msgstr "Сторінка входу на телефоні, у мобільному браузері або в мобільному застосунку Fluxer."
+
+#. Shown above the list of CSS attributes in the "Reference" tab of the quick CSS editor.
+#: src/features/theme_settings/components/QuickCssReference.tsx
+msgid "These attributes don't change between Fluxer updates."
+msgstr "Ці атрибути не змінюються між оновленнями Fluxer."
+
+#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "This {theOtherPlatform} template couldn't be read. It may use a format Fluxer doesn't support yet."
+msgstr "Цей шаблон від {theOtherPlatform} не вдалося прочитати. Можливо, він використовує формат, який Fluxer ще не підтримує."
+
+#. Toast after the button "Open #operators" when the account, or the IP address it connects from, is banned from {labsName}, the community that has the #operators channel. Plain and neutral.
+#: src/features/premium/components/operator_pass/OpenOperatorsButton.tsx
+msgid "This account or the network you're on is banned from {labsName}, so you can't join it."
+msgstr "Цей обліковий запис або мережу, якою ви користуєтеся, заблоковано в {labsName}, тому ви не можете приєднатися."
+
+#. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
+#: src/features/platform/hooks/useAppStorageDegradedNotice.ts
+msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
+msgstr "Цей браузер не може зберігати дані Fluxer. Після його закриття доведеться ввійти знову."
+
+#. Error shown when enabling the camera is rejected because the channel already has the maximum number of users sharing video. {voiceChannelCameraUserLimit} is the configured cap.
+#: src/features/voice/engine/media_engine_facade/shared.ts
+msgid "This channel is at its camera limit. Up to {voiceChannelCameraUserLimit} people can share video in it."
+msgstr "Досягнуто ліміту камер — у цьому каналі відео можуть транслювати не більше ніж {voiceChannelCameraUserLimit} учасників."
+
+#. Title of the alert shown when publishing a message from an announcement channel is rate limited.
+#: src/features/messaging/components/alerts/MessageCrosspostLimitModal.tsx
+msgid "This channel is at its publishing limit"
+msgstr "Вичерпано ліміт публікацій"
+
+#. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "This class name changes with every Fluxer update. Use a [data-flx] selector."
+msgstr "Це ім’я класу змінюється з кожним оновленням Fluxer. Використовуйте селектор [data-flx]."
+
+#. Description text in the guild at capacity modal.
+#: src/features/guild/components/alerts/GuildAtCapacityModal.tsx
+msgid "This community is at its member limit and isn't accepting new members right now."
+msgstr "Ця спільнота досягла максимальної кількості учасників і наразі не приймає нових."
+
+#. Body of the error modal shown when a community from Explore has reached its member limit.
+#: src/features/discovery/commands/DiscoveryJoinCommands.tsx
+msgid "This community is at its member limit, so you can't join right now."
+msgstr "Ця спільнота досягла ліміту учасників, тому ви не можете приєднатися зараз."
+
+#. Linux settings text when the desktop has no system-wide shortcut support. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "This desktop doesn't offer system-wide keybinds. Keybinds still work while {productName} is focused."
+msgstr "Це робоче середовище не підтримує загальносистемні комбінації клавіш. Комбінації клавіш і далі працюють, коли {productName} у фокусі."
+
+#. Voice settings warning on Linux desktops without system-wide shortcut support. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "This desktop doesn't offer system-wide keybinds. Push-to-talk only works while {productName} is focused."
+msgstr "Це робоче середовище не підтримує загальносистемні комбінації клавіш. Функція «Натисни і говори» працює лише тоді, коли {productName} у фокусі."
+
+#. Note under the early bird Operator Pass price, saying that this lower price applies to purchases made until the given day. It must never read as if a price already paid will change later. {date} is a date such as January 1, 2027.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassPriceBlock.tsx
+msgid "This early bird price is for purchases until {date}."
+msgstr "Ця рання ціна діє для покупок до {date} включно."
+
+#. Note under the early bird Operator Pass price. The first sentence says this lower price applies to purchases made until the given day. The second says what one pass costs when bought after that day. It must never read as if a price already paid will change later or as a future charge. {date} is a date such as January 1, 2027, and {standardPrice} is the price of one pass with currency.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassPriceBlock.tsx
+msgid "This early bird price is for purchases until {date}. After that, a pass costs {standardPrice}."
+msgstr "Ця рання ціна діє для покупок до {date} включно. Пропуск, куплений після цієї дати, коштує {standardPrice}."
+
+#. Setup wizard explanation of why the sign-in method is fixed: the instance is older than username sign-in.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "This instance was upgraded from a version of Fluxer that used email sign-in, so it stays on email."
+msgstr "Цей екземпляр оновлено з версії Fluxer, яка використовувала вхід поштою, тому він залишається на пошті."
+
+#. Title of the alert shown when edits to a published announcement message are rate limited.
+#: src/features/messaging/components/alerts/PublishedMessageEditLimitModal.tsx
+msgid "This message is at its editing limit"
+msgstr "Вичерпано ліміт редагувань"
+
+#. Muted line in the Operator Pass settings when the Operator Pass that came with Visionary ended because the account no longer has Visionary.
+#: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
+msgid "This pass ended because your Visionary ended."
+msgstr "Цей пропуск припинив дію, бо ваш Visionary завершився."
+
+#. Text in the Operator Pass checkout dialog when the payment page timed out before anyone paid. A Start again button follows it.
+#: src/features/premium/components/operator_pass/checkout/CheckoutOutcomeStage.tsx
+msgid "This payment page has expired, so nothing was charged."
+msgstr "Термін дії цієї сторінки оплати минув, тож нічого не списано."
+
+#. Body of the confirm dialog for a Plutonium self-serve refund paid on the web or in the desktop app. Every payment made in the last 3 days is refunded, for example a subscription and the upgrade paid after it.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "This refunds every purchase you made in the last 3 days and cancels any subscription they paid for. You won't be able to self-refund again for 30 days."
+msgstr "Це поверне кошти за кожну покупку, зроблену за останні 3 дні, і скасує підписку, оплачену ними. Ви не зможете самостійно повернути кошти ще раз протягом 30 днів."
+
+#. Error message in the keybinds tab. Keep the tone plain and specific.
+#: src/features/user/components/modals/tabs/keybinds_tab/CustomKeybindsList.tsx
+msgid "This removes every custom keybind and re-enables all built-in keybinds. This cannot be undone."
+msgstr "Це видалить усі власні комбінації клавіш і знову ввімкне всі вбудовані. Цю дію не можна скасувати."
+
+#. Body of the first setup wizard screen. An instance is one installation of Fluxer run by the person reading this.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "This sets up your instance, the copy of Fluxer you installed, and creates your account on it. It takes about five minutes. You can change most choices later in the admin panel, and a screen tells you when you can't."
+msgstr "Тут ви налаштовуєте свій екземпляр, тобто встановлену вами копію Fluxer, і створюєте в ньому свій обліковий запис. Це займе близько п'яти хвилин. Більшість налаштувань можна змінити пізніше в панелі адміністратора, а якщо щось змінити не можна, екран про це скаже."
+
+#. Body of the voice-channel-full modal.
+#: src/features/voice/components/alerts/VoiceChannelFullModal.tsx
+msgid "This voice channel is at its user limit. Try again later or join a different channel."
+msgstr "Цей голосовий канал досяг ліміту користувачів. Спробуйте пізніше або приєднайтеся до іншого каналу."
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Tooltip keybinds"
+msgstr "Комбінації клавіш у підказках"
+
+#. Title of the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Operator Pass and Visionary are product names, keep them as is.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "Turn on your Operator Pass"
+msgstr "Увімкнути Operator Pass"
+
+#. Linux settings text when the installed desktop app is too old for system-wide shortcuts. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Update {productName} to use system-wide keybinds on Wayland."
+msgstr "Оновіть {productName}, щоб використовувати загальносистемні комбінації клавіш у Wayland."
+
+#. Error under a certificate name field when the name is longer than 48 characters.
+#: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
+msgid "Use 48 characters or fewer."
+msgstr "Використовуйте не більше 48 символів."
+
+#. Accessible label for the official Fluxer instance option.
+#: src/features/auth/flow/instance_selector/InstancePickerRows.tsx
+msgid "Use the official Fluxer instance"
+msgstr "Використовуйте офіційний екземпляр Fluxer"
+
+#. Switch above the certificate name fields when buying more than one Operator Pass. A page is a page of the Operator certificate PDF, one page per pass, so use the same word for page as in "Download page {number} ({name})". When on, one name goes on every page of the certificate.
+#: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
+msgid "Use the same name on every page"
+msgstr "Одне ім'я на всіх сторінках"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
+msgid "Voice and video keybinds"
+msgstr "Комбінації клавіш для голосових і відеодзвінків"
+
+#. Short status next to a loading indicator in the Operator Pass checkout dialog while the app waits for the payment to go through.
+#: src/features/premium/components/operator_pass/checkout/CheckoutWaitingStage.tsx
+msgid "Waiting for your payment"
+msgstr "Чекаємо на вашу оплату"
+
+#. Hint under the checkbox "Welcome me in #operators" in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Turn on your pass means the button in that dialog that switches the pass on, nothing is bought. Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
+#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
+msgid "We add you to Fluxer Labs when you turn on your pass, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
+msgstr "Коли ви вмикаєте свій пропуск, ми додаємо вас до Fluxer Labs, якщо тільки ви раніше не виходили з Fluxer Labs і вас звідти не видаляли. Якщо це ввімкнено, невдовзі після цього ми привітаємо вас на ім'я в #operators."
+
+#. Hint under the checkbox or switch "Welcome me in #operators". Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
+#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
+msgid "We add you to Fluxer Labs when your pass is delivered, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
+msgstr "Коли ваш пропуск доставлено, ми додаємо вас до Fluxer Labs, якщо тільки ви раніше не виходили з Fluxer Labs і вас звідти не видаляли. Якщо це ввімкнено, невдовзі після цього ми привітаємо вас на ім'я в #operators."
+
+#. Error under the certificate name fields when the server turned a name down, for example because it looks like it comes from Fluxer or another brand, or because it has characters such as emoji that the certificate cannot print. Never say which rule matched.
+#: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
+msgid "We can't print this name on a certificate. Please choose another one."
+msgstr "Ми не можемо надрукувати це ім'я на сертифікаті. Виберіть інше."
+
+#. Error under the Operators' wall name field when the server turned the name down, for example because it looks like it comes from Fluxer or another brand. Never say which rule matched.
+#: src/features/premium/components/operator_pass/OperatorPassWallNameField.tsx
+msgid "We can't show this name on the Operators' wall. Please choose another one."
+msgstr "Ми не можемо показати це ім'я на стіні Operators. Виберіть інше."
+
+#. Startup screen text when the current account's instance cannot be reached. instanceHost is its host, such as chat.example.com.
+#: src/features/app/components/BootstrapErrorScreen.tsx
+msgid "We couldn't connect to {instanceHost}. Check your connection and try again."
+msgstr "Не вдалося підключитися до {instanceHost}. Перевірте з'єднання та спробуйте ще раз."
+
+#. Modal body shown when switching to an account on a named unreachable instance fails. instanceLabel is a hostname or endpoint label.
+#: src/features/auth/utils/AccountSwitcherModalUtils.tsx
+msgid "We couldn't connect to {instanceLabel} to switch accounts. Your current account is still active. Try again when the instance is back online."
+msgstr "Не вдалося підключитися до {instanceLabel} для перемикання облікових записів. Ваш поточний обліковий запис залишається активним. Спробуйте ще раз, коли сервер знову стане доступним."
+
+#. Modal body shown when switching to an account on an unreachable instance fails.
+#: src/features/auth/utils/AccountSwitcherModalUtils.tsx
+msgid "We couldn't connect to that account's instance to switch accounts. Your current account is still active. Try again when the instance is back online."
+msgstr "Не вдалося підключитися до сервера цього облікового запису для перемикання. Ваш поточний обліковий запис залишається активним. Спробуйте ще раз, коли сервер буде доступний."
+
+#: src/features/messaging/components/alerts/AttachmentUploadConnectivityModal.tsx
+msgid "We couldn't connect to the attachment upload service. {PRODUCT_NAME} can fall back to the standard upload path for messages up to {fallbackSizeFormatted} total, but these attachments exceed that combined limit and can't be sent until connectivity is restored. Try again later or contact <0>{SUPPORT_EMAIL}</0> if this keeps happening."
+msgstr "Нам не вдалося зв'язатися зі службою завантаження вкладень. {PRODUCT_NAME} може скористатися стандартним способом завантаження для повідомлень загальним розміром до {fallbackSizeFormatted}, але ці вкладення перевищують цей сукупний ліміт, тож їх не вдасться надіслати, доки не відновиться зв'язок. Спробуйте пізніше або напишіть на <0>{SUPPORT_EMAIL}</0>, якщо це повторюватиметься."
+
+#: src/features/messaging/components/alerts/AttachmentUploadConnectivityModal.tsx
+msgid "We couldn't connect to the attachment upload service. {PRODUCT_NAME} can fall back to the standard upload path for messages up to {fallbackSizeFormatted} total, but these attachments exceed that combined limit and can't be sent until connectivity is restored. Try again later or contact the administrators of this instance if this keeps happening."
+msgstr "Нам не вдалося зв'язатися зі службою завантаження вкладень. {PRODUCT_NAME} може скористатися стандартним способом завантаження для повідомлень загальним розміром до {fallbackSizeFormatted}, але ці вкладення перевищують цей сукупний ліміт, тож їх не вдасться надіслати, доки не відновиться зв'язок. Спробуйте пізніше або зверніться до адміністраторів цього екземпляра, якщо це повторюватиметься."
+
+#. Line after an Operator Pass payment that we refunded right away because emails to the address on the buyer's account bounce, so we could not send the purchase confirmation. The certificate is the numbered Operator certificate PDF that the price pays for. Settings means the user settings, where the email address is changed. No email follows, so never say we'll email.
+#: src/features/premium/components/operator_pass/checkout/CheckoutOutcomeStage.tsx
+msgid "We couldn't email the address on your account, so we refunded this payment in full and didn't create a certificate. Update your email in settings and you can buy again."
+msgstr "Нам не вдалося надіслати лист на адресу вашого облікового запису, тому ми повернули вам весь платіж і не створили сертифікат. Оновіть адресу електронної пошти в налаштуваннях, і ви зможете купити знову."
+
+#. Text in the Operator Pass checkout dialog while the app waits for the payment. The payment page opened in the web browser, and the dialog changes by itself when the payment is done. This window means the checkout dialog in the app.
+#: src/features/premium/components/operator_pass/checkout/CheckoutWaitingStage.tsx
+msgid "We opened the payment page in your browser. This window updates once your payment goes through."
+msgstr "Ми відкрили сторінку оплати у вашому браузері. Це вікно оновиться, щойно оплата пройде."
+
+#. Notice in the Operator Pass checkout dialog when the pass was removed from the account permanently. Operator Pass is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/checkout/CheckoutNoticeStage.tsx
+msgid "We permanently removed what comes with the {operatorPassName} from this account, so it can't buy a pass again."
+msgstr "Ми назавжди вилучили з цього облікового запису все, що йде з {operatorPassName}, тому він не може знову купити пропуск."
+
+#. Hint under the name field for the Operator certificate. The certificate can print names in any writing system, such as Latin, Arabic, Chinese or Devanagari. The buyer can put the name of a friend on the certificate when the pass is a gift.
+#: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
+msgid "We print each name exactly as you type it. Buying for someone else? Put their name on their certificate."
+msgstr "Ми друкуємо кожне ім'я точно так, як ви його вводите. Купуєте для іншої людини? Вкажіть її ім'я на її сертифікаті."
+
+#. Hint under the name field for the Operator certificate when a Visionary turns on the Operator Pass that comes with Visionary. The certificate can print names in any writing system, such as Latin, Arabic, Chinese or Devanagari.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "We print the name exactly as you type it."
+msgstr "Ми друкуємо ім'я точно так, як ви його вводите."
+
+#. Line after an Operator Pass payment that we refunded right away without delivering it, in a case where no email about it follows. The certificate is the numbered Operator certificate PDF that the price pays for. Never say we'll email.
+#: src/features/premium/components/operator_pass/checkout/CheckoutOutcomeStage.tsx
+msgid "We refunded this payment in full and didn't create a certificate."
+msgstr "Ми повернули вам весь платіж і не створили сертифікат."
+
+#. Line after an Operator Pass payment that we refunded right away, for example because sales to consumers in the buyer's country are paused, the certificate names were missing, or the buyer withdrew before delivery. The certificate is the numbered Operator certificate PDF that the price pays for. The buyer also gets an email that explains why, which can go out some time after this page shows, so keep it in the future tense.
+#: src/features/premium/components/operator_pass/checkout/CheckoutOutcomeStage.tsx
+msgid "We refunded this payment in full and didn't create a certificate. We'll email you the details."
+msgstr "Ми повернули вам весь платіж і не створили сертифікат. Подробиці ми надішлемо вам електронною поштою."
+
+#. Line after an Operator Pass payment that we refunded in full after the certificate was already delivered, for example after a withdrawal. The buyer also gets an email that explains why, which can go out some time after this page shows, so keep it in the future tense.
+#: src/features/premium/components/operator_pass/checkout/CheckoutOutcomeStage.tsx
+msgid "We refunded this payment in full. We'll email you the details."
+msgstr "Ми повернули вам весь платіж. Подробиці ми надішлемо вам електронною поштою."
+
+#. Description under the switch "Welcome me in #operators" in the Operator Pass settings. #operators is a channel in the Fluxer Labs community, keep it as is. Turning the switch on after the pass is delivered still queues the one welcome.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassLabsGreetingSetting.tsx
+msgid "We welcome you by name in #operators once, soon after your pass is delivered or you turn this on."
+msgstr "Ми один раз привітаємо вас на ім'я в #operators невдовзі після доставки пропуска або після того, як ви це ввімкнете."
+
+#. Line in the Operator Pass withdrawal dialogs, right above the name field. This is the statutory line saying in which durable form the receipt for the withdrawal is sent, required by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. The buyer confirms it by pressing Confirm withdrawal. {email} is the email address of the account, keep it as is. The receipt is an email that acknowledges we received the withdrawal, never a payment receipt.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "We'll send your receipt to {email}."
+msgstr "Ми надішлемо підтвердження отримання вашої відмови на {email}."
+
+#. Line in the Operator Pass withdrawal dialogs, right above the name field, shown when the account has no email address. This is the statutory line saying in which durable form the receipt for the withdrawal is sent, required by EU consumer law (Directive 2023/2673, article 11a) and in Sweden by distansavtalslagen 2 kap. 10 a §. The buyer confirms it by pressing Confirm withdrawal. Checkout is the payment page where the buyer paid. The receipt is an email that acknowledges we received the withdrawal, never a payment receipt.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "We'll send your receipt to the email address you gave at checkout."
+msgstr "Ми надішлемо підтвердження отримання вашої відмови на адресу електронної пошти, яку ви вказали під час оплати."
+
+#. Checkbox and switch label, on by default. When on, the Fluxer system account welcomes the person by name in #operators, a channel in the Fluxer Labs community, once their Operator Pass is delivered. Keep #operators as is, it is the channel name.
+#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
+msgid "Welcome me in #operators"
+msgstr "Привітайте мене в #operators"
+
+#. Premium onboarding nagbar body. {premiumProductFullName} is the full premium product name, such as Fluxer Plutonium. {premiumProductName} is the short product name.
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx
+msgid "Welcome to {premiumProductFullName}. See all {premiumProductName} features and manage your subscription."
+msgstr "Вітаємо у {premiumProductFullName}. Перегляньте всі функції {premiumProductName} і керуйте своєю підпискою."
+
+#. Premium onboarding nagbar body for lifetime premium users. Visionary is the lifetime premium tier name. {premiumProductFullName} is the full premium product name. {premiumProductName} is the short product name.
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx
+msgid "Welcome to {premiumProductFullName}. You have lifetime access as a Visionary. See all {premiumProductName} features."
+msgstr "Вітаємо у {premiumProductFullName}. У вас довічний доступ Visionary. Перегляньте всі функції {premiumProductName}."
+
+#. Premium onboarding nagbar body for lifetime premium users on a self-hosted instance. {premiumProductFullName} is the full premium product name. {premiumProductName} is the short product name.
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx
+msgid "Welcome to {premiumProductFullName}. You have lifetime access. See all {premiumProductName} features."
+msgstr "Ласкаво просимо до {premiumProductFullName}. Ви маєте довічний доступ. Перегляньте всі функції {premiumProductName}."
+
+#. Premium onboarding nagbar body for a gift subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx
+msgid "Welcome to {premiumProductFullName}. Your gift subscription runs until {formattedDate}. See all {premiumProductName} features."
+msgstr "Вітаємо у {premiumProductFullName}. Ваша подарункова підписка діє до {formattedDate}. Перегляньте всі функції {premiumProductName}."
+
+#. Premium onboarding nagbar body for a monthly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx
+msgid "Welcome to {premiumProductFullName}. Your monthly subscription renews on {formattedDate}. See all {premiumProductName} features and manage your subscription."
+msgstr "Вітаємо у {premiumProductFullName}. Ваша щомісячна підписка поновлюється {formattedDate}. Перегляньте всі функції {premiumProductName} і керуйте своєю підпискою."
+
+#. Premium onboarding nagbar body for a subscription that will cancel. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx
+msgid "Welcome to {premiumProductFullName}. Your subscription is active until {formattedDate}. See all {premiumProductName} features and manage your subscription."
+msgstr "Вітаємо у {premiumProductFullName}. Ваша підписка діє до {formattedDate}. Перегляньте всі функції {premiumProductName} і керуйте своєю підпискою."
+
+#. Premium onboarding nagbar body for a yearly subscription. {premiumProductFullName} is the full premium product name, {premiumProductName} is the short product name, and {formattedDate} is already localized.
+#: src/features/app/components/layout/app_layout/nagbars/PremiumOnboardingNagbar.tsx
+msgid "Welcome to {premiumProductFullName}. Your yearly subscription renews on {formattedDate}. See all {premiumProductName} features and manage your subscription."
+msgstr "Вітаємо у {premiumProductFullName}. Ваша річна підписка поновлюється {formattedDate}. Перегляньте всі функції {premiumProductName} і керуйте своєю підпискою."
+
+#. Accessible name of the slideshow on the left side of the Operator Pass checkout dialog, which shows what comes with the pass one slide at a time. Operator Pass is a product name and stays untranslated. Never use a word that means bonus, perks, gift, included or free.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcase.tsx
+msgid "What comes with the {operatorPassName}"
+msgstr "Що входить до {operatorPassName}"
+
+#. Muted line under the slideshow in the Operator Pass checkout dialog. The linked text opens section 3 of the Operator Pass terms, which lists everything that comes with the pass. {OPERATOR_PASS_NAME} is a product name and stays untranslated. Never use a word that means bonus, perks, gift, included or free.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcase.tsx
+msgid "What comes with the pass is described in the <0>{OPERATOR_PASS_NAME} terms</0>."
+msgstr "Усе, що йде разом із пропуском, описано в <0>умовах {OPERATOR_PASS_NAME}</0>."
+
+#. Text under the heading Early feature testing on a slide in the Operator Pass checkout dialog. When the team has a new feature ready for testing, we may invite people with the pass to try it before it is released and to say what they think of it. May invite means it is an invitation we can choose to send, never a promise that every Operator tests every feature. The second sentence says features that haven't been released yet can still have bugs. Calm and plain, no hype. No dashes as punctuation and no semicolons.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "When we have a new {productName} feature ready for testing, we may invite you to try it before it's released and to tell us what you think of it. Features that haven't been released yet can still have bugs."
+msgstr "Коли в нас є нова функція {productName}, готова до тестування, ми можемо запросити вас спробувати її до виходу й розповісти, що ви про неї думаєте. У функціях, які ще не вийшли, можуть бути помилки."
+
+#: src/features/user/components/modals/tabs/UserVoiceTab.tsx
+msgid "While push-to-talk is on, your keybind controls your microphone, so the mute button is disabled."
+msgstr "Коли ввімкнено режим «Натисни і говори», мікрофоном керує ваша комбінація клавіш, тому кнопка вимкнення мікрофона неактивна."
+
+#. Hint under the CNPJ field in the checkout dialogs, shown only to buyers in Brazil. CNPJ is the Brazilian company registration number, keep it as is. The Brazilian Consumer Defense Code is the Código de Defesa do Consumidor, and the right of withdrawal is the direito de arrependimento in its article 49. Use the usual name of that law in your language.
+#: src/features/premium/components/BusinessPurchaseField.tsx
+msgid "With a CNPJ, this is a business purchase, so the 7-day right of withdrawal in the Brazilian Consumer Defense Code doesn't apply to it, unless Brazilian law treats your company as a consumer."
+msgstr "З CNPJ це покупка для бізнесу, тому 7-денне право на відмову за бразильським Кодексом захисту прав споживачів на неї не поширюється, якщо тільки бразильський закон не вважає вашу компанію споживачем."
+
+#. Line in the dialog for an Operator Pass someone passed on to you. The Operators' wall is the list of Operators on the homepage. Operator is the badge name and #operators is a channel name, keep both as is. {labsName} is the community name. Name these things plainly and never call them a bonus, a perk, free or included.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "With a pass on your account, you have the Operator badge, a spot on the Operators' wall and #operators in {labsName}."
+msgstr "Коли на вашому обліковому записі є пропуск, у вас є значок Operator, місце на стіні Operators і #operators у {labsName}."
+
+#. Small text link under Operator Passes bought in a country whose withdrawal right lasts after delivery, such as Brazil with 7 days. It withdraws from one pass of the purchase for a refund of that pass, while the button next to it withdraws from the whole purchase. Only shown when the purchase has more than one pass. {date} is the last day, without a time. Use the consumer law word for withdrawing from a purchase (pt-BR: desistir), never a word for taking money out.
+#: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
+msgid "Withdraw from one pass (until {date})"
+msgstr "Відмовитися від одного пропуску (до {date} включно)"
+
+#. Title of the dialog where a buyer withdraws from one Operator Pass of a purchase. "Withdraw" means using the consumer right of withdrawal on an Operator Pass purchase for a full refund, before the certificate is delivered or, where the law keeps the right after delivery such as in Brazil, within the days it gives. Never a word for taking money out.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Withdraw from this pass?"
+msgstr "Відмовитися від цього пропуску?"
+
+#. Toast after the withdrawal went through. The receipt is the email that acknowledges we received the withdrawal, never a payment receipt, so use the same words as in "We'll send your receipt to {email}." The receipt email can go out some time after this toast shows, so keep it in the future tense. "Withdraw" means using the consumer right of withdrawal on an Operator Pass purchase for a full refund, before the certificate is delivered or, where the law keeps the right after delivery such as in Brazil, within the days it gives. Never a word for taking money out.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Withdrawal confirmed. We'll email your receipt."
+msgstr "Відмову від договору підтверджено. Підтвердження отримання вашої відмови ми надішлемо електронною поштою."
+
+#. Setup wizard option that accepts the push relay privacy notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "Yes, use the push relay"
+msgstr "Так, використовувати push-ретранслятор"
+
+#. Line after a successful Operator Pass purchase. The linked text opens the Operator Pass tab in the user settings, where the person can change how they show on the Operators' wall and the welcome in #operators. The Operators' wall is the list of Operators on the homepage. Keep #operators as is, it is a channel name. {OPERATOR_PASS_NAME} is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/checkout/CheckoutDoneStage.tsx
+msgid "You can change your spot on the Operators' wall and your welcome in #operators in <0><1>your {OPERATOR_PASS_NAME} settings</1></0>."
+msgstr "Змінити своє місце на стіні Operators і привітання в #operators можна в <0><1>налаштуваннях {OPERATOR_PASS_NAME}</1></0>."
+
+#. Line under "Full refund" in the Payments settings when the amount is not known, for example for a Google Play purchase. {date} is the last day of the refund window, such as Nov 2, 2026.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "You can get a full refund until {date}."
+msgstr "Ти можеш отримати повне повернення коштів до {date} включно."
+
+#. Line under "Full refund" in the Payments settings when the amount is not known and the refund also ends a Plutonium subscription. {date} is the last day of the refund window, such as Nov 2, 2026.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "You can get a full refund until {date}. This also ends your subscription right away."
+msgstr "Ти можеш отримати повне повернення коштів до {date} включно. Це також одразу припиняє твою підписку."
+
+#. Line under "Full refund" in the Payments settings. {amount} is the price paid, with currency, and {date} is the last day of the refund window, such as Nov 2, 2026. Both are filled in by code.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "You can get the full {amount} back until {date}."
+msgstr "Ти можеш повернути повну суму {amount} до {date} включно."
+
+#. Line under "Full refund" in the Payments settings when the refund also ends a Plutonium subscription. {amount} is the price paid, with currency, and {date} is the last day of the refund window, such as Nov 2, 2026. Both are filled in by code.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "You can get the full {amount} back until {date}. This also ends your subscription right away."
+msgstr "Ти можеш повернути повну суму {amount} до {date} включно. Це також одразу припиняє твою підписку."
+
+#. Error when you try to pass an Operator Pass on to someone you are not friends with.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "You can only pass this on to one of your friends on Fluxer."
+msgstr "Ви можете передати це лише одному зі своїх друзів у Fluxer."
+
+#. Line under a Plutonium subscription or gift in settings, next to the Withdraw from contract here button. "Withdraw" means using the consumer right of withdrawal to get money back, never a word for taking money out. {date} is the last day of the withdrawal period, such as Dec 4, 2026. {amount} is a price with currency.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "You can withdraw until {date} and get {amount} back."
+msgstr "Ти можеш відмовитися до {date} включно й повернути {amount}."
+
+#. Emoji upload limit message in community emoji settings. Do not suggest that communities can be upgraded.
+#: src/features/guild/components/modals/guild_tabs/GuildEmojiTab.tsx
+msgid "You can't add more emojis. Delete some existing emojis to make room."
+msgstr "Ви досягли максимальної кількості емоджі. Видаліть деякі наявні емоджі, щоб звільнити місце."
+
+#. Sticker upload limit message in community sticker settings. Do not suggest that communities can be upgraded.
+#: src/features/guild/components/modals/guild_tabs/GuildStickersTab.tsx
+msgid "You can't add more stickers. Delete some existing stickers to make room."
+msgstr "Ви досягли максимальної кількості стікерів. Видаліть деякі наявні стікери, щоб звільнити місце."
+
+#. Description text in the background image gallery modal. Preserve {maxBackgroundImages}; it is inserted by code. Keep the tone plain and specific.
+#: src/features/theme/components/modals/BackgroundImageGalleryModal.tsx
+msgid "You can't have more than {maxBackgroundImages} backgrounds. Remove one to add a new background."
+msgstr "Ви досягли максимуму в {maxBackgroundImages} фонів. Видаліть один, щоб додати новий."
+
+#. Sentence in the dialog that withdraws from one Operator Pass. The certificate page is the page for this pass in the Operator certificate PDF. "Withdraw" means using the consumer right of withdrawal on an Operator Pass purchase for a full refund, before the certificate is delivered or, where the law keeps the right after delivery such as in Brazil, within the days it gives. Never a word for taking money out.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "You get a full refund to your original payment method. The pass ends now, and our records show its certificate page as canceled."
+msgstr "Ви отримаєте повне повернення коштів на початковий спосіб оплати. Пропуск припиняється зараз, а в наших записах його сторінка сертифіката позначена як анульована."
+
+#. Modal body shown when the free bookmarks limit is reached and Plutonium would increase it. {count} is the free cap, {premiumCount} the Plutonium cap.
+#: src/features/app/components/alerts/MaxBookmarksModal.tsx
+msgid "You have {count, plural, one {# bookmark} other {# bookmarks}}, the most you can have for free. With {premiumProductName} you can have up to {premiumCount, plural, one {# bookmark} other {# bookmarks}}, or you can remove one to add another."
+msgstr "Ви досягли безкоштовного ліміту: {count, plural, one {# закладка} few {# закладки} many {# закладок} other {# закладки}}. З {premiumProductName} ліміт зросте до {premiumCount, plural, one {# закладки} few {# закладок} many {# закладок} other {# закладки}}, або видаліть одну, щоб додати нову."
+
+#. Modal body shown when the bookmarks limit is reached on a self-hosted instance with no upgrade path. {count} is the bookmark cap.
+#: src/features/app/components/alerts/MaxBookmarksModal.tsx
+msgid "You have {count, plural, one {# bookmark} other {# bookmarks}}, the most your instance admin allows. Remove one to add another."
+msgstr "Ви досягли ліміту: {count, plural, one {# закладка} few {# закладки} many {# закладок} other {# закладки}}. Цей ліміт встановлює адміністратор вашого екземпляра. Видаліть одну, щоб додати нову."
+
+#. Modal body shown when the free favorite-memes limit is reached and Plutonium would increase it. {count} is the free cap, {premiumCount} the Plutonium cap.
+#: src/features/app/components/alerts/MaxFavoriteMemesModal.tsx
+msgid "You have {count, plural, one {# saved media item} other {# saved media items}}, the most you can have for free. With {premiumProductName} you can have up to {premiumCount, plural, one {# saved media item} other {# saved media items}}."
+msgstr "Ви досягли безкоштовного ліміту: {count, plural, one {# збережений медіафайл} few {# збережені медіафайли} many {# збережених медіафайлів} other {# збереженого медіафайлу}}. З {premiumProductName} ліміт зросте до {premiumCount, plural, one {# збереженого медіафайлу} few {# збережених медіафайлів} many {# збережених медіафайлів} other {# збереженого медіафайлу}}."
+
+#. Modal body shown when the favorite-memes limit is reached on a self-hosted instance with no Plutonium upgrade path. {count} is the saved media cap.
+#: src/features/app/components/alerts/MaxFavoriteMemesModal.tsx
+msgid "You have {count, plural, one {# saved media item} other {# saved media items}}, the most your instance admin allows."
+msgstr "Ви досягли ліміту: {count, plural, one {# збережений медіафайл} few {# збережені медіафайли} many {# збережених медіафайлів} other {# збереженого медіафайлу}}. Цей ліміт встановлює адміністратор вашого екземпляра."
+
+#. Line under a Plutonium subscription in the Payments settings, next to the Withdraw from contract here button, when the refund is less than what was paid. "Withdraw" means using the consumer right of withdrawal to get money back, never a word for taking money out. {paid} and {amount} are prices with currency: {paid} is what the user paid and {amount} is what they get back. {paidDate} is the payment date and {endDate} the last day of the withdrawal period, such as Dec 4, 2026. {premiumProductName} is the plan name, such as Plutonium, keep it as is.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "You paid {paid} on {paidDate}. If you withdraw now, we keep the part for the time you've had {premiumProductName} and refund {amount}. You can withdraw until {endDate}."
+msgstr "Ти сплатив {paid} {paidDate}. Якщо ти відмовишся зараз, ми залишимо частину за час користування {premiumProductName} і повернемо {amount}. Відмовитися можна до {endDate} включно."
+
+#. Sentence in the dialog that withdraws from a paid Plutonium subscription, when the refund is less than what was paid. {paid} is what the user paid and {amount} is what they get back, both prices with currency. {premiumProductName} is the plan name, such as Plutonium, keep it as is. "Withdraw" means using the consumer right of withdrawal to get money back, never a word for taking money out.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "You paid {paid}. We keep the part for the time you've had {premiumProductName}, so we refund {amount} to your original payment method."
+msgstr "Ти сплатив {paid}. Ми залишаємо частину за час користування {premiumProductName}, тому повертаємо {amount} на твій початковий спосіб оплати."
+
+#. Short label in the max bookmarks modal.
+#: src/features/app/components/alerts/MaxBookmarksModal.tsx
+msgid "You're at the bookmark limit"
+msgstr "Досягнуто ліміту закладок"
+
+#. Title of the error modal shown when the user is already in the maximum number of communities.
+#: src/features/discovery/commands/DiscoveryJoinCommands.tsx
+msgid "You're at the community limit"
+msgstr "Ви досягли ліміту спільнот"
+
+#. Label in the message list page.
+#. Label in the saved messages content popout.
+#. Short label in the shared app channel pins content.
+#: src/features/app/components/shared/ChannelPinsContent.tsx
+#: src/features/messaging/components/pages/MessageListPage.tsx
+#: src/features/messaging/components/popouts/RecentMentionsContent.tsx
+#: src/features/messaging/components/popouts/SavedMessagesContent.tsx
+msgid "You're at the end"
+msgstr "Ви досягли кінця"
+
+#. Title of the error modal shown when no more favorite GIFs can be added.
+#: src/features/expressions/commands/FavoriteGifCommands.ts
+msgid "You're at the favorite GIF limit"
+msgstr "Досягнуто ліміту вибраних GIF"
+
+#. Limit text shown when no more favorite GIFs can be added.
+#: src/features/expressions/utils/FavoriteGifMessageDescriptors.ts
+msgid "You're at the favorite GIF limit."
+msgstr "Ви досягли ліміту вибраних GIF."
+
+#. Title of the error modal shown when the user or a recipient has too many open group DMs.
+#: src/features/app/components/alerts/DmActionErrorModal.tsx
+msgid "You're at the group DM limit"
+msgstr "Ви досягли ліміту групових чатів"
+
+#. Short label in the max favorite memes modal.
+#: src/features/app/components/alerts/MaxFavoriteMemesModal.tsx
+msgid "You're at the saved media limit"
+msgstr "Досягнуто ліміту збережених медіа"
+
+#. Toast / error shown when the user tries to join voice with too many active connections in the same channel.
+#: src/features/voice/engine/media_engine_facade/shared.ts
+msgid "You're at this voice channel's connection limit."
+msgstr "Ви досягли ліміту підключень для цього голосового каналу."
+
+#. Text after a successful Operator Pass purchase, when the certificate can be downloaded but the email with it hasn't gone out yet. The certificate is the Operator certificate PDF. Settings means the user settings. Don't say the email was sent. Operator Pass is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/checkout/CheckoutDoneStage.tsx
+msgid "Your {operatorPassName} is ready, and you can download your certificate here or in your settings."
+msgstr "Ваш {operatorPassName} готовий, а сертифікат можна завантажити тут або в налаштуваннях."
+
+#. Text after a successful Operator Pass purchase, when the certificate email went out. The certificate is the Operator certificate PDF with a number and the name chosen at checkout. Settings means the user settings. Operator Pass is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/checkout/CheckoutDoneStage.tsx
+msgid "Your {operatorPassName} is ready. We emailed your certificate, and you can download it here or in your settings."
+msgstr "Ваш {operatorPassName} готовий. Ми надіслали вам сертифікат електронною поштою, а завантажити його можна тут або в налаштуваннях."
+
+#. Text after a successful Operator Pass purchase, when the certificate PDF can't be downloaded yet. Settings means the user settings. Don't promise when it is done or say it was emailed. Operator Pass is a product name and stays untranslated.
+#: src/features/premium/components/operator_pass/checkout/CheckoutDoneStage.tsx
+msgid "Your {operatorPassName} is ready. We're still making your certificate, and it shows up in your settings once it's done."
+msgstr "Ваш {operatorPassName} готовий. Ми ще готуємо ваш сертифікат, і він з'явиться в налаштуваннях, щойно буде готовий."
+
+#. Nagbar body shown while a premium subscription is in its grace period after a failed renewal. {premiumProductName} is the premium product name and {formattedGraceDate} is already localized. Use the same word for "features" as in "See all {premiumProductName} features".
+#: src/features/app/components/layout/app_layout/nagbars/PremiumStatusNagbar.tsx
+msgid "Your {premiumProductName} subscription failed to renew. You still have access to all {premiumProductName} features until {formattedGraceDate}. Update your payment method before then to keep your access."
+msgstr "Не вдалося поновити вашу підписку {premiumProductName}. Ви все ще маєте доступ до всіх функцій {premiumProductName} до {formattedGraceDate}. Оновіть спосіб оплати до цієї дати, щоб зберегти доступ."
+
+#. Nagbar body shown when a premium subscription has expired. {premiumProductName} is the premium product name. Use the same word for "features" as in "See all {premiumProductName} features".
+#: src/features/app/components/layout/app_layout/nagbars/PremiumStatusNagbar.tsx
+msgid "Your {premiumProductName} subscription has expired, and you no longer have access to {premiumProductName} features. Reactivate your subscription to get access again."
+msgstr "Термін дії вашої підписки {premiumProductName} закінчився, і ви більше не маєте доступу до функцій {premiumProductName}. Поновіть підписку, щоб відновити доступ."
+
+#. Sentence in the Operator Pass withdrawal dialogs, shown instead of the usual one when the withdrawal ends the last Operator Pass on the account and you have Visionary. The badge is the Operator badge on the profile and the wall listing is the spot on the Operators' wall. #operators is the channel name in Fluxer Labs and Visionary is a plan name, keep both as is. Visionary keeps access to #operators under section 13 of the Operator Pass terms.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Your badge and wall listing go too. You keep #operators through your Visionary."
+msgstr "Ваш значок і запис на стіні також зникнуть. Доступ до #operators залишається у вас завдяки Visionary."
+
+#. Body of the confirmation before offering your last Operator Pass, shown instead of the usual one when you have Visionary. The badge is the Operator badge and the wall listing is your entry on the Operators' wall. #operators is the channel name in Fluxer Labs and Visionary is a plan name, keep both as is. Visionary keeps access to #operators under section 13 of the Operator Pass terms. {name} is the display name of the person you offer it to.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "Your badge and wall listing go when the pass moves to {name}. You keep #operators through your Visionary."
+msgstr "Ваш значок і запис на стіні зникнуть, коли пропуск перейде до користувача {name}. Доступ до #operators залишається у вас завдяки Visionary."
+
+#. Sentence in the Operator Pass withdrawal dialogs, shown only when the withdrawal ends the last Operator Pass on the account. The badge is the Operator badge on the profile, the wall listing is the spot on the Operators' wall, and #operators is the channel name in Fluxer Labs, kept as is. Together they stand for everything else that comes with the pass.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Your badge, wall listing and #operators go too."
+msgstr "Ваш значок, запис на стіні й доступ до #operators також зникнуть."
+
+#. Body of the confirmation before offering your last Operator Pass. The badge is the Operator badge, the wall listing is your entry on the Operators' wall, and #operators is the channel name in Fluxer Labs, kept as is. Together they stand for everything else that comes with the pass. {name} is the display name of the person you offer it to.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "Your badge, wall listing and #operators go when the pass moves to {name}."
+msgstr "Ваш значок, запис на стіні й доступ до #operators зникнуть, коли пропуск перейде до користувача {name}."
+
+#. Line in the dialog where you pick who gets one of your Operator Passes. The certificate is the Operator certificate PDF with the name chosen at checkout, and passing the pass on does not change it.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "Your certificate doesn't change."
+msgstr "Ваш сертифікат залишається таким, яким його надруковано."
+
+#. Toast after replacing the private link to an Operator certificate page with a new one.
+#: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
+msgid "Your certificate page has a new link."
+msgstr "Сторінка вашого сертифіката має нове посилання."
+
+#. First line in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. {date} is a long date such as November 20, 2026. Never translate certificate as diploma, card, license or token.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "Your certificate shows the name below and {date}, the date you got Visionary."
+msgstr "На вашому сертифікаті вказано ім'я нижче і {date}, дату, коли ви отримали Visionary."
+
+#. Body of the confirmation shown before saving an edit to a message published from an announcement channel.
+#: src/features/messaging/commands/MessageCommands.tsx
+msgid "Your changes go to every community that follows this channel, which can take a minute. Each published message allows 3 quick edits, then 1 every 20 minutes."
+msgstr "Ваші зміни надійдуть до всіх спільнот, які підписані на цей канал, що може зайняти хвилину. Кожне опубліковане повідомлення дозволяє 3 швидкі редагування, а потім по 1 кожні 20 хвилин."
+
+#. Explains the public Operator Pass count. Each valid pass counts once per account, including purchases passed on. The badge is the Operator badge and the wall is the Operators' wall.
+#: src/features/premium/utils/OperatorPassRecognitionMessages.ts
+msgid "Your count includes the passes on your account and the passes you bought and passed on. Paused or ended passes don't count, and you need at least one pass on your account for the badge and the wall."
+msgstr "Ваша кількість містить пропуски на вашому обліковому записі та пропуски, які ви купили й передали іншим. Призупинені або припинені пропуски не враховуються, а для значка й стіни потрібен принаймні один пропуск на обліковому записі."
+
+#. Linux settings text when the desktop dialog for system-wide shortcuts was dismissed or failed. Neutral wording, the user may not have declined anything.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Your desktop didn't set up system-wide keybinds."
+msgstr "Ваше робоче середовище не налаштувало загальносистемні комбінації клавіш."
+
+#. Subtitle above the list of system-wide shortcuts assigned by the Linux desktop. {productName} is the app name.
+#: src/features/user/components/modals/tabs/components/SystemShortcutsSection.tsx
+msgid "Your desktop runs these keybinds even while {productName} is not focused."
+msgstr "Ваше робоче середовище виконує ці комбінації клавіш, навіть коли {productName} не у фокусі."
+
+#. Title of the second step of the Operator Pass checkout dialog, with the name on the Operators' wall, the welcome in #operators and whether the buyer buys for a company.
+#: src/features/premium/components/modals/OperatorPassCheckoutModal.tsx
+msgid "Your details"
+msgstr "Ваші дані"
+
+#. Heading of the first slide in the Operator Pass checkout dialog, next to a picture of a sample certificate. The certificate is a PDF with one page for each pass, and each page has its own number, the name chosen at checkout and the date and time of payment. Always call it a certificate, never a diploma, card, collectible, token or license, and never suggest it can be resold or has cash value. Keep Operator in English.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "Your Operator certificate"
+msgstr "Ваш сертифікат Operator"
+
+#. Shown in the dialog after a Visionary turned on the Operator Pass that comes with Visionary, above the button that downloads the certificate PDF.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "Your Operator Pass is on. Your certificate is ready to download."
+msgstr "Ваш Operator Pass увімкнено. Сертифікат готовий до завантаження."
+
+#. Text under the heading Your Operator certificate on a slide in the Operator Pass checkout dialog. The certificate is a PDF with one page for each pass, and each page has its own number, the name chosen at checkout and the date and time of payment. Always call it a certificate, never a diploma, card, collectible, token or license, and never suggest it can be resold or has cash value. Keep Operator in English. Checkout is where you pay. Settings are the app settings, where each certificate page has its own private link. The last two sentences tell a buyer who buys a pass as a gift to type the other person's name on that page. Calm and plain.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "Your pass comes with this certificate. It's a PDF with one page for each pass, and each page has its own number, the name you choose at checkout and the date and time you paid. We email it to you, and in settings each page has its own link that you can open, print or share. Buying for someone else? Put their name on their certificate."
+msgstr "До вашого пропуску додається цей сертифікат. Це PDF, у якому на кожен пропуск припадає одна сторінка, і кожна сторінка має власний номер, ім'я, яке ви обираєте під час оформлення замовлення, а також дату і час оплати. Ми надсилаємо його вам електронною поштою, а в налаштуваннях кожна сторінка має власне посилання, яке можна відкрити, надрукувати або надіслати іншим. Купуєте для когось іншого? Вкажіть ім'я цієї людини в її сертифікаті."
+
+#. Name of the section in the Operator Pass settings tab that lists the Operator Passes the account holds.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "Your passes"
+msgstr "Твої пропуски"
+
+#. Settings search entry description for the Operator Pass settings tab. One-line summary of what the tab holds. Operators' wall is the name of a section of the homepage.
+#: src/features/user/components/settings_utils/search_index/OperatorPassIndex.ts
+msgid "Your passes, your certificate and your spot on the Operators' wall"
+msgstr "Твої пропуски, твій сертифікат і твоє місце на стіні Operators"
+
+#. Success toast shown after a self-serve Plutonium refund is issued. "Business days" means working days, not weekends or holidays.
+#: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
+msgid "Your refund has been issued. It can take a few business days before you see the money."
+msgstr "Повернення коштів оформлено. Може минути кілька робочих днів, перш ніж ви побачите гроші."
+
+#. Sentence in the dialog that withdraws from a paid Plutonium subscription. Withdrawing refunds every payment for it and ends the subscription right away.
+#: src/features/premium/components/operator_pass/OperatorPassWithdrawModal.tsx
+msgid "Your subscription ends now."
+msgstr "Твоя підписка завершується зараз."
+
+#. Line in the Operator Pass settings for a Visionary who has not turned on the Operator Pass that comes with Visionary yet. A Turn on button follows it. Visionary and Operator Pass are product names, keep them as is. You pay nothing more means turning it on costs nothing on top of what they paid for Visionary, never use a word that means free or included.
+#: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
+msgid "Your Visionary comes with an Operator Pass. You pay nothing more to turn it on, and nothing about your Visionary changes."
+msgstr "Разом із вашим Visionary ви отримуєте Operator Pass. За його ввімкнення ви нічого додатково не платите, і у вашому Visionary нічого не змінюється."
+
+#. Line in the dialog where a Visionary turns on the Operator Pass that comes with Visionary, shown when the account is not in {labsName}, the community name. Operator is a role name and #operators a channel name, keep both as is.
+#: src/features/premium/components/operator_pass/OperatorPassVisionaryModal.tsx
+msgid "Your Visionary gives you #operators in {labsName} once you join with this account. After you turn on your Operator Pass, joining also gives you the Operator role."
+msgstr "Завдяки Visionary ви отримаєте доступ до #operators, щойно приєднаєтеся до {labsName} із цього облікового запису. Після того як ввімкнете Operator Pass, приєднання дасть вам і роль Operator."

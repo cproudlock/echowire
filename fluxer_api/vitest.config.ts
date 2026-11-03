@@ -42,6 +42,7 @@ const MODULE_REGISTRY_TEST_FILES = [
 	'src/api/worker/tasks/HarvestUserData.test.ts',
 	'src/api/voice/tests/VoiceP2pConnectionReports.test.ts',
 	'src/api/voice/tests/VoiceAvailabilityService.test.ts',
+	'src/api/billing_documents/BillingDocuments.test.ts',
 ];
 
 const INSTANCE_POLICY_TEST_FILES = ['src/api/admin/tests/InstanceConfigPendingRegistrationApproval.test.ts'];

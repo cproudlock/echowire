@@ -526,6 +526,7 @@ class RequestServices implements RequestScopedServices {
 			this.stripeService.getStripe(),
 			new JobLedgerRepository(),
 			this.storeEntitlementService,
+			this.stripeService.operatorPassFulfilment,
 		);
 		return this.cachedAdminService;
 	}
@@ -875,7 +876,6 @@ class RequestServices implements RequestScopedServices {
 			this.stripeService.getStripe(),
 			getOperatorPassRepository(),
 			getOperatorPassEntitlementService(),
-			getDonationRepository(),
 		);
 		return this.cachedOperatorPassCheckoutService;
 	}
@@ -911,6 +911,7 @@ class RequestServices implements RequestScopedServices {
 				getUserCacheService(),
 				getGatewayService(),
 				Config.instance.selfHosted ? null : getOperatorPassEntitlementService(),
+				Config.instance.selfHosted ? null : this.operatorPassServices.roleService,
 			);
 		}
 		return this.cachedUserAccountRequestService;

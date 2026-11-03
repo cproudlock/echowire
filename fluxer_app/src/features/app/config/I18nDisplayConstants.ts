@@ -10,6 +10,8 @@ export {PRODUCT_NAME};
 // (DESKTOP_APP_NAME in fluxer_desktop DesktopIdentity.ts), which is lowercase.
 export const PRODUCT_LABS_COMMUNITY_NAME = `${PRODUCT_NAME} Labs`;
 export const OPERATOR_PASS_NAME = 'Operator Pass';
+export const OPERATOR_PASS_SELLER_ADDRESS = 'c/o Embassy House, Östgötagatan 12, 116 25 Stockholm';
+export const OPERATOR_PASS_SELLER_PHONE = '+46 79 101 18 18';
 export const DESKTOP_ENTRY_NAME = 'echowire';
 export const CANARY_DESKTOP_ENTRY_NAME = 'echowire canary';
 export const PAYMENT_PROVIDER_NAME = 'Stripe';

@@ -219,6 +219,7 @@ export interface MasterConfig {
 			from_email: string;
 			from_name: string;
 			reply_to_email: string;
+			support_alert_email?: string;
 			app_base_url: string;
 			webhook_secret?: string;
 			smtp?: SmtpConfig;
@@ -349,6 +350,10 @@ export interface MasterConfig {
 		};
 		account_identity: AccountIdentityModeName | null;
 		tag_style: TagStyleName | null;
+		age_policy: {
+			enabled?: boolean;
+			restricted_regions?: Array<string>;
+		};
 	};
 	payment_disputes: {
 		closure_effective_at?: string;
@@ -360,14 +365,18 @@ export interface MasterConfig {
 		now_override?: string;
 		labs_guild_id?: string;
 		labs_operator_role_id?: string;
+		labs_visionary_role_id?: string;
+		labs_access_role_id?: string;
+		labs_operators_channel_id?: string;
 		standard_prices_minor?: Partial<Record<string, number>>;
 		release_lists?: string;
 		transfer_lock_hours?: number;
+		wall_auto_approve?: boolean;
 		withdrawal_countries?: string;
-		stopped_countries?: string;
 		localized_prices_enabled?: Partial<Record<string, boolean>>;
 		wall_tiers?: string;
 		max_quantity?: number;
+		preview_ips?: Array<string>;
 	};
 	dev: {
 		relax_registration_rate_limits: boolean;

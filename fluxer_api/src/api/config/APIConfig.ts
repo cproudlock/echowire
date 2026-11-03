@@ -10,6 +10,7 @@ import type {CachePurgeAdapterName, StoreProductSlotName, VoiceTurnServerConfig}
 import type {ResolvedDownloadsProvider} from '@fluxer/config/src/S3DownloadsProvider';
 import type {AccountIdentityMode, TagStyle} from '@fluxer/constants/src/AccountIdentityConstants';
 import type {SmtpTlsMode} from '@fluxer/constants/src/SmtpConstants';
+import type {GeoEntry} from '@fluxer/schema/src/domains/geolocation/GeolocationSchemas';
 import type {OperatorPassCurrency} from '@fluxer/schema/src/domains/operator_pass/OperatorPassSchemas';
 
 export type APIWorkerMode = 'all_lanes' | 'single_lane' | 'single_task';
@@ -18,6 +19,10 @@ export type APIWorkerLaneName = 'realtime' | 'unfurl' | 'lifecycle' | 'batch' | 
 export interface AppStoreAppConfig {
 	bundleId: string;
 	appAppleId: number;
+}
+
+export interface AgePolicyConfig {
+	restricted: Array<GeoEntry>;
 }
 
 export interface TrustedCallerConfig {
@@ -47,14 +52,18 @@ export interface OperatorPassConfig {
 	clockOffsetMs: number;
 	labsGuildId: bigint | null;
 	labsOperatorRoleId: bigint | null;
+	labsVisionaryRoleId: bigint | null;
+	labsAccessRoleId: bigint | null;
+	labsOperatorsChannelId: bigint | null;
 	standardPricesMinor: OperatorPassPriceTable | null;
 	releaseLists: OperatorPassReleaseListTable;
 	transferLockMs: number;
+	wallAutoApprove: boolean;
 	withdrawalCountries: OperatorPassWithdrawalCountryTable;
-	stoppedCountries: ReadonlySet<string>;
 	disabledCurrencies: ReadonlySet<OperatorPassCurrency>;
 	wallTierMinimums: ReadonlyArray<number>;
 	maxQuantity: number;
+	previewIps: ReadonlyArray<string>;
 }
 
 export interface APICachePurgeConfig {
@@ -198,6 +207,7 @@ export interface APIConfig {
 		fromEmail: string;
 		fromName: string;
 		replyToEmail: string;
+		supportAlertEmail: string | null;
 		appBaseUrl: string;
 		smtp?: SmtpConfig;
 		fallback?: {
@@ -345,6 +355,7 @@ export interface APIConfig {
 		};
 		accountIdentity: AccountIdentityMode | null;
 		tagStyle: TagStyle | null;
+		agePolicy: AgePolicyConfig;
 	};
 	discovery: {
 		enabled: boolean;

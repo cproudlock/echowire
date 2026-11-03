@@ -1,0 +1,3 @@
+2026-11-01T10:00:00Z INFO starting
+2026-11-01T10:00:01Z FATAL drill: the service cannot start
+2026-11-01T10:00:02Z INFO idle

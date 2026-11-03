@@ -1,0 +1,5 @@
+2026-11-01T10:00:00Z INFO starting
+2026-11-01T10:00:01Z ERROR retry failed: connection refused to 10000001
+2026-11-01T10:00:03Z ERROR retry failed: connection refused to 10000001
+2026-11-01T10:00:05Z ERROR retry failed: connection refused to 10000001
+2026-11-01T10:00:06Z INFO idle

@@ -1,0 +1,2 @@
+2026-11-01T10:00:20Z INFO steady state
+2026-11-01T10:00:21Z ERROR Snowflake service error: shard_unavailable

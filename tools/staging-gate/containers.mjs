@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 // Compare the services a compose file declares with the containers that are running.
-//   containers.mjs --ps ps.json --config compose-config.json [--json out.json] [--quiet]
+//   containers.mjs --ps ps.json --config compose-config.json [--json out.json] [--quiet] [--explain]
+// --explain adds one line naming the likely culprit (a container that is starting, unhealthy, exited or
+// restarting) and, separately, the containers that were never started because something they depend on
+// is not healthy ('created': they are waiting, not broken).
 // ps.json is `docker compose ps -a --format json` (one object per line, or an array); the config is
 // `docker compose config --format json`. Exit 0 only when every declared service is accounted for:
 // running (and healthy when it has a healthcheck), or a one-shot (restart: "no") that exited 0.
@@ -12,6 +15,7 @@ function parseArgs(argv) {
 	for (let i = 0; i < argv.length; i++) {
 		const a = argv[i];
 		if (a === '--quiet') out.quiet = true;
+		else if (a === '--explain') out.explain = true;
 		else if (a.startsWith('--')) out[a.slice(2)] = argv[++i];
 	}
 	return out;
@@ -80,6 +84,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
 	if (!args.quiet) {
 		console.log(`containers: ${result.ok}/${result.expected} services up`);
 		for (const r of result.problems) console.log(`  NOT OK  ${r.service}: ${r.state} (${r.detail})`);
+		if (args.explain && result.problems.length > 0) {
+			const waiting = result.problems.filter((r) => r.state === 'created').map((r) => r.service);
+			const culprits = result.problems.filter((r) => r.state !== 'created').map((r) => `${r.service} (${r.state})`);
+			console.log(`  CULPRIT  ${culprits.length > 0 ? culprits.join(', ') : 'none started: see the compose log'}`);
+			if (waiting.length > 0)
+				console.log(`  WAITING  ${waiting.join(', ')} (never started: they depend on the culprit)`);
+		}
 	}
 	process.exit(result.ok === result.expected ? 0 : 1);
 }

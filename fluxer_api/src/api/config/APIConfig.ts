@@ -46,7 +46,6 @@ interface APICachePurgeTarget {
 }
 
 export interface OperatorPassConfig {
-	saleOpensAt: Date | null;
 	priceRisesAt: Date | null;
 	graceMs: number;
 	clockOffsetMs: number;
@@ -57,13 +56,10 @@ export interface OperatorPassConfig {
 	labsOperatorsChannelId: bigint | null;
 	standardPricesMinor: OperatorPassPriceTable | null;
 	releaseLists: OperatorPassReleaseListTable;
-	transferLockMs: number;
-	wallAutoApprove: boolean;
 	withdrawalCountries: OperatorPassWithdrawalCountryTable;
 	disabledCurrencies: ReadonlySet<OperatorPassCurrency>;
 	wallTierMinimums: ReadonlyArray<number>;
 	maxQuantity: number;
-	previewIps: ReadonlyArray<string>;
 }
 
 export interface APICachePurgeConfig {
@@ -165,6 +161,7 @@ export interface APIConfig {
 	endpoints: {
 		apiPublic: string;
 		apiPublicDiscovery: string;
+		apiTransportDiscovery: string | null;
 		apiClient: string;
 		webApp: string;
 		webAppOrigins: Array<string>;

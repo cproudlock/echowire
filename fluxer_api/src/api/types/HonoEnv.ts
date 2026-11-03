@@ -52,7 +52,6 @@ import type {OAuth2Service} from '@app/api/oauth/OAuth2Service';
 import type {OAuth2TokenRepository} from '@app/api/oauth/repositories/OAuth2TokenRepository';
 import type {OperatorPassCheckoutService} from '@app/api/operator_pass/OperatorPassCheckoutService';
 import type {OperatorPassEntitlementService} from '@app/api/operator_pass/OperatorPassEntitlementService';
-import type {OperatorPassWaitlistService} from '@app/api/operator_pass/OperatorPassWaitlistService';
 import type {ReadStateRequestService} from '@app/api/read_state/ReadStateRequestService';
 import type {ReadStateService} from '@app/api/read_state/ReadStateService';
 import type {ReportRequestService} from '@app/api/report/ReportRequestService';
@@ -126,7 +125,6 @@ export interface HonoEnv {
 		downloadService: DownloadService;
 		operatorPassCheckoutService: OperatorPassCheckoutService;
 		operatorPassEntitlementService: OperatorPassEntitlementService;
-		operatorPassWaitlistService: OperatorPassWaitlistService;
 		streamService: StreamService;
 		emailService: IEmailService;
 		emailChangeService: EmailChangeService;

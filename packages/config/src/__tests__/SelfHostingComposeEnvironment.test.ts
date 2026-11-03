@@ -19,6 +19,12 @@ const API_SETTINGS_NOT_FORWARDED: Record<string, string> = {
 	FLUXER_RELAX_REGISTRATION_RATE_LIMITS: 'test and development only',
 	FLUXER_DISABLE_RATE_LIMITS: 'test and development only',
 	FLUXER_TEST_MODE_ENABLED: 'test and development only',
+	FLUXER_EMAIL_SUPPORT_ALERT_EMAIL: 'optional billing support alert address; the stack sells nothing',
+	FLUXER_LABS_VISIONARY_ROLE_ID: 'Operator Pass delivery, hosted Fluxer Labs only',
+	FLUXER_LABS_ACCESS_ROLE_ID: 'Operator Pass delivery, hosted Fluxer Labs only',
+	FLUXER_LABS_OPERATORS_CHANNEL_ID: 'Operator Pass delivery, hosted Fluxer Labs only',
+	FLUXER_AGE_POLICY_ENABLED: 'off for a self-hosted instance unless regions are set; the stack sets none',
+	FLUXER_AGE_POLICY_RESTRICTED_REGIONS: 'no age restricted regions are configured for this stack',
 	FLUXER_TEST_HARNESS_TOKEN: 'test and development only',
 	FLUXER_VALIDATE_RESPONSES: 'test and development only',
 	// Echowire: fork-only settings the shipped self-hosting stack does not offer.

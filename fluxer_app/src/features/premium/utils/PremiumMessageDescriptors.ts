@@ -105,7 +105,7 @@ export const OPERATOR_PASS_WALL_SECTION_DESCRIPTOR = msg({
 		"Heading of the Operators' wall section in the Operator Pass settings tab. Operators' wall is the name of a section of the homepage.",
 });
 export const OPERATOR_PASS_LABS_SECTION_DESCRIPTOR = msg({
-	message: 'Fluxer Labs',
+	message: 'Labs',
 	comment:
 		'Name of the section in the Operator Pass settings tab about the Fluxer Labs community. Fluxer Labs is the name of a community, keep it as is.',
 });

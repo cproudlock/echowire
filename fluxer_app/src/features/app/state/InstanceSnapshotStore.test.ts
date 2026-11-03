@@ -35,6 +35,7 @@ function discoveryDocument(
 ): InstanceDiscoveryResponse {
 	return {
 		api_code_version: 1,
+		age_policy: {geos: []},
 		endpoints: {
 			api: `https://${host}/api`,
 			api_client: `https://${host}/api`,

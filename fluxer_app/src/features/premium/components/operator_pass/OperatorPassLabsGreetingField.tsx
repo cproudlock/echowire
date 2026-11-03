@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import {PRODUCT_LABS_COMMUNITY_NAME} from '@app/features/app/config/I18nDisplayConstants';
 import styles from '@app/features/premium/components/operator_pass/OperatorPassWallNameField.module.css';
 import OperatorPassHoldings from '@app/features/premium/state/OperatorPassHoldings';
 import {Checkbox} from '@app/features/ui/checkbox/Checkbox';
@@ -14,13 +15,13 @@ export const LABS_GREETING_LABEL_DESCRIPTOR = msg({
 });
 const LABS_GREETING_HINT_DESCRIPTOR = msg({
 	message:
-		'We add you to Fluxer Labs when your pass is delivered, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after.',
+		'We add you to {labsName} when your pass is delivered, unless you left or were removed from {labsName} before. With this on, we welcome you by name in #operators soon after.',
 	comment:
 		'Hint under the checkbox or switch "Welcome me in #operators". Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.',
 });
 const LABS_GREETING_VISIONARY_HINT_DESCRIPTOR = msg({
 	message:
-		'We add you to Fluxer Labs when you turn on your pass, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after.',
+		'We add you to {labsName} when you turn on your pass, unless you left or were removed from {labsName} before. With this on, we welcome you by name in #operators soon after.',
 	comment:
 		'Hint under the checkbox "Welcome me in #operators" in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Turn on your pass means the button in that dialog that switches the pass on, nothing is bought. Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.',
 });
@@ -62,7 +63,9 @@ export const OperatorPassLabsGreetingField = observer(function OperatorPassLabsG
 				</span>
 			</Checkbox>
 			<span id={`${id}-hint`} className={styles.hint} data-flx="premium.operator-pass-labs-greeting-field.hint">
-				{i18n._(variant === 'visionary' ? LABS_GREETING_VISIONARY_HINT_DESCRIPTOR : LABS_GREETING_HINT_DESCRIPTOR)}
+				{i18n._(variant === 'visionary' ? LABS_GREETING_VISIONARY_HINT_DESCRIPTOR : LABS_GREETING_HINT_DESCRIPTOR, {
+					labsName: PRODUCT_LABS_COMMUNITY_NAME,
+				})}
 			</span>
 		</div>
 	);

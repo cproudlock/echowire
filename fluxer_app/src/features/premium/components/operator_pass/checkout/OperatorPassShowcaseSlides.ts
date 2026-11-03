@@ -57,7 +57,7 @@ export const OPERATOR_PASS_SHOWCASE_SLIDES: ReadonlyArray<OperatorPassShowcaseSl
 		}),
 		body: msg({
 			message:
-				'The badge on your Fluxer profile shows when you got your pass, like "Operator Pass since November 2026". You can hide it, or just its date, in your settings at any time.',
+				'The badge on your {productName} profile shows when you got your pass, like "Operator Pass since November 2026". You can hide it, or just its date, in your settings at any time.',
 			comment:
 				'Text under the heading The Operator badge on a slide in the Operator Pass checkout dialog. The quoted example is the text on the badge, translate it the way the app shows it in your language. Operator badge is a name, keep Operator in English. Never add a word that says how long the badge lasts.',
 		}),
@@ -89,7 +89,7 @@ export const OPERATOR_PASS_SHOWCASE_SLIDES: ReadonlyArray<OperatorPassShowcaseSl
 		width: 640,
 		height: 495,
 		title: msg({
-			message: '#operators in Fluxer Labs',
+			message: '#operators in {labsName}',
 			comment:
 				"Heading of a slide in the Operator Pass checkout dialog about the #operators channel. #operators is the channel's literal name and Fluxer Labs is the name of the official community, keep both unchanged. No trailing punctuation.",
 		}),
@@ -100,7 +100,8 @@ export const OPERATOR_PASS_SHOWCASE_SLIDES: ReadonlyArray<OperatorPassShowcaseSl
 				"Text under the heading #operators in Fluxer Labs on a slide in the Operator Pass checkout dialog. Operator is the role's name, keep it in English. #operators is the channel's literal name, keep it unchanged. Opens #operators to talk about means the role gives access to the channel, where people talk about self-hosting, bots and the API. Hampus is a person's first name, keep it as is. Who created {productName} describes him as the person who started and made the software. Use past tense. Joins in when he can means Hampus takes part in the conversation when he has time, never that he answers questions or gives support. Warm and plain, never salesy. No dashes as punctuation and no semicolons.",
 		}),
 		alt: msg({
-			message: 'Operators and the Fluxer Team talking about self-hosting in the #operators channel of Fluxer Labs',
+			message:
+				'Operators and the {productName} Team talking about self-hosting in the #operators channel of {labsName}',
 			comment:
 				"Alternative text of the screenshot on a slide in the Operator Pass checkout dialog, read out by screen readers. The screenshot shows a short chat in the #operators channel. Operators are the people who have an Operator Pass, keep the word Operators in English. Fluxer Labs is the name of the official community, keep it unchanged. #operators is the channel's literal name, keep it unchanged. Talking means chatting with each other, never asking for or giving support. No trailing punctuation.",
 		}),

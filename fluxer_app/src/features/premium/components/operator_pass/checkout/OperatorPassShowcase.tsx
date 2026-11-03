@@ -3,7 +3,11 @@
 import {Routes} from '@app/app/Routes';
 import Accessibility from '@app/features/accessibility/state/Accessibility';
 import {ExternalLink} from '@app/features/app/components/shared/ExternalLink';
-import {OPERATOR_PASS_NAME, PRODUCT_NAME} from '@app/features/app/config/I18nDisplayConstants';
+import {
+	OPERATOR_PASS_NAME,
+	PRODUCT_LABS_COMMUNITY_NAME,
+	PRODUCT_NAME,
+} from '@app/features/app/config/I18nDisplayConstants';
 import styles from '@app/features/premium/components/operator_pass/checkout/OperatorPassShowcase.module.css';
 import {OPERATOR_PASS_SHOWCASE_SLIDES} from '@app/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides';
 import FocusRing from '@app/features/ui/focus_ring/FocusRing';
@@ -14,6 +18,8 @@ import {clsx} from 'clsx';
 import {AnimatePresence, motion} from 'framer-motion';
 import {observer} from 'mobx-react-lite';
 import {useEffect, useState} from 'react';
+
+const SLIDE_VALUES = {productName: PRODUCT_NAME, labsName: PRODUCT_LABS_COMMUNITY_NAME};
 
 const AUTOPLAY_MS = 3500;
 
@@ -104,7 +110,7 @@ export const OperatorPassShowcase = observer(function OperatorPassShowcase({
 								src={slide.webp}
 								width={slide.width}
 								height={slide.height}
-								alt={slide.alt ? i18n._(slide.alt) : ''}
+								alt={slide.alt ? i18n._(slide.alt, SLIDE_VALUES) : ''}
 								decoding="async"
 								draggable={false}
 								onLoad={preloadNext}
@@ -112,11 +118,11 @@ export const OperatorPassShowcase = observer(function OperatorPassShowcase({
 							/>
 						</picture>
 						<h3 className={styles.title} data-flx="premium.operator-pass-showcase.title">
-							{i18n._(slide.title)}
+							{i18n._(slide.title, SLIDE_VALUES)}
 						</h3>
 						{!compact && (
 							<p className={styles.body} data-flx="premium.operator-pass-showcase.body">
-								{i18n._(slide.body, {productName: PRODUCT_NAME})}
+								{i18n._(slide.body, SLIDE_VALUES)}
 							</p>
 						)}
 					</motion.div>

@@ -6,6 +6,7 @@ import {ExternalLink} from '@app/features/app/components/shared/ExternalLink';
 import {
 	OPERATOR_PASS_NAME,
 	OPERATOR_PASS_SELLER_ADDRESS,
+	OPERATOR_PASS_SELLER_NAME,
 	OPERATOR_PASS_SELLER_PHONE,
 	PAYMENT_PROVIDER_NAME,
 	SUPPORT_EMAIL,
@@ -95,7 +96,7 @@ export const PurchaseDisclaimer = observer(
 						</Trans>
 					)}{' '}
 					<Trans comment="Sentence after the privacy sentence in the Operator Pass checkout dialog that names the company selling the pass. Fluxer Platform AB is the company name and 559537-3993 its Swedish organization number, keep both as is. Haninge is the Swedish municipality where the company is registered and stays as is. Translate registered office with the legal term your language uses for the registered seat of a company, and keep the Swedish word säte in parentheses. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.">
-						Seller: Fluxer Platform AB, 559537-3993, registered office (säte) Haninge, Sweden,{' '}
+						Seller: {OPERATOR_PASS_SELLER_NAME}, 559537-3993, registered office (säte) Haninge, Sweden,{' '}
 						{OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}.
 					</Trans>
 				</p>

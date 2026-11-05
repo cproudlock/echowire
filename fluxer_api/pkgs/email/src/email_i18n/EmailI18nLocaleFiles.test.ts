@@ -12,6 +12,7 @@ const DATE = new Date('2026-10-01T23:30:00Z');
 
 const FIXTURE: {[K in EmailTemplateKey]: EmailTemplateVariables[K]} = {
 	account_deletion_cancelled: {},
+	account_deletion_completed: {},
 	account_deletion_scheduled_inactivity: {deletion_date: 'Dec 1, 2026'},
 	account_deletion_scheduled_requested: {deletion_date: 'Dec 14, 2026'},
 
@@ -147,6 +148,7 @@ const FIXTURE: {[K in EmailTemplateKey]: EmailTemplateVariables[K]} = {
 	operator_pass_purchase_refused: {},
 	operator_pass_wall_hidden: {reason: 'guidelines'},
 	operator_pass_wall_name_replaced: {target: 'both', shown: 'operator', reason: 'rights'},
+	operator_pass_wall_quote_cleared: {reason: 'rights'},
 	operator_pass_visionary_turned_on: {
 		badge: 'no',
 		wallName: 'Ada',

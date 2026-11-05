@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-use crate::job::{ClearJob, MessageJob, RingJob};
+use crate::job::{ClearJob, MessageJob, NotificationFields, RingJob};
 use crate::metrics::PayloadShrink;
 use crate::unix_seconds;
 use fluxer_common::time::unix_millis;
@@ -44,6 +44,14 @@ const RING_TTL_FALLBACK_SECONDS: i64 = 30;
 const RING_TTL_MAX_SECONDS: i64 = 120;
 const RING_IDENTITY_KEYS: [&str; 2] = [RING_CALLER_ID_KEY, RING_CALLER_NAME_KEY];
 const THREAD_DATA_KEYS: [&str; 3] = ["parent_id", "parent_name", "channel_name"];
+const IDENTITY_DATA_KEYS: [&str; 6] = [
+    "author_name",
+    "guild_name",
+    "conversation_name",
+    "conversation_kind",
+    "preview_kind",
+    "preview_arg",
+];
 const NOTIF_TYPE_KEY: &str = "notif_type_id";
 const FORUM_THREAD_CREATED_NOTIF_TYPE: u64 = 9;
 const FCM_DEFAULT_CHANNEL_ID: &str = "fluxer_default_push";
@@ -82,6 +90,7 @@ pub fn web_push_message(job: &MessageJob, target_user_id: &str, badge_count: u32
         "has_media": image_url.is_some(),
     });
     merge_thread_fields(&mut data, job);
+    merge_identity_fields(&mut data, fields);
     let badge = fields.badge.as_deref();
     let mut notification = json!({
         "title": fields.title,
@@ -126,6 +135,25 @@ fn merge_thread_fields(data: &mut Value, job: &MessageJob) {
             NOTIF_TYPE_KEY.to_owned(),
             FORUM_THREAD_CREATED_NOTIF_TYPE.into(),
         );
+    }
+}
+
+fn merge_identity_fields(data: &mut Value, fields: &NotificationFields) {
+    let Some(object) = data.as_object_mut() else {
+        return;
+    };
+    let values = [
+        fields.author_name.as_deref(),
+        fields.guild_name.as_deref(),
+        fields.conversation_name.as_deref(),
+        fields.conversation_kind.as_deref(),
+        fields.preview_kind.as_deref(),
+        fields.preview_arg.as_deref(),
+    ];
+    for (key, value) in IDENTITY_DATA_KEYS.into_iter().zip(values) {
+        if let Some(value) = value.filter(|value| !value.is_empty()) {
+            object.insert(key.to_owned(), value.into());
+        }
     }
 }
 
@@ -758,6 +786,12 @@ mod tests {
                 notification_tag: format!("channel:{CHANNEL_ID}"),
                 url: format!("/channels/@me/{CHANNEL_ID}"),
                 image_url: image_url.map(str::to_owned),
+                author_name: None,
+                guild_name: None,
+                conversation_name: None,
+                conversation_kind: None,
+                preview_kind: None,
+                preview_arg: None,
             },
             user_ids: vec![USER_ID.to_owned()],
             kind: None,
@@ -1018,5 +1052,22 @@ mod tests {
         let shrunk: Value = serde_json::from_slice(&bytes).expect("the shrunk payload is json");
         assert_eq!(shrunk["data"]["type"], json!(CLEAR_TYPE));
         assert_eq!(shrunk["data"]["action"], json!(CLEAR_ACTION));
+    }
+
+    #[test]
+    fn the_identity_fields_are_in_the_encrypted_data() {
+        let mut job = message_job(None);
+        job.notification.author_name = Some("peer".to_owned());
+        job.notification.guild_name = Some("Test Guild".to_owned());
+        job.notification.conversation_name = Some("general".to_owned());
+        job.notification.conversation_kind = Some("guild".to_owned());
+        job.notification.preview_kind = Some("attachment".to_owned());
+        let data = &web_push_message(&job, USER_ID, 3)["data"];
+        assert_eq!(data["author_name"], json!("peer"));
+        assert_eq!(data["guild_name"], json!("Test Guild"));
+        assert_eq!(data["conversation_name"], json!("general"));
+        assert_eq!(data["conversation_kind"], json!("guild"));
+        assert_eq!(data["preview_kind"], json!("attachment"));
+        assert!(data.get("preview_arg").is_none());
     }
 }

@@ -24,6 +24,7 @@ ignore = [
 	# depends on the unmaintained encoding crate. Advisory is unmaintained-only,
 	# not a vulnerability, and RUSTSEC lists no safe upgrade.
 	{ id = "RUSTSEC-2021-0153", reason = "unmaintained encoding via fluxer_marketing -> gettext; no safe upgrade exists" },
+	{ id = "RUSTSEC-2026-0441", reason = "pin-utils is unmaintained, not vulnerable. Only wasmtimer uses it, through reqwest-retry, and wasmtimer 0.4.3 is the newest release" },
 ]
 
 # ---------------------------------------------------------------------------

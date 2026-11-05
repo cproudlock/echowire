@@ -2140,6 +2140,11 @@ msgstr "{productName}에서 기기 목록을 보려면 마이크 접근 권한�
 msgid "{productName} needs screen recording access. Allow screen recording in your operating system privacy settings and restart the app."
 msgstr "{productName}에 화면 녹화 접근 권한이 필요합니다. 운영체제 개인 정보 보호 설정에서 화면 녹화를 허용하고 앱을 다시 시작하세요."
 
+#. Text under the date of birth heading. productName is the app name. It says the app never asks for ID or a face scan, what the date is used for, and that it cannot be changed once entered.
+#: src/features/auth/components/date_of_birth/DateOfBirthGate.tsx
+msgid "{productName} only asks for your date of birth, never for ID or a face scan. It's used to check the minimum age for your country and for age-restricted content, and it isn't shown to anyone. You can't change it later, so please make sure it's right."
+msgstr "{productName}은(는) 생년월일만 묻고, 신분증이나 얼굴 스캔은 절대 요구하지 않습니다. 생년월일은 거주 국가의 최소 연령과 연령 제한 콘텐츠를 확인하는 데 사용되며 누구에게도 표시되지 않습니다. 나중에 변경할 수 없으니 정확한지 확인해 주세요."
+
 #. Title of the printed or downloaded recovery kit. productName is the app name.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "{productName} recovery kit"
@@ -2174,11 +2179,6 @@ msgstr "{productName}에서 잠재적인 레이드를 감지했습니다. 초대
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering lets the gateway send notifications to your device even when the app is in the background."
 msgstr "{productName}은(는) 모바일 PWA로 설치된 경우 푸시 알림을 사용합니다. 등록하면 앱이 백그라운드에 있을 때도 게이트웨이가 기기에 연결할 수 있습니다."
-
-#. Text under the date of birth heading. productName is the app name. The last sentence says the date of birth cannot be changed once entered.
-#: src/features/auth/components/date_of_birth/DateOfBirthGate.tsx
-msgid "{productName} uses your date of birth to match content and settings to your age. It isn't shown to anyone. You can't change it later."
-msgstr "{productName}은(는) 생년월일을 바탕으로 콘텐츠와 설정을 나이에 맞춥니다. 생년월일은 누구에게도 표시되지 않습니다. 나중에 변경할 수 없습니다."
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -4320,6 +4320,11 @@ msgstr "{PRODUCT_NAME}에서 마이크에 접근하도록 허용해 주세요. �
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx
 msgid "Allow {productName} under Screen Recording in System Settings. If it is already allowed, relaunch {productName2} so macOS applies it."
 msgstr "{productName}을(를) 시스템 설정의 '스크린 타임'에서 허용해 주세요. 이미 허용된 경우, macOS가 적용하도록 {productName2}을(를) 다시 시작하세요."
+
+#. Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the echowire app for iPhone and iPad.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
+msgid "Allow 18+ content on iPhone and iPad"
+msgstr "iPhone 및 iPad에서 18+ 콘텐츠 허용"
 
 #. Private thread setting that lets non-moderators add other members.
 #: src/features/threads/utils/ThreadMessageDescriptors.ts
@@ -6792,6 +6797,16 @@ msgstr "브라우저에서는 {productName}이(가) 디스플레이를 미리 �
 #: src/features/voice/components/modals/screen_share_picker_modal/useDeviceEmptyStateCopy.ts
 msgid "Browsers do not list cameras in the screen-share picker. Choose them from the Devices tab instead. If nothing appears here, allow camera access or connect a device."
 msgstr "브라우저에서는 화면 공유 선택기에 카메라가 표시되지 않습니다. 대신 기기 탭에서 선택해 주세요. 여기에 아무것도 표시되지 않으면 카메라 접근을 허용하거나 기기를 연결하세요."
+
+#. Shown on a self-hosted instance opened over plain HTTP when someone tries to use the microphone, camera or screen sharing, which browsers block there. HTTPS is a technical term, keep it as is.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Browsers only allow the microphone, camera and screen sharing on sites that use HTTPS, and this instance doesn't use HTTPS. You can still join voice channels and listen."
+msgstr "브라우저는 HTTPS를 사용하는 사이트에서만 마이크, 카메라, 화면 공유를 허용하는데, 이 인스턴스는 HTTPS를 사용하지 않습니다. 음성 채널에 참여해 듣는 것은 가능합니다."
+
+#. Short note next to a setting or button that browsers turn off on a self-hosted instance opened over plain HTTP, such as notifications or passkeys. HTTPS is a technical term, keep it as is.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Browsers only allow this on sites that use HTTPS, and this instance doesn't use HTTPS."
+msgstr "브라우저는 HTTPS를 사용하는 사이트에서만 이를 허용하는데, 이 인스턴스는 HTTPS를 사용하지 않습니다."
 
 #. Where the dark mode favicon appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -20749,6 +20764,11 @@ msgstr "계속 실행"
 msgid "Keep subscription"
 msgstr "구독 유지"
 
+#. Error under the "Quote on the wall" field when the quote has a line break.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Keep the quote on one line."
+msgstr "한마디는 한 줄로 입력하세요."
+
 #. Description text in the secrets section.
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/SecretsSection.tsx
 msgid "Keep these safe. Regenerating will break existing integrations."
@@ -21026,6 +21046,11 @@ msgstr "화면 공유 미리보기에 대해 자세히 알아보세요"
 msgid "Learn more"
 msgstr "자세히 알아보기"
 
+#. Link under the Plutonium page hero buttons on self-hosted instances. premiumProductName is the paid tier name set by the instance. Opens a page about the tier that the instance admin chose.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
+msgid "Learn more about {premiumProductName}"
+msgstr "{premiumProductName}에 대해 자세히 알아보기"
+
 #. Link text in the Plutonium page tag footnote. Opens the Visionary help article.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
 msgid "Learn more about Visionary"
@@ -21227,6 +21252,11 @@ msgstr "동영상으로 사용자를 볼 수 있게 합니다."
 #: src/features/permissions/system/components/MacPermissionPrompt.tsx
 msgid "Lets push-to-talk and keybinds work in other apps."
 msgstr "다른 앱에서 푸시 투 토크 및 단축키가 작동하도록 합니다."
+
+#. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
+msgid "Lets you open communities and channels marked 18+ in the echowire app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
+msgstr "iPhone 및 iPad용 echowire 앱에서 18+로 표시된 커뮤니티와 채널을 열 수 있고, 민감한 미디어에 \"표시\"를 선택할 수 있습니다. 이 설정은 웹이나 데스크톱에서만 변경할 수 있습니다."
 
 #: src/features/user/components/modals/tabs/account_security_tab/RecoveryKitSettings.tsx
 msgid "Lets you reset your password if you forget it."
@@ -26400,6 +26430,11 @@ msgstr "옵션 2"
 msgid "Optional arguments"
 msgstr "선택적 인수"
 
+#. Text under the "Quote on the wall" field in the Operators' wall settings. The wall listing is the person's entry on the Operators' wall. Operator is the badge name.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Optional. It shows in quotes on your wall listing and with your Operator badge."
+msgstr "선택 사항입니다. 벽의 내 항목과 Operator 배지에 따옴표로 표시됩니다."
+
 #. Short label in the channel and chat textual attachment preview bottom sheet. Keep it concise.
 #: src/features/channel/components/embeds/attachments/TextualAttachmentPreviewBottomSheet.tsx
 msgid "Options"
@@ -28689,6 +28724,11 @@ msgstr "{appName} 종료"
 msgid "Quit {appName}, make sure no other copy is running, and open it again."
 msgstr "{appName}을(를) 종료하고 다른 복사본이 실행 중이지 않은지 확인한 다음 다시 엽니다."
 
+#. Label of the optional text field for a short quote that shows with the person's listing on the Operators' wall and with their Operator badge. The wall is the list of Operators on the Operator Pass page.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Quote on the wall"
+msgstr "벽에 표시할 한마디"
+
 #: src/features/channel/components/embeds/channel_embed/BlueskyEmbed.tsx
 msgid "Quotes: <0>{countLabel}</0>"
 msgstr "인용: <0>{countLabel}</0>"
@@ -29500,6 +29540,11 @@ msgstr "스티커 삭제"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx
 msgid "Remove tag {tag}"
 msgstr "태그 {tag} 삭제"
+
+#. Error under the "Quote on the wall" field when the quote has invisible characters, text direction controls or stacked accent marks.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Remove the hidden or special characters from the quote."
+msgstr "한마디에서 숨겨진 문자나 특수 문자를 지우세요."
 
 #. Error message in the linked accounts tab. Keep the tone plain and specific.
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
@@ -33090,6 +33135,11 @@ msgstr "내 프로필에 {badgeLabel} 표시"
 #: src/features/premium/components/operator_pass/checkout/OperatorPassShowcase.tsx
 msgid "Show {title}"
 msgstr "{title} 보기"
+
+#. Switch label in the Fluxer Labs section of the Operator Pass settings. On by default. #operators is a channel in the Fluxer Labs community, keep it as is.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassLabsGreetingSetting.tsx
+msgid "Show #operators"
+msgstr "#operators 표시"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -36713,6 +36763,11 @@ msgstr "제공된 redirect_uri가 이 애플리케이션에 등록되지 않았�
 msgid "The provided redirect_uri must use HTTP or HTTPS."
 msgstr "제공된 redirect_uri는 HTTP 또는 HTTPS를 사용해야 합니다."
 
+#. Error under the "Quote on the wall" field when the quote looks like a link, a web address such as example.com, an email address, an @mention or a community invite.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "The quote can't have links, web addresses, email addresses, @mentions or invites."
+msgstr "한마디에는 링크, 웹 주소, 이메일 주소, @멘션 또는 초대를 넣을 수 없습니다."
+
 #. Report flow: toast shown when the report questions changed while the reporter was answering them.
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "The report form changed. Please start again."
@@ -37266,11 +37321,6 @@ msgstr "이 채널은 상위 카테고리 <0>{0}</0>과(와) 동기화되어 있
 msgid "This channel no longer exists. It may have already been deleted."
 msgstr "이 채널은 더 이상 존재하지 않습니다. 이미 삭제되었을 수 있습니다."
 
-#. Error shown when signing in or signing up on a self-hosted instance opened over plain HTTP or a bare IP address, where the browser blocks the automatic background check. HTTPS and localhost are technical terms, keep them as is.
-#: src/features/auth/altcha/CaptchaInterceptor.ts
-msgid "This check only runs when the app is opened over HTTPS or on localhost. Ask the instance owner to serve it over HTTPS, or open it from localhost."
-msgstr "이 확인은 앱이 HTTPS 또는 localhost를 통해 열릴 때만 실행됩니다. 인스턴스 소유자에게 HTTPS를 통해 제공하도록 요청하거나 localhost에서 열어주세요."
-
 #. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "This class name changes with every echowire update. Use a [data-flx] selector."
@@ -37613,6 +37663,11 @@ msgstr "이 인스턴스는 이메일을 사용하지 않으며, 관리자는 �
 #: src/features/moderation/components/report/ReportStepUnavailable.tsx
 msgid "This instance doesn't use email, so it can't take reports through this form. Report content from inside the app, or contact the administrators of this instance."
 msgstr "이 인스턴스는 이메일을 사용하지 않으므로 이 양식으로 신고를 받을 수 없습니다. 앱에서 콘텐츠를 신고하거나 이 인스턴스의 관리자에게 문의하세요."
+
+#. Title of the dialog shown when someone tries to use the microphone, camera or screen sharing on a self-hosted instance opened over plain HTTP. HTTPS is a technical term, keep it as is.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "This instance doesn't use HTTPS"
+msgstr "이 인스턴스는 HTTPS를 사용하지 않습니다"
 
 #. Explanation shown in place of the single sign-on description when the instance offers no SSO provider.
 #: src/features/auth/flow/AuthSsoPanel.tsx
@@ -38134,6 +38189,16 @@ msgstr "이 음성 채널은 성인용 콘텐츠로 표시되어 있으며 일�
 #: src/features/voice/engine/media_engine_facade/shared.ts
 msgid "This voice channel is no longer available."
 msgstr "이 음성 채널을 더 이상 사용할 수 없습니다."
+
+#. Error shown when someone tries to join an end-to-end encrypted voice channel from a browser that cannot encrypt calls.
+#: src/features/voice/engine/media_engine_facade/shared.ts
+msgid "This voice channel uses end-to-end encryption, and this browser can't join encrypted calls."
+msgstr "이 음성 채널은 종단 간 암호화를 사용하며, 이 브라우저는 암호화된 통화에 참여할 수 없습니다."
+
+#. Error shown when someone tries to join an end-to-end encrypted voice channel on a self-hosted instance opened over plain HTTP. HTTPS is a technical term, keep it as is.
+#: src/features/voice/engine/media_engine_facade/shared.ts
+msgid "This voice channel uses end-to-end encryption. Browsers only allow encrypted calls on sites that use HTTPS, and this instance doesn't use HTTPS."
+msgstr "이 음성 채널은 종단 간 암호화를 사용합니다. 브라우저는 HTTPS를 사용하는 사이트에서만 암호화된 통화를 허용하는데, 이 인스턴스는 HTTPS를 사용하지 않습니다."
 
 #. Description text in the channel and chat user message. Preserve {silentMention}; it is inserted by code.
 #: src/features/channel/components/UserMessage.tsx
@@ -39155,6 +39220,11 @@ msgstr "범위 설정을 해제하면 앱이 제대로 작동하지 않을 수 �
 #: src/features/voice/components/modals/HideOwnCameraConfirmModal.tsx
 msgid "Turning this off only hides your camera from your own view. Others in the call can still see your camera feed."
 msgstr "이 설정을 끄면 내 화면에서만 내 카메라가 숨겨집니다. 통화에 참여한 다른 사람들에게는 내 카메라 피드가 계속 표시됩니다."
+
+#. Description under the switch "Show #operators" in the Operator Pass settings. #operators is a channel name, keep it as is. {labsName} is the name of the community, such as Fluxer Labs. Turning it off does not remove the account from the community, the pass or the badge.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassLabsGreetingSetting.tsx
+msgid "Turning this off removes the roles that open #operators in {labsName}, and we won't add them back until you turn it on again."
+msgstr "끄면 {labsName}의 #operators를 여는 역할이 제거되고, 다시 켤 때까지 역할을 다시 추가하지 않아요."
 
 #. Help under the Klipy API key field in the setup wizard.
 #: src/features/app/components/setup/SetupServicesStep.tsx
@@ -40495,6 +40565,11 @@ msgstr "32자 이하로 입력하세요."
 #: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
 msgid "Use 48 characters or fewer."
 msgstr "48자 이하로 입력해 주세요."
+
+#. Error under the "Quote on the wall" field when the quote is longer than 80 characters. An emoji counts as one character.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Use 80 characters or fewer."
+msgstr "80자 이하로 입력하세요."
 
 #. Text button on the browser approval page that goes back to choosing which account signs in to the app.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx
@@ -42737,6 +42812,11 @@ msgstr "단어 전체"
 #: src/features/auth/flow/AccountRestrictionScreen.tsx
 msgid "Why"
 msgstr "사유"
+
+#. Link after the date of birth text that opens the help article about why the app asks for a date of birth.
+#: src/features/auth/components/date_of_birth/DateOfBirthGate.tsx
+msgid "Why we ask"
+msgstr "묻는 이유"
 
 #. Link after the hidden status in the Operators' wall settings. It opens the Operator Pass terms.
 #: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx

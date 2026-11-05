@@ -2,6 +2,7 @@
 
 export type EmailTemplateKey =
 	| 'account_deletion_cancelled'
+	| 'account_deletion_completed'
 	| 'account_deletion_scheduled_inactivity'
 	| 'account_deletion_scheduled_requested'
 	| 'bulk_message_deletion_completed'
@@ -39,6 +40,7 @@ export type EmailTemplateKey =
 	| 'operator_pass_visionary_turned_on'
 	| 'operator_pass_wall_hidden'
 	| 'operator_pass_wall_name_replaced'
+	| 'operator_pass_wall_quote_cleared'
 	| 'operator_pass_welcome'
 	| 'operator_pass_withdrawal_receipt'
 	| 'password_change_verification'

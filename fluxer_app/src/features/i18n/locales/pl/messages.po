@@ -2140,6 +2140,11 @@ msgstr "{productName} potrzebuje dostępu do mikrofonu, aby wyświetlić Twoje u
 msgid "{productName} needs screen recording access. Allow screen recording in your operating system privacy settings and restart the app."
 msgstr "{productName} potrzebuje dostępu do nagrywania ekranu. Włącz nagrywanie ekranu w ustawieniach prywatności systemu operacyjnego i uruchom ponownie aplikację."
 
+#. Text under the date of birth heading. productName is the app name. It says the app never asks for ID or a face scan, what the date is used for, and that it cannot be changed once entered.
+#: src/features/auth/components/date_of_birth/DateOfBirthGate.tsx
+msgid "{productName} only asks for your date of birth, never for ID or a face scan. It's used to check the minimum age for your country and for age-restricted content, and it isn't shown to anyone. You can't change it later, so please make sure it's right."
+msgstr "{productName} prosi tylko o datę urodzenia, nigdy o dokument tożsamości ani skan twarzy. Służy ona do sprawdzenia minimalnego wieku w Twoim kraju i dostępu do treści z ograniczeniem wiekowym, a nikt inny jej nie widzi. Później nie można jej zmienić, więc upewnij się, że jest poprawna."
+
 #. Title of the printed or downloaded recovery kit. productName is the app name.
 #: src/features/auth/components/modals/RecoveryKitModal.tsx
 msgid "{productName} recovery kit"
@@ -2174,11 +2179,6 @@ msgstr "Aplikacja {productName} wykryła tu potencjalny nalot. Zaproszenia są w
 #: src/features/user/components/modals/tabs/notifications_tab/Notifications.tsx
 msgid "{productName} uses push notifications when installed as a mobile PWA. Registering lets the gateway send notifications to your device even when the app is in the background."
 msgstr "{productName} używa powiadomień push, gdy jest zainstalowany jako mobilna aplikacja PWA. Rejestracja gwarantuje, że bramka będzie mogła dotrzeć do Twojego urządzenia, nawet gdy aplikacja działa w tle."
-
-#. Text under the date of birth heading. productName is the app name. The last sentence says the date of birth cannot be changed once entered.
-#: src/features/auth/components/date_of_birth/DateOfBirthGate.tsx
-msgid "{productName} uses your date of birth to match content and settings to your age. It isn't shown to anyone. You can't change it later."
-msgstr "{productName} na podstawie daty urodzenia dopasowuje treści i ustawienia do Twojego wieku. Nikt inny jej nie widzi. Później nie można jej zmienić."
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -4320,6 +4320,11 @@ msgstr "Zezwól aplikacji {PRODUCT_NAME} na dostęp do mikrofonu. Sprawdź pasek
 #: src/features/voice/components/modals/screen_share_picker_modal/ScreenSharePickerDisplayPermissionPrompt.tsx
 msgid "Allow {productName} under Screen Recording in System Settings. If it is already allowed, relaunch {productName2} so macOS applies it."
 msgstr "Zezwól {productName} w sekcji Nagrywanie ekranu w Ustawieniach systemowych. Jeśli jest już dozwolone, uruchom ponownie {productName2}, aby system macOS zastosował zmiany."
+
+#. Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the echowire app for iPhone and iPad.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
+msgid "Allow 18+ content on iPhone and iPad"
+msgstr "Zezwól na treści 18+ na iPhonie i iPadzie"
 
 #. Private thread setting that lets non-moderators add other members.
 #: src/features/threads/utils/ThreadMessageDescriptors.ts
@@ -6792,6 +6797,16 @@ msgstr "Przeglądarki nie pozwalają aplikacji {productName} wcześniej wyświet
 #: src/features/voice/components/modals/screen_share_picker_modal/useDeviceEmptyStateCopy.ts
 msgid "Browsers do not list cameras in the screen-share picker. Choose them from the Devices tab instead. If nothing appears here, allow camera access or connect a device."
 msgstr "Przeglądarki nie wyświetlają kamer w oknie wyboru udostępniania ekranu. Wybierz je z karty \"Urządzenia\". Jeśli nic się tu nie pojawi, zezwól na dostęp do kamery lub podłącz urządzenie."
+
+#. Shown on a self-hosted instance opened over plain HTTP when someone tries to use the microphone, camera or screen sharing, which browsers block there. HTTPS is a technical term, keep it as is.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Browsers only allow the microphone, camera and screen sharing on sites that use HTTPS, and this instance doesn't use HTTPS. You can still join voice channels and listen."
+msgstr "Przeglądarki pozwalają na mikrofon, kamerę i udostępnianie ekranu tylko na stronach z HTTPS, a ta instancja nie używa HTTPS. Nadal możesz dołączać do kanałów głosowych i słuchać."
+
+#. Short note next to a setting or button that browsers turn off on a self-hosted instance opened over plain HTTP, such as notifications or passkeys. HTTPS is a technical term, keep it as is.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "Browsers only allow this on sites that use HTTPS, and this instance doesn't use HTTPS."
+msgstr "Przeglądarki pozwalają na to tylko na stronach z HTTPS, a ta instancja nie używa HTTPS."
 
 #. Where the dark mode favicon appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -20749,6 +20764,11 @@ msgstr "Kontynuuj działanie"
 msgid "Keep subscription"
 msgstr "Zachowaj subskrypcję"
 
+#. Error under the "Quote on the wall" field when the quote has a line break.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Keep the quote on one line."
+msgstr "Zapisz cytat w jednym wierszu."
+
 #. Description text in the secrets section.
 #: src/features/user/components/modals/tabs/applications_tab/application_detail/SecretsSection.tsx
 msgid "Keep these safe. Regenerating will break existing integrations."
@@ -21026,6 +21046,11 @@ msgstr "Dowiedz się więcej o podglądach udostępniania ekranu"
 msgid "Learn more"
 msgstr "Dowiedz się więcej"
 
+#. Link under the Plutonium page hero buttons on self-hosted instances. premiumProductName is the paid tier name set by the instance. Opens a page about the tier that the instance admin chose.
+#: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
+msgid "Learn more about {premiumProductName}"
+msgstr "Dowiedz się więcej o {premiumProductName}"
+
 #. Link text in the Plutonium page tag footnote. Opens the Visionary help article.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
 msgid "Learn more about Visionary"
@@ -21227,6 +21252,11 @@ msgstr "Umożliwia innym zobaczenie Cię na wideo."
 #: src/features/permissions/system/components/MacPermissionPrompt.tsx
 msgid "Lets push-to-talk and keybinds work in other apps."
 msgstr "Pozwala na działanie funkcji naciśnij i mów oraz skrótów w innych aplikacjach."
+
+#. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
+msgid "Lets you open communities and channels marked 18+ in the echowire app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
+msgstr "Pozwala otwierać społeczności i kanały oznaczone jako 18+ w aplikacji echowire na iPhone’a i iPada oraz wybierać tam opcję „Pokaż” dla multimediów wrażliwych. To ustawienie możesz zmienić tylko w przeglądarce lub na komputerze."
 
 #: src/features/user/components/modals/tabs/account_security_tab/RecoveryKitSettings.tsx
 msgid "Lets you reset your password if you forget it."
@@ -26400,6 +26430,11 @@ msgstr "Opcja druga"
 msgid "Optional arguments"
 msgstr "Opcjonalne argumenty"
 
+#. Text under the "Quote on the wall" field in the Operators' wall settings. The wall listing is the person's entry on the Operators' wall. Operator is the badge name.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Optional. It shows in quotes on your wall listing and with your Operator badge."
+msgstr "Opcjonalnie. Pojawia się w cudzysłowie przy Twoim wpisie na ścianie i przy Twojej odznace Operator."
+
 #. Short label in the channel and chat textual attachment preview bottom sheet. Keep it concise.
 #: src/features/channel/components/embeds/attachments/TextualAttachmentPreviewBottomSheet.tsx
 msgid "Options"
@@ -28689,6 +28724,11 @@ msgstr "Zamknij {appName}"
 msgid "Quit {appName}, make sure no other copy is running, and open it again."
 msgstr "Zamknij {appName}, upewnij się, że żadna inna kopia nie działa, i otwórz ją ponownie."
 
+#. Label of the optional text field for a short quote that shows with the person's listing on the Operators' wall and with their Operator badge. The wall is the list of Operators on the Operator Pass page.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Quote on the wall"
+msgstr "Cytat na ścianie"
+
 #: src/features/channel/components/embeds/channel_embed/BlueskyEmbed.tsx
 msgid "Quotes: <0>{countLabel}</0>"
 msgstr "Cytowania: <0>{countLabel}</0>"
@@ -29500,6 +29540,11 @@ msgstr "Usuń naklejkę"
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx
 msgid "Remove tag {tag}"
 msgstr "Usuń tag {tag}"
+
+#. Error under the "Quote on the wall" field when the quote has invisible characters, text direction controls or stacked accent marks.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Remove the hidden or special characters from the quote."
+msgstr "Usuń z cytatu ukryte lub specjalne znaki."
 
 #. Error message in the linked accounts tab. Keep the tone plain and specific.
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
@@ -33090,6 +33135,11 @@ msgstr "Pokaż {badgeLabel} w twoim profilu"
 #: src/features/premium/components/operator_pass/checkout/OperatorPassShowcase.tsx
 msgid "Show {title}"
 msgstr "Pokaż: {title}"
+
+#. Switch label in the Fluxer Labs section of the Operator Pass settings. On by default. #operators is a channel in the Fluxer Labs community, keep it as is.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassLabsGreetingSetting.tsx
+msgid "Show #operators"
+msgstr "Pokaż #operators"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -36713,6 +36763,11 @@ msgstr "Podany adres redirect_uri nie jest zarejestrowany dla tej aplikacji."
 msgid "The provided redirect_uri must use HTTP or HTTPS."
 msgstr "Podany adres redirect_uri musi używać protokołu HTTP lub HTTPS."
 
+#. Error under the "Quote on the wall" field when the quote looks like a link, a web address such as example.com, an email address, an @mention or a community invite.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "The quote can't have links, web addresses, email addresses, @mentions or invites."
+msgstr "Cytat nie może zawierać linków, adresów stron, adresów e-mail, @wzmianek ani zaproszeń."
+
 #. Report flow: toast shown when the report questions changed while the reporter was answering them.
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "The report form changed. Please start again."
@@ -37266,11 +37321,6 @@ msgstr "Ten kanał jest zsynchronizowany z kategorią nadrzędną <0>{0}</0>."
 msgid "This channel no longer exists. It may have already been deleted."
 msgstr "Ten kanał już nie istnieje. Mógł zostać usunięty."
 
-#. Error shown when signing in or signing up on a self-hosted instance opened over plain HTTP or a bare IP address, where the browser blocks the automatic background check. HTTPS and localhost are technical terms, keep them as is.
-#: src/features/auth/altcha/CaptchaInterceptor.ts
-msgid "This check only runs when the app is opened over HTTPS or on localhost. Ask the instance owner to serve it over HTTPS, or open it from localhost."
-msgstr "Ten sprawdzanie działa tylko wtedy, gdy aplikacja jest otwierana przez HTTPS lub na localhost. Poproś właściciela instancji o udostępnienie jej przez HTTPS lub otwórz ją z poziomu localhost."
-
 #. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "This class name changes with every echowire update. Use a [data-flx] selector."
@@ -37613,6 +37663,11 @@ msgstr "Ta instancja nie używa e-maila, a Ty jesteś jedynym administratorem. J
 #: src/features/moderation/components/report/ReportStepUnavailable.tsx
 msgid "This instance doesn't use email, so it can't take reports through this form. Report content from inside the app, or contact the administrators of this instance."
 msgstr "Ta instancja nie korzysta z poczty e-mail, więc nie może przyjmować zgłoszeń przez ten formularz. Zgłoś treść w aplikacji lub skontaktuj się z administratorami tej instancji."
+
+#. Title of the dialog shown when someone tries to use the microphone, camera or screen sharing on a self-hosted instance opened over plain HTTP. HTTPS is a technical term, keep it as is.
+#: src/features/i18n/utils/CommonMessageDescriptors.ts
+msgid "This instance doesn't use HTTPS"
+msgstr "Ta instancja nie używa HTTPS"
 
 #. Explanation shown in place of the single sign-on description when the instance offers no SSO provider.
 #: src/features/auth/flow/AuthSsoPanel.tsx
@@ -38134,6 +38189,16 @@ msgstr "Ten kanał głosowy jest oznaczony jako zawierający treści dla dorosł
 #: src/features/voice/engine/media_engine_facade/shared.ts
 msgid "This voice channel is no longer available."
 msgstr "Ten kanał głosowy jest już niedostępny."
+
+#. Error shown when someone tries to join an end-to-end encrypted voice channel from a browser that cannot encrypt calls.
+#: src/features/voice/engine/media_engine_facade/shared.ts
+msgid "This voice channel uses end-to-end encryption, and this browser can't join encrypted calls."
+msgstr "Ten kanał głosowy używa szyfrowania end-to-end, a ta przeglądarka nie może dołączać do szyfrowanych połączeń."
+
+#. Error shown when someone tries to join an end-to-end encrypted voice channel on a self-hosted instance opened over plain HTTP. HTTPS is a technical term, keep it as is.
+#: src/features/voice/engine/media_engine_facade/shared.ts
+msgid "This voice channel uses end-to-end encryption. Browsers only allow encrypted calls on sites that use HTTPS, and this instance doesn't use HTTPS."
+msgstr "Ten kanał głosowy używa szyfrowania end-to-end. Przeglądarki pozwalają na szyfrowane połączenia tylko na stronach z HTTPS, a ta instancja nie używa HTTPS."
 
 #. Description text in the channel and chat user message. Preserve {silentMention}; it is inserted by code.
 #: src/features/channel/components/UserMessage.tsx
@@ -39155,6 +39220,11 @@ msgstr "Wyłączenie zakresów autoryzacji może uniemożliwić poprawne działa
 #: src/features/voice/components/modals/HideOwnCameraConfirmModal.tsx
 msgid "Turning this off only hides your camera from your own view. Others in the call can still see your camera feed."
 msgstr "Wyłączenie tej opcji ukrywa Twoją kamerę tylko w Twoim widoku. Inni uczestnicy połączenia nadal będą widzieć Twój obraz z kamery."
+
+#. Description under the switch "Show #operators" in the Operator Pass settings. #operators is a channel name, keep it as is. {labsName} is the name of the community, such as Fluxer Labs. Turning it off does not remove the account from the community, the pass or the badge.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassLabsGreetingSetting.tsx
+msgid "Turning this off removes the roles that open #operators in {labsName}, and we won't add them back until you turn it on again."
+msgstr "Wyłączenie tej opcji usuwa role, które otwierają dostęp do #operators w {labsName}, i nie przywrócimy ich, dopóki jej ponownie nie włączysz."
 
 #. Help under the Klipy API key field in the setup wizard.
 #: src/features/app/components/setup/SetupServicesStep.tsx
@@ -40495,6 +40565,11 @@ msgstr "Użyj maksymalnie 32 znaków."
 #: src/features/premium/components/operator_pass/OperatorPassCertificateNamesField.tsx
 msgid "Use 48 characters or fewer."
 msgstr "Użyj najwyżej 48 znaków."
+
+#. Error under the "Quote on the wall" field when the quote is longer than 80 characters. An emoji counts as one character.
+#: src/features/premium/components/operator_pass/OperatorPassWallQuoteField.tsx
+msgid "Use 80 characters or fewer."
+msgstr "Użyj maksymalnie 80 znaków."
 
 #. Text button on the browser approval page that goes back to choosing which account signs in to the app.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx
@@ -42737,6 +42812,11 @@ msgstr "Całe słowo"
 #: src/features/auth/flow/AccountRestrictionScreen.tsx
 msgid "Why"
 msgstr "Dlaczego"
+
+#. Link after the date of birth text that opens the help article about why the app asks for a date of birth.
+#: src/features/auth/components/date_of_birth/DateOfBirthGate.tsx
+msgid "Why we ask"
+msgstr "Dlaczego pytamy"
 
 #. Link after the hidden status in the Operators' wall settings. It opens the Operator Pass terms.
 #: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx

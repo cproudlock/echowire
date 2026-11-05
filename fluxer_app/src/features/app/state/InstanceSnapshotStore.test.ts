@@ -259,6 +259,11 @@ describe('runtimeSnapshotFromDiscovery', () => {
 				custom_css: null,
 				trusted_domains: [],
 				upload_limit_message: null,
+				premium_page_color: '#aa5500',
+				premium_showcase_expressions_url: 'https://cdn.q.test/expressions.png',
+				premium_showcase_profile_url: 'https://cdn.q.test/profile.png',
+				premium_showcase_stream_url: 'https://cdn.q.test/stream.png',
+				premium_showcase_upload_url: 'https://cdn.q.test/upload.png',
 			},
 			setup: {
 				configured: false,

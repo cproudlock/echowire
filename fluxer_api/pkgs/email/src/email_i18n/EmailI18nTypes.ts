@@ -74,6 +74,7 @@ export type EnforcementNoticeKindLabel =
 
 export interface EmailTemplateVariables {
 	account_deletion_cancelled: Record<string, never>;
+	account_deletion_completed: Record<string, never>;
 	account_deletion_scheduled_inactivity: {
 		deletion_date: string;
 	};
@@ -235,6 +236,9 @@ export interface EmailTemplateVariables {
 	operator_pass_wall_name_replaced: {
 		target: 'name' | 'avatar' | 'both';
 		shown: 'previous' | 'username' | 'operator';
+		reason: 'guidelines' | 'impersonation' | 'rights' | 'age_suitability';
+	};
+	operator_pass_wall_quote_cleared: {
 		reason: 'guidelines' | 'impersonation' | 'rights' | 'age_suitability';
 	};
 	operator_pass_visionary_turned_on: {

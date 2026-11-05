@@ -668,6 +668,10 @@
 	.perkRowFlipped > .perkArtColumn {
 		order: 2;
 	}
+
+	.perkRowTextOnly {
+		grid-template-columns: minmax(0, 1fr);
+	}
 }
 
 .perkArtColumn {
@@ -701,6 +705,21 @@
 	position: relative;
 	width: min(100%, 36rem);
 	filter: drop-shadow(0 var(--pl-ledge-xl) 0 var(--pl-image-ledge));
+}
+
+.perkArtCustom {
+	aspect-ratio: 11 / 8;
+	overflow: hidden;
+	border-radius: var(--pl-radius-l);
+}
+
+.perkArtCustom .perkArtImage {
+	height: 100%;
+	object-fit: cover;
+}
+
+.perkArtCustom.perkArtFailed .perkArtImage {
+	display: none;
 }
 
 .perkArtPending,

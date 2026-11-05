@@ -8,6 +8,13 @@ export const EMAIL_I18N_MESSAGES = {
 		signoff: 'The {product_name} team',
 		footer_reason: 'You received this email because the deletion of your {product_name} account was canceled.',
 	},
+	account_deletion_completed: {
+		subject: 'Your {product_name} account has been deleted',
+		intro: "We've deleted your {product_name} account, as you asked.",
+		note: 'Your messages were deleted or unlinked from you, depending on what you chose. If you want to use {product_name} again, you can create a new account.',
+		signoff: 'The {product_name} team',
+		footer_reason: 'You received this email because you asked to delete your {product_name} account.',
+	},
 	account_deletion_scheduled_inactivity: {
 		subject: 'Your inactive {product_name} account will be deleted',
 		intro: "Your {product_name} account has been inactive for a long time, so we'll delete it on {deletion_date}.",
@@ -476,6 +483,27 @@ export const EMAIL_I18N_MESSAGES = {
 		ground: 'Section 3.1 of the Operator Pass terms',
 		automated_text: "Automated detection didn't find this, and a person on our team made the decision.",
 		next: 'You can send a new name or avatar in your <settings>settings</settings>.',
+		appeal_title: 'How to appeal',
+		appeal_body_v2:
+			"{reply, select, yes {Reply to this email within 60 days and tell us why you disagree. It's free, and a person on our team reads and decides your appeal.} other {Contact the admins of this instance within 60 days and tell them why you disagree.}}",
+		redress_v2:
+			"You can also go to court. If you're in the EU, you can use a certified <dsa>out-of-court dispute settlement body</dsa>. If you're a consumer in the EU or the EEA, you can also take the dispute to the Swedish National Board for Consumer Disputes (<arn>ARN</arn>), Box 174, 101 23 Stockholm, Sweden.",
+		signoff: 'The {product_name} team',
+		footer_reason:
+			"You received this email because of a decision about your listing on the {product_name} Operators' wall.",
+	},
+	operator_pass_wall_quote_cleared: {
+		subject: "We removed your quote from the {product_name} Operators' wall",
+		intro:
+			"We removed the quote from your listing on the Operators' wall. The rest of your listing stays as it is, and your badge and your purchase aren't affected.",
+		reason_label: 'Reason',
+		reason_value:
+			"{reason, select, impersonation {Pretends to be someone else} rights {Uses someone else's text without the rights to it} age_suitability {Not suitable for younger users} other {Breaks the community guidelines}}",
+		facts_label: 'Facts we relied on',
+		ground_label: 'Ground',
+		ground: 'Section 6.2 of the terms of service',
+		automated_text: "Automated detection didn't find this, and a person on our team made the decision.",
+		next: 'You can add a new quote that follows the community guidelines in your <settings>settings</settings>.',
 		appeal_title: 'How to appeal',
 		appeal_body_v2:
 			"{reply, select, yes {Reply to this email within 60 days and tell us why you disagree. It's free, and a person on our team reads and decides your appeal.} other {Contact the admins of this instance within 60 days and tell them why you disagree.}}",

@@ -79,6 +79,10 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_API_HEADERS_TIMEOUT_MS: {path: ['services', 'api', 'headers_timeout_ms'], parse: parseInteger},
 	FLUXER_API_REQUEST_TIMEOUT_MS: {path: ['services', 'api', 'request_timeout_ms'], parse: parseInteger},
 	FLUXER_API_MAX_INFLIGHT_REQUESTS: {path: ['services', 'api', 'max_inflight_requests'], parse: parseInteger},
+	FLUXER_API_MAX_CONCURRENT_FORM_UPLOADS: {
+		path: ['services', 'api', 'max_concurrent_form_uploads'],
+		parse: parseInteger,
+	},
 	FLUXER_API_AUTOMATED_MESSAGE_DELETION_DELAY_DAYS: {
 		path: ['services', 'api', 'automated_message_deletion_delay_days'],
 		parse: parseInteger,
@@ -150,6 +154,8 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	},
 	FLUXER_ADMIN_SECRET_KEY_BASE: {path: ['services', 'admin', 'secret_key_base']},
 	FLUXER_ADMIN_OAUTH_CLIENT_SECRET: {path: ['services', 'admin', 'oauth_client_secret']},
+	FLUXER_ADMIN_SSO_ISSUER: {path: ['services', 'admin', 'sso', 'issuer']},
+	FLUXER_ADMIN_SSO_CLIENT_ID: {path: ['services', 'admin', 'sso', 'client_id']},
 	FLUXER_GATEWAY_RPC_AUTH_TOKEN: {path: ['services', 'gateway', 'rpc_auth_token']},
 	FLUXER_SUDO_MODE_SECRET: {path: ['auth', 'sudo_mode_secret']},
 	FLUXER_CONNECTION_INITIATION_SECRET: {path: ['auth', 'connection_initiation_secret']},
@@ -325,6 +331,10 @@ const NAMED_FLUXER_ENV_OVERRIDES: Record<string, NamedEnvOverride> = {
 	FLUXER_STORE_BILLING_SANDBOX_USER_IDS: {path: ['integrations', 'store_billing', 'sandbox_user_ids'], parse: parseCsv},
 	FLUXER_STORE_BILLING_SANDBOX_ENTITLES_ALL: {
 		path: ['integrations', 'store_billing', 'sandbox_entitles_all'],
+		parse: parseBoolean,
+	},
+	FLUXER_STORE_BILLING_SANDBOX_SUBSCRIPTIONS: {
+		path: ['integrations', 'store_billing', 'sandbox_subscriptions'],
 		parse: parseBoolean,
 	},
 	FLUXER_SELF_HOSTED: {path: ['instance', 'self_hosted'], parse: parseBoolean},

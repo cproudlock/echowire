@@ -70,6 +70,7 @@ export interface ClientRuntimeDiscovery {
 	readonly customBadgesVersion: string | null;
 	readonly builtInGuildBadgeImages: InstanceBuiltInGuildBadgeImages;
 	readonly hiddenBuiltInGuildBadges: InstanceHiddenBuiltInGuildBadges;
+	readonly hiddenRoleIds: ReadonlyArray<string>;
 }
 
 export function projectClientRuntimeDiscovery(document: InstanceDiscoveryDocument): ClientRuntimeDiscovery {
@@ -94,6 +95,7 @@ export function projectClientRuntimeDiscovery(document: InstanceDiscoveryDocumen
 		customBadgesVersion: document.customBadgesVersion ?? null,
 		builtInGuildBadgeImages: document.builtInGuildBadgeImages ?? NO_BUILT_IN_GUILD_BADGE_IMAGES,
 		hiddenBuiltInGuildBadges: document.hiddenBuiltInGuildBadges ?? [],
+		hiddenRoleIds: document.hiddenRoleIds ?? [],
 	};
 }
 
@@ -168,6 +170,11 @@ function projectAppPublic(appPublic: InstanceDiscoveryDocument['appPublic']): In
 			premium_product_name: value.branding.premium_product_name ?? DEFAULT_PREMIUM_PRODUCT_NAME,
 			premium_info_url: value.branding.premium_info_url ?? null,
 			sign_in_backdrop_url: value.branding.sign_in_backdrop_url ?? null,
+			premium_page_color: value.branding.premium_page_color ?? null,
+			premium_showcase_expressions_url: value.branding.premium_showcase_expressions_url ?? null,
+			premium_showcase_profile_url: value.branding.premium_showcase_profile_url ?? null,
+			premium_showcase_stream_url: value.branding.premium_showcase_stream_url ?? null,
+			premium_showcase_upload_url: value.branding.premium_showcase_upload_url ?? null,
 			custom_css: value.branding.custom_css ?? null,
 			upload_limit_message: value.branding.upload_limit_message ?? null,
 			trusted_domains: value.branding.trusted_domains ?? [],

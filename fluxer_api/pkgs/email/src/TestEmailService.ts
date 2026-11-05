@@ -131,6 +131,9 @@ export class TestEmailService implements IEmailService {
 		account_deletion_cancelled: async (email, _params) => {
 			return this.record(email, 'account_deletion_cancelled');
 		},
+		account_deletion_completed: async (email, _params) => {
+			return this.record(email, 'account_deletion_completed');
+		},
 		inactivity_warning: async (email, {deletionDate, lastActiveDate}) => {
 			return this.record(email, 'inactivity_warning', {
 				deletion_date: deletionDate.toISOString(),
@@ -321,6 +324,12 @@ export class TestEmailService implements IEmailService {
 			return this.record(email, 'operator_pass_wall_name_replaced', {
 				target: params.target,
 				shown: params.shown,
+				reason: params.reason,
+				note: params.note,
+			});
+		},
+		operator_pass_wall_quote_cleared: async (email, params) => {
+			return this.record(email, 'operator_pass_wall_quote_cleared', {
 				reason: params.reason,
 				note: params.note,
 			});

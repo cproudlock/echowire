@@ -4533,6 +4533,10 @@
 				{
 					"name": "placeholder",
 					"type": "text"
+				},
+				{
+					"name": "nsfw",
+					"type": "boolean"
 				}
 			],
 			"primary_key": "((user_id), meme_id)",
@@ -7916,6 +7920,10 @@
 					"type": "text"
 				},
 				{
+					"name": "quote",
+					"type": "text"
+				},
+				{
 					"name": "opted_out",
 					"type": "boolean"
 				},
@@ -8670,6 +8678,34 @@
 				},
 				{
 					"name": "eu_withdrawal_waiver_text_version",
+					"type": "text"
+				},
+				{
+					"name": "distribution",
+					"type": "text"
+				},
+				{
+					"name": "distribution_rate_bps",
+					"type": "int"
+				},
+				{
+					"name": "distribution_rule_version",
+					"type": "int"
+				},
+				{
+					"name": "distribution_base_amount_minor",
+					"type": "int"
+				},
+				{
+					"name": "distribution_purchase_ref",
+					"type": "text"
+				},
+				{
+					"name": "tax_amount_minor",
+					"type": "int"
+				},
+				{
+					"name": "tax_country",
 					"type": "text"
 				}
 			],
@@ -10076,6 +10112,10 @@
 				{
 					"name": "sensitive_content_guild_filter",
 					"type": "int"
+				},
+				{
+					"name": "allow_mature_content_on_ios",
+					"type": "boolean"
 				},
 				{
 					"name": "version",

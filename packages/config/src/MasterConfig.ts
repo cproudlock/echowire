@@ -119,6 +119,7 @@ export interface MasterConfig {
 			headers_timeout_ms: number;
 			request_timeout_ms: number;
 			max_inflight_requests: number;
+			max_concurrent_form_uploads: number;
 			automated_message_deletion_delay_days: number;
 			ip_ban_exempt_ips: Array<string>;
 			additional_cors_origins: Array<string>;
@@ -181,6 +182,10 @@ export interface MasterConfig {
 		admin: {
 			secret_key_base: string;
 			oauth_client_secret: string;
+			sso: {
+				issuer: string;
+				client_id: string;
+			};
 		};
 	};
 	auth: {
@@ -337,6 +342,7 @@ export interface MasterConfig {
 		store_billing: {
 			sandbox_user_ids?: Array<string>;
 			sandbox_entitles_all: boolean;
+			sandbox_subscriptions: boolean;
 		};
 	};
 	instance: {

@@ -70,11 +70,11 @@ const COMMUNITY_DESCRIPTION_DESCRIPTOR = msg({
 const ALLOW_MATURE_CONTENT_ON_IOS_DESCRIPTOR = msg({
 	message: 'Allow 18+ content on iPhone and iPad',
 	comment:
-		'Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the Fluxer app for iPhone and iPad.',
+		'Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the echowire app for iPhone and iPad.',
 });
 const ALLOW_MATURE_CONTENT_ON_IOS_DESCRIPTION_DESCRIPTOR = msg({
 	message:
-		'Lets you open communities and channels marked 18+ in the Fluxer app for iPhone and iPad, and choose "Show" for sensitive media there. You can only change this on the web or on desktop.',
+		'Lets you open communities and channels marked 18+ in the echowire app for iPhone and iPad, and choose "Show" for sensitive media there. You can only change this on the web or on desktop.',
 	comment:
 		'Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.',
 });

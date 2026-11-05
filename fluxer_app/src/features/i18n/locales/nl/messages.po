@@ -4322,7 +4322,7 @@ msgstr "Sta {PRODUCT_NAME} toe om je microfoon te gebruiken. Controleer de adres
 msgid "Allow {productName} under Screen Recording in System Settings. If it is already allowed, relaunch {productName2} so macOS applies it."
 msgstr "Sta {productName} toe onder Schermopname in Systeeminstellingen. Als het al is toegestaan, start je {productName2} opnieuw op, zodat macOS dit toepast."
 
-#. Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the Fluxer app for iPhone and iPad.
+#. Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the echowire app for iPhone and iPad.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
 msgid "Allow 18+ content on iPhone and iPad"
 msgstr "18+-inhoud toestaan op iPhone en iPad"
@@ -21256,8 +21256,8 @@ msgstr "Laat push-to-talk en sneltoetsen werken in andere apps."
 
 #. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
-msgid "Lets you open communities and channels marked 18+ in the Fluxer app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
-msgstr "Hiermee kun je in de Fluxer-app voor iPhone en iPad communities en kanalen openen die als 18+ zijn gemarkeerd, en daar \"Tonen\" kiezen voor gevoelige media. Je kunt dit alleen op het web of in de desktop-app wijzigen."
+msgid "Lets you open communities and channels marked 18+ in the echowire app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
+msgstr "Hiermee kun je in de echowire-app voor iPhone en iPad communities en kanalen openen die als 18+ zijn gemarkeerd, en daar \"Tonen\" kiezen voor gevoelige media. Je kunt dit alleen op het web of in de desktop-app wijzigen."
 
 #: src/features/user/components/modals/tabs/account_security_tab/RecoveryKitSettings.tsx
 msgid "Lets you reset your password if you forget it."

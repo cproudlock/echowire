@@ -4321,7 +4321,7 @@ msgstr "Povolte aplikaci {PRODUCT_NAME} přístup k mikrofonu. Zkontrolujte adre
 msgid "Allow {productName} under Screen Recording in System Settings. If it is already allowed, relaunch {productName2} so macOS applies it."
 msgstr "Povolte {productName} v části Nahrávání obrazovky v Nastavení systému. Pokud je již povoleno, restartujte {productName2}, aby se to projevilo v systému macOS."
 
-#. Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the Fluxer app for iPhone and iPad.
+#. Switch in the sensitive content settings. Turns on 18+ communities and channels and the "Show" sensitive media option in the echowire app for iPhone and iPad.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
 msgid "Allow 18+ content on iPhone and iPad"
 msgstr "Povolit obsah 18+ na iPhonu a iPadu"
@@ -21255,8 +21255,8 @@ msgstr "Umožňuje fungování push-to-talk a klávesových zkratek v jiných ap
 
 #. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
-msgid "Lets you open communities and channels marked 18+ in the Fluxer app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
-msgstr "Umožňuje otevírat komunity a kanály označené 18+ v aplikaci Fluxer pro iPhone a iPad a vybrat tam u citlivých médií možnost „Zobrazit“. Toto nastavení můžete změnit jen na webu nebo v aplikaci pro počítač."
+msgid "Lets you open communities and channels marked 18+ in the echowire app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
+msgstr "Umožňuje otevírat komunity a kanály označené 18+ v aplikaci echowire pro iPhone a iPad a vybrat tam u citlivých médií možnost „Zobrazit“. Toto nastavení můžete změnit jen na webu nebo v aplikaci pro počítač."
 
 #: src/features/user/components/modals/tabs/account_security_tab/RecoveryKitSettings.tsx
 msgid "Lets you reset your password if you forget it."

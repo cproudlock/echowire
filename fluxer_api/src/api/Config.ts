@@ -377,6 +377,7 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 		headersTimeoutMs: master.services.api.headers_timeout_ms,
 		requestTimeoutMs: master.services.api.request_timeout_ms,
 		maxInflightRequests: master.services.api.max_inflight_requests,
+		maxConcurrentFormUploads: master.services.api.max_concurrent_form_uploads,
 		automatedMessageDeletionDelayDays: master.services.api.automated_message_deletion_delay_days,
 		ipBanExemptIps: normalizeIpBanExemptIps(master.services.api.ip_ban_exempt_ips),
 		additionalCorsOrigins: master.services.api.additional_cors_origins ?? [],
@@ -610,6 +611,10 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 		},
 		admin: {
 			oauthClientSecret: master.services.admin.oauth_client_secret,
+			sso: {
+				issuer: master.services.admin.sso.issuer,
+				clientId: master.services.admin.sso.client_id,
+			},
 		},
 		auth: {
 			sudoModeSecret: master.auth.sudo_mode_secret,
@@ -715,6 +720,7 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 		storeBilling: {
 			sandboxUserIds: master.integrations.store_billing.sandbox_user_ids ?? [],
 			sandboxEntitlesAll: master.integrations.store_billing.sandbox_entitles_all,
+			sandboxSubscriptions: master.integrations.store_billing.sandbox_subscriptions,
 		},
 		worker: {
 			mode: apiWorkerConfig?.mode ?? 'all_lanes',

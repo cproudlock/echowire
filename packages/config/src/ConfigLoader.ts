@@ -29,6 +29,11 @@ let cachedConfig: MasterConfig | null = null;
 const CANARY_APP_ORIGIN = 'https://canary.echowire.org';
 const MAX_REPORT_RETENTION_DAYS = 36_500;
 
+const OFFICIAL_ANDROID_PASSKEY_ORIGINS = [
+	'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
+	'android:apk-key-hash:Ld4qnT0TfBeHMT3Yu2H0WTwqlxgFs-32uDmwqtLndsk',
+];
+
 const DEFAULT_PASSKEY_ORIGINS = [
 	// Echowire: our own origins. Upstream lists fluxer.app and the fluxer.com
 	// domain they are migrating to; neither is served by this instance.
@@ -36,8 +41,7 @@ const DEFAULT_PASSKEY_ORIGINS = [
 	'https://web.echowire.org',
 	CANARY_APP_ORIGIN,
 	'https://web.canary.echowire.org',
-	'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
-	'android:apk-key-hash:Ld4qnT0TfBeHMT3Yu2H0WTwqlxgFs-32uDmwqtLndsk',
+	...OFFICIAL_ANDROID_PASSKEY_ORIGINS,
 ];
 
 const DEFAULT_ADDITIONAL_CORS_ORIGINS = [CANARY_APP_ORIGIN];
@@ -115,6 +119,7 @@ function defaultConfig(): MasterConfig {
 				headers_timeout_ms: 30_000,
 				request_timeout_ms: 120_000,
 				max_inflight_requests: 512,
+				max_concurrent_form_uploads: 16,
 				automated_message_deletion_delay_days: 7,
 				ip_ban_exempt_ips: [],
 				additional_cors_origins: DEFAULT_ADDITIONAL_CORS_ORIGINS,
@@ -157,6 +162,10 @@ function defaultConfig(): MasterConfig {
 			admin: {
 				secret_key_base: '',
 				oauth_client_secret: '',
+				sso: {
+					issuer: '',
+					client_id: '',
+				},
 			},
 		},
 		auth: {
@@ -263,6 +272,7 @@ function defaultConfig(): MasterConfig {
 			store_billing: {
 				sandbox_user_ids: [],
 				sandbox_entitles_all: false,
+				sandbox_subscriptions: true,
 			},
 		},
 		instance: {
@@ -679,6 +689,7 @@ function validateStoreBillingConfig(config: MasterConfig): void {
 		}
 	}
 	assertBoolean(config.integrations.store_billing.sandbox_entitles_all, 'FLUXER_STORE_BILLING_SANDBOX_ENTITLES_ALL');
+	assertBoolean(config.integrations.store_billing.sandbox_subscriptions, 'FLUXER_STORE_BILLING_SANDBOX_SUBSCRIPTIONS');
 }
 
 const AGE_POLICY_REGION_PATTERN = /^[A-Z]{2}(?:-[A-Z0-9]{1,3})?$/u;
@@ -790,6 +801,12 @@ function normalizeConfig(config: MasterConfig): MasterConfig {
 	normalizeAppOriginAliases(config);
 	normalizeAgePolicyConfig(config);
 	assertIntegerInRange(config.services.api.max_inflight_requests, 'FLUXER_API_MAX_INFLIGHT_REQUESTS', 1, 100_000);
+	assertIntegerInRange(
+		config.services.api.max_concurrent_form_uploads,
+		'FLUXER_API_MAX_CONCURRENT_FORM_UPLOADS',
+		1,
+		10_000,
+	);
 	assertIntegerInRange(
 		config.services.api.automated_message_deletion_delay_days,
 		'FLUXER_API_AUTOMATED_MESSAGE_DELETION_DELAY_DAYS',
@@ -946,6 +963,9 @@ function normalizePasskeys(config: MasterConfig, useDefaultOrigins: boolean): vo
 			...new Set([...passkeys.additional_allowed_origins, new URL(config.endpoints.app).origin]),
 		];
 	}
+	passkeys.additional_allowed_origins = [
+		...new Set([...passkeys.additional_allowed_origins, ...OFFICIAL_ANDROID_PASSKEY_ORIGINS]),
+	];
 }
 
 export async function loadConfig(): Promise<MasterConfig> {

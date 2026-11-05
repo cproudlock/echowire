@@ -88,6 +88,7 @@ export interface APIConfig {
 	headersTimeoutMs: number;
 	requestTimeoutMs: number;
 	maxInflightRequests: number;
+	maxConcurrentFormUploads: number;
 	automatedMessageDeletionDelayDays: number;
 	ipBanExemptIps: Array<string>;
 	additionalCorsOrigins: Array<string>;
@@ -308,6 +309,10 @@ export interface APIConfig {
 	};
 	admin: {
 		oauthClientSecret?: string;
+		sso: {
+			issuer: string;
+			clientId: string;
+		};
 	};
 	auth: {
 		sudoModeSecret: string;
@@ -407,6 +412,7 @@ export interface APIConfig {
 	storeBilling: {
 		sandboxUserIds: Array<string>;
 		sandboxEntitlesAll: boolean;
+		sandboxSubscriptions: boolean;
 	};
 	worker: {
 		mode: APIWorkerMode;

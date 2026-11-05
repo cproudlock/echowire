@@ -1694,7 +1694,7 @@ module.exports = {
 			to: 'badges',
 			filter: ['**/*'],
 		},
-		...(buildChannel === 'development' && targetPlatform === 'darwin'
+		...(targetPlatform === 'darwin'
 			? [{from: `build_resources/${iconDir}/_compiled/Assets.car`, to: 'Assets.car'}]
 			: []),
 	],
@@ -1802,7 +1802,7 @@ module.exports = {
 			NSAppleEventsUsageDescription: 'echowire needs access to Apple Events for automation features.',
 			NSAudioCaptureUsageDescription: 'echowire captures audio from the screen or window you choose to share.',
 			NSScreenCaptureUsageDescription: 'echowire captures the screen or window you choose to share.',
-			...(buildChannel === 'development' ? {CFBundleIconName: 'AppIcon'} : {}),
+			CFBundleIconName: 'AppIcon',
 			NSLocalNetworkUsageDescription:
 				'echowire needs local network access to reach an echowire instance you host on your own network. It never scans your network or connects to devices you have not pointed it at.',
 		},

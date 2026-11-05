@@ -3,10 +3,6 @@
 import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import styles from '@app/features/premium/components/plutonium_page/PlutoniumPage.module.css';
 import {
-	PlutoniumPageIcon,
-	type PlutoniumPageIconName,
-} from '@app/features/premium/components/plutonium_page/PlutoniumPageIcons';
-import {
 	AVATAR_LSF,
 	BANNER_LSF,
 	EMOJI_CATVIBE,
@@ -17,7 +13,11 @@ import {
 	STICKER_FEEL_THAT,
 	STREAM_SHOTS,
 	UPLOAD_SHOTS,
-} from '@app/features/premium/components/plutonium_page/PlutoniumPageMedia';
+} from '@app/features/premium/components/plutonium_page/PlutoniumPageArt';
+import {
+	PlutoniumPageIcon,
+	type PlutoniumPageIconName,
+} from '@app/features/premium/components/plutonium_page/PlutoniumPageIcons';
 import {
 	SHOWCASE_EXPRESSIONS_BODY_DESCRIPTOR,
 	SHOWCASE_EXPRESSIONS_TITLE_DESCRIPTOR,
@@ -79,7 +79,9 @@ type PerkArtSource = {kind: 'flagship'} | {kind: 'custom'; url: string};
 function perkArtSource(card: PerkCard): PerkArtSource | null {
 	if (!RuntimeConfig.isSelfHosted()) return {kind: 'flagship'};
 	const url = RuntimeConfig.appPublic.branding[CUSTOM_SHOT_FIELDS[card.id]];
-	return url ? {kind: 'custom', url} : null;
+	// Echowire: no custom card image configured: keep showing the bundled art (upstream shows a text-only row
+	// on a self-hosted instance). See docs/upstream-divergence.md, row 'Premium page art on self-hosted'.
+	return url ? {kind: 'custom', url} : {kind: 'flagship'};
 }
 
 function customSrcSet(url: string): string {

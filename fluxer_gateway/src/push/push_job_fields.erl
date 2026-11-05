@@ -6,7 +6,9 @@
 -export([notification/7, thread/2, caller/1, is_mature/1]).
 
 -define(MAX_CALLER_NAME_BYTES, 128).
--define(MATURE_TITLE, <<"Fluxer">>).
+%% Echowire: the title of a push for a message in an 18+ channel. Upstream names itself literally;
+%% the fork is echowire everywhere a user can read it (see docs/upstream-divergence.md).
+-define(MATURE_TITLE, <<"echowire">>).
 -define(MATURE_CHANNEL_BODY, <<"Message in an 18+ channel">>).
 -define(MATURE_GROUP_DM_BODY, <<"Message in an 18+ group DM">>).
 

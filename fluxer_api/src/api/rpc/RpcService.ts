@@ -1635,7 +1635,11 @@ export class RpcService {
 			const needsIncomingCallRepair = settings.incomingCallFlags === 0;
 			const needsGroupDmRepair = settings.groupDmAddPermissionFlags === 0;
 			if (needsIncomingCallRepair || needsGroupDmRepair) {
-				const isAdult = canUserAccessNsfwContent({isBot: false, dateOfBirth: user.dateOfBirth});
+				const isAdult = canUserAccessNsfwContent({
+					isBot: false,
+					dateOfBirth: user.dateOfBirth,
+					attestedAgeFloor: user.attestedAgeFloor,
+				});
 				const baseRow = settings.toRow();
 				const updatedRow = {
 					...baseRow,

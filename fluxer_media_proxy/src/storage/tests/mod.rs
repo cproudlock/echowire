@@ -2,6 +2,7 @@
 
 mod keys;
 mod response_body;
+mod slow_stream;
 
 use crate::{
     config::{

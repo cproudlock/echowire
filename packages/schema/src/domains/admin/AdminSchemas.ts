@@ -67,6 +67,7 @@ import {
 } from '@fluxer/schema/src/domains/instance/InstanceSchemas';
 import {MessageEmbedResponse} from '@fluxer/schema/src/domains/message/EmbedSchemas';
 import {MessageResponseSchema} from '@fluxer/schema/src/domains/message/MessageResponseSchemas';
+import {withBase64Binary} from '@fluxer/schema/src/primitives/Base64BinaryFields';
 import {ChannelTypeSchema} from '@fluxer/schema/src/primitives/ChannelValidators';
 import {
 	ContentWarningLevelSchema,
@@ -1064,7 +1065,7 @@ export const BrandingAssetUploadRequest = z.object({
 		'premium_showcase_stream',
 		'premium_showcase_upload',
 	]),
-	image: z.string().max(16_000_000).nullish(),
+	image: withBase64Binary(z.string().max(16_000_000)).nullish(),
 });
 
 export type BrandingAssetUploadRequest = z.infer<typeof BrandingAssetUploadRequest>;
@@ -1553,7 +1554,7 @@ const AdminGuildResponseSchema = z.object({
 });
 const AdminGuildChannelSummarySchema = z.object({
 	id: SnowflakeStringType,
-	name: createStringType(1, 100).nullable(),
+	name: z.string().max(100).nullable(),
 	type: ChannelTypeSchema,
 	position: Int32Type,
 	parent_id: SnowflakeStringType.nullable(),
@@ -1565,7 +1566,7 @@ const AdminGuildChannelSummarySchema = z.object({
 });
 const AdminGuildRoleSummarySchema = z.object({
 	id: SnowflakeStringType,
-	name: createStringType(1, 100),
+	name: z.string().max(100),
 	color: Int32Type,
 	position: Int32Type,
 	permissions: PermissionStringType.describe('The role permissions bitfield'),
@@ -1580,7 +1581,7 @@ const AdminLookupGuildSchema = z.object({
 	owner_username: z.string().nullable(),
 	owner_global_name: z.string().nullable(),
 	owner_discriminator: z.string().nullable(),
-	name: createStringType(1, 100),
+	name: z.string().max(100),
 	vanity_url_code: createStringType(1, 256).nullable(),
 	icon: createStringType(1, 256).nullable(),
 	banner: createStringType(1, 256).nullable(),
@@ -1622,7 +1623,7 @@ export const ListGuildMembersResponse = z.object({
 });
 const GuildAssetItemSchema = z.object({
 	id: SnowflakeStringType,
-	name: createStringType(1, 100),
+	name: z.string().max(100),
 	animated: z.boolean(),
 	creator_id: SnowflakeStringType,
 	media_url: createStringType(1, 2048),

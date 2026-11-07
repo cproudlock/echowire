@@ -11,7 +11,13 @@ import {
 	setCassandraQueryExecutorForTesting,
 	shutdownCassandraQueryExecutorForTesting,
 } from '@app/api/database/CassandraQueryExecution';
-import type {IUsersServiceClient} from '@app/api/infrastructure/UsersServiceClient';
+import type {
+	AppAttestAgeAccepted,
+	AppAttestChallengeIssued,
+	AppAttestOutcome,
+	IUsersServiceClient,
+	PlayIntegrityOutcome,
+} from '@app/api/infrastructure/UsersServiceClient';
 import {setInjectedUsersServiceClient} from '@app/api/infrastructure/UsersServiceClient';
 import {initializeLogger} from '@app/api/Logger';
 import {setInjectedKVProvider, setInjectedSnowflakeService} from '@app/api/middleware/ServiceRegistry';
@@ -112,6 +118,26 @@ class RepositoryBackedUsersServiceClient implements IUsersServiceClient {
 	}
 
 	async invalidateUserCache(_userId: UserID): Promise<void> {}
+
+	async appAttestCreateChallenge(): Promise<AppAttestOutcome<AppAttestChallengeIssued>> {
+		return {ok: false, code: 'not_configured'};
+	}
+
+	async appAttestRegisterKey(): Promise<AppAttestOutcome<true>> {
+		return {ok: false, code: 'not_configured'};
+	}
+
+	async appAttestSubmitAge(): Promise<AppAttestOutcome<AppAttestAgeAccepted>> {
+		return {ok: false, code: 'not_configured'};
+	}
+
+	async playIntegrityCreateChallenge(): Promise<PlayIntegrityOutcome<AppAttestChallengeIssued>> {
+		return {ok: false, code: 'not_configured'};
+	}
+
+	async playIntegritySubmitAge(): Promise<PlayIntegrityOutcome<AppAttestAgeAccepted>> {
+		return {ok: false, code: 'not_configured'};
+	}
 }
 
 setDefaultTestEnv();

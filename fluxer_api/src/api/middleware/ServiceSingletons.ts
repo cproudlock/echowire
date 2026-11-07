@@ -193,7 +193,7 @@ export const getOperatorPassEntitlementService = singleton(
 	() => new OperatorPassEntitlementService(getOperatorPassRepository()),
 );
 export const getOperatorPassWallService = singleton(
-	() => new OperatorPassWallService(getOperatorPassRepository(), getUserRepository()),
+	() => new OperatorPassWallService(getOperatorPassRepository(), getUserRepository(), getCacheService()),
 );
 
 interface OperatorPassWallInfrastructure {

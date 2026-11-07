@@ -34,6 +34,7 @@ import type {ApplicationRepository} from '@app/api/oauth/repositories/Applicatio
 import type {OAuth2TokenRepository} from '@app/api/oauth/repositories/OAuth2TokenRepository';
 import {endOperatorPassesForDeletion} from '@app/api/operator_pass/OperatorPassHoldingService';
 import type {StoreEntitlementService} from '@app/api/store_billing/StoreEntitlementService';
+import {deleteAllAppAttestKeys} from '@app/api/user/AgeAssurance';
 import type {UserRepository} from '@app/api/user/repositories/UserRepository';
 import {isPendingDeletionBlocked} from '@app/api/user/services/PendingDeletionCoordinator';
 import {
@@ -93,7 +94,7 @@ async function withdrawPendingRegistrationOf(user: User): Promise<void> {
 }
 
 async function removeNetworkBlocksOf(userId: UserID, deps: UserDeletionDependencies): Promise<void> {
-	const decisions = await getEnforcementDecisionRepository().listBySubject('user', userId);
+	const decisions = await getEnforcementDecisionRepository().listAllBySubject('user', userId);
 	if (decisions.length === 0) return;
 	const removed = await deps.adminRepository.removeDecisionIpBans(decisions.map((decision) => decision.decision_id));
 	if (removed.length > 0) {
@@ -287,8 +288,13 @@ export async function processUserDeletion(
 	Logger.debug({userId}, 'Leaving all group DMs');
 	const allPrivateChannels = await userRepository.listPrivateChannels(userId);
 	const groupDmChannels = allPrivateChannels.filter((channel) => channel.type === ChannelTypes.GROUP_DM);
-	for (const channel of groupDmChannels) {
+	for (const privateChannel of groupDmChannels) {
 		try {
+			const channel = await channelRepository.channelData.findUnique(privateChannel.id);
+			if (!channel?.recipientIds.has(userId)) {
+				await userRepository.closeDmForUser(userId, privateChannel.id);
+				continue;
+			}
 			const updatedRecipientIds = new Set<UserID>(channel.recipientIds);
 			updatedRecipientIds.delete(userId);
 			let newOwnerId = channel.ownerId;
@@ -314,12 +320,15 @@ export async function processUserDeletion(
 			}
 			const updatedNicknames = new Map(channel.nicknames);
 			updatedNicknames.delete(userId.toString());
-			await channelRepository.channelData.upsert({
-				...channel.toRow(),
-				owner_id: newOwnerId,
-				recipient_ids: updatedRecipientIds,
-				nicks: updatedNicknames.size > 0 ? updatedNicknames : null,
-			});
+			await channelRepository.channelData.upsert(
+				{
+					...channel.toRow(),
+					owner_id: newOwnerId,
+					recipient_ids: updatedRecipientIds,
+					nicks: updatedNicknames.size > 0 ? updatedNicknames : null,
+				},
+				channel.toRow(),
+			);
 			await userRepository.closeDmForUser(userId, channel.id);
 			const messageId = createMessageID(await snowflakeService.generateForChannel(channel.id));
 			await channelRepository.messages.upsertMessage({
@@ -372,7 +381,7 @@ export async function processUserDeletion(
 			});
 			Logger.debug({userId, channelId: channel.id}, 'Left group DM successfully');
 		} catch (error) {
-			Logger.error({error, userId, channelId: channel.id}, 'Failed to leave group DM');
+			Logger.error({error, userId, channelId: privateChannel.id}, 'Failed to leave group DM');
 		}
 	}
 	if (user.pendingBulkMessageDeletionAt) {
@@ -479,6 +488,7 @@ export async function processUserDeletion(
 		revokeAllAuthSessions({users: userRepository, gateway: gatewayService}, userId),
 		userRepository.deleteAllMfaBackupCodes(userId),
 		userRepository.deleteAllWebAuthnCredentials(userId),
+		deleteAllAppAttestKeys(userId),
 		deleteRecoveryKit(userId),
 		userRepository.deleteAllPushSubscriptions(userId),
 		userRepository.deleteAllRecentMentions(userId),

@@ -1990,6 +1990,8 @@ dependencies = [
  "fluxer_common",
  "futures",
  "hmac",
+ "hyper",
+ "hyper-util",
  "p256",
  "percent-encoding",
  "rand 0.10.3",
@@ -2000,6 +2002,7 @@ dependencies = [
  "sha2 0.11.1",
  "thiserror",
  "tokio",
+ "tower-service",
  "tracing",
  "url",
 ]
@@ -2053,6 +2056,7 @@ dependencies = [
  "fluxer-svc",
  "fluxer_common",
  "hickory-resolver",
+ "html5ever",
  "infer",
  "moka",
  "regex",
@@ -2073,18 +2077,23 @@ name = "fluxer-users"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "base64 0.23.1",
  "chrono",
+ "ciborium",
  "fluxer-svc",
  "fluxer_common",
  "futures",
  "hmac",
  "moka",
+ "reqwest",
+ "ring",
  "scylla",
  "serde",
  "serde_json",
  "sha2 0.11.1",
  "tokio",
  "tracing",
+ "x509-cert",
 ]
 
 [[package]]

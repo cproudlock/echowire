@@ -22,6 +22,7 @@ interface ModuleMapPluginOptions {
 
 interface ModuleEntry {
 	id?: string | number;
+	chunkIds?: Array<string | number>;
 	files?: Array<string>;
 	concatenatedInto?: string | number;
 	exportMap?: Record<string, string>;
@@ -36,69 +37,103 @@ interface ModuleMapManifest {
 	assets: Record<string, string>;
 }
 
+interface ModuleWithResource {
+	resource?: string | null;
+}
+
 interface ConcatenatedModuleLike {
-	modules?: Set<{resource?: string | null}>;
-	rootModule?: {resource?: string | null} | null;
+	modules?: Array<ModuleWithResource> | Set<ModuleWithResource>;
+	rootModule?: ModuleWithResource | null;
 }
 
 type CompilationModule = Parameters<Compilation['chunkGraph']['getModuleId']>[0];
 
-const getConcatenatedModules = (module: CompilationModule): ConcatenatedModuleLike | undefined => {
-	const concatenated = module as CompilationModule & ConcatenatedModuleLike;
+const getModuleChunkIds = (compilation: Compilation, module: CompilationModule): Array<string | number> =>
+	[...compilation.chunkGraph.getModuleChunksIterable(module)].flatMap((chunk) => (chunk.id == null ? [] : [chunk.id]));
 
-	return concatenated.modules?.size ? concatenated : undefined;
+const getConcatenatedModules = (module: CompilationModule): Array<ModuleWithResource> | undefined => {
+	const {modules} = module as CompilationModule & ConcatenatedModuleLike;
+
+	if (modules == null) return undefined;
+
+	const list = Array.isArray(modules) ? modules : [...modules];
+
+	return list.length ? list : undefined;
+};
+
+const getModuleKey = (root: string, filename: string): {key: string; packageName?: string} => {
+	const nodeModuleInfo = getNodeModuleInfo(root, filename);
+
+	if (nodeModuleInfo) {
+		return {key: `npm/${nodeModuleInfo.packagePath}`, packageName: nodeModuleInfo.packageName};
+	}
+
+	const relativePath = normalizePath(path.relative(root, filename));
+
+	return {key: relativePath.startsWith('apps/') ? relativePath.slice(5) : relativePath};
 };
 
 const collectModuleMetadata = (compilation: Compilation, root: string, includeDependencies: boolean) => {
 	const modules: Record<string, ModuleEntry> = {};
 	const packages: Record<string, string> = {};
+	const concatenatedChildren = new Map<string, {id: string | number; chunkIds: Array<string | number>}>();
+	const concatenatedRoots = new Set<string>();
 
 	for (const module of compilation.modules) {
+		const concatenated = getConcatenatedModules(module);
+		if (!concatenated) continue;
+
 		const id = compilation.chunkGraph.getModuleId(module);
 		if (id == null) continue;
 
+		const rootModule = (module as CompilationModule & ConcatenatedModuleLike).rootModule ?? concatenated[0];
+
+		if (typeof rootModule?.resource === 'string') {
+			concatenatedRoots.add(stripQuery(rootModule.resource));
+		}
+
+		for (const child of concatenated) {
+			if (!child.resource || child === rootModule || !path.isAbsolute(child.resource)) continue;
+
+			concatenatedChildren.set(stripQuery(child.resource), {
+				id,
+				chunkIds: getModuleChunkIds(compilation, module),
+			});
+		}
+	}
+
+	for (const module of compilation.modules) {
 		const resource = getModuleResource(module);
 		if (!resource || !path.isAbsolute(resource)) continue;
 
 		const moduleFilename = stripQuery(resource);
-		const nodeModuleInfo = getNodeModuleInfo(root, moduleFilename);
-		const packageName = nodeModuleInfo?.packageName;
-		const packagePath = nodeModuleInfo?.packagePath;
+		const {key, packageName} = getModuleKey(root, moduleFilename);
 
 		if (packageName ? !includeDependencies : !isInRoot(root, moduleFilename)) {
 			continue;
 		}
 
-		const key = packageName ? `npm/${packagePath}` : normalizePath(path.relative(root, moduleFilename));
+		const id = compilation.chunkGraph.getModuleId(module);
 
-		const concatenated = getConcatenatedModules(module);
+		if (id == null) {
+			if (concatenatedRoots.has(moduleFilename)) continue;
 
-		if (concatenated) {
-			const rootModule = concatenated.rootModule ?? [...concatenated.modules!][0];
+			const concatenated = concatenatedChildren.get(moduleFilename);
+			if (concatenated === undefined) continue;
 
-			for (const child of concatenated.modules!) {
-				if (!child.resource || child === rootModule) continue;
+			modules[key] = {
+				concatenatedInto: concatenated.id,
+				chunkIds: concatenated.chunkIds,
+			};
 
-				const childResource = stripQuery(child.resource);
-				const childRelative = path.relative(root, childResource);
-
-				if (isInRoot(root, childResource)) {
-					modules[normalizePath(childRelative)] = {
-						concatenatedInto: id,
-					};
-				}
-			}
-		}
-
-		let moduleKey = key;
-		if (!packageName && key.startsWith('apps/')) {
-			moduleKey = key.slice(5);
+			continue;
 		}
 
 		const exportMap = getModuleExportMap(compilation, module);
 
-		modules[moduleKey] = {
+		modules[key] = {
 			id,
+			chunkIds: getModuleChunkIds(compilation, module),
 			files: getModuleFiles(compilation, module),
 			...(exportMap ? {exportMap} : {}),
 		};

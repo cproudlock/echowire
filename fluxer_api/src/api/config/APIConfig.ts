@@ -251,6 +251,8 @@ export interface APIConfig {
 		turnServers: Array<VoiceTurnServerConfig>;
 		joinAllowPrivateEndpoints: boolean;
 		healthIntervalMs: number;
+		participantSweepEnabled: boolean;
+		participantSweepDryRun: boolean;
 	};
 	stripe: {
 		enabled: boolean;

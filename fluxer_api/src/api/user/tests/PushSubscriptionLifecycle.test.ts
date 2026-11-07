@@ -21,6 +21,7 @@ import {
 	subscribePush,
 	unregisterMobileDevice,
 } from '@app/api/user/tests/UserTestUtils';
+import {MAX_PUSH_SUBSCRIPTIONS_PER_USER} from '@fluxer/constants/src/LimitConstants';
 import type {AuthSessionResponse} from '@fluxer/schema/src/domains/auth/AuthSchemas';
 import {beforeEach, describe, expect, test} from 'vitest';
 
@@ -195,6 +196,31 @@ describe('Push Subscription Lifecycle', () => {
 		});
 		const devices = await listMobileDevices(harness, account.token);
 		expect(devices.devices).toHaveLength(2);
+	});
+	test('re-registering a token at the subscription cap evicts no other device', async () => {
+		// The prune runs before the cap check, so the stale row of the re-registering
+		// device is not counted and no unrelated device is pushed out.
+		const account = await createTestAccount(harness);
+		for (let index = 0; index < MAX_PUSH_SUBSCRIPTIONS_PER_USER; index += 1) {
+			await registerMobileDevice(harness, account.token, {
+				platform: 'android_fcm',
+				token: `fcm-cap-token-${index}`,
+				app_id: 'beta',
+				provider_environment: 'production',
+			});
+		}
+		const current = await registerMobileDevice(harness, account.token, {
+			platform: 'android_fcm',
+			token: 'fcm-cap-token-0',
+			app_id: 'stable',
+			provider_environment: 'production',
+		});
+		const devices = await listMobileDevices(harness, account.token);
+		expect(devices.devices).toHaveLength(MAX_PUSH_SUBSCRIPTIONS_PER_USER);
+		expect(devices.devices.some((device) => device.device_id === current.device_id)).toBe(true);
+		expect(devices.devices.filter((device) => device.app_id === 'beta')).toHaveLength(
+			MAX_PUSH_SUBSCRIPTIONS_PER_USER - 1,
+		);
 	});
 	test('Web Push and raw token registrations coexist for one platform', async () => {
 		const account = await createTestAccount(harness);

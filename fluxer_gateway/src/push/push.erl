@@ -404,7 +404,10 @@ log_worker_pool_drop(false, MessageId, ChannelId) ->
 -spec cache_stats_with_counters(state()) -> map().
 cache_stats_with_counters(#{pending_len := PendingLen}) ->
     Base = maps:merge(push_ets_cache:cache_stats(), push_recipients:counters()),
-    maps:merge(maps:merge(Base#{worker_pool_pending => PendingLen}, push_unread_cap:stats()), push_loss_counters()).
+    maps:merge(
+        maps:merge(Base#{worker_pool_pending => PendingLen}, push_unread_cap:stats()),
+        push_loss_counters()
+    ).
 
 -spec push_loss_counters() -> map().
 push_loss_counters() ->

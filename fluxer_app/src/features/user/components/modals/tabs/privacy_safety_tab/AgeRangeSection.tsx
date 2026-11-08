@@ -18,11 +18,11 @@ const logger = new Logger('AgeRangeSection');
 const AGE_RANGE_LABEL_DESCRIPTOR = msg({
 	message: 'Age range from your Apple or Google account',
 	comment:
-		'Label in the sensitive content settings, shown when the Fluxer app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.',
+		'Label in the sensitive content settings, shown when the echowire app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.',
 });
 const AGE_RANGE_DESCRIPTION_DESCRIPTOR = msg({
 	message:
-		"The Fluxer app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth.",
+		"The echowire app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth.",
 	comment: 'Helper text under "Age range from your Apple or Google account" in the sensitive content settings.',
 });
 const REMOVE_AGE_RANGE_DESCRIPTOR = msg({
@@ -35,7 +35,7 @@ const REMOVE_AGE_RANGE_TITLE_DESCRIPTOR = msg({
 });
 const REMOVE_AGE_RANGE_BODY_DESCRIPTOR = msg({
 	message:
-		"We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with Fluxer.",
+		"We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with echowire.",
 	comment:
 		'Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.',
 });

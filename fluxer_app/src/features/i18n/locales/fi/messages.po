@@ -2190,6 +2190,10 @@ msgstr "{productName} ei päivity käynnistyksen aikana. Kun päivitys on saatav
 msgid "{productName} wordmark"
 msgstr "{productName}-sanamerkki"
 
+#: src/features/connection/components/modals/AddConnectionModal.tsx
+msgid "{providerName} opens in your browser. Sign in there to connect your account."
+msgstr "{providerName} avautuu selaimeesi. Kirjaudu sisään siellä yhdistääksesi tilisi."
+
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts
 msgid "{reactorCount, plural, one {{emojiName} reacted by {reactors}} other {{emojiName} reacted by {reactors}}}"
@@ -2239,6 +2243,11 @@ msgstr "{requestedLabel} ei voinut käynnistyä. Käytetään sen sijaan {effect
 #: src/features/voice/components/StreamInfoPill.tsx
 msgid "{resolution} {fps} FPS"
 msgstr "{resolution} {fps} FPS"
+
+#. Footer summary under the preset name in the web stream setup modal. {resolution} is a technical token like 1080p. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "{resolution} at {fps} FPS"
+msgstr "{resolution}, {fps} FPS"
 
 #. Short label in the channel display name state. Keep it concise. Preserve {resolvedName}; it is inserted by code.
 #: src/features/channel/state/ChannelDisplayName.ts
@@ -3344,10 +3353,10 @@ msgstr "Lisää \";\" tämän rivin loppuun."
 msgid "Add \":\" between the property and its value."
 msgstr "Lisää \":\" ominaisuuden ja arvon väliin."
 
-#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {blueskyProviderName}; it is inserted by code.
+#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {providerName}; it is the provider name, inserted by code.
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Add {blueskyProviderName} connection"
-msgstr "Lisää {blueskyProviderName}-yhteys"
+msgid "Add {providerName} connection"
+msgstr "Lisää {providerName}-yhteys"
 
 #. OAuth scope description shown on the consent screen for the bot scope.
 #: src/features/app/constants/AppConstants.ts
@@ -4132,6 +4141,11 @@ msgstr "Kun olet kirjautunut, yritä toimintoa uudelleen."
 msgid "After your account is deleted, you will not be able to delete the messages you sent"
 msgstr "Tilisi poistamisen jälkeen et voi enää poistaa lähettämiäsi viestejä"
 
+#. Label in the sensitive content settings, shown when the echowire app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Age range from your Apple or Google account"
+msgstr "Ikäryhmä Apple- tai Google-tililtäsi"
+
 #. US state name, shown next to the country name in the mature content gate.
 #: src/features/user/utils/UserGeo.ts
 msgctxt "us-state"
@@ -4747,6 +4761,11 @@ msgstr "ladattu videotiedosto"
 #: src/features/guild/components/modals/GuildOwnershipWarningModal.tsx
 msgid "and {remainingCount} more"
 msgstr "ja {remainingCount} muuta"
+
+#. Developer / debug surface — keep terse and technical. Label in the developer Nagbar controls panel for the Android app on Google Play banner.
+#: src/features/devtools/components/NagbarControls.ts
+msgid "Android app nagbar"
+msgstr "Android-sovelluksen ilmoituspalkki"
 
 #. Short label in the animation tab. Keep it concise.
 #: src/features/user/components/modals/tabs/accessibility_tab/AnimationTab.tsx
@@ -9533,6 +9552,11 @@ msgstr "Yhteisö päivitetty"
 msgid "Community voice"
 msgstr "Yhteisön ääni"
 
+#. Report flow: section heading above the card of the community being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Community you're reporting"
+msgstr "Yhteisö, josta ilmoitat"
+
 #. Permission category for permissions that affect the whole community.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts
 msgid "Community-wide"
@@ -11336,10 +11360,10 @@ msgstr "Vahvistussähköpostin lähetys epäonnistui"
 msgid "Couldn't sign you in"
 msgstr "Ei voitu kirjauttaa sisään"
 
-#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {blueskyProviderName}; it is inserted by code and must appear verbatim in the translation.
+#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {providerName}; it is the provider name, inserted by code, and must appear verbatim in the translation.
 #: src/features/connection/commands/ConnectionCommands.ts
-msgid "Couldn't start {blueskyProviderName} authorization"
-msgstr "Kohteen {blueskyProviderName} valtuutusta ei voitu aloittaa"
+msgid "Couldn't start {providerName} authorization"
+msgstr "Kohteen {providerName} valtuutusta ei voitu aloittaa"
 
 #. Title of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx
@@ -17312,9 +17336,11 @@ msgid "Frame"
 msgstr "Kehys"
 
 #. Section header in the stream settings menu for frame rate options.
+#. Section label in the web stream setup modal for the stream frame rate options, in frames per second.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Frame rate"
 msgstr "Kuvataajuus"
@@ -17789,6 +17815,11 @@ msgstr "Hanki animoitu avatar ja banneri, tilaajamerkki, haluamasi nelinumeroine
 #: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
 msgid "Get another pass"
 msgstr "Hanki toinen Operator Pass"
+
+#. Button in the Android app nagbar that opens the echowire listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "Get it on {googlePlay}"
+msgstr "Lataa {googlePlay}-kaupasta"
 
 #. Secondary Plutonium page button that starts a monthly subscription checkout.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -21454,8 +21485,8 @@ msgid "Link warnings"
 msgstr "Linkkivaroitukset"
 
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Link your {BLUESKY_PROVIDER_NAME} account or verify domain ownership to display them on your profile."
-msgstr "Linkitä {BLUESKY_PROVIDER_NAME}-tilisi tai vahvista verkkotunnuksen omistajuus, jotta ne näkyvät profiilissasi."
+msgid "Link your accounts or verify domain ownership to display them on your profile."
+msgstr "Linkitä tilisi tai vahvista verkkotunnuksen omistajuus, jotta ne näkyvät profiilissasi."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts
@@ -24638,6 +24669,11 @@ msgstr "Ei viittauksia paikallisiin tiedostoihin"
 msgid "No logs yet"
 msgstr "Ei vielä lokeja"
 
+#. Label for a linked account whose provider this instance removed or turned off. The account is hidden from the profile.
+#: src/features/connection/components/ConnectionIcon.tsx
+msgid "No longer available"
+msgstr "Ei enää saatavilla"
+
 #: src/features/app/components/dialogs/shared/AddOverridePopout.tsx
 msgid "No matches"
 msgstr "Ei osumia"
@@ -27119,6 +27155,11 @@ msgstr "Ihmiset voivat luoda omia yhteisöjä ja liittyä niin moneen kuin halua
 msgid "People can only talk in communities."
 msgstr "Ihmiset voivat keskustella vain yhteisöissä."
 
+#. Description under the "Share a preview image" switch in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "People can see a still image of what you share before they start watching."
+msgstr "Muut näkevät pysäytyskuvan jakamastasi sisällöstä ennen kuin alkavat katsoa."
+
 #. Description of allowing direct messages in the setup wizard.
 #: src/features/app/components/setup/SetupPolicySteps.tsx
 msgid "People can send friend requests and direct messages."
@@ -27307,6 +27348,11 @@ msgstr "Käyttöoikeudet"
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx
 msgid "Permissions for {0}"
 msgstr "Sovelluksen {0} käyttöoikeudet"
+
+#. Report flow: section heading above the card of the person being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Person you're reporting"
+msgstr "Henkilö, josta ilmoitat"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/utils/UserMessageDescriptors.ts
@@ -27926,6 +27972,11 @@ msgstr "Valmistellaan"
 msgid "Presence"
 msgstr "Läsnäolo"
 
+#. Section label in the web stream setup modal. Picks the Gaming preset (motion), the Screen share preset (sharp text) or custom numbers.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Preset"
+msgstr "Esiasetus"
+
 #. Shown in the "Quick CSS" section in Settings > Themes. {shortcut} is a keyboard shortcut such as Ctrl+Alt+Shift+T.
 #: src/features/theme_settings/components/QuickCssSection.tsx
 msgid "Press {shortcut} anywhere in the app to open the editor."
@@ -28326,11 +28377,6 @@ msgstr "Profiilityyppi"
 #: src/features/user/components/modals/tabs/MyProfileTab.tsx
 msgid "Profile updated"
 msgstr "Profiili päivitetty"
-
-#. Report flow: section heading above the card of the user whose profile is being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Profile you're reporting"
-msgstr "Profiili, josta ilmoitat"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
@@ -29309,6 +29355,7 @@ msgstr "Muista ikkunan koko ja sijainti"
 #. Button or menu action label in the channel and chat message reactions sheet. Keep it concise. Keep the tone plain and specific.
 #. Button that clears the default reaction or deletes a tag in forum settings.
 #. Button that removes a branding image in the setup wizard.
+#. Confirm button in the dialog that deletes the stored age range.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the shared app saved message missing card. Keep the tone plain and specific.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -29323,6 +29370,7 @@ msgstr "Muista ikkunan koko ja sijainti"
 #: src/features/guild/components/modals/guild_tabs/GuildVanityURLTab.tsx
 #: src/features/ui/action_menu/GroupDMContextMenu.tsx
 #: src/features/ui/action_menu/UserContextMenu.tsx
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 #: src/features/webhook/components/WebhookListItem.tsx
 msgid "Remove"
@@ -29359,6 +29407,11 @@ msgstr "Poistetaanko käyttäjä {userName} ryhmästä?"
 #: src/features/relationship/utils/RelationshipActionUtils.tsx
 msgid "Remove {userName} from your friends?"
 msgstr "Poistetaanko käyttäjä {userName} kavereistasi?"
+
+#. Button in the sensitive content settings that opens a confirmation to delete the stored age range.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove age range"
+msgstr "Poista ikäryhmä"
 
 #. Confirm button label on the remove-all-reactions alert. Destructive.
 #: src/features/channel/components/MessageActionUtils.tsx
@@ -29566,6 +29619,11 @@ msgstr "Poista kääntäjä"
 #: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
 msgid "Remove when you first bought {premiumProductName} from your badge"
 msgstr "Poista merkistäsi tieto siitä, milloin ostit {premiumProductName}-tilauksen"
+
+#. Title of the confirmation shown before deleting the age range from an Apple or Google account.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove your age range?"
+msgstr "Poistetaanko ikäryhmäsi?"
 
 #. Status badge for the application to Explore, shown in the "Explore" tab in community settings. The community was removed from Explore.
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx
@@ -29936,6 +29994,11 @@ msgstr "{authorName} vastasi käyttäjälle {replyAuthorName}: {formatted}"
 msgid "Replying to <0>{authorNickname}</0>"
 msgstr "Vastaus käyttäjälle <0>{authorNickname}</0>"
 
+#. Voice and call participant menu action that reports this person to the safety team, for example for something they said or showed in the call.
+#: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx
+msgid "Report"
+msgstr "Ilmoita"
+
 #. Report flow target option. Selects reporting an entire community (server). Use the localized term for community, not server.
 #: src/features/moderation/components/report/OptionDescriptors.ts
 msgid "Report a community"
@@ -29950,6 +30013,11 @@ msgstr "Ilmoita viestistä"
 #: src/features/moderation/components/report/OptionDescriptors.ts
 msgid "Report a user profile"
 msgstr "Ilmoita käyttäjäprofiilista"
+
+#. Action label in community menus, on invites and in Explore, and the title of the report window it opens. Reports a whole community to the safety team.
+#: src/features/moderation/utils/ModerationMessageDescriptors.ts
+msgid "Report community"
+msgstr "Ilmoita yhteisöstä"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx
 msgid "Report details"
@@ -29971,7 +30039,12 @@ msgstr "Ilmoita ongelmasta"
 msgid "Report message"
 msgstr "Ilmoita viestistä"
 
-#. Action label in the full user profile's overflow menu, and the title of the report window it opens. Reports the user's profile: their photo, name or bio.
+#. Action in a forum post's menu. Reports the post's opening message to the safety team. A post is a topic thread in a forum channel.
+#: src/features/forum/utils/ForumMessageDescriptors.ts
+msgid "Report post"
+msgstr "Ilmoita julkaisusta"
+
+#. Action label in user right-click menus and the full user profile's overflow menu, and the title of the report window it opens. Reports the user's profile: their photo, name or bio.
 #: src/features/moderation/utils/ModerationMessageDescriptors.ts
 msgid "Report profile"
 msgstr "Ilmoita profiilista"
@@ -30485,8 +30558,10 @@ msgid "Resizing, maximizing, and window snapping depend on the compositor. Wayla
 msgstr "Ikkunan koon muuttaminen, suurentaminen ja reunoihin kiinnitys riippuvat koostajasta. Wayland ilman asiakaspuolen ikkunakehyksiä ei välttämättä tarjoa kahvoja. Käynnistä sovellus valitsimella --ozone-platform=x11, jos ikkuna tuntuu jumiutuneen."
 
 #. Section header in the stream settings menu for resolution options.
+#. Section label in the web stream setup modal for the stream resolution options.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Resolution"
 msgstr "Tarkkuus"
@@ -32922,6 +32997,11 @@ msgstr "Useita henkilöitä kirjoittaa..."
 msgid "Share"
 msgstr "Jaa"
 
+#. Switch label in the web stream setup modal. When on, Fluxer uploads a still image of the stream so people can see it before watching.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share a preview image"
+msgstr "Jaa esikatselukuva"
+
 #. Button or menu action label in the buttons tab. Keep it concise.
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Share action."
@@ -32931,6 +33011,11 @@ msgstr "Jakotoiminto."
 #: src/features/user/components/settings_utils/section_registry/ThemesSections.ts
 msgid "Share and back up"
 msgstr "Jaa ja varmuuskopioi"
+
+#. Switch label in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share audio"
+msgstr "Jaa ääni"
 
 #. Plutonium page perk card body about upload size. freeSize is a formatted size such as 25 MB.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -32981,7 +33066,9 @@ msgstr "Kerro, mitä tiimimme tarvitsee arvioidakseen tämän."
 msgid "Share with a friend"
 msgstr "Jaa kaverille"
 
+#. Title of the modal shown on web before the browser screen picker opens. The user picks stream quality here first.
 #. Voice control button or tooltip label for starting screen sharing.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/utils/VoiceMessageDescriptors.ts
 msgid "Share your screen"
 msgstr "Jaa näyttösi"
@@ -33031,8 +33118,8 @@ msgstr "Terävä teksti 720p, jopa 30 FPS"
 
 #. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
-msgid "Sharp text at up to 4K, up to 15 FPS"
-msgstr "Terävää tekstiä jopa 4K-resoluutiolla, jopa 15 FPS"
+msgid "Sharp text at up to 1080p, 30 FPS"
+msgstr "Terävä teksti jopa 1080p, 30 FPS"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -33466,8 +33553,11 @@ msgstr "Näytä mykistetyt kanavat"
 msgid "Show my own camera"
 msgstr "Näytä oma kamerani"
 
+#. Toggle label in the mobile video settings bottom sheet. Controls whether the local screen share tile is in the call view.
 #. Voice display preference checkbox that controls whether the current user sees their own screen share tile.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts
+#: src/features/voice/components/bottomsheets/VoiceSettingsBottomSheets.tsx
+#: src/features/voice/components/VoiceSettingsMenus.tsx
 msgid "Show my screen share"
 msgstr "Näytä oma näytönjakoni"
 
@@ -34066,7 +34156,7 @@ msgid "Skip this step"
 msgstr "Ohita tämä vaihe"
 
 #. Accessible skip-link label for keyboard users.
-#: src/app/App.tsx
+#: src/app/SkipToContentLink.tsx
 msgid "Skip to content"
 msgstr "Siirry sisältöön"
 
@@ -34956,6 +35046,11 @@ msgstr "Aloita nauhoitus"
 msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> to narrow down results."
 msgstr "Aloita haut käyttämällä <0>{peoplePrefix}</0>, <1>{textChannelPrefix}</1>, <2>{voiceChannelPrefix}</2> ja <3>{communityPrefix}</3>, jotta voit rajata hakutuloksia."
 
+#. Primary button in the web stream setup modal. Opens the browser's screen picker and starts sharing.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Start sharing"
+msgstr "Aloita jakaminen"
+
 #. Native macOS Edit > Speech submenu item that starts reading the selected text aloud. Imperative verb.
 #: src/features/platform/utils/DesktopLocaleBridge.ts
 msgid "Start speaking"
@@ -35424,11 +35519,6 @@ msgstr "Striimi puskuroi"
 #: src/features/voice/components/voice_participant_tile/shared.ts
 msgid "Stream ended"
 msgstr "Striimi päättyi"
-
-#. Overlay text on a participant tile when the local user hid the remote screen share.
-#: src/features/voice/components/voice_participant_tile/shared.ts
-msgid "Stream hidden"
-msgstr "Striimi piilotettu"
 
 #. Plutonium page perk card title about stream quality.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -36487,6 +36577,11 @@ msgstr "<0>Tietosuojakäytäntö</0> ja <1>{OPERATOR_PASS_NAME} -tietosuojailmoi
 msgid "The <0>privacy policy</0> explains how we handle your data."
 msgstr "<0>Tietosuojakäytäntö</0> kertoo, miten käsittelemme tietojasi."
 
+#. Report flow: body of the final screen after a report was sent, on a self-hosted instance whose own administrators handle reports. The second sentence promises the reported person is not told who reported them.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "The administrators of this instance will review your report. We won't reveal that it came from you."
+msgstr "Tämän instanssin ylläpitäjät tarkistavat ilmoituksesi. Emme paljasta, että se tuli sinulta."
+
 #. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx
 msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
@@ -36547,6 +36642,10 @@ msgstr "Yhteisö, josta tämä on peräisin, on poistanut kloonauksen käytöst�
 msgid "The community you're looking for may have been deleted or you may not have access to it."
 msgstr "Etsimääsi yhteisöä ei ehkä enää ole tai sinulla ei ole siihen pääsyä."
 
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "The connection was not allowed. You can close this tab and try again."
+msgstr "Yhteyttä ei sallittu. Voit sulkea tämän välilehden ja yrittää uudelleen."
+
 #. Body of the confirmation dialog before replacing the private link to an Operator certificate page. The certificate is a PDF, and each page has a number and the date and time of payment. The new copy of the page has the new link printed on it.
 #: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
 msgid "The current link stops working right away, for you and for anyone you've shared it with. We make a new copy of this page with the new link printed on it, with the same number and date."
@@ -36556,6 +36655,11 @@ msgstr "Nykyinen linkki lakkaa toimimasta heti, sinulta ja kaikilta, joille olet
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "The desktop update could not be downloaded. Try again from the update button when your connection is stable."
 msgstr "Työpöytäpäivitystä ei voitu ladata. Yritä uudelleen päivityspainikkeesta, kun yhteytesi on vakaa."
+
+#. Helper text under "Age range from your Apple or Google account" in the sensitive content settings.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "The echowire app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth."
+msgstr "echowire-sovellus iPhonelle, iPadille tai Androidille lähetti meille tämän ikäryhmän. Jos se näyttää, että olet vähintään 18-vuotias, voit nähdä 18+-sisältöä Isossa-Britanniassa ja Brasiliassa. Se ei muuta syntymäaikaasi."
 
 #. Activity log detail line under a deleted emoji, shown only when someone other than the person who deleted it had uploaded it. {user} is the user who uploaded the emoji, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogExpressionMessageMessages.ts
@@ -42185,10 +42289,20 @@ msgstr "CSS-tiedoston lukeminen epäonnistui."
 msgid "We couldn't read this theme. It may be corrupted or invalid."
 msgstr "Teemaa ei voitu lukea. Se voi olla vioittunut tai virheellinen."
 
+#. Error shown when deleting the stored age range fails.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We couldn't remove your age range. Please try again."
+msgstr "Ikäryhmääsi ei voitu poistaa. Yritä uudelleen."
+
 #. Error message after saving a theme failed in Settings > Themes or the quick CSS editor window.
 #: src/features/theme_settings/utils/ThemeSettingsErrorModal.ts
 msgid "We couldn't save that theme."
 msgstr "Emme voineet tallentaa sitä teemaa."
+
+#. Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with echowire."
+msgstr "Poistamme ikäryhmän, sen vastaanottoajan ja Apple-laitteidesi App Attest -avaimet. Isossa-Britanniassa ja Brasiliassa et näe 18+-sisältöä ennen kuin sovellus lähettää ikäryhmän uudelleen. Sovellus voi lähettää ikäryhmäsi myöhemmin uudelleen, jos Apple- tai Google-tilisi jakaa sen yhä echowirein kanssa."
 
 #. Modal body for existing-subscription block. Directs the user to the billing portal and addresses the just-paid race case. Keep plain and reassuring.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx
@@ -43128,6 +43242,10 @@ msgstr "Sinulla on jo ryhmä näiden käyttäjien kanssa. Haluatko varmasti luod
 msgid "You already have lifetime {premiumProductName}"
 msgstr "Sinulla on jo elinikäinen {premiumProductName}"
 
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "You already have the most connections an account can have. Remove one and try again."
+msgstr "Sinulla on jo suurin mahdollinen määrä yhteyksiä yhdellä tilillä. Poista yksi ja yritä uudelleen."
+
 #. Body text in the connection add connection modal.
 #: src/features/connection/components/modals/AddConnectionModal.tsx
 msgid "You already have this connection."
@@ -43242,6 +43360,11 @@ msgstr "Voit saada täyden hyvityksen {date} asti."
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
 msgid "You can get a full refund until {date}. This also ends your subscription right away."
 msgstr "Voit saada täyden hyvityksen {date} asti. Tämä myös päättää tilauksesi heti."
+
+#. Nagbar body telling people that the echowire app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep echowire and Android untranslated. Keep the tone calm and plain.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "You can get the echowire app for Android on {googlePlay} and chat from your phone."
+msgstr "Voit ladata echowirein Android-sovelluksen {googlePlay}-kaupasta ja keskustella puhelimellasi."
 
 #. Line under "Full refund" in the Payments settings. {amount} is the price paid, with currency, and {date} is the last day of the refund window, such as Nov 2, 2026. Both are filled in by code.
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
@@ -44098,6 +44221,11 @@ msgstr "Katselet vanhempia viestejä"
 msgid "You've added more people than a group DM allows. Remove a few and try again."
 msgstr "Olet lisännyt enemmän henkilöitä kuin ryhmäkeskustelu sallii. Poista muutama ja yritä uudelleen."
 
+#. Report flow: note on the summary screen when the reporter already reported this community.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "You've already reported this community."
+msgstr "Olet jo ilmoittanut tästä yhteisöstä."
+
 #. Report flow: note on the summary screen when the reporter already reported this message.
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "You've already reported this message."
@@ -44301,6 +44429,11 @@ msgstr "Selaimesi esti tunnusavaimen, koska tämä sivun osoite ei vastaa tämä
 #: src/features/auth/utils/PasskeyErrorMessages.ts
 msgid "Your browser blocked the passkey because this page is not on {rpId}, the passkey domain of this instance. Ask the instance owner to check the passkey domain setting."
 msgstr "Selaimesi esti tunnusavaimen, koska tämä sivu ei ole osoitteessa {rpId}, joka on tämän instanssin tunnusavainten verkkotunnus. Pyydä instanssin omistajaa tarkistamaan tunnusavainten verkkotunnusasetus."
+
+#. Description under the "Share audio" switch in the web stream setup modal. The browser picker owns the final audio choice.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your browser lets you choose whether to include audio when you pick what to share."
+msgstr "Selaimesi antaa sinun valita, otetaanko ääni mukaan, kun valitset jaettavan sisällön."
 
 #. Body of the browser-audio-required modal explaining why the user must click before audio can play.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx
@@ -44714,6 +44847,11 @@ msgctxt "screen-share"
 msgid "Your screen share could not be published with a compatible video codec, so it was stopped. Try sharing again."
 msgstr "Näyttösi jakamista ei voitu julkaista yhteensopivalla videokoodekilla, joten se pysäytettiin. Yritä jakaa uudelleen."
 
+#. Footer summary under the preset name in the web stream setup modal when the Source resolution is picked. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your screen's resolution at {fps} FPS"
+msgstr "Näyttösi resoluutio, {fps} FPS"
+
 #. Alert on the setup token screen when the token was refused while creating the account.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx
 msgid "Your setup token stopped working. Enter it again."
@@ -44886,478 +45024,3 @@ msgstr "Lähennä"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
 msgid "Zoom out"
 msgstr "Loitonna"
-
-#. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "--{name} isn't a Fluxer variable and isn't set anywhere in your CSS."
-msgstr "--{name} ei ole Fluxer-muuttuja eikä sitä ole asetettu missään CSS:ssäsi."
-
-#. Instance selector error shown when the instance speaks a protocol generation this client does not know. Domain is interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "{domain} runs a newer version of Fluxer than this app. Update Fluxer, then try again."
-msgstr "{domain} käyttää uudempaa Fluxer-versiota kuin tämä sovellus. Päivitä Fluxer ja yritä uudelleen."
-
-#: src/features/connection/components/modals/AddConnectionModal.tsx
-msgid "{providerName} opens in your browser. Sign in there to connect your account."
-msgstr "{providerName} avautuu selaimeesi. Kirjaudu sisään siellä yhdistääksesi tilisi."
-
-#. Footer summary under the preset name in the web stream setup modal. {resolution} is a technical token like 1080p. {fps} is a whole number of frames per second, and FPS is a technical token.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "{resolution} at {fps} FPS"
-msgstr "{resolution}, {fps} FPS"
-
-#. Heading of a slide in the Operator Pass checkout dialog about the #operators channel. #operators is the channel's literal name and Fluxer Labs is the name of the official community, keep both unchanged. No trailing punctuation.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "#operators in Fluxer Labs"
-msgstr "#operators Fluxer Labs -yhteisössä"
-
-#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {providerName}; it is the provider name, inserted by code.
-#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Add {providerName} connection"
-msgstr "Lisää {providerName}-yhteys"
-
-#. Label in the sensitive content settings, shown when the Fluxer app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Age range from your Apple or Google account"
-msgstr "Ikäryhmä Apple- tai Google-tililtäsi"
-
-#. Developer / debug surface — keep terse and technical. Label in the developer Nagbar controls panel for the Android app on Google Play banner.
-#: src/features/devtools/components/NagbarControls.ts
-msgid "Android app nagbar"
-msgstr "Android-sovelluksen ilmoituspalkki"
-
-#. Help text under the theme color picker in the setup wizard branding step.
-#: src/features/app/components/setup/SetupBrandingFields.tsx
-msgid "Buttons, links and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to keep Fluxer's indigo."
-msgstr "Painikkeet, linkit ja korostukset koko sovelluksessa käyttävät tätä väriä, ja puhelinten selaimet käyttävät sitä työkalupalkissaan. Palauta se oletukseksi, niin Fluxerin indigo säilyy."
-
-#. Completion in the quick CSS editor that inserts a :root rule, where theme variables are set.
-#: src/features/theme_settings/editor/CssCompletions.ts
-msgid "Change Fluxer variables"
-msgstr "Muuta Fluxer-muuttujia"
-
-#. Report flow: section heading above the card of the community being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Community you're reporting"
-msgstr "Yhteisö, josta ilmoitat"
-
-#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online."
-msgstr "Fluxer-instanssia ei tavoitettu osoitteesta {domain}. Tarkista osoite ja varmista, että instanssi on verkossa."
-
-#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {providerName}; it is the provider name, inserted by code, and must appear verbatim in the translation.
-#: src/features/connection/commands/ConnectionCommands.ts
-msgid "Couldn't start {providerName} authorization"
-msgstr "Kohteen {providerName} valtuutusta ei voitu aloittaa"
-
-#. Link under the Weblate line in the language settings. It opens a help article on fluxer.com about suggesting a new language and helping translate the app. Keep it a short question.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx
-msgid "Don't see your language?"
-msgstr "Eikö kieltäsi ole listalla?"
-
-#. Description under the switch that adds the Operators' wall name to the yearly Operators list. A Fluxer release is a published version of the app. Operators are the people who have an Operator Pass, keep the word Operators in English.
-#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
-msgid "Each yearly list of Operators that we publish goes into the notes of a Fluxer release and a file in its source code. Your wall name is only on it if you turn this on. If you ask us to remove it later, we take it out of future lists, the release notes and that file, but earlier versions of the source code and copies others made can't be recalled."
-msgstr "Jokainen julkaisemamme vuosittainen Operators-lista menee Fluxer-version julkaisutietoihin ja tiedostoon sen lähdekoodissa. Seinällä näkyvä nimesi on listalla vain, jos otat tämän käyttöön. Jos pyydät myöhemmin poistamaan sen, poistamme sen tulevista listoista, julkaisutiedoista ja siitä tiedostosta, mutta lähdekoodin aiempia versioita ja muiden tekemiä kopioita ei voi kutsua takaisin."
-
-#. Bullet point in the P2P call dialog. Plutonium is the name of the paid subscription and must not be translated. 4K and fps are video terms.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts
-msgid "Everyone in the call gets Plutonium stream quality for free, with up to 4K source resolution and 60 fps."
-msgstr "Kaikki puhelussa olevat saavat Plutonium-striimin laadun ilmaiseksi: jopa 4K-lähderesoluutio ja 60 fps."
-
-#. Description of the shared usernames option in the setup wizard. Keep the example alex#4821 as it is.
-#: src/features/app/components/setup/SetupIdentitySteps.tsx
-msgid "Fluxer adds a random number to each username, like alex#4821, so many people can use the same name."
-msgstr "Fluxer lisää jokaiseen käyttäjänimeen satunnaisen numeron, kuten alex#4821, jotta moni voi käyttää samaa nimeä."
-
-#. Problem shown in the quick CSS editor on a web address that the app is not allowed to load. Assets are files uploaded under "Assets".
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer blocked loading {url}. Upload it as an asset."
-msgstr "Fluxer esti lataamasta {url}. Lataa se resurssiksi."
-
-#. Problem shown in the quick CSS editor on an image address on a site the person has not trusted. Assets are files uploaded under "Assets". Trusting a site lets quick CSS and themes load images from it.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer blocked loading {url}. Upload the file as an asset, or trust the site it's on."
-msgstr "Fluxer esti lataamasta {url}. Lataa tiedosto resurssiksi tai luota sivustoon, jolla se on."
-
-#. Problem shown in the quick CSS editor on a reference to an uploaded theme asset that does not exist.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer can't find the asset \"{name}\"."
-msgstr "Fluxer ei löydä resurssia \"{name}\"."
-
-#. Problem shown in the quick CSS editor on a reference to a file on the computer that Fluxer cannot read.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer can't find the file \"{path}\"."
-msgstr "Fluxer ei löydä tiedostoa \"{path}\"."
-
-#. Shown for a watched theme folder in Settings > Themes when the folder was moved, deleted or disconnected.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't find this folder. It will load the themes again when the folder is back."
-msgstr "Fluxer ei löydä tätä kansiota. Teemat ladataan uudelleen, kun kansio on taas saatavilla."
-
-#. Shown for a watched theme folder in Settings > Themes when the desktop app no longer has permission to read it.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't open this folder. Import it again to keep watching it."
-msgstr "Fluxer ei voi avata tätä kansiota. Tuo se uudelleen, jotta seuranta jatkuu."
-
-#. Error toast in "Your themes" when the chosen theme folder cannot be opened.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't read this folder."
-msgstr "Fluxer ei voi lukea tätä kansiota."
-
-#. Problem shown at the top of the quick CSS editor when the whole sheet was left out.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer couldn't apply this CSS. Check it for a broken comment, string or bracket."
-msgstr "Fluxer ei voinut ottaa tätä CSS:ää käyttöön. Tarkista, onko siinä rikkinäinen kommentti, merkkijono tai sulje."
-
-#. Alert when the SMTP check fails and the mail server sent no reply. host is the mail server address.
-#: src/features/app/components/setup/SetupEmailSteps.tsx
-msgid "Fluxer couldn't connect to {host}."
-msgstr "Fluxer ei saanut yhteyttä palvelimeen {host}."
-
-#. Alert when the SMTP check fails. host is the mail server address and error is its reply.
-#: src/features/app/components/setup/SetupEmailSteps.tsx
-msgid "Fluxer couldn't connect to {host}. The server said: \"{error}\""
-msgstr "Fluxer ei saanut yhteyttä palvelimeen {host}. Palvelin vastasi: ”{error}”"
-
-#. Status shown in the desktop app when it stopped checking the browser sign-in because the instance could not be reached. instanceName is the server name, such as Fluxer. "Try again" is the label of the button below and must match its translation.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "Fluxer couldn't connect to {instanceName} to check whether your browser approved this sign-in. Check your connection, then select \"Try again\"."
-msgstr "Fluxer ei saanut yhteyttä palveluun {instanceName} tarkistaakseen, hyväksyikö selaimesi tämän kirjautumisen. Tarkista yhteytesi ja valitse sitten \"Yritä uudelleen\"."
-
-#. Name of the section in the Operator Pass settings tab about the Fluxer Labs community. Fluxer Labs is the name of a community, keep it as is.
-#: src/features/premium/utils/PremiumMessageDescriptors.ts
-msgid "Fluxer Labs"
-msgstr "Fluxer Labs"
-
-#. Status shown when browser sign-in status polling gives up after repeated failures.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "Fluxer stopped checking whether the browser approved this sign-in. It didn't lose your code."
-msgstr "Fluxer lopetti selaimen hyväksynnän tarkistamisen tälle kirjautumiselle. Se ei kadottanut koodiasi."
-
-#. Shown in the modal that applies a shared theme when the theme points at files the app will not load.
-#: src/features/theme/components/modals/ThemeAcceptModal.tsx
-msgid "Fluxer won't load {count, plural, one {# file} other {# files}} that this theme links to on other sites."
-msgstr "Fluxer ei lataa {count, plural, one {# tiedostoa} other {# tiedostoa}} muilta sivustoilta, joille tämä teema linkittää."
-
-#. Button in the Android app nagbar that opens the Fluxer listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.
-#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
-msgid "Get it on {googlePlay}"
-msgstr "Lataa {googlePlay}-kaupasta"
-
-#: src/features/user/components/modals/tabs/LanguageTab.tsx
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "Auta kääntämään {PRODUCT_NAME} kielellesi osoitteessa <0>{I18N_WEBLATE_DOMAIN}</0>."
-
-#. Hint in the desktop app while it waits for the browser, for people with more than one Fluxer app installed. "Signing in on another device?" is the label of the button below and must match its translation.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "If the link opens a different Fluxer app, select \"Signing in on another device?\" and type the code in your browser instead."
-msgstr "Jos linkki avaa toisen Fluxer-sovelluksen, valitse \"Kirjautuminen toisella laitteella?\" ja kirjoita koodi selaimeesi."
-
-#. Help on the setup token screen, followed by a terminal command. rexctl is a name that must not be translated.
-#: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "If you installed Fluxer with rexctl, it printed the token when it finished. Run this on your server to show it again."
-msgstr "Jos asensit Fluxerin rexctl:llä, se tulosti tokenin lopussa. Suorita tämä palvelimellasi uudelleen näytölle."
-
-#. What the app shows when no wordmark is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the product name shows as plain text, or as the Fluxer wordmark while the product name is Fluxer."
-msgstr "Jos jätät tämän tyhjäksi, tuotteen nimi näkyy tavallisena tekstinä tai Fluxerin sanamerkkinä niin kauan kuin tuotteen nimi on Fluxer."
-
-#. What the app shows when no logo is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the sign-in page uses your app icon or symbol. Without those, it shows the Fluxer logo while the product name is Fluxer, and no image for any other name."
-msgstr "Jos jätät tämän tyhjäksi, kirjautumissivu käyttää sovelluskuvaketta tai symbolia. Jos niitäkään ei ole, se näyttää Fluxerin logon niin kauan kuin tuotteen nimi on Fluxer, eikä mitään kuvaa muilla nimillä."
-
-#. What the app shows when no favicon is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the tab uses your app icon, or the Fluxer icon if that is empty too."
-msgstr "Jos jätät tämän tyhjäksi, välilehti käyttää sovelluskuvaketta tai Fluxerin kuvaketta, jos sekin on tyhjä."
-
-#. What the app shows when no app icon is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, those places show the Fluxer icon."
-msgstr "Jos jätät tämän tyhjäksi, näissä kohdissa näkyy Fluxerin kuvake."
-
-#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
-#: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "If you run Fluxer without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart Fluxer, and enter that value here."
-msgstr "Jos käytät Fluxeria ilman rexctl:ää, aseta FLUXER_SETUP_TOKEN arvoon, joka on vähintään 32 merkkiä pitkä ja jonka valitset itse, käynnistä Fluxer uudelleen ja syötä tämä arvo tähän."
-
-#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
-msgid "Keep Neko still"
-msgstr "Pidä Neko paikallaan"
-
-#. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
-msgid "Lets you open communities and channels marked 18+ in the Fluxer app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
-msgstr "Voit avata 18+-merkittyjä yhteisöjä ja kanavia Fluxerin iPhone- ja iPad-sovelluksessa ja valita siellä arkaluonteiselle medialle ”Näytä”. Voit muuttaa tätä vain verkossa tai työpöytäsovelluksessa."
-
-#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Link your accounts or verify domain ownership to display them on your profile."
-msgstr "Linkitä tilisi tai vahvista verkkotunnuksen omistajuus, jotta ne näkyvät profiilissasi."
-
-#. Button in the quick CSS editor window that moves the editor back into a panel inside the app.
-#: src/features/theme_settings/components/QuickCssWorkspace.tsx
-msgid "Move back into Fluxer"
-msgstr "Siirrä takaisin Fluxeriin"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Neko cat that chases your cursor"
-msgstr "Neko-kissa, joka jahtaa osoitintasi"
-
-#. Label for a linked account whose provider this instance removed or turned off. The account is hidden from the profile.
-#: src/features/connection/components/ConnectionIcon.tsx
-msgid "No longer available"
-msgstr "Ei enää saatavilla"
-
-#. Warning in Settings > Themes and in the modal that applies a shared theme. Trusting a site lets quick CSS and themes load images from it, and CSS can make the browser load different images depending on what the app shows.
-#: src/features/theme_settings/utils/ThemeSettingsMessageDescriptors.ts
-msgid "Only trust sites you know. A site you trust can see your IP address, when you have Fluxer open and some of what's on your screen."
-msgstr "Luota vain sivustoihin, jotka tunnet. Sivusto, johon luotat, näkee IP-osoitteesi, milloin Fluxer on auki ja osan siitä, mitä näytölläsi on."
-
-#. Alternative text of the screenshot on a slide in the Operator Pass checkout dialog, read out by screen readers. The screenshot shows a short chat in the #operators channel. Operators are the people who have an Operator Pass, keep the word Operators in English. Fluxer Labs is the name of the official community, keep it unchanged. #operators is the channel's literal name, keep it unchanged. Talking means chatting with each other, never asking for or giving support. No trailing punctuation.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "Operators and the Fluxer Team talking about self-hosting in the #operators channel of Fluxer Labs"
-msgstr "Operatorit ja Fluxer-tiimi keskustelevat itsehostauksesta Fluxer Labsin #operators-kanavalla"
-
-#. Description under the "Share a preview image" switch in the web stream setup modal.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "People can see a still image of what you share before they start watching."
-msgstr "Muut näkevät pysäytyskuvan jakamastasi sisällöstä ennen kuin alkavat katsoa."
-
-#. Description of leaving the push relay off in the setup wizard.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "People using the Fluxer mobile apps won't get notifications from your instance. You can turn this on later in the admin panel."
-msgstr "Fluxerin mobiilisovellusten käyttäjät eivät saa ilmoituksia instanssistasi. Voit ottaa tämän käyttöön myöhemmin hallintapaneelissa."
-
-#. Report flow: section heading above the card of the person being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Person you're reporting"
-msgstr "Henkilö, josta ilmoitat"
-
-#. Review row label for the push relay.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "Phone notifications"
-msgstr "Ilmoitukset puhelimeen"
-
-#. Section label in the web stream setup modal. Picks the Gaming preset (motion), the Screen share preset (sharp text) or custom numbers.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Preset"
-msgstr "Esiasetus"
-
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx
-msgid "Read the documentation ({domain})"
-msgstr "Lue dokumentaatio ({domain})"
-
-#. Link to the push relay privacy notice in the setup wizard.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "Read the push relay privacy notice"
-msgstr "Lue push-välityksen tietosuojailmoitus"
-
-#. Button in the sensitive content settings that opens a confirmation to delete the stored age range.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Remove age range"
-msgstr "Poista ikäryhmä"
-
-#. Title of the confirmation shown before deleting the age range from an Apple or Google account.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Remove your age range?"
-msgstr "Poistetaanko ikäryhmäsi?"
-
-#. Voice and call participant menu action that reports this person to the safety team, for example for something they said or showed in the call.
-#: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx
-msgid "Report"
-msgstr "Ilmoita"
-
-#. Action label in community menus, on invites and in Explore, and the title of the report window it opens. Reports a whole community to the safety team.
-#: src/features/moderation/utils/ModerationMessageDescriptors.ts
-msgid "Report community"
-msgstr "Ilmoita yhteisöstä"
-
-#. Action in a forum post's menu. Reports the post's opening message to the safety team. A post is a topic thread in a forum channel.
-#: src/features/forum/utils/ForumMessageDescriptors.ts
-msgid "Report post"
-msgstr "Ilmoita julkaisusta"
-
-#. Sentence after the privacy sentence in the Operator Pass checkout dialog that names the company selling the pass. Fluxer Platform AB is the company name and 559537-3993 its Swedish organization number, keep both as is. Haninge is the Swedish municipality where the company is registered and stays as is. Translate registered office with the legal term your language uses for the registered seat of a company, and keep the Swedish word säte in parentheses. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
-#: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
-msgid "Seller: Fluxer Platform AB, 559537-3993, registered office (säte) Haninge, Sweden, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
-msgstr "Myyjä: Fluxer Platform AB, 559537-3993, kotipaikka (säte) Haninge, Ruotsi, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
-
-#. Setup wizard title for the push relay consent.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "Send notifications to the Fluxer mobile apps?"
-msgstr "Lähetetäänkö ilmoituksia Fluxerin mobiilisovelluksiin?"
-
-#. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
-#: src/features/theme_settings/editor/AppSelectors.ts
-msgid "Set on messages that Fluxer sends, such as when someone joins."
-msgstr "Asetetaan Fluxerin lähettämiin viesteihin, esimerkiksi kun joku liittyy."
-
-#. Switch label in the web stream setup modal. When on, Fluxer uploads a still image of the stream so people can see it before watching.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Share a preview image"
-msgstr "Jaa esikatselukuva"
-
-#. Switch label in the web stream setup modal.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Share audio"
-msgstr "Jaa ääni"
-
-#. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx
-msgid "Sharp text at up to 1080p, 30 FPS"
-msgstr "Terävä teksti jopa 1080p, 30 FPS"
-
-#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
-msgid "Show Neko"
-msgstr "Näytä Neko"
-
-#. Primary button in the web stream setup modal. Opens the browser's screen picker and starts sharing.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Start sharing"
-msgstr "Aloita jakaminen"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Static Neko"
-msgstr "Staattinen Neko"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Still Neko"
-msgstr "Liikkumaton Neko"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
-msgstr "Estä Nekoa jahtaamasta osoitintasi, mutta pidä se silti vedettävänä ja interaktiivisena."
-
-#. Report flow: body of the final screen after a report was sent, on a self-hosted instance whose own administrators handle reports. The second sentence promises the reported person is not told who reported them.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "The administrators of this instance will review your report. We won't reveal that it came from you."
-msgstr "Tämän instanssin ylläpitäjät tarkistavat ilmoituksesi. Emme paljasta, että se tuli sinulta."
-
-#. Text under the heading The Operator badge on a slide in the Operator Pass checkout dialog. The quoted example is the text on the badge, translate it the way the app shows it in your language. Operator badge is a name, keep Operator in English. Never add a word that says how long the badge lasts.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "The badge on your Fluxer profile shows when you got your pass, like \"Operator Pass since November 2026\". You can hide it, or just its date, in your settings at any time."
-msgstr "Fluxer-profiilisi merkki näyttää, milloin sait passisi, esimerkiksi ”Operator Pass marraskuusta 2026 lähtien”. Voit piilottaa sen tai pelkän päivämäärän asetuksissasi milloin tahansa."
-
-#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
-msgid "The connection was not allowed. You can close this tab and try again."
-msgstr "Yhteyttä ei sallittu. Voit sulkea tämän välilehden ja yrittää uudelleen."
-
-#. Helper text under "Age range from your Apple or Google account" in the sensitive content settings.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "The Fluxer app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth."
-msgstr "Fluxer-sovellus iPhonelle, iPadille tai Androidille lähetti meille tämän ikäryhmän. Jos se näyttää, että olet vähintään 18-vuotias, voit nähdä 18+-sisältöä Isossa-Britanniassa ja Brasiliassa. Se ei muuta syntymäaikaasi."
-
-#. Setup wizard body explaining the push relay.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "The Fluxer apps for iOS and Android get notifications through a push relay that Fluxer runs, which passes them to Apple and Google. To use it, you accept the push relay privacy notice."
-msgstr "Fluxerin iOS- ja Android-sovellukset saavat ilmoitukset Fluxerin ylläpitämän push-välityksen kautta, joka välittää ne Applelle ja Googlelle. Käyttääksesi sitä hyväksyt push-välityksen tietosuojailmoituksen."
-
-#. Where the logo branding image appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "The large image next to the sign-in form, which is always dark. On a phone it only shows next to the name, when there is no wordmark and the product name is not Fluxer. Use a square or wide PNG or SVG in light colors with a transparent background, at least 256 pixels tall and up to {size}."
-msgstr "Suuri kuva aina tumman kirjautumislomakkeen vieressä. Puhelimessa se näkyy vain nimen vieressä, kun sanamerkkiä ei ole eikä tuotteen nimi ole Fluxer. Käytä neliön muotoista tai leveää PNG- tai SVG-kuvaa vaaleissa väreissä läpinäkyvällä taustalla, vähintään 256 pikseliä korkea ja enintään {size}."
-
-#. Caption under the phone preview in the setup wizard branding step.
-#: src/features/app/components/setup/SetupBrandingPreview.tsx
-msgid "The sign-in page on a phone, in a mobile browser or the Fluxer mobile app."
-msgstr "Kirjautumissivu puhelimessa, mobiiliselaimessa tai Fluxerin mobiilisovelluksessa."
-
-#. Shown above the list of CSS attributes in the "Reference" tab of the quick CSS editor.
-#: src/features/theme_settings/components/QuickCssReference.tsx
-msgid "These attributes don't change between Fluxer updates."
-msgstr "Nämä attribuutit eivät muutu Fluxerin päivityksissä."
-
-#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape.
-#: src/features/guild/components/modals/add_guild_modal/shared.ts
-msgid "This {theOtherPlatform} template couldn't be read. It may use a format Fluxer doesn't support yet."
-msgstr "Tätä {theOtherPlatform}-mallia ei voitu lukea. Se saattaa käyttää muotoa, jota Fluxer ei vielä tue."
-
-#. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
-#: src/features/platform/hooks/useAppStorageDegradedNotice.ts
-msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
-msgstr "Tämä selain ei voi tallentaa Fluxerin tietoja. Sinun täytyy kirjautua uudelleen, kun olet sulkenut sen."
-
-#. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "This class name changes with every Fluxer update. Use a [data-flx] selector."
-msgstr "Tämä luokan nimi muuttuu jokaisessa Fluxerin päivityksessä. Käytä [data-flx]-valitsinta."
-
-#. Setup wizard explanation of why the sign-in method is fixed: the instance is older than username sign-in.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "This instance was upgraded from a version of Fluxer that used email sign-in, so it stays on email."
-msgstr "Tämä instanssi on päivitetty Fluxerin versiosta, joka käytti sähköpostikirjautumista, joten kirjautuminen tapahtuu edelleen sähköpostilla."
-
-#. Body of the first setup wizard screen. An instance is one installation of Fluxer run by the person reading this.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "This sets up your instance, the copy of Fluxer you installed, and creates your account on it. It takes about five minutes. You can change most choices later in the admin panel, and a screen tells you when you can't."
-msgstr "Tässä määrität instanssisi eli asentamasi Fluxerin kopion ja luot sille tilisi. Se kestää noin viisi minuuttia. Voit muuttaa useimpia valintoja myöhemmin hallintapaneelissa, ja näkymä kertoo, kun et voi."
-
-#. Accessible label for the official Fluxer instance option.
-#: src/features/auth/flow/instance_selector/InstancePickerRows.tsx
-msgid "Use the official Fluxer instance"
-msgstr "Käytä virallista Fluxer-instanssia"
-
-#. Hint under the checkbox "Welcome me in #operators" in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Turn on your pass means the button in that dialog that switches the pass on, nothing is bought. Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
-#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
-msgid "We add you to Fluxer Labs when you turn on your pass, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
-msgstr "Lisäämme sinut Fluxer Labsiin, kun otat passisi käyttöön, ellet ole aiemmin poistunut Fluxer Labsista tai ellei sinua ole poistettu sieltä. Kun tämä on päällä, toivotamme sinut nimeltä tervetulleeksi kanavalle #operators pian sen jälkeen."
-
-#. Hint under the checkbox or switch "Welcome me in #operators". Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
-#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
-msgid "We add you to Fluxer Labs when your pass is delivered, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
-msgstr "Lisäämme sinut Fluxer Labsiin, kun passisi on toimitettu, ellet ole aiemmin poistunut Fluxer Labsista tai ellei sinua ole poistettu sieltä. Kun tämä on päällä, toivotamme sinut nimeltä tervetulleeksi kanavalle #operators pian sen jälkeen."
-
-#. Error shown when deleting the stored age range fails.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "We couldn't remove your age range. Please try again."
-msgstr "Ikäryhmääsi ei voitu poistaa. Yritä uudelleen."
-
-#. Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with Fluxer."
-msgstr "Poistamme ikäryhmän, sen vastaanottoajan ja Apple-laitteidesi App Attest -avaimet. Isossa-Britanniassa ja Brasiliassa et näe 18+-sisältöä ennen kuin sovellus lähettää ikäryhmän uudelleen. Sovellus voi lähettää ikäryhmäsi myöhemmin uudelleen, jos Apple- tai Google-tilisi jakaa sen yhä Fluxerin kanssa."
-
-#. Setup wizard option that accepts the push relay privacy notice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "Yes, use the push relay"
-msgstr "Kyllä, käytä push-välitystä"
-
-#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
-msgid "You already have the most connections an account can have. Remove one and try again."
-msgstr "Sinulla on jo suurin mahdollinen määrä yhteyksiä yhdellä tilillä. Poista yksi ja yritä uudelleen."
-
-#. Nagbar body telling people that the Fluxer app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep Fluxer and Android untranslated. Keep the tone calm and plain.
-#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
-msgid "You can get the Fluxer app for Android on {googlePlay} and chat from your phone."
-msgstr "Voit ladata Fluxerin Android-sovelluksen {googlePlay}-kaupasta ja keskustella puhelimellasi."
-
-#. Error when you try to pass an Operator Pass on to someone you are not friends with.
-#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
-msgid "You can only pass this on to one of your friends on Fluxer."
-msgstr "Voit antaa tämän vain yhdelle Fluxer-kaverillesi."
-
-#. Report flow: note on the summary screen when the reporter already reported this community.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "You've already reported this community."
-msgstr "Olet jo ilmoittanut tästä yhteisöstä."
-
-#. Description under the "Share audio" switch in the web stream setup modal. The browser picker owns the final audio choice.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Your browser lets you choose whether to include audio when you pick what to share."
-msgstr "Selaimesi antaa sinun valita, otetaanko ääni mukaan, kun valitset jaettavan sisällön."
-
-#. Footer summary under the preset name in the web stream setup modal when the Source resolution is picked. {fps} is a whole number of frames per second, and FPS is a technical token.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Your screen's resolution at {fps} FPS"
-msgstr "Näyttösi resoluutio, {fps} FPS"

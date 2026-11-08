@@ -12,14 +12,14 @@ import {useLingui} from '@lingui/react/macro';
 import {observer} from 'mobx-react-lite';
 
 const ANDROID_APP_MESSAGE_DESCRIPTOR = msg({
-	message: 'You can get the Fluxer app for Android on {googlePlay} and chat from your phone.',
+	message: 'You can get the echowire app for Android on {googlePlay} and chat from your phone.',
 	comment:
-		'Nagbar body telling people that the Fluxer app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep Fluxer and Android untranslated. Keep the tone calm and plain.',
+		'Nagbar body telling people that the echowire app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep echowire and Android untranslated. Keep the tone calm and plain.',
 });
 const ANDROID_APP_BUTTON_DESCRIPTOR = msg({
 	message: 'Get it on {googlePlay}',
 	comment:
-		'Button in the Android app nagbar that opens the Fluxer listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.',
+		'Button in the Android app nagbar that opens the echowire listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.',
 });
 
 export const AndroidAppNagbar = observer(({isMobile}: {isMobile: boolean}) => {

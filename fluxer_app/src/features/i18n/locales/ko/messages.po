@@ -2190,6 +2190,10 @@ msgstr "{productName}이(가) 시작 중에는 업데이트되지 않습니다. 
 msgid "{productName} wordmark"
 msgstr "{productName} 워드마크"
 
+#: src/features/connection/components/modals/AddConnectionModal.tsx
+msgid "{providerName} opens in your browser. Sign in there to connect your account."
+msgstr "브라우저에서 {providerName}이(가) 열려요. 그곳에서 로그인하여 계정을 연결하세요."
+
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts
 msgid "{reactorCount, plural, one {{emojiName} reacted by {reactors}} other {{emojiName} reacted by {reactors}}}"
@@ -2239,6 +2243,11 @@ msgstr "{requestedLabel}을(를) 시작할 수 없습니다. 대신 {effectiveLa
 #: src/features/voice/components/StreamInfoPill.tsx
 msgid "{resolution} {fps} FPS"
 msgstr "{resolution} {fps} FPS"
+
+#. Footer summary under the preset name in the web stream setup modal. {resolution} is a technical token like 1080p. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "{resolution} at {fps} FPS"
+msgstr "{resolution}, {fps} FPS"
 
 #. Short label in the channel display name state. Keep it concise. Preserve {resolvedName}; it is inserted by code.
 #: src/features/channel/state/ChannelDisplayName.ts
@@ -3344,10 +3353,10 @@ msgstr "이 줄 끝에 \";\"를 추가하세요."
 msgid "Add \":\" between the property and its value."
 msgstr "속성과 값 사이에 \":\"를 추가하세요."
 
-#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {blueskyProviderName}; it is inserted by code.
+#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {providerName}; it is the provider name, inserted by code.
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Add {blueskyProviderName} connection"
-msgstr "{blueskyProviderName} 연결 추가"
+msgid "Add {providerName} connection"
+msgstr "{providerName} 연결 추가"
 
 #. OAuth scope description shown on the consent screen for the bot scope.
 #: src/features/app/constants/AppConstants.ts
@@ -4132,6 +4141,11 @@ msgstr "로그인한 후 작업을 다시 시도하세요."
 msgid "After your account is deleted, you will not be able to delete the messages you sent"
 msgstr "계정 삭제 후에는 보낸 메시지를 삭제할 수 없습니다"
 
+#. Label in the sensitive content settings, shown when the echowire app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Age range from your Apple or Google account"
+msgstr "Apple 또는 Google 계정의 연령대"
+
 #. US state name, shown next to the country name in the mature content gate.
 #: src/features/user/utils/UserGeo.ts
 msgctxt "us-state"
@@ -4747,6 +4761,11 @@ msgstr "업로드된 동영상 파일"
 #: src/features/guild/components/modals/GuildOwnershipWarningModal.tsx
 msgid "and {remainingCount} more"
 msgstr "외 {remainingCount}개"
+
+#. Developer / debug surface — keep terse and technical. Label in the developer Nagbar controls panel for the Android app on Google Play banner.
+#: src/features/devtools/components/NagbarControls.ts
+msgid "Android app nagbar"
+msgstr "Android 앱 알림 표시줄"
 
 #. Short label in the animation tab. Keep it concise.
 #: src/features/user/components/modals/tabs/accessibility_tab/AnimationTab.tsx
@@ -9533,6 +9552,11 @@ msgstr "커뮤니티 업데이트됨"
 msgid "Community voice"
 msgstr "커뮤니티 음성"
 
+#. Report flow: section heading above the card of the community being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Community you're reporting"
+msgstr "신고할 커뮤니티"
+
 #. Permission category for permissions that affect the whole community.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts
 msgid "Community-wide"
@@ -11336,10 +11360,10 @@ msgstr "인증 이메일을 보낼 수 없습니다"
 msgid "Couldn't sign you in"
 msgstr "로그인할 수 없었습니다"
 
-#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {blueskyProviderName}; it is inserted by code and must appear verbatim in the translation.
+#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {providerName}; it is the provider name, inserted by code, and must appear verbatim in the translation.
 #: src/features/connection/commands/ConnectionCommands.ts
-msgid "Couldn't start {blueskyProviderName} authorization"
-msgstr "{blueskyProviderName} 승인을 시작할 수 없습니다"
+msgid "Couldn't start {providerName} authorization"
+msgstr "{providerName} 승인을 시작할 수 없습니다"
 
 #. Title of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx
@@ -17312,9 +17336,11 @@ msgid "Frame"
 msgstr "프레임"
 
 #. Section header in the stream settings menu for frame rate options.
+#. Section label in the web stream setup modal for the stream frame rate options, in frames per second.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Frame rate"
 msgstr "프레임 속도"
@@ -17789,6 +17815,11 @@ msgstr "애니메이션 아바타 및 배너, 구독자 배지, 사용자 이름
 #: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
 msgid "Get another pass"
 msgstr "Operator Pass 추가 구매"
+
+#. Button in the Android app nagbar that opens the echowire listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "Get it on {googlePlay}"
+msgstr "{googlePlay}에서 다운로드"
 
 #. Secondary Plutonium page button that starts a monthly subscription checkout.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -21454,8 +21485,8 @@ msgid "Link warnings"
 msgstr "링크 경고"
 
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Link your {BLUESKY_PROVIDER_NAME} account or verify domain ownership to display them on your profile."
-msgstr "프로필에 표시하려면 {BLUESKY_PROVIDER_NAME} 계정을 연결하거나 도메인 소유권을 확인하세요."
+msgid "Link your accounts or verify domain ownership to display them on your profile."
+msgstr "프로필에 표시하려면 계정을 연결하거나 도메인 소유권을 확인하세요."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts
@@ -24638,6 +24669,11 @@ msgstr "참조된 로컬 파일 없음"
 msgid "No logs yet"
 msgstr "아직 활동 로그가 없습니다"
 
+#. Label for a linked account whose provider this instance removed or turned off. The account is hidden from the profile.
+#: src/features/connection/components/ConnectionIcon.tsx
+msgid "No longer available"
+msgstr "더 이상 사용할 수 없음"
+
 #: src/features/app/components/dialogs/shared/AddOverridePopout.tsx
 msgid "No matches"
 msgstr "일치하는 항목 없음"
@@ -27119,6 +27155,11 @@ msgstr "사용자가 자신의 커뮤니티를 만들고 원하는 만큼 참여
 msgid "People can only talk in communities."
 msgstr "사용자는 커뮤니티 안에서만 대화할 수 있습니다."
 
+#. Description under the "Share a preview image" switch in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "People can see a still image of what you share before they start watching."
+msgstr "다른 사람들이 시청을 시작하기 전에 공유 중인 화면의 정지 이미지를 볼 수 있어요."
+
 #. Description of allowing direct messages in the setup wizard.
 #: src/features/app/components/setup/SetupPolicySteps.tsx
 msgid "People can send friend requests and direct messages."
@@ -27307,6 +27348,11 @@ msgstr "권한"
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx
 msgid "Permissions for {0}"
 msgstr "{0}에 대한 권한"
+
+#. Report flow: section heading above the card of the person being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Person you're reporting"
+msgstr "신고하려는 사람"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/utils/UserMessageDescriptors.ts
@@ -27926,6 +27972,11 @@ msgstr "준비 중"
 msgid "Presence"
 msgstr "활동 상태"
 
+#. Section label in the web stream setup modal. Picks the Gaming preset (motion), the Screen share preset (sharp text) or custom numbers.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Preset"
+msgstr "프리셋"
+
 #. Shown in the "Quick CSS" section in Settings > Themes. {shortcut} is a keyboard shortcut such as Ctrl+Alt+Shift+T.
 #: src/features/theme_settings/components/QuickCssSection.tsx
 msgid "Press {shortcut} anywhere in the app to open the editor."
@@ -28326,11 +28377,6 @@ msgstr "프로필 유형"
 #: src/features/user/components/modals/tabs/MyProfileTab.tsx
 msgid "Profile updated"
 msgstr "프로필 업데이트 완료"
-
-#. Report flow: section heading above the card of the user whose profile is being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Profile you're reporting"
-msgstr "신고하려는 프로필"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
@@ -29309,6 +29355,7 @@ msgstr "창 크기 및 위치 기억"
 #. Button or menu action label in the channel and chat message reactions sheet. Keep it concise. Keep the tone plain and specific.
 #. Button that clears the default reaction or deletes a tag in forum settings.
 #. Button that removes a branding image in the setup wizard.
+#. Confirm button in the dialog that deletes the stored age range.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the shared app saved message missing card. Keep the tone plain and specific.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -29323,6 +29370,7 @@ msgstr "창 크기 및 위치 기억"
 #: src/features/guild/components/modals/guild_tabs/GuildVanityURLTab.tsx
 #: src/features/ui/action_menu/GroupDMContextMenu.tsx
 #: src/features/ui/action_menu/UserContextMenu.tsx
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 #: src/features/webhook/components/WebhookListItem.tsx
 msgid "Remove"
@@ -29359,6 +29407,11 @@ msgstr "{userName}님을 그룹에서 내보낼까요?"
 #: src/features/relationship/utils/RelationshipActionUtils.tsx
 msgid "Remove {userName} from your friends?"
 msgstr "{userName}님을 친구 목록에서 삭제하시겠어요?"
+
+#. Button in the sensitive content settings that opens a confirmation to delete the stored age range.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove age range"
+msgstr "연령대 삭제"
 
 #. Confirm button label on the remove-all-reactions alert. Destructive.
 #: src/features/channel/components/MessageActionUtils.tsx
@@ -29566,6 +29619,11 @@ msgstr "번역기 삭제"
 #: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
 msgid "Remove when you first bought {premiumProductName} from your badge"
 msgstr "{premiumProductName}을(를) 처음 구매한 시점을 배지에서 제거"
+
+#. Title of the confirmation shown before deleting the age range from an Apple or Google account.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove your age range?"
+msgstr "연령대를 삭제할까요?"
 
 #. Status badge for the application to Explore, shown in the "Explore" tab in community settings. The community was removed from Explore.
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx
@@ -29936,6 +29994,11 @@ msgstr "{replyAuthorName}님에게 답장, {authorName}님: {formatted}"
 msgid "Replying to <0>{authorNickname}</0>"
 msgstr "<0>{authorNickname}</0>님에게 답장 중"
 
+#. Voice and call participant menu action that reports this person to the safety team, for example for something they said or showed in the call.
+#: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx
+msgid "Report"
+msgstr "신고"
+
 #. Report flow target option. Selects reporting an entire community (server). Use the localized term for community, not server.
 #: src/features/moderation/components/report/OptionDescriptors.ts
 msgid "Report a community"
@@ -29950,6 +30013,11 @@ msgstr "메시지 신고"
 #: src/features/moderation/components/report/OptionDescriptors.ts
 msgid "Report a user profile"
 msgstr "사용자 프로필 신고"
+
+#. Action label in community menus, on invites and in Explore, and the title of the report window it opens. Reports a whole community to the safety team.
+#: src/features/moderation/utils/ModerationMessageDescriptors.ts
+msgid "Report community"
+msgstr "커뮤니티 신고"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx
 msgid "Report details"
@@ -29971,7 +30039,12 @@ msgstr "문제 신고"
 msgid "Report message"
 msgstr "메시지 신고"
 
-#. Action label in the full user profile's overflow menu, and the title of the report window it opens. Reports the user's profile: their photo, name or bio.
+#. Action in a forum post's menu. Reports the post's opening message to the safety team. A post is a topic thread in a forum channel.
+#: src/features/forum/utils/ForumMessageDescriptors.ts
+msgid "Report post"
+msgstr "게시물 신고"
+
+#. Action label in user right-click menus and the full user profile's overflow menu, and the title of the report window it opens. Reports the user's profile: their photo, name or bio.
 #: src/features/moderation/utils/ModerationMessageDescriptors.ts
 msgid "Report profile"
 msgstr "프로필 신고"
@@ -30485,8 +30558,10 @@ msgid "Resizing, maximizing, and window snapping depend on the compositor. Wayla
 msgstr "창 크기 조절, 최대화, 창 스냅은 컴포지터에 따라 달라집니다. 클라이언트 측 장식이 없는 Wayland는 핸들을 제공하지 않을 수 있습니다. 창이 제대로 움직이지 않으면 --ozone-platform=x11로 실행하세요."
 
 #. Section header in the stream settings menu for resolution options.
+#. Section label in the web stream setup modal for the stream resolution options.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Resolution"
 msgstr "해상도"
@@ -32922,6 +32997,11 @@ msgstr "여러 명이 입력 중..."
 msgid "Share"
 msgstr "공유"
 
+#. Switch label in the web stream setup modal. When on, Fluxer uploads a still image of the stream so people can see it before watching.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share a preview image"
+msgstr "미리보기 이미지 공유"
+
 #. Button or menu action label in the buttons tab. Keep it concise.
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Share action."
@@ -32931,6 +33011,11 @@ msgstr "공유하기."
 #: src/features/user/components/settings_utils/section_registry/ThemesSections.ts
 msgid "Share and back up"
 msgstr "공유 및 백업"
+
+#. Switch label in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share audio"
+msgstr "오디오 공유"
 
 #. Plutonium page perk card body about upload size. freeSize is a formatted size such as 25 MB.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -32981,7 +33066,9 @@ msgstr "저희 팀이 평가하는 데 필요한 내용을 공유해 주세요."
 msgid "Share with a friend"
 msgstr "친구에게 공유하기"
 
+#. Title of the modal shown on web before the browser screen picker opens. The user picks stream quality here first.
 #. Voice control button or tooltip label for starting screen sharing.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/utils/VoiceMessageDescriptors.ts
 msgid "Share your screen"
 msgstr "화면 공유"
@@ -33031,8 +33118,8 @@ msgstr "720p에서 최대 30FPS의 선명한 텍스트"
 
 #. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
-msgid "Sharp text at up to 4K, up to 15 FPS"
-msgstr "최대 4K, 최대 15 FPS의 선명한 텍스트"
+msgid "Sharp text at up to 1080p, 30 FPS"
+msgstr "최대 1080p의 선명한 텍스트, 30 FPS"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -33466,8 +33553,11 @@ msgstr "음소거한 채널 표시"
 msgid "Show my own camera"
 msgstr "내 카메라 표시"
 
+#. Toggle label in the mobile video settings bottom sheet. Controls whether the local screen share tile is in the call view.
 #. Voice display preference checkbox that controls whether the current user sees their own screen share tile.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts
+#: src/features/voice/components/bottomsheets/VoiceSettingsBottomSheets.tsx
+#: src/features/voice/components/VoiceSettingsMenus.tsx
 msgid "Show my screen share"
 msgstr "내 화면 공유 표시"
 
@@ -34066,7 +34156,7 @@ msgid "Skip this step"
 msgstr "건너뛰기"
 
 #. Accessible skip-link label for keyboard users.
-#: src/app/App.tsx
+#: src/app/SkipToContentLink.tsx
 msgid "Skip to content"
 msgstr "본문으로 건너뛰기"
 
@@ -34956,6 +35046,11 @@ msgstr "녹음 시작"
 msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> to narrow down results."
 msgstr "검색어 앞에 <0>{peoplePrefix}</0>, <1>{textChannelPrefix}</1>, <2>{voiceChannelPrefix}</2>, <3>{communityPrefix}</3> 기호를 붙이면 검색 범위를 좁힐 수 있습니다."
 
+#. Primary button in the web stream setup modal. Opens the browser's screen picker and starts sharing.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Start sharing"
+msgstr "공유 시작"
+
 #. Native macOS Edit > Speech submenu item that starts reading the selected text aloud. Imperative verb.
 #: src/features/platform/utils/DesktopLocaleBridge.ts
 msgid "Start speaking"
@@ -35424,11 +35519,6 @@ msgstr "스트림 버퍼링 중"
 #: src/features/voice/components/voice_participant_tile/shared.ts
 msgid "Stream ended"
 msgstr "스트림 종료됨"
-
-#. Overlay text on a participant tile when the local user hid the remote screen share.
-#: src/features/voice/components/voice_participant_tile/shared.ts
-msgid "Stream hidden"
-msgstr "화면 공유 숨김"
 
 #. Plutonium page perk card title about stream quality.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -36487,6 +36577,11 @@ msgstr "데이터 처리 방식은 <0>개인정보처리방침</0>과 <1>{OPERAT
 msgid "The <0>privacy policy</0> explains how we handle your data."
 msgstr "데이터 처리 방식은 <0>개인정보처리방침</0>에서 설명합니다."
 
+#. Report flow: body of the final screen after a report was sent, on a self-hosted instance whose own administrators handle reports. The second sentence promises the reported person is not told who reported them.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "The administrators of this instance will review your report. We won't reveal that it came from you."
+msgstr "이 인스턴스의 관리자가 신고 내용을 검토합니다. 회원님이 신고했다는 사실은 밝히지 않습니다."
+
 #. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx
 msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
@@ -36547,6 +36642,10 @@ msgstr "이 표현을 가져온 커뮤니티에서 복제를 꺼 두어 복사�
 msgid "The community you're looking for may have been deleted or you may not have access to it."
 msgstr "찾으시는 커뮤니티가 삭제되었거나 접근 권한이 없을 수 있습니다."
 
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "The connection was not allowed. You can close this tab and try again."
+msgstr "연결이 허용되지 않았습니다. 이 탭을 닫고 다시 시도해 주세요."
+
 #. Body of the confirmation dialog before replacing the private link to an Operator certificate page. The certificate is a PDF, and each page has a number and the date and time of payment. The new copy of the page has the new link printed on it.
 #: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
 msgid "The current link stops working right away, for you and for anyone you've shared it with. We make a new copy of this page with the new link printed on it, with the same number and date."
@@ -36556,6 +36655,11 @@ msgstr "현재 링크는 바로 작동을 멈추며, 회원님과 링크를 공�
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "The desktop update could not be downloaded. Try again from the update button when your connection is stable."
 msgstr "데스크톱 업데이트를 다운로드할 수 없습니다. 연결이 안정적일 때 업데이트 버튼을 눌러 다시 시도해 주세요."
+
+#. Helper text under "Age range from your Apple or Google account" in the sensitive content settings.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "The echowire app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth."
+msgstr "iPhone, iPad 또는 Android용 echowire 앱이 이 연령대를 보냈어요. 18세 이상으로 확인되면 영국과 브라질에서 18+ 콘텐츠를 볼 수 있어요. 생년월일은 바뀌지 않아요."
 
 #. Activity log detail line under a deleted emoji, shown only when someone other than the person who deleted it had uploaded it. {user} is the user who uploaded the emoji, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogExpressionMessageMessages.ts
@@ -42185,10 +42289,20 @@ msgstr "CSS 파일을 읽을 수 없습니다."
 msgid "We couldn't read this theme. It may be corrupted or invalid."
 msgstr "테마를 읽을 수 없습니다. 파일이 손상되었거나 유효하지 않을 수 있습니다."
 
+#. Error shown when deleting the stored age range fails.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We couldn't remove your age range. Please try again."
+msgstr "연령대를 삭제하지 못했어요. 다시 시도해 주세요."
+
 #. Error message after saving a theme failed in Settings > Themes or the quick CSS editor window.
 #: src/features/theme_settings/utils/ThemeSettingsErrorModal.ts
 msgid "We couldn't save that theme."
 msgstr "테마를 저장할 수 없었습니다."
+
+#. Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with echowire."
+msgstr "연령대, 이를 받은 시간, 회원님의 Apple 기기용 App Attest 키를 삭제해요. 영국과 브라질에서는 앱이 연령대를 다시 보낼 때까지 18+ 콘텐츠를 볼 수 없어요. Apple 또는 Google 계정이 계속 echowire와 연령대를 공유하면 앱이 나중에 다시 보낼 수 있어요."
 
 #. Modal body for existing-subscription block. Directs the user to the billing portal and addresses the just-paid race case. Keep plain and reassuring.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx
@@ -43128,6 +43242,10 @@ msgstr "이 멤버들로 구성된 그룹이 이미 있습니다. 새 그룹을 
 msgid "You already have lifetime {premiumProductName}"
 msgstr "이미 {premiumProductName} 평생 이용권을 보유하고 있습니다"
 
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "You already have the most connections an account can have. Remove one and try again."
+msgstr "계정 하나에 둘 수 있는 연결 수가 이미 최대입니다. 하나를 삭제하고 다시 시도해 주세요."
+
 #. Body text in the connection add connection modal.
 #: src/features/connection/components/modals/AddConnectionModal.tsx
 msgid "You already have this connection."
@@ -43242,6 +43360,11 @@ msgstr "{date}까지 전액 환불을 받을 수 있어요."
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
 msgid "You can get a full refund until {date}. This also ends your subscription right away."
 msgstr "{date}까지 전액 환불을 받을 수 있으며, 구독도 즉시 종료돼요."
+
+#. Nagbar body telling people that the echowire app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep echowire and Android untranslated. Keep the tone calm and plain.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "You can get the echowire app for Android on {googlePlay} and chat from your phone."
+msgstr "{googlePlay}에서 Android용 echowire 앱을 다운로드하면 휴대폰에서도 채팅할 수 있습니다."
 
 #. Line under "Full refund" in the Payments settings. {amount} is the price paid, with currency, and {date} is the last day of the refund window, such as Nov 2, 2026. Both are filled in by code.
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
@@ -44098,6 +44221,11 @@ msgstr "이전 메시지를 보고 있습니다"
 msgid "You've added more people than a group DM allows. Remove a few and try again."
 msgstr "그룹 DM에 허용된 인원보다 많은 사람을 추가했습니다. 몇 명을 빼고 다시 시도해 주세요."
 
+#. Report flow: note on the summary screen when the reporter already reported this community.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "You've already reported this community."
+msgstr "이미 이 커뮤니티를 신고했습니다."
+
 #. Report flow: note on the summary screen when the reporter already reported this message.
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "You've already reported this message."
@@ -44301,6 +44429,11 @@ msgstr "브라우저에서 이 페이지 주소가 인스턴스의 비밀번호 
 #: src/features/auth/utils/PasskeyErrorMessages.ts
 msgid "Your browser blocked the passkey because this page is not on {rpId}, the passkey domain of this instance. Ask the instance owner to check the passkey domain setting."
 msgstr "브라우저에서 이 페이지가 이 인스턴스의 패스키 도메인인 {rpId}에 있지 않아 패스키를 차단했습니다. 인스턴스 소유자에게 패스키 도메인 설정을 확인하도록 요청하세요."
+
+#. Description under the "Share audio" switch in the web stream setup modal. The browser picker owns the final audio choice.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your browser lets you choose whether to include audio when you pick what to share."
+msgstr "공유할 항목을 고를 때 브라우저에서 오디오를 포함할지 선택할 수 있어요."
 
 #. Body of the browser-audio-required modal explaining why the user must click before audio can play.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx
@@ -44714,6 +44847,11 @@ msgctxt "screen-share"
 msgid "Your screen share could not be published with a compatible video codec, so it was stopped. Try sharing again."
 msgstr "호환되는 비디오 코덱으로 화면 공유를 게시할 수 없어 중지되었습니다. 다시 공유해 보세요."
 
+#. Footer summary under the preset name in the web stream setup modal when the Source resolution is picked. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your screen's resolution at {fps} FPS"
+msgstr "화면 해상도, {fps} FPS"
+
 #. Alert on the setup token screen when the token was refused while creating the account.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx
 msgid "Your setup token stopped working. Enter it again."
@@ -44886,478 +45024,3 @@ msgstr "확대"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
 msgid "Zoom out"
 msgstr "축소"
-
-#. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "--{name} isn't a Fluxer variable and isn't set anywhere in your CSS."
-msgstr "--{name}은(는) Fluxer 변수도 아니고, CSS 어디에도 설정되어 있지 않아요."
-
-#. Instance selector error shown when the instance speaks a protocol generation this client does not know. Domain is interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "{domain} runs a newer version of Fluxer than this app. Update Fluxer, then try again."
-msgstr "{domain}에서 더 최신 버전의 Fluxer를 사용 중입니다. Fluxer를 업데이트한 후 다시 시도하세요."
-
-#: src/features/connection/components/modals/AddConnectionModal.tsx
-msgid "{providerName} opens in your browser. Sign in there to connect your account."
-msgstr "브라우저에서 {providerName}이(가) 열려요. 그곳에서 로그인하여 계정을 연결하세요."
-
-#. Footer summary under the preset name in the web stream setup modal. {resolution} is a technical token like 1080p. {fps} is a whole number of frames per second, and FPS is a technical token.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "{resolution} at {fps} FPS"
-msgstr "{resolution}, {fps} FPS"
-
-#. Heading of a slide in the Operator Pass checkout dialog about the #operators channel. #operators is the channel's literal name and Fluxer Labs is the name of the official community, keep both unchanged. No trailing punctuation.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "#operators in Fluxer Labs"
-msgstr "Fluxer Labs의 #operators"
-
-#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {providerName}; it is the provider name, inserted by code.
-#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Add {providerName} connection"
-msgstr "{providerName} 연결 추가"
-
-#. Label in the sensitive content settings, shown when the Fluxer app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Age range from your Apple or Google account"
-msgstr "Apple 또는 Google 계정의 연령대"
-
-#. Developer / debug surface — keep terse and technical. Label in the developer Nagbar controls panel for the Android app on Google Play banner.
-#: src/features/devtools/components/NagbarControls.ts
-msgid "Android app nagbar"
-msgstr "Android 앱 알림 표시줄"
-
-#. Help text under the theme color picker in the setup wizard branding step.
-#: src/features/app/components/setup/SetupBrandingFields.tsx
-msgid "Buttons, links and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to keep Fluxer's indigo."
-msgstr "앱 전체의 버튼, 링크, 강조 표시에 이 색상이 사용되며, 휴대폰 브라우저에서는 툴바 색상으로도 사용됩니다. 초기화하면 Fluxer의 인디고 색상이 유지됩니다."
-
-#. Completion in the quick CSS editor that inserts a :root rule, where theme variables are set.
-#: src/features/theme_settings/editor/CssCompletions.ts
-msgid "Change Fluxer variables"
-msgstr "Fluxer 변수 변경"
-
-#. Report flow: section heading above the card of the community being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Community you're reporting"
-msgstr "신고할 커뮤니티"
-
-#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online."
-msgstr "{domain}에서 Fluxer 인스턴스에 연결할 수 없습니다. 주소를 확인하고 인스턴스가 온라인 상태인지 확인하세요."
-
-#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {providerName}; it is the provider name, inserted by code, and must appear verbatim in the translation.
-#: src/features/connection/commands/ConnectionCommands.ts
-msgid "Couldn't start {providerName} authorization"
-msgstr "{providerName} 승인을 시작할 수 없습니다"
-
-#. Link under the Weblate line in the language settings. It opens a help article on fluxer.com about suggesting a new language and helping translate the app. Keep it a short question.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx
-msgid "Don't see your language?"
-msgstr "찾는 언어가 없나요?"
-
-#. Description under the switch that adds the Operators' wall name to the yearly Operators list. A Fluxer release is a published version of the app. Operators are the people who have an Operator Pass, keep the word Operators in English.
-#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
-msgid "Each yearly list of Operators that we publish goes into the notes of a Fluxer release and a file in its source code. Your wall name is only on it if you turn this on. If you ask us to remove it later, we take it out of future lists, the release notes and that file, but earlier versions of the source code and copies others made can't be recalled."
-msgstr "저희가 게시하는 연간 Operators 목록은 매번 Fluxer 릴리스 노트와 소스 코드의 파일에 들어갑니다. 이 옵션을 켜야만 벽에 표시된 이름이 목록에 포함됩니다. 나중에 삭제를 요청하시면 앞으로의 목록, 릴리스 노트, 해당 파일에서 이름을 빼지만, 소스 코드의 이전 버전과 다른 사람이 만든 사본은 회수할 수 없습니다."
-
-#. Bullet point in the P2P call dialog. Plutonium is the name of the paid subscription and must not be translated. 4K and fps are video terms.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts
-msgid "Everyone in the call gets Plutonium stream quality for free, with up to 4K source resolution and 60 fps."
-msgstr "통화에 참여한 모든 분께는 무료로 플루토늄 스트림 품질이 제공됩니다. 최대 4K 소스 해상도 및 60fps를 지원합니다."
-
-#. Description of the shared usernames option in the setup wizard. Keep the example alex#4821 as it is.
-#: src/features/app/components/setup/SetupIdentitySteps.tsx
-msgid "Fluxer adds a random number to each username, like alex#4821, so many people can use the same name."
-msgstr "Fluxer가 alex#4821처럼 사용자 이름마다 임의의 번호를 붙이므로 여러 사람이 같은 이름을 사용할 수 있습니다."
-
-#. Problem shown in the quick CSS editor on a web address that the app is not allowed to load. Assets are files uploaded under "Assets".
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer blocked loading {url}. Upload it as an asset."
-msgstr "Fluxer가 {url} 불러오기를 차단했어요. 에셋으로 업로드하세요."
-
-#. Problem shown in the quick CSS editor on an image address on a site the person has not trusted. Assets are files uploaded under "Assets". Trusting a site lets quick CSS and themes load images from it.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer blocked loading {url}. Upload the file as an asset, or trust the site it's on."
-msgstr "Fluxer가 {url} 불러오기를 차단했어요. 파일을 에셋으로 업로드하거나 파일이 있는 사이트를 신뢰하세요."
-
-#. Problem shown in the quick CSS editor on a reference to an uploaded theme asset that does not exist.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer can't find the asset \"{name}\"."
-msgstr "Fluxer가 에셋 \"{name}\"을(를) 찾을 수 없어요."
-
-#. Problem shown in the quick CSS editor on a reference to a file on the computer that Fluxer cannot read.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer can't find the file \"{path}\"."
-msgstr "Fluxer가 파일 \"{path}\"을(를) 찾을 수 없어요."
-
-#. Shown for a watched theme folder in Settings > Themes when the folder was moved, deleted or disconnected.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't find this folder. It will load the themes again when the folder is back."
-msgstr "Fluxer에서 이 폴더를 찾을 수 없어요. 폴더가 돌아오면 테마를 다시 불러올 거예요."
-
-#. Shown for a watched theme folder in Settings > Themes when the desktop app no longer has permission to read it.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't open this folder. Import it again to keep watching it."
-msgstr "Fluxer에서 이 폴더를 열 수 없습니다. 계속 감시하려면 다시 가져오세요."
-
-#. Error toast in "Your themes" when the chosen theme folder cannot be opened.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't read this folder."
-msgstr "Fluxer가 이 폴더를 읽을 수 없습니다."
-
-#. Problem shown at the top of the quick CSS editor when the whole sheet was left out.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer couldn't apply this CSS. Check it for a broken comment, string or bracket."
-msgstr "Fluxer가 이 CSS를 적용할 수 없었어요. 주석, 문자열, 괄호가 깨지지 않았는지 확인하세요."
-
-#. Alert when the SMTP check fails and the mail server sent no reply. host is the mail server address.
-#: src/features/app/components/setup/SetupEmailSteps.tsx
-msgid "Fluxer couldn't connect to {host}."
-msgstr "Fluxer가 {host}에 연결하지 못했습니다."
-
-#. Alert when the SMTP check fails. host is the mail server address and error is its reply.
-#: src/features/app/components/setup/SetupEmailSteps.tsx
-msgid "Fluxer couldn't connect to {host}. The server said: \"{error}\""
-msgstr "Fluxer가 {host}에 연결하지 못했습니다. 서버 응답: \"{error}\""
-
-#. Status shown in the desktop app when it stopped checking the browser sign-in because the instance could not be reached. instanceName is the server name, such as Fluxer. "Try again" is the label of the button below and must match its translation.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "Fluxer couldn't connect to {instanceName} to check whether your browser approved this sign-in. Check your connection, then select \"Try again\"."
-msgstr "Fluxer가 브라우저에서 이 로그인을 승인했는지 확인하기 위해 {instanceName}에 연결하지 못했습니다. 연결을 확인한 다음 \"다시 시도\"를 선택하세요."
-
-#. Name of the section in the Operator Pass settings tab about the Fluxer Labs community. Fluxer Labs is the name of a community, keep it as is.
-#: src/features/premium/utils/PremiumMessageDescriptors.ts
-msgid "Fluxer Labs"
-msgstr "Fluxer Labs"
-
-#. Status shown when browser sign-in status polling gives up after repeated failures.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "Fluxer stopped checking whether the browser approved this sign-in. It didn't lose your code."
-msgstr "Fluxer가 브라우저에서 이 로그인을 승인했는지 확인을 중단했습니다. 코드는 잃지 않았습니다."
-
-#. Shown in the modal that applies a shared theme when the theme points at files the app will not load.
-#: src/features/theme/components/modals/ThemeAcceptModal.tsx
-msgid "Fluxer won't load {count, plural, one {# file} other {# files}} that this theme links to on other sites."
-msgstr "Fluxer는 이 테마가 링크한 다른 사이트의 파일 {count, plural, other {#개}}를 불러오지 않아요."
-
-#. Button in the Android app nagbar that opens the Fluxer listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.
-#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
-msgid "Get it on {googlePlay}"
-msgstr "{googlePlay}에서 다운로드"
-
-#: src/features/user/components/modals/tabs/LanguageTab.tsx
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "<0>{I18N_WEBLATE_DOMAIN}</0>에서 {PRODUCT_NAME}을(를) 여러분의 언어로 번역하는 데 참여해 보세요."
-
-#. Hint in the desktop app while it waits for the browser, for people with more than one Fluxer app installed. "Signing in on another device?" is the label of the button below and must match its translation.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "If the link opens a different Fluxer app, select \"Signing in on another device?\" and type the code in your browser instead."
-msgstr "링크가 다른 Fluxer 앱을 열면 \"다른 기기에서 로그인 중이신가요?\"를 선택하고 브라우저에 코드를 입력하세요."
-
-#. Help on the setup token screen, followed by a terminal command. rexctl is a name that must not be translated.
-#: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "If you installed Fluxer with rexctl, it printed the token when it finished. Run this on your server to show it again."
-msgstr "Fluxer를 rexctl로 설치했다면, 설치 완료 시 토큰이 출력되었습니다. 서버에서 다음 명령어를 실행하여 다시 표시하세요."
-
-#. What the app shows when no wordmark is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the product name shows as plain text, or as the Fluxer wordmark while the product name is Fluxer."
-msgstr "비워 두면 제품 이름이 일반 텍스트로 표시되며, 제품 이름이 Fluxer인 동안에는 Fluxer 워드마크가 표시됩니다."
-
-#. What the app shows when no logo is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the sign-in page uses your app icon or symbol. Without those, it shows the Fluxer logo while the product name is Fluxer, and no image for any other name."
-msgstr "비워 두면 로그인 페이지에 앱 아이콘이나 심볼이 표시됩니다. 둘 다 없으면 제품 이름이 Fluxer일 때는 Fluxer 로고가 표시되고, 다른 이름일 때는 이미지가 표시되지 않습니다."
-
-#. What the app shows when no favicon is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the tab uses your app icon, or the Fluxer icon if that is empty too."
-msgstr "비워 두면 탭에 앱 아이콘이 표시되고, 앱 아이콘도 비어 있으면 Fluxer 아이콘이 표시됩니다."
-
-#. What the app shows when no app icon is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, those places show the Fluxer icon."
-msgstr "비워 두면 해당 위치에 Fluxer 아이콘이 표시됩니다."
-
-#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
-#: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "If you run Fluxer without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart Fluxer, and enter that value here."
-msgstr "rexctl 없이 Fluxer를 실행하는 경우, 직접 선택한 32자 이상의 값으로 FLUXER_SETUP_TOKEN을 설정하고 Fluxer를 다시 시작한 다음 여기에 해당 값을 입력하세요."
-
-#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
-msgid "Keep Neko still"
-msgstr "네코 고정하기"
-
-#. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
-msgid "Lets you open communities and channels marked 18+ in the Fluxer app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
-msgstr "iPhone 및 iPad용 Fluxer 앱에서 18+로 표시된 커뮤니티와 채널을 열 수 있고, 민감한 미디어에 \"표시\"를 선택할 수 있습니다. 이 설정은 웹이나 데스크톱에서만 변경할 수 있습니다."
-
-#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Link your accounts or verify domain ownership to display them on your profile."
-msgstr "프로필에 표시하려면 계정을 연결하거나 도메인 소유권을 확인하세요."
-
-#. Button in the quick CSS editor window that moves the editor back into a panel inside the app.
-#: src/features/theme_settings/components/QuickCssWorkspace.tsx
-msgid "Move back into Fluxer"
-msgstr "Fluxer로 다시 옮기기"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Neko cat that chases your cursor"
-msgstr "커서를 따라다니는 네코 고양이"
-
-#. Label for a linked account whose provider this instance removed or turned off. The account is hidden from the profile.
-#: src/features/connection/components/ConnectionIcon.tsx
-msgid "No longer available"
-msgstr "더 이상 사용할 수 없음"
-
-#. Warning in Settings > Themes and in the modal that applies a shared theme. Trusting a site lets quick CSS and themes load images from it, and CSS can make the browser load different images depending on what the app shows.
-#: src/features/theme_settings/utils/ThemeSettingsMessageDescriptors.ts
-msgid "Only trust sites you know. A site you trust can see your IP address, when you have Fluxer open and some of what's on your screen."
-msgstr "아는 사이트만 신뢰하세요. 신뢰한 사이트는 내 IP 주소, Fluxer를 열어 둔 시간, 화면에 보이는 내용 일부를 알 수 있어요."
-
-#. Alternative text of the screenshot on a slide in the Operator Pass checkout dialog, read out by screen readers. The screenshot shows a short chat in the #operators channel. Operators are the people who have an Operator Pass, keep the word Operators in English. Fluxer Labs is the name of the official community, keep it unchanged. #operators is the channel's literal name, keep it unchanged. Talking means chatting with each other, never asking for or giving support. No trailing punctuation.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "Operators and the Fluxer Team talking about self-hosting in the #operators channel of Fluxer Labs"
-msgstr "Fluxer Labs의 #operators 채널에서 Operators와 Fluxer 팀이 자체 호스팅에 관해 이야기하는 모습"
-
-#. Description under the "Share a preview image" switch in the web stream setup modal.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "People can see a still image of what you share before they start watching."
-msgstr "다른 사람들이 시청을 시작하기 전에 공유 중인 화면의 정지 이미지를 볼 수 있어요."
-
-#. Description of leaving the push relay off in the setup wizard.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "People using the Fluxer mobile apps won't get notifications from your instance. You can turn this on later in the admin panel."
-msgstr "Fluxer 모바일 앱을 사용하는 사람은 이 인스턴스의 알림을 받지 못합니다. 나중에 관리자 패널에서 켤 수 있습니다."
-
-#. Report flow: section heading above the card of the person being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Person you're reporting"
-msgstr "신고하려는 사람"
-
-#. Review row label for the push relay.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "Phone notifications"
-msgstr "휴대폰 알림"
-
-#. Section label in the web stream setup modal. Picks the Gaming preset (motion), the Screen share preset (sharp text) or custom numbers.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Preset"
-msgstr "프리셋"
-
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx
-msgid "Read the documentation ({domain})"
-msgstr "문서 읽기({domain})"
-
-#. Link to the push relay privacy notice in the setup wizard.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "Read the push relay privacy notice"
-msgstr "푸시 릴레이 개인정보 고지 읽기"
-
-#. Button in the sensitive content settings that opens a confirmation to delete the stored age range.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Remove age range"
-msgstr "연령대 삭제"
-
-#. Title of the confirmation shown before deleting the age range from an Apple or Google account.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Remove your age range?"
-msgstr "연령대를 삭제할까요?"
-
-#. Voice and call participant menu action that reports this person to the safety team, for example for something they said or showed in the call.
-#: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx
-msgid "Report"
-msgstr "신고"
-
-#. Action label in community menus, on invites and in Explore, and the title of the report window it opens. Reports a whole community to the safety team.
-#: src/features/moderation/utils/ModerationMessageDescriptors.ts
-msgid "Report community"
-msgstr "커뮤니티 신고"
-
-#. Action in a forum post's menu. Reports the post's opening message to the safety team. A post is a topic thread in a forum channel.
-#: src/features/forum/utils/ForumMessageDescriptors.ts
-msgid "Report post"
-msgstr "게시물 신고"
-
-#. Sentence after the privacy sentence in the Operator Pass checkout dialog that names the company selling the pass. Fluxer Platform AB is the company name and 559537-3993 its Swedish organization number, keep both as is. Haninge is the Swedish municipality where the company is registered and stays as is. Translate registered office with the legal term your language uses for the registered seat of a company, and keep the Swedish word säte in parentheses. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
-#: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
-msgid "Seller: Fluxer Platform AB, 559537-3993, registered office (säte) Haninge, Sweden, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
-msgstr "판매자: Fluxer Platform AB, 559537-3993, 등기상 소재지(säte) Haninge, 스웨덴, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
-
-#. Setup wizard title for the push relay consent.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "Send notifications to the Fluxer mobile apps?"
-msgstr "Fluxer 모바일 앱으로 알림을 보낼까요?"
-
-#. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
-#: src/features/theme_settings/editor/AppSelectors.ts
-msgid "Set on messages that Fluxer sends, such as when someone joins."
-msgstr "누군가가 참여할 때 등 Fluxer가 보내는 메시지에 설정됨."
-
-#. Switch label in the web stream setup modal. When on, Fluxer uploads a still image of the stream so people can see it before watching.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Share a preview image"
-msgstr "미리보기 이미지 공유"
-
-#. Switch label in the web stream setup modal.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Share audio"
-msgstr "오디오 공유"
-
-#. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx
-msgid "Sharp text at up to 1080p, 30 FPS"
-msgstr "최대 1080p의 선명한 텍스트, 30 FPS"
-
-#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
-msgid "Show Neko"
-msgstr "네코 표시"
-
-#. Primary button in the web stream setup modal. Opens the browser's screen picker and starts sharing.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Start sharing"
-msgstr "공유 시작"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Static Neko"
-msgstr "움직이지 않는 네코"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Still Neko"
-msgstr "네코 정지"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
-msgstr "네코가 커서를 따라다니지 않도록 하면서도 드래그와 상호작용은 유지합니다."
-
-#. Report flow: body of the final screen after a report was sent, on a self-hosted instance whose own administrators handle reports. The second sentence promises the reported person is not told who reported them.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "The administrators of this instance will review your report. We won't reveal that it came from you."
-msgstr "이 인스턴스의 관리자가 신고 내용을 검토합니다. 회원님이 신고했다는 사실은 밝히지 않습니다."
-
-#. Text under the heading The Operator badge on a slide in the Operator Pass checkout dialog. The quoted example is the text on the badge, translate it the way the app shows it in your language. Operator badge is a name, keep Operator in English. Never add a word that says how long the badge lasts.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "The badge on your Fluxer profile shows when you got your pass, like \"Operator Pass since November 2026\". You can hide it, or just its date, in your settings at any time."
-msgstr "Fluxer 프로필의 배지에는 패스를 받은 시기가 \"2026년 11월부터 Operator Pass 보유\"처럼 표시됩니다. 설정에서 언제든지 배지 전체 또는 날짜만 숨길 수 있습니다."
-
-#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
-msgid "The connection was not allowed. You can close this tab and try again."
-msgstr "연결이 허용되지 않았습니다. 이 탭을 닫고 다시 시도해 주세요."
-
-#. Helper text under "Age range from your Apple or Google account" in the sensitive content settings.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "The Fluxer app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth."
-msgstr "iPhone, iPad 또는 Android용 Fluxer 앱이 이 연령대를 보냈어요. 18세 이상으로 확인되면 영국과 브라질에서 18+ 콘텐츠를 볼 수 있어요. 생년월일은 바뀌지 않아요."
-
-#. Setup wizard body explaining the push relay.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "The Fluxer apps for iOS and Android get notifications through a push relay that Fluxer runs, which passes them to Apple and Google. To use it, you accept the push relay privacy notice."
-msgstr "iOS 및 Android용 Fluxer 앱은 Fluxer가 운영하는 푸시 릴레이를 통해 알림을 받으며, 릴레이가 이를 Apple과 Google에 전달합니다. 사용하려면 푸시 릴레이 개인정보 고지에 동의해야 합니다."
-
-#. Where the logo branding image appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "The large image next to the sign-in form, which is always dark. On a phone it only shows next to the name, when there is no wordmark and the product name is not Fluxer. Use a square or wide PNG or SVG in light colors with a transparent background, at least 256 pixels tall and up to {size}."
-msgstr "항상 어두운 로그인 양식 옆에 표시되는 큰 이미지입니다. 휴대폰에서는 워드마크가 없고 제품 이름이 Fluxer가 아닐 때만 이름 옆에 표시됩니다. 배경이 투명하고 밝은 색상으로 된 정사각형 또는 가로로 긴 PNG 또는 SVG를 사용하세요. 높이는 256픽셀 이상, 크기는 최대 {size}까지 가능합니다."
-
-#. Caption under the phone preview in the setup wizard branding step.
-#: src/features/app/components/setup/SetupBrandingPreview.tsx
-msgid "The sign-in page on a phone, in a mobile browser or the Fluxer mobile app."
-msgstr "휴대폰의 모바일 브라우저 또는 Fluxer 모바일 앱에서 보이는 로그인 페이지입니다."
-
-#. Shown above the list of CSS attributes in the "Reference" tab of the quick CSS editor.
-#: src/features/theme_settings/components/QuickCssReference.tsx
-msgid "These attributes don't change between Fluxer updates."
-msgstr "이 속성들은 Fluxer 업데이트에도 변하지 않아요."
-
-#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape.
-#: src/features/guild/components/modals/add_guild_modal/shared.ts
-msgid "This {theOtherPlatform} template couldn't be read. It may use a format Fluxer doesn't support yet."
-msgstr "이 {theOtherPlatform} 템플릿을 읽을 수 없습니다. Fluxer에서 아직 지원하지 않는 형식일 수 있습니다."
-
-#. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
-#: src/features/platform/hooks/useAppStorageDegradedNotice.ts
-msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
-msgstr "이 브라우저에서는 Fluxer 데이터를 저장할 수 없습니다. 브라우저를 닫은 후에는 다시 로그인해야 합니다."
-
-#. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "This class name changes with every Fluxer update. Use a [data-flx] selector."
-msgstr "이 클래스 이름은 Fluxer 업데이트마다 바뀌어요. [data-flx] 셀렉터를 사용하세요."
-
-#. Setup wizard explanation of why the sign-in method is fixed: the instance is older than username sign-in.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "This instance was upgraded from a version of Fluxer that used email sign-in, so it stays on email."
-msgstr "이 인스턴스는 이메일 로그인을 사용하던 Fluxer 버전에서 업그레이드되어 이메일 방식을 유지합니다."
-
-#. Body of the first setup wizard screen. An instance is one installation of Fluxer run by the person reading this.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "This sets up your instance, the copy of Fluxer you installed, and creates your account on it. It takes about five minutes. You can change most choices later in the admin panel, and a screen tells you when you can't."
-msgstr "설치한 Fluxer 사본인 인스턴스를 설정하고 그 안에 내 계정을 만듭니다. 5분 정도 걸립니다. 대부분의 선택은 나중에 관리자 패널에서 바꿀 수 있으며, 바꿀 수 없는 항목은 화면에서 알려 드립니다."
-
-#. Accessible label for the official Fluxer instance option.
-#: src/features/auth/flow/instance_selector/InstancePickerRows.tsx
-msgid "Use the official Fluxer instance"
-msgstr "공식 Fluxer 인스턴스 사용"
-
-#. Hint under the checkbox "Welcome me in #operators" in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Turn on your pass means the button in that dialog that switches the pass on, nothing is bought. Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
-#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
-msgid "We add you to Fluxer Labs when you turn on your pass, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
-msgstr "패스를 켜면 Fluxer Labs에 추가해 드려요. 단, 전에 Fluxer Labs에서 나갔거나 내보내진 적이 있다면 추가하지 않아요. 이 옵션을 켜 두면 곧이어 #operators에서 이름을 불러 환영해 드려요."
-
-#. Hint under the checkbox or switch "Welcome me in #operators". Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
-#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
-msgid "We add you to Fluxer Labs when your pass is delivered, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
-msgstr "패스가 전달되면 Fluxer Labs에 추가해 드려요. 단, 전에 Fluxer Labs에서 나갔거나 내보내진 적이 있다면 추가하지 않아요. 이 옵션을 켜 두면 곧이어 #operators에서 이름을 불러 환영해 드려요."
-
-#. Error shown when deleting the stored age range fails.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "We couldn't remove your age range. Please try again."
-msgstr "연령대를 삭제하지 못했어요. 다시 시도해 주세요."
-
-#. Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with Fluxer."
-msgstr "연령대, 이를 받은 시간, 회원님의 Apple 기기용 App Attest 키를 삭제해요. 영국과 브라질에서는 앱이 연령대를 다시 보낼 때까지 18+ 콘텐츠를 볼 수 없어요. Apple 또는 Google 계정이 계속 Fluxer와 연령대를 공유하면 앱이 나중에 다시 보낼 수 있어요."
-
-#. Setup wizard option that accepts the push relay privacy notice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "Yes, use the push relay"
-msgstr "예, 푸시 릴레이 사용"
-
-#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
-msgid "You already have the most connections an account can have. Remove one and try again."
-msgstr "계정 하나에 둘 수 있는 연결 수가 이미 최대입니다. 하나를 삭제하고 다시 시도해 주세요."
-
-#. Nagbar body telling people that the Fluxer app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep Fluxer and Android untranslated. Keep the tone calm and plain.
-#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
-msgid "You can get the Fluxer app for Android on {googlePlay} and chat from your phone."
-msgstr "{googlePlay}에서 Android용 Fluxer 앱을 다운로드하면 휴대폰에서도 채팅할 수 있습니다."
-
-#. Error when you try to pass an Operator Pass on to someone you are not friends with.
-#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
-msgid "You can only pass this on to one of your friends on Fluxer."
-msgstr "Fluxer 친구에게만 전달할 수 있습니다."
-
-#. Report flow: note on the summary screen when the reporter already reported this community.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "You've already reported this community."
-msgstr "이미 이 커뮤니티를 신고했습니다."
-
-#. Description under the "Share audio" switch in the web stream setup modal. The browser picker owns the final audio choice.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Your browser lets you choose whether to include audio when you pick what to share."
-msgstr "공유할 항목을 고를 때 브라우저에서 오디오를 포함할지 선택할 수 있어요."
-
-#. Footer summary under the preset name in the web stream setup modal when the Source resolution is picked. {fps} is a whole number of frames per second, and FPS is a technical token.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Your screen's resolution at {fps} FPS"
-msgstr "화면 해상도, {fps} FPS"

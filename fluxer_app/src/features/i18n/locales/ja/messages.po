@@ -2190,6 +2190,10 @@ msgstr "{productName}は起動中はアップデートされません。アッ�
 msgid "{productName} wordmark"
 msgstr "{productName}のワードマーク"
 
+#: src/features/connection/components/modals/AddConnectionModal.tsx
+msgid "{providerName} opens in your browser. Sign in there to connect your account."
+msgstr "ブラウザで{providerName}が開きます。そこでサインインしてアカウントを連携してください。"
+
 #. Reaction tooltip. Preserve {emojiName}, {reactors}; they are inserted by code. {reactorCount} is how many people reacted, for verb agreement. Order the parts so the emoji never reads as the one doing the reacting.
 #: src/features/messaging/utils/ReactionUtils.ts
 msgid "{reactorCount, plural, one {{emojiName} reacted by {reactors}} other {{emojiName} reacted by {reactors}}}"
@@ -2239,6 +2243,11 @@ msgstr "{requestedLabel} を開始できませんでした。代わりに {effec
 #: src/features/voice/components/StreamInfoPill.tsx
 msgid "{resolution} {fps} FPS"
 msgstr "{resolution} {fps} FPS"
+
+#. Footer summary under the preset name in the web stream setup modal. {resolution} is a technical token like 1080p. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "{resolution} at {fps} FPS"
+msgstr "{resolution}、{fps} FPS"
 
 #. Short label in the channel display name state. Keep it concise. Preserve {resolvedName}; it is inserted by code.
 #: src/features/channel/state/ChannelDisplayName.ts
@@ -3344,10 +3353,10 @@ msgstr "この行の最後に「;」を追加してください。"
 msgid "Add \":\" between the property and its value."
 msgstr "プロパティと値の間に「:」を追加してください。"
 
-#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {blueskyProviderName}; it is inserted by code.
+#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {providerName}; it is the provider name, inserted by code.
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Add {blueskyProviderName} connection"
-msgstr "{blueskyProviderName}連携を追加"
+msgid "Add {providerName} connection"
+msgstr "{providerName}連携を追加"
 
 #. OAuth scope description shown on the consent screen for the bot scope.
 #: src/features/app/constants/AppConstants.ts
@@ -4132,6 +4141,11 @@ msgstr "サインイン後に、もう一度操作をお試しください。"
 msgid "After your account is deleted, you will not be able to delete the messages you sent"
 msgstr "アカウント削除後、送信済みのメッセージを削除することはできません"
 
+#. Label in the sensitive content settings, shown when the echowire app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Age range from your Apple or Google account"
+msgstr "Apple または Google アカウントの年齢層"
+
 #. US state name, shown next to the country name in the mature content gate.
 #: src/features/user/utils/UserGeo.ts
 msgctxt "us-state"
@@ -4747,6 +4761,11 @@ msgstr "アップロードされた動画ファイル"
 #: src/features/guild/components/modals/GuildOwnershipWarningModal.tsx
 msgid "and {remainingCount} more"
 msgstr "他{remainingCount}件"
+
+#. Developer / debug surface — keep terse and technical. Label in the developer Nagbar controls panel for the Android app on Google Play banner.
+#: src/features/devtools/components/NagbarControls.ts
+msgid "Android app nagbar"
+msgstr "Androidアプリナグバー"
 
 #. Short label in the animation tab. Keep it concise.
 #: src/features/user/components/modals/tabs/accessibility_tab/AnimationTab.tsx
@@ -9533,6 +9552,11 @@ msgstr "コミュニティを更新しました"
 msgid "Community voice"
 msgstr "コミュニティボイス"
 
+#. Report flow: section heading above the card of the community being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Community you're reporting"
+msgstr "報告するコミュニティ"
+
 #. Permission category for permissions that affect the whole community.
 #: src/features/permissions/utils/PermissionLabelDescriptors.ts
 msgid "Community-wide"
@@ -11336,10 +11360,10 @@ msgstr "確認メールを送信できませんでした"
 msgid "Couldn't sign you in"
 msgstr "サインインできませんでした"
 
-#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {blueskyProviderName}; it is inserted by code and must appear verbatim in the translation.
+#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {providerName}; it is the provider name, inserted by code, and must appear verbatim in the translation.
 #: src/features/connection/commands/ConnectionCommands.ts
-msgid "Couldn't start {blueskyProviderName} authorization"
-msgstr "{blueskyProviderName}の認証を開始できませんでした"
+msgid "Couldn't start {providerName} authorization"
+msgstr "{providerName}の認証を開始できませんでした"
 
 #. Title of the generic fallback error modal shown when creating a checkout session fails unexpectedly.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx
@@ -17312,9 +17336,11 @@ msgid "Frame"
 msgstr "ウィンドウ枠"
 
 #. Section header in the stream settings menu for frame rate options.
+#. Section label in the web stream setup modal for the stream frame rate options, in frames per second.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/modals/tabs/UserVideoTab.tsx
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Frame rate"
 msgstr "フレームレート"
@@ -17789,6 +17815,11 @@ msgstr "プロフィールごとにコミュニティを分けられるほか、
 #: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
 msgid "Get another pass"
 msgstr "Operator Passを追加で取得"
+
+#. Button in the Android app nagbar that opens the echowire listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "Get it on {googlePlay}"
+msgstr "{googlePlay}で手に入れよう"
 
 #. Secondary Plutonium page button that starts a monthly subscription checkout.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -21454,8 +21485,8 @@ msgid "Link warnings"
 msgstr "リンクの警告"
 
 #: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Link your {BLUESKY_PROVIDER_NAME} account or verify domain ownership to display them on your profile."
-msgstr "プロフィールに表示するには、{BLUESKY_PROVIDER_NAME}アカウントをリンクするか、ドメイン所有権を確認してください。"
+msgid "Link your accounts or verify domain ownership to display them on your profile."
+msgstr "プロフィールに表示するには、アカウントをリンクするか、ドメイン所有権を確認してください。"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/LinkedAccountsIndex.ts
@@ -24638,6 +24669,11 @@ msgstr "参照されているローカルファイルはありません"
 msgid "No logs yet"
 msgstr "まだログがありません"
 
+#. Label for a linked account whose provider this instance removed or turned off. The account is hidden from the profile.
+#: src/features/connection/components/ConnectionIcon.tsx
+msgid "No longer available"
+msgstr "利用できなくなりました"
+
 #: src/features/app/components/dialogs/shared/AddOverridePopout.tsx
 msgid "No matches"
 msgstr "一致なし"
@@ -27119,6 +27155,11 @@ msgstr "ユーザーは自分のコミュニティを作成し、好きなだけ
 msgid "People can only talk in communities."
 msgstr "ユーザーはコミュニティの中でのみ会話できます。"
 
+#. Description under the "Share a preview image" switch in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "People can see a still image of what you share before they start watching."
+msgstr "視聴を始める前に、共有している内容の静止画をほかの人が見られます。"
+
 #. Description of allowing direct messages in the setup wizard.
 #: src/features/app/components/setup/SetupPolicySteps.tsx
 msgid "People can send friend requests and direct messages."
@@ -27307,6 +27348,11 @@ msgstr "権限"
 #: src/features/user/components/modals/tabs/AuthorizedAppsTab.tsx
 msgid "Permissions for {0}"
 msgstr "{0}の権限"
+
+#. Report flow: section heading above the card of the person being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Person you're reporting"
+msgstr "報告する相手"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/utils/UserMessageDescriptors.ts
@@ -27926,6 +27972,11 @@ msgstr "準備中"
 msgid "Presence"
 msgstr "プレゼンス"
 
+#. Section label in the web stream setup modal. Picks the Gaming preset (motion), the Screen share preset (sharp text) or custom numbers.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Preset"
+msgstr "プリセット"
+
 #. Shown in the "Quick CSS" section in Settings > Themes. {shortcut} is a keyboard shortcut such as Ctrl+Alt+Shift+T.
 #: src/features/theme_settings/components/QuickCssSection.tsx
 msgid "Press {shortcut} anywhere in the app to open the editor."
@@ -28326,11 +28377,6 @@ msgstr "プロフィールタイプ"
 #: src/features/user/components/modals/tabs/MyProfileTab.tsx
 msgid "Profile updated"
 msgstr "プロフィールを更新しました"
-
-#. Report flow: section heading above the card of the user whose profile is being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Profile you're reporting"
-msgstr "報告するプロフィール"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/ChatSettingsIndex.ts
@@ -29309,6 +29355,7 @@ msgstr "ウィンドウのサイズと位置を記憶する"
 #. Button or menu action label in the channel and chat message reactions sheet. Keep it concise. Keep the tone plain and specific.
 #. Button that clears the default reaction or deletes a tag in forum settings.
 #. Button that removes a branding image in the setup wizard.
+#. Confirm button in the dialog that deletes the stored age range.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #. Short label in the shared app saved message missing card. Keep the tone plain and specific.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -29323,6 +29370,7 @@ msgstr "ウィンドウのサイズと位置を記憶する"
 #: src/features/guild/components/modals/guild_tabs/GuildVanityURLTab.tsx
 #: src/features/ui/action_menu/GroupDMContextMenu.tsx
 #: src/features/ui/action_menu/UserContextMenu.tsx
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 #: src/features/webhook/components/WebhookListItem.tsx
 msgid "Remove"
@@ -29359,6 +29407,11 @@ msgstr "{userName}をグループから削除しますか？"
 #: src/features/relationship/utils/RelationshipActionUtils.tsx
 msgid "Remove {userName} from your friends?"
 msgstr "{userName}さんを友達から削除しますか？"
+
+#. Button in the sensitive content settings that opens a confirmation to delete the stored age range.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove age range"
+msgstr "年齢層を削除"
 
 #. Confirm button label on the remove-all-reactions alert. Destructive.
 #: src/features/channel/components/MessageActionUtils.tsx
@@ -29566,6 +29619,11 @@ msgstr "翻訳ツールを削除"
 #: src/features/user/components/modals/tabs/my_profile_tab/ProfileBadgeSettings.tsx
 msgid "Remove when you first bought {premiumProductName} from your badge"
 msgstr "バッジから{premiumProductName}の購入日を削除"
+
+#. Title of the confirmation shown before deleting the age range from an Apple or Google account.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove your age range?"
+msgstr "年齢層を削除しますか？"
 
 #. Status badge for the application to Explore, shown in the "Explore" tab in community settings. The community was removed from Explore.
 #: src/features/guild/components/modals/guild_tabs/GuildDiscoveryTab.tsx
@@ -29936,6 +29994,11 @@ msgstr "{replyAuthorName}への返信で、{authorName}さんが次のように�
 msgid "Replying to <0>{authorNickname}</0>"
 msgstr "<0>{authorNickname}</0>に返信中"
 
+#. Voice and call participant menu action that reports this person to the safety team, for example for something they said or showed in the call.
+#: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx
+msgid "Report"
+msgstr "報告"
+
 #. Report flow target option. Selects reporting an entire community (server). Use the localized term for community, not server.
 #: src/features/moderation/components/report/OptionDescriptors.ts
 msgid "Report a community"
@@ -29950,6 +30013,11 @@ msgstr "メッセージを報告"
 #: src/features/moderation/components/report/OptionDescriptors.ts
 msgid "Report a user profile"
 msgstr "ユーザープロフィールを報告"
+
+#. Action label in community menus, on invites and in Explore, and the title of the report window it opens. Reports a whole community to the safety team.
+#: src/features/moderation/utils/ModerationMessageDescriptors.ts
+msgid "Report community"
+msgstr "コミュニティを報告"
 
 #: src/features/moderation/components/report/ReportStepDetails.tsx
 msgid "Report details"
@@ -29971,7 +30039,12 @@ msgstr "問題を報告"
 msgid "Report message"
 msgstr "メッセージを報告"
 
-#. Action label in the full user profile's overflow menu, and the title of the report window it opens. Reports the user's profile: their photo, name or bio.
+#. Action in a forum post's menu. Reports the post's opening message to the safety team. A post is a topic thread in a forum channel.
+#: src/features/forum/utils/ForumMessageDescriptors.ts
+msgid "Report post"
+msgstr "投稿を報告"
+
+#. Action label in user right-click menus and the full user profile's overflow menu, and the title of the report window it opens. Reports the user's profile: their photo, name or bio.
 #: src/features/moderation/utils/ModerationMessageDescriptors.ts
 msgid "Report profile"
 msgstr "プロフィールを報告"
@@ -30485,8 +30558,10 @@ msgid "Resizing, maximizing, and window snapping depend on the compositor. Wayla
 msgstr "ウィンドウのリサイズ、最大化、スナップはコンポジターに依存します。クライアントサイドの装飾がないWaylandでは、ハンドルが提供されない場合があります。ウィンドウが動かなくなった場合は、--ozone-platform=x11で起動してください。"
 
 #. Section header in the stream settings menu for resolution options.
+#. Section label in the web stream setup modal for the stream resolution options.
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/VoiceVideoSections.ts
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
 msgid "Resolution"
 msgstr "解像度"
@@ -32922,6 +32997,11 @@ msgstr "複数人が入力中…"
 msgid "Share"
 msgstr "共有"
 
+#. Switch label in the web stream setup modal. When on, Fluxer uploads a still image of the stream so people can see it before watching.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share a preview image"
+msgstr "プレビュー画像を共有"
+
 #. Button or menu action label in the buttons tab. Keep it concise.
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Share action."
@@ -32931,6 +33011,11 @@ msgstr "共有アクション。"
 #: src/features/user/components/settings_utils/section_registry/ThemesSections.ts
 msgid "Share and back up"
 msgstr "共有とバックアップ"
+
+#. Switch label in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share audio"
+msgstr "音声を共有"
 
 #. Plutonium page perk card body about upload size. freeSize is a formatted size such as 25 MB.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -32981,7 +33066,9 @@ msgstr "チームが評価するために必要な情報を共有してくださ
 msgid "Share with a friend"
 msgstr "友達に共有"
 
+#. Title of the modal shown on web before the browser screen picker opens. The user picks stream quality here first.
 #. Voice control button or tooltip label for starting screen sharing.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
 #: src/features/voice/utils/VoiceMessageDescriptors.ts
 msgid "Share your screen"
 msgstr "画面を共有"
@@ -33031,8 +33118,8 @@ msgstr "720pでシャープ、最大30FPS"
 
 #. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
 #: src/features/voice/components/StreamSettingsMenuContent.tsx
-msgid "Sharp text at up to 4K, up to 15 FPS"
-msgstr "最大4K、最大15 FPSで鮮明なテキスト"
+msgid "Sharp text at up to 1080p, 30 FPS"
+msgstr "最大1080pでシャープなテキスト、30 FPS"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -33466,8 +33553,11 @@ msgstr "ミュート中のチャンネルを表示"
 msgid "Show my own camera"
 msgstr "自分のカメラを表示"
 
+#. Toggle label in the mobile video settings bottom sheet. Controls whether the local screen share tile is in the call view.
 #. Voice display preference checkbox that controls whether the current user sees their own screen share tile.
 #: src/features/ui/action_menu/items/voice_participant_menu_data/shared.ts
+#: src/features/voice/components/bottomsheets/VoiceSettingsBottomSheets.tsx
+#: src/features/voice/components/VoiceSettingsMenus.tsx
 msgid "Show my screen share"
 msgstr "自分の画面共有を表示"
 
@@ -34066,7 +34156,7 @@ msgid "Skip this step"
 msgstr "この手順をスキップ"
 
 #. Accessible skip-link label for keyboard users.
-#: src/app/App.tsx
+#: src/app/SkipToContentLink.tsx
 msgid "Skip to content"
 msgstr "コンテンツにスキップ"
 
@@ -34956,6 +35046,11 @@ msgstr "録音を開始"
 msgid "Start searches with <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> to narrow down results."
 msgstr "検索の先頭に <0>{peoplePrefix}</0> <1>{textChannelPrefix}</1> <2>{voiceChannelPrefix}</2> <3>{communityPrefix}</3> を付けると、結果を絞り込めます。"
 
+#. Primary button in the web stream setup modal. Opens the browser's screen picker and starts sharing.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Start sharing"
+msgstr "共有を開始"
+
 #. Native macOS Edit > Speech submenu item that starts reading the selected text aloud. Imperative verb.
 #: src/features/platform/utils/DesktopLocaleBridge.ts
 msgid "Start speaking"
@@ -35424,11 +35519,6 @@ msgstr "ストリームをバッファリング中"
 #: src/features/voice/components/voice_participant_tile/shared.ts
 msgid "Stream ended"
 msgstr "配信が終了しました"
-
-#. Overlay text on a participant tile when the local user hid the remote screen share.
-#: src/features/voice/components/voice_participant_tile/shared.ts
-msgid "Stream hidden"
-msgstr "ストリームを非表示にしました"
 
 #. Plutonium page perk card title about stream quality.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -36487,6 +36577,11 @@ msgstr "データの取り扱いについては<0>プライバシーポリシー
 msgid "The <0>privacy policy</0> explains how we handle your data."
 msgstr "データの取り扱いについては<0>プライバシーポリシー</0>で説明しています。"
 
+#. Report flow: body of the final screen after a report was sent, on a self-hosted instance whose own administrators handle reports. The second sentence promises the reported person is not told who reported them.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "The administrators of this instance will review your report. We won't reveal that it came from you."
+msgstr "このインスタンスの管理者があなたの報告を確認します。あなたからの報告であることは明かしません。"
+
 #. Error shown when the setup wizard cannot load because the API origin differs from the page origin.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx
 msgid "The API is on a different origin than this page, so setup requests are sent without your session. Check the public origin and port this instance is configured with, then reload."
@@ -36547,6 +36642,10 @@ msgstr "このコミュニティではクローン作成が無効になってい
 msgid "The community you're looking for may have been deleted or you may not have access to it."
 msgstr "お探しのコミュニティは削除されたか、アクセス権がない可能性があります。"
 
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "The connection was not allowed. You can close this tab and try again."
+msgstr "連携が許可されませんでした。このタブを閉じて、もう一度お試しください。"
+
 #. Body of the confirmation dialog before replacing the private link to an Operator certificate page. The certificate is a PDF, and each page has a number and the date and time of payment. The new copy of the page has the new link printed on it.
 #: src/features/premium/components/operator_pass/OperatorPassPurchasesSection.tsx
 msgid "The current link stops working right away, for you and for anyone you've shared it with. We make a new copy of this page with the new link printed on it, with the same number and date."
@@ -36556,6 +36655,11 @@ msgstr "現在のリンクは、あなたにとっても共有した相手にと
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "The desktop update could not be downloaded. Try again from the update button when your connection is stable."
 msgstr "デスクトップのアップデートをダウンロードできませんでした。インターネット接続が安定していることを確認し、アップデートボタンからもう一度お試しください。"
+
+#. Helper text under "Age range from your Apple or Google account" in the sensitive content settings.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "The echowire app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth."
+msgstr "この年齢層は、iPhone、iPad、Android 向けの echowire アプリから送信されました。18 歳以上であることを示している場合、英国とブラジルで 18+ コンテンツを見られます。生年月日は変更されません。"
 
 #. Activity log detail line under a deleted emoji, shown only when someone other than the person who deleted it had uploaded it. {user} is the user who uploaded the emoji, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogExpressionMessageMessages.ts
@@ -42185,10 +42289,20 @@ msgstr "CSSファイルを読み込めませんでした。"
 msgid "We couldn't read this theme. It may be corrupted or invalid."
 msgstr "このテーマは読み込めませんでした。破損しているか、無効なファイル形式の可能性があります。"
 
+#. Error shown when deleting the stored age range fails.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We couldn't remove your age range. Please try again."
+msgstr "年齢層を削除できませんでした。もう一度お試しください。"
+
 #. Error message after saving a theme failed in Settings > Themes or the quick CSS editor window.
 #: src/features/theme_settings/utils/ThemeSettingsErrorModal.ts
 msgid "We couldn't save that theme."
 msgstr "テーマを保存できませんでした。"
+
+#. Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with echowire."
+msgstr "年齢層、それを受け取った日時、お使いの Apple デバイスの App Attest キーを削除します。英国とブラジルでは、アプリが再び年齢層を送信するまで 18+ コンテンツを見られません。Apple または Google アカウントが引き続き echowire と年齢層を共有している場合、アプリが後で再度送信することがあります。"
 
 #. Modal body for existing-subscription block. Directs the user to the billing portal and addresses the just-paid race case. Keep plain and reassuring.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCheckoutActions.tsx
@@ -43128,6 +43242,10 @@ msgstr "これらのユーザーを含むグループがすでに存在します
 msgid "You already have lifetime {premiumProductName}"
 msgstr "すでに永久版の{premiumProductName}をお持ちです"
 
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "You already have the most connections an account can have. Remove one and try again."
+msgstr "1つのアカウントで持てる連携の上限に達しています。1つ削除してから、もう一度お試しください。"
+
 #. Body text in the connection add connection modal.
 #: src/features/connection/components/modals/AddConnectionModal.tsx
 msgid "You already have this connection."
@@ -43242,6 +43360,11 @@ msgstr "{date}まで全額払い戻しを受けることができます。"
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
 msgid "You can get a full refund until {date}. This also ends your subscription right away."
 msgstr "{date}まで全額払い戻しを受けることができます。これによりサブスクリプションも即時終了します。"
+
+#. Nagbar body telling people that the echowire app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep echowire and Android untranslated. Keep the tone calm and plain.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "You can get the echowire app for Android on {googlePlay} and chat from your phone."
+msgstr "{googlePlay}からAndroid版echowireアプリをダウンロードすると、スマートフォンでもチャットできます。"
 
 #. Line under "Full refund" in the Payments settings. {amount} is the price paid, with currency, and {date} is the last day of the refund window, such as Nov 2, 2026. Both are filled in by code.
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx
@@ -44098,6 +44221,11 @@ msgstr "過去のメッセージを表示しています"
 msgid "You've added more people than a group DM allows. Remove a few and try again."
 msgstr "グループDMの参加人数上限を超えています。数人を削除してから、もう一度お試しください。"
 
+#. Report flow: note on the summary screen when the reporter already reported this community.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "You've already reported this community."
+msgstr "このコミュニティはすでに報告済みです。"
+
 #. Report flow: note on the summary screen when the reporter already reported this message.
 #: src/features/moderation/components/report_flow/ReportFlowCopy.ts
 msgid "You've already reported this message."
@@ -44301,6 +44429,11 @@ msgstr "ブラウザがパスキーをブロックしました。このページ
 #: src/features/auth/utils/PasskeyErrorMessages.ts
 msgid "Your browser blocked the passkey because this page is not on {rpId}, the passkey domain of this instance. Ask the instance owner to check the passkey domain setting."
 msgstr "ブラウザがこのページをブロックしました。このページは、このインスタンスのパスキー ドメインである {rpId} に属していません。インスタンスの所有者にパスキー ドメインの設定を確認するように依頼してください。"
+
+#. Description under the "Share audio" switch in the web stream setup modal. The browser picker owns the final audio choice.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your browser lets you choose whether to include audio when you pick what to share."
+msgstr "共有する内容を選ぶときに、音声を含めるかどうかをブラウザで選べます。"
 
 #. Body of the browser-audio-required modal explaining why the user must click before audio can play.
 #: src/features/voice/components/modals/AudioPlaybackPermissionModal.tsx
@@ -44714,6 +44847,11 @@ msgctxt "screen-share"
 msgid "Your screen share could not be published with a compatible video codec, so it was stopped. Try sharing again."
 msgstr "互換性のあるビデオコーデックで画面共有を公開できなかったため、停止しました。もう一度共有してみてください。"
 
+#. Footer summary under the preset name in the web stream setup modal when the Source resolution is picked. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your screen's resolution at {fps} FPS"
+msgstr "画面の解像度、{fps} FPS"
+
 #. Alert on the setup token screen when the token was refused while creating the account.
 #: src/features/app/components/setup/SelfHostedSetupWizardGate.tsx
 msgid "Your setup token stopped working. Enter it again."
@@ -44886,478 +45024,3 @@ msgstr "拡大"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
 msgid "Zoom out"
 msgstr "縮小"
-
-#. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "--{name} isn't a Fluxer variable and isn't set anywhere in your CSS."
-msgstr "--{name} はFluxerの変数ではなく、CSS内で設定されていません。"
-
-#. Instance selector error shown when the instance speaks a protocol generation this client does not know. Domain is interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "{domain} runs a newer version of Fluxer than this app. Update Fluxer, then try again."
-msgstr "{domain} はこのアプリより新しいバージョンの Fluxer を実行しています。Fluxer をアップデートしてから、もう一度お試しください。"
-
-#: src/features/connection/components/modals/AddConnectionModal.tsx
-msgid "{providerName} opens in your browser. Sign in there to connect your account."
-msgstr "ブラウザで{providerName}が開きます。そこでサインインしてアカウントを連携してください。"
-
-#. Footer summary under the preset name in the web stream setup modal. {resolution} is a technical token like 1080p. {fps} is a whole number of frames per second, and FPS is a technical token.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "{resolution} at {fps} FPS"
-msgstr "{resolution}、{fps} FPS"
-
-#. Heading of a slide in the Operator Pass checkout dialog about the #operators channel. #operators is the channel's literal name and Fluxer Labs is the name of the official community, keep both unchanged. No trailing punctuation.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "#operators in Fluxer Labs"
-msgstr "Fluxer Labsの#operators"
-
-#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {providerName}; it is the provider name, inserted by code.
-#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Add {providerName} connection"
-msgstr "{providerName}連携を追加"
-
-#. Label in the sensitive content settings, shown when the Fluxer app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Age range from your Apple or Google account"
-msgstr "Apple または Google アカウントの年齢層"
-
-#. Developer / debug surface — keep terse and technical. Label in the developer Nagbar controls panel for the Android app on Google Play banner.
-#: src/features/devtools/components/NagbarControls.ts
-msgid "Android app nagbar"
-msgstr "Androidアプリナグバー"
-
-#. Help text under the theme color picker in the setup wizard branding step.
-#: src/features/app/components/setup/SetupBrandingFields.tsx
-msgid "Buttons, links and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to keep Fluxer's indigo."
-msgstr "アプリ全体のボタン、リンク、ハイライトにこの色が使われます。スマートフォンのブラウザでは、ツールバーの色にも使われます。リセットすると、Fluxerのインディゴのままになります。"
-
-#. Completion in the quick CSS editor that inserts a :root rule, where theme variables are set.
-#: src/features/theme_settings/editor/CssCompletions.ts
-msgid "Change Fluxer variables"
-msgstr "Fluxer変数を変更"
-
-#. Report flow: section heading above the card of the community being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Community you're reporting"
-msgstr "報告するコミュニティ"
-
-#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online."
-msgstr "{domain} の Fluxer インスタンスに接続できませんでした。アドレスを確認し、インスタンスがオンラインであることを確認してください。"
-
-#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {providerName}; it is the provider name, inserted by code, and must appear verbatim in the translation.
-#: src/features/connection/commands/ConnectionCommands.ts
-msgid "Couldn't start {providerName} authorization"
-msgstr "{providerName}の認証を開始できませんでした"
-
-#. Link under the Weblate line in the language settings. It opens a help article on fluxer.com about suggesting a new language and helping translate the app. Keep it a short question.
-#: src/features/user/components/modals/tabs/LanguageTab.tsx
-msgid "Don't see your language?"
-msgstr "お使いの言語が見つかりませんか？"
-
-#. Description under the switch that adds the Operators' wall name to the yearly Operators list. A Fluxer release is a published version of the app. Operators are the people who have an Operator Pass, keep the word Operators in English.
-#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
-msgid "Each yearly list of Operators that we publish goes into the notes of a Fluxer release and a file in its source code. Your wall name is only on it if you turn this on. If you ask us to remove it later, we take it out of future lists, the release notes and that file, but earlier versions of the source code and copies others made can't be recalled."
-msgstr "私たちが公開する年間Operatorsリストは、毎回Fluxerのリリースノートとソースコードのファイルに掲載されます。このオプションをオンにした場合のみ、ウォールの名前がリストに載ります。後から削除を依頼された場合、今後のリスト、リリースノート、そのファイルから削除しますが、ソースコードの過去のバージョンや他の人が作成したコピーは回収できません。"
-
-#. Bullet point in the P2P call dialog. Plutonium is the name of the paid subscription and must not be translated. 4K and fps are video terms.
-#: src/features/voice/utils/VoiceMessageDescriptors.ts
-msgid "Everyone in the call gets Plutonium stream quality for free, with up to 4K source resolution and 60 fps."
-msgstr "通話中の全員が無料でPlutoniumストリーム品質を利用できます：最大4Kソース解像度、60fps。"
-
-#. Description of the shared usernames option in the setup wizard. Keep the example alex#4821 as it is.
-#: src/features/app/components/setup/SetupIdentitySteps.tsx
-msgid "Fluxer adds a random number to each username, like alex#4821, so many people can use the same name."
-msgstr "Fluxerは各ユーザー名にalex#4821のようなランダムな番号を付けるので、多くの人が同じ名前を使えます。"
-
-#. Problem shown in the quick CSS editor on a web address that the app is not allowed to load. Assets are files uploaded under "Assets".
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer blocked loading {url}. Upload it as an asset."
-msgstr "Fluxerは{url}の読み込みをブロックしました。アセットとしてアップロードしてください。"
-
-#. Problem shown in the quick CSS editor on an image address on a site the person has not trusted. Assets are files uploaded under "Assets". Trusting a site lets quick CSS and themes load images from it.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer blocked loading {url}. Upload the file as an asset, or trust the site it's on."
-msgstr "Fluxerは{url}の読み込みをブロックしました。ファイルをアセットとしてアップロードするか、ファイルがあるサイトを信頼してください。"
-
-#. Problem shown in the quick CSS editor on a reference to an uploaded theme asset that does not exist.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer can't find the asset \"{name}\"."
-msgstr "Fluxerはアセット「{name}」が見つかりません。"
-
-#. Problem shown in the quick CSS editor on a reference to a file on the computer that Fluxer cannot read.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer can't find the file \"{path}\"."
-msgstr "Fluxerはファイル「{path}」が見つかりません。"
-
-#. Shown for a watched theme folder in Settings > Themes when the folder was moved, deleted or disconnected.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't find this folder. It will load the themes again when the folder is back."
-msgstr "Fluxerはこのフォルダーが見つかりません。フォルダーが戻ればテーマを再読み込みします。"
-
-#. Shown for a watched theme folder in Settings > Themes when the desktop app no longer has permission to read it.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't open this folder. Import it again to keep watching it."
-msgstr "Fluxerはこのフォルダーを開けません。もう一度インポートして監視を続けてください。"
-
-#. Error toast in "Your themes" when the chosen theme folder cannot be opened.
-#: src/features/theme_settings/components/YourThemesSection.tsx
-msgid "Fluxer can't read this folder."
-msgstr "Fluxerはこのフォルダーを読み込めません。"
-
-#. Problem shown at the top of the quick CSS editor when the whole sheet was left out.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "Fluxer couldn't apply this CSS. Check it for a broken comment, string or bracket."
-msgstr "FluxerはこのCSSを適用できませんでした。コメント、文字列、括弧が壊れていないか確認してください。"
-
-#. Alert when the SMTP check fails and the mail server sent no reply. host is the mail server address.
-#: src/features/app/components/setup/SetupEmailSteps.tsx
-msgid "Fluxer couldn't connect to {host}."
-msgstr "Fluxerは{host}に接続できませんでした。"
-
-#. Alert when the SMTP check fails. host is the mail server address and error is its reply.
-#: src/features/app/components/setup/SetupEmailSteps.tsx
-msgid "Fluxer couldn't connect to {host}. The server said: \"{error}\""
-msgstr "Fluxerは{host}に接続できませんでした。サーバーの応答：「{error}」"
-
-#. Status shown in the desktop app when it stopped checking the browser sign-in because the instance could not be reached. instanceName is the server name, such as Fluxer. "Try again" is the label of the button below and must match its translation.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "Fluxer couldn't connect to {instanceName} to check whether your browser approved this sign-in. Check your connection, then select \"Try again\"."
-msgstr "ブラウザでこのサインインが承認されたか確認するために {instanceName} に接続できませんでした。接続を確認してから「再試行」を選択してください。"
-
-#. Name of the section in the Operator Pass settings tab about the Fluxer Labs community. Fluxer Labs is the name of a community, keep it as is.
-#: src/features/premium/utils/PremiumMessageDescriptors.ts
-msgid "Fluxer Labs"
-msgstr "Fluxer Labs"
-
-#. Status shown when browser sign-in status polling gives up after repeated failures.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "Fluxer stopped checking whether the browser approved this sign-in. It didn't lose your code."
-msgstr "Fluxer はブラウザでのサインイン承認の確認を停止しました。コードは失われていません。"
-
-#. Shown in the modal that applies a shared theme when the theme points at files the app will not load.
-#: src/features/theme/components/modals/ThemeAcceptModal.tsx
-msgid "Fluxer won't load {count, plural, one {# file} other {# files}} that this theme links to on other sites."
-msgstr "Fluxerは、このテーマがリンクしている他のサイト上の{count, plural, other {#個のファイル}}を読み込みません。"
-
-#. Button in the Android app nagbar that opens the Fluxer listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.
-#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
-msgid "Get it on {googlePlay}"
-msgstr "{googlePlay}で手に入れよう"
-
-#: src/features/user/components/modals/tabs/LanguageTab.tsx
-msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
-msgstr "<0>{I18N_WEBLATE_DOMAIN}</0>で{PRODUCT_NAME}をあなたの言語に翻訳するお手伝いをしてください。"
-
-#. Hint in the desktop app while it waits for the browser, for people with more than one Fluxer app installed. "Signing in on another device?" is the label of the button below and must match its translation.
-#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
-msgid "If the link opens a different Fluxer app, select \"Signing in on another device?\" and type the code in your browser instead."
-msgstr "リンクで別の Fluxer アプリが開いた場合は、「別のデバイスでサインインしていますか？」を選択し、代わりにブラウザでコードを入力してください。"
-
-#. Help on the setup token screen, followed by a terminal command. rexctl is a name that must not be translated.
-#: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "If you installed Fluxer with rexctl, it printed the token when it finished. Run this on your server to show it again."
-msgstr "Fluxer を rexctl でインストールした場合、完了時にトークンが表示されます。サーバーでこれを再度表示するには、以下を実行してください。"
-
-#. What the app shows when no wordmark is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the product name shows as plain text, or as the Fluxer wordmark while the product name is Fluxer."
-msgstr "空欄の場合、プロダクト名がテキストで表示されます。プロダクト名がFluxerの間は、Fluxerのワードマークが表示されます。"
-
-#. What the app shows when no logo is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the sign-in page uses your app icon or symbol. Without those, it shows the Fluxer logo while the product name is Fluxer, and no image for any other name."
-msgstr "空欄の場合、サインイン画面にはアプリアイコンかシンボルが表示されます。どちらもない場合、プロダクト名がFluxerならFluxerのロゴが表示され、それ以外の名前では画像は表示されません。"
-
-#. What the app shows when no favicon is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, the tab uses your app icon, or the Fluxer icon if that is empty too."
-msgstr "空欄の場合、タブにはアプリアイコンが表示され、それも空欄ならFluxerのアイコンが表示されます。"
-
-#. What the app shows when no app icon is set, in the setup wizard.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "If you leave it empty, those places show the Fluxer icon."
-msgstr "空欄の場合、これらの場所にはFluxerのアイコンが表示されます。"
-
-#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
-#: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "If you run Fluxer without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart Fluxer, and enter that value here."
-msgstr "rexctlを使わずにFluxerを起動する場合は、FLUXER_SETUP_TOKENに任意の32文字以上の値を設定し、Fluxerを再起動してからその値を入力してください。"
-
-#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
-msgid "Keep Neko still"
-msgstr "ネコを固定する"
-
-#. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
-msgid "Lets you open communities and channels marked 18+ in the Fluxer app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
-msgstr "iPhoneとiPad向けのFluxerアプリで、18歳以上向けに指定されたコミュニティやチャンネルを開いたり、センシティブなメディアで「表示」を選んだりできるようになります。この設定はウェブまたはデスクトップでのみ変更できます。"
-
-#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
-msgid "Link your accounts or verify domain ownership to display them on your profile."
-msgstr "プロフィールに表示するには、アカウントをリンクするか、ドメイン所有権を確認してください。"
-
-#. Button in the quick CSS editor window that moves the editor back into a panel inside the app.
-#: src/features/theme_settings/components/QuickCssWorkspace.tsx
-msgid "Move back into Fluxer"
-msgstr "Fluxer に戻す"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Neko cat that chases your cursor"
-msgstr "カーソルを追いかける猫"
-
-#. Label for a linked account whose provider this instance removed or turned off. The account is hidden from the profile.
-#: src/features/connection/components/ConnectionIcon.tsx
-msgid "No longer available"
-msgstr "利用できなくなりました"
-
-#. Warning in Settings > Themes and in the modal that applies a shared theme. Trusting a site lets quick CSS and themes load images from it, and CSS can make the browser load different images depending on what the app shows.
-#: src/features/theme_settings/utils/ThemeSettingsMessageDescriptors.ts
-msgid "Only trust sites you know. A site you trust can see your IP address, when you have Fluxer open and some of what's on your screen."
-msgstr "知っているサイトだけを信頼してください。信頼したサイトには、あなたのIPアドレス、Fluxerを開いている時間、画面に表示されている内容の一部が伝わる可能性があります。"
-
-#. Alternative text of the screenshot on a slide in the Operator Pass checkout dialog, read out by screen readers. The screenshot shows a short chat in the #operators channel. Operators are the people who have an Operator Pass, keep the word Operators in English. Fluxer Labs is the name of the official community, keep it unchanged. #operators is the channel's literal name, keep it unchanged. Talking means chatting with each other, never asking for or giving support. No trailing punctuation.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "Operators and the Fluxer Team talking about self-hosting in the #operators channel of Fluxer Labs"
-msgstr "Fluxer Labsの#operatorsチャンネルで、OperatorsとFluxerチームがセルフホスティングについて話している様子"
-
-#. Description under the "Share a preview image" switch in the web stream setup modal.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "People can see a still image of what you share before they start watching."
-msgstr "視聴を始める前に、共有している内容の静止画をほかの人が見られます。"
-
-#. Description of leaving the push relay off in the setup wizard.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "People using the Fluxer mobile apps won't get notifications from your instance. You can turn this on later in the admin panel."
-msgstr "Fluxerのモバイルアプリを使う人は、このインスタンスからの通知を受け取れません。あとで管理パネルからオンにできます。"
-
-#. Report flow: section heading above the card of the person being reported.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "Person you're reporting"
-msgstr "報告する相手"
-
-#. Review row label for the push relay.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "Phone notifications"
-msgstr "スマートフォンへの通知"
-
-#. Section label in the web stream setup modal. Picks the Gaming preset (motion), the Screen share preset (sharp text) or custom numbers.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Preset"
-msgstr "プリセット"
-
-#. Developer applications link label. domain is the documentation domain.
-#: src/features/user/components/modals/tabs/applications_tab/index.tsx
-msgid "Read the documentation ({domain})"
-msgstr "ドキュメントを読む（{domain}）"
-
-#. Link to the push relay privacy notice in the setup wizard.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "Read the push relay privacy notice"
-msgstr "プッシュリレーのプライバシー通知を読む"
-
-#. Button in the sensitive content settings that opens a confirmation to delete the stored age range.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Remove age range"
-msgstr "年齢層を削除"
-
-#. Title of the confirmation shown before deleting the age range from an Apple or Google account.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "Remove your age range?"
-msgstr "年齢層を削除しますか？"
-
-#. Voice and call participant menu action that reports this person to the safety team, for example for something they said or showed in the call.
-#: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx
-msgid "Report"
-msgstr "報告"
-
-#. Action label in community menus, on invites and in Explore, and the title of the report window it opens. Reports a whole community to the safety team.
-#: src/features/moderation/utils/ModerationMessageDescriptors.ts
-msgid "Report community"
-msgstr "コミュニティを報告"
-
-#. Action in a forum post's menu. Reports the post's opening message to the safety team. A post is a topic thread in a forum channel.
-#: src/features/forum/utils/ForumMessageDescriptors.ts
-msgid "Report post"
-msgstr "投稿を報告"
-
-#. Sentence after the privacy sentence in the Operator Pass checkout dialog that names the company selling the pass. Fluxer Platform AB is the company name and 559537-3993 its Swedish organization number, keep both as is. Haninge is the Swedish municipality where the company is registered and stays as is. Translate registered office with the legal term your language uses for the registered seat of a company, and keep the Swedish word säte in parentheses. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
-#: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
-msgid "Seller: Fluxer Platform AB, 559537-3993, registered office (säte) Haninge, Sweden, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
-msgstr "販売者: Fluxer Platform AB、559537-3993、登記上の本店所在地（säte）Haninge、スウェーデン、{OPERATOR_PASS_SELLER_ADDRESS}、{OPERATOR_PASS_SELLER_PHONE}、{SUPPORT_EMAIL}。"
-
-#. Setup wizard title for the push relay consent.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "Send notifications to the Fluxer mobile apps?"
-msgstr "Fluxerのモバイルアプリに通知を送りますか？"
-
-#. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
-#: src/features/theme_settings/editor/AppSelectors.ts
-msgid "Set on messages that Fluxer sends, such as when someone joins."
-msgstr "誰かが参加した時など、Fluxerが送信するメッセージに設定されます。"
-
-#. Switch label in the web stream setup modal. When on, Fluxer uploads a still image of the stream so people can see it before watching.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Share a preview image"
-msgstr "プレビュー画像を共有"
-
-#. Switch label in the web stream setup modal.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Share audio"
-msgstr "音声を共有"
-
-#. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
-#: src/features/voice/components/StreamSettingsMenuContent.tsx
-msgid "Sharp text at up to 1080p, 30 FPS"
-msgstr "最大1080pでシャープなテキスト、30 FPS"
-
-#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
-#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
-msgid "Show Neko"
-msgstr "ネコを表示"
-
-#. Primary button in the web stream setup modal. Opens the browser's screen picker and starts sharing.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Start sharing"
-msgstr "共有を開始"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Static Neko"
-msgstr "静止したネコ"
-
-#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Still Neko"
-msgstr "ネコを静止"
-
-#. Settings search entry description. One-line summary of what the setting controls.
-#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
-msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
-msgstr "ネコをドラッグしたり操作したりできる状態のまま、カーソルを追いかけないようにします。"
-
-#. Report flow: body of the final screen after a report was sent, on a self-hosted instance whose own administrators handle reports. The second sentence promises the reported person is not told who reported them.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "The administrators of this instance will review your report. We won't reveal that it came from you."
-msgstr "このインスタンスの管理者があなたの報告を確認します。あなたからの報告であることは明かしません。"
-
-#. Text under the heading The Operator badge on a slide in the Operator Pass checkout dialog. The quoted example is the text on the badge, translate it the way the app shows it in your language. Operator badge is a name, keep Operator in English. Never add a word that says how long the badge lasts.
-#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
-msgid "The badge on your Fluxer profile shows when you got your pass, like \"Operator Pass since November 2026\". You can hide it, or just its date, in your settings at any time."
-msgstr "Fluxerプロフィールのバッジには、「2026年11月からのOperator Pass」のように、パスを手に入れた時期が表示されます。設定から、いつでもバッジ全体または日付だけを非表示にできます。"
-
-#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
-msgid "The connection was not allowed. You can close this tab and try again."
-msgstr "連携が許可されませんでした。このタブを閉じて、もう一度お試しください。"
-
-#. Helper text under "Age range from your Apple or Google account" in the sensitive content settings.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "The Fluxer app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth."
-msgstr "この年齢層は、iPhone、iPad、Android 向けの Fluxer アプリから送信されました。18 歳以上であることを示している場合、英国とブラジルで 18+ コンテンツを見られます。生年月日は変更されません。"
-
-#. Setup wizard body explaining the push relay.
-#: src/features/app/components/setup/SetupPolicySteps.tsx
-msgid "The Fluxer apps for iOS and Android get notifications through a push relay that Fluxer runs, which passes them to Apple and Google. To use it, you accept the push relay privacy notice."
-msgstr "iOS版とAndroid版のFluxerアプリは、Fluxerが運営するプッシュリレーを通じて通知を受け取り、リレーがそれをAppleとGoogleに渡します。利用するには、プッシュリレーのプライバシー通知に同意します。"
-
-#. Where the logo branding image appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
-#: src/features/app/components/setup/SetupBrandingAssetField.tsx
-msgid "The large image next to the sign-in form, which is always dark. On a phone it only shows next to the name, when there is no wordmark and the product name is not Fluxer. Use a square or wide PNG or SVG in light colors with a transparent background, at least 256 pixels tall and up to {size}."
-msgstr "常に暗い色のサインインフォームの横に表示される大きな画像です。スマートフォンでは、ワードマークがなく、プロダクト名がFluxer以外の場合にのみ、名前の横に表示されます。背景が透明で明るい色の、正方形または横長のPNGまたはSVG（高さ256ピクセル以上、{size}まで）を使用してください。"
-
-#. Caption under the phone preview in the setup wizard branding step.
-#: src/features/app/components/setup/SetupBrandingPreview.tsx
-msgid "The sign-in page on a phone, in a mobile browser or the Fluxer mobile app."
-msgstr "スマートフォンのモバイルブラウザまたはFluxerモバイルアプリで表示したサインイン画面です。"
-
-#. Shown above the list of CSS attributes in the "Reference" tab of the quick CSS editor.
-#: src/features/theme_settings/components/QuickCssReference.tsx
-msgid "These attributes don't change between Fluxer updates."
-msgstr "これらの属性はFluxerのアップデートで変わりません。"
-
-#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape.
-#: src/features/guild/components/modals/add_guild_modal/shared.ts
-msgid "This {theOtherPlatform} template couldn't be read. It may use a format Fluxer doesn't support yet."
-msgstr "この {theOtherPlatform} テンプレートは読み込めませんでした。Fluxer がまだサポートしていない形式を使用している可能性があります。"
-
-#. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
-#: src/features/platform/hooks/useAppStorageDegradedNotice.ts
-msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
-msgstr "このブラウザーでは Fluxer のデータを保存できません。ブラウザーを閉じた後は、もう一度サインインする必要があります。"
-
-#. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
-#: src/features/theme_settings/editor/CssLint.ts
-msgid "This class name changes with every Fluxer update. Use a [data-flx] selector."
-msgstr "このクラス名はFluxerのアップデートごとに変わります。[data-flx]セレクターを使ってください。"
-
-#. Setup wizard explanation of why the sign-in method is fixed: the instance is older than username sign-in.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "This instance was upgraded from a version of Fluxer that used email sign-in, so it stays on email."
-msgstr "このインスタンスはメールでサインインしていたバージョンのFluxerからアップグレードされたため、メールのままになります。"
-
-#. Body of the first setup wizard screen. An instance is one installation of Fluxer run by the person reading this.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "This sets up your instance, the copy of Fluxer you installed, and creates your account on it. It takes about five minutes. You can change most choices later in the admin panel, and a screen tells you when you can't."
-msgstr "ここでは、インストールしたFluxerであるインスタンスを設定し、その上にあなたのアカウントを作成します。約5分で終わります。ほとんどの選択はあとで管理パネルから変更でき、変更できないものは画面でお知らせします。"
-
-#. Accessible label for the official Fluxer instance option.
-#: src/features/auth/flow/instance_selector/InstancePickerRows.tsx
-msgid "Use the official Fluxer instance"
-msgstr "公式のFluxerインスタンスを使用"
-
-#. Hint under the checkbox "Welcome me in #operators" in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Turn on your pass means the button in that dialog that switches the pass on, nothing is bought. Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
-#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
-msgid "We add you to Fluxer Labs when you turn on your pass, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
-msgstr "以前に Fluxer Labs から退出したことや外されたことがなければ、パスをオンにしたときに Fluxer Labs に追加されます。オンにすると、その後まもなく #operators で名前を挙げて歓迎します。"
-
-#. Hint under the checkbox or switch "Welcome me in #operators". Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
-#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
-msgid "We add you to Fluxer Labs when your pass is delivered, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
-msgstr "以前に Fluxer Labs から退出したことや外されたことがなければ、パスのお届け時に Fluxer Labs に追加されます。オンにすると、その後まもなく #operators で名前を挙げて歓迎します。"
-
-#. Error shown when deleting the stored age range fails.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "We couldn't remove your age range. Please try again."
-msgstr "年齢層を削除できませんでした。もう一度お試しください。"
-
-#. Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.
-#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
-msgid "We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with Fluxer."
-msgstr "年齢層、それを受け取った日時、お使いの Apple デバイスの App Attest キーを削除します。英国とブラジルでは、アプリが再び年齢層を送信するまで 18+ コンテンツを見られません。Apple または Google アカウントが引き続き Fluxer と年齢層を共有している場合、アプリが後で再度送信することがあります。"
-
-#. Setup wizard option that accepts the push relay privacy notice.
-#: src/features/app/components/setup/SetupWizardSteps.tsx
-msgid "Yes, use the push relay"
-msgstr "はい、プッシュリレーを使う"
-
-#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
-msgid "You already have the most connections an account can have. Remove one and try again."
-msgstr "1つのアカウントで持てる連携の上限に達しています。1つ削除してから、もう一度お試しください。"
-
-#. Nagbar body telling people that the Fluxer app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep Fluxer and Android untranslated. Keep the tone calm and plain.
-#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
-msgid "You can get the Fluxer app for Android on {googlePlay} and chat from your phone."
-msgstr "{googlePlay}からAndroid版Fluxerアプリをダウンロードすると、スマートフォンでもチャットできます。"
-
-#. Error when you try to pass an Operator Pass on to someone you are not friends with.
-#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
-msgid "You can only pass this on to one of your friends on Fluxer."
-msgstr "Fluxerのフレンドにのみ渡すことができます。"
-
-#. Report flow: note on the summary screen when the reporter already reported this community.
-#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
-msgid "You've already reported this community."
-msgstr "このコミュニティはすでに報告済みです。"
-
-#. Description under the "Share audio" switch in the web stream setup modal. The browser picker owns the final audio choice.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Your browser lets you choose whether to include audio when you pick what to share."
-msgstr "共有する内容を選ぶときに、音声を含めるかどうかをブラウザで選べます。"
-
-#. Footer summary under the preset name in the web stream setup modal when the Source resolution is picked. {fps} is a whole number of frames per second, and FPS is a technical token.
-#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
-msgid "Your screen's resolution at {fps} FPS"
-msgstr "画面の解像度、{fps} FPS"

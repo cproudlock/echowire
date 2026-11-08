@@ -205,6 +205,8 @@ export const useNagbarConditions = (): NagbarConditions => {
 	})();
 	const androidAppNagbarStarted = useAndroidAppNagbarStarted();
 	const canShowAndroidApp = (() => {
+		// Echowire: the nagbar promotes the Fluxer app on Google Play; echowire ships its own Android app.
+		if (isSelfHosted) return false;
 		if (nagbarState.forceHideAndroidApp) return false;
 		if (nagbarState.forceAndroidApp) return true;
 		if (hasBrokenElectronNativeContext) return false;

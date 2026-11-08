@@ -128,7 +128,7 @@ interface ReporterMetadata {
 	fullLegalName: string | null;
 	countryOfResidence: string | null;
 	tier?: ReporterTier;
-	capExempt?: boolean;
+	urgent?: boolean;
 }
 
 export interface ReportFlowRecord {
@@ -416,6 +416,14 @@ export class ReportService {
 				reported_at: reportData.reported_at,
 			};
 			if (!(await this.reportRepository.reserveMessageReportByReporter(reservation))) {
+				const existing = reporter.urgent
+					? await this.reportRepository.findMessageReportByReporter({
+							reporter_id: reporter.id,
+							channel_id: channelId,
+							message_id: messageId,
+						})
+					: null;
+				if (existing) return existing;
 				throw new ConflictError({code: APIErrorCodes.CONFLICT});
 			}
 		}
@@ -501,6 +509,13 @@ export class ReportService {
 				reported_at: reportData.reported_at,
 			};
 			if (!(await this.reportRepository.reserveUserReportByReporter(reservation))) {
+				const existing = reporter.urgent
+					? await this.reportRepository.findUserReportByReporter({
+							reporter_id: reporter.id,
+							reported_user_id: reportedUserId,
+						})
+					: null;
+				if (existing) return existing;
 				throw new ConflictError({code: APIErrorCodes.CONFLICT});
 			}
 		}
@@ -585,6 +600,13 @@ export class ReportService {
 				reported_at: reportData.reported_at,
 			};
 			if (!(await this.reportRepository.reserveGuildReportByReporter(reservation))) {
+				const existing = reporter.urgent
+					? await this.reportRepository.findGuildReportByReporter({
+							reporter_id: reporter.id,
+							reported_guild_id: guildId,
+						})
+					: null;
+				if (existing) return existing;
 				throw new ConflictError({code: APIErrorCodes.CONFLICT});
 			}
 		}
@@ -1697,6 +1719,10 @@ export class ReportService {
 		channel: Channel;
 		message: Message;
 	}): Promise<void> {
+		if (reporter.urgent) {
+			return;
+		}
+		const reporterKey = this.getReporterRateLimitKey(reporter);
 		const checks: Array<{
 			identifier: string;
 			maxAttempts: number;
@@ -1705,22 +1731,17 @@ export class ReportService {
 				identifier: `report:message:target:${message.id.toString()}`,
 				maxAttempts: MESSAGE_REPORT_TARGET_MESSAGE_RATE_LIMIT_MAX,
 			},
+			{identifier: this.createReportRateLimitIdentifier(reporterKey), maxAttempts: REPORT_RATE_LIMIT_MAX},
+			{
+				identifier: `report:message:channel:${reporterKey}:${channel.id.toString()}`,
+				maxAttempts: MESSAGE_REPORT_USER_CHANNEL_RATE_LIMIT_MAX,
+			},
 		];
-		if (!reporter.capExempt) {
-			const reporterKey = this.getReporterRateLimitKey(reporter);
-			checks.push(
-				{identifier: this.createReportRateLimitIdentifier(reporterKey), maxAttempts: REPORT_RATE_LIMIT_MAX},
-				{
-					identifier: `report:message:channel:${reporterKey}:${channel.id.toString()}`,
-					maxAttempts: MESSAGE_REPORT_USER_CHANNEL_RATE_LIMIT_MAX,
-				},
-			);
-			if (channel.guildId) {
-				checks.push({
-					identifier: `report:message:guild:${reporterKey}:${channel.guildId.toString()}`,
-					maxAttempts: MESSAGE_REPORT_USER_GUILD_RATE_LIMIT_MAX,
-				});
-			}
+		if (channel.guildId) {
+			checks.push({
+				identifier: `report:message:guild:${reporterKey}:${channel.guildId.toString()}`,
+				maxAttempts: MESSAGE_REPORT_USER_GUILD_RATE_LIMIT_MAX,
+			});
 		}
 		for (const check of checks) {
 			await this.ensureReportRateLimit(check.identifier, check.maxAttempts, false);
@@ -1731,7 +1752,7 @@ export class ReportService {
 	}
 
 	private async ensureReporterAllowance(reporter: ReporterMetadata, consume: boolean): Promise<void> {
-		if (reporter.capExempt) {
+		if (reporter.urgent) {
 			return;
 		}
 		const identifier = this.createReportRateLimitIdentifier(this.getReporterRateLimitKey(reporter));

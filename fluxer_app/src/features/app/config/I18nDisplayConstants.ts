@@ -53,6 +53,8 @@ const DESKTOP_DOWNLOAD_URLS: Record<string, string> = {
 };
 
 export const DESKTOP_DOWNLOAD_URL = DESKTOP_DOWNLOAD_URLS[Config.RELEASE_CHANNEL] ?? DESKTOP_DOWNLOAD_URLS.stable;
+// Echowire: GOOGLE_PLAY_URL is upstream's; the Android nagbar that uses it is hidden on self-hosted (AppLayoutHooks.ts).
+export const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=com.fluxer';
 // Echowire: the docs constants are gone with the applications tab's "read the documentation" link
 // (this fork does not deploy fluxer_docs). The Bluesky handle matches ExternalUrls.BLUESKY.
 export const FLUXER_BLUESKY_HANDLE = '@echowire.org';

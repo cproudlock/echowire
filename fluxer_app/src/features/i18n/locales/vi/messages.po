@@ -44886,3 +44886,478 @@ msgstr "Phóng to"
 #: src/features/user/components/settings_utils/search_index/KeybindsIndex.ts
 msgid "Zoom out"
 msgstr "Thu nhỏ"
+
+#. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "--{name} isn't a Fluxer variable and isn't set anywhere in your CSS."
+msgstr "--{name} không phải là biến Fluxer và chưa được đặt trong CSS của bạn."
+
+#. Instance selector error shown when the instance speaks a protocol generation this client does not know. Domain is interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "{domain} runs a newer version of Fluxer than this app. Update Fluxer, then try again."
+msgstr "{domain} chạy phiên bản Fluxer mới hơn ứng dụng này. Hãy cập nhật Fluxer rồi thử lại."
+
+#: src/features/connection/components/modals/AddConnectionModal.tsx
+msgid "{providerName} opens in your browser. Sign in there to connect your account."
+msgstr "{providerName} sẽ mở trong trình duyệt của bạn. Đăng nhập ở đó để kết nối tài khoản của bạn."
+
+#. Footer summary under the preset name in the web stream setup modal. {resolution} is a technical token like 1080p. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "{resolution} at {fps} FPS"
+msgstr "{resolution} ở {fps} FPS"
+
+#. Heading of a slide in the Operator Pass checkout dialog about the #operators channel. #operators is the channel's literal name and Fluxer Labs is the name of the official community, keep both unchanged. No trailing punctuation.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "#operators in Fluxer Labs"
+msgstr "#operators trong Fluxer Labs"
+
+#. Button or menu action label in the linked accounts tab. Keep it concise. Preserve {providerName}; it is the provider name, inserted by code.
+#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
+msgid "Add {providerName} connection"
+msgstr "Thêm kết nối {providerName}"
+
+#. Label in the sensitive content settings, shown when the Fluxer app for iPhone, iPad or Android has sent the age range that the Apple or Google account shares with apps.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Age range from your Apple or Google account"
+msgstr "Độ tuổi từ tài khoản Apple hoặc Google của bạn"
+
+#. Developer / debug surface — keep terse and technical. Label in the developer Nagbar controls panel for the Android app on Google Play banner.
+#: src/features/devtools/components/NagbarControls.ts
+msgid "Android app nagbar"
+msgstr "Thanh thông báo ứng dụng Android"
+
+#. Help text under the theme color picker in the setup wizard branding step.
+#: src/features/app/components/setup/SetupBrandingFields.tsx
+msgid "Buttons, links and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to keep Fluxer's indigo."
+msgstr "Các nút, liên kết và điểm nhấn trong toàn ứng dụng dùng màu này, và trình duyệt trên điện thoại dùng màu này cho thanh công cụ. Đặt lại để giữ màu chàm của Fluxer."
+
+#. Completion in the quick CSS editor that inserts a :root rule, where theme variables are set.
+#: src/features/theme_settings/editor/CssCompletions.ts
+msgid "Change Fluxer variables"
+msgstr "Thay đổi biến Fluxer"
+
+#. Report flow: section heading above the card of the community being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Community you're reporting"
+msgstr "Cộng đồng bạn đang báo cáo"
+
+#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online."
+msgstr "Không thể kết nối tới một phiên bản Fluxer tại {domain}. Vui lòng kiểm tra địa chỉ và đảm bảo phiên bản đang trực tuyến."
+
+#. Toast error shown when starting the OAuth flow for a connection provider fails. Preserve {providerName}; it is the provider name, inserted by code, and must appear verbatim in the translation.
+#: src/features/connection/commands/ConnectionCommands.ts
+msgid "Couldn't start {providerName} authorization"
+msgstr "Không thể bắt đầu ủy quyền {providerName}"
+
+#. Link under the Weblate line in the language settings. It opens a help article on fluxer.com about suggesting a new language and helping translate the app. Keep it a short question.
+#: src/features/user/components/modals/tabs/LanguageTab.tsx
+msgid "Don't see your language?"
+msgstr "Không thấy ngôn ngữ của bạn?"
+
+#. Description under the switch that adds the Operators' wall name to the yearly Operators list. A Fluxer release is a published version of the app. Operators are the people who have an Operator Pass, keep the word Operators in English.
+#: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
+msgid "Each yearly list of Operators that we publish goes into the notes of a Fluxer release and a file in its source code. Your wall name is only on it if you turn this on. If you ask us to remove it later, we take it out of future lists, the release notes and that file, but earlier versions of the source code and copies others made can't be recalled."
+msgstr "Mỗi danh sách Operators hằng năm mà chúng tôi công bố được đưa vào ghi chú của một bản phát hành Fluxer và vào một tệp trong mã nguồn của bản đó. Tên trên bức tường của bạn chỉ có trong danh sách nếu bạn bật tùy chọn này. Nếu sau này bạn yêu cầu gỡ tên, chúng tôi sẽ bỏ tên khỏi các danh sách sau này, ghi chú phát hành và tệp đó, nhưng các phiên bản cũ của mã nguồn và bản sao do người khác tạo thì không thể thu hồi."
+
+#. Bullet point in the P2P call dialog. Plutonium is the name of the paid subscription and must not be translated. 4K and fps are video terms.
+#: src/features/voice/utils/VoiceMessageDescriptors.ts
+msgid "Everyone in the call gets Plutonium stream quality for free, with up to 4K source resolution and 60 fps."
+msgstr "Mọi người trong cuộc gọi đều nhận được chất lượng luồng Plutonium miễn phí: độ phân giải nguồn lên tới 4K và 60 fps."
+
+#. Description of the shared usernames option in the setup wizard. Keep the example alex#4821 as it is.
+#: src/features/app/components/setup/SetupIdentitySteps.tsx
+msgid "Fluxer adds a random number to each username, like alex#4821, so many people can use the same name."
+msgstr "Fluxer thêm một số ngẫu nhiên vào mỗi tên người dùng, như alex#4821, để nhiều người có thể dùng cùng một tên."
+
+#. Problem shown in the quick CSS editor on a web address that the app is not allowed to load. Assets are files uploaded under "Assets".
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer blocked loading {url}. Upload it as an asset."
+msgstr "Fluxer đã chặn tải {url}. Hãy tải lên như một tài nguyên."
+
+#. Problem shown in the quick CSS editor on an image address on a site the person has not trusted. Assets are files uploaded under "Assets". Trusting a site lets quick CSS and themes load images from it.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer blocked loading {url}. Upload the file as an asset, or trust the site it's on."
+msgstr "Fluxer đã chặn tải {url}. Hãy tải tệp lên như một tài nguyên hoặc tin cậy trang web chứa tệp đó."
+
+#. Problem shown in the quick CSS editor on a reference to an uploaded theme asset that does not exist.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer can't find the asset \"{name}\"."
+msgstr "Fluxer không tìm thấy tài nguyên \"{name}\"."
+
+#. Problem shown in the quick CSS editor on a reference to a file on the computer that Fluxer cannot read.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer can't find the file \"{path}\"."
+msgstr "Fluxer không tìm thấy tệp \"{path}\"."
+
+#. Shown for a watched theme folder in Settings > Themes when the folder was moved, deleted or disconnected.
+#: src/features/theme_settings/components/YourThemesSection.tsx
+msgid "Fluxer can't find this folder. It will load the themes again when the folder is back."
+msgstr "Fluxer không tìm thấy thư mục này. Chủ đề sẽ được tải lại khi thư mục trở lại."
+
+#. Shown for a watched theme folder in Settings > Themes when the desktop app no longer has permission to read it.
+#: src/features/theme_settings/components/YourThemesSection.tsx
+msgid "Fluxer can't open this folder. Import it again to keep watching it."
+msgstr "Fluxer không thể mở thư mục này. Nhập lại để tiếp tục theo dõi."
+
+#. Error toast in "Your themes" when the chosen theme folder cannot be opened.
+#: src/features/theme_settings/components/YourThemesSection.tsx
+msgid "Fluxer can't read this folder."
+msgstr "Fluxer không thể đọc thư mục này."
+
+#. Problem shown at the top of the quick CSS editor when the whole sheet was left out.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "Fluxer couldn't apply this CSS. Check it for a broken comment, string or bracket."
+msgstr "Fluxer không thể áp dụng CSS này. Hãy kiểm tra xem có chú thích, chuỗi hoặc dấu ngoặc nào bị hỏng không."
+
+#. Alert when the SMTP check fails and the mail server sent no reply. host is the mail server address.
+#: src/features/app/components/setup/SetupEmailSteps.tsx
+msgid "Fluxer couldn't connect to {host}."
+msgstr "Fluxer không kết nối được với {host}."
+
+#. Alert when the SMTP check fails. host is the mail server address and error is its reply.
+#: src/features/app/components/setup/SetupEmailSteps.tsx
+msgid "Fluxer couldn't connect to {host}. The server said: \"{error}\""
+msgstr "Fluxer không kết nối được với {host}. Máy chủ trả lời: \"{error}\""
+
+#. Status shown in the desktop app when it stopped checking the browser sign-in because the instance could not be reached. instanceName is the server name, such as Fluxer. "Try again" is the label of the button below and must match its translation.
+#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
+msgid "Fluxer couldn't connect to {instanceName} to check whether your browser approved this sign-in. Check your connection, then select \"Try again\"."
+msgstr "Fluxer không thể kết nối với {instanceName} để kiểm tra xem trình duyệt của bạn đã phê duyệt đăng nhập này chưa. Hãy kiểm tra kết nối rồi chọn \"Thử lại\"."
+
+#. Name of the section in the Operator Pass settings tab about the Fluxer Labs community. Fluxer Labs is the name of a community, keep it as is.
+#: src/features/premium/utils/PremiumMessageDescriptors.ts
+msgid "Fluxer Labs"
+msgstr "Fluxer Labs"
+
+#. Status shown when browser sign-in status polling gives up after repeated failures.
+#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
+msgid "Fluxer stopped checking whether the browser approved this sign-in. It didn't lose your code."
+msgstr "Fluxer đã ngừng kiểm tra xem trình duyệt có phê duyệt đăng nhập này không. Mã của bạn vẫn còn nguyên."
+
+#. Shown in the modal that applies a shared theme when the theme points at files the app will not load.
+#: src/features/theme/components/modals/ThemeAcceptModal.tsx
+msgid "Fluxer won't load {count, plural, one {# file} other {# files}} that this theme links to on other sites."
+msgstr "Fluxer sẽ không tải {count, plural, other {# tệp}} trên các trang khác mà chủ đề này liên kết tới."
+
+#. Button in the Android app nagbar that opens the Fluxer listing on Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Use the wording Google Play uses for its own "Get it on Google Play" badge in this language when one exists. Keep it short.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "Get it on {googlePlay}"
+msgstr "Tải về từ {googlePlay}"
+
+#: src/features/user/components/modals/tabs/LanguageTab.tsx
+msgid "Help translate {PRODUCT_NAME} into your language on <0>{I18N_WEBLATE_DOMAIN}</0>."
+msgstr "Giúp dịch {PRODUCT_NAME} sang ngôn ngữ của bạn trên <0>{I18N_WEBLATE_DOMAIN}</0>."
+
+#. Hint in the desktop app while it waits for the browser, for people with more than one Fluxer app installed. "Signing in on another device?" is the label of the button below and must match its translation.
+#: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
+msgid "If the link opens a different Fluxer app, select \"Signing in on another device?\" and type the code in your browser instead."
+msgstr "Nếu liên kết mở một ứng dụng Fluxer khác, hãy chọn \"Đăng nhập trên thiết bị khác?\" và nhập mã trong trình duyệt."
+
+#. Help on the setup token screen, followed by a terminal command. rexctl is a name that must not be translated.
+#: src/features/app/components/setup/SetupTokenStep.tsx
+msgid "If you installed Fluxer with rexctl, it printed the token when it finished. Run this on your server to show it again."
+msgstr "Nếu bạn đã cài đặt Fluxer bằng rexctl, nó đã in mã thông báo khi hoàn tất. Chạy lệnh này trên máy chủ của bạn để hiển thị lại mã thông báo đó."
+
+#. What the app shows when no wordmark is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, the product name shows as plain text, or as the Fluxer wordmark while the product name is Fluxer."
+msgstr "Nếu để trống, tên sản phẩm sẽ hiển thị dạng văn bản thường, hoặc dạng wordmark Fluxer khi tên sản phẩm là Fluxer."
+
+#. What the app shows when no logo is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, the sign-in page uses your app icon or symbol. Without those, it shows the Fluxer logo while the product name is Fluxer, and no image for any other name."
+msgstr "Nếu để trống, trang đăng nhập sẽ dùng biểu tượng ứng dụng hoặc biểu tượng của bạn. Nếu không có cả hai, trang sẽ hiển thị logo Fluxer khi tên sản phẩm là Fluxer, và không hiển thị ảnh nào với tên khác."
+
+#. What the app shows when no favicon is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, the tab uses your app icon, or the Fluxer icon if that is empty too."
+msgstr "Nếu để trống, tab sẽ dùng biểu tượng ứng dụng của bạn, hoặc biểu tượng Fluxer nếu biểu tượng ứng dụng cũng trống."
+
+#. What the app shows when no app icon is set, in the setup wizard.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "If you leave it empty, those places show the Fluxer icon."
+msgstr "Nếu để trống, những vị trí đó sẽ hiển thị biểu tượng Fluxer."
+
+#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
+#: src/features/app/components/setup/SetupTokenStep.tsx
+msgid "If you run Fluxer without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart Fluxer, and enter that value here."
+msgstr "Nếu bạn chạy Fluxer mà không có rexctl, hãy đặt FLUXER_SETUP_TOKEN thành một giá trị có ít nhất 32 ký tự do bạn chọn, khởi động lại Fluxer và nhập giá trị đó vào đây."
+
+#. Toggle label and settings search entry for stopping the Neko sprite from chasing the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Keep Neko still"
+msgstr "Giữ Neko đứng yên"
+
+#. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
+msgid "Lets you open communities and channels marked 18+ in the Fluxer app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
+msgstr "Cho phép bạn mở các cộng đồng và kênh được đánh dấu 18+ trong ứng dụng Fluxer dành cho iPhone và iPad, và chọn \"Hiển thị\" cho phương tiện nhạy cảm ở đó. Bạn chỉ có thể thay đổi cài đặt này trên web hoặc trên máy tính."
+
+#: src/features/user/components/modals/tabs/LinkedAccountsTab.tsx
+msgid "Link your accounts or verify domain ownership to display them on your profile."
+msgstr "Liên kết các tài khoản của bạn hoặc xác minh quyền sở hữu miền để hiển thị chúng trên hồ sơ của bạn."
+
+#. Button in the quick CSS editor window that moves the editor back into a panel inside the app.
+#: src/features/theme_settings/components/QuickCssWorkspace.tsx
+msgid "Move back into Fluxer"
+msgstr "Đưa trở lại Fluxer"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Neko cat that chases your cursor"
+msgstr "Mèo Neko đuổi theo con trỏ chuột của bạn"
+
+#. Label for a linked account whose provider this instance removed or turned off. The account is hidden from the profile.
+#: src/features/connection/components/ConnectionIcon.tsx
+msgid "No longer available"
+msgstr "Không còn khả dụng"
+
+#. Warning in Settings > Themes and in the modal that applies a shared theme. Trusting a site lets quick CSS and themes load images from it, and CSS can make the browser load different images depending on what the app shows.
+#: src/features/theme_settings/utils/ThemeSettingsMessageDescriptors.ts
+msgid "Only trust sites you know. A site you trust can see your IP address, when you have Fluxer open and some of what's on your screen."
+msgstr "Chỉ tin cậy những trang web bạn biết. Trang web bạn tin cậy có thể thấy địa chỉ IP của bạn, lúc bạn mở Fluxer và một phần nội dung trên màn hình của bạn."
+
+#. Alternative text of the screenshot on a slide in the Operator Pass checkout dialog, read out by screen readers. The screenshot shows a short chat in the #operators channel. Operators are the people who have an Operator Pass, keep the word Operators in English. Fluxer Labs is the name of the official community, keep it unchanged. #operators is the channel's literal name, keep it unchanged. Talking means chatting with each other, never asking for or giving support. No trailing punctuation.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "Operators and the Fluxer Team talking about self-hosting in the #operators channel of Fluxer Labs"
+msgstr "Các Operator và đội ngũ Fluxer trò chuyện về tự lưu trữ trong kênh #operators của Fluxer Labs"
+
+#. Description under the "Share a preview image" switch in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "People can see a still image of what you share before they start watching."
+msgstr "Mọi người có thể xem ảnh tĩnh của nội dung bạn chia sẻ trước khi bắt đầu xem."
+
+#. Description of leaving the push relay off in the setup wizard.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "People using the Fluxer mobile apps won't get notifications from your instance. You can turn this on later in the admin panel."
+msgstr "Người dùng ứng dụng di động Fluxer sẽ không nhận được thông báo từ máy chủ của bạn. Bạn có thể bật lại sau trong bảng quản trị."
+
+#. Report flow: section heading above the card of the person being reported.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "Person you're reporting"
+msgstr "Người bạn đang báo cáo"
+
+#. Review row label for the push relay.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "Phone notifications"
+msgstr "Thông báo trên điện thoại"
+
+#. Section label in the web stream setup modal. Picks the Gaming preset (motion), the Screen share preset (sharp text) or custom numbers.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Preset"
+msgstr "Cài đặt sẵn"
+
+#. Developer applications link label. domain is the documentation domain.
+#: src/features/user/components/modals/tabs/applications_tab/index.tsx
+msgid "Read the documentation ({domain})"
+msgstr "Đọc tài liệu ({domain})"
+
+#. Link to the push relay privacy notice in the setup wizard.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "Read the push relay privacy notice"
+msgstr "Đọc thông báo quyền riêng tư của bộ chuyển tiếp thông báo đẩy"
+
+#. Button in the sensitive content settings that opens a confirmation to delete the stored age range.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove age range"
+msgstr "Xóa độ tuổi"
+
+#. Title of the confirmation shown before deleting the age range from an Apple or Google account.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "Remove your age range?"
+msgstr "Xóa độ tuổi của bạn?"
+
+#. Voice and call participant menu action that reports this person to the safety team, for example for something they said or showed in the call.
+#: src/features/ui/action_menu/items/VoiceParticipantMenuData.tsx
+msgid "Report"
+msgstr "Báo cáo"
+
+#. Action label in community menus, on invites and in Explore, and the title of the report window it opens. Reports a whole community to the safety team.
+#: src/features/moderation/utils/ModerationMessageDescriptors.ts
+msgid "Report community"
+msgstr "Báo cáo cộng đồng"
+
+#. Action in a forum post's menu. Reports the post's opening message to the safety team. A post is a topic thread in a forum channel.
+#: src/features/forum/utils/ForumMessageDescriptors.ts
+msgid "Report post"
+msgstr "Báo cáo bài viết"
+
+#. Sentence after the privacy sentence in the Operator Pass checkout dialog that names the company selling the pass. Fluxer Platform AB is the company name and 559537-3993 its Swedish organization number, keep both as is. Haninge is the Swedish municipality where the company is registered and stays as is. Translate registered office with the legal term your language uses for the registered seat of a company, and keep the Swedish word säte in parentheses. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
+#: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
+msgid "Seller: Fluxer Platform AB, 559537-3993, registered office (säte) Haninge, Sweden, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
+msgstr "Người bán: Fluxer Platform AB, 559537-3993, trụ sở đăng ký (säte) Haninge, Thụy Điển, {OPERATOR_PASS_SELLER_ADDRESS}, {OPERATOR_PASS_SELLER_PHONE}, {SUPPORT_EMAIL}."
+
+#. Setup wizard title for the push relay consent.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "Send notifications to the Fluxer mobile apps?"
+msgstr "Gửi thông báo đến ứng dụng di động Fluxer?"
+
+#. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
+#: src/features/theme_settings/editor/AppSelectors.ts
+msgid "Set on messages that Fluxer sends, such as when someone joins."
+msgstr "Được đặt trên tin nhắn Fluxer gửi, ví dụ khi ai đó tham gia."
+
+#. Switch label in the web stream setup modal. When on, Fluxer uploads a still image of the stream so people can see it before watching.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share a preview image"
+msgstr "Chia sẻ ảnh xem trước"
+
+#. Switch label in the web stream setup modal.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Share audio"
+msgstr "Chia sẻ âm thanh"
+
+#. Description for the high-tier Screen share streaming preset (Plutonium). Resolution and frame rate are technical tokens.
+#: src/features/voice/components/StreamSettingsMenuContent.tsx
+msgid "Sharp text at up to 1080p, 30 FPS"
+msgstr "Chữ sắc nét lên đến 1080p, 30 FPS"
+
+#. Toggle label and settings search entry for showing the Neko sprite that chases the cursor.
+#: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
+msgid "Show Neko"
+msgstr "Hiện Neko"
+
+#. Primary button in the web stream setup modal. Opens the browser's screen picker and starts sharing.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Start sharing"
+msgstr "Bắt đầu chia sẻ"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Static Neko"
+msgstr "Neko tĩnh"
+
+#. Settings search synonym. Used to match this term when the user types it in the settings search bar.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Still Neko"
+msgstr "Neko đứng yên"
+
+#. Settings search entry description. One-line summary of what the setting controls.
+#: src/features/user/components/settings_utils/search_index/AppearanceIndex.ts
+msgid "Stop Neko from chasing your cursor while keeping it draggable and interactive."
+msgstr "Ngăn Neko đuổi theo con trỏ chuột nhưng vẫn có thể kéo và tương tác."
+
+#. Report flow: body of the final screen after a report was sent, on a self-hosted instance whose own administrators handle reports. The second sentence promises the reported person is not told who reported them.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "The administrators of this instance will review your report. We won't reveal that it came from you."
+msgstr "Quản trị viên của máy chủ này sẽ xem xét báo cáo của bạn. Chúng tôi sẽ không tiết lộ báo cáo này đến từ bạn."
+
+#. Text under the heading The Operator badge on a slide in the Operator Pass checkout dialog. The quoted example is the text on the badge, translate it the way the app shows it in your language. Operator badge is a name, keep Operator in English. Never add a word that says how long the badge lasts.
+#: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
+msgid "The badge on your Fluxer profile shows when you got your pass, like \"Operator Pass since November 2026\". You can hide it, or just its date, in your settings at any time."
+msgstr "Huy hiệu trên hồ sơ Fluxer của bạn cho biết bạn có pass từ khi nào, ví dụ “Operator Pass từ tháng 11 năm 2026”. Bạn có thể ẩn huy hiệu, hoặc chỉ ẩn ngày của nó, trong phần cài đặt bất cứ lúc nào."
+
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "The connection was not allowed. You can close this tab and try again."
+msgstr "Kết nối không được cho phép. Bạn có thể đóng tab này và thử lại."
+
+#. Helper text under "Age range from your Apple or Google account" in the sensitive content settings.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "The Fluxer app for iPhone, iPad or Android sent us this age range. If it shows that you're 18 or older, you can see 18+ content in the UK and Brazil. It doesn't change your date of birth."
+msgstr "Ứng dụng Fluxer cho iPhone, iPad hoặc Android đã gửi cho chúng tôi độ tuổi này. Nếu độ tuổi này cho thấy bạn từ 18 tuổi trở lên, bạn có thể xem nội dung 18+ ở Vương quốc Anh và Brazil. Độ tuổi này không thay đổi ngày sinh của bạn."
+
+#. Setup wizard body explaining the push relay.
+#: src/features/app/components/setup/SetupPolicySteps.tsx
+msgid "The Fluxer apps for iOS and Android get notifications through a push relay that Fluxer runs, which passes them to Apple and Google. To use it, you accept the push relay privacy notice."
+msgstr "Ứng dụng Fluxer cho iOS và Android nhận thông báo qua bộ chuyển tiếp thông báo đẩy do Fluxer vận hành, bộ này chuyển chúng đến Apple và Google. Để dùng, bạn chấp nhận thông báo quyền riêng tư của bộ chuyển tiếp thông báo đẩy."
+
+#. Where the logo branding image appears and the recommended format, in the setup wizard. size is a file size such as 10 MB.
+#: src/features/app/components/setup/SetupBrandingAssetField.tsx
+msgid "The large image next to the sign-in form, which is always dark. On a phone it only shows next to the name, when there is no wordmark and the product name is not Fluxer. Use a square or wide PNG or SVG in light colors with a transparent background, at least 256 pixels tall and up to {size}."
+msgstr "Ảnh lớn cạnh biểu mẫu đăng nhập, vốn luôn có nền tối. Trên điện thoại, ảnh này chỉ hiển thị cạnh tên khi không có wordmark và tên sản phẩm không phải là Fluxer. Dùng ảnh PNG hoặc SVG vuông hoặc khổ rộng, màu sáng, nền trong suốt, cao tối thiểu 256 pixel và tối đa {size}."
+
+#. Caption under the phone preview in the setup wizard branding step.
+#: src/features/app/components/setup/SetupBrandingPreview.tsx
+msgid "The sign-in page on a phone, in a mobile browser or the Fluxer mobile app."
+msgstr "Trang đăng nhập trên điện thoại, trong trình duyệt di động hoặc ứng dụng Fluxer trên di động."
+
+#. Shown above the list of CSS attributes in the "Reference" tab of the quick CSS editor.
+#: src/features/theme_settings/components/QuickCssReference.tsx
+msgid "These attributes don't change between Fluxer updates."
+msgstr "Các thuộc tính này không thay đổi giữa các bản cập nhật Fluxer."
+
+#. Error in the import-template form when the desktop app loaded the template from the third-party platform named by {theOtherPlatform} but its contents were not in the expected shape.
+#: src/features/guild/components/modals/add_guild_modal/shared.ts
+msgid "This {theOtherPlatform} template couldn't be read. It may use a format Fluxer doesn't support yet."
+msgstr "Mẫu {theOtherPlatform} này không thể đọc được. Có thể mẫu này sử dụng định dạng mà Fluxer chưa hỗ trợ."
+
+#. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
+#: src/features/platform/hooks/useAppStorageDegradedNotice.ts
+msgid "This browser can't save Fluxer's data. You'll need to sign in again after you close it."
+msgstr "Trình duyệt này không thể lưu dữ liệu của Fluxer. Bạn sẽ cần đăng nhập lại sau khi đóng trình duyệt."
+
+#. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
+#: src/features/theme_settings/editor/CssLint.ts
+msgid "This class name changes with every Fluxer update. Use a [data-flx] selector."
+msgstr "Tên class này thay đổi mỗi lần cập nhật Fluxer. Hãy dùng bộ chọn [data-flx]."
+
+#. Setup wizard explanation of why the sign-in method is fixed: the instance is older than username sign-in.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "This instance was upgraded from a version of Fluxer that used email sign-in, so it stays on email."
+msgstr "Máy chủ này được nâng cấp từ một phiên bản Fluxer dùng đăng nhập bằng email, nên vẫn giữ đăng nhập bằng email."
+
+#. Body of the first setup wizard screen. An instance is one installation of Fluxer run by the person reading this.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "This sets up your instance, the copy of Fluxer you installed, and creates your account on it. It takes about five minutes. You can change most choices later in the admin panel, and a screen tells you when you can't."
+msgstr "Trình hướng dẫn này thiết lập máy chủ của bạn, tức bản Fluxer bạn đã cài, và tạo tài khoản của bạn trên đó. Mất khoảng năm phút. Bạn có thể thay đổi hầu hết lựa chọn sau trong bảng quản trị, và sẽ có màn hình cho bạn biết khi nào không thể."
+
+#. Accessible label for the official Fluxer instance option.
+#: src/features/auth/flow/instance_selector/InstancePickerRows.tsx
+msgid "Use the official Fluxer instance"
+msgstr "Sử dụng phiên bản Fluxer chính thức"
+
+#. Hint under the checkbox "Welcome me in #operators" in the dialog where a Visionary turns on the Operator Pass that comes with Visionary. Turn on your pass means the button in that dialog that switches the pass on, nothing is bought. Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
+#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
+msgid "We add you to Fluxer Labs when you turn on your pass, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
+msgstr "Chúng tôi thêm bạn vào Fluxer Labs khi bạn bật pass của mình, trừ khi trước đây bạn đã rời hoặc bị xóa khỏi Fluxer Labs. Khi bật tùy chọn này, chúng tôi sẽ chào đón bạn bằng tên trong #operators ngay sau đó."
+
+#. Hint under the checkbox or switch "Welcome me in #operators". Fluxer Labs is the name of a community on Fluxer, keep it as is. #operators is a channel there, keep it as is. Left or were removed from Fluxer Labs before means the person left the Fluxer Labs community, or was removed from it, at any time in the past.
+#: src/features/premium/components/operator_pass/OperatorPassLabsGreetingField.tsx
+msgid "We add you to Fluxer Labs when your pass is delivered, unless you left or were removed from Fluxer Labs before. With this on, we welcome you by name in #operators soon after."
+msgstr "Chúng tôi thêm bạn vào Fluxer Labs khi pass của bạn được giao, trừ khi trước đây bạn đã rời hoặc bị xóa khỏi Fluxer Labs. Khi bật tùy chọn này, chúng tôi sẽ chào đón bạn bằng tên trong #operators ngay sau đó."
+
+#. Error shown when deleting the stored age range fails.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We couldn't remove your age range. Please try again."
+msgstr "Chúng tôi không thể xóa độ tuổi của bạn. Vui lòng thử lại."
+
+#. Body of the confirmation shown before deleting the age range. App Attest is an Apple product name and stays in English.
+#: src/features/user/components/modals/tabs/privacy_safety_tab/AgeRangeSection.tsx
+msgid "We delete the age range, the time we got it and the App Attest keys for your Apple devices. In the UK and Brazil, you can't see 18+ content until the app sends an age range again. The app may send it again later if your Apple or Google account still shares it with Fluxer."
+msgstr "Chúng tôi xóa độ tuổi, thời điểm chúng tôi nhận được nó và các khóa App Attest cho thiết bị Apple của bạn. Ở Vương quốc Anh và Brazil, bạn không thể xem nội dung 18+ cho đến khi ứng dụng gửi lại độ tuổi. Ứng dụng có thể gửi lại độ tuổi của bạn sau này nếu tài khoản Apple hoặc Google của bạn vẫn chia sẻ nó với Fluxer."
+
+#. Setup wizard option that accepts the push relay privacy notice.
+#: src/features/app/components/setup/SetupWizardSteps.tsx
+msgid "Yes, use the push relay"
+msgstr "Có, dùng bộ chuyển tiếp thông báo đẩy"
+
+#: src/features/connection/components/pages/ConnectionCallbackPage.tsx
+msgid "You already have the most connections an account can have. Remove one and try again."
+msgstr "Bạn đã có số kết nối tối đa mà một tài khoản có thể có. Hãy xóa một kết nối và thử lại."
+
+#. Nagbar body telling people that the Fluxer app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep Fluxer and Android untranslated. Keep the tone calm and plain.
+#: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
+msgid "You can get the Fluxer app for Android on {googlePlay} and chat from your phone."
+msgstr "Bạn có thể tải ứng dụng Fluxer cho Android trên {googlePlay} và trò chuyện từ điện thoại."
+
+#. Error when you try to pass an Operator Pass on to someone you are not friends with.
+#: src/features/premium/components/operator_pass/OperatorPassPassItOnModal.tsx
+msgid "You can only pass this on to one of your friends on Fluxer."
+msgstr "Bạn chỉ có thể chuyển cái này cho một người bạn của mình trên Fluxer."
+
+#. Report flow: note on the summary screen when the reporter already reported this community.
+#: src/features/moderation/components/report_flow/ReportFlowCopy.ts
+msgid "You've already reported this community."
+msgstr "Bạn đã báo cáo cộng đồng này rồi."
+
+#. Description under the "Share audio" switch in the web stream setup modal. The browser picker owns the final audio choice.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your browser lets you choose whether to include audio when you pick what to share."
+msgstr "Trình duyệt cho phép bạn chọn có kèm âm thanh hay không khi chọn nội dung để chia sẻ."
+
+#. Footer summary under the preset name in the web stream setup modal when the Source resolution is picked. {fps} is a whole number of frames per second, and FPS is a technical token.
+#: src/features/voice/components/modals/screen_share_picker_modal/WebStreamSetupModal.tsx
+msgid "Your screen's resolution at {fps} FPS"
+msgstr "Độ phân giải màn hình của bạn ở {fps} FPS"

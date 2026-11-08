@@ -77,7 +77,7 @@ function discoveryDocument(
 			direct_messages_disabled: false,
 			guild_create_access: true,
 		},
-		services: {gif_enabled: true, youtube_enabled: true, bluesky_enabled: false},
+		services: {gif_enabled: true, youtube_enabled: true, bluesky_enabled: false, connection_providers: []},
 		limits: EMPTY_LIMITS,
 		push: {public_vapid_key: 'vapid'},
 		app_public: {

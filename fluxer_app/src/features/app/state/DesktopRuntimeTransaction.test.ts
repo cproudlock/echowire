@@ -69,7 +69,7 @@ function discoveryDocument(host: string): InstanceDiscoveryResponse {
 			direct_messages_disabled: false,
 			guild_create_access: true,
 		},
-		services: {gif_enabled: true, youtube_enabled: false, bluesky_enabled: false},
+		services: {gif_enabled: true, youtube_enabled: false, bluesky_enabled: false, connection_providers: []},
 		limits: EMPTY_LIMITS,
 		push: {public_vapid_key: null},
 		app_public: BOOTSTRAP_APP_PUBLIC,

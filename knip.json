@@ -8,6 +8,7 @@
 		"fluxer_admin/src/styles/app.css",
 		"fluxer_admin/static/htmx.min.js",
 		"fluxer_api/scripts/MigrateScyllaToPostgres.ts",
+		"fluxer_app/inline_scripts/*.js",
 		"fluxer_app_proxy/src/routes/instance_brand_preboot.js",
 		"fluxer_app_proxy/src/routes/saturation_preboot.js",
 		"fluxer_app/src/features/voice/utils/camera-effects/models/selfie_segmentation_256x256.d.onnx.ts",

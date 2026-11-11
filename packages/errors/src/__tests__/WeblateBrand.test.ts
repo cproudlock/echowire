@@ -68,7 +68,7 @@ describe('the error catalogs never point at upstream', () => {
 		// Coverage, asserted rather than assumed. The loop skips a non-JSON entry, which is
 		// correct for a stray file and is also exactly how a sweep decays into a check that
 		// cannot fail, so state how much was swept and fail if it collapses.
-		expect(filesScanned).toBe(34);
+		expect(filesScanned).toBe(44);
 		expect(valuesScanned).toBeGreaterThan(15_000);
 
 		// If this fails, a message sends users to a host this fork does not run. Fix the
@@ -148,7 +148,7 @@ describe('the error catalogs never point at upstream', () => {
 			}
 		}
 
-		expect(localesScanned).toBe(33);
+		expect(localesScanned).toBe(43);
 
 		// If this fails, run the project's own sync so the key reaches every locale, and reduce
 		// any plural to the categories that locale actually has. Do not invent a translation:

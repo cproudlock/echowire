@@ -193,8 +193,8 @@ describe('user-visible text never names the upstream brand', () => {
 			}
 		}
 		// Say how much was looked at, so a broken walk fails here instead of reporting a
-		// clean sweep of nothing. 34 locales is the shipped set; raise this when one is added.
-		expect(catalogsScanned).toBe(34);
+		// clean sweep of nothing. 44 locales is the shipped set; raise this when one is added.
+		expect(catalogsScanned).toBe(44);
 		expect(entriesScanned).toBeGreaterThan(200_000);
 		expect(leaks.sort()).toEqual([]);
 	});

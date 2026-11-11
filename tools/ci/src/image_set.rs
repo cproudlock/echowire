@@ -83,6 +83,10 @@ const COMPONENTS: &[Component] = &[
         services: &["push"],
     },
     Component {
+        image: "fluxer-server",
+        services: &[],
+    },
+    Component {
         image: "fluxer-snowflakes",
         services: &["snowflakes", "snowflakes-shard"],
     },
@@ -875,12 +879,13 @@ mod tests {
     //
     // Two components are deliberately not published by this fork, each for a reason:
     //   fluxer-app-proxy  upstream's variant; this fork ships the -self-hosted one
+    //   fluxer-server     upstream's single-process image (fluxerd); this fork ships one image per service
     // (fluxer-docs was excluded here until 2026-10-04, when it was deployed and added
     // to the publish matrix. The exclusion list is asserted against COMPONENTS above, so a
     // stale entry fails rather than silently widening the gap.)
     #[test]
     fn the_fork_publish_workflow_builds_every_component_it_ships() {
-        const NOT_PUBLISHED_BY_THE_FORK: &[&str] = &["fluxer-app-proxy"];
+        const NOT_PUBLISHED_BY_THE_FORK: &[&str] = &["fluxer-app-proxy", "fluxer-server"];
 
         let canonical: BTreeSet<&str> = COMPONENTS.iter().map(|c| c.image).collect();
         for skipped in NOT_PUBLISHED_BY_THE_FORK {

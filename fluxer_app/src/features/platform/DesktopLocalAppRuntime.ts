@@ -10,8 +10,20 @@ export function isDesktopLocalAppOrigin(protocol: string | null, hostname: strin
 	return protocol === DESKTOP_LOCAL_APP_PROTOCOL && hostname === DESKTOP_LOCAL_APP_HOST;
 }
 
+let localAppDocument: boolean | null = null;
+
 export function isDesktopLocalAppDocument(): boolean {
-	return 'window' in globalThis && isDesktopLocalAppOrigin(window.location.protocol, window.location.hostname);
+	if (localAppDocument === null) {
+		localAppDocument =
+			'window' in globalThis && isDesktopLocalAppOrigin(window.location.protocol, window.location.hostname);
+	}
+	return localAppDocument;
+}
+
+// Echowire: the kept InstanceSnapshotStore tests stub a different document per test, and the memo above
+// would otherwise hold the first answer for the whole file.
+export function resetDesktopLocalAppDocumentForTests(): void {
+	localAppDocument = null;
 }
 
 export function parseDesktopLocalRouteKey(pathname: string, basePath: string): string | null {

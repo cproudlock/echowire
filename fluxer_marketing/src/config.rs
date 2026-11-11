@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-use fluxer_common::config::{self as cfg, GeoipS3Config, GeoipSourceConfig};
-use std::env;
+use fluxer_common::config::{self as cfg, EnvMap, GeoipS3Config, GeoipSourceConfig};
 
 const DEFAULT_SECRET_KEY_BASE: &str = "development-marketing-secret";
 
@@ -45,15 +44,16 @@ pub const DOWNLOAD_RELEASE_CHANNEL: ReleaseChannel = ReleaseChannel::Canary;
 
 impl MarketingConfig {
     pub fn from_env() -> Self {
+        let vars = EnvMap::from_process().unwrap_or_else(|error| panic!("{error}"));
         let geoip_source = cfg::parse_geoip_source_config(
-            &cfg::read_first_env(&["FLUXER_GEOIP_DB_PATH", "MAXMIND_DB_PATH"], ""),
+            &vars.read_first(&["FLUXER_GEOIP_DB_PATH", "MAXMIND_DB_PATH"], ""),
             "marketing",
         );
-        let geoip_s3_config = cfg::read_geoip_s3_config_from_env(&geoip_source);
+        let geoip_s3_config = cfg::read_geoip_s3_config_from_env(&geoip_source, &vars);
         let geoip_db_path = geoip_source.maxmind_db_path().unwrap_or_default();
-        let env = RuntimeEnv::from_env_value(&cfg::read_env("FLUXER_ENV", "development"));
+        let env = RuntimeEnv::from_env_value(&vars.read("FLUXER_ENV", "development"));
         let secret_key_base =
-            cfg::read_env("FLUXER_MARKETING_SECRET_KEY_BASE", DEFAULT_SECRET_KEY_BASE);
+            vars.read("FLUXER_MARKETING_SECRET_KEY_BASE", DEFAULT_SECRET_KEY_BASE);
         if env == RuntimeEnv::Production && secret_key_base == DEFAULT_SECRET_KEY_BASE {
             panic!(
                 "FLUXER_MARKETING_SECRET_KEY_BASE must be set to a non-default value in production"
@@ -61,45 +61,43 @@ impl MarketingConfig {
         }
         Self {
             env,
-            host: cfg::read_env("FLUXER_MARKETING_HOST", "0.0.0.0"),
-            port: cfg::read_env("FLUXER_MARKETING_PORT", "3010")
+            host: vars.read("FLUXER_MARKETING_HOST", "0.0.0.0"),
+            port: vars
+                .read("FLUXER_MARKETING_PORT", "3010")
                 .parse()
                 .unwrap_or(3010),
             secret_key_base,
-            base_path: cfg::normalize_base_path(&cfg::read_env("FLUXER_MARKETING_BASE_PATH", "")),
-            api_endpoint: cfg::trim_trailing_slash(&cfg::read_env(
-                "FLUXER_API_ENDPOINT",
-                "https://api.echowire.org",
-            )),
-            static_cdn_endpoint: cfg::trim_trailing_slash(&cfg::read_env(
-                "FLUXER_STATIC_CDN_ENDPOINT",
-                "",
-            )),
-            marketing_endpoint: cfg::trim_trailing_slash(&cfg::read_env(
-                "FLUXER_MARKETING_ENDPOINT",
-                "https://echowire.org",
-            )),
+            base_path: cfg::normalize_base_path(&vars.read("FLUXER_MARKETING_BASE_PATH", "")),
+            api_endpoint: cfg::trim_trailing_slash(
+                &vars.read("FLUXER_API_ENDPOINT", "https://api.echowire.org"),
+            ),
+            static_cdn_endpoint: cfg::trim_trailing_slash(
+                &vars.read("FLUXER_STATIC_CDN_ENDPOINT", ""),
+            ),
+            marketing_endpoint: cfg::trim_trailing_slash(
+                &vars.read("FLUXER_MARKETING_ENDPOINT", "https://echowire.org"),
+            ),
             geoip_db_path,
             geoip_source,
             geoip_s3_config,
-            trust_client_ip_header: cfg::read_bool_env("FLUXER_TRUST_CLIENT_IP_HEADER", false),
-            linux_repo_enabled: cfg::read_bool_env("FLUXER_MARKETING_LINUX_REPO_ENABLED", false),
-            client_ip_header_name: cfg::read_first_env(
-                &[
-                    "FLUXER_CLIENT_IP_HEADER_NAME",
-                    "FLUXER_CLIENT_IP_HEADER",
-                    "CLIENT_IP_HEADER_NAME",
-                    "CLIENT_IP_HEADER",
-                ],
-                "x-forwarded-for",
-            )
-            .trim()
-            .to_ascii_lowercase(),
-            release_channel: ReleaseChannel::from_env_value(&cfg::read_first_env(
-                &["RELEASE_CHANNEL", "FLUXER_RELEASE_CHANNEL"],
-                "stable",
-            )),
-            build_version: cfg::read_first_env(
+            trust_client_ip_header: vars.read_bool("FLUXER_TRUST_CLIENT_IP_HEADER", false),
+            linux_repo_enabled: vars.read_bool("FLUXER_MARKETING_LINUX_REPO_ENABLED", false),
+            client_ip_header_name: vars
+                .read_first(
+                    &[
+                        "FLUXER_CLIENT_IP_HEADER_NAME",
+                        "FLUXER_CLIENT_IP_HEADER",
+                        "CLIENT_IP_HEADER_NAME",
+                        "CLIENT_IP_HEADER",
+                    ],
+                    "x-forwarded-for",
+                )
+                .trim()
+                .to_ascii_lowercase(),
+            release_channel: ReleaseChannel::from_env_value(
+                &vars.read_first(&["RELEASE_CHANNEL", "FLUXER_RELEASE_CHANNEL"], "stable"),
+            ),
+            build_version: vars.read_first(
                 &["BUILD_VERSION", "FLUXER_BUILD_VERSION"],
                 env!("CARGO_PKG_VERSION"),
             ),

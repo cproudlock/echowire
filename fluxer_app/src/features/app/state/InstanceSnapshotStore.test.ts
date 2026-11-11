@@ -10,6 +10,7 @@ import InstanceSnapshotStore, {
 	storedInstanceKey,
 } from '@app/features/app/state/InstanceSnapshotStore';
 import {requireRuntimeConfigSnapshot} from '@app/features/app/state/RuntimeConfigSnapshot';
+import {resetDesktopLocalAppDocumentForTests} from '@app/features/platform/DesktopLocalAppRuntime';
 import {BOOTSTRAP_APP_PUBLIC} from '@app/features/platform/state/__fixtures__/RuntimeBootstrapFixture';
 import {
 	type InstanceDiscoveryDocument,
@@ -117,6 +118,7 @@ function runningChannel(): OfficialReleaseChannel {
 }
 
 function stubBrowserDocument(origin: string, {servesOwnApi = false}: {servesOwnApi?: boolean} = {}): void {
+	resetDesktopLocalAppDocumentForTests();
 	const url = new URL(origin);
 	vi.stubGlobal('window', {
 		location: {origin: url.origin === 'null' ? origin : url.origin, protocol: url.protocol, hostname: url.hostname},

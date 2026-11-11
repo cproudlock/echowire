@@ -798,6 +798,7 @@ mod tests {
             parent_id: None,
             parent_name: None,
             channel_name: None,
+            age_restricted: false,
         }
     }
 

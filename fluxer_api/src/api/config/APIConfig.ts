@@ -52,7 +52,6 @@ export interface OperatorPassConfig {
 	labsGuildId: bigint | null;
 	labsOperatorRoleId: bigint | null;
 	labsVisionaryRoleId: bigint | null;
-	labsAccessRoleId: bigint | null;
 	labsOperatorsChannelId: bigint | null;
 	standardPricesMinor: OperatorPassPriceTable | null;
 	releaseLists: OperatorPassReleaseListTable;
@@ -85,6 +84,7 @@ type APIGeoipConfig = APIGeoipFilesystemConfig | APIGeoipS3Config;
 export interface APIConfig {
 	nodeEnv: 'development' | 'production';
 	port: number;
+	host?: string;
 	headersTimeoutMs: number;
 	requestTimeoutMs: number;
 	maxInflightRequests: number;
@@ -119,7 +119,15 @@ export interface APIConfig {
 	};
 	kv: {
 		url: string;
-		mode: 'standalone' | 'cluster';
+		mode: 'standalone' | 'cluster' | 'postgres';
+		postgresMaxConnections: number;
+		postgresMaxBytes: number;
+	};
+	storage: {
+		backend: 's3' | 'filesystem';
+		root: string;
+		uploadsTtlMs: number | null;
+		readOnly: boolean;
 	};
 	nats: {
 		coreUrl: string;

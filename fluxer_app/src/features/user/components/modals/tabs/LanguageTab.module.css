@@ -11,6 +11,14 @@
 	gap: var(--spacing-4);
 }
 
+/* Echowire: the Weblate notice is gone, but the regional format help line still uses this. */
+.noticeText {
+	margin: 0;
+	color: var(--text-primary-muted);
+	font-size: 0.875rem;
+	line-height: 1.35;
+}
+
 .languageOption {
 	display: flex;
 	flex: 1;
@@ -36,6 +44,11 @@
 }
 
 .languageOptionMenu .flagImage {
+	height: 1.125rem;
+	width: 1.125rem;
+}
+
+.languageOptionMenu .languageMark {
 	height: 1.125rem;
 	width: 1.125rem;
 }
@@ -79,7 +92,8 @@
 }
 
 .languageOptionSelected .languageName,
-.languageOptionSelected .languageCode {
+.languageOptionSelected .languageCode,
+.languageOptionSelected .languageMark {
 	color: currentColor;
 }
 
@@ -88,6 +102,13 @@
 	height: 1.25rem;
 	width: 1.25rem;
 	object-fit: contain;
+}
+
+.languageMark {
+	flex-shrink: 0;
+	height: 1.25rem;
+	width: 1.25rem;
+	color: var(--text-primary-muted);
 }
 
 .flagImageText {
@@ -109,11 +130,6 @@
 
 .tooltipText {
 	font-style: italic;
-}
-
-.switchWrapper {
-	display: flex;
-	flex-direction: column;
 }
 
 .spellcheckHint {

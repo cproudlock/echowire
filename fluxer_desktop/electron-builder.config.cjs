@@ -366,7 +366,6 @@ const nativeBuildArtifactExcludes = [
 	'!node_modules/@fluxer/**/target/**/*',
 	'!node_modules/@fluxer/**/build/**/*',
 	'!node_modules/@fluxer/**/Cargo.toml',
-	'!node_modules/@fluxer/**/Cargo.lock',
 	'!node_modules/@fluxer/**/CMakeLists.txt',
 	'!node_modules/@fluxer/**/tsconfig.json',
 	'!node_modules/@fluxer/**/*.d.ts',
@@ -651,7 +650,7 @@ async function expectedNativeRuntimeArtifactsForAppDir(platform, arch, appDir) {
 	const artifacts = expectedNativeRuntimeArtifacts(platform, arch);
 	if (platform !== 'linux') return artifacts;
 	const webAuthnRoot = path.join(appDir, 'node_modules', '@fluxer', 'webauthn');
-	const linuxWebAuthnRuntimeLibraries = new Set(['libfido2.so.1']);
+	const linuxWebAuthnRuntimeLibraries = new Set(process.env.FLUXER_SYSTEM_LIBS === '1' ? [] : ['libfido2.so.1']);
 	try {
 		for (const entry of await fs.readdir(webAuthnRoot, {withFileTypes: true})) {
 			if (entry.isFile() && isLinuxSharedLibraryArtifact(entry.name)) {

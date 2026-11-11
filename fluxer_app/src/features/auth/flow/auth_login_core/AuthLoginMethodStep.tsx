@@ -4,6 +4,7 @@ import RuntimeConfig from '@app/features/app/state/RuntimeConfig';
 import {
 	SIGN_IN_WITH_A_PASSKEY_DESCRIPTOR,
 	SIGN_IN_WITH_BROWSER_DESCRIPTOR,
+	USE_A_PASSKEY_SAVED_FOR_HOST_DESCRIPTOR,
 } from '@app/features/auth/AuthMessageDescriptors';
 import loginStyles from '@app/features/auth/components/pages/LoginPage.module.css';
 import {
@@ -63,6 +64,7 @@ interface AuthLoginMethodStepProps {
 	readonly extraTopContent: ReactNode;
 	readonly identifierField: LoginIdentifierField;
 	readonly leadingAction: ReactNode;
+	readonly legacyPasskeyHost: string | null;
 	readonly passkeyAvailableForInstance: boolean;
 	readonly registerLink: ReactElement<Record<string, unknown>>;
 	readonly showBrowserOption: boolean;
@@ -74,6 +76,7 @@ interface AuthLoginMethodStepProps {
 	readonly onBrowserLogin: () => void;
 	readonly onEmailLogin: () => void;
 	readonly onPasskeyLogin: () => void;
+	readonly onLegacyPasskeyLogin: () => void;
 	readonly onBackToInstance: (() => void) | null;
 }
 
@@ -95,6 +98,7 @@ export function AuthLoginMethodStep({
 	extraTopContent,
 	identifierField,
 	leadingAction,
+	legacyPasskeyHost,
 	passkeyAvailableForInstance,
 	registerLink,
 	showBrowserOption,
@@ -106,6 +110,7 @@ export function AuthLoginMethodStep({
 	onBrowserLogin,
 	onEmailLogin,
 	onPasskeyLogin,
+	onLegacyPasskeyLogin,
 	onBackToInstance,
 }: AuthLoginMethodStepProps) {
 	const {i18n} = useLingui();
@@ -157,6 +162,23 @@ export function AuthLoginMethodStep({
 			stepFocus: false,
 			submitting: false,
 		});
+		if (legacyPasskeyHost !== null) {
+			secondaryActions.push({
+				disabled,
+				id: 'legacy-passkey',
+				label: i18n._(USE_A_PASSKEY_SAVED_FOR_HOST_DESCRIPTOR, {host: legacyPasskeyHost}),
+				icon: (
+					<KeyIcon
+						size={remFromPx(16)}
+						data-flx="auth.flow.auth-login-core.auth-login-method-step.legacy-passkey-key-icon"
+					/>
+				),
+				variant: ButtonVariant.SECONDARY,
+				onSelect: onLegacyPasskeyLogin,
+				stepFocus: false,
+				submitting: false,
+			});
+		}
 	}
 	if (showBrowserOption) {
 		secondaryActions.push({

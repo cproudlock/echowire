@@ -216,12 +216,6 @@ jobs:
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step update_version
 
-      - name: Set build channel
-        working-directory: ${{ env.WORKDIR }}/fluxer_desktop
-        run: >-
-          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
-          --step set_build_channel
-
       - name: Build shared renderer assets
         working-directory: ${{ env.WORKDIR }}/fluxer_desktop
         run: >-
@@ -435,16 +429,9 @@ jobs:
           cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
           --step update_version
 
-      - name: Set build channel
-        working-directory: ${{ env.WORKDIR }}/fluxer_desktop
-        run: >-
-          cargo run --locked --quiet --manifest-path ${{ github.workspace }}/_ci/tools/ci/Cargo.toml -- build-desktop
-          --step set_build_channel
-
       - name: Typecheck desktop
         # Echowire: the desktop bundle is built with esbuild, which strips types without
-        # checking them, so type errors used to reach shipped builds. Runs after
-        # set_build_channel because that generates src/common/BuildChannel.ts. Linux only:
+        # checking them, so type errors used to reach shipped builds. Linux only:
         # the check is platform-independent, and the release job needs every leg to pass,
         # so gating one leg gates the release.
         if: matrix.platform == 'linux'

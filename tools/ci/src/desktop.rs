@@ -135,7 +135,6 @@ enum DesktopStep {
     InstallRustWindowsTargets,
     InstallDependencies,
     UpdateVersion,
-    SetBuildChannel,
     BuildSharedAssets,
     PrepareSharedAssets,
     RestoreSharedAssets,
@@ -266,7 +265,6 @@ pub async fn run(args: BuildDesktopArgs) -> Result<()> {
             "--no-git-tag-version",
             "--allow-same-version",
         ])),
-        DesktopStep::SetBuildChannel => set_build_channel_step(),
         DesktopStep::BuildSharedAssets => build_shared_assets_step(),
         DesktopStep::PrepareSharedAssets => prepare_shared_assets_step(),
         DesktopStep::RestoreSharedAssets => restore_shared_assets_step(),
@@ -355,70 +353,6 @@ fn set_metadata_step(channel: &str, test_build: bool) -> Result<()> {
         ("s3_prefix", s3_prefix),
         ("source_sha", source_sha.as_str()),
     ])
-}
-
-fn set_build_channel_step() -> Result<()> {
-    let channel = env::var("BUILD_CHANNEL").unwrap_or_else(|_| "stable".to_string());
-    write_build_channel_file(&resolve_desktop_dir()?, &channel)
-}
-
-fn resolve_desktop_dir() -> Result<PathBuf> {
-    let cwd = env::current_dir().context("Failed to resolve current directory")?;
-    if cwd.file_name().and_then(|value| value.to_str()) == Some("fluxer_desktop") {
-        return Ok(cwd);
-    }
-    if cwd.join("fluxer_desktop").is_dir() {
-        return Ok(cwd.join("fluxer_desktop"));
-    }
-    Err(anyhow!(
-        "Could not resolve fluxer_desktop directory from {}",
-        cwd.display()
-    ))
-}
-
-const BUILD_CHANNELS: &[&str] = &["stable", "canary", "development"];
-
-pub(crate) fn write_build_channel_file(root: &Path, channel: &str) -> Result<()> {
-    ensure!(
-        BUILD_CHANNELS.contains(&channel),
-        "Invalid BUILD_CHANNEL: {channel}. Must be one of: {}.",
-        BUILD_CHANNELS.join(", ")
-    );
-    let path = root.join("src/common/BuildChannel.ts");
-    let content = build_channel_content(channel);
-    if path
-        .exists()
-        .then(|| fs::read_to_string(&path))
-        .transpose()
-        .with_context(|| format!("Failed to read {}", path.display()))?
-        .as_deref()
-        == Some(content.as_str())
-    {
-        println!("Build channel already set to: {channel}");
-        return Ok(());
-    }
-    if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent)
-            .with_context(|| format!("Failed to create {}", parent.display()))?;
-    }
-    fs::write(&path, content).with_context(|| format!("Failed to write {}", path.display()))?;
-    println!("Set build channel to: {channel}");
-    Ok(())
-}
-
-fn build_channel_content(channel: &str) -> String {
-    let union = BUILD_CHANNELS
-        .iter()
-        .map(|value| format!("'{value}'"))
-        .collect::<Vec<_>>()
-        .join(" | ");
-    format!(
-        "// SPDX-License-Identifier: AGPL-3.0-or-later\n\n\
-export type BuildChannel = {union};\n\n\
-export const BUILD_CHANNEL = '{channel}' as BuildChannel;\n\
-export const IS_CANARY = BUILD_CHANNEL === 'canary';\n\
-export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
-    )
 }
 
 fn resolve_source_sha() -> Result<String> {
@@ -9261,51 +9195,6 @@ mod tests {
         assert_eq!(
             handoff_artifact_name("stable", "windows", "arm64", DEFAULT_DESKTOP_VARIANT, false),
             "fluxer-desktop-stable-windows-arm64"
-        );
-    }
-
-    #[test]
-    fn build_channel_content_matches_expected_typescript() {
-        assert_eq!(
-            build_channel_content("canary"),
-            "// SPDX-License-Identifier: AGPL-3.0-or-later\n\n\
-export type BuildChannel = 'stable' | 'canary' | 'development';\n\n\
-export const BUILD_CHANNEL = 'canary' as BuildChannel;\n\
-export const IS_CANARY = BUILD_CHANNEL === 'canary';\n\
-export const CHANNEL_DISPLAY_NAME = BUILD_CHANNEL;\n"
-        );
-        assert!(
-            build_channel_content("development")
-                .contains("export const BUILD_CHANNEL = 'development' as BuildChannel;")
-        );
-    }
-
-    #[test]
-    fn write_build_channel_file_rejects_invalid_channels() {
-        let temp = tempfile::tempdir().unwrap();
-        assert_eq!(
-            write_build_channel_file(temp.path(), "nightly")
-                .unwrap_err()
-                .to_string(),
-            "Invalid BUILD_CHANNEL: nightly. Must be one of: stable, canary, development."
-        );
-        write_build_channel_file(temp.path(), "development").unwrap();
-    }
-
-    #[test]
-    fn write_build_channel_file_creates_and_updates_file() {
-        let temp = tempfile::tempdir().unwrap();
-        write_build_channel_file(temp.path(), "stable").unwrap();
-        let path = temp.path().join("src/common/BuildChannel.ts");
-        assert_eq!(
-            fs::read_to_string(&path).unwrap(),
-            build_channel_content("stable")
-        );
-
-        write_build_channel_file(temp.path(), "canary").unwrap();
-        assert_eq!(
-            fs::read_to_string(&path).unwrap(),
-            build_channel_content("canary")
         );
     }
 

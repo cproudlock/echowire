@@ -1268,6 +1268,12 @@ msgstr "{count, plural, one {# közös közösség} other {# közös közösség
 msgid "{count, plural, one {# new message} other {# new messages}}"
 msgstr "{count, plural, one {# új üzenet} other {# új üzenet}}"
 
+#. Short label in the footer of a forum post card, meaning "# new messages". count is the number of unread messages. Keep it as short as possible. It shares one line with the message count and the time.
+#: src/features/forum/utils/ForumMessageDescriptors.ts
+msgctxt "forum-card-footer"
+msgid "{count, plural, one {# new} other {# new}}"
+msgstr ""
+
 #. Heading of the list of Operator Passes in the Operator Pass settings, and the count of passes an account has. Operator Pass is a product name, keep it as is.
 #: src/features/premium/components/operator_pass/OperatorPassHoldingsSection.tsx
 msgid "{count, plural, one {# Operator Pass} other {# Operator Passes}}"
@@ -1799,7 +1805,7 @@ msgstr "{mentionCount, plural, one {# említés} other {# említés}}"
 msgid "{mentionCount, plural, one {# mention} other {# mentions}} on {accountCount, plural, one {# other account} other {# other accounts}}"
 msgstr "{mentionCount, plural, one {# említés} other {# említés}} {accountCount, plural, one {# másik fiókban} other {# másik fiókban}}"
 
-#. Message group spacing option label.
+#. Current value and track label of the space between message groups slider, for example 16px.
 #: src/features/user/components/modals/tabs/appearance_tab/MessagesTab.tsx
 msgid "{messageGroupSpacing}px"
 msgstr "{messageGroupSpacing}px"
@@ -2455,6 +2461,11 @@ msgstr "{username} hívást indított."
 #: src/features/messaging/utils/SystemMessageUtils.tsx
 msgid "{username} started a thread: {threadName}"
 msgstr "{username} új szálat indított: {threadName}"
+
+#. Screen reader value for the chat font size and group spacing sliders, shown on screen as 16px.
+#: src/features/user/components/modals/tabs/appearance_tab/ScalingTab.tsx
+msgid "{value} pixels"
+msgstr ""
 
 #. Size of the chosen branding image in the setup wizard. Width and height are numbers.
 #: src/features/app/components/setup/SetupBrandingAssetField.tsx
@@ -6905,6 +6916,11 @@ msgstr "Gomb helyi menüvel"
 msgid "Buttons"
 msgstr "Gombok"
 
+#. Help text under the theme color picker in the setup wizard branding step.
+#: src/features/app/components/setup/SetupBrandingFields.tsx
+msgid "Buttons and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to go back to the default indigo."
+msgstr ""
+
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Buttons can trigger context menus on click by passing the onClick event directly to openContextMenu."
 msgstr "A gombok kattintásra helyi menüt nyithatnak meg, ha az onClick eseményt közvetlenül az openContextMenu kapja meg."
@@ -6921,11 +6937,6 @@ msgstr "A gombok betöltésjelzőt mutatnak, ha a submitting értéke true."
 #: src/features/user/components/modals/tabs/component_gallery_tab/ComponentGalleryTabButtonsTab.tsx
 msgid "Buttons with icons"
 msgstr "Gombok ikonokkal"
-
-#. Help text under the theme color picker in the setup wizard branding step.
-#: src/features/app/components/setup/SetupBrandingFields.tsx
-msgid "Buttons, links and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to go back to the default indigo."
-msgstr "Buttons, links and highlights across the app use this color, and phone browsers use it for their toolbar. Reset it to go back to the default indigo."
 
 #. Gift inventory empty-state description. premiumProductName is the premium tab name and product name.
 #: src/features/user/components/modals/tabs/GiftInventoryTab.tsx
@@ -7945,7 +7956,7 @@ msgid "Channel access"
 msgstr "Csatorna-hozzáférés"
 
 #. Title of the alert shown when clicking a message link the user does not have permission to view.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx
+#: src/features/messaging/utils/InAppLinkUtils.tsx
 msgid "Channel access denied"
 msgstr "Csatorna-hozzáférés megtagadva"
 
@@ -8160,7 +8171,7 @@ msgstr "Csevegés betűtípusa"
 msgid "Chat font scaling"
 msgstr "Csevegés betűméretezése"
 
-#. Accessible label for the chat font size select.
+#. Label for the chat font size slider.
 #: src/features/user/components/modals/tabs/appearance_tab/ScalingTab.tsx
 msgid "Chat font size"
 msgstr "Csevegés betűmérete"
@@ -11196,6 +11207,10 @@ msgstr "Nem sikerült betölteni ezt a közösséget. Próbáld meg később új
 msgid "Couldn't load this part of the app. Check your connection and try again."
 msgstr "Nem sikerült betölteni az alkalmazás ezen részét. Ellenőrizze a kapcsolatát, és próbálkozzon újra."
 
+#: src/features/user/components/settings_utils/ChannelSettingsTabStates.tsx
+msgid "Couldn't load this tab. Check your connection and try again."
+msgstr ""
+
 #. Error modal title shown when the voice regions for a channel fail to load in channel settings.
 #: src/features/channel/components/alerts/VoiceRegionsLoadFailedModal.tsx
 msgid "Couldn't load voice regions"
@@ -13373,13 +13388,13 @@ msgstr "Fejlesztői állapot"
 #. Short label in the channel and chat utility buttons. Keep it concise.
 #. Title of the info alert shown when clicking an internal developer-tools deep link.
 #: src/features/channel/components/channel_header_components/UtilityButtons.tsx
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx
+#: src/features/messaging/utils/InAppLinkUtils.tsx
 #: src/features/ui/action_menu/items/StaffDeveloperUserControlsMenuItem.tsx
 msgid "Developer tools"
 msgstr "Fejlesztői eszközök"
 
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx
+#: src/features/messaging/utils/InAppLinkUtils.tsx
 msgid "Developer tools are available from the staff badge in the channel header."
 msgstr "A fejlesztői eszközök a csatornafejlécben található személyzeti jelvényről érhetők el."
 
@@ -21528,7 +21543,7 @@ msgid "Link styling"
 msgstr "Linkstílus"
 
 #. Title of the alert shown when clicking an internal link that is not available to the current account.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx
+#: src/features/messaging/utils/InAppLinkUtils.tsx
 msgid "Link unavailable"
 msgstr "A hivatkozás nem érhető el"
 
@@ -24182,6 +24197,12 @@ msgstr "Soha ne automatikusan"
 msgid "New"
 msgstr "Új"
 
+#. Short label in the footer of a forum post card, meaning "new messages", when the exact number is unknown. Keep it as short as possible. It shares one line with the message count and the time.
+#: src/features/forum/utils/ForumMessageDescriptors.ts
+msgctxt "forum-card-footer"
+msgid "New"
+msgstr ""
+
 #. Small badge on a new or recently added app navigation item.
 #: src/features/app/components/layout/GuildsLayout.tsx
 msgctxt "navigation-badge"
@@ -26328,6 +26349,11 @@ msgstr "Nyisd meg a Rendszerbeállítások > Adatvédelem és biztonság > Képe
 #: src/features/guild/components/modals/add_guild_modal/TemplateImportForm.tsx
 msgid "Open template JSON"
 msgstr "Sablon JSON-jának megnyitása"
+
+#. Explains where the code comes from, under the title of the browser page where it is typed. The code is shown by the app the user is signing in to, not by an app that is already signed in. "Signing in on another device?" is the label of a button in that app and must match its translation exactly. PRODUCT_NAME is the app name, such as Fluxer.
+#: src/features/auth/flow/HandoffApprovalFlow.tsx
+msgid "Open the {PRODUCT_NAME} app you're signing in to, select \"Signing in on another device?\" and type the code it shows here. Only enter a code from a device you control."
+msgstr "Nyisd meg a(z) {PRODUCT_NAME} alkalmazást, amelybe bejelentkezel, válaszd a „Bejelentkezel egy másik eszközön?” lehetőséget, és írd be ide az általa mutatott kódot. Csak olyan kódot adj meg, amelyik egy általad felügyelt eszközről származik."
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -36676,11 +36702,6 @@ msgstr "Ennyi volt az összes."
 msgid "The {PRODUCT_NAME} app asked to sign in as {requestedIdentifier}, but you chose {name}."
 msgstr "A(z) {PRODUCT_NAME} alkalmazás a(z) {requestedIdentifier} fiókkal szeretett volna bejelentkezni, de Ön a(z) {name} fiókot választotta."
 
-#. Explains where the code comes from, under the title of the browser page where it is typed. Signing in on another device is the label of a button in the app and must match its translation. PRODUCT_NAME is the app name, such as Fluxer.
-#: src/features/auth/flow/HandoffApprovalFlow.tsx
-msgid "The {PRODUCT_NAME} app on your other device shows it under Signing in on another device. Only enter a code from a device you control."
-msgstr "A(z) {PRODUCT_NAME} alkalmazás a másik eszközödön a „Bejelentkezés másik eszközön” alatt jelenik meg. Csak olyan kódot adj meg, amelyik egy általad felügyelt eszközről származik."
-
 #. Shown after the user cancelled the sign-in request in the browser. PRODUCT_NAME is the app name, such as Fluxer.
 #: src/features/auth/flow/HandoffApprovalFlow.tsx
 msgid "The {PRODUCT_NAME} app was not signed in. You can close this tab."
@@ -38060,7 +38081,7 @@ msgid "This link has expired"
 msgstr "Ez a link lejárt"
 
 #. Body of the link-unavailable alert.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx
+#: src/features/messaging/utils/InAppLinkUtils.tsx
 msgid "This link is not available for your account."
 msgstr "Ez a hivatkozás nem érhető el a fiókod számára."
 
@@ -43837,7 +43858,7 @@ msgid "You changed your tag while on {PREMIUM_PRODUCT_NAME}. It will reroll rand
 msgstr "A(z) {PREMIUM_PRODUCT_NAME} használata közben megváltoztattad a címkédet. Ha a(z) {PREMIUM_PRODUCT_NAME} nem újul meg, a lejáratakor véletlenszerű új címkét kapsz."
 
 #. Body of the access-denied alert for clicked message links.
-#: src/features/messaging/components/markdown/renderers/LinkRenderer.tsx
+#: src/features/messaging/utils/InAppLinkUtils.tsx
 msgid "You do not have access to the channel where this message was sent."
 msgstr "Nincs hozzáférésed ahhoz a csatornához, ahová ezt az üzenetet küldték."
 

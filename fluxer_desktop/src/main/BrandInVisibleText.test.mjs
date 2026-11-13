@@ -18,6 +18,7 @@ const LITERAL = /(["'`])((?:\\.|(?!\1).)*?)\1/g;
 // needs a decision, not an entry.
 const ALLOWED = new Map([
 	['X-Fluxer-Desktop-Protocol-Authorization', 'a wire header name shared with the renderer'],
+	['X-Fluxer-Desktop-Attachment-Window', 'a wire header name shared with the renderer'],
 	// biome-ignore lint/suspicious/noTemplateCurlyInString: the literal source text of a template in ShellSelfUpdate.ts
 	['Fluxer/${app.getVersion()} (${process.platform}: ${process.arch})', 'the User-Agent string the update server sees'],
 	[

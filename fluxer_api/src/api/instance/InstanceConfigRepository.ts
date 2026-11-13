@@ -28,6 +28,7 @@ import {
 	setCachedAccountsConfig,
 	setCachedEmailDeliveryState,
 } from '@app/api/instance/AccountsConfigCache';
+import {setCachedProxyAttachmentsThroughApi} from '@app/api/instance/AttachmentAccessMode';
 import {getLegacyDateOfBirthCollectionDefault} from '@app/api/instance/DateOfBirthCollectionCache';
 import {
 	describeIncompleteSmtpConfig,
@@ -427,6 +428,7 @@ interface InstanceAttachmentDecayConfig {
 
 interface InstanceMediaConfig {
 	attachment_decay: InstanceAttachmentDecayConfig;
+	proxy_attachments_through_api?: boolean | undefined;
 }
 
 export interface InstanceAttachmentDecayEffectiveConfig {
@@ -445,6 +447,7 @@ interface InstanceMediaAdminConfig {
 	attachment_decay: InstanceAttachmentDecayConfig & {
 		effective: InstanceAttachmentDecayEffectiveConfig;
 	};
+	proxy_attachments_through_api: boolean;
 }
 
 export interface InstanceIntegrationsConfigPatch {
@@ -462,6 +465,7 @@ export interface InstanceIntegrationsConfigPatch {
 
 interface InstanceMediaConfigPatch {
 	attachment_decay?: Partial<InstanceAttachmentDecayConfig>;
+	proxy_attachments_through_api?: boolean;
 }
 
 export interface InstanceRegistrationUrl extends RegistrationUrlResponse {
@@ -1357,6 +1361,7 @@ const StoredAttachmentDecaySchema = z
 	);
 const StoredInstanceMediaSchema = z.object({
 	attachment_decay: StoredAttachmentDecaySchema.prefault({}),
+	proxy_attachments_through_api: z.boolean().optional(),
 }) satisfies z.ZodType<InstanceMediaConfig>;
 
 function normalizeAttachmentDecayBounds(value: InstanceAttachmentDecayConfig): InstanceAttachmentDecayConfig {
@@ -1936,7 +1941,13 @@ export class InstanceConfigRepository {
 		checkStoredConfig('integrations', () =>
 			parseStoredInstanceIntegrationsConfig(snapshot.get(INSTANCE_INTEGRATIONS_CONFIG_KEY) ?? null),
 		);
-		checkStoredConfig('media', () => parseStoredInstanceMediaConfig(snapshot.get(INSTANCE_MEDIA_CONFIG_KEY) ?? null));
+		setCachedProxyAttachmentsThroughApi(null);
+		checkStoredConfig('media', () =>
+			setCachedProxyAttachmentsThroughApi(
+				parseStoredInstanceMediaConfig(snapshot.get(INSTANCE_MEDIA_CONFIG_KEY) ?? null).proxy_attachments_through_api ??
+					null,
+			),
+		);
 		setStoredBillingConfig(parseStoredInstanceBillingConfig(snapshot.get(INSTANCE_BILLING_CONFIG_KEY) ?? null));
 		const appPublic = parseStoredAppPublicConfig(snapshot.get(APP_PUBLIC_CONFIG_KEY) ?? null);
 		setCachedConfiguredLegalUrls(appPublic.legal);
@@ -1970,6 +1981,7 @@ export class InstanceConfigRepository {
 
 	clearCacheForTesting(): void {
 		setCachedProductName(null);
+		setCachedProxyAttachmentsThroughApi(null);
 		setCachedAccountIdentity(null);
 		setCachedAccountsConfig(null);
 		setCachedEmailDeliveryState(null);
@@ -2872,16 +2884,22 @@ export class InstanceConfigRepository {
 		return parseStoredInstanceMediaConfig(raw);
 	}
 
-	setInstanceMediaConfig(config: InstanceMediaConfigPatch): Promise<InstanceMediaConfig> {
-		return this.updateStoredConfig(INSTANCE_MEDIA_CONFIG_KEY, (raw) => {
+	async setInstanceMediaConfig(config: InstanceMediaConfigPatch): Promise<InstanceMediaConfig> {
+		const next = await this.updateStoredConfig(INSTANCE_MEDIA_CONFIG_KEY, (raw) => {
 			const current = parseStoredInstanceMediaConfig(raw);
+			const proxyAttachmentsThroughApi = config.proxy_attachments_through_api ?? current.proxy_attachments_through_api;
 			return decodeInstanceMediaConfig({
 				attachment_decay: {
 					...current.attachment_decay,
 					...(config.attachment_decay ?? {}),
 				},
+				...(proxyAttachmentsThroughApi === undefined
+					? {}
+					: {proxy_attachments_through_api: proxyAttachmentsThroughApi}),
 			});
 		});
+		setCachedProxyAttachmentsThroughApi(next.proxy_attachments_through_api ?? null);
+		return next;
 	}
 
 	async getEffectiveAttachmentDecayConfig(): Promise<InstanceAttachmentDecayEffectiveConfig> {
@@ -2903,6 +2921,7 @@ export class InstanceConfigRepository {
 				...media.attachment_decay,
 				effective: attachmentDecay,
 			},
+			proxy_attachments_through_api: media.proxy_attachments_through_api === true,
 		};
 	}
 

@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-import DesktopRuntimeTransactions from '@app/features/app/state/DesktopRuntimeTransaction';
+import DesktopRuntimeTransactions, * as DesktopRuntimeTransactionModule from '@app/features/app/state/DesktopRuntimeTransaction';
 import InstanceSnapshotStore, {
 	type RuntimeConfigSnapshot,
 	runtimeSnapshotFromDiscovery,
@@ -19,10 +19,6 @@ import {afterEach, beforeEach, describe, expect, test, vi} from 'vitest';
 const desktopRuntime = vi.hoisted(() => ({required: false}));
 
 vi.mock('@lingui/core/macro', () => ({msg: (descriptor: MessageDescriptor) => descriptor}));
-vi.mock('@app/features/app/state/DesktopRuntimeTransaction', async (importOriginal) => {
-	const actual = await importOriginal<typeof import('@app/features/app/state/DesktopRuntimeTransaction')>();
-	return {...actual, requiresDesktopRuntimeTransaction: () => desktopRuntime.required};
-});
 
 const EMPTY_LIMITS: LimitConfigSnapshot = {version: 1, traitDefinitions: [], rules: []};
 
@@ -88,7 +84,13 @@ function parsedDocument(host: string): InstanceDiscoveryDocument {
 const bootSnapshot: RuntimeConfigSnapshot = runtimeSnapshotFromDiscovery(parsedDocument('boot.test'));
 RuntimeConfig.applySnapshot(bootSnapshot);
 
+// Echowire: a spy on the export rather than vi.mock. DesktopRuntimeTransaction, NativeUtils and RuntimeConfig import
+// each other in a cycle; with vi.mock plus importOriginal, the order the cycle loads in decides whether
+// RuntimeConfig sees the mock, and upstream changed that order on 2026-11-13 (#4068).
 beforeEach(() => {
+	vi.spyOn(DesktopRuntimeTransactionModule, 'requiresDesktopRuntimeTransaction').mockImplementation(
+		() => desktopRuntime.required,
+	);
 	RuntimeConfig.applySnapshot(bootSnapshot);
 });
 

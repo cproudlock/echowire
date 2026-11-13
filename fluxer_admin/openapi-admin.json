@@ -18366,9 +18366,10 @@
 									"effective"
 								],
 								"additionalProperties": false
-							}
+							},
+							"proxy_attachments_through_api": {"type": "boolean"}
 						},
-						"required": ["attachment_decay"],
+						"required": ["attachment_decay", "proxy_attachments_through_api"],
 						"additionalProperties": false
 					},
 					"billing": {"$ref": "#/components/schemas/InstanceBillingResponse"},
@@ -18887,6 +18888,10 @@
 										"maximum": 9007199254740991
 									}
 								}
+							},
+							"proxy_attachments_through_api": {
+								"description": "Whether attachment links point at the API, which checks that the viewer can read the message before it hands over the file",
+								"type": "boolean"
 							}
 						}
 					},
@@ -27425,6 +27430,7 @@
 					"UNCLAIMED_ACCOUNT_CANNOT_SEND_MESSAGES",
 					"UNCLAIMED_ACCOUNT_CANNOT_SUBMIT_REPORTS",
 					"UNKNOWN_BADGE",
+					"UNKNOWN_BAN",
 					"UNKNOWN_CHANNEL",
 					"UNKNOWN_CONNECTION_PROVIDER",
 					"UNKNOWN_EMOJI",
@@ -27819,6 +27825,7 @@
 					"Claim your account to send messages.",
 					"Claim your account to submit reports.",
 					"Badge wasn't found.",
+					"Ban wasn't found.",
 					"Channel wasn't found.",
 					"This kind of connection isn't available on this instance.",
 					"Unknown emoji.",

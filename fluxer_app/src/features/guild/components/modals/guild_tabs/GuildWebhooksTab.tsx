@@ -15,7 +15,8 @@ import {WebhookListItem} from '@app/features/webhook/components/WebhookListItem'
 import {useWebhookUpdates} from '@app/features/webhook/hooks/useWebhookUpdates';
 import type {Webhook} from '@app/features/webhook/models/Webhook';
 import Webhooks from '@app/features/webhook/state/Webhooks';
-import {Permissions, WEBHOOK_CHANNEL_TYPES} from '@fluxer/constants/src/ChannelConstants';
+import {Permissions} from '@fluxer/constants/src/ChannelConstants';
+import {WEBHOOK_CHANNEL_TYPES} from '@fluxer/constants/src/ThreadConstants';
 import {msg} from '@lingui/core/macro';
 import {Trans, useLingui} from '@lingui/react/macro';
 import {RobotIcon, WarningCircleIcon} from '@phosphor-icons/react';

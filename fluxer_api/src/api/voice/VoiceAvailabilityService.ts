@@ -30,6 +30,10 @@ export function deriveVoicePingEndpoint(server: VoiceServerRecord | null): strin
 
 const EMPTY_CONNECTION_COUNTS: ReadonlyMap<string, number> = new Map();
 
+export function isRegionPickable(region: VoiceRegionAvailability): boolean {
+	return region.isAccessible && !region.hidden;
+}
+
 function meetsVoiceRestrictions(restrictions: VoiceRegionRecord['restrictions'], context: VoiceAccessContext): boolean {
 	if (restrictions.allowedUserIds.size > 0 && !restrictions.allowedUserIds.has(context.requestingUserId)) {
 		return false;
@@ -118,6 +122,7 @@ export class VoiceAvailabilityService {
 				latitude: region.latitude,
 				longitude: region.longitude,
 				isDefault: region.isDefault,
+				hidden: region.hidden,
 				vipOnly: region.restrictions.vipOnly,
 				requiredGuildFeatures: Array.from(region.restrictions.requiredGuildFeatures),
 				serverCount: servers.length,

@@ -51,6 +51,11 @@ export const ENABLE_FAVORITES_DESCRIPTOR = msg({
 	message: 'Enable favorites',
 	comment: 'Toggle label and settings search entry for controlling whether favorites are visible throughout the app.',
 });
+export const SHOW_PLUTONIUM_BUTTON_DESCRIPTOR = msg({
+	message: 'Show {premiumProductName} button',
+	comment:
+		'Toggle label and settings search entry for showing the premium button in the direct messages list. Preserve {premiumProductName}; it is inserted by code.',
+});
 export const SHOW_HELP_CENTER_BUTTON_DESCRIPTOR = msg({
 	message: 'Show help center button',
 	comment: 'Toggle label and settings search entry for showing the help center button in the sidebar.',

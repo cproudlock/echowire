@@ -68,3 +68,8 @@ echo "== built =="
 docker images --format "{{.Repository}}:{{.Tag}} {{.Size}}" | grep ":$TAG" | sed "s/^/  /"
 echo "  failures: $(wc -l < "$FAILED")"
 sed "s/^/    /" "$FAILED" 2>/dev/null
+
+# Each build leaves 20-100 GB of buildx cache; without this the dev disk fills
+# in a day. Keep the last 48h so repeat builds stay fast.
+docker builder prune -f --filter until=48h >/dev/null 2>&1 || true
+echo "  build cache pruned (older than 48h)"

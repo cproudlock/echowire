@@ -9,6 +9,7 @@ import {ForumPostCard} from '@app/features/forum/components/ForumPostCard';
 import {ForumPostComposer} from '@app/features/forum/components/ForumPostComposer';
 import {ForumFilterRow, ForumSearchCard} from '@app/features/forum/components/ForumToolbar';
 import {getForumPostListView, useForumViewing, usePostDataPrefetch} from '@app/features/forum/hooks/useForumPosts';
+import ForumPostDrafts from '@app/features/forum/state/ForumPostDrafts';
 import ForumPosts from '@app/features/forum/state/ForumPosts';
 import * as D from '@app/features/forum/utils/ForumMessageDescriptors';
 import {
@@ -21,7 +22,7 @@ import markupStyles from '@app/features/theme/styles/Markup.module.css';
 import {Button} from '@app/features/ui/button/Button';
 import {Spinner} from '@app/features/ui/components/Spinner';
 import FocusRing from '@app/features/ui/focus_ring/FocusRing';
-import {ForumLayoutTypes, THREAD_SEARCH_MAX_LIMIT} from '@fluxer/constants/src/ThreadConstants';
+import {ForumLayoutTypes, THREAD_NAME_MAX_LENGTH, THREAD_SEARCH_MAX_LIMIT} from '@fluxer/constants/src/ThreadConstants';
 import {useLingui} from '@lingui/react/macro';
 import {CaretDownIcon, CaretUpIcon, ChatsTeardropIcon, InfoIcon} from '@phosphor-icons/react';
 import {clsx} from 'clsx';
@@ -240,10 +241,12 @@ const ForumPostList = observer(({forum, onNewPost}: {forum: Channel; onNewPost: 
 });
 
 export const ForumChannelView = observer(({forum}: {forum: Channel}) => {
-	const [composerTitle, setComposerTitle] = useState<string | null>(null);
 	useForumViewing(forum);
-	const handleNewPost = useCallback((title: string) => setComposerTitle(title.trim()), []);
-	const handleCloseComposer = useCallback(() => setComposerTitle(null), []);
+	const handleNewPost = useCallback(
+		(title: string) => ForumPostDrafts.open(forum.id, title.trim().slice(0, THREAD_NAME_MAX_LENGTH)),
+		[forum.id],
+	);
+	const handleCloseComposer = useCallback(() => ForumPostDrafts.close(forum.id), [forum.id]);
 	return (
 		<div className={styles.view} data-flx="forum.forum-channel-view.view">
 			<ChannelHeader
@@ -255,7 +258,7 @@ export const ForumChannelView = observer(({forum}: {forum: Channel}) => {
 			<div className={styles.scroller} data-flx="forum.forum-channel-view.scroller">
 				<div className={styles.content} data-flx="forum.forum-channel-view.content">
 					<ForumGuidelines forum={forum} data-flx="forum.forum-channel-view.forum-guidelines" />
-					{composerTitle == null ? (
+					{ForumPostDrafts.get(forum.id) == null ? (
 						<>
 							<ForumSearchCard
 								forum={forum}
@@ -268,7 +271,6 @@ export const ForumChannelView = observer(({forum}: {forum: Channel}) => {
 						<ForumPostComposer
 							key={forum.id}
 							forum={forum}
-							initialTitle={composerTitle}
 							onClose={handleCloseComposer}
 							data-flx="forum.forum-channel-view.forum-post-composer"
 						/>

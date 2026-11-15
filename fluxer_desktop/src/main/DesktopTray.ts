@@ -96,24 +96,17 @@ export function updateTrayRuntimeState(update: Partial<TrayRuntimeStatePayload>,
 	if (webContentsId !== undefined) {
 		trayActionBridgeWebContentsId = webContentsId;
 	}
-	// Echowire: only rebuild the tray menu when a menu-relevant value actually
-	// changes. The renderer re-pushes the full tray state on a heartbeat; every
-	// field here is rendered in the menu, so an unconditional refresh rebuilt the
-	// context menu ~2x/sec. On Linux (AppIndicator) setContextMenu() closes an
-	// open menu, so the status submenu flickered shut before it could be clicked.
-	const menuChanged = (Object.keys(update) as Array<keyof TrayRuntimeStatePayload>).some(
-		(key) => trayState[key] !== update[key],
-	);
 	if (typeof update.buildInfo === 'string' && update.buildInfo !== trayState.buildInfo) {
 		logger.info(`The renderer reported its build: ${update.buildInfo}`);
 	}
 	const privacyChanged =
 		typeof update.hidePersonalInformation === 'boolean' &&
 		update.hidePersonalInformation !== trayState.hidePersonalInformation;
+	const changed = (Object.keys(update) as Array<keyof TrayRuntimeStatePayload>).some(
+		(key) => update[key] !== trayState[key],
+	);
 	Object.assign(trayState, update);
-	if (menuChanged) {
-		refreshDesktopTrayMenu();
-	}
+	if (changed) refreshDesktopTrayMenu();
 	if (privacyChanged) {
 		for (const listener of Array.from(privacyListeners)) listener();
 	}

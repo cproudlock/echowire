@@ -496,10 +496,12 @@ function compiledFluxerCiBin() {
 	if (fluxerCiBin !== '') {
 		return fluxerCiBin;
 	}
-	console.log('Building fluxer-ci without its S3 and HTTP features...');
+	// Fork: build with default features. Upstream #3989 builds without them for offline Linux packaging,
+	// but this fork's tools/ci (desktop.rs S3 uploads, linux_repo.rs) needs the s3 and http features to compile.
+	console.log('Building fluxer-ci...');
 	const output = execFileSync(
 		'cargo',
-		['build', '--locked', '--no-default-features', '-p', 'fluxer-ci', '--message-format=json-render-diagnostics'],
+		['build', '--locked', '-p', 'fluxer-ci', '--message-format=json-render-diagnostics'],
 		{cwd: MONOREPO_ROOT, encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, stdio: ['ignore', 'pipe', 'inherit']},
 	);
 	for (const line of output.split('\n')) {

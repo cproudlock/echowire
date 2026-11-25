@@ -48,7 +48,7 @@ Valkey, search Meilisearch, voice LiveKit.
 |---|---|---|
 | HTTP API and worker | TypeScript (Hono) | `fluxer_api` |
 | Web client (SPA) | React, rspack | `fluxer_app` |
-| Gateway (WebSocket) | Erlang/OTP 28 | `fluxer_gateway` |
+| Gateway (WebSocket) | Gleam on Erlang/OTP 28, Rust NIF | `fluxer_gateway` |
 | Desktop | Electron, plus Rust native capture modules | `fluxer_desktop` |
 | Shared service runtime | Rust library | `fluxer_svc`, `fluxer_common` |
 | Users, messages, unfurl, gifs, snowflakes | Rust, coordinator plus `-shard` | `fluxer_users`, `fluxer_messages`, `fluxer_unfurl`, `fluxer_gifs`, `fluxer_snowflakes` |
@@ -156,20 +156,20 @@ passes". The local gate ran none of these:
     cargo deny --locked check -D warnings
     cargo run -p fluxer-ci -- ci --step gateway_fmt
     cargo run -p fluxer-ci -- ci --step gateway_compile
-    cargo run -p fluxer-ci -- ci --step gateway_dialyzer
+    cargo run -p fluxer-ci -- ci --step gateway_test
 
 The two that were actually failing are the two that are cheapest to forget.
 `cargo deny` fails on **unmatched-skip** whenever the dependency graph moves
 under a merge, because `-D warnings` promotes it: a skip naming a version no
 longer in the graph is an error, not a tidy-up. And `gateway_fmt` catches
-formatting in any Erlang module a merge touched, which no other step sees.
+formatting in any Gleam module a merge touched, which no other step sees.
 
-So after any upstream merge, run those four as well, and **read the CI result
+So after any upstream merge, run those as well, and **read the CI result
 for the push** rather than treating the local gate as the last word. A local
 gate that covers less than CI is a gate that reports green on a red tree, which
 is the same defect as a gate that cannot fail, arrived at from the other side.
-`rebar3` is not in this container; the gateway steps need the `erlang:28` image
-or the `fluxer_gateway` image build.
+Neither gleam nor erl is in this container; the gateway steps need OTP 28.5 and
+Gleam 1.19.2 (see **Gateway** below).
 
 **Invoke these commands. Do not reimplement them.** A wrapper that paraphrases a
 documented command is a copy that rots silently, and the 2026-10-03 audit found two
@@ -240,52 +240,20 @@ fail for the property worth gating:
 - **`openapi:generate` writes the specs**, so by itself it only fails when generation
   errors. A committed spec that has drifted passes. Gate on regeneration producing no
   change: run it, then `git diff --quiet` the two spec files.
-- **The gateway eunit is now a plain pass/fail gate. The carve-out is deleted.** It
-  used to read: the suite always fails a fixed set of tests here for want of the
-  `guild_member_list_oset_nif` Rust NIF, so exit status is not pass/fail, gate on the
-  criterion instead (tree compiled, no assertion failure, no undefined function other
-  than that NIF). All of that rested on a false premise.
+- **The gateway tests are a plain pass/fail gate.** The Erlang eunit suite went away
+  with the Gleam rewrite, and so did its order-dependent flake. Run these after any
+  merge touching the gateway:
 
-  The premise was a **missing mount**, not a container limitation. On 2026-10-04 both
-  gateway NIFs, `guild_member_list_oset_nif` included, built on the first attempt
-  inside `erlang:28` once the host Rust toolchain was mounted (recipe under
-  **Gateway** below). The image has no cargo of its own, the hook failed with
-  `Failed to run cargo / No such file or directory`, and that was read for weeks as
-  "this container cannot build the NIF".
+      cargo run -p fluxer-ci -- ci --step gateway_test
+      cargo run -p fluxer-ci -- ci --step gateway_bouncer_test
 
-  Then the suite was actually run with the NIFs present: **3126 tests, 0 failures,
-  rc=0**, in 219 seconds. So there is no permitted-failure set, and `rebar3 as test
-  eunit` returning non-zero is now simply a failure. Run it after any merge touching
-  Erlang:
-
-      cargo run -p fluxer-ci -- ci --step gateway_eunit   # or the docker recipe below
-
-  Two things are worth taking from this beyond the gate itself. First, the carve-out
-  made the gate **quietly weaker than anyone believed** for as long as it stood: a
-  filtered gate reports green while a real regression hides inside the filter, and
-  nobody re-reads the filter's justification because the green is reassuring. Second,
-  the justification was wrong for a dull reason, a missing `-v`, and nobody checked
-  because the error message named cargo rather than the mount. So the rule is: a gate
-  with a standing exemption needs its exemption re-tested on a schedule, not
-  inherited. An exemption is a claim about the world, and claims rot.
-
-  **The suite has one known order-dependent flake, and the answer is not to restore
-  a filter.** Within an hour of the carve-out coming off, a full run failed
-  `guild_subscription_handler:update_member_subscriptions_matches_reference_test/0`
-  while 3203 others passed. The same module alone passed 27 of 27, and the next full
-  run passed 3204 of 3204. So it is a flake, and its mechanism is known rather than
-  mysterious: the test calls `ensure_started/2` on the globally named `presence_bus`
-  and `presence_cache`, so it inherits whatever earlier tests left in them, and it
-  compares `drain_mailbox/1` output, so a stray dispatch from any other test using
-  the same named bus lands in its mailbox and the expected/actual dispatch lists
-  diverge. It is the Erlang twin of the `isolate: false` api pool problem recorded
-  below, named processes instead of module mocks.
-
-  The temptation on seeing a real gate go red intermittently is to filter that test
-  out, which is how the carve-out that just came off was born. Don't. Re-run, and if
-  it passes, record the run rather than the exemption. The actual fix is to give
-  those tests unique process names or to stop them sharing a bus, which is a change
-  to the tests rather than to the gate.
+  `gateway_test` goes through `fluxer_gateway/scripts/gleam.sh`, which also fails a run
+  that ends without its `N passed, no failures` line, so a VM that dies partway is not
+  a pass. There is no permitted-failure set. The eunit gate once had one, a carve-out
+  for a NIF that "could not be built here", and the real cause was a missing docker
+  mount. So the rule stands: a gate with a standing exemption needs its exemption
+  re-tested on a schedule, not inherited, and an intermittent failure is answered by
+  re-running and fixing the test, never by filtering it out.
 
 Plus, depending on what changed:
 
@@ -302,85 +270,28 @@ Plus, depending on what changed:
 - **After API route or schema changes, and after merges:** `pnpm openapi:generate`
   and commit the result. Response schemas must be exported named schemas; an
   inline `z.array(...)` fails generation.
-- **Gateway:** rebar3 is not in the container. Compile inside the `erlang:28-slim`
-  docker image and run the touched modules' eunit there; the `fluxer-gateway` image
-  build does the full compile. Three details decide whether that works, and each
-  fails quietly:
+- **Gateway:** upstream rewrote it in Gleam (#4254). Sources are in
+  `fluxer_gateway/src/fluxer_gateway/`, tests in `fluxer_gateway/test/`, the Rust NIF in
+  `fluxer_gateway/rust/`, and the bouncer is two more Gleam packages,
+  `fluxer_gateway/bouncer` and `fluxer_gateway/bouncer_proto`. There is no `rebar.config`
+  and no `.erl` source left, so the old rebar3 and eunit recipes no longer apply. The
+  commands are the steps of the `gateway` job in `tests.yaml`, defined in
+  `tools/ci/src/gateway.rs`:
 
-  1. Modules use `-include_lib("fluxer_gateway/include/...")`, which resolves by
-     searching `ERL_LIBS` for an application directory of that name. Mount the
-     checkout at `/libs/fluxer_gateway` and set `ERL_LIBS=/libs:/libs/fluxer_gateway/_build/test/lib`.
-     Mounting at `/gw` fails every include.
-  2. Compile with `+debug_info`. `meck(passthrough)` recovers a module's abstract
-     code, so without it every passthrough mock dies `{abstract_code_not_found, M}`.
-     rebar3 sets it by default; `erlc` does not.
-  3. Do **not** have `ERL_LIBS` set when running the tests, or the stale
-     `fluxer_gateway/ebin` left in `_build` by an earlier rebar run shadows the
-     freshly compiled modules and `-pa` does not win. Compile with it, run without
-     it and pass the dep ebins explicitly.
+      cargo run -p fluxer-ci -- ci --step gateway_fmt            # gleam format --check
+      cargo run -p fluxer-ci -- ci --step gateway_rust_fmt       # cargo fmt --check in rust/
+      cargo run -p fluxer-ci -- ci --step gateway_clippy
+      cargo run -p fluxer-ci -- ci --step gateway_compile        # gleam build --warnings-as-errors
+      cargo run -p fluxer-ci -- ci --step gateway_rust_test
+      cargo run -p fluxer-ci -- ci --step gateway_test           # scripts/gleam.sh test
+      cargo run -p fluxer-ci -- ci --step gateway_bouncer_test
 
-  Two traps when reading the output. `erlc` reports a bad include as `can't find
-  include lib`, with no occurrence of the word "error", so grepping for `/error/`
-  hides a completely failed compile: assert the emitted `.beam` count equals the
-  `.erl` count instead. The second trap used to read "this container cannot build the
-  `guild_member_list_oset_nif` Rust NIF", and it is gone: it builds fine once cargo is
-  mounted, eunit then runs clean at 3126 tests and 0 failures, and the carve-out that
-  rested on it is deleted. See the gateway eunit entry above.
-
-  **The eunit recipe**, same mounts as compile because the NIFs are what made the
-  difference:
-
-      docker run --rm \
-        -v "$PWD:/repo" -v "$HOME/.cargo:/hostcargo:ro" -v "$HOME/.rustup:/hostrustup:ro" \
-        -w /repo/fluxer_gateway \
-        -e FLUXER_CI_BIN=/repo/target/debug/fluxer-ci \
-        -e CARGO_HOME=/hostcargo -e RUSTUP_HOME=/hostrustup \
-        -e REBAR_CACHE_DIR=/tmp/rc \
-        -e PATH=/hostcargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-        erlang:28 rebar3 as test eunit
-
-  It takes about four minutes and includes the member-list benchmarks, so expect
-  throughput numbers in the output rather than only dots.
-
-  **The `gateway_fmt` and `gateway_compile` recipes that work**, both verified on
-  2026-10-04 against a 33-commit slice that touched ten Erlang modules:
-
-      # gateway_fmt: mounting fluxer_gateway alone is enough
-      docker run --rm -v "$PWD/fluxer_gateway:/gw" -w /gw \
-        -e REBAR_CACHE_DIR=/tmp/rc erlang:28 rebar3 fmt --check
-
-      # gateway_compile: needs the WHOLE repo and a cargo
-      docker run --rm \
-        -v "$PWD:/repo" -v "$HOME/.cargo:/hostcargo:ro" -v "$HOME/.rustup:/hostrustup:ro" \
-        -w /repo/fluxer_gateway \
-        -e FLUXER_CI_BIN=/repo/target/debug/fluxer-ci \
-        -e CARGO_HOME=/hostcargo -e RUSTUP_HOME=/hostrustup \
-        -e REBAR_CACHE_DIR=/tmp/rc \
-        -e PATH=/hostcargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
-        erlang:28 rebar3 compile
-
-  Three things make compile different from fmt, and each produced a distinct failure
-  before it worked:
-
-  1. **Mount the whole repo, not just `fluxer_gateway`.** `rebar.config` has
-     `{pre_hooks, [{compile, "../tools/ci/run.sh build-gateway-nifs --gateway-dir ."}]}`,
-     so `..` has to resolve. This is the already-documented reason fmt-only mounts
-     do not compile; the recipe above is what to do about it.
-  2. **Set `FLUXER_CI_BIN` to a prebuilt `fluxer-ci`.** `tools/ci/run.sh` execs
-     `$FLUXER_CI_BIN` when it is executable and otherwise falls back to
-     `cargo run --manifest-path .../tools/ci/Cargo.toml`, which would rebuild the
-     249 MB debug binary inside the image on every run. Build it on the host first
-     with `cargo build -p fluxer-ci`.
-  3. **Mount cargo and rustup anyway.** `FLUXER_CI_BIN` only removes the cargo needed
-     to run `fluxer-ci` itself; `build-gateway-nifs` then shells out to
-     `cargo build --release` per NIF regardless. Without the toolchain mounts the hook
-     dies `Failed to run cargo`, which is the error that was long misread as the NIF
-     being unbuildable here.
-
-  Then apply the count check: `find src -name '*.erl' | wc -l` against
-  `find _build/default/lib/fluxer_gateway/ebin -name '*.beam' | wc -l`. A full tree is
-  **344 and 344**. `rebar3 compile` returning 0 is a stronger signal than `erlc`
-  managed, but #3072 compiled 235 of 344 and still looked healthy, so count anyway.
+  `scripts/gleam.sh` rebuilds `priv/gateway_nif.so` with cargo when the Rust sources are
+  newer, so the Gleam steps need cargo as well as gleam and erl. For one area, run
+  `FLUXER_TEST_ONLY=<name> scripts/gleam.sh test` in `fluxer_gateway`, for example
+  `FLUXER_TEST_ONLY=unread_cap`. Neither gleam nor erl is in this container: CI pins OTP
+  28.5 and Gleam 1.19.2, and the `fluxer-gateway` image build compiles `src` but runs no
+  tests.
 
 Bare text nodes beside elements in JSX fail both biome and eslint
 (`no-conditional-text-nodes-with-siblings`) because Chrome page translation
@@ -772,14 +683,15 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
 - **A clean merge is not evidence that the result compiles.** Git merges text. In a
   language with no type checker between the merge and the build, it will combine the
   fork's old function signatures with upstream's new bodies and report no conflict.
-  #3072 did exactly that in `fluxer_gateway/src/guild/guild_sessions.erl`: upstream
+  #3072 did exactly that in `guild_sessions.erl` of the old Erlang gateway: upstream
   reshaped visibility checks to thread a per-pass memo, the fork had split the same
   function for thread channels, and the merge produced
   `session_can_view_non_thread_channel` taking no `Memo` while its body used one. The
   gateway built 235 of 344 modules with `variable 'Memo' is unbound`, and nothing in
-  the conflict list hinted at it. So after any merge touching Erlang, compile the
-  tree and check the module count, do not infer health from the absence of conflicts.
-  This applies with full force to Erlang and to Rust macro-generated code, and to any
+  the conflict list hinted at it. The gateway is Gleam now and its compiler would catch
+  that one, but the rule holds: build the merged tree (`gateway_compile` for the
+  gateway), do not infer health from the absence of conflicts. This applies with full
+  force to Rust macro-generated code, and to any
   generated file nothing typechecks.
 - **When upstream reshapes an API, carry what the divergence defends, not the code
   as written.** Work out what the fork's version was protecting, then express that
@@ -910,9 +822,9 @@ Reusable scripts live in the container home (`~/deploy-0914.sh`,
   a thread has no overwrites of its own and resolves every permission from its
   parent channel (VIEW_CHANNEL on the parent comes first); a thread whose parent
   is gone is inaccessible; a private thread is visible only to its members and
-  to members with MANAGE_CHANNELS on the parent. The gateway applies the same rules and never caches or memoises thread
-  visibility by role set (`guild_sessions.erl`,
-  `guild_member_list_channel_engine.erl`). Any change to a thread permission path
+  to members with MANAGE_CHANNELS on the parent. The gateway applies the same rules in upstream's
+  `fluxer_gateway/src/fluxer_gateway/threads/access.gleam`; its per-pass memo is keyed by
+  user, never by role set. Any change to a thread permission path
   needs api integration tests (`ThreadAccessControl.test.ts`,
   `ThreadAccessReview.test.ts`, `ForumsServerParity.test.ts`).
 - **Voice customisations** in `fluxer_app/src/features/voice/`: AGC and

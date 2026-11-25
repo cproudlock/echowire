@@ -15,8 +15,14 @@ interface DesktopReleaseAsset {
 	size: number;
 }
 
+// Echowire: tools/ci/src/release.rs writes schema 3 for a full release and schema 2 for a
+// modules-only one (kind "modules", no shell assets). Schema 1 and full schema 2 descriptors
+// came from earlier pipelines. Only assets are read here; modules (schema 2 and up) and
+// linux_repos (schema 3) are checked for shape.
+type DesktopReleaseSchemaVersion = 1 | 2 | 3;
+
 interface DesktopReleaseDescriptor {
-	schema_version: 1;
+	schema_version: DesktopReleaseSchemaVersion;
 	channel: DesktopChannel;
 	version: string;
 	release_tag: string;
@@ -82,10 +88,43 @@ function parseDesktopReleaseAsset(value: unknown): DesktopReleaseAsset | null {
 	};
 }
 
+function countDesktopReleaseEntries(value: unknown, storagePrefix: string, releasePrefix: string): number | null {
+	if (value === undefined) {
+		return 0;
+	}
+	if (!Array.isArray(value)) {
+		return null;
+	}
+	for (const entry of value) {
+		if (
+			!isJsonRecord(entry) ||
+			typeof entry.storage_key !== 'string' ||
+			!entry.storage_key.startsWith(storagePrefix) ||
+			typeof entry.release_asset !== 'string' ||
+			!entry.release_asset.startsWith(releasePrefix) ||
+			!/^[A-Za-z0-9._-]+$/u.test(entry.release_asset) ||
+			typeof entry.sha256 !== 'string' ||
+			!/^[a-f0-9]{64}$/u.test(entry.sha256) ||
+			typeof entry.size !== 'number' ||
+			!Number.isSafeInteger(entry.size) ||
+			entry.size <= 0
+		) {
+			return null;
+		}
+	}
+	return value.length;
+}
+
 export function parseDesktopReleaseDescriptor(value: unknown): DesktopReleaseDescriptor | null {
+	if (!isJsonRecord(value)) {
+		return null;
+	}
+	const schemaVersion = value.schema_version;
+	const modulesOnly = value.kind === 'modules';
 	if (
-		!isJsonRecord(value) ||
-		value.schema_version !== 1 ||
+		(schemaVersion !== 1 && schemaVersion !== 2 && schemaVersion !== 3) ||
+		(value.kind !== undefined && !modulesOnly) ||
+		(modulesOnly && schemaVersion !== 2) ||
 		(value.channel !== 'stable' && value.channel !== 'canary') ||
 		typeof value.version !== 'string' ||
 		!/^\d+\.\d+\.\d+$/u.test(value.version) ||
@@ -93,8 +132,9 @@ export function parseDesktopReleaseDescriptor(value: unknown): DesktopReleaseDes
 		typeof value.source_sha !== 'string' ||
 		!/^[a-f0-9]{40}$/u.test(value.source_sha) ||
 		!Array.isArray(value.assets) ||
-		value.assets.length < MIN_RELEASE_ROUTE_COUNT ||
-		value.assets.length > MAX_RELEASE_ROUTE_COUNT
+		(modulesOnly
+			? value.assets.length !== 0
+			: value.assets.length < MIN_RELEASE_ROUTE_COUNT || value.assets.length > MAX_RELEASE_ROUTE_COUNT)
 	) {
 		return null;
 	}
@@ -108,6 +148,31 @@ export function parseDesktopReleaseDescriptor(value: unknown): DesktopReleaseDes
 	const descriptorName = `${expectedReleasePrefix}release-manifest.json`;
 	if (value.release_tag !== expectedTag) {
 		return null;
+	}
+	const moduleCount = countDesktopReleaseEntries(value.modules, expectedStoragePrefix, expectedReleasePrefix);
+	const linuxRepoCount = countDesktopReleaseEntries(
+		value.linux_repos,
+		`linux-repo/${value.channel}/`,
+		expectedReleasePrefix,
+	);
+	if (
+		moduleCount === null ||
+		linuxRepoCount === null ||
+		(schemaVersion === 1 && moduleCount > 0) ||
+		(schemaVersion !== 3 && linuxRepoCount > 0) ||
+		(modulesOnly && moduleCount === 0)
+	) {
+		return null;
+	}
+	if (modulesOnly) {
+		return {
+			schema_version: schemaVersion,
+			channel: value.channel,
+			version: value.version,
+			release_tag: value.release_tag,
+			source_sha: value.source_sha,
+			assets: [],
+		};
 	}
 	const storageKeys = new Set<string>();
 	const routeCounts = new Map<string, number>();
@@ -172,7 +237,7 @@ export function parseDesktopReleaseDescriptor(value: unknown): DesktopReleaseDes
 		return null;
 	}
 	return {
-		schema_version: 1,
+		schema_version: schemaVersion,
 		channel: value.channel,
 		version: value.version,
 		release_tag: value.release_tag,

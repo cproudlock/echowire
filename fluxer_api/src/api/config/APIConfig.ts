@@ -12,6 +12,7 @@ import type {AccountIdentityMode, TagStyle} from '@fluxer/constants/src/AccountI
 import type {SmtpTlsMode} from '@fluxer/constants/src/SmtpConstants';
 import type {GeoEntry} from '@fluxer/schema/src/domains/geolocation/GeolocationSchemas';
 import type {OperatorPassCurrency} from '@fluxer/schema/src/domains/operator_pass/OperatorPassSchemas';
+import type {CassandraConsistencyName, CassandraSerialConsistencyName} from '@pkgs/cassandra/src/Client';
 
 export type APIWorkerMode = 'all_lanes' | 'single_lane' | 'single_task';
 export type APIWorkerLaneName = 'realtime' | 'unfurl' | 'lifecycle' | 'batch' | 'crosspost';
@@ -98,6 +99,8 @@ export interface APIConfig {
 		port: number;
 		keyspace: string;
 		localDc: string;
+		consistency: CassandraConsistencyName;
+		serialConsistency: CassandraSerialConsistencyName;
 		username: string;
 		password: string;
 	};
@@ -138,6 +141,12 @@ export interface APIConfig {
 		enabled: boolean;
 		stream: string;
 		skipBuckets: Array<string>;
+	};
+	cassandraWriteCapture: {
+		mode: 'off' | 'behind';
+		natsUrl: string;
+		authToken: string;
+		stream: string;
 	};
 	search: {
 		engine: 'elasticsearch' | 'meilisearch' | 'none';

@@ -86,6 +86,7 @@ import {Logger} from '@app/features/platform/utils/AppLogger';
 import ReadStates from '@app/features/read_state/state/ReadStates';
 import ChannelThreads from '@app/features/threads/state/ChannelThreads';
 import ThreadGuilds from '@app/features/threads/state/ThreadGuilds';
+import * as PopoutCommands from '@app/features/ui/commands/PopoutCommands';
 import KeyboardMode from '@app/features/ui/state/KeyboardMode';
 import {isWebReservedZoomShortcut} from '@app/features/ui/utils/AppZoomKeybindUtils';
 import {getElectronAPI, isNativeMacOS} from '@app/features/ui/utils/NativeUtils';
@@ -343,6 +344,7 @@ class KeybindManager {
 		const safeIndex = currentIndex <= 0 && currentGuildId ? 0 : currentIndex;
 		const slotCount = guilds.length + 1;
 		const nextIndex = (safeIndex + direction + slotCount) % slotCount;
+		PopoutCommands.closeAllForDocument(document);
 		this.navigateToGuildLikeSlot(nextIndex);
 	}
 

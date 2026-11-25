@@ -22,41 +22,64 @@ reconnects, produces one notification per message.
 
 Facts that shaped the design:
 
-- Push work is routed to an owner node per user by
-  `gateway_node_router:owner_node_result(UserId, push)`. `push_ets_cache` keeps
-  its per-user state in node-local ETS and has a `rebalance` that drops rows the
-  node no longer owns. Production runs one gateway today, and more may come.
+- Push work is routed to an owner node per user by the cluster router
+  (`router.owner(PushKey(user), Push)`). The push caches keep their per-user
+  state in node-local ETS. Production runs one gateway today, and more may come.
 - A read reaches the gateway as `push.clear_channel_notifications` (API to
-  gateway RPC), which `push:clear_channel_notifications/3` already uses to
+  gateway RPC), which `server.clear_channel_notifications` already uses to
   truncate queued pushes and to send clear pushes.
 - Message creates are batched per guild dispatch and routed by the FIRST user id
   of the batch, so a batch can contain users owned by another node.
 
+The module and function names here are those of the Gleam gateway under
+`fluxer_gateway/src/fluxer_gateway/push/`. The first version of this decision
+was written against the Erlang gateway (`push_unread_cap.erl`), which upstream
+replaced in #4254. The behavior is unchanged, the implementation section below
+describes the Gleam port.
+
 ## Decision
 
 We will cap pushes per user per channel at 3 since the channel was last read,
-implemented in a new module `push_unread_cap` in the gateway.
+implemented in a fork-owned module `push/unread_cap.gleam` in the gateway.
 
-- The counter is a node-local ETS table keyed `{UserId, ChannelId}` holding a
-  count and an expiry. It is incremented for each user who would otherwise be
-  notified, as the last step of `filter_eligible_users`. At or below the cap the
-  user is notified; above it the push is not sent. The message itself is
-  unaffected, only the notification is dropped.
+- The counter is a node-local ETS table (`push_unread_cap`) keyed by user and
+  channel, holding a count, an expiry and the topology version the row was
+  written in. It is incremented for each user who would otherwise be notified,
+  as the last step of `recipients.eligible`, after the blocked-user and age
+  filters. At or below the cap the user is notified; above it the push is not
+  sent. The message itself is unaffected, only the notification is dropped.
 - Direct messages and direct @mentions always notify and do not use up the cap.
-  Role and @everyone mentions count like ordinary messages.
-- A read resets the counter. `push:clear_channel_notifications/3` casts a reset to
-  the user's owner node, independent of the clear-notifications switch.
+  Role, @everyone and @here mentions count like ordinary messages. Priority is
+  decided from the message itself (`guild == 0`, or the user is in the message's
+  direct mentions), not from the `rule.Class` of the recipient: the `Direct`
+  class also holds role mentions, and prefiltered creates carry a class but no
+  reason.
+- A read resets the counter. `server.clear_channel_notifications` calls
+  `unread_cap.reset_routed`, independent of the clear-notifications switch. It
+  drops the row on the node that got the RPC and, when the user's push owner is
+  another node, on that node as well.
 - Rows expire after 24 hours, matching the APNs expiration, and the table is
-  trimmed to 500000 entries. Both run on the existing eviction tick.
+  trimmed to 500000 entries. Both run on the push cache eviction tick, next to
+  `settings_cache.evict`. The table is created with the push caches and is owned
+  by the same keeper process.
 - The cap is `FLUXER_GATEWAY_PUSH_UNREAD_CAP` (default 3, 0 disables) and the
-  expiry is `FLUXER_GATEWAY_PUSH_UNREAD_CAP_TTL_SECONDS`.
+  expiry is `FLUXER_GATEWAY_PUSH_UNREAD_CAP_TTL_SECONDS`. Both are fields of the
+  gateway `Settings` record. A negative cap or a non-positive expiry falls back
+  to the default.
 - Multiple gateways: the module only counts for users this node owns. For any
-  other user it lets the push through and bumps a `not_owner` counter. It never
-  suppresses on a guess, so a routing mismatch costs extra pushes and never loses
-  one. `push_ets_cache:rebalance/0` also calls `push_unread_cap:rebalance/0` to
-  drop rows the node stopped owning.
-- Counters are exposed in the push cache stats: `unread_cap`, `unread_cap_size`,
-  `unread_cap_suppressed` and `unread_cap_not_owner`.
+  other user, or when the owner is unknown, it lets the push through and bumps
+  a `not_owner` counter. It never suppresses on a guess, so a routing mismatch
+  costs extra pushes and never loses one. A count is only trusted within the
+  topology version it was written in: after any topology change the row starts
+  over, and the eviction tick drops rows from other versions. This replaces the
+  old `rebalance`.
+- Rows are not part of the push handoff. A rolling restart or a bucket move
+  loses them, which only resets counts.
+- A missing table sends. Gleam has no exception handling, so each table call
+  checks that the table exists first instead of catching an error.
+- Metrics: counters `fluxer_gateway_push_unread_cap_suppressed` and
+  `fluxer_gateway_push_unread_cap_not_owner`, and the gauge
+  `fluxer_gateway_push_unread_cap_rows`, set on each eviction tick.
 
 ## Consequences
 
@@ -74,10 +97,13 @@ Hard or unhappy:
   fewer.
 - Because message creates are routed by the first user of a batch, on more than
   one gateway a recipient owned by another node is let through uncapped. The fix
-  is to split `user_ids` by owner node in `push:handle_message_create/1` before
-  casting. It is deliberately not part of this change because it alters routing
-  for every push cache, and it is only needed when a second gateway exists. Until
-  then `unread_cap_not_owner` shows how much leaks.
+  is to split the recipients by owner node in `server.handle_message_create`
+  before casting. It is deliberately not part of this change because it alters
+  routing for every push cache, and it is only needed when a second gateway
+  exists. Until then the `not_owner` counter shows how much leaks.
+- A push job that is handed to another node, or requeued, after eligibility ran
+  is evaluated again, so one message can use up two counts for a user. This can
+  only make the cap bite one message early, during a handoff.
 - The iOS icon badge count travels inside each push. A suppressed message sends no
   push, so the badge can lag behind the real unread count until the next push or
   until the app is opened. We accept this for now. A silent badge-only update for

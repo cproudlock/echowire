@@ -4,8 +4,12 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: @lingui/cli\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 "Language: tok\n"
+"PO-Revision-Date: 2026-11-23 03:41+0000\n"
+"Last-Translator: Hampus <hampus@fluxer.com>\n"
+"Language-Team: Toki Pona <https://weblate.fluxer.tools/projects/fluxer/app/tok/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
 #: src/features/theme_settings/editor/CssLint.ts
@@ -219,27 +223,27 @@ msgstr ""
 #. Activity log summary when an announcement channel was created. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new channel, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} created the announcement channel {channel}"
-msgstr ""
+msgstr "{actor} li open e tomo suli {channel}"
 
 #. Activity log summary when an announcement channel was created inside a category. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new channel, shown as a channel chip with its name. {category} is the category that holds it, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} created the announcement channel {channel} in {category}"
-msgstr ""
+msgstr "{actor} li open e tomo suli {channel} lon kulupu {category}"
 
 #. Activity log summary when a channel category was created. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new category, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} created the category {channel}"
-msgstr ""
+msgstr "{actor} li open e kulupu {category}"
 
 #. Activity log summary when a channel of a type this app version cannot name was created. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new channel, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} created the channel {channel}"
-msgstr ""
+msgstr "{actor} li open e tomo {channel}"
 
 #. Activity log summary when a channel of a type this app version cannot name was created inside a category. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new channel, shown as a channel chip with its name. {category} is the category that holds it, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} created the channel {channel} in {category}"
-msgstr ""
+msgstr "{actor} li open e tomo {channel} lon kulupu {category}"
 
 #. Activity log summary when a forum channel was created. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new channel, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogForumPresentation.ts
@@ -299,12 +303,12 @@ msgstr ""
 #. Activity log summary when a voice channel was created. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new channel, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} created the voice channel {channel}"
-msgstr ""
+msgstr "{actor} li open e tomo kalama {channel}"
 
 #. Activity log summary when a voice channel was created inside a category. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the new channel, shown as a channel chip with its name. {category} is the category that holds it, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} created the voice channel {channel} in {category}"
-msgstr ""
+msgstr "{actor} li open e tomo kalama {channel} lon kulupu {category}"
 
 #. Activity log summary for a new webhook when its channel was not recorded. {actor} is the member who created the webhook, shown as a clickable user chip, or the word System. {name} is the name of the webhook, shown in bold by the app. Do not add ** or <b> around it.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogInviteWebhookMessages.ts
@@ -429,7 +433,7 @@ msgstr ""
 #. Activity log summary when a voice channel was deleted. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the deleted channel, shown as a channel chip with the name it had.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} deleted the voice channel {channel}"
-msgstr ""
+msgstr "{actor} li weka e tomo kalama {channel}"
 
 #. Activity log summary for a deleted webhook when its channel was not recorded. {actor} is the member who deleted the webhook, shown as a clickable user chip, or the word System. {name} is the name the webhook had, shown in bold by the app. Do not add ** or <b> around it.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogInviteWebhookMessages.ts
@@ -499,7 +503,7 @@ msgstr ""
 #. Activity log summary for a member who was moved to another voice channel when the channel they were moved to was not recorded. {actor} is the member who did the move, shown as a clickable user chip, or the word System. {target} is the member who was moved, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts
 msgid "{actor} moved {target} to a different voice channel"
-msgstr ""
+msgstr "{actor} li tawa e {target} tawa tomo kalama ante"
 
 #. Activity log summary for a member who moved themselves from one voice channel to another using moderator tools. {actor} is that member, shown as a clickable user chip. {oldChannel} is the voice channel they were in and {newChannel} is the voice channel they moved to, both shown as channel chips with the channel name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts
@@ -534,7 +538,7 @@ msgstr ""
 #. Activity log summary for a member who moved themselves to another voice channel using moderator tools, when the channel they moved to was not recorded. {actor} is that member, shown as a clickable user chip.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogMemberMessages.ts
 msgid "{actor} moved to a different voice channel"
-msgstr ""
+msgstr "{actor} li tawa tomo kalama ante"
 
 #. Activity log summary when a member paused invites. Pausing invites disables every invite link of the community, so nobody new can join through one until invites are enabled again. Existing members are not affected. Use the same verb as the Pause invites button. {actor} is the member who made the change, shown as a clickable user chip, or the word System.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogGuildMessages.ts
@@ -679,7 +683,7 @@ msgstr ""
 #. Activity log summary when the only change to a voice channel was its name. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {oldName} is the name before the change and {newName} the name after, both shown in bold. The app adds the bold, so do not add ** or <b>.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} renamed the voice channel {oldName} to {newName}"
-msgstr ""
+msgstr "{actor} li ante e tomo kalama tan nimi {oldName} tawa nimi {newName}"
 
 #. Activity log summary for a webhook whose name was the only thing changed. {actor} is the member who renamed the webhook, shown as a clickable user chip, or the word System. {oldName} is the previous name of the webhook and {newName} is its new name, both shown in bold by the app. Do not add ** or <b> around them.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogInviteWebhookMessages.ts
@@ -899,7 +903,7 @@ msgstr ""
 #. Activity log summary when settings of a voice channel were changed. The changes are listed as detail rows below it. {actor} is the member who made the change, shown as a clickable user chip, or the word System. {channel} is the channel, shown as a channel chip with its name.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogChannelMessages.ts
 msgid "{actor} updated the voice channel {channel}"
-msgstr ""
+msgstr "{actor} li ante e tomo kalama {channel}"
 
 #. Activity log summary for changes to a webhook. The changes are listed as details under it. {actor} is the member who changed the webhook, shown as a clickable user chip, or the word System. {name} is the name of the webhook, shown in bold by the app. Do not add ** or <b> around it.
 #: src/features/guild/utils/guild_tabs/audit_log/AuditLogInviteWebhookMessages.ts
@@ -45199,6 +45203,11 @@ msgstr ""
 #. Settings search entry description for the Operator Pass settings tab. One-line summary of what the tab holds. Operators' wall is the name of a section of the homepage.
 #: src/features/user/components/settings_utils/search_index/OperatorPassIndex.ts
 msgid "Your passes, your certificate and your spot on the Operators' wall"
+msgstr ""
+
+#. Error shown when a passkey or security key prompt fails for a reason Fluxer has no specific message for. {detail} is a technical error code such as UnknownError or com.apple.AuthenticationServices.AuthorizationError 1004. Keep {detail} unchanged.
+#: src/features/auth/utils/PasskeyErrorMessages.ts
+msgid "Your passkey or security key couldn't finish the request. Try again, and if it keeps failing, contact support with this error: {detail}"
 msgstr ""
 
 #. Recovery kit modal description shown after someone recovers their account with a recovery key.

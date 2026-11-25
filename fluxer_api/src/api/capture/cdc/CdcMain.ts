@@ -20,6 +20,8 @@ import {
 	recordsTotal,
 	renderMetrics,
 	repairFinished,
+	repairRowsRead,
+	repairScanStarted,
 	repairTombstones,
 	rowsWrittenTotal,
 	schemaMismatch,
@@ -29,9 +31,11 @@ import {
 import {PendingKeys} from '@app/api/capture/cdc/CdcPending';
 import {
 	nextRepair,
+	PROGRESS_PREFIX,
+	type RepairProgress,
 	type RepairRecord,
-	ROUTINE_ROWS_PER_SECOND,
 	repairTable,
+	resumableProgress,
 	TableLocks,
 } from '@app/api/capture/cdc/CdcRepair';
 import {RowEncoder, UnmappableValue} from '@app/api/capture/cdc/CdcRows';
@@ -51,6 +55,7 @@ import {ClickHouseHttp, quoteIdentifier} from '@app/api/capture/cdc/ClickHouseHt
 import {CaptureCodec, type CaptureValue} from '@app/api/database/capture/CaptureCodec';
 import type {CaptureScope} from '@app/api/database/capture/CaptureRecords';
 import {CDC_SKIPPED, CDC_TABLES, type CdcRecord} from '@app/api/database/capture/CdcRecords';
+import {settleWithin} from '@app/api/utils/ConcurrencyUtils';
 import {createServer, setupGracefulShutdown} from '@fluxer/hono/src/Server';
 import {createLogger} from '@fluxer/logger/src/Logger';
 import type {Consumer, JsMsg} from '@nats-io/jetstream';
@@ -69,6 +74,8 @@ const RECHECK_LIMIT = 2000;
 const REREAD_LIMIT = 20_000;
 const HOUSEKEEPING_MS = 5 * 60_000;
 const STATUS_MS = 30_000;
+const CDC_DRAIN_MS = 30_000;
+const CDC_SHUTDOWN_MS = 50_000;
 const WORKING_MS = 60_000;
 const IDLE_REPAIR_MS = 15_000;
 const SUMMARY_MS = 86_400_000;
@@ -233,7 +240,7 @@ function serialisedProgress(progress: ProducerProgress | null): unknown {
 	return progress === null ? null : {...progress, above: [...progress.above]};
 }
 
-class CdcConsumer {
+export class CdcConsumer {
 	readonly status: CdcStatus = {
 		broken: null,
 		bootstrapped: false,
@@ -297,6 +304,8 @@ class CdcConsumer {
 			const record = repairs.get(`repair:${name}`);
 			repairFinished.set(name, record === undefined ? 0 : record.finishedMs / 1000);
 			repairTombstones.set(name, record?.tombstones ?? 0);
+			repairScanStarted.set(name, 0);
+			repairRowsRead.set(name, 0);
 		}
 		this.status.bootstrapped = (await state.read('bootstrap')).has('bootstrap');
 		gauges.bootstrapped = this.status.bootstrapped ? 1 : 0;
@@ -344,6 +353,14 @@ class CdcConsumer {
 				this.setBroken(`batch failed: ${String(error)}`);
 			}
 		}
+		if (this.stopping && this.status.broken === null) this.handBack();
+	}
+
+	private handBack(): void {
+		if (this.held.length === 0) return;
+		for (const msg of this.held) msg.nak();
+		Logger.info({messages: this.held.length}, 'ClickHouse CDC handed back unapplied messages');
+		this.held = [];
 	}
 
 	async repairs(): Promise<void> {
@@ -571,7 +588,11 @@ class CdcConsumer {
 			const schema = await this.retry(() => syncSchema(this.runtime), 'clickhouse');
 			this.tables = schema.tables;
 			this.status.unlisted = schema.unlisted;
-			for (const name of this.tables.keys()) if (!repairFinished.has(name)) repairFinished.set(name, 0);
+			for (const name of this.tables.keys()) {
+				if (!repairFinished.has(name)) repairFinished.set(name, 0);
+				if (!repairScanStarted.has(name)) repairScanStarted.set(name, 0);
+				if (!repairRowsRead.has(name)) repairRowsRead.set(name, 0);
+			}
 			await this.sweep();
 		}
 		if (nowMs - this.lastSummaryMs >= SUMMARY_MS) {
@@ -633,7 +654,15 @@ class CdcConsumer {
 			new Map([...entries].map(([name, value]) => [name.slice(prefix.length), value]));
 		const repairs = strip(await state.read<RepairRecord>('repair:'), 'repair:');
 		const due = strip(await state.read<number>('due:'), 'due:');
-		const choice = nextRepair(this.tables.keys(), repairs, due, Date.now());
+		const progress = strip(await state.read<RepairProgress>(PROGRESS_PREFIX), PROGRESS_PREFIX);
+		const resumed = [...progress].find(([name, saved]) => {
+			const known = this.tables.get(name);
+			return known !== undefined && resumableProgress(saved, known) !== undefined;
+		});
+		const choice =
+			resumed === undefined
+				? nextRepair(this.tables.keys(), repairs, due, Date.now())
+				: {table: resumed[0], marked: resumed[1].marked};
 		gauges.repair_due = choice?.marked === true ? 1 : 0;
 		const table = choice === null ? undefined : this.tables.get(choice.table);
 		if (choice === null || table === undefined || (bootstrap && !choice.marked)) return false;
@@ -650,10 +679,17 @@ class CdcConsumer {
 					stopping: () => this.stopping,
 					onError: (error) => this.countError(error, 'cassandra'),
 					onRows: (name, rows) => rowsWrittenTotal.inc(`table="${name}"`, rows),
+					onProgress: (name, scanStartMs, read) => {
+						repairScanStarted.set(name, scanStartMs / 1000);
+						repairRowsRead.set(name, read);
+					},
 				},
 				table,
-				choice.marked ? this.runtime.config.markedRowsPerSecond : ROUTINE_ROWS_PER_SECOND,
+				choice.marked ? this.runtime.config.markedRowsPerSecond : this.runtime.config.routineRowsPerSecond,
+				{marked: choice.marked, ...(resumed === undefined ? {} : {resume: resumed[1]})},
 			);
+			repairScanStarted.set(choice.table, 0);
+			repairRowsRead.set(choice.table, 0);
 			repairFinished.set(choice.table, record.finishedMs / 1000);
 			repairTombstones.set(choice.table, record.tombstones);
 			tombstonesTotal.inc(`table="${choice.table}",source="repair"`, record.tombstones);
@@ -746,13 +782,16 @@ export async function runCdc(config: CdcConfig): Promise<number> {
 	setupGracefulShutdown(
 		async () => {
 			cdc.stop();
-			await finished.catch(() => undefined);
+			await settleWithin(
+				finished.catch(() => undefined),
+				CDC_DRAIN_MS,
+			);
 			clearInterval(statusTimer);
 			server.close();
 			await connection.drain();
 			await shutdownCassandra();
 		},
-		{logger: Logger, timeoutMs: 60_000},
+		{logger: Logger, timeoutMs: CDC_SHUTDOWN_MS},
 	);
 	await finished;
 	Logger.info({status: cdc.status}, 'ClickHouse CDC loop ended');
@@ -841,6 +880,7 @@ export async function runCdcCompare(config: CdcConfig, options: CompareOptions):
 		const cdcColumns = await comparer.columns(config.viewDatabase);
 		let failed = 0;
 		for (const [name, table] of tables) {
+			if (table.derived !== undefined) continue;
 			const sync = syncColumns.get(name);
 			const cdc = cdcColumns.get(name);
 			if (sync === undefined || cdc === undefined) {

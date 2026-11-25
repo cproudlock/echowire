@@ -206,8 +206,11 @@ def resolve(path: str) -> tuple[str, dict]:
             keep.append(ln.strip())
         return sorted(keep)
 
-    if significant(ohdr) != significant(thdr):
-        only_ours = [x for x in significant(ohdr) if x not in significant(thdr)]
+    # A header where upstream only adds lines (Weblate adding Plural-Forms when a locale
+    # gets its first translations) is taken as is. Block only when ours has a line
+    # theirs lacks.
+    only_ours = [x for x in significant(ohdr) if x not in significant(thdr)]
+    if only_ours:
         return "conflict", {
             **stats,
             "conflict": 1,

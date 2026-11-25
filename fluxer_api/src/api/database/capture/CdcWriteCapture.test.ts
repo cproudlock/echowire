@@ -6,7 +6,7 @@ import {getStatementMeta, type PreparedQuery} from '@app/api/database/CassandraT
 import {CaptureCodec} from '@app/api/database/capture/CaptureCodec';
 import type {CapturedStatement, CaptureSink} from '@app/api/database/capture/CassandraWriteCapture';
 import type {CdcRecord, KeyRecord} from '@app/api/database/capture/CdcRecords';
-import {type CdcCaptureLimits, CdcWriteCapture} from '@app/api/database/capture/CdcWriteCapture';
+import {CaptureClosedError, type CdcCaptureLimits, CdcWriteCapture} from '@app/api/database/capture/CdcWriteCapture';
 import cassandra from 'cassandra-driver';
 import {describe, expect, it} from 'vitest';
 
@@ -80,10 +80,13 @@ const Invites = defineTable<{code: string; uses: number}, 'code'>({
 	primaryKey: ['code'],
 });
 
-const Messages = defineTable<{channel_id: bigint; message_id: bigint; content: string}, 'channel_id' | 'message_id'>({
-	name: 'messages',
-	columns: ['channel_id', 'message_id', 'content'],
-	primaryKey: ['channel_id', 'message_id'],
+const MessagesByAuthor = defineTable<
+	{author_id: bigint; message_id: bigint; channel_id: bigint},
+	'author_id' | 'message_id'
+>({
+	name: 'messages_by_author_id_v2',
+	columns: ['author_id', 'message_id', 'channel_id'],
+	primaryKey: ['author_id', 'message_id'],
 });
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/records.json', import.meta.url), 'utf8')) as Array<
@@ -97,7 +100,7 @@ function statement(query: PreparedQuery): CapturedStatement {
 }
 
 const userWrite = statement(Users.upsertAll({user_id: USER_ID, username: 'fluxer'}));
-const messageWrite = statement(Messages.insert({channel_id: 1n, message_id: 2n, content: 'hi'}));
+const messageWrite = statement(MessagesByAuthor.insert({author_id: 1n, message_id: 2n, channel_id: 3n}));
 const inviteClaim = statement(Invites.insertIfNotExists({code: 'fluxer', uses: 0}));
 
 function capture(
@@ -235,16 +238,18 @@ describe('cdc capture in mode behind', () => {
 		await writes.close(30);
 		sink.failing = () => false;
 		let sent = false;
-		await writes.plain([userWrite], false, async () => {
-			sent = true;
-		});
-		expect(sent).toBe(true);
+		await expect(
+			writes.plain([userWrite], false, async () => {
+				sent = true;
+			}),
+		).rejects.toBeInstanceOf(CaptureClosedError);
+		expect(sent).toBe(false);
 		expect(sink.keyRecords()).toEqual([]);
 		expect(sink.life()).toEqual([{kind: 'life', producer: 'api-0:boot', state: 'closed', last_seq: 2, dropped: 2}]);
 		expect(sink.closed).toBe(true);
 	});
 
-	it('counts a write that returns while the close waits on a publish in its closed record', async () => {
+	it('refuses a write that starts while the close waits on a publish and leaves it out of the closed record', async () => {
 		const sink = new RecordingSink();
 		const gate = Promise.withResolvers<void>();
 		sink.gate = gate.promise;
@@ -252,11 +257,62 @@ describe('cdc capture in mode behind', () => {
 		await writes.plain([userWrite], false, async () => undefined);
 		const closing = writes.close(30);
 		await new Promise((resolve) => setTimeout(resolve, 60));
-		await writes.plain([userWrite], false, async () => undefined);
+		let sent = false;
+		await expect(
+			writes.conditional(
+				inviteClaim,
+				async () => {
+					sent = true;
+					return true;
+				},
+				(applied) => applied,
+			),
+		).rejects.toBeInstanceOf(CaptureClosedError);
 		gate.resolve();
 		await closing;
+		expect(sent).toBe(false);
 		expect(sink.keyRecords().map(({seq}) => seq)).toEqual([1]);
-		expect(sink.life()).toEqual([{kind: 'life', producer: 'api-0:boot', state: 'closed', last_seq: 2, dropped: 1}]);
+		expect(sink.life()).toEqual([{kind: 'life', producer: 'api-0:boot', state: 'closed', last_seq: 1, dropped: 0}]);
+	});
+
+	it('waits for a write already sent when the close starts and records it before the closed record', async () => {
+		const sink = new RecordingSink();
+		const writes = capture(sink);
+		const sending = Promise.withResolvers<void>();
+		const write = writes.plain([userWrite], false, () => sending.promise);
+		const closing = writes.close(1000);
+		await new Promise((resolve) => setTimeout(resolve, 30));
+		expect(sink.life().filter((record) => record.kind === 'life' && record.state === 'closed')).toEqual([]);
+		sending.resolve();
+		await write;
+		await closing;
+		const kinds = sink.published.map(({record}) => (record.kind === 'k' ? record.seq : record.state));
+		expect(kinds).toEqual([1, 'closed']);
+		expect(sink.life().at(-1)).toEqual({
+			kind: 'life',
+			producer: 'api-0:boot',
+			state: 'closed',
+			last_seq: 1,
+			dropped: 0,
+		});
+	});
+
+	it('counts a write still running at the close deadline as dropped', async () => {
+		const sink = new RecordingSink();
+		const writes = capture(sink);
+		const sending = Promise.withResolvers<void>();
+		const write = writes.plain([userWrite], false, () => sending.promise);
+		await writes.close(30);
+		expect(sink.life().at(-1)).toEqual({
+			kind: 'life',
+			producer: 'api-0:boot',
+			state: 'closed',
+			last_seq: 0,
+			dropped: 1,
+		});
+		sending.resolve();
+		await write;
+		expect(sink.keyRecords()).toEqual([]);
 	});
 
 	it('closes after the queue drained with the last seq it queued', async () => {

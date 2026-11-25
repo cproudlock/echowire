@@ -457,8 +457,7 @@ pub(crate) fn parse_url_segment(
     }
     let text = &scan.text[position..];
     let url = &text[..end];
-    let escaped = matches!(byte_at(text, 0), b'"' | b'\'')
-        || (end < text.len() && matches!(byte_at(text, end), b'"' | b'\''));
+    let escaped = end < text.len() && matches!(byte_at(text, end), b'"' | b'\'');
     Some(ParserResult {
         node: Node::Link {
             text: None,
@@ -987,7 +986,10 @@ pub fn normalize_phone_number(text: &str) -> String {
 }
 
 fn is_trimmed_autolink_punctuation(char: u8) -> bool {
-    matches!(char, b'.' | b',' | b';' | b':' | b'!' | b'?')
+    matches!(
+        char,
+        b'.' | b',' | b';' | b':' | b'!' | b'?' | b'"' | b'\'' | b']'
+    )
 }
 
 fn has_terminal_tld(text: &str) -> bool {

@@ -11,7 +11,9 @@ const base: Pick<MasterConfig, 's3' | 's3_downloads'>['s3'] = {
 	region: 'us-east-1',
 	access_key_id: 'MAIN_KEY',
 	secret_access_key: 'MAIN_SECRET',
-	buckets: {cdn: 'cdn', uploads: 'uploads', downloads: 'downloads', reports: 'r', harvests: 'h'},
+	buckets: {cdn: 'cdn', uploads: 'uploads', downloads: 'downloads', reports: 'r', harvests: 'h'},	store_id: 'primary',
+	dual_store_enabled: false,
+	fallback_reads_enabled: false,
 };
 
 describe('resolveDownloadsProvider', () => {

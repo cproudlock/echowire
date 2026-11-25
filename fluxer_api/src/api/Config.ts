@@ -29,6 +29,7 @@ import {smtpTlsModeFromSecure} from '@fluxer/constants/src/SmtpConstants';
 import {parseIpAddress} from '@fluxer/ip_utils/src/IpAddress';
 import type {GeoEntry} from '@fluxer/schema/src/domains/geolocation/GeolocationSchemas';
 import {normalizeString} from '@fluxer/schema/src/primitives/SchemaPrimitives';
+import {parseCassandraConsistency, parseCassandraSerialConsistency} from '@pkgs/cassandra/src/Client';
 import {parseGeoipSourceConfig, resolveGeoipRuntimeSourceConfig} from '@pkgs/geoip/src/GeoipStartup';
 
 function extractHostname(url: string): string {
@@ -398,6 +399,8 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 			port: cassandraSource?.port ?? 9042,
 			keyspace: cassandraSource?.keyspace ?? '',
 			localDc: cassandraSource?.local_dc ?? '',
+			consistency: parseCassandraConsistency(cassandraSource?.consistency),
+			serialConsistency: parseCassandraSerialConsistency(cassandraSource?.serial_consistency),
 			username: cassandraSource?.username ?? '',
 			password: cassandraSource?.password ?? '',
 		},
@@ -436,6 +439,12 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 			enabled: master.services.api.storage_change_feed?.enabled ?? false,
 			stream: master.services.api.storage_change_feed?.stream ?? 'STORAGE_CHANGES',
 			skipBuckets: master.services.api.storage_change_feed?.skip_buckets ?? [s3Buckets.uploads],
+		},
+		cassandraWriteCapture: {
+			mode: master.services.api.cassandra_write_capture?.mode ?? 'off',
+			natsUrl: master.services.api.cassandra_write_capture?.nats_url ?? '',
+			authToken: master.services.api.cassandra_write_capture?.auth_token ?? '',
+			stream: master.services.api.cassandra_write_capture?.stream ?? 'CASSANDRA_CDC',
 		},
 		search: {
 			engine: master.integrations.search?.engine ?? 'elasticsearch',

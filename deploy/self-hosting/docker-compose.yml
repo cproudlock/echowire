@@ -238,8 +238,9 @@ x-fluxer-env: &fluxer-env
   FLUXER_VAPID_PUBLIC_KEY: ${FLUXER_VAPID_PUBLIC_KEY:?set FLUXER_VAPID_PUBLIC_KEY in .env}
   FLUXER_VAPID_PRIVATE_KEY: ${FLUXER_VAPID_PRIVATE_KEY:?set FLUXER_VAPID_PRIVATE_KEY in .env}
   FLUXER_VAPID_EMAIL: ${FLUXER_VAPID_EMAIL:-admin@${FLUXER_DOMAIN}}
-  # Echowire: mobile push. The gateway sends FCM (Android) and APNs (iOS) notifications
-  # from these. Upstream's compose does not pass them, so dropping this block on a merge
+  # Echowire: mobile push. The push service sends FCM (Android) and APNs (iOS) notifications
+  # from the FLUXER_PUSH_* values; the gateway reads only FLUXER_GATEWAY_PUSH_ENABLED.
+  # Upstream's compose does not pass them, so dropping this block on a merge
   # silently disables all mobile push (it did, from 2026-09-07 until 2026-09-15).
   FLUXER_GATEWAY_PUSH_ENABLED: ${FLUXER_GATEWAY_PUSH_ENABLED:-true}
   FLUXER_PUSH_ANDROID_PER_TYPE_CHANNELS: ${FLUXER_PUSH_ANDROID_PER_TYPE_CHANNELS:-false}
@@ -259,7 +260,7 @@ x-fluxer-env: &fluxer-env
   FLUXER_PASSKEY_RP_NAME: ${FLUXER_PASSKEY_RP_NAME:-echowire}
   FLUXER_PASSKEY_ADDITIONAL_ALLOWED_ORIGINS: ${FLUXER_PASSKEY_ADDITIONAL_ALLOWED_ORIGINS:-${FLUXER_PUBLIC_ORIGIN:-${FLUXER_PUBLIC_SCHEME:-https}://${FLUXER_DOMAIN}}}
   FLUXER_GATEWAY_RPC_AUTH_TOKEN: ${FLUXER_GATEWAY_RPC_AUTH_TOKEN:?set FLUXER_GATEWAY_RPC_AUTH_TOKEN in .env}
-  # Echowire: upstream #3107 reads this in fluxer_gateway_config.erl with a default of
+  # Echowire: upstream #3107 reads this in the gateway's config/settings.gleam with a default of
   # TRUE and does not plumb it through the compose, so gateway NATS RPC is on with no way
   # to disable it short of editing this file mid-incident. Passed through empty so the
   # application still decides the default, while leaving an operator a lever in .env.
@@ -617,6 +618,9 @@ services:
       FLUXER_GATEWAY_PUSH_ENABLED: ${FLUXER_GATEWAY_PUSH_ENABLED:-}
       FLUXER_GATEWAY_PUSH_ENROLLED_CLEAR_NOTIFICATIONS_ENABLED: ${FLUXER_GATEWAY_PUSH_ENROLLED_CLEAR_NOTIFICATIONS_ENABLED:-}
       FLUXER_GATEWAY_PUSH_OUTBOX_REQUEST_TIMEOUT_MS: ${FLUXER_GATEWAY_PUSH_OUTBOX_REQUEST_TIMEOUT_MS:-}
+      # Echowire: unread push cap (ADR 0009). The defaults match config/settings.gleam.
+      FLUXER_GATEWAY_PUSH_UNREAD_CAP: ${FLUXER_GATEWAY_PUSH_UNREAD_CAP:-3}
+      FLUXER_GATEWAY_PUSH_UNREAD_CAP_TTL_SECONDS: ${FLUXER_GATEWAY_PUSH_UNREAD_CAP_TTL_SECONDS:-86400}
       FLUXER_GATEWAY_PRESENCE_PUSH_BUFFER_MAX_ENTRIES: ${FLUXER_GATEWAY_PRESENCE_PUSH_BUFFER_MAX_ENTRIES:-}
       FLUXER_GATEWAY_PRESENCE_PUSH_BUFFER_MAX_BYTES: ${FLUXER_GATEWAY_PRESENCE_PUSH_BUFFER_MAX_BYTES:-}
       FLUXER_GATEWAY_HTTP_RPC_MAX_CONCURRENCY: ${FLUXER_GATEWAY_HTTP_RPC_MAX_CONCURRENCY:-}

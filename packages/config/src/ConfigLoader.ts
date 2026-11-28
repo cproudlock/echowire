@@ -60,6 +60,12 @@ export function parseUploadsTtlMs(value: string): number | null {
 const OFFICIAL_ANDROID_PASSKEY_ORIGINS = [
 	'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 	'android:apk-key-hash:Ld4qnT0TfBeHMT3Yu2H0WTwqlxgFs-32uDmwqtLndsk',
+	// Echowire: org.echowire.twa, the same two certs as /.well-known/assetlinks.json
+	// (Play app signing key, then our upload key). Android passkey providers send the
+	// signing cert hash as the origin, so without these every passkey made in the
+	// echowire Android app failed verification.
+	'android:apk-key-hash:ApyiGsmmlsP5i_yEP509Y4kpX1tPkbPVZ6yqTblBfn4',
+	'android:apk-key-hash:L3ptyg20t01vZrqrStlcjh0Fw8K937wXpjjPC0m-BLE',
 ];
 
 const DEFAULT_PASSKEY_ORIGINS = [
@@ -212,6 +218,17 @@ function defaultConfig(): MasterConfig {
 			connection_initiation_secret: '',
 			profile_pseudonym_secret: '',
 			sso_allow_private_addresses: false,
+			sso: {
+				enabled: null,
+				enforced: null,
+				auto_provision: null,
+				issuer: '',
+				client_id: '',
+				client_secret: '',
+				scope: '',
+				display_name: '',
+				allowed_domains: [],
+			},
 			passkeys: {
 				rp_name: 'echowire',
 				// Echowire: left empty so it derives from base_domain below. Hardcoding
@@ -327,9 +344,7 @@ function defaultConfig(): MasterConfig {
 			age_policy: {},
 		},
 		payment_disputes: {},
-		operator_pass: {
-			grace_minutes: 30,
-		},
+		operator_pass: {},
 		dev: {
 			relax_registration_rate_limits: false,
 			disable_rate_limits: false,

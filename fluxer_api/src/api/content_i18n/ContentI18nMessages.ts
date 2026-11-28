@@ -208,7 +208,7 @@ export const CONTENT_I18N_MESSAGES = {
 	'report_flow.label.account_trading': 'Selling accounts, or stolen logins or card details',
 	'report_flow.label.account_trading_communities': 'Buying or selling accounts or communities',
 	'report_flow.label.address': 'Home address or workplace',
-	'report_flow.label.adult_content_no_gate': 'Adult content without an 18+ age restriction',
+	'report_flow.label.adult_content_no_gate': "Adult content in a community that isn't marked 18+",
 	'report_flow.label.adult_content_profile': 'Explicit adult content in their profile',
 	'report_flow.label.adult_content_unmarked': "Adult content in a community channel that isn't marked 18+",
 	'report_flow.label.age_no_message': "No, it doesn't mention it",
@@ -261,7 +261,7 @@ export const CONTENT_I18N_MESSAGES = {
 	'report_flow.label.impersonation_guild': 'Pretending to be {product_name} or another organization',
 	'report_flow.label.impersonation_organization': 'A company, brand or group',
 	'report_flow.label.impersonation_person': 'Me or someone close to me',
-	'report_flow.label.impersonation_public_figure': 'A well-known person, like a creator or politician',
+	'report_flow.label.impersonation_public_figure': 'A well-known person, like a streamer or politician',
 	'report_flow.label.impersonation_staff': '{product_name} staff or support',
 	'report_flow.label.intimate_image_abuse':
 		'Intimate images shared without consent, including deepfakes, or a threat to share them',

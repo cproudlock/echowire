@@ -12,11 +12,35 @@ import (
 	"time"
 )
 
-const StateFile = "migrations.json"
+const stateFile = "migrations.json"
 
 type State struct {
 	Storage *Switched `json:"storage,omitempty"`
 	KV      *Switched `json:"kv,omitempty"`
+	Docker  *Moving   `json:"docker,omitempty"`
+}
+
+type Moving struct {
+	At         time.Time   `json:"at"`
+	Dir        string      `json:"dir"`
+	Runtime    string      `json:"runtime,omitempty"`
+	Units      []SavedUnit `json:"units,omitempty"`
+	Mounts     []DataMount `json:"mounts,omitempty"`
+	SwitchedAt *time.Time  `json:"switched_at,omitempty"`
+}
+
+type DataMount struct {
+	Service string `json:"service"`
+	Target  string `json:"target"`
+	Bind    string `json:"bind,omitempty"`
+	Volume  string `json:"volume,omitempty"`
+}
+
+type SavedUnit struct {
+	Path    string `json:"path"`
+	Data    []byte `json:"data,omitempty"`
+	Enabled bool   `json:"enabled,omitempty"`
+	User    bool   `json:"user,omitempty"`
 }
 
 type Switched struct {
@@ -32,7 +56,7 @@ func (s *Switched) Open() bool { return s != nil && s.OpenedAt != nil }
 
 func (s *Switched) Pending() bool { return s != nil && s.CleanedUpAt == nil }
 
-func statePath(dir string) string { return filepath.Join(dir, ".rexctl", StateFile) }
+func statePath(dir string) string { return filepath.Join(dir, ".rexctl", stateFile) }
 
 func LoadState(dir string) (State, error) {
 	var st State
@@ -94,5 +118,16 @@ func (st State) Merge(next State) State {
 	if next.KV != nil {
 		st.KV = next.KV
 	}
+	if next.Docker != nil {
+		st.Docker = next.Docker
+	}
 	return st
+}
+
+func FileJournal(dir string) (func(State) error, error) {
+	base, err := LoadState(dir)
+	if err != nil {
+		return nil, err
+	}
+	return func(cur State) error { return base.Merge(cur).Save(dir) }, nil
 }

@@ -5,6 +5,8 @@ package engine
 import (
 	"context"
 	"errors"
+	"net"
+	"net/http"
 	"slices"
 	"strconv"
 	"strings"
@@ -13,13 +15,13 @@ import (
 	cerrdefs "github.com/containerd/errdefs"
 	"github.com/distribution/reference"
 	"github.com/docker/compose/v5/pkg/api"
-	"github.com/fluxerapp/fluxer/fluxer_rexctl/internal/stack"
 	"github.com/moby/moby/api/types/container"
+	"github.com/moby/moby/api/types/mount"
 	"github.com/moby/moby/api/types/volume"
 	"github.com/moby/moby/client"
 )
 
-var ErrNoContainers = errors.New("engine: the project has no containers")
+var errNoContainers = errors.New("engine: the project has no containers")
 
 func projectFilter(project string) client.Filters {
 	return make(client.Filters).Add("label", api.ProjectLabel+"="+project)
@@ -51,6 +53,7 @@ func (p *Project) PS(ctx context.Context) ([]Container, error) {
 		if len(s.Names) > 0 {
 			ct.Name = strings.TrimPrefix(s.Names[0], "/")
 		}
+		ct.Mounts = mountsOf(s.Mounts)
 		ct.Number, _ = strconv.Atoi(s.Labels[api.ContainerNumberLabel])
 		if s.Health != nil && s.Health.Status != container.NoHealthcheck {
 			ct.Health = strings.ToLower(string(s.Health.Status))
@@ -58,10 +61,14 @@ func (p *Project) PS(ctx context.Context) ([]Container, error) {
 			ct.Health = healthFromStatus(s.Status)
 		}
 		podmanHealth := p.Engine.Kind == Podman && ct.State == "running" && ct.Health == ""
-		if needsInspect(ct) || podmanHealth {
+		podmanMounts := p.Engine.Kind == Podman && len(ct.Mounts) == 0
+		if needsInspect(ct) || podmanHealth || podmanMounts {
 			in, err := c.ContainerInspect(ctx, s.ID, client.ContainerInspectOptions{})
 			if err == nil {
 				ct.RestartCount = in.Container.RestartCount
+				if len(ct.Mounts) == 0 {
+					ct.Mounts = mountsOf(in.Container.Mounts)
+				}
 				if st := in.Container.State; st != nil {
 					ct.ExitCode = st.ExitCode
 					if podmanHealth && st.Health != nil && st.Health.Status != "" && st.Health.Status != container.NoHealthcheck {
@@ -81,6 +88,19 @@ func (p *Project) PS(ctx context.Context) ([]Container, error) {
 		return a.Number - b.Number
 	})
 	return out, nil
+}
+
+func mountsOf(points []container.MountPoint) []Mount {
+	var out []Mount
+	for _, m := range points {
+		switch m.Type {
+		case mount.TypeBind:
+			out = append(out, Mount{Bind: m.Source, Target: m.Destination, ReadOnly: !m.RW})
+		case mount.TypeVolume:
+			out = append(out, Mount{Volume: m.Name, Target: m.Destination, ReadOnly: !m.RW})
+		}
+	}
+	return out
 }
 
 func needsInspect(c Container) bool {
@@ -124,6 +144,23 @@ func (e *Engine) Volumes(ctx context.Context, project string) ([]Volume, error) 
 		out = append(out, Volume{Name: v.Name, Project: labels[api.ProjectLabel], Labels: labels, Mountpoint: v.Mountpoint, Device: v.Options["device"], CreatedAt: v.CreatedAt})
 	}
 	slices.SortFunc(out, func(a, b Volume) int { return strings.Compare(a.Name, b.Name) })
+	return out, nil
+}
+
+func (e *Engine) Networks(ctx context.Context, project string) ([]string, error) {
+	c, err := e.api()
+	if err != nil {
+		return nil, err
+	}
+	res, err := c.NetworkList(ctx, client.NetworkListOptions{Filters: projectFilter(project)})
+	if err != nil {
+		return nil, &Error{Op: "networks", Class: ClassOf(err), Err: err}
+	}
+	out := make([]string, 0, len(res.Items))
+	for _, n := range res.Items {
+		out = append(out, n.Name)
+	}
+	slices.Sort(out)
 	return out, nil
 }
 
@@ -197,19 +234,53 @@ func (e *Engine) PublishedHostPorts(ctx context.Context) ([]PortOwner, error) {
 }
 
 func (e *Engine) Projects(ctx context.Context) ([]ProjectInfo, error) {
-	c, err := e.conn()
+	c, err := e.api()
 	if err != nil {
 		return nil, err
 	}
-	stacks, err := c.svc.List(ctx, api.ListOptions{All: true})
-	if err != nil {
+	dial := c.Dialer()
+	hc := &http.Client{Transport: &http.Transport{
+		DialContext: func(ctx context.Context, _, _ string) (net.Conn, error) { return dial(ctx) },
+	}}
+	var list []listedContainer
+	if err := libpod(ctx, hc, http.MethodGet, "/containers/json?all=1", &list); err != nil {
 		return nil, &Error{Op: "projects", Class: ClassOf(err), Err: err}
 	}
-	out := make([]ProjectInfo, 0, len(stacks))
-	for _, s := range stacks {
-		out = append(out, ProjectInfo{Name: s.Name, Status: s.Status, ConfigFiles: s.ConfigFiles})
+	return groupProjects(list), nil
+}
+
+type listedContainer struct {
+	State  string            `json:"State"`
+	Labels map[string]string `json:"Labels"`
+}
+
+func groupProjects(list []listedContainer) []ProjectInfo {
+	states := map[string]map[string]int{}
+	files := map[string]string{}
+	for _, ct := range list {
+		name := ct.Labels[api.ProjectLabel]
+		if name == "" {
+			continue
+		}
+		if states[name] == nil {
+			states[name] = map[string]int{}
+		}
+		states[name][ct.State]++
+		if f := ct.Labels[api.ConfigFilesLabel]; f != "" && files[name] == "" {
+			files[name] = f
+		}
 	}
-	return out, nil
+	out := make([]ProjectInfo, 0, len(states))
+	for name, counts := range states {
+		parts := make([]string, 0, len(counts))
+		for state, n := range counts {
+			parts = append(parts, state+"("+strconv.Itoa(n)+")")
+		}
+		slices.Sort(parts)
+		out = append(out, ProjectInfo{Name: name, Status: strings.Join(parts, ", "), ConfigFiles: files[name]})
+	}
+	slices.SortFunc(out, func(a, b ProjectInfo) int { return strings.Compare(a.Name, b.Name) })
+	return out
 }
 
 func (e *Engine) LocalImage(ctx context.Context, ref string) (string, bool, error) {
@@ -229,7 +300,7 @@ func (e *Engine) LocalImage(ctx context.Context, ref string) (string, bool, erro
 
 func Stores(dir string, e *Engine, prefer Kind) Roots {
 	if e == nil {
-		r := PlannedRoots(prefer)
+		r := plannedRoots(prefer)
 		if r.Data == "" {
 			return Roots{Data: dir, Images: dir}
 		}
@@ -270,22 +341,22 @@ func (e *Engine) LocalDiffIDs(ctx context.Context) (map[string]bool, error) {
 	return out, nil
 }
 
-func (e *Engine) PullNeed(ctx context.Context, set stack.ImageSet, refs []string, sizes map[string]uint64) uint64 {
-	local, _ := e.LocalDiffIDs(ctx)
-	var missing []string
+func (e *Engine) PullNeed(ctx context.Context, refs []string, sizes map[string]uint64) uint64 {
 	var need uint64
 	for _, ref := range refs {
 		if _, found, err := e.LocalImage(ctx, ref); err == nil && found {
 			continue
 		}
-		if _, known := set.LayersFor(e.Platform, ref); !known && sizes[ref] > 0 {
+		if sizes[ref] > 0 {
 			need += 2 * sizes[ref]
 			continue
 		}
-		missing = append(missing, ref)
+		need += ImageGuess
 	}
-	return need + set.Need(e.Platform, missing, local)
+	return need
 }
+
+const ImageGuess = 1 << 30
 
 func (e *Engine) UniqueSize(ctx context.Context, refs []string) (uint64, error) {
 	c, err := e.api()

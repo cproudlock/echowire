@@ -273,6 +273,8 @@ describe('runtimeSnapshotFromDiscovery', () => {
 				account_identity_locked: true,
 				account_identity_lock_reason: null,
 				setup_token_required: true,
+				install_method: 'docker',
+				setup_command: 'docker compose exec api fluxer setup',
 			},
 			legal: {
 				terms_url: 'https://q.test/terms',

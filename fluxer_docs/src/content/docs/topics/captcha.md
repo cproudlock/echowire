@@ -8,25 +8,25 @@ Some operations return 400 `CAPTCHA_REQUIRED` with an [ALTCHA](https://altcha.or
 
 ## Turn the check on or off
 
-The check is on by default. An administrator can turn it off or change its cost in the [captcha configuration](/admin-api/instance/#captcha-configuration-object). The `captcha.provider` field in [instance discovery](/http-api/instance/#captcha-configuration-object) is `altcha` while the check is on and `none` while it is off.
+The check is on by default. An instance admin can turn it off or change its cost in the [captcha configuration](/admin-api/instance/#captcha-configuration-object). The `captcha.provider` field in [instance discovery](/http-api/instance/#captcha-configuration-object) is `altcha` while the check is on and `none` while it is off.
 
 ## Solve a challenge
 
 1. Send the request without `X-Captcha-Token`.
 2. Read `altcha_challenge` from the 400 `CAPTCHA_REQUIRED` [error response](/http-api/#error-response).
-3. Solve it with an ALTCHA v2 solver for `PBKDF2/SHA-256`.
+3. Solve it with an ALTCHA v2 solver that supports `PBKDF2/SHA-256`.
 4. Retry the same request with `X-Captcha-Token` set to the [token](#token-format).
 
-The error response has these fields next to `code` and `message`.
+The error response has these fields alongside `code` and `message`.
 
 | Field | Type | Description |
 | --- | --- | --- |
 | captcha_provider | string | Always `altcha` |
 | altcha_challenge | object | An ALTCHA v2 challenge, with `parameters` and `signature` |
 
-A challenge works once and expires after 10 minutes. A rejected token returns 400 `INVALID_CAPTCHA` with a new challenge in the same fields.
+A challenge works once and lasts 10 minutes. A rejected token returns 400 `INVALID_CAPTCHA` with a new challenge in the same fields.
 
-Some operations make their challenge harder after heavy use. Solve the challenge from the latest error response.
+Some operations make their challenge harder after heavy use. Always solve the challenge in the most recent error response you got.
 
 ## Token format
 
@@ -43,7 +43,7 @@ The token is the base64 encoding of this JSON object, and it can be at most 4096
 
 ## Gated operations
 
-These operations need a solved challenge while the check is on.
+With the check on, these need a solved challenge.
 
 | Method | Route | Operation |
 | --- | --- | --- |

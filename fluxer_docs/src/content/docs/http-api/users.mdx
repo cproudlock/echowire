@@ -23,7 +23,7 @@ The public account object inside messages, relationships, guild members and appl
 | discriminator | string | The discriminator, four digits with leading zeroes |
 | global_name | ?string | The display name, or null |
 | avatar<sup>1</sup> | ?string | The avatar hash, or null |
-| avatar_color | ?integer | The 24-bit RGB color taken from the avatar, or null |
+| avatar_color | ?integer | The 24-bit RGB colour taken from the avatar, or null |
 | bot? | boolean | Whether the account is a bot, omitted when false |
 | system? | boolean | Whether the account is a Fluxer system account, omitted when false |
 | flags | integer | [Public user flags](#public-user-flags) |
@@ -45,13 +45,13 @@ The public account object inside messages, relationships, guild members and appl
 }
 ```
 
-While an account's `profile_restricted` is true, other accounts get null `global_name` and `avatar` for it. A deleted account has the username `DeletedUser`, the discriminator `0000`, the global name `Deleted User`, `flags` of `0` and a null `avatar` and `avatar_color`.
+While an account's `profile_restricted` is true, other accounts get null `global_name` and `avatar` for it. A deleted account has the username `DeletedUser`, the discriminator `0000`, the global name `Deleted User`, `flags` of `0`, and a null `avatar` and `avatar_color` for the account.
 
 On an instance whose `tag_style` [feature](/http-api/instance/#instance-features-object) is `none`, usernames are unique on their own and every account that isn't a bot has the discriminator `0000`.
 
 ## Public user flags
 
-These are the values in the `flags` field, and `STAFF` is left out while the account hides its staff flag.
+These are the values in the `flags` field. `STAFF` is left out while the account hides it.
 
 | Value | Name | Description |
 | --- | --- | --- |
@@ -89,11 +89,11 @@ The current account as its owner sees it, returned by [Get current user](/http-a
 | has_verified_phone | boolean | Deprecated. Always false |
 | bio | ?string | The profile biography, or null |
 | pronouns | ?string | The profile pronouns, or null |
-| accent_color | ?integer | The profile accent color as 24-bit RGB, or null |
+| accent_color | ?integer | The profile accent colour as 24-bit RGB, or null |
 | timezone?<sup>1</sup> | ?string | The IANA timezone, or null |
 | timezone_privacy_flags?<sup>1</sup> | integer | [Profile field privacy flags](#profile-field-privacy-flags) for the timezone |
 | banner | ?string | The profile banner hash, or null |
-| banner_color | ?integer | The 24-bit RGB color taken from the banner, or null |
+| banner_color | ?integer | The 24-bit RGB colour taken from the banner, or null |
 | mfa_enabled<sup>1</sup> | boolean | Whether any authenticator is set up |
 | authenticator_types?<sup>1</sup> | array[integer] | [Authenticator types](#authenticator-types) set up for the account |
 | verified<sup>2</sup> | boolean | Whether the email address is confirmed |
@@ -107,7 +107,7 @@ The current account as its owner sees it, returned by [Get current user](/http-a
 | premium_grace_ends_at<sup>1</sup> | ?ISO8601 timestamp | When premium access ends after `premium_until` passes, or null |
 | premium_discriminator<sup>1</sup> <sup>4</sup> | boolean | Whether the discriminator was picked with premium |
 | hidden_profile_badges<sup>1</sup> | array[string] | The [badge keys](#hiding-badges) hidden from other people, sorted |
-| premium_badge_hidden<sup>1</sup> | boolean | Deprecated. Whether the premium badge the account holds is in the hidden list |
+| premium_badge_hidden<sup>1</sup> | boolean | Deprecated. Whether the premium badge the account has is in the hidden list |
 | premium_badge_masked<sup>1</sup> | boolean | Whether a lifetime badge shows as a subscription badge |
 | premium_badge_timestamp_hidden<sup>1</sup> | boolean | Whether the premium start date is hidden from the profile |
 | premium_badge_sequence_hidden<sup>1</sup> | boolean | Deprecated. Whether the Visionary ID is in the hidden list |
@@ -117,14 +117,14 @@ The current account as its owner sees it, returned by [Get current user](/http-a
 | password_last_changed_at<sup>1</sup> | ?ISO8601 timestamp | When the password last changed, or null |
 | last_voice_activity_sharing_change_at<sup>1</sup> | ?ISO8601 timestamp | When voice activity sharing last changed for all friends (24-hour cooldown), or null |
 | required_actions<sup>1</sup> | array[string] | Deprecated. Always empty |
-| nsfw_allowed<sup>1</sup> | boolean | Whether the account can see age-restricted content |
+| nsfw_allowed<sup>1</sup> | boolean | Whether the account can see mature content |
 | has_dismissed_premium_onboarding<sup>1</sup> | boolean | Whether premium onboarding was dismissed, false while premium is not active |
 | has_ever_purchased<sup>1</sup> | boolean | Whether the account has bought anything |
 | has_unread_gift_inventory<sup>1</sup> | boolean | Whether the gift inventory has unread items |
 | unread_gift_inventory_count<sup>1</sup> | integer | The number of unread gift inventory items |
 | pending_bulk_message_deletion<sup>1</sup> | ?[pending bulk message deletion](#pending-bulk-message-deletion-object) object | The scheduled deletion of all the account's messages, or null |
 | mature_content_unlocked?<sup>1</sup> <sup>5</sup> | boolean | Whether the account can see mature content in places where a date of birth typed in is not enough |
-| has_age_range?<sup>1</sup> <sup>5</sup> | boolean | Whether Fluxer keeps an age range for the account. The range itself is not included |
+| has_age_range?<sup>1</sup> <sup>5</sup> | boolean | Whether the account unlocked mature content in the iOS or Android app. What the Apple or Google account shared is not included |
 | terms_agreed_at<sup>1</sup> | ?ISO8601 timestamp | When the account last accepted the terms, or null |
 | privacy_agreed_at<sup>1</sup> | ?ISO8601 timestamp | When the account was last shown the current privacy policy, or null |
 | claimed?<sup>1</sup> | boolean | Whether the account can sign in on another device with an email, a password or a passkey |
@@ -136,13 +136,13 @@ The current account as its owner sees it, returned by [Get current user](/http-a
 
 <sup>1</sup> With an OAuth2 bearer token on [Get current user](/http-api/users/current-user/#get-current-user), arrays are empty, optional fields are left out, booleans are false, nullable fields are null and `unread_gift_inventory_count` is `0`
 
-<sup>2</sup> With an OAuth2 bearer token that lacks the `email` [scope](/http-api/oauth2/#oauth2-scopes), `email` is null and `verified` is false
+<sup>2</sup> With an OAuth2 bearer token that lacks the `email` [scope](/http-api/oauth2/#oauth2-scopes), `email` is null and `verified` is always false
 
 <sup>3</sup> When the [accounts configuration](/admin-api/instance/#accounts-configuration-object) enforces it, most routes return 403 `DATE_OF_BIRTH_REQUIRED` until the date is set
 
 <sup>4</sup> After premium ends, a `random` tag-style instance gives the account a new discriminator at its next Gateway session
 
-<sup>5</sup> The iOS and Android apps can send an age range from the Apple or Google account, and Fluxer keeps it only when it is 18 or over. `mature_content_unlocked` is true when Fluxer keeps such a range, when staff set it, or when the account had mature content unlocked before. A self-hosted instance never keeps an age range
+<sup>5</sup> The iOS and Android apps can unlock mature content when the Apple or Google account confirms that the person is an adult. `has_age_range` is true after such an unlock, and `mature_content_unlocked` is true after it, when staff set it, or when the account had mature content unlocked before. A self-hosted instance never unlocks mature content this way
 
 ## Pending bulk message deletion object
 
@@ -184,19 +184,35 @@ An account is limited while `account_limited` is true. It can still read, join v
 - [Create webhook](/http-api/webhooks/#create-webhook)
 - [Accept invite](/http-api/invites/#accept-invite) and [Join discovery guild](/http-api/discovery/#join-discovery-guild), unless the account is already a member
 - [Create guild](/http-api/guilds/#create-guild)
-- Creating a group DM with [Create private channel](/http-api/users/private-channels/#create-private-channel), and [Add group direct message recipient](/http-api/channels/#add-group-direct-message-recipient)
+- Creating a group direct message with [Create private channel](/http-api/users/private-channels/#create-private-channel), and [Add group direct message recipient](/http-api/channels/#add-group-direct-message-recipient)
 - Changing a profile field with [Modify current user](/http-api/users/current-user/#modify-current-user) or [Modify current guild member](/http-api/guild-members/#modify-current-guild-member)
 - Setting a custom status with [Modify current user settings](/http-api/users/settings/#modify-current-user-settings) or a [presence update](/gateway/commands/#presence-update)
-- [Initiate connection](/http-api/connections/#initiate-connection), [Verify and create connection](/http-api/connections/#verify-and-create-connection) and [Start Bluesky authorization](/http-api/connections/#start-bluesky-authorization)
+- [Initiate connection](/http-api/connections/#initiate-connection), [Verify and create connection](/http-api/connections/#verify-and-create-connection) and [Start Bluesky authorisation](/http-api/connections/#start-bluesky-authorization)
 - [Upload entrance sound](/http-api/entrance-sounds/#upload-entrance-sound) and [Set entrance sound selection](/http-api/entrance-sounds/#set-entrance-sound-selection)
 
 ## Account tiers
 
-An account is unclaimed while it has no email address, unverified while its email address isn't confirmed and verified otherwise. When the `account_identity` [feature](/http-api/instance/#instance-features-object) is `username`, an account with a password or a passkey is verified and one without is unclaimed. On an instance that sends no email, or whose `verification_basis` is `local_credential`, an account with an email address follows the same rule. Bots, system accounts and single sign-on accounts are always verified.
+Every account is in one of three tiers.
 
-`interaction_tier` in the [accounts configuration](/admin-api/instance/#accounts-configuration-object) sets how strict the tiers are. When it is `enforced`, an account that isn't verified can read, edit its own profile and settings, write personal notes and join communities, but can't do most things that involve other people.
+| Tier | When |
+| --- | --- |
+| Unclaimed | The account has no email address |
+| Unverified | The account's email address isn't confirmed |
+| Verified | Otherwise |
 
-A denial that has its own code returns it, such as `UNCLAIMED_ACCOUNT_CANNOT_SEND_MESSAGES` or `EMAIL_VERIFICATION_REQUIRED`. Every other denial returns 403 `ACCOUNT_VERIFICATION_REQUIRED`, and so does every denial for an account whose `verification_need` is `password`. That [error response](/http-api/#error-response) has `action`, `tier` and `need`, and `action` is one of the values below.
+- When the `account_identity` [feature](/http-api/instance/#instance-features-object) is `username`, an account with a password or a passkey is verified and one without is unclaimed.
+- On an instance that sends no email, or whose `verification_basis` is `local_credential`, an account with an email address follows the same rule.
+- Bots, system accounts and single sign-on accounts are always verified.
+
+### What the tiers allow
+
+`interaction_tier` in the [accounts configuration](/admin-api/instance/#accounts-configuration-object) sets how strict the tiers are. When it is `enforced`, an account that isn't verified can read, edit its own profile and settings, write personal notes and join communities. It can't do most things that involve other people.
+
+### Denials
+
+A denial that has its own code returns it, such as `UNCLAIMED_ACCOUNT_CANNOT_SEND_MESSAGES` or `EMAIL_VERIFICATION_REQUIRED`. Every other denial returns 403 `ACCOUNT_VERIFICATION_REQUIRED`, and so does every denial for an account whose `verification_need` is `password`.
+
+That [error response](/http-api/#error-response) has `action`, `tier` and `need`, and `action` is one of the values below.
 
 | Action | Operations |
 | --- | --- |
@@ -205,7 +221,7 @@ A denial that has its own code returns it, such as `UNCLAIMED_ACCOUNT_CANNOT_SEN
 | `reaction` | Add a reaction |
 | `direct_message` | Send a DM |
 | `direct_message_open` | Open a DM |
-| `group_dm` | Create or join a group DM |
+| `group_dm` | Create or join a group direct message |
 | `friend_request` | Send a friend request |
 | `friend_accept` | Accept a friend request |
 | `invite_create` | Create an invite |
@@ -213,7 +229,7 @@ A denial that has its own code returns it, such as `UNCLAIMED_ACCOUNT_CANNOT_SEN
 | `guild_create` | Create a guild |
 | `voice` | Join a voice channel |
 | `call` | Start or ring a call in a DM |
-| `group_call` | Start or join a call in a group DM |
+| `group_call` | Start or join a call in a group direct message |
 | `thread_join` | Join a thread |
 | `channel_follow` | Follow an announcement channel |
 | `ownership_transfer` | Receive guild ownership |
@@ -224,7 +240,7 @@ A denial that has its own code returns it, such as `UNCLAIMED_ACCOUNT_CANNOT_SEN
 | `mfa` | Turn on two-factor authentication or regenerate backup codes |
 | `guild_verification` | Talk in a guild that requires a verified email |
 
-`guild_join` applies only to accounts assigned [guild visits](/admin-api/instance/#guild-visits-configuration-object), and never while the instance sets `guild_join_gate` to `off`. With `visits_capable`, it applies only to clients that send the `X-Fluxer-Capabilities: guild_visits` header.
+`guild_join` applies only to accounts assigned [guild visits](/admin-api/instance/#guild-visits-configuration-object), and never while the instance sets `guild_join_gate` to `off`. With `visits_capable`, it applies only to clients whose `X-Fluxer-Capabilities` header has `guild_visits`.
 
 ## Profile field privacy flags
 
@@ -287,7 +303,7 @@ The account-wide settings, returned by [Get current user settings](/http-api/use
 | privacy_setup_version | integer | The latest privacy setup version the account reviewed, or 0 |
 | privacy_setup_completed_at | ?ISO8601 timestamp | When the account last finished the privacy setup, or null |
 
-<sup>1</sup> Only staff accounts can set it. A settings update from any other account sets it to false or empty
+<sup>1</sup> Only staff accounts can set it. A settings update from any other account sets it to false or leaves it empty
 
 ## Custom status object
 
@@ -317,15 +333,15 @@ The text and emoji set as the account's status.
 
 ## Guild folder object
 
-A folder in the guild sidebar. When you join a guild, Fluxer adds it to the start of the uncategorized folder, and when you leave one, Fluxer removes it and deletes any other folder it leaves empty.
+A folder in the guild sidebar. When you join a guild, Fluxer adds it to the start of the uncategorised folder, and when you leave one, Fluxer removes it and deletes any other folder it leaves empty.
 
 ### Structure
 
 | Field | Type | Description |
 | --- | --- | --- |
-| id | ?integer | The ID of the folder, `-1` for the uncategorized folder |
+| id | ?integer | The ID of the folder, `-1` for the uncategorised folder |
 | name | ?string | The folder name, or null |
-| color | ?integer | The folder color as 24-bit RGB, or null |
+| color | ?integer | The folder colour as 24-bit RGB, or null |
 | flags | integer | [Guild folder flags](#guild-folder-flags) |
 | icon | string | [Guild folder icon](#guild-folder-icons) |
 | guild_ids | array[snowflake] | The guild IDs in sidebar order. A guild can appear in only one folder |
@@ -458,7 +474,7 @@ When `FRIENDS_ONLY` is set it applies over `NOBODY`, and `NOBODY` applies over `
 
 ## User profile object
 
-The account-wide profile inside a [full user profile object](#full-user-profile-object). Every field is null when the target's profile is hidden, or when its `profile_restricted` is true and you aren't the target.
+The account-wide profile inside a [full user profile object](#full-user-profile-object). Every field is null when the target's profile is hidden, or when you aren't the target and its `profile_restricted` is true.
 
 ### Structure
 
@@ -467,8 +483,8 @@ The account-wide profile inside a [full user profile object](#full-user-profile-
 | bio | ?string | The biography, or null |
 | pronouns | ?string | The pronouns, or null |
 | banner | ?string | The profile banner hash, or null |
-| banner_color | ?integer | The 24-bit RGB color taken from the banner, or null |
-| accent_color | ?integer | The accent color as 24-bit RGB, or null |
+| banner_color | ?integer | The 24-bit RGB colour taken from the banner, or null |
+| accent_color | ?integer | The accent colour as 24-bit RGB, or null |
 
 ## Guild member profile object
 
@@ -481,7 +497,7 @@ The target's profile in the guild from the `guild_id` query parameter.
 | bio | ?string | The guild biography, or null |
 | pronouns | ?string | The guild pronouns, or null |
 | banner | ?string | The guild banner hash, or null |
-| accent_color | ?integer | The guild accent color as 24-bit RGB, or null |
+| accent_color | ?integer | The guild accent colour as 24-bit RGB, or null |
 
 ## Mutual guild object
 
@@ -510,7 +526,7 @@ Returned by [Get user profile](#get-user-profile). When profile privacy restrict
 | premium_since?<sup>2</sup> | ISO8601 timestamp | When the target's premium started |
 | premium_lifetime_sequence?<sup>2</sup> | integer | The target's lifetime premium sequence number |
 | profile_badges | array[[profile badge](#profile-badge-object) object] | The badges to show, in order |
-| hidden_profile_badge_count?<sup>5</sup> | integer | How many badges you hold that are [hidden](#hiding-badges) |
+| hidden_profile_badge_count?<sup>5</sup> | integer | How many badges you have that are [hidden](#hiding-badges) |
 | mutual_friends?<sup>3</sup> | array[[partial user](#partial-user-object) object] | Your mutual friends with the target |
 | mutual_guilds?<sup>3</sup> | array[[mutual guild](#mutual-guild-object) object] | The guilds you and the target share |
 | connected_accounts<sup>4</sup> | array[[connection](/http-api/connections/#connection-object) object] | The target's verified connections you can see |
@@ -523,7 +539,7 @@ Returned by [Get user profile](#get-user-profile). When profile privacy restrict
 
 <sup>3</sup> Only when the matching `with_` query parameter is true, and never for your own profile
 
-<sup>4</sup> Empty or null when the profile is restricted or the target's [profile field privacy flags](#profile-field-privacy-flags) don't include you
+<sup>4</sup> Empty or null when the profile is restricted or the target's [profile field privacy flags](#profile-field-privacy-flags) don't include you as a viewer
 
 <sup>5</sup> Only on your own profile
 
@@ -548,11 +564,11 @@ One badge on a [full user profile](#full-user-profile-object). The API picks the
 | accessible_label? | ?string | The label for screen readers, used in place of `label` |
 | details?<sup>4</sup> | ?[badge details](#badge-details-object) object | A richer tooltip with the badge art, `title` and `lines`. Without it, `label` is the tooltip |
 
-<sup>1</sup> Known values are `staff`, `premium` and `custom`. Render any other kind from its other fields
+<sup>1</sup> Known values are `staff`, `premium` and `custom`. Render any other kind from its remaining fields
 
 <sup>2</sup> The image is at `{static_cdn}/badges/{asset}.webp`, with `static_cdn` from [instance discovery](/http-api/instance/), and square badges also have a `.png`. Hashed files never change
 
-<sup>3</sup> A WebP image from the media proxy. Add a `size` query parameter to get it at the size you draw it
+<sup>3</sup> A WebP image from the media proxy. Add a `size` query parameter to get it at the size you show it at
 
 <sup>4</sup> A custom badge with a description has one, with the name as `title` and the description as its only line
 
@@ -576,7 +592,7 @@ Your own profile follows the same rules and shows what other people see. `label`
 
 ### Hiding badges
 
-Every badge an account holds can be hidden from other people. The account's `hidden_profile_badges` lists the keys of the hidden badges, using the same values as `key`, and [Modify current user](/http-api/users/current-user/#modify-current-user) replaces it. A built-in badge's key is its `kind`, and a custom badge's key is `custom:{id}`.
+Every badge an account has can be hidden from other people. The account's `hidden_profile_badges` lists the keys of the hidden badges, using the same values as `key`, and [Modify current user](/http-api/users/current-user/#modify-current-user) replaces it. A built-in badge's key is its `kind`, and a custom badge's key is `custom:{id}`.
 
 | Key | Badge |
 | --- | --- |
@@ -590,7 +606,7 @@ Every badge an account holds can be hidden from other people. The account's `hid
 | `premium` | Premium on a self-hosted instance |
 | `custom:{id}` | A custom badge |
 
-A hidden badge is dropped from `profile_badges`. Hiding `staff`, `partner` or `bug_hunter` also clears that bit from the account's `flags` in every user object other people get. Hiding the key of the premium badge the account holds drops that badge even when a Visionary badge is masked as a subscription, and leaves the premium fields out of the full profile.
+A hidden badge is dropped from `profile_badges`. Hiding `staff`, `partner` or `bug_hunter` also clears that bit from the account's `flags` in every user object other people get. Hiding the key of the premium badge the account has drops that badge even when a Visionary badge is masked as a subscription, and leaves the premium fields out of the full profile.
 
 Staff in the [Admin API](/admin-api/users/#admin-profile-badge-object) still see every badge, with hidden ones marked.
 
@@ -613,7 +629,7 @@ The rate limit is 100 requests per 10 seconds, on the `user:read::user_id` bucke
 
 <RouteHeader method="GET" path="/v1/users/{target_id}/profile" bot />
 
-Returns a [full user profile](#full-user-profile-object) object. To get the profile of another account that isn't a bot, you need a friendship, a pending friend request, a shared guild or a shared group DM with it. Profile privacy can still [restrict the fields](#full-user-profile-object) you get.
+Returns a [full user profile](#full-user-profile-object) object. To get the profile of another account that isn't a bot, you need a friendship, a pending friend request, a shared guild or a shared group direct message with it. Profile privacy can still [restrict the fields](#full-user-profile-object) you get.
 
 ### Query parameters
 

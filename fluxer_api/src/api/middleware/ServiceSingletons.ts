@@ -78,6 +78,7 @@ import {
 } from '@app/api/operator_pass/OperatorPassWallPublisher';
 import {OperatorPassWallService} from '@app/api/operator_pass/OperatorPassWallService';
 import {PaymentDisputeRepository} from '@app/api/payment_disputes/PaymentDisputeRepository';
+import {isFailClosedRateLimitKey} from '@app/api/rate_limit_configs/FailClosedRateLimitKeys';
 import {ReadStateRepository} from '@app/api/read_state/ReadStateRepository';
 import {ReadStateRequestService} from '@app/api/read_state/ReadStateRequestService';
 import {ReadStateService} from '@app/api/read_state/ReadStateService';
@@ -106,6 +107,7 @@ import {VoiceP2pConnectionReportRepository} from '@app/api/voice/VoiceP2pConnect
 import {VoiceRepository} from '@app/api/voice/VoiceRepository';
 import {SweegoWebhookService} from '@app/api/webhook/SweegoWebhookService';
 import {WebhookRepository} from '@app/api/webhook/WebhookRepository';
+import {Counter, registerMetricsSection} from '@fluxer/hono/src/middleware/Metrics';
 import type {ICacheService} from '@pkgs/cache/src/ICacheService';
 import {KVCacheProvider} from '@pkgs/cache/src/providers/KVCacheProvider';
 import type {EmailConfig, UserBouncedEmailChecker} from '@pkgs/email/src/EmailProviderTypes';
@@ -113,6 +115,7 @@ import {EmailService} from '@pkgs/email/src/EmailService';
 import type {IEmailService} from '@pkgs/email/src/IEmailService';
 import {TestEmailService} from '@pkgs/email/src/TestEmailService';
 import {NatsConnectionManager} from '@pkgs/nats/src/NatsConnectionManager';
+import {FailoverRateLimitStore} from '@pkgs/rate_limit/src/FailoverRateLimitStore';
 import {RateLimitService} from '@pkgs/rate_limit/src/RateLimitService';
 import type {IVirusScanService} from '@pkgs/virus_scan/src/IVirusScanService';
 
@@ -189,7 +192,30 @@ export const getCustomBadgeCatalog = singleton(
 			mediaEndpoint: () => Config.endpoints.media,
 		}),
 );
-export const getRateLimitService = singleton(() => new RateLimitService(getKVClient()));
+const rateLimitFallbacks = new Counter();
+const rateLimitFailClosed = new Counter();
+
+export const getRateLimitService = singleton(() => {
+	registerMetricsSection(() =>
+		rateLimitFallbacks.render(
+			'fluxer_api_rate_limit_local_fallback_total',
+			'Rate limit checks handled by the per-pod bucket after KV failed, timed out or was skipped',
+		),
+	);
+	registerMetricsSection(() =>
+		rateLimitFailClosed.render(
+			'fluxer_api_rate_limit_fail_closed_total',
+			'Security rate limit checks refused with 503 because KV failed or was skipped',
+		),
+	);
+	return new RateLimitService(
+		new FailoverRateLimitStore(getKVClient(), {
+			onFallback: (reason) => rateLimitFallbacks.inc(`reason="${reason}"`),
+			failClosed: isFailClosedRateLimitKey,
+			onFailClosed: () => rateLimitFailClosed.inc(),
+		}),
+	);
+});
 export const getEmailDnsValidationService = singleton(() => new EmailDnsValidationService());
 export const getOperatorPassEntitlementService = singleton(
 	() => new OperatorPassEntitlementService(getOperatorPassRepository()),
@@ -435,7 +461,9 @@ export const getEntranceSoundService = singleton(
 export const getEntranceSoundPlayService = singleton(
 	() => new EntranceSoundPlayService(getEntranceSoundService(), getGatewayService(), getChannelRepository()),
 );
-export const getGatewayRequestService = singleton(() => new GatewayRequestService(getBotAuthService()));
+export const getGatewayRequestService = singleton(
+	() => new GatewayRequestService(getBotAuthService(), getGuildRepository()),
+);
 export const getGuildDiscoveryService = singleton(
 	() =>
 		new GuildDiscoveryService(

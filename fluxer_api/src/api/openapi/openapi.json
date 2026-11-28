@@ -7031,7 +7031,14 @@
 				"summary": "Indicate typing activity",
 				"tags": ["Channels", "Messages"],
 				"responses": {
-					"200": {"description": "Success"},
+					"200": {
+						"description": "Success",
+						"content": {
+							"application/json": {
+								"schema": {"anyOf": [{"$ref": "#/components/schemas/TypingCooldownResponse"}, {"type": "null"}]}
+							}
+						}
+					},
 					"204": {"description": "No Content"},
 					"400": {
 						"description": "Bad Request - The request was malformed or contained invalid data",
@@ -12209,7 +12216,7 @@
 				]
 			}
 		},
-		"/harvest-downloads/{harvestId}": {
+		"/harvest-downloads/{harvest_id}": {
 			"get": {
 				"operationId": "download_data_harvest_archive",
 				"summary": "Download data harvest archive",
@@ -12257,7 +12264,7 @@
 				"description": "Streams a completed data harvest archive. Authorised by a signed, expiring token rather than a session, so the link works from the harvest completion email. Only active when presigned harvest downloads are disabled.",
 				"parameters": [
 					{
-						"name": "harvestId",
+						"name": "harvest_id",
 						"in": "path",
 						"required": true,
 						"schema": {"description": "The ID of the harvest request", "$ref": "#/components/schemas/SnowflakeType"},
@@ -12729,7 +12736,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Resolves the approximate location of the requesting client from its IP address, together with the locations where age restricted content is gated or unavailable."
+				"description": "Resolves the approximate location of the requesting client from its IP address, together with the locations where mature content has to be unlocked or is unavailable."
 			}
 		},
 		"/klipy/featured": {
@@ -13212,7 +13219,7 @@
 				}
 			}
 		},
-		"/oauth2/@me/authorizations/{applicationId}": {
+		"/oauth2/@me/authorizations/{application_id}": {
 			"delete": {
 				"operationId": "delete_user_oauth2_authorization",
 				"summary": "Revoke OAuth2 authorization",
@@ -13262,7 +13269,7 @@
 				"security": [{"sessionToken": []}],
 				"parameters": [
 					{
-						"name": "applicationId",
+						"name": "application_id",
 						"in": "path",
 						"required": true,
 						"schema": {"description": "The ID of the application", "$ref": "#/components/schemas/SnowflakeType"},
@@ -15241,7 +15248,7 @@
 						"content": {"application/json": {"schema": {"$ref": "#/components/schemas/Error"}}}
 					}
 				},
-				"description": "Returns whether the early bird or the standard price applies, the price of one pass in the buyer currency, the most passes one checkout can buy, the withdrawal rule of the buyer country and a signed quote. Signed-in callers also get their holder status with the number of passes they hold, and why they cannot buy passes.",
+				"description": "Returns the price of one pass in the buyer currency, the most passes one checkout can buy, the withdrawal rule of the buyer country and a signed quote. Signed-in callers also get their holder status with the number of passes they hold, and why they cannot buy passes.",
 				"parameters": [
 					{
 						"name": "country_code",
@@ -21680,7 +21687,7 @@
 				"security": [{"sessionToken": []}]
 			}
 		},
-		"/users/@me/harvest/{harvestId}": {
+		"/users/@me/harvest/{harvest_id}": {
 			"get": {
 				"operationId": "get_data_harvest_status",
 				"summary": "Get data harvest status",
@@ -21733,7 +21740,7 @@
 				"security": [{"sessionToken": []}],
 				"parameters": [
 					{
-						"name": "harvestId",
+						"name": "harvest_id",
 						"in": "path",
 						"required": true,
 						"schema": {"description": "The ID of the harvest request", "$ref": "#/components/schemas/SnowflakeType"},
@@ -21742,7 +21749,7 @@
 				]
 			}
 		},
-		"/users/@me/harvest/{harvestId}/download": {
+		"/users/@me/harvest/{harvest_id}/download": {
 			"get": {
 				"operationId": "get_data_harvest_download_url",
 				"summary": "Get data harvest download URL",
@@ -21795,7 +21802,7 @@
 				"security": [{"sessionToken": []}],
 				"parameters": [
 					{
-						"name": "harvestId",
+						"name": "harvest_id",
 						"in": "path",
 						"required": true,
 						"schema": {"description": "The ID of the harvest request", "$ref": "#/components/schemas/SnowflakeType"},
@@ -29608,7 +29615,7 @@
 						"description": "Information about a pending bulk message deletion request. Only populated when the legacy delayed-deletion flow is in progress; the new immediate-deletion flow does not surface a pending state here."
 					},
 					"mature_content_unlocked": {
-						"description": "Whether mature content is unlocked for the account in regions where a date of birth typed in is not enough for mature content. It is true when the iOS or Android app sent an age range of 18 or over, when staff set it, or when the account already had mature content unlocked before. Never true from an age range on a self-hosted instance",
+						"description": "Whether mature content is unlocked for the account in regions where a date of birth typed in is not enough for mature content. It is true when the account unlocked mature content in the iOS or Android app, when staff set it, or when the account already had mature content unlocked before. The app unlock never applies on a self-hosted instance",
 						"type": "boolean"
 					},
 					"terms_agreed_at": {
@@ -29637,7 +29644,7 @@
 						"type": "boolean"
 					},
 					"has_age_range": {
-						"description": "Whether Fluxer keeps an age range for the account that the iOS or Android app sent from the Apple or Google account. The range itself is not included",
+						"description": "Whether the account unlocked mature content in the iOS or Android app, where the Apple or Google account confirmed that the person is an adult. What the account shared is not included",
 						"type": "boolean"
 					},
 					"profile_restricted": {
@@ -33189,7 +33196,7 @@
 						"description": "Information about a pending bulk message deletion request. Only populated when the legacy delayed-deletion flow is in progress; the new immediate-deletion flow does not surface a pending state here."
 					},
 					"mature_content_unlocked": {
-						"description": "Whether mature content is unlocked for the account in regions where a date of birth typed in is not enough for mature content. It is true when the iOS or Android app sent an age range of 18 or over, when staff set it, or when the account already had mature content unlocked before. Never true from an age range on a self-hosted instance",
+						"description": "Whether mature content is unlocked for the account in regions where a date of birth typed in is not enough for mature content. It is true when the account unlocked mature content in the iOS or Android app, when staff set it, or when the account already had mature content unlocked before. The app unlock never applies on a self-hosted instance",
 						"type": "boolean"
 					},
 					"terms_agreed_at": {
@@ -33218,7 +33225,7 @@
 						"type": "boolean"
 					},
 					"has_age_range": {
-						"description": "Whether Fluxer keeps an age range for the account that the iOS or Android app sent from the Apple or Google account. The range itself is not included",
+						"description": "Whether the account unlocked mature content in the iOS or Android app, where the Apple or Google account confirmed that the person is an adult. What the account shared is not included",
 						"type": "boolean"
 					},
 					"profile_restricted": {
@@ -34776,23 +34783,12 @@
 						"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
 						"description": "The server time the state was computed at"
 					},
-					"price_rises_at": {
-						"anyOf": [
-							{
-								"type": "string",
-								"format": "date-time",
-								"pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
-							},
-							{"type": "null"}
-						],
-						"description": "When the early bird price ends, null while no sale date is set"
-					},
 					"currency": {"$ref": "#/components/schemas/OperatorPassCurrencySchema"},
 					"price_minor": {
 						"type": "integer",
 						"minimum": -9007199254740991,
 						"maximum": 9007199254740991,
-						"description": "Current price of one pass in minor units"
+						"description": "Price of one pass in minor units"
 					},
 					"max_quantity": {
 						"type": "integer",
@@ -34803,10 +34799,6 @@
 					"withdrawal_rule": {
 						"anyOf": [{"$ref": "#/components/schemas/OperatorPassWithdrawalRuleResponse"}, {"type": "null"}],
 						"description": "A country rule that keeps the right of withdrawal after delivery, null when the right ends once the certificate is delivered"
-					},
-					"standard_price_minor": {
-						"anyOf": [{"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991}, {"type": "null"}],
-						"description": "Price of one pass after the early bird phase in minor units, null when no standard price is set"
 					},
 					"quote": {"type": "string", "description": "Signed price quote to send back with checkout"},
 					"holder": {
@@ -34821,12 +34813,10 @@
 				"required": [
 					"phase",
 					"now",
-					"price_rises_at",
 					"currency",
 					"price_minor",
 					"max_quantity",
 					"withdrawal_rule",
-					"standard_price_minor",
 					"quote",
 					"holder",
 					"purchase_blocked_reason"
@@ -35376,11 +35366,27 @@
 					"discriminator": {"type": "string", "description": "The discriminator of the user"},
 					"global_name": {"description": "The global display name of the user", "type": ["string", "null"]},
 					"avatar": {"description": "The avatar hash of the user", "type": ["string", "null"]},
+					"avatar_color": {
+						"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}],
+						"description": "The default avatar color of the user"
+					},
+					"bot": {"type": "boolean", "description": "Whether the user is a bot"},
+					"system": {"type": "boolean", "description": "Whether the user is a system user"},
 					"email": {"description": "The email address of the user", "type": ["string", "null"]},
 					"verified": {"description": "Whether the user has verified their email", "type": ["boolean", "null"]},
 					"flags": {"$ref": "#/components/schemas/PublicUserFlags", "description": "The user flags"}
 				},
-				"required": ["sub", "id", "username", "discriminator", "global_name", "avatar"],
+				"required": [
+					"sub",
+					"id",
+					"username",
+					"discriminator",
+					"global_name",
+					"avatar",
+					"avatar_color",
+					"bot",
+					"system"
+				],
 				"additionalProperties": false
 			},
 			"RevokeRequestForm": {
@@ -35435,7 +35441,6 @@
 						"description": "The client identifier for the token",
 						"$ref": "#/components/schemas/SnowflakeStringType"
 					},
-					"username": {"description": "The username of the token owner", "type": "string"},
 					"token_type": {"description": "The type of token", "type": "string"},
 					"exp": {"description": "The expiration timestamp in seconds", "$ref": "#/components/schemas/Int32Type"},
 					"iat": {"description": "The issued-at timestamp in seconds", "$ref": "#/components/schemas/Int32Type"},
@@ -35711,13 +35716,9 @@
 							"icon": {"description": "The icon hash of the application", "type": ["string", "null"]},
 							"description": {"description": "The description of the application", "type": ["string", "null"]},
 							"bot_public": {"type": "boolean", "description": "Whether the bot can be invited by anyone"},
-							"bot_require_code_grant": {
-								"type": "boolean",
-								"description": "Whether the bot requires OAuth2 code grant"
-							},
-							"flags": {"$ref": "#/components/schemas/ApplicationFlags"}
+							"bot_require_code_grant": {"type": "boolean", "description": "Whether the bot requires OAuth2 code grant"}
 						},
-						"required": ["id", "name", "icon", "description", "bot_public", "bot_require_code_grant", "flags"],
+						"required": ["id", "name", "icon", "description", "bot_public", "bot_require_code_grant"],
 						"additionalProperties": false,
 						"description": "The application associated with the token"
 					},
@@ -35732,6 +35733,10 @@
 						"description": "The user associated with the token",
 						"type": "object",
 						"properties": {
+							"sub": {
+								"description": "The subject identifier of the user",
+								"$ref": "#/components/schemas/SnowflakeStringType"
+							},
 							"id": {
 								"description": "The unique identifier of the user",
 								"$ref": "#/components/schemas/SnowflakeStringType"
@@ -35744,13 +35749,24 @@
 								"anyOf": [{"$ref": "#/components/schemas/Int32Type"}, {"type": "null"}],
 								"description": "The default avatar color of the user"
 							},
-							"bot": {"description": "Whether the user is a bot", "type": "boolean"},
-							"system": {"description": "Whether the user is a system user", "type": "boolean"},
+							"bot": {"type": "boolean", "description": "Whether the user is a bot"},
+							"system": {"type": "boolean", "description": "Whether the user is a system user"},
 							"flags": {"$ref": "#/components/schemas/PublicUserFlags", "description": "The user flags"},
 							"email": {"description": "The email address of the user", "type": ["string", "null"]},
 							"verified": {"description": "Whether the user has verified their email", "type": ["boolean", "null"]}
 						},
-						"required": ["id", "username", "discriminator", "global_name", "avatar", "avatar_color", "flags"],
+						"required": [
+							"sub",
+							"id",
+							"username",
+							"discriminator",
+							"global_name",
+							"avatar",
+							"avatar_color",
+							"bot",
+							"system",
+							"flags"
+						],
 						"additionalProperties": false
 					}
 				},
@@ -35784,7 +35800,7 @@
 					"ageBlockedGeos": {
 						"type": "array",
 						"items": {"$ref": "#/components/schemas/GeoEntry"},
-						"description": "Locations where age restricted content is unavailable"
+						"description": "Locations where mature content is unavailable"
 					}
 				},
 				"required": ["countryCode", "regionCode", "latitude", "longitude", "ageRestrictedGeos", "ageBlockedGeos"],
@@ -37152,7 +37168,12 @@
 				"type": "object",
 				"properties": {
 					"poll_interval_seconds": {"type": "integer", "minimum": -9007199254740991, "maximum": 9007199254740991},
-					"poll_jitter_percent": {"type": "integer", "minimum": 0, "maximum": 50},
+					"poll_jitter_percent": {
+						"type": "integer",
+						"minimum": 0,
+						"maximum": 50,
+						"description": "Most that each app shifts a check earlier or later, as a percentage of the poll interval"
+					},
 					"assignments": {
 						"type": "object",
 						"properties": {
@@ -37485,6 +37506,20 @@
 					"has_more": {"type": "boolean", "description": "Whether there are potentially more threads to fetch"}
 				},
 				"required": ["threads", "members", "has_more"],
+				"additionalProperties": false
+			},
+			"TypingCooldownResponse": {
+				"type": "object",
+				"properties": {
+					"message_send_cooldown_ms": {
+						"description": "Milliseconds until slowmode lets the user send a message",
+						"$ref": "#/components/schemas/Int32Type"
+					},
+					"thread_create_cooldown_ms": {
+						"description": "Milliseconds until slowmode lets the user create a thread",
+						"$ref": "#/components/schemas/Int32Type"
+					}
+				},
 				"additionalProperties": false
 			},
 			"ThreadSearchSortOrderSchema": {
@@ -40494,6 +40529,17 @@
 					"setup_token_required": {
 						"description": "Present only while a self-hosted instance is unconfigured. True when registration needs the setup token",
 						"type": "boolean"
+					},
+					"install_method": {
+						"description": "Present only while a self-hosted instance is unconfigured. How Fluxer was installed, or null when it is unknown",
+						"anyOf": [
+							{"type": "string", "enum": ["rexctl", "systemd", "helm", "compose", "docker", "podman", "container"]},
+							{"type": "null"}
+						]
+					},
+					"setup_command": {
+						"description": "Present only while a self-hosted instance is unconfigured. The terminal command that prints the setup token on this install, or null when it is unknown",
+						"type": ["string", "null"]
 					}
 				},
 				"required": ["configured", "admin_url"],
@@ -40932,7 +40978,7 @@
 				"type": "string"
 			},
 			"GuildJoinGateSchema": {
-				"description": "When joining a community needs a finished account. Applies only while the interaction tier is enforced and the person can preview communities",
+				"description": "When joining a community needs a finished account, which only applies while the interaction tier is enforced and the person can preview communities",
 				"x-enumNames": ["OFF", "VISITS_CAPABLE", "ALWAYS"],
 				"x-enumDescriptions": [
 					"Joining a community never needs a finished account",
@@ -43568,8 +43614,13 @@
 			"VoiceP2pAssignmentResponse": {
 				"type": "object",
 				"properties": {
-					"enabled": {"type": "boolean"},
-					"max_participants": {"type": "integer", "minimum": 2, "maximum": 4}
+					"enabled": {"type": "boolean", "description": "Whether this account can start peer-to-peer calls"},
+					"max_participants": {
+						"type": "integer",
+						"minimum": 2,
+						"maximum": 4,
+						"description": "Most people in one peer-to-peer call"
+					}
 				},
 				"required": ["enabled", "max_participants"],
 				"additionalProperties": false
@@ -43591,7 +43642,7 @@
 			},
 			"DomainMigrationAssignmentResponse": {
 				"type": "object",
-				"properties": {"enabled": {"type": "boolean"}},
+				"properties": {"enabled": {"type": "boolean", "description": "Whether this account moves to the new domain"}},
 				"required": ["enabled"],
 				"additionalProperties": false
 			},
@@ -43874,7 +43925,7 @@
 				"maximum": 2147483647,
 				"format": "int32",
 				"x-enumNames": ["SAFE", "AGE_RESTRICTED"],
-				"x-enumDescriptions": ["Guild is safe for all ages", "Guild is age-restricted"],
+				"x-enumDescriptions": ["Guild is safe for all ages", "Guild is marked 18+"],
 				"enum": [0, 3]
 			},
 			"GuildMFALevelInput": {
@@ -44751,7 +44802,7 @@
 				"enum": [0, 3],
 				"format": "int32",
 				"x-enumNames": ["SAFE", "AGE_RESTRICTED"],
-				"x-enumDescriptions": ["Guild is safe for all ages", "Guild is age-restricted"]
+				"x-enumDescriptions": ["Guild is safe for all ages", "Guild is marked 18+"]
 			},
 			"GuildEmojiWithUserResponse": {
 				"type": "object",
@@ -45017,14 +45068,6 @@
 				},
 				"required": ["countryCode", "regionCode"],
 				"additionalProperties": false
-			},
-			"ApplicationFlags": {
-				"type": "integer",
-				"minimum": 0,
-				"maximum": 2147483647,
-				"description": "The application flags",
-				"format": "int32",
-				"x-bitflagValues": []
 			},
 			"OAuth2AuthorizationResponse": {
 				"type": "object",
@@ -45301,7 +45344,7 @@
 			"OperatorPassPhaseSchema": {
 				"description": "Operator Pass sale phase",
 				"x-enumNames": ["EARLY_BIRD", "STANDARD"],
-				"x-enumDescriptions": ["Sales are open at the early bird price", "Sales are open at the standard price"],
+				"x-enumDescriptions": ["Bought at the launch price", "Sales are open at the standard price"],
 				"enum": ["early_bird", "standard"],
 				"type": "string"
 			},
@@ -48376,23 +48419,23 @@
 					"ACLs must be non-empty.",
 					"Admin API key wasn't found.",
 					"You're already friends with this user.",
-					"An age range only counts here when it shows that you're 18 or older.",
-					"You don't need an age range where you are.",
-					"An age you only entered yourself in your Google account doesn't count here. It counts once Google has checked it, for example with a card or an ID.",
-					"This instance doesn't accept age ranges from the app.",
+					"Mature content stays locked because your Apple or Google account doesn't show that you're an adult.",
+					"You don't need to unlock mature content where you are.",
+					"A birthday you only typed into your Google account can't unlock mature content. It can once Google has confirmed it, for example with a card or an ID.",
+					"This instance can't unlock mature content from the app.",
 					"This device key isn't registered with your account.",
 					"This device key is already registered to another account.",
-					"This check has expired or was already used. Try again.",
+					"This request has expired or was already used. Try again.",
 					"We couldn't confirm this device key.",
-					"We couldn't confirm the age range your device sent.",
-					"This age range request isn't valid.",
-					"This instance doesn't accept age ranges from the Android app.",
-					"This age range request isn't valid.",
-					"This check has expired or was already used. Try again.",
-					"We couldn't confirm the age range your device sent. Try again.",
-					"Install the app from Google Play and sign in to Google Play so the app can send your age range.",
-					"This device didn't pass the Google Play device check, so the app can't send your age range from it.",
-					"We couldn't connect to Google Play to get your age range. Try again later.",
+					"We couldn't confirm the unlock request your device sent.",
+					"This unlock request isn't valid.",
+					"This instance can't unlock mature content from the Android app.",
+					"This unlock request isn't valid.",
+					"This request has expired or was already used. Try again.",
+					"We couldn't confirm the unlock request your device sent. Try again.",
+					"Install the app from Google Play and sign in to Google Play to unlock mature content.",
+					"This device didn't pass the Google Play device check, so you can't unlock mature content from it.",
+					"We couldn't connect to Google Play to unlock mature content. Try again later.",
 					"Bots can't create communities.",
 					"Bots can't send friend requests.",
 					"This bot is already in the community.",
@@ -48450,8 +48493,8 @@
 					"An enforcement decision owns this restriction. End the decision instead.",
 					"A later decision replaced this one, so it can no longer be ended.",
 					"The deletion of this account has already started, so the decision can no longer be ended.",
-					"Updates from a channel with a content warning can only go to a channel with a content warning or an age restriction.",
-					"Updates from an age-restricted channel can only go to an age-restricted channel.",
+					"Updates from a channel with a content warning can only go to a mature channel or a channel with a content warning.",
+					"Updates from a mature channel can only go to a mature channel.",
 					"Email verification is required for this action.",
 					"Email verification is required for this action.",
 					"You don't have permission to create communities on this instance. Contact your instance administrator to request access.",
@@ -48471,7 +48514,7 @@
 					"This instance reviews new accounts. Sign up from the sign-up page with a password so you can sign in once approved.",
 					"This registration is waiting for admin approval.",
 					"This registration request was rejected.",
-					"This registration link is invalid or has expired.",
+					"This invite link is invalid or has expired.",
 					"Explicit content can't be sent.",
 					"This feature isn't available on self-hosted instances.",
 					"This feature is temporarily disabled.",
@@ -48572,7 +48615,7 @@
 					"There are too many users with this username.",
 					"This application isn't a bot.",
 					"You're not friends with this user.",
-					"NSFW content is age restricted.",
+					"This mature content isn't available to your account.",
 					"Passkey authentication failed.",
 					"No active subscription.",
 					"Preview must be JPEG.",

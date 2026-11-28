@@ -8,9 +8,9 @@ import RouteHeader from '@/components/RouteHeader.astro';
 
 A custom badge is an image that instance admins make and give out. A user badge shows on the [profile](/http-api/users/#profile-badge-object) of each account it's given to, after the built-in badges. A guild badge shows next to the guild name, after its verified, partnered or discoverable badge. Clients get guild badges from [List guild badges](/http-api/instance/#list-guild-badges), and [instance discovery](/http-api/instance/#guild-badge-object) lists the first 100.
 
-Admins can also replace the image of a built-in badge, which is staff or premium on profiles and verified, partnered or discoverable on guilds. The badge keeps its name, tooltip and meaning, and everyone sees the new image in its place. See [Replace built-in badge image](#replace-built-in-badge-image).
+Admins can also [replace the image of a built-in badge](#replace-built-in-badge-image), which is staff or premium on profiles and verified, partnered or discoverable on guilds. The badge keeps its name, tooltip and meaning, and everyone sees the new image in its place.
 
-Admins can also hide a built-in guild badge so that clients stop showing it. The guild keeps what the badge stands for: a discoverable guild stays listed in discovery without the badge next to its name. See [Hide built-in guild badge](#hide-built-in-guild-badge).
+Admins can also [hide a built-in guild badge](#hide-built-in-guild-badge), and clients then stop showing it. The guild keeps the feature behind the badge. A discoverable guild stays listed in discovery without the badge next to its name.
 
 There is no limit on how many badges an instance can have. The [badge settings](#badge-settings-object) set how many one account or one guild can be given, 100 per account and 50 per guild by default. Give badges with [Update user badges](/admin-api/users/#update-user-badges) and the `badge_ids` field of [Update guild](/admin-api/guilds/#update-guild). Deleting a badge takes it off everyone who had it.
 
@@ -68,7 +68,7 @@ Each badge type has its own display order. A new badge goes to the end of its ty
 
 Lowering a limit keeps the badges already given. A change that adds a badge to an account or guild that would then be over the limit fails with `MAX_BADGES`. A change that only removes badges always works.
 
-Each profile response holds every custom badge of the account with its name, description and link, and each guild object holds every badge ID of the guild. A higher limit makes these responses larger. Older app versions show every badge of a profile or guild in one row, with no control that opens the rest in a list.
+Each profile response has every custom badge of the account with its name, description and link, and each guild object has every badge ID of the guild. A higher limit makes these responses larger. Older app versions show every badge of a profile or guild in one row, with no control that opens the rest in a list.
 
 Guilds have a lower ceiling because every guild a person is in sends its `badge_ids` in the Gateway Ready event. Every badge an account shows comes back in each [profile](/http-api/users/#full-user-profile-object). With 1,000 badges that have long descriptions and links, a profile response can be several megabytes.
 
@@ -76,19 +76,19 @@ Guilds have a lower ceiling because every guild a person is in sends its `badge_
 
 <RouteHeader method="GET" path="/v1/admin/badges" auditReason />
 
-Returns one page of custom badges in display order, with the badge settings and the built-in badge images. Without `type` the list holds every user badge, then every guild badge. You need `badge:list`.
+Returns one page of custom badges in display order, with the badge settings and the built-in badge images. Without `type` the list has every user badge, then every guild badge. You need `badge:list`.
 
 ### Query parameters
 
 | Field | Type | Description |
 | --- | --- | --- |
 | type? | string | `user` or `guild` |
-| query? | string | Only badges whose ID is this value, or whose name holds it, ignoring case (1-64 characters) |
+| query? | string | Only badges whose ID is this value, or whose name contains it, ignoring case (1-64 characters) |
 | ids? | string | Up to 100 badge IDs separated by commas. Only these come back, and `next` is null. Not with `query` or `after` |
 | after? | string | The `next` value of the previous page |
 | limit? | integer | How many badges to return (1-200, default 100) |
 
-A page with `query` looks at up to 5,000 badges. It can hold fewer badges than `limit` and still have a `next` value. Keep asking until `next` is null.
+A page with `query` looks at up to 5,000 badges. It can have fewer badges than `limit` and still have a `next` value. Keep asking until `next` is null.
 
 ### Response body
 
@@ -96,7 +96,7 @@ A page with `query` looks at up to 5,000 badges. It can hold fewer badges than `
 | --- | --- | --- |
 | badges | array[[Admin custom badge](#admin-custom-badge-object) object] | One page of badges |
 | next | ?string | Send this as `after` to get the next page, or null when there are no more badges to look at |
-| version | string | The catalog version, the same value as `custom_badges_version` in [instance discovery](/http-api/instance/#instance-discovery-object) |
+| version | string | The catalogue version, the same value as `custom_badges_version` in [instance discovery](/http-api/instance/#instance-discovery-object) |
 | settings | [badge settings](#badge-settings-object) object | The badge limits |
 | built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
 
@@ -226,7 +226,7 @@ It works on instances with up to 1,000 badges. Larger instances move badges one 
 | --- | --- | --- |
 | badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
 | next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
-| version | string | The catalog version |
+| version | string | The catalogue version |
 | settings | [badge settings](#badge-settings-object) object | The badge limits |
 | built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
 
@@ -264,7 +264,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 ## Errors while a change is published
 
-Every create, edit, delete and move saves the badge and then publishes a new catalog version, which tells API servers and clients to load the badges again. If the API can't publish the version, the request fails with 503 `SERVICE_UNAVAILABLE` although the change was saved. The next badge change, or the next API restart, publishes it. Until then some clients can show the old badge. An image that the change replaced or deleted is cleaned up the same way as when the version is published.
+Every create, edit, delete and move saves the badge and then publishes a new catalogue version, which tells API servers and clients to load the badges again. If the API can't publish the version, the request fails with 503 `SERVICE_UNAVAILABLE` although the change was saved. The next badge change, or the next API restart, publishes it. Until then some clients can show the old badge. An image that the change replaced or deleted is cleaned up the same way as when the version is published.
 
 ## Replace built-in badge image
 
@@ -286,7 +286,7 @@ Uploads an image and shows it everywhere the built-in badge appears, then return
 | --- | --- | --- |
 | badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
 | next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
-| version | string | The catalog version |
+| version | string | The catalogue version |
 | settings | [badge settings](#badge-settings-object) object | The badge limits |
 | built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
 
@@ -312,7 +312,7 @@ Goes back to the built-in image for a badge, deletes the uploaded one and return
 | --- | --- | --- |
 | badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
 | next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
-| version | string | The catalog version |
+| version | string | The catalogue version |
 | settings | [badge settings](#badge-settings-object) object | The badge limits |
 | built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
 
@@ -329,7 +329,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 <RouteHeader method="PUT" path="/v1/admin/badges/built-in/{kind}/hidden" auditReason />
 
-Stops clients on this instance from showing a built-in guild badge, then returns the first page of [List badges](#list-badges) with up to 200 badges. `kind` is `guild_verified`, `guild_partnered` or `guild_discoverable`. Guilds keep the feature behind the badge, so a discoverable guild stays listed in discovery. When a guild has more than one of these badges, clients show the next one that isn't hidden. You need `badge:update`.
+Stops clients on this instance from showing a built-in guild badge, then returns the first page of [List badges](#list-badges) with up to 200 badges. `kind` is `guild_verified`, `guild_partnered` or `guild_discoverable`. Guilds keep the feature behind the badge. A discoverable guild stays listed in discovery. When a guild has more than one of these badges, clients show the next one that isn't hidden. You need `badge:update`.
 
 ### Response body
 
@@ -337,7 +337,7 @@ Stops clients on this instance from showing a built-in guild badge, then returns
 | --- | --- | --- |
 | badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
 | next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
-| version | string | The catalog version |
+| version | string | The catalogue version |
 | settings | [badge settings](#badge-settings-object) object | The badge limits |
 | built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
 
@@ -362,7 +362,7 @@ Shows a hidden built-in guild badge again and returns the first page of [List ba
 | --- | --- | --- |
 | badges | array[[Admin custom badge](#admin-custom-badge-object) object] | The first page of badges, up to 200 |
 | next | ?string | Send this as `after` to [List badges](#list-badges) for the next page, or null when there are no more badges |
-| version | string | The catalog version |
+| version | string | The catalogue version |
 | settings | [badge settings](#badge-settings-object) object | The badge limits |
 | built_in | array[[Built-in badge image](#built-in-badge-image-object) object] | Every built-in badge and the image the instance shows for it |
 

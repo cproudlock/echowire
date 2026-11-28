@@ -190,8 +190,8 @@ catalogs:
       specifier: 8.0.0
       version: 8.0.0
     argon2:
-      specifier: 0.45.1
-      version: 0.45.1
+      specifier: 0.45.2
+      version: 0.45.2
     astro:
       specifier: 7.4.4
       version: 7.4.4
@@ -474,6 +474,7 @@ overrides:
   zod@^4: 4.6.7
 
 patchedDependencies:
+  '@astrojs/starlight@0.42.7': e3ba4d526d5d3069172ec280f047592d9b652006d0c285279d277cf6555ef2a9
   '@electron/universal@3.0.4': 89eb2c71ca988f424f2c75cf28b566b156c55b06a0b6cd01d06f9a6763e754bb
   '@phosphor-icons/react@2.1.10': 9b0b481de857aa7a7525f023baea9da72be4574ff72825e39d959e6979d78eea
   emscripten-wasm-loader@3.0.3: 65d0567cd2da382764aee3839187feb5284662c4a9f0b755f1e52163c5e36399
@@ -666,7 +667,7 @@ importers:
         version: 8.0.0
       argon2:
         specifier: 'catalog:'
-        version: 0.45.1
+        version: 0.45.2
       bidi-js:
         specifier: 'catalog:'
         version: 1.0.3
@@ -1909,7 +1910,7 @@ importers:
         version: 11.1.9(astro@7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(supports-color@7.2.0)
       '@astrojs/starlight':
         specifier: 'catalog:'
-        version: 0.42.7(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(astro@7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(supports-color@7.2.0)(typescript@6.0.3)
+        version: 0.42.7(patch_hash=e3ba4d526d5d3069172ec280f047592d9b652006d0c285279d277cf6555ef2a9)(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(astro@7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(supports-color@7.2.0)(typescript@6.0.3)
       '@fluxer/config':
         specifier: workspace:*
         version: link:../packages/config
@@ -1966,9 +1967,6 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 26.6.6
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: catalog:ts7
         version: 7.0.2
@@ -7243,8 +7241,8 @@ packages:
   arg@5.0.2:
     resolution: {integrity: sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==}
 
-  argon2@0.45.1:
-    resolution: {integrity: sha512-skm+/WCjkGqCQxF7FG1LuZXM5yvbFjgbfiCGsud2oLgaDhh6b6dbH0b1EkghbM+xx4Bj8Ape+KKgixoIlWZicQ==}
+  argon2@0.45.2:
+    resolution: {integrity: sha512-41gOiSQBpQf+7H7HyLZbUqRZxrNk5ps39TsJKILjWuOyAOialUkztuIVL/Y/l+n5iSA2C4/jFg3FUYso/cX7TA==}
     engines: {node: '>=16.17.0'}
 
   argparse@2.0.1:
@@ -12237,7 +12235,7 @@ snapshots:
       sitemap: 9.0.1
       zod: 4.6.7
 
-  '@astrojs/starlight@0.42.7(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(astro@7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(supports-color@7.2.0)(typescript@6.0.3)':
+  '@astrojs/starlight@0.42.7(patch_hash=e3ba4d526d5d3069172ec280f047592d9b652006d0c285279d277cf6555ef2a9)(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(astro@7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))(supports-color@7.2.0)(typescript@6.0.3)':
     dependencies:
       '@astrojs/markdown-satteri': 0.4.6
       '@astrojs/mdx': 8.1.2(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@astrojs/markdown-satteri@0.4.6)(astro@7.4.4(@astrojs/markdown-remark@7.3.5(supports-color@7.2.0))(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))
@@ -16808,7 +16806,7 @@ snapshots:
 
   arg@5.0.2: {}
 
-  argon2@0.45.1:
+  argon2@0.45.2:
     dependencies:
       '@phc/format': 1.0.0
       cross-env: 10.1.0

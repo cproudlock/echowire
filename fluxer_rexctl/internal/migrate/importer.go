@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"io"
 	"maps"
+	"path"
 	"path/filepath"
 	"slices"
 	"strings"
@@ -20,12 +21,12 @@ import (
 )
 
 const (
-	ImporterService = "api"
-	ImporterScript  = "dist/MigrateEntrypoint.js"
-	ImportKV        = "kv"
-	ImportStorage   = "storage"
+	importerService = "api"
+	importerScript  = "dist/MigrateEntrypoint.js"
+	importKV        = "kv"
+	importStorage   = "storage"
 
-	ObjectsGroup = "10001"
+	objectsGroup = "10001"
 )
 
 type Job struct {
@@ -63,25 +64,31 @@ func (j Job) argv(node, script string) []string {
 type ComposeImporter struct {
 	Project *engine.Project
 	Objects *engine.Project
+	Image   string
+	Root    string
 }
 
-var ErrNoImporterNetwork = errors.New("migrate: the api service has no network to run the importer on")
+var errNoImporterNetwork = errors.New("migrate: the api service has no network to run the importer on")
 
 func (c ComposeImporter) Run(ctx context.Context, j Job) error {
 	p := c.Project
 	if j.Objects && c.Objects != nil {
 		p = c.Objects
 	}
-	o := p.HelperFor(ImporterService)
+	o := p.HelperFor(importerService)
 	o.Network = network(p)
 	if o.Network == "" {
-		return ErrNoImporterNetwork
+		return errNoImporterNetwork
 	}
 	if j.Objects {
 		o.Mounts = append(o.Mounts, engine.Mount{Volume: stack.ObjectsVolume, Target: stack.ObjectsRoot})
-		o.GroupAdd = append(o.GroupAdd, ObjectsGroup)
+		o.GroupAdd = append(o.GroupAdd, objectsGroup)
 	}
-	o.Command = j.argv("node", ImporterScript)
+	o.Command = j.argv("node", importerScript)
+	if j.Objects && c.Image != "" {
+		o.Image = c.Image
+		o.Command = j.argv(path.Join(c.Root, "bin", "node"), path.Join(c.Root, importerService, importerScript))
+	}
 	o.Stdout, o.Stderr = j.Stdout, j.Stderr
 	return p.Helper(ctx, o)
 }
@@ -91,7 +98,7 @@ func network(p *engine.Project) string {
 	if m == nil {
 		return ""
 	}
-	svc, ok := m.Services[ImporterService]
+	svc, ok := m.Services[importerService]
 	if !ok {
 		return ""
 	}
@@ -110,8 +117,8 @@ type NativeImporter struct {
 
 func (n NativeImporter) Run(ctx context.Context, j Job) error {
 	root := n.Stack.Current()
-	cmd := j.argv(filepath.Join(root, "bin", "node"), filepath.Join(root, ImporterService, ImporterScript))
-	return n.Stack.Exec(ctx, n.Set, ImporterService, engine.ExecOptions{Stdout: j.Stdout, Stderr: j.Stderr}, cmd...)
+	cmd := j.argv(filepath.Join(root, "bin", "node"), filepath.Join(root, importerService, importerScript))
+	return n.Stack.Exec(ctx, n.Set, importerService, engine.ExecOptions{Stdout: j.Stdout, Stderr: j.Stderr}, cmd...)
 }
 
 type tail struct{ buf []byte }

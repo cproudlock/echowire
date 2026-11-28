@@ -2,6 +2,7 @@
 
 import {
 	CANCEL_DESCRIPTOR,
+	COPIED_DESCRIPTOR,
 	IDLE_DESCRIPTOR,
 	ONLINE_DESCRIPTOR,
 	OPEN_SETTINGS_DESCRIPTOR,
@@ -16,7 +17,7 @@ import {msg} from '@lingui/core/macro';
 
 const ABOUT_DESCRIPTOR = msg({
 	message: 'About {appName}',
-	comment: 'Desktop app menu item. Opens the About panel. {appName} is the desktop app name (typically Fluxer).',
+	comment: 'Desktop app menu item. Opens the About panel. {appName} is the desktop app name (typically echowire).',
 });
 const PREFERENCES_DESCRIPTOR = msg({
 	message: 'Preferences...',
@@ -146,7 +147,7 @@ const HELP_DESCRIPTOR = msg({
 });
 const WEBSITE_DESCRIPTOR = msg({
 	message: 'Website',
-	comment: 'Native Help submenu item that opens the Fluxer marketing website.',
+	comment: 'Native Help submenu item that opens the echowire marketing website.',
 });
 const REPORT_ISSUE_DESCRIPTOR = msg({
 	message: 'Report issue',
@@ -235,20 +236,15 @@ const CHECK_FOR_UPDATES_DESCRIPTOR = msg({
 	message: 'Check for updates',
 	comment: 'Tray menu item. Triggers the auto-updater to look for a new desktop build.',
 });
-const UPDATE_APP_NOW_DESCRIPTOR = msg({
-	message: 'Update {appName} now',
-	comment:
-		'Tray menu item shown only while a desktop update is waiting. Clicking it installs the update. {appName} is the desktop app name (typically Fluxer).',
-});
 const RELOAD_TO_UPDATE_DESCRIPTOR = msg({
 	message: 'Reload {appName} to update',
 	comment:
-		'Tray menu item shown only while a downloaded update of the app files is waiting. Clicking it reloads the window to apply it. {appName} is the desktop app name (typically Fluxer).',
+		'Tray menu item shown only while a downloaded update of the app files is waiting. Clicking it reloads the window to apply it. {appName} is the desktop app name (typically echowire).',
 });
 const RESTART_TO_UPDATE_DESCRIPTOR = msg({
 	message: 'Restart {appName} to update',
 	comment:
-		'Tray menu item shown only while a downloaded update of the desktop app itself is waiting. Clicking it restarts the app to apply it. {appName} is the desktop app name (typically Fluxer).',
+		'Tray menu item shown only while a downloaded update of the desktop app itself is waiting. Clicking it restarts the app to apply it. {appName} is the desktop app name (typically echowire).',
 });
 const CHECK_FOR_UPDATES_MENU_DESCRIPTOR = msg({
 	message: 'Check for updates...',
@@ -297,12 +293,12 @@ const UPDATE_MANUAL_DETAIL_DESCRIPTOR = msg({
 const UPDATE_MANAGED_DETAIL_DESCRIPTOR = msg({
 	message: 'Update {appName} with your package manager, or download the new version.',
 	comment:
-		'Native desktop dialog body under the headline announcing a new version, shown on a Linux install managed by a package manager such as a deb, rpm or AUR package. {appName} is the desktop app name (typically Fluxer).',
+		'Native desktop dialog body under the headline announcing a new version, shown on a Linux install managed by a package manager such as a deb, rpm or AUR package. {appName} is the desktop app name (typically echowire).',
 });
 const UPDATE_FLATPAK_DETAIL_DESCRIPTOR = msg({
 	message: 'Update {appName} from your software center.',
 	comment:
-		'Native desktop dialog body under the headline announcing a new version, shown on a Flatpak install. {appName} is the desktop app name (typically Fluxer).',
+		'Native desktop dialog body under the headline announcing a new version, shown on a Flatpak install. {appName} is the desktop app name (typically echowire).',
 });
 const UPDATE_OPEN_SOFTWARE_CENTER_DESCRIPTOR = msg({
 	message: 'Open software center',
@@ -432,12 +428,12 @@ const UNREAD_MESSAGES_COUNT_DESCRIPTOR = msg({
 const APP_STORE_UNREADABLE_TITLE_DESCRIPTOR = msg({
 	message: '{appName} cannot open its local data',
 	comment:
-		'Title of the native error dialog shown when the desktop app cannot open the local data store it used before. {appName} is the desktop app name (typically Fluxer).',
+		'Title of the native error dialog shown when the desktop app cannot open the local data store it used before. {appName} is the desktop app name (typically echowire).',
 });
 const APP_STORE_UNREADABLE_MESSAGE_DESCRIPTOR = msg({
 	message: '{appName} cannot open the local data it saved on this computer.',
 	comment:
-		'Main message of the native error dialog shown when the desktop app cannot open its local data store. {appName} is the desktop app name (typically Fluxer).',
+		'Main message of the native error dialog shown when the desktop app cannot open its local data store. {appName} is the desktop app name (typically echowire).',
 });
 const APP_STORE_UNREADABLE_UNCHANGED_DESCRIPTOR = msg({
 	message: 'Your accounts and settings have not been changed or deleted.',
@@ -446,7 +442,7 @@ const APP_STORE_UNREADABLE_UNCHANGED_DESCRIPTOR = msg({
 const APP_STORE_UNREADABLE_ADVICE_DESCRIPTOR = msg({
 	message: 'Quit {appName}, make sure no other copy is running, and open it again.',
 	comment:
-		'Detail line in the native dialog shown when the desktop app cannot open its local data store. {appName} is the desktop app name (typically Fluxer).',
+		'Detail line in the native dialog shown when the desktop app cannot open its local data store. {appName} is the desktop app name (typically echowire).',
 });
 const APP_STORE_UNREADABLE_DETAILS_DESCRIPTOR = msg({
 	message: 'Details: {reason}',
@@ -480,7 +476,7 @@ const SHOW_STORE_FOLDER_DESCRIPTOR = msg({
 const FAILED_TO_START_DESCRIPTOR = msg({
 	message: '{appName} failed to start',
 	comment:
-		'Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically Fluxer).',
+		'Title of the native error dialog shown when the desktop app cannot boot. {appName} is the desktop app name (typically echowire).',
 });
 const APP_LOAD_FAILED_TITLE_DESCRIPTOR = msg({
 	message: "Can't connect",
@@ -490,7 +486,7 @@ const APP_LOAD_FAILED_TITLE_DESCRIPTOR = msg({
 const APP_LOAD_FAILED_MESSAGE_DESCRIPTOR = msg({
 	message: "{appName} can't connect to its servers. It will keep trying in the background.",
 	comment:
-		'Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically Fluxer). The app keeps retrying on its own while the dialog is open.',
+		'Body of the native dialog shown when the desktop app has repeatedly failed to load. {appName} is the desktop app name (typically echowire). The app keeps retrying on its own while the dialog is open.',
 });
 const LINUX_ENTRY_GENERIC_NAME_DESCRIPTOR = msg({
 	message: 'Instant Messenger',
@@ -502,6 +498,174 @@ const LINUX_ENTRY_COMMENT_DESCRIPTOR = msg({
 	comment:
 		'Comment of the Linux .desktop entry. One-line app description shown as a tooltip in Linux launchers and software centres. VoIP is voice over IP; keep the term if it is used untranslated in your language.',
 });
+const SERVICES_DESCRIPTOR = msg({
+	message: 'Services',
+	context: 'macos-app-menu',
+	comment: 'macOS app menu submenu that lists system Services for the selected text. Use the standard macOS term.',
+});
+const HIDE_OTHERS_DESCRIPTOR = msg({
+	message: 'Hide others',
+	comment: 'macOS app menu item that hides every other app window. Use the standard macOS term.',
+});
+const SHOW_ALL_DESCRIPTOR = msg({
+	message: 'Show all',
+	context: 'macos-app-menu',
+	comment: 'macOS app menu item that shows the windows of every hidden app again. Use the standard macOS term.',
+});
+const BRING_ALL_TO_FRONT_DESCRIPTOR = msg({
+	message: 'Bring all to front',
+	comment:
+		'macOS Window menu item that brings every window of the desktop app to the front. Use the standard macOS term.',
+});
+const TRAY_TOOLTIP_WITH_UNREAD_DESCRIPTOR = msg({
+	message: '{appName} - {description}',
+	comment:
+		'Tooltip on the desktop tray or menu bar icon while there are unread messages. {appName} is the desktop app name (typically echowire). {description} is the unread summary, such as "Unread messages: 3". Change the separator only if your language needs it.',
+});
+const QUICK_CSS_WINDOW_TITLE_DESCRIPTOR = msg({
+	message: '{appName} | Quick CSS',
+	comment:
+		'Title of the desktop window that holds the popped out Quick CSS editor. {appName} is the desktop app name (typically echowire). Use the same term for Quick CSS as in Settings > Themes.',
+});
+const SAVE_DIALOG_ALL_FILES_DESCRIPTOR = msg({
+	message: 'All files',
+	comment: 'File type filter in the desktop save dialog on Windows and Linux that shows files of any type.',
+});
+const SAVE_DIALOG_FILE_TYPE_DESCRIPTOR = msg({
+	message: '{extension} file',
+	comment:
+		'File type filter in the desktop save dialog on Windows and Linux. {extension} is an uppercase file extension such as PNG or PDF.',
+});
+const SPLASH_WINDOW_TITLE_DESCRIPTOR = msg({
+	message: '{appName} Updater',
+	comment:
+		'Title of the small desktop window that checks for and installs updates before the app opens. {appName} is the desktop app name (typically echowire).',
+});
+const SPLASH_CHECKING_FOR_UPDATES_DESCRIPTOR = msg({
+	message: 'Checking for updates…',
+	comment: 'Status line in the desktop update window shown while the app looks for updates before it opens.',
+});
+const SPLASH_DOWNLOADING_UPDATES_DESCRIPTOR = msg({
+	message: 'Downloading update {current} of {total}…',
+	comment:
+		'Status line in the desktop update window while update packages download. {current} is the package being downloaded and {total} is the number of packages. Both are already formatted numbers.',
+});
+const SPLASH_INSTALLING_UPDATES_DESCRIPTOR = msg({
+	message: 'Installing update {current} of {total}…',
+	comment:
+		'Status line in the desktop update window while update packages install. {current} is the package being installed and {total} is the number of packages. Both are already formatted numbers.',
+});
+const SPLASH_VERIFYING_DESCRIPTOR = msg({
+	message: 'Verifying files…',
+	comment: 'Status line in the desktop update window while downloaded update files are checked.',
+});
+const SPLASH_DOWNLOAD_STALLED_DESCRIPTOR = msg({
+	message: 'Download stalled. Retrying in {seconds} sec…',
+	comment:
+		'Status line in the desktop update window when an update download stopped making progress. {seconds} counts down each second. Use the short unit for seconds so the text reads well for any number, because plural forms are not available here.',
+});
+const SPLASH_UPDATE_FAILED_DESCRIPTOR = msg({
+	message: 'Update failed. Retrying in {seconds} sec…',
+	comment:
+		'Status line in the desktop update window when an update attempt failed. {seconds} counts down each second. Use the short unit for seconds so the text reads well for any number, because plural forms are not available here.',
+});
+const SPLASH_SHELL_UPDATE_DOWNLOADING_DESCRIPTOR = msg({
+	message: 'Updating {appName}…',
+	comment:
+		'Status line in the desktop update window while a new version of the desktop app downloads. {appName} is the desktop app name (typically echowire).',
+});
+const SPLASH_SHELL_UPDATE_RESTARTING_DESCRIPTOR = msg({
+	message: 'Restarting to finish the update…',
+	comment: 'Status line in the desktop update window right before the desktop app restarts to apply an update.',
+});
+const SPLASH_BLOCKED_UPDATE_REQUIRED_DESCRIPTOR = msg({
+	message: 'Update required to continue',
+	comment:
+		'Status line in the desktop update window when the app cannot open until a required update installs. A Retry now button is shown below.',
+});
+const SPLASH_BLOCKED_UPDATE_UNREACHABLE_DESCRIPTOR = msg({
+	message: "Can't reach the {appName} update server",
+	comment:
+		'Status line in the desktop update window when the update server cannot be reached. {appName} is the desktop app name (typically echowire).',
+});
+const SPLASH_BLOCKED_SHELL_UPDATE_DESCRIPTOR = msg({
+	message: 'A new version of {appName} is required',
+	comment:
+		'Status line in the desktop update window when this version of the desktop app is too old to continue. A Download update button is shown below. {appName} is the desktop app name (typically echowire).',
+});
+const SPLASH_BLOCKED_UNSUPPORTED_BUILD_DESCRIPTOR = msg({
+	message: 'This installation is incomplete. Reinstall {appName}',
+	comment:
+		'Status line in the desktop update window when the installed desktop app is missing files it needs to start. {appName} is the desktop app name (typically echowire).',
+});
+const SPLASH_LAUNCHING_DESCRIPTOR = msg({
+	message: 'Starting…',
+	comment: 'Status line in the desktop update window while the desktop app opens after checking for updates.',
+});
+const SPLASH_UNREACHABLE_LAUNCH_DESCRIPTOR = msg({
+	message: 'Starting offline…',
+	comment:
+		'Status line in the desktop update window when the app opens without checking for updates because the update server cannot be reached.',
+});
+const SPLASH_WAITING_LOCAL_NETWORK_DESCRIPTOR = msg({
+	message: 'Waiting for local network permission…',
+	comment:
+		'Status line in the desktop update window on macOS while the system asks the user to allow access to the local network.',
+});
+const SPLASH_DOWNLOAD_AMOUNT_DESCRIPTOR = msg({
+	message: '{received} of {total} MB',
+	comment:
+		'Download progress in the desktop update window. {received} and {total} are already formatted numbers of megabytes. Use the local abbreviation for megabytes.',
+});
+const SPLASH_DOWNLOAD_AMOUNT_WITH_SPEED_DESCRIPTOR = msg({
+	message: '{received} of {total} MB, {speed}',
+	comment:
+		'Download progress with the current speed in the desktop update window. {received} and {total} are already formatted numbers of megabytes. {speed} is a formatted speed such as "2.4 MB/s". Use the local abbreviation for megabytes.',
+});
+const SPLASH_SPEED_MEGABYTES_DESCRIPTOR = msg({
+	message: '{value} MB/s',
+	comment:
+		'Download speed in megabytes per second in the desktop update window. {value} is an already formatted number. Use the local abbreviation.',
+});
+const SPLASH_SPEED_KILOBYTES_DESCRIPTOR = msg({
+	message: '{value} KB/s',
+	comment:
+		'Download speed in kilobytes per second in the desktop update window. {value} is an already formatted number. Use the local abbreviation.',
+});
+const SPLASH_OPEN_LOGS_DESCRIPTOR = msg({
+	message: 'Open logs',
+	comment: 'Small link button in the desktop update window that opens the folder with the desktop app log files.',
+});
+const SPLASH_COPY_DIAGNOSTICS_DESCRIPTOR = msg({
+	message: 'Copy diagnostics',
+	comment:
+		'Small link button in the desktop update window that copies technical details about the update problem to the clipboard, for a support request.',
+});
+const SPLASH_RETRY_NOW_DESCRIPTOR = msg({
+	message: 'Retry now',
+	comment: 'Button in the desktop update window that tries the update again right away.',
+});
+const SPLASH_DOWNLOAD_UPDATE_DESCRIPTOR = msg({
+	message: 'Download update',
+	comment:
+		'Button in the desktop update window that opens the download page for the new version of the desktop app in the browser.',
+});
+const SPLASH_QUIT_DESCRIPTOR = msg({
+	message: 'Quit',
+	context: 'desktop-update-window',
+	comment: 'Button in the desktop update window that closes the desktop app. Imperative verb.',
+});
+const SPLASH_UPDATE_SERVER_UNREACHABLE_DESCRIPTOR = msg({
+	message:
+		"{appName} couldn't reach its update server to download app files. Check your internet connection, proxy or firewall. {appName} keeps retrying.",
+	comment:
+		'Explanation in the desktop update window when the update server cannot be reached and the app cannot open without an update. {appName} is the desktop app name (typically echowire).',
+});
+const SPLASH_NOT_ENOUGH_DISK_SPACE_DESCRIPTOR = msg({
+	message: 'Not enough disk space to install the update',
+	comment:
+		'Explanation in the desktop update window when the computer has no free disk space left for the update files.',
+});
 const logger = new Logger('DesktopLocaleBridge');
 type NativeMessage = MessageDescriptor | string;
 
@@ -510,6 +674,9 @@ const NATIVE_MESSAGES: Record<string, NativeMessage> = {
 	'desktop.appMenu.preferences': PREFERENCES_DESCRIPTOR,
 	'desktop.appMenu.preferencesPlain': PREFERENCES_2_DESCRIPTOR,
 	'desktop.appMenu.hide': HIDE_DESCRIPTOR,
+	'desktop.appMenu.hideOthers': HIDE_OTHERS_DESCRIPTOR,
+	'desktop.appMenu.showAll': SHOW_ALL_DESCRIPTOR,
+	'desktop.appMenu.services': SERVICES_DESCRIPTOR,
 	'desktop.appMenu.quit': QUIT_DESCRIPTOR,
 	'desktop.appMenu.exit': EXIT_DESCRIPTOR,
 	'desktop.appMenu.file': FILE_DESCRIPTOR,
@@ -537,6 +704,7 @@ const NATIVE_MESSAGES: Record<string, NativeMessage> = {
 	'desktop.appMenu.minimize': MINIMIZE_DESCRIPTOR,
 	'desktop.appMenu.zoomWindow': ZOOM_WINDOW_DESCRIPTOR,
 	'desktop.appMenu.close': CLOSE_DESCRIPTOR,
+	'desktop.appMenu.bringAllToFront': BRING_ALL_TO_FRONT_DESCRIPTOR,
 	'desktop.appMenu.help': HELP_DESCRIPTOR,
 	'desktop.appMenu.website': WEBSITE_DESCRIPTOR,
 	'desktop.appMenu.github': 'GitHub',
@@ -566,7 +734,6 @@ const NATIVE_MESSAGES: Record<string, NativeMessage> = {
 	'desktop.tray.disconnectFrom': DISCONNECT_FROM_DESCRIPTOR,
 	'desktop.tray.disconnectVoice': DISCONNECT_FROM_VOICE_DESCRIPTOR,
 	'desktop.tray.checkForUpdates': CHECK_FOR_UPDATES_DESCRIPTOR,
-	'desktop.tray.updateNow': UPDATE_APP_NOW_DESCRIPTOR,
 	'desktop.tray.reloadToUpdate': RELOAD_TO_UPDATE_DESCRIPTOR,
 	'desktop.tray.restartToUpdate': RESTART_TO_UPDATE_DESCRIPTOR,
 	'desktop.appMenu.checkForUpdates': CHECK_FOR_UPDATES_MENU_DESCRIPTOR,
@@ -601,6 +768,7 @@ const NATIVE_MESSAGES: Record<string, NativeMessage> = {
 	'desktop.jumpList.newDirectMessageDescription': COMPOSE_A_NEW_DIRECT_MESSAGE_DESCRIPTOR,
 	'desktop.jumpList.chooseAccount': JUMP_LIST_CHOOSE_ACCOUNT_DESCRIPTOR,
 	'desktop.jumpList.chooseAccountDescription': JUMP_LIST_CHOOSE_ACCOUNT_DESCRIPTION_DESCRIPTOR,
+	'desktop.tray.toolTipWithUnread': TRAY_TOOLTIP_WITH_UNREAD_DESCRIPTOR,
 	'desktop.tray.accounts': TRAY_ACCOUNTS_DESCRIPTOR,
 	'desktop.tray.chooseAccount': TRAY_CHOOSE_ACCOUNT_DESCRIPTOR,
 	'desktop.tray.accountWithHost': TRAY_ACCOUNT_WITH_HOST_DESCRIPTOR,
@@ -630,6 +798,37 @@ const NATIVE_MESSAGES: Record<string, NativeMessage> = {
 	'desktop.localApp.apiUnavailable': LOCAL_APP_API_UNAVAILABLE_DESCRIPTOR,
 	'desktop.linuxEntry.genericName': LINUX_ENTRY_GENERIC_NAME_DESCRIPTOR,
 	'desktop.linuxEntry.comment': LINUX_ENTRY_COMMENT_DESCRIPTOR,
+	'desktop.quickCss.windowTitle': QUICK_CSS_WINDOW_TITLE_DESCRIPTOR,
+	'desktop.saveDialog.allFiles': SAVE_DIALOG_ALL_FILES_DESCRIPTOR,
+	'desktop.saveDialog.fileType': SAVE_DIALOG_FILE_TYPE_DESCRIPTOR,
+	'desktop.splash.windowTitle': SPLASH_WINDOW_TITLE_DESCRIPTOR,
+	'desktop.splash.checkingForUpdates': SPLASH_CHECKING_FOR_UPDATES_DESCRIPTOR,
+	'desktop.splash.downloadingUpdates': SPLASH_DOWNLOADING_UPDATES_DESCRIPTOR,
+	'desktop.splash.installingUpdates': SPLASH_INSTALLING_UPDATES_DESCRIPTOR,
+	'desktop.splash.verifying': SPLASH_VERIFYING_DESCRIPTOR,
+	'desktop.splash.downloadStalled': SPLASH_DOWNLOAD_STALLED_DESCRIPTOR,
+	'desktop.splash.updateFailed': SPLASH_UPDATE_FAILED_DESCRIPTOR,
+	'desktop.splash.shellUpdateDownloading': SPLASH_SHELL_UPDATE_DOWNLOADING_DESCRIPTOR,
+	'desktop.splash.shellUpdateRestarting': SPLASH_SHELL_UPDATE_RESTARTING_DESCRIPTOR,
+	'desktop.splash.blockedUpdateRequired': SPLASH_BLOCKED_UPDATE_REQUIRED_DESCRIPTOR,
+	'desktop.splash.blockedUpdateUnreachable': SPLASH_BLOCKED_UPDATE_UNREACHABLE_DESCRIPTOR,
+	'desktop.splash.blockedShellUpdate': SPLASH_BLOCKED_SHELL_UPDATE_DESCRIPTOR,
+	'desktop.splash.blockedUnsupportedBuild': SPLASH_BLOCKED_UNSUPPORTED_BUILD_DESCRIPTOR,
+	'desktop.splash.launching': SPLASH_LAUNCHING_DESCRIPTOR,
+	'desktop.splash.unreachableLaunch': SPLASH_UNREACHABLE_LAUNCH_DESCRIPTOR,
+	'desktop.splash.waitingLocalNetwork': SPLASH_WAITING_LOCAL_NETWORK_DESCRIPTOR,
+	'desktop.splash.downloadAmount': SPLASH_DOWNLOAD_AMOUNT_DESCRIPTOR,
+	'desktop.splash.downloadAmountWithSpeed': SPLASH_DOWNLOAD_AMOUNT_WITH_SPEED_DESCRIPTOR,
+	'desktop.splash.speedMegabytes': SPLASH_SPEED_MEGABYTES_DESCRIPTOR,
+	'desktop.splash.speedKilobytes': SPLASH_SPEED_KILOBYTES_DESCRIPTOR,
+	'desktop.splash.openLogs': SPLASH_OPEN_LOGS_DESCRIPTOR,
+	'desktop.splash.copyDiagnostics': SPLASH_COPY_DIAGNOSTICS_DESCRIPTOR,
+	'desktop.splash.copied': COPIED_DESCRIPTOR,
+	'desktop.splash.retryNow': SPLASH_RETRY_NOW_DESCRIPTOR,
+	'desktop.splash.downloadUpdate': SPLASH_DOWNLOAD_UPDATE_DESCRIPTOR,
+	'desktop.splash.quit': SPLASH_QUIT_DESCRIPTOR,
+	'desktop.splash.updateServerUnreachable': SPLASH_UPDATE_SERVER_UNREACHABLE_DESCRIPTOR,
+	'desktop.splash.notEnoughDiskSpace': SPLASH_NOT_ENOUGH_DISK_SPACE_DESCRIPTOR,
 };
 const PLACEHOLDER_PATTERN = /\{(\w+)\}/g;
 

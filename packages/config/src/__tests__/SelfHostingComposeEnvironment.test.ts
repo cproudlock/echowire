@@ -5,6 +5,19 @@ import {NAMED_FLUXER_ENV_NAMES} from '@fluxer/config/src/config_loader/Environme
 import {describe, expect, test} from 'vitest';
 
 const API_SETTINGS_NOT_FORWARDED: Record<string, string> = {
+	// Echowire: added by upstream fa41fdb62 (#setup seeding), not passed by our compose.
+	FLUXER_SSO_ENABLED: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_ENFORCED: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_AUTO_PROVISION: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_ISSUER: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_CLIENT_ID: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_CLIENT_SECRET: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_SCOPE: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_DISPLAY_NAME: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_SSO_ALLOWED_DOMAINS: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
+	FLUXER_INSTALL_METHOD: 'shown in the setup screen; set by fluxerd and rexctl installs, unset means compose',
+	FLUXER_SETUP_COMMAND:
+		'shown in the setup screen; set by fluxerd and rexctl installs, this instance is already set up',
 	FLUXER_CASSANDRA_HOSTS: 'the stack runs Postgres only',
 	FLUXER_CASSANDRA_PORT: 'the stack runs Postgres only',
 	FLUXER_CASSANDRA_KEYSPACE: 'the stack runs Postgres only',

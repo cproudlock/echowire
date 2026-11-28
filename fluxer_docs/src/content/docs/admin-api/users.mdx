@@ -6,9 +6,9 @@ description: Admin API routes for reading and changing accounts, their sessions,
 
 import RouteHeader from '@/components/RouteHeader.astro';
 
-These routes read and change any account on the instance. Each field group has its own route and [ACL](/admin-api/#acl-registry), and every route except [Get current Admin user](#get-current-admin-user) records an [Admin audit entry](/admin-api/#admin-audit-entry-object), reads included.
+These routes look up and change any account on the instance. Each field group has its own route and [ACL](/admin-api/#acl-registry), and every route except [Get current Admin user](#get-current-admin-user) records an [Admin audit entry](/admin-api/#admin-audit-entry-object), reads included.
 
-On an instance where members sign in with a username, the email routes return 400 `EMAIL_UNAVAILABLE_ON_INSTANCE` and you reset a password with [Create password reset link](#create-password-reset-link), which also works on an email instance that doesn't send email. On routes that record an [enforcement decision](/admin-api/enforcement/), the `X-Audit-Log-Reason` header is required and becomes the decision's first note. Blocking a user's avatar is on [Blocklists](/admin-api/blocklists/#block-a-users-current-avatar).
+On an instance where members sign in with a username, the email routes return 400 `EMAIL_UNAVAILABLE_ON_INSTANCE` and you reset a password with [Create password reset link](#create-password-reset-link), which also works on an email instance that doesn't send email. On routes that record an [enforcement decision](/admin-api/enforcement/), the `X-Audit-Log-Reason` header is required and becomes the decision's first note. [Block a user's avatar](/admin-api/blocklists/#block-a-users-current-avatar) with the blocklist routes.
 
 ## Admin user object
 
@@ -30,7 +30,7 @@ The full admin view of one account, with the flags, lifecycle, contact and netwo
 | banner | ?string | The profile banner hash |
 | bio | ?string | The profile bio |
 | pronouns | ?string | The profile pronouns |
-| accent_color | ?integer | The profile accent color |
+| accent_color | ?integer | The profile accent colour |
 | email<sup>2</sup> | ?string | The email address |
 | email_verified<sup>2</sup> | boolean | Whether the email address is verified |
 | email_bounced<sup>2</sup> | boolean | Whether mail to the address hard bounced |
@@ -165,7 +165,7 @@ The `flags` field is a 64-bit bitfield sent as a decimal string. It has every st
 | 1 &lt;&lt; 0 | DISCRIMINATOR | Account has a premium discriminator |
 | 1 &lt;&lt; 2 | BADGE_MASKED | Premium badge is masked |
 | 1 &lt;&lt; 3 | BADGE_TIMESTAMP_HIDDEN | Premium badge timestamp is hidden |
-| 1 &lt;&lt; 5 | PERKS_SANITIZED | Premium perks are sanitized |
+| 1 &lt;&lt; 5 | PERKS_SANITIZED | Premium perks are sanitised |
 | 1 &lt;&lt; 6 | PURCHASE_DISABLED | Premium purchase is blocked |
 | 1 &lt;&lt; 7 | ENABLED_OVERRIDE | Premium is turned on by override |
 | 1 &lt;&lt; 8 | PERKS_DISABLED | Premium perks are paused |
@@ -286,7 +286,7 @@ One sign-in session of an account. Ended sessions stay in the list with `deleted
 | app_beta_number<sup>2</sup> | ?integer | The beta number, only on `beta` builds |
 | deleted_at | ?ISO8601 timestamp | When the session ended, or null while it is active |
 
-<sup>1</sup> Needs `user:view:ip`. Without it `client_ip` is `[redacted]` and the other two are null
+<sup>1</sup> Needs the `user:view:ip` ACL. Without it, `client_ip` is `[redacted]` and the other two fields are null
 
 <sup>2</sup> From the `X-Fluxer-Client-Properties` header of the last request the session made, and null when that header is missing or on ended sessions
 
@@ -330,8 +330,7 @@ A direct message or group direct message channel the account is in.
 | --- | --- | --- |
 | channel_id | snowflake | The ID of the channel |
 | channel_type | ?integer | [Channel type](/http-api/channels/#channel-types) |
-| channel_nsfw | ?boolean | Whether the channel is age-restricted |
-| guild_nsfw_level | ?integer | Always null |
+| channel_nsfw | ?boolean | Whether the channel is marked 18+ |
 | recipient_ids | array[snowflake] | The IDs of the recipients (at most 100) |
 | recipients | array[[Admin resolved user](#admin-resolved-user-object) object] | The recipients whose accounts still exist (at most 100) |
 | last_message_id | ?snowflake | The ID of the latest message |
@@ -387,7 +386,7 @@ One message to shred.
 
 <RouteHeader method="GET" path="/v1/admin/users" auditReason />
 
-Finds accounts by one selector and returns [Admin user](#admin-user-object) objects. You need `user:lookup`. When you send more than one selector, the first one in this order wins: `user_id`, `resolve`, `email`, `last_active_ip`, `acl`, then `q`.
+Finds accounts by one selector and returns [Admin user](#admin-user-object) objects. You need the `user:lookup` ACL. When you send more than one selector, the first one wins in the order `user_id`, `resolve`, `email`, `last_active_ip`, `acl`, then `q`.
 
 ### Query parameters
 
@@ -512,7 +511,7 @@ Changes the username and returns the account. You need `user:update:username`.
 | username | string | The new username (1-32 characters) |
 | discriminator?<sup>1</sup> | string | A discriminator of one to four digits |
 
-<sup>1</sup> Used only when the account may have a custom discriminator. Otherwise Fluxer picks a free one
+<sup>1</sup> Used only when the account may have a custom discriminator, and otherwise Fluxer picks a free one
 
 ### Response body
 
@@ -586,7 +585,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 <RouteHeader method="POST" path="/v1/admin/users/{user_id}/verification-email" auditReason />
 
-Emails the account holder a new verification link. You need `user:update:email`. Nothing is sent when the address is already verified, has bounced or the instance doesn't send email.
+Emails the account holder a new verification link. You need the `user:update:email` ACL. Nothing is sent when the address is already verified or has bounced, or when the instance doesn't send email.
 
 ### Response
 
@@ -663,7 +662,7 @@ Checks an ID token from the admin single sign-on provider and returns an [OAuth2
 
 | Status | Body | Condition |
 | --- | --- | --- |
-| 200 | [OAuth2 token](/http-api/oauth2/#oauth2-token-object) object with `user_id` | The admin was signed in |
+| 200 | [OAuth2 token](/http-api/oauth2/#oauth2-token-object) object with the admin's `user_id` added | The admin was signed in |
 | 400 | [error response](/admin-api/#error-response) | `INVALID_FORM_BODY` with the validation code `INVALID_SSO_TOKEN` when the ID token was refused or already used, or `SSO_MISCONFIGURED` when the API can't use the provider's settings |
 | 400 | [OAuth2 error](/http-api/oauth2/#oauth2-error-response-object) object | `invalid_client` when the client ID or secret is wrong |
 | 403 | [error response](/admin-api/#error-response) | `MISSING_PERMISSIONS` when the account doesn't exist, can't sign in or lacks `admin:authenticate`, `FEATURE_TEMPORARILY_DISABLED` when admin single sign-on is off |
@@ -690,7 +689,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 <RouteHeader method="PATCH" path="/v1/admin/users/{user_id}/date-of-birth" auditReason />
 
-Changes the date of birth and returns the account. You need `user:update:dob`. A deletion scheduled because the account was under the minimum age is canceled.
+Changes the date of birth and returns the account. You need `user:update:dob`. A deletion scheduled because the account was under the minimum age is cancelled.
 
 ### JSON body
 
@@ -882,7 +881,7 @@ Replaces the [custom badges](/admin-api/badges/) given to the account and return
 | Status | Body | Condition |
 | --- | --- | --- |
 | 200 | response body | The badges were replaced |
-| 400 | [error response](/admin-api/#error-response) | `MAX_BADGES` when the list adds a badge and holds more than `max_per_user` of the [badge settings](/admin-api/badges/#badge-settings-object) |
+| 400 | [error response](/admin-api/#error-response) | `MAX_BADGES` when the list adds a badge and has more than `max_per_user` of the [badge settings](/admin-api/badges/#badge-settings-object) |
 | 404 | [error response](/admin-api/#error-response) | `UNKNOWN_BADGE` when an ID isn't a user badge, or `UNKNOWN_USER` |
 
 A list that only removes badges always works, even when the account still has more than the limit after a limit was lowered.
@@ -959,7 +958,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 Ends the premium of an account right away and returns the account. You need `user:update:flags`, and the `X-Audit-Log-Reason` header is required. Use it to take back premium from a [gift code](/admin-api/gift-codes/) or from `ENABLED_OVERRIDE`.
 
-Fluxer ends premium the same way it does when premium expires. It clears the premium type, start, end, gift extension, grace period and billing cycle, and removes `ENABLED_OVERRIDE`. It then sanitizes the account's profile perks in each community, such as a community avatar and banner, and sets `PERKS_SANITIZED`. An animated avatar and banner stop showing at once. When the [tag style](/http-api/instance/#tag-styles) is `random`, a premium discriminator is replaced the next time the account starts a session, as it is when premium expires. Gift codes the account redeemed stay redeemed.
+Fluxer ends premium the same way it does when premium expires. It clears the premium type, start, end, gift extension, grace period and billing cycle, and removes `ENABLED_OVERRIDE`. It then sanitises the account's profile perks in each guild, such as a guild profile avatar and banner, and sets `PERKS_SANITIZED`. An animated avatar and banner stop showing at once. When the [tag style](/http-api/instance/#tag-styles) is `random`, a premium discriminator is replaced the next time the account starts a session, as it is when premium expires. Gift codes the account redeemed stay redeemed.
 
 Fluxer refuses the request, and changes nothing, in these cases.
 
@@ -987,7 +986,7 @@ Fluxer refuses the request, and changes nothing, in these cases.
 
 The request records a `remove_premium` [audit entry](/admin-api/#admin-audit-entry-object) with the earlier premium type and end date, and whether `ENABLED_OVERRIDE` was removed.
 
-Fluxer sends [User Update](/gateway/events/#user-update), and [Guild Member Update](/gateway/events/#guild-member-update) for each community where perks were sanitized.
+Fluxer sends [User Update](/gateway/events/#user-update), and [Guild Member Update](/gateway/events/#guild-member-update) for each guild where perks were sanitised.
 
 The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
@@ -1112,7 +1111,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 <RouteHeader method="PUT" path="/v1/admin/users/{user_id}/feature-limits" auditReason />
 
-Records a decision that limits one feature, sets its account flag and returns the account. You need `user:update:flags`. [Feature limits](/admin-api/enforcement/#feature-limits) lists each limit's flag and reasons.
+Records a decision that limits [one feature](/admin-api/enforcement/#feature-limits), sets its account flag and returns the account. You need `user:update:flags`.
 
 ### JSON body
 
@@ -1190,7 +1189,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 <RouteHeader method="DELETE" path="/v1/admin/users/{user_id}/deletion" auditReason />
 
-Cancels a scheduled deletion that no enforcement decision owns, emails the account holder and returns the account. You need `user:delete`. The account can sign in again, but signed-out sessions stay signed out. To cancel a closure with a decision, [end the decision](/admin-api/enforcement/#end-an-enforcement-decision).
+Cancels a scheduled deletion that no enforcement decision owns, emails the account holder and returns the account. You need the `user:delete` ACL. The account can sign in again, but signed-out sessions stay signed out. To cancel a closure that has a decision, [end the decision](/admin-api/enforcement/#end-an-enforcement-decision) instead.
 
 ### JSON body
 
@@ -1208,7 +1207,7 @@ Cancels a scheduled deletion that no enforcement decision owns, emails the accou
 
 | Status | Body | Condition |
 | --- | --- | --- |
-| 200 | response body | The deletion was canceled |
+| 200 | response body | The deletion was cancelled |
 | 400 | [error response](/admin-api/#error-response) | `NO_PENDING_DELETION` when nothing is scheduled |
 | 409 | [error response](/admin-api/#error-response) | `ENFORCEMENT_DECISION_OWNS_STATE` when a decision owns the deletion |
 | 409 | [error response](/admin-api/#error-response) | `CONFLICT` when a different deletion is scheduled or erasure has started |
@@ -1344,7 +1343,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 <RouteHeader method="POST" path="/v1/admin/sso-identities/migrate" auditReason />
 
-Moves every subject from an earlier provider ID to the current one, keeping each on its account. You need `instance:config:update`. The provider ID is the issuer URL, or the authorization URL without an issuer. Run this once after you change either.
+Moves every subject from an earlier provider ID to the current one, keeping each on its account. You need `instance:config:update`. The provider ID is the issuer URL, or the authorisation URL without an issuer. Run this once after you change either.
 
 ### JSON body
 
@@ -1377,7 +1376,7 @@ One single sign-on subject bound to an account.
 
 | Field | Type | Description |
 | --- | --- | --- |
-| provider_id | string | The provider's issuer URL, or its authorization URL without an issuer |
+| provider_id | string | The provider's issuer URL, or its authorisation URL without an issuer |
 | subject | string | The `sub` claim the provider sent |
 | user_id | snowflake | The ID of the account |
 | claimed_at | ISO8601 timestamp | When the subject was bound |
@@ -1417,7 +1416,7 @@ The rate limit is 200 requests per minute, on the `admin:lookup` bucket.
 
 <RouteHeader method="GET" path="/v1/admin/users/{user_id}/applications" auditReason />
 
-Lists the OAuth2 applications the account owns. You need `application:list:by_owner`.
+Lists the OAuth2 applications that the account owns. You need the `application:list:by_owner` ACL.
 
 ### Response body
 
@@ -1531,7 +1530,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 
 <RouteHeader method="GET" path="/v1/admin/app-sessions" auditReason />
 
-Lists the active sessions whose last `X-Fluxer-Client-Properties` header sent the given platform and release channel. You need `user:list:sessions`. A page has up to 200 sessions and can have fewer while `next_cursor` is set. Keep reading until it is null.
+Lists the active sessions whose last `X-Fluxer-Client-Properties` header sent the given platform and release channel. You need the `user:list:sessions` ACL. A page has up to 200 sessions and can have fewer while `next_cursor` is set. Keep reading until `next_cursor` is null.
 
 ### Query parameters
 
@@ -1636,7 +1635,7 @@ The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 Counts the account's messages and, unless it is a dry run, queues a [shred job](/admin-api/messages/#get-message-shred-job) that deletes them. You need `message:delete_all`. The `enforcement` basis records a content removal [decision](/admin-api/enforcement/) and sends its notice. For child safety and violent extremism reasons, use [Shred user messages](#shred-user-messages).
 
 :::danger[Deleted messages can't be restored]
-Only `dry_run` set to `false`, `False` or `0` deletes messages, and any other value only counts them.
+Only `dry_run` set to `false`, `False` or `0` deletes messages, and any other value only counts the messages.
 :::
 
 ### Query parameters
@@ -1677,7 +1676,7 @@ The rate limit is 100 requests per minute, on the `admin:message:operation` buck
 
 <RouteHeader method="POST" path="/v1/admin/users/{user_id}/message-shreds/preview" auditReason />
 
-Lists exactly the messages a shred of these entries deletes, without deleting anything or recording a decision. You need `message:shred`. A message is listed only when the account sent it in the named channel. Missing messages, messages someone else sent and repeated entries are returned in `skipped`. Pass `preview_token` to [Shred user messages](#shred-user-messages) to delete exactly these messages.
+Lists exactly the messages a shred of these entries deletes, without deleting anything or recording a decision. You need `message:shred`. A message is listed only when the account sent it in the entry's `channel_id`. Missing messages, messages someone else sent and repeated entries are returned in `skipped`. Pass `preview_token` to [Shred user messages](#shred-user-messages) to delete exactly these messages.
 
 ### JSON body
 
@@ -1695,7 +1694,7 @@ Lists exactly the messages a shred of these entries deletes, without deleting an
 | skipped | array[object] | Each entry a shred leaves alone, with `channel_id`, `message_id` and a `reason` of `not_found`, `other_author` or `duplicate` |
 | preview_token | string | Pass this with the shred |
 
-<sup>1</sup> `content` holds the first 200 characters of the message
+<sup>1</sup> `content` has the first 200 characters of the message
 
 ### Response
 
@@ -1757,7 +1756,7 @@ Cancels the message deletion the account holder scheduled for their own account 
 
 | Status | Body | Condition |
 | --- | --- | --- |
-| 200 | response body | The deletion was canceled, or none was scheduled |
+| 200 | response body | The deletion was cancelled, or none was scheduled |
 
 The rate limit is 100 requests per minute, on the `admin:user:modify` bucket.
 

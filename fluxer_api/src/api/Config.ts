@@ -11,7 +11,6 @@ import type {
 import {
 	parseOperatorPassMaxQuantity,
 	parseOperatorPassReleaseLists,
-	parseOperatorPassStandardPrices,
 	parseOperatorPassWallTiers,
 	parseOperatorPassWithdrawalCountries,
 	resolveOperatorPassDisabledCurrencies,
@@ -28,6 +27,7 @@ import {EmailDeliveryModes} from '@fluxer/constants/src/AccountConfigConstants';
 import {smtpTlsModeFromSecure} from '@fluxer/constants/src/SmtpConstants';
 import {parseIpAddress} from '@fluxer/ip_utils/src/IpAddress';
 import type {GeoEntry} from '@fluxer/schema/src/domains/geolocation/GeolocationSchemas';
+import {INSTALL_METHODS, type InstallMethod} from '@fluxer/schema/src/domains/instance/InstanceSchemas';
 import {normalizeString} from '@fluxer/schema/src/primitives/SchemaPrimitives';
 import {parseCassandraConsistency, parseCassandraSerialConsistency} from '@pkgs/cassandra/src/Client';
 import {parseGeoipSourceConfig, resolveGeoipRuntimeSourceConfig} from '@pkgs/geoip/src/GeoipStartup';
@@ -225,8 +225,12 @@ function resolveSetupToken(master: MasterConfig): string | null {
 	return token;
 }
 
+function resolveInstallMethod(value: string | undefined): InstallMethod | null {
+	const method = value?.trim().toLowerCase();
+	return INSTALL_METHODS.find((known) => known === method) ?? null;
+}
+
 const ISO_INSTANT_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/u;
-const OPERATOR_PASS_MAX_GRACE_MINUTES = 24 * 60;
 
 function parseIsoInstant(value: string | undefined, envName: string): Date {
 	const trimmed = (value ?? '').trim();
@@ -267,21 +271,6 @@ function resolveOperatorPassClockOffsetMs(master: MasterConfig): number {
 
 function buildOperatorPassConfig(master: MasterConfig): OperatorPassConfig {
 	const source = master.operator_pass;
-	const priceRisesAt = parseOptionalIsoInstant(source.price_rises_at, 'FLUXER_OPERATOR_PASS_PRICE_RISES_AT');
-	if (priceRisesAt === null && master.env === 'production' && !master.instance.self_hosted) {
-		console.warn('FLUXER_OPERATOR_PASS_PRICE_RISES_AT is not set, the Operator Pass early bird price never ends');
-	}
-	const graceMinutes = source.grace_minutes;
-	if (
-		typeof graceMinutes !== 'number' ||
-		!Number.isInteger(graceMinutes) ||
-		graceMinutes < 0 ||
-		graceMinutes > OPERATOR_PASS_MAX_GRACE_MINUTES
-	) {
-		throw new Error(
-			`FLUXER_OPERATOR_PASS_GRACE_MINUTES must be an integer between 0 and ${OPERATOR_PASS_MAX_GRACE_MINUTES}`,
-		);
-	}
 	const labsGuildId = parseOptionalSnowflake(source.labs_guild_id, 'FLUXER_LABS_GUILD_ID');
 	const labsOperatorRoleId = parseOptionalSnowflake(source.labs_operator_role_id, 'FLUXER_LABS_OPERATOR_ROLE_ID');
 	if ((labsGuildId === null) !== (labsOperatorRoleId === null)) {
@@ -298,27 +287,21 @@ function buildOperatorPassConfig(master: MasterConfig): OperatorPassConfig {
 	if (labsOperatorsChannelId !== null && labsGuildId === null) {
 		throw new Error('FLUXER_LABS_OPERATORS_CHANNEL_ID needs FLUXER_LABS_GUILD_ID');
 	}
-	const standardPricesMinor = parseOperatorPassStandardPrices(source.standard_prices_minor);
-	const hostedSale = priceRisesAt !== null && master.env === 'production' && !master.instance.self_hosted;
-	if (hostedSale && standardPricesMinor === null) {
+	if (
+		master.env === 'production' &&
+		!master.instance.self_hosted &&
+		(labsGuildId === null || labsVisionaryRoleId === null || labsOperatorsChannelId === null)
+	) {
 		throw new Error(
-			'FLUXER_OPERATOR_PASS_STANDARD_PRICE_* must be set in production when FLUXER_OPERATOR_PASS_PRICE_RISES_AT is set',
-		);
-	}
-	if (hostedSale && (labsGuildId === null || labsVisionaryRoleId === null || labsOperatorsChannelId === null)) {
-		throw new Error(
-			'FLUXER_LABS_GUILD_ID, FLUXER_LABS_OPERATOR_ROLE_ID, FLUXER_LABS_VISIONARY_ROLE_ID and FLUXER_LABS_OPERATORS_CHANNEL_ID must be set in production when FLUXER_OPERATOR_PASS_PRICE_RISES_AT is set',
+			'FLUXER_LABS_GUILD_ID, FLUXER_LABS_OPERATOR_ROLE_ID, FLUXER_LABS_VISIONARY_ROLE_ID and FLUXER_LABS_OPERATORS_CHANNEL_ID must be set in production',
 		);
 	}
 	return {
-		priceRisesAt,
-		graceMs: graceMinutes * 60 * 1000,
 		clockOffsetMs: resolveOperatorPassClockOffsetMs(master),
 		labsGuildId,
 		labsOperatorRoleId,
 		labsVisionaryRoleId,
 		labsOperatorsChannelId,
-		standardPricesMinor,
 		releaseLists: parseOperatorPassReleaseLists(source.release_lists),
 		withdrawalCountries: parseOperatorPassWithdrawalCountries(source.withdrawal_countries),
 		wallTierMinimums: parseOperatorPassWallTiers(source.wall_tiers),
@@ -662,6 +645,17 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 			connectionInitiationSecret: master.auth.connection_initiation_secret,
 			profilePseudonymSecret: master.auth.profile_pseudonym_secret,
 			ssoAllowPrivateAddresses: master.auth.sso_allow_private_addresses,
+			sso: {
+				enabled: master.auth.sso.enabled,
+				enforced: master.auth.sso.enforced,
+				autoProvision: master.auth.sso.auto_provision,
+				issuer: master.auth.sso.issuer,
+				clientId: master.auth.sso.client_id,
+				clientSecret: master.auth.sso.client_secret,
+				scope: master.auth.sso.scope,
+				displayName: master.auth.sso.display_name,
+				allowedDomains: master.auth.sso.allowed_domains,
+			},
 			passkeys: {
 				rpName: master.auth.passkeys.rp_name,
 				rpId: master.auth.passkeys.rp_id,
@@ -697,6 +691,8 @@ export function buildAPIConfigFromMaster(master: MasterConfig): APIConfig {
 			setup: {
 				configured: master.instance.setup.configured,
 				token: resolveSetupToken(master),
+				installMethod: resolveInstallMethod(master.instance.setup.install_method),
+				command: master.instance.setup.command?.trim() || null,
 			},
 			accountIdentity: master.instance.account_identity,
 			tagStyle: master.instance.tag_style,

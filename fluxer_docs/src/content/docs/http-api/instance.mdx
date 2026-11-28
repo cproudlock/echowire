@@ -17,7 +17,7 @@ The public description of one instance.
 | Field | Type | Description |
 | --- | --- | --- |
 | codename? | string | The protocol generation the instance speaks |
-| api_code_version | integer | The API code version, which goes up when clients need to change their behavior |
+| api_code_version | integer | The API code version, which goes up when clients need to change their behaviour |
 | endpoints | [instance endpoints](#instance-endpoints-object) object | Public service URLs |
 | captcha | [captcha configuration](#captcha-configuration-object) object | CAPTCHA configuration |
 | features | [instance features](#instance-features-object) object | Instance-wide feature switches |
@@ -33,14 +33,14 @@ The public description of one instance.
 | notice? | ?[instance notice](#instance-notice-object) object | The current notice from the instance admins, or null |
 | guild_badges?<sup>1</sup> | array[[guild badge](#guild-badge-object) object] | The first custom badges that guilds can show next to their name, in display order (at most 100) |
 | guild_badges_partial? | boolean | True when the instance has more guild badges than `guild_badges` lists |
-| custom_badges_version? | string | The badge catalog version. It changes whenever a badge is created, edited, deleted or moved |
+| custom_badges_version? | string | The badge catalogue version. It changes whenever a badge is created, edited, deleted or moved |
 | built_in_guild_badge_images? | [built-in guild badge images](#built-in-guild-badge-images-object) object | The images the instance shows in place of the built-in guild badges |
-| hidden_built_in_guild_badges?<sup>2</sup> | array[string] | The built-in guild badges the instance doesn't show: any of `verified`, `partnered` and `discoverable` |
+| hidden_built_in_guild_badges?<sup>2</sup> | array[string] | The built-in guild badges the instance doesn't show, from `verified`, `partnered` and `discoverable` |
 | voice_origins? | array[string] | The origin of every voice server endpoint, such as `wss://voice.example.com`, for content security policies. Voice servers that share a domain are listed once as a wildcard, such as `wss://*.example.com` (at most 1000) |
 
 <sup>1</sup> An instance can have any number of guild badges. Discovery lists the first 100 in display order, and [List guild badges](#list-guild-badges) serves every one. A client that knows only `guild_badges` can't show a badge past the first 100
 
-<sup>2</sup> Guilds keep the feature behind a hidden badge, so a discoverable guild is still listed in discovery. When a guild has more than one of these badges, clients show the next one that isn't hidden
+<sup>2</sup> Guilds keep the feature behind a hidden badge, so a discoverable guild is still listed in discovery. When a guild has more than one of these badges, clients show the next badge that isn't hidden
 
 ## Guild badge object
 
@@ -59,7 +59,7 @@ A custom badge that instance admins give to guilds. A guild lists the badges it 
 
 ### Loading badges
 
-A client can show guild badges without holding the whole catalog.
+A client can show guild badges without holding the whole catalogue.
 
 1. Keep the badges from `guild_badges` and the `custom_badges_version` of the discovery document.
 2. For each guild, look up the IDs in `badge_ids` that you don't know, in batches of up to 100, with `ids` and `version` set.
@@ -82,7 +82,7 @@ Instance admins can replace the artwork of the built-in guild badges. When a fie
 
 ## Instance notice object
 
-A short message from the instance admins, such as planned maintenance, that people can dismiss.
+A short message from the instance admins, such as a note about planned maintenance, that people can dismiss.
 
 ### Structure
 
@@ -105,7 +105,7 @@ Each value is an absolute URL. Use it exactly as published, including its scheme
 | api | string | Base URL of the client API, the same as `api_client` |
 | api_client | string | Base URL of the client API, used by the Fluxer apps |
 | api_public | string | Base URL of the public API, used by bots and other clients |
-| api_transport? | string | Base URL the official desktop app sends API requests to instead of `api_client`. Only Fluxer.app lists it, and the app ignores any address other than the matching fluxer.com one |
+| api_transport? | string | Base URL the official desktop app sends API requests to instead of `api_client`. Only fluxer.com lists it, and the app ignores any address other than the matching fluxer.com one |
 | gateway | string | The [Gateway](/gateway/overview/) WebSocket URL, with a `ws` or `wss` scheme |
 | media | string | [Media Proxy](/media-proxy/overview/) base URL |
 | upload_relay? | string | Attachment [upload relay](/media-proxy/upload-relay/) base URL |
@@ -136,7 +136,7 @@ Each value is an absolute URL. Use it exactly as published, including its scheme
 | turnstile | A Cloudflare Turnstile challenge, for clients that cannot solve an ALTCHA challenge |
 | none | The instance needs no CAPTCHA |
 
-Send the solved challenge in the `X-Captcha-Token` header, as [CAPTCHA handling](/topics/captcha/) explains.
+Send the [solved challenge](/topics/captcha/) in the `X-Captcha-Token` header.
 
 ## Instance features object
 
@@ -170,7 +170,7 @@ Instance-wide switches to check before you offer a feature.
 | email_delivery_state? | string | Whether the instance sends email and why not, one of the [email delivery states](#email-delivery-states) |
 | verification_basis? | string | What an account needs to be verified, `confirmed_email` or `local_credential` |
 
-When `emails_enabled` is false, email verification, password recovery and IP authorization don't work.
+When `emails_enabled` is false, email verification, password recovery and IP authorisation don't work.
 
 ### Instant account availability
 
@@ -199,7 +199,7 @@ When `emails_enabled` is false, email verification, password recovery and IP aut
 | email | People register and sign in with an email address |
 | username | People register and sign in with a username, and the instance collects no email address |
 
-On a `username` instance, email routes return 400 `EMAIL_UNAVAILABLE_ON_INSTANCE`. On an `email` instance, username-only routes such as [recover an account](/http-api/authentication/#recover-an-account) return 400 `USERNAME_SIGN_IN_ONLY`.
+On a `username` instance, email routes return 400 `EMAIL_UNAVAILABLE_ON_INSTANCE`. On an `email` instance, username-only routes such as [recover an account](/http-api/authentication/#recover-an-account) return 400 with `USERNAME_SIGN_IN_ONLY` instead.
 
 ### Tag styles
 
@@ -353,7 +353,7 @@ A `feature_` key is `1` when the feature is available and `0` when it isn't. The
 | feature_early_access | Beta features (user) |
 | feature_global_expressions | Using expressions in every guild (user) |
 | feature_guild_create | Creating communities while the instance restricts it (user) |
-| feature_higher_video_quality | Higher video streaming quality: screen shares up to 2160p at 120 FPS and cameras up to 1080p, whatever the `max_screen_share_resolution`, `max_screen_share_frame_rate` and `max_camera_resolution` limits say (user) |
+| feature_higher_video_quality | Screen shares up to 2160p at 120 FPS and cameras up to 1080p, even when the `max_screen_share_resolution`, `max_screen_share_frame_rate` and `max_camera_resolution` limits are lower (user) |
 | feature_per_guild_profiles | A different profile in each guild (user) |
 | feature_voice_entrance_sounds | A sound when joining voice (user) |
 | guild_visit_history_days_unverified | Days of history an unverified account sees while [visiting](/http-api/guilds/#visiting-guilds) a guild (user) |
@@ -367,9 +367,9 @@ A `feature_` key is `1` when the feature is available and `0` when it isn't. The
 | max_custom_backgrounds | Maximum custom profile backgrounds (user) |
 | max_embeds_per_message | Maximum embeds per message (user and guild) |
 | max_favorite_meme_tags | Maximum meme tags to track (user) |
-| max_favorite_memes | Maximum favorite memes (user) |
-| max_group_dm_recipients | Maximum members per group DM (user) |
-| max_group_dms_per_user | Maximum group DMs a user can own (user) |
+| max_favorite_memes | Maximum favourite memes (user) |
+| max_group_dm_recipients | Maximum members per group direct message (user) |
+| max_group_dms_per_user | Maximum group direct messages a user can own (user) |
 | max_guild_channels | Maximum channels per guild, counting forum and media channels but not threads (guild) |
 | max_guild_emojis | Maximum emojis per guild (guild) |
 | max_guild_emojis_animated | Alias of `max_guild_emojis` for older clients (guild) |
@@ -384,7 +384,7 @@ A `feature_` key is `1` when the feature is available and `0` when it isn't. The
 | max_guild_visits | Maximum guilds a user can [visit](/http-api/guilds/#visiting-guilds) at once, halved for unverified accounts (user) |
 | max_guilds | Maximum guilds a user can join (user) |
 | max_message_length | Maximum characters per message (user and guild) |
-| max_private_channels_per_user | Maximum DM channels per user (user) |
+| max_private_channels_per_user | Maximum direct message channels per user (user) |
 | max_reactions_per_message | Maximum distinct reactions per message (guild) |
 | max_relationships | Maximum friends and blocked users (user) |
 | max_screen_share_bitrate | Highest screen share bitrate in bits per second, 1000000 to 50000000 (user) |
@@ -396,7 +396,7 @@ A `feature_` key is `1` when the feature is available and `0` when it isn't. The
 | max_webhooks_per_guild | Maximum webhooks per guild (guild) |
 | sticker_max_size | Maximum sticker upload size in bytes, up to 104857600 (guild) |
 
-Threads and forums have fixed limits, listed under [thread lifecycle](/http-api/threads/#thread-lifecycle), [thread members](/http-api/thread-members/) and [forum channel fields](/http-api/forums/#forum-channel-fields).
+Threads and forums have fixed [thread](/http-api/threads/#thread-lifecycle), [thread member](/http-api/thread-members/) and [forum](/http-api/forums/#forum-channel-fields) limits.
 
 ## Public application configuration object
 
@@ -423,15 +423,15 @@ What a client needs before anyone signs in.
 | logo_url | ?string | App logo URL, or null |
 | wordmark_url | ?string | App wordmark URL, or null |
 | favicon_url | ?string | Favicon URL, or null |
-| favicon_dark_url | ?string | Favicon URL for a dark color scheme, or null to use `favicon_url` |
-| theme_color | ?string | Brand color as lowercase `#rrggbb`, or null |
+| favicon_dark_url | ?string | Favicon URL for a dark colour scheme, or null to use `favicon_url` |
+| theme_color | ?string | Brand colour as lowercase `#rrggbb`, or null |
 | status_page_url | ?string | Status page URL, or null |
 | status_page_instatus | boolean | Whether the status page is an Instatus page browsers can read. Clients show its incidents only when this is true |
 | status_page_incident_history_url | ?string | Status page incident history URL, or null |
 | premium_product_name | string | The name of the premium tier, `Premium` unless an admin sets one |
 | premium_info_url | ?string | URL of a page about the premium tier, or null |
 | sign_in_backdrop_url | ?string | Image shown behind the sign-in screens, or null for the default |
-| premium_page_color | ?string | Premium page color of a self-hosted instance as lowercase `#rrggbb`, or null |
+| premium_page_color | ?string | Premium page colour of a self-hosted instance as lowercase `#rrggbb`, or null |
 | premium_showcase_expressions_url | ?string | Image next to the emoji card on the premium page of a self-hosted instance, or null |
 | premium_showcase_profile_url | ?string | Image next to the profile card on the premium page of a self-hosted instance, or null |
 | premium_showcase_stream_url | ?string | Image next to the stream card on the premium page of a self-hosted instance, or null |
@@ -562,13 +562,13 @@ Returns custom guild badges in display order. Send `ids` to look up the badges o
 | ids? | string | Up to 100 badge IDs separated by commas. Can't be sent with `after` |
 | after? | string | The `next` value of the previous page |
 | limit? | integer | How many badges to return when paging (1-200, default 100) |
-| version? | string | The `custom_badges_version` the client holds |
+| version? | string | The client's current `custom_badges_version` |
 
 ### Response body
 
 | Field | Type | Description |
 | --- | --- | --- |
-| version | string | The current badge catalog version |
+| version | string | The current badge catalogue version |
 | badges | array[[guild badge](#guild-badge-object) object] | The badges in display order. IDs that are unknown, deleted or user badges are left out |
 | next | ?string | Send this as `after` to get the next page, or null on the last page and for a lookup by `ids` |
 
@@ -579,7 +579,7 @@ Returns custom guild badges in display order. Send `ids` to look up the badges o
 | `version` is the current version | `public, max-age=86400, immutable` |
 | no `version`, or an older one | `public, max-age=60, must-revalidate` |
 
-The response has an `ETag` header, and a request with a matching `If-None-Match` gets 304 with no body. A response read while the catalog changes gets the short lifetime and no `ETag`. The version also changes when the instance moves to a new media URL, because every `asset_url` changes with it.
+The response has an `ETag` header, and a request with a matching `If-None-Match` gets 304 with no body. A response read while the catalogue changes gets the short lifetime and no `ETag`. The version also changes when the instance moves to a new media URL, because every `asset_url` changes with it.
 
 ### Response
 

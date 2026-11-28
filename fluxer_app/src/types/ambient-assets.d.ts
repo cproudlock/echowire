@@ -73,3 +73,16 @@ declare module '@pkgs/libfluxwebp/libfluxwebp_simd_bg.wasm' {
 	const url: string;
 	export default url;
 }
+
+// Echowire: the ban modal plays bundled video (banned.mp4/.webm) instead of
+// upstream hotlinks; these were declared in vite-env.d.ts before upstream merged
+// the ambient declarations into this file.
+declare module '*.mp4' {
+	const url: string;
+	export default url;
+}
+
+declare module '*.webm' {
+	const url: string;
+	export default url;
+}

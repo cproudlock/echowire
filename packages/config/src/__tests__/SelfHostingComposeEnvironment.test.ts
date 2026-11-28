@@ -16,7 +16,8 @@ const API_SETTINGS_NOT_FORWARDED: Record<string, string> = {
 	FLUXER_SSO_DISPLAY_NAME: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
 	FLUXER_SSO_ALLOWED_DOMAINS: 'upstream fluxerd seeds SSO from settings; this stack configures SSO in the admin panel',
 	FLUXER_INSTALL_METHOD: 'shown in the setup screen; set by fluxerd and rexctl installs, unset means compose',
-	FLUXER_SETUP_COMMAND: 'shown in the setup screen; set by fluxerd and rexctl installs, this instance is already set up',
+	FLUXER_SETUP_COMMAND:
+		'shown in the setup screen; set by fluxerd and rexctl installs, this instance is already set up',
 	FLUXER_CASSANDRA_HOSTS: 'the stack runs Postgres only',
 	FLUXER_CASSANDRA_PORT: 'the stack runs Postgres only',
 	FLUXER_CASSANDRA_KEYSPACE: 'the stack runs Postgres only',

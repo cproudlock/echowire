@@ -25,6 +25,7 @@ import {isDesktopUpdateRequested, shouldDisableModuleUpdatesForLaunch} from '@el
 import {relaunchStableLaunchPath} from '@electron/main/LinuxLaunchPath';
 import {getDesktopLocalAppProtocol} from '@electron/main/LocalAppProtocol';
 import {LocalNetworkSplashHint} from '@electron/main/LocalNetworkSplashHint';
+import {t} from '@electron/main/MainI18n';
 import {MAIN_WINDOW_LIVE_FRAME_WAIT_MS} from '@electron/main/MainWindowReveal';
 import {
 	armOpenUrlForwarding,
@@ -45,6 +46,7 @@ import {createOnDemandModuleInstaller} from '@electron/main/ModuleOnDemand';
 import {getModuleStoreRoot, type ModuleLaunchAttempt, ModuleStore} from '@electron/main/ModuleStore';
 import {
 	ModuleUpdater,
+	ModuleUpdaterDetail,
 	type ModuleUpdaterOutcome,
 	type ModuleUpdaterSplashState,
 	ModuleUpdaterStatus,
@@ -122,9 +124,6 @@ const MODULE_LAUNCH_PERMIT = Symbol('fluxer.desktop.moduleLaunchPermit');
 const IN_PLACE_RELOAD_CONFIRM_TIMEOUT_MS = 45_000;
 const NETWORK_SPLASH_GRACE_MS = 500;
 
-const UPDATE_SERVER_UNREACHABLE_MESSAGE =
-	"echowire couldn't reach its update server to download app files. Check your internet connection, proxy or firewall. echowire keeps retrying.";
-
 interface ModuleLaunchPermit {
 	readonly [MODULE_LAUNCH_PERMIT]: true;
 	readonly unreachable: boolean;
@@ -157,7 +156,7 @@ function toSplashState(state: ModuleUpdaterSplashState): SplashState {
 		receivedBytes: state.receivedBytes,
 		totalBytes: state.totalBytes,
 		bytesPerSecond: state.bytesPerSecond,
-		message: state.detail,
+		message: state.detail === ModuleUpdaterDetail.STORAGE_FULL ? t('desktop.splash.notEnoughDiskSpace') : null,
 	};
 }
 
@@ -307,7 +306,7 @@ async function runBootstrap(): Promise<void> {
 async function refuseUnsupportedBuild(reason: string): Promise<never> {
 	const logger = createChildLogger('Bootstrap');
 	logger.error('This build cannot start a renderer, refusing to launch', {reason});
-	process.stderr.write(`echowire cannot start: ${reason}\n`);
+	process.stderr.write(`Fluxer cannot start: ${reason}\n`);
 	await app.whenReady();
 	openSplashWindow();
 	setSplashState({status: 'blocked-unsupported-build', action: SplashAction.QUIT});
@@ -629,7 +628,7 @@ async function runModuleBootstrap(
 						updateServerUnreachable: outcome.updateServerUnreachable,
 					});
 					if (outcome.updateServerUnreachable) {
-						showBlockedSplash('blocked-update-unreachable', UPDATE_SERVER_UNREACHABLE_MESSAGE);
+						showBlockedSplash('blocked-update-unreachable', t('desktop.splash.updateServerUnreachable'));
 						await updateServerRetry.holdUntilNextAttempt();
 						logger.info('Retrying the update server');
 						return null;

@@ -55,6 +55,14 @@ fn pending_identify_retry_jitter_ms() -> Int {
   durations.gateway().socket_pending_identify_retry_jitter_ms
 }
 
+fn held_start_budget_ms() -> Int {
+  durations.gateway().socket_held_start_budget_ms
+}
+
+fn held_start_retry_cap_ms() -> Int {
+  durations.gateway().socket_held_start_retry_cap_ms
+}
+
 fn heartbeat_ack_fallback_ms() -> Int {
   durations.gateway().socket_heartbeat_ack_fallback_ms
 }
@@ -87,9 +95,14 @@ pub opaque type Message {
 type Pending {
   Idle
   Starting(identify: Identify, timeout: Int)
-  Resuming(timeout: Int, session: SessionId, accepted: Bool)
+  Resuming(timeout: Int, session: SessionId, accepted: Bool, resumed: Bool)
+  AwaitingResumed(timeout: Int)
   Rebinding(timeout: Int)
   Holding(identify: Identify, retry: Option(Int), throttled: Bool)
+}
+
+type FailedStarts {
+  FailedStarts(first_at: Int, count: Int)
 }
 
 type Acks {
@@ -153,6 +166,7 @@ pub opaque type State {
     acks: Acks,
     attached: Option(Attached),
     pending: Pending,
+    failed_starts: Option(FailedStarts),
     deferred: List(#(Opcode, Body)),
     deferred_count: Int,
     early: List(SocketMsg),
@@ -163,6 +177,7 @@ pub opaque type State {
     next_token: Int,
     identify_at: Option(Int),
     resume_at: Option(Int),
+    identify_deadline_ms: Option(Int),
     reported: ConnectionState,
   )
 }
@@ -293,6 +308,7 @@ pub fn open(upgrade: Upgrade, mailbox: Mailbox, link: Link) -> State {
     acks: no_acks,
     attached: None,
     pending: Idle,
+    failed_starts: None,
     deferred: [],
     deferred_count: 0,
     early: [],
@@ -303,6 +319,9 @@ pub fn open(upgrade: Upgrade, mailbox: Mailbox, link: Link) -> State {
     next_token: 0,
     identify_at: None,
     resume_at: None,
+    identify_deadline_ms: Some(
+      clock.system_ms() + limits.heartbeat_interval_ms(),
+    ),
     reported: socket_metrics.AwaitingIdentify,
   )
   |> greet
@@ -357,7 +376,7 @@ pub fn paused(state: State) -> Bool {
 
 fn awaiting_reply(state: State) -> Bool {
   case state.pending {
-    Starting(..) | Resuming(..) | Rebinding(..) -> True
+    Starting(..) | Resuming(..) | AwaitingResumed(..) | Rebinding(..) -> True
     Idle | Holding(..) -> False
   }
 }
@@ -389,8 +408,10 @@ fn connection_state(state: State) -> ConnectionState {
     Open, None, Starting(..) -> socket_metrics.Identifying
     Open, None, Resuming(..) -> socket_metrics.Resuming
     Open, None, Holding(..) -> socket_metrics.Held
-    Open, None, Idle | Open, None, Rebinding(..) ->
-      socket_metrics.AwaitingIdentify
+    Open, None, Idle
+    | Open, None, AwaitingResumed(..)
+    | Open, None, Rebinding(..)
+    -> socket_metrics.AwaitingIdentify
   }
 }
 
@@ -496,7 +517,11 @@ fn session_key(state: State) -> Option(SessionId) {
 
 fn holds_payloads(state: State) -> Bool {
   case state.pending {
-    Starting(..) | Resuming(..) | Holding(..) | Rebinding(..) -> True
+    Starting(..)
+    | Resuming(..)
+    | AwaitingResumed(..)
+    | Holding(..)
+    | Rebinding(..) -> True
     Idle -> False
   }
 }
@@ -504,7 +529,11 @@ fn holds_payloads(state: State) -> Bool {
 fn defers(state: State, op: Opcode) -> Bool {
   case op, state.pending {
     opcode.Heartbeat, _ -> False
-    _, Starting(..) | _, Resuming(..) | _, Rebinding(..) -> True
+    _, Starting(..)
+    | _, Resuming(..)
+    | _, AwaitingResumed(..)
+    | _, Rebinding(..)
+    -> True
     opcode.Identify, Holding(..) | opcode.Resume, Holding(..) -> False
     _, Holding(..) -> True
     _, Idle -> False
@@ -660,6 +689,7 @@ fn handle_identify(
   state: State,
   payload: Result(Identify, identify.IdentifyError),
 ) -> State {
+  let state = State(..state, identify_deadline_ms: None)
   case abuse_protection.check_identify_rate(state.config.peer_ip) {
     Error(_) -> {
       socket_metrics.rate_limited(socket_metrics.IdentifyIpLimit)
@@ -804,7 +834,7 @@ fn schedule_retry(state: State) -> State {
     Holding(identify: ident, retry: None, throttled:) -> {
       let #(state, token) = new_token(state)
       let delay =
-        pending_identify_retry_base_ms()
+        retry_delay_ms(state.failed_starts)
         + int.random(pending_identify_retry_jitter_ms())
       process.send_after(state.config.self, delay, RetryIdentify(token))
       State(
@@ -813,6 +843,36 @@ fn schedule_retry(state: State) -> State {
       )
     }
     _ -> state
+  }
+}
+
+fn retry_delay_ms(failed_starts: Option(FailedStarts)) -> Int {
+  let doublings = case failed_starts {
+    Some(FailedStarts(count:, ..)) -> int.clamp(count - 1, 0, 16)
+    None -> 0
+  }
+  int.min(
+    held_start_retry_cap_ms(),
+    int.bitwise_shift_left(pending_identify_retry_base_ms(), doublings),
+  )
+}
+
+fn hold_failed_start(
+  state: State,
+  ident: Identify,
+  why: Hold,
+  code: CloseCode,
+  reason: String,
+) -> State {
+  let now = clock.monotonic_ms()
+  let failed = case state.failed_starts {
+    Some(FailedStarts(first_at:, count:)) ->
+      FailedStarts(first_at:, count: count + 1)
+    None -> FailedStarts(first_at: now, count: 1)
+  }
+  case now - failed.first_at >= held_start_budget_ms() {
+    True -> close(state, code, reason)
+    False -> hold(State(..state, failed_starts: Some(failed)), ident, why)
   }
 }
 
@@ -833,7 +893,8 @@ fn retry_held_identify(state: State) -> State {
         True -> start_unless_draining(state, ident)
         False -> schedule_retry(state)
       }
-    Idle | Starting(..) | Resuming(..) | Rebinding(..) -> state
+    Idle | Starting(..) | Resuming(..) | AwaitingResumed(..) | Rebinding(..) ->
+      state
   }
 }
 
@@ -841,6 +902,7 @@ fn handle_resume(
   state: State,
   payload: Result(resume.ResumeRequest, resume.ResumeDecodeError),
 ) -> State {
+  let state = State(..state, identify_deadline_ms: None)
   case abuse_protection.check_identify_rate(state.config.peer_ip) {
     Error(_) -> {
       socket_metrics.rate_limited(socket_metrics.IdentifyIpLimit)
@@ -875,7 +937,12 @@ fn handle_resume(
               )
               State(
                 ..state,
-                pending: Resuming(timeout:, session: id, accepted: False),
+                pending: Resuming(
+                  timeout:,
+                  session: id,
+                  accepted: False,
+                  resumed: False,
+                ),
                 resume_at: Some(clock.monotonic_ms()),
               )
             }
@@ -921,10 +988,12 @@ fn open_info(state: State, message: Message) -> State {
       case state.pending {
         Starting(identify: ident, timeout:) if timeout == token -> {
           socket_metrics.start_timed_out()
-          hold(
+          hold_failed_start(
             State(..state, pending: Idle),
             ident,
             socket_metrics.HoldStartTimeout,
+            error.CloseUnknownError,
+            "Session unavailable",
           )
         }
         _ -> state
@@ -945,6 +1014,8 @@ fn open_info(state: State, message: Message) -> State {
             "Session unavailable",
           )
         }
+        AwaitingResumed(timeout:) if timeout == token ->
+          replay_deferred(State(..state, pending: Idle))
         _ -> state
       }
     RetryIdentify(token) ->
@@ -975,9 +1046,14 @@ fn outbox(state: State, message: SocketMsg) -> State {
     Some(Attached(ref:, ..)), _ if ref.id == message.session ->
       deliver(state, message)
     Some(_), _ -> state
-    None, Resuming(timeout:, session:, ..) if session == message.session ->
+    None, Resuming(timeout:, session:, resumed:, ..)
+      if session == message.session
+    ->
       deliver(
-        State(..state, pending: Resuming(timeout:, session:, accepted: True)),
+        State(
+          ..state,
+          pending: Resuming(timeout:, session:, accepted: True, resumed:),
+        ),
         message,
       )
     None, Resuming(..) -> state
@@ -1081,6 +1157,7 @@ fn send_session_frame(state: State, frame: Outbound) -> State {
           reconnect_if_draining(state)
           State(
             ..state,
+            pending: resumed_sent(state.pending),
             resume_at: elapsed(
               state.resume_at,
               socket_metrics.resume_to_resumed,
@@ -1098,6 +1175,15 @@ fn send_session_frame(state: State, frame: Outbound) -> State {
     session.ReconnectFrame, Error(Nil) -> close_for_drain(state)
     _, Ok(state) -> state
     _, Error(Nil) -> state
+  }
+}
+
+fn resumed_sent(pending: Pending) -> Pending {
+  case pending {
+    Resuming(timeout:, session:, accepted:, ..) ->
+      Resuming(timeout:, session:, accepted:, resumed: True)
+    AwaitingResumed(..) -> Idle
+    Idle | Starting(..) | Rebinding(..) | Holding(..) -> pending
   }
 }
 
@@ -1208,9 +1294,21 @@ fn start_failed(
     session.StartTooManySessions ->
       close(state, error.CloseRateLimited, "Too many sessions")
     session.StartRateLimited(..) ->
-      hold(state, ident, socket_metrics.HoldRateLimited)
+      hold_failed_start(
+        state,
+        ident,
+        socket_metrics.HoldRateLimited,
+        error.CloseRateLimited,
+        "Session RPC rate limited",
+      )
     session.StartUnavailable(..) ->
-      hold(state, ident, socket_metrics.HoldUnavailable)
+      hold_failed_start(
+        state,
+        ident,
+        socket_metrics.HoldUnavailable,
+        error.CloseUnknownError,
+        "Session unavailable",
+      )
     session.StartUnknownError ->
       close(state, error.CloseUnknownError, "Failed to start session")
   }
@@ -1218,7 +1316,7 @@ fn start_failed(
 
 fn resume_reply(state: State, reply: Result(SessionRef, ResumeError)) -> State {
   case state.pending, state.attached {
-    Resuming(..), None -> {
+    Resuming(timeout:, resumed:, ..), None -> {
       let state = State(..state, pending: Idle)
       socket_metrics.resume_finished(case reply {
         Ok(_) -> socket_metrics.Resumed
@@ -1229,8 +1327,12 @@ fn resume_reply(state: State, reply: Result(SessionRef, ResumeError)) -> State {
           metrics.counter("fluxer_gateway_session_resumes_total", [], 1)
           rollout_metrics.count(rollout_metrics.resumed, [], 1)
           garbage_collect()
+          let pending = case resumed {
+            True -> Idle
+            False -> AwaitingResumed(timeout:)
+          }
           State(
-            ..attach(state, session_ref),
+            ..attach(State(..state, pending:), session_ref),
             heartbeat: heartbeat.acked(clock.system_ms()),
           )
         }
@@ -1259,7 +1361,12 @@ fn down_message(state: State, down: process.Down) -> State {
           rollout_metrics.count(rollout_metrics.identify_after_crash, [], 1)
         False -> Nil
       }
-      let state = State(..reset_voice(state), attached: None, acks: no_acks)
+      let pending = case state.pending {
+        AwaitingResumed(..) -> Idle
+        other -> other
+      }
+      let state =
+        State(..reset_voice(state), attached: None, acks: no_acks, pending:)
       send_invalid_session(state, "session_down")
     }
     _, _ -> state
@@ -1278,24 +1385,33 @@ fn heartbeat_check(state: State, token: Int) -> State {
   case state.heartbeat_timer {
     Some(current) if current == token -> {
       let state = State(..state, heartbeat_timer: None)
-      let outcome = heartbeat.check(state.heartbeat, clock.system_ms())
+      let now_ms = clock.system_ms()
+      let outcome = heartbeat.check(state.heartbeat, now_ms)
       socket_metrics.heartbeat_checked(outcome)
-      let next = case outcome {
-        heartbeat.TimedOut ->
-          close(state, error.SessionTimeout, "Heartbeat timeout")
-        heartbeat.RequestHeartbeat(waiting) -> {
-          let state = schedule_heartbeat(State(..state, heartbeat: waiting))
-          case send_frame(state, encode.heartbeat_request()) {
-            Ok(state) -> state
-            Error(Nil) -> state
-          }
-        }
-        heartbeat.StillAlive -> schedule_heartbeat(state)
+      let next = case state.identify_deadline_ms {
+        Some(deadline) if now_ms >= deadline ->
+          close(state, error.NotAuthenticated, "Not authenticated")
+        _ -> heartbeat_outcome(state, outcome)
       }
       garbage_collect()
       next
     }
     _ -> state
+  }
+}
+
+fn heartbeat_outcome(state: State, outcome: heartbeat.CheckOutcome) -> State {
+  case outcome {
+    heartbeat.TimedOut ->
+      close(state, error.SessionTimeout, "Heartbeat timeout")
+    heartbeat.RequestHeartbeat(waiting) -> {
+      let state = schedule_heartbeat(State(..state, heartbeat: waiting))
+      case send_frame(state, encode.heartbeat_request()) {
+        Ok(state) -> state
+        Error(Nil) -> state
+      }
+    }
+    heartbeat.StillAlive -> schedule_heartbeat(state)
   }
 }
 

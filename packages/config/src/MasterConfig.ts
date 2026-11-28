@@ -230,6 +230,17 @@ export interface MasterConfig {
 		connection_initiation_secret: string;
 		profile_pseudonym_secret: string;
 		sso_allow_private_addresses: boolean;
+		sso: {
+			enabled: boolean | null;
+			enforced: boolean | null;
+			auto_provision: boolean | null;
+			issuer: string;
+			client_id: string;
+			client_secret: string;
+			scope: string;
+			display_name: string;
+			allowed_domains: Array<string>;
+		};
 		passkeys: {
 			rp_name: string;
 			rp_id: string;
@@ -393,6 +404,8 @@ export interface MasterConfig {
 		setup: {
 			configured: boolean;
 			token?: string;
+			install_method?: string;
+			command?: string;
 		};
 		account_identity: AccountIdentityModeName | null;
 		tag_style: TagStyleName | null;
@@ -405,14 +418,11 @@ export interface MasterConfig {
 		closure_effective_at?: string;
 	};
 	operator_pass: {
-		price_rises_at?: string;
-		grace_minutes: number;
 		now_override?: string;
 		labs_guild_id?: string;
 		labs_operator_role_id?: string;
 		labs_visionary_role_id?: string;
 		labs_operators_channel_id?: string;
-		standard_prices_minor?: Partial<Record<string, number>>;
 		release_lists?: string;
 		withdrawal_countries?: string;
 		localized_prices_enabled?: Partial<Record<string, boolean>>;

@@ -29,7 +29,7 @@ One page of matching messages.
 
 <sup>1</sup> Messages have no `referenced_message` field
 
-<sup>2</sup> In a channel context without [READ_MESSAGE_HISTORY](/http-api/permissions/), this is the number of messages in `messages`
+<sup>2</sup> In a channel context without [READ_MESSAGE_HISTORY](/http-api/permissions/), this is the number of messages returned in `messages`
 
 <sup>3</sup> Present only when a returned message is in a thread and the request is not a single channel search
 
@@ -56,7 +56,7 @@ Fluxer returns this object with status 200 when a channel in the search isn't in
 
 A bot can only use `current`, and any other value returns 400 `INVALID_FORM_BODY` with the field code [BOT_SEARCH_SCOPE_UNAVAILABLE](/http-api/errors/) on `scope`.
 
-To search members, communities or threads, see [Guild member search](/http-api/guild-member-search/), [Discovery](/http-api/discovery/) and [Search threads](/http-api/threads/#search-threads).
+[Search members](/http-api/guild-member-search/), [communities](/http-api/discovery/) and [threads](/http-api/threads/#search-threads) with their own routes.
 
 ## Search author types
 
@@ -96,7 +96,7 @@ To search members, communities or threads, see [Guild member search](/http-api/g
 | timestamp | Creation time |
 | relevance<sup>1</sup> | The search backend's own order |
 
-<sup>1</sup> `sort_order` doesn't apply, and on Elasticsearch this is the same as `timestamp` with `desc`
+<sup>1</sup> `sort_order` doesn't apply. On Elasticsearch this is the same as sorting by `timestamp` with `desc` order
 
 ## Search sort orders
 
@@ -157,7 +157,7 @@ Every field is optional, but the default `current` scope needs `context_guild_id
 | exclude_attachment_extension?<sup>6</sup> | array[string] | Extensions to exclude (at most 50, 1-32 characters each) |
 | sort_by? | string | [Search sort field](#search-sort-fields) (default `timestamp`) |
 | sort_order? | string | [Search sort order](#search-sort-orders) (default `desc`) |
-| include_nsfw?<sup>7</sup> | boolean | Whether age-restricted channels can give results (default false) |
+| include_nsfw?<sup>7</sup> | boolean | Whether channels marked 18+ can give results (default false) |
 
 <sup>1</sup> A channel context ignores them
 
@@ -182,7 +182,7 @@ Every channel in `channel_ids` must be in the scope. A channel from another guil
 | 200 | [message search result](#message-search-result-object) object \| [search indexing](#search-indexing-object) object | The search completed, or an index isn't ready |
 | 400 | [error response](/http-api/#error-response) | `INVALID_FORM_BODY` for a bad scope, a channel from another guild or no context |
 | 403 | [error response](/http-api/#error-response) | `FEATURE_TEMPORARILY_DISABLED` when the instance has no search backend |
-| 403 | [error response](/http-api/#error-response) | `NSFW_CONTENT_AGE_RESTRICTED` when the context is age restricted and you are not old enough |
+| 403 | [error response](/http-api/#error-response) | `NSFW_CONTENT_AGE_RESTRICTED` when the context is marked 18+ and the account can't see mature content |
 | 403 | [error response](/http-api/#error-response) | `CONTENT_BLOCKED` when a search string matches the instance blocklist |
 
 The rate limit is 20 requests per 10 seconds, on the `search:messages` bucket.

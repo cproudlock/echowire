@@ -46,6 +46,7 @@ import {
 	REGISTRATION_MODES,
 } from '@fluxer/instance_bootstrap/src/Types';
 import type {LimitConfigSnapshot, LimitFilter, LimitRule} from '@fluxer/limits/src/LimitTypes';
+import {INSTALL_METHODS, type InstallMethod} from '@fluxer/schema/src/domains/instance/InstanceSchemas';
 
 const LIMIT_KEYS_SET = new Set<string>(LIMIT_KEYS);
 // Echowire: the premium tier is Reverb (upstream: Plutonium).
@@ -485,6 +486,13 @@ function readOptionalLockReason(source: Record<string, unknown>): AccountIdentit
 	return Object.values(AccountIdentityLockReasons).find((reason) => reason === value) ?? null;
 }
 
+function readOptionalInstallMethod(source: Record<string, unknown>): InstallMethod | null | undefined {
+	if (!Object.hasOwn(source, 'install_method')) {
+		return undefined;
+	}
+	return INSTALL_METHODS.find((method) => method === source.install_method) ?? null;
+}
+
 function readAppPublic(value: unknown): InstanceAppPublic {
 	const source = readRecord(value, 'appPublic');
 	const branding = readRecord(source.branding, 'appPublic.branding');
@@ -498,6 +506,7 @@ function readAppPublic(value: unknown): InstanceAppPublic {
 	);
 	const setupTokenRequired = readOptionalBoolean(setup, 'setup_token_required', 'appPublic.setup.setup_token_required');
 	const accountIdentityLockReason = readOptionalLockReason(setup);
+	const installMethod = readOptionalInstallMethod(setup);
 	return {
 		branding: {
 			product_name: readNonEmptyString(branding, 'product_name', 'appPublic.branding.product_name'),
@@ -562,6 +571,8 @@ function readAppPublic(value: unknown): InstanceAppPublic {
 			...(accountIdentityLocked === undefined ? {} : {account_identity_locked: accountIdentityLocked}),
 			...(accountIdentityLockReason === undefined ? {} : {account_identity_lock_reason: accountIdentityLockReason}),
 			...(setupTokenRequired === undefined ? {} : {setup_token_required: setupTokenRequired}),
+			...(installMethod === undefined ? {} : {install_method: installMethod}),
+			...(Object.hasOwn(setup, 'setup_command') ? {setup_command: readOptionalText(setup, 'setup_command')} : {}),
 		},
 		legal: {
 			terms_url: readNullableAbsoluteHttpUrl(legal, 'terms_url', 'appPublic.legal.terms_url'),

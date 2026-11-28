@@ -73,7 +73,7 @@ The instance admin sets the rollout in the [guild visits configuration](/admin-a
 
 <RouteHeader method="GET" path="/v1/experiments" bot />
 
-Returns an [experiment assignments](#experiment-assignments-object) object for the caller.
+Returns the caller's [experiment assignments](#experiment-assignments-object) object.
 
 ### Request headers
 
@@ -102,4 +102,4 @@ The rate limit is 60 requests per 10 seconds, on the `default` bucket.
 
 ### Polling
 
-Call this route when a session starts and again every `poll_interval_seconds`, with a random offset of up to `poll_jitter_percent` either way. Send the last `ETag` in `If-None-Match`, and keep your current assignments when you get a 304. Until you get a 200, use 300 seconds with 15 percent jitter.
+Call this route when a session starts and again every `poll_interval_seconds`, with a random offset of up to `poll_jitter_percent` either way. Send the last `ETag` in `If-None-Match`, and keep your current assignments when you get a 304. Until you get a 200, use 300 seconds with 15 per cent jitter.

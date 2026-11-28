@@ -16,7 +16,7 @@ A user session that doesn't declare the [`channel_threads` client capability](/h
 
 ## Origin refusal
 
-[Execute webhook](#execute-webhook), the [GitHub](#execute-github-webhook), [Slack](#execute-slack-webhook), [Instatus](#execute-instatus-webhook) and [Libredesk](#execute-libredesk-webhook) callbacks, [Get webhook message](#get-webhook-message), [Edit webhook message](#edit-webhook-message) and [Delete webhook message](#delete-webhook-message) return 403 `INVALID_API_ORIGIN` when the `Origin` header is one of the instance's own web app origins. See [cross-origin requests](/http-api/#cross-origin-requests).
+[Execute webhook](#execute-webhook), the [GitHub](#execute-github-webhook), [Slack](#execute-slack-webhook), [Instatus](#execute-instatus-webhook) and [Libredesk](#execute-libredesk-webhook) callbacks, [Get webhook message](#get-webhook-message), [Edit webhook message](#edit-webhook-message) and [Delete webhook message](#delete-webhook-message) return 403 `INVALID_API_ORIGIN` when the [`Origin` header](/http-api/#cross-origin-requests) is one of the instance's own web app origins.
 
 ## Webhook object
 
@@ -126,7 +126,7 @@ Token routes return this shorter form of the [webhook object](#webhook-object).
 | message_reference?<sup>2</sup> | ?[message reference input](/http-api/messages/#message-reference-input-object) object | A reply or forward reference |
 | allowed_mentions?<sup>3</sup> | ?[allowed mentions](/http-api/messages/#allowed-mentions-object) object | Which mentions notify |
 | flags? | integer | [Message flags](/http-api/messages/#message-flags) |
-| favorite_meme_id? | ?snowflake | Accepted, but webhook messages never attach a favorite meme |
+| favorite_meme_id? | ?snowflake | Accepted, but webhook messages never attach a favourite meme |
 | sticker_ids? | ?array[snowflake] | Up to 3 sticker IDs |
 | tts? | boolean | Accepted, but webhook messages are never text-to-speech |
 | nonce?<sup>4</sup> | string \| integer | A client-generated message identifier (1-32 characters) |
@@ -137,13 +137,13 @@ Token routes return this shorter form of the [webhook object](#webhook-object).
 
 <sup>1</sup> Up to the guild's [max_message_length](/http-api/instance/#limit-keys) or 4,000 characters, whichever is larger
 
-<sup>2</sup> The referenced message must be in the webhook's channel, or in the thread from `thread_id`
+<sup>2</sup> The referenced message must be in the webhook's channel, or in the thread that `thread_id` points to
 
 <sup>3</sup> When omitted, no mention notifies anyone
 
 <sup>4</sup> Repeating a nonce within five minutes returns the first message and creates no new one
 
-<sup>5</sup> Only for a webhook in a forum or media channel. See [Webhooks in forums](/http-api/forums/#webhooks-in-forums)
+<sup>5</sup> Only for a [webhook in a forum or media channel](/http-api/forums/#webhooks-in-forums)
 
 ## Webhook message edit body
 
@@ -162,7 +162,7 @@ Token routes return this shorter form of the [webhook object](#webhook-object).
 
 <RouteHeader method="GET" path="/v1/guilds/{guild_id}/webhooks" bot />
 
-Returns the [webhooks](#webhook-object) in a guild, limited to channels where you have `VIEW_CHANNEL` and `MANAGE_WEBHOOKS`.
+Returns the [webhooks](#webhook-object) in a guild, limited to channels where you have both `VIEW_CHANNEL` and `MANAGE_WEBHOOKS`.
 
 ### Response
 
@@ -228,7 +228,7 @@ The rate limit is 100 requests per 10 seconds, on the `webhook:read::webhook_id`
 
 <RouteHeader method="PATCH" path="/v1/webhooks/{webhook_id}" bot auditReason />
 
-Updates a webhook and returns the [webhook object](#webhook-object). To move it, you need `MANAGE_WEBHOOKS` in the new channel too, and the new channel must be in the same guild.
+Updates a webhook and returns the [webhook object](#webhook-object). To move it, you need `MANAGE_WEBHOOKS` in the new channel too, and the new channel must be in the same guild as the old one.
 
 ### JSON body
 
@@ -451,7 +451,7 @@ Deletes a message the webhook posted.
 
 Fluxer sends [Message Delete](/gateway/events/#message-delete).
 
-The rate limit is 30 requests per minute, on the `webhook:message_delete::webhook_id` bucket.
+The `webhook:message_delete::webhook_id` bucket allows 30 requests per minute.
 
 ## Slack callback objects
 
@@ -477,7 +477,7 @@ The rate limit is 30 requests per minute, on the `webhook:message_delete::webhoo
 | fallback? | string | The embed description when `pretext` and `text` are absent |
 | pretext? | string | The first line of the embed description |
 | text? | string | The rest of the embed description |
-| color? | string | The embed color as six hex digits, with or without `#` |
+| color? | string | The embed colour as six hex digits, with or without `#` |
 | title? | string | The embed title |
 | title_link? | string | The embed URL |
 | fields? | array[[Slack attachment field](#slack-attachment-field-object) object] | The embed fields |
@@ -505,7 +505,7 @@ A field without both a title and a value is dropped.
 
 ## GitHub callback objects
 
-[Execute GitHub webhook](#execute-github-webhook) takes the body GitHub sends. Fields outside these tables are ignored.
+[Execute GitHub webhook](#execute-github-webhook) takes the body GitHub sends. Fluxer ignores any field that isn't in these tables.
 
 ### GitHub callback object
 
@@ -848,7 +848,7 @@ Fluxer posts the latest update as the embed description.
 
 ## Instatus status values
 
-Fluxer uppercases a status and drops everything except letters, which turns `degraded_performance` into `DEGRADEDPERFORMANCE`. Each value sets the label, and every value except `UP` and `HASISSUES` also sets the embed color. Any other status is shown as sent.
+Fluxer uppercases a status and drops everything except letters, which turns `degraded_performance` into `DEGRADEDPERFORMANCE`. Each value sets the label, and every value except `UP` and `HASISSUES` also sets the embed colour. Any other status is shown as sent.
 
 | Value | Description |
 | --- | --- |

@@ -31,6 +31,8 @@ const postgresReadyTimeout = 3 * time.Minute
 
 var errStop = errors.New("backup: stop")
 
+var ErrArchiveReplaced = errors.New("backup: the backup is in a folder the restore replaces")
+
 var ErrUploadsNotHere = errors.New("backup: the uploads this backup belongs with aren't on this machine")
 
 type UploadsNotHereError struct {
@@ -128,8 +130,11 @@ func checkRestoreSpace(stores engine.Roots, dir string, pull, data uint64) error
 }
 
 func needFree(path string, need uint64) error {
-	free, err := host.FreeDisk(path)
-	if err != nil || free >= need {
+	free, err := FreeSpace(path)
+	if err != nil {
+		return err
+	}
+	if free >= need {
 		return nil
 	}
 	return &RestoreSpaceError{Dir: path, Need: need, Available: free}
@@ -158,6 +163,13 @@ func Restore(ctx context.Context, path, dir string, e *engine.Engine, opts Resto
 	if err != nil {
 		return nil, err
 	}
+	source, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
+	if inReplacedFolder(path, dir) {
+		return nil, fmt.Errorf("%w: %s", ErrArchiveReplaced, path)
+	}
 	existing, err := instance.Find(dir)
 	if err != nil && !errors.Is(err, instance.ErrNotFound) {
 		return nil, err
@@ -179,7 +191,7 @@ func Restore(ctx context.Context, path, dir string, e *engine.Engine, opts Resto
 	}
 
 	progress(StageClearing)
-	stale, err := clearForRestore(ctx, dir, existing, e, m)
+	stale, err := clearForRestore(ctx, dir, source, existing, e, m)
 	if err != nil {
 		return nil, err
 	}
@@ -188,13 +200,14 @@ func Restore(ctx context.Context, path, dir string, e *engine.Engine, opts Resto
 	if err := os.MkdirAll(dir, 0o755); err != nil {
 		return nil, err
 	}
-	if err := extractFiles(path, dir); err != nil {
+	if err := extractInstance(path, dir); err != nil {
 		return nil, err
 	}
 	inst, err := instance.Find(dir)
 	if err != nil {
 		return nil, err
 	}
+	keepBackupNotes(inst, existing, path)
 	if err := adoptRestored(inst, e, opts.Adopted); err != nil {
 		return nil, err
 	}
@@ -252,7 +265,7 @@ func Restore(ctx context.Context, path, dir string, e *engine.Engine, opts Resto
 	return inst, nil
 }
 
-func clearForRestore(ctx context.Context, dir string, existing *instance.Instance, e *engine.Engine, m *Manifest) ([]string, error) {
+func clearForRestore(ctx context.Context, dir string, source os.FileInfo, existing *instance.Instance, e *engine.Engine, m *Manifest) ([]string, error) {
 	if existing == nil {
 		return nil, nil
 	}
@@ -269,21 +282,17 @@ func clearForRestore(ctx context.Context, dir string, existing *instance.Instanc
 	if err := down(ctx, e.Named(existing.Project(), existing.Dir), m); err != nil {
 		return nil, err
 	}
-	if err := clearInstanceFiles(dir); err != nil {
+	if err := clearInstanceFiles(dir, source); err != nil {
 		return nil, err
 	}
 	return stale, nil
 }
 
-var downProject = func(ctx context.Context, p *engine.Project, keep []string) error {
-	if len(keep) > 0 {
+func down(ctx context.Context, p *engine.Project, m *Manifest) error {
+	if keep := keptVolumes(m); len(keep) > 0 {
 		return p.DownKeeping(ctx, keep...)
 	}
 	return p.Down(ctx, true)
-}
-
-func down(ctx context.Context, p *engine.Project, m *Manifest) error {
-	return downProject(ctx, p, keptVolumes(m))
 }
 
 const restoreMarkerName = "restoring-without-uploads.json"
@@ -395,7 +404,7 @@ func uploadsIdentity(u *UploadsRef, vols []engine.Volume) error {
 		}
 		id, err := bindID(u.Bind, false)
 		if err != nil {
-			return refuse("couldn't read " + filepath.Join(u.Bind, UploadsIDFile))
+			return refuse("couldn't read " + filepath.Join(u.Bind, uploadsIDFile))
 		}
 		if u.ID == "" || id != u.ID || ino != u.Inode {
 			return refuse(u.Bind + " was made again since the backup")
@@ -419,6 +428,25 @@ func movesEngine(was instance.EngineRef, e *engine.Engine) bool {
 		return true
 	}
 	return was.ID != "" && e.ID != "" && was.ID != e.ID
+}
+
+func keepBackupNotes(inst, existing *instance.Instance, path string) {
+	if inst.State == nil {
+		return
+	}
+	if abs, err := filepath.Abs(path); err == nil {
+		path = abs
+	}
+	inst.State.Restored = &instance.Restored{From: path}
+	if existing == nil || existing.State == nil {
+		return
+	}
+	if inst.State.MigrateBackup == "" {
+		inst.State.MigrateBackup = existing.State.MigrateBackup
+	}
+	if r := existing.State.Restored; r != nil && samePath(r.From, path) {
+		inst.State.Restored = r
+	}
 }
 
 func adoptRestored(inst *instance.Instance, e *engine.Engine, adopted func(*instance.Instance)) error {
@@ -494,7 +522,7 @@ func pullFromBackup(ctx context.Context, path, dir string, e *engine.Engine, m *
 		return err
 	}
 	defer os.RemoveAll(staging)
-	if err := extractFiles(path, staging); err != nil {
+	if err := extractInstance(path, staging); err != nil {
 		return err
 	}
 	inst, err := instance.Find(staging)
@@ -502,14 +530,13 @@ func pullFromBackup(ctx context.Context, path, dir string, e *engine.Engine, m *
 		return err
 	}
 	if inst.Project() != m.Project {
-		return fmt.Errorf("%w: the backup's state names project %s and its manifest names %s", ErrDamaged, inst.Project(), m.Project)
+		return fmt.Errorf("%w: the backup's state is for project %s and its manifest is for %s", ErrDamaged, inst.Project(), m.Project)
 	}
 	p, err := deploy.Load(ctx, inst, e)
 	if err != nil {
 		return &PullError{Err: err}
 	}
-	images, _ := stack.EmbeddedImages()
-	if err := checkRestoreSpace(engine.Stores(dir, e, ""), dir, e.PullNeed(ctx, images, p.Images(), nil), data); err != nil {
+	if err := checkRestoreSpace(engine.Stores(dir, e, ""), dir, e.PullNeed(ctx, p.Images(), nil), data); err != nil {
 		return err
 	}
 	if err := p.Pull(ctx, onEvent); err != nil {
@@ -545,24 +572,49 @@ func samePath(a, b string) bool {
 	return filepath.Clean(a) == filepath.Clean(b)
 }
 
-func clearInstanceFiles(dir string) error {
-	names, err := instanceFiles(dir)
-	if err != nil {
-		return err
-	}
-	for _, name := range names {
-		if err := os.Remove(filepath.Join(dir, name)); err != nil && !errors.Is(err, os.ErrNotExist) {
-			return err
-		}
-	}
-	for _, p := range []string{
+func replacedFolders(dir string) []string {
+	return []string{
 		filepath.Join(dir, instance.CertsDir),
 		filepath.Join(dir, instance.CADir),
 		filepath.Join(dir, instance.CaddyDropInDir),
 		stack.GeneratedPath(dir),
 		filepath.Join(dir, instance.StateDirName, instance.ReleasesDir),
 		filepath.Join(dir, instance.StateDirName, instance.StateFileName),
-	} {
+	}
+}
+
+func inReplacedFolder(path, dir string) bool {
+	abs, err := filepath.Abs(path)
+	if err != nil {
+		abs = path
+	}
+	for _, at := range []string{abs, instance.RealPath(path)} {
+		for _, p := range replacedFolders(dir) {
+			for _, folder := range []string{p, instance.RealPath(p)} {
+				if rel, err := filepath.Rel(folder, at); err == nil && filepath.IsLocal(rel) {
+					return true
+				}
+			}
+		}
+	}
+	return false
+}
+
+func clearInstanceFiles(dir string, source os.FileInfo) error {
+	names, err := instanceFiles(dir)
+	if err != nil {
+		return err
+	}
+	for _, name := range names {
+		p := filepath.Join(dir, name)
+		if fi, err := os.Stat(p); err == nil && source != nil && os.SameFile(fi, source) {
+			continue
+		}
+		if err := os.Remove(p); err != nil && !errors.Is(err, os.ErrNotExist) {
+			return err
+		}
+	}
+	for _, p := range replacedFolders(dir) {
 		if err := os.RemoveAll(p); err != nil {
 			return err
 		}
@@ -571,11 +623,15 @@ func clearInstanceFiles(dir string) error {
 }
 
 func extractFiles(path, dir string) error {
-	err := walkArchive(path, func(hdr *tar.Header, r io.Reader) error {
-		if !strings.HasPrefix(hdr.Name, FilesPrefix) {
+	source, err := os.Stat(path)
+	if err != nil {
+		return err
+	}
+	err = walkArchive(path, func(hdr *tar.Header, r io.Reader) error {
+		if !strings.HasPrefix(hdr.Name, filesPrefix) {
 			return errStop
 		}
-		rel := strings.TrimSuffix(strings.TrimPrefix(hdr.Name, FilesPrefix), "/")
+		rel := strings.TrimSuffix(strings.TrimPrefix(hdr.Name, filesPrefix), "/")
 		if rel == "" {
 			return nil
 		}
@@ -587,6 +643,12 @@ func extractFiles(path, dir string) error {
 		case tar.TypeDir:
 			return os.MkdirAll(target, dirMode(hdr.Mode))
 		case tar.TypeReg:
+			if isArchiveName(rel) && !strings.Contains(rel, "/") {
+				return nil
+			}
+			if fi, err := os.Stat(target); err == nil && os.SameFile(fi, source) {
+				return nil
+			}
 			if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
 				return err
 			}
@@ -611,14 +673,14 @@ type NativeArchive struct {
 }
 
 func FromNative(path string) (NativeArchive, error) {
-	name := FilesPrefix + instance.StateDirName + "/" + instance.StateFileName
+	name := filesPrefix + instance.StateDirName + "/" + instance.StateFileName
 	var out NativeArchive
 	hasSecrets := false
 	err := walkArchive(path, func(hdr *tar.Header, r io.Reader) error {
-		if !strings.HasPrefix(hdr.Name, FilesPrefix) {
+		if !strings.HasPrefix(hdr.Name, filesPrefix) {
 			return errStop
 		}
-		hasSecrets = hasSecrets || hdr.Name == FilesPrefix+nativeSecretsName
+		hasSecrets = hasSecrets || hdr.Name == filesPrefix+nativeSecretsName
 		if hdr.Name == name {
 			data, err := io.ReadAll(io.LimitReader(r, maxStateSize+1))
 			if err != nil {
@@ -647,16 +709,16 @@ func FromNative(path string) (NativeArchive, error) {
 	if err := json.Unmarshal(out.State, &st); err != nil {
 		return out, fmt.Errorf("%w: %s: %v", ErrDamaged, name, err)
 	}
-	out.Native = st.Runtime == instance.RuntimeNative
+	out.Native = st.Runtime == instance.RuntimeNative || st.Runtime == instance.RuntimeContainer
 	return out, nil
 }
 
 func ExtractNativeFiles(path, dir string) error {
 	err := walkArchive(path, func(hdr *tar.Header, r io.Reader) error {
-		if !strings.HasPrefix(hdr.Name, FilesPrefix) {
+		if !strings.HasPrefix(hdr.Name, filesPrefix) {
 			return errStop
 		}
-		rel := strings.TrimSuffix(strings.TrimPrefix(hdr.Name, FilesPrefix), "/")
+		rel := strings.TrimSuffix(strings.TrimPrefix(hdr.Name, filesPrefix), "/")
 		if rel == "" || !slices.ContainsFunc(native.InstanceFiles, func(f string) bool { return rel == f || strings.HasPrefix(rel, f+"/") }) {
 			return nil
 		}
@@ -834,7 +896,7 @@ func restoreData(ctx context.Context, path string, p *engine.Project, image stri
 	}
 	volumesStarted := false
 	err := walkArchive(path, func(hdr *tar.Header, r io.Reader) error {
-		if hdr.Name == DumpName {
+		if hdr.Name == dumpName {
 			if err := closeSink(nil); err != nil {
 				return err
 			}
@@ -903,7 +965,7 @@ func restoreData(ctx context.Context, path string, p *engine.Project, image stri
 }
 
 func forgetUploadsID(bind string) error {
-	if err := os.Remove(filepath.Join(bind, UploadsIDFile)); err != nil && !errors.Is(err, os.ErrNotExist) {
+	if err := os.Remove(filepath.Join(bind, uploadsIDFile)); err != nil && !errors.Is(err, os.ErrNotExist) {
 		return &RestoreError{Part: "uploads", Err: err}
 	}
 	return nil

@@ -10,7 +10,7 @@ The Admin API lets you manage accounts, guilds, messages and configuration on yo
 
 ## Authentication
 
-Send one of these credentials in the `Authorization` header. [Authentication](/authentication/) has the token formats.
+Send one of these credentials in the `Authorization` header, in its [token format](/authentication/).
 
 | Credential | Header value |
 | --- | --- |
@@ -75,7 +75,7 @@ Each route needs one or more ACLs, and the caller needs at least one of them. Th
 | ban:avatar_hash:add | Adds and updates `avatar-hash` blocklist entries |
 | ban:avatar_hash:check | Reads the `avatar-hash` blocklist |
 | ban:avatar_hash:remove | Removes `avatar-hash` blocklist entries |
-| ban:profile_substring:add | Adds and updates `profile-substring` blocklist entries |
+| ban:profile_substring:add | Adds `profile-substring` blocklist entries and updates them |
 | ban:profile_substring:check | Reads the `profile-substring` blocklist |
 | ban:profile_substring:remove | Removes `profile-substring` blocklist entries |
 | bulk:add:guild_members | Queues the bulk guild member addition task |
@@ -276,20 +276,21 @@ Expect values that aren't in this table.
 | system_dm | System DM broadcast |
 | gift_code | Batch of generated gift codes, or one revoked gift code |
 | bulk_job | Background job |
+| badge | Custom badge or built-in badge |
 | admin_api_key | Admin API key |
 | audit_log | Admin audit entry |
 | enforcement_decision | Enforcement decision |
 | archive | Archive list |
 | admin_acl | Admin ACL registry |
-| blocklist | Blocklist catalog |
+| blocklist | Blocklist catalogue |
 | discovery_category | Discovery category |
 | instance_config | Instance configuration |
 | limit_config | Limit configuration |
 | registration_url | Admin-issued registration URL |
 | gateway | Gateway cluster |
-| system | API process that served the request |
 | voice_region | Voice region |
 | voice_server | Voice server registration |
+| voice_join_token | Voice join token |
 | ip | IP blocklist entry |
 | email | Exact email blocklist entry |
 | phrase | Phrase blocklist entry |
@@ -333,7 +334,7 @@ These entries have `access` set to `read`.
 | list_audit_logs | A page of the Admin audit log was read |
 | list_badges | The custom badges were listed |
 | list_blocklist_entries | A page of blocklist entries was read |
-| list_blocklists | The blocklist catalog was read |
+| list_blocklists | The blocklist catalogue was read |
 | list_channel_messages | The messages of a channel were listed |
 | list_discovery_applications | Pending discovery applications were read |
 | list_discovery_categories | The discovery categories were read |
@@ -350,7 +351,7 @@ These entries have `access` set to `read`.
 | list_network_block_candidates | The networks an account used in the last 30 days were listed, with how many other accounts share each |
 | list_pending_registrations | Pending registrations were read |
 | list_report_notes | The internal notes on a report were listed |
-| list_report_reasons | The report reason catalog was listed |
+| list_report_reasons | The report reason catalogue was listed |
 | list_user_applications | The applications an account owns were read |
 | list_user_change_log | The contact change log of an account was read |
 | list_user_dm_channels | The direct message channels of an account were read |
@@ -397,8 +398,8 @@ These entries have `access` set to `write`.
 | bulk_schedule_deletion | A bulk account deletion schedule was queued or applied |
 | bulk_update_guild_features | A bulk guild feature change was queued or applied |
 | bulk_update_user_flags | A bulk account flag change was queued or applied |
-| cancel_bulk_message_deletion | A bulk message deletion an account scheduled for itself was canceled |
-| cancel_deletion | A scheduled account deletion was canceled |
+| cancel_bulk_message_deletion | A bulk message deletion an account scheduled for itself was cancelled |
+| cancel_deletion | A scheduled account deletion was cancelled |
 | cancel_job | Cancellation of a job was requested |
 | change_dob | A date of birth was changed |
 | change_email | An email address was changed |
@@ -430,7 +431,7 @@ These entries have `access` set to `write`.
 | end_enforcement_decision | An enforcement decision was ended as lifted or reversed |
 | force_add_to_guild | An account was added to a guild while bypassing the ban check |
 | generate_gift_codes | Gift codes were generated |
-| hide_built_in_badge | A built-in community badge was hidden on this instance |
+| hide_built_in_badge | A built-in guild badge was hidden on this instance |
 | kick_member | A member was removed from a guild |
 | limit_features | A feature limit decision was recorded for an account |
 | link_sso_identity | A single sign-on subject was bound to an account by hand |
@@ -471,7 +472,7 @@ These entries have `access` set to `write`.
 | set_system_status | The system flag of an account was changed |
 | set_traits | Account traits were replaced |
 | shutdown_guild | One guild was stopped on the main Gateway |
-| show_built_in_badge | A hidden built-in community badge was shown again |
+| show_built_in_badge | A hidden built-in guild badge was shown again |
 | sso_sign_in | An admin signed in to the admin panel through single sign-on |
 | system_dm.send | A system DM broadcast was created |
 | temp_ban | An account was suspended for a time or permanently |
@@ -518,7 +519,7 @@ These entries have `access` set to `write`.
 
 ## Audit reasons
 
-Send `X-Audit-Log-Reason` on any route marked Audit reason, and the API stores it in `audit_log_reason` on each entry the request records. The API trims the value and strips control characters. A blank value or one longer than 512 characters is dropped without failing the request. Routes that require a reason, such as the [enforcement](/admin-api/enforcement/) routes, return 400 when the value is missing or dropped. The API percent-decodes the value first, so you can send UTF-8 text encoded with `encodeURIComponent`. A value that is not valid percent-encoding is stored as sent. Encode a literal `%` as `%25`.
+Send `X-Audit-Log-Reason` on any route marked Audit reason, and the API stores it in `audit_log_reason` on each entry the request records. The API trims the value and strips control characters. A blank value or one longer than 512 characters is dropped without failing the request. Routes that require a reason, such as the [enforcement](/admin-api/enforcement/) routes, return 400 when the value is missing or dropped. The API percent-decodes the value first, and UTF-8 text encoded with `encodeURIComponent` works. A value that is not valid percent-encoding is stored as sent. Encode a literal `%` as `%25`.
 
 ## Errors and rate limits
 
@@ -533,11 +534,11 @@ These errors can come from any Admin route.
 | 400 | [error response](#error-response) | `INVALID_FORM_BODY` when the path, query or body is invalid |
 | 401 | [error response](#error-response) | `UNAUTHORIZED` when the credential is missing, invalid or a bot token |
 | 403 | [error response](#error-response) | `ACCESS_DENIED` for an access token from an OAuth2 application other than Admin |
-| 403 | [error response](#error-response) | `MISSING_PERMISSIONS` when the account holds neither `admin:authenticate` nor `*` |
-| 403 | [error response](#error-response) | `MISSING_ACL` when the caller holds none of the route's ACLs |
+| 403 | [error response](#error-response) | `MISSING_PERMISSIONS` when the account has neither `admin:authenticate` nor `*` |
+| 403 | [error response](#error-response) | `MISSING_ACL` when the caller has none of the route's ACLs |
 | 429 | [error response](#error-response) | `RATE_LIMITED` when a rate limit is hit |
 
-Admin rate limits count each account and credential type separately, and an Admin API key never shares its owner's session limits. See [Rate limits](/topics/rate-limits/) for the headers and the global limit.
+Admin rate limits count each account and credential type separately, and an Admin API key never shares its owner's session limits. The headers and the global limit are the same as in [Rate limits](/topics/rate-limits/).
 
 ## List ACLs
 
@@ -581,7 +582,7 @@ Returns a page of [Admin audit entries](#admin-audit-entry-object), newest first
 | limit? | integer | The maximum number of entries to return (1-200, default 50) |
 | offset? | integer | The number of entries to skip (default 0) |
 
-Without a search index, the API ignores `q` and only filters the newest `limit` plus `offset` entries, so a page and `total` can come back short.
+Without a search index, the API ignores `q` and only filters the newest `limit` plus `offset` entries. A page and `total` can then come back short.
 
 ### Response body
 

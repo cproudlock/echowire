@@ -212,6 +212,17 @@ function defaultConfig(): MasterConfig {
 			connection_initiation_secret: '',
 			profile_pseudonym_secret: '',
 			sso_allow_private_addresses: false,
+			sso: {
+				enabled: null,
+				enforced: null,
+				auto_provision: null,
+				issuer: '',
+				client_id: '',
+				client_secret: '',
+				scope: '',
+				display_name: '',
+				allowed_domains: [],
+			},
 			passkeys: {
 				rp_name: 'echowire',
 				// Echowire: left empty so it derives from base_domain below. Hardcoding
@@ -327,9 +338,7 @@ function defaultConfig(): MasterConfig {
 			age_policy: {},
 		},
 		payment_disputes: {},
-		operator_pass: {
-			grace_minutes: 30,
-		},
+		operator_pass: {},
 		dev: {
 			relax_registration_rate_limits: false,
 			disable_rate_limits: false,

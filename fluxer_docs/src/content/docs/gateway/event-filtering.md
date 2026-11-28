@@ -4,7 +4,7 @@ title: Event filtering
 description: Which sessions receive each Dispatch, and how to receive fewer of them.
 ---
 
-Fluxer has no gateway intents, and you limit [Dispatch](/gateway/events/) traffic with [Lazy Request](/gateway/commands/#lazy-request) subscriptions, the [Identify](/gateway/commands/#identify) `ignored_events` list and the `CHANNEL_THREADS` [session flag](/gateway/threads/#session-flag).
+Fluxer has no gateway intents. Identify ignores an `intents` field, and a client ported from Discord gets the events described here once it connects with `v=1`. You limit [Dispatch](/gateway/events/) traffic with [Lazy Request](/gateway/commands/#lazy-request) subscriptions, the [Identify](/gateway/commands/#identify) `ignored_events` list and the `CHANNEL_THREADS` [session flag](/gateway/threads/#session-flag).
 
 ## Permission and visibility
 
@@ -26,13 +26,13 @@ A session can access a message when it has `READ_MESSAGE_HISTORY` or when the me
 
 [Channel Update Bulk](/gateway/events/#channel-update-bulk) has only the channels the session can view.
 
-When you pass the `session_id` query parameter to [Add own reaction](/http-api/messages/#add-own-reaction), [Remove own reaction](/http-api/messages/#remove-own-reaction) or [Remove another user's reaction](/http-api/messages/#remove-another-users-reaction), that session gets no [Message Reaction Add](/gateway/events/#message-reaction-add) or [Message Reaction Remove](/gateway/events/#message-reaction-remove) for the change.
+When you pass the `session_id` query parameter to [Add own reaction](/http-api/messages/#add-own-reaction), [Remove own reaction](/http-api/messages/#remove-own-reaction) or [Remove another user's reaction](/http-api/messages/#remove-another-users-reaction) in a guild channel, that session gets no [Message Reaction Add](/gateway/events/#message-reaction-add) or [Message Reaction Remove](/gateway/events/#message-reaction-remove) for the change. In a private channel the session still gets the event, with `session_id` set.
 
 A guild with the `UNAVAILABLE_FOR_EVERYONE` or `UNAVAILABLE_FOR_EVERYONE_BUT_STAFF` feature sends only [Guild Update](/gateway/events/#guild-update).
 
 ## Active and passive guilds
 
-A user session is passive in every guild until a [Lazy Request](/gateway/commands/#lazy-request) sets `active: true` for that guild. The guild in [Identify](/gateway/commands/#identify) `initial_guild_id` starts active. Bot sessions are never passive, and every session is active in a guild with 250 members or fewer.
+In a guild with more than 250 members, a user session is passive until a [Lazy Request](/gateway/commands/#lazy-request) sets `active: true` for that guild. The guild in [Identify](/gateway/commands/#identify) `initial_guild_id` starts active, and bot sessions are never passive.
 
 A passive session in a larger guild gets only these events.
 
@@ -42,13 +42,12 @@ A passive session in a larger guild gets only these events.
 - [Guild Audit Log Entry Create](/gateway/events/#guild-audit-log-entry-create)
 - [Message Create](/gateway/events/#message-create) and [Message Update](/gateway/events/#message-update) for a message that mentions the session's user, and Message Create for the user's own messages
 - [Guild Member Update](/gateway/events/#guild-member-update) and [Guild Member Remove](/gateway/events/#guild-member-remove) for the session's own user
-- [Voice State Update](/gateway/events/#voice-state-update) for channels it can view
-- Thread events that [Gateway threads](/gateway/threads/#dispatch-events) lists for passive sessions
+- The [thread events](/gateway/threads/#dispatch-events) marked for passive sessions
 - [Passive Updates](/gateway/events/#passive-updates)
 
 A message mentions the user when `mentions` has the user, `mention_roles` has one of the user's roles, or `mention_here` or `mention_everyone` is set.
 
-[Passive Updates](/gateway/events/#passive-updates) comes every 30 seconds with the changed `last_message_id` values and voice states for channels the session can view, and Fluxer skips it when nothing changed.
+[Passive Updates](/gateway/events/#passive-updates) comes every 30 seconds with the changed `last_message_id` values and voice states for channels the session can view, and Fluxer skips it when nothing changed. A passive session gets voice state changes only this way.
 
 ### Typing is decided separately
 
@@ -60,23 +59,23 @@ A message, reaction, typing or pin event in a thread also has to meet one of the
 
 ### Member lists
 
-[Guild Member List Update](/gateway/events/#guild-member-list-update) goes to a session only for a channel in its `member_list_channels` that it can view with `VIEW_CHANNEL_MEMBERS`. A session has one member list subscription per guild.
+[Guild Member List Update](/gateway/events/#guild-member-list-update) goes to a session only for a channel in its `member_list_channels` that it can view with `VIEW_CHANNEL_MEMBERS`. A session has one member list subscription at a time. Subscribing a channel in one guild drops the member list it had in any other channel or guild.
 
 ## Visited guilds
 
-A session [visiting](/http-api/guilds/#visiting-guilds) a guild gets only these events for it.
+A session [visiting](/http-api/guilds/#visiting-guilds) a guild gets only these events for that guild.
 
 - [Guild Update](/gateway/events/#guild-update) and the role, emoji and sticker events
 - Channel create, update and delete events for channels a visitor can read, with only the @everyone overwrite
 - [Channel Pins Update](/gateway/events/#channel-pins-update) for channels a visitor can read
 - Message and reaction events for the channel set as `focused_channel_id` in [Lazy Request](/gateway/commands/#lazy-request)
-- [Thread create, update and delete events](/gateway/threads/#dispatch-events) for public threads in channels a visitor can read
+- [Thread create, update and delete events](/gateway/threads/#dispatch-events) for public threads in channels that the visitor is allowed to read
 
-Visitors never appear in member lists, presences, typing, voice states or member counts. Fluxer ignores member list ranges, [Request Guild Members](/gateway/commands/#request-guild-members), read acknowledgments and typing from a session for a visited guild.
+Visitors never appear in member lists, presences, typing, voice states or member counts. Fluxer ignores member list ranges, [Request Guild Members](/gateway/commands/#request-guild-members), read acknowledgements and typing from a session for a visited guild.
 
 ## Presence subscriptions
 
-A session gets a [Presence Update](/gateway/events/#presence-update) for a guild member only if it listed that user in the `members` array of a [Lazy Request](/gateway/commands/#lazy-request) and can view a channel the user can view. Each `members` array replaces the previous set for that guild. If the session loses access to every channel it shares with a user, send that user in `members` again once access comes back.
+A session gets a [Presence Update](/gateway/events/#presence-update) for a guild member only if it listed that user in the `members` array of a [Lazy Request](/gateway/commands/#lazy-request) and can view a channel the user can view. Each `members` array replaces the previous set for that guild. If the session loses access to every channel it shares with a user, send that user in `members` again after access returns.
 
 ## Ignored events
 
@@ -97,7 +96,7 @@ Fluxer still sends [Message Create](/gateway/events/#message-create) when `MESSA
 
 ## The shard filter
 
-A session that identified with a `shard_id` other than 0 drops every Dispatch that has no guild. This filter does not drop [Rate Limited](/gateway/events/#rate-limited), [Guild Counts Update](/gateway/events/#guild-counts-update) or [Channel Member Counts Update](/gateway/events/#channel-member-counts-update), which are replies to a command the session sent. Account, direct message, relationship and call events arrive only on shard 0 or on a session that sent no `shard` pair (see [Sharding](/gateway/overview/#sharding)).
+A session that identified with a `shard_id` other than 0 drops every Dispatch that has no guild. This filter does not drop [Rate Limited](/gateway/events/#rate-limited), [Guild Counts Update](/gateway/events/#guild-counts-update) or [Channel Member Counts Update](/gateway/events/#channel-member-counts-update), which are replies to a command the session sent. Account, direct message, relationship and call events arrive only on shard 0 or on a session that sent no [`shard`](/gateway/overview/#sharding) pair.
 
 ## What a bot should send
 

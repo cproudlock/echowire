@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 import type {
-	OperatorPassPriceTable,
 	OperatorPassReleaseListTable,
 	OperatorPassWithdrawalCountryTable,
 } from '@app/api/operator_pass/OperatorPassPrices';
@@ -11,6 +10,7 @@ import type {ResolvedDownloadsProvider} from '@fluxer/config/src/S3DownloadsProv
 import type {AccountIdentityMode, TagStyle} from '@fluxer/constants/src/AccountIdentityConstants';
 import type {SmtpTlsMode} from '@fluxer/constants/src/SmtpConstants';
 import type {GeoEntry} from '@fluxer/schema/src/domains/geolocation/GeolocationSchemas';
+import type {InstallMethod} from '@fluxer/schema/src/domains/instance/InstanceSchemas';
 import type {OperatorPassCurrency} from '@fluxer/schema/src/domains/operator_pass/OperatorPassSchemas';
 import type {CassandraConsistencyName, CassandraSerialConsistencyName} from '@pkgs/cassandra/src/Client';
 
@@ -47,14 +47,11 @@ interface APICachePurgeTarget {
 }
 
 export interface OperatorPassConfig {
-	priceRisesAt: Date | null;
-	graceMs: number;
 	clockOffsetMs: number;
 	labsGuildId: bigint | null;
 	labsOperatorRoleId: bigint | null;
 	labsVisionaryRoleId: bigint | null;
 	labsOperatorsChannelId: bigint | null;
-	standardPricesMinor: OperatorPassPriceTable | null;
 	releaseLists: OperatorPassReleaseListTable;
 	withdrawalCountries: OperatorPassWithdrawalCountryTable;
 	disabledCurrencies: ReadonlySet<OperatorPassCurrency>;
@@ -354,6 +351,17 @@ export interface APIConfig {
 		connectionInitiationSecret: string;
 		profilePseudonymSecret: string;
 		ssoAllowPrivateAddresses: boolean;
+		sso: {
+			enabled: boolean | null;
+			enforced: boolean | null;
+			autoProvision: boolean | null;
+			issuer: string;
+			clientId: string;
+			clientSecret: string;
+			scope: string;
+			displayName: string;
+			allowedDomains: Array<string>;
+		};
 		passkeys: {
 			rpName: string;
 			rpId: string;
@@ -389,6 +397,8 @@ export interface APIConfig {
 		setup: {
 			configured: boolean;
 			token: string | null;
+			installMethod: InstallMethod | null;
+			command: string | null;
 		};
 		accountIdentity: AccountIdentityMode | null;
 		tagStyle: TagStyle | null;

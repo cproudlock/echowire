@@ -595,6 +595,8 @@ describe('FLUXER_PUBLIC_ORIGIN', () => {
 			'https://chat.example.com:29080',
 			'android:apk-key-hash:keSY4bimyLqZQV7bKXgpa2xYuqXi0qZJzsYtp6gpx7w',
 			'android:apk-key-hash:Ld4qnT0TfBeHMT3Yu2H0WTwqlxgFs-32uDmwqtLndsk',
+			'android:apk-key-hash:ApyiGsmmlsP5i_yEP509Y4kpX1tPkbPVZ6yqTblBfn4',
+			'android:apk-key-hash:L3ptyg20t01vZrqrStlcjh0Fw8K937wXpjjPC0m-BLE',
 		]);
 	});
 

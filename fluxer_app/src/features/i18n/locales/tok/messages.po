@@ -14,7 +14,7 @@ msgstr ""
 #. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "--{name} isn't a echowire variable and isn't set anywhere in your CSS."
-msgstr ""
+msgstr "--{name} li nimi pi ilo echowire ala. CSS sina kin li pana ala e ona."
 
 #. Description text in the messages tab.
 #: src/features/user/components/modals/tabs/appearance_tab/MessagesTab.tsx
@@ -1549,7 +1549,7 @@ msgstr "{displayName} li pana e wile pi jan pona tawa sina"
 #. Instance selector error shown when the instance speaks a protocol generation this client does not know. Domain is interpolated.
 #: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
 msgid "{domain} runs a newer version of echowire than this app. Update echowire, then try again."
-msgstr ""
+msgstr "{domain} li kepeken ilo echowire sin. ilo ni li sin ala. o kama sin e ilo echowire, o pali sin."
 
 #. Profile timezone difference text. duration is a localized hours/minutes phrase for how far ahead the target user's local time is.
 #: src/features/user/components/popouts/UserProfileShared.tsx
@@ -7654,7 +7654,7 @@ msgstr "o ante e sitelen monsi pi tomo toki"
 #. Completion in the quick CSS editor that inserts a :root rule, where theme variables are set.
 #: src/features/theme_settings/editor/CssCompletions.ts
 msgid "Change echowire variables"
-msgstr ""
+msgstr "o ante e nanpa ante pi ilo echowire"
 
 #. Button in the Operator Pass checkout dialog that opens the dialog to change the account email.
 #: src/features/moderation/components/report/ReportStepVerification.tsx
@@ -11138,15 +11138,15 @@ msgstr ""
 msgid "Couldn't connect to {names}"
 msgstr "mi ken ala linja tawa {names}"
 
-#. Instance selector error shown when no Fluxer instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
-msgstr "mi ken ala linja tawa ma ilo Fluxer lon {domain}. o lukin e nimi linja. ma ilo o lon. ma ilo li pali e lipu lon ona sama la o kama jo e lipu ni tan {certificateUrl}. nanpa SHA-256 ona o sama nanpa tan jan lawa pi ma ilo. o pana e ona lon ilo ni. o pali sin."
-
-#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
+#. Instance selector error shown when no echowire instance answered at the address. Domain is interpolated.
 #: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
 msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online."
-msgstr ""
+msgstr "mi ken ala linja tawa ma ilo echowire lon {domain}. o lukin e nimi linja. ma ilo o lon."
+
+#. Instance selector error shown when no echowire instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
+msgstr "mi ken ala linja tawa ma ilo echowire lon {domain}. o lukin e nimi linja. ma ilo o lon. ma ilo li pali e lipu lon ona sama la o kama jo e lipu ni tan {certificateUrl}. nanpa SHA-256 ona o sama nanpa tan jan lawa pi ma ilo. o pana e ona lon ilo ni. o pali sin."
 
 #. Toast shown when joining a voice channel fails because the connection timed out or the transport dropped.
 #: src/features/voice/engine/media_engine_facade/shared.ts
@@ -13559,7 +13559,7 @@ msgstr "ilo pi jan pali ilo"
 #. Body of the developer-tools info alert. Refers to the staff badge button in the channel header.
 #: src/features/messaging/utils/InAppLinkUtils.tsx
 msgid "Developer tools are available from the staff badge in the channel header."
-msgstr "ilo pi jan pali ilo li lon sitelen pi jan pali Fluxer lon sewi tomo."
+msgstr "ilo pi jan pali ilo li lon sitelen pi jan pali echowire lon sewi tomo."
 
 #: src/features/channel/components/channel_header_components/DeveloperToolsContextMenu.tsx
 msgid "Developer tools unavailable"
@@ -14697,7 +14697,7 @@ msgstr "nimi jan wan li jo e jan wan taso. jan ante li jo e nimi la jan li wile 
 #. Description under the switch that adds the Operators' wall name to the yearly Operators list. A Fluxer release is a published version of the app. Operators are the people who have an Operator Pass, keep the word Operators in English.
 #: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
 msgid "Each yearly list of Operators that we publish goes into the notes of an echowire release and a file in its source code. Your wall name is only on it if you turn this on. If you ask us to remove it later, we take it out of future lists, the release notes and that file, but earlier versions of the source code and copies others made can't be recalled."
-msgstr ""
+msgstr "mi pana e lipu pi jan Operator lon sike ale. ona li lon lipu sona pi ilo echowire sin, li lon lipu wan pi toki open ona. sina open e ni la nimi sina li lon ona. sina wile weka e ona lon tenpo kama la mi weka e ona tan lipu kama, tan lipu sona pi ilo sin, tan lipu ni. taso mi ken ala weka e ona tan toki open pi tenpo pini, tan lipu sama pi jan ante."
 
 #. Plutonium page comparison row label for early access.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -14727,62 +14727,62 @@ msgstr "weka pi kalama sin"
 #. Problem shown in the quick CSS editor on a web address that the app is not allowed to load. Assets are files uploaded under "Assets".
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire blocked loading {url}. Upload it as an asset."
-msgstr ""
+msgstr "ilo echowire li ken ala kama jo e {url}. o pana e ona sama lipu sina."
 
 #. Problem shown in the quick CSS editor on an image address on a site the person has not trusted. Assets are files uploaded under "Assets". Trusting a site lets quick CSS and themes load images from it.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire blocked loading {url}. Upload the file as an asset, or trust the site it's on."
-msgstr ""
+msgstr "ilo echowire li ken ala kama jo e {url}. o pana e lipu sama lipu sina, anu o pana e pona tawa ma ona."
 
 #. Problem shown in the quick CSS editor on a reference to an uploaded theme asset that does not exist.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire can't find the asset \"{name}\"."
-msgstr ""
+msgstr "ilo echowire li ken ala alasa e lipu \"{name}\"."
 
 #. Problem shown in the quick CSS editor on a reference to a file on the computer that echowire cannot read.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire can't find the file \"{path}\"."
-msgstr ""
+msgstr "ilo echowire li ken ala alasa e lipu \"{path}\"."
 
 #. Shown for a watched theme folder in Settings > Themes when the folder was moved, deleted or disconnected.
 #: src/features/theme_settings/components/YourThemesSection.tsx
 msgid "echowire can't find this folder. It will load the themes again when the folder is back."
-msgstr ""
+msgstr "ilo echowire li ken ala alasa e poki lipu ni. poki li kama sin la, ilo li kama jo sin e nasin lukin."
 
 #. Shown for a watched theme folder in Settings > Themes when the desktop app no longer has permission to read it.
 #: src/features/theme_settings/components/YourThemesSection.tsx
 msgid "echowire can't open this folder. Import it again to keep watching it."
-msgstr ""
+msgstr "ilo echowire li ken ala open e poki lipu ni. o pana sin e ona. ni la ilo li awen lukin e ona."
 
 #. Error toast in "Your themes" when the chosen theme folder cannot be opened.
 #: src/features/theme_settings/components/YourThemesSection.tsx
 msgid "echowire can't read this folder."
-msgstr ""
+msgstr "ilo echowire li ken ala lukin e poki lipu ni."
 
 #. Problem shown at the top of the quick CSS editor when the whole sheet was left out.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire couldn't apply this CSS. Check it for a broken comment, string or bracket."
-msgstr ""
+msgstr "ilo echowire li ken ala kepeken e CSS ni. o lukin e pakala lon toki len, lon linja nimi, lon sitelen poki."
 
 #. Status shown in the desktop app when it stopped checking the browser sign-in because the instance could not be reached. instanceName is the server name, such as Fluxer. "Try again" is the label of the button below and must match its translation.
 #: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
 msgid "echowire couldn't connect to {instanceName} to check whether your browser approved this sign-in. Check your connection, then select \"Try again\"."
-msgstr ""
+msgstr "ilo echowire li ken ala linja tawa {instanceName}. tan ni la ona li sona ala e ni: ilo pi lipu linja li pona ala pona e kama sina. o lukin e linja sina. ni la o luka e \"o pali sin\"."
 
 #. Error shown in the desktop app when a passkey prompt starts but no security key is connected to the computer.
 #: src/features/auth/utils/PasskeyErrorMessages.ts
 msgid "echowire couldn't find a security key on this computer. Connect your security key and try again, or open echowire in your web browser and use your passkey there."
-msgstr ""
+msgstr "ilo echowire li alasa e ilo awen lon ilo ni, li ken ala lukin e ona. o linja e ilo awen sina, o pali sin. anu la o open e ilo echowire lon ilo pi lipu linja, o kepeken ilo open sina lon ni."
 
 #. Status shown when browser sign-in status polling gives up after repeated failures.
 #: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
 msgid "echowire stopped checking whether the browser approved this sign-in. It didn't lose your code."
-msgstr ""
+msgstr "ilo echowire li pini e lukin pi kama sina lon ilo pi lipu linja. nanpa sina li awen."
 
 #. Shown in the modal that applies a shared theme when the theme points at files the app will not load.
 #: src/features/theme/components/modals/ThemeAcceptModal.tsx
 msgid "echowire won't load {count, plural, one {# file} other {# files}} that this theme links to on other sites."
-msgstr ""
+msgstr "ilo echowire li kama jo ala e {count, plural, other {lipu #}} tan ma ante. nasin lukin ni li wile e ona."
 
 #. Action label for opening the edit flow for the selected item.
 #. Button or menu action label in the linked accounts tab. Keep it concise.
@@ -19571,7 +19571,7 @@ msgstr ""
 msgid "If you leave it empty, those places show the default icon."
 msgstr ""
 
-#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
+#. Help on the setup token screen for someone who installed echowire without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
 #: src/features/app/components/setup/SetupTokenStep.tsx
 msgid "If you run without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart the server, and enter that value here."
 msgstr ""
@@ -21589,7 +21589,7 @@ msgstr "nena toki en nena ante li ken pali lon ilo ante."
 #. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
 msgid "Lets you open communities and channels marked 18+ in the echowire app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
-msgstr ""
+msgstr "ni la sina ken open e kulupu en tomo tan jan 18+ taso lon ilo echowire pi ilo iPhone en ilo iPad, sina ken wile e \"o lukin\" tawa sitelen ike lon ni. sina ken ante e ni lon ilo pi lipu linja anu ilo pi ilo sona taso."
 
 #: src/features/user/components/modals/tabs/account_security_tab/RecoveryKitSettings.tsx
 msgid "Lets you reset your password if you forget it."
@@ -23736,7 +23736,7 @@ msgstr "o tawa e ilo ale tawa…"
 #. Button in the quick CSS editor window that moves the editor back into a panel inside the app.
 #: src/features/theme_settings/components/QuickCssWorkspace.tsx
 msgid "Move back into echowire"
-msgstr ""
+msgstr "o tawa sin lon ilo echowire"
 
 #. Label in the keybinds tab.
 #: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts
@@ -23751,7 +23751,7 @@ msgstr "o tawa monsi lon tomo pi tenpo pini"
 #. Row in the quick CSS editor shortcuts dialog.
 #: src/features/theme_settings/components/QuickCssShortcutsModal.tsx
 msgid "Move between the editor and the app"
-msgstr "o tawa insa ilo pi ante lukin en ilo Fluxer"
+msgstr "o tawa insa ilo pi ante lukin en ilo echowire"
 
 #. Submenu label that moves a single device into another voice channel.
 #. Submenu label that moves a single device into another voice channel.
@@ -23962,7 +23962,7 @@ msgstr "o pini e kalama pi ilo ale"
 #. Label for a streaming privacy settings toggle.
 #: src/features/user/components/modals/tabs/appearance_tab/StreamerModeTab.tsx
 msgid "Mute app sound effects"
-msgstr "o pini e kalama musi pi ilo Fluxer"
+msgstr "o pini e kalama musi pi ilo echowire"
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/PrivacySafetySections.ts
@@ -24883,7 +24883,7 @@ msgstr "sona ala."
 #. Desktop updater modal body when no installed version string is available.
 #: src/features/updater/commands/UpdaterModalCommands.tsx
 msgid "No desktop update is available."
-msgstr "ilo Fluxer sin pi ilo suli li lon ala."
+msgstr "ilo echowire sin pi ilo suli li lon ala."
 
 #: src/features/voice/components/modals/ScreenSharePickerModal.tsx
 msgid "No displays found"
@@ -26118,7 +26118,7 @@ msgstr "ni sina taso"
 #. Warning in Settings > Themes and in the modal that applies a shared theme. Trusting a site lets quick CSS and themes load images from it, and CSS can make the browser load different images depending on what the app shows.
 #: src/features/theme_settings/utils/ThemeSettingsMessageDescriptors.ts
 msgid "Only trust sites you know. A site you trust can see your IP address, when you have echowire open and some of what's on your screen."
-msgstr ""
+msgstr "o lukin e lipu linja pi sona sina taso. lipu linja li ken lukin e nanpa IP sina, e tenpo pi ilo echowire open sina, e ijo lili lon sinpin sina."
 
 #. Body of the error modal shown when a non-Visionary user tries to rejoin a gated Plutonium community.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCommunityActions.tsx
@@ -26598,7 +26598,7 @@ msgstr "o open e lipu pi lukin lon"
 
 #: src/features/channel/components/channel_header_components/developer_tools/ToolsMenu.tsx
 msgid "Open system DM"
-msgstr "o open e toki len pi ilo Fluxer"
+msgstr "o open e toki len pi ilo echowire"
 
 #. Primary button in the screen-share picker on Linux/Wayland. Hands off to the OS xdg-desktop-portal picker.
 #: src/features/voice/components/modals/ScreenSharePickerModal.tsx
@@ -27253,7 +27253,7 @@ msgstr "ilo open li wile e nimi ma. lipu li open kepeken nanpa IP sama ni la, il
 #. Sudo (re-auth) modal body shown on unsigned macOS desktop bundles where passkeys cannot work. Direct the user to install the signed client.
 #: src/features/auth/components/modals/SudoVerificationModal.tsx
 msgid "Passkeys require a signed macOS bundle with a valid application identifier. Install the signed desktop client and retry."
-msgstr "ilo open li wile e ilo macOS pi sitelen lon. o pana e ilo Fluxer pi sitelen lon tawa ilo suli, o pali sin."
+msgstr "ilo open li wile e ilo macOS pi sitelen lon. o pana e ilo echowire pi sitelen lon tawa ilo suli, o pali sin."
 
 #. Generic form-field label for a password.
 #. Label for the SMTP password field.
@@ -29198,7 +29198,7 @@ msgstr "sitelen JSON pi sitelen lili"
 #. Button or menu action label in the keybinds tab. Turns a disabled built-in shortcut back on. Keep it concise.
 #: src/features/user/components/modals/tabs/keybinds_tab/DefaultShortcutRow.tsx
 msgid "Re-enable built-in keybind"
-msgstr "o open sin e nena pi ilo Fluxer"
+msgstr "o open sin e nena pi ilo echowire"
 
 #. Button label that discards the current recording and restarts.
 #: src/features/voice/components/VoiceMessageComposerModal.tsx
@@ -29722,7 +29722,7 @@ msgstr "o open sin e ilo {appName} tawa ilo sin"
 
 #: src/features/user/components/modals/tabs/LanguageTab.tsx
 msgid "Reload {PRODUCT_NAME} to fully apply the engine change. Switching between in-app and system spellcheck requires a renderer reload because Electron can't swap providers while running."
-msgstr "o open sin e ilo {PRODUCT_NAME} tawa ante ale. ilo Electron li ken ala ante e ilo pi sitelen pona lon tenpo pali. tan ni la, sina ante tan ilo pi ilo Fluxer tawa ilo pi ilo suli la, o open sin."
+msgstr "o open sin e ilo {PRODUCT_NAME} tawa ante ale. ilo Electron li ken ala ante e ilo pi sitelen pona lon tenpo pali. tan ni la, sina ante tan ilo pi ilo echowire tawa ilo pi ilo suli la, o open sin."
 
 #. Tooltip on the channel header updater icon prompting a web reload to apply an update of unknown version. productName is the app name.
 #: src/features/channel/components/channel_header_components/UpdaterIcon.tsx
@@ -31473,8 +31473,8 @@ msgstr "o open lon open"
 
 #. Help on the setup token screen of an instance in a container whose tool the app does not know, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "Run this in the Fluxer container to show the token."
-msgstr "o open e ni lon poki Fluxer. ni la sina lukin e nanpa."
+msgid "Run this in the echowire container to show the token."
+msgstr "o open e ni lon poki echowire. ni la sina lukin e nanpa."
 
 #. Help on the setup token screen of an instance run with systemd, Docker or Podman, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -33217,7 +33217,7 @@ msgstr "ni li lon toki ni: ona li ken lukin e palisa pi pali toki."
 #. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
 #: src/features/theme_settings/editor/AppSelectors.ts
 msgid "Set on messages that echowire sends, such as when someone joins."
-msgstr ""
+msgstr "ni li lon toki tan ilo echowire, sama ni: jan li kama."
 
 #. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
 #: src/features/theme_settings/editor/AppSelectors.ts
@@ -34195,7 +34195,7 @@ msgstr "o lukin e sitelen lon palisa ilo"
 #. Settings search entry description. One-line summary of what the setting controls. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/search_index/AdvancedSettingsIndex.ts
 msgid "Show text in Fluxer Sans, the previous default font, instead of the Windows system font"
-msgstr "o lukin e sitelen kepeken Fluxer Sans, ona li nasin sitelen pi tenpo pini. o kepeken ala nasin sitelen Windows"
+msgstr "o lukin e sitelen kepeken echowire Sans, ona li nasin sitelen pi tenpo pini. o kepeken ala nasin sitelen Windows"
 
 #. Desktop setting description under the colored tray icon toggle on Windows and Linux.
 #: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
@@ -36345,7 +36345,7 @@ msgstr "o tawa lipu jan ante"
 #. Nagbar button that opens the setting for switching the app font back to Fluxer Sans. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Switch back to Fluxer Sans"
-msgstr "o kepeken sin e Fluxer Sans"
+msgstr "o kepeken sin e echowire Sans"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -36934,7 +36934,7 @@ msgstr "sina open e lukin insa la, sitelen li kepeken nasin pi kule walo pimeja,
 #. Nagbar message shown once to existing Windows users after the default app font changed to the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Text on Windows now uses the system font. You can switch back to Fluxer Sans in settings."
-msgstr "sitelen lon ilo Windows li kepeken nasin sitelen pi ilo Windows. lon nasin la sina ken kepeken sin e Fluxer Sans."
+msgstr "sitelen lon ilo Windows li kepeken nasin sitelen pi ilo Windows. lon nasin la sina ken kepeken sin e echowire Sans."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
@@ -37421,10 +37421,10 @@ msgctxt "screen-share"
 msgid "The screen share source stopped sending video, so your screen share was stopped."
 msgstr "ilo pi pana sinpin li pini e pana sitelen. ni la pana sinpin sina li pini."
 
-#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. Fluxer Platform AB is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
+#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. {OPERATOR_PASS_SELLER_NAME} is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
 #: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
-msgid "The seller is Fluxer Platform AB (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
-msgstr "jan esun li kulupu Fluxer Platform AB (nanpa 559537-3993). kulupu ni li tan ma Swensa li jo e tomo lawa lon ma Haninge. o sitelen tawa mi lon {OPERATOR_PASS_SELLER_ADDRESS}, o toki tawa mi kepeken nanpa {OPERATOR_PASS_SELLER_PHONE}, anu o pana e lipu kon tawa {SUPPORT_EMAIL}."
+msgid "The seller is {OPERATOR_PASS_SELLER_NAME} (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
+msgstr "jan esun li kulupu {OPERATOR_PASS_SELLER_NAME} (nanpa 559537-3993). kulupu ni li tan ma Swensa li jo e tomo lawa lon ma Haninge. o sitelen tawa mi lon {OPERATOR_PASS_SELLER_ADDRESS}, o toki tawa mi kepeken nanpa {OPERATOR_PASS_SELLER_PHONE}, anu o pana e lipu kon tawa {SUPPORT_EMAIL}."
 
 #. Setup wizard body explaining what the setup token is for.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -37434,7 +37434,7 @@ msgstr "nanpa open li toki e ni: sina jan ni: sina open e ma ilo ni."
 #. Caption under the sign-in page preview in the setup wizard branding step.
 #: src/features/app/components/setup/SetupBrandingPreview.tsx
 msgid "The sign-in page in a browser on a computer. The desktop app shows the same page."
-msgstr "lipu kama lon ilo pi lipu linja lon ilo suli. ilo Fluxer pi ilo suli li lukin e lipu sama."
+msgstr "lipu kama lon ilo pi lipu linja lon ilo suli. ilo echowire pi ilo suli li lukin e lipu sama."
 
 #. Caption under the phone preview in the setup wizard branding step.
 #: src/features/app/components/setup/SetupBrandingPreview.tsx
@@ -37707,7 +37707,7 @@ msgstr "pakala li lon. mi ken ala kama jo e ilo Webhook. o pali sin."
 #. Shown above the list of CSS attributes in the "Reference" tab of the quick CSS editor.
 #: src/features/theme_settings/components/QuickCssReference.tsx
 msgid "These attributes don't change between echowire updates."
-msgstr ""
+msgstr "ilo echowire li kama sin la, nimi ni li ante ala."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -37843,7 +37843,7 @@ msgstr "ilo pi lipu linja ni li ken ala kipisi e lipu {avifFormatLabel} tawa. o 
 #. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
 #: src/features/platform/hooks/useAppStorageDegradedNotice.ts
 msgid "This browser can't save echowire's data. You'll need to sign in again after you close it."
-msgstr ""
+msgstr "ilo pi lipu linja ni li ken ala awen e sona echowire. sina pini e ona la, sina o kama sin."
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts
@@ -37966,7 +37966,7 @@ msgstr "tomo ni li lon ala. ken la ona li weka."
 #. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "This class name changes with every echowire update. Use a [data-flx] selector."
-msgstr ""
+msgstr "ilo echowire li kama sin la, nimi ni li ante. o kepeken nimi [data-flx]."
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/ToolsMenu.tsx
@@ -38820,7 +38820,7 @@ msgstr "jan ni li lon ala. o open sin e lipu, o pali sin."
 #. Tooltip on the community members page explaining the Platform admin join source. Keep calm and factual.
 #: src/features/channel/components/guild_members_page/MemberTableRow.tsx
 msgid "This user was force-added to this community by a platform administrator."
-msgstr "jan lawa pi ilo Fluxer li pana e jan ni lon kulupu ni."
+msgstr "jan lawa pi ilo echowire li pana e jan ni lon kulupu ni."
 
 #. Registration form message when the chosen username belongs to someone else.
 #: src/features/auth/flow/AuthRegisterFormCore.tsx
@@ -41434,7 +41434,7 @@ msgstr "o kepeken nasin alasa anu nimi alasa. ni la sina alasa e toki"
 #. Toggle label and settings search entry for showing app text in the Fluxer Sans font instead of the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 msgid "Use Fluxer Sans on Windows"
-msgstr "o kepeken nasin sitelen Fluxer Sans lon ilo Windows"
+msgstr "o kepeken nasin sitelen echowire Sans lon ilo Windows"
 
 #. Short label in the banner uploader. Keep it concise. Keep the tone plain and specific.
 #: src/features/user/utils/UserMessageDescriptors.ts
@@ -41500,7 +41500,7 @@ msgstr "o kepeken nasin lukin pi ilo pi ilo sona lon lipu jan ni"
 #. Accessible label for the official Fluxer instance option.
 #: src/features/auth/flow/instance_selector/InstancePickerRows.tsx
 msgid "Use the official echowire instance"
-msgstr ""
+msgstr "o kepeken ma ilo pi kulupu echowire"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -44007,7 +44007,7 @@ msgstr "sina ken kama jo e mani ale sin tawa {date}. ni kin li pini e esun tenpo
 #. Nagbar body telling people that the echowire app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep echowire and Android untranslated. Keep the tone calm and plain.
 #: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
 msgid "You can get the echowire app for Android on {googlePlay} and chat from your phone."
-msgstr ""
+msgstr "sina ken kama jo e ilo echowire pi ilo Android lon {googlePlay}. ni la sina ken toki kepeken ilo sina."
 
 #. Line under "Full refund" in the Payments settings. {amount} is the price paid, with currency, and {date} is the last day of the refund window, such as Nov 2, 2026. Both are filled in by code.
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx

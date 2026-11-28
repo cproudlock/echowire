@@ -54,7 +54,7 @@ const SETUP_TOKEN_KUBERNETES_DESCRIPTOR = msg({
 		'Help on the setup token screen of an instance installed with the Helm chart, followed by a terminal command. kubectl is a name that must not be translated.',
 });
 const SETUP_TOKEN_CONTAINER_DESCRIPTOR = msg({
-	message: 'Run this in the Fluxer container to show the token.',
+	message: 'Run this in the echowire container to show the token.',
 	comment:
 		'Help on the setup token screen of an instance in a container whose tool the app does not know, followed by a terminal command.',
 });
@@ -62,7 +62,7 @@ const SETUP_TOKEN_LOST_DESCRIPTOR = msg({
 	message:
 		'If you run without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart the server, and enter that value here.',
 	comment:
-		'Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.',
+		'Help on the setup token screen for someone who installed echowire without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.',
 });
 const SETUP_TOKEN_LABEL_DESCRIPTOR = msg({
 	message: 'Setup token',

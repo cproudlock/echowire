@@ -11141,15 +11141,15 @@ msgstr "Couldn't connect to {host}. The server said: \"{error}\""
 msgid "Couldn't connect to {names}"
 msgstr "לא הצלחנו להתחבר אל {names}"
 
-#. Instance selector error shown when no Fluxer instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
-msgstr "לא הצלחנו להתחבר למופע של Fluxer בכתובת {domain}. יש לבדוק את הכתובת ולוודא שהמופע מקוון. אם המופע חותם בעצמו על האישור שלו, יש להוריד את האישור מ-{certificateUrl}, לוודא שטביעת האצבע SHA-256 שלו זהה לזו שמנהל המופע מסר, להתקין אותו במכשיר הזה ולנסות שוב."
-
-#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
+#. Instance selector error shown when no echowire instance answered at the address. Domain is interpolated.
 #: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
 msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online."
 msgstr "לא הצלחנו ליצור קשר עם מופע של echowire בכתובת {domain}. בדוק את הכתובת וודא שהמופע מקוון."
+
+#. Instance selector error shown when no echowire instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
+msgstr "לא הצלחנו להתחבר למופע של echowire בכתובת {domain}. יש לבדוק את הכתובת ולוודא שהמופע מקוון. אם המופע חותם בעצמו על האישור שלו, יש להוריד את האישור מ-{certificateUrl}, לוודא שטביעת האצבע SHA-256 שלו זהה לזו שמנהל המופע מסר, להתקין אותו במכשיר הזה ולנסות שוב."
 
 #. Toast shown when joining a voice channel fails because the connection timed out or the transport dropped.
 #: src/features/voice/engine/media_engine_facade/shared.ts
@@ -19574,7 +19574,7 @@ msgstr "If you leave it empty, the tab uses your app icon, or the default icon i
 msgid "If you leave it empty, those places show the default icon."
 msgstr "If you leave it empty, those places show the default icon."
 
-#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
+#. Help on the setup token screen for someone who installed echowire without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
 #: src/features/app/components/setup/SetupTokenStep.tsx
 msgid "If you run without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart the server, and enter that value here."
 msgstr "If you run without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart the server, and enter that value here."
@@ -31476,8 +31476,8 @@ msgstr "הפעלה בעת התחברות"
 
 #. Help on the setup token screen of an instance in a container whose tool the app does not know, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "Run this in the Fluxer container to show the token."
-msgstr "אפשר להריץ את הפקודה הזו בקונטיינר של Fluxer כדי להציג את האסימון."
+msgid "Run this in the echowire container to show the token."
+msgstr "אפשר להריץ את הפקודה הזו בקונטיינר של echowire כדי להציג את האסימון."
 
 #. Help on the setup token screen of an instance run with systemd, Docker or Podman, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -34198,7 +34198,7 @@ msgstr "הצגת סמל במגש המערכת"
 #. Settings search entry description. One-line summary of what the setting controls. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/search_index/AdvancedSettingsIndex.ts
 msgid "Show text in Fluxer Sans, the previous default font, instead of the Windows system font"
-msgstr "הצגת טקסט בגופן Fluxer Sans, הגופן הקודם, במקום גופן המערכת של Windows"
+msgstr "הצגת טקסט בגופן echowire Sans, הגופן הקודם, במקום גופן המערכת של Windows"
 
 #. Desktop setting description under the colored tray icon toggle on Windows and Linux.
 #: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
@@ -36348,7 +36348,7 @@ msgstr "החלפת חשבונות"
 #. Nagbar button that opens the setting for switching the app font back to Fluxer Sans. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Switch back to Fluxer Sans"
-msgstr "חזרה ל-Fluxer Sans"
+msgstr "חזרה ל-echowire Sans"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -36937,7 +36937,7 @@ msgstr "הטקסט מוצג עם החלקה בגווני אפור במקום Cle
 #. Nagbar message shown once to existing Windows users after the default app font changed to the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Text on Windows now uses the system font. You can switch back to Fluxer Sans in settings."
-msgstr "הטקסט ב-Windows משתמש כעת בגופן המערכת. ניתן להחליף בחזרה ל-Fluxer Sans בהגדרות."
+msgstr "הטקסט ב-Windows משתמש כעת בגופן המערכת. ניתן להחליף בחזרה ל-echowire Sans בהגדרות."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
@@ -37424,10 +37424,10 @@ msgctxt "screen-share"
 msgid "The screen share source stopped sending video, so your screen share was stopped."
 msgstr "מקור שיתוף המסך הפסיק לשלוח וידאו, ולכן שיתוף המסך שלך הופסק."
 
-#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. Fluxer Platform AB is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
+#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. {OPERATOR_PASS_SELLER_NAME} is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
 #: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
-msgid "The seller is Fluxer Platform AB (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
-msgstr "המוכר הוא Fluxer Platform AB (מס' רישום 559537-3993), חברה שוודית שמקום מושבה ב-Haninge. אפשר לכתוב לנו לכתובת {OPERATOR_PASS_SELLER_ADDRESS}, להתקשר למספר {OPERATOR_PASS_SELLER_PHONE} או לשלוח אימייל לכתובת {SUPPORT_EMAIL}."
+msgid "The seller is {OPERATOR_PASS_SELLER_NAME} (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
+msgstr "המוכר הוא {OPERATOR_PASS_SELLER_NAME} (מס' רישום 559537-3993), חברה שוודית שמקום מושבה ב-Haninge. אפשר לכתוב לנו לכתובת {OPERATOR_PASS_SELLER_ADDRESS}, להתקשר למספר {OPERATOR_PASS_SELLER_PHONE} או לשלוח אימייל לכתובת {SUPPORT_EMAIL}."
 
 #. Setup wizard body explaining what the setup token is for.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -41437,7 +41437,7 @@ msgstr "אפשר להשתמש במסננים או להזין מילות מפתח
 #. Toggle label and settings search entry for showing app text in the Fluxer Sans font instead of the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 msgid "Use Fluxer Sans on Windows"
-msgstr "שימוש ב-Fluxer Sans ב-Windows"
+msgstr "שימוש ב-echowire Sans ב-Windows"
 
 #. Short label in the banner uploader. Keep it concise. Keep the tone plain and specific.
 #: src/features/user/utils/UserMessageDescriptors.ts

@@ -10,7 +10,7 @@ msgstr ""
 #. Problem shown in the quick CSS editor on var() of a CSS variable that does not exist. {name} is the variable name without its leading dashes.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "--{name} isn't a echowire variable and isn't set anywhere in your CSS."
-msgstr ""
+msgstr "--{name} nuk është variabël i echowire dhe nuk është caktuar askund në CSS-në tënde."
 
 #. Description text in the messages tab.
 #: src/features/user/components/modals/tabs/appearance_tab/MessagesTab.tsx
@@ -1545,7 +1545,7 @@ msgstr "{displayName} të dërgoi një kërkesë miqësie"
 #. Instance selector error shown when the instance speaks a protocol generation this client does not know. Domain is interpolated.
 #: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
 msgid "{domain} runs a newer version of echowire than this app. Update echowire, then try again."
-msgstr ""
+msgstr "{domain} përdor një version më të ri të echowire se ky aplikacion. Përditëso echowire dhe provo përsëri."
 
 #. Profile timezone difference text. duration is a localized hours/minutes phrase for how far ahead the target user's local time is.
 #: src/features/user/components/popouts/UserProfileShared.tsx
@@ -7650,7 +7650,7 @@ msgstr "Ndrysho sfondin e bisedës së ngulitur"
 #. Completion in the quick CSS editor that inserts a :root rule, where theme variables are set.
 #: src/features/theme_settings/editor/CssCompletions.ts
 msgid "Change echowire variables"
-msgstr ""
+msgstr "Ndrysho variablat e echowire"
 
 #. Button in the Operator Pass checkout dialog that opens the dialog to change the account email.
 #: src/features/moderation/components/report/ReportStepVerification.tsx
@@ -11134,15 +11134,15 @@ msgstr ""
 msgid "Couldn't connect to {names}"
 msgstr "Nuk u lidh dot me {names}"
 
-#. Instance selector error shown when no Fluxer instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
-msgstr "Nuk u lidh dot me një instancë Fluxer në {domain}. Kontrollo adresën dhe nëse instanca është në linjë. Nëse instanca e nënshkruan vetë certifikatën, shkarkoje nga {certificateUrl}, kontrollo që gjurma SHA-256 të përputhet me atë që të jep administratori i instancës, instaloje në këtë pajisje dhe pastaj provo përsëri."
-
-#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
+#. Instance selector error shown when no echowire instance answered at the address. Domain is interpolated.
 #: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
 msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online."
-msgstr ""
+msgstr "Nuk u lidh dot me një instancë echowire në {domain}. Kontrollo adresën dhe nëse instanca është në linjë."
+
+#. Instance selector error shown when no echowire instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
+msgstr "Nuk u lidh dot me një instancë echowire në {domain}. Kontrollo adresën dhe nëse instanca është në linjë. Nëse instanca e nënshkruan vetë certifikatën, shkarkoje nga {certificateUrl}, kontrollo që gjurma SHA-256 të përputhet me atë që të jep administratori i instancës, instaloje në këtë pajisje dhe pastaj provo përsëri."
 
 #. Toast shown when joining a voice channel fails because the connection timed out or the transport dropped.
 #: src/features/voice/engine/media_engine_facade/shared.ts
@@ -14693,7 +14693,7 @@ msgstr "Çdo emër përdoruesi i përket një personi. Nëse një emër është 
 #. Description under the switch that adds the Operators' wall name to the yearly Operators list. A Fluxer release is a published version of the app. Operators are the people who have an Operator Pass, keep the word Operators in English.
 #: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassWallSettings.tsx
 msgid "Each yearly list of Operators that we publish goes into the notes of an echowire release and a file in its source code. Your wall name is only on it if you turn this on. If you ask us to remove it later, we take it out of future lists, the release notes and that file, but earlier versions of the source code and copies others made can't be recalled."
-msgstr ""
+msgstr "Çdo listë vjetore e Operatorëve që publikojmë futet në shënimet e një versioni të echowire dhe në një skedar të kodit të tij burimor. Emri yt në mur del aty vetëm nëse e aktivizon këtë. Nëse më vonë na kërkon ta heqim, e heqim nga listat e ardhshme, nga shënimet e versionit dhe nga ai skedar, por versionet e mëparshme të kodit burimor dhe kopjet që kanë bërë të tjerët nuk mund të tërhiqen."
 
 #. Plutonium page comparison row label for early access.
 #: src/features/premium/components/plutonium_page/PlutoniumPageMessages.ts
@@ -14723,62 +14723,62 @@ msgstr "Anulimi i jehonës"
 #. Problem shown in the quick CSS editor on a web address that the app is not allowed to load. Assets are files uploaded under "Assets".
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire blocked loading {url}. Upload it as an asset."
-msgstr ""
+msgstr "echowire bllokoi ngarkimin e {url}. Ngarkoje si aset."
 
 #. Problem shown in the quick CSS editor on an image address on a site the person has not trusted. Assets are files uploaded under "Assets". Trusting a site lets quick CSS and themes load images from it.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire blocked loading {url}. Upload the file as an asset, or trust the site it's on."
-msgstr ""
+msgstr "echowire bllokoi ngarkimin e {url}. Ngarkoje skedarin si aset ose beso sajtin ku ndodhet."
 
 #. Problem shown in the quick CSS editor on a reference to an uploaded theme asset that does not exist.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire can't find the asset \"{name}\"."
-msgstr ""
+msgstr "echowire nuk e gjen asetin „{name}“."
 
 #. Problem shown in the quick CSS editor on a reference to a file on the computer that echowire cannot read.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire can't find the file \"{path}\"."
-msgstr ""
+msgstr "echowire nuk e gjen skedarin „{path}“."
 
 #. Shown for a watched theme folder in Settings > Themes when the folder was moved, deleted or disconnected.
 #: src/features/theme_settings/components/YourThemesSection.tsx
 msgid "echowire can't find this folder. It will load the themes again when the folder is back."
-msgstr ""
+msgstr "echowire nuk e gjen këtë dosje. Do t'i ngarkojë sërish temat kur dosja të jetë përsëri aty."
 
 #. Shown for a watched theme folder in Settings > Themes when the desktop app no longer has permission to read it.
 #: src/features/theme_settings/components/YourThemesSection.tsx
 msgid "echowire can't open this folder. Import it again to keep watching it."
-msgstr ""
+msgstr "echowire nuk e hap dot këtë dosje. Importoje sërish që të vazhdojë ta ndjekë."
 
 #. Error toast in "Your themes" when the chosen theme folder cannot be opened.
 #: src/features/theme_settings/components/YourThemesSection.tsx
 msgid "echowire can't read this folder."
-msgstr ""
+msgstr "echowire nuk e lexon dot këtë dosje."
 
 #. Problem shown at the top of the quick CSS editor when the whole sheet was left out.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "echowire couldn't apply this CSS. Check it for a broken comment, string or bracket."
-msgstr ""
+msgstr "echowire nuk e zbatoi dot këtë CSS. Kontrolloje për ndonjë koment, varg ose kllapë të prishur."
 
 #. Status shown in the desktop app when it stopped checking the browser sign-in because the instance could not be reached. instanceName is the server name, such as Fluxer. "Try again" is the label of the button below and must match its translation.
 #: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
 msgid "echowire couldn't connect to {instanceName} to check whether your browser approved this sign-in. Check your connection, then select \"Try again\"."
-msgstr ""
+msgstr "echowire nuk u lidh dot me {instanceName} për të parë nëse shfletuesi e miratoi këtë hyrje. Kontrollo lidhjen, pastaj zgjidh „Provo përsëri“."
 
 #. Error shown in the desktop app when a passkey prompt starts but no security key is connected to the computer.
 #: src/features/auth/utils/PasskeyErrorMessages.ts
 msgid "echowire couldn't find a security key on this computer. Connect your security key and try again, or open echowire in your web browser and use your passkey there."
-msgstr ""
+msgstr "echowire nuk gjeti dot çelës sigurie në këtë kompjuter. Lidh çelësin e sigurisë dhe provo përsëri, ose hap echowire në shfletues dhe përdor çelësin e kalimit atje."
 
 #. Status shown when browser sign-in status polling gives up after repeated failures.
 #: src/features/auth/flow/auth_login_core/AuthLoginBrowserStep.tsx
 msgid "echowire stopped checking whether the browser approved this sign-in. It didn't lose your code."
-msgstr ""
+msgstr "echowire ndaloi së kontrolluari nëse shfletuesi e miratoi këtë hyrje. Kodi yt nuk humbi."
 
 #. Shown in the modal that applies a shared theme when the theme points at files the app will not load.
 #: src/features/theme/components/modals/ThemeAcceptModal.tsx
 msgid "echowire won't load {count, plural, one {# file} other {# files}} that this theme links to on other sites."
-msgstr ""
+msgstr "echowire nuk do të ngarkojë {count, plural, one {# skedar} other {# skedarë}} nga sajte të tjera, me të cilët lidhet kjo temë."
 
 #. Action label for opening the edit flow for the selected item.
 #. Button or menu action label in the linked accounts tab. Keep it concise.
@@ -19567,7 +19567,7 @@ msgstr ""
 msgid "If you leave it empty, those places show the default icon."
 msgstr ""
 
-#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
+#. Help on the setup token screen for someone who installed echowire without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
 #: src/features/app/components/setup/SetupTokenStep.tsx
 msgid "If you run without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart the server, and enter that value here."
 msgstr ""
@@ -21585,7 +21585,7 @@ msgstr "Lejon shtyp-për-të-folur dhe shkurtoret të funksionojnë në aplikaci
 #. Helper text under the "Allow 18+ content on iPhone and iPad" switch. "Show" is the sensitive media option name and must match its translation.
 #: src/features/user/components/modals/tabs/privacy_safety_tab/SensitiveContentTab.tsx
 msgid "Lets you open communities and channels marked 18+ in the echowire app for iPhone and iPad, and choose \"Show\" for sensitive media there. You can only change this on the web or on desktop."
-msgstr ""
+msgstr "Të lejon të hapësh komunitete dhe kanale të shënuara 18+ në aplikacionin echowire për iPhone dhe iPad dhe të zgjedhësh „Shfaq“ për mediat e ndjeshme atje. Këtë mund ta ndryshosh vetëm në ueb ose në desktop."
 
 #: src/features/user/components/modals/tabs/account_security_tab/RecoveryKitSettings.tsx
 msgid "Lets you reset your password if you forget it."
@@ -23732,7 +23732,7 @@ msgstr "Zhvendos të gjitha pajisjet te…"
 #. Button in the quick CSS editor window that moves the editor back into a panel inside the app.
 #: src/features/theme_settings/components/QuickCssWorkspace.tsx
 msgid "Move back into echowire"
-msgstr ""
+msgstr "Ktheje në echowire"
 
 #. Label in the keybinds tab.
 #: src/features/user/components/modals/tabs/keybinds_tab/AssignableActionOptions.ts
@@ -26114,7 +26114,7 @@ msgstr "Vetëm të zgjedhurat"
 #. Warning in Settings > Themes and in the modal that applies a shared theme. Trusting a site lets quick CSS and themes load images from it, and CSS can make the browser load different images depending on what the app shows.
 #: src/features/theme_settings/utils/ThemeSettingsMessageDescriptors.ts
 msgid "Only trust sites you know. A site you trust can see your IP address, when you have echowire open and some of what's on your screen."
-msgstr ""
+msgstr "Beso vetëm faqet që njeh. Një faqe që i beson mund të shohë adresën tënde IP, kur e ke echowire të hapur dhe një pjesë të asaj që ke në ekran."
 
 #. Body of the error modal shown when a non-Visionary user tries to rejoin a gated Plutonium community.
 #: src/features/app/components/dialogs/components/plutonium/hooks/useCommunityActions.tsx
@@ -31469,8 +31469,8 @@ msgstr "Nis gjatë hyrjes"
 
 #. Help on the setup token screen of an instance in a container whose tool the app does not know, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "Run this in the Fluxer container to show the token."
-msgstr "Ekzekuto këtë në kontejnerin e Fluxer për të shfaqur tokenin."
+msgid "Run this in the echowire container to show the token."
+msgstr "Ekzekuto këtë në kontejnerin e echowire për të shfaqur tokenin."
 
 #. Help on the setup token screen of an instance run with systemd, Docker or Podman, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -33213,7 +33213,7 @@ msgstr "Vendoset te mesazhet që mund të shfaqin shiritin e veprimeve."
 #. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
 #: src/features/theme_settings/editor/AppSelectors.ts
 msgid "Set on messages that echowire sends, such as when someone joins."
-msgstr ""
+msgstr "Vendoset te mesazhet që dërgon echowire, për shembull kur dikush bashkohet."
 
 #. Describes a CSS attribute in the "Reference" tab of the quick CSS editor.
 #: src/features/theme_settings/editor/AppSelectors.ts
@@ -34191,7 +34191,7 @@ msgstr "Shfaq ikonën në shiritin e sistemit"
 #. Settings search entry description. One-line summary of what the setting controls. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/search_index/AdvancedSettingsIndex.ts
 msgid "Show text in Fluxer Sans, the previous default font, instead of the Windows system font"
-msgstr "Shfaq tekstin me Fluxer Sans, shkronjat e mëparshme të parazgjedhura, në vend të shkronjave të sistemit Windows"
+msgstr "Shfaq tekstin me echowire Sans, shkronjat e mëparshme të parazgjedhura, në vend të shkronjave të sistemit Windows"
 
 #. Desktop setting description under the colored tray icon toggle on Windows and Linux.
 #: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
@@ -36341,7 +36341,7 @@ msgstr "Ndërro llogaritë"
 #. Nagbar button that opens the setting for switching the app font back to Fluxer Sans. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Switch back to Fluxer Sans"
-msgstr "Kthehu te Fluxer Sans"
+msgstr "Kthehu te echowire Sans"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -36930,7 +36930,7 @@ msgstr "Teksti shfaqet me zbutje gri në vend të ClearType kur transparenca ës
 #. Nagbar message shown once to existing Windows users after the default app font changed to the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Text on Windows now uses the system font. You can switch back to Fluxer Sans in settings."
-msgstr "Teksti në Windows tani përdor shkronjat e sistemit. Mund të kthehesh te Fluxer Sans te cilësimet."
+msgstr "Teksti në Windows tani përdor shkronjat e sistemit. Mund të kthehesh te echowire Sans te cilësimet."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
@@ -37417,10 +37417,10 @@ msgctxt "screen-share"
 msgid "The screen share source stopped sending video, so your screen share was stopped."
 msgstr "Burimi i ndarjes së ekranit ndaloi së dërguari video, prandaj ndarja e ekranit u ndalua."
 
-#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. Fluxer Platform AB is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
+#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. {OPERATOR_PASS_SELLER_NAME} is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
 #: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
-msgid "The seller is Fluxer Platform AB (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
-msgstr "Shitësi është Fluxer Platform AB (nr. i regjistrimit 559537-3993), një shoqëri suedeze me seli në Haninge. Na shkruaj në adresën {OPERATOR_PASS_SELLER_ADDRESS}, na telefono në {OPERATOR_PASS_SELLER_PHONE} ose na dërgo email në {SUPPORT_EMAIL}."
+msgid "The seller is {OPERATOR_PASS_SELLER_NAME} (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
+msgstr "Shitësi është {OPERATOR_PASS_SELLER_NAME} (nr. i regjistrimit 559537-3993), një shoqëri suedeze me seli në Haninge. Na shkruaj në adresën {OPERATOR_PASS_SELLER_ADDRESS}, na telefono në {OPERATOR_PASS_SELLER_PHONE} ose na dërgo email në {SUPPORT_EMAIL}."
 
 #. Setup wizard body explaining what the setup token is for.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -37703,7 +37703,7 @@ msgstr "Ndodhi një gabim gjatë ngarkimit të webhook-ëve. Provo përsëri."
 #. Shown above the list of CSS attributes in the "Reference" tab of the quick CSS editor.
 #: src/features/theme_settings/components/QuickCssReference.tsx
 msgid "These attributes don't change between echowire updates."
-msgstr ""
+msgstr "Këto atribute nuk ndryshojnë mes përditësimeve të echowire."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/search_index/MyProfileIndex.ts
@@ -37839,7 +37839,7 @@ msgstr "Ky shfletues nuk mund të presë skedarë {avifFormatLabel} të animuar.
 #. Notice shown when the browser refuses to store app data and the app keeps it in memory for this tab.
 #: src/features/platform/hooks/useAppStorageDegradedNotice.ts
 msgid "This browser can't save echowire's data. You'll need to sign in again after you close it."
-msgstr ""
+msgstr "Ky shfletues nuk mund të ruajë të dhënat e echowire. Do të duhet të hysh përsëri pasi ta mbyllësh."
 
 #. Console warning line explaining that the browser console is meant for developers.
 #: src/features/devtools/utils/SelfXssNotice.ts
@@ -37962,7 +37962,7 @@ msgstr "Ky kanal nuk ekziston më. Mund të jetë fshirë tashmë."
 #. Problem shown in the quick CSS editor on a generated class name. [data-flx] is CSS code and stays in English.
 #: src/features/theme_settings/editor/CssLint.ts
 msgid "This class name changes with every echowire update. Use a [data-flx] selector."
-msgstr ""
+msgstr "Ky emër klase ndryshon me çdo përditësim të echowire. Përdor një selektor [data-flx]."
 
 #. Developer tools debug menu label. Internal-only surface for developers; translators may keep this terse.
 #: src/features/channel/components/channel_header_components/developer_tools/ToolsMenu.tsx
@@ -41430,7 +41430,7 @@ msgstr "Përdor filtra ose shkruaj fjalë kyçe për të gjetur mesazhe"
 #. Toggle label and settings search entry for showing app text in the Fluxer Sans font instead of the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 msgid "Use Fluxer Sans on Windows"
-msgstr "Përdor Fluxer Sans në Windows"
+msgstr "Përdor echowire Sans në Windows"
 
 #. Short label in the banner uploader. Keep it concise. Keep the tone plain and specific.
 #: src/features/user/utils/UserMessageDescriptors.ts
@@ -41496,7 +41496,7 @@ msgstr "Përdor temën e aplikacionit për desktop për këtë llogari"
 #. Accessible label for the official Fluxer instance option.
 #: src/features/auth/flow/instance_selector/InstancePickerRows.tsx
 msgid "Use the official echowire instance"
-msgstr ""
+msgstr "Përdor instancën zyrtare të echowire"
 
 #. Settings search entry description. One-line summary of what the settings search entry controls.
 #: src/features/user/components/settings_utils/search_index/DesktopSettingsIndex.ts
@@ -44003,7 +44003,7 @@ msgstr "Mund të marrësh rimbursim të plotë deri më {date}. Kjo e përfundon
 #. Nagbar body telling people that the echowire app for Android phones can be installed from Google Play. {googlePlay} is the store brand name Google Play and must stay as is. Keep echowire and Android untranslated. Keep the tone calm and plain.
 #: src/features/app/components/layout/app_layout/nagbars/AndroidAppNagbar.tsx
 msgid "You can get the echowire app for Android on {googlePlay} and chat from your phone."
-msgstr ""
+msgstr "Mund ta shkarkosh aplikacionin echowire për Android në {googlePlay} dhe të bisedosh nga telefoni."
 
 #. Line under "Full refund" in the Payments settings. {amount} is the price paid, with currency, and {date} is the last day of the refund window, such as Nov 2, 2026. Both are filled in by code.
 #: src/features/app/components/dialogs/components/plutonium/RefundsSection.tsx

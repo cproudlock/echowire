@@ -21,13 +21,13 @@ export const INSTANCE_ADDRESS_INVALID_DESCRIPTOR = msg({
 });
 const INSTANCE_UNREACHABLE_DESCRIPTOR = msg({
 	message: "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online.",
-	comment: 'Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.',
+	comment: 'Instance selector error shown when no echowire instance answered at the address. Domain is interpolated.',
 });
 const INSTANCE_UNREACHABLE_SELF_SIGNED_DESCRIPTOR = msg({
 	message:
-		"Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again.",
+		"Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again.",
 	comment:
-		'Instance selector error shown when no Fluxer instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.',
+		'Instance selector error shown when no echowire instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.',
 });
 const INSTANCE_NEEDS_NEWER_CLIENT_DESCRIPTOR = msg({
 	message: '{domain} runs a newer version of echowire than this app. Update echowire, then try again.',

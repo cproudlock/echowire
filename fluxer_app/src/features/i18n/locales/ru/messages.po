@@ -11141,15 +11141,15 @@ msgstr "Couldn't connect to {host}. The server said: \"{error}\""
 msgid "Couldn't connect to {names}"
 msgstr "Не удалось подключиться к {names}"
 
-#. Instance selector error shown when no Fluxer instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
-#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
-msgid "Couldn't connect to a Fluxer instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
-msgstr "Не удалось подключиться к серверу Fluxer по адресу {domain}. Проверьте адрес и убедитесь, что сервер в сети. Если сервер использует самоподписанный сертификат, скачайте его по адресу {certificateUrl}, убедитесь, что его отпечаток SHA-256 совпадает с тем, который дал вам администратор сервера, установите его на это устройство и попробуйте снова."
-
-#. Instance selector error shown when no Fluxer instance answered at the address. Domain is interpolated.
+#. Instance selector error shown when no echowire instance answered at the address. Domain is interpolated.
 #: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
 msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online."
 msgstr "Не удалось подключиться к экземпляру echowire по адресу {domain}. Проверьте адрес и убедитесь, что экземпляр в сети."
+
+#. Instance selector error shown when no echowire instance answered at an IP address or a name that only works on a local network, where the instance often uses a certificate it signed itself. The certificate comes over plain HTTP, so the fingerprint check guards against a swapped file. Domain and certificate URL are interpolated.
+#: src/features/auth/flow/instance_selector/InstanceDiscoveryFailure.ts
+msgid "Couldn't connect to an echowire instance at {domain}. Check the address and that the instance is online. If the instance signs its own certificate, download it from {certificateUrl}, check that its SHA-256 fingerprint matches the one the instance's admin gives you, install it on this device, then try again."
+msgstr "Не удалось подключиться к серверу echowire по адресу {domain}. Проверьте адрес и убедитесь, что сервер в сети. Если сервер использует самоподписанный сертификат, скачайте его по адресу {certificateUrl}, убедитесь, что его отпечаток SHA-256 совпадает с тем, который дал вам администратор сервера, установите его на это устройство и попробуйте снова."
 
 #. Toast shown when joining a voice channel fails because the connection timed out or the transport dropped.
 #: src/features/voice/engine/media_engine_facade/shared.ts
@@ -19574,7 +19574,7 @@ msgstr "If you leave it empty, the tab uses your app icon, or the default icon i
 msgid "If you leave it empty, those places show the default icon."
 msgstr "If you leave it empty, those places show the default icon."
 
-#. Help on the setup token screen for someone who installed Fluxer without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
+#. Help on the setup token screen for someone who installed echowire without rexctl. FLUXER_SETUP_TOKEN and rexctl must not be translated.
 #: src/features/app/components/setup/SetupTokenStep.tsx
 msgid "If you run without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart the server, and enter that value here."
 msgstr "If you run without rexctl, set FLUXER_SETUP_TOKEN to a value of at least 32 characters that you choose, restart the server, and enter that value here."
@@ -31476,8 +31476,8 @@ msgstr "Запускать при входе"
 
 #. Help on the setup token screen of an instance in a container whose tool the app does not know, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
-msgid "Run this in the Fluxer container to show the token."
-msgstr "Выполните эту команду в контейнере Fluxer, чтобы показать токен."
+msgid "Run this in the echowire container to show the token."
+msgstr "Выполните эту команду в контейнере echowire, чтобы показать токен."
 
 #. Help on the setup token screen of an instance run with systemd, Docker or Podman, followed by a terminal command.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -34198,7 +34198,7 @@ msgstr "Показывать значок в системном трее"
 #. Settings search entry description. One-line summary of what the setting controls. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/search_index/AdvancedSettingsIndex.ts
 msgid "Show text in Fluxer Sans, the previous default font, instead of the Windows system font"
-msgstr "Показывать текст шрифтом Fluxer Sans, предыдущим шрифтом по умолчанию, вместо системного шрифта Windows"
+msgstr "Показывать текст шрифтом echowire Sans, предыдущим шрифтом по умолчанию, вместо системного шрифта Windows"
 
 #. Desktop setting description under the colored tray icon toggle on Windows and Linux.
 #: src/features/user/components/modals/tabs/DesktopSettingsTab.tsx
@@ -36348,7 +36348,7 @@ msgstr "Сменить аккаунт"
 #. Nagbar button that opens the setting for switching the app font back to Fluxer Sans. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Switch back to Fluxer Sans"
-msgstr "Вернуться к Fluxer Sans"
+msgstr "Вернуться к echowire Sans"
 
 #. Keyboard shortcut action label shown in the shortcuts list and keybind editor. Keep short, sentence case.
 #: src/features/input/state/input_keybind/shared.ts
@@ -36937,7 +36937,7 @@ msgstr "Текст сглаживается в оттенках серого в�
 #. Nagbar message shown once to existing Windows users after the default app font changed to the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/app/components/layout/app_layout/nagbars/WindowsFontNagbar.tsx
 msgid "Text on Windows now uses the system font. You can switch back to Fluxer Sans in settings."
-msgstr "Текст в Windows теперь отображается системным шрифтом. Вернуть Fluxer Sans можно в настройках."
+msgstr "Текст в Windows теперь отображается системным шрифтом. Вернуть echowire Sans можно в настройках."
 
 #. Settings search synonym. Used to match this term when the user types it in the settings search bar.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
@@ -37376,7 +37376,7 @@ msgstr "Теперь пропуск ваш."
 #. Text under the heading #operators in Fluxer Labs on a slide in the Operator Pass checkout dialog. The pass is the Operator Pass. #operators is the channel's literal name, keep it unchanged. Opens #operators to talk about means the pass gives access to the channel, where people talk about self-hosting, bots and the API. Hampus is a person's first name, keep it as is. Who created {productName} describes him as the person who started and made the software. Use past tense. Joins in when he can means Hampus takes part in the conversation when he has time, never that he answers questions or gives support. Warm and plain, never salesy. No dashes as punctuation and no semicolons.
 #: src/features/premium/components/operator_pass/checkout/OperatorPassShowcaseSlides.ts
 msgid "The pass opens #operators to talk about self-hosting, bots and the API. Hampus, who created {productName}, joins in when he can."
-msgstr "Пропуск открывает доступ к #operators, где обсуждают запуск Fluxer на своём сервере, ботов и API. Hampus, создатель {productName}, заглядывает, когда может."
+msgstr "Пропуск открывает доступ к #operators, где обсуждают запуск echowire на своём сервере, ботов и API. Hampus, создатель {productName}, заглядывает, когда может."
 
 #. Error shown when the browser passkey prompt ends without a passkey.
 #: src/features/auth/utils/PasskeyErrorMessages.ts
@@ -37424,10 +37424,10 @@ msgctxt "screen-share"
 msgid "The screen share source stopped sending video, so your screen share was stopped."
 msgstr "Источник демонстрации экрана прекратил передачу видео, поэтому демонстрация была остановлена."
 
-#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. Fluxer Platform AB is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
+#. Sentences after the privacy sentence in the Operator Pass checkout dialog that name the company selling the pass and how to reach it. {OPERATOR_PASS_SELLER_NAME} is the company name and 559537-3993 its Swedish registration number, keep both as is. Haninge is the Swedish municipality where the company has its registered seat and stays as is. Translate registered seat with the legal term your language uses for the registered seat of a company. The address, phone number and email address are filled in and stay as is. Use the same word for seller as on a receipt.
 #: src/features/app/components/dialogs/components/PurchaseDisclaimer.tsx
-msgid "The seller is Fluxer Platform AB (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
-msgstr "Продавец: Fluxer Platform AB (рег. № 559537-3993), шведская компания с местом нахождения в Haninge. Напишите нам по адресу {OPERATOR_PASS_SELLER_ADDRESS}, позвоните по номеру {OPERATOR_PASS_SELLER_PHONE} или отправьте электронное письмо на {SUPPORT_EMAIL}."
+msgid "The seller is {OPERATOR_PASS_SELLER_NAME} (reg. no. 559537-3993), a Swedish company with its registered seat in Haninge. Write to us at {OPERATOR_PASS_SELLER_ADDRESS}, call {OPERATOR_PASS_SELLER_PHONE} or email {SUPPORT_EMAIL}."
+msgstr "Продавец: {OPERATOR_PASS_SELLER_NAME} (рег. № 559537-3993), шведская компания с местом нахождения в Haninge. Напишите нам по адресу {OPERATOR_PASS_SELLER_ADDRESS}, позвоните по номеру {OPERATOR_PASS_SELLER_PHONE} или отправьте электронное письмо на {SUPPORT_EMAIL}."
 
 #. Setup wizard body explaining what the setup token is for.
 #: src/features/app/components/setup/SetupTokenStep.tsx
@@ -41437,7 +41437,7 @@ msgstr "Используйте фильтры или введите ключев
 #. Toggle label and settings search entry for showing app text in the Fluxer Sans font instead of the Windows system font. Fluxer Sans is a font name and must not be translated.
 #: src/features/user/components/settings_utils/section_registry/SharedDescriptors.ts
 msgid "Use Fluxer Sans on Windows"
-msgstr "Использовать Fluxer Sans в Windows"
+msgstr "Использовать echowire Sans в Windows"
 
 #. Short label in the banner uploader. Keep it concise. Keep the tone plain and specific.
 #: src/features/user/utils/UserMessageDescriptors.ts
@@ -44836,7 +44836,7 @@ msgstr "Предпросмотр сообщества {community} завершё
 #. Description of the Fluxer Labs section in the Operator Pass settings when the account is not a member of the community. A button "Join {labsName}" follows it. #operators is a channel name, keep it as is. {labsName} is the name of the community, such as Fluxer Labs.
 #: src/features/user/components/modals/tabs/operator_pass_tab/OperatorPassLabsGreetingSetting.tsx
 msgid "You're not in {labsName}. Joining opens #operators, where you can talk about self-hosting, bots and the API."
-msgstr "Вас нет в {labsName}. Присоединившись, вы получите доступ к #operators, где можно обсуждать запуск Fluxer на своём сервере, ботов и API."
+msgstr "Вас нет в {labsName}. Присоединившись, вы получите доступ к #operators, где можно обсуждать запуск echowire на своём сервере, ботов и API."
 
 #. Plutonium subscription card tooltip shown when the user is on a grandfathered price that is no longer offered.
 #: src/features/app/components/dialogs/components/plutonium/SubscriptionCard.tsx

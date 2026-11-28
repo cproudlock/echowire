@@ -306,7 +306,7 @@ async function runBootstrap(): Promise<void> {
 async function refuseUnsupportedBuild(reason: string): Promise<never> {
 	const logger = createChildLogger('Bootstrap');
 	logger.error('This build cannot start a renderer, refusing to launch', {reason});
-	process.stderr.write(`Fluxer cannot start: ${reason}\n`);
+	process.stderr.write(`echowire cannot start: ${reason}\n`);
 	await app.whenReady();
 	openSplashWindow();
 	setSplashState({status: 'blocked-unsupported-build', action: SplashAction.QUIT});

@@ -2,9 +2,6 @@
 
 package instance
 
-// Echowire: settings only this fork reads. Kept in their own file so upstream's
-// envvars.go merges cleanly. The echowire stack sets them through
-// deploy/self-hosting/docker-compose.yml, not rexctl, so they sit in "internal".
 func init() {
 	envVars = append(envVars,
 		envVar{"FLUXER_API_ADDITIONAL_CORS_ORIGINS", "internal", "Extra origins the API allows for cross-origin requests, comma separated, such as the canary web app."},

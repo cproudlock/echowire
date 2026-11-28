@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Bu konu {count} üye sınırına ulaştı.",
 	"threads.no_tags_available_to_non_moderators": "Etiket gerekli, ancak bu kanalda etiketleri yalnızca moderatörler ekleyebilir.",
 	"threads.search_index_not_ready": "Arama dizini henüz hazır değil. Birazdan tekrar deneyin.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Bu mesaj için zaten bir konu oluşturuldu.",
 	"threads.thread_archived": "Bu konu arşivlendi.",
 	"threads.thread_locked": "Bu konu kilitli.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Bu webhook hizmeti `thread_id` olmadan forum veya medya kanalına gönderi yapamaz.",
 	"webhooks.thread_name_requires_forum": "`thread_name` ve `applied_tags` yalnızca forum ve medya kanallarında çalışır.",
 	"webhooks.unknown_webhook": "Bilinmeyen webhook.",
-	"webhooks.webhook_name_length_invalid": "Webhook adı {min} ile {max} karakter arasında olmalı.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Webhook adı {min} ile {max} karakter arasında olmalı."
 }

@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Naabot na ng thread na ito ang limit na {count} miyembro.",
 	"threads.no_tags_available_to_non_moderators": "Kailangan ng tag, pero mga moderator lang ang puwedeng maglagay ng mga tag sa channel na ito.",
 	"threads.search_index_not_ready": "Hindi pa handa ang search index. Subukan ulit maya-maya.",
+	"threads.starter_attachment_already_present": "",
+	"threads.starter_attachment_limit_reached": "",
+	"threads.starter_attachment_source_invalid": "",
 	"threads.thread_already_created_for_message": "May thread na para sa mensaheng ito.",
 	"threads.thread_archived": "Naka-archive ang thread na ito.",
 	"threads.thread_locked": "Naka-lock ang thread na ito.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Hindi makakapag-post ang webhook service na ito sa forum o media channel nang walang `thread_id`.",
 	"webhooks.thread_name_requires_forum": "Gumagana lang ang `thread_name` at `applied_tags` sa mga forum at media channel.",
 	"webhooks.unknown_webhook": "Hindi kilalang webhook.",
-	"webhooks.webhook_name_length_invalid": "Dapat nasa pagitan ng {min} at {max} na character ang pangalan ng webhook.",
-	"threads.starter_attachment_already_present": "",
-	"threads.starter_attachment_limit_reached": "",
-	"threads.starter_attachment_source_invalid": ""
+	"webhooks.webhook_name_length_invalid": "Dapat nasa pagitan ng {min} at {max} na character ang pangalan ng webhook."
 }

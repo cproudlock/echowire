@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Ez a szál elérte a tagok korlátját: {count}.",
 	"threads.no_tags_available_to_non_moderators": "Címke szükséges, de ebben a csatornában csak moderátorok adhatnak hozzá címkét.",
 	"threads.search_index_not_ready": "A keresési index még nem áll készen. Próbáld újra egy pillanat múlva.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Ehhez az üzenethez már létrehoztak egy szálat.",
 	"threads.thread_archived": "Ez a szál archiválva van.",
 	"threads.thread_locked": "Ez a szál zárolva van.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Ez a webhookszolgáltatás `thread_id` nélkül nem tud fórum- vagy médiacsatornába üzenetet küldeni.",
 	"webhooks.thread_name_requires_forum": "A `thread_name` és az `applied_tags` csak fórum- és médiacsatornákban működik.",
 	"webhooks.unknown_webhook": "Ismeretlen webhook.",
-	"webhooks.webhook_name_length_invalid": "A webhook neve {min}–{max} karakter hosszú lehet.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "A webhook neve {min}–{max} karakter hosszú lehet."
 }

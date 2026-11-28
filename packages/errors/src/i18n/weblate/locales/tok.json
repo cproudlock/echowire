@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "linja toki ni li jo e jan pi mute ale. mute ale li {count}.",
 	"threads.no_tags_available_to_non_moderators": "nimi lili li wile, taso jan awen taso li ken pana e nimi lili lon tomo ni.",
 	"threads.search_index_not_ready": "lipu alasa li pini ala. o pali sin lon tenpo lili.",
+	"threads.starter_attachment_already_present": "",
+	"threads.starter_attachment_limit_reached": "",
+	"threads.starter_attachment_source_invalid": "",
 	"threads.thread_already_created_for_message": "linja toki li lon toki ni.",
 	"threads.thread_archived": "linja toki ni li lon poki pini.",
 	"threads.thread_locked": "linja toki ni li pini.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "ilo Webhook ni li jo ala e `thread_id` la, ona li ken ala pana e toki lon tomo pi linja toki anu tomo sitelen tawa.",
 	"webhooks.thread_name_requires_forum": "`thread_name` en `applied_tags` li pali lon tomo pi linja toki en tomo sitelen tawa taso.",
 	"webhooks.unknown_webhook": "ilo Webhook ni li lon ala.",
-	"webhooks.webhook_name_length_invalid": "nimi pi ilo Webhook li wile jo e sitelen {min} anu mute, e sitelen {max} anu lili.",
-	"threads.starter_attachment_already_present": "",
-	"threads.starter_attachment_limit_reached": "",
-	"threads.starter_attachment_source_invalid": ""
+	"webhooks.webhook_name_length_invalid": "nimi pi ilo Webhook li wile jo e sitelen {min} anu mute, e sitelen {max} anu lili."
 }

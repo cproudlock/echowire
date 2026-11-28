@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "В этой ветке достигнут лимит участников: {count}.",
 	"threads.no_tags_available_to_non_moderators": "Нужен тег, но в этом канале добавлять теги могут только модераторы.",
 	"threads.search_index_not_ready": "Поисковый индекс ещё не готов. Попробуйте ещё раз чуть позже.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Для этого сообщения уже создана ветка.",
 	"threads.thread_archived": "Эта ветка в архиве.",
 	"threads.thread_locked": "Эта ветка заблокирована.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Этот сервис вебхуков не может публиковать в форум или медиаканал без `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` и `applied_tags` работают только в форумах и медиаканалах.",
 	"webhooks.unknown_webhook": "Неизвестный вебхук.",
-	"webhooks.webhook_name_length_invalid": "Имя вебхука должно содержать от {min} до {max} символов.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Имя вебхука должно содержать от {min} до {max} символов."
 }

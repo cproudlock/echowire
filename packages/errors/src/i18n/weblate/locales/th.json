@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "เธรดนี้มีสมาชิกครบขีดจำกัด {count} คนแล้ว",
 	"threads.no_tags_available_to_non_moderators": "ต้องมีแท็ก แต่ในช่องนี้มีเพียงผู้ดูแลเท่านั้นที่ใส่แท็กได้",
 	"threads.search_index_not_ready": "ดัชนีการค้นหายังไม่พร้อม ลองอีกครั้งในอีกสักครู่",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "มีการสร้างเธรดสำหรับข้อความนี้แล้ว",
 	"threads.thread_archived": "เธรดนี้ถูกเก็บถาวรแล้ว",
 	"threads.thread_locked": "เธรดนี้ถูกล็อกอยู่",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "บริการเว็บฮุกนี้โพสต์ในช่องฟอรัมหรือช่องสื่อโดยไม่มี `thread_id` ไม่ได้",
 	"webhooks.thread_name_requires_forum": "`thread_name` และ `applied_tags` ใช้ได้เฉพาะในช่องฟอรัมและช่องสื่อ",
 	"webhooks.unknown_webhook": "ไม่พบเว็บฮุก",
-	"webhooks.webhook_name_length_invalid": "ชื่อเว็บฮุกต้องมีความยาวระหว่าง {min} ถึง {max} ตัวอักษร",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "ชื่อเว็บฮุกต้องมีความยาวระหว่าง {min} ถึง {max} ตัวอักษร"
 }

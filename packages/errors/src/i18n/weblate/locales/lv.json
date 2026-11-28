@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Šis pavediens ir sasniedzis dalībnieku ierobežojumu: {count}.",
 	"threads.no_tags_available_to_non_moderators": "Nepieciešama birka, bet šajā kanālā birkas var pievienot tikai moderatori.",
 	"threads.search_index_not_ready": "Meklēšanas indekss vēl nav gatavs. Pēc brīža mēģini vēlreiz.",
+	"threads.starter_attachment_already_present": "",
+	"threads.starter_attachment_limit_reached": "",
+	"threads.starter_attachment_source_invalid": "",
 	"threads.thread_already_created_for_message": "Šai ziņai pavediens jau ir izveidots.",
 	"threads.thread_archived": "Šis pavediens ir arhivēts.",
 	"threads.thread_locked": "Šis pavediens ir slēgts.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Šis tīmekļa āķa pakalpojums nevar publicēt foruma vai multivides kanālā bez `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` un `applied_tags` darbojas tikai foruma un multivides kanālos.",
 	"webhooks.unknown_webhook": "Nezināms tīmekļa āķis.",
-	"webhooks.webhook_name_length_invalid": "Tīmekļa āķa nosaukumā jābūt no {min} līdz {max} rakstzīmēm.",
-	"threads.starter_attachment_already_present": "",
-	"threads.starter_attachment_limit_reached": "",
-	"threads.starter_attachment_source_invalid": ""
+	"webhooks.webhook_name_length_invalid": "Tīmekļa āķa nosaukumā jābūt no {min} līdz {max} rakstzīmēm."
 }

@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Luồng này đã đạt giới hạn {count} thành viên.",
 	"threads.no_tags_available_to_non_moderators": "Cần có thẻ, nhưng trong kênh này chỉ người kiểm duyệt mới có thể gắn thẻ.",
 	"threads.search_index_not_ready": "Chỉ mục tìm kiếm chưa sẵn sàng. Hãy thử lại sau giây lát.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Tin nhắn này đã có luồng.",
 	"threads.thread_archived": "Luồng này đã được lưu trữ.",
 	"threads.thread_locked": "Luồng này đã bị khóa.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Dịch vụ webhook này không thể đăng vào kênh diễn đàn hoặc kênh phương tiện khi không có `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` và `applied_tags` chỉ hoạt động trong kênh diễn đàn và kênh phương tiện.",
 	"webhooks.unknown_webhook": "Webhook không xác định.",
-	"webhooks.webhook_name_length_invalid": "Tên webhook phải có độ dài từ {min} đến {max} ký tự.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Tên webhook phải có độ dài từ {min} đến {max} ký tự."
 }

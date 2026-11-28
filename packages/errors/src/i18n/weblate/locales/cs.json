@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Toto vlákno dosáhlo limitu členů: {count}.",
 	"threads.no_tags_available_to_non_moderators": "Štítek je povinný, ale v tomto kanálu mohou štítky přidávat jen moderátoři.",
 	"threads.search_index_not_ready": "Vyhledávací index ještě není připravený. Zkuste to za chvíli znovu.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Pro tuto zprávu už bylo vlákno vytvořeno.",
 	"threads.thread_archived": "Toto vlákno je archivované.",
 	"threads.thread_locked": "Toto vlákno je uzamčené.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Tato služba webhooků nemůže bez `thread_id` publikovat do kanálu fóra ani médií.",
 	"webhooks.thread_name_requires_forum": "`thread_name` a `applied_tags` fungují jen v kanálech fóra a médií.",
 	"webhooks.unknown_webhook": "Neznámý webhook.",
-	"webhooks.webhook_name_length_invalid": "Název webhooku musí být dlouhý {min} až {max} znaků.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Název webhooku musí být dlouhý {min} až {max} znaků."
 }

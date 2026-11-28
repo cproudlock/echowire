@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Tämä ketju on saavuttanut jäsenten rajan: {count}.",
 	"threads.no_tags_available_to_non_moderators": "Tunniste vaaditaan, mutta tällä kanavalla vain moderaattorit voivat lisätä tunnisteita.",
 	"threads.search_index_not_ready": "Hakuhakemisto ei ole vielä valmis. Yritä hetken päästä uudelleen.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Tälle viestille on jo luotu ketju.",
 	"threads.thread_archived": "Tämä ketju on arkistoitu.",
 	"threads.thread_locked": "Tämä ketju on lukittu.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Tämä webhook-palvelu ei voi julkaista foorumi- tai mediakanavalle ilman kenttää `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` ja `applied_tags` toimivat vain foorumi- ja mediakanavilla.",
 	"webhooks.unknown_webhook": "Tuntematon webhook.",
-	"webhooks.webhook_name_length_invalid": "Webhookin nimen on oltava {min}–{max} merkkiä pitkä.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Webhookin nimen on oltava {min}–{max} merkkiä pitkä."
 }

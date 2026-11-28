@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "このスレッドは、メンバーの上限（{count}人）に達しました。",
 	"threads.no_tags_available_to_non_moderators": "タグが必要ですが、このチャンネルでタグを付けられるのはモデレーターだけです。",
 	"threads.search_index_not_ready": "検索インデックスの準備がまだできていません。少し待ってからもう一度お試しください。",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "このメッセージのスレッドはすでに作成されています。",
 	"threads.thread_archived": "このスレッドはアーカイブされています。",
 	"threads.thread_locked": "このスレッドはロックされています。",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "このウェブフックサービスは、`thread_id`なしではフォーラムチャンネルやメディアチャンネルに投稿できません。",
 	"webhooks.thread_name_requires_forum": "`thread_name`と`applied_tags`はフォーラムチャンネルとメディアチャンネルでのみ使えます。",
 	"webhooks.unknown_webhook": "不明なウェブフックです。",
-	"webhooks.webhook_name_length_invalid": "ウェブフック名は{min}～{max}文字である必要があります。",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "ウェブフック名は{min}～{max}文字である必要があります。"
 }

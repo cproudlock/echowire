@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Ova nit već ima najveći dopušteni broj članova ({count}).",
 	"threads.no_tags_available_to_non_moderators": "Oznaka je obavezna, ali u ovom kanalu oznake mogu dodavati samo moderatori.",
 	"threads.search_index_not_ready": "Indeks pretraživanja još nije spreman. Pokušajte ponovno za trenutak.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Za ovu poruku već je stvorena nit.",
 	"threads.thread_archived": "Ova nit je arhivirana.",
 	"threads.thread_locked": "Ova nit je zaključana.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Ova webhook usluga ne može objavljivati u forumskom ili medijskom kanalu bez `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` i `applied_tags` rade samo u forumskim i medijskim kanalima.",
 	"webhooks.unknown_webhook": "Nepoznat webhook.",
-	"webhooks.webhook_name_length_invalid": "Naziv webhooka mora biti između {min} i {max} znakova.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Naziv webhooka mora biti između {min} i {max} znakova."
 }

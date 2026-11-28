@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "وصلت سلسلة الرسائل هذه إلى الحد الأقصى للأعضاء: {count}.",
 	"threads.no_tags_available_to_non_moderators": "يلزم وسم، لكن المشرفين وحدهم يمكنهم إضافة الوسوم في هذه القناة.",
 	"threads.search_index_not_ready": "فهرس البحث غير جاهز بعد. حاول مرة أخرى بعد قليل.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "تم إنشاء سلسلة رسائل لهذه الرسالة بالفعل.",
 	"threads.thread_archived": "سلسلة الرسائل هذه مؤرشفة.",
 	"threads.thread_locked": "سلسلة الرسائل هذه مقفلة.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "لا يمكن لخدمة الويب هوك هذه النشر في قناة منتدى أو قناة وسائط دون `thread_id`.",
 	"webhooks.thread_name_requires_forum": "لا يعمل `thread_name` و`applied_tags` إلا في قنوات المنتدى والوسائط.",
 	"webhooks.unknown_webhook": "ويب هوك غير معروف.",
-	"webhooks.webhook_name_length_invalid": "يجب أن يكون اسم الويب هوك بين {min} و{max} حرفًا.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "يجب أن يكون اسم الويب هوك بين {min} و{max} حرفًا."
 }

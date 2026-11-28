@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Este tópico atingiu o limite de {count} membros.",
 	"threads.no_tags_available_to_non_moderators": "É necessária uma etiqueta, mas só os moderadores podem aplicar as etiquetas neste canal.",
 	"threads.search_index_not_ready": "O índice de pesquisa ainda não está pronto. Tenta novamente daqui a pouco.",
+	"threads.starter_attachment_already_present": "",
+	"threads.starter_attachment_limit_reached": "",
+	"threads.starter_attachment_source_invalid": "",
 	"threads.thread_already_created_for_message": "Já foi criado um tópico para esta mensagem.",
 	"threads.thread_archived": "Este tópico está arquivado.",
 	"threads.thread_locked": "Este tópico está bloqueado.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Este serviço de webhook não pode publicar num canal de fórum ou de multimédia sem um `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` e `applied_tags` só funcionam em canais de fórum e de multimédia.",
 	"webhooks.unknown_webhook": "Webhook desconhecido.",
-	"webhooks.webhook_name_length_invalid": "O nome do webhook tem de ter entre {min} e {max} carateres.",
-	"threads.starter_attachment_already_present": "",
-	"threads.starter_attachment_limit_reached": "",
-	"threads.starter_attachment_source_invalid": ""
+	"webhooks.webhook_name_length_invalid": "O nome do webhook tem de ter entre {min} e {max} carateres."
 }

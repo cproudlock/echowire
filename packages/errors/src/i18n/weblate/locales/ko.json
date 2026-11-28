@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "이 스레드는 멤버 한도({count}명)에 도달했습니다.",
 	"threads.no_tags_available_to_non_moderators": "태그가 필요하지만 이 채널에서는 모더레이터만 태그를 달 수 있습니다.",
 	"threads.search_index_not_ready": "검색 인덱스가 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "이 메시지에 대한 스레드가 이미 만들어졌습니다.",
 	"threads.thread_archived": "이 스레드는 보관되었습니다.",
 	"threads.thread_locked": "이 스레드는 잠겨 있습니다.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "이 웹훅 서비스는 `thread_id` 없이 포럼 채널이나 미디어 채널에 게시할 수 없습니다.",
 	"webhooks.thread_name_requires_forum": "`thread_name`과 `applied_tags`는 포럼 채널과 미디어 채널에서만 작동합니다.",
 	"webhooks.unknown_webhook": "알 수 없는 웹훅입니다.",
-	"webhooks.webhook_name_length_invalid": "웹훅 이름은 {min}자에서 {max}자 사이여야 합니다.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "웹훅 이름은 {min}자에서 {max}자 사이여야 합니다."
 }

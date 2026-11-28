@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "此子区的成员已达上限：{count}。",
 	"threads.no_tags_available_to_non_moderators": "需要选择标签，但在此频道中只有版主可以添加标签。",
 	"threads.search_index_not_ready": "搜索索引尚未就绪，请稍后再试。",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "已为此消息创建过子区。",
 	"threads.thread_archived": "此子区已归档。",
 	"threads.thread_locked": "此子区已锁定。",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "此 Webhook 服务在没有 `thread_id` 的情况下无法在论坛频道或媒体频道中发帖。",
 	"webhooks.thread_name_requires_forum": "`thread_name` 和 `applied_tags` 仅适用于论坛频道和媒体频道。",
 	"webhooks.unknown_webhook": "未知 Webhook。",
-	"webhooks.webhook_name_length_invalid": "Webhook 名称长度必须在 {min} 到 {max} 个字符之间。",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Webhook 名称长度必须在 {min} 到 {max} 个字符之间。"
 }

@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Dieser Thread hat sein Mitgliederlimit erreicht: {count}.",
 	"threads.no_tags_available_to_non_moderators": "Ein Tag ist erforderlich, aber in diesem Kanal können nur Moderatoren Tags vergeben.",
 	"threads.search_index_not_ready": "Der Suchindex ist noch nicht bereit. Versuche es gleich noch einmal.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Für diese Nachricht wurde bereits ein Thread erstellt.",
 	"threads.thread_archived": "Dieser Thread ist archiviert.",
 	"threads.thread_locked": "Dieser Thread ist gesperrt.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Dieser Webhook-Dienst kann ohne `thread_id` nicht in einem Forum- oder Medienkanal posten.",
 	"webhooks.thread_name_requires_forum": "`thread_name` und `applied_tags` funktionieren nur in Forum- und Medienkanälen.",
 	"webhooks.unknown_webhook": "Unbekannter Webhook.",
-	"webhooks.webhook_name_length_invalid": "Der Webhook-Name muss zwischen {min} und {max} Zeichen lang sein.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Der Webhook-Name muss zwischen {min} und {max} Zeichen lang sein."
 }

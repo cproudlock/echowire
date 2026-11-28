@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "यह थ्रेड {count} सदस्यों की सीमा तक पहुँच गया है।",
 	"threads.no_tags_available_to_non_moderators": "टैग ज़रूरी है, लेकिन इस चैनल में केवल मॉडरेटर ही टैग लगा सकते हैं।",
 	"threads.search_index_not_ready": "खोज इंडेक्स अभी तैयार नहीं है। थोड़ी देर में फिर से कोशिश करें।",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "इस मैसेज के लिए पहले ही एक थ्रेड बनाया जा चुका है।",
 	"threads.thread_archived": "यह थ्रेड आर्काइव किया गया है।",
 	"threads.thread_locked": "यह थ्रेड लॉक है।",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "यह वेबहुक सेवा `thread_id` के बिना फ़ोरम या मीडिया चैनल में पोस्ट नहीं कर सकती।",
 	"webhooks.thread_name_requires_forum": "`thread_name` और `applied_tags` केवल फ़ोरम और मीडिया चैनलों में काम करते हैं।",
 	"webhooks.unknown_webhook": "अज्ञात वेबहुक।",
-	"webhooks.webhook_name_length_invalid": "वेबहुक का नाम {min} और {max} वर्णों के बीच होना चाहिए।",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "वेबहुक का नाम {min} और {max} वर्णों के बीच होना चाहिए।"
 }

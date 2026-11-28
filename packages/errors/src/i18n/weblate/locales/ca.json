@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Aquest fil ha arribat al límit de {count} membres.",
 	"threads.no_tags_available_to_non_moderators": "Cal una etiqueta, però en aquest canal només els moderadors poden aplicar etiquetes.",
 	"threads.search_index_not_ready": "L'índex de cerca encara no està a punt. Torna-ho a provar d'aquí a un moment.",
+	"threads.starter_attachment_already_present": "",
+	"threads.starter_attachment_limit_reached": "",
+	"threads.starter_attachment_source_invalid": "",
 	"threads.thread_already_created_for_message": "Ja s'ha creat un fil per a aquest missatge.",
 	"threads.thread_archived": "Aquest fil està arxivat.",
 	"threads.thread_locked": "Aquest fil està bloquejat.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Aquest servei de webhook no pot publicar en un canal de fòrum o multimèdia sense un `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` i `applied_tags` només funcionen als canals de fòrum i multimèdia.",
 	"webhooks.unknown_webhook": "Webhook desconegut.",
-	"webhooks.webhook_name_length_invalid": "El nom del webhook ha de tenir entre {min} i {max} caràcters.",
-	"threads.starter_attachment_already_present": "",
-	"threads.starter_attachment_limit_reached": "",
-	"threads.starter_attachment_source_invalid": ""
+	"webhooks.webhook_name_length_invalid": "El nom del webhook ha de tenir entre {min} i {max} caràcters."
 }

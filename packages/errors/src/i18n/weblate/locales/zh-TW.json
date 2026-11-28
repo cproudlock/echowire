@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "此討論串的成員已達上限：{count}。",
 	"threads.no_tags_available_to_non_moderators": "需要選擇標籤，但此頻道的標籤只有版主可以套用。",
 	"threads.search_index_not_ready": "搜尋索引尚未就緒，請稍後再試。",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "已為此訊息建立過討論串。",
 	"threads.thread_archived": "此討論串已封存。",
 	"threads.thread_locked": "此討論串已鎖定。",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "此 Webhook 服務在沒有 `thread_id` 的情況下無法在論壇頻道或媒體頻道中發文。",
 	"webhooks.thread_name_requires_forum": "`thread_name` 和 `applied_tags` 僅適用於論壇頻道和媒體頻道。",
 	"webhooks.unknown_webhook": "未知的 Webhook。",
-	"webhooks.webhook_name_length_invalid": "Webhook 名稱必須介於 {min} 到 {max} 個字元之間。",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Webhook 名稱必須介於 {min} 到 {max} 個字元之間。"
 }

@@ -592,6 +592,9 @@
 	"threads.max_thread_members_reached": "Acest fir a atins limita de membri: {count}.",
 	"threads.no_tags_available_to_non_moderators": "Este nevoie de o etichetă, dar în acest canal doar moderatorii pot aplica etichete.",
 	"threads.search_index_not_ready": "Indexul de căutare nu este încă pregătit. Încearcă din nou peste câteva clipe.",
+	"threads.starter_attachment_already_present": "This attachment is already on the post.",
+	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
+	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message.",
 	"threads.thread_already_created_for_message": "Pentru acest mesaj a fost deja creat un fir.",
 	"threads.thread_archived": "Acest fir este arhivat.",
 	"threads.thread_locked": "Acest fir este blocat.",
@@ -648,8 +651,5 @@
 	"webhooks.service_forum_unsupported": "Acest serviciu de webhook nu poate posta într-un canal de forum sau media fără `thread_id`.",
 	"webhooks.thread_name_requires_forum": "`thread_name` și `applied_tags` funcționează doar în canalele de forum și media.",
 	"webhooks.unknown_webhook": "Webhook necunoscut.",
-	"webhooks.webhook_name_length_invalid": "Numele webhook-ului trebuie să aibă între {min} și {max} caractere.",
-	"threads.starter_attachment_already_present": "This attachment is already on the post.",
-	"threads.starter_attachment_limit_reached": "The post has reached its attachment limit.",
-	"threads.starter_attachment_source_invalid": "The source message can't be the post's own first message."
+	"webhooks.webhook_name_length_invalid": "Numele webhook-ului trebuie să aibă între {min} și {max} caractere."
 }
